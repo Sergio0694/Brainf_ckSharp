@@ -23,10 +23,10 @@ namespace Branf_ck_sharp
         /// <returns></returns>
         [PublicAPI]
         [Pure, NotNull]
-        public static object Run([NotNull] String source, [CanBeNull] String arguments,
+        public static InterpreterResult Run([NotNull] String source, [CanBeNull] String arguments,
             int size, int threshold)
         {
-            return TryRun(source, arguments, new TouringMachineState(size), threshold);
+            return (InterpreterResult)TryRun(source, arguments, new TouringMachineState(size), threshold);
         }
 
         /// <summary>
@@ -39,10 +39,10 @@ namespace Branf_ck_sharp
         /// <returns></returns>
         [PublicAPI]
         [Pure, NotNull]
-        public static object Run([NotNull] String source, [CanBeNull] String arguments,
+        public static InterpreterResult Run([NotNull] String source, [CanBeNull] String arguments,
             [NotNull] TouringMachineState state, int threshold)
         {
-            return TryRun(source, arguments, state.Clone(), threshold);
+            return (InterpreterResult)TryRun(source, arguments, state.Clone(), threshold);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Branf_ck_sharp
             int height = 0;
             foreach (char c in operators)
             {
-                // Check the parenthesis
+                // Check the parentheses
                 if (c == '[') height++;
                 else if (c == ']')
                 {
@@ -97,7 +97,7 @@ namespace Branf_ck_sharp
             int height = 0;
             for (int i = 0; i < source.Length; i++)
             {
-                // Check the parenthesis
+                // Check the parentheses
                 if (source[i] == '[') height++;
                 else if (source[i] == ']')
                 {
@@ -110,6 +110,7 @@ namespace Branf_ck_sharp
             return height == 0 ? (true, 0) : (false, source.Length - 1);
         }
 
+        [Pure, NotNull]
         private static object TryRun([NotNull] String source, [CanBeNull] String arguments,
             [NotNull] TouringMachineState state, int threshold)
         {
@@ -134,7 +135,7 @@ namespace Branf_ck_sharp
                 {
                     if (timer.ElapsedMilliseconds > threshold)
                     {
-                        return false;
+                        return (InterpreterExitCode.Failure & InterpreterExitCode.InfiniteLoop, new String[0]);
                     }
 
                     int skip = 0;
@@ -144,7 +145,7 @@ namespace Branf_ck_sharp
                         {
                             case '>':
                                 if (state.CanMoveNext) state.MoveNext();
-                                else return false;
+                                else return (InterpreterExitCode.Failure & InterpreterExitCode.ExceptionThrown, new String[0]);
                                 break;
                             case '<':
                                 if (state.CanMoveBack) state.MoveBack();
@@ -165,7 +166,16 @@ namespace Branf_ck_sharp
                                 {
                                     var result = TryRunCore(loop);
                                     // TODO: handle errors/breakpoints here
-                                    if (result == null) return false;
+                                    if (result == null)
+                                    {
+                                        String frame = operators.Take(i).Aggregate(new StringBuilder(), (b, c) =>
+                                        {
+                                            b.Append(c);
+                                            return b;
+                                        }).ToString();
+                                        Stack<String> a = null;
+                                        
+                                    }
                                 }
                                 break;
                             case ']':
@@ -191,6 +201,8 @@ namespace Branf_ck_sharp
                 } while (repeat);
                 return null;
             }
+
+            timer.Stop();
             return null;
         }
 
