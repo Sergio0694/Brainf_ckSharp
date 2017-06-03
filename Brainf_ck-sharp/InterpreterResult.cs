@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Brainf_ck_sharp.Exceptions;
 using Branf_ck_sharp;
 using JetBrains.Annotations;
 
@@ -23,11 +22,17 @@ namespace Brainf_ck_sharp
         public String SourceCode { get; }
 
         [CanBeNull]
-        public InterpreterException Exception { get; }
+        public Stack<String> StackTrace { get; }
 
-        internal InterpreterResult()
+        internal InterpreterResult(InterpreterExitCode exitCode, [NotNull] TouringMachineState state, TimeSpan duration,
+            [NotNull] String output, [NotNull] String code, [CanBeNull] Stack<String> stackTrace)
         {
-            
+            ExitCode = exitCode;
+            MachineState = state;
+            ElapsedTime = duration;
+            Output = output;
+            SourceCode = code;
+            StackTrace = stackTrace;
         }
     }
 }

@@ -119,91 +119,130 @@ namespace Branf_ck_sharp
             if (executable.Count == 0) return InterpreterExitCode.Failure & InterpreterExitCode.NoCodeInterpreted;
 
             // Check the code syntax
-            if (!CheckSourceSyntax(executable)) return InterpreterExitCode.Failure & InterpreterExitCode.SyntaxError;
+            if (!CheckSourceSyntax(executable)) return InterpreterExitCode.Failure & InterpreterExitCode.MismatchedParentheses;
 
             // Prepare the input and output arguments
             Queue<char> input = new Queue<char>(arguments);
             StringBuilder output = new StringBuilder();
 
+            // Start the stopwatch to monitor the execution
             Stopwatch timer = new Stopwatch();
             timer.Start();
 
-            object TryRunCore(IReadOnlyList<char> operators)
+            // Internal recursive function that interpretes the code
+            (InterpreterExitCode, IEnumerable<IEnumerable<char>>) TryRunCore(IReadOnlyList<char> operators)
             {
+                // Outer do-while that repeats the code if there's a loop
                 bool repeat = false;
                 do
                 {
+                    // Check the current elapsed time
                     if (timer.ElapsedMilliseconds > threshold)
                     {
-                        return (InterpreterExitCode.Failure & InterpreterExitCode.InfiniteLoop, new String[0]);
+                        return (InterpreterExitCode.Failure & InterpreterExitCode.ThresholdExceeded, new[] { new char[0] });
                     }
 
+                    // Iterate over all the commands
                     int skip = 0;
                     for (int i = 0; i < operators.Count; i++)
                     {
+                        // Skip the current character if inside a loop that points to a 0 cell
+                        if (skip > 0)
+                        {
+                            skip--;
+                            continue;
+                        }
+
+                        // Parse the current operator
                         switch (operators[i])
                         {
+                            // ptr++
                             case '>':
                                 if (state.CanMoveNext) state.MoveNext();
-                                else return (InterpreterExitCode.Failure & InterpreterExitCode.ExceptionThrown, new String[0]);
+                                else return (InterpreterExitCode.Failure &
+                                             InterpreterExitCode.ExceptionThrown &
+                                             InterpreterExitCode.UpperBoundExceeded, new[] { operators.Take(i) });
                                 break;
+
+                            // ptr--
                             case '<':
                                 if (state.CanMoveBack) state.MoveBack();
-                                else return false;
+                                else return (InterpreterExitCode.Failure &
+                                             InterpreterExitCode.ExceptionThrown &
+                                             InterpreterExitCode.UpperBoundExceeded, new[] { operators.Take(i) });
                                 break;
+             
+                            // *ptr++
                             case '+':
                                 if (state.CanIncrement) state.Plus();
-                                else return false;
+                                else return (InterpreterExitCode.Failure &
+                                             InterpreterExitCode.ExceptionThrown &
+                                             InterpreterExitCode.MaxValueExceeded, new[] { operators.Take(i) });
                                 break;
+
+                            // *ptr--
                             case '-':
                                 if (state.CanDecrement) state.Minus();
-                                else return false;
+                                else return (InterpreterExitCode.Failure &
+                                             InterpreterExitCode.ExceptionThrown &
+                                             InterpreterExitCode.NegativeValue, new[] { operators.Take(i) });
                                 break;
+
+                            // while (*ptr) {
                             case '[':
-                                IReadOnlyList<char> loop = operators.Skip(i).ToArray();
-                                skip = CalculateSkippedOperators(loop);
+                                IReadOnlyList<char> loop = ExtractInnerLoop(operators, i);
+                                skip = loop.Count + 1;
                                 if (state.Current > 0)
                                 {
-                                    var result = TryRunCore(loop);
-                                    // TODO: handle errors/breakpoints here
-                                    if (result == null)
+                                    (InterpreterExitCode code, IEnumerable<IEnumerable<char>> loopFrames) = TryRunCore(loop);
+                                    if ((code & InterpreterExitCode.Success) == 0)
                                     {
-                                        String frame = operators.Take(i).Aggregate(new StringBuilder(), (b, c) =>
-                                        {
-                                            b.Append(c);
-                                            return b;
-                                        }).ToString();
-                                        Stack<String> a = null;
-                                        
+                                        return (code, new[] { operators.Take(i) }.Concat(loopFrames));
                                     }
                                 }
                                 break;
+
+                            // }
                             case ']':
                                 if (state.Current == 0)
                                 {
                                     // Loop end
-                                    return true;
+                                    return (InterpreterExitCode.Success, null);
                                 }
                                 else
                                 {
+                                    // Jump back and execute the loop body again
                                     repeat = true;
                                     continue;
                                 }
+
+                            // putch(*ptr)
                             case '.':
                                 output.Append(Convert.ToChar(state.Current));
                                 break;
+
+                            // *ptr = getch()
                             case ',':
                                 if (input.Count > 0) state.Input(input.Dequeue());
-                                else return false;
+                                else return (InterpreterExitCode.Failure &
+                                             InterpreterExitCode.ExceptionThrown &
+                                             InterpreterExitCode.StrinBufferExhausted, new[] { operators.Take(i) });
                                 break;
                         }
                     }
                 } while (repeat);
-                return null;
+                return (InterpreterExitCode.Success, null);
             }
 
+            // Execute the code and stop the timer
+            (InterpreterExitCode result, IEnumerable<IEnumerable<char>> frames) = TryRunCore(executable);
             timer.Stop();
-            return null;
+
+            // Reconstruct the stack trace that generated the error and return the interpreter result
+            Stack<String> stackTrace = frames == null ? null : new Stack<String>(
+                from frame in frames
+                select frame.AggregateToString());
+            return new InterpreterResult(result, state, timer.Elapsed, output.ToString(), executable.AggregateToString(), stackTrace);
         }
 
         /* TODO: update this old code
@@ -422,6 +461,28 @@ namespace Branf_ck_sharp
                 jump++;
             }
             return jump + 1; // Include the last ] operator
+        }
+
+
+        [Pure, NotNull]
+        private static IReadOnlyList<char> ExtractInnerLoop([NotNull] IReadOnlyList<char> source, int index)
+        {
+            // Initial checks
+            if (source.Count == 0) throw new ArgumentException("The source code is empty");
+            if (index < 0 || index > source.Count - 2) throw new ArgumentOutOfRangeException("The target index is invalid");
+            if (source[index] != '[') throw new ArgumentException("The target index doesn't point to the beginning of a loop");
+
+            int height = 0;
+            for (int i = index + 1; i < source.Count; i++)
+            {
+                if (source[i] == '[') height++;
+                else if (source[i] == ']')
+                {
+                    if (height == 0) return source.Skip(index + 1).Take(i - (index + 1)).ToArray();
+                    height--;
+                }
+            }
+            throw new ArgumentException("The source code doesn't contain a well formatted nested loop at the given position");
         }
     }
 }
