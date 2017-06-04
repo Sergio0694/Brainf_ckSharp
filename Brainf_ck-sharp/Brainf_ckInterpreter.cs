@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using Brainf_ck_sharp;
+using Branf_ck_sharp;
 using JetBrains.Annotations;
 
-namespace Branf_ck_sharp
+namespace Brainf_ck_sharp
 {
     /// <summary>
     /// Classe statica che interpreta ed esegue il debug in modo asincrono dei codici sorgenti in Brainfuck
@@ -23,10 +23,10 @@ namespace Branf_ck_sharp
         /// <returns></returns>
         [PublicAPI]
         [Pure, NotNull]
-        public static InterpreterResult Run([NotNull] String source, [CanBeNull] String arguments,
-            int size, int threshold)
+        public static InterpreterResult Run([NotNull] String source, [NotNull] String arguments,
+            int size = 64, int? threshold = null)
         {
-            return (InterpreterResult)TryRun(source, arguments, new TouringMachineState(size), threshold);
+            return TryRun(source, arguments, new TouringMachineState(size), threshold);
         }
 
         /// <summary>
@@ -39,10 +39,10 @@ namespace Branf_ck_sharp
         /// <returns></returns>
         [PublicAPI]
         [Pure, NotNull]
-        public static InterpreterResult Run([NotNull] String source, [CanBeNull] String arguments,
-            [NotNull] TouringMachineState state, int threshold)
+        public static InterpreterResult Run([NotNull] String source, [NotNull] String arguments,
+            [NotNull] TouringMachineState state, int? threshold = null)
         {
-            return (InterpreterResult)TryRun(source, arguments, state.Clone(), threshold);
+            return TryRun(source, arguments, state.Clone(), threshold);
         }
 
         /// <summary>
@@ -111,18 +111,25 @@ namespace Branf_ck_sharp
         }
 
         [Pure, NotNull]
-        private static object TryRun([NotNull] String source, [CanBeNull] String arguments,
-            [NotNull] TouringMachineState state, int threshold)
+        private static InterpreterResult TryRun([NotNull] String source, [NotNull] String arguments,
+            [NotNull] TouringMachineState state, int? threshold)
         {
             // Get the operators to execute and check if the source is empty
             IReadOnlyList<char> executable = FindExecutableCode(source).ToArray();
-            if (executable.Count == 0) return InterpreterExitCode.Failure & InterpreterExitCode.NoCodeInterpreted;
+            if (executable.Count == 0)
+            {
+                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.NoCodeInterpreted, state, TimeSpan.Zero, String.Empty, String.Empty, null);
+            }
 
             // Check the code syntax
-            if (!CheckSourceSyntax(executable)) return InterpreterExitCode.Failure & InterpreterExitCode.MismatchedParentheses;
+            if (!CheckSourceSyntax(executable))
+            {
+                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.MismatchedParentheses, state, TimeSpan.Zero, String.Empty,
+                    executable.AggregateToString(), null);
+            }
 
             // Prepare the input and output arguments
-            Queue<char> input = new Queue<char>(arguments);
+            Queue<char> input = arguments.Length > 0 ? new Queue<char>(arguments) : new Queue<char>();
             StringBuilder output = new StringBuilder();
 
             // Start the stopwatch to monitor the execution
@@ -137,9 +144,9 @@ namespace Branf_ck_sharp
                 do
                 {
                     // Check the current elapsed time
-                    if (timer.ElapsedMilliseconds > threshold)
+                    if (threshold.HasValue && timer.ElapsedMilliseconds > threshold.Value)
                     {
-                        return (InterpreterExitCode.Failure & InterpreterExitCode.ThresholdExceeded, new[] { new char[0] });
+                        return (InterpreterExitCode.Failure | InterpreterExitCode.ThresholdExceeded, new[] { new char[0] });
                     }
 
                     // Iterate over all the commands
@@ -159,45 +166,45 @@ namespace Branf_ck_sharp
                             // ptr++
                             case '>':
                                 if (state.CanMoveNext) state.MoveNext();
-                                else return (InterpreterExitCode.Failure &
-                                             InterpreterExitCode.ExceptionThrown &
-                                             InterpreterExitCode.UpperBoundExceeded, new[] { operators.Take(i) });
+                                else return (InterpreterExitCode.Failure |
+                                             InterpreterExitCode.ExceptionThrown |
+                                             InterpreterExitCode.UpperBoundExceeded, new[] { operators.Take(i + 1) });
                                 break;
 
                             // ptr--
                             case '<':
                                 if (state.CanMoveBack) state.MoveBack();
-                                else return (InterpreterExitCode.Failure &
-                                             InterpreterExitCode.ExceptionThrown &
-                                             InterpreterExitCode.UpperBoundExceeded, new[] { operators.Take(i) });
+                                else return (InterpreterExitCode.Failure |
+                                             InterpreterExitCode.ExceptionThrown |
+                                             InterpreterExitCode.UpperBoundExceeded, new[] { operators.Take(i + 1) });
                                 break;
-             
+
                             // *ptr++
                             case '+':
                                 if (state.CanIncrement) state.Plus();
-                                else return (InterpreterExitCode.Failure &
-                                             InterpreterExitCode.ExceptionThrown &
-                                             InterpreterExitCode.MaxValueExceeded, new[] { operators.Take(i) });
+                                else return (InterpreterExitCode.Failure |
+                                             InterpreterExitCode.ExceptionThrown |
+                                             InterpreterExitCode.MaxValueExceeded, new[] { operators.Take(i + 1) });
                                 break;
 
                             // *ptr--
                             case '-':
                                 if (state.CanDecrement) state.Minus();
-                                else return (InterpreterExitCode.Failure &
-                                             InterpreterExitCode.ExceptionThrown &
-                                             InterpreterExitCode.NegativeValue, new[] { operators.Take(i) });
+                                else return (InterpreterExitCode.Failure |
+                                             InterpreterExitCode.ExceptionThrown |
+                                             InterpreterExitCode.NegativeValue, new[] { operators.Take(i + 1) });
                                 break;
 
                             // while (*ptr) {
                             case '[':
-                                IReadOnlyList<char> loop = ExtractInnerLoop(operators, i);
-                                skip = loop.Count + 1;
+                                IReadOnlyList<char> loop = ExtractInnerLoop(operators, i).Concat(new[] { ']' }).ToArray();
+                                skip = loop.Count;
                                 if (state.Current > 0)
                                 {
                                     (InterpreterExitCode code, IEnumerable<IEnumerable<char>> loopFrames) = TryRunCore(loop);
                                     if ((code & InterpreterExitCode.Success) == 0)
                                     {
-                                        return (code, new[] { operators.Take(i) }.Concat(loopFrames));
+                                        return (code, new[] { operators.Take(i + 1) }.Concat(loopFrames));
                                     }
                                 }
                                 break;
@@ -224,9 +231,9 @@ namespace Branf_ck_sharp
                             // *ptr = getch()
                             case ',':
                                 if (input.Count > 0) state.Input(input.Dequeue());
-                                else return (InterpreterExitCode.Failure &
-                                             InterpreterExitCode.ExceptionThrown &
-                                             InterpreterExitCode.StrinBufferExhausted, new[] { operators.Take(i) });
+                                else return (InterpreterExitCode.Failure |
+                                             InterpreterExitCode.ExceptionThrown |
+                                             InterpreterExitCode.StrinBufferExhausted, new[] { operators.Take(i + 1) });
                                 break;
                         }
                     }
@@ -465,7 +472,7 @@ namespace Branf_ck_sharp
 
 
         [Pure, NotNull]
-        private static IReadOnlyList<char> ExtractInnerLoop([NotNull] IReadOnlyList<char> source, int index)
+        private static IEnumerable<char> ExtractInnerLoop([NotNull] IReadOnlyList<char> source, int index)
         {
             // Initial checks
             if (source.Count == 0) throw new ArgumentException("The source code is empty");
@@ -478,7 +485,7 @@ namespace Branf_ck_sharp
                 if (source[i] == '[') height++;
                 else if (source[i] == ']')
                 {
-                    if (height == 0) return source.Skip(index + 1).Take(i - (index + 1)).ToArray();
+                    if (height == 0) return source.Skip(index + 1).Take(i - (index + 1));
                     height--;
                 }
             }
