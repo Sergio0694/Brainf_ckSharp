@@ -8,13 +8,13 @@ namespace Branf_ck_sharp
     /// <summary>
     /// A class that represents the state of a Touring machine (data + position)
     /// </summary>
-    public class TouringMachineState : IReadOnlyList<uint>
+    public class TouringMachineState : IReadOnlyList<ushort>
     {
         /// <summary>
         /// The unsigned int array that represents the memory of the Touring machine
         /// </summary>
         [NotNull]
-        private readonly uint[] Memory;
+        private readonly ushort[] Memory;
 
         /// <summary>
         /// The current position on the memory array
@@ -34,17 +34,17 @@ namespace Branf_ck_sharp
             if (size <= 0) throw new ArgumentOutOfRangeException("The size must be a positive number");
             if (size > 4096) throw new ArgumentOutOfRangeException("The size can't be greater than 4096");
             Count = size;
-            Memory = new uint[size];
+            Memory = new ushort[size];
         }
 
         /// <summary>
         /// Creates a new instance for the <see cref="Clone"/> method
         /// </summary>
         /// <param name="memory">The source memory array</param>
-        private TouringMachineState([NotNull] uint[] memory)
+        private TouringMachineState([NotNull] ushort[] memory)
         {
-            uint[] copy = new uint[memory.Length];
-            Buffer.BlockCopy(memory, 0, copy, 0, sizeof(uint) * memory.Length);
+            ushort[] copy = new ushort[memory.Length];
+            Buffer.BlockCopy(memory, 0, copy, 0, sizeof(ushort) * memory.Length);
             Memory = copy;
             Count = memory.Length;
         }
@@ -88,7 +88,7 @@ namespace Branf_ck_sharp
         /// <summary>
         /// Checks whether or not it is possible to increment the current memory location
         /// </summary>
-        public bool CanIncrement => Memory[_Position] < uint.MaxValue;
+        public bool CanIncrement => Memory[_Position] < ushort.MaxValue;
 
         /// <summary>
         /// Decrements the current memory location (*ptr--)
@@ -106,16 +106,16 @@ namespace Branf_ck_sharp
         [Pure, NotNull]
         public TouringMachineState Clone() => new TouringMachineState(Memory) { _Position = _Position };
 
-        #region IReadOnlyList<uint>
+        #region IReadOnlyList<ushort>
 
         /// <inheritdoc cref="IEnumerable{T}"/>
-        public IEnumerator<uint> GetEnumerator() => (Memory as IEnumerable<uint>).GetEnumerator();
+        public IEnumerator<ushort> GetEnumerator() => (Memory as IEnumerable<ushort>).GetEnumerator();
 
         /// <inheritdoc cref="IEnumerable"/>
         IEnumerator IEnumerable.GetEnumerator() => Memory.GetEnumerator();
 
         /// <inheritdoc cref="IReadOnlyList{T}"/>
-        public uint this[int index] => Memory[index];
+        public ushort this[int index] => Memory[index];
 
         #endregion
     }

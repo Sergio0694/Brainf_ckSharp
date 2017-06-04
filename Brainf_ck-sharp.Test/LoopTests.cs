@@ -14,7 +14,8 @@ namespace Brainf_ck_sharp_Test
             const String script = "[]";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue((result.ExitCode & InterpreterExitCode.Success) == InterpreterExitCode.Success);
+            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success) &&
+                          result.HasFlag(InterpreterExitCode.NoOutput));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.IsTrue(result.MachineState.Current == 0);
         }
@@ -25,7 +26,8 @@ namespace Brainf_ck_sharp_Test
             const String script = ",[-]";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, "0");
             Assert.IsNotNull(result);
-            Assert.IsTrue((result.ExitCode & InterpreterExitCode.Success) == InterpreterExitCode.Success);
+            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success) &&
+                          result.HasFlag(InterpreterExitCode.NoOutput));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.IsTrue(result.MachineState.Current == 0);
         }
@@ -36,7 +38,8 @@ namespace Brainf_ck_sharp_Test
             const String script = ",[>+<-]>.";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, "0");
             Assert.IsNotNull(result);
-            Assert.IsTrue((result.ExitCode & InterpreterExitCode.Success) == InterpreterExitCode.Success);
+            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success) &&
+                          result.HasFlag(InterpreterExitCode.TextOutput));
             Assert.AreEqual(result.Output, "0");
             Assert.IsTrue(result.MachineState.Current == 48);
         }
@@ -47,7 +50,8 @@ namespace Brainf_ck_sharp_Test
             const String script = "++[>++[>+<-]<-]>,[>+<-]>.";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, "0");
             Assert.IsNotNull(result);
-            Assert.IsTrue((result.ExitCode & InterpreterExitCode.Success) == InterpreterExitCode.Success);
+            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success) &&
+                          result.HasFlag(InterpreterExitCode.TextOutput));
             Assert.AreEqual(result.Output, "4");
             Assert.IsTrue(result.MachineState.Current == 52);
         }

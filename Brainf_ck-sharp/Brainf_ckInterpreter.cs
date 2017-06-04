@@ -176,7 +176,7 @@ namespace Brainf_ck_sharp
                                 if (state.CanMoveBack) state.MoveBack();
                                 else return (InterpreterExitCode.Failure |
                                              InterpreterExitCode.ExceptionThrown |
-                                             InterpreterExitCode.UpperBoundExceeded, new[] { operators.Take(i + 1) });
+                                             InterpreterExitCode.LowerBoundExceeded, new[] { operators.Take(i + 1) });
                                 break;
 
                             // *ptr++
@@ -249,7 +249,10 @@ namespace Brainf_ck_sharp
             Stack<String> stackTrace = frames == null ? null : new Stack<String>(
                 from frame in frames
                 select frame.AggregateToString());
-            return new InterpreterResult(result, state, timer.Elapsed, output.ToString(), executable.AggregateToString(), stackTrace);
+            String text = output.ToString();
+            return new InterpreterResult(
+                result | (text.Length > 0 ? InterpreterExitCode.TextOutput : InterpreterExitCode.NoOutput),
+                state, timer.Elapsed, text, executable.AggregateToString(), stackTrace);
         }
 
         /* TODO: update this old code

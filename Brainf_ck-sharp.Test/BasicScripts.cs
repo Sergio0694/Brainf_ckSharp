@@ -14,7 +14,7 @@ namespace Brainf_ck_sharp_Test
             const String script = "+++++";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue((result.ExitCode & InterpreterExitCode.Success) == InterpreterExitCode.Success);
+            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.IsTrue(result.MachineState.Current == 5);
         }
@@ -25,7 +25,7 @@ namespace Brainf_ck_sharp_Test
             const String script = "+++++---";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue((result.ExitCode & InterpreterExitCode.Success) == InterpreterExitCode.Success);
+            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.IsTrue(result.MachineState.Current == 2);
         }
@@ -36,7 +36,7 @@ namespace Brainf_ck_sharp_Test
             const String script = ",++";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, "0");
             Assert.IsNotNull(result);
-            Assert.IsTrue((result.ExitCode & InterpreterExitCode.Success) == InterpreterExitCode.Success);
+            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.IsTrue(result.MachineState.Current == 50);
         }
@@ -47,7 +47,7 @@ namespace Brainf_ck_sharp_Test
             const String script = ",+++++++.";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, "0");
             Assert.IsNotNull(result);
-            Assert.IsTrue((result.ExitCode & InterpreterExitCode.Success) == InterpreterExitCode.Success);
+            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success));
             Assert.AreEqual(result.Output, "7");
             Assert.IsTrue(result.MachineState.Current == 55);
         }

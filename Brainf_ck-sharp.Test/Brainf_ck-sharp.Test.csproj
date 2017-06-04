@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasicScripts.cs" />
+    <Compile Include="ExceptionTests.cs" />
     <Compile Include="LoopTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScriptTests.cs" />

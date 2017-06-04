@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Branf_ck_sharp;
 using JetBrains.Annotations;
 
@@ -9,6 +8,26 @@ namespace Brainf_ck_sharp
     public sealed class InterpreterResult
     {
         public InterpreterExitCode ExitCode { get; }
+
+        public bool HasFlag(InterpreterExitCode flag)
+        {
+            // Check the flags set
+            bool found = false;
+            int bits = (ushort)flag;
+            for (int i = 0; i < 16; i++)
+            {
+                if ((bits & 1) == 1)
+                {
+                    if (found) throw new ArgumentException("The input value has more than a single flag set");
+                    found = true;
+                }
+                bits = bits >> 1;
+            }
+            if (!found) throw new ArgumentException("The input value doesn't have a flag set");
+
+            // Check whether or not the input flag is valid for this instance
+            return (ExitCode & flag) == flag;
+        }
 
         [NotNull]
         public TouringMachineState MachineState { get; }

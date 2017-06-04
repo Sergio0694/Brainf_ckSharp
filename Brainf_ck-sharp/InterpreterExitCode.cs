@@ -6,7 +6,7 @@ namespace Brainf_ck_sharp
     /// Tipo enumerato che indica il risultato dell'interpretazione del codice
     /// </summary>
     [Flags]
-    public enum InterpreterExitCode
+    public enum InterpreterExitCode : ushort
     {
         /// <summary>
         /// The code was interpreted successfully
