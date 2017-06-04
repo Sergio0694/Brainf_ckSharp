@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Brainf_ck_sharp
+namespace Brainf_ck_sharp.ReturnTypes
 {
     /// <summary>
     /// Tipo enumerato che indica il risultato dell'interpretazione del codice
@@ -53,12 +53,34 @@ namespace Brainf_ck_sharp
         /// </summary>
         InternalException = 1 << 8,
 
+        /// <summary>
+        /// The script execution was halted after reaching a breakpoint
+        /// </summary>
         BreakpointReached = 1 << 9,
 
+        /// <summary>
+        /// The script tried to move back from the first memory location
+        /// </summary>
         LowerBoundExceeded = 1 << 10,
+
+        /// <summary>
+        /// The script tried to move over the last memory location
+        /// </summary>
         UpperBoundExceeded = 1 << 11,
+
+        /// <summary>
+        /// The script tried to lower the value of a memory cell set to 0
+        /// </summary>
         NegativeValue = 1 << 12,
+
+        /// <summary>
+        /// The script tried to increase the value of a memory cell that had the maximum allowed value
+        /// </summary>
         MaxValueExceeded = 1 << 13,
+
+        /// <summary>
+        /// The script requested another input character when the available buffer was empty
+        /// </summary>
         StrinBufferExhausted = 1 << 14
     }
 }

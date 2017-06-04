@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace Branf_ck_sharp
+namespace Brainf_ck_sharp
 {
     /// <summary>
     /// A class that represents the state of a Touring machine (data + position)
     /// </summary>
-    public class TouringMachineState : IReadOnlyList<ushort>
+    public sealed class TouringMachineState : IReadOnlyList<ushort>
     {
         /// <summary>
         /// The unsigned int array that represents the memory of the Touring machine

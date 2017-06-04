@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using Branf_ck_sharp;
+using Brainf_ck_sharp.Helpers;
+using Brainf_ck_sharp.ReturnTypes;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp
@@ -197,14 +198,18 @@ namespace Brainf_ck_sharp
 
                             // while (*ptr) {
                             case '[':
+
+                                // Extract the loop code and append the final ] character
                                 IReadOnlyList<char> loop = ExtractInnerLoop(operators, i).Concat(new[] { ']' }).ToArray();
                                 skip = loop.Count;
+
+                                // Execute the loop if the current value is greater than 0
                                 if (state.Current > 0)
                                 {
                                     (InterpreterExitCode code, IEnumerable<IEnumerable<char>> loopFrames) = TryRunCore(loop);
                                     if ((code & InterpreterExitCode.Success) == 0)
                                     {
-                                        return (code, new[] { operators.Take(i + 1) }.Concat(loopFrames));
+                                        return (code, loopFrames.Concat(new[] { operators.Take(i + 1) }));
                                     }
                                 }
                                 break;
@@ -245,10 +250,13 @@ namespace Brainf_ck_sharp
             (InterpreterExitCode result, IEnumerable<IEnumerable<char>> frames) = TryRunCore(executable);
             timer.Stop();
 
-            // Reconstruct the stack trace that generated the error and return the interpreter result
-            Stack<String> stackTrace = frames == null ? null : new Stack<String>(
-                from frame in frames
-                select frame.AggregateToString());
+            // Reconstruct the stack trace that generated the error
+            IReadOnlyList<String> stackTrace = frames == null
+                ? null
+                : (from frame in frames
+                   select frame.AggregateToString()).ToArray();
+
+            // Return the interpreter result with all the necessary info
             String text = output.ToString();
             return new InterpreterResult(
                 result | (text.Length > 0 ? InterpreterExitCode.TextOutput : InterpreterExitCode.NoOutput),

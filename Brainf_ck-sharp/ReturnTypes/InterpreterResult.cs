@@ -1,14 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using Branf_ck_sharp;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp
+namespace Brainf_ck_sharp.ReturnTypes
 {
+    /// <summary>
+    /// A class that contains all the info on an interpreted Brainf_ck script
+    /// </summary>
     public sealed class InterpreterResult
     {
+        /// <summary>
+        /// Gets the exit code for the interpreted script, with all the relevant flags
+        /// </summary>
         public InterpreterExitCode ExitCode { get; }
 
+        /// <summary>
+        /// Checks whether or not the current <see cref="ExitCode"/> property contains a specific flag
+        /// </summary>
+        /// <param name="flag">The flag to check (it must have a single bit set)</param>
         public bool HasFlag(InterpreterExitCode flag)
         {
             // Check the flags set
@@ -29,29 +38,45 @@ namespace Brainf_ck_sharp
             return (ExitCode & flag) == flag;
         }
 
+        /// <summary>
+        /// Gets the resulting memory state after running the original script
+        /// </summary>
         [NotNull]
         public TouringMachineState MachineState { get; }
 
+        /// <summary>
+        /// Gets the execution time for the interpreted script
+        /// </summary>
         public TimeSpan ElapsedTime { get; }
 
+        /// <summary>
+        /// Gets the output produced by the script
+        /// </summary>
         [NotNull]
         public String Output { get; }
 
+        /// <summary>
+        /// Gets the original raw source code for the interpreted script
+        /// </summary>
         [NotNull]
         public String SourceCode { get; }
 
+        /// <summary>
+        /// If the script isn't executed successfully, gets all the relevant debug info
+        /// </summary>
         [CanBeNull]
-        public Stack<String> StackTrace { get; }
+        public InterpreterDebugInfo DebugInfo { get; }
 
+        // Internal constructor
         internal InterpreterResult(InterpreterExitCode exitCode, [NotNull] TouringMachineState state, TimeSpan duration,
-            [NotNull] String output, [NotNull] String code, [CanBeNull] Stack<String> stackTrace)
+            [NotNull] String output, [NotNull] String code, [CanBeNull] IReadOnlyList<String> stackTrace)
         {
             ExitCode = exitCode;
             MachineState = state;
             ElapsedTime = duration;
             Output = output;
             SourceCode = code;
-            StackTrace = stackTrace;
+            if (stackTrace != null) DebugInfo = new InterpreterDebugInfo(stackTrace, code);
         }
     }
 }

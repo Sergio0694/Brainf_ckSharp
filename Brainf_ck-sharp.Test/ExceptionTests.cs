@@ -1,5 +1,6 @@
 ﻿using System;
 using Brainf_ck_sharp;
+using Brainf_ck_sharp.ReturnTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Brainf_ck_sharp_Test
@@ -77,6 +78,8 @@ namespace Brainf_ck_sharp_Test
             Assert.IsTrue(result.HasFlag(InterpreterExitCode.Failure) &&
                           result.HasFlag(InterpreterExitCode.ThresholdExceeded));
             Assert.AreEqual(result.Output, String.Empty);
+            Assert.AreEqual(result.DebugInfo?.ErrorPosition, 1);
+            Assert.AreEqual(result.DebugInfo?.FaultedOperator, '[');
         }
 
         [TestMethod]
@@ -111,9 +114,11 @@ namespace Brainf_ck_sharp_Test
                           result.HasFlag(InterpreterExitCode.ExceptionThrown) &&
                           result.HasFlag(InterpreterExitCode.NegativeValue));
             Assert.AreEqual(result.Output, String.Empty);
-            Assert.IsTrue(result.StackTrace?.Count == 2);
-            Assert.AreEqual(result.StackTrace?.Pop(), ">+++>-");
-            Assert.AreEqual(result.StackTrace?.Pop(), "+++++[");
+            Assert.IsTrue(result.DebugInfo?.StackTrace.Count == 2);
+            Assert.AreEqual(result.DebugInfo?.StackTrace[0], ">+++>-");
+            Assert.AreEqual(result.DebugInfo?.StackTrace[1], "+++++[");
+            Assert.AreEqual(result.DebugInfo?.ErrorPosition, 11);
+            Assert.AreEqual(result.DebugInfo?.FaultedOperator, '-');
         }
 
         [TestMethod]
@@ -126,8 +131,10 @@ namespace Brainf_ck_sharp_Test
                           result.HasFlag(InterpreterExitCode.ExceptionThrown) &&
                           result.HasFlag(InterpreterExitCode.NegativeValue));
             Assert.AreEqual(result.Output, String.Empty);
-            Assert.IsTrue(result.StackTrace?.Count == 1);
-            Assert.AreEqual(result.StackTrace?.Pop(), "+++++>-");
+            Assert.IsTrue(result.DebugInfo?.StackTrace.Count == 1);
+            Assert.AreEqual(result.DebugInfo?.StackTrace[0], "+++++>-");
+            Assert.AreEqual(result.DebugInfo?.ErrorPosition, 6);
+            Assert.AreEqual(result.DebugInfo?.FaultedOperator, '-');
         }
     }
 }
