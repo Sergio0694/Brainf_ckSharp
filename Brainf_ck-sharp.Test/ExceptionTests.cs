@@ -100,5 +100,34 @@ namespace Brainf_ck_sharp_Test
                           result.HasFlag(InterpreterExitCode.NoCodeInterpreted));
             Assert.AreEqual(result.Output, String.Empty);
         }
+
+        [TestMethod]
+        public void StackTraceTest1()
+        {
+            const String script = "+++++[>+++>-<<-]";
+            InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Failure) &&
+                          result.HasFlag(InterpreterExitCode.ExceptionThrown) &&
+                          result.HasFlag(InterpreterExitCode.NegativeValue));
+            Assert.AreEqual(result.Output, String.Empty);
+            Assert.IsTrue(result.StackTrace?.Count == 2);
+            Assert.AreEqual(result.StackTrace?.Pop(), ">+++>-");
+            Assert.AreEqual(result.StackTrace?.Pop(), "+++++[");
+        }
+
+        [TestMethod]
+        public void StackTraceTest2()
+        {
+            const String script = "+++++>-[>+++>-<<-]";
+            InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Failure) &&
+                          result.HasFlag(InterpreterExitCode.ExceptionThrown) &&
+                          result.HasFlag(InterpreterExitCode.NegativeValue));
+            Assert.AreEqual(result.Output, String.Empty);
+            Assert.IsTrue(result.StackTrace?.Count == 1);
+            Assert.AreEqual(result.StackTrace?.Pop(), "+++++>-");
+        }
     }
 }
