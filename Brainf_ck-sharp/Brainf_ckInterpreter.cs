@@ -47,6 +47,63 @@ namespace Brainf_ck_sharp
         }
 
         /// <summary>
+        /// Gets the "Break Permitted Here" Unicode character (0x82)
+        /// </summary>
+        private const char BreakpointChar = '\u0082';
+
+        public static InterpreterExecutionSession InitializeSession([NotNull] IReadOnlyList<String> source, [NotNull] String arguments,
+            int size = 64, int? threshold = null)
+        {
+            TouringMachineState state = new TouringMachineState(size);
+            IReadOnlyList<IReadOnlyList<char>> chunks = source.Select(FindExecutableCode).ToArray();
+            if (chunks.Count == 0 || chunks.Any(group => group.Count == 0))
+            {
+                return new InterpreterExecutionSession(
+                    new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.NoCodeInterpreted, state,
+                    TimeSpan.Zero, String.Empty, String.Empty, null, null), null);
+            }
+
+            List<char> executable = new List<char>();
+            for (int i = 0; i < chunks.Count; i++)
+            {
+                executable.AddRange(chunks[i]);
+                if (i != chunks.Count - 1) executable.Add(BreakpointChar);
+            }
+
+            // Check the code syntax
+            if (!CheckSourceSyntax(executable))
+            {
+                return new InterpreterExecutionSession(
+                    new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.MismatchedParentheses, state,
+                    TimeSpan.Zero, String.Empty, executable.AggregateToString(), null, null), null);
+            }
+
+            // Prepare the input and output arguments
+            Queue<char> input = arguments.Length > 0 ? new Queue<char>(arguments) : new Queue<char>();
+            StringBuilder output = new StringBuilder();
+
+
+            InterpreterResult result = TryRun(executable, input, output, state, threshold, null, false, TimeSpan.Zero);
+            return new InterpreterExecutionSession(result, new SessionDebugData(executable, input, output, threshold));
+        }
+
+        internal static InterpreterExecutionSession ContinueSession([NotNull] InterpreterExecutionSession session)
+        {
+            if (!session.CanContinue) throw new InvalidOperationException("The current session can't be continued");
+            InterpreterResult step = TryRun(session.DebugData.Source, session.DebugData.Stdin, session.DebugData.Stdout,
+                session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.BreakpointPosition, false, session.CurrentResult.ElapsedTime);
+            return new InterpreterExecutionSession(step, session.DebugData);
+        }
+
+        internal static InterpreterExecutionSession RunSessionToCompletion([NotNull] InterpreterExecutionSession session)
+        {
+            if (!session.CanContinue) throw new InvalidOperationException("The current session can't be continued");
+            InterpreterResult step = TryRun(session.DebugData.Source, session.DebugData.Stdin, session.DebugData.Stdout,
+                session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.BreakpointPosition, true, session.CurrentResult.ElapsedTime);
+            return new InterpreterExecutionSession(step, session.DebugData);
+        }
+
+        /// <summary>
         /// Gets the collection of valid Brainf_ck operators
         /// </summary>
         [NotNull]
@@ -111,7 +168,6 @@ namespace Brainf_ck_sharp
             return height == 0 ? (true, 0) : (false, source.Length - 1);
         }
 
-        [Pure, NotNull]
         private static InterpreterResult TryRun([NotNull] String source, [NotNull] String arguments,
             [NotNull] TouringMachineState state, int? threshold)
         {
@@ -119,35 +175,43 @@ namespace Brainf_ck_sharp
             IReadOnlyList<char> executable = FindExecutableCode(source).ToArray();
             if (executable.Count == 0)
             {
-                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.NoCodeInterpreted, state, TimeSpan.Zero, String.Empty, String.Empty, null);
+                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.NoCodeInterpreted, state, TimeSpan.Zero, String.Empty, String.Empty, null, null);
             }
 
             // Check the code syntax
             if (!CheckSourceSyntax(executable))
             {
                 return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.MismatchedParentheses, state, TimeSpan.Zero, String.Empty,
-                    executable.AggregateToString(), null);
+                    executable.AggregateToString(), null, null);
             }
 
             // Prepare the input and output arguments
             Queue<char> input = arguments.Length > 0 ? new Queue<char>(arguments) : new Queue<char>();
             StringBuilder output = new StringBuilder();
 
+            // Execute the code
+            return TryRun(executable, input, output, state, threshold, null, true, TimeSpan.Zero);
+        }
+
+        [Pure, NotNull]
+        private static InterpreterResult TryRun([NotNull] IReadOnlyList<char> executable, [NotNull] Queue<char> input, [NotNull] StringBuilder output,
+            [NotNull] TouringMachineState state, int? threshold, int? jump, bool runToCompletion, TimeSpan elapsed)
+        {
             // Start the stopwatch to monitor the execution
             Stopwatch timer = new Stopwatch();
             timer.Start();
 
             // Internal recursive function that interpretes the code
-            (InterpreterExitCode, IEnumerable<IEnumerable<char>>) TryRunCore(IReadOnlyList<char> operators)
+            (InterpreterExitCode, IEnumerable<IEnumerable<char>>, int, bool) TryRunCore(IReadOnlyList<char> operators, int depth, bool broken)
             {
                 // Outer do-while that repeats the code if there's a loop
                 bool repeat = false;
                 do
                 {
                     // Check the current elapsed time
-                    if (threshold.HasValue && timer.ElapsedMilliseconds > threshold.Value)
+                    if (threshold.HasValue && timer.ElapsedMilliseconds > threshold.Value + elapsed.TotalMilliseconds)
                     {
-                        return (InterpreterExitCode.Failure | InterpreterExitCode.ThresholdExceeded, new[] { new char[0] });
+                        return (InterpreterExitCode.Failure | InterpreterExitCode.ThresholdExceeded, new[] { new char[0] }, depth, broken);
                     }
 
                     // Iterate over all the commands
@@ -166,34 +230,38 @@ namespace Brainf_ck_sharp
                         {
                             // ptr++
                             case '>':
+                                if (jump != null && !broken) continue;
                                 if (state.CanMoveNext) state.MoveNext();
                                 else return (InterpreterExitCode.Failure |
                                              InterpreterExitCode.ExceptionThrown |
-                                             InterpreterExitCode.UpperBoundExceeded, new[] { operators.Take(i + 1) });
+                                             InterpreterExitCode.UpperBoundExceeded, new[] { operators.Take(i + 1) }, depth + i, broken);
                                 break;
 
                             // ptr--
                             case '<':
+                                if (jump != null && !broken) continue;
                                 if (state.CanMoveBack) state.MoveBack();
                                 else return (InterpreterExitCode.Failure |
                                              InterpreterExitCode.ExceptionThrown |
-                                             InterpreterExitCode.LowerBoundExceeded, new[] { operators.Take(i + 1) });
+                                             InterpreterExitCode.LowerBoundExceeded, new[] { operators.Take(i + 1) }, depth + i, broken);
                                 break;
 
                             // *ptr++
                             case '+':
+                                if (jump != null && !broken) continue;
                                 if (state.CanIncrement) state.Plus();
                                 else return (InterpreterExitCode.Failure |
                                              InterpreterExitCode.ExceptionThrown |
-                                             InterpreterExitCode.MaxValueExceeded, new[] { operators.Take(i + 1) });
+                                             InterpreterExitCode.MaxValueExceeded, new[] { operators.Take(i + 1) }, depth + i, broken);
                                 break;
 
                             // *ptr--
                             case '-':
+                                if (jump != null && !broken) continue;
                                 if (state.CanDecrement) state.Minus();
                                 else return (InterpreterExitCode.Failure |
                                              InterpreterExitCode.ExceptionThrown |
-                                             InterpreterExitCode.NegativeValue, new[] { operators.Take(i + 1) });
+                                             InterpreterExitCode.NegativeValue, new[] { operators.Take(i + 1) }, depth + i, broken);
                                 break;
 
                             // while (*ptr) {
@@ -204,22 +272,24 @@ namespace Brainf_ck_sharp
                                 skip = loop.Count;
 
                                 // Execute the loop if the current value is greater than 0
-                                if (state.Current > 0)
+                                if (state.Current > 0 || jump != null && !broken)
                                 {
-                                    (InterpreterExitCode code, IEnumerable<IEnumerable<char>> loopFrames) = TryRunCore(loop);
-                                    if ((code & InterpreterExitCode.Success) == 0)
+                                    (InterpreterExitCode code, IEnumerable<IEnumerable<char>> loopFrames, int target, bool step) = TryRunCore(loop, depth + i + 1, broken);
+                                    broken |= step;
+                                    if ((code & InterpreterExitCode.Success) == 0 ||
+                                        (code & InterpreterExitCode.BreakpointReached) == InterpreterExitCode.BreakpointReached)
                                     {
-                                        return (code, loopFrames.Concat(new[] { operators.Take(i + 1) }));
+                                        return (code, loopFrames.Concat(new[] { operators.Take(i + 1) }), target, broken);
                                     }
                                 }
                                 break;
 
                             // }
                             case ']':
-                                if (state.Current == 0)
+                                if (state.Current == 0 || jump != null && !broken)
                                 {
                                     // Loop end
-                                    return (InterpreterExitCode.Success, null);
+                                    return (InterpreterExitCode.Success, null, depth + i, broken);
                                 }
                                 else
                                 {
@@ -230,37 +300,55 @@ namespace Brainf_ck_sharp
 
                             // putch(*ptr)
                             case '.':
+                                if (jump != null && !broken) continue;
                                 output.Append(Convert.ToChar(state.Current));
                                 break;
 
                             // *ptr = getch()
                             case ',':
+                                if (jump != null && !broken) continue;
                                 if (input.Count > 0) state.Input(input.Dequeue());
                                 else return (InterpreterExitCode.Failure |
                                              InterpreterExitCode.ExceptionThrown |
-                                             InterpreterExitCode.StrinBufferExhausted, new[] { operators.Take(i + 1) });
+                                             InterpreterExitCode.StrinBufferExhausted, new[] { operators.Take(i + 1) }, depth + i, broken);
                                 break;
+
+                            // Breakpoint
+                            case BreakpointChar:
+                                if (jump >= depth + i && // Skip while the target breakpoint is ahead or at the current position
+                                    !broken) // Only break if this is the target breakpoint from a previous session
+                                {
+                                    broken = true;
+                                    continue;
+                                }
+                                if (runToCompletion) // Complete the session and ignore the breakpoints
+                                {
+                                    continue;
+                                }
+                                return (InterpreterExitCode.Success |
+                                        InterpreterExitCode.BreakpointReached, new[] { operators.Take(i + 1) }, depth + i, broken);
                         }
                     }
                 } while (repeat);
-                return (InterpreterExitCode.Success, null);
+                return (InterpreterExitCode.Success, null, depth + operators.Count, broken);
             }
 
             // Execute the code and stop the timer
-            (InterpreterExitCode result, IEnumerable<IEnumerable<char>> frames) = TryRunCore(executable);
+            (InterpreterExitCode result, IEnumerable<IEnumerable<char>> frames, int position, _) = TryRunCore(executable, 0, false);
             timer.Stop();
 
             // Reconstruct the stack trace that generated the error
             IReadOnlyList<String> stackTrace = frames == null
                 ? null
                 : (from frame in frames
-                   select frame.AggregateToString()).ToArray();
+                   select frame.Where(c => c != BreakpointChar).AggregateToString()).ToArray();
 
             // Return the interpreter result with all the necessary info
             String text = output.ToString();
             return new InterpreterResult(
                 result | (text.Length > 0 ? InterpreterExitCode.TextOutput : InterpreterExitCode.NoOutput),
-                state, timer.Elapsed, text, executable.AggregateToString(), stackTrace);
+                state, timer.Elapsed.Add(elapsed), text, executable.AggregateToString(), stackTrace,
+                (result & InterpreterExitCode.BreakpointReached) == InterpreterExitCode.BreakpointReached ? (int?)position : null);
         }
 
         /* TODO: update this old code
