@@ -71,11 +71,11 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// Gets the position of the breakpoint that caused the script to half, if present
         /// </summary>
         [CanBeNull]
-        internal int? BreakpointPosition { get; }
+        internal uint? BreakpointPosition { get; }
 
         // Internal constructor
         internal InterpreterResult(InterpreterExitCode exitCode, [NotNull] TouringMachineState state, TimeSpan duration,
-            [NotNull] String output, [NotNull] String code, [CanBeNull] IReadOnlyList<String> stackTrace, int? breakpoint)
+            [NotNull] String output, [NotNull] String code, [CanBeNull] IReadOnlyList<String> stackTrace, uint? breakpoint)
         {
             ExitCode = exitCode;
             MachineState = state;
@@ -88,7 +88,7 @@ namespace Brainf_ck_sharp.ReturnTypes
 
         // Private constructor for the Clone method
         private InterpreterResult(InterpreterExitCode exitCode, [NotNull] TouringMachineState state, TimeSpan duration,
-            [NotNull] String output, [NotNull] String code, [CanBeNull] InterpreterDebugInfo debugInfo, int? breakpoint)
+            [NotNull] String output, [NotNull] String code, [CanBeNull] InterpreterDebugInfo debugInfo, uint? breakpoint)
         {
             ExitCode = exitCode;
             MachineState = state;

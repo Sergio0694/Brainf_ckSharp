@@ -46,11 +46,6 @@ namespace Brainf_ck_sharp
             return TryRun(source, arguments, state.Clone(), threshold);
         }
 
-        /// <summary>
-        /// Gets the "Break Permitted Here" Unicode character (0x82)
-        /// </summary>
-        private const char BreakpointChar = '\u0082';
-
         public static InterpreterExecutionSession InitializeSession([NotNull] IReadOnlyList<String> source, [NotNull] String arguments,
             int size = 64, int? threshold = null)
         {
@@ -63,11 +58,13 @@ namespace Brainf_ck_sharp
                     TimeSpan.Zero, String.Empty, String.Empty, null, null), null);
             }
 
-            List<char> executable = new List<char>();
+            List<Brainf_ckBinaryItem> executable = new List<Brainf_ckBinaryItem>();
+            List<uint> breakpoints = new List<uint>();
+            uint offset = 0;
             for (int i = 0; i < chunks.Count; i++)
             {
-                executable.AddRange(chunks[i]);
-                if (i != chunks.Count - 1) executable.Add(BreakpointChar);
+                if (i > 0) breakpoints.Add(offset);
+                executable.AddRange(chunks[i].Select(c => new Brainf_ckBinaryItem(offset++, c)));
             }
 
             // Check the code syntax
@@ -75,23 +72,23 @@ namespace Brainf_ck_sharp
             {
                 return new InterpreterExecutionSession(
                     new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.MismatchedParentheses, state,
-                    TimeSpan.Zero, String.Empty, executable.AggregateToString(), null, null), null);
+                    TimeSpan.Zero, String.Empty, executable.Select(op => op.Operator).AggregateToString(), null, null), null);
             }
 
             // Prepare the input and output arguments
             Queue<char> input = arguments.Length > 0 ? new Queue<char>(arguments) : new Queue<char>();
             StringBuilder output = new StringBuilder();
 
-
-            InterpreterResult result = TryRun(executable, input, output, state, threshold, null, false, TimeSpan.Zero);
-            return new InterpreterExecutionSession(result, new SessionDebugData(executable, input, output, threshold));
+            InterpreterResult result = TryRun(executable, input, output, state, threshold, TimeSpan.Zero, null, breakpoints.Count > 0 ? breakpoints : null);
+            return new InterpreterExecutionSession(result, new SessionDebugData(executable, input, output, threshold, breakpoints));
         }
 
         internal static InterpreterExecutionSession ContinueSession([NotNull] InterpreterExecutionSession session)
         {
             if (!session.CanContinue) throw new InvalidOperationException("The current session can't be continued");
             InterpreterResult step = TryRun(session.DebugData.Source, session.DebugData.Stdin, session.DebugData.Stdout,
-                session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.BreakpointPosition, false, session.CurrentResult.ElapsedTime);
+                session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.ElapsedTime,
+                session.CurrentResult.BreakpointPosition, session.DebugData.Breakpoints);
             return new InterpreterExecutionSession(step, session.DebugData);
         }
 
@@ -99,7 +96,8 @@ namespace Brainf_ck_sharp
         {
             if (!session.CanContinue) throw new InvalidOperationException("The current session can't be continued");
             InterpreterResult step = TryRun(session.DebugData.Source, session.DebugData.Stdin, session.DebugData.Stdout,
-                session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.BreakpointPosition, true, session.CurrentResult.ElapsedTime);
+                session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.ElapsedTime,
+                session.CurrentResult.BreakpointPosition, null);
             return new InterpreterExecutionSession(step, session.DebugData);
         }
 
@@ -124,11 +122,11 @@ namespace Brainf_ck_sharp
         /// </summary>
         /// <param name="operators">The operators sequence</param>
         [Pure]
-        private static bool CheckSourceSyntax([NotNull] IEnumerable<char> operators)
+        private static bool CheckSourceSyntax([NotNull] IEnumerable<Brainf_ckBinaryItem> operators)
         {
             // Iterate over all the characters in the source
             int height = 0;
-            foreach (char c in operators)
+            foreach (char c in operators.Select(op => op.Operator))
             {
                 // Check the parentheses
                 if (c == '[') height++;
@@ -172,17 +170,18 @@ namespace Brainf_ck_sharp
             [NotNull] TouringMachineState state, int? threshold)
         {
             // Get the operators to execute and check if the source is empty
-            IReadOnlyList<char> executable = FindExecutableCode(source).ToArray();
+            IReadOnlyList<Brainf_ckBinaryItem> executable = FindExecutableCode(source).Select((c, i) => new Brainf_ckBinaryItem((uint)i, c)).ToArray();
             if (executable.Count == 0)
             {
-                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.NoCodeInterpreted, state, TimeSpan.Zero, String.Empty, String.Empty, null, null);
+                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.NoCodeInterpreted, state,
+                    TimeSpan.Zero, String.Empty, String.Empty, null, null);
             }
 
             // Check the code syntax
             if (!CheckSourceSyntax(executable))
             {
                 return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.MismatchedParentheses, state, TimeSpan.Zero, String.Empty,
-                    executable.AggregateToString(), null, null);
+                    executable.Select(op => op.Operator).AggregateToString(), null, null);
             }
 
             // Prepare the input and output arguments
@@ -190,19 +189,29 @@ namespace Brainf_ck_sharp
             StringBuilder output = new StringBuilder();
 
             // Execute the code
-            return TryRun(executable, input, output, state, threshold, null, true, TimeSpan.Zero);
+            return TryRun(executable, input, output, state, threshold, TimeSpan.Zero, null, null);
         }
 
         [Pure, NotNull]
-        private static InterpreterResult TryRun([NotNull] IReadOnlyList<char> executable, [NotNull] Queue<char> input, [NotNull] StringBuilder output,
-            [NotNull] TouringMachineState state, int? threshold, int? jump, bool runToCompletion, TimeSpan elapsed)
+        private static InterpreterResult TryRun([NotNull] IReadOnlyList<Brainf_ckBinaryItem> executable, [NotNull] Queue<char> input, [NotNull] StringBuilder output,
+            [NotNull] TouringMachineState state, int? threshold, TimeSpan elapsed, uint? jump, IReadOnlyList<uint> breakpoints)
         {
+            // Preliminary tests
+            if (executable.Count == 0) throw new ArgumentException("The source code can't be empty");
+            if (threshold <= 0) throw new ArgumentOutOfRangeException("The threshold must be a positive value");
+            if (jump < 0) throw new ArgumentOutOfRangeException("The target breakpoint position must be a positive number");
+            if (jump.HasValue && (jump > executable.Count - 1 || breakpoints?.Contains(jump.Value) == false))
+            {
+                throw new ArgumentOutOfRangeException("The target breakpoint position isn't valid");
+            }
+            if (breakpoints?.Count == 0) throw new ArgumentException("The breakpoints list can't be empty");
+
             // Start the stopwatch to monitor the execution
             Stopwatch timer = new Stopwatch();
             timer.Start();
 
             // Internal recursive function that interpretes the code
-            (InterpreterExitCode, IEnumerable<IEnumerable<char>>, int, bool) TryRunCore(IReadOnlyList<char> operators, int depth, bool broken)
+            (InterpreterExitCode, IEnumerable<IEnumerable<char>>, uint, bool) TryRunCore(IReadOnlyList<Brainf_ckBinaryItem> operators, uint depth, bool reached)
             {
                 // Outer do-while that repeats the code if there's a loop
                 bool repeat = false;
@@ -211,7 +220,7 @@ namespace Brainf_ck_sharp
                     // Check the current elapsed time
                     if (threshold.HasValue && timer.ElapsedMilliseconds > threshold.Value + elapsed.TotalMilliseconds)
                     {
-                        return (InterpreterExitCode.Failure | InterpreterExitCode.ThresholdExceeded, new[] { new char[0] }, depth, broken);
+                        return (InterpreterExitCode.Failure | InterpreterExitCode.ThresholdExceeded, new[] { new char[0] }, depth, false);
                     }
 
                     // Iterate over all the commands
@@ -225,71 +234,83 @@ namespace Brainf_ck_sharp
                             continue;
                         }
 
+                        // Check the breakpoints if the current call isn't expected to go straight to the end of the script
+                        if (jump == null && breakpoints?.Contains(operators[i].Offset) == true || // First breakpoint in the code
+                            jump != null && breakpoints?.Contains(operators[i].Offset) == true && reached) // New breakpoint after restoring the execution
+                        {
+                            // First breakpoint in the current session
+                            return (InterpreterExitCode.Success |
+                                    InterpreterExitCode.BreakpointReached, new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, true);
+                        }
+
+                        // Keep track when the target breakpoint is reached and the previous execution is restored
+                        if (jump == operators[i].Offset && !reached) reached = true;
+
                         // Parse the current operator
-                        switch (operators[i])
+                        switch (operators[i].Operator)
                         {
                             // ptr++
                             case '>':
-                                if (jump != null && !broken) continue;
+                                if (jump != null && !reached) continue;
                                 if (state.CanMoveNext) state.MoveNext();
                                 else return (InterpreterExitCode.Failure |
                                              InterpreterExitCode.ExceptionThrown |
-                                             InterpreterExitCode.UpperBoundExceeded, new[] { operators.Take(i + 1) }, depth + i, broken);
+                                             InterpreterExitCode.UpperBoundExceeded, new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached);
                                 break;
 
                             // ptr--
                             case '<':
-                                if (jump != null && !broken) continue;
+                                if (jump != null && !reached) continue;
                                 if (state.CanMoveBack) state.MoveBack();
                                 else return (InterpreterExitCode.Failure |
                                              InterpreterExitCode.ExceptionThrown |
-                                             InterpreterExitCode.LowerBoundExceeded, new[] { operators.Take(i + 1) }, depth + i, broken);
+                                             InterpreterExitCode.LowerBoundExceeded, new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached);
                                 break;
 
                             // *ptr++
                             case '+':
-                                if (jump != null && !broken) continue;
+                                if (jump != null && !reached) continue;
                                 if (state.CanIncrement) state.Plus();
                                 else return (InterpreterExitCode.Failure |
                                              InterpreterExitCode.ExceptionThrown |
-                                             InterpreterExitCode.MaxValueExceeded, new[] { operators.Take(i + 1) }, depth + i, broken);
+                                             InterpreterExitCode.MaxValueExceeded, new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached);
                                 break;
 
                             // *ptr--
                             case '-':
-                                if (jump != null && !broken) continue;
+                                if (jump != null && !reached) continue;
                                 if (state.CanDecrement) state.Minus();
                                 else return (InterpreterExitCode.Failure |
                                              InterpreterExitCode.ExceptionThrown |
-                                             InterpreterExitCode.NegativeValue, new[] { operators.Take(i + 1) }, depth + i, broken);
+                                             InterpreterExitCode.NegativeValue, new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached);
                                 break;
 
                             // while (*ptr) {
                             case '[':
 
                                 // Extract the loop code and append the final ] character
-                                IReadOnlyList<char> loop = ExtractInnerLoop(operators, i).Concat(new[] { ']' }).ToArray();
-                                skip = loop.Count;
+                                IReadOnlyList<Brainf_ckBinaryItem> loop = ExtractInnerLoop(operators, i).ToArray();
+                                skip = loop.Count; // Don't count the last ] character in the loop body
 
                                 // Execute the loop if the current value is greater than 0
-                                if (state.Current > 0 || jump != null && !broken)
+                                if (state.Current > 0 || jump != null && !reached)
                                 {
-                                    (InterpreterExitCode code, IEnumerable<IEnumerable<char>> loopFrames, int target, bool step) = TryRunCore(loop, depth + i + 1, broken);
-                                    broken |= step;
+                                    (InterpreterExitCode code, IEnumerable<IEnumerable<char>> loopFrames, uint target, bool inner) = TryRunCore(loop, depth + (uint)i + 1, reached);
+                                    reached |= inner;
                                     if ((code & InterpreterExitCode.Success) == 0 ||
                                         (code & InterpreterExitCode.BreakpointReached) == InterpreterExitCode.BreakpointReached)
                                     {
-                                        return (code, loopFrames.Concat(new[] { operators.Take(i + 1) }), target, broken);
+                                        return (code, loopFrames.Concat(new[] { operators.Select(op => op.Operator).Take(i + 1) }), target, reached);
                                     }
                                 }
                                 break;
 
                             // }
                             case ']':
-                                if (state.Current == 0 || jump != null && !broken)
+                                if (state.Current == 0 || jump != null && !reached)
                                 {
                                     // Loop end
-                                    return (InterpreterExitCode.Success, null, depth + i, broken);
+                                    return (InterpreterExitCode.Success, null, depth + (uint)i, reached);
                                 }
                                 else
                                 {
@@ -300,252 +321,41 @@ namespace Brainf_ck_sharp
 
                             // putch(*ptr)
                             case '.':
-                                if (jump != null && !broken) continue;
+                                if (jump != null && !reached) continue;
                                 output.Append(Convert.ToChar(state.Current));
                                 break;
 
                             // *ptr = getch()
                             case ',':
-                                if (jump != null && !broken) continue;
+                                if (jump != null && !reached) continue;
                                 if (input.Count > 0) state.Input(input.Dequeue());
                                 else return (InterpreterExitCode.Failure |
                                              InterpreterExitCode.ExceptionThrown |
-                                             InterpreterExitCode.StrinBufferExhausted, new[] { operators.Take(i + 1) }, depth + i, broken);
+                                             InterpreterExitCode.StrinBufferExhausted, new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached);
                                 break;
-
-                            // Breakpoint
-                            case BreakpointChar:
-                                if (jump >= depth + i && // Skip while the target breakpoint is ahead or at the current position
-                                    !broken) // Only break if this is the target breakpoint from a previous session
-                                {
-                                    broken = true;
-                                    continue;
-                                }
-                                if (runToCompletion) // Complete the session and ignore the breakpoints
-                                {
-                                    continue;
-                                }
-                                return (InterpreterExitCode.Success |
-                                        InterpreterExitCode.BreakpointReached, new[] { operators.Take(i + 1) }, depth + i, broken);
                         }
                     }
                 } while (repeat);
-                return (InterpreterExitCode.Success, null, depth + operators.Count, broken);
+                return (InterpreterExitCode.Success, null, depth + (uint)operators.Count, reached);
             }
 
             // Execute the code and stop the timer
-            (InterpreterExitCode result, IEnumerable<IEnumerable<char>> frames, int position, _) = TryRunCore(executable, 0, false);
+            (InterpreterExitCode result, IEnumerable<IEnumerable<char>> frames, uint position, _) = TryRunCore(executable, 0, false);
             timer.Stop();
 
             // Reconstruct the stack trace that generated the error
             IReadOnlyList<String> stackTrace = frames == null
                 ? null
                 : (from frame in frames
-                   select frame.Where(c => c != BreakpointChar).AggregateToString()).ToArray();
+                   select frame.AggregateToString()).ToArray();
 
             // Return the interpreter result with all the necessary info
             String text = output.ToString();
             return new InterpreterResult(
                 result | (text.Length > 0 ? InterpreterExitCode.TextOutput : InterpreterExitCode.NoOutput),
-                state, timer.Elapsed.Add(elapsed), text, executable.AggregateToString(), stackTrace,
-                (result & InterpreterExitCode.BreakpointReached) == InterpreterExitCode.BreakpointReached ? (int?)position : null);
+                state, timer.Elapsed.Add(elapsed), text, executable.Select(op => op.Operator).AggregateToString(), stackTrace,
+                (result & InterpreterExitCode.BreakpointReached) == InterpreterExitCode.BreakpointReached ? (uint?)position : null);
         }
-
-        /* TODO: update this old code
-        /// <summary>
-        /// Interpreta in modo ricorsivo e asincrono il codice sorgente, eseguendo tutte le operazioni anche in eventuali cicli annidati
-        /// </summary>
-        /// <typeparam name="T">Vale o PivotPage oppure DatiInterpreteHelper</typeparam>
-        /// <param name="sorgente">Il codice sorgente di partenza o il frammento attuale da interpretare in una chiamata ricorsiva</param>
-        /// <param name="datiBrainfuck">L'istanza con i dati su cui lavora l'interprete</param>
-        /// <param name="output">La stringa temporanea su cui aggiungere gli eventuali caratteri in uscita prodotti dal codice</param>
-        /// <param name="cronometro">Tiene il conto del tempo totale trascorso nell'interpretare il codice</param>
-        /// <param name="contextualParameter"><para>Referenza alla pagina principale per visualizzare il Flyout oppure</para>
-        /// <para>un'istanza di DatiInterpreteHelper con i dati di Debug da visualizzare in seguito</para></param>
-        /// <param name="charBuffer">Parametro opzionale che indica il numero massimo di caratteri che può richiedere uno script eseguito nella console</param>
-        /// <returns>Restituisce la stringa con l'output generato dal codice in ingresso</returns>
-        private static async Task<String> Run(CompilerInternalData internalData, T contextualParameter, int charBuffer = 0)
-        {
-            int skipChar = 0;
-            int? backupPosizione = null;
-            if (typeof(T) == typeof(DatiInterpreteHelper))
-            {
-                backupPosizione = (contextualParameter as DatiInterpreteHelper).posizioneErrore;
-            }
-            Inizio:
-            {
-                if ((internalData.cronometro.ElapsedMilliseconds > 1500 && typeof(T) == typeof(PivotPage)) ||
-                    (internalData.cronometro.ElapsedMilliseconds > 2500 && typeof(T) == typeof(DatiInterpreteHelper)))
-                {
-                    if (typeof(T) == typeof(DatiInterpreteHelper))
-                    {
-                        (contextualParameter as DatiInterpreteHelper).StackTrace.Pop();
-                        (contextualParameter as DatiInterpreteHelper).StackTrace.Push(internalData.sourceCode.Substring(0, internalData.sourceCode.IndexOf(']')));
-                    }
-                    throw new OperationCanceledException();
-                }
-                for (int carattere = 0; carattere < internalData.sourceCode.Length; carattere++)
-                {
-                    if (typeof(T) == typeof(DatiInterpreteHelper))
-                    {
-                        if (internalData.sourceCode[carattere] == RichEditBoxHelper.CharBreakpoint && skipChar != 0)
-                        {
-                            (contextualParameter as DatiInterpreteHelper).skipBreakpoint = true;
-                            return internalData.codeOutput;
-                        }
-                    }
-                    if (skipChar != 0)
-                    {
-                        skipChar--;
-                        continue;
-                    }
-                    if (typeof(T) == typeof(DatiInterpreteHelper))
-                    {
-                        (contextualParameter as DatiInterpreteHelper).posizioneErrore++;
-                        (contextualParameter as DatiInterpreteHelper).aggiornaCimaStackTrace(internalData.sourceCode[carattere]);
-                        if (internalData.sourceCode[carattere] == RichEditBoxHelper.CharBreakpoint)
-                        {
-                            (contextualParameter as DatiInterpreteHelper).breakpointStop = true;
-                            return internalData.codeOutput;
-                        }
-                    }
-                    switch (internalData.sourceCode[carattere])
-                    {
-                        case '>':
-                        {
-                            if (internalData.datiSessione.canGoUp)
-                            {
-                                internalData.datiSessione.indice++;
-                            }
-                            else
-                            {
-                                throw new Exception("UpperBoundExceededException");
-                            }
-                            break;
-                        }
-                        case '<':
-                        {
-                            if (internalData.datiSessione.canGoDown)
-                            {
-                                internalData.datiSessione.indice--;
-                            }
-                            else
-                            {
-                                throw new Exception("LowerBoundExceededException");
-                            }
-                            break;
-                        }
-                        case '+':
-                        {
-                            if (internalData.datiSessione.canIncrement)
-                            {
-                                internalData.datiSessione.Plus();
-                            }
-                            else
-                            {
-                                throw new Exception("MaxValueExceededException");
-                            }
-                            break;
-                        }
-                        case '-':
-                        {
-                            if (internalData.datiSessione.canDecrement)
-                            {
-                                internalData.datiSessione.Minus();
-                            }
-                            else
-                            {
-                                throw new Exception("NegativeValueException");
-                            }
-                            break;
-                        }
-                        case '[':
-                        {
-                            skipChar = calcolaCaratteriSalto(internalData[carattere + 1]) + 1;
-                            if (internalData.datiSessione.attuale != 0)
-                            {
-                                CompilerInternalData sessioneParziale = new CompilerInternalData(internalData.cronometro)
-                                {
-                                    sourceCode = internalData[carattere + 1],
-                                    datiSessione = internalData.datiSessione,
-                                    codeOutput = internalData.codeOutput
-                                };
-                                if (typeof(T) == typeof(DatiInterpreteHelper))
-                                {
-                                    (contextualParameter as DatiInterpreteHelper).StackTrace.Push("");
-                                }
-                                internalData.codeOutput = await interpreta(sessioneParziale, contextualParameter, charBuffer);
-                                if (typeof(T) == typeof(DatiInterpreteHelper))
-                                {
-                                    if ((contextualParameter as DatiInterpreteHelper).breakpointStop ||
-                                        (contextualParameter as DatiInterpreteHelper).skipBreakpoint)
-                                    {
-                                        return internalData.codeOutput;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (typeof(T) == typeof(DatiInterpreteHelper))
-                                {
-                                    (contextualParameter as DatiInterpreteHelper).posizioneErrore += skipChar;
-                                }
-                            }
-                            break;
-                        }
-                        case ']':
-                        {
-                            if (internalData.datiSessione.attuale == 0)
-                            {
-                                if (typeof(T) == typeof(DatiInterpreteHelper))
-                                {
-                                    String backupInnerStack = (contextualParameter as DatiInterpreteHelper).StackTrace.Pop();
-                                    String baseStack = (contextualParameter as DatiInterpreteHelper).StackTrace.Pop();
-                                    (contextualParameter as DatiInterpreteHelper).StackTrace.Push(baseStack + backupInnerStack);
-                                }
-                                return internalData.codeOutput;
-                            }
-                            else
-                            {
-                                if (typeof(T) == typeof(DatiInterpreteHelper))
-                                {
-                                    (contextualParameter as DatiInterpreteHelper).posizioneErrore = backupPosizione.Value;
-                                    (contextualParameter as DatiInterpreteHelper).ripristinaCimaStackTrace();
-                                }
-                                goto Inizio;
-                            }
-                        }
-                        case '.': internalData.codeOutput += Convert.ToString(Convert.ToChar(internalData.datiSessione.attuale)); break;
-                        case ',':
-                        {
-                            if (typeof(T) == typeof(PivotPage))
-                            {
-                                internalData.cronometro.Stop();
-                                if (--charBuffer < 0)
-                                {
-                                    throw new Exception("CharBufferLimitExceededException");
-                                }
-                                internalData.datiSessione.attuale = (char)(await stdinRequest(StdinInputType.SingleCharacter, contextualParameter as PivotPage));
-                                internalData.cronometro.Start();
-                            }
-                            else
-                            {
-                                try
-                                {
-                                    internalData.datiSessione.attuale = (contextualParameter as DatiInterpreteHelper).carattereAttuale;
-                                }
-                                catch
-                                {
-                                    throw new Exception("ExhaustedStdinBufferException");
-                                }
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-            return internalData.codeOutput;
-        } */
 
         /// <summary>
         /// Counts the number of operators to skip from the first one inside a terminated loop
@@ -571,20 +381,20 @@ namespace Brainf_ck_sharp
 
 
         [Pure, NotNull]
-        private static IEnumerable<char> ExtractInnerLoop([NotNull] IReadOnlyList<char> source, int index)
+        private static IEnumerable<Brainf_ckBinaryItem> ExtractInnerLoop([NotNull] IReadOnlyList<Brainf_ckBinaryItem> source, int index)
         {
             // Initial checks
             if (source.Count == 0) throw new ArgumentException("The source code is empty");
             if (index < 0 || index > source.Count - 2) throw new ArgumentOutOfRangeException("The target index is invalid");
-            if (source[index] != '[') throw new ArgumentException("The target index doesn't point to the beginning of a loop");
+            if (source[index].Operator != '[') throw new ArgumentException("The target index doesn't point to the beginning of a loop");
 
             int height = 0;
             for (int i = index + 1; i < source.Count; i++)
             {
-                if (source[i] == '[') height++;
-                else if (source[i] == ']')
+                if (source[i].Operator == '[') height++;
+                else if (source[i].Operator == ']')
                 {
-                    if (height == 0) return source.Skip(index + 1).Take(i - (index + 1));
+                    if (height == 0) return source.Skip(index + 1).Take(i - index);
                     height--;
                 }
             }
