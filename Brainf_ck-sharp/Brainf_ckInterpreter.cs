@@ -15,13 +15,20 @@ namespace Brainf_ck_sharp
     public static class Brainf_ckInterpreter
     {
         /// <summary>
-        /// 
+        /// Gets the collection of valid Brainf_ck operators
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="arguments"></param>
-        /// <param name="size"></param>
-        /// <param name="threshold"></param>
-        /// <returns></returns>
+        [NotNull]
+        public static readonly IReadOnlyCollection<char> Operators = new[] { '+', '-', '>', '<', '.', ',', '[', ']' };
+
+        #region Public APIs
+
+        /// <summary>
+        /// Executes the given script and returns the result
+        /// </summary>
+        /// <param name="source">The source code with the script to execute</param>
+        /// <param name="arguments">The arguments for the script</param>
+        /// <param name="size">The size of the memory to use to run the script</param>
+        /// <param name="threshold">The optional time threshold to run the script</param>
         [PublicAPI]
         [Pure, NotNull]
         public static InterpreterResult Run([NotNull] String source, [NotNull] String arguments,
@@ -31,13 +38,12 @@ namespace Brainf_ck_sharp
         }
 
         /// <summary>
-        /// 
+        /// Executes the given script and returns the result
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="arguments"></param>
-        /// <param name="state"></param>
-        /// <param name="threshold"></param>
-        /// <returns></returns>
+        /// <param name="source">The source code with the script to execute</param>
+        /// <param name="arguments">The arguments for the script</param>
+        /// <param name="state">The initial memory state to run the script</param>
+        /// <param name="threshold">The optional time threshold to run the script</param>
         [PublicAPI]
         [Pure, NotNull]
         public static InterpreterResult Run([NotNull] String source, [NotNull] String arguments,
@@ -46,6 +52,15 @@ namespace Brainf_ck_sharp
             return TryRun(source, arguments, state.Clone(), threshold);
         }
 
+        /// <summary>
+        /// Initializes an execution session with the input source code
+        /// </summary>
+        /// <param name="source">The source code to use to initialize the session. A breakpoint will be added at the start of each code chunk after the first one</param>
+        /// <param name="arguments">The optional arguments for the script</param>
+        /// <param name="size">The size of the memory state to use for the session</param>
+        /// <param name="threshold">An optional time threshold for the execution of the whole session</param>
+        [PublicAPI]
+        [Pure, NotNull]
         public static InterpreterExecutionSession InitializeSession([NotNull] IReadOnlyList<String> source, [NotNull] String arguments,
             int size = 64, int? threshold = null)
         {
@@ -83,68 +98,11 @@ namespace Brainf_ck_sharp
             return new InterpreterExecutionSession(result, new SessionDebugData(executable, input, output, threshold, breakpoints));
         }
 
-        internal static InterpreterExecutionSession ContinueSession([NotNull] InterpreterExecutionSession session)
-        {
-            if (!session.CanContinue) throw new InvalidOperationException("The current session can't be continued");
-            InterpreterResult step = TryRun(session.DebugData.Source, session.DebugData.Stdin, session.DebugData.Stdout,
-                session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.ElapsedTime,
-                session.CurrentResult.BreakpointPosition, session.DebugData.Breakpoints);
-            return new InterpreterExecutionSession(step, session.DebugData);
-        }
-
-        internal static InterpreterExecutionSession RunSessionToCompletion([NotNull] InterpreterExecutionSession session)
-        {
-            if (!session.CanContinue) throw new InvalidOperationException("The current session can't be continued");
-            InterpreterResult step = TryRun(session.DebugData.Source, session.DebugData.Stdin, session.DebugData.Stdout,
-                session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.ElapsedTime,
-                session.CurrentResult.BreakpointPosition, null);
-            return new InterpreterExecutionSession(step, session.DebugData);
-        }
-
-        /// <summary>
-        /// Gets the collection of valid Brainf_ck operators
-        /// </summary>
-        [NotNull]
-        public static readonly IReadOnlyCollection<char> Operators = new[] { '+', '-', '>', '<', '.', ',', '[', ']' };
-
-        /// <summary>
-        /// Extracts the valid operators from a raw source code
-        /// </summary>
-        /// <param name="source">The input source code</param>
-        [NotNull, LinqTunnel]
-        private static IReadOnlyList<char> FindExecutableCode([NotNull] String source) =>
-            (from c in source
-            where Operators.Contains(c)
-            select c).ToArray();
-
-        /// <summary>
-        /// Checks whether or not the syntax in the input operators is valid
-        /// </summary>
-        /// <param name="operators">The operators sequence</param>
-        [Pure]
-        private static bool CheckSourceSyntax([NotNull] IEnumerable<Brainf_ckBinaryItem> operators)
-        {
-            // Iterate over all the characters in the source
-            int height = 0;
-            foreach (char c in operators.Select(op => op.Operator))
-            {
-                // Check the parentheses
-                if (c == '[') height++;
-                else if (c == ']')
-                {
-                    if (height == 0) return false;
-                    height--;
-                }
-            }
-            return height == 0;
-        }
-
         /// <summary>
         /// Checks whether or not the syntax in the input source code is valid
         /// </summary>
         /// <param name="source">The source code to analyze</param>
-        /// <returns>A bool value that indicates whether or not the source code is valid, 
-        /// and the position of the first syntax error, if there is at least one</returns>
+        /// <returns>A bool value that indicates whether or not the source code is valid, and the position of the first syntax error, if there is at least one</returns>
         [PublicAPI]
         [Pure]
         public static (bool Valid, int ErrorPosition) CheckSourceSyntax([NotNull] String source)
@@ -166,6 +124,18 @@ namespace Brainf_ck_sharp
             return height == 0 ? (true, 0) : (false, source.Length - 1);
         }
 
+        #endregion
+
+        #region Interpreter implementation
+
+        /// <summary>
+        /// Executes the input script
+        /// </summary>
+        /// <param name="source">The source code with the script to execute</param>
+        /// <param name="arguments">The arguments for the script</param>
+        /// <param name="state">The initial memory state to run the script</param>
+        /// <param name="threshold">The optional time threshold to run the script</param>
+        [Pure, NotNull]
         private static InterpreterResult TryRun([NotNull] String source, [NotNull] String arguments,
             [NotNull] TouringMachineState state, int? threshold)
         {
@@ -192,6 +162,17 @@ namespace Brainf_ck_sharp
             return TryRun(executable, input, output, state, threshold, TimeSpan.Zero, null, null);
         }
 
+        /// <summary>
+        /// Executes a script or continues the execution of a script
+        /// </summary>
+        /// <param name="executable">The source code of the scrpt to execute</param>
+        /// <param name="input">The stdin buffer</param>
+        /// <param name="output">The stdout buffer</param>
+        /// <param name="state">The curret memory state to run or continue the script</param>
+        /// <param name="threshold">The optional time threshold for the execution of the script</param>
+        /// <param name="elapsed">The elapsed time since the beginning of the script (if there's an execution session in progress)</param>
+        /// <param name="jump">The optional position of a previously reached breakpoint to use to resume the execution</param>
+        /// <param name="breakpoints">The optional list of breakpoints in the input source code</param>
         [Pure, NotNull]
         private static InterpreterResult TryRun([NotNull] IReadOnlyList<Brainf_ckBinaryItem> executable, [NotNull] Queue<char> input, [NotNull] StringBuilder output,
             [NotNull] TouringMachineState state, int? threshold, TimeSpan elapsed, uint? jump, IReadOnlyList<uint> breakpoints)
@@ -358,28 +339,10 @@ namespace Brainf_ck_sharp
         }
 
         /// <summary>
-        /// Counts the number of operators to skip from the first one inside a terminated loop
+        /// Extracts the body of a loop from the given source code partition (including the last ] operator in the loop body)
         /// </summary>
-        /// <param name="operators">The operastors to analyze</param>
-        private static int CalculateSkippedOperators([NotNull] IEnumerable<char> operators)
-        {
-            // Count the total operators in the nested loops to skip
-            int height = 0, jump = 0;
-            foreach (char c in operators)
-            {
-                // Reach the end of the nested loop
-                if (c == '[') height++;
-                else if (c == ']')
-                {
-                    if (height == 0) break;
-                    height--;
-                }
-                jump++;
-            }
-            return jump + 1; // Include the last ] operator
-        }
-
-
+        /// <param name="source">The source code to use to extract the loop body</param>
+        /// <param name="index">The index of the [ operator at the beginning of the loop to extract</param>
         [Pure, NotNull]
         private static IEnumerable<Brainf_ckBinaryItem> ExtractInnerLoop([NotNull] IReadOnlyList<Brainf_ckBinaryItem> source, int index)
         {
@@ -388,6 +351,7 @@ namespace Brainf_ck_sharp
             if (index < 0 || index > source.Count - 2) throw new ArgumentOutOfRangeException("The target index is invalid");
             if (source[index].Operator != '[') throw new ArgumentException("The target index doesn't point to the beginning of a loop");
 
+            // Iterate from the first character of the loop to the final ] operator
             int height = 0;
             for (int i = index + 1; i < source.Count; i++)
             {
@@ -400,5 +364,69 @@ namespace Brainf_ck_sharp
             }
             throw new ArgumentException("The source code doesn't contain a well formatted nested loop at the given position");
         }
+
+        #endregion
+
+        #region Tools
+
+        /// <summary>
+        /// Continues the input execution session to its next step
+        /// </summary>
+        /// <param name="session">The session to continue</param>
+        [Pure, NotNull]
+        internal static InterpreterExecutionSession ContinueSession([NotNull] InterpreterExecutionSession session)
+        {
+            InterpreterResult step = TryRun(session.DebugData.Source, session.DebugData.Stdin, session.DebugData.Stdout,
+                session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.ElapsedTime,
+                session.CurrentResult.BreakpointPosition, session.DebugData.Breakpoints);
+            return new InterpreterExecutionSession(step, session.DebugData);
+        }
+
+        /// <summary>
+        /// Resumes the execution of the input session and runs it to the end
+        /// </summary>
+        /// <param name="session">The session to run</param>
+        [Pure, NotNull]
+        internal static InterpreterExecutionSession RunSessionToCompletion([NotNull] InterpreterExecutionSession session)
+        {
+            InterpreterResult step = TryRun(session.DebugData.Source, session.DebugData.Stdin, session.DebugData.Stdout,
+                session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.ElapsedTime,
+                session.CurrentResult.BreakpointPosition, null);
+            return new InterpreterExecutionSession(step, session.DebugData);
+        }
+
+        /// <summary>
+        /// Extracts the valid operators from a raw source code
+        /// </summary>
+        /// <param name="source">The input source code</param>
+        [NotNull, LinqTunnel]
+        private static IReadOnlyList<char> FindExecutableCode([NotNull] String source) =>
+        (from c in source
+            where Operators.Contains(c)
+            select c).ToArray();
+
+        /// <summary>
+        /// Checks whether or not the syntax in the input operators is valid
+        /// </summary>
+        /// <param name="operators">The operators sequence</param>
+        [Pure]
+        private static bool CheckSourceSyntax([NotNull] IEnumerable<Brainf_ckBinaryItem> operators)
+        {
+            // Iterate over all the characters in the source
+            int height = 0;
+            foreach (char c in operators.Select(op => op.Operator))
+            {
+                // Check the parentheses
+                if (c == '[') height++;
+                else if (c == ']')
+                {
+                    if (height == 0) return false;
+                    height--;
+                }
+            }
+            return height == 0;
+        }
+
+        #endregion
     }
 }

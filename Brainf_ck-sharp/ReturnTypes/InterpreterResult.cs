@@ -9,6 +9,8 @@ namespace Brainf_ck_sharp.ReturnTypes
     /// </summary>
     public sealed class InterpreterResult
     {
+        #region Public APIs
+
         /// <summary>
         /// Gets the exit code for the interpreted script, with all the relevant flags
         /// </summary>
@@ -18,6 +20,8 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// Checks whether or not the current <see cref="ExitCode"/> property contains a specific flag
         /// </summary>
         /// <param name="flag">The flag to check (it must have a single bit set)</param>
+        [PublicAPI]
+        [Pure]
         public bool HasFlag(InterpreterExitCode flag)
         {
             // Check the flags set
@@ -65,7 +69,11 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// If the script isn't executed successfully, gets all the relevant debug info
         /// </summary>
         [CanBeNull]
-        public InterpreterDebugInfo DebugInfo { get; }
+        public InterpreterExceptionInfo ExceptionInfo { get; }
+
+        #endregion
+
+        #region Internal methods
 
         /// <summary>
         /// Gets the position of the breakpoint that caused the script to half, if present
@@ -82,27 +90,33 @@ namespace Brainf_ck_sharp.ReturnTypes
             ElapsedTime = duration;
             Output = output;
             SourceCode = code;
-            if (stackTrace != null) DebugInfo = new InterpreterDebugInfo(stackTrace, code);
+            if (stackTrace != null) ExceptionInfo = new InterpreterExceptionInfo(stackTrace, code);
             if (breakpoint != null) BreakpointPosition = breakpoint;
         }
 
         // Private constructor for the Clone method
         private InterpreterResult(InterpreterExitCode exitCode, [NotNull] TouringMachineState state, TimeSpan duration,
-            [NotNull] String output, [NotNull] String code, [CanBeNull] InterpreterDebugInfo debugInfo, uint? breakpoint)
+            [NotNull] String output, [NotNull] String code, [CanBeNull] InterpreterExceptionInfo debugInfo, uint? breakpoint)
         {
             ExitCode = exitCode;
             MachineState = state;
             ElapsedTime = duration;
             Output = output;
             SourceCode = code;
-            if (debugInfo != null) DebugInfo = debugInfo;
+            if (debugInfo != null) ExceptionInfo = debugInfo;
             if (breakpoint != null) BreakpointPosition = breakpoint;
         }
 
+        /// <summary>
+        /// Creates a copu of the current result
+        /// </summary>
+        /// <returns></returns>
+        [Pure, NotNull]
         internal InterpreterResult Clone()
         {
-            return new InterpreterResult(ExitCode, MachineState.Clone(), ElapsedTime,
-                Output, SourceCode, DebugInfo, BreakpointPosition);
+            return new InterpreterResult(ExitCode, MachineState.Clone(), ElapsedTime, Output, SourceCode, ExceptionInfo, BreakpointPosition);
         }
+
+        #endregion
     }
 }

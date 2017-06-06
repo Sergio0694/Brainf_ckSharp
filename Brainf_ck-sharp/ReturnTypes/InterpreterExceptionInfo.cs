@@ -8,7 +8,7 @@ namespace Brainf_ck_sharp.ReturnTypes
     /// <summary>
     /// Contains additional info to debug a faulted Brainf_ck script
     /// </summary>
-    public sealed class InterpreterDebugInfo
+    public sealed class InterpreterExceptionInfo
     {
         /// <summary>
         /// Gets the stack trace for the exception thrown when running the script
@@ -27,7 +27,7 @@ namespace Brainf_ck_sharp.ReturnTypes
         public int ErrorPosition { get; }
 
         // Internal constructor
-        internal InterpreterDebugInfo([NotNull] IReadOnlyList<String> stackTrace, String source)
+        internal InterpreterExceptionInfo([NotNull] IReadOnlyList<String> stackTrace, String source)
         {
             StackTrace = stackTrace;
             ErrorPosition = stackTrace.Aggregate(0, (s, v) => s + v.Length) - 1;

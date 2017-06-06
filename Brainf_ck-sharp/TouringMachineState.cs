@@ -104,7 +104,7 @@ namespace Brainf_ck_sharp
         /// Creates a copy of the current machine state
         /// </summary>
         [Pure, NotNull]
-        public TouringMachineState Clone() => new TouringMachineState(Memory) { _Position = _Position };
+        internal TouringMachineState Clone() => new TouringMachineState(Memory) { _Position = _Position };
 
         #region IReadOnlyList<ushort>
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Brainf_ck_sharp;
 using Brainf_ck_sharp.ReturnTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
