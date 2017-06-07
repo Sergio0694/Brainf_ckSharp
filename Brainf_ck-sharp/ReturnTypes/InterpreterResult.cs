@@ -54,6 +54,11 @@ namespace Brainf_ck_sharp.ReturnTypes
         public TimeSpan ElapsedTime { get; }
 
         /// <summary>
+        /// Gets the total numer of evaluated operators for the current result
+        /// </summary>
+        public uint TotalOperations { get; }
+
+        /// <summary>
         /// Gets the output produced by the script
         /// </summary>
         [NotNull]
@@ -83,26 +88,28 @@ namespace Brainf_ck_sharp.ReturnTypes
 
         // Internal constructor
         internal InterpreterResult(InterpreterExitCode exitCode, [NotNull] TouringMachineState state, TimeSpan duration,
-            [NotNull] String output, [NotNull] String code, [CanBeNull] IReadOnlyList<String> stackTrace, uint? breakpoint)
+            [NotNull] String output, [NotNull] String code, uint operations, [CanBeNull] IReadOnlyList<String> stackTrace, uint? breakpoint)
         {
             ExitCode = exitCode;
             MachineState = state;
             ElapsedTime = duration;
             Output = output;
             SourceCode = code;
+            TotalOperations = operations;
             if (stackTrace != null) ExceptionInfo = new InterpreterExceptionInfo(stackTrace, code);
             if (breakpoint != null) BreakpointPosition = breakpoint;
         }
 
         // Private constructor for the Clone method
         private InterpreterResult(InterpreterExitCode exitCode, [NotNull] TouringMachineState state, TimeSpan duration,
-            [NotNull] String output, [NotNull] String code, [CanBeNull] InterpreterExceptionInfo debugInfo, uint? breakpoint)
+            [NotNull] String output, [NotNull] String code, uint operations, [CanBeNull] InterpreterExceptionInfo debugInfo, uint? breakpoint)
         {
             ExitCode = exitCode;
             MachineState = state;
             ElapsedTime = duration;
             Output = output;
             SourceCode = code;
+            TotalOperations = operations;
             if (debugInfo != null) ExceptionInfo = debugInfo;
             if (breakpoint != null) BreakpointPosition = breakpoint;
         }
@@ -114,7 +121,7 @@ namespace Brainf_ck_sharp.ReturnTypes
         [Pure, NotNull]
         internal InterpreterResult Clone()
         {
-            return new InterpreterResult(ExitCode, MachineState.Clone(), ElapsedTime, Output, SourceCode, ExceptionInfo, BreakpointPosition);
+            return new InterpreterResult(ExitCode, MachineState.Clone(), ElapsedTime, Output, SourceCode, TotalOperations, ExceptionInfo, BreakpointPosition);
         }
 
         #endregion
