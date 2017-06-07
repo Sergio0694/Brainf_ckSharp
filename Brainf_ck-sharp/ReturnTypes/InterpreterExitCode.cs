@@ -81,6 +81,11 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// <summary>
         /// The script requested another input character when the available buffer was empty
         /// </summary>
-        StrinBufferExhausted = 1 << 14
+        StdinBufferExhausted = 1 << 14,
+
+        /// <summary>
+        /// The script tried to print too many characters in the output buffer
+        /// </summary>
+        StdoutBufferLimitExceeded = 1 << 15
     }
 }

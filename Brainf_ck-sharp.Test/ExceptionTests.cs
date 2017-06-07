@@ -65,7 +65,7 @@ namespace Brainf_ck_sharp_Test
             Assert.IsNotNull(result);
             Assert.IsTrue(result.HasFlag(InterpreterExitCode.Failure) &&
                           result.HasFlag(InterpreterExitCode.ExceptionThrown) &&
-                          result.HasFlag(InterpreterExitCode.StrinBufferExhausted));
+                          result.HasFlag(InterpreterExitCode.StdinBufferExhausted));
             Assert.AreEqual(result.Output, String.Empty);
         }
 
@@ -102,6 +102,18 @@ namespace Brainf_ck_sharp_Test
             Assert.IsTrue(result.HasFlag(InterpreterExitCode.Failure) &&
                           result.HasFlag(InterpreterExitCode.NoCodeInterpreted));
             Assert.AreEqual(result.Output, String.Empty);
+        }
+
+        [TestMethod]
+        public void ExceptionTest9()
+        {
+            const String script = ",[.-]";
+            InterpreterResult result = Brainf_ckInterpreter.Run(script, "€");
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Failure) &&
+                          result.HasFlag(InterpreterExitCode.ExceptionThrown) &&
+                          result.HasFlag(InterpreterExitCode.StdoutBufferLimitExceeded));
+            Assert.AreEqual(result.Output.Length, 512);
         }
 
         [TestMethod]

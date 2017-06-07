@@ -129,6 +129,11 @@ namespace Brainf_ck_sharp
         #region Interpreter implementation
 
         /// <summary>
+        /// Gets the maximum allowed size for the output buffer
+        /// </summary>
+        private const int StdoutBufferSizeLimit = 512;
+
+        /// <summary>
         /// Executes the input script
         /// </summary>
         /// <param name="source">The source code with the script to execute</param>
@@ -320,6 +325,13 @@ namespace Brainf_ck_sharp
                             // putch(*ptr)
                             case '.':
                                 if (jump != null && !reached) continue;
+                                if (output.Length >= StdoutBufferSizeLimit)
+                                {
+                                    return new InterpreterWorkingData(InterpreterExitCode.Failure |
+                                                                      InterpreterExitCode.ExceptionThrown |
+                                                                      InterpreterExitCode.StdoutBufferLimitExceeded,
+                                                                      new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached, partial);
+                                }
                                 output.Append(Convert.ToChar(state.Current));
                                 partial++;
                                 break;
@@ -330,7 +342,7 @@ namespace Brainf_ck_sharp
                                 if (input.Count > 0) state.Input(input.Dequeue());
                                 else return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                        InterpreterExitCode.ExceptionThrown |
-                                                                       InterpreterExitCode.StrinBufferExhausted,
+                                                                       InterpreterExitCode.StdinBufferExhausted,
                                                                        new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached, partial);
                                 partial++;
                                 break;
