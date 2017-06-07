@@ -289,7 +289,7 @@ namespace Brainf_ck_sharp
                                 {
                                     InterpreterWorkingData inner = TryRunCore(loop, depth + (uint)i + 1, reached);
                                     partial += inner.TotalOperations;
-                                    if (!(jump != null && !reached && inner.BreakpointReached)) partial++;
+                                    if (!(jump != null && !reached)) partial++; // Only count the first [ if it's the first time it's evaluated
                                     reached |= inner.BreakpointReached;
                                     if ((inner.ExitCode & InterpreterExitCode.Success) == 0 ||
                                         (inner.ExitCode & InterpreterExitCode.BreakpointReached) == InterpreterExitCode.BreakpointReached)
@@ -298,6 +298,7 @@ namespace Brainf_ck_sharp
                                             inner.StackFrames.Concat(new[] { operators.Select(op => op.Operator).Take(i + 1) }), inner.Position, reached, partial);
                                     }
                                 }
+                                else if (state.Current == 0) partial++;
                                 break;
 
                             // }
@@ -305,7 +306,8 @@ namespace Brainf_ck_sharp
                                 if (state.Current == 0 || jump != null && !reached)
                                 {
                                     // Loop end
-                                    return new InterpreterWorkingData(InterpreterExitCode.Success, null, depth + (uint)i, reached, partial + 1);
+                                    return new InterpreterWorkingData(InterpreterExitCode.Success, null, depth + (uint)i, reached,
+                                        jump != null && !reached ? partial : partial + 1); // Increment the partial to include the closing ] bracket, if needed
                                 }
                                 else
                                 {
