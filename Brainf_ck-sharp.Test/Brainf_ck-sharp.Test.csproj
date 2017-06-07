@@ -56,6 +56,7 @@
     <Compile Include="BreakpointTests.cs" />
     <Compile Include="ExceptionTests.cs" />
     <Compile Include="LoopTests.cs" />
+    <Compile Include="MiscTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScriptTests.cs" />
   </ItemGroup>
