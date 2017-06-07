@@ -82,7 +82,8 @@
                    IsTextScaleFactorEnabled="False"
                    Grid.Column="1"
                    x:Name="RowBlock">
-            <Run Text="Row"/>
+            <Run Text="Row"
+                 x:Uid="RowTitleRun"/>
             <Run Text="12"
                  x:Name="RowRun"/>
         </TextBlock>

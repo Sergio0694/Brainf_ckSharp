@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="it" original="BRAINF_CK-SHARP.UWP/STRINGS/EN-US/RESOURCES.RESW" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6810.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="BRAINF_CK-SHARP.UWP/STRINGS/EN-US/RESOURCES.RESW" datatype="resx">
+        <trans-unit id="RowTitleRun.Text" translate="yes" xml:space="preserve">
+          <source>Row</source>
+          <target state="translated">Ri</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Keep this short to 2-4 characters (abbreviate if needed)</note>
+        </trans-unit>
+        <trans-unit id="ShortCharacter" translate="yes" xml:space="preserve">
+          <source>Char</source>
+          <target state="translated">Car</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Keep this short to 2-4 characters (abbreviate if needed)</note>
+        </trans-unit>
+        <trans-unit id="ShortColumn" translate="yes" xml:space="preserve">
+          <source>Col</source>
+          <target state="translated">Col</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Keep this short to 2-4 characters (abbreviate if needed)</note>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>
