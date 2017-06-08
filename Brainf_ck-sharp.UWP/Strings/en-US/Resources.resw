@@ -117,6 +117,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ExEmptyStdin" xml:space="preserve">
+    <value>Stdin buffer exhausted</value>
+  </data>
+  <data name="ExLowerBound" xml:space="preserve">
+    <value>Lower bound exceeded</value>
+  </data>
+  <data name="ExMaxStdout" xml:space="preserve">
+    <value>Stdout buffer length limit exceeded</value>
+  </data>
+  <data name="ExMaxValue" xml:space="preserve">
+    <value>Max value exceeded</value>
+  </data>
+  <data name="ExNegativeValue" xml:space="preserve">
+    <value>Negative value</value>
+  </data>
+  <data name="ExUpperBound" xml:space="preserve">
+    <value>Upper bound exceeded</value>
+  </data>
+  <data name="InterpreterError" xml:space="preserve">
+    <value>Interpreter error</value>
+  </data>
   <data name="RowTitleRun.Text" xml:space="preserve">
     <value>Row</value>
     <comment>Keep this short to 2-4 characters (abbreviate if needed)</comment>
@@ -128,5 +149,11 @@
   <data name="ShortColumn" xml:space="preserve">
     <value>Col</value>
     <comment>Keep this short to 2-4 characters (abbreviate if needed)</comment>
+  </data>
+  <data name="ThresholdExceeded" xml:space="preserve">
+    <value>Time threshold exceeded</value>
+  </data>
+  <data name="WrongBrackets" xml:space="preserve">
+    <value>Mismatched parentheses</value>
   </data>
 </root>

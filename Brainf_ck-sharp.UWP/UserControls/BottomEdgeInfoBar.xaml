@@ -104,7 +104,7 @@
         <!--File-->
         <Grid x:Name="FileGrid"
               Grid.Column="3"
-              Margin="16,0,0,0">
+              Margin="16,0,8,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>

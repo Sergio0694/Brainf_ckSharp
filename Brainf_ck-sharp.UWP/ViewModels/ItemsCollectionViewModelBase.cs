@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 using JetBrains.Annotations;
 
@@ -24,7 +19,35 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         public ObservableCollection<T> Source
         {
             get => _Source;
-            protected set => Set(ref _Source, value);
+            protected set
+            {
+                // Update the source and the IsEmpty property
+                if (Set(ref _Source, value))
+                {
+                    IsEmpty = value.Count == 0;
+                }
+            }
+        }
+
+        private bool _IsEmpty;
+
+        /// <summary>
+        /// Gets whether or not the current source collection is empty
+        /// </summary>
+        public bool IsEmpty
+        {
+            get => _IsEmpty;
+            private set => Set(ref _IsEmpty, value);
+        }
+
+        /// <summary>
+        /// Clears the collection of items, if possible
+        /// </summary>
+        protected bool Clear()
+        {
+            if (IsEmpty) return false;
+            Source = new ObservableCollection<T>();
+            return true;
         }
     }
 }

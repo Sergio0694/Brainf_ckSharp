@@ -14,14 +14,14 @@
                     HorizontalAlignment="Center">
             <TextBlock Text="+"
                        TextAlignment="Center"
-                       FontSize="16"
+                       FontSize="20"
                        Foreground="White"
                        x:Name="OperatorBlock"/>
             <TextBlock Text="*ptr++"
                        TextAlignment="Center"
                        FontSize="8"
                        Foreground="#80FFFFFF"
-                       Margin="0,4,0,0"
+                       Margin="0,8,0,0"
                        x:Name="InfoBlock"/>
         </StackPanel>
     </Button>
