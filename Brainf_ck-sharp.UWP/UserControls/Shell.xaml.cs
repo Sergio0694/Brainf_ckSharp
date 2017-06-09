@@ -29,6 +29,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 _KeyboardEffect?.AdjustSize();
             };
             this.InitializeComponent();
+            Console.ViewModel.IsEnabled = true;
         }
 
         // Acrylic brush for the header
@@ -40,6 +41,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
         // Initialize the effects
         private async void Shell_Loaded(object sender, RoutedEventArgs e)
         {
+            Console.AdjustTopMargin(HeaderGrid.ActualHeight + 12);
             if (UniversalAPIsHelper.IsMobileDevice)
             {
                 _HeaderEffect = await HeaderBorder.GetAttachedInAppSemiAcrylicEffectAsync(HeaderBorder, 16, 800,
@@ -54,6 +56,12 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 _KeyboardEffect = await KeyboardBorder.GetAttachedSemiAcrylicEffectAsync(Color.FromArgb(byte.MaxValue, 16, 16, 16), 0.95f,
                     KeyboardCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
             }
+        }
+
+        // Select the right page
+        private void HeaderControl_OnSelectedIndezChanged(object sender, int e)
+        {
+            PivotControl.SelectedIndex = e;
         }
     }
 }

@@ -5,11 +5,39 @@ using Brainf_ck_sharp;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels.ConsoleModels;
 using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Messages;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ck_sharp_UWP.ViewModels
 {
     public class ConsoleViewModel : ItemsCollectionViewModelBase<ConsoleCommandModelBase>
     {
+        public ConsoleViewModel()
+        {
+            Source.Add(new ConsoleUserCommand());
+        }
+
+        private bool _IsEnabled;
+
+        /// <summary>
+        /// Gets or sets whether or not the instance is enabled and it is processing incoming messages
+        /// </summary>
+        public bool IsEnabled
+        {
+            get => _IsEnabled;
+            set
+            {
+                if (Set(ref _IsEnabled, value))
+                {
+                    if (value)
+                    {
+                        Messenger.Default.Register<OperatorAddedMessage>(this, op => TryAddCommandCharacter(op.Operator));
+                    }
+                    else Messenger.Default.Unregister(this);
+                }
+            }
+        }
+
         /// <summary>
         /// The current machine state to use to process the scripts
         /// </summary>

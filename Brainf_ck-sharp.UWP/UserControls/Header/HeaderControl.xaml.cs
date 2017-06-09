@@ -1,8 +1,6 @@
 ﻿using System;
 using Windows.UI.Xaml.Controls;
 
-// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
-
 namespace Brainf_ck_sharp_UWP.UserControls.Header
 {
     public sealed partial class HeaderControl : UserControl
@@ -12,16 +10,23 @@ namespace Brainf_ck_sharp_UWP.UserControls.Header
             this.InitializeComponent();
         }
 
+        /// <summary>
+        /// Raised whenever the header selection changes
+        /// </summary>
+        public event EventHandler<int> SelectedIndezChanged;
+
         public void DeselectIDEButton()
         {
             if (IDEButton != null)
                 IDEButton.IsSelected = false;
+            SelectedIndezChanged?.Invoke(this, 0);
         }
 
         public void DeselectConsoleButton()
         {
             if (ConsoleButton != null)
                 ConsoleButton.IsSelected = false;
+            SelectedIndezChanged?.Invoke(this, 1);
         }
     }
 }

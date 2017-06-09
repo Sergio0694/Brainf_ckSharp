@@ -57,6 +57,31 @@
           <source>Mismatched parentheses</source>
           <target state="new">Mismatched parentheses</target>
         </trans-unit>
+        <trans-unit id="run" translate="yes" xml:space="preserve">
+          <source>run</source>
+          <target state="new">run</target>
+        </trans-unit>
+        <trans-unit id="RestartRun.Text" translate="yes" xml:space="preserve">
+          <source>RESTART</source>
+          <target state="new">RESTART</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Keep this uppercase</note>
+        </trans-unit>
+        <trans-unit id="Exception" translate="yes" xml:space="preserve">
+          <source>thrown</source>
+          <target state="new">thrown</target>
+        </trans-unit>
+        <trans-unit id="InternalError" translate="yes" xml:space="preserve">
+          <source>error</source>
+          <target state="new">error</target>
+        </trans-unit>
+        <trans-unit id="SyntaxError" translate="yes" xml:space="preserve">
+          <source>syntax error</source>
+          <target state="new">syntax error</target>
+        </trans-unit>
+        <trans-unit id="Threshold" translate="yes" xml:space="preserve">
+          <source>runtime error</source>
+          <target state="new">runtime error</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -142,6 +142,9 @@
     <value>Row</value>
     <comment>Keep this short to 2-4 characters (abbreviate if needed)</comment>
   </data>
+  <data name="run" xml:space="preserve">
+    <value>run</value>
+  </data>
   <data name="ShortCharacter" xml:space="preserve">
     <value>Char</value>
     <comment>Keep this short to 2-4 characters (abbreviate if needed)</comment>
@@ -155,5 +158,21 @@
   </data>
   <data name="WrongBrackets" xml:space="preserve">
     <value>Mismatched parentheses</value>
+  </data>
+  <data name="RestartRun.Text" xml:space="preserve">
+    <value>RESTART</value>
+    <comment>Keep this uppercase</comment>
+  </data>
+  <data name="Exception" xml:space="preserve">
+    <value>thrown</value>
+  </data>
+  <data name="InternalError" xml:space="preserve">
+    <value>error</value>
+  </data>
+  <data name="SyntaxError" xml:space="preserve">
+    <value>syntax error</value>
+  </data>
+  <data name="Threshold" xml:space="preserve">
+    <value>runtime error</value>
   </data>
 </root>

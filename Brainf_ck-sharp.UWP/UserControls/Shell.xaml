@@ -8,6 +8,7 @@
     xmlns:virtualKeyboard="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard"
     xmlns:header="using:Brainf_ck_sharp_UWP.UserControls.Header"
     xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    xmlns:views="using:Brainf_ck_sharp_UWP.Views"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -16,6 +17,7 @@
         
         <!--UI header-->
         <Grid
+            Canvas.ZIndex="1"
             x:Name="HeaderGrid"
             RelativePanel.AlignTopWithPanel="True"
             RelativePanel.AlignLeftWithPanel="True"
@@ -49,13 +51,27 @@
             </Grid>
             
             <!--Header with pivot buttons-->
-            <header:HeaderControl Grid.Row="1"/>
+            <header:HeaderControl
+                Grid.Row="1"
+                SelectedIndezChanged="HeaderControl_OnSelectedIndezChanged"/>
         </Grid>
         
         <!--Console and IDE-->
         <Pivot
-            RelativePanel.Below="HeaderGrid"
-            RelativePanel.Above="OperatorsKeyboard">
+            x:Name="PivotControl"
+            RelativePanel.AlignTopWithPanel="True"
+            RelativePanel.Above="OperatorsKeyboard"
+            Style="{StaticResource PivotCustomStyle}">
+            
+            <!--Console-->
+            <PivotItem Margin="8,0,8,8">
+                <views:ConsoleView x:Name="Console"/>
+            </PivotItem>
+            
+            <!--IDE-->
+            <PivotItem Margin="0">
+                
+            </PivotItem>
         </Pivot>
 
         <Grid
