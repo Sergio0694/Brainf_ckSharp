@@ -112,6 +112,7 @@
     <Compile Include="DataModels\ConsoleModels\ConsoleUserCommand.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\LocalizationManager.cs" />
+    <Compile Include="Helpers\WindowsAPIs\KeyEventsListener.cs" />
     <Compile Include="Helpers\WindowsAPIs\TitleBarHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\UniversalAPIsHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\StatusBarHelper.cs" />
