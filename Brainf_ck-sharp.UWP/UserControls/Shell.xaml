@@ -99,7 +99,8 @@
             <CommandBar.PrimaryCommands>
                 <AppBarButton 
                     Label="Play"
-                    Icon="Play"/>
+                    Icon="Play"
+                    Click="PlayButton_Click"/>
             </CommandBar.PrimaryCommands>
         </CommandBar>
 

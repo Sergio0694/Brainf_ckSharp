@@ -19,7 +19,7 @@ namespace Brainf_ck_sharp_UWP.TemplateSelectors
                     case ConsoleUserCommand _: return parent.FindResource<DataTemplate>("UserCommandTemplate");
                     case ConsoleRestartCommand _: return parent.FindResource<DataTemplate>("RestartConsoleTemplate");
                     case ConsoleCommandResult _: return parent.FindResource<DataTemplate>("ConsoleResultTemplate");
-                    case ConsoleExceptionResult _: return parent.FindResource<DataTemplate>("RestartConsoleTemplate");
+                    case ConsoleExceptionResult _: return parent.FindResource<DataTemplate>("ConsoleExceptionResult");
                 }
             }
             return null;

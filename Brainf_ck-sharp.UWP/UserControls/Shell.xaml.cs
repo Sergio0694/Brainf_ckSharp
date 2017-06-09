@@ -4,6 +4,8 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp_UWP.Messages.Actions;
+using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations.Behaviours;
 using UICompositionAnimations.Behaviours.Effects.Base;
 
@@ -13,14 +15,6 @@ namespace Brainf_ck_sharp_UWP.UserControls
     {
         public Shell()
         {
-            // Hide the title placeholder if needed
-            if (UniversalAPIsHelper.IsMobileDevice)
-            {
-                PCPlaceholderGrid.Visibility = Visibility.Collapsed;
-                KeyboardCanvas.Visibility = Visibility.Collapsed;
-                KeyboardBorder.Visibility = Visibility.Collapsed;
-            }
-
             // Update the effects and initialize the UI
             this.Loaded += Shell_Loaded;
             this.SizeChanged += (s, e) =>
@@ -30,6 +24,14 @@ namespace Brainf_ck_sharp_UWP.UserControls
             };
             this.InitializeComponent();
             Console.ViewModel.IsEnabled = true;
+
+            // Hide the title placeholder if needed
+            if (UniversalAPIsHelper.IsMobileDevice)
+            {
+                PCPlaceholderGrid.Visibility = Visibility.Collapsed;
+                KeyboardCanvas.Visibility = Visibility.Collapsed;
+                KeyboardBorder.Visibility = Visibility.Collapsed;
+            }
         }
 
         // Acrylic brush for the header
@@ -44,8 +46,8 @@ namespace Brainf_ck_sharp_UWP.UserControls
             Console.AdjustTopMargin(HeaderGrid.ActualHeight + 12);
             if (UniversalAPIsHelper.IsMobileDevice)
             {
-                _HeaderEffect = await HeaderBorder.GetAttachedInAppSemiAcrylicEffectAsync(HeaderBorder, 16, 800,
-                    Color.FromArgb(byte.MaxValue, 30, 30, 30), 0.8f,
+                _HeaderEffect = await HeaderBorder.GetAttachedInAppSemiAcrylicEffectAsync(HeaderBorder, 8, 800,
+                    Color.FromArgb(byte.MaxValue, 30, 30, 30), 0.6f,
                     HeaderCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
                 OperatorsKeyboard.Background = new SolidColorBrush(Color.FromArgb(byte.MaxValue, 10, 10, 10));
             }
@@ -62,6 +64,11 @@ namespace Brainf_ck_sharp_UWP.UserControls
         private void HeaderControl_OnSelectedIndezChanged(object sender, int e)
         {
             PivotControl.SelectedIndex = e;
+        }
+
+        private void PlayButton_Click(object sender, RoutedEventArgs e)
+        {
+            Messenger.Default.Send(new PlayScriptMessage());
         }
     }
 }

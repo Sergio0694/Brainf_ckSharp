@@ -1,6 +1,8 @@
 ﻿using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Foundation;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -25,6 +27,8 @@ namespace Brainf_ck_sharp_UWP
             this.Suspending += OnSuspending;
         }
 
+        private static Shell _DefaultContent;
+
         /// <summary>
         /// Richiamato quando l'applicazione viene avviata normalmente dall'utente. All'avvio dell'applicazione
         /// verranno usati altri punti di ingresso per aprire un file specifico.
@@ -47,11 +51,57 @@ namespace Brainf_ck_sharp_UWP
                 if (UniversalAPIsHelper.IsMobileDevice) StatusBarHelper.HideAsync().Forget();
                 else TitleBarHelper.StyleAppTitleBar();
 
+                // Setup the view mode
+                ApplicationView view = ApplicationView.GetForCurrentView();
+                view.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
+                view.VisibleBoundsChanged += App_VisibleBoundsChanged;
+
                 // Posizionare il frame nella finestra corrente
                 Window.Current.Content = shell;
             }
+            _DefaultContent = shell;
 
             Window.Current.Activate();
+        }
+
+        /// <summary>
+        /// Gets or sets a value that indicates whether or not the navigation bar is visible
+        /// </summary>
+        private bool _NavBarVisible;
+
+        private void App_VisibleBoundsChanged(ApplicationView sender, object args)
+        {
+            // Return if the content hasn't finished loading yet
+            if (_DefaultContent == null) return;
+
+            // Close the open flyout if the navigation bar has been changed
+            if (sender.Orientation == ApplicationViewOrientation.Portrait)
+            {
+                double navBarHeight = Window.Current.Bounds.Height - sender.VisibleBounds.Bottom;
+                _NavBarVisible = navBarHeight > 0;
+
+                // Adjust the app UI
+                _DefaultContent.Margin = new Thickness(0, 0, 0, navBarHeight);
+            }
+            else
+            {
+                // Return if the StatusBar is still visible
+                Rect windowBounds = Window.Current.Bounds;
+                if (!StatusBarHelper.OccludedHeight.EqualsWithDelta(0)) return;
+
+                // Set the left margin if the device orientation is left
+                if (sender.VisibleBounds.Left.EqualsWithDelta(0) && sender.VisibleBounds.Right < windowBounds.Width)
+                {
+                    double navBarWidth = windowBounds.Width - sender.VisibleBounds.Right;
+                    _DefaultContent.Margin = new Thickness(0, 0, navBarWidth, 0);
+                }
+                else if (sender.VisibleBounds.Left > 0 && sender.VisibleBounds.Width < windowBounds.Width)
+                {
+                    // Adjust the right margin in the case the orientation is right
+                    _DefaultContent.Margin = new Thickness(sender.VisibleBounds.Left, 0, 0, 0);
+                }
+                else _DefaultContent.Margin = new Thickness();
+            }
         }
 
         /// <summary>

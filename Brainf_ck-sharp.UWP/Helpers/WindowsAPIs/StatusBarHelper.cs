@@ -39,5 +39,10 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
         /// Tries to hide the status bar, if present
         /// </summary>
         public static IAsyncAction HideAsync() => GetCurrentStatusBarAsync()?.HideAsync();
+
+        /// <summary>
+        /// Gets the occluded height of the status bar, if displayed
+        /// </summary>
+        public static double OccludedHeight => GetCurrentStatusBarAsync()?.OccludedRect.Height ?? 0;
     }
 }

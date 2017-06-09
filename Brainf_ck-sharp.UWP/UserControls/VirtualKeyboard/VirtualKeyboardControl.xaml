@@ -26,25 +26,25 @@
         <controls:KeyboardButton
             Text=">"
             Description="++ptr"
-            Tapped="NextButton_Tapped"/>
+            Click="NextButton_Tapped"/>
         <controls:KeyboardButton
             Text="&lt;"
             Description="--ptr"
             Grid.Row="0"
             Grid.Column="1"
-            Tapped="BackButton_Tapped"/>
+            Click="BackButton_Tapped"/>
         <controls:KeyboardButton
             Text="+"
             Description="*ptr++"
             Grid.Row="0"
             Grid.Column="2"
-            Tapped="PlusButton_Tapped"/>
+            Click="PlusButton_Tapped"/>
         <controls:KeyboardButton
             Text="-"
             Description="*ptr--"
             Grid.Row="0"
             Grid.Column="3"
-            Tapped="MinusButton_Tapped"/>
+            Click="MinusButton_Tapped"/>
         
         <!--Second row ([].,)-->
         <controls:KeyboardButton
@@ -52,24 +52,24 @@
             Description="while (*ptr) {"
             Grid.Row="1"
             Grid.Column="0"
-            Tapped="OpenBracketButton_Tapped"/>
+            Click="OpenBracketButton_Tapped"/>
         <controls:KeyboardButton
             Text="]"
             Description="}"
             Grid.Row="1"
             Grid.Column="1"
-            Tapped="CloseBracketButton_Tapped"/>
+            Click="CloseBracketButton_Tapped"/>
         <controls:KeyboardButton
             Text="."
             Description="putchar(*ptr)"
             Grid.Row="1"
             Grid.Column="2"
-            Tapped="PointButton_Tapped"/>
+            Click="PointButton_Tapped"/>
         <controls:KeyboardButton
             Text=","
             Description="*ptr = getchar()"
             Grid.Row="1"
             Grid.Column="3"
-            Tapped="CommaButton_Tapped"/>
+            Click="CommaButton_Tapped"/>
     </Grid>
 </UserControl>

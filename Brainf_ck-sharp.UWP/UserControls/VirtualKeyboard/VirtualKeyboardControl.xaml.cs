@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Brainf_ck_sharp_UWP.Messages;
@@ -30,21 +31,21 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
 
         #region Virtual buttons tap handlers
 
-        private void NextButton_Tapped(object sender, TappedRoutedEventArgs e) => OnKeyPressed('>');
+        private void NextButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed('>');
 
-        private void BackButton_Tapped(object sender, TappedRoutedEventArgs e) => OnKeyPressed('<');
+        private void BackButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed('<');
 
-        private void PlusButton_Tapped(object sender, TappedRoutedEventArgs e) => OnKeyPressed('+');
+        private void PlusButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed('+');
 
-        private void MinusButton_Tapped(object sender, TappedRoutedEventArgs e) => OnKeyPressed('-');
+        private void MinusButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed('-');
 
-        private void OpenBracketButton_Tapped(object sender, TappedRoutedEventArgs e) => OnKeyPressed('[');
+        private void OpenBracketButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed('[');
 
-        private void CloseBracketButton_Tapped(object sender, TappedRoutedEventArgs e) => OnKeyPressed(']');
+        private void CloseBracketButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed(']');
 
-        private void PointButton_Tapped(object sender, TappedRoutedEventArgs e) => OnKeyPressed('.');
+        private void PointButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed('.');
 
-        private void CommaButton_Tapped(object sender, TappedRoutedEventArgs e) => OnKeyPressed(',');
+        private void CommaButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed(',');
 
         #endregion
     }

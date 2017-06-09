@@ -8,7 +8,8 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Button Style="{StaticResource WideButtonWithNoBackgroundStyle}">
+    <Button Style="{StaticResource WideButtonWithNoBackgroundStyle}"
+            Click="Button_Clicked">
         <StackPanel
             VerticalAlignment="Center"
             HorizontalAlignment="Center">

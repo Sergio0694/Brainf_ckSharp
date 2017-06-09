@@ -116,6 +116,7 @@
     <Compile Include="Helpers\WindowsAPIs\TitleBarHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\UniversalAPIsHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\StatusBarHelper.cs" />
+    <Compile Include="Messages\Actions\PlayScriptMessage.cs" />
     <Compile Include="Messages\IDEStatusUpdateMessage.cs" />
     <Compile Include="Messages\OperatorAddedMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

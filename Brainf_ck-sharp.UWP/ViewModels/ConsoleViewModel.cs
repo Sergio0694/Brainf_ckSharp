@@ -6,6 +6,7 @@ using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels.ConsoleModels;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Messages;
+using Brainf_ck_sharp_UWP.Messages.Actions;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ck_sharp_UWP.ViewModels
@@ -32,6 +33,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     if (value)
                     {
                         Messenger.Default.Register<OperatorAddedMessage>(this, op => TryAddCommandCharacter(op.Operator));
+                        Messenger.Default.Register<PlayScriptMessage>(this, m => ExecuteCommand().Forget());
                     }
                     else Messenger.Default.Unregister(this);
                 }

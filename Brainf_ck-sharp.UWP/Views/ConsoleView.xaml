@@ -41,7 +41,7 @@
         <!--Text result template-->
         <DataTemplate x:Key="ConsoleResultTemplate">
             <TextBlock 
-                Foreground="GreenYellow"
+                Foreground="Cornsilk"
                 Text="{Binding Result}"
                 FontSize="16"
                 TextWrapping="Wrap"/>
@@ -56,7 +56,13 @@
                     Text="{Binding ExceptionType, Converter={StaticResource ExceptionConverter}}"
                     FontWeight="SemiBold"
                     Foreground="#FFA00000"/>
-                <Run attachedProperties:RunInlineHelper.BindableText="{Binding Message}"/>
+                <Run 
+                    Text="&gt;"
+                    FontWeight="SemiBold"
+                    Foreground="#FFA00000"/>
+                <Run 
+                    attachedProperties:RunInlineHelper.BindableText="{Binding Message}"
+                    Foreground="#FF700000"/>
             </TextBlock>
         </DataTemplate>
         
