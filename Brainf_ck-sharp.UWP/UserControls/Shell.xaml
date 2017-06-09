@@ -7,14 +7,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:virtualKeyboard="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard"
     xmlns:header="using:Brainf_ck_sharp_UWP.UserControls.Header"
+    xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
 
     <RelativePanel>
         
+        <!--UI header-->
         <Grid
-            Background="#A0262626"
             x:Name="HeaderGrid"
             RelativePanel.AlignTopWithPanel="True"
             RelativePanel.AlignLeftWithPanel="True"
@@ -23,18 +24,31 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock
-                Foreground="White"
-                Text="Brainf*ck#"
-                FontSize="12"
-                FontWeight="SemiLight"
-                Margin="12,0,0,0"
-                VerticalAlignment="Center"/>
-            <Rectangle
-                Grid.Row="0"
-                Height="32"
-                HorizontalAlignment="Stretch"/>
             
+            <!--CompositionBorder-->
+            <xaml:CanvasControl x:Name="HeaderCanvas"/>
+            <Border 
+                x:Name="HeaderBorder"
+                Grid.Row="0"
+                Grid.RowSpan="2"/>
+            
+            <!--Title placeholder-->
+            <Grid 
+                x:Name="PCPlaceholderGrid"
+                Grid.Row="0">
+                <TextBlock
+                    Foreground="White"
+                    Text="Brainf*ck#"
+                    FontSize="12"
+                    FontWeight="SemiLight"
+                    Margin="12,0,0,0"
+                    VerticalAlignment="Center"/>
+                <Rectangle
+                    Height="32"
+                    HorizontalAlignment="Stretch"/>
+            </Grid>
+            
+            <!--Header with pivot buttons-->
             <header:HeaderControl Grid.Row="1"/>
         </Grid>
         
@@ -43,15 +57,25 @@
             RelativePanel.Below="HeaderGrid"
             RelativePanel.Above="OperatorsKeyboard">
         </Pivot>
-        
-        <virtualKeyboard:VirtualKeyboardControl
+
+        <Grid
             x:Name="OperatorsKeyboard"
+            Height="200"
+            Background="#FF121212"
             RelativePanel.Above="SharedCommandBar"
             RelativePanel.AlignLeftWithPanel="True"
-            RelativePanel.AlignRightWithPanel="True"/>
-        
+            RelativePanel.AlignRightWithPanel="True">
+
+            <!--CompositionBorder-->
+            <xaml:CanvasControl x:Name="KeyboardCanvas"/>
+            <Border x:Name="KeyboardBorder"/>
+            
+            <!--Keyboard UI-->
+            <virtualKeyboard:VirtualKeyboardControl/>
+        </Grid>
+
         <!--Command bar-->
-        <CommandBar 
+        <CommandBar
             x:Name="SharedCommandBar"
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True"
@@ -62,7 +86,7 @@
                     Icon="Play"/>
             </CommandBar.PrimaryCommands>
         </CommandBar>
-        
+
         <!--Status bar-->
         <local:BottomEdgeInfoBar
             x:Name="InfoBar"

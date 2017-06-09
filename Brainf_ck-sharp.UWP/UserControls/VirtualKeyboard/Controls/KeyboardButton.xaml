@@ -8,21 +8,24 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Button VerticalAlignment="Stretch"
-            HorizontalAlignment="Stretch">
-        <StackPanel VerticalAlignment="Center"
-                    HorizontalAlignment="Center">
-            <TextBlock Text="+"
-                       TextAlignment="Center"
-                       FontSize="20"
-                       Foreground="White"
-                       x:Name="OperatorBlock"/>
-            <TextBlock Text="*ptr++"
-                       TextAlignment="Center"
-                       FontSize="8"
-                       Foreground="#80FFFFFF"
-                       Margin="0,8,0,0"
-                       x:Name="InfoBlock"/>
+    <Button Style="{StaticResource WideButtonWithNoBackgroundStyle}">
+        <StackPanel
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center">
+            <TextBlock 
+                Text="+"
+                TextAlignment="Center"
+                FontSize="24"
+                Foreground="White"
+                x:Name="OperatorBlock"/>
+            <TextBlock 
+                Text="*ptr++"
+                TextAlignment="Center"
+                FontSize="12"
+                Foreground="#80FFFFFF"
+                Margin="0,4,0,0"
+                FontWeight="SemiLight"
+                x:Name="InfoBlock"/>
         </StackPanel>
     </Button>
 </UserControl>
