@@ -55,8 +55,9 @@
     </VisualStateManager.VisualStateGroups>
 
     <!--Visual tree-->
-    <Grid Background="{ThemeResource SystemControlHighlightAltListAccentMediumBrush}"
-          x:Name="RootGrid">
+    <Grid 
+        Background="{ThemeResource SystemControlHighlightAltListAccentMediumBrush}"
+        x:Name="RootGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
@@ -66,21 +67,24 @@
         </Grid.ColumnDefinitions>
 
         <!--State info-->
-        <TextBlock Text="Ready"
-                   x:Name="InfoBlock"
-                   Foreground="White"
-                   Margin="8,0,0,0"
-                   FontSize="10"
-                   VerticalAlignment="Center"
-                   IsTextScaleFactorEnabled="False"/>
+        <TextBlock 
+            Text="Ready"
+            x:Name="InfoBlock"
+            Foreground="White"
+            Margin="8,0,0,0"
+            FontSize="12"
+            FontWeight="SemiLight"
+            VerticalAlignment="Center"
+            IsTextScaleFactorEnabled="False"/>
 
         <!--Row-->
         <TextBlock Foreground="White"
                    Margin="16,0,0,0"
-                   FontSize="10"
+                   FontSize="12"
                    VerticalAlignment="Center"
                    IsTextScaleFactorEnabled="False"
                    Grid.Column="1"
+                   FontWeight="SemiLight"
                    x:Name="RowBlock">
             <Run Text="Row"
                  x:Uid="RowTitleRun"/>
@@ -89,43 +93,51 @@
         </TextBlock>
 
         <!--Column-->
-        <TextBlock Foreground="White"
-                   Margin="16,0,0,0"
-                   FontSize="10"
-                   VerticalAlignment="Center"
-                   IsTextScaleFactorEnabled="False"
-                   Grid.Column="2">
-            <Run Text="Col"
-                 x:Name="ColumnTitleRun"/>
-            <Run Text="7"
-                 x:Name="ColumnRun"/>
+        <TextBlock 
+            Foreground="White"
+            Margin="16,0,0,0"
+            FontSize="12"
+            VerticalAlignment="Center"
+            IsTextScaleFactorEnabled="False"
+            FontWeight="SemiLight"
+            Grid.Column="2">
+            <Run 
+                Text="Col"
+                x:Name="ColumnTitleRun"/>
+            <Run 
+                Text="7"
+                x:Name="ColumnRun"/>
         </TextBlock>
 
         <!--File-->
-        <Grid x:Name="FileGrid"
-              Grid.Column="3"
-              Margin="16,0,8,0">
+        <Grid 
+            x:Name="FileGrid"
+            Grid.Column="3"
+            Margin="16,0,8,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="&#xE70B;"
-                       FontFamily="Segoe MDL2 Assets"
-                       VerticalAlignment="Center"
-                       Foreground="White"
-                       FontSize="10"
-                       Margin="0,2,0,0"/>
-            <TextBlock Foreground="White"
-                       Margin="4,0,0,0"
-                       FontSize="10"
-                       Text="myscript"
-                       x:Name="FileBlock"
-                       VerticalAlignment="Center"
-                       IsTextScaleFactorEnabled="False"
-                       Grid.Column="1"
-                       TextWrapping="NoWrap"
-                       TextTrimming="CharacterEllipsis"
-                       MaxLines="1"/>
+            <TextBlock 
+                Text="&#xE70B;"
+                FontFamily="Segoe MDL2 Assets"
+                VerticalAlignment="Center"
+                Foreground="White"
+                FontSize="14"
+                Margin="0,2,0,0"/>
+            <TextBlock 
+                Foreground="White"
+                Margin="4,0,0,0"
+                FontSize="12"
+                Text="myscript"
+                x:Name="FileBlock"
+                VerticalAlignment="Center"
+                IsTextScaleFactorEnabled="False"
+                Grid.Column="1"
+                TextWrapping="NoWrap"
+                TextTrimming="CharacterEllipsis"
+                FontWeight="SemiLight"
+                MaxLines="1"/>
         </Grid>
     </Grid>
 </UserControl>

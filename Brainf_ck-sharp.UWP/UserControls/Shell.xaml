@@ -5,17 +5,50 @@
     xmlns:local="using:Brainf_ck_sharp_UWP.UserControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:virtualKeyboard="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard"
+    xmlns:header="using:Brainf_ck_sharp_UWP.UserControls.Header"
     mc:Ignorable="d"
-    d:DesignHeight="300"
+    d:DesignHeight="600"
     d:DesignWidth="400">
 
     <RelativePanel>
         
+        <Grid
+            Background="#A0262626"
+            x:Name="HeaderGrid"
+            RelativePanel.AlignTopWithPanel="True"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock
+                Foreground="White"
+                Text="Brainf*ck#"
+                FontSize="12"
+                FontWeight="SemiLight"
+                Margin="12,0,0,0"
+                VerticalAlignment="Center"/>
+            <Rectangle
+                Grid.Row="0"
+                Height="32"
+                HorizontalAlignment="Stretch"/>
+            
+            <header:HeaderControl Grid.Row="1"/>
+        </Grid>
+        
         <!--Console and IDE-->
         <Pivot
-            RelativePanel.AlignTopWithPanel="True"
-            RelativePanel.Above="SharedCommandBar">
+            RelativePanel.Below="HeaderGrid"
+            RelativePanel.Above="OperatorsKeyboard">
         </Pivot>
+        
+        <virtualKeyboard:VirtualKeyboardControl
+            x:Name="OperatorsKeyboard"
+            RelativePanel.Above="SharedCommandBar"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"/>
         
         <!--Command bar-->
         <CommandBar 

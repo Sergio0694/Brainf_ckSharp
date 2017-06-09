@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Brainf_ck_sharp;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels.ConsoleModels;
 using Brainf_ck_sharp_UWP.Helpers;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 
 namespace Brainf_ck_sharp_UWP.ViewModels
 {

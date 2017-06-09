@@ -21,6 +21,42 @@
           <target state="translated">Col</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Keep this short to 2-4 characters (abbreviate if needed)</note>
         </trans-unit>
+        <trans-unit id="ExEmptyStdin" translate="yes" xml:space="preserve">
+          <source>Stdin buffer exhausted</source>
+          <target state="new">Stdin buffer exhausted</target>
+        </trans-unit>
+        <trans-unit id="ExLowerBound" translate="yes" xml:space="preserve">
+          <source>Lower bound exceeded</source>
+          <target state="new">Lower bound exceeded</target>
+        </trans-unit>
+        <trans-unit id="ExMaxStdout" translate="yes" xml:space="preserve">
+          <source>Stdout buffer length limit exceeded</source>
+          <target state="new">Stdout buffer length limit exceeded</target>
+        </trans-unit>
+        <trans-unit id="ExMaxValue" translate="yes" xml:space="preserve">
+          <source>Max value exceeded</source>
+          <target state="new">Max value exceeded</target>
+        </trans-unit>
+        <trans-unit id="ExNegativeValue" translate="yes" xml:space="preserve">
+          <source>Negative value</source>
+          <target state="new">Negative value</target>
+        </trans-unit>
+        <trans-unit id="ExUpperBound" translate="yes" xml:space="preserve">
+          <source>Upper bound exceeded</source>
+          <target state="new">Upper bound exceeded</target>
+        </trans-unit>
+        <trans-unit id="InterpreterError" translate="yes" xml:space="preserve">
+          <source>Interpreter error</source>
+          <target state="new">Interpreter error</target>
+        </trans-unit>
+        <trans-unit id="ThresholdExceeded" translate="yes" xml:space="preserve">
+          <source>Time threshold exceeded</source>
+          <target state="new">Time threshold exceeded</target>
+        </trans-unit>
+        <trans-unit id="WrongBrackets" translate="yes" xml:space="preserve">
+          <source>Mismatched parentheses</source>
+          <target state="new">Mismatched parentheses</target>
+        </trans-unit>
       </group>
     </body>
   </file>
