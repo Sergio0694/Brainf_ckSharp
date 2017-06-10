@@ -111,8 +111,10 @@
     <Compile Include="DataModels\ConsoleModels\ConsoleRestartCommand.cs" />
     <Compile Include="DataModels\ConsoleModels\ConsoleUserCommand.cs" />
     <Compile Include="Helpers\Extensions.cs" />
+    <Compile Include="Helpers\FlyoutManager.cs" />
     <Compile Include="Helpers\LocalizationManager.cs" />
     <Compile Include="Helpers\WindowsAPIs\KeyEventsListener.cs" />
+    <Compile Include="Helpers\WindowsAPIs\ResolutionHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\TitleBarHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\UniversalAPIsHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\StatusBarHelper.cs" />
@@ -122,6 +124,7 @@
     <Compile Include="Messages\Actions\PlayScriptMessage.cs" />
     <Compile Include="Messages\Actions\RestartConsoleMessage.cs" />
     <Compile Include="Messages\Actions\UndoConsoleCharacterMessage.cs" />
+    <Compile Include="Messages\Flyouts\FlyoutCloseRequestMessage.cs" />
     <Compile Include="Messages\IDEStatus\ConsoleStatusUpdateMessage.cs" />
     <Compile Include="Messages\IDEStatus\IDEStatusUpdateMessage.cs" />
     <Compile Include="Messages\IDEStatus\IDEStatusUpdateMessageBase.cs" />
@@ -133,6 +136,12 @@
     </Compile>
     <Compile Include="UserControls\CustomCommandBar\CommandBarWithButtonsAnimations.cs" />
     <Compile Include="UserControls\CustomCommandBar\CustomCommandBarButton.cs" />
+    <Compile Include="UserControls\Flyouts\FlyoutContainer.xaml.cs">
+      <DependentUpon>FlyoutContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\MemoryViewerFlyoutControl.xaml.cs">
+      <DependentUpon>MemoryViewerFlyoutControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Header\HeaderButtonControl.xaml.cs">
       <DependentUpon>HeaderButtonControl.xaml</DependentUpon>
     </Compile>
@@ -197,6 +206,14 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="UserControls\BottomEdgeInfoBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\FlyoutContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\MemoryViewerFlyoutControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,11 +1,8 @@
-﻿using System;
-using Windows.ApplicationModel;
+﻿using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.UserControls;
@@ -42,11 +39,6 @@ namespace Brainf_ck_sharp_UWP
                 // Creare un frame che agisca da contesto di navigazione e passare alla prima pagina
                 shell = new Shell();
 
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: caricare lo stato dall'applicazione sospesa in precedenza
-                }
-
                 // Handle the UI
                 if (UniversalAPIsHelper.IsMobileDevice) StatusBarHelper.HideAsync().Forget();
                 else TitleBarHelper.StyleAppTitleBar();
@@ -56,11 +48,13 @@ namespace Brainf_ck_sharp_UWP
                 view.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseVisible);
                 if (UniversalAPIsHelper.IsMobileDevice) view.VisibleBoundsChanged += App_VisibleBoundsChanged;
 
+                // Enable the key listener
+                KeyEventsListener.IsEnabled = true;
+
                 // Posizionare il frame nella finestra corrente
                 Window.Current.Content = shell;
             }
             _DefaultContent = shell;
-
             Window.Current.Activate();
         }
 

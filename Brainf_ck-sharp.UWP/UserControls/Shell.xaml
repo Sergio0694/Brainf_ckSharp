@@ -136,7 +136,7 @@
                     Label="Clear screen"
                     x:Uid="Clrscr"
                     Icon="&#xEA99;"
-                    IsEnabled="{x:Bind ViewModel.RestartAvailable, Mode=OneWay, FallbackValue=False}"
+                    IsEnabled="{x:Bind ViewModel.ClearScreenAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind RequestClearScreen}"/>
             </customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
         </customCommandBar:CommandBarWithButtonsAnimations>

@@ -55,7 +55,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Header
             if (e.NewValue is bool value && value)
             {
                 @this.HeaderSelected?.Invoke(d, EventArgs.Empty);
-                bool a = VisualStateManager.GoToState(@this, "Selected", false);
+                VisualStateManager.GoToState(@this, "Selected", false);
             }
             else VisualStateManager.GoToState(@this, "Default", false);
         }
