@@ -35,6 +35,7 @@
         Play,
         Restart,
         Clear,
-        Undo
+        Undo,
+        ClearScreen
     }
 }

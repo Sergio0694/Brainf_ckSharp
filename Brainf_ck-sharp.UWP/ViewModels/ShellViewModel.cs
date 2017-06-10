@@ -33,6 +33,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 case ConsoleAction.Undo:
                     UndoAvailable = message.Status;
                     break;
+                case ConsoleAction.ClearScreen:
+                    ClearScreenAvailable = message.Status;
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -80,6 +83,17 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         {
             get => _PlayAvailable;
             private set => Set(ref _PlayAvailable, value);
+        }
+
+        private bool _ClearScreenAvailable;
+
+        /// <summary>
+        /// Gets whether or not it is possible to clear the screen
+        /// </summary>
+        public bool ClearScreenAvailable
+        {
+            get => _ClearScreenAvailable;
+            private set => Set(ref _ClearScreenAvailable, value);
         }
     }
 }

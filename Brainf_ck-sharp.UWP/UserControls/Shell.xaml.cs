@@ -75,5 +75,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
         public void RequestUndoConsoleCharacter() => Messenger.Default.Send(new UndoConsoleCharacterMessage());
 
         public void RequestRestartConsole() => Messenger.Default.Send(new RestartConsoleMessage());
+
+        public void RequestClearScreen() => Messenger.Default.Send(new ClearScreenMessage());
     }
 }

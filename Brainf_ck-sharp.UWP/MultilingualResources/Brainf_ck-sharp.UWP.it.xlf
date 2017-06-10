@@ -102,6 +102,10 @@
           <source>Restart</source>
           <target state="new">Restart</target>
         </trans-unit>
+        <trans-unit id="Clrscr.Label" translate="yes" xml:space="preserve">
+          <source>Clear screen</source>
+          <target state="new">Clear screen</target>
+        </trans-unit>
       </group>
     </body>
   </file>

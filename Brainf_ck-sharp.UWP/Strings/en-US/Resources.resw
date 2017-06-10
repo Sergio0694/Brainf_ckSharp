@@ -190,4 +190,7 @@
   <data name="Undo.Label" xml:space="preserve">
     <value>Undo</value>
   </data>
+  <data name="Clrscr.Label" xml:space="preserve">
+    <value>Clear screen</value>
+  </data>
 </root>

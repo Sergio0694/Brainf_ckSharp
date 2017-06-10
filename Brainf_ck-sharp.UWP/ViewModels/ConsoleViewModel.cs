@@ -43,6 +43,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         Messenger.Default.Register<ClearConsoleLineMessage>(this, m => TryResetCommand());
                         Messenger.Default.Register<UndoConsoleCharacterMessage>(this, m => TryUndoLastCommandCharacter());
                         Messenger.Default.Register<RestartConsoleMessage>(this, m => Restart());
+                        Messenger.Default.Register<ClearScreenMessage>(this, m => TryClearScreen());
                     }
                     else Messenger.Default.Unregister(this);
                 }
@@ -87,14 +88,13 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         public bool CommandAvailable => Source.LastOrDefault() is ConsoleUserCommand command &&
                                         command.Command.Length > 0;
 
-        // Sends both the undo and clear messages
-        private void SendCommandAvailableMessages(bool status)
+        // Broadcasts the messages to reflect the current console status
+        private void SendCommandAvailableMessages(bool? forcedStatus = null)
         {
-            Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Play, status));
-            Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Undo, status));
-            Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Clear, status));
-            if (status && 
-                Source.Last() is ConsoleUserCommand command &&
+            Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Play, forcedStatus ?? CommandAvailable));
+            Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Undo, forcedStatus ?? CommandAvailable));
+            Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Clear, forcedStatus ?? CommandAvailable));
+            if (Source.Last() is ConsoleUserCommand command &&
                 command.Command.Length > 0)
             {
                 (bool valid, int error) = Brainf_ckInterpreter.CheckSourceSyntax(command.Command);
@@ -103,6 +103,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     : new ConsoleStatusUpdateMessage(IDEStatus.FaultedConsole, "Warning", command.Command.Length, error));
             }
             else Messenger.Default.Send(new ConsoleStatusUpdateMessage(IDEStatus.Console, "Ready", 0, 0));
+            Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.ClearScreen, ClearScreenAvailable));
         }
 
         /// <summary>
@@ -113,7 +114,24 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             if (!CommandAvailable) return;
             ConsoleUserCommand command = (ConsoleUserCommand)Source.Last();
             command.UpdateCommand(command.Command.Substring(0, command.Command.Length - 1));
-            if (!CommandAvailable) SendCommandAvailableMessages(false);
+            if (!CommandAvailable) SendCommandAvailableMessages();
+        }
+
+        /// <summary>
+        /// Gets whether or not it is possible to clear the screen
+        /// </summary>
+        public bool ClearScreenAvailable => Source.Count > 1 ||
+                                            Source.First() is ConsoleUserCommand command && command.Command.Length > 0;
+
+        /// <summary>
+        /// Clears the screen, if there are console lines to remove
+        /// </summary>
+        public void TryClearScreen()
+        {
+            if (!ClearScreenAvailable) return;
+            Clear();
+            Source.Add(new ConsoleUserCommand());
+            SendCommandAvailableMessages();
         }
 
         /// <summary>
@@ -124,7 +142,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             if (!CommandAvailable) return;
             ConsoleUserCommand command = (ConsoleUserCommand)Source.Last();
             command.UpdateCommand(String.Empty);
-            SendCommandAvailableMessages(false);
+            SendCommandAvailableMessages();
         }
 
         /// <summary>
@@ -188,7 +206,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             if (Source.LastOrDefault() is ConsoleUserCommand command)
             {
                 command.UpdateCommand($"{command.Command}{c}");
-                SendCommandAvailableMessages(true);
+                SendCommandAvailableMessages();
             }
             ConsoleLineAddedOrModified?.Invoke(this, EventArgs.Empty);
         }
