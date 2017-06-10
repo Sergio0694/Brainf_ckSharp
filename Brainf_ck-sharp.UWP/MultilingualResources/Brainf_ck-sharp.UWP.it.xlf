@@ -106,6 +106,10 @@
           <source>Clear screen</source>
           <target state="new">Clear screen</target>
         </trans-unit>
+        <trans-unit id="MemoryStateTitle" translate="yes" xml:space="preserve">
+          <source>Memory state</source>
+          <target state="new">Memory state</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryViewerFlyoutControl"
+    x:Class="Brainf_ck_sharp_UWP.UserControls.DataTemplates.MemoryCellTemplate"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -13,15 +13,17 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid>
+        <Border BorderThickness="2"
+                BorderBrush="#20FFFFFF"/>
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
+
             <Canvas Background="#20000000"/>
             <TextBlock 
-                Text="72"
+                Text="{Binding Value.Value, Mode=OneWay}"
                 FontSize="16"
                 Foreground="LightGray"
                 VerticalAlignment="Center"
@@ -32,7 +34,7 @@
                 Background="#06FFFFFF"
                 Grid.Column="1"/>
             <TextBlock
-                Text="&amp;"
+                Text="{Binding Value.Character, Mode=OneWay}"
                 FontSize="16"
                 FontWeight="SemiBold"
                 Foreground="#FFAE0909"
@@ -42,9 +44,11 @@
         </Grid>
         
         <TextBlock
-            Text="2"
+            Text="{Binding Index, Mode=OneWay, FallbackValue=0}"
+            HorizontalAlignment="Center"
             Grid.Row="1"
+            FontSize="14"
             Foreground="DarkGray"
-            Margin="8,4,0,0"/>
+            Margin="0,4,0,0"/>
     </Grid>
 </UserControl>

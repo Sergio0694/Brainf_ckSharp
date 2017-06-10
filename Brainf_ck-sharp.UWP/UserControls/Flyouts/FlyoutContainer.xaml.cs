@@ -27,7 +27,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         private async void FlyoutContainer_Loaded(object sender, RoutedEventArgs e)
         {
             _BackgroundAcrylic = await BlurBorder.GetAttachedInAppSemiAcrylicEffectAsync(BlurBorder, 8, 800,
-                Color.FromArgb(byte.MaxValue, 40, 40, 40), 0.6f,
+                Color.FromArgb(byte.MaxValue, 0x1B, 0x1B, 0x1B), 0.8f,
                 Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
         }
 

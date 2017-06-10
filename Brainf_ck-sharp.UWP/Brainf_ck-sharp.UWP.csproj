@@ -112,6 +112,7 @@
     <Compile Include="DataModels\ConsoleModels\ConsoleUserCommand.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\FlyoutManager.cs" />
+    <Compile Include="Helpers\IndexedModelWithValue.cs" />
     <Compile Include="Helpers\LocalizationManager.cs" />
     <Compile Include="Helpers\WindowsAPIs\KeyEventsListener.cs" />
     <Compile Include="Helpers\WindowsAPIs\ResolutionHelper.cs" />
@@ -124,7 +125,9 @@
     <Compile Include="Messages\Actions\PlayScriptMessage.cs" />
     <Compile Include="Messages\Actions\RestartConsoleMessage.cs" />
     <Compile Include="Messages\Actions\UndoConsoleCharacterMessage.cs" />
+    <Compile Include="Messages\Flyouts\FlyoutClosedNotificationMessage.cs" />
     <Compile Include="Messages\Flyouts\FlyoutCloseRequestMessage.cs" />
+    <Compile Include="Messages\Flyouts\FlyoutOpenedMessage.cs" />
     <Compile Include="Messages\IDEStatus\ConsoleStatusUpdateMessage.cs" />
     <Compile Include="Messages\IDEStatus\IDEStatusUpdateMessage.cs" />
     <Compile Include="Messages\IDEStatus\IDEStatusUpdateMessageBase.cs" />
@@ -139,8 +142,11 @@
     <Compile Include="UserControls\Flyouts\FlyoutContainer.xaml.cs">
       <DependentUpon>FlyoutContainer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\MemoryViewerFlyoutControl.xaml.cs">
-      <DependentUpon>MemoryViewerFlyoutControl.xaml</DependentUpon>
+    <Compile Include="UserControls\DataTemplates\MemoryCellTemplate.xaml.cs">
+      <DependentUpon>MemoryCellTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\MemoryViewerFlyout.xaml.cs">
+      <DependentUpon>MemoryViewerFlyout.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Header\HeaderButtonControl.xaml.cs">
       <DependentUpon>HeaderButtonControl.xaml</DependentUpon>
@@ -213,7 +219,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Flyouts\MemoryViewerFlyoutControl.xaml">
+    <Page Include="UserControls\DataTemplates\MemoryCellTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\MemoryViewerFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -256,9 +266,7 @@
       <Version>2.1.1</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UserControls\DataTemplates\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Brainf_ck-sharp\Brainf_ck-sharp.csproj">
       <Project>{29c20cf8-6019-427b-9987-e6059ba657e4}</Project>

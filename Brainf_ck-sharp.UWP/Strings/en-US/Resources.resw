@@ -193,4 +193,7 @@
   <data name="Clrscr.Label" xml:space="preserve">
     <value>Clear screen</value>
   </data>
+  <data name="MemoryStateTitle" xml:space="preserve">
+    <value>Memory state</value>
+  </data>
 </root>

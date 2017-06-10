@@ -52,9 +52,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         }
 
         /// <summary>
-        /// The current machine state to use to process the scripts
+        /// Gets the current machine state to use to process the scripts
         /// </summary>
-        private IReadonlyTouringMachineState _State = TouringMachineStateProvider.Initialize(64);
+        public IReadonlyTouringMachineState State { get; private set; }= TouringMachineStateProvider.Initialize(64);
 
         private bool _CanRestart;
 
@@ -79,7 +79,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             if (!CanRestart) return;
             CanRestart = false;
             Source.Add(new ConsoleRestartCommand());
-            _State = TouringMachineStateProvider.Initialize(64);
+            State = TouringMachineStateProvider.Initialize(64);
             Source.Add(new ConsoleUserCommand());
         }
 
@@ -155,7 +155,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             CanRestart = true;
             SendCommandAvailableMessages(false);
             String command = ((ConsoleUserCommand)Source.LastOrDefault()).Command;
-            InterpreterResult result = await Task.Run(() => Brainf_ckInterpreter.Run(command, String.Empty, _State, 1000));
+            InterpreterResult result = await Task.Run(() => Brainf_ckInterpreter.Run(command, String.Empty, State, 1000));
             if (result.HasFlag(InterpreterExitCode.Success) &&
                 result.HasFlag(InterpreterExitCode.TextOutput))
             {
@@ -190,7 +190,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 else throw new InvalidOperationException("The interpreter exception type isn't valid");
                 Source.Add(new ConsoleExceptionResult(ConsoleExceptionType.RuntimeError, message));
             }
-            _State = result.MachineState;
+            State = result.MachineState;
 
             // New user command
             Source.Add(new ConsoleUserCommand());

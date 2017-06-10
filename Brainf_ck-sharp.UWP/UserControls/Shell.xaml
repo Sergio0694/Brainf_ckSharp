@@ -16,6 +16,17 @@
 
     <RelativePanel>
         
+        <!--Fade canvas-->
+        <Canvas 
+            Background="#80000000"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"
+            RelativePanel.AlignTopWithPanel="True"
+            RelativePanel.AlignBottomWithPanel="True"
+            Canvas.ZIndex="2"
+            IsHitTestVisible="False"
+            x:Name="FadeCanvas"/>
+        
         <!--UI header-->
         <Grid
             Canvas.ZIndex="1"
@@ -109,7 +120,8 @@
                     Label="Memory state"
                     Icon="&#xE74C;"
                     DefaultButton="True"
-                    x:Uid="MemoryState"/>
+                    x:Uid="MemoryState"
+                    Click="{x:Bind RequestShowMemoryState}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Clear"
                     Icon="&#xE10A;"

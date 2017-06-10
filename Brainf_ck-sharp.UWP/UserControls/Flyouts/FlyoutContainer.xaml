@@ -9,9 +9,13 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid x:Name="RootGrid">
+    <!--Root-->
+    <Grid 
+        x:Name="RootGrid"
+        BorderThickness="1"
+        BorderBrush="#40FFFFFF">
         <Grid.RowDefinitions>
-            <RowDefinition Height="36"/>
+            <RowDefinition Height="52"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
@@ -23,14 +27,14 @@
         
         <!--Title-->
         <Canvas Grid.Row="0"
-                Background="#30000000"/>
+                Background="#40000000"/>
         <TextBlock Text="Title"
                    x:Name="TitleBlock"
                    VerticalAlignment="Center"
                    Grid.Row="0"
                    Margin="12,0,0,0"
                    FontWeight="SemiLight"
-                   FontSize="18"/>
+                   FontSize="20"/>
 
         <!--Close button-->
         <Button Style="{ThemeResource WideButtonWithNoBackgroundStyle}"
