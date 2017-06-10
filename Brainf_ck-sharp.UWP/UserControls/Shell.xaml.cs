@@ -60,12 +60,6 @@ namespace Brainf_ck_sharp_UWP.UserControls
             }
         }
 
-        // Select the right page
-        private void HeaderControl_OnSelectedIndezChanged(object sender, int e)
-        {
-            PivotControl.SelectedIndex = e;
-        }
-
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             Messenger.Default.Send(new PlayScriptMessage());

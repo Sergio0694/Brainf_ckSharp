@@ -1,5 +1,7 @@
 ﻿using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Brainf_ck_sharp_UWP.Helpers;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Header
 {
@@ -10,23 +12,25 @@ namespace Brainf_ck_sharp_UWP.UserControls.Header
             this.InitializeComponent();
         }
 
-        /// <summary>
-        /// Raised whenever the header selection changes
-        /// </summary>
-        public event EventHandler<int> SelectedIndezChanged;
+        public void SelectConsole() => SelectedHeaderIndex = 0;
 
-        public void DeselectIDEButton()
+        public void SelectIDE() => SelectedHeaderIndex = 1;
+
+        public int SelectedHeaderIndex
         {
-            if (IDEButton != null)
-                IDEButton.IsSelected = false;
-            SelectedIndezChanged?.Invoke(this, 0);
+            get => (int)GetValue(SelectedHeaderIndexProperty);
+            set => SetValue(SelectedHeaderIndexProperty, value);
         }
 
-        public void DeselectConsoleButton()
+        public static readonly DependencyProperty SelectedHeaderIndexProperty = DependencyProperty.Register(
+            nameof(SelectedHeaderIndex), typeof(int), typeof(HeaderControl), new PropertyMetadata(default(int), OnSelectedHeaderIndexPropertyChanged));
+
+        private static void OnSelectedHeaderIndexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (ConsoleButton != null)
-                ConsoleButton.IsSelected = false;
-            SelectedIndezChanged?.Invoke(this, 1);
+            HeaderControl @this = d.To<HeaderControl>();
+            int index = e.NewValue.To<int>();
+            @this.ConsoleButton.IsSelected = index == 0;
+            @this.IDEButton.IsSelected = index == 1;
         }
     }
 }

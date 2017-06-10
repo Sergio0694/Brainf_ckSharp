@@ -23,7 +23,7 @@
             Title="Console"
             IsSelected="True"
             x:Name="ConsoleButton"
-            HeaderSelected="{x:Bind DeselectIDEButton}"/>
+            HeaderSelected="{x:Bind SelectConsole}"/>
         <local:HeaderButtonControl
             Height="68"
             Width="80"
@@ -32,6 +32,6 @@
             Title="IDE"
             x:Name="IDEButton"
             IsSelected="False"
-            HeaderSelected="{x:Bind DeselectConsoleButton}"/>
+            HeaderSelected="{x:Bind SelectIDE}"/>
     </Grid>
 </UserControl>

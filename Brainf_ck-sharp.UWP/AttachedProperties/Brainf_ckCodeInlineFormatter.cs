@@ -82,7 +82,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
             {
                 Text = e.NewValue.To<String>()?.Aggregate(new StringBuilder(), (b, c) =>
                 {
-                    b.Append(c);
+                    b.Append($"{c}{ZeroWidthSpace}");
                     return b;
                 }).ToString() ?? String.Empty
             });

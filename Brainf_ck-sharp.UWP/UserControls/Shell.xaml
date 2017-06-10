@@ -53,7 +53,7 @@
             <!--Header with pivot buttons-->
             <header:HeaderControl
                 Grid.Row="1"
-                SelectedIndezChanged="HeaderControl_OnSelectedIndezChanged"/>
+                SelectedHeaderIndex="{x:Bind PivotControl.SelectedIndex, Mode=TwoWay}"/>
         </Grid>
         
         <!--Console and IDE-->

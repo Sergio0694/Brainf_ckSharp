@@ -133,6 +133,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 else throw new InvalidOperationException("The interpreter exception type isn't valid");
                 Source.Add(new ConsoleExceptionResult(ConsoleExceptionType.RuntimeError, message));
             }
+            _State = result.MachineState;
 
             // New user command
             Source.Add(new ConsoleUserCommand());
