@@ -3,8 +3,10 @@ using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Actions;
+using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations.Behaviours;
 using UICompositionAnimations.Behaviours.Effects.Base;
@@ -23,6 +25,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 _KeyboardEffect?.AdjustSize();
             };
             this.InitializeComponent();
+            DataContext = new ShellViewModel();
             Console.ViewModel.IsEnabled = true;
 
             // Hide the title placeholder if needed
@@ -33,6 +36,8 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 KeyboardBorder.Visibility = Visibility.Collapsed;
             }
         }
+
+        public ShellViewModel ViewModel => DataContext.To<ShellViewModel>();
 
         // Acrylic brush for the header
         private AttachedStaticCompositionEffect<Border> _HeaderEffect;

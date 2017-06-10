@@ -117,6 +117,7 @@
     <Compile Include="Helpers\WindowsAPIs\UniversalAPIsHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\StatusBarHelper.cs" />
     <Compile Include="Messages\Actions\ClearConsoleLineMessage.cs" />
+    <Compile Include="Messages\Actions\ConsoleAvailableActionStatusChangedMessage.cs" />
     <Compile Include="Messages\Actions\PlayScriptMessage.cs" />
     <Compile Include="Messages\Actions\RestartConsoleMessage.cs" />
     <Compile Include="Messages\Actions\UndoConsoleCharacterMessage.cs" />
@@ -146,6 +147,7 @@
     </Compile>
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
     <Compile Include="ViewModels\ItemsCollectionViewModelBase.cs" />
+    <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>

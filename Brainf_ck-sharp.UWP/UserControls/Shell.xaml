@@ -103,6 +103,7 @@
                     Icon="&#xE102;"
                     x:Uid="PlayButton"
                     DefaultButton="True"
+                    IsEnabled="{x:Bind ViewModel.PlayAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind RequestPlay}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Memory state"
@@ -113,12 +114,14 @@
                     Label="Clear"
                     Icon="&#xE10A;"
                     x:Uid="Clear"
+                    IsEnabled="{x:Bind ViewModel.ClearAvailable, Mode=OneWay, FallbackValue=False}"
                     DefaultButton="True"
                     Click="{x:Bind RequestClearConsoleLine}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Undo"
                     Icon="&#xE10E;"
                     x:Uid="Undo"
+                    IsEnabled="{x:Bind ViewModel.UndoAvailable, Mode=OneWay, FallbackValue=False}"
                     DefaultButton="True"
                     Click="{x:Bind RequestUndoConsoleCharacter}"/>
             </customCommandBar:CommandBarWithButtonsAnimations.PrimaryCommands>
@@ -126,6 +129,7 @@
                 <AppBarButton
                     Label="Restart"
                     x:Uid="Restart"
+                    IsEnabled="{x:Bind ViewModel.RestartAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind RequestRestartConsole}"/>
             </customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
         </customCommandBar:CommandBarWithButtonsAnimations>

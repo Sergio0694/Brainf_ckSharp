@@ -13,8 +13,6 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 {
     public class ConsoleViewModel : ItemsCollectionViewModelBase<ConsoleCommandModelBase>
     {
-        private const int AutoCommandsDelay = 250;
-
         public ConsoleViewModel()
         {
             Source.Add(new ConsoleUserCommand());
@@ -58,19 +56,22 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         public bool CanRestart
         {
             get => _CanRestart;
-            private set => Set(ref _CanRestart, value);
+            private set
+            {
+                if (Set(ref _CanRestart, value))
+                    Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Restart, value));
+            }
         }
 
         /// <summary>
         /// Restarts the console and resets the current state
         /// </summary>
-        public async void Restart()
+        public void Restart()
         {
             if (!CanRestart) return;
             CanRestart = false;
             Source.Add(new ConsoleRestartCommand());
             _State = new TouringMachineState(64);
-            await Task.Delay(AutoCommandsDelay);
             Source.Add(new ConsoleUserCommand());
         }
 
@@ -79,6 +80,15 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// </summary>
         public bool CommandAvailable => Source.LastOrDefault() is ConsoleUserCommand command &&
                                         command.Command.Length > 0;
+
+        // Sends both the undo and clear messages
+        private void SendCommandAvailableMessages(bool status)
+        {
+            Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Play, status));
+            Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Undo, status));
+            Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Clear, status));
+        }
+
         /// <summary>
         /// Tries to delete the last character in the active command line
         /// </summary>
@@ -87,6 +97,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             if (!CommandAvailable) return;
             ConsoleUserCommand command = (ConsoleUserCommand)Source.Last();
             command.UpdateCommand(command.Command.Substring(0, command.Command.Length - 1));
+            if (!CommandAvailable) SendCommandAvailableMessages(false);
         }
 
         /// <summary>
@@ -97,6 +108,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             if (!CommandAvailable) return;
             ConsoleUserCommand command = (ConsoleUserCommand)Source.Last();
             command.UpdateCommand(String.Empty);
+            SendCommandAvailableMessages(false);
         }
 
         /// <summary>
@@ -105,6 +117,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         public async Task ExecuteCommand()
         {
             if (!CommandAvailable) return;
+            CanRestart = true;
+            SendCommandAvailableMessages(false);
             String command = ((ConsoleUserCommand)Source.LastOrDefault()).Command;
             InterpreterResult result = await Task.Run(() => Brainf_ckInterpreter.Run(command, String.Empty, _State, 1000));
             if (result.HasFlag(InterpreterExitCode.Success) &&
@@ -144,9 +158,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             _State = result.MachineState;
 
             // New user command
-            await Task.Delay(AutoCommandsDelay);
             Source.Add(new ConsoleUserCommand());
-            CanRestart = true;
         }
 
         /// <summary>
@@ -159,6 +171,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             if (Source.LastOrDefault() is ConsoleUserCommand command)
             {
                 command.UpdateCommand($"{command.Command}{c}");
+                SendCommandAvailableMessages(true);
             }
         }
     }

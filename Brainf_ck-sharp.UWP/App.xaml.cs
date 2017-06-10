@@ -54,7 +54,7 @@ namespace Brainf_ck_sharp_UWP
                 // Setup the view mode
                 ApplicationView view = ApplicationView.GetForCurrentView();
                 view.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseVisible);
-                view.VisibleBoundsChanged += App_VisibleBoundsChanged;
+                if (UniversalAPIsHelper.IsMobileDevice) view.VisibleBoundsChanged += App_VisibleBoundsChanged;
 
                 // Posizionare il frame nella finestra corrente
                 Window.Current.Content = shell;
@@ -63,11 +63,6 @@ namespace Brainf_ck_sharp_UWP
 
             Window.Current.Activate();
         }
-
-        /// <summary>
-        /// Gets or sets a value that indicates whether or not the navigation bar is visible
-        /// </summary>
-        private bool _NavBarVisible;
 
         private void App_VisibleBoundsChanged(ApplicationView sender, object args)
         {
@@ -78,7 +73,6 @@ namespace Brainf_ck_sharp_UWP
             if (sender.Orientation == ApplicationViewOrientation.Portrait)
             {
                 double navBarHeight = Window.Current.Bounds.Height - sender.VisibleBounds.Bottom;
-                _NavBarVisible = navBarHeight > 0;
 
                 // Adjust the app UI
                 _DefaultContent.Margin = new Thickness(0, 0, 0, navBarHeight);
