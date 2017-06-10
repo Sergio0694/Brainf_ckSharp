@@ -121,7 +121,9 @@
     <Compile Include="Messages\Actions\PlayScriptMessage.cs" />
     <Compile Include="Messages\Actions\RestartConsoleMessage.cs" />
     <Compile Include="Messages\Actions\UndoConsoleCharacterMessage.cs" />
-    <Compile Include="Messages\IDEStatusUpdateMessage.cs" />
+    <Compile Include="Messages\IDEStatus\ConsoleStatusUpdateMessage.cs" />
+    <Compile Include="Messages\IDEStatus\IDEStatusUpdateMessage.cs" />
+    <Compile Include="Messages\IDEStatus\IDEStatusUpdateMessageBase.cs" />
     <Compile Include="Messages\OperatorAddedMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TemplateSelectors\ConsoleLineTemplateSelector.cs" />

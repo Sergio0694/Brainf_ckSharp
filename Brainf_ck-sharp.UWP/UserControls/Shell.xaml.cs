@@ -5,7 +5,9 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
+using Brainf_ck_sharp_UWP.Messages.IDEStatus;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations.Behaviours;
@@ -48,6 +50,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
         // Initialize the effects
         private async void Shell_Loaded(object sender, RoutedEventArgs e)
         {
+            Messenger.Default.Send(new IDEStatusUpdateMessage(IDEStatus.Console, "Ready", 0, 0, String.Empty));
             Console.AdjustTopMargin(HeaderGrid.ActualHeight + 12);
             if (UniversalAPIsHelper.IsMobileDevice)
             {

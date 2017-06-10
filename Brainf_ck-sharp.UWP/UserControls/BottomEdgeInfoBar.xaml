@@ -9,51 +9,6 @@
     d:DesignWidth="400"
     Height="24">
 
-    <!--Visual states-->
-    <VisualStateManager.VisualStateGroups>
-        <VisualStateGroup>
-            <VisualState x:Name="ConsoleState">
-                <VisualState.Setters>
-                    <Setter 
-                        Target="RootGrid.Background"
-                        Value="{ThemeResource SystemControlHighlightAltListAccentMediumBrush}"/>
-                    <Setter
-                        Target="RowBlock.Visibility"
-                        Value="Collapsed"/>
-                    <Setter
-                        Target="FileGrid.Visibility"
-                        Value="Collapsed"/>
-                </VisualState.Setters>
-            </VisualState>
-            <VisualState x:Name="IDEState">
-                <VisualState.Setters>
-                    <Setter 
-                        Target="RootGrid.Background"
-                        Value="{ThemeResource SystemControlHighlightAltListAccentMediumBrush}"/>
-                    <Setter
-                        Target="RowBlock.Visibility"
-                        Value="Visible"/>
-                    <Setter
-                        Target="FileGrid.Visibility"
-                        Value="Visible"/>
-                </VisualState.Setters>
-            </VisualState>
-            <VisualState x:Name="IDEErrorState">
-                <VisualState.Setters>
-                    <Setter 
-                        Target="RootGrid.Background"
-                        Value="#FFA00000"/>
-                    <Setter
-                        Target="RowBlock.Visibility"
-                        Value="Visible"/>
-                    <Setter
-                        Target="FileGrid.Visibility"
-                        Value="Visible"/>
-                </VisualState.Setters>
-            </VisualState>
-        </VisualStateGroup>
-    </VisualStateManager.VisualStateGroups>
-
     <!--Visual tree-->
     <Grid 
         Background="{ThemeResource SystemControlHighlightAltListAccentMediumBrush}"
@@ -62,9 +17,95 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"
                               MaxWidth="140"/>
         </Grid.ColumnDefinitions>
+
+        <!--Visual states-->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="ConsoleState">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="RootGrid.Background"
+                            Value="{ThemeResource SystemControlHighlightAltListAccentMediumBrush}"/>
+                        <Setter
+                            Target="RowBlock.Visibility"
+                            Value="Collapsed"/>
+                        <Setter
+                            Target="FileGrid.Visibility"
+                            Value="Collapsed"/>
+                        <Setter
+                            Target="ColumnBlock.Visibility"
+                            Value="Collapsed"/>
+                        <Setter
+                            Target="CharBlock.Visibility"
+                            Value="Visible"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="ConsoleErrorState">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="RootGrid.Background"
+                            Value="#FFCA5100"/>
+                        <Setter
+                            Target="RowBlock.Visibility"
+                            Value="Collapsed"/>
+                        <Setter
+                            Target="FileGrid.Visibility"
+                            Value="Collapsed"/>
+                        <Setter
+                            Target="ColumnBlock.Visibility"
+                            Value="Collapsed"/>
+                        <Setter
+                            Target="CharBlock.Visibility"
+                            Value="Visible"/>
+                        <Setter
+                            Target="ErrorBlock.Visibility"
+                            Value="Visible"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="IDEState">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="RootGrid.Background"
+                            Value="{ThemeResource SystemControlHighlightAltListAccentMediumBrush}"/>
+                        <Setter
+                            Target="RowBlock.Visibility"
+                            Value="Visible"/>
+                        <Setter
+                            Target="ColumnBlock.Visibility"
+                            Value="Visible"/>
+                        <Setter
+                            Target="CharBlock.Visibility"
+                            Value="Collapsed"/>
+                        <Setter
+                            Target="FileGrid.Visibility"
+                            Value="Visible"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="IDEErrorState">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="RootGrid.Background"
+                            Value="#FFA00000"/>
+                        <Setter
+                            Target="RowBlock.Visibility"
+                            Value="Visible"/>
+                        <Setter
+                            Target="ColumnBlock.Visibility"
+                            Value="Visible"/>
+                        <Setter
+                            Target="CharBlock.Visibility"
+                            Value="Collapsed"/>
+                        <Setter
+                            Target="FileGrid.Visibility"
+                            Value="Visible"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
         <!--State info-->
         <TextBlock 
@@ -77,15 +118,33 @@
             VerticalAlignment="Center"
             IsTextScaleFactorEnabled="False"/>
 
+        <!--Error position-->
+        <TextBlock 
+            x:Name="ErrorBlock"
+            Visibility="Collapsed"
+            Foreground="White"
+            Margin="16,0,0,0"
+            FontSize="12"
+            VerticalAlignment="Center"
+            IsTextScaleFactorEnabled="False"
+            FontWeight="SemiLight"
+            Grid.Column="1">
+            <Run Text="Error"/>
+            <Run 
+                Text="12"
+                x:Name="ErrorRun"/>
+        </TextBlock>
+
         <!--Row-->
         <TextBlock Foreground="White"
                    Margin="16,0,0,0"
                    FontSize="12"
                    VerticalAlignment="Center"
                    IsTextScaleFactorEnabled="False"
-                   Grid.Column="1"
+                   Grid.Column="2"
                    FontWeight="SemiLight"
-                   x:Name="RowBlock">
+                   x:Name="RowBlock"
+                   Visibility="Collapsed">
             <Run Text="Row"
                  x:Uid="RowTitleRun"/>
             <Run Text="12"
@@ -94,25 +153,42 @@
 
         <!--Column-->
         <TextBlock 
+            x:Name="ColumnBlock"
             Foreground="White"
             Margin="16,0,0,0"
             FontSize="12"
             VerticalAlignment="Center"
             IsTextScaleFactorEnabled="False"
             FontWeight="SemiLight"
-            Grid.Column="2">
-            <Run 
-                Text="Col"
-                x:Name="ColumnTitleRun"/>
+            Grid.Column="3"
+            Visibility="Collapsed">
+            <Run Text="Col"/>
             <Run 
                 Text="7"
                 x:Name="ColumnRun"/>
         </TextBlock>
 
+        <!--Character-->
+        <TextBlock 
+            x:Name="CharBlock"
+            Foreground="White"
+            Margin="16,0,8,0"
+            FontSize="12"
+            VerticalAlignment="Center"
+            IsTextScaleFactorEnabled="False"
+            FontWeight="SemiLight"
+            Grid.Column="3">
+            <Run Text="Char"/>
+            <Run 
+                Text="0"
+                x:Name="CharRun"/>
+        </TextBlock>
+
         <!--File-->
         <Grid 
             x:Name="FileGrid"
-            Grid.Column="3"
+            Visibility="Collapsed"
+            Grid.Column="4"
             Margin="16,0,8,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>

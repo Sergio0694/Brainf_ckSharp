@@ -7,6 +7,7 @@ using Brainf_ck_sharp_UWP.DataModels.ConsoleModels;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
+using Brainf_ck_sharp_UWP.Messages.IDEStatus;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ck_sharp_UWP.ViewModels
@@ -87,6 +88,16 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Play, status));
             Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Undo, status));
             Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Clear, status));
+            if (status && 
+                Source.Last() is ConsoleUserCommand command &&
+                command.Command.Length > 0)
+            {
+                (bool valid, int error) = Brainf_ckInterpreter.CheckSourceSyntax(command.Command);
+                Messenger.Default.Send(valid 
+                    ? new ConsoleStatusUpdateMessage(IDEStatus.Console, "Ready", command.Command.Length, 0) 
+                    : new ConsoleStatusUpdateMessage(IDEStatus.FaultedConsole, "Warning", command.Command.Length, error));
+            }
+            else Messenger.Default.Send(new ConsoleStatusUpdateMessage(IDEStatus.Console, "Ready", 0, 0));
         }
 
         /// <summary>
