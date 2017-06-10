@@ -60,9 +60,12 @@ namespace Brainf_ck_sharp_UWP.UserControls
             }
         }
 
-        private void PlayButton_Click(object sender, RoutedEventArgs e)
-        {
-            Messenger.Default.Send(new PlayScriptMessage());
-        }
+        public void RequestPlay() => Messenger.Default.Send(new PlayScriptMessage());
+
+        public void RequestClearConsoleLine() => Messenger.Default.Send(new ClearConsoleLineMessage());
+
+        public void RequestUndoConsoleCharacter() => Messenger.Default.Send(new UndoConsoleCharacterMessage());
+
+        public void RequestRestartConsole() => Messenger.Default.Send(new RestartConsoleMessage());
     }
 }

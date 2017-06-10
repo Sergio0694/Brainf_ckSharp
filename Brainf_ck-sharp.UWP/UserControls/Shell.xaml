@@ -9,6 +9,7 @@
     xmlns:header="using:Brainf_ck_sharp_UWP.UserControls.Header"
     xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
     xmlns:views="using:Brainf_ck_sharp_UWP.Views"
+    xmlns:customCommandBar="using:Brainf_ck_sharp_UWP.UserControls.CustomCommandBar"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -91,18 +92,43 @@
         </Grid>
 
         <!--Command bar-->
-        <CommandBar
+        <customCommandBar:CommandBarWithButtonsAnimations
             x:Name="SharedCommandBar"
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True"
             RelativePanel.Above="InfoBar">
-            <CommandBar.PrimaryCommands>
-                <AppBarButton 
+            <customCommandBar:CommandBarWithButtonsAnimations.PrimaryCommands>
+                <customCommandBar:CustomCommandBarButton
                     Label="Play"
-                    Icon="Play"
-                    Click="PlayButton_Click"/>
-            </CommandBar.PrimaryCommands>
-        </CommandBar>
+                    Icon="&#xE102;"
+                    x:Uid="PlayButton"
+                    DefaultButton="True"
+                    Click="{x:Bind RequestPlay}"/>
+                <customCommandBar:CustomCommandBarButton
+                    Label="Memory state"
+                    Icon="&#xE74C;"
+                    DefaultButton="True"
+                    x:Uid="MemoryState"/>
+                <customCommandBar:CustomCommandBarButton
+                    Label="Clear"
+                    Icon="&#xE10A;"
+                    x:Uid="Clear"
+                    DefaultButton="True"
+                    Click="{x:Bind RequestClearConsoleLine}"/>
+                <customCommandBar:CustomCommandBarButton
+                    Label="Undo"
+                    Icon="&#xE10E;"
+                    x:Uid="Undo"
+                    DefaultButton="True"
+                    Click="{x:Bind RequestUndoConsoleCharacter}"/>
+            </customCommandBar:CommandBarWithButtonsAnimations.PrimaryCommands>
+            <customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
+                <AppBarButton
+                    Label="Restart"
+                    x:Uid="Restart"
+                    Click="{x:Bind RequestRestartConsole}"/>
+            </customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
+        </customCommandBar:CommandBarWithButtonsAnimations>
 
         <!--Status bar-->
         <local:BottomEdgeInfoBar

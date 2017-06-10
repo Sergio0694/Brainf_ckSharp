@@ -175,4 +175,19 @@
   <data name="Threshold" xml:space="preserve">
     <value>runtime error</value>
   </data>
+  <data name="Clear.Label" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="MemoryState.Label" xml:space="preserve">
+    <value>Memory state</value>
+  </data>
+  <data name="PlayButton.Label" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="Restart.Label" xml:space="preserve">
+    <value>Restart</value>
+  </data>
+  <data name="Undo.Label" xml:space="preserve">
+    <value>Undo</value>
+  </data>
 </root>

@@ -53,7 +53,7 @@ namespace Brainf_ck_sharp_UWP
 
                 // Setup the view mode
                 ApplicationView view = ApplicationView.GetForCurrentView();
-                view.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
+                view.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseVisible);
                 view.VisibleBoundsChanged += App_VisibleBoundsChanged;
 
                 // Posizionare il frame nella finestra corrente

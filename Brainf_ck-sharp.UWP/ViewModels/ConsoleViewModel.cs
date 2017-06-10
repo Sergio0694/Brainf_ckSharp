@@ -13,6 +13,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 {
     public class ConsoleViewModel : ItemsCollectionViewModelBase<ConsoleCommandModelBase>
     {
+        private const int AutoCommandsDelay = 250;
+
         public ConsoleViewModel()
         {
             Source.Add(new ConsoleUserCommand());
@@ -34,6 +36,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     {
                         Messenger.Default.Register<OperatorAddedMessage>(this, op => TryAddCommandCharacter(op.Operator));
                         Messenger.Default.Register<PlayScriptMessage>(this, m => ExecuteCommand().Forget());
+                        Messenger.Default.Register<ClearConsoleLineMessage>(this, m => TryResetCommand());
+                        Messenger.Default.Register<UndoConsoleCharacterMessage>(this, m => TryUndoLastCommandCharacter());
+                        Messenger.Default.Register<RestartConsoleMessage>(this, m => Restart());
                     }
                     else Messenger.Default.Unregister(this);
                 }
@@ -59,11 +64,14 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Restarts the console and resets the current state
         /// </summary>
-        public void Restart()
+        public async void Restart()
         {
             if (!CanRestart) return;
+            CanRestart = false;
             Source.Add(new ConsoleRestartCommand());
             _State = new TouringMachineState(64);
+            await Task.Delay(AutoCommandsDelay);
+            Source.Add(new ConsoleUserCommand());
         }
 
         /// <summary>
@@ -136,7 +144,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             _State = result.MachineState;
 
             // New user command
+            await Task.Delay(AutoCommandsDelay);
             Source.Add(new ConsoleUserCommand());
+            CanRestart = true;
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -78,5 +79,24 @@ namespace Brainf_ck_sharp_UWP.Helpers
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool EqualsWithDelta(this double value, double comparison, double delta = 0.1) => (value - comparison).Abs() < delta;
+
+        /// <summary>
+        /// Performs a loop on the given collection, calling the input delegate for each item
+        /// </summary>
+        /// <typeparam name="T">The Type to cast the collection items to</typeparam>
+        /// <param name="source">The source collection</param>
+        /// <param name="action">The delegate to call for each item in the collection</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void TypedForEach<T>([NotNull] this IEnumerable source, [NotNull] Action<T> action)
+        {
+            foreach (object item in source) action(item.To<T>());
+        }
+
+        /// <summary>
+        /// Converts a boolean value to its Visibility equivalent
+        /// </summary>
+        /// <param name="value">The value to convert</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Visibility ToVisibility(this bool value) => value ? Visibility.Visible : Visibility.Collapsed;
     }
 }
