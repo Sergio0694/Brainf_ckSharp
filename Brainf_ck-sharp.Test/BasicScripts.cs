@@ -17,7 +17,7 @@ namespace Brainf_ck_sharp_Test
             Assert.IsNotNull(result);
             Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success));
             Assert.AreEqual(result.Output, String.Empty);
-            Assert.IsTrue(result.MachineState.Current == 5);
+            Assert.IsTrue(result.MachineState.Current.Value == 5);
         }
 
         [TestMethod]
@@ -28,7 +28,7 @@ namespace Brainf_ck_sharp_Test
             Assert.IsNotNull(result);
             Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success));
             Assert.AreEqual(result.Output, String.Empty);
-            Assert.IsTrue(result.MachineState.Current == 2);
+            Assert.IsTrue(result.MachineState.Current.Value == 2);
         }
 
         [TestMethod]
@@ -39,7 +39,7 @@ namespace Brainf_ck_sharp_Test
             Assert.IsNotNull(result);
             Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success));
             Assert.AreEqual(result.Output, String.Empty);
-            Assert.IsTrue(result.MachineState.Current == 50);
+            Assert.IsTrue(result.MachineState.Current.Value == 50);
         }
 
         [TestMethod]
@@ -50,7 +50,7 @@ namespace Brainf_ck_sharp_Test
             Assert.IsNotNull(result);
             Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success));
             Assert.AreEqual(result.Output, "7");
-            Assert.IsTrue(result.MachineState.Current == 55);
+            Assert.IsTrue(result.MachineState.Current.Value == 55);
         }
     }
 }

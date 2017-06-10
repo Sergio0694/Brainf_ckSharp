@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Brainf_ck_sharp.MemoryState;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp.ReturnTypes
@@ -46,7 +47,7 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// Gets the resulting memory state after running the original script
         /// </summary>
         [NotNull]
-        public TouringMachineState MachineState { get; }
+        public IReadonlyTouringMachineState MachineState { get; }
 
         /// <summary>
         /// Gets the execution time for the interpreted script
@@ -121,7 +122,7 @@ namespace Brainf_ck_sharp.ReturnTypes
         [Pure, NotNull]
         internal InterpreterResult Clone()
         {
-            return new InterpreterResult(ExitCode, MachineState.Clone(), ElapsedTime, Output, SourceCode, TotalOperations, ExceptionInfo, BreakpointPosition);
+            return new InterpreterResult(ExitCode, ((TouringMachineState)MachineState).Clone(), ElapsedTime, Output, SourceCode, TotalOperations, ExceptionInfo, BreakpointPosition);
         }
 
         #endregion

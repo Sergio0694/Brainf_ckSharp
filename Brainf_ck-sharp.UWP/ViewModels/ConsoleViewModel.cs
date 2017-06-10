@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Brainf_ck_sharp;
+using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels.ConsoleModels;
 using Brainf_ck_sharp_UWP.Helpers;
@@ -53,7 +54,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// The current machine state to use to process the scripts
         /// </summary>
-        private TouringMachineState _State = new TouringMachineState(64);
+        private IReadonlyTouringMachineState _State = TouringMachineStateProvider.Initialize(64);
 
         private bool _CanRestart;
 
@@ -78,7 +79,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             if (!CanRestart) return;
             CanRestart = false;
             Source.Add(new ConsoleRestartCommand());
-            _State = new TouringMachineState(64);
+            _State = TouringMachineStateProvider.Initialize(64);
             Source.Add(new ConsoleUserCommand());
         }
 

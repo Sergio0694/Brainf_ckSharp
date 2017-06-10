@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Brainf_ck_sharp.Helpers;
+using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp.ReturnTypes;
 using JetBrains.Annotations;
 
@@ -47,9 +48,13 @@ namespace Brainf_ck_sharp
         [PublicAPI]
         [Pure, NotNull]
         public static InterpreterResult Run([NotNull] String source, [NotNull] String arguments,
-            [NotNull] TouringMachineState state, int? threshold = null)
+            [NotNull] IReadonlyTouringMachineState state, int? threshold = null)
         {
-            return TryRun(source, arguments, state.Clone(), threshold);
+            if (state is TouringMachineState touring)
+            {
+                return TryRun(source, arguments, touring.Clone(), threshold);
+            }
+            throw new ArgumentException();
         }
 
         /// <summary>
@@ -290,7 +295,7 @@ namespace Brainf_ck_sharp
                                 skip = loop.Count;
 
                                 // Execute the loop if the current value is greater than 0
-                                if (state.Current > 0 || jump != null && !reached)
+                                if (state.Current.Value > 0 || jump != null && !reached)
                                 {
                                     InterpreterWorkingData inner = TryRunCore(loop, depth + (uint)i + 1, reached);
                                     partial += inner.TotalOperations;
@@ -303,12 +308,12 @@ namespace Brainf_ck_sharp
                                             inner.StackFrames.Concat(new[] { operators.Select(op => op.Operator).Take(i + 1) }), inner.Position, reached, partial);
                                     }
                                 }
-                                else if (state.Current == 0) partial++;
+                                else if (state.Current.Value == 0) partial++;
                                 break;
 
                             // }
                             case ']':
-                                if (state.Current == 0 || jump != null && !reached)
+                                if (state.Current.Value == 0 || jump != null && !reached)
                                 {
                                     // Loop end
                                     return new InterpreterWorkingData(InterpreterExitCode.Success, null, depth + (uint)i, reached,
@@ -332,7 +337,7 @@ namespace Brainf_ck_sharp
                                                                       InterpreterExitCode.StdoutBufferLimitExceeded,
                                                                       new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached, partial);
                                 }
-                                output.Append(Convert.ToChar(state.Current));
+                                output.Append(state.Current.Character);
                                 partial++;
                                 break;
 
@@ -409,7 +414,7 @@ namespace Brainf_ck_sharp
         internal static InterpreterExecutionSession ContinueSession([NotNull] InterpreterExecutionSession session)
         {
             InterpreterResult step = TryRun(session.DebugData.Source, session.DebugData.Stdin, session.DebugData.Stdout,
-                session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.ElapsedTime, session.CurrentResult.TotalOperations,
+                (TouringMachineState)session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.ElapsedTime, session.CurrentResult.TotalOperations,
                 session.CurrentResult.BreakpointPosition, session.DebugData.Breakpoints);
             return new InterpreterExecutionSession(step, session.DebugData);
         }
@@ -422,7 +427,7 @@ namespace Brainf_ck_sharp
         internal static InterpreterExecutionSession RunSessionToCompletion([NotNull] InterpreterExecutionSession session)
         {
             InterpreterResult step = TryRun(session.DebugData.Source, session.DebugData.Stdin, session.DebugData.Stdout,
-                session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.ElapsedTime, session.CurrentResult.TotalOperations,
+                (TouringMachineState)session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.ElapsedTime, session.CurrentResult.TotalOperations,
                 session.CurrentResult.BreakpointPosition, null);
             return new InterpreterExecutionSession(step, session.DebugData);
         }
