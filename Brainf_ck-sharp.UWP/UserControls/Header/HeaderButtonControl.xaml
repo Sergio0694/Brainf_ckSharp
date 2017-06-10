@@ -27,6 +27,9 @@
                         <Setter
                             Target="TitleBlock.Foreground"
                             Value="White"/>
+                        <Setter
+                            Target="RootGrid.Background"
+                            Value="Transparent"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Selected">
@@ -40,12 +43,15 @@
                         <Setter
                             Target="TitleBlock.Foreground"
                             Value="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                        <Setter
+                            Target="RootGrid.Background"
+                            Value="#40000000"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         
-        <Grid>
+        <Grid x:Name="RootGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="2"/>

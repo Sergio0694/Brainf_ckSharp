@@ -98,5 +98,27 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// <param name="value">The value to convert</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Visibility ToVisibility(this bool value) => value ? Visibility.Visible : Visibility.Collapsed;
+
+        /// <summary>
+        /// Returns the first element of a specific type in the visual tree of a DependencyObject
+        /// </summary>
+        /// <typeparam name="T">The type of the element to find</typeparam>
+        /// <param name="parent">The object that contains the UIElement to find</param>
+        public static T FindChild<T>(this DependencyObject parent) where T : class
+        {
+            if (parent is T) return parent.To<T>();
+            int children = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < children; i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
+                if (!(child is T))
+                {
+                    T tChild = FindChild<T>(child);
+                    if (tChild != null) return tChild;
+                }
+                else return child as T;
+            }
+            return null;
+        }
     }
 }

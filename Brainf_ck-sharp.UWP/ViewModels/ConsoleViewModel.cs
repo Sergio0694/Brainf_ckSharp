@@ -19,6 +19,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             Source.Add(new ConsoleUserCommand());
         }
 
+        /// <summary>
+        /// Raised whenever a new console line is added to the source collection or edited
+        /// </summary>
+        public event EventHandler ConsoleLineAddedOrModified;
+
         private bool _IsEnabled;
 
         /// <summary>
@@ -170,6 +175,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 
             // New user command
             Source.Add(new ConsoleUserCommand());
+            ConsoleLineAddedOrModified?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -184,6 +190,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 command.UpdateCommand($"{command.Command}{c}");
                 SendCommandAvailableMessages(true);
             }
+            ConsoleLineAddedOrModified?.Invoke(this, EventArgs.Empty);
         }
     }
 }

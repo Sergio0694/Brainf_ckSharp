@@ -78,7 +78,8 @@
         ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
         ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
         ScrollViewer.VerticalScrollBarVisibility="Auto"
-        ItemTemplateSelector="{StaticResource LineSelector}">
+        ItemTemplateSelector="{StaticResource LineSelector}"
+        x:Name="ConsoleListView">
         <ListView.Header>
             <Grid x:Name="TopMarginGrid"/>
         </ListView.Header>
