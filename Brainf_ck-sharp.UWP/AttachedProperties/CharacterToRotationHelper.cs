@@ -35,7 +35,9 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
                     CenterX = 11,
                     CenterY = 15,
                     ScaleX = 0.8,
-                    ScaleY = 0.8
+                    ScaleY = 0.8,
+                    TranslateX = -2,
+                    TranslateY = -2
                 }
             },
             { 2, new CompositeTransform
@@ -44,7 +46,9 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
                     CenterX = 12,
                     CenterY = 16,
                     ScaleX = 0.7,
-                    ScaleY = 0.7
+                    ScaleY = 0.7,
+                    TranslateX = -2,
+                    TranslateY = -1
                 }
             },
             { 3, new CompositeTransform
@@ -53,7 +57,9 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
                     CenterX = 14,
                     CenterY = 18,
                     ScaleX = 0.8,
-                    ScaleY = 0.8
+                    ScaleY = 0.8,
+                    TranslateX = -2,
+                    TranslateY = -2
                 }
             }
         };

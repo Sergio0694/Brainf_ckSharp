@@ -108,5 +108,6 @@
   </data>
   <data name="UnicodeGroup2InfoBlock.Text" xml:space="preserve">
     <value>Non visibili</value>
+    <comment>It's talking about a series of special characters</comment>
   </data>
 </root>

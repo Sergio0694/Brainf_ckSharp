@@ -133,6 +133,7 @@
         <trans-unit id="UnicodeGroup2InfoBlock.Text" translate="yes" xml:space="preserve">
           <source>Not visible</source>
           <target state="translated">Non visibili</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">It's talking about a series of special characters</note>
         </trans-unit>
       </group>
     </body>

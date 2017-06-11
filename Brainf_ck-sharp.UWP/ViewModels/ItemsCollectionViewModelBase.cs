@@ -24,21 +24,15 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 // Update the source and the IsEmpty property
                 if (Set(ref _Source, value))
                 {
-                    IsEmpty = value.Count == 0;
+                    RaisePropertyChanged(() => IsEmpty);
                 }
             }
         }
 
-        private bool _IsEmpty;
-
         /// <summary>
         /// Gets whether or not the current source collection is empty
         /// </summary>
-        public bool IsEmpty
-        {
-            get => _IsEmpty;
-            private set => Set(ref _IsEmpty, value);
-        }
+        public bool IsEmpty => Source.Count == 0;
 
         /// <summary>
         /// Clears the collection of items, if possible

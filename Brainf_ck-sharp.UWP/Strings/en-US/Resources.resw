@@ -210,6 +210,7 @@
   </data>
   <data name="UnicodeGroup2InfoBlock.Text" xml:space="preserve">
     <value>Not visible</value>
+    <comment>It's talking about a series of special characters</comment>
   </data>
   <data name="UnicodeTitle" xml:space="preserve">
     <value>Unicode characters</value>
