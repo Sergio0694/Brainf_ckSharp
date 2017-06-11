@@ -132,6 +132,7 @@
                             Grid.Row="0"
                             Background="#40000000"/>
                         <stdinHeader:KeyboardHeaderControl 
+                            x:Name="StdinHeader"
                             Grid.Row="0"
                             SelectedHeaderIndex="{x:Bind CommandsPivot.SelectedIndex, Mode=TwoWay}"/>
                     </Grid>

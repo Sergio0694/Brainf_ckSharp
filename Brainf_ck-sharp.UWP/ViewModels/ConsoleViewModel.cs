@@ -10,6 +10,7 @@ using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
 using GalaSoft.MvvmLight.Messaging;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.ViewModels
 {
@@ -40,7 +41,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     if (value)
                     {
                         Messenger.Default.Register<OperatorAddedMessage>(this, op => TryAddCommandCharacter(op.Operator));
-                        Messenger.Default.Register<PlayScriptMessage>(this, m => ExecuteCommand().Forget());
+                        Messenger.Default.Register<PlayScriptMessage>(this, m => ExecuteCommand(m.StdinBuffer).Forget());
                         Messenger.Default.Register<ClearConsoleLineMessage>(this, m => TryResetCommand());
                         Messenger.Default.Register<UndoConsoleCharacterMessage>(this, m => TryUndoLastCommandCharacter());
                         Messenger.Default.Register<RestartConsoleMessage>(this, m => Restart());
@@ -149,13 +150,13 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Executes the current user command, if possible
         /// </summary>
-        public async Task ExecuteCommand()
+        public async Task ExecuteCommand([NotNull] String stdin)
         {
             if (!CommandAvailable) return;
             CanRestart = true;
             SendCommandAvailableMessages(false);
             String command = ((ConsoleUserCommand)Source.LastOrDefault()).Command;
-            InterpreterResult result = await Task.Run(() => Brainf_ckInterpreter.Run(command, String.Empty, State, 1000));
+            InterpreterResult result = await Task.Run(() => Brainf_ckInterpreter.Run(command, stdin, State, 1000));
             if (result.HasFlag(InterpreterExitCode.Success) &&
                 result.HasFlag(InterpreterExitCode.TextOutput))
             {

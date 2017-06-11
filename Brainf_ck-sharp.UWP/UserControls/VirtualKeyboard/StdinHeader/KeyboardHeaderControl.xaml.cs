@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml;
+﻿using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Helpers;
 
@@ -34,5 +35,15 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
             @this.KeyboardButton.IsSelected = index == 0;
             @this.MemoryMapButton.IsSelected = index == 1;
         }
+
+        /// <summary>
+        /// Gets the current text in the Stdin buffer
+        /// </summary>
+        public String StdinBuffer => StdinBox.Text;
+
+        /// <summary>
+        /// Resets the current Stdin buffer
+        /// </summary>
+        public void ResetStdin() => StdinBox.Text = String.Empty;
     }
 }

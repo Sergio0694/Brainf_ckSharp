@@ -9,11 +9,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
     /// </summary>
     public class FixedRadExpanderControl : RadExpanderControl
     {
-        protected override void OnKeyDown(KeyRoutedEventArgs e)
-        {
-           e.Handled = true;
-            base.OnKeyDown(e);
-        }
+        // Ignores the key events to prevent the control to expand and collapse by accident
+        protected override void OnKeyDown(KeyRoutedEventArgs e) { }
 
         // Only propagates the event if the tap originated inside the indicator area
         protected override void OnTapped(TappedRoutedEventArgs e)

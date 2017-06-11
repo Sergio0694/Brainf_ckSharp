@@ -83,7 +83,12 @@ namespace Brainf_ck_sharp_UWP.UserControls
             }
         }
 
-        public void RequestPlay() => Messenger.Default.Send(new PlayScriptMessage());
+        public void RequestPlay()
+        {
+            String stdin = StdinHeader.StdinBuffer;
+            StdinHeader.ResetStdin();
+            Messenger.Default.Send(new PlayScriptMessage(stdin));
+        }
 
         public void RequestShowMemoryState()
         {

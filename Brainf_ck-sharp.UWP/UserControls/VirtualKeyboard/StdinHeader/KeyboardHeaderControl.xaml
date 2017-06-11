@@ -41,6 +41,7 @@
         <TextBox 
             Grid.Column="2"
             Style="{StaticResource DarkTextBox}"
-            PlaceholderText="Stdin buffer"/>
+            PlaceholderText="Stdin buffer"
+            x:Name="StdinBox"/>
     </Grid>
 </UserControl>
