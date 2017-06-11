@@ -2,6 +2,7 @@
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp_UWP.Helpers;
@@ -64,6 +65,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
         // Initialize the effects
         private async void Shell_Loaded(object sender, RoutedEventArgs e)
         {
+            // UI setup
             FadeCanvas.SetVisualOpacity(0);
             Messenger.Default.Send(new IDEStatusUpdateMessage(IDEStatus.Console, "Ready", 0, 0, String.Empty));
             Console.AdjustTopMargin(HeaderGrid.ActualHeight + 12);
@@ -81,6 +83,24 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 _KeyboardEffect = await KeyboardBorder.GetAttachedSemiAcrylicEffectAsync(Color.FromArgb(byte.MaxValue, 16, 16, 16), 0.95f,
                     KeyboardCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
             }
+
+            // Disable the swipe gestures in the keyboard pivot
+            ScrollViewer scroller = CommandsPivot.FindChild<ScrollViewer>();
+            scroller.PointerEntered += Scroller_PointerIn;
+            scroller.PointerMoved += Scroller_PointerIn;
+            scroller.PointerExited += Scroller_PointerOut;
+            scroller.PointerReleased += Scroller_PointerOut;
+            scroller.PointerCaptureLost += Scroller_PointerOut;
+        }
+
+        private void Scroller_PointerIn(object sender, PointerRoutedEventArgs e)
+        {
+            sender.To<ScrollViewer>().HorizontalScrollMode = ScrollMode.Disabled;
+        }
+
+        private void Scroller_PointerOut(object sender, PointerRoutedEventArgs e)
+        {
+            sender.To<ScrollViewer>().HorizontalScrollMode = ScrollMode.Enabled;
         }
 
         public void RequestPlay()
