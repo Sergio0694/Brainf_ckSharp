@@ -131,7 +131,6 @@
                             FontSize="18"
                             FontWeight="SemiBold"
                             Foreground="#FFA00000"
-                            Grid.Column="1"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"/>
                     </Viewbox>

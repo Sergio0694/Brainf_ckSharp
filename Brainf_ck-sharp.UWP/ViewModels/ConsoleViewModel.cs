@@ -97,7 +97,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Undo, forcedStatus ?? CommandAvailable));
             Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Clear, forcedStatus ?? CommandAvailable));
             if (Source.Last() is ConsoleUserCommand command &&
-                command.Command.Length > 0)
+                command.Command.Length > 0 && forcedStatus != false)
             {
                 (bool valid, int error) = Brainf_ckInterpreter.CheckSourceSyntax(command.Command);
                 Messenger.Default.Send(valid 

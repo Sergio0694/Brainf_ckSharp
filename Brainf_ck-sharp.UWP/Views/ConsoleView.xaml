@@ -19,7 +19,7 @@
                 TextWrapping="Wrap">
                 <Run Text="run:"
                      FontWeight="SemiBold"
-                     Foreground="Crimson"/>
+                     Foreground="#FFA8101D"/>
                 <Span attachedProperties:Brainf_ckCodeInlineFormatter.UnformattedSource="{Binding Command}"/>
             </TextBlock>
         </DataTemplate>
@@ -54,15 +54,16 @@
                 TextWrapping="Wrap">
                 <Run 
                     Text="{Binding ExceptionType, Converter={StaticResource ExceptionConverter}}"
-                    FontWeight="SemiBold"
+                    FontWeight="Bold"
                     Foreground="#FFA00000"/>
                 <Run 
                     Text="&gt;"
-                    FontWeight="SemiBold"
+                    FontWeight="Bold"
                     Foreground="#FFA00000"/>
                 <Run 
                     attachedProperties:RunInlineHelper.BindableText="{Binding Message}"
-                    Foreground="#FF700000"/>
+                    FontWeight="SemiBold"
+                    Foreground="#FF900000"/>
             </TextBlock>
         </DataTemplate>
         

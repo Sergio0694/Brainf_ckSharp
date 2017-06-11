@@ -33,13 +33,17 @@
 
             <!--Left value-->
             <Canvas Background="#20000000"/>
-            <TextBlock 
-                Text="{Binding Value.Value}"
-                FontSize="16"
-                Foreground="LightGray"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"
-                Grid.Column="0"/>
+            <Viewbox
+                StretchDirection="DownOnly"
+                Grid.Column="0"
+                Margin="12,0,12,0">
+                <TextBlock 
+                    Text="{Binding Value.Value}"
+                    FontSize="16"
+                    Foreground="LightGray"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"/>
+            </Viewbox>
 
             <!--Right character-->
             <Canvas 
