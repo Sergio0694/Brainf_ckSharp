@@ -11,7 +11,7 @@
     <!--Visual tree-->
     <Button
         Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
-        Tapped="{x:Bind TrySelect}">
+        Tapped="Header_Tapped">
 
         <!--Visual states-->
         <VisualStateManager.VisualStateGroups>

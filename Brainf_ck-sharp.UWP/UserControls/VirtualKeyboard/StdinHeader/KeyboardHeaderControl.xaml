@@ -16,6 +16,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
+        <!--Decorator on the top left-->
         <Rectangle
             Grid.ColumnSpan="2"
             Fill="{ThemeResource TextControlBorderBrush}"

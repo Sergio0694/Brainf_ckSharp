@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Brainf_ck_sharp_UWP.Helpers;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Header
@@ -64,5 +65,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.Header
         /// Tries to set the current control as selected
         /// </summary>
         public void TrySelect() => IsSelected = true;
+
+        private void Header_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            e.Handled = true;
+            TrySelect();
+        }
     }
 }
