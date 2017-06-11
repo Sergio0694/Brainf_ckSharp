@@ -13,6 +13,7 @@
     xmlns:stdinHeader="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader"
     xmlns:telerik="using:Telerik.UI.Xaml.Controls.Primitives"
     xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
+    xmlns:controls="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -151,8 +152,10 @@
                         <!--Memory view-->
                         <PivotItem 
                             Margin="0"
-                            Background="#36000000">
-
+                            Background="#20000000">
+                            <Grid Margin="12,0,0,0">
+                                <controls:CompactCharactersViewerControl/>
+                            </Grid>
                         </PivotItem>
                     </Pivot>
                 </telerik:RadExpanderControl.ExpandableContent>

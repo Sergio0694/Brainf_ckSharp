@@ -55,7 +55,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Gets the current machine state to use to process the scripts
         /// </summary>
-        public IReadonlyTouringMachineState State { get; private set; }= TouringMachineStateProvider.Initialize(64);
+        public IReadonlyTouringMachineState State { get; private set; } = TouringMachineStateProvider.Initialize(64);
 
         private bool _CanRestart;
 
@@ -117,6 +117,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             ConsoleUserCommand command = (ConsoleUserCommand)Source.Last();
             command.UpdateCommand(command.Command.Substring(0, command.Command.Length - 1));
             if (!CommandAvailable) SendCommandAvailableMessages();
+            ConsoleLineAddedOrModified?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -145,6 +146,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             ConsoleUserCommand command = (ConsoleUserCommand)Source.Last();
             command.UpdateCommand(String.Empty);
             SendCommandAvailableMessages();
+            ConsoleLineAddedOrModified?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -196,6 +198,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             // New user command
             Source.Add(new ConsoleUserCommand());
             ConsoleLineAddedOrModified?.Invoke(this, EventArgs.Empty);
+            Messenger.Default.Send(new ConsoleMemoryStateChangedMessage(result.MachineState));
         }
 
         /// <summary>

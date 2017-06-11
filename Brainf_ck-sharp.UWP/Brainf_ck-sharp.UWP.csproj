@@ -103,9 +103,13 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AttachedProperties\Brainf_ckCodeInlineFormatter.cs" />
+    <Compile Include="AttachedProperties\CharacterToRotationHelper.cs" />
     <Compile Include="AttachedProperties\RunInlineHelper.cs" />
     <Compile Include="Converters\BoolToAccentBrushOrFallbackConverter.cs" />
+    <Compile Include="Converters\CharacterWithFallbackConverter.cs" />
     <Compile Include="Converters\ExceptionTypeConverter.cs" />
+    <Compile Include="Converters\PositiveValueToBrushConverter.cs" />
+    <Compile Include="DataModels\CharactersChunkModel.cs" />
     <Compile Include="DataModels\ConsoleModels\ConsoleCommandModelBase.cs" />
     <Compile Include="DataModels\ConsoleModels\ConsoleCommandResult.cs" />
     <Compile Include="DataModels\ConsoleModels\ConsoleExceptionResult.cs" />
@@ -124,6 +128,7 @@
     <Compile Include="Messages\Actions\ClearConsoleLineMessage.cs" />
     <Compile Include="Messages\Actions\ClearScreenMessage.cs" />
     <Compile Include="Messages\Actions\ConsoleAvailableActionStatusChangedMessage.cs" />
+    <Compile Include="Messages\Actions\ConsoleMemoryStateChangedMessage.cs" />
     <Compile Include="Messages\Actions\PlayScriptMessage.cs" />
     <Compile Include="Messages\Actions\RestartConsoleMessage.cs" />
     <Compile Include="Messages\Actions\UndoConsoleCharacterMessage.cs" />
@@ -141,6 +146,9 @@
     </Compile>
     <Compile Include="UserControls\CustomCommandBar\CommandBarWithButtonsAnimations.cs" />
     <Compile Include="UserControls\CustomCommandBar\CustomCommandBarButton.cs" />
+    <Compile Include="UserControls\DataTemplates\CompactCharactersChunkViewerTemplate.xaml.cs">
+      <DependentUpon>CompactCharactersChunkViewerTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Flyouts\FlyoutContainer.xaml.cs">
       <DependentUpon>FlyoutContainer.xaml</DependentUpon>
     </Compile>
@@ -160,6 +168,9 @@
     <Compile Include="UserControls\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\VirtualKeyboard\Controls\CompactCharactersViewerControl.xaml.cs">
+      <DependentUpon>CompactCharactersViewerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\VirtualKeyboard\StdinHeader\KeyboardHeaderControl.xaml.cs">
       <DependentUpon>KeyboardHeaderControl.xaml</DependentUpon>
     </Compile>
@@ -172,6 +183,7 @@
     <Compile Include="UserControls\VirtualKeyboard\Controls\KeyboardButton.xaml.cs">
       <DependentUpon>KeyboardButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\CompactCharactersViewerControlViewModel.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
     <Compile Include="ViewModels\ItemsCollectionViewModelBase.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
@@ -224,6 +236,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\DataTemplates\CompactCharactersChunkViewerTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\Flyouts\FlyoutContainer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -245,6 +261,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Shell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\VirtualKeyboard\Controls\CompactCharactersViewerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

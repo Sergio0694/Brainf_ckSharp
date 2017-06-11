@@ -45,6 +45,7 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
+        <!--Root-->
         <Grid x:Name="RootGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
