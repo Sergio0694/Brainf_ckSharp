@@ -159,6 +159,12 @@
     <Compile Include="UserControls\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\VirtualKeyboard\StdinHeader\KeyboardHeaderControl.xaml.cs">
+      <DependentUpon>KeyboardHeaderControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\VirtualKeyboard\StdinHeader\KeyboardSectionHeaderButton.xaml.cs">
+      <DependentUpon>KeyboardSectionHeaderButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\VirtualKeyboard\VirtualKeyboardControl.xaml.cs">
       <DependentUpon>VirtualKeyboardControl.xaml</DependentUpon>
     </Compile>
@@ -238,6 +244,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Shell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\VirtualKeyboard\StdinHeader\KeyboardHeaderControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\VirtualKeyboard\StdinHeader\KeyboardSectionHeaderButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

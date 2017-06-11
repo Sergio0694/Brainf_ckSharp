@@ -1,0 +1,45 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader.KeyboardHeaderControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="48"
+    d:DesignWidth="400">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="48"/>
+            <ColumnDefinition Width="48"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Rectangle
+            Grid.ColumnSpan="2"
+            Fill="{ThemeResource TextControlBorderBrush}"
+            VerticalAlignment="Top"
+            Height="1"
+            Canvas.ZIndex="1"/>
+        
+        <!--Sections-->
+        <local:KeyboardSectionHeaderButton
+            Grid.Column="0"
+            IconText="&#xE75B;"
+            x:Name="KeyboardButton"
+            IsSelected="True"
+            HeaderSelected="{x:Bind SelectKeyboard}"/>
+        <local:KeyboardSectionHeaderButton
+            IconText="&#xE8D2;"
+            Grid.Column="1"
+            x:Name="MemoryMapButton"
+            HeaderSelected="{x:Bind SelectMemoryView}"/>
+        
+        <!--Stdin-->
+        <TextBox 
+            Grid.Column="2"
+            Style="{StaticResource DarkTextBox}"
+            PlaceholderText="Stdin buffer"/>
+    </Grid>
+</UserControl>

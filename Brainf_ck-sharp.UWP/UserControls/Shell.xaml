@@ -10,6 +10,7 @@
     xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
     xmlns:views="using:Brainf_ck_sharp_UWP.Views"
     xmlns:customCommandBar="using:Brainf_ck_sharp_UWP.UserControls.CustomCommandBar"
+    xmlns:stdinHeader="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -25,7 +26,8 @@
             RelativePanel.AlignBottomWithPanel="True"
             Canvas.ZIndex="2"
             IsHitTestVisible="False"
-            x:Name="FadeCanvas"/>
+            x:Name="FadeCanvas"
+            d:IsHidden="True"/>
         
         <!--UI header-->
         <Grid
@@ -86,20 +88,51 @@
             </PivotItem>
         </Pivot>
 
+        <!--Commands prompt-->
         <Grid
             x:Name="OperatorsKeyboard"
-            Height="200"
             Background="#FF121212"
             RelativePanel.Above="SharedCommandBar"
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"/>
+                <RowDefinition Height="180"/>
+            </Grid.RowDefinitions>
 
             <!--CompositionBorder-->
             <xaml:CanvasControl x:Name="KeyboardCanvas"/>
-            <Border x:Name="KeyboardBorder"/>
+            <Border 
+                x:Name="KeyboardBorder"
+                Grid.Row="0"
+                Grid.RowSpan="2"/>
             
-            <!--Keyboard UI-->
-            <virtualKeyboard:VirtualKeyboardControl/>
+            <!--Header-->
+            <Canvas 
+                Grid.Row="0"
+                Background="#40000000"/>
+            <stdinHeader:KeyboardHeaderControl 
+                Grid.Row="0"
+                SelectedHeaderIndex="{x:Bind CommandsPivot.SelectedIndex, Mode=TwoWay}"/>
+            
+            <!--Keyboard pivot-->
+            <Pivot 
+                Grid.Row="1"
+                Style="{StaticResource PivotCustomStyle}"
+                x:Name="CommandsPivot">
+
+                <!--Keyboard UI-->
+                <PivotItem Margin="0">
+                    <virtualKeyboard:VirtualKeyboardControl/>
+                </PivotItem>
+                
+                <!--Memory view-->
+                <PivotItem 
+                    Margin="0"
+                    Background="#36000000">
+                    
+                </PivotItem>
+            </Pivot>
         </Grid>
 
         <!--Command bar-->
