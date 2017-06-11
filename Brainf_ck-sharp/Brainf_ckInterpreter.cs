@@ -113,11 +113,15 @@ namespace Brainf_ck_sharp
         public static (bool Valid, int ErrorPosition) CheckSourceSyntax([NotNull] String source)
         {
             // Iterate over all the characters in the source
-            int height = 0;
+            int height = 0, error = 0;
             for (int i = 0; i < source.Length; i++)
             {
                 // Check the parentheses
-                if (source[i] == '[') height++;
+                if (source[i] == '[')
+                {
+                    if (height == 0) error = i;
+                    height++;
+                }
                 else if (source[i] == ']')
                 {
                     if (height == 0) return (false, i);
@@ -126,7 +130,7 @@ namespace Brainf_ck_sharp
             }
 
             // Edge case or valid return
-            return height == 0 ? (true, 0) : (false, source.Length - 1);
+            return height == 0 ? (true, 0) : (false, error);
         }
 
         #endregion

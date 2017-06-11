@@ -40,7 +40,7 @@
         <Button Style="{ThemeResource WideButtonWithNoBackgroundStyle}"
                 Grid.Row="0"
                 HorizontalAlignment="Right"
-                Width="36"
+                Width="52"
                 Click="{x:Bind RequestClose}">
             <TextBlock Text="&#xE10A;"
                        Style="{StaticResource FontIconTextBlockStyle}"

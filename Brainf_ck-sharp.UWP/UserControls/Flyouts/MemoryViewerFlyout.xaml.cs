@@ -12,7 +12,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         {
             SizeChanged += (_, e) =>
             {
-                ItemsWidth = (e.NewSize.Width - 12) / (e.NewSize.Width > 480 ? 5 : 4);
+                ItemsWidth = e.NewSize.Width / (e.NewSize.Width > 480 ? 5 : 4);
             };
             this.InitializeComponent();
         }

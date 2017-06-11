@@ -55,7 +55,7 @@ namespace Brainf_ck_sharp.MemoryState
         /// <summary>
         /// Gets the value of the current memory position (*ptr)
         /// </summary>
-        public Brainf_ckMemoryCell Current => new Brainf_ckMemoryCell(Memory[Position]);
+        public Brainf_ckMemoryCell Current => new Brainf_ckMemoryCell(Memory[Position], true);
 
         /// <summary>
         /// Checks whether or not it is possible to move the pointer forward
@@ -106,13 +106,13 @@ namespace Brainf_ck_sharp.MemoryState
         #region IReadOnlyList<ushort>
 
         /// <inheritdoc cref="IEnumerable{T}"/>
-        public IEnumerator<Brainf_ckMemoryCell> GetEnumerator() => Memory.Select(m => new Brainf_ckMemoryCell(m)).GetEnumerator();
+        public IEnumerator<Brainf_ckMemoryCell> GetEnumerator() => Memory.Select((m, i) => new Brainf_ckMemoryCell(m, i == Position)).GetEnumerator();
 
         /// <inheritdoc cref="IEnumerable"/>
         IEnumerator IEnumerable.GetEnumerator() => Memory.GetEnumerator();
 
         /// <inheritdoc cref="IReadOnlyList{T}"/>
-        public Brainf_ckMemoryCell this[int index] => new Brainf_ckMemoryCell(Memory[index]);
+        public Brainf_ckMemoryCell this[int index] => new Brainf_ckMemoryCell(Memory[index], index == Position);
 
         #endregion
     }

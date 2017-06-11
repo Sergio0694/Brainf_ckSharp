@@ -45,6 +45,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         {
             TitleBlock.Text = title;
             Grid.SetRow(content, 1);
+            content.Margin = new Thickness(12, 0, 0, 0);
             RootGrid.Children.Add(content);
         }
     }

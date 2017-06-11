@@ -104,6 +104,7 @@
     </Compile>
     <Compile Include="AttachedProperties\Brainf_ckCodeInlineFormatter.cs" />
     <Compile Include="AttachedProperties\RunInlineHelper.cs" />
+    <Compile Include="Converters\BoolToAccentBrushOrFallbackConverter.cs" />
     <Compile Include="Converters\ExceptionTypeConverter.cs" />
     <Compile Include="DataModels\ConsoleModels\ConsoleCommandModelBase.cs" />
     <Compile Include="DataModels\ConsoleModels\ConsoleCommandResult.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Helpers\FlyoutManager.cs" />
     <Compile Include="Helpers\IndexedModelWithValue.cs" />
     <Compile Include="Helpers\LocalizationManager.cs" />
+    <Compile Include="Helpers\StaticHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\KeyEventsListener.cs" />
     <Compile Include="Helpers\WindowsAPIs\ResolutionHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\TitleBarHelper.cs" />
@@ -258,6 +260,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>5.3.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp">
+      <Version>1.4.1</Version>
     </PackageReference>
     <PackageReference Include="MvvmLightLibs">
       <Version>5.3.0</Version>

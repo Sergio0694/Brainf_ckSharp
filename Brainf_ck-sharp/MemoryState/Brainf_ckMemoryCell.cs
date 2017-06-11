@@ -8,6 +8,11 @@ namespace Brainf_ck_sharp.MemoryState
     public struct Brainf_ckMemoryCell
     {
         /// <summary>
+        /// Gets whether or not the cell is currently selected
+        /// </summary>
+        public bool Selected { get; }
+
+        /// <summary>
         /// Gets the value of the current cell
         /// </summary>
         public uint Value { get; }
@@ -21,23 +26,34 @@ namespace Brainf_ck_sharp.MemoryState
         /// Creates a new instance with the given value
         /// </summary>
         /// <param name="value">The value for the memory cell</param>
-        internal Brainf_ckMemoryCell(uint value) => Value = value;
+        /// <param name="selected">Gets whether the cell is selected</param>
+        internal Brainf_ckMemoryCell(uint value, bool selected)
+        {
+            Value = value;
+            Selected = selected;
+        }
 
         // Operators and equality operators
         public static bool operator ==(Brainf_ckMemoryCell a, Brainf_ckMemoryCell b) => a.Value == b.Value;
         public static bool operator !=(Brainf_ckMemoryCell a, Brainf_ckMemoryCell b) => a.Value != b.Value;
 
         /// <inheritdoc/>
-        public bool Equals(Brainf_ckMemoryCell other) => Value == other.Value;
+        public bool Equals(Brainf_ckMemoryCell other) => Selected == other.Selected && Value == other.Value;
 
         /// <inheritdoc/>
         public override bool Equals(object obj)
         {
-            if (obj is Brainf_ckMemoryCell cell) return Value == cell.Value;
+            if (obj is Brainf_ckMemoryCell cell) return Equals(cell);
             return false;
         }
 
         /// <inheritdoc/>
-        public override int GetHashCode() => (int)Value;
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (Selected.GetHashCode() * 397) ^ (int)Value;
+            }
+        }
     }
 }
