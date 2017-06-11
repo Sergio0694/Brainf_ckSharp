@@ -24,4 +24,89 @@
     <value>Col</value>
     <comment>Keep this short to 2-4 characters (abbreviate if needed)</comment>
   </data>
+  <data name="ExEmptyStdin" xml:space="preserve">
+    <value>Buffer Stdin esaurito</value>
+  </data>
+  <data name="ExLowerBound" xml:space="preserve">
+    <value>Limite inferiore superato</value>
+  </data>
+  <data name="ExMaxStdout" xml:space="preserve">
+    <value>Limite lunghezza buffer Stdout superato</value>
+  </data>
+  <data name="ExMaxValue" xml:space="preserve">
+    <value>Valore massimo superato</value>
+  </data>
+  <data name="ExNegativeValue" xml:space="preserve">
+    <value>Valore negativo</value>
+  </data>
+  <data name="ExUpperBound" xml:space="preserve">
+    <value>Limite superiore superato</value>
+  </data>
+  <data name="InterpreterError" xml:space="preserve">
+    <value>Errore interprete</value>
+  </data>
+  <data name="ThresholdExceeded" xml:space="preserve">
+    <value>Limite di tempo superato</value>
+  </data>
+  <data name="WrongBrackets" xml:space="preserve">
+    <value>Parentesi non corrispondenti</value>
+  </data>
+  <data name="run" xml:space="preserve">
+    <value>esegui</value>
+  </data>
+  <data name="RestartRun.Text" xml:space="preserve">
+    <value>RIAVVIO</value>
+    <comment>Keep this uppercase</comment>
+  </data>
+  <data name="Exception" xml:space="preserve">
+    <value>eccezione</value>
+  </data>
+  <data name="InternalError" xml:space="preserve">
+    <value>errore</value>
+  </data>
+  <data name="SyntaxError" xml:space="preserve">
+    <value>errore sintassi</value>
+  </data>
+  <data name="Threshold" xml:space="preserve">
+    <value>errore runtime</value>
+  </data>
+  <data name="Clear.Label" xml:space="preserve">
+    <value>Cancella</value>
+  </data>
+  <data name="MemoryState.Label" xml:space="preserve">
+    <value>Stato memoria</value>
+  </data>
+  <data name="PlayButton.Label" xml:space="preserve">
+    <value>Esegui</value>
+  </data>
+  <data name="Undo.Label" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
+  <data name="Restart.Label" xml:space="preserve">
+    <value>Riavvia</value>
+  </data>
+  <data name="Clrscr.Label" xml:space="preserve">
+    <value>Pulisci lo schermo</value>
+  </data>
+  <data name="MemoryStateTitle" xml:space="preserve">
+    <value>Stato memoria</value>
+  </data>
+  <data name="Unicode.Label" xml:space="preserve">
+    <value>Mostra caratteri Unicode</value>
+  </data>
+  <data name="UnicodeTitle" xml:space="preserve">
+    <value>Caratteri Unicode</value>
+  </data>
+  <data name="UnicodeGroup1Block.Text" xml:space="preserve">
+    <value>Da 0 a 31</value>
+  </data>
+  <data name="UnicodeGroup1InfoBlock.Text" xml:space="preserve">
+    <value>Caratteri di controllo</value>
+  </data>
+  <data name="UnicodeGroup2Block.Text" xml:space="preserve">
+    <value>Da 128 a 159</value>
+  </data>
+  <data name="UnicodeGroup2InfoBlock.Text" xml:space="preserve">
+    <value>Non visibili</value>
+  </data>
 </root>

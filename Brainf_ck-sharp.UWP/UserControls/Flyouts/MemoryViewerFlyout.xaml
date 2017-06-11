@@ -12,7 +12,7 @@
 
     <!--Memory cells list-->
     <ListView ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
-              ItemsSource="{x:Bind Source, Mode=OneWay}"
+              x:Name="MemoryList"
               CanDrag="False">
         <ListView.Header>
             <Grid Height="12"/>
@@ -27,7 +27,7 @@
                 <ItemsWrapGrid Orientation="Horizontal"
                                ItemHeight="{Binding ElementName=This, Path=ItemsHeight, FallbackValue=76}"
                                ItemWidth="{Binding ElementName=This, Path=ItemsWidth, FallbackValue=100}"
-                               MaximumRowsOrColumns="4"/>
+                               MaximumRowsOrColumns="5"/>
             </ItemsPanelTemplate>
         </ListView.ItemsPanel>
     </ListView>

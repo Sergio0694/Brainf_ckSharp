@@ -196,4 +196,22 @@
   <data name="MemoryStateTitle" xml:space="preserve">
     <value>Memory state</value>
   </data>
+  <data name="Unicode.Label" xml:space="preserve">
+    <value>Show Unicode characters</value>
+  </data>
+  <data name="UnicodeGroup1Block.Text" xml:space="preserve">
+    <value>0 to 31</value>
+  </data>
+  <data name="UnicodeGroup1InfoBlock.Text" xml:space="preserve">
+    <value>Control characters</value>
+  </data>
+  <data name="UnicodeGroup2Block.Text" xml:space="preserve">
+    <value>128 to 159</value>
+  </data>
+  <data name="UnicodeGroup2InfoBlock.Text" xml:space="preserve">
+    <value>Not visible</value>
+  </data>
+  <data name="UnicodeTitle" xml:space="preserve">
+    <value>Unicode characters</value>
+  </data>
 </root>

@@ -27,7 +27,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         }
 
         public static readonly DependencyProperty PropertyTypeProperty = DependencyProperty.Register(
-            nameof(Source), typeof(IEnumerable<IndexedModelWithValue<Brainf_ckMemoryCell>>), typeof(MemoryViewerFlyout), new PropertyMetadata(null));
+            nameof(Source), typeof(IEnumerable<IndexedModelWithValue<Brainf_ckMemoryCell>>), typeof(MemoryViewerFlyout), new PropertyMetadata(null, PropertyChangedCallback));
+
+        private static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            d.To<MemoryViewerFlyout>().MemoryList.ItemsSource = e.NewValue.To<IEnumerable<IndexedModelWithValue<Brainf_ckMemoryCell>>>();
+        }
 
         public double ItemsWidth
         {
@@ -45,6 +50,6 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         }
 
         public static readonly DependencyProperty ItemsHeightProperty = DependencyProperty.Register(
-            nameof(ItemsHeight), typeof(double), typeof(MemoryViewerFlyout), new PropertyMetadata(76));
+            nameof(ItemsHeight), typeof(double), typeof(MemoryViewerFlyout), new PropertyMetadata(76d));
     }
 }

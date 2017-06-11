@@ -23,92 +23,116 @@
         </trans-unit>
         <trans-unit id="ExEmptyStdin" translate="yes" xml:space="preserve">
           <source>Stdin buffer exhausted</source>
-          <target state="new">Stdin buffer exhausted</target>
+          <target state="translated">Buffer Stdin esaurito</target>
         </trans-unit>
         <trans-unit id="ExLowerBound" translate="yes" xml:space="preserve">
           <source>Lower bound exceeded</source>
-          <target state="new">Lower bound exceeded</target>
+          <target state="translated">Limite inferiore superato</target>
         </trans-unit>
         <trans-unit id="ExMaxStdout" translate="yes" xml:space="preserve">
           <source>Stdout buffer length limit exceeded</source>
-          <target state="new">Stdout buffer length limit exceeded</target>
+          <target state="translated">Limite lunghezza buffer Stdout superato</target>
         </trans-unit>
         <trans-unit id="ExMaxValue" translate="yes" xml:space="preserve">
           <source>Max value exceeded</source>
-          <target state="new">Max value exceeded</target>
+          <target state="translated">Valore massimo superato</target>
         </trans-unit>
         <trans-unit id="ExNegativeValue" translate="yes" xml:space="preserve">
           <source>Negative value</source>
-          <target state="new">Negative value</target>
+          <target state="translated">Valore negativo</target>
         </trans-unit>
         <trans-unit id="ExUpperBound" translate="yes" xml:space="preserve">
           <source>Upper bound exceeded</source>
-          <target state="new">Upper bound exceeded</target>
+          <target state="translated">Limite superiore superato</target>
         </trans-unit>
         <trans-unit id="InterpreterError" translate="yes" xml:space="preserve">
           <source>Interpreter error</source>
-          <target state="new">Interpreter error</target>
+          <target state="translated">Errore interprete</target>
         </trans-unit>
         <trans-unit id="ThresholdExceeded" translate="yes" xml:space="preserve">
           <source>Time threshold exceeded</source>
-          <target state="new">Time threshold exceeded</target>
+          <target state="translated">Limite di tempo superato</target>
         </trans-unit>
         <trans-unit id="WrongBrackets" translate="yes" xml:space="preserve">
           <source>Mismatched parentheses</source>
-          <target state="new">Mismatched parentheses</target>
+          <target state="translated">Parentesi non corrispondenti</target>
         </trans-unit>
         <trans-unit id="run" translate="yes" xml:space="preserve">
           <source>run</source>
-          <target state="new">run</target>
+          <target state="translated">esegui</target>
         </trans-unit>
         <trans-unit id="RestartRun.Text" translate="yes" xml:space="preserve">
           <source>RESTART</source>
-          <target state="new">RESTART</target>
+          <target state="translated">RIAVVIO</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Keep this uppercase</note>
         </trans-unit>
         <trans-unit id="Exception" translate="yes" xml:space="preserve">
           <source>thrown</source>
-          <target state="new">thrown</target>
+          <target state="translated">eccezione</target>
         </trans-unit>
         <trans-unit id="InternalError" translate="yes" xml:space="preserve">
           <source>error</source>
-          <target state="new">error</target>
+          <target state="translated">errore</target>
         </trans-unit>
         <trans-unit id="SyntaxError" translate="yes" xml:space="preserve">
           <source>syntax error</source>
-          <target state="new">syntax error</target>
+          <target state="translated">errore sintassi</target>
         </trans-unit>
         <trans-unit id="Threshold" translate="yes" xml:space="preserve">
           <source>runtime error</source>
-          <target state="new">runtime error</target>
+          <target state="translated">errore runtime</target>
         </trans-unit>
         <trans-unit id="Clear.Label" translate="yes" xml:space="preserve">
           <source>Clear</source>
-          <target state="new">Clear</target>
+          <target state="translated">Cancella</target>
         </trans-unit>
         <trans-unit id="MemoryState.Label" translate="yes" xml:space="preserve">
           <source>Memory state</source>
-          <target state="new">Memory state</target>
+          <target state="translated">Stato memoria</target>
         </trans-unit>
         <trans-unit id="PlayButton.Label" translate="yes" xml:space="preserve">
           <source>Play</source>
-          <target state="new">Play</target>
+          <target state="translated">Esegui</target>
         </trans-unit>
         <trans-unit id="Undo.Label" translate="yes" xml:space="preserve">
           <source>Undo</source>
-          <target state="new">Undo</target>
+          <target state="translated">Annulla</target>
         </trans-unit>
         <trans-unit id="Restart.Label" translate="yes" xml:space="preserve">
           <source>Restart</source>
-          <target state="new">Restart</target>
+          <target state="translated">Riavvia</target>
         </trans-unit>
         <trans-unit id="Clrscr.Label" translate="yes" xml:space="preserve">
           <source>Clear screen</source>
-          <target state="new">Clear screen</target>
+          <target state="translated">Pulisci lo schermo</target>
         </trans-unit>
         <trans-unit id="MemoryStateTitle" translate="yes" xml:space="preserve">
           <source>Memory state</source>
-          <target state="new">Memory state</target>
+          <target state="translated">Stato memoria</target>
+        </trans-unit>
+        <trans-unit id="Unicode.Label" translate="yes" xml:space="preserve">
+          <source>Show Unicode characters</source>
+          <target state="translated">Mostra caratteri Unicode</target>
+        </trans-unit>
+        <trans-unit id="UnicodeTitle" translate="yes" xml:space="preserve">
+          <source>Unicode characters</source>
+          <target state="translated">Caratteri Unicode</target>
+        </trans-unit>
+        <trans-unit id="UnicodeGroup1Block.Text" translate="yes" xml:space="preserve">
+          <source>0 to 31</source>
+          <target state="translated">Da 0 a 31</target>
+        </trans-unit>
+        <trans-unit id="UnicodeGroup1InfoBlock.Text" translate="yes" xml:space="preserve">
+          <source>Control characters</source>
+          <target state="translated">Caratteri di controllo</target>
+        </trans-unit>
+        <trans-unit id="UnicodeGroup2Block.Text" translate="yes" xml:space="preserve">
+          <source>128 to 159</source>
+          <target state="translated">Da 128 a 159</target>
+        </trans-unit>
+        <trans-unit id="UnicodeGroup2InfoBlock.Text" translate="yes" xml:space="preserve">
+          <source>Not visible</source>
+          <target state="translated">Non visibili</target>
         </trans-unit>
       </group>
     </body>

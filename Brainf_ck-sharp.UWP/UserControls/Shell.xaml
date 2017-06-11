@@ -201,7 +201,7 @@
                 <customCommandBar:CustomCommandBarButton
                     Label="Restart"
                     x:Uid="Restart"
-                    Icon="&#xE117;"
+                    Icon="&#xE9F3;"
                     IsEnabled="{x:Bind ViewModel.RestartAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind RequestRestartConsole}"/>
                 <customCommandBar:CustomCommandBarButton
@@ -210,6 +210,11 @@
                     Icon="&#xEA99;"
                     IsEnabled="{x:Bind ViewModel.ClearScreenAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind RequestClearScreen}"/>
+                <customCommandBar:CustomCommandBarButton
+                    Label="Show Unicode characters"
+                    x:Uid="Unicode"
+                    Icon="&#xEBDB;"
+                    Click="{x:Bind RequestShowUnicodeCharacters}"/>
             </customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
         </customCommandBar:CommandBarWithButtonsAnimations>
 

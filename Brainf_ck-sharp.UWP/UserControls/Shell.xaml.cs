@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -112,10 +115,12 @@ namespace Brainf_ck_sharp_UWP.UserControls
 
         public void RequestShowMemoryState()
         {
-            MemoryViewerFlyout viewer = new MemoryViewerFlyout
+            IReadonlyTouringMachineState source = Console.ViewModel.State;
+            MemoryViewerFlyout viewer = new MemoryViewerFlyout();
+            Task.Run(() => IndexedModelWithValue<Brainf_ckMemoryCell>.New(source).ToArray()).ContinueWith(t =>
             {
-                Source = IndexedModelWithValue<Brainf_ckMemoryCell>.New(Console.ViewModel.State)
-            };
+                viewer.Source = t.Result;
+            }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
             FlyoutManager.Instance.Show(LocalizationManager.GetResource("MemoryStateTitle"), viewer);
         }
 
@@ -126,5 +131,12 @@ namespace Brainf_ck_sharp_UWP.UserControls
         public void RequestRestartConsole() => Messenger.Default.Send(new RestartConsoleMessage());
 
         public void RequestClearScreen() => Messenger.Default.Send(new ClearScreenMessage());
+
+        public void RequestShowUnicodeCharacters()
+        {
+            UnicodeCharactersGuideFlyout flyout = new UnicodeCharactersGuideFlyout();
+            flyout.ViewModel.LoadAsync().Forget();
+            FlyoutManager.Instance.Show(LocalizationManager.GetResource("UnicodeTitle"), flyout);
+        }
     }
 }
