@@ -5,7 +5,9 @@ using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp;
+using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.UserControls.Flyouts;
 using Brainf_ck_sharp_UWP.ViewModels;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
@@ -19,8 +21,18 @@ namespace Brainf_ck_sharp_UWP.Views
             Loaded += IDEView_Loaded;
             this.InitializeComponent();
             DataContext = new IDEViewModel(EditBox.Document);
+            ViewModel.PlayRequested += ViewModel_PlayRequested;
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             _PreviousText = text;
+        }
+
+        private void ViewModel_PlayRequested(object sender, string e)
+        {
+            EditBox.Document.GetText(TextGetOptions.None, out String text);
+            InterpreterExecutionSession session = Brainf_ckInterpreter.InitializeSession(new[] { text }, e);
+            IDERunResultFlyout flyout = new IDERunResultFlyout(session);
+            FlyoutManager.Instance.Show("Run", flyout, new Thickness());
+            flyout.ViewModel.LoadGroupsAsync().Forget();
         }
 
         // Initializes the scroll events for the code

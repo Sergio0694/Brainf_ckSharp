@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
+using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.Helpers;
 
 namespace Brainf_ck_sharp_UWP.AttachedProperties
@@ -33,7 +35,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
         /// A property that shows a formatted Brainf_ck code to a <see cref="Span"/> object
         /// </summary>
         public static readonly DependencyProperty SourceProperty =
-            DependencyProperty.RegisterAttached("Source", typeof(String), typeof(RunInlineHelper), new PropertyMetadata(String.Empty, OnPropertyChanged));
+            DependencyProperty.RegisterAttached("Source", typeof(String), typeof(Brainf_ckCodeInlineFormatter), new PropertyMetadata(String.Empty, OnPropertyChanged));
 
         private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -46,6 +48,52 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
                 select new Run { Text = text, Foreground = brush };
             @this.Inlines.Clear();
             foreach (Run run in runs) @this.Inlines.Add(run);
+        }
+
+        public static IReadOnlyList<String> GetStackTrace(Span element)
+        {
+            return element.GetValue(StackTraceProperty).To<IReadOnlyList<String>>();
+        }
+
+        public static void SetStackTrace(Span element, IReadOnlyList<String> value)
+        {
+            element?.SetValue(StackTraceProperty, value);
+        }
+
+        /// <summary>
+        /// A property that shows a formatted Brainf_ck stack trace to a <see cref="Span"/> object
+        /// </summary>
+        public static readonly DependencyProperty StackTraceProperty =
+            DependencyProperty.RegisterAttached("StackTrace", typeof(IReadOnlyList<String>), typeof(Brainf_ckCodeInlineFormatter), 
+                new PropertyMetadata(DependencyProperty.UnsetValue, OnStackTracePropertyPropertyChanged));
+
+        private static void OnStackTracePropertyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            Span @this = d.To<Span>();
+            IReadOnlyList<String> stack = e.NewValue.To<IReadOnlyList<String>>();
+            List<Inline> inlines = new List<Inline>();
+            foreach ((String call, int i) in stack.Select((c, i) => (c, i)))
+            {
+                // Insert the "at" separator if needed
+                if (i > 0)
+                {
+                    inlines.Add(new LineBreak());
+                    inlines.Add(new Run
+                    {
+                        Text = "at",
+                        Foreground = new SolidColorBrush(Colors.DimGray),
+                        FontSize = @this.FontSize - 1
+                    });
+                    inlines.Add(new LineBreak());
+                }
+
+                // Add the formatted call line
+                Span line = new Span();
+                SetSource(line, call);
+                inlines.Add(line);
+            }
+            @this.Inlines.Clear();
+            foreach (Inline inline in inlines) @this.Inlines.Add(inline);
         }
 
         public static String GetUnformattedSource(Span element)

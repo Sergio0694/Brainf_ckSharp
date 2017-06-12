@@ -41,11 +41,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         /// </summary>
         /// <param name="title">The title for the container</param>
         /// <param name="content">The element to host in the container</param>
-        public void SetupUI([NotNull] String title, FrameworkElement content)
+        /// <param name="margin">The optional margins to set to the content of the popup to show</param>
+        public void SetupUI([NotNull] String title, FrameworkElement content, Thickness? margin)
         {
             TitleBlock.Text = title;
             Grid.SetRow(content, 1);
-            content.Margin = new Thickness(12, 0, 0, 0);
+            content.Margin = margin ?? new Thickness(12, 0, 0, 0);
             RootGrid.Children.Add(content);
         }
     }

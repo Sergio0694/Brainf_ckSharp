@@ -5,10 +5,12 @@ using Brainf_ck_sharp;
 using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels.ConsoleModels;
+using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.ViewModels.Abstract;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
@@ -102,10 +104,10 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             {
                 (bool valid, int error) = Brainf_ckInterpreter.CheckSourceSyntax(command.Command);
                 Messenger.Default.Send(valid 
-                    ? new ConsoleStatusUpdateMessage(IDEStatus.Console, "Ready", command.Command.Length, 0) 
-                    : new ConsoleStatusUpdateMessage(IDEStatus.FaultedConsole, "Warning", command.Command.Length, error));
+                    ? new ConsoleStatusUpdateMessage(IDEStatus.Console, LocalizationManager.GetResource("Ready"), command.Command.Length, 0) 
+                    : new ConsoleStatusUpdateMessage(IDEStatus.FaultedConsole, LocalizationManager.GetResource("Warning"), command.Command.Length, error));
             }
-            else Messenger.Default.Send(new ConsoleStatusUpdateMessage(IDEStatus.Console, "Ready", 0, 0));
+            else Messenger.Default.Send(new ConsoleStatusUpdateMessage(IDEStatus.Console, LocalizationManager.GetResource("Ready"), 0, 0));
             Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.ClearScreen, ClearScreenAvailable));
         }
 
@@ -166,33 +168,10 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 // Text output
                 Source.Add(new ConsoleCommandResult(result.Output));
             }
-            else if (result.HasFlag(InterpreterExitCode.MismatchedParentheses))
-            {
-                // Syntax error
-                Source.Add(new ConsoleExceptionResult(ConsoleExceptionType.SyntaxError, LocalizationManager.GetResource("WrongBrackets")));
-            }
-            else if (result.HasFlag(InterpreterExitCode.InternalException))
-            {
-                // Interpreter error
-                Source.Add(new ConsoleExceptionResult(ConsoleExceptionType.InternalError, LocalizationManager.GetResource("InterpreterError")));
-            }
-            else if (result.HasFlag(InterpreterExitCode.ThresholdExceeded))
-            {
-                // Possible infinite loop
-                Source.Add(new ConsoleExceptionResult(ConsoleExceptionType.RuntimeError, LocalizationManager.GetResource("ThresholdExceeded")));
-            }
             else if (result.HasFlag(InterpreterExitCode.ExceptionThrown))
             {
-                // Handled exception
-                String message;
-                if (result.HasFlag(InterpreterExitCode.LowerBoundExceeded)) message = LocalizationManager.GetResource("ExLowerBound");
-                else if (result.HasFlag(InterpreterExitCode.UpperBoundExceeded)) message = LocalizationManager.GetResource("ExUpperBound");
-                else if (result.HasFlag(InterpreterExitCode.NegativeValue)) message = LocalizationManager.GetResource("ExNegativeValue");
-                else if (result.HasFlag(InterpreterExitCode.MaxValueExceeded)) message = LocalizationManager.GetResource("ExMaxValue");
-                else if (result.HasFlag(InterpreterExitCode.StdinBufferExhausted)) message = LocalizationManager.GetResource("ExEmptyStdin");
-                else if (result.HasFlag(InterpreterExitCode.StdoutBufferLimitExceeded)) message = LocalizationManager.GetResource("ExMaxStdout");
-                else throw new InvalidOperationException("The interpreter exception type isn't valid");
-                Source.Add(new ConsoleExceptionResult(ConsoleExceptionType.RuntimeError, message));
+                ScriptExceptionInfo info = ScriptExceptionInfo.FromResult(result);
+                Source.Add(new ConsoleExceptionResult(info));
             }
             State = result.MachineState;
 

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp_UWP.DataModels;
+using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Messages.Actions;
+using Brainf_ck_sharp_UWP.ViewModels.Abstract;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 

@@ -301,4 +301,136 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!--JumpList generic Style-->
+    <Style TargetType="SemanticZoom" x:Name="SemanticZoomCustomStyle">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="TabNavigation" Value="Once" />
+        <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
+        <Setter Property="ScrollViewer.IsHorizontalRailEnabled" Value="False" />
+        <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
+        <Setter Property="ScrollViewer.IsVerticalRailEnabled" Value="False" />
+        <Setter Property="IsZoomOutButtonEnabled" Value="False" />
+        <Setter Property="ScrollViewer.ZoomMode" Value="Disabled" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="SemanticZoom">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="SemanticZoomStates">
+                                <VisualState x:Name="ZoomInView">
+                                    <Storyboard>
+                                        <FadeOutThemeAnimation TargetName="ZoomedOutPresenter" />
+                                        <FadeInThemeAnimation TargetName="ZoomedInPresenter" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="ZoomOutView">
+                                    <Storyboard>
+                                        <FadeOutThemeAnimation TargetName="ZoomedInPresenter" />
+                                        <FadeInThemeAnimation TargetName="ZoomedOutPresenter" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ZoomOutButtonStates">
+                                <VisualState x:Name="ZoomOutButtonVisible"/>
+                                <VisualState x:Name="ZoomOutButtonHidden"/>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <ScrollViewer x:Name="ScrollViewer"
+                                      HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
+                                      VerticalScrollBarVisibility="Hidden"
+                                      IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}"
+                                      IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}"
+                                      ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}"
+                                      IsZoomChainingEnabled="True"
+                                      IsZoomInertiaEnabled="False"
+                                      IsScrollInertiaEnabled="True"
+                                      HorizontalContentAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      MinZoomFactor="0.5"
+                                      MaxZoomFactor="1.0"
+                                      AutomationProperties.AccessibilityView="Raw">
+                            <ScrollViewer.Template>
+                                <ControlTemplate TargetType="ScrollViewer">
+                                    <ScrollContentPresenter x:Name="ScrollContentPresenter"
+                                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                            Margin="{TemplateBinding Padding}" />
+                                </ControlTemplate>
+                            </ScrollViewer.Template>
+                            <Grid Padding="{TemplateBinding Padding}"
+                                  RenderTransformOrigin="0, 0"
+                                  Background="{TemplateBinding Background}"
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="{TemplateBinding BorderThickness}">
+                                <Grid.RenderTransform>
+                                    <CompositeTransform x:Name="ManipulatedElementTransform" />
+                                </Grid.RenderTransform>
+                                <ContentPresenter x:Name="ZoomedInPresenter"
+                                                  RenderTransformOrigin="0.5, 0.5"
+                                                  Visibility="Collapsed"
+                                                  IsHitTestVisible="False"
+                                                  Content="{TemplateBinding ZoomedInView}">
+                                    <ContentPresenter.RenderTransform>
+                                        <CompositeTransform x:Name="ZoomedInTransform" />
+                                    </ContentPresenter.RenderTransform>
+                                </ContentPresenter>
+                                <ContentPresenter x:Name="ZoomedOutPresenter"
+                                                  RenderTransformOrigin="0.5, 0.5"
+                                                  Content="{TemplateBinding ZoomedOutView}"
+                                                  IsHitTestVisible="False"
+                                                  Visibility="Collapsed">
+                                    <ContentPresenter.RenderTransform>
+                                        <CompositeTransform x:Name="ZoomedOutTransform" />
+                                    </ContentPresenter.RenderTransform>
+                                </ContentPresenter>
+                            </Grid>
+                        </ScrollViewer>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Default style for Windows.UI.Xaml.Controls.ListViewHeaderItem -->
+    <Style TargetType="ListViewHeaderItem" x:Key="GroupsViewListHeaderStyle">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+        <Setter Property="FontSize" Value="{ThemeResource ListViewHeaderItemThemeFontSize}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="UseSystemFocusVisuals" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewHeaderItem">
+                    <ContentPresenter x:Name="ContentPresenter"
+                                      Margin="{TemplateBinding Padding}"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      ContentTransitions="{TemplateBinding ContentTransitions}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--Generic JumpList Picker Style-->
+    <Style x:Key="GenericJumpListPickerStyle"
+           TargetType="ListView">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

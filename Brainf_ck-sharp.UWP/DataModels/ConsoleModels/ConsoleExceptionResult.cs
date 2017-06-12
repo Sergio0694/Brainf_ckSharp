@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Brainf_ck_sharp_UWP.DataModels.Misc;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.DataModels.ConsoleModels
@@ -9,36 +9,18 @@ namespace Brainf_ck_sharp_UWP.DataModels.ConsoleModels
     public sealed class ConsoleExceptionResult : ConsoleCommandModelBase
     {
         /// <summary>
-        /// Gets the exception type for the current instance
-        /// </summary>
-        public ConsoleExceptionType ExceptionType { get; }
-
-        /// <summary>
-        /// Gets the message for the current exception
+        /// Gets the wrapped info to show
         /// </summary>
         [NotNull]
-        public String Message { get; }
+        public ScriptExceptionInfo Info { get; }
 
         /// <summary>
         /// Initializes a new instance for an exception that was generated
         /// </summary>
-        /// <param name="type">The exception type</param>
-        /// <param name="message">The info message for the exception</param>
-        public ConsoleExceptionResult(ConsoleExceptionType type, [NotNull] String message)
+        /// <param name="info">The exception info</param>
+        public ConsoleExceptionResult([NotNull] ScriptExceptionInfo info)
         {
-            ExceptionType = type;
-            Message = message;
+            Info = info;
         }
-    }
-
-    /// <summary>
-    /// Indicates the type of exception that was thrown by a script
-    /// </summary>
-    public enum ConsoleExceptionType
-    {
-        SyntaxError,
-        RuntimeError,
-        ThresholdExceeded,
-        InternalError
     }
 }

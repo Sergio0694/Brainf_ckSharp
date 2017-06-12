@@ -34,12 +34,15 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     {
                         Messenger.Default.Register<OperatorAddedMessage>(this, op => InsertSingleCharacter(op.Operator));
                         Messenger.Default.Register<ClearScreenMessage>(this, m => TryClearScreen());
+                        Messenger.Default.Register<PlayScriptMessage>(this, m => PlayRequested?.Invoke(this, m.StdinBuffer));
                         SendMessages();
                     }
                     else Messenger.Default.Unregister(this);
                 }
             }
         }
+
+        public event EventHandler<String> PlayRequested;
 
         /// <summary>
         /// Sends the status info messages for the current state

@@ -4,7 +4,7 @@ using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp_UWP.Helpers;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels
+namespace Brainf_ck_sharp_UWP.DataModels.Misc
 {
     /// <summary>
     /// A class that represents a group of 4 contiguous memory cells

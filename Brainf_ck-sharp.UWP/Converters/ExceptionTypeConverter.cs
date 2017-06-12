@@ -1,24 +1,24 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
-using Brainf_ck_sharp_UWP.DataModels.ConsoleModels;
+using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Helpers;
 
 namespace Brainf_ck_sharp_UWP.Converters
 {
     /// <summary>
-    /// A converter that returns a text representiation of a <see cref="ConsoleExceptionType"/> value
+    /// A converter that returns a text representiation of a <see cref="ScriptExceptionType"/> value
     /// </summary>
     public class ExceptionTypeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            switch (value.To<ConsoleExceptionType>())
+            switch (value.To<ScriptExceptionType>())
             {
-                case ConsoleExceptionType.SyntaxError:
+                case ScriptExceptionType.SyntaxError:
                     return LocalizationManager.GetResource("SyntaxError");
-                case ConsoleExceptionType.RuntimeError:
+                case ScriptExceptionType.RuntimeError:
                     return LocalizationManager.GetResource("Exception");
-                case ConsoleExceptionType.ThresholdExceeded:
+                case ScriptExceptionType.ThresholdExceeded:
                     return LocalizationManager.GetResource("Threshold");
                 default:
                     return LocalizationManager.GetResource("InternalError");

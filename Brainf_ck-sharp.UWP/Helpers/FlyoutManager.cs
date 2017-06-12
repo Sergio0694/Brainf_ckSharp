@@ -86,7 +86,8 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// </summary>
         /// <param name="title">The title of the new flyout to show</param>
         /// <param name="content">The content to show inside the flyout</param>
-        public async void Show([NotNull] String title, [NotNull] FrameworkElement content)
+        /// <param name="margin">The optional margins to set to the content of the popup to show</param>
+        public async void Show([NotNull] String title, [NotNull] FrameworkElement content, [CanBeNull] Thickness? margin = null)
         {
             // Lock and close the existing popup, if needed
             await Semaphore.WaitAsync();
@@ -99,7 +100,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
-            container.SetupUI(title, content);
+            container.SetupUI(title, content, margin);
             Popup popup = new Popup
             {
                 IsLightDismissEnabled = false,

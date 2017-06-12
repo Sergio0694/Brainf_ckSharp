@@ -221,4 +221,26 @@
   <data name="Warning" xml:space="preserve">
     <value>Warning</value>
   </data>
+  <data name="BreakpointReached" xml:space="preserve">
+    <value>Breakpoint reached</value>
+  </data>
+  <data name="ErrorLocation" xml:space="preserve">
+    <value>Error location</value>
+  </data>
+  <data name="ErrorType" xml:space="preserve">
+    <value>Error type</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Position</value>
+    <comment>The position of a wrong operator in a source code</comment>
+  </data>
+  <data name="SourceCode" xml:space="preserve">
+    <value>Source code</value>
+  </data>
+  <data name="StackTrace" xml:space="preserve">
+    <value>Stack trace</value>
+  </data>
+  <data name="Stats" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
 </root>

@@ -11,7 +11,7 @@ using JetBrains.Annotations;
 namespace Brainf_ck_sharp
 {
     /// <summary>
-    /// Classe statica che interpreta ed esegue il debug in modo asincrono dei codici sorgenti in Brainfuck
+    /// A simple class that handles all the Brainf_ck code and interprets it
     /// </summary>
     public static class Brainf_ckInterpreter
     {

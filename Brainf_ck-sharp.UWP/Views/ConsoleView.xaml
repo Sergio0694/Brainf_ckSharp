@@ -53,16 +53,16 @@
                 FontSize="16"
                 TextWrapping="Wrap">
                 <Run 
-                    Text="{Binding ExceptionType, Converter={StaticResource ExceptionConverter}}"
-                    FontWeight="Bold"
+                    Text="{Binding Info.ExceptionType, Converter={StaticResource ExceptionConverter}}"
+                    FontWeight="ExtraBold"
                     Foreground="#FFA00000"/>
                 <Run 
                     Text="&gt;"
-                    FontWeight="Bold"
+                    FontWeight="ExtraBold"
                     Foreground="#FFA00000"/>
                 <Run 
-                    attachedProperties:RunInlineHelper.BindableText="{Binding Message}"
-                    FontWeight="SemiBold"
+                    attachedProperties:RunInlineHelper.BindableText="{Binding Info.Message}"
+                    FontWeight="Bold"
                     Foreground="#FF900000"/>
             </TextBlock>
         </DataTemplate>

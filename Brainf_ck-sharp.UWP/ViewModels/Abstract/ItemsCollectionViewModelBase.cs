@@ -2,7 +2,7 @@
 using GalaSoft.MvvmLight;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.ViewModels
+namespace Brainf_ck_sharp_UWP.ViewModels.Abstract
 {
     /// <summary>
     /// A VM for a view that exposes a collection of items of the same type

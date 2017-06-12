@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Brainf_ck_sharp_UWP.ViewModels.Abstract;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.ViewModels
