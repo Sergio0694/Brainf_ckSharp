@@ -44,9 +44,10 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Sends the status info messages for the current state
         /// </summary>
-        private void SendMessages()
+        public void SendMessages()
         {
             Document.GetText(TextGetOptions.None, out String code);
+            Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.ClearScreen, code.Length > 1));
             (bool valid, int error) = Brainf_ckInterpreter.CheckSourceSyntax(code);
             (int row, int col) = code.FindCoordinates(Document.Selection.StartPosition);
             if (valid)
@@ -60,14 +61,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             }
         }
 
-        public void ApplySyntaxHighlightOnLastCharacter()
-        {
-            ITextRange range = Document.GetRange(Document.Selection.StartPosition - 1, Document.Selection.StartPosition);
-            range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(range.Character);
-            SendMessages();
-        }
-
-        public void InsertSingleCharacter(char c)
+        /// <summary>
+        /// Inserts a new character from the virtual keyboard and scrolls the current line into view, if needed
+        /// </summary>
+        /// <param name="c">The received character</param>
+        private void InsertSingleCharacter(char c)
         {
             try
             {
@@ -78,17 +76,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             {
                 //
             }
-            ApplySyntaxHighlightOnLastCharacter();
             Document.Selection.ScrollIntoView(PointOptions.NoHorizontalScroll);
-
-
-            String a;
-            Document.GetText(TextGetOptions.None, out a);
-            ITextRange range = Document.GetRange(0, int.MaxValue);
-            int r = range.FindText("\r", int.MaxValue, FindOptions.None);
-            System.Diagnostics.Debug.WriteLine(r);
-
-            SendMessages();
         }
 
         /// <summary>

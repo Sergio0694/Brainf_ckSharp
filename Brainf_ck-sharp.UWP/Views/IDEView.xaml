@@ -42,7 +42,6 @@
             Grid.Column="2"
             Style="{StaticResource TransparentEditBox}"
             x:Name="EditBox"
-            KeyDown="EditBox_KeyDown"
             TextWrapping="NoWrap"
             IsSpellCheckEnabled="False"
             IsTextPredictionEnabled="False"
