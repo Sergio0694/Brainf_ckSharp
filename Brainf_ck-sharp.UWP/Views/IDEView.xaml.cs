@@ -29,8 +29,10 @@ namespace Brainf_ck_sharp_UWP.Views
         // Updates the position of the line numbers when the edit box is scrolled
         private void Scroller_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
-            float target = (float) (_Top - 8 - EditBox.VerticalScrollViewerOffset);
+            // Keep the line numbers and the current cursor in sync with the code
+            float target = (float) (_Top - 12 - EditBox.VerticalScrollViewerOffset);
             LinesGrid.SetVisualOffsetAsync(TranslationAxis.Y, target);
+            CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + EditBox.ActualSelectionVerticalOffset));
         }
 
         public IDEViewModel ViewModel => DataContext.To<IDEViewModel>();
@@ -45,7 +47,8 @@ namespace Brainf_ck_sharp_UWP.Views
         public void AdjustTopMargin(double height)
         {
             _Top = height;
-            LinesGrid.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height - 8));
+            LinesGrid.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height - 12)); // Adjust the initial offset of the line numbers and indicators
+            CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height + 8));
             TopMarginGrid.Height = height;
         }
 
@@ -57,6 +60,7 @@ namespace Brainf_ck_sharp_UWP.Views
         // Updates the line numbers displayed next to the code box
         private void EditBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
+            // Draw the line numbers in the TextBlock next to the code
             int count = EditBox.GetLinesCount();
             StringBuilder builder = new StringBuilder();
             for (int i = 1; i < count; i++)
@@ -64,6 +68,13 @@ namespace Brainf_ck_sharp_UWP.Views
                 builder.Append($"\n{i}");
             }
             LineBlock.Text = builder.ToString();
+        }
+
+        private void EditBox_OnSelectionChanged(object sender, RoutedEventArgs e)
+        {
+            // Update the visibility and the position of the cursor
+            CursorBorder.SetVisualOpacity(EditBox.Document.Selection.Length > 0 ? 0 : 1);
+            CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + EditBox.ActualSelectionVerticalOffset));
         }
     }
 }

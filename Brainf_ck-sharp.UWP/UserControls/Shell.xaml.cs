@@ -71,7 +71,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             FadeCanvas.SetVisualOpacity(0);
             Messenger.Default.Send(new ConsoleStatusUpdateMessage(IDEStatus.Console, LocalizationManager.GetResource("Ready"), 0, 0));
             Console.AdjustTopMargin(HeaderGrid.ActualHeight + 12);
-            IDE.AdjustTopMargin(HeaderGrid.ActualHeight + 4);
+            IDE.AdjustTopMargin(HeaderGrid.ActualHeight);
             if (UniversalAPIsHelper.IsMobileDevice)
             {
                 _HeaderEffect = await HeaderBorder.GetAttachedInAppSemiAcrylicEffectAsync(HeaderBorder, 8, 800,

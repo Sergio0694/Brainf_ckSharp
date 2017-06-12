@@ -13,8 +13,10 @@
     <Grid Background="#FF1E1E1E">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="48"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="36"/>
+            <ColumnDefinition 
+                Width="*"
+                x:Name="CodeColumn"/>
         </Grid.ColumnDefinitions>
         
         <!--Breakpoints canvas-->
@@ -24,7 +26,7 @@
         <Canvas Grid.Column="1">
             <Grid
                 x:Name="LinesGrid"
-                Width="40">
+                Width="32">
                 <TextBlock
                     FontSize="15"
                     Foreground="#FF237CAD"
@@ -44,10 +46,25 @@
             TextWrapping="NoWrap"
             IsSpellCheckEnabled="False"
             IsTextPredictionEnabled="False"
-            TextChanged="EditBox_OnTextChanged">
+            TextChanged="EditBox_OnTextChanged"
+            SelectionChanged="EditBox_OnSelectionChanged"
+            Margin="0"
+            Padding="4,0,0,0">
             <RichEditBox.Header>
                 <Grid x:Name="TopMarginGrid"/>
             </RichEditBox.Header>
         </inheritedControls:RichEditBoxWithVerticalOffsetInfo>
+        
+        <!--Current line cursor-->
+        <Canvas Grid.Column="2">
+            <Border 
+                Width="{Binding ElementName=CodeColumn, Path=ActualWidth}"
+                VerticalAlignment="Top"
+                Height="20"
+                BorderThickness="2"
+                BorderBrush="#20FFFFFF"
+                IsHitTestVisible="False"
+                x:Name="CursorBorder"/>
+        </Canvas>
     </Grid>
 </UserControl>
