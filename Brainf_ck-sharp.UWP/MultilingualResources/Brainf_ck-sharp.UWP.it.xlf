@@ -135,6 +135,14 @@
           <target state="translated">Non visibili</target>
           <note from="MultilingualBuild" annotates="source" priority="2">It's talking about a series of special characters</note>
         </trans-unit>
+        <trans-unit id="Ready" translate="yes" xml:space="preserve">
+          <source>Ready</source>
+          <target state="translated">Pronto</target>
+        </trans-unit>
+        <trans-unit id="Warning" translate="yes" xml:space="preserve">
+          <source>Warning</source>
+          <target state="translated">Attenzione</target>
+        </trans-unit>
       </group>
     </body>
   </file>

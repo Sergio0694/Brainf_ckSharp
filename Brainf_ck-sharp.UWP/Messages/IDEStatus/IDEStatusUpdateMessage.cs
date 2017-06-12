@@ -19,16 +19,38 @@ namespace Brainf_ck_sharp_UWP.Messages.IDEStatus
         public int Column { get; }
 
         /// <summary>
+        /// Gets the error Y position, if present
+        /// </summary>
+        public int ErrorRow { get; }
+
+        /// <summary>
+        /// Gets the error X position, if present
+        /// </summary>
+        public int ErrorColumn { get; }
+
+        /// <summary>
         /// Gets the current filename, if available
         /// </summary>
         [NotNull]
         public String Filename { get; }
 
         // Default constructor
-        public IDEStatusUpdateMessage(IDEStatus status, [NotNull] String info, int row, int column, [NotNull] String filename) : base(status, info)
+        public IDEStatusUpdateMessage([NotNull] String info, int row, int column, [NotNull] String filename) 
+            : base(IDEStatus.IDE, info)
         {
             Row = row;
             Column = column;
+            Filename = filename;
+        }
+
+        // Faulted constructor
+        public IDEStatusUpdateMessage([NotNull] String info, int row, int column, int errorRow, int errorColumn, [NotNull] String filename) 
+            : base(IDEStatus.FaultedIDE, info)
+        {
+            Row = row;
+            Column = column;
+            ErrorRow = errorRow;
+            ErrorColumn = errorColumn;
             Filename = filename;
         }
     }

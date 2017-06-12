@@ -218,7 +218,8 @@
                     x:Uid="Restart"
                     Icon="&#xE9F3;"
                     IsEnabled="{x:Bind ViewModel.RestartAvailable, Mode=OneWay, FallbackValue=False}"
-                    Click="{x:Bind RequestRestartConsole}"/>
+                    Click="{x:Bind RequestRestartConsole}"
+                    x:Name="RestartButton"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Clear screen"
                     x:Uid="Clrscr"

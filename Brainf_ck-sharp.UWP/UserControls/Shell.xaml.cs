@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI;
@@ -70,7 +69,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
         {
             // UI setup
             FadeCanvas.SetVisualOpacity(0);
-            Messenger.Default.Send(new IDEStatusUpdateMessage(IDEStatus.Console, "Ready", 0, 0, String.Empty));
+            Messenger.Default.Send(new ConsoleStatusUpdateMessage(IDEStatus.Console, LocalizationManager.GetResource("Ready"), 0, 0));
             Console.AdjustTopMargin(HeaderGrid.ActualHeight + 12);
             IDE.AdjustTopMargin(HeaderGrid.ActualHeight + 4);
             if (UniversalAPIsHelper.IsMobileDevice)
@@ -142,7 +141,11 @@ namespace Brainf_ck_sharp_UWP.UserControls
 
         private void PivotControl_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SharedCommandBar.SwitchContent(sender.To<Pivot>().SelectedIndex == 0);
+            int index = sender.To<Pivot>().SelectedIndex;
+            SharedCommandBar.SwitchContent(index == 0);
+            Console.ViewModel.IsEnabled = index == 0;
+            RestartButton.Visibility = index == 0 ? Visibility.Visible : Visibility.Collapsed;
+            IDE.ViewModel.IsEnabled = index == 1;
         }
     }
 }

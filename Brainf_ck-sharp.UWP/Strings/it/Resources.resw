@@ -110,4 +110,10 @@
     <value>Non visibili</value>
     <comment>It's talking about a series of special characters</comment>
   </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Pronto</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Attenzione</value>
+  </data>
 </root>

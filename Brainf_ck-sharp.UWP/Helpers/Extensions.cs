@@ -136,5 +136,28 @@ namespace Brainf_ck_sharp_UWP.Helpers
             }
             return -1;
         }
+
+        /// <summary>
+        /// Finds the coordinates in a multiline string for the given index
+        /// </summary>
+        /// <param name="text">The input text</param>
+        /// <param name="index">The target text index</param>
+        /// <param name="newline">The newline character to use</param>
+        public static (int Y, int X) FindCoordinates([NotNull] this String text, int index, char newline = '\r')
+        {
+            int
+                row = 1,
+                col = 1;
+            for (int i = 0; i < index; i++)
+            {
+                if (text[i] == '\r')
+                {
+                    row++;
+                    col = 1;
+                }
+                else col++;
+            }
+            return (row, col);
+        }
     }
 }

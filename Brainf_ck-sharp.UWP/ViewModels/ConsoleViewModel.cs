@@ -46,6 +46,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         Messenger.Default.Register<UndoConsoleCharacterMessage>(this, m => TryUndoLastCommandCharacter());
                         Messenger.Default.Register<RestartConsoleMessage>(this, m => Restart());
                         Messenger.Default.Register<ClearScreenMessage>(this, m => TryClearScreen());
+                        SendCommandAvailableMessages();
                     }
                     else Messenger.Default.Unregister(this);
                 }
@@ -116,7 +117,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             if (!CommandAvailable) return;
             ConsoleUserCommand command = (ConsoleUserCommand)Source.Last();
             command.UpdateCommand(command.Command.Substring(0, command.Command.Length - 1));
-            if (!CommandAvailable) SendCommandAvailableMessages();
+            SendCommandAvailableMessages();
             ConsoleLineAddedOrModified?.Invoke(this, EventArgs.Empty);
         }
 

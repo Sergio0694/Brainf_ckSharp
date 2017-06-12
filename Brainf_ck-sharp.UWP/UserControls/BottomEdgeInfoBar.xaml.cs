@@ -49,6 +49,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                         RowRun.Text = ide.Row.ToString();
                         ColumnRun.Text = ide.Column.ToString();
                         FileBlock.Text = ide.Filename;
+                        if (ide.Status == IDEStatus.FaultedIDE) IDEErrorRun.Text = $"[{ide.ErrorRow}, {ide.ErrorColumn}]";
                         break;
                     default: throw new ArgumentOutOfRangeException();
                 }

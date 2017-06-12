@@ -215,4 +215,10 @@
   <data name="UnicodeTitle" xml:space="preserve">
     <value>Unicode characters</value>
   </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
 </root>

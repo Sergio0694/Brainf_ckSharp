@@ -4,9 +4,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Brainf_ck_sharp_UWP.Helpers;
-using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.ViewModels;
-using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 
@@ -19,7 +17,6 @@ namespace Brainf_ck_sharp_UWP.Views
             Loaded += IDEView_Loaded;
             this.InitializeComponent();
             DataContext = new IDEViewModel(EditBox.Document);
-            Messenger.Default.Register<OperatorAddedMessage>(this, m => AddOperatorFromVirtualKeyboard(m.Operator));
         }
 
         // Initializes the scroll events for the code
@@ -50,11 +47,6 @@ namespace Brainf_ck_sharp_UWP.Views
             _Top = height;
             LinesGrid.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height - 8));
             TopMarginGrid.Height = height;
-        }
-
-        private void AddOperatorFromVirtualKeyboard(char c)
-        {
-            ViewModel.InsertSingleCharacter(c);
         }
 
         private void EditBox_KeyDown(object sender, KeyRoutedEventArgs e)
