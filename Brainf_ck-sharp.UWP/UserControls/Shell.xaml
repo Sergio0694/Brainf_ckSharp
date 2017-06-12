@@ -78,16 +78,17 @@
             x:Name="PivotControl"
             RelativePanel.AlignTopWithPanel="True"
             RelativePanel.Above="OperatorsKeyboard"
-            Style="{StaticResource PivotCustomStyle}">
+            Style="{StaticResource PivotCustomStyle}"
+            SelectionChanged="PivotControl_OnSelectionChanged">
             
             <!--Console-->
-            <PivotItem Margin="8,0,8,8">
+            <PivotItem Margin="8,0,0,0">
                 <views:ConsoleView x:Name="Console"/>
             </PivotItem>
             
             <!--IDE-->
             <PivotItem Margin="0">
-                
+                <views:IDEView x:Name="IDE"/>
             </PivotItem>
         </Pivot>
 
@@ -169,6 +170,8 @@
             RelativePanel.AlignRightWithPanel="True"
             RelativePanel.Above="InfoBar">
             <customCommandBar:CommandBarWithButtonsAnimations.PrimaryCommands>
+                
+                <!--Console buttons-->
                 <customCommandBar:CustomCommandBarButton
                     Label="Play"
                     Icon="&#xE102;"
@@ -196,6 +199,18 @@
                     IsEnabled="{x:Bind ViewModel.UndoAvailable, Mode=OneWay, FallbackValue=False}"
                     DefaultButton="True"
                     Click="{x:Bind RequestUndoConsoleCharacter}"/>
+                
+                <!--IDE buttons-->
+                <customCommandBar:CustomCommandBarButton
+                    Label="Play"
+                    Icon="&#xE102;"
+                    x:Uid="PlayButton"
+                    Click="{x:Bind RequestPlay}"/>
+                <customCommandBar:CustomCommandBarButton
+                    Label="Debug"
+                    Icon="&#xEBE8;"
+                    x:Uid="DebugButton"
+                    Click="{x:Bind RequestPlay}"/>
             </customCommandBar:CommandBarWithButtonsAnimations.PrimaryCommands>
             <customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
                 <customCommandBar:CustomCommandBarButton

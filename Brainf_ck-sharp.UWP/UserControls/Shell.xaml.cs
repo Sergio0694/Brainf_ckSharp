@@ -72,6 +72,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             FadeCanvas.SetVisualOpacity(0);
             Messenger.Default.Send(new IDEStatusUpdateMessage(IDEStatus.Console, "Ready", 0, 0, String.Empty));
             Console.AdjustTopMargin(HeaderGrid.ActualHeight + 12);
+            IDE.AdjustTopMargin(HeaderGrid.ActualHeight + 4);
             if (UniversalAPIsHelper.IsMobileDevice)
             {
                 _HeaderEffect = await HeaderBorder.GetAttachedInAppSemiAcrylicEffectAsync(HeaderBorder, 8, 800,
@@ -137,6 +138,11 @@ namespace Brainf_ck_sharp_UWP.UserControls
             UnicodeCharactersGuideFlyout flyout = new UnicodeCharactersGuideFlyout();
             flyout.ViewModel.LoadAsync().Forget();
             FlyoutManager.Instance.Show(LocalizationManager.GetResource("UnicodeTitle"), flyout);
+        }
+
+        private void PivotControl_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SharedCommandBar.SwitchContent(sender.To<Pivot>().SelectedIndex == 0);
         }
     }
 }

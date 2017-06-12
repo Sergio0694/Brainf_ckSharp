@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
@@ -30,23 +29,11 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
             element?.SetValue(SourceProperty, value);
         }
 
+        /// <summary>
+        /// A property that shows a formatted Brainf_ck code to a <see cref="Span"/> object
+        /// </summary>
         public static readonly DependencyProperty SourceProperty =
             DependencyProperty.RegisterAttached("Source", typeof(String), typeof(RunInlineHelper), new PropertyMetadata(String.Empty, OnPropertyChanged));
-
-        /// <summary>
-        /// Gets the syntax highlight colors map for the available operators
-        /// </summary>
-        private static readonly IReadOnlyDictionary<char, Color> HighlightMap = new Dictionary<char, Color>
-        {
-            { '>', Color.FromArgb(byte.MaxValue, 0xDD, 0xDD, 0xDD) },
-            { '<', Color.FromArgb(byte.MaxValue, 0xDD, 0xDD, 0xDD) },
-            { '+', Colors.White },
-            { '-', Colors.White },
-            { '[', Color.FromArgb(byte.MaxValue, 0x59, 0x6C, 0xD6) },
-            { ']', Color.FromArgb(byte.MaxValue, 0x59, 0x6C, 0xD6) },
-            { '.', Colors.IndianRed },
-            { ',', Colors.DarkKhaki }
-        };
 
         private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -55,7 +42,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
             IEnumerable<Run> runs =
                 from c in code
                 let text = $"{c}{ZeroWidthSpace}"
-                let brush = new SolidColorBrush(HighlightMap[c])
+                let brush = new SolidColorBrush(Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(c))
                 select new Run { Text = text, Foreground = brush };
             @this.Inlines.Clear();
             foreach (Run run in runs) @this.Inlines.Add(run);
@@ -71,6 +58,9 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
             element?.SetValue(UnformattedSourceProperty, value);
         }
 
+        /// <summary>
+        /// A property that shows an unformatted Brainf_ck code to a <see cref="Span"/> object (it just renders the characters)
+        /// </summary>
         public static readonly DependencyProperty UnformattedSourceProperty =
             DependencyProperty.RegisterAttached("UnformattedSource", typeof(String), typeof(Brainf_ckCodeInlineFormatter), new PropertyMetadata(String.Empty, OnUnformattedSourcePropertyChanged));
 

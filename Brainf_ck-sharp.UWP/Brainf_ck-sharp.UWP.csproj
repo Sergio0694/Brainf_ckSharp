@@ -116,6 +116,7 @@
     <Compile Include="DataModels\ConsoleModels\ConsoleExceptionResult.cs" />
     <Compile Include="DataModels\ConsoleModels\ConsoleRestartCommand.cs" />
     <Compile Include="DataModels\ConsoleModels\ConsoleUserCommand.cs" />
+    <Compile Include="Helpers\Brainf_ckFormatterHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\FlyoutManager.cs" />
     <Compile Include="Helpers\IndexedModelWithValue.cs" />
@@ -172,6 +173,7 @@
       <DependentUpon>HeaderControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\InheritedControls\FixedRadExpanderControl.cs" />
+    <Compile Include="UserControls\InheritedControls\RichEditBoxWithVerticalOffsetInfo.cs" />
     <Compile Include="UserControls\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
@@ -192,11 +194,15 @@
     </Compile>
     <Compile Include="ViewModels\CompactCharactersViewerControlViewModel.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
+    <Compile Include="ViewModels\IDEViewModel.cs" />
     <Compile Include="ViewModels\ItemsCollectionViewModelBase.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\UnicodeCharactersGuideFlyoutViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\IDEView.xaml.cs">
+      <DependentUpon>IDEView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +307,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConsoleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\IDEView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
