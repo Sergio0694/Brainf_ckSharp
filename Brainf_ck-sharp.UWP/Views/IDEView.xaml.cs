@@ -163,7 +163,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     else if (range.Character == '\r')
                     {
                         // New line, tabs needed
-                        EditBox.Document.Selection.TypeText(tabs);
+                        if (tabs.Length > 0) EditBox.Document.Selection.TypeText(tabs);
                         DrawLineNumbers();
                     }
                 }
