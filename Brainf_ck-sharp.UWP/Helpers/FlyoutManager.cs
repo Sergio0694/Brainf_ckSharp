@@ -49,12 +49,9 @@ namespace Brainf_ck_sharp_UWP.Helpers
         private async void FlyoutManager_VisibleBoundsChanged(ApplicationView sender, object args)
         {
             await Semaphore.WaitAsync();
-            if (_CurrentPopup != null)
+            if (_CurrentPopup != null && _CurrentPopup.Child is FlyoutContainer container)
             {
-                AdjustPopupSize(_CurrentPopup);
-                FlyoutContainer container = _CurrentPopup.Child.To<FlyoutContainer>();
-                container.Height = _CurrentPopup.Height;
-                container.Width = _CurrentPopup.Width;
+                AdjustPopupSize(_CurrentPopup, container);
             }
             Semaphore.Release();
         }
@@ -106,9 +103,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
                 IsLightDismissEnabled = false,
                 Child = container
             };
-            AdjustPopupSize(popup);
-            container.Height = popup.Height;
-            container.Width = popup.Width;
+            AdjustPopupSize(popup, container);
 
             // Display and animate the popup
             _CurrentPopup = popup;
@@ -122,21 +117,30 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// Adjusts the size of a popup based on the current screen size
         /// </summary>
         /// <param name="popup">The popup to resize</param>
-        private static void AdjustPopupSize([NotNull] Popup popup)
+        /// <param name="container">The content hosted inside the <see cref="Popup"/> control</param>
+        private static void AdjustPopupSize([NotNull] Popup popup, [NotNull] FrameworkElement container)
         {
             double
                 width = ResolutionHelper.CurrentWidth,
                 height = ResolutionHelper.CurrentHeight;
-            if (width <= MaxPopupWidth) popup.Width = width;
+            if (width <= MaxPopupWidth)
+            {
+                container.Width = width;
+                popup.HorizontalOffset = 0;
+            }
             else
             {
-                popup.Width = MaxPopupWidth;
+                container.Width = MaxPopupWidth;
                 popup.HorizontalOffset = width / 2 - MaxPopupWidth / 2;
             }
-            if (height <= MaxPopupHeight) popup.Height = height;
+            if (height <= MaxPopupHeight)
+            {
+                container.Height = height;
+                popup.VerticalOffset = 0;
+            }
             else
             {
-                popup.Height = MaxPopupHeight;
+                container.Height = MaxPopupHeight;
                 popup.VerticalOffset = height / 2 - MaxPopupHeight / 2;
             }
         }

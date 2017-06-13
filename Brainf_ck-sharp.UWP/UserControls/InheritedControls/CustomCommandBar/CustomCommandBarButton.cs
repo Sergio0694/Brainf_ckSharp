@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Helpers;
 
-namespace Brainf_ck_sharp_UWP.UserControls.CustomCommandBar
+namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
 {
     /// <summary>
     /// A custom CommandBarButton to be put inside the AutoHideCommandBar

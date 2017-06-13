@@ -9,11 +9,11 @@
     xmlns:header="using:Brainf_ck_sharp_UWP.UserControls.Header"
     xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
     xmlns:views="using:Brainf_ck_sharp_UWP.Views"
-    xmlns:customCommandBar="using:Brainf_ck_sharp_UWP.UserControls.CustomCommandBar"
     xmlns:stdinHeader="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader"
     xmlns:telerik="using:Telerik.UI.Xaml.Controls.Primitives"
     xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
     xmlns:controls="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls"
+    xmlns:customCommandBar="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">

@@ -157,13 +157,16 @@
     <Compile Include="UserControls\BottomEdgeInfoBar.xaml.cs">
       <DependentUpon>BottomEdgeInfoBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\CustomCommandBar\CommandBarWithButtonsAnimations.cs" />
-    <Compile Include="UserControls\CustomCommandBar\CustomCommandBarButton.cs" />
+    <Compile Include="UserControls\CustomControls\IDESessionBreakpointOptionControl.xaml.cs">
+      <DependentUpon>IDESessionBreakpointOptionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\InheritedControls\CustomCommandBar\CommandBarWithButtonsAnimations.cs" />
+    <Compile Include="UserControls\InheritedControls\CustomCommandBar\CustomCommandBarButton.cs" />
     <Compile Include="UserControls\DataTemplates\CompactCharactersChunkViewerTemplate.xaml.cs">
       <DependentUpon>CompactCharactersChunkViewerTemplate.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\DataTemplates\ErrorCharacterTemplate.xaml.cs">
-      <DependentUpon>ErrorCharacterTemplate.xaml</DependentUpon>
+    <Compile Include="UserControls\CustomControls\ErrorCharacterDisplayControl.xaml.cs">
+      <DependentUpon>ErrorCharacterDisplayControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DataTemplates\IDEResultHeaders\IDEResultZoomedInHeaderTemplate.xaml.cs">
       <DependentUpon>IDEResultZoomedInHeaderTemplate.xaml</DependentUpon>
@@ -275,11 +278,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\CustomControls\IDESessionBreakpointOptionControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\DataTemplates\CompactCharactersChunkViewerTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\DataTemplates\ErrorCharacterTemplate.xaml">
+    <Page Include="UserControls\CustomControls\ErrorCharacterDisplayControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

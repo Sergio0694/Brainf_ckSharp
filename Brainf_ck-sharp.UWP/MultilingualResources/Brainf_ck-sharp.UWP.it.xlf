@@ -205,6 +205,14 @@
           <source>Repeat last script</source>
           <target state="translated">Ripeti ultimo script</target>
         </trans-unit>
+        <trans-unit id="ContinueButton.Title" translate="yes" xml:space="preserve">
+          <source>Continue</source>
+          <target state="new">Continue</target>
+        </trans-unit>
+        <trans-unit id="SkipButton.Title" translate="yes" xml:space="preserve">
+          <source>Skip</source>
+          <target state="new">Skip</target>
+        </trans-unit>
       </group>
     </body>
   </file>

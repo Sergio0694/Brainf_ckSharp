@@ -13,7 +13,7 @@ using JetBrains.Annotations;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 
-namespace Brainf_ck_sharp_UWP.UserControls.CustomCommandBar
+namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
 {
     /// <summary>
     /// A custom CommandBar that uses an animation to show/hide groups of primary buttons inside it
@@ -138,7 +138,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomCommandBar
             // Get the buttons to hide
             CustomCommandBarButton[] pendingButtons =
                 (from control in PrimaryCommands
-                let button = control.To<CustomCommandBarButton>()
+                let button = Extensions.To<CustomCommandBarButton>(control)
                 where button.Visibility == Visibility.Visible
                 select button).ToArray();
             if (pendingButtons.Length == 0 || _Disposed)

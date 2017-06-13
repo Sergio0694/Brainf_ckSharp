@@ -4,11 +4,11 @@ using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.Helpers;
 
-namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
+namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
 {
-    public sealed partial class ErrorCharacterTemplate : UserControl
+    public sealed partial class ErrorCharacterDisplayControl : UserControl
     {
-        public ErrorCharacterTemplate()
+        public ErrorCharacterDisplayControl()
         {
             this.InitializeComponent();
         }
@@ -23,12 +23,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
         }
 
         public static readonly DependencyProperty ExceptionInfoProperty = DependencyProperty.Register(
-            nameof(ExceptionInfo), typeof(InterpreterExceptionInfo), typeof(ErrorCharacterTemplate), 
+            nameof(ExceptionInfo), typeof(InterpreterExceptionInfo), typeof(ErrorCharacterDisplayControl), 
             new PropertyMetadata(default(InterpreterExceptionInfo), OnExceptionInfoPropertyChanged));
 
         private static void OnExceptionInfoPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ErrorCharacterTemplate @this = d.To<ErrorCharacterTemplate>();
+            ErrorCharacterDisplayControl @this = d.To<ErrorCharacterDisplayControl>();
             if (e.NewValue is InterpreterExceptionInfo info)
             {
                 @this.OperatorBlock.Text = info.FaultedOperator.ToString();
