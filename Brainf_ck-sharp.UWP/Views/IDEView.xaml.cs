@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Text;
@@ -86,6 +87,8 @@ namespace Brainf_ck_sharp_UWP.Views
             DrawLineNumbers();
             DrawBracketGuides(null);
         }
+
+        #region UI overlays
 
         /// <summary>
         /// Updates the line numbers shown next to the code edit box
@@ -192,6 +195,8 @@ namespace Brainf_ck_sharp_UWP.Views
             }
         }
 
+        #endregion
+
         private String _PreviousText;
 
         private void EditBox_OnSelectionChanged(object sender, RoutedEventArgs e)
@@ -274,10 +279,6 @@ namespace Brainf_ck_sharp_UWP.Views
                     }
                 }
             }
-            else
-            {
-                
-            }
 
             // Display the text updates
             int batch;
@@ -319,6 +320,51 @@ namespace Brainf_ck_sharp_UWP.Views
             CursorRectangle.Visibility = Visibility.Visible;
             CursorAnimation.Begin();
             VisualStateManager.GoToState(this, "Default", false);
+        }
+
+        private async void EditBox_OnPaste(object sender, TextControlPasteEventArgs e)
+        {
+            // Retrieve the contents as plain text
+            e.Handled = true;
+            DataPackageView view = Clipboard.GetContent();
+            String text;
+            if (view.Contains(StandardDataFormats.Text)) text = await view.GetTextAsync();
+            else if (view.Contains(StandardDataFormats.Rtf))
+            {
+                String rtf = await view.GetRtfAsync();
+                RichEditBox provider = new RichEditBox();
+                provider.Document.SetText(TextSetOptions.FormatRtf, rtf);
+                provider.Document.GetText(TextGetOptions.None, out text);
+            }
+            else text = null;
+            view.ReportOperationCompleted(DataPackageOperation.Copy);
+            if (text == null) return;
+
+            // Disable the handlers
+            EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
+            EditBox.TextChanged -= EditBox_OnTextChanged;
+            EditBox.Document.BatchDisplayUpdates();
+
+            // Paste and highlight the text
+            EditBox.Document.Selection.SetText(TextSetOptions.None, text);
+            int start = EditBox.Document.Selection.StartPosition, end = EditBox.Document.Selection.EndPosition;
+            for (int i = start; i < end - 1; i++)
+            {
+                ITextRange range = EditBox.Document.GetRange(i, i + 1);
+                range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(range.Character);
+            }
+            EditBox.Document.Selection.StartPosition = end;
+
+            // Refresh the UI
+            EditBox.Document.ApplyDisplayUpdates();
+            EditBox.Document.GetText(TextGetOptions.None, out text);
+            _PreviousText = text;
+            DrawLineNumbers();
+            DrawBracketGuides(text);
+
+            // Restore the handlers
+            EditBox.SelectionChanged += EditBox_OnSelectionChanged;
+            EditBox.TextChanged += EditBox_OnTextChanged;
         }
     }
 }

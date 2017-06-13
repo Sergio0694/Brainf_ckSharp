@@ -82,6 +82,7 @@
             SelectionChanged="EditBox_OnSelectionChanged"
             GotFocus="EditBox_OnGotFocus"
             LostFocus="EditBox_OnLostFocus"
+            Paste="EditBox_OnPaste"
             Margin="0"
             Padding="4,0,0,0">
             <RichEditBox.Header>
