@@ -90,5 +90,15 @@
                 Fill="LightGray"
                 x:Name="CursorRectangle"/>
         </Canvas>
+
+        <!--Canvas with the column guides-->
+        <Canvas
+            Grid.Column="2"
+            IsHitTestVisible="False"
+            x:Name="BracketGuidesCanvas">
+            <Canvas.RenderTransform>
+                <TranslateTransform x:Name="GuidesTransform"/>
+            </Canvas.RenderTransform>
+        </Canvas>
     </Grid>
 </UserControl>

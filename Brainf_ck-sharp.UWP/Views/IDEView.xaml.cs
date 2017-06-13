@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Windows.Foundation;
+using Windows.UI;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Shapes;
 using Brainf_ck_sharp;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.Helpers;
@@ -30,7 +34,7 @@ namespace Brainf_ck_sharp_UWP.Views
         private void ViewModel_PlayRequested(object sender, string e)
         {
             EditBox.Document.GetText(TextGetOptions.None, out String text);
-            InterpreterExecutionSession session = Brainf_ckInterpreter.InitializeSession(new[] { text }, e);
+            InterpreterExecutionSession session = Brainf_ckInterpreter.InitializeSession(new[] { text }, e, 64, 1000);
             IDERunResultFlyout flyout = new IDERunResultFlyout(session);
             FlyoutManager.Instance.Show("Run", flyout, new Thickness());
             flyout.ViewModel.LoadGroupsAsync().Forget();
@@ -48,11 +52,12 @@ namespace Brainf_ck_sharp_UWP.Views
         private void Scroller_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             // Keep the line numbers and the current cursor in sync with the code
-            float target = (float) (_Top - 12 - EditBox.VerticalScrollViewerOffset);
+            float target = (float)(_Top - 12 - EditBox.VerticalScrollViewerOffset);
             LinesGrid.SetVisualOffsetAsync(TranslationAxis.Y, target);
             Point selectionOffset = EditBox.ActualSelectionVerticalOffset;
             CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
             CursorRectangle.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
+            GuidesTransform.Y = -EditBox.VerticalScrollViewerOffset;
         }
 
         public IDEViewModel ViewModel => DataContext.To<IDEViewModel>();
@@ -71,6 +76,7 @@ namespace Brainf_ck_sharp_UWP.Views
             CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height + 8));
             CursorRectangle.SetVisualOffsetAsync(TranslationAxis.Y, (float) (height + 8));
             CursorRectangle.SetVisualOffsetAsync(TranslationAxis.X, 4);
+            BracketGuidesCanvas.SetVisualOffsetAsync(TranslationAxis.Y, (float)height);
             TopMarginGrid.Height = height;
         }
 
@@ -78,6 +84,7 @@ namespace Brainf_ck_sharp_UWP.Views
         private void EditBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
             DrawLineNumbers();
+            DrawBracketGuides(null);
         }
 
         /// <summary>
@@ -93,6 +100,96 @@ namespace Brainf_ck_sharp_UWP.Views
                 builder.Append($"\n{i}");
             }
             LineBlock.Text = builder.ToString();
+        }
+
+        // The backup of the indexes of the brackets in the text
+        private IReadOnlyList<(int, int, char)> _Brackets;
+
+        /// <summary>
+        /// Redraws the column guides if necessary
+        /// </summary>
+        /// <param name="code">The current text, if already available</param>
+        private void DrawBracketGuides(String code)
+        {
+            // Get the text, clear the current guides and make sure the syntax is currently valid
+            if (code == null) EditBox.Document.GetText(TextGetOptions.None, out code);
+
+            // Check the current syntax
+            (bool valid, _) = Brainf_ckInterpreter.CheckSourceSyntax(code);
+            if (!valid)
+            {
+                BracketGuidesCanvas.Children.Clear();
+                _Brackets = null;
+                return;
+            }
+
+            // Build the indexes for the current state
+            List<(int, int, char)> indexes = new List<(int, int, char)>();
+            foreach ((char c, int i) in code.Select((c, i) => (c, i)))
+            {
+                if (c == '[' || c == ']')
+                {
+                    (int x, int y) = code.FindCoordinates(i);
+                    indexes.Add((x, y, c));
+                }
+            }
+
+            // Check if the brackets haven't been changed or moved
+            if (_Brackets != null && 
+                _Brackets.Count == indexes.Count &&
+                _Brackets.Zip(indexes, (first, second) => first.Equals(second)).All(b => b))
+            {
+                return;
+            }
+            _Brackets = indexes;
+            BracketGuidesCanvas.Children.Clear();
+
+            // Draw the guides for each brackets pair
+            foreach ((char c, int i) in code.Select((c, i) => (c, i)))
+            {
+                // Get the index of the corresponding closing bracket (only if they're not on the same line)
+                if (c != '[') continue;
+                int height = 0, target = -1;
+                bool newLine = false;
+                for (int j = i + 1; j < code.Length; j++)
+                {
+                    char token = code[j];
+                    if (token == '\r') newLine = true;
+                    else if (token == '[') height++;
+                    else if (token == ']')
+                    {
+                        if (height == 0)
+                        {
+                            if (newLine) target = j;
+                            break;
+                        }
+                        height--;
+                    }
+                }
+                if (target == -1) continue;
+
+                // Get the initial and ending range
+                ITextRange range = EditBox.Document.GetRange(i, i);
+                range.GetRect(PointOptions.Transform, out Rect open, out _);
+                range = EditBox.Document.GetRange(target, target);
+                range.GetRect(PointOptions.Transform, out Rect close, out _);
+
+                // Render the new line guide
+                double top = close.Top - open.Bottom;
+                Line guide = new Line
+                {
+                    Width = 1,
+                    StrokeThickness = 1,
+                    Height = top,
+                    Stroke = new SolidColorBrush(Colors.LightGray),
+                    StrokeDashArray = new DoubleCollection { 4 },
+                    Y1 = 0,
+                    Y2 = top
+                };
+                guide.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 30 + open.Top));
+                guide.SetVisualOffsetAsync(TranslationAxis.X, (float)(open.X + 6));
+                BracketGuidesCanvas.Children.Add(guide);
+            }
         }
 
         private String _PreviousText;
@@ -117,6 +214,7 @@ namespace Brainf_ck_sharp_UWP.Views
             int start = EditBox.Document.Selection.StartPosition;
 
             // Single character entered
+            bool refreshBrackets = false;
             if (text.Length == _PreviousText.Length + 1)
             {
                 // Get the last character and apply the right color
@@ -165,12 +263,14 @@ namespace Brainf_ck_sharp_UWP.Views
                         bracketsRange.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar('[');
                         EditBox.Document.Selection.Move(TextRangeUnit.Character, -(indents + 2));
                         DrawLineNumbers();
+                        refreshBrackets = true;
                     }
                     else if (range.Character == '\r')
                     {
                         // New line, tabs needed
                         if (tabs.Length > 0) EditBox.Document.Selection.TypeText(tabs);
                         DrawLineNumbers();
+                        refreshBrackets = true;
                     }
                 }
             }
@@ -189,6 +289,9 @@ namespace Brainf_ck_sharp_UWP.Views
             // Get the updated text
             EditBox.Document.GetText(TextGetOptions.None, out text);
             _PreviousText = text;
+
+            // Update the bracket guides
+            if (refreshBrackets) DrawBracketGuides(text);
 
             // Move the cursor to the right position
             Point selectionOffset = EditBox.ActualSelectionVerticalOffset;

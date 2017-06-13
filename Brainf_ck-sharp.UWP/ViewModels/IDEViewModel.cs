@@ -42,6 +42,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             }
         }
 
+        /// <summary>
+        /// Raised whenever the user requests to play the current script
+        /// </summary>
         public event EventHandler<String> PlayRequested;
 
         /// <summary>
