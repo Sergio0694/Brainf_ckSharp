@@ -47,9 +47,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Sends the status info messages for the current state
         /// </summary>
-        public void SendMessages()
+        public void SendMessages([CanBeNull] String code = null)
         {
-            Document.GetText(TextGetOptions.None, out String code);
+            if (code == null) Document.GetText(TextGetOptions.None, out code);
             Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.ClearScreen, code.Length > 1));
             (bool valid, int error) = Brainf_ckInterpreter.CheckSourceSyntax(code);
             (int row, int col) = code.FindCoordinates(Document.Selection.StartPosition);

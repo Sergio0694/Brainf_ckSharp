@@ -29,12 +29,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         /// <summary>
         /// Gets the actual vertical offset of the current text selection
         /// </summary>
-        public double ActualSelectionVerticalOffset
+        public Point ActualSelectionVerticalOffset
         {
             get
             {
                 Document.Selection.GetRect(PointOptions.Transform, out Rect textRect, out _);
-                return textRect.Top - VerticalScrollViewerOffset;
+                return new Point(textRect.X, textRect.Top - VerticalScrollViewerOffset);
             }
         }
 

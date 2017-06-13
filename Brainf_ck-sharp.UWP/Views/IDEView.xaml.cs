@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using Windows.Foundation;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -38,6 +39,7 @@ namespace Brainf_ck_sharp_UWP.Views
         // Initializes the scroll events for the code
         private void IDEView_Loaded(object sender, RoutedEventArgs e)
         {
+            CursorAnimation.Begin();
             ScrollViewer scroller = EditBox.FindChild<ScrollViewer>();
             scroller.ViewChanged += Scroller_ViewChanged;
         }
@@ -48,7 +50,9 @@ namespace Brainf_ck_sharp_UWP.Views
             // Keep the line numbers and the current cursor in sync with the code
             float target = (float) (_Top - 12 - EditBox.VerticalScrollViewerOffset);
             LinesGrid.SetVisualOffsetAsync(TranslationAxis.Y, target);
-            CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + EditBox.ActualSelectionVerticalOffset));
+            Point selectionOffset = EditBox.ActualSelectionVerticalOffset;
+            CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
+            CursorRectangle.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
         }
 
         public IDEViewModel ViewModel => DataContext.To<IDEViewModel>();
@@ -65,6 +69,8 @@ namespace Brainf_ck_sharp_UWP.Views
             _Top = height;
             LinesGrid.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height - 12)); // Adjust the initial offset of the line numbers and indicators
             CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height + 8));
+            CursorRectangle.SetVisualOffsetAsync(TranslationAxis.Y, (float) (height + 8));
+            CursorRectangle.SetVisualOffsetAsync(TranslationAxis.X, 4);
             TopMarginGrid.Height = height;
         }
 
@@ -95,7 +101,7 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             // Update the visibility and the position of the cursor
             CursorBorder.SetVisualOpacity(EditBox.Document.Selection.Length.Abs() > 0 ? 0 : 1);
-            CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + EditBox.ActualSelectionVerticalOffset));
+            CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + EditBox.ActualSelectionVerticalOffset.Y));
 
             /* ====================
              * Syntax highlight
@@ -180,15 +186,34 @@ namespace Brainf_ck_sharp_UWP.Views
                 batch = EditBox.Document.ApplyDisplayUpdates();
             } while (batch != 0);
 
-            // Notify the UI
-            ViewModel.SendMessages();
-
-            // Backup the new length and restore the event handlers
+            // Get the updated text
             EditBox.Document.GetText(TextGetOptions.None, out text);
             _PreviousText = text;
+
+            // Move the cursor to the right position
+            Point selectionOffset = EditBox.ActualSelectionVerticalOffset;
+            CursorRectangle.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
+            CursorRectangle.SetVisualOffsetAsync(TranslationAxis.X, (float)(selectionOffset.X + 4));
+
+            // Notify the UI
+            ViewModel.SendMessages(text);
+
+            // Restore the event handlers
             EditBox.Document.ApplyDisplayUpdates();
             EditBox.SelectionChanged += EditBox_OnSelectionChanged;
             EditBox.TextChanged += EditBox_OnTextChanged;
+        }
+
+        private void EditBox_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            CursorAnimation.Stop();
+            CursorRectangle.Visibility = Visibility.Collapsed;
+        }
+
+        private void EditBox_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            CursorRectangle.Visibility = Visibility.Visible;
+            CursorAnimation.Begin();
         }
     }
 }

@@ -8,6 +8,18 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.Resources>
+        <Storyboard x:Name="CursorAnimation">
+            <DoubleAnimation
+                Storyboard.TargetName="CursorRectangle"
+                Storyboard.TargetProperty="Opacity"
+                To="0"
+                From="1"
+                Duration="0:0:0.5"
+                AutoReverse="True"
+                RepeatBehavior="Forever"/>
+        </Storyboard>
+    </UserControl.Resources>
 
     <!--Root-->
     <Grid Background="#FF1E1E1E">
@@ -48,6 +60,8 @@
             ClipboardCopyFormat="PlainText"
             TextChanged="EditBox_OnTextChanged"
             SelectionChanged="EditBox_OnSelectionChanged"
+            GotFocus="EditBox_OnGotFocus"
+            LostFocus="EditBox_OnLostFocus"
             Margin="0"
             Padding="4,0,0,0">
             <RichEditBox.Header>
@@ -56,15 +70,25 @@
         </inheritedControls:RichEditBoxWithVerticalOffsetInfo>
         
         <!--Current line cursor-->
-        <Canvas Grid.Column="2">
+        <Canvas 
+            Grid.Column="2"
+            IsHitTestVisible="False">
+            
+            <!--Current line highlight-->
             <Border 
                 Width="{Binding ElementName=CodeColumn, Path=ActualWidth}"
                 VerticalAlignment="Top"
                 Height="20"
                 BorderThickness="2"
                 BorderBrush="#20FFFFFF"
-                IsHitTestVisible="False"
                 x:Name="CursorBorder"/>
+            
+            <!--Virtual cursor-->
+            <Rectangle 
+                Width="1"
+                Height="20"
+                Fill="LightGray"
+                x:Name="CursorRectangle"/>
         </Canvas>
     </Grid>
 </UserControl>
