@@ -37,7 +37,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 }
 
                 // Exception type (if present) and Stdout buffer (if it contains at least a character)
-                if (Session.CurrentResult.HasFlag(InterpreterExitCode.ExceptionThrown))
+                if (!Session.CurrentResult.HasFlag(InterpreterExitCode.Success))
                 {
                     ScriptExceptionInfo info = ScriptExceptionInfo.FromResult(Session.CurrentResult);
                     source.Add(new JumpListGroup<IDEResultSection, IDEResultSectionDataBase>(

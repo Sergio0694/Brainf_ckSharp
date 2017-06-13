@@ -27,12 +27,12 @@
         <!--Sections-->
         <local:KeyboardSectionHeaderButton
             Grid.Column="0"
-            IconText="&#xE75B;"
+            IconText="&#xE92E;"
             x:Name="KeyboardButton"
             IsSelected="True"
             HeaderSelected="{x:Bind SelectKeyboard}"/>
         <local:KeyboardSectionHeaderButton
-            IconText="&#xE8D2;"
+            IconText="&#xE96A;"
             Grid.Column="1"
             x:Name="MemoryMapButton"
             HeaderSelected="{x:Bind SelectMemoryView}"/>

@@ -168,7 +168,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 // Text output
                 Source.Add(new ConsoleCommandResult(result.Output));
             }
-            else if (result.HasFlag(InterpreterExitCode.ExceptionThrown))
+            else if (!result.HasFlag(InterpreterExitCode.Success))
             {
                 ScriptExceptionInfo info = ScriptExceptionInfo.FromResult(result);
                 Source.Add(new ConsoleExceptionResult(info));

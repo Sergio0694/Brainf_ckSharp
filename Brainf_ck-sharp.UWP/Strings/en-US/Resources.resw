@@ -265,4 +265,7 @@
   <data name="LowercaseSingleOperator" xml:space="preserve">
     <value>1 operator</value>
   </data>
+  <data name="RepeatScript.Label" xml:space="preserve">
+    <value>Repeat last script</value>
+  </data>
 </root>

@@ -201,6 +201,10 @@
           <source>1 operator</source>
           <target state="translated">1 operatore</target>
         </trans-unit>
+        <trans-unit id="RepeatScript.Label" translate="yes" xml:space="preserve">
+          <source>Repeat last script</source>
+          <target state="new">Repeat last script</target>
+        </trans-unit>
       </group>
     </body>
   </file>

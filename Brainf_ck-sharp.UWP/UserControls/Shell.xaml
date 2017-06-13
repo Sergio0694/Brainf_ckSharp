@@ -215,6 +215,13 @@
             </customCommandBar:CommandBarWithButtonsAnimations.PrimaryCommands>
             <customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
                 <customCommandBar:CustomCommandBarButton
+                    Label="Repeat last script"
+                    x:Uid="RepeatScript"
+                    Icon="&#xE117;"
+                    IsEnabled="{x:Bind ViewModel.RestartAvailable, Mode=OneWay, FallbackValue=False}"
+                    Click="{x:Bind RequestRestartConsole}"
+                    x:Name="RepeatScriptButton"/>
+                <customCommandBar:CustomCommandBarButton
                     Label="Restart"
                     x:Uid="Restart"
                     Icon="&#xE9F3;"
