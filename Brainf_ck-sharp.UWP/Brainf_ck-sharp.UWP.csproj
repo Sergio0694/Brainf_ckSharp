@@ -164,7 +164,10 @@
     <Compile Include="UserControls\DataTemplates\ErrorCharacterTemplate.xaml.cs">
       <DependentUpon>ErrorCharacterTemplate.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\DataTemplates\IDEResultZoomedOutHeaderTemplate.xaml.cs">
+    <Compile Include="UserControls\DataTemplates\IDEResultHeaders\IDEResultZoomedInHeaderTemplate.xaml.cs">
+      <DependentUpon>IDEResultZoomedInHeaderTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\IDEResultHeaders\IDEResultZoomedOutHeaderTemplate.xaml.cs">
       <DependentUpon>IDEResultZoomedOutHeaderTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DataTemplates\UnicodeCharacterTemplate.xaml.cs">
@@ -279,7 +282,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\DataTemplates\IDEResultZoomedOutHeaderTemplate.xaml">
+    <Page Include="UserControls\DataTemplates\IDEResultHeaders\IDEResultZoomedInHeaderTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DataTemplates\IDEResultHeaders\IDEResultZoomedOutHeaderTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

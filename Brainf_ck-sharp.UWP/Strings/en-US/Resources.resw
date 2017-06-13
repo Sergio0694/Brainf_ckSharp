@@ -256,4 +256,13 @@
   <data name="Stats" xml:space="preserve">
     <value>Statistics</value>
   </data>
+  <data name="LowercaseAtPosition" xml:space="preserve">
+    <value>at position</value>
+  </data>
+  <data name="LowercaseOperators" xml:space="preserve">
+    <value>operators</value>
+  </data>
+  <data name="LowercaseSingleOperator" xml:space="preserve">
+    <value>1 operator</value>
+  </data>
 </root>

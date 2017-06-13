@@ -189,6 +189,18 @@
           <source>1 nested loop</source>
           <target state="translated">1 ciclo annidato</target>
         </trans-unit>
+        <trans-unit id="LowercaseAtPosition" translate="yes" xml:space="preserve">
+          <source>at position</source>
+          <target state="translated">in posizione</target>
+        </trans-unit>
+        <trans-unit id="LowercaseOperators" translate="yes" xml:space="preserve">
+          <source>operators</source>
+          <target state="translated">operatori</target>
+        </trans-unit>
+        <trans-unit id="LowercaseSingleOperator" translate="yes" xml:space="preserve">
+          <source>1 operator</source>
+          <target state="translated">1 operatore</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -1,20 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using Windows.UI;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Converters;
 using Brainf_ck_sharp_UWP.DataModels.IDEResults;
 using Brainf_ck_sharp_UWP.Helpers;
 
-namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
+namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEResultHeaders
 {
     public sealed partial class IDEResultZoomedOutHeaderTemplate : UserControl
     {
         public IDEResultZoomedOutHeaderTemplate()
         {
             this.InitializeComponent();
+            this.ManageControlPointerStates((_, value) => VisualStateManager.GoToState(this, value ? "Highlight" : "Default", false));
         }
 
         /// <summary>
@@ -60,7 +63,9 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
                         @this.InfoBlock.FontWeight = FontWeights.Normal;
                         break;
                     case IDEResultSectionSessionData section when section.Section == IDEResultSection.SourceCode:
-                        @this.InfoBlock.Text = $"{LocalizationManager.GetResource("Position")} {section.Session.CurrentResult.MachineState.Position}";
+                        @this.InfoBlock.Text = section.Session.CurrentResult.SourceCode.Length > 1 
+                            ? $"{section.Session.CurrentResult.SourceCode.Length} {LocalizationManager.GetResource("LowercaseOperators")}" 
+                            : LocalizationManager.GetResource("LowercaseSingleOperator");
                         @this.InfoBlock.Foreground = new SolidColorBrush(Colors.LightGray);
                         @this.InfoBlock.FontWeight = FontWeights.Normal;
                         break;
@@ -74,12 +79,27 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
                         break;
                     case IDEResultSectionSessionData section when section.Section == IDEResultSection.ErrorLocation ||
                                                                   section.Section == IDEResultSection.BreakpointReached:
-                        @this.InfoBlock.Text = $"{LocalizationManager.GetResource("Position")} {section.Session.CurrentResult.ExceptionInfo?.ErrorPosition ?? 0}";
-                        @this.InfoBlock.Foreground = new SolidColorBrush(Colors.LightGray);
+                        char c = section.Session.CurrentResult.ExceptionInfo?.FaultedOperator ?? (char)0;
+                        List<Run> inlines = new List<Run>
+                        {
+                            new Run
+                            {
+                                Text = c.ToString(),
+                                Foreground = new SolidColorBrush(Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(c))
+                            },
+                            new Run
+                            {
+                                Text = $" {LocalizationManager.GetResource("LowercaseAtPosition")} {section.Session.CurrentResult.ExceptionInfo?.ErrorPosition ?? 0}",
+                                Foreground = new SolidColorBrush(Colors.LightGray)
+                            }
+                        };
+                        @this.InfoBlock.Inlines.Clear();
+                        foreach (Run run in inlines) @this.InfoBlock.Inlines.Add(run);
                         @this.InfoBlock.FontWeight = FontWeights.Normal;
                         break;
                     case IDEResultExceptionInfoData exception:
-                        @this.InfoBlock.Text = ExceptionTypeConverter.Convert(exception.Info.ExceptionType);
+                        String message = ExceptionTypeConverter.Convert(exception.Info.ExceptionType);
+                        @this.InfoBlock.Text = $"{message[0].ToString().ToUpperInvariant()}{message.Substring(1)}";
                         @this.InfoBlock.Foreground = new SolidColorBrush(Colors.DarkRed);
                         @this.InfoBlock.FontWeight = FontWeights.SemiBold;
                         break;

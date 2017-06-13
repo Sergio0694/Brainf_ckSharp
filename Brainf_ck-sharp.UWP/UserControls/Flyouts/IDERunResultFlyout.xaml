@@ -9,6 +9,7 @@
     xmlns:attached="using:Brainf_ck_sharp_UWP.AttachedProperties"
     xmlns:dataTemplates="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates"
     xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
+    xmlns:ideResultHeaders="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEResultHeaders"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -94,16 +95,14 @@
         
         <!--Header-->
         <DataTemplate x:Key="HeaderTemplate">
-            <TextBlock
-                Text="{Binding Key, Converter={StaticResource HeadersConverter}}"
-                FontSize="16"
-                Foreground="DarkGray"
+            <ideResultHeaders:IDEResultZoomedInHeaderTemplate
+                Title="{Binding Key, Converter={StaticResource HeadersConverter}}"
                 Margin="12,8,16,0"/>
         </DataTemplate>
 
         <!--Zoomed out default header-->
         <DataTemplate x:Key="ZoomedOutDefaultHeaderTemplate">
-            <dataTemplates:IDEResultZoomedOutHeaderTemplate
+            <ideResultHeaders:IDEResultZoomedOutHeaderTemplate
                 Title="{Binding Group.Key, Converter={StaticResource UppercaseConverter}}"
                 DataModel="{Binding Group.Sample}"/>
         </DataTemplate>

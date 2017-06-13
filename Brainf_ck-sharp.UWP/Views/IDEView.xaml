@@ -45,6 +45,7 @@
             TextWrapping="NoWrap"
             IsSpellCheckEnabled="False"
             IsTextPredictionEnabled="False"
+            ClipboardCopyFormat="PlainText"
             TextChanged="EditBox_OnTextChanged"
             SelectionChanged="EditBox_OnSelectionChanged"
             Margin="0"
