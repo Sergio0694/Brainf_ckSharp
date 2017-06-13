@@ -70,7 +70,7 @@ namespace Brainf_ck_sharp
             int size = 64, int? threshold = null)
         {
             TouringMachineState state = new TouringMachineState(size);
-            IReadOnlyList<IReadOnlyList<char>> chunks = source.Select(FindExecutableCode).ToArray();
+            IReadOnlyList<IReadOnlyList<char>> chunks = source.Select(chunk => FindExecutableCode(chunk).ToArray()).ToArray();
             if (chunks.Count == 0 || chunks.Any(group => group.Count == 0))
             {
                 return new InterpreterExecutionSession(
@@ -132,6 +132,14 @@ namespace Brainf_ck_sharp
             // Edge case or valid return
             return height == 0 ? (true, 0) : (false, error);
         }
+        
+        /// <summary>
+        /// Checks whether or not the given source code contains at least one executable operator
+        /// </summary>
+        /// <param name="source">The source code to analyze</param>
+        [PublicAPI]
+        [Pure]
+        public static bool FindOperators([NotNull] String source) => FindExecutableCode(source).Any();
 
         #endregion
 
@@ -441,10 +449,9 @@ namespace Brainf_ck_sharp
         /// </summary>
         /// <param name="source">The input source code</param>
         [NotNull, LinqTunnel]
-        private static IReadOnlyList<char> FindExecutableCode([NotNull] String source) =>
-        (from c in source
-            where Operators.Contains(c)
-            select c).ToArray();
+        private static IEnumerable<char> FindExecutableCode([NotNull] String source) => from c in source
+                                                                                        where Operators.Contains(c)
+                                                                                        select c;
 
         /// <summary>
         /// Checks whether or not the syntax in the input operators is valid

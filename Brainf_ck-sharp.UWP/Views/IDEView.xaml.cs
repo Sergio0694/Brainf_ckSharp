@@ -311,12 +311,14 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             CursorAnimation.Stop();
             CursorRectangle.Visibility = Visibility.Collapsed;
+            VisualStateManager.GoToState(this, "Focused", false);
         }
 
         private void EditBox_OnLostFocus(object sender, RoutedEventArgs e)
         {
             CursorRectangle.Visibility = Visibility.Visible;
             CursorAnimation.Begin();
+            VisualStateManager.GoToState(this, "Default", false);
         }
     }
 }

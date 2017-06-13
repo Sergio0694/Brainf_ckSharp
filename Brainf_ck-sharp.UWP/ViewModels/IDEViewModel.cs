@@ -47,6 +47,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// </summary>
         public event EventHandler<String> PlayRequested;
 
+        // Indicates whether or not the IDE contains at least a valid operator
+        private bool _CanExecute;
+
         /// <summary>
         /// Sends the status info messages for the current state
         /// </summary>
@@ -56,6 +59,12 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.ClearScreen, code.Length > 1));
             (bool valid, int error) = Brainf_ckInterpreter.CheckSourceSyntax(code);
             (int row, int col) = code.FindCoordinates(Document.Selection.StartPosition);
+            bool executable = Brainf_ckInterpreter.FindOperators(code);
+            if (_CanExecute != executable)
+            {
+                Messenger.Default.Send(new IDEExecutableStatusChangedMessage(executable));
+                _CanExecute = executable;
+            }
             if (valid)
             {
                 Messenger.Default.Send(new IDEStatusUpdateMessage(LocalizationManager.GetResource("Ready"), row, col, String.Empty));

@@ -10,6 +10,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         public ShellViewModel()
         {
             Messenger.Default.Register<ConsoleAvailableActionStatusChangedMessage>(this, ProcessConsoleActionsStatusChangedMessage);
+            Messenger.Default.Register<IDEExecutableStatusChangedMessage>(this, m => IDECodeAvailable = m.Executable);
         }
 
         // Enables or disables the console buttons when needed
@@ -104,6 +105,17 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         {
             get => _ClearScreenAvailable;
             private set => Set(ref _ClearScreenAvailable, value);
+        }
+
+        private bool _IDECodeAvailable;
+
+        /// <summary>
+        /// Gets or sets whether or not there is code to run in the IDE
+        /// </summary>
+        public bool IDECodeAvailable
+        {
+            get => _IDECodeAvailable;
+            private set => Set(ref _IDECodeAvailable, value);
         }
     }
 }

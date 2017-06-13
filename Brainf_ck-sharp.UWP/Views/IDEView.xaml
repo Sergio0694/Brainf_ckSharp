@@ -30,7 +30,27 @@
                 Width="*"
                 x:Name="CodeColumn"/>
         </Grid.ColumnDefinitions>
-        
+
+        <!--Visual states-->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="Default">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="CursorBorder.BorderBrush"
+                            Value="#20FFFFFF"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Focused">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="CursorBorder.BorderBrush"
+                            Value="#30FFFFFF"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <!--Breakpoints canvas-->
         <Canvas Background="#FF333333"/>
 

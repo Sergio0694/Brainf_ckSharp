@@ -206,11 +206,13 @@
                     Label="Play"
                     Icon="&#xE102;"
                     x:Uid="PlayButton"
+                    IsEnabled="{x:Bind ViewModel.IDECodeAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind RequestPlay}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Debug"
                     Icon="&#xEBE8;"
                     x:Uid="DebugButton"
+                    IsEnabled="False"
                     Click="{x:Bind RequestPlay}"/>
             </customCommandBar:CommandBarWithButtonsAnimations.PrimaryCommands>
             <customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>

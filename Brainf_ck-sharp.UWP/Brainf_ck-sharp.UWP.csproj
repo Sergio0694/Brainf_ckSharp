@@ -140,6 +140,7 @@
     <Compile Include="Messages\Actions\ClearScreenMessage.cs" />
     <Compile Include="Messages\Actions\ConsoleAvailableActionStatusChangedMessage.cs" />
     <Compile Include="Messages\Actions\ConsoleMemoryStateChangedMessage.cs" />
+    <Compile Include="Messages\Actions\IDEExecutableStatusChangedMessage.cs" />
     <Compile Include="Messages\Actions\PlayScriptMessage.cs" />
     <Compile Include="Messages\Actions\RestartConsoleMessage.cs" />
     <Compile Include="Messages\Actions\UndoConsoleCharacterMessage.cs" />
