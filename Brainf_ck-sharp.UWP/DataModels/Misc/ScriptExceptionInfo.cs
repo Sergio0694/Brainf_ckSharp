@@ -53,7 +53,7 @@ namespace Brainf_ck_sharp_UWP.DataModels.Misc
             // Possible infinite loop
             if (result.HasFlag(InterpreterExitCode.ThresholdExceeded))
             {
-                return new ScriptExceptionInfo(ScriptExceptionType.RuntimeError, LocalizationManager.GetResource("ThresholdExceeded"));
+                return new ScriptExceptionInfo(ScriptExceptionType.ThresholdExceeded, LocalizationManager.GetResource("ThresholdExceeded"));
             }
 
             // Handled exception

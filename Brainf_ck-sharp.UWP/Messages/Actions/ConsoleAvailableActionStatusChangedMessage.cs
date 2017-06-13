@@ -36,6 +36,7 @@
         Restart,
         Clear,
         Undo,
-        ClearScreen
+        ClearScreen,
+        RepeatLastScript
     }
 }

@@ -218,8 +218,8 @@
                     Label="Repeat last script"
                     x:Uid="RepeatScript"
                     Icon="&#xE117;"
-                    IsEnabled="{x:Bind ViewModel.RestartAvailable, Mode=OneWay, FallbackValue=False}"
-                    Click="{x:Bind RequestRestartConsole}"
+                    IsEnabled="{x:Bind ViewModel.RepeatLastScriptAvailable, Mode=OneWay, FallbackValue=False}"
+                    Click="{x:Bind RequestRepeatLastConsoleScript}"
                     x:Name="RepeatScriptButton"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Restart"

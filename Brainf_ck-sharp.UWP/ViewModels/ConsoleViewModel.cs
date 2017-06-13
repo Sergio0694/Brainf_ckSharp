@@ -43,7 +43,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     if (value)
                     {
                         Messenger.Default.Register<OperatorAddedMessage>(this, op => TryAddCommandCharacter(op.Operator));
-                        Messenger.Default.Register<PlayScriptMessage>(this, m => ExecuteCommand(m.StdinBuffer).Forget());
+                        Messenger.Default.Register<PlayScriptMessage>(this, m =>
+                        {
+                            if (m.Type == ScriptPlayType.Default) ExecuteCommand(m.StdinBuffer).Forget();
+                            else if (m.Type == ScriptPlayType.RepeatedCommand) RepeatLastScript(m.StdinBuffer).Forget();
+                        });
                         Messenger.Default.Register<ClearConsoleLineMessage>(this, m => TryResetCommand());
                         Messenger.Default.Register<UndoConsoleCharacterMessage>(this, m => TryUndoLastCommandCharacter());
                         Messenger.Default.Register<RestartConsoleMessage>(this, m => Restart());
@@ -88,6 +92,27 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         }
 
         /// <summary>
+        /// Tries to repeat the previous command
+        /// </summary>
+        /// <param name="stdin">The current input buffer</param>
+        private async Task RepeatLastScript([NotNull] String stdin)
+        {
+            // Retrieve the current and the last command
+            ConsoleUserCommand current = null, last = null;
+            foreach (ConsoleUserCommand model in Source.Reverse().Where(model => model is ConsoleUserCommand).Cast<ConsoleUserCommand>())
+            {
+                if (current == null) current = model;
+                else if (last == null && model.Command.Length > 0) last = model;
+                else if (last != null) break;
+            }
+            if (current == null || last == null) return;
+
+            // Repeat the script
+            current.UpdateCommand(last.Command);
+            await ExecuteCommand(stdin);
+        }
+
+        /// <summary>
         /// Gets whether or not there is an available user command to execute
         /// </summary>
         public bool CommandAvailable => Source.LastOrDefault() is ConsoleUserCommand command &&
@@ -99,6 +124,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Play, forcedStatus ?? CommandAvailable));
             Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Undo, forcedStatus ?? CommandAvailable));
             Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Clear, forcedStatus ?? CommandAvailable));
+            bool script = Source.Skip(forcedStatus == false ? 0 : 1).Where(model => model is ConsoleUserCommand).Cast<ConsoleUserCommand>().Any(model => model.Command.Length > 0);
+            Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.RepeatLastScript, script));
             if (Source.Last() is ConsoleUserCommand command &&
                 command.Command.Length > 0 && forcedStatus != false)
             {

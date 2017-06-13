@@ -50,13 +50,16 @@ namespace Brainf_ck_sharp_UWP.UserControls
             Messenger.Default.Register<FlyoutClosedNotificationMessage>(this, m => ManageFlyoutUI(false));
         }
 
+        public ShellViewModel ViewModel => DataContext.To<ShellViewModel>();
+
+        #region UI
+
+        // Adjusts the UI when a flyout is displayed in the app
         private void ManageFlyoutUI(bool shown)
         {
             FadeCanvas.IsHitTestVisible = shown;
             FadeCanvas.StartCompositionFadeAnimation(null, shown ? 1 : 0, 250, null, EasingFunctionNames.Linear);
         }
-
-        public ShellViewModel ViewModel => DataContext.To<ShellViewModel>();
 
         // Acrylic brush for the header
         private AttachedStaticCompositionEffect<Border> _HeaderEffect;
@@ -96,22 +99,31 @@ namespace Brainf_ck_sharp_UWP.UserControls
             scroller.PointerCaptureLost += Scroller_PointerOut;
         }
 
+        // Disables the swipe gesture for the keyboard pivot (swiping that pivot causes the app to crash)
         private void Scroller_PointerIn(object sender, PointerRoutedEventArgs e)
         {
             sender.To<ScrollViewer>().HorizontalScrollMode = ScrollMode.Disabled;
         }
 
+        // Restores the original scrolling settings when the pointer is outside the keyboard pivot
         private void Scroller_PointerOut(object sender, PointerRoutedEventArgs e)
         {
             sender.To<ScrollViewer>().HorizontalScrollMode = ScrollMode.Enabled;
         }
 
-        public void RequestPlay()
+        #endregion
+
+        // Sends a message to request to execute the current script
+        private void SendPlayRequestMessage(ScriptPlayType type)
         {
             String stdin = StdinHeader.StdinBuffer;
             StdinHeader.ResetStdin();
-            Messenger.Default.Send(new PlayScriptMessage(stdin));
+            Messenger.Default.Send(new PlayScriptMessage(type, stdin));
         }
+
+        public void RequestPlay() => SendPlayRequestMessage(ScriptPlayType.Default);
+
+        public void RequestRepeatLastConsoleScript() => SendPlayRequestMessage(ScriptPlayType.RepeatedCommand);
 
         public void RequestShowMemoryState()
         {
@@ -145,6 +157,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             SharedCommandBar.SwitchContent(index == 0);
             Console.ViewModel.IsEnabled = index == 0;
             RestartButton.Visibility = index == 0 ? Visibility.Visible : Visibility.Collapsed;
+            RepeatScriptButton.Visibility = index == 0 ? Visibility.Visible : Visibility.Collapsed;
             IDE.ViewModel.IsEnabled = index == 1;
         }
     }

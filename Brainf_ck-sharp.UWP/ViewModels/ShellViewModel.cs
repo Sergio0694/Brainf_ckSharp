@@ -32,9 +32,23 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 case ConsoleAction.ClearScreen:
                     ClearScreenAvailable = message.Status;
                     break;
+                case ConsoleAction.RepeatLastScript:
+                    RepeatLastScriptAvailable = message.Status;
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private bool _RepeatLastScriptAvailable;
+
+        /// <summary>
+        /// Gets or sets whether or not it is possible to repeat the last script that was run in the console
+        /// </summary>
+        public bool RepeatLastScriptAvailable
+        {
+            get => _RepeatLastScriptAvailable;
+            private set => Set(ref _RepeatLastScriptAvailable, value);
         }
 
         private bool _RestartAvailable;
