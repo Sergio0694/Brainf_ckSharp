@@ -109,7 +109,8 @@
                 Margin="0"
                 IsExpandable="True"
                 IsExpanded="True"
-                ExpanderHitTargetAreaWidth="48">
+                ExpanderHitTargetAreaWidth="48"
+                AnimatedIndicatorContent="&#xE010;">
                 <telerik:RadExpanderControl.AnimatedIndicatorContentTemplate>
                     <DataTemplate>
                         <Button 
