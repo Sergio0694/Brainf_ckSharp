@@ -14,13 +14,13 @@ namespace Brainf_ck_sharp_UWP.DataModels.IDEResults
         /// Gets the indexed memory state info for the script
         /// </summary>
         [NotNull]
-        public IEnumerable<IndexedModelWithValue<Brainf_ckMemoryCell>> IndexedState { get; }
+        public IReadOnlyCollection<IndexedModelWithValue<Brainf_ckMemoryCell>> IndexedState { get; }
         
         /// <summary>
         /// Creates a new instance for the given memory state
         /// </summary>
         /// <param name="state">The indexed memory state to expose</param>
-        public IDEResultSectionStateData([NotNull] IEnumerable<IndexedModelWithValue<Brainf_ckMemoryCell>> state)
+        public IDEResultSectionStateData([NotNull] IReadOnlyCollection<IndexedModelWithValue<Brainf_ckMemoryCell>> state)
             : base(IDEResultSection.MemoryState)
         {
             IndexedState = state;

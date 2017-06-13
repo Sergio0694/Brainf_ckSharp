@@ -109,6 +109,7 @@
     <Compile Include="Converters\CharacterWithFallbackConverter.cs" />
     <Compile Include="Converters\ExceptionTypeConverter.cs" />
     <Compile Include="Converters\IDESectionToDisplayNameConverter.cs" />
+    <Compile Include="Converters\IDESectionToUppercaseDisplayNameConverter.cs" />
     <Compile Include="Converters\PositiveValueToBrushConverter.cs" />
     <Compile Include="Converters\ReadableCharactersConverter.cs" />
     <Compile Include="DataModels\IDEResults\IDEResultExceptionInfoData.cs" />
@@ -162,6 +163,9 @@
     </Compile>
     <Compile Include="UserControls\DataTemplates\ErrorCharacterTemplate.xaml.cs">
       <DependentUpon>ErrorCharacterTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\IDEResultZoomedOutHeaderTemplate.xaml.cs">
+      <DependentUpon>IDEResultZoomedOutHeaderTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DataTemplates\UnicodeCharacterTemplate.xaml.cs">
       <DependentUpon>UnicodeCharacterTemplate.xaml</DependentUpon>
@@ -272,6 +276,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\DataTemplates\ErrorCharacterTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DataTemplates\IDEResultZoomedOutHeaderTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,0 +1,95 @@
+﻿using System;
+using Windows.UI;
+using Windows.UI.Text;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+using Brainf_ck_sharp_UWP.Converters;
+using Brainf_ck_sharp_UWP.DataModels.IDEResults;
+using Brainf_ck_sharp_UWP.Helpers;
+
+namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
+{
+    public sealed partial class IDEResultZoomedOutHeaderTemplate : UserControl
+    {
+        public IDEResultZoomedOutHeaderTemplate()
+        {
+            this.InitializeComponent();
+        }
+
+        /// <summary>
+        /// Gets or sets the title to display in the control
+        /// </summary>
+        public String Title
+        {
+            get => (String)GetValue(TitleProperty);
+            set => SetValue(TitleProperty, value);
+        }
+
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
+            nameof(Title), typeof(String), typeof(IDEResultZoomedOutHeaderTemplate), new PropertyMetadata(default(String), OnTitlePropertyChanged));
+
+        private static void OnTitlePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            d.To<IDEResultZoomedOutHeaderTemplate>().TitleBlock.Text = e.NewValue.To<String>() ?? String.Empty;
+        }
+
+        /// <summary>
+        /// Gets or sets the data model linked with this instance
+        /// </summary>
+        public IDEResultSectionDataBase DataModel
+        {
+            get => (IDEResultSectionDataBase)GetValue(DataModelProperty);
+            set => SetValue(DataModelProperty, value);
+        }
+
+        public static readonly DependencyProperty DataModelProperty = DependencyProperty.Register(
+            nameof(DataModel), typeof(IDEResultSectionDataBase), typeof(IDEResultZoomedOutHeaderTemplate), 
+            new PropertyMetadata(default(IDEResultSectionDataBase), OnDataModelPropertyChanged));
+
+        private static void OnDataModelPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            IDEResultZoomedOutHeaderTemplate @this = d.To<IDEResultZoomedOutHeaderTemplate>();
+            if (e.NewValue is IDEResultSectionDataBase data)
+            {
+                switch (data)
+                {
+                    case IDEResultSectionSessionData section when section.Section == IDEResultSection.Stdout:
+                        @this.InfoBlock.Text = section.Session.CurrentResult.Output;
+                        @this.InfoBlock.Foreground = new SolidColorBrush(Colors.Cornsilk);
+                        @this.InfoBlock.FontWeight = FontWeights.Normal;
+                        break;
+                    case IDEResultSectionSessionData section when section.Section == IDEResultSection.SourceCode:
+                        @this.InfoBlock.Text = $"{LocalizationManager.GetResource("Position")} {section.Session.CurrentResult.MachineState.Position}";
+                        @this.InfoBlock.Foreground = new SolidColorBrush(Colors.LightGray);
+                        @this.InfoBlock.FontWeight = FontWeights.Normal;
+                        break;
+                    case IDEResultSectionSessionData section when section.Section == IDEResultSection.StackTrace:
+                        int depth = section.Session.CurrentResult.ExceptionInfo?.StackTrace.Count ?? 0;
+                        if (depth == 0) @this.InfoBlock.Text = LocalizationManager.GetResource("NoLoops");
+                        else if (depth == 1) @this.InfoBlock.Text = LocalizationManager.GetResource("SingleLoop");
+                        else @this.InfoBlock.Text = $"{depth} {LocalizationManager.GetResource("Loops")}";
+                        @this.InfoBlock.Foreground = new SolidColorBrush(Colors.LightGray);
+                        @this.InfoBlock.FontWeight = FontWeights.Normal;
+                        break;
+                    case IDEResultSectionSessionData section when section.Section == IDEResultSection.ErrorLocation ||
+                                                                  section.Section == IDEResultSection.BreakpointReached:
+                        @this.InfoBlock.Text = $"{LocalizationManager.GetResource("Position")} {section.Session.CurrentResult.ExceptionInfo?.ErrorPosition ?? 0}";
+                        @this.InfoBlock.Foreground = new SolidColorBrush(Colors.LightGray);
+                        @this.InfoBlock.FontWeight = FontWeights.Normal;
+                        break;
+                    case IDEResultExceptionInfoData exception:
+                        @this.InfoBlock.Text = ExceptionTypeConverter.Convert(exception.Info.ExceptionType);
+                        @this.InfoBlock.Foreground = new SolidColorBrush(Colors.DarkRed);
+                        @this.InfoBlock.FontWeight = FontWeights.SemiBold;
+                        break;
+                    case IDEResultSectionStateData state:
+                        @this.InfoBlock.Text = $"{state.IndexedState.Count} {LocalizationManager.GetResource("MemoryCells")}";
+                        @this.InfoBlock.Foreground = new SolidColorBrush(Colors.LightGray);
+                        @this.InfoBlock.FontWeight = FontWeights.Normal;
+                        break;
+                }
+            }
+        }
+    }
+}

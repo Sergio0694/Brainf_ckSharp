@@ -116,4 +116,39 @@
   <data name="Warning" xml:space="preserve">
     <value>Attenzione</value>
   </data>
+  <data name="Position" xml:space="preserve">
+    <value>Posizione</value>
+    <comment>The position of a wrong operator in a source code</comment>
+  </data>
+  <data name="BreakpointReached" xml:space="preserve">
+    <value>Punto di interruzione raggiunto</value>
+  </data>
+  <data name="ErrorLocation" xml:space="preserve">
+    <value>Posizione errore</value>
+  </data>
+  <data name="ErrorType" xml:space="preserve">
+    <value>Tipo errore</value>
+  </data>
+  <data name="SourceCode" xml:space="preserve">
+    <value>Codice sorgente</value>
+  </data>
+  <data name="StackTrace" xml:space="preserve">
+    <value>Stack trace</value>
+  </data>
+  <data name="Stats" xml:space="preserve">
+    <value>Statistiche</value>
+  </data>
+  <data name="Loops" xml:space="preserve">
+    <value>cicli annidati</value>
+    <comment>This will be "n nested loops"</comment>
+  </data>
+  <data name="MemoryCells" xml:space="preserve">
+    <value>celle di memoria</value>
+  </data>
+  <data name="NoLoops" xml:space="preserve">
+    <value>Nessun ciclo annidato</value>
+  </data>
+  <data name="SingleLoop" xml:space="preserve">
+    <value>1 ciclo annidato</value>
+  </data>
 </root>

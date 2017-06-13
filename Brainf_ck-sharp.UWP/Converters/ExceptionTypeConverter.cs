@@ -12,7 +12,16 @@ namespace Brainf_ck_sharp_UWP.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            switch (value.To<ScriptExceptionType>())
+            return Convert(value.To<ScriptExceptionType>());
+        }
+
+        /// <summary>
+        /// Converts the given type into its representation
+        /// </summary>
+        /// <param name="type">The input type</param>
+        public static String Convert(ScriptExceptionType type)
+        {
+            switch (type)
             {
                 case ScriptExceptionType.SyntaxError:
                     return LocalizationManager.GetResource("SyntaxError");

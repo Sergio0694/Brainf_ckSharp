@@ -16,14 +16,14 @@ namespace Brainf_ck_sharp_UWP.DataModels
             Key = key;
         }
 
-        public JumpListGroup([NotNull] IGrouping<TKey, TItems> collection) : base(collection)
-        {
-            Key = collection.Key;
-        }
-
         /// <summary>
         /// Key that represents the group of objects and used as group header.
         /// </summary>
         public TKey Key { get; }
+
+        /// <summary>
+        /// Gets the first item in the group (the only one if used for a single-item list)
+        /// </summary>
+        public TItems Sample => this.FirstOrDefault();
     }
 }

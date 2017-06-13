@@ -12,7 +12,16 @@ namespace Brainf_ck_sharp_UWP.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            switch (value.To<IDEResultSection>())
+            return Convert(value.To<IDEResultSection>());
+        }
+
+        /// <summary>
+        /// Converts a given result to its display value
+        /// </summary>
+        /// <param name="section">The input result to convert</param>
+        public static String Convert(IDEResultSection section)
+        {
+            switch (section)
             {
                 case IDEResultSection.ExceptionType:
                     return LocalizationManager.GetResource("ErrorType");

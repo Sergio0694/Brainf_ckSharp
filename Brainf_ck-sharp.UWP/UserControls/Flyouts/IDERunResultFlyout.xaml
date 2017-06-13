@@ -90,6 +90,7 @@
 
         <!--Headers converter-->
         <converters:IDESectionToDisplayNameConverter x:Key="HeadersConverter"/>
+        <converters:IDESectionToUppercaseDisplayNameConverter x:Key="UppercaseConverter"/>
         
         <!--Header-->
         <DataTemplate x:Key="HeaderTemplate">
@@ -100,13 +101,11 @@
                 Margin="12,8,16,0"/>
         </DataTemplate>
 
-        <!--ZoomedOutHeader-->
-        <DataTemplate x:Key="ZoomedOutHeaderTemplate">
-            <TextBlock
-                Text="{Binding Group.Key, Converter={StaticResource HeadersConverter}}"
-                FontSize="22"
-                Foreground="DarkGray"
-                Margin="12,0,16,0"/>
+        <!--Zoomed out default header-->
+        <DataTemplate x:Key="ZoomedOutDefaultHeaderTemplate">
+            <dataTemplates:IDEResultZoomedOutHeaderTemplate
+                Title="{Binding Group.Key, Converter={StaticResource UppercaseConverter}}"
+                DataModel="{Binding Group.Sample}"/>
         </DataTemplate>
     </UserControl.Resources>
 
@@ -136,11 +135,7 @@
                 <ListView ItemsSource="{x:Bind ViewModel.CollectionGroups, Mode=OneWay}"
                           Style="{StaticResource GenericJumpListPickerStyle}"
                           ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
-                          ItemTemplate="{StaticResource ZoomedOutHeaderTemplate}">
-                    <ListView.Header>
-                        <Grid Height="12"/>
-                    </ListView.Header>
-                </ListView>
+                          ItemTemplate="{StaticResource ZoomedOutDefaultHeaderTemplate}"/>
             </SemanticZoom.ZoomedOutView>
         </SemanticZoom>
     </Grid>

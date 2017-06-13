@@ -145,32 +145,49 @@
         </trans-unit>
         <trans-unit id="Position" translate="yes" xml:space="preserve">
           <source>Position</source>
-          <target state="new">Position</target>
+          <target state="translated">Posizione</target>
           <note from="MultilingualBuild" annotates="source" priority="2">The position of a wrong operator in a source code</note>
         </trans-unit>
         <trans-unit id="BreakpointReached" translate="yes" xml:space="preserve">
           <source>Breakpoint reached</source>
-          <target state="new">Breakpoint reached</target>
+          <target state="translated">Punto di interruzione raggiunto</target>
         </trans-unit>
         <trans-unit id="ErrorLocation" translate="yes" xml:space="preserve">
           <source>Error location</source>
-          <target state="new">Error location</target>
+          <target state="translated">Posizione errore</target>
         </trans-unit>
         <trans-unit id="ErrorType" translate="yes" xml:space="preserve">
           <source>Error type</source>
-          <target state="new">Error type</target>
+          <target state="translated">Tipo errore</target>
         </trans-unit>
         <trans-unit id="SourceCode" translate="yes" xml:space="preserve">
           <source>Source code</source>
-          <target state="new">Source code</target>
+          <target state="translated">Codice sorgente</target>
         </trans-unit>
         <trans-unit id="StackTrace" translate="yes" xml:space="preserve">
           <source>Stack trace</source>
-          <target state="new">Stack trace</target>
+          <target state="translated">Stack trace</target>
         </trans-unit>
         <trans-unit id="Stats" translate="yes" xml:space="preserve">
           <source>Statistics</source>
-          <target state="new">Statistics</target>
+          <target state="translated">Statistiche</target>
+        </trans-unit>
+        <trans-unit id="Loops" translate="yes" xml:space="preserve">
+          <source>nested loops</source>
+          <target state="translated">cicli annidati</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">This will be "n nested loops"</note>
+        </trans-unit>
+        <trans-unit id="MemoryCells" translate="yes" xml:space="preserve">
+          <source>memory cells</source>
+          <target state="translated">celle di memoria</target>
+        </trans-unit>
+        <trans-unit id="NoLoops" translate="yes" xml:space="preserve">
+          <source>No nested loops</source>
+          <target state="translated">Nessun ciclo annidato</target>
+        </trans-unit>
+        <trans-unit id="SingleLoop" translate="yes" xml:space="preserve">
+          <source>1 nested loop</source>
+          <target state="translated">1 ciclo annidato</target>
         </trans-unit>
       </group>
     </body>
