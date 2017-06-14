@@ -208,7 +208,7 @@ namespace Brainf_ck_sharp_UWP.Views
         }
 
         public static readonly DependencyProperty LineApproximateHeightProperty = DependencyProperty.Register(
-            nameof(LineApproximateHeight), typeof(double), typeof(IDEView), new PropertyMetadata(19.951171875));
+            nameof(LineApproximateHeight), typeof(double), typeof(IDEView), new PropertyMetadata(19.94998046875));
 
         #endregion
 

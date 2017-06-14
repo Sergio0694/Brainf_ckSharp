@@ -32,7 +32,7 @@
         <DataTemplate x:Key="IDEIndentationInfoOpenBracketTemplate">
             <Grid 
                 HorizontalAlignment="Stretch"
-                Height="19.951171875">
+                Height="19.94998046875">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="12"/>
@@ -71,14 +71,14 @@
             <Rectangle
                 HorizontalAlignment="Center"
                 Width="1"
-                Height="19.951171875"
+                Height="19.94998046875"
                 Fill="DarkGray"/>
         </DataTemplate>
         
         <!--Closed bracket-->
         <DataTemplate x:Key="IDEIndentationInfoClosedBracketTemplate">
             <Grid 
-                Height="19.951171875"
+                Height="19.94998046875"
                 HorizontalAlignment="Stretch">
                 <Rectangle
                     VerticalAlignment="Stretch"
@@ -96,7 +96,7 @@
 
         <!--Empty line-->
         <DataTemplate x:Key="IDEIndentationInfoEmptyLineTemplate">
-            <Grid Height="19.951171875"/>
+            <Grid Height="19.94998046875"/>
         </DataTemplate>
 
         <!--Info template selector-->

@@ -152,11 +152,14 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 }
 
                 // Replace the current item if needed
-                IDEIndentationLineInfo previous = Source[i];
+                IDEIndentationLineInfo
+                    previous = Source[i],
+                    next = source[i];
+
                 if (previous is IDEIndentationOpenBracketLineInfo info &&
-                    source[i] is IDEIndentationOpenBracketLineInfo updated &&
-                    info.Depth == updated.Depth ||
-                    previous.LineType == source[i].LineType)
+                    next is IDEIndentationOpenBracketLineInfo updated
+                    ? info.Depth == updated.Depth
+                    : previous.LineType == next.LineType)
                 {
                     continue;
                 }

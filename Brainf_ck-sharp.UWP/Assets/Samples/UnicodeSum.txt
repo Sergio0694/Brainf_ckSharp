@@ -1,0 +1,27 @@
+[
+	Enter at least two chars in the Stdin buffer,
+	and this program will print the char that has the value 
+	of the first two char summed together
+]
+++
+[
+	>++++++ 12 in 2nd cell
+	[
+		>+++
+		>+++ 36 in 3rd and 4th
+		>+++++ 60 in 5th
+		<<<- loop end
+	]
+	<-
+]
+>>---- 32 in 3rd cell (space)
+>+++++++ 43 in 4th
+>+ 61 in 5th
+<<<<
+,. read first char
+>>.>.<.<
+,.>.>>.<<.< second char
+[
+	<+>- move result to first cell
+]
+<. print result
