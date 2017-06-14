@@ -8,8 +8,9 @@
     xmlns:flyouts="using:Brainf_ck_sharp_UWP.UserControls.Flyouts"
     xmlns:attached="using:Brainf_ck_sharp_UWP.AttachedProperties"
     xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
-    xmlns:ideResultHeaders="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEResultHeaders"
     xmlns:customControls="using:Brainf_ck_sharp_UWP.UserControls.CustomControls"
+    xmlns:jumpList="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList"
+    xmlns:ideResult="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -95,14 +96,14 @@
         
         <!--Header-->
         <DataTemplate x:Key="HeaderTemplate">
-            <ideResultHeaders:IDEResultZoomedInHeaderTemplate
+            <jumpList:JumpListZoomedInHeaderTemplate
                 Title="{Binding Key, Converter={StaticResource HeadersConverter}}"
                 Margin="12,8,16,0"/>
         </DataTemplate>
 
         <!--Zoomed out default header-->
         <DataTemplate x:Key="ZoomedOutDefaultHeaderTemplate">
-            <ideResultHeaders:IDEResultZoomedOutHeaderTemplate
+            <ideResult:IDEResultZoomedOutHeaderTemplate
                 Title="{Binding Group.Key, Converter={StaticResource UppercaseConverter}}"
                 DataModel="{Binding Group.Sample}"/>
         </DataTemplate>
@@ -117,32 +118,34 @@
         
         
         <!--Main content-->
-        <SemanticZoom Style="{StaticResource SemanticZoomCustomStyle}"
-                      x:Name="ZoomControl"
-                      Grid.ColumnSpan="2">
+        <SemanticZoom 
+            Style="{StaticResource SemanticZoomCustomStyle}"
+            Grid.ColumnSpan="2">
             <SemanticZoom.ZoomedInView>
 
                 <!--ZoomedInView-->
-                <ListView ItemsSource="{x:Bind ViewModel.View, Mode=OneWay}"
-                          ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
-                          HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch"
-                          IsItemClickEnabled="True"
-                          ItemTemplateSelector="{StaticResource ResultTemplateSelector}"
-                          x:Name="MainListView">
+                <ListView 
+                    ItemsSource="{x:Bind ViewModel.View, Mode=OneWay}"
+                    ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    IsItemClickEnabled="False"
+                    ItemTemplateSelector="{StaticResource ResultTemplateSelector}">
                     <ListView.GroupStyle>
-                        <GroupStyle HeaderTemplate="{StaticResource HeaderTemplate}"
-                                    HeaderContainerStyle="{StaticResource GroupsViewListHeaderStyle}"/>
+                        <GroupStyle 
+                            HeaderTemplate="{StaticResource HeaderTemplate}"
+                            HeaderContainerStyle="{StaticResource GroupsViewListHeaderStyle}"/>
                     </ListView.GroupStyle>
                 </ListView>
             </SemanticZoom.ZoomedInView>
             <SemanticZoom.ZoomedOutView>
 
                 <!--ZoomedOutView-->
-                <ListView ItemsSource="{x:Bind ViewModel.CollectionGroups, Mode=OneWay}"
-                          Style="{StaticResource GenericJumpListPickerStyle}"
-                          ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
-                          ItemTemplate="{StaticResource ZoomedOutDefaultHeaderTemplate}"/>
+                <ListView 
+                    ItemsSource="{x:Bind ViewModel.CollectionGroups, Mode=OneWay}"
+                    Style="{StaticResource GenericJumpListPickerStyle}"
+                    ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
+                    ItemTemplate="{StaticResource ZoomedOutDefaultHeaderTemplate}"/>
             </SemanticZoom.ZoomedOutView>
         </SemanticZoom>
 

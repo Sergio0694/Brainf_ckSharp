@@ -1,17 +1,16 @@
 ﻿<UserControl
-    x:Class="Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEResultHeaders.IDEResultZoomedOutHeaderTemplate"
+    x:Class="Brainf_ck_sharp_UWP.UserControls.DataTemplates.SavedSourceCodeTemplate"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="60"
-    d:DesignWidth="400"
-    Height="68">
+    d:DesignWidth="400">
 
     <!--Root-->
     <Grid x:Name="RootGrid"
-          Background="#24000000">
+          Background="#04000000">
 
         <!--Visual states-->
         <VisualStateManager.VisualStateGroups>
@@ -20,7 +19,7 @@
                     <VisualState.Setters>
                         <Setter 
                             Target="RootGrid.Background"
-                            Value="#24000000"/>
+                            Value="#04000000"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Highlight">
@@ -35,25 +34,25 @@
         
         <!--Content-->
         <StackPanel VerticalAlignment="Center"
-                    Margin="16,4,16,0">
+                    Margin="12,12,16,12">
 
-            <!--Group name-->
+            <!--Title name-->
             <TextBlock x:Name="TitleBlock"
                        Text="SAMPLE_TITLE"
                        Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
                        FontSize="18"
-                       FontWeight="SemiBold"
+                       FontWeight="Normal"
                        TextLineBounds="Tight"
                        IsTextScaleFactorEnabled="False"
                        MaxLines="1"
                        TextWrapping="NoWrap"
                        TextTrimming="CharacterEllipsis"/>
 
-            <!--Group info-->
+            <!--Code-->
             <TextBlock Text="..."
-                       x:Name="InfoBlock"
-                       MaxLines="1"
-                       TextWrapping="NoWrap"
+                       x:Name="CodeBlock"
+                       MaxLines="2"
+                       TextWrapping="Wrap"
                        TextTrimming="CharacterEllipsis"
                        IsTextScaleFactorEnabled="False"
                        Foreground="LightGray"

@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using Windows.UI;
-using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Documents;
-using Windows.UI.Xaml.Media;
-using Brainf_ck_sharp_UWP.Converters;
-using Brainf_ck_sharp_UWP.DataModels.IDEResults;
 using Brainf_ck_sharp_UWP.Helpers;
-using Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEResultHeaders;
 
 namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
 {

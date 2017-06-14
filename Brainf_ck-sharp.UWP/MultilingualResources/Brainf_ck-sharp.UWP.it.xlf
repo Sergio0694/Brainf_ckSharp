@@ -213,6 +213,46 @@
           <source>Skip</source>
           <target state="translated">Salta</target>
         </trans-unit>
+        <trans-unit id="Favorites" translate="yes" xml:space="preserve">
+          <source>Favorites</source>
+          <target state="new">Favorites</target>
+        </trans-unit>
+        <trans-unit id="PersonalCodes" translate="yes" xml:space="preserve">
+          <source>Personal codes</source>
+          <target state="new">Personal codes</target>
+        </trans-unit>
+        <trans-unit id="SampleCodes" translate="yes" xml:space="preserve">
+          <source>Sample codes</source>
+          <target state="new">Sample codes</target>
+        </trans-unit>
+        <trans-unit id="MoreCodes" translate="yes" xml:space="preserve">
+          <source>source codes</source>
+          <target state="new">source codes</target>
+        </trans-unit>
+        <trans-unit id="OneCode" translate="yes" xml:space="preserve">
+          <source>1 source code</source>
+          <target state="new">1 source code</target>
+        </trans-unit>
+        <trans-unit id="CodeLibrary" translate="yes" xml:space="preserve">
+          <source>Code library</source>
+          <target state="new">Code library</target>
+        </trans-unit>
+        <trans-unit id="CodeLibraryButton.Label" translate="yes" xml:space="preserve">
+          <source>Browse code library</source>
+          <target state="new">Browse code library</target>
+        </trans-unit>
+        <trans-unit id="Sum" translate="yes" xml:space="preserve">
+          <source>Sum</source>
+          <target state="new">Sum</target>
+        </trans-unit>
+        <trans-unit id="UnicodeSum" translate="yes" xml:space="preserve">
+          <source>Unicode sum</source>
+          <target state="new">Unicode sum</target>
+        </trans-unit>
+        <trans-unit id="UnicodeValue" translate="yes" xml:space="preserve">
+          <source>Unicode value</source>
+          <target state="new">Unicode value</target>
+        </trans-unit>
       </group>
     </body>
   </file>

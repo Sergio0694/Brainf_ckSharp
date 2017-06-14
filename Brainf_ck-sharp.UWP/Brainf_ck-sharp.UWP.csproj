@@ -111,9 +111,12 @@
     <Compile Include="Converters\ExceptionTypeConverter.cs" />
     <Compile Include="Converters\IDESectionToDisplayNameConverter.cs" />
     <Compile Include="Converters\IDESectionToUppercaseDisplayNameConverter.cs" />
+    <Compile Include="Converters\IndexToVisibilityConverter.cs" />
+    <Compile Include="Converters\SourceCodesNumberDescriptionConverter.cs" />
     <Compile Include="Converters\PositiveValueToBrushConverter.cs" />
     <Compile Include="Converters\ReadableCharactersConverter.cs" />
     <Compile Include="Converters\SingleDigitConverterWithFallback.cs" />
+    <Compile Include="Converters\SourceCodeTypeConverter.cs" />
     <Compile Include="DataModels\IDEResults\IDEResultExceptionInfoData.cs" />
     <Compile Include="DataModels\Misc\CharactersChunkModel.cs" />
     <Compile Include="DataModels\ConsoleModels\ConsoleCommandModelBase.cs" />
@@ -130,7 +133,9 @@
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationInfoLineType.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationOpenBracketLineInfo.cs" />
     <Compile Include="DataModels\Misc\ScriptExceptionInfo.cs" />
+    <Compile Include="DataModels\SQLite\SavedSourceCodeType.cs" />
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
+    <Compile Include="Helpers\BitHelper.cs" />
     <Compile Include="Helpers\Brainf_ckFormatterHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\FlyoutManager.cs" />
@@ -168,6 +173,15 @@
     <Compile Include="UserControls\CustomControls\IDESessionBreakpointOptionControl.xaml.cs">
       <DependentUpon>IDESessionBreakpointOptionControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml.cs">
+      <DependentUpon>SavedSourceCodeTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\JumpList\JumpListZoomedOutHeaderTemplate.xaml.cs">
+      <DependentUpon>JumpListZoomedOutHeaderTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\LocalSourceCodesBrowserFlyout.xaml.cs">
+      <DependentUpon>LocalSourceCodesBrowserFlyout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CommandBarWithButtonsAnimations.cs" />
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CustomCommandBarButton.cs" />
     <Compile Include="UserControls\DataTemplates\CompactCharactersChunkViewerTemplate.xaml.cs">
@@ -176,10 +190,10 @@
     <Compile Include="UserControls\CustomControls\ErrorCharacterDisplayControl.xaml.cs">
       <DependentUpon>ErrorCharacterDisplayControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\DataTemplates\IDEResultHeaders\IDEResultZoomedInHeaderTemplate.xaml.cs">
-      <DependentUpon>IDEResultZoomedInHeaderTemplate.xaml</DependentUpon>
+    <Compile Include="UserControls\DataTemplates\JumpList\JumpListZoomedInHeaderTemplate.xaml.cs">
+      <DependentUpon>JumpListZoomedInHeaderTemplate.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\DataTemplates\IDEResultHeaders\IDEResultZoomedOutHeaderTemplate.xaml.cs">
+    <Compile Include="UserControls\DataTemplates\JumpList\IDEResult\IDEResultZoomedOutHeaderTemplate.xaml.cs">
       <DependentUpon>IDEResultZoomedOutHeaderTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DataTemplates\UnicodeCharacterTemplate.xaml.cs">
@@ -232,6 +246,7 @@
     <Compile Include="ViewModels\IDERunResultFlyoutViewModel.cs" />
     <Compile Include="ViewModels\IDEViewModel.cs" />
     <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase.cs" />
+    <Compile Include="ViewModels\LocalSourceCodesBrowserFlyoutViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\UnicodeCharactersGuideFlyoutViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
@@ -313,13 +328,21 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\DataTemplates\IDEResultHeaders\IDEResultZoomedInHeaderTemplate.xaml">
+    <Page Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\DataTemplates\JumpList\JumpListZoomedInHeaderTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\DataTemplates\IDEResultHeaders\IDEResultZoomedOutHeaderTemplate.xaml">
+    <Page Include="UserControls\DataTemplates\JumpList\IDEResult\IDEResultZoomedOutHeaderTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DataTemplates\JumpList\JumpListZoomedOutHeaderTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\DataTemplates\UnicodeCharacterTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -334,6 +357,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Flyouts\IDERunResultFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\LocalSourceCodesBrowserFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

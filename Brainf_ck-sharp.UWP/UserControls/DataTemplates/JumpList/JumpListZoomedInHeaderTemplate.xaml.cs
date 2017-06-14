@@ -3,11 +3,11 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Helpers;
 
-namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEResultHeaders
+namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList
 {
-    public sealed partial class IDEResultZoomedInHeaderTemplate : UserControl
+    public sealed partial class JumpListZoomedInHeaderTemplate : UserControl
     {
-        public IDEResultZoomedInHeaderTemplate()
+        public JumpListZoomedInHeaderTemplate()
         {
             this.InitializeComponent();
             this.ManageControlPointerStates((_, value) => VisualStateManager.GoToState(this, value ? "Highlight" : "Default", false));
@@ -23,11 +23,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEResultHeaders
         }
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
-            nameof(Title), typeof(String), typeof(IDEResultZoomedInHeaderTemplate), new PropertyMetadata(default(String), PropertyChangedCallback));
+            nameof(Title), typeof(String), typeof(JumpListZoomedInHeaderTemplate), new PropertyMetadata(default(String), PropertyChangedCallback));
 
         private static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            d.To<IDEResultZoomedInHeaderTemplate>().Block.Text = e.NewValue.To<String>() ?? String.Empty;
+            d.To<JumpListZoomedInHeaderTemplate>().Block.Text = e.NewValue.To<String>() ?? String.Empty;
         }
     }
 }

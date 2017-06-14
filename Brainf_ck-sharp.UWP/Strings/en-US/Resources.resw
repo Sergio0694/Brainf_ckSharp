@@ -274,4 +274,34 @@
   <data name="SkipButton.Title" xml:space="preserve">
     <value>Skip</value>
   </data>
+  <data name="CodeLibrary" xml:space="preserve">
+    <value>Code library</value>
+  </data>
+  <data name="CodeLibraryButton.Label" xml:space="preserve">
+    <value>Browse code library</value>
+  </data>
+  <data name="Favorites" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+  <data name="MoreCodes" xml:space="preserve">
+    <value>source codes</value>
+  </data>
+  <data name="OneCode" xml:space="preserve">
+    <value>1 source code</value>
+  </data>
+  <data name="PersonalCodes" xml:space="preserve">
+    <value>Personal codes</value>
+  </data>
+  <data name="SampleCodes" xml:space="preserve">
+    <value>Sample codes</value>
+  </data>
+  <data name="Sum" xml:space="preserve">
+    <value>Sum</value>
+  </data>
+  <data name="UnicodeSum" xml:space="preserve">
+    <value>Unicode sum</value>
+  </data>
+  <data name="UnicodeValue" xml:space="preserve">
+    <value>Unicode value</value>
+  </data>
 </root>

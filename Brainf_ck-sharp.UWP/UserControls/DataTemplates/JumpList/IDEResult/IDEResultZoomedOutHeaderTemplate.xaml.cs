@@ -10,7 +10,7 @@ using Brainf_ck_sharp_UWP.Converters;
 using Brainf_ck_sharp_UWP.DataModels.IDEResults;
 using Brainf_ck_sharp_UWP.Helpers;
 
-namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEResultHeaders
+namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult
 {
     public sealed partial class IDEResultZoomedOutHeaderTemplate : UserControl
     {

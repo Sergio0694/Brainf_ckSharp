@@ -14,9 +14,15 @@
     xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
     xmlns:controls="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls"
     xmlns:customCommandBar="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar"
+    xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
+    <UserControl.Resources>
+        
+        <!--Buttons visibility converter-->
+        <converters:IndexToVisibilityConverter x:Key="IndexToVisibilityConverter"/>
+    </UserControl.Resources>
 
     <RelativePanel>
         
@@ -222,14 +228,14 @@
                     Icon="&#xE117;"
                     IsEnabled="{x:Bind ViewModel.RepeatLastScriptAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind RequestRepeatLastConsoleScript}"
-                    x:Name="RepeatScriptButton"/>
+                    Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=0, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Restart"
                     x:Uid="Restart"
                     Icon="&#xE9F3;"
                     IsEnabled="{x:Bind ViewModel.RestartAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind RequestRestartConsole}"
-                    x:Name="RestartButton"/>
+                    Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=0, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Clear screen"
                     x:Uid="Clrscr"
@@ -241,6 +247,12 @@
                     x:Uid="Unicode"
                     Icon="&#xEBDB;"
                     Click="{x:Bind RequestShowUnicodeCharacters}"/>
+                <customCommandBar:CustomCommandBarButton
+                    Label="Browse code library"
+                    x:Uid="CodeLibraryButton"
+                    Icon="&#xE756;"
+                    Click="{x:Bind RequestShowCodeLibrary}"
+                    Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
             </customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
         </customCommandBar:CommandBarWithButtonsAnimations>
 

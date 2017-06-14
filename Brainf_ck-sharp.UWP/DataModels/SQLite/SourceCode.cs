@@ -1,4 +1,5 @@
 ﻿using System;
+using Brainf_ck_sharp_UWP.Helpers;
 using SQLite.Net.Attributes;
 
 namespace Brainf_ck_sharp_UWP.DataModels.SQLite
@@ -40,6 +41,13 @@ namespace Brainf_ck_sharp_UWP.DataModels.SQLite
         public long Modified { get; set; }
 
         /// <summary>
+        /// Gets or sets the flags for the current instance
+        /// </summary>
+        /// <remarks>Bit 0 - Favorite</remarks>
+        [Column(nameof(Flags)), NotNull, Default]
+        public uint Flags { get; set; }
+
+        /// <summary>
         /// Gets or sets a <see cref="DateTime"/> object that indicates the creation time
         /// </summary>
         [Ignore]
@@ -57,6 +65,16 @@ namespace Brainf_ck_sharp_UWP.DataModels.SQLite
         {
             get => Modified != 0 ? DateTime.FromBinary(Modified) : DateTime.MinValue;
             set => Modified = value.ToBinary();
+        }
+
+        /// <summary>
+        /// Gets or sets whether or not the source code has been added to the favorites
+        /// </summary>
+        [Ignore]
+        public bool Favorited
+        {
+            get => BitHelper.Test(Flags, 0);
+            set => BitHelper.SetTo(Flags, value, 0);
         }
     }
 }

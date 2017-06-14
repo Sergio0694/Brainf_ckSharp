@@ -156,9 +156,14 @@ namespace Brainf_ck_sharp_UWP.UserControls
             int index = sender.To<Pivot>().SelectedIndex;
             SharedCommandBar.SwitchContent(index == 0);
             Console.ViewModel.IsEnabled = index == 0;
-            RestartButton.Visibility = index == 0 ? Visibility.Visible : Visibility.Collapsed;
-            RepeatScriptButton.Visibility = index == 0 ? Visibility.Visible : Visibility.Collapsed;
             IDE.ViewModel.IsEnabled = index == 1;
+        }
+
+        public async void RequestShowCodeLibrary()
+        {
+            LocalSourceCodesBrowserFlyout flyout = new LocalSourceCodesBrowserFlyout();
+            await flyout.ViewModel.LoadGroupsAsync();
+            FlyoutManager.Instance.Show(LocalizationManager.GetResource("CodeLibrary"), flyout, new Thickness());
         }
     }
 }

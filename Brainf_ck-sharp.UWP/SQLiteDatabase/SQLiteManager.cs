@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Storage;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
+using Brainf_ck_sharp_UWP.Helpers;
 using JetBrains.Annotations;
 using SQLite.Net;
 using SQLite.Net.Async;
@@ -93,12 +95,12 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         /// <summary>
         /// Gets a collection of names for the code samples, and their hardcoded ID
         /// </summary>
-        private static readonly IReadOnlyCollection<(String, Guid)> SamplesMap = new List<(String Name, Guid Uid)>
+        private static readonly IReadOnlyCollection<(String Name, String FriendlyName, Guid Uid)> SamplesMap = new List<(String, String, Guid)>
         {
-            ("HelloWorld.txt", Guid.Parse("6B4C55E6-7009-48EC-96C5-C73552D9F257")),
-            ("UnicodeValue.txt", Guid.Parse("10768D40-5E3D-4787-9CB8-2A0ABBE26EFC")),
-            ("UnicodeSum.txt", Guid.Parse("78BAA70A-0DAF-4BB6-B09A-CDA9537D2FFF")),
-            ("Sum.txt", Guid.Parse("0441153F-E40A-4AEC-8373-8A552697778B"))
+            ("HelloWorld.txt", "Hello world!", Guid.Parse("6B4C55E6-7009-48EC-96C5-C73552D9F257")),
+            ("UnicodeValue.txt", LocalizationManager.GetResource("UnicodeValue"), Guid.Parse("10768D40-5E3D-4787-9CB8-2A0ABBE26EFC")),
+            ("UnicodeSum.txt", LocalizationManager.GetResource("UnicodeSum"), Guid.Parse("78BAA70A-0DAF-4BB6-B09A-CDA9537D2FFF")),
+            ("Sum.txt", LocalizationManager.GetResource("Sum"),  Guid.Parse("0441153F-E40A-4AEC-8373-8A552697778B"))
         };
 
         /// <summary>
@@ -109,7 +111,7 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
             // Get the samples folder and iterate over the expected samples
             await EnsureDatabaseConnectionAsync();
             StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(SampleFilesPath);
-            foreach ((String name, Guid uid) in SamplesMap)
+            foreach ((String name, String friendly, Guid uid) in SamplesMap)
             {
                 // Get the source code file and look for an existing copy in the local database
                 StorageFile file = await folder.GetFileAsync(name);
@@ -122,6 +124,7 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
                     row = new SourceCode
                     {
                         Uid = uid.ToString(),
+                        Title = friendly,
                         Code = code,
                         CreatedTime = DateTime.Now,
                         ModifiedTime = DateTime.Now
@@ -131,10 +134,35 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
             }
         }
 
-        public async Task<IReadOnlyList<SourceCode>> LoadSavedCodesAsync()
+        /// <summary>
+        /// Loads the saved source codes from the app database
+        /// </summary>
+        public async Task<IList<(SavedSourceCodeType Type, IList<SourceCode> Items)>> LoadSavedCodesAsync()
         {
+            // Query the codes from the database
             await EnsureDatabaseConnectionAsync();
-            throw new NotImplementedException();
+            await RefreshCodeSamplesAsync();
+            List<SourceCode> codes = await DatabaseConnection.Table<SourceCode>().OrderBy(entry => entry.Title).ToListAsync();
+
+            // Populate the three categories
+            List<SourceCode>
+                samples = new List<SourceCode>(),
+                favorites = new List<SourceCode>(),
+                original = new List<SourceCode>();
+            foreach (SourceCode code in codes)
+            {
+                if (SamplesMap.Any(sample => sample.Uid.Equals(Guid.Parse(code.Uid)))) samples.Add(code);
+                else if (code.Favorited) favorites.Add(code);
+                else original.Add(code);
+            }
+
+            // Aggregate and return the results
+            return new(SavedSourceCodeType, IList<SourceCode>)[]
+            {
+                (SavedSourceCodeType.Favorite, favorites.ToArray()),
+                (SavedSourceCodeType.Original, original.ToArray()),
+                (SavedSourceCodeType.Sample, samples.ToArray())
+            };
         }
 
         public async Task<bool> SaveCodeAsync([NotNull] SourceCode code, [NotNull] String text)
@@ -142,7 +170,5 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
             await EnsureDatabaseConnectionAsync();
             throw new NotImplementedException();
         }
-
-
     }
 }
