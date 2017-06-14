@@ -51,7 +51,7 @@
                     <TextBlock
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
-                        Text="{Binding Depth, Converter={StaticResource DepthDigitCOnverter}, FallbackValue=•}"
+                        Text="{Binding Depth, Converter={StaticResource DepthDigitCOnverter}, ConverterParameter=•}"
                         IsTextScaleFactorEnabled="False"
                         FontSize="8"
                         Foreground="SlateGray"
