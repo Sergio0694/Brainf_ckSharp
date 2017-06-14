@@ -1,17 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Windows.UI.Text;
 using Brainf_ck_sharp;
+using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
-using GalaSoft.MvvmLight;
+using Brainf_ck_sharp_UWP.ViewModels.Abstract;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.ViewModels
 {
-    public class IDEViewModel : ViewModelBase
+    public class IDEViewModel : ItemsCollectionViewModelBase<IDEIndentationLineInfo>
     {
         // The current document that's linked to the view
         private readonly ITextDocument Document;
@@ -101,6 +104,68 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         {
             Document.SetText(TextSetOptions.None, String.Empty);
             SendMessages();
+        }
+
+        /// <summary>
+        /// Updates the indentation info for a given state
+        /// </summary>
+        /// <param name="brackets">The collection of brackets and their position in the current text</param>
+        public void UpdateIndentationInfo([CanBeNull] IReadOnlyList<(int, int, char)> brackets)
+        {
+            // // Check the info is available
+            if (brackets == null || brackets.Count == 0) return;
+            int max = brackets.Max(entry => entry.Item1);
+
+            // Updates the indentation info displayed on the IDE
+            List<IDEIndentationLineInfo> source = new List<IDEIndentationLineInfo>();
+            uint depth = 0;
+            for (int i = 1; i <= max; i++)
+            {
+                IReadOnlyList<(int, int, char)> line = brackets.Where(info => info.Item1 == i).ToArray();
+                if (line.Count == 0)
+                {
+                    source.Add(new IDEIndentationLineInfo(depth == 0 ? IDEIndentationInfoLineType.Empty : IDEIndentationInfoLineType.Straight));
+                }
+                else if (line[0].Item3 == '[')
+                {
+                    depth++;
+                    source.Add(new IDEIndentationOpenBracketLineInfo(depth));
+                }
+                else if (line[0].Item3 == ']')
+                {
+                    depth--;
+                    source.Add(new IDEIndentationLineInfo(IDEIndentationInfoLineType.ClosedBracket));
+                }
+            }
+            
+            // Update the source collection
+            for (int i = 0; i < source.Count; i++)
+            {
+                // The source doesn't contain enough items
+                if (Source.Count - 1 < i)
+                {
+                    Source.Add(source[i]);
+                }
+
+                // Replace the current item if needed
+                IDEIndentationLineInfo previous = Source[i];
+                if (previous is IDEIndentationOpenBracketLineInfo info &&
+                    source[i] is IDEIndentationOpenBracketLineInfo updated &&
+                    info.Depth == updated.Depth ||
+                    previous.LineType == source[i].LineType)
+                {
+                    continue;
+                }
+                Source[i] = source[i];
+            }
+
+            // Remove the exceeding items
+            int diff = Source.Count - Source.Count;
+            while (diff > 0)
+            {
+                Source.RemoveAt(Source.Count - 1);
+                diff--;
+            }
         }
     }
 }

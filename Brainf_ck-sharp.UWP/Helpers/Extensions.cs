@@ -67,8 +67,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
         {
             while (element != null)
             {
-                object result;
-                if (element.Resources.TryGetValue(name, out result)) return result.To<T>();
+                if (element.Resources.TryGetValue(name, out object result)) return result.To<T>();
                 element = element.FindParent<FrameworkElement>(true);
             }
             return (T)Application.Current.Resources[name];

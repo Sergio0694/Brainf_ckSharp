@@ -55,6 +55,7 @@ namespace Brainf_ck_sharp_UWP.Views
             // Keep the line numbers and the current cursor in sync with the code
             float target = (float)(_Top - 12 - EditBox.VerticalScrollViewerOffset);
             LinesGrid.SetVisualOffsetAsync(TranslationAxis.Y, target);
+            IndentationInfoList.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset));
             Point selectionOffset = EditBox.ActualSelectionVerticalOffset;
             CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
             CursorRectangle.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
@@ -74,6 +75,7 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             _Top = height;
             LinesGrid.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height - 12)); // Adjust the initial offset of the line numbers and indicators
+            IndentationInfoList.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height + 10));
             CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height + 8));
             CursorRectangle.SetVisualOffsetAsync(TranslationAxis.Y, (float) (height + 8));
             CursorRectangle.SetVisualOffsetAsync(TranslationAxis.X, 4);
@@ -86,6 +88,7 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             DrawLineNumbers();
             DrawBracketGuides(null);
+            ViewModel.UpdateIndentationInfo(_Brackets);
         }
 
         #region UI overlays
@@ -292,7 +295,11 @@ namespace Brainf_ck_sharp_UWP.Views
             _PreviousText = text;
 
             // Update the bracket guides
-            if (refreshBrackets) DrawBracketGuides(text);
+            if (refreshBrackets)
+            {
+                DrawBracketGuides(text);
+                ViewModel.UpdateIndentationInfo(_Brackets);
+            }
 
             // Move the cursor to the right position
             Point selectionOffset = EditBox.ActualSelectionVerticalOffset;
@@ -361,6 +368,7 @@ namespace Brainf_ck_sharp_UWP.Views
             _PreviousText = text;
             DrawLineNumbers();
             DrawBracketGuides(text);
+            ViewModel.UpdateIndentationInfo(_Brackets);
 
             // Restore the handlers
             EditBox.SelectionChanged += EditBox_OnSelectionChanged;

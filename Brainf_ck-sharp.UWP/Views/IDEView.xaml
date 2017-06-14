@@ -5,10 +5,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
+    xmlns:templateSelectors="using:Brainf_ck_sharp_UWP.TemplateSelectors"
+    xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
+        
+        <!--Animation for the manual cursor-->
         <Storyboard x:Name="CursorAnimation">
             <DoubleAnimation
                 Storyboard.TargetName="CursorRectangle"
@@ -19,13 +23,93 @@
                 AutoReverse="True"
                 RepeatBehavior="Forever"/>
         </Storyboard>
+        
+        <!--Depth converters-->
+        <converters:DepthToVisibilityConverter x:Key="DepthConverter"/>
+        <converters:SingleDigitConverterWithFallback x:Key="DepthDigitCOnverter"/>
+        
+        <!--Indentation guide info-->
+        <DataTemplate x:Key="IDEIndentationInfoOpenBracketTemplate">
+            <Grid 
+                HorizontalAlignment="Stretch"
+                Height="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="12"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Rectangle
+                    HorizontalAlignment="Center"
+                    Width="1"
+                    Fill="DarkGray"
+                    VerticalAlignment="Stretch"
+                    Visibility="{Binding Depth, Converter={StaticResource DepthConverter}, FallbackValue=Collapsed}"/>
+                <Border
+                    BorderThickness="1"
+                    BorderBrush="DarkGray"
+                    Grid.Row="1">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Text="{Binding Depth, Converter={StaticResource DepthDigitCOnverter}, FallbackValue=•}"
+                        IsTextScaleFactorEnabled="False"
+                        FontSize="8"
+                        Foreground="SlateGray"
+                        Margin="0,-1,0,0"/>
+                </Border>
+                <Rectangle
+                    HorizontalAlignment="Center"
+                    Width="1"
+                    Fill="DarkGray"
+                    Grid.Row="2"
+                    VerticalAlignment="Stretch"/>
+            </Grid>
+        </DataTemplate>
+        
+        <!--Straight line-->
+        <DataTemplate x:Key="IDEIndentationInfoStraightLineTemplate">
+            <Rectangle
+                HorizontalAlignment="Center"
+                Width="1"
+                Height="20"
+                Fill="DarkGray"/>
+        </DataTemplate>
+        
+        <!--Closed bracket-->
+        <DataTemplate x:Key="IDEIndentationInfoClosedBracketTemplate">
+            <Grid 
+                Height="20"
+                HorizontalAlignment="Stretch">
+                <Rectangle
+                    HorizontalAlignment="Center"
+                    Width="1"
+                    Height="20"
+                    Fill="DarkGray"/>
+                <Rectangle
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Width="6"
+                    Height="1"
+                    Fill="DarkGray"/>
+            </Grid>
+        </DataTemplate>
+
+        <!--Empty line-->
+        <DataTemplate x:Key="IDEIndentationInfoEmptyLineTemplate">
+            <Grid Height="20"/>
+        </DataTemplate>
+
+        <!--Info template selector-->
+        <templateSelectors:IDEIndentationInfoTemplateSelector x:Key="IndentationInfoTemplateSelector"/>
     </UserControl.Resources>
 
     <!--Root-->
     <Grid Background="#FF1E1E1E">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="36"/>
+            <ColumnDefinition Width="28"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="12"/>
             <ColumnDefinition 
                 Width="*"
                 x:Name="CodeColumn"/>
@@ -56,22 +140,37 @@
 
         <!--Line numbers grid-->
         <Canvas Grid.Column="1">
-            <Grid
+            <Grid 
                 x:Name="LinesGrid"
-                Width="32">
+                Width="28">
                 <TextBlock
                     FontSize="15"
+                    Text="0"
                     Foreground="#FF237CAD"
                     HorizontalAlignment="Right"
                     TextAlignment="Right"
-                    Text="0"
+                    TextTrimming="CharacterEllipsis"
                     x:Name="LineBlock"/>
             </Grid>
         </Canvas>
 
+        <!--Indentation indicators-->
+        <Canvas Grid.Column="3">
+            <ListView
+                Width="12"
+                HorizontalAlignment="Stretch"
+                ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+                ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
+                ItemTemplateSelector="{StaticResource IndentationInfoTemplateSelector}"
+                ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                ScrollViewer.VerticalScrollMode="Disabled"
+                IsHitTestVisible="False"
+                x:Name="IndentationInfoList"/>
+        </Canvas>
+
         <!--Code box-->
         <inheritedControls:RichEditBoxWithVerticalOffsetInfo
-            Grid.Column="2"
+            Grid.Column="4"
             Style="{StaticResource TransparentEditBox}"
             x:Name="EditBox"
             TextWrapping="NoWrap"
@@ -92,7 +191,7 @@
         
         <!--Current line cursor-->
         <Canvas 
-            Grid.Column="2"
+            Grid.Column="4"
             IsHitTestVisible="False">
             
             <!--Current line highlight-->
@@ -114,7 +213,7 @@
 
         <!--Canvas with the column guides-->
         <Canvas
-            Grid.Column="2"
+            Grid.Column="4"
             IsHitTestVisible="False"
             x:Name="BracketGuidesCanvas">
             <Canvas.RenderTransform>

@@ -107,11 +107,13 @@
     <Compile Include="AttachedProperties\RunInlineHelper.cs" />
     <Compile Include="Converters\BoolToAccentBrushOrFallbackConverter.cs" />
     <Compile Include="Converters\CharacterWithFallbackConverter.cs" />
+    <Compile Include="Converters\DepthToVisibilityConverter.cs" />
     <Compile Include="Converters\ExceptionTypeConverter.cs" />
     <Compile Include="Converters\IDESectionToDisplayNameConverter.cs" />
     <Compile Include="Converters\IDESectionToUppercaseDisplayNameConverter.cs" />
     <Compile Include="Converters\PositiveValueToBrushConverter.cs" />
     <Compile Include="Converters\ReadableCharactersConverter.cs" />
+    <Compile Include="Converters\SingleDigitConverterWithFallback.cs" />
     <Compile Include="DataModels\IDEResults\IDEResultExceptionInfoData.cs" />
     <Compile Include="DataModels\Misc\CharactersChunkModel.cs" />
     <Compile Include="DataModels\ConsoleModels\ConsoleCommandModelBase.cs" />
@@ -124,6 +126,9 @@
     <Compile Include="DataModels\IDEResults\IDEResultSectionSessionData.cs" />
     <Compile Include="DataModels\IDEResults\IDEResultSectionStateData.cs" />
     <Compile Include="DataModels\JumpListGroup.cs" />
+    <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationLineInfo.cs" />
+    <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationInfoLineType.cs" />
+    <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationOpenBracketLineInfo.cs" />
     <Compile Include="DataModels\Misc\ScriptExceptionInfo.cs" />
     <Compile Include="Helpers\Brainf_ckFormatterHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
@@ -153,6 +158,7 @@
     <Compile Include="Messages\OperatorAddedMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TemplateSelectors\ConsoleLineTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\IDEIndentationInfoTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\IDERunResultTemplateSelector.cs" />
     <Compile Include="UserControls\BottomEdgeInfoBar.xaml.cs">
       <DependentUpon>BottomEdgeInfoBar.xaml</DependentUpon>
