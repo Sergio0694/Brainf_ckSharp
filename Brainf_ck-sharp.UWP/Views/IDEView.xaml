@@ -182,12 +182,7 @@
             GotFocus="EditBox_OnGotFocus"
             LostFocus="EditBox_OnLostFocus"
             Paste="EditBox_OnPaste"
-            Margin="0"
-            Padding="4,0,0,0">
-            <RichEditBox.Header>
-                <Grid x:Name="TopMarginGrid"/>
-            </RichEditBox.Header>
-        </inheritedControls:RichEditBoxWithVerticalOffsetInfo>
+            Margin="0"/>
         
         <!--Current line cursor-->
         <Canvas 

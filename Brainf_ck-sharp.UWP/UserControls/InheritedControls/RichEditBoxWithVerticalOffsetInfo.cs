@@ -1,7 +1,10 @@
 ﻿using System;
 using Windows.Foundation;
 using Windows.UI.Text;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Brainf_ck_sharp_UWP.Helpers;
 
 namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
 {
@@ -10,10 +13,43 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
     /// </summary>
     public class RichEditBoxWithVerticalOffsetInfo : RichEditBox
     {
+        public RichEditBoxWithVerticalOffsetInfo()
+        {
+            Loaded += (s, e) =>
+            {
+                _TemplateScrollBar = _TemplateScrollViewer.FindChild<ScrollBar>();
+                _TemplateScrollBar.Margin = ScrollBarMargin;
+            };
+        }
+
+        /// <summary>
+        /// Gets the internal <see cref="ScrollBar"/> for the <see cref="ScrollViewer"/> that hosts the content
+        /// </summary>
+        private ScrollBar _TemplateScrollBar;
+
+        /// <summary>
+        /// Gets or sets the margin of the internal <see cref="ScrollBar"/> control
+        /// </summary>
+        public Thickness ScrollBarMargin
+        {
+            get => (Thickness)GetValue(ScrollBarMarginProperty);
+            set => SetValue(ScrollBarMarginProperty, value);
+        }
+
+        public static readonly DependencyProperty ScrollBarMarginProperty = DependencyProperty.Register(
+            nameof(ScrollBarMargin), typeof(Thickness), typeof(RichEditBoxWithVerticalOffsetInfo), 
+            new PropertyMetadata(default(Thickness), OnScrollBarMarginPropertyChanged));
+
+        private static void OnScrollBarMarginPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ScrollBar bar = d.To<RichEditBoxWithVerticalOffsetInfo>()._TemplateScrollBar;
+            if (bar != null) bar.Margin = e.NewValue.To<Thickness>();
+        }
+
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            _TemplateScrollViewer = GetTemplateChild("ContentElement") as ScrollViewer;
+            _TemplateScrollViewer = GetTemplateChild("ContentScroller") as ScrollViewer;
         }
 
         /// <summary>
@@ -45,6 +81,19 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         {
             Document.GetText(TextGetOptions.None, out String text);
             return text.Split('\r').Length;
+        }
+
+        /// <summary>
+        /// Scrolls the control to make the current selection visible, if needed
+        /// </summary>
+        public void TryScrollToSelection()
+        {
+            Document.Selection.GetRect(PointOptions.Transform, out Rect rect, out _);
+            double
+                viewport = _TemplateScrollViewer.ViewportHeight - ScrollBarMargin.Top, // The current visible area, excluding additional padding
+                current = rect.Top - _TemplateScrollViewer.VerticalOffset; // The actual transformed Y position, considering the scrolling
+            if (current < 0) _TemplateScrollViewer.ChangeView(null, _TemplateScrollViewer.VerticalOffset + current, null, false);
+            else if (current > viewport) _TemplateScrollViewer.ChangeView(null, _TemplateScrollViewer.VerticalOffset + (current - viewport) + 32, null, false);
         }
     }
 }

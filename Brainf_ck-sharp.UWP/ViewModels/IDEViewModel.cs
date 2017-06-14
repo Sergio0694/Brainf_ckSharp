@@ -94,7 +94,6 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             {
                 //
             }
-            Document.Selection.ScrollIntoView(PointOptions.NoHorizontalScroll);
         }
 
         /// <summary>

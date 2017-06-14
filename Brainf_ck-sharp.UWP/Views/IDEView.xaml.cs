@@ -80,7 +80,8 @@ namespace Brainf_ck_sharp_UWP.Views
             CursorRectangle.SetVisualOffsetAsync(TranslationAxis.Y, (float) (height + 8));
             CursorRectangle.SetVisualOffsetAsync(TranslationAxis.X, 4);
             BracketGuidesCanvas.SetVisualOffsetAsync(TranslationAxis.Y, (float)height);
-            TopMarginGrid.Height = height;
+            EditBox.Padding = new Thickness(4, _Top + 8, 0, 8);
+            EditBox.ScrollBarMargin = new Thickness(0, _Top, 0, 0);
         }
 
         // Updates the line numbers displayed next to the code box
@@ -216,10 +217,6 @@ namespace Brainf_ck_sharp_UWP.Views
 
         private void EditBox_OnSelectionChanged(object sender, RoutedEventArgs e)
         {
-            // Update the visibility and the position of the cursor
-            CursorBorder.SetVisualOpacity(EditBox.Document.Selection.Length.Abs() > 0 ? 0 : 1);
-            CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + EditBox.ActualSelectionVerticalOffset.Y));
-
             /* ====================
              * Syntax highlight
              * ================= */
@@ -318,6 +315,10 @@ namespace Brainf_ck_sharp_UWP.Views
             CursorRectangle.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
             CursorRectangle.SetVisualOffsetAsync(TranslationAxis.X, (float)(selectionOffset.X + 4));
 
+            // Update the visibility and the position of the cursor
+            CursorBorder.SetVisualOpacity(EditBox.Document.Selection.Length.Abs() > 0 ? 0 : 1);
+            CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + EditBox.ActualSelectionVerticalOffset.Y));
+
             // Notify the UI
             ViewModel.SendMessages(text);
 
@@ -325,6 +326,9 @@ namespace Brainf_ck_sharp_UWP.Views
             EditBox.Document.ApplyDisplayUpdates();
             EditBox.SelectionChanged += EditBox_OnSelectionChanged;
             EditBox.TextChanged += EditBox_OnTextChanged;
+
+            // Scroll if needed
+            EditBox.TryScrollToSelection();
         }
 
         private void EditBox_OnGotFocus(object sender, RoutedEventArgs e)
