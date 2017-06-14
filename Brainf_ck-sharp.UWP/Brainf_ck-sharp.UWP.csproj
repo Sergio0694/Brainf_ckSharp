@@ -243,6 +243,9 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="Assets\Misc\SourceCodesTemplateDatabase.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Brainf_ck-sharp.UWP_TemporaryKey.pfx" />
     <PRIResource Include="Strings\it\Resources.resw" />
     <PRIResource Include="Strings\en-US\Resources.resw" />

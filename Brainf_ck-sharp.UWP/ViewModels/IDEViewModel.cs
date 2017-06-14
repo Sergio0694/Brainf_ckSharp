@@ -113,7 +113,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         public void UpdateIndentationInfo([CanBeNull] IReadOnlyList<(int, int, char)> brackets)
         {
             // // Check the info is available
-            if (brackets == null || brackets.Count == 0) return;
+            if (brackets == null || brackets.Count == 0)
+            {
+                Source.Clear();
+                return;
+            }
             int max = brackets.Max(entry => entry.Item1);
 
             // Updates the indentation info displayed on the IDE

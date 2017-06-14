@@ -198,6 +198,18 @@ namespace Brainf_ck_sharp_UWP.Views
             }
         }
 
+        /// <summary>
+        /// Gets the approximate height of each line of code in the IDE
+        /// </summary>
+        public double LineApproximateHeight // TODO: approximate this when the lines count changes and bind it to the items height of the ListView
+        {
+            get => (double)GetValue(LineApproximateHeightProperty);
+            set => SetValue(LineApproximateHeightProperty, value);
+        }
+
+        public static readonly DependencyProperty LineApproximateHeightProperty = DependencyProperty.Register(
+            nameof(LineApproximateHeight), typeof(double), typeof(IDEView), new PropertyMetadata(19.951171875));
+
         #endregion
 
         private String _PreviousText;
@@ -369,6 +381,7 @@ namespace Brainf_ck_sharp_UWP.Views
             DrawLineNumbers();
             DrawBracketGuides(text);
             ViewModel.UpdateIndentationInfo(_Brackets);
+            ViewModel.SendMessages(text);
 
             // Restore the handlers
             EditBox.SelectionChanged += EditBox_OnSelectionChanged;

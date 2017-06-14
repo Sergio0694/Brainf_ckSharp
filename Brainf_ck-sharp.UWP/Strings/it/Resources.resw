@@ -163,4 +163,10 @@
   <data name="RepeatScript.Label" xml:space="preserve">
     <value>Ripeti ultimo script</value>
   </data>
+  <data name="ContinueButton.Title" xml:space="preserve">
+    <value>Continua</value>
+  </data>
+  <data name="SkipButton.Title" xml:space="preserve">
+    <value>Salta</value>
+  </data>
 </root>
