@@ -7,8 +7,11 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp.MemoryState;
+using Brainf_ck_sharp_UWP.DataModels.SQLite;
+using Brainf_ck_sharp_UWP.FlyoutService;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
@@ -163,7 +166,9 @@ namespace Brainf_ck_sharp_UWP.UserControls
         {
             LocalSourceCodesBrowserFlyout flyout = new LocalSourceCodesBrowserFlyout();
             await flyout.ViewModel.LoadGroupsAsync();
-            FlyoutManager.Instance.Show(LocalizationManager.GetResource("CodeLibrary"), flyout, new Thickness());
+            FlyoutClosedResult<SourceCode> result = await FlyoutManager.Instance.ShowAsync<LocalSourceCodesBrowserFlyout, SourceCode>(
+                LocalizationManager.GetResource("CodeLibrary"), flyout, new Thickness());
+            if (result) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(result.Value));
         }
     }
 }

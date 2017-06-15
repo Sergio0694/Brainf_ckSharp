@@ -33,6 +33,12 @@ namespace Brainf_ck_sharp_UWP
         /// <param name="e">Dettagli sulla richiesta e sul processo di avvio.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            // Language test
+#if DEBUG
+            Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "en-US";
+#endif
+
+            // Initialize the window content
             Shell shell = Window.Current.Content as Shell;
             if (shell == null)
             {

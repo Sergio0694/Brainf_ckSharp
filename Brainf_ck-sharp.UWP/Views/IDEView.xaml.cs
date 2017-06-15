@@ -12,9 +12,12 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using Brainf_ck_sharp;
 using Brainf_ck_sharp.ReturnTypes;
+using Brainf_ck_sharp_UWP.FlyoutService;
 using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
 using Brainf_ck_sharp_UWP.ViewModels;
+using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 
@@ -30,6 +33,7 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.PlayRequested += ViewModel_PlayRequested;
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             _PreviousText = text;
+            Messenger.Default.Register<SourceCodeLoadingRequestedMessage>(this, m => LoadCode(m.RequestedCode.Code, true));
         }
 
         private void ViewModel_PlayRequested(object sender, string e)
@@ -37,7 +41,7 @@ namespace Brainf_ck_sharp_UWP.Views
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             InterpreterExecutionSession session = Brainf_ckInterpreter.InitializeSession(new[] { text }, e, 64, 1000);
             IDERunResultFlyout flyout = new IDERunResultFlyout(session);
-            FlyoutManager.Instance.Show("Run", flyout, new Thickness());
+            FlyoutManager.Instance.Show(LocalizationManager.GetResource("RunTitle"), flyout, new Thickness());
             flyout.ViewModel.LoadGroupsAsync().Forget();
         }
 
@@ -362,30 +366,41 @@ namespace Brainf_ck_sharp_UWP.Views
             else text = null;
             view.ReportOperationCompleted(DataPackageOperation.Copy);
             if (text == null) return;
+            LoadCode(text, false);
+        }
 
+        /// <summary>
+        /// Manually loads some code into the IDE
+        /// </summary>
+        /// <param name="code">The code to load</param>
+        /// <param name="overwrite">If true, the whole document will be replaced with the new code</param>
+        private void LoadCode(String code, bool overwrite)
+        {
             // Disable the handlers
             EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
             EditBox.TextChanged -= EditBox_OnTextChanged;
             EditBox.Document.BatchDisplayUpdates();
 
             // Paste and highlight the text
-            EditBox.Document.Selection.SetText(TextSetOptions.None, text);
+            if (overwrite) EditBox.Document.Selection.SetRange(0, int.MaxValue);
+            EditBox.Document.Selection.SetText(TextSetOptions.None, code);
             int start = EditBox.Document.Selection.StartPosition, end = EditBox.Document.Selection.EndPosition;
             for (int i = start; i < end - 1; i++)
             {
                 ITextRange range = EditBox.Document.GetRange(i, i + 1);
                 range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(range.Character);
             }
-            EditBox.Document.Selection.StartPosition = end;
+            if (overwrite) EditBox.Document.Selection.SetRange(0, 0);
+            else EditBox.Document.Selection.StartPosition = end;
 
             // Refresh the UI
             EditBox.Document.ApplyDisplayUpdates();
-            EditBox.Document.GetText(TextGetOptions.None, out text);
-            _PreviousText = text;
+            EditBox.Document.GetText(TextGetOptions.None, out code);
+            _PreviousText = code;
             DrawLineNumbers();
-            DrawBracketGuides(text);
+            DrawBracketGuides(code);
             ViewModel.UpdateIndentationInfo(_Brackets);
-            ViewModel.SendMessages(text);
+            ViewModel.SendMessages(code);
 
             // Restore the handlers
             EditBox.SelectionChanged += EditBox_OnSelectionChanged;

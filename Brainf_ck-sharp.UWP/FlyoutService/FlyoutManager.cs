@@ -5,6 +5,7 @@ using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
+using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
@@ -13,7 +14,7 @@ using JetBrains.Annotations;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 
-namespace Brainf_ck_sharp_UWP.Helpers
+namespace Brainf_ck_sharp_UWP.FlyoutService
 {
     /// <summary>
     /// A class that exposes methods to manage flyouts to display across the app
@@ -111,6 +112,54 @@ namespace Brainf_ck_sharp_UWP.Helpers
             popup.IsOpen = true;
             await popup.StartCompositionFadeSlideAnimationAsync(null, 1, TranslationAxis.Y, 20, 0, 250, null, null, EasingFunctionNames.CircleEaseOut);
             Semaphore.Release();
+        }
+
+        /// <summary>
+        /// Shows a new flyout with the given parameters and waits for a result
+        /// </summary>
+        /// <param name="title">The title of the new flyout to show</param>
+        /// <param name="content">The content to show inside the flyout</param>
+        /// <param name="margin">The optional margins to set to the content of the popup to show</param>
+        public async Task<FlyoutClosedResult<TEvent>> ShowAsync<TContent, TEvent>([NotNull] String title, [NotNull] TContent content, [CanBeNull] Thickness? margin = null)
+            where TContent : FrameworkElement, IEventConfirmedContent<TEvent>
+        {
+            // Lock and close the existing popup, if needed
+            await Semaphore.WaitAsync();
+            Messenger.Default.Send(new FlyoutOpenedMessage());
+            if (_CurrentPopup?.IsOpen == true) _CurrentPopup.IsOpen = false;
+
+            // Initialize the container and the target popup, and the confirm handler
+            FlyoutContainer container = new FlyoutContainer
+            {
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch
+            };
+            container.SetupUI(title, content, margin);
+            TaskCompletionSource<TEvent> tcs = new TaskCompletionSource<TEvent>();
+            content.ContentConfirmed += (s, e) =>
+            {
+                tcs.TrySetResult(e);
+                Messenger.Default.Send(new FlyoutCloseRequestMessage());
+            };
+            Popup popup = new Popup
+            {
+                IsLightDismissEnabled = false,
+                Child = container
+            };
+            AdjustPopupSize(popup, container);
+            popup.Closed += (s, e) => tcs.TrySetCanceled();
+
+            // Display and animate the popup
+            _CurrentPopup = popup;
+            popup.SetVisualOpacity(0);
+            popup.IsOpen = true;
+            await popup.StartCompositionFadeSlideAnimationAsync(null, 1, TranslationAxis.Y, 20, 0, 250, null, null, EasingFunctionNames.CircleEaseOut);
+            Semaphore.Release();
+
+            // Wait and return the right result
+            return await tcs.Task.ContinueWith(t => t.Status == TaskStatus.RanToCompletion
+                ? t.Result
+                : FlyoutClosedResult<TEvent>.Closed);
         }
 
         /// <summary>

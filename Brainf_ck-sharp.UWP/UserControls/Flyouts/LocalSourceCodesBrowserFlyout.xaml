@@ -30,7 +30,8 @@
                     ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
-                    IsItemClickEnabled="True">
+                    IsItemClickEnabled="True"
+                    ItemClick="ListViewBase_OnItemClick">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <dataTemplates:SavedSourceCodeTemplate SourceCode="{Binding}"/>

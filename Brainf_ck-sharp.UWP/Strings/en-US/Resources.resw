@@ -292,6 +292,9 @@
   <data name="PersonalCodes" xml:space="preserve">
     <value>Personal codes</value>
   </data>
+  <data name="RunTitle" xml:space="preserve">
+    <value>Run</value>
+  </data>
   <data name="SampleCodes" xml:space="preserve">
     <value>Sample codes</value>
   </data>

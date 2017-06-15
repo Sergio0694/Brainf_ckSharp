@@ -135,10 +135,12 @@
     <Compile Include="DataModels\Misc\ScriptExceptionInfo.cs" />
     <Compile Include="DataModels\SQLite\SavedSourceCodeType.cs" />
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
+    <Compile Include="FlyoutService\FlyoutClosedResult.cs" />
+    <Compile Include="FlyoutService\IEventConfirmedContent.cs" />
     <Compile Include="Helpers\BitHelper.cs" />
     <Compile Include="Helpers\Brainf_ckFormatterHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
-    <Compile Include="Helpers\FlyoutManager.cs" />
+    <Compile Include="FlyoutService\FlyoutManager.cs" />
     <Compile Include="Helpers\IndexedModelWithValue.cs" />
     <Compile Include="Helpers\LocalizationManager.cs" />
     <Compile Include="Helpers\StaticHelper.cs" />
@@ -162,6 +164,7 @@
     <Compile Include="Messages\IDEStatus\IDEStatusUpdateMessage.cs" />
     <Compile Include="Messages\IDEStatus\IDEStatusUpdateMessageBase.cs" />
     <Compile Include="Messages\OperatorAddedMessage.cs" />
+    <Compile Include="Messages\SourceCodeLoadingRequestedMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLiteDatabase\SQLiteManager.cs" />
     <Compile Include="TemplateSelectors\ConsoleLineTemplateSelector.cs" />

@@ -253,6 +253,10 @@
           <source>Unicode value</source>
           <target state="new">Unicode value</target>
         </trans-unit>
+        <trans-unit id="RunTitle" translate="yes" xml:space="preserve">
+          <source>Run</source>
+          <target state="new">Run</target>
+        </trans-unit>
       </group>
     </body>
   </file>
