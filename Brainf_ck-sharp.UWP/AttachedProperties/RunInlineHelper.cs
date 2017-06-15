@@ -8,7 +8,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
     /// <summary>
     /// An attached property that binds a text value to a <see cref="Run"/> object
     /// </summary>
-    public class RunInlineHelper
+    public static class RunInlineHelper
     {
         public static String GetBindableText(Run element)
         {

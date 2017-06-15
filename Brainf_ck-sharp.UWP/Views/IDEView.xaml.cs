@@ -63,7 +63,9 @@ namespace Brainf_ck_sharp_UWP.Views
             Point selectionOffset = EditBox.ActualSelectionVerticalOffset;
             CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
             CursorRectangle.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
+            CursorTransform.X = -EditBox.HorizontalScrollViewerOffset;
             GuidesTransform.Y = -EditBox.VerticalScrollViewerOffset;
+            GuidesTransform.X = -EditBox.HorizontalScrollViewerOffset;
         }
 
         public IDEViewModel ViewModel => DataContext.To<IDEViewModel>();
@@ -83,8 +85,8 @@ namespace Brainf_ck_sharp_UWP.Views
             CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height + 8));
             CursorRectangle.SetVisualOffsetAsync(TranslationAxis.Y, (float) (height + 8));
             CursorRectangle.SetVisualOffsetAsync(TranslationAxis.X, 4);
-            BracketGuidesCanvas.SetVisualOffsetAsync(TranslationAxis.Y, (float)height);
-            EditBox.Padding = new Thickness(4, _Top + 8, 0, 8);
+            BracketsParentGrid.SetVisualOffsetAsync(TranslationAxis.Y, (float)height);
+            EditBox.Padding = new Thickness(4, _Top + 8, 4, 8);
             EditBox.ScrollBarMargin = new Thickness(0, _Top, 0, 0);
         }
 
@@ -405,6 +407,18 @@ namespace Brainf_ck_sharp_UWP.Views
             // Restore the handlers
             EditBox.SelectionChanged += EditBox_OnSelectionChanged;
             EditBox.TextChanged += EditBox_OnTextChanged;
+        }
+
+        // Updates the clip size of the bracket guides container
+        private void BracketsGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            BracketsClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
+        }
+
+        // Updates the clip size of the container of the unfocused text cursor
+        private void LineCursorCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            LineCursorClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
         }
     }
 }

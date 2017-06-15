@@ -54,7 +54,7 @@
                         Text="{Binding Depth, Converter={StaticResource DepthDigitCOnverter}, ConverterParameter=•}"
                         IsTextScaleFactorEnabled="False"
                         FontSize="8"
-                        Foreground="SlateGray"
+                        Foreground="GhostWhite"
                         Margin="0,-1,0,0"/>
                 </Border>
                 <Rectangle
@@ -187,7 +187,11 @@
         <!--Current line cursor-->
         <Canvas 
             Grid.Column="4"
-            IsHitTestVisible="False">
+            IsHitTestVisible="False"
+            SizeChanged="LineCursorCanvas_SizeChanged">
+            <Canvas.Clip>
+                <RectangleGeometry x:Name="LineCursorClip"/>
+            </Canvas.Clip>
             
             <!--Current line highlight-->
             <Border 
@@ -203,17 +207,27 @@
                 Width="1"
                 Height="20"
                 Fill="LightGray"
-                x:Name="CursorRectangle"/>
+                x:Name="CursorRectangle">
+                <Rectangle.RenderTransform>
+                    <TranslateTransform x:Name="CursorTransform"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
         </Canvas>
 
         <!--Canvas with the column guides-->
-        <Canvas
+        <Grid
             Grid.Column="4"
             IsHitTestVisible="False"
-            x:Name="BracketGuidesCanvas">
-            <Canvas.RenderTransform>
-                <TranslateTransform x:Name="GuidesTransform"/>
-            </Canvas.RenderTransform>
-        </Canvas>
+            SizeChanged="BracketsGrid_SizeChanged"
+            x:Name="BracketsParentGrid">
+            <Grid.Clip>
+                <RectangleGeometry x:Name="BracketsClip"/>
+            </Grid.Clip>
+            <Canvas x:Name="BracketGuidesCanvas">
+                <Canvas.RenderTransform>
+                    <TranslateTransform x:Name="GuidesTransform"/>
+                </Canvas.RenderTransform>
+            </Canvas>
+        </Grid>
     </Grid>
 </UserControl>

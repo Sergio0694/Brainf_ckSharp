@@ -13,7 +13,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
     /// <summary>
     /// A Brainf_ck code inline formatter to display code with syntax highlight inside a <see cref="Span"/> object
     /// </summary>
-    public class Brainf_ckCodeInlineFormatter
+    public static class Brainf_ckCodeInlineFormatter
     {
         /// <summary>
         /// Gets the zero width space character

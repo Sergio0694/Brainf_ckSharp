@@ -10,7 +10,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
     /// <summary>
     /// An attached property that sets a <see cref="RotateTransform"/> object to a <see cref="TextBlock"/> control if needed
     /// </summary>
-    public class CharacterToRotationHelper
+    public static class CharacterToRotationHelper
     {
         public static char GetCharacter(TextBlock element)
         {

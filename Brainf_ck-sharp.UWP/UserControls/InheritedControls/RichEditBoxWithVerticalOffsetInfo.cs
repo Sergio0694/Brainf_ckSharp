@@ -63,6 +63,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         public double VerticalScrollViewerOffset => _TemplateScrollViewer.VerticalOffset;
 
         /// <summary>
+        /// Gets the curent horizontal offset of the inner ScrollViewer
+        /// </summary>
+        public double HorizontalScrollViewerOffset => _TemplateScrollViewer.HorizontalOffset;
+
+        /// <summary>
         /// Gets the actual vertical offset of the current text selection
         /// </summary>
         public Point ActualSelectionVerticalOffset
