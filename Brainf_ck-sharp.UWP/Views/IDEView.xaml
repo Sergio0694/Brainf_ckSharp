@@ -101,6 +101,30 @@
 
         <!--Info template selector-->
         <templateSelectors:IDEIndentationInfoTemplateSelector x:Key="IndentationInfoTemplateSelector"/>
+        
+        <!--Diff empty line-->
+        <DataTemplate x:Key="DiffEmptyLineTemplate">
+            <Grid Height="19.94998046875"/>
+        </DataTemplate>
+
+        <!--Diff updated saved line-->
+        <DataTemplate x:Key="DiffSavedLineTemplate">
+            <Rectangle
+                Height="19.94998046875"
+                Width="4"
+                Fill="#FF577430"/>
+        </DataTemplate>
+
+        <!--Diff updated saved line-->
+        <DataTemplate x:Key="DiffChangedLineTemplate">
+            <Rectangle
+                Height="19.94998046875"
+                Width="4"
+                Fill="#FFEFF284"/>
+        </DataTemplate>
+        
+        <!--Git diff template selector-->
+        <templateSelectors:GitDiffLineStatusTemplateSelector x:Key="DiffTemplateSelector"/>
     </UserControl.Resources>
 
     <!--Root-->
@@ -152,6 +176,20 @@
                     TextTrimming="CharacterEllipsis"
                     x:Name="LineBlock"/>
             </Grid>
+        </Canvas>
+        
+        <!--Git diff indicators-->
+        <Canvas Grid.Column="2">
+            <ListView
+                x:Name="GitDiffListView"
+                HorizontalAlignment="Stretch"
+                Width="6"
+                ItemsSource="{x:Bind ViewModel.DiffStatusSource}"
+                ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
+                ItemTemplateSelector="{StaticResource DiffTemplateSelector}"
+                ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                ScrollViewer.VerticalScrollMode="Disabled"
+                IsHitTestVisible="False"/>
         </Canvas>
 
         <!--Indentation indicators-->

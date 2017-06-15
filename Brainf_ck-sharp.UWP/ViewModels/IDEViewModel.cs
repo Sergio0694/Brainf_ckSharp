@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Windows.UI.Text;
 using Brainf_ck_sharp;
+using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Messages;
@@ -166,10 +168,64 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             }
 
             // Remove the exceeding items
-            int diff = Source.Count - Source.Count;
+            int diff = Source.Count - source.Count;
             while (diff > 0)
             {
                 Source.RemoveAt(Source.Count - 1);
+                diff--;
+            }
+        }
+
+        /// <summary>
+        /// Gets the items collection for the current instance
+        /// </summary>
+        [NotNull]
+        public ObservableCollection<GitDiffLineStatus> DiffStatusSource { get; } = new ObservableCollection<GitDiffLineStatus>();
+
+        /// <summary>
+        /// Updates the diff indicators for the current source code being edited
+        /// </summary>
+        /// <param name="previous">The previous code</param>
+        /// <param name="current">The current code</param>
+        public void UpdateGitDiffStatus([NotNull] String previous, [NotNull] String current)
+        {
+            // Clear the current indicators if the two strings are the same
+            if (previous.Equals(current))
+            {
+                DiffStatusSource.Clear();
+                return;
+            }
+
+            String[]
+                currentLines = current.Split('\r'),
+                previousLines = previous.Split('\r').Take(currentLines.Length).ToArray();
+            List<GitDiffLineStatus> source = new List<GitDiffLineStatus>();
+            for (int i = 0; i < currentLines.Length - 1; i++)
+            {
+                if (i > previousLines.Length - 1) source.Add(GitDiffLineStatus.Edited);
+                else source.Add(currentLines[i].Equals(previousLines[i]) ? GitDiffLineStatus.Undefined : GitDiffLineStatus.Edited);
+                // TODO: actually implement this
+            }
+
+            // Update the source collection
+            for (int i = 0; i < source.Count; i++)
+            {
+                // The source doesn't contain enough items
+                if (DiffStatusSource.Count - 1 < i)
+                {
+                    DiffStatusSource.Add(source[i]);
+                }
+
+                // Replace the current item if needed
+                if (source[i] != DiffStatusSource[i])
+                    DiffStatusSource[i] = source[i];
+            }
+
+            // Remove the exceeding items
+            int diff = DiffStatusSource.Count - source.Count;
+            while (diff > 0)
+            {
+                DiffStatusSource.RemoveAt(DiffStatusSource.Count - 1);
                 diff--;
             }
         }

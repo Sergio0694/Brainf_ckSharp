@@ -60,6 +60,7 @@ namespace Brainf_ck_sharp_UWP.Views
             float target = (float)(_Top - 12 - EditBox.VerticalScrollViewerOffset);
             LinesGrid.SetVisualOffsetAsync(TranslationAxis.Y, target);
             IndentationInfoList.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset));
+            GitDiffListView.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset));
             Point selectionOffset = EditBox.ActualSelectionVerticalOffset;
             CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
             CursorRectangle.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
@@ -82,6 +83,7 @@ namespace Brainf_ck_sharp_UWP.Views
             _Top = height;
             LinesGrid.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height - 12)); // Adjust the initial offset of the line numbers and indicators
             IndentationInfoList.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height + 10));
+            GitDiffListView.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height + 10));
             CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height + 8));
             CursorRectangle.SetVisualOffsetAsync(TranslationAxis.Y, (float) (height + 8));
             CursorRectangle.SetVisualOffsetAsync(TranslationAxis.X, 4);
@@ -219,6 +221,7 @@ namespace Brainf_ck_sharp_UWP.Views
 
         #endregion
 
+        // Gets the backup of the text in the IDE
         private String _PreviousText;
 
         private void EditBox_OnSelectionChanged(object sender, RoutedEventArgs e)
@@ -307,6 +310,7 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Get the updated text
             EditBox.Document.GetText(TextGetOptions.None, out text);
+            ViewModel.UpdateGitDiffStatus(_PreviousText, text);
             _PreviousText = text;
 
             // Update the bracket guides
@@ -402,6 +406,7 @@ namespace Brainf_ck_sharp_UWP.Views
             DrawLineNumbers();
             DrawBracketGuides(code);
             ViewModel.UpdateIndentationInfo(_Brackets);
+            ViewModel.UpdateGitDiffStatus(_PreviousText, code);
             ViewModel.SendMessages(code);
 
             // Restore the handlers
