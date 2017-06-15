@@ -165,19 +165,24 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
             };
         }
 
-        public async Task<bool> SaveCodeAsync([NotNull] String title, [NotNull] String text)
+        /// <summary>
+        /// Saves a new source code in the app local database
+        /// </summary>
+        /// <param name="title">The title of the source code to save</param>
+        /// <param name="code">The code to save</param>
+        public async Task<bool> SaveCodeAsync([NotNull] String title, [NotNull] String code)
         {
             await EnsureDatabaseConnectionAsync();
             if (!await CheckExistingName(title)) return false;
-            SourceCode code = new SourceCode
+            SourceCode entry = new SourceCode
             {
                 Uid = Guid.NewGuid().ToString(),
-                Code = text,
+                Code = code,
                 Title = title,
                 CreatedTime = DateTime.Now,
                 ModifiedTime = DateTime.Now
             };
-            await DatabaseConnection.InsertAsync(code);
+            await DatabaseConnection.InsertAsync(entry);
             return true;
         }
 

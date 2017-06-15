@@ -248,7 +248,7 @@
                     x:Uid="Unicode"
                     Icon="&#xEBDB;"
                     Click="{x:Bind RequestShowUnicodeCharacters}"/>
-                <AppBarSeparator/>
+                <AppBarSeparator Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Browse code library"
                     x:Uid="CodeLibraryButton"

@@ -313,4 +313,23 @@
   <data name="SaveButton.Label" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="AlreadyUsed" xml:space="preserve">
+    <value>Already used</value>
+  </data>
+  <data name="Available" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="CodePreviewBlock.Text" xml:space="preserve">
+    <value>Code preview:</value>
+  </data>
+  <data name="CodeTitleBox.PlaceholderText" xml:space="preserve">
+    <value>Enter the code title</value>
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value>Empty</value>
+    <comment>Empty title for a code to save</comment>
+  </data>
+  <data name="FilenameBlock.Text" xml:space="preserve">
+    <value>File name:</value>
+  </data>
 </root>

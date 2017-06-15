@@ -9,6 +9,20 @@
         <Setter Property="FontSize" Value="16"/>
     </Style>
 
+    <!--Text trimming generic style-->
+    <Style TargetType="TextBlock" x:Key="TrimmedTextStyle">
+        <Setter Property="MaxLines" Value="1"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+
+    <!--A 1 line, trimmed TextBlock-->
+    <Style x:Key="TextBlockMainTemplateStyle" TargetType="TextBlock" BasedOn="{StaticResource TrimmedTextStyle}">
+        <Setter Property="FontWeight" Value="SemiLight"/>
+        <Setter Property="Foreground" Value="GhostWhite"/>
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
+
     <!-- Default style for Windows.UI.Xaml.Controls.TextBox -->
     <Style TargetType="TextBox" x:Key="DarkTextBox">
         <Setter Property="MinWidth" Value="{ThemeResource TextControlThemeMinWidth}" />

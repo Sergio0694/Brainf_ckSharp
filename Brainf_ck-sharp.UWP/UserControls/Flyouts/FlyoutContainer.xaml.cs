@@ -27,8 +27,10 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
             ConfirmButton.ManageControlPointerStates((p, value) => VisualStateManager.GoToState(this, value ? "Highlight" : "Default", false));
         }
 
+        // The in-app acrylic brush for the background of the popup
         private AttachedStaticCompositionEffect<Border> _BackgroundAcrylic;
 
+        // Initializes the acrylic effect
         private async void FlyoutContainer_Loaded(object sender, RoutedEventArgs e)
         {
             _BackgroundAcrylic = await BlurBorder.GetAttachedInAppSemiAcrylicEffectAsync(BlurBorder, 8, 800,
@@ -46,6 +48,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         /// </summary>
         public FlyoutDisplayMode DisplayMode { get; private set; }
 
+        // The content currently hosted by the container
         private FrameworkElement _Content;
 
         /// <summary>
@@ -80,8 +83,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
             InterfacesSetup(content);
         }
 
+        /// <summary>
+        /// Adjusts the UI according to the interfaces implemented by the current content
+        /// </summary>
+        /// <param name="element"></param>
         private void InterfacesSetup(FrameworkElement element)
         {
+            // Show the button and bind its enabled status
             if (element is IValidableDialog validable)
             {
                 ConfirmButton.Visibility = Visibility.Visible;

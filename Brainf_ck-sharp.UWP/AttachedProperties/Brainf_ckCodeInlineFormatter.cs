@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
@@ -39,7 +40,9 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
         private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Span @this = d.To<Span>();
-            String code = e.NewValue.To<String>();
+            String
+                raw = e.NewValue.To<String>(),
+                code = Regex.Replace(raw, @"[^\+\-\[\]\.,><]", "");
             IEnumerable<Run> runs =
                 from c in code
                 let text = $"{c}{ZeroWidthSpace}"
@@ -114,10 +117,13 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
         private static void OnUnformattedSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Span @this = d.To<Span>();
+            String
+                raw = e.NewValue.To<String>(),
+                code = Regex.Replace(raw, @"[^\+\-\[\]\.,><]", "");
             @this.Inlines.Clear();
             @this.Inlines.Add(new Run
             {
-                Text = e.NewValue.To<String>()?.Aggregate(new StringBuilder(), (b, c) =>
+                Text = code?.Aggregate(new StringBuilder(), (b, c) =>
                 {
                     b.Append($"{c}{ZeroWidthSpace}");
                     return b;

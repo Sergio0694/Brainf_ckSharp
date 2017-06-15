@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
 using Brainf_ck_sharp_UWP.AttachedProperties;
@@ -36,7 +35,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
             SavedSourceCodeTemplate @this = d.To<SavedSourceCodeTemplate>();
             @this.TitleBlock.Text = code.Title;
             Span host = new Span();
-            Brainf_ckCodeInlineFormatter.SetSource(host, Regex.Replace(code.Code, @"[^\+\-\[\]\.,><]", ""));
+            Brainf_ckCodeInlineFormatter.SetSource(host, code.Code);
             @this.CodeBlock.Inlines.Clear();
             @this.CodeBlock.Inlines.Add(host);
         }

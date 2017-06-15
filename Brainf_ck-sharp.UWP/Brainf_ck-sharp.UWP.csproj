@@ -106,6 +106,7 @@
     <Compile Include="AttachedProperties\CharacterToRotationHelper.cs" />
     <Compile Include="AttachedProperties\RunInlineHelper.cs" />
     <Compile Include="Converters\BoolToAccentBrushOrFallbackConverter.cs" />
+    <Compile Include="Converters\SourceCodeTitleScoreToDisplayStringConverter.cs" />
     <Compile Include="Converters\CharacterWithFallbackConverter.cs" />
     <Compile Include="Converters\DepthToVisibilityConverter.cs" />
     <Compile Include="Converters\ExceptionTypeConverter.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="DataModels\Misc\ScriptExceptionInfo.cs" />
     <Compile Include="DataModels\SQLite\SavedSourceCodeType.cs" />
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
+    <Compile Include="DataModels\SQLite\SourceCodeTitleScore.cs" />
     <Compile Include="FlyoutService\FlyoutClosedResult.cs" />
     <Compile Include="FlyoutService\FlyoutDisplayMode.cs" />
     <Compile Include="FlyoutService\Interfaces\IEventConfirmedContent.cs" />
@@ -181,6 +183,9 @@
     </Compile>
     <Compile Include="UserControls\CustomControls\IDESessionBreakpointOptionControl.xaml.cs">
       <DependentUpon>IDESessionBreakpointOptionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CustomControls\TextValidatorControl.xaml.cs">
+      <DependentUpon>TextValidatorControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml.cs">
       <DependentUpon>SavedSourceCodeTemplate.xaml</DependentUpon>
@@ -338,6 +343,10 @@
     <Page Include="UserControls\CustomControls\IDESessionBreakpointOptionControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\CustomControls\TextValidatorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\DataTemplates\CompactCharactersChunkViewerTemplate.xaml">
       <SubType>Designer</SubType>
