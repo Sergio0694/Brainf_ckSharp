@@ -307,4 +307,10 @@
   <data name="UnicodeValue" xml:space="preserve">
     <value>Unicode value</value>
   </data>
+  <data name="SaveAsButton.Label" xml:space="preserve">
+    <value>Save as</value>
+  </data>
+  <data name="SaveButton.Label" xml:space="preserve">
+    <value>Save</value>
+  </data>
 </root>

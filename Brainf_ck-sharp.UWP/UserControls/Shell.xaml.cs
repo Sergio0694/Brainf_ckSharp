@@ -170,5 +170,9 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 LocalizationManager.GetResource("CodeLibrary"), flyout, new Thickness());
             if (result) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(result.Value));
         }
+
+        public void RequestSaveSourceCode() => Messenger.Default.Send(new SaveSourceCodeRequestMessage(CodeSaveType.Save));
+
+        public void RequestSaveSourceCodeAs() => Messenger.Default.Send(new SaveSourceCodeRequestMessage(CodeSaveType.SaveAs));
     }
 }
