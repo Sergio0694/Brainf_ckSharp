@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using Brainf_ck_sharp;
 using Brainf_ck_sharp.ReturnTypes;
+using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.FlyoutService;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Messages;
@@ -33,8 +34,15 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.PlayRequested += ViewModel_PlayRequested;
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             _PreviousText = text;
-            Messenger.Default.Register<SourceCodeLoadingRequestedMessage>(this, m => LoadCode(m.RequestedCode.Code, true));
+            Messenger.Default.Register<SourceCodeLoadingRequestedMessage>(this, m =>
+            {
+                _LoadedCode = m.RequestedCode;
+                LoadCode(m.RequestedCode.Code, true);
+            });
         }
+
+        // Gets the loaded code the user is currently working on, if present
+        private SourceCode _LoadedCode;
 
         private void ViewModel_PlayRequested(object sender, string e)
         {
@@ -310,7 +318,7 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Get the updated text
             EditBox.Document.GetText(TextGetOptions.None, out text);
-            ViewModel.UpdateGitDiffStatus(_PreviousText, text);
+            ViewModel.UpdateGitDiffStatus(_LoadedCode?.Code ?? _PreviousText, text);
             _PreviousText = text;
 
             // Update the bracket guides
@@ -406,7 +414,7 @@ namespace Brainf_ck_sharp_UWP.Views
             DrawLineNumbers();
             DrawBracketGuides(code);
             ViewModel.UpdateIndentationInfo(_Brackets);
-            ViewModel.UpdateGitDiffStatus(_PreviousText, code);
+            ViewModel.UpdateGitDiffStatus(_LoadedCode?.Code ?? _PreviousText, code);
             ViewModel.SendMessages(code);
 
             // Restore the handlers

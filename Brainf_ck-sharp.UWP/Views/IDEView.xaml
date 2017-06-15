@@ -109,18 +109,42 @@
 
         <!--Diff updated saved line-->
         <DataTemplate x:Key="DiffSavedLineTemplate">
-            <Rectangle
+            <StackPanel 
                 Height="19.94998046875"
-                Width="4"
-                Fill="#FF577430"/>
+                Orientation="Horizontal"
+                HorizontalAlignment="Center">
+                <Rectangle
+                    Fill="#FF3B4927"
+                    Width="1"
+                    VerticalAlignment="Stretch"/>
+                <Rectangle
+                    Width="4"
+                    Fill="#FF577430"/>
+                <Rectangle
+                    Fill="#FF3B4927"
+                    Width="1"
+                    VerticalAlignment="Stretch"/>
+            </StackPanel>
         </DataTemplate>
 
         <!--Diff updated saved line-->
         <DataTemplate x:Key="DiffChangedLineTemplate">
-            <Rectangle
+            <StackPanel 
                 Height="19.94998046875"
-                Width="4"
-                Fill="#FFEFF284"/>
+                Orientation="Horizontal"
+                HorizontalAlignment="Center">
+                <Rectangle
+                    Fill="#FF878851"
+                    Width="1"
+                    VerticalAlignment="Stretch"/>
+                <Rectangle
+                    Width="4"
+                    Fill="#FFEFF284"/>
+                <Rectangle
+                    Fill="#FF878851"
+                    Width="1"
+                    VerticalAlignment="Stretch"/>
+            </StackPanel>
         </DataTemplate>
         
         <!--Git diff template selector-->
@@ -132,7 +156,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="28"/>
-            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="12"/>
             <ColumnDefinition 
                 Width="*"
@@ -183,7 +207,7 @@
             <ListView
                 x:Name="GitDiffListView"
                 HorizontalAlignment="Stretch"
-                Width="6"
+                Width="10"
                 ItemsSource="{x:Bind ViewModel.DiffStatusSource}"
                 ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
                 ItemTemplateSelector="{StaticResource DiffTemplateSelector}"

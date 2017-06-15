@@ -198,7 +198,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 
             String[]
                 currentLines = current.Split('\r'),
-                previousLines = previous.Split('\r').Take(currentLines.Length).ToArray();
+                previousLines = previous.Replace("\n", "").Split('\r').Take(currentLines.Length).ToArray();
             List<GitDiffLineStatus> source = new List<GitDiffLineStatus>();
             for (int i = 0; i < currentLines.Length - 1; i++)
             {
