@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
-using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using JetBrains.Annotations;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
@@ -138,7 +138,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
             // Get the buttons to hide
             CustomCommandBarButton[] pendingButtons =
                 (from control in PrimaryCommands
-                let button = Extensions.To<CustomCommandBarButton>(control)
+                let button = control.To<CustomCommandBarButton>()
                 where button.Visibility == Visibility.Visible
                 select button).ToArray();
             if (pendingButtons.Length == 0 || _Disposed)

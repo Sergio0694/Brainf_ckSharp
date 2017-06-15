@@ -2,6 +2,7 @@
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Microsoft.Toolkit.Uwp;
 
 namespace Brainf_ck_sharp_UWP.Converters
@@ -14,7 +15,7 @@ namespace Brainf_ck_sharp_UWP.Converters
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             return value is uint u && u > 0 || value is int i && i > 0
-                ? StaticHelper.GetResourceValue<SolidColorBrush>("SystemControlHighlightAccentBrush")
+                ? XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("SystemControlHighlightAccentBrush")
                 : new SolidColorBrush(parameter.To<String>().ToColor());
         }
 

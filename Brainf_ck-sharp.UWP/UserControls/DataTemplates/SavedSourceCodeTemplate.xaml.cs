@@ -3,7 +3,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
 using Brainf_ck_sharp_UWP.AttachedProperties;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
-using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.Extensions;
 
 namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
 {

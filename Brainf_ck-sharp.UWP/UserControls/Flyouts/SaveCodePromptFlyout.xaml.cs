@@ -2,7 +2,7 @@
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.AttachedProperties;
 using Brainf_ck_sharp_UWP.FlyoutService.Interfaces;
-using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.ViewModels;
 using JetBrains.Annotations;
 

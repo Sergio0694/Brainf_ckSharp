@@ -2,6 +2,7 @@
 using Windows.UI.Xaml.Data;
 using Brainf_ck_sharp_UWP.DataModels.IDEResults;
 using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.Extensions;
 
 namespace Brainf_ck_sharp_UWP.Converters
 {

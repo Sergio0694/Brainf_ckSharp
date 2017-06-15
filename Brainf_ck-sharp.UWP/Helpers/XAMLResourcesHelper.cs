@@ -1,13 +1,14 @@
 ﻿using System;
 using Windows.UI.Xaml;
+using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.Helpers
 {
     /// <summary>
-    /// A simple class with some static helper methods
+    /// A simple class that gets/sets values to and from XAML resources in the app
     /// </summary>
-    public class StaticHelper
+    public class XAMLResourcesHelper
     {
         /// <summary>
         /// Retrieves the value of a given XAML resource

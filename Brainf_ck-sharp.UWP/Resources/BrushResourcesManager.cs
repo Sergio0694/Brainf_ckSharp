@@ -22,12 +22,12 @@ namespace Brainf_ck_sharp_UWP.Resources
         // Initializes the brushes
         private BrushResourcesManager()
         {
-            AccentBrush = StaticHelper.GetResourceValue<SolidColorBrush>("SystemControlHighlightAccentBrush");
+            AccentBrush = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("SystemControlHighlightAccentBrush");
             AccentBrushLowFadeBrush = new SolidColorBrush(Color.FromArgb(0x90, AccentBrush.Color.R, AccentBrush.Color.G, AccentBrush.Color.B));
-            StaticHelper.AssignValueToXAMLResource("AccentBrushLowFade", AccentBrushLowFadeBrush);
+            XAMLResourcesHelper.AssignValueToXAMLResource("AccentBrushLowFade", AccentBrushLowFadeBrush);
             AccentBrushMediumFadeBrush = new SolidColorBrush(Color.FromArgb(0xB0, AccentBrush.Color.R, AccentBrush.Color.G, AccentBrush.Color.B));
-            StaticHelper.AssignValueToXAMLResource("AccentBrushMediumFade", AccentBrushMediumFadeBrush);
-            RedDangerBrush = StaticHelper.GetResourceValue<SolidColorBrush>("RedDangerBrush");
+            XAMLResourcesHelper.AssignValueToXAMLResource("AccentBrushMediumFade", AccentBrushMediumFadeBrush);
+            RedDangerBrush = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("RedDangerBrush");
         }
 
         #region Brushes

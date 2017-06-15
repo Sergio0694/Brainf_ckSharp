@@ -144,11 +144,13 @@
     <Compile Include="FlyoutService\Interfaces\IValidableDialog.cs" />
     <Compile Include="Helpers\BitHelper.cs" />
     <Compile Include="Helpers\Brainf_ckFormatterHelper.cs" />
-    <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="FlyoutService\FlyoutManager.cs" />
+    <Compile Include="Helpers\Extensions\MiscExtensions.cs" />
+    <Compile Include="Helpers\Extensions\NumericExtensions.cs" />
+    <Compile Include="Helpers\Extensions\UIExtensions.cs" />
     <Compile Include="Helpers\IndexedModelWithValue.cs" />
     <Compile Include="Helpers\LocalizationManager.cs" />
-    <Compile Include="Helpers\StaticHelper.cs" />
+    <Compile Include="Helpers\XAMLResourcesHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\KeyEventsListener.cs" />
     <Compile Include="Helpers\WindowsAPIs\ResolutionHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\TitleBarHelper.cs" />

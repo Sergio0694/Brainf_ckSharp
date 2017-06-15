@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.ViewModels;
 
 namespace Brainf_ck_sharp_UWP.Views

@@ -5,7 +5,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.FlyoutService;
 using Brainf_ck_sharp_UWP.FlyoutService.Interfaces;
-using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
