@@ -175,7 +175,8 @@
             x:Name="SharedCommandBar"
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True"
-            RelativePanel.Above="InfoBar">
+            RelativePanel.Above="InfoBar"
+            CommandBarOverflowPresenterStyle="{StaticResource AcrylicCommandBarOverflowPresenter}">
             <customCommandBar:CommandBarWithButtonsAnimations.PrimaryCommands>
                 
                 <!--Console buttons-->
@@ -247,11 +248,24 @@
                     x:Uid="Unicode"
                     Icon="&#xEBDB;"
                     Click="{x:Bind RequestShowUnicodeCharacters}"/>
+                <AppBarSeparator/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Browse code library"
                     x:Uid="CodeLibraryButton"
                     Icon="&#xE756;"
                     Click="{x:Bind RequestShowCodeLibrary}"
+                    Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
+                <customCommandBar:CustomCommandBarButton
+                    Label="Save"
+                    x:Uid="SaveButton"
+                    Icon="&#xE105;"
+                    Click="{x:Bind RequestSaveSourceCode}"
+                    Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
+                <customCommandBar:CustomCommandBarButton
+                    Label="Save as"
+                    x:Uid="SaveAsButton"
+                    Icon="&#xEA35;"
+                    Click="{x:Bind RequestSaveSourceCodeAs}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
             </customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
         </customCommandBar:CommandBarWithButtonsAnimations>
