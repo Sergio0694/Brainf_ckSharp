@@ -2,6 +2,7 @@
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.FlyoutService;
+using Brainf_ck_sharp_UWP.FlyoutService.Interfaces;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.ViewModels;
 

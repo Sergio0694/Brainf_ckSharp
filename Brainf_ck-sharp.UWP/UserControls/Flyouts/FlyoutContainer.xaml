@@ -17,11 +17,32 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="52"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
+
+        <!--Visual states-->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="Default">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="ButtonContentGrid.Background"
+                            Value="{StaticResource AccentBrushLowFade}"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Highlight">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="ButtonContentGrid.Background"
+                            Value="{StaticResource AccentBrushMediumFade}"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <!--Acrylic border-->
         <Border x:Name="BlurBorder"
-                Grid.RowSpan="2"/>
+                Grid.RowSpan="3"/>
         <xaml:CanvasControl x:Name="Win2DCanvas"
                             Grid.Row="0"/>
         
@@ -46,6 +67,35 @@
                        Style="{StaticResource FontIconTextBlockStyle}"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"/>
+        </Button>
+        
+        <!--Scroller for fixed content-->
+        <ScrollViewer 
+            Grid.Row="1"
+            Visibility="Collapsed"
+            x:Name="ContentScroller"/>
+        
+        <!--Confirm button-->
+        <Button 
+            Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
+            Grid.Row="2"
+            Height="60"
+            Click="ConfirmButton_Click"
+            x:Name="ConfirmButton"
+            IsEnabled="False"
+            Visibility="Collapsed">
+            <Grid 
+                x:Name="ButtonContentGrid"
+                Background="{StaticResource AccentBrushLowFade}">
+                <Canvas
+                    Background="#10000000"/>
+                <TextBlock 
+                    Text="Confirm"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    FontSize="18"
+                    FontWeight="SemiBold"/>
+            </Grid>
         </Button>
     </Grid>
 </UserControl>

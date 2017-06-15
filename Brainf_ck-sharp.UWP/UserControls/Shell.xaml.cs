@@ -76,7 +76,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             // UI setup
             FadeCanvas.SetVisualOpacity(0);
             Messenger.Default.Send(new ConsoleStatusUpdateMessage(IDEStatus.Console, LocalizationManager.GetResource("Ready"), 0, 0));
-            Console.AdjustTopMargin(HeaderGrid.ActualHeight + 12);
+            Console.AdjustTopMargin(HeaderGrid.ActualHeight + 8);
             IDE.AdjustTopMargin(HeaderGrid.ActualHeight);
             if (UniversalAPIsHelper.IsMobileDevice)
             {
@@ -136,7 +136,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             {
                 viewer.Source = t.Result;
             }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
-            FlyoutManager.Instance.Show(LocalizationManager.GetResource("MemoryStateTitle"), viewer);
+            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("MemoryStateTitle"), viewer);
         }
 
         public void RequestClearConsoleLine() => Messenger.Default.Send(new ClearConsoleLineMessage());
@@ -151,7 +151,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
         {
             UnicodeCharactersGuideFlyout flyout = new UnicodeCharactersGuideFlyout();
             flyout.ViewModel.LoadAsync().Forget();
-            FlyoutManager.Instance.Show(LocalizationManager.GetResource("UnicodeTitle"), flyout);
+            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UnicodeTitle"), flyout);
         }
 
         private void PivotControl_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

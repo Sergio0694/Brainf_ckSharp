@@ -5,6 +5,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp_UWP.Resources;
 using Brainf_ck_sharp_UWP.UserControls;
 
 namespace Brainf_ck_sharp_UWP
@@ -48,6 +49,7 @@ namespace Brainf_ck_sharp_UWP
                 // Handle the UI
                 if (UniversalAPIsHelper.IsMobileDevice) StatusBarHelper.HideAsync().Forget();
                 else TitleBarHelper.StyleAppTitleBar();
+                BrushResourcesManager.InitializeOrRefreshInstance();
 
                 // Setup the view mode
                 ApplicationView view = ApplicationView.GetForCurrentView();

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Brainf_ck_sharp_UWP.FlyoutService
+namespace Brainf_ck_sharp_UWP.FlyoutService.Interfaces
 {
     /// <summary>
     /// An interface to apply to a content to be shown inside a Flyout

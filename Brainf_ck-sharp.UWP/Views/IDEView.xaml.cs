@@ -16,6 +16,8 @@ using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.FlyoutService;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Messages;
+using Brainf_ck_sharp_UWP.Messages.Actions;
+using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
@@ -39,6 +41,18 @@ namespace Brainf_ck_sharp_UWP.Views
                 _LoadedCode = m.RequestedCode;
                 LoadCode(m.RequestedCode.Code, true);
             });
+            Messenger.Default.Register<SaveSourceCodeRequestMessage>(this, m => ManageSaveCodeRequest(m.RequestType));
+        }
+
+        private async void ManageSaveCodeRequest(CodeSaveType type)
+        {
+            SaveCodePromptFlyout flyout = new SaveCodePromptFlyout();
+            var result = await FlyoutManager.Instance.ShowAsync("Save code", flyout, null, FlyoutDisplayMode.ActualHeight);
+            if (result == FlyoutResult.Confirmed)
+            {
+                EditBox.Document.GetText(TextGetOptions.None, out String text);
+                await SQLiteManager.Instance.SaveCodeAsync(flyout.Title, text);
+            }
         }
 
         // Gets the loaded code the user is currently working on, if present
@@ -49,7 +63,7 @@ namespace Brainf_ck_sharp_UWP.Views
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             InterpreterExecutionSession session = Brainf_ckInterpreter.InitializeSession(new[] { text }, e, 64, 1000);
             IDERunResultFlyout flyout = new IDERunResultFlyout(session);
-            FlyoutManager.Instance.Show(LocalizationManager.GetResource("RunTitle"), flyout, new Thickness());
+            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("RunTitle"), flyout, new Thickness()).Forget();
             flyout.ViewModel.LoadGroupsAsync().Forget();
         }
 

@@ -165,10 +165,30 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
             };
         }
 
-        public async Task<bool> SaveCodeAsync([NotNull] SourceCode code, [NotNull] String text)
+        public async Task<bool> SaveCodeAsync([NotNull] String title, [NotNull] String text)
         {
             await EnsureDatabaseConnectionAsync();
-            throw new NotImplementedException();
+            if (!await CheckExistingName(title)) return false;
+            SourceCode code = new SourceCode
+            {
+                Uid = Guid.NewGuid().ToString(),
+                Code = text,
+                Title = title,
+                CreatedTime = DateTime.Now,
+                ModifiedTime = DateTime.Now
+            };
+            await DatabaseConnection.InsertAsync(code);
+            return true;
+        }
+
+        /// <summary>
+        /// Checks whether or not there is a saved source code with the same title
+        /// </summary>
+        /// <param name="name">The title to check</param>
+        public async Task<bool> CheckExistingName([NotNull] String name)
+        {
+            await EnsureDatabaseConnectionAsync();
+            return await DatabaseConnection.Table<SourceCode>().Where(row => row.Title == name).FirstOrDefaultAsync() == null;
         }
     }
 }

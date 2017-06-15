@@ -137,7 +137,9 @@
     <Compile Include="DataModels\SQLite\SavedSourceCodeType.cs" />
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
     <Compile Include="FlyoutService\FlyoutClosedResult.cs" />
-    <Compile Include="FlyoutService\IEventConfirmedContent.cs" />
+    <Compile Include="FlyoutService\FlyoutDisplayMode.cs" />
+    <Compile Include="FlyoutService\Interfaces\IEventConfirmedContent.cs" />
+    <Compile Include="FlyoutService\Interfaces\IValidableDialog.cs" />
     <Compile Include="Helpers\BitHelper.cs" />
     <Compile Include="Helpers\Brainf_ckFormatterHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
@@ -168,6 +170,7 @@
     <Compile Include="Messages\OperatorAddedMessage.cs" />
     <Compile Include="Messages\SourceCodeLoadingRequestedMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\BrushResourcesManager.cs" />
     <Compile Include="SQLiteDatabase\SQLiteManager.cs" />
     <Compile Include="TemplateSelectors\GitDiffLineStatusTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\ConsoleLineTemplateSelector.cs" />
@@ -187,6 +190,9 @@
     </Compile>
     <Compile Include="UserControls\Flyouts\LocalSourceCodesBrowserFlyout.xaml.cs">
       <DependentUpon>LocalSourceCodesBrowserFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\SaveCodePromptFlyout.xaml.cs">
+      <DependentUpon>SaveCodePromptFlyout.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CommandBarWithButtonsAnimations.cs" />
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CustomCommandBarButton.cs" />
@@ -254,6 +260,7 @@
     <Compile Include="ViewModels\IDEViewModel.cs" />
     <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase.cs" />
     <Compile Include="ViewModels\LocalSourceCodesBrowserFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\SaveCodePromptFlyoutViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\UnicodeCharactersGuideFlyoutViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
@@ -304,6 +311,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Resources\BrushesDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
     <Page Include="Styles\ButtonStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -372,6 +384,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Flyouts\MemoryViewerFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\SaveCodePromptFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
+using Brainf_ck_sharp_UWP.FlyoutService.Interfaces;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
@@ -85,7 +87,8 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
         /// <param name="title">The title of the new flyout to show</param>
         /// <param name="content">The content to show inside the flyout</param>
         /// <param name="margin">The optional margins to set to the content of the popup to show</param>
-        public async void Show([NotNull] String title, [NotNull] FrameworkElement content, [CanBeNull] Thickness? margin = null)
+        public async Task<FlyoutResult> ShowAsync([NotNull] String title, [NotNull] FrameworkElement content, [CanBeNull] Thickness? margin = null,
+            FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent)
         {
             // Lock and close the existing popup, if needed
             await Semaphore.WaitAsync();
@@ -98,13 +101,33 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
-            container.SetupUI(title, content, margin);
+
+            // Prepare the flyout depending on the desired display mode
+            switch (mode)
+            {
+                case FlyoutDisplayMode.ScrollableContent:
+                    container.SetupUI(title, content, margin);
+                    break;
+                case FlyoutDisplayMode.ActualHeight:
+                    double width = CalculateExpectedWidth();
+                    if (margin != null) content.Margin = margin.Value;
+                    container.SetupFixedUI(title, content, width);
+                    break;
+                default:
+                    throw new ArgumentException("The desired display mode is not valid");
+            }
+
             Popup popup = new Popup
             {
                 IsLightDismissEnabled = false,
                 Child = container
             };
             AdjustPopupSize(popup, container);
+            TaskCompletionSource<FlyoutResult> tcs = new TaskCompletionSource<FlyoutResult>();
+            popup.Closed += (s, e) =>
+            {
+                tcs.SetResult(container.Confirmed ? FlyoutResult.Confirmed : FlyoutResult.Canceled);
+            };
 
             // Display and animate the popup
             _CurrentPopup = popup;
@@ -112,6 +135,7 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
             popup.IsOpen = true;
             await popup.StartCompositionFadeSlideAnimationAsync(null, 1, TranslationAxis.Y, 20, 0, 250, null, null, EasingFunctionNames.CircleEaseOut);
             Semaphore.Release();
+            return await tcs.Task;
         }
 
         /// <summary>
@@ -120,7 +144,9 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
         /// <param name="title">The title of the new flyout to show</param>
         /// <param name="content">The content to show inside the flyout</param>
         /// <param name="margin">The optional margins to set to the content of the popup to show</param>
-        public async Task<FlyoutClosedResult<TEvent>> ShowAsync<TContent, TEvent>([NotNull] String title, [NotNull] TContent content, [CanBeNull] Thickness? margin = null)
+        /// <param name="mode">The desired display mode for the flyout</param>
+        public async Task<FlyoutClosedResult<TEvent>> ShowAsync<TContent, TEvent>(
+            [NotNull] String title, [NotNull] TContent content, [CanBeNull] Thickness? margin = null, FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent)
             where TContent : FrameworkElement, IEventConfirmedContent<TEvent>
         {
             // Lock and close the existing popup, if needed
@@ -134,7 +160,23 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
-            container.SetupUI(title, content, margin);
+
+            // Prepare the flyout depending on the desired display mode
+            switch (mode)
+            {
+                case FlyoutDisplayMode.ScrollableContent:
+                    container.SetupUI(title, content, margin);
+                    break;
+                case FlyoutDisplayMode.ActualHeight:
+                    double width = CalculateExpectedWidth();
+                    if (margin != null) content.Margin = margin.Value;
+                    container.SetupFixedUI(title, content, width);
+                    break;
+                default:
+                    throw new ArgumentException("The desired display mode is not valid");
+            }
+
+            // Setup the completion events and manage the popup size
             TaskCompletionSource<TEvent> tcs = new TaskCompletionSource<TEvent>();
             content.ContentConfirmed += (s, e) =>
             {
@@ -162,12 +204,18 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
                 : FlyoutClosedResult<TEvent>.Closed);
         }
 
+        private static double CalculateExpectedWidth()
+        {
+            double width = ResolutionHelper.CurrentWidth;
+            return width <= MaxPopupWidth ? width : MaxPopupWidth;
+        }
+
         /// <summary>
         /// Adjusts the size of a popup based on the current screen size
         /// </summary>
         /// <param name="popup">The popup to resize</param>
         /// <param name="container">The content hosted inside the <see cref="Popup"/> control</param>
-        private static void AdjustPopupSize([NotNull] Popup popup, [NotNull] FrameworkElement container)
+        private static void AdjustPopupSize([NotNull] Popup popup, [NotNull] FlyoutContainer container)
         {
             double
                 width = ResolutionHelper.CurrentWidth,
@@ -182,15 +230,33 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
                 container.Width = MaxPopupWidth;
                 popup.HorizontalOffset = width / 2 - MaxPopupWidth / 2;
             }
-            if (height <= MaxPopupHeight)
+            if (container.DisplayMode == FlyoutDisplayMode.ScrollableContent)
             {
-                container.Height = height;
-                popup.VerticalOffset = 0;
+                if (height <= MaxPopupHeight)
+                {
+                    container.Height = height;
+                    popup.VerticalOffset = 0;
+                }
+                else
+                {
+                    container.Height = MaxPopupHeight;
+                    popup.VerticalOffset = height / 2 - MaxPopupHeight / 2;
+                }
             }
             else
             {
-                container.Height = MaxPopupHeight;
-                popup.VerticalOffset = height / 2 - MaxPopupHeight / 2;
+                Size desired = container.CalculateDesiredSize();
+                
+                if (desired.Height <= height)
+                {
+                    container.Height = desired.Height;
+                    popup.VerticalOffset = height / 2 - desired.Height / 2;
+                }
+                else
+                {
+                    container.Height = height;
+                    popup.VerticalOffset = 0;
+                }
             }
         }
     }
