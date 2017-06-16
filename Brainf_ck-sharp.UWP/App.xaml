@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="Styles/TextStyles.xaml"/>
                 <ResourceDictionary Source="Styles/ButtonStyles.xaml"/>
                 <ResourceDictionary Source="Styles/MiscStyles.xaml"/>
+                <ResourceDictionary Source="Styles/MenuFlyoutStyles.xaml"/>
                 <ResourceDictionary Source="Resources/BrushesDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

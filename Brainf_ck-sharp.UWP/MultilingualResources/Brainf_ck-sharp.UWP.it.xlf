@@ -290,6 +290,43 @@
           <target state="new">Empty</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Empty title for a code to save</note>
         </trans-unit>
+        <trans-unit id="Clipboard" translate="yes" xml:space="preserve">
+          <source>Copy to clipboard</source>
+          <target state="new">Copy to clipboard</target>
+        </trans-unit>
+        <trans-unit id="Delete" translate="yes" xml:space="preserve">
+          <source>Delete</source>
+          <target state="new">Delete</target>
+        </trans-unit>
+        <trans-unit id="Email" translate="yes" xml:space="preserve">
+          <source>Send via email</source>
+          <target state="new">Send via email</target>
+        </trans-unit>
+        <trans-unit id="Favorite" translate="yes" xml:space="preserve">
+          <source>Favorite</source>
+          <target state="new">Favorite</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Add to favorites</note>
+        </trans-unit>
+        <trans-unit id="OSShare" translate="yes" xml:space="preserve">
+          <source>OS share</source>
+          <target state="new">OS share</target>
+        </trans-unit>
+        <trans-unit id="Rename" translate="yes" xml:space="preserve">
+          <source>Rename</source>
+          <target state="new">Rename</target>
+        </trans-unit>
+        <trans-unit id="SaveFile" translate="yes" xml:space="preserve">
+          <source>Save file</source>
+          <target state="new">Save file</target>
+        </trans-unit>
+        <trans-unit id="Share" translate="yes" xml:space="preserve">
+          <source>Share</source>
+          <target state="new">Share</target>
+        </trans-unit>
+        <trans-unit id="Unfavorite" translate="yes" xml:space="preserve">
+          <source>Unfavorite</source>
+          <target state="new">Unfavorite</target>
+        </trans-unit>
       </group>
     </body>
   </file>

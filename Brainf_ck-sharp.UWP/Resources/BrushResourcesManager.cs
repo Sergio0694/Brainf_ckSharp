@@ -28,6 +28,8 @@ namespace Brainf_ck_sharp_UWP.Resources
             AccentBrushMediumFadeBrush = new SolidColorBrush(Color.FromArgb(0xB0, AccentBrush.Color.R, AccentBrush.Color.G, AccentBrush.Color.B));
             XAMLResourcesHelper.AssignValueToXAMLResource("AccentBrushMediumFade", AccentBrushMediumFadeBrush);
             RedDangerBrush = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("RedDangerBrush");
+            XAMLResourcesHelper.AssignValueToXAMLResource("SubMenuFlyoutPointerOverBrush", new SolidColorBrush(Color.FromArgb(0xA0, AccentBrush.Color.R, AccentBrush.Color.G, AccentBrush.Color.B)));
+            XAMLResourcesHelper.AssignValueToXAMLResource("SubMenuFlyoutOpenedBrush", new SolidColorBrush(Color.FromArgb(0x70, AccentBrush.Color.R, AccentBrush.Color.G, AccentBrush.Color.B)));
         }
 
         #region Brushes

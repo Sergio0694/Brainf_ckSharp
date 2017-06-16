@@ -319,17 +319,45 @@
   <data name="Available" xml:space="preserve">
     <value>Available</value>
   </data>
+  <data name="Clipboard" xml:space="preserve">
+    <value>Copy to clipboard</value>
+  </data>
   <data name="CodePreviewBlock.Text" xml:space="preserve">
     <value>Code preview:</value>
   </data>
   <data name="CodeTitleBox.PlaceholderText" xml:space="preserve">
     <value>Enter the code title</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Send via email</value>
+  </data>
   <data name="Empty" xml:space="preserve">
     <value>Empty</value>
     <comment>Empty title for a code to save</comment>
   </data>
+  <data name="Favorite" xml:space="preserve">
+    <value>Favorite</value>
+    <comment>Add to favorites</comment>
+  </data>
   <data name="FilenameBlock.Text" xml:space="preserve">
     <value>File name:</value>
+  </data>
+  <data name="OSShare" xml:space="preserve">
+    <value>OS share</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="SaveFile" xml:space="preserve">
+    <value>Save file</value>
+  </data>
+  <data name="Share" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="Unfavorite" xml:space="preserve">
+    <value>Unfavorite</value>
   </data>
 </root>

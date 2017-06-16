@@ -3,10 +3,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
     <!--Font icon-->
+    <x:Double x:Key="FontIconTextBlockSize">16</x:Double>
     <Style TargetType="TextBlock" x:Key="FontIconTextBlockStyle">
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
-        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontSize" Value="{StaticResource FontIconTextBlockSize}"/>
     </Style>
 
     <!--Text trimming generic style-->

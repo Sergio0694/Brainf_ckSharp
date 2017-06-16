@@ -8,6 +8,10 @@
     <!--Highlight accent brush (button highlight state)-->
     <SolidColorBrush x:Key="AccentBrushMediumFade"/>
     
+    <!--Sub MenuFlyout brushes-->
+    <SolidColorBrush x:Key="SubMenuFlyoutPointerOverBrush"/>
+    <SolidColorBrush x:Key="SubMenuFlyoutOpenedBrush"/>
+    
     <!--Red danger brush-->
     <SolidColorBrush x:Key="RedDangerBrush" Color="#FFDC232B"/>
 </ResourceDictionary>

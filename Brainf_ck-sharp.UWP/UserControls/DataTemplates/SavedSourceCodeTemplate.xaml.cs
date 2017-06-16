@@ -1,8 +1,10 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
+using Windows.UI.Xaml.Input;
 using Brainf_ck_sharp_UWP.AttachedProperties;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
+using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 
 namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
@@ -38,6 +40,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
             Brainf_ckCodeInlineFormatter.SetSource(host, code.Code);
             @this.CodeBlock.Inlines.Clear();
             @this.CodeBlock.Inlines.Add(host);
+        }
+
+        private void SavedSourceCodeTemplate_OnRightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            MenuFlyout menu = MenuFlyoutHelper.PrepareSavedSourceCodeMenuFlyout(
+                null, true, null, null, null);
+            menu.ShowAt(this, e.GetPosition(this));
         }
     }
 }

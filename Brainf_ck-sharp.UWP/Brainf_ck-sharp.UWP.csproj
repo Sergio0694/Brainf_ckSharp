@@ -138,6 +138,7 @@
     <Compile Include="DataModels\SQLite\SavedSourceCodeType.cs" />
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
     <Compile Include="DataModels\SQLite\SourceCodeTitleScore.cs" />
+    <Compile Include="Enums\SourceCodeShareType.cs" />
     <Compile Include="FlyoutService\FlyoutClosedResult.cs" />
     <Compile Include="FlyoutService\FlyoutDisplayMode.cs" />
     <Compile Include="FlyoutService\Interfaces\IEventConfirmedContent.cs" />
@@ -150,6 +151,7 @@
     <Compile Include="Helpers\Extensions\UIExtensions.cs" />
     <Compile Include="Helpers\IndexedModelWithValue.cs" />
     <Compile Include="Helpers\LocalizationManager.cs" />
+    <Compile Include="Helpers\MenuFlyoutHelper.cs" />
     <Compile Include="Helpers\XAMLResourcesHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\KeyEventsListener.cs" />
     <Compile Include="Helpers\WindowsAPIs\ResolutionHelper.cs" />
@@ -324,6 +326,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Styles\ButtonStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Styles\MenuFlyoutStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
