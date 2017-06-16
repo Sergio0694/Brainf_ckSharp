@@ -158,9 +158,7 @@
             <ColumnDefinition Width="28"/>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="12"/>
-            <ColumnDefinition 
-                Width="*"
-                x:Name="CodeColumn"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <!--Visual states-->
@@ -257,7 +255,7 @@
             
             <!--Current line highlight-->
             <Border 
-                Width="{Binding ElementName=CodeColumn, Path=ActualWidth}"
+                HorizontalAlignment="Stretch"
                 VerticalAlignment="Top"
                 Height="20"
                 BorderThickness="2"

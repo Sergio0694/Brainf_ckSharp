@@ -450,6 +450,7 @@ namespace Brainf_ck_sharp_UWP.Views
         private void LineCursorCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             LineCursorClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
+            CursorBorder.Width = e.NewSize.Width;
         }
     }
 }
