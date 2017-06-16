@@ -303,6 +303,13 @@ namespace Brainf_ck_sharp_UWP.Views
                             }
                         }
 
+                        // Edge case: first line in the document
+                        if (range.StartPosition == 0)
+                        {
+                            EditBox.Document.Selection.TypeText($"\r{tabs}\t\r{tabs}]");
+                            edge = true;
+                        }
+
                         // Default autocomplete: new line and [ ] brackets
                         if (!edge)
                         {
