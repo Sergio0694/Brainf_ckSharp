@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -43,7 +44,7 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
             ApplicationView.GetForCurrentView().VisibleBoundsChanged += FlyoutManager_VisibleBoundsChanged;
             SystemNavigationManager.GetForCurrentView().BackRequested += (_, e) =>
             {
-                if (_CurrentPopup != null) e.Handled = true; // Not thread-safe, but anyways
+                if (PopupStack.Count > 0) e.Handled = true; // Not thread-safe, but anyways
                 TryCloseAsync().Forget();
             };
             KeyEventsListener.Esc += (s, _) => TryCloseAsync().Forget();
@@ -53,9 +54,9 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
         private async void FlyoutManager_VisibleBoundsChanged(ApplicationView sender, object args)
         {
             await Semaphore.WaitAsync();
-            if (_CurrentPopup != null && _CurrentPopup.Child is FlyoutContainer container)
+            foreach (Popup popup in PopupStack)
             {
-                AdjustPopupSize(_CurrentPopup, container);
+                AdjustPopupSize(popup, popup.Child.To<FlyoutContainer>());
             }
             Semaphore.Release();
         }
@@ -64,7 +65,7 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
         private readonly SemaphoreSlim Semaphore = new SemaphoreSlim(1);
 
         // The current popup control
-        private Popup _CurrentPopup;
+        private Stack<Popup> PopupStack { get; } = new Stack<Popup>();
 
         /// <summary>
         /// Closes the current popup, if there's one displayed
@@ -72,12 +73,12 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
         private async Task TryCloseAsync()
         {
             await Semaphore.WaitAsync();
-            if (_CurrentPopup?.IsOpen == true)
+            if (PopupStack.Count > 0 && PopupStack.Peek().IsOpen)
             {
-                Messenger.Default.Send(new FlyoutClosedNotificationMessage());
-                await _CurrentPopup.StartCompositionFadeSlideAnimationAsync(null, 0, TranslationAxis.Y, 0, 20, 250, null, null, EasingFunctionNames.CircleEaseOut);
-                _CurrentPopup.IsOpen = false;
-                _CurrentPopup = null;
+                Popup popup = PopupStack.Pop();
+                if (PopupStack.Count == 0) Messenger.Default.Send(new FlyoutClosedNotificationMessage());
+                await popup.StartCompositionFadeSlideAnimationAsync(null, 0, TranslationAxis.Y, 0, 20, 250, null, null, EasingFunctionNames.CircleEaseOut);
+                popup.IsOpen = false;
             }
             Semaphore.Release();
         }
@@ -89,13 +90,18 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
         /// <param name="content">The content to show inside the flyout</param>
         /// <param name="margin">The optional margins to set to the content of the popup to show</param>
         /// <param name="mode">The desired display mode for the flyout</param>
+        /// <param name="stack">Indicates whether or not the popup can be stacked on top of another open popup</param>
         public async Task<FlyoutResult> ShowAsync([NotNull] String title, [NotNull] FrameworkElement content, [CanBeNull] Thickness? margin = null,
-            FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent)
+            FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent, bool stack = false)
         {
             // Lock and close the existing popup, if needed
             await Semaphore.WaitAsync();
             Messenger.Default.Send(new FlyoutOpenedMessage());
-            if (_CurrentPopup?.IsOpen == true) _CurrentPopup.IsOpen = false;
+            if (!stack)
+            {
+                foreach (Popup previous in PopupStack) previous.IsOpen = false;
+                PopupStack.Clear();
+            }
 
             // Initialize the container and the target popup
             FlyoutContainer container = new FlyoutContainer
@@ -132,7 +138,7 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
             };
 
             // Display and animate the popup
-            _CurrentPopup = popup;
+            PopupStack.Push(popup);
             popup.SetVisualOpacity(0);
             popup.IsOpen = true;
             await popup.StartCompositionFadeSlideAnimationAsync(null, 1, TranslationAxis.Y, 20, 0, 250, null, null, EasingFunctionNames.CircleEaseOut);
@@ -147,14 +153,20 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
         /// <param name="content">The content to show inside the flyout</param>
         /// <param name="margin">The optional margins to set to the content of the popup to show</param>
         /// <param name="mode">The desired display mode for the flyout</param>
+        /// <param name="stack">Indicates whether or not the popup can be stacked on top of another open popup</param>
         public async Task<FlyoutClosedResult<TEvent>> ShowAsync<TContent, TEvent>(
-            [NotNull] String title, [NotNull] TContent content, [CanBeNull] Thickness? margin = null, FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent)
+            [NotNull] String title, [NotNull] TContent content, [CanBeNull] Thickness? margin = null, 
+            FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent, bool stack = false)
             where TContent : FrameworkElement, IEventConfirmedContent<TEvent>
         {
             // Lock and close the existing popup, if needed
             await Semaphore.WaitAsync();
             Messenger.Default.Send(new FlyoutOpenedMessage());
-            if (_CurrentPopup?.IsOpen == true) _CurrentPopup.IsOpen = false;
+            if (!stack)
+            {
+                foreach (Popup previous in PopupStack) previous.IsOpen = false;
+                PopupStack.Clear();
+            }
 
             // Initialize the container and the target popup, and the confirm handler
             FlyoutContainer container = new FlyoutContainer
@@ -194,7 +206,7 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
             popup.Closed += (s, e) => tcs.TrySetCanceled();
 
             // Display and animate the popup
-            _CurrentPopup = popup;
+            PopupStack.Push(popup);
             popup.SetVisualOpacity(0);
             popup.IsOpen = true;
             await popup.StartCompositionFadeSlideAnimationAsync(null, 1, TranslationAxis.Y, 20, 0, 250, null, null, EasingFunctionNames.CircleEaseOut);

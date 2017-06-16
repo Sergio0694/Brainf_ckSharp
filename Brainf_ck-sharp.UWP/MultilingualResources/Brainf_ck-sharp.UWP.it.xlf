@@ -351,6 +351,14 @@
           <source>The selected source code has been shared correctly</source>
           <target state="translated">Il codice selezionato è stato condiviso correttamente</target>
         </trans-unit>
+        <trans-unit id="RenameCode" translate="yes" xml:space="preserve">
+          <source>Rename code</source>
+          <target state="new">Rename code</target>
+        </trans-unit>
+        <trans-unit id="SaveCode" translate="yes" xml:space="preserve">
+          <source>Save code</source>
+          <target state="new">Save code</target>
+        </trans-unit>
       </group>
     </body>
   </file>

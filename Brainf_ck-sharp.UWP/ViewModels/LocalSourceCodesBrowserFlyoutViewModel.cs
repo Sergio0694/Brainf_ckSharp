@@ -140,5 +140,20 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
             }
         }
+
+        /// <summary>
+        /// Renames a source code
+        /// </summary>
+        /// <param name="code">The code to edit</param>
+        /// <param name="title">The new title to assign to the code</param>
+        public async Task RenameItemAsync([NotNull] SourceCode code, [NotNull] String title)
+        {
+            await SQLiteManager.Instance.RenameCodeAsync(code, title);
+
+            JumpListGroup<SavedSourceCodeType, Tuple<SavedSourceCodeType, SourceCode>> section = Source.FirstOrDefault(
+                group => group.Key == (code.Favorited ? SavedSourceCodeType.Favorite : SavedSourceCodeType.Original));
+            Tuple<SavedSourceCodeType, SourceCode> tuple = section.First(entry => entry.Item2 == code);
+            section.EnsureSorted(tuple, entry => entry.Item2.Title);
+        }
     }
 }

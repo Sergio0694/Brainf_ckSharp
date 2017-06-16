@@ -9,6 +9,13 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 {
     public class SaveCodePromptFlyoutViewModel : ViewModelBase
     {
+        /// <summary>
+        /// Gets the current name for the code, if it's already saved in the app
+        /// </summary>
+        private readonly String OriginalName;
+
+        public SaveCodePromptFlyoutViewModel([CanBeNull] String name) => OriginalName = name;
+
         private bool _NameValid;
 
         /// <summary>
@@ -54,7 +61,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             else
             {
                 NameValid = await SQLiteManager.Instance.CheckExistingName(name);
-                NameScore = NameValid ? SourceCodeTitleScore.Valid : SourceCodeTitleScore.AlreadyUsed;
+                NameScore = NameValid 
+                    ? SourceCodeTitleScore.Valid 
+                    : (OriginalName?.Equals(name) == true ? SourceCodeTitleScore.NotModified : SourceCodeTitleScore.AlreadyUsed);
             }
         }
     }

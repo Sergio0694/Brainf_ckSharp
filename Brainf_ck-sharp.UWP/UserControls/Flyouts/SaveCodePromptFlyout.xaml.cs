@@ -10,10 +10,15 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
 {
     public sealed partial class SaveCodePromptFlyout : UserControl, IValidableDialog
     {
-        public SaveCodePromptFlyout([NotNull] String code)
+        /// <summary>
+        /// Creates a new instance to display to the user
+        /// </summary>
+        /// <param name="code">The code that's being saved or edited</param>
+        /// <param name="name">The current name for the code, if it's already saved in the database</param>
+        public SaveCodePromptFlyout([NotNull] String code, [CanBeNull] String name)
         {
             this.InitializeComponent();
-            DataContext = new SaveCodePromptFlyoutViewModel();
+            DataContext = new SaveCodePromptFlyoutViewModel(name);
             ViewModel.ValidStatusChanged += ViewModel_ValidStatusChanged;
             Brainf_ckCodeInlineFormatter.SetSource(CodeSpan, code);
         }

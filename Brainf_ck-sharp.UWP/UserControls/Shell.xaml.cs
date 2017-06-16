@@ -138,7 +138,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             {
                 viewer.Source = t.Result;
             }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
-            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("MemoryStateTitle"), viewer);
+            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("MemoryStateTitle"), viewer).Forget();
         }
 
         public void RequestClearConsoleLine() => Messenger.Default.Send(new ClearConsoleLineMessage());
@@ -153,7 +153,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
         {
             UnicodeCharactersGuideFlyout flyout = new UnicodeCharactersGuideFlyout();
             flyout.ViewModel.LoadAsync().Forget();
-            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UnicodeTitle"), flyout);
+            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UnicodeTitle"), flyout).Forget();
         }
 
         private void PivotControl_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

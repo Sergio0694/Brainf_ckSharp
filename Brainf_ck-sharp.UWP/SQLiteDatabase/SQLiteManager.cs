@@ -93,6 +93,8 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
 
         #endregion
 
+        #region Sample codes
+
         /// <summary>
         /// Gets a collection of names for the code samples, and their hardcoded ID
         /// </summary>
@@ -107,7 +109,7 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         /// <summary>
         /// Refreshes the list of local code samples
         /// </summary>
-        public async Task RefreshCodeSamplesAsync()
+        private async Task RefreshCodeSamplesAsync()
         {
             // Get the samples folder and iterate over the expected samples
             await EnsureDatabaseConnectionAsync();
@@ -134,6 +136,10 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
                 }
             }
         }
+
+        #endregion
+
+        #region Public APIs
 
         /// <summary>
         /// Loads the saved source codes from the app database
@@ -198,6 +204,18 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         }
 
         /// <summary>
+        /// Renames a selected source code saved in the app
+        /// </summary>
+        /// <param name="code">The source code to rename</param>
+        /// <param name="name">The new name for the saved code</param>
+        public async Task RenameCodeAsync([NotNull] SourceCode code, [NotNull] String name)
+        {
+            await EnsureDatabaseConnectionAsync();
+            code.Title = name;
+            await DatabaseConnection.UpdateAsync(code);
+        }
+
+        /// <summary>
         /// Delets a saved source code from the database
         /// </summary>
         /// <param name="code">The code to delete</param>
@@ -217,5 +235,7 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
             code.Favorited = !code.Favorited;
             await DatabaseConnection.UpdateAsync(code);
         }
+
+        #endregion
     }
 }

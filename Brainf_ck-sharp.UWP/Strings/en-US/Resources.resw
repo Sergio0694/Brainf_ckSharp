@@ -378,4 +378,10 @@
   <data name="ShareErrorBody" xml:space="preserve">
     <value>There was an error while sharing the code, try again later</value>
   </data>
+  <data name="RenameCode" xml:space="preserve">
+    <value>Rename code</value>
+  </data>
+  <data name="SaveCode" xml:space="preserve">
+    <value>Save code</value>
+  </data>
 </root>

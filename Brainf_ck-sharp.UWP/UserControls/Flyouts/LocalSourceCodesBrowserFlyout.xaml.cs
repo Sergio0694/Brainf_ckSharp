@@ -1,8 +1,10 @@
 ﻿using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Enums;
+using Brainf_ck_sharp_UWP.FlyoutService;
 using Brainf_ck_sharp_UWP.FlyoutService.Interfaces;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
@@ -42,9 +44,15 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         }
 
         // Forwards a request to rename a source code
-        private void SavedSourceCodeTemplate_OnRenameRequested(object sender, SourceCode e)
+        private async void SavedSourceCodeTemplate_OnRenameRequested(object sender, SourceCode e)
         {
-            throw new NotImplementedException();
+            SaveCodePromptFlyout flyout = new SaveCodePromptFlyout(e.Code, e.Title);
+            FlyoutResult result = await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("RenameCode"), 
+                flyout, new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight, true);
+            if (result == FlyoutResult.Confirmed)
+            {
+                await ViewModel.RenameItemAsync(e, flyout.Title);
+            }
         }
 
         // Forwards the share event and displays a notification with the result of the share operation

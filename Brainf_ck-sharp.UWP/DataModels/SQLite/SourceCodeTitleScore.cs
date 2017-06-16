@@ -7,6 +7,11 @@
     {
         Empty,
         AlreadyUsed,
+
+        /// <summary>
+        /// Indicates that the desired name is the same as the one already in use for a given saved code
+        /// </summary>
+        NotModified,
         Valid
     }
 }

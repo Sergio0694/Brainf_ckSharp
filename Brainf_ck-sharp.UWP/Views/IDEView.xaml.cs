@@ -50,8 +50,8 @@ namespace Brainf_ck_sharp_UWP.Views
         private async void ManageSaveCodeRequest(CodeSaveType type)
         {
             EditBox.Document.GetText(TextGetOptions.None, out String text);
-            SaveCodePromptFlyout flyout = new SaveCodePromptFlyout(text);
-            var result = await FlyoutManager.Instance.ShowAsync("Save code", flyout, new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight);
+            SaveCodePromptFlyout flyout = new SaveCodePromptFlyout(text, null);
+            var result = await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("SaveCode"), flyout, new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight);
             if (result == FlyoutResult.Confirmed)
             {
                 await SQLiteManager.Instance.SaveCodeAsync(flyout.Title, text);

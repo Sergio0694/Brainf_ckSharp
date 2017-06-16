@@ -42,6 +42,35 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
         }
 
         /// <summary>
+        /// Makes sure the input list has its elements in the right order
+        /// </summary>
+        /// <typeparam name="TValue">The Type of the items in the list</typeparam>
+        /// <param name="list">The list to edit</param>
+        /// <param name="editedItem">The item that has just been edited</param>
+        /// <param name="selectors">The functions that return a comparable value from an item</param>
+        public static void EnsureSorted<TValue>(
+            [NotNull] this IList<TValue> list, [NotNull] TValue editedItem,
+            [NotNull] params Func<TValue, IComparable>[] selectors) where TValue : class
+        {
+            // Input check
+            if (selectors.Length == 0) throw new ArgumentOutOfRangeException("The function needs at least a selector");
+            if (!list.Contains(editedItem)) throw new InvalidOperationException("The source list doesn't contain the given item");
+
+            // Sort the temporary list
+            IOrderedEnumerable<TValue> query = list.OrderBy(selectors[0]);
+            if (selectors.Length > 1) for (int i = 1; i < selectors.Length; i++) query = query.ThenBy(selectors[i]);
+            List<TValue> sorted = query.ToList();
+
+            // Make sure the edited item is sorted correctly
+            int index = sorted.IndexOf(editedItem);
+            if (list.IndexOf(editedItem) != index)
+            {
+                list.Remove(editedItem);
+                list.Insert(index, editedItem);
+            }
+        }
+
+        /// <summary>
         /// Performs a loop on the given collection, calling the input delegate for each item
         /// </summary>
         /// <typeparam name="T">The Type to cast the collection items to</typeparam>
