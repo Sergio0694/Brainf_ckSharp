@@ -16,5 +16,5 @@
     <SolidColorBrush x:Key="RedDangerBrush" Color="#FFDC232B"/>
     
     <!--Warning brush-->
-    <SolidColorBrush x:Key="OrangeWarningBrush" Color="#FFFF7A28"/>
+    <SolidColorBrush x:Key="OrangeWarningBrush" Color="#FFFF840C"/>
 </ResourceDictionary>

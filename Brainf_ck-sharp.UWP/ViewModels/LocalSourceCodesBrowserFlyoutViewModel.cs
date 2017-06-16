@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
+using Brainf_ck_sharp_UWP.Enums;
+using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.ViewModels.Abstract;
 using JetBrains.Annotations;
@@ -92,6 +97,48 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             if (section.Any(entry => entry.Item2 != code))
                 section.Remove(section.First(entry => entry.Item2 == code));
             else Source.Remove(section);
+        }
+
+        /// <summary>
+        /// Shared a saved source code
+        /// </summary>
+        /// <param name="mode">The desired share mode</param>
+        /// <param name="code">The code to share</param>
+        public async Task<bool> ShareItemAsync(SourceCodeShareType mode, [NotNull] SourceCode code)
+        {
+            switch (mode)
+            {
+                case SourceCodeShareType.Clipboard:
+                    
+                    // Try to perform the copy operation
+                    try
+                    {
+                        DataPackage package = new DataPackage { RequestedOperation = DataPackageOperation.Copy };
+                        package.SetText(code.Code);
+                        Clipboard.SetContent(package);
+                        return true;
+                    }
+                    catch
+                    {
+                        // Whops!
+                        return false;
+                    }
+                case SourceCodeShareType.OSShare:
+                    ShareCharmsHelper.ShareText(code.Title, code.Code);
+                    return true;
+                case SourceCodeShareType.Email:
+                    StorageFile file = await StorageHelper.CreateTemporaryFileAsync(code.Title, ".txt");
+                    if (file == null) return false;
+                    await FileIO.WriteTextAsync(file, code.Code);
+                    return await EmailHelper.SendEmail(String.Empty, LocalizationManager.GetResource("SharedCode"), null, file);
+                case SourceCodeShareType.LocalFile:
+                    StorageFile local = await StorageHelper.PickSaveFileAsync(code.Title, LocalizationManager.GetResource("PlainText"), ".txt");
+                    if (local == null) return false;
+                    await FileIO.WriteTextAsync(local, code.Code);
+                    return true;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
+            }
         }
     }
 }

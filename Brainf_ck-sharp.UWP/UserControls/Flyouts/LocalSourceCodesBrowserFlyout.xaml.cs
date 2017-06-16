@@ -3,7 +3,10 @@ using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.FlyoutService.Interfaces;
+using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.PopupService;
+using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.ViewModels;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
@@ -42,9 +45,19 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
             throw new NotImplementedException();
         }
 
-        private void SavedSourceCodeTemplate_OnShareRequested(object sender, (SourceCodeShareType, SourceCode) e)
+        // Forwards the share event and displays a notification with the result of the share operation
+        private async void SavedSourceCodeTemplate_OnShareRequested(object sender, (SourceCodeShareType Type, SourceCode Code) e)
         {
-            throw new NotImplementedException();
+            bool result = await ViewModel.ShareItemAsync(e.Type, e.Code);
+            if (result)
+            {
+                NotificationsManager.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("ShareCompleted"),
+                    LocalizationManager.GetResource("ShareCompletedBody"), NotificationType.Default);
+            }
+            else
+            {
+                NotificationsManager.ShowDefaultErrorNotification(LocalizationManager.GetResource("ShareError"), LocalizationManager.GetResource("ShareErrorBody"));
+            }
         }
 
         // Forwards the delete item event

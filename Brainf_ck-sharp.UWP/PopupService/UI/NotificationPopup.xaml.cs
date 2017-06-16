@@ -45,7 +45,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             _AcrylicEffect = await AcrylicBorder.GetAttachedInAppSemiAcrylicEffectAsync(AcrylicBorder, 8, 800,
                 Type == NotificationType.Default 
                 ? BrushResourcesManager.Instance.AccentBrush.Color
-                : XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("OrangeWarningBrush").Color, 0.6f,
+                : XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("OrangeWarningBrush").Color, 0.5f,
                 Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
         }
 

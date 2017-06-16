@@ -360,4 +360,22 @@
   <data name="Unfavorite" xml:space="preserve">
     <value>Unfavorite</value>
   </data>
+  <data name="PlainText" xml:space="preserve">
+    <value>Plain text</value>
+  </data>
+  <data name="ShareCompleted" xml:space="preserve">
+    <value>Share completed</value>
+  </data>
+  <data name="ShareCompletedBody" xml:space="preserve">
+    <value>The selected source code has been shared correctly</value>
+  </data>
+  <data name="SharedCode" xml:space="preserve">
+    <value>Brainf*ck shared code</value>
+  </data>
+  <data name="ShareError" xml:space="preserve">
+    <value>Share error</value>
+  </data>
+  <data name="ShareErrorBody" xml:space="preserve">
+    <value>There was an error while sharing the code, try again later</value>
+  </data>
 </root>

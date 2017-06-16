@@ -215,117 +215,141 @@
         </trans-unit>
         <trans-unit id="Favorites" translate="yes" xml:space="preserve">
           <source>Favorites</source>
-          <target state="new">Favorites</target>
+          <target state="translated">Preferiti</target>
         </trans-unit>
         <trans-unit id="PersonalCodes" translate="yes" xml:space="preserve">
           <source>Personal codes</source>
-          <target state="new">Personal codes</target>
+          <target state="translated">Codici personali</target>
         </trans-unit>
         <trans-unit id="SampleCodes" translate="yes" xml:space="preserve">
           <source>Sample codes</source>
-          <target state="new">Sample codes</target>
+          <target state="translated">Codici di esempio</target>
         </trans-unit>
         <trans-unit id="MoreCodes" translate="yes" xml:space="preserve">
           <source>source codes</source>
-          <target state="new">source codes</target>
+          <target state="translated">codici sorgente</target>
         </trans-unit>
         <trans-unit id="OneCode" translate="yes" xml:space="preserve">
           <source>1 source code</source>
-          <target state="new">1 source code</target>
+          <target state="translated">1 codice sorgente</target>
         </trans-unit>
         <trans-unit id="CodeLibrary" translate="yes" xml:space="preserve">
           <source>Code library</source>
-          <target state="new">Code library</target>
+          <target state="translated">Libreria codici</target>
         </trans-unit>
         <trans-unit id="CodeLibraryButton.Label" translate="yes" xml:space="preserve">
           <source>Browse code library</source>
-          <target state="new">Browse code library</target>
+          <target state="translated">Sfoglia libreria codici</target>
         </trans-unit>
         <trans-unit id="Sum" translate="yes" xml:space="preserve">
           <source>Sum</source>
-          <target state="new">Sum</target>
+          <target state="translated">Somma</target>
         </trans-unit>
         <trans-unit id="UnicodeSum" translate="yes" xml:space="preserve">
           <source>Unicode sum</source>
-          <target state="new">Unicode sum</target>
+          <target state="translated">Somma Unicode</target>
         </trans-unit>
         <trans-unit id="UnicodeValue" translate="yes" xml:space="preserve">
           <source>Unicode value</source>
-          <target state="new">Unicode value</target>
+          <target state="translated">Valore Unicode</target>
         </trans-unit>
         <trans-unit id="RunTitle" translate="yes" xml:space="preserve">
           <source>Run</source>
-          <target state="new">Run</target>
+          <target state="translated">Esegui</target>
         </trans-unit>
         <trans-unit id="SaveAsButton.Label" translate="yes" xml:space="preserve">
           <source>Save as</source>
-          <target state="new">Save as</target>
+          <target state="translated">Salva con nome</target>
         </trans-unit>
         <trans-unit id="SaveButton.Label" translate="yes" xml:space="preserve">
           <source>Save</source>
-          <target state="new">Save</target>
+          <target state="translated">Salva</target>
         </trans-unit>
         <trans-unit id="FilenameBlock.Text" translate="yes" xml:space="preserve">
           <source>File name:</source>
-          <target state="new">File name:</target>
+          <target state="translated">Nome file:</target>
         </trans-unit>
         <trans-unit id="CodePreviewBlock.Text" translate="yes" xml:space="preserve">
           <source>Code preview:</source>
-          <target state="new">Code preview:</target>
+          <target state="translated">Anteprima codice:</target>
         </trans-unit>
         <trans-unit id="CodeTitleBox.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Enter the code title</source>
-          <target state="new">Enter the code title</target>
+          <target state="translated">Inserisci un titolo</target>
         </trans-unit>
         <trans-unit id="AlreadyUsed" translate="yes" xml:space="preserve">
           <source>Already used</source>
-          <target state="new">Already used</target>
+          <target state="translated">Nome già in uso</target>
         </trans-unit>
         <trans-unit id="Available" translate="yes" xml:space="preserve">
           <source>Available</source>
-          <target state="new">Available</target>
+          <target state="translated">Disponibile</target>
         </trans-unit>
         <trans-unit id="Empty" translate="yes" xml:space="preserve">
           <source>Empty</source>
-          <target state="new">Empty</target>
+          <target state="translated">Nome non valido</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Empty title for a code to save</note>
         </trans-unit>
         <trans-unit id="Clipboard" translate="yes" xml:space="preserve">
           <source>Copy to clipboard</source>
-          <target state="new">Copy to clipboard</target>
+          <target state="translated">Copia negli appunti</target>
         </trans-unit>
         <trans-unit id="Delete" translate="yes" xml:space="preserve">
           <source>Delete</source>
-          <target state="new">Delete</target>
+          <target state="translated">Elimina</target>
         </trans-unit>
         <trans-unit id="Email" translate="yes" xml:space="preserve">
           <source>Send via email</source>
-          <target state="new">Send via email</target>
+          <target state="translated">Invia per email</target>
         </trans-unit>
         <trans-unit id="Favorite" translate="yes" xml:space="preserve">
           <source>Favorite</source>
-          <target state="new">Favorite</target>
+          <target state="translated">Aggiungi ai preferiti</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Add to favorites</note>
         </trans-unit>
         <trans-unit id="OSShare" translate="yes" xml:space="preserve">
           <source>OS share</source>
-          <target state="new">OS share</target>
+          <target state="translated">Condivisione OS</target>
         </trans-unit>
         <trans-unit id="Rename" translate="yes" xml:space="preserve">
           <source>Rename</source>
-          <target state="new">Rename</target>
+          <target state="translated">Rinomina</target>
         </trans-unit>
         <trans-unit id="SaveFile" translate="yes" xml:space="preserve">
           <source>Save file</source>
-          <target state="new">Save file</target>
+          <target state="translated">Salva file</target>
         </trans-unit>
         <trans-unit id="Share" translate="yes" xml:space="preserve">
           <source>Share</source>
-          <target state="new">Share</target>
+          <target state="translated">Condividi</target>
         </trans-unit>
         <trans-unit id="Unfavorite" translate="yes" xml:space="preserve">
           <source>Unfavorite</source>
-          <target state="new">Unfavorite</target>
+          <target state="translated">Rimuovi dai preferiti</target>
+        </trans-unit>
+        <trans-unit id="PlainText" translate="yes" xml:space="preserve">
+          <source>Plain text</source>
+          <target state="translated">Testo semplice</target>
+        </trans-unit>
+        <trans-unit id="SharedCode" translate="yes" xml:space="preserve">
+          <source>Brainf*ck shared code</source>
+          <target state="translated">Codice condiviso Brainf*ck#</target>
+        </trans-unit>
+        <trans-unit id="ShareError" translate="yes" xml:space="preserve">
+          <source>Share error</source>
+          <target state="translated">Errore condivisione</target>
+        </trans-unit>
+        <trans-unit id="ShareErrorBody" translate="yes" xml:space="preserve">
+          <source>There was an error while sharing the code, try again later</source>
+          <target state="translated">C'è stato un errore durante la condivisione del codice, riprova più tardi</target>
+        </trans-unit>
+        <trans-unit id="ShareCompleted" translate="yes" xml:space="preserve">
+          <source>Share completed</source>
+          <target state="translated">Condivisione completata</target>
+        </trans-unit>
+        <trans-unit id="ShareCompletedBody" translate="yes" xml:space="preserve">
+          <source>The selected source code has been shared correctly</source>
+          <target state="translated">Il codice selezionato è stato condiviso correttamente</target>
         </trans-unit>
       </group>
     </body>
