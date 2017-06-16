@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml.Data;
@@ -28,12 +29,12 @@ namespace Brainf_ck_sharp_UWP.ViewModels.Abstract
         /// </summary>
         public event EventHandler<bool> LoadingCompleted;
 
-        private IList<JumpListGroup<TKey, TValue>> _Source;
+        private ObservableCollection<JumpListGroup<TKey, TValue>> _Source;
 
         /// <summary>
         /// Gets the user-defined items collection for this instance
         /// </summary>
-        public IList<JumpListGroup<TKey, TValue>> Source
+        public ObservableCollection<JumpListGroup<TKey, TValue>> Source
         {
             get => _Source;
             private set
@@ -87,7 +88,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.Abstract
         {
             IList<JumpListGroup<TKey, TValue>> source = await OnLoadGroupsAsync();
             LoadingCompleted?.Invoke(this, source.Count > 0);
-            Source = source;
+            Source = new ObservableCollection<JumpListGroup<TKey, TValue>>(source);
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
+using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.FlyoutService.Interfaces;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.ViewModels;
@@ -28,6 +29,27 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
                 Result = code;
                 ContentConfirmed?.Invoke(this, code);
             }
+        }
+
+        // Forwards the favorite toggle event
+        private void SavedSourceCodeTemplate_OnFavoriteToggleRequested(object sender, SourceCode e)
+        {
+            ViewModel.ToggleFavorite(e);
+        }
+
+        private void SavedSourceCodeTemplate_OnRenameRequested(object sender, SourceCode e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SavedSourceCodeTemplate_OnShareRequested(object sender, (SourceCodeShareType, SourceCode) e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SavedSourceCodeTemplate_OnDeleteRequested(object sender, SourceCode e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

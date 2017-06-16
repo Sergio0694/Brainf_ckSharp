@@ -65,12 +65,24 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
 
         #region Events
 
+        /// <summary>
+        /// Raised whenever the user toggles the favorite status for the current code
+        /// </summary>
         public event EventHandler<SourceCode> FavoriteToggleRequested;
 
+        /// <summary>
+        /// Raised whenever the user requests to rename the saved code
+        /// </summary>
         public event EventHandler<SourceCode> RenameRequested;
 
+        /// <summary>
+        /// Raised whenever the user selects a share method to share the saved code
+        /// </summary>
         public event EventHandler<(SourceCodeShareType, SourceCode)> ShareRequested;
 
+        /// <summary>
+        /// Raised whenever the user requests to delete the current item
+        /// </summary>
         public event EventHandler<SourceCode> DeleteRequested;
 
         #endregion

@@ -195,5 +195,16 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
             await EnsureDatabaseConnectionAsync();
             return await DatabaseConnection.Table<SourceCode>().Where(row => row.Title == name).FirstOrDefaultAsync() == null;
         }
+
+        /// <summary>
+        /// Toggles the favorite status for a given code
+        /// </summary>
+        /// <param name="code">The target code to edit</param>
+        public async Task ToggleFavoriteStatusAsync([NotNull] SourceCode code)
+        {
+            await EnsureDatabaseConnectionAsync();
+            code.Favorited = !code.Favorited;
+            await DatabaseConnection.UpdateAsync(code);
+        }
     }
 }

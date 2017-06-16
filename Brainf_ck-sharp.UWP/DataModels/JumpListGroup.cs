@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using JetBrains.Annotations;
 
@@ -9,7 +10,7 @@ namespace Brainf_ck_sharp_UWP.DataModels
     /// </summary>
     /// <typeparam name="TKey">The type of the group key</typeparam>
     /// <typeparam name="TItems">The type of the items in the group</typeparam>
-    public class JumpListGroup<TKey, TItems> : List<TItems>
+    public class JumpListGroup<TKey, TItems> : ObservableCollection<TItems>
     {
         public JumpListGroup([NotNull] TKey key, [CanBeNull] IEnumerable<TItems> collection) : base(collection ?? new List<TItems>())
         {

@@ -74,7 +74,7 @@ namespace Brainf_ck_sharp_UWP.DataModels.SQLite
         public bool Favorited
         {
             get => BitHelper.Test(Flags, 0);
-            set => BitHelper.SetTo(Flags, value, 0);
+            set => Flags = BitHelper.SetTo(Flags, value, 0);
         }
     }
 }
