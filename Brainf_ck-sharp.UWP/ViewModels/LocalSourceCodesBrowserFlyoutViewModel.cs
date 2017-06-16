@@ -16,17 +16,17 @@ using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.ViewModels
 {
-    public class LocalSourceCodesBrowserFlyoutViewModel : JumpListViewModelBase<SavedSourceCodeType, Tuple<SavedSourceCodeType, SourceCode>>
+    public class LocalSourceCodesBrowserFlyoutViewModel : JumpListViewModelBase<SavedSourceCodeType, CategorizedSourceCode>
     {
-        protected override async Task<IList<JumpListGroup<SavedSourceCodeType, Tuple<SavedSourceCodeType, SourceCode>>>> OnLoadGroupsAsync()
+        protected override async Task<IList<JumpListGroup<SavedSourceCodeType, CategorizedSourceCode>>> OnLoadGroupsAsync()
         {
             IList<(SavedSourceCodeType Type, IList<SourceCode> Items)> categories = await SQLiteManager.Instance.LoadSavedCodesAsync();
             return (from category in categories
                     where category.Items.Count > 0
                     let items =
                         from code in category.Items
-                        select Tuple.Create(category.Type, code)
-                    select new JumpListGroup<SavedSourceCodeType, Tuple<SavedSourceCodeType, SourceCode>>(category.Type, items)).ToArray();
+                        select new CategorizedSourceCode(category.Type, code)
+                    select new JumpListGroup<SavedSourceCodeType, CategorizedSourceCode>(category.Type, items)).ToArray();
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         {
             // Update the item in the database
             await SQLiteManager.Instance.ToggleFavoriteStatusAsync(code);
-            JumpListGroup<SavedSourceCodeType, Tuple<SavedSourceCodeType, SourceCode>>
+            JumpListGroup<SavedSourceCodeType, CategorizedSourceCode>
                 favorites = Source.FirstOrDefault(group => group.Key == SavedSourceCodeType.Favorite),
                 original = Source.FirstOrDefault(group => group.Key == SavedSourceCodeType.Original);
 
@@ -47,18 +47,18 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 // The item has been favorited, move from default to first section
                 if (favorites == null)
                 {
-                    favorites = new JumpListGroup<SavedSourceCodeType, Tuple<SavedSourceCodeType, SourceCode>>(
-                        SavedSourceCodeType.Favorite, new[] { Tuple.Create(SavedSourceCodeType.Favorite, code) });
+                    favorites = new JumpListGroup<SavedSourceCodeType, CategorizedSourceCode>(
+                        SavedSourceCodeType.Favorite, new[] { new CategorizedSourceCode(SavedSourceCodeType.Favorite, code) });
                     Source.Insert(0, favorites);
                 }
                 else
                 {
-                    favorites.AddSorted(Tuple.Create(SavedSourceCodeType.Favorite, code), tuple => tuple.Item2.Title);
+                    favorites.AddSorted(new CategorizedSourceCode(SavedSourceCodeType.Favorite, code), tuple => tuple.Code.Title);
                 }
 
                 // Remove from the previous section
-                if (original.Any(entry => entry.Item2 != code))
-                    original.Remove(original.First(entry => entry.Item2 == code));
+                if (original.Any(entry => entry.Code != code))
+                    original.Remove(original.First(entry => entry.Code == code));
                 else Source.Remove(original);
             }
             else
@@ -66,18 +66,18 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 // The item has been unfavorited
                 if (original == null)
                 {
-                    original = new JumpListGroup<SavedSourceCodeType, Tuple<SavedSourceCodeType, SourceCode>>(
-                        SavedSourceCodeType.Original, new[] { Tuple.Create(SavedSourceCodeType.Original, code) });
-                    Source.Insert(favorites.Any(entry => entry.Item2 != code) ? 1 : 0, original);
+                    original = new JumpListGroup<SavedSourceCodeType, CategorizedSourceCode>(
+                        SavedSourceCodeType.Original, new[] { new CategorizedSourceCode(SavedSourceCodeType.Original, code) });
+                    Source.Insert(favorites.Any(entry => entry.Code != code) ? 1 : 0, original);
                 }
                 else
                 {
-                    original.AddSorted(Tuple.Create(SavedSourceCodeType.Original, code), tuple => tuple.Item2.Title);
+                    original.AddSorted(new CategorizedSourceCode(SavedSourceCodeType.Original, code), tuple => tuple.Code.Title);
                 }
 
                 // Remove from the previous section
-                if (favorites.Any(entry => entry.Item2 != code))
-                    favorites.Remove(favorites.First(entry => entry.Item2 == code));
+                if (favorites.Any(entry => entry.Code != code))
+                    favorites.Remove(favorites.First(entry => entry.Code == code));
                 else Source.Remove(favorites);
             }
         }
@@ -92,10 +92,10 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             await SQLiteManager.Instance.DeleteCodeAsync(code);
 
             // Update the UI
-            JumpListGroup<SavedSourceCodeType, Tuple<SavedSourceCodeType, SourceCode>> section = Source.FirstOrDefault(
+            JumpListGroup<SavedSourceCodeType, CategorizedSourceCode> section = Source.FirstOrDefault(
                 group => group.Key == (code.Favorited ? SavedSourceCodeType.Favorite : SavedSourceCodeType.Original));
-            if (section.Any(entry => entry.Item2 != code))
-                section.Remove(section.First(entry => entry.Item2 == code));
+            if (section.Any(entry => entry.Code != code))
+                section.Remove(section.First(entry => entry.Code == code));
             else Source.Remove(section);
         }
 
@@ -150,10 +150,10 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         {
             await SQLiteManager.Instance.RenameCodeAsync(code, title);
 
-            JumpListGroup<SavedSourceCodeType, Tuple<SavedSourceCodeType, SourceCode>> section = Source.FirstOrDefault(
+            JumpListGroup<SavedSourceCodeType, CategorizedSourceCode> section = Source.FirstOrDefault(
                 group => group.Key == (code.Favorited ? SavedSourceCodeType.Favorite : SavedSourceCodeType.Original));
-            Tuple<SavedSourceCodeType, SourceCode> tuple = section.First(entry => entry.Item2 == code);
-            section.EnsureSorted(tuple, entry => entry.Item2.Title);
+            CategorizedSourceCode item = section.First(entry => entry.Code == code);
+            section.EnsureSorted(item, entry => entry.Code.Title);
         }
     }
 }

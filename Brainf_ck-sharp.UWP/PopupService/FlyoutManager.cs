@@ -224,6 +224,9 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 : FlyoutClosedResult<TEvent>.Closed);
         }
 
+        /// <summary>
+        /// Calculates the expected width for a flyout to display
+        /// </summary>
         private static double CalculateExpectedWidth()
         {
             double width = ResolutionHelper.CurrentWidth;
@@ -260,31 +263,20 @@ namespace Brainf_ck_sharp_UWP.PopupService
             // Calculate the height depending on the display mode
             if (container.DisplayMode == FlyoutDisplayMode.ScrollableContent)
             {
-                if (height <= maxHeight)
-                {
-                    container.Height = height;
-                    popup.VerticalOffset = 0;
-                }
-                else
-                {
-                    container.Height = maxHeight;
-                    popup.VerticalOffset = height / 2 - maxHeight / 2;
-                }
+                if (height - 24 <= maxHeight) container.Height = height - 24;
+                else container.Height = maxHeight;
+                popup.VerticalOffset = height / 2 - container.Height / 2;
             }
             else
             {
                 // Calculate the desired size and arrange the popup
                 Size desired = container.CalculateDesiredSize();
-                if (desired.Height <= height)
+                if (desired.Height <= height + 24)
                 {
                     container.Height = desired.Height;
-                    popup.VerticalOffset = height / 2 - desired.Height / 2;
                 }
-                else
-                {
-                    container.Height = height;
-                    popup.VerticalOffset = 0;
-                }
+                else container.Height = height - 24;
+                popup.VerticalOffset = height / 2 - container.Height / 2;
             }
         }
     }

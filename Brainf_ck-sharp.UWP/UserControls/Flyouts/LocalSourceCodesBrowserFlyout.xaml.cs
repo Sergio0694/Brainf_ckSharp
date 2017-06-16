@@ -29,10 +29,10 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
 
         private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            if (e.ClickedItem is SourceCode code)
+            if (e.ClickedItem is CategorizedSourceCode item)
             {
-                Result = code;
-                ContentConfirmed?.Invoke(this, code);
+                Result = item.Code;
+                ContentConfirmed?.Invoke(this, item.Code);
             }
         }
 

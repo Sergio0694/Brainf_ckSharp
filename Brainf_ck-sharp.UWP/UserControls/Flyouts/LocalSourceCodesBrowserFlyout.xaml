@@ -35,8 +35,8 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <dataTemplates:SavedSourceCodeTemplate 
-                                SourceCode="{Binding Item2}"
-                                CodeType="{Binding Item1}"
+                                SourceCode="{Binding Code}"
+                                CodeType="{Binding Type}"
                                 FavoriteToggleRequested="SavedSourceCodeTemplate_OnFavoriteToggleRequested"
                                 RenameRequested="SavedSourceCodeTemplate_OnRenameRequested"
                                 ShareRequested="SavedSourceCodeTemplate_OnShareRequested"

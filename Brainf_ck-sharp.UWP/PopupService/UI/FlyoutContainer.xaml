@@ -10,10 +10,7 @@
     d:DesignWidth="400">
 
     <!--Root-->
-    <Grid 
-        x:Name="RootGrid"
-        BorderThickness="1"
-        BorderBrush="#40FFFFFF">
+    <Grid x:Name="RootGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="52"/>
             <RowDefinition Height="*"/>
@@ -39,9 +36,18 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+        
+        <!--Border around the control-->
+        <Border
+            BorderThickness="1"
+            Grid.RowSpan="3"
+            BorderBrush="#40FFFFFF"
+            IsHitTestVisible="False"
+            Canvas.ZIndex="1"/>
 
         <!--Acrylic border-->
         <Border x:Name="BlurBorder"
+                Grid.Row="0"
                 Grid.RowSpan="3"/>
         <xaml:CanvasControl x:Name="Win2DCanvas"
                             Grid.Row="0"/>
