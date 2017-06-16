@@ -1,5 +1,6 @@
 ﻿using System;
 using Windows.UI.Xaml.Controls;
+using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.FlyoutService.Interfaces;
@@ -40,6 +41,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
             ViewModel.ToggleFavorite(e).Forget();
         }
 
+        // Forwards a request to rename a source code
         private void SavedSourceCodeTemplate_OnRenameRequested(object sender, SourceCode e)
         {
             throw new NotImplementedException();
@@ -48,13 +50,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         // Forwards the share event and displays a notification with the result of the share operation
         private async void SavedSourceCodeTemplate_OnShareRequested(object sender, (SourceCodeShareType Type, SourceCode Code) e)
         {
-            bool result = await ViewModel.ShareItemAsync(e.Type, e.Code);
-            if (result)
+            AsyncOperationResult<bool> result = await ViewModel.ShareItemAsync(e.Type, e.Code);
+            if (result.Status == AsyncOperationStatus.RunToCompletion && result.Result)
             {
                 NotificationsManager.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("ShareCompleted"),
                     LocalizationManager.GetResource("ShareCompletedBody"), NotificationType.Default);
             }
-            else
+            else if (result.Status != AsyncOperationStatus.Canceled)
             {
                 NotificationsManager.ShowDefaultErrorNotification(LocalizationManager.GetResource("ShareError"), LocalizationManager.GetResource("ShareErrorBody"));
             }

@@ -104,7 +104,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// </summary>
         /// <param name="mode">The desired share mode</param>
         /// <param name="code">The code to share</param>
-        public async Task<bool> ShareItemAsync(SourceCodeShareType mode, [NotNull] SourceCode code)
+        public async Task<AsyncOperationResult<bool>> ShareItemAsync(SourceCodeShareType mode, [NotNull] SourceCode code)
         {
             switch (mode)
             {
@@ -128,12 +128,12 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     return true;
                 case SourceCodeShareType.Email:
                     StorageFile file = await StorageHelper.CreateTemporaryFileAsync(code.Title, ".txt");
-                    if (file == null) return false;
+                    if (file == null) return AsyncOperationStatus.Canceled;
                     await FileIO.WriteTextAsync(file, code.Code);
                     return await EmailHelper.SendEmail(String.Empty, LocalizationManager.GetResource("SharedCode"), null, file);
                 case SourceCodeShareType.LocalFile:
                     StorageFile local = await StorageHelper.PickSaveFileAsync(code.Title, LocalizationManager.GetResource("PlainText"), ".txt");
-                    if (local == null) return false;
+                    if (local == null) return AsyncOperationStatus.Canceled;
                     await FileIO.WriteTextAsync(local, code.Code);
                     return true;
                 default:

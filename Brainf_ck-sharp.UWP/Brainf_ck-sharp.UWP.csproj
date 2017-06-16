@@ -118,6 +118,7 @@
     <Compile Include="Converters\ReadableCharactersConverter.cs" />
     <Compile Include="Converters\SingleDigitConverterWithFallback.cs" />
     <Compile Include="Converters\SourceCodeTypeConverter.cs" />
+    <Compile Include="DataModels\AsyncOperationResult.cs" />
     <Compile Include="DataModels\IDEResults\IDEResultExceptionInfoData.cs" />
     <Compile Include="DataModels\Misc\CharactersChunkModel.cs" />
     <Compile Include="DataModels\ConsoleModels\ConsoleCommandModelBase.cs" />
