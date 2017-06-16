@@ -18,6 +18,7 @@ using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
+using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
@@ -53,8 +54,9 @@ namespace Brainf_ck_sharp_UWP.Views
             var result = await FlyoutManager.Instance.ShowAsync("Save code", flyout, new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight);
             if (result == FlyoutResult.Confirmed)
             {
-                
                 await SQLiteManager.Instance.SaveCodeAsync(flyout.Title, text);
+                NotificationsManager.ShowNotification(0xEC24.ToSegoeMDL2Icon(), "Code saved", "The new source code has been saved correctly",
+                    NotificationType.Default);
             }
         }
 

@@ -139,6 +139,8 @@
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
     <Compile Include="DataModels\SQLite\SourceCodeTitleScore.cs" />
     <Compile Include="Enums\SourceCodeShareType.cs" />
+    <Compile Include="Helpers\DispatcherHelper.cs" />
+    <Compile Include="Messages\Flyouts\NotificationCloseRequestmessage.cs" />
     <Compile Include="PopupService\Misc\FlyoutClosedResult.cs" />
     <Compile Include="PopupService\Misc\FlyoutDisplayMode.cs" />
     <Compile Include="PopupService\Interfaces\IEventConfirmedContent.cs" />
@@ -175,6 +177,11 @@
     <Compile Include="Messages\IDEStatus\IDEStatusUpdateMessageBase.cs" />
     <Compile Include="Messages\OperatorAddedMessage.cs" />
     <Compile Include="Messages\SourceCodeLoadingRequestedMessage.cs" />
+    <Compile Include="PopupService\Misc\NotificationType.cs" />
+    <Compile Include="PopupService\NotificationsManager.cs" />
+    <Compile Include="PopupService\UI\NotificationPopup.xaml.cs">
+      <DependentUpon>NotificationPopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\BrushResourcesManager.cs" />
     <Compile Include="SQLiteDatabase\SQLiteManager.cs" />
@@ -320,6 +327,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="PopupService\UI\NotificationPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\BrushesDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
