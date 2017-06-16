@@ -140,6 +140,7 @@
     <Compile Include="DataModels\SQLite\SourceCodeTitleScore.cs" />
     <Compile Include="Enums\SourceCodeShareType.cs" />
     <Compile Include="Helpers\DispatcherHelper.cs" />
+    <Compile Include="Helpers\Extensions\_IEnumerableExtensions.cs" />
     <Compile Include="Messages\Flyouts\NotificationCloseRequestmessage.cs" />
     <Compile Include="PopupService\Misc\FlyoutClosedResult.cs" />
     <Compile Include="PopupService\Misc\FlyoutDisplayMode.cs" />

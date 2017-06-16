@@ -7,6 +7,7 @@ using Windows.ApplicationModel;
 using Windows.Storage;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using JetBrains.Annotations;
 using SQLite.Net;
 using SQLite.Net.Async;
@@ -142,7 +143,7 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
             // Query the codes from the database
             await EnsureDatabaseConnectionAsync();
             await RefreshCodeSamplesAsync();
-            List<SourceCode> codes = await DatabaseConnection.Table<SourceCode>().OrderBy(entry => entry.Title).ToListAsync();
+            List<SourceCode> codes = await DatabaseConnection.Table<SourceCode>().ToListAsync();
 
             // Populate the three categories
             List<SourceCode>
@@ -151,9 +152,9 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
                 original = new List<SourceCode>();
             foreach (SourceCode code in codes)
             {
-                if (SamplesMap.Any(sample => sample.Uid.Equals(Guid.Parse(code.Uid)))) samples.Add(code);
-                else if (code.Favorited) favorites.Add(code);
-                else original.Add(code);
+                if (SamplesMap.Any(sample => sample.Uid.Equals(Guid.Parse(code.Uid)))) samples.AddSorted(code, entry => entry.Title);
+                else if (code.Favorited) favorites.AddSorted(code, entry => entry.Title);
+                else original.AddSorted(code, entry => entry.Title);
             }
 
             // Aggregate and return the results

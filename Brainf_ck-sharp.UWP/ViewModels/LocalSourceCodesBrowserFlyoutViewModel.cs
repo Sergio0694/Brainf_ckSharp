@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
+using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.ViewModels.Abstract;
 
@@ -24,11 +25,13 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 
         public async void ToggleFavorite(SourceCode code)
         {
+            // Update the item in the database
             await SQLiteManager.Instance.ToggleFavoriteStatusAsync(code);
             JumpListGroup<SavedSourceCodeType, Tuple<SavedSourceCodeType, SourceCode>>
                 favorites = Source.FirstOrDefault(group => group.Key == SavedSourceCodeType.Favorite),
                 original = Source.FirstOrDefault(group => group.Key == SavedSourceCodeType.Original);
 
+            // Update the UI
             if (code.Favorited)
             {
                 // The item has been favorited, move from default to first section
@@ -40,7 +43,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 }
                 else
                 {
-                    favorites.Add(Tuple.Create(SavedSourceCodeType.Favorite, code));
+                    favorites.AddSorted(Tuple.Create(SavedSourceCodeType.Favorite, code), tuple => tuple.Item2.Title);
                 }
 
                 // Remove from the previous section
@@ -50,6 +53,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             }
             else
             {
+                // The item has been unfavorited
                 if (original == null)
                 {
                     original = new JumpListGroup<SavedSourceCodeType, Tuple<SavedSourceCodeType, SourceCode>>(
@@ -58,7 +62,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 }
                 else
                 {
-                    original.Add(Tuple.Create(SavedSourceCodeType.Original, code));
+                    original.AddSorted(Tuple.Create(SavedSourceCodeType.Original, code), tuple => tuple.Item2.Title);
                 }
 
                 // Remove from the previous section
