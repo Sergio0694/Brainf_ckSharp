@@ -55,6 +55,11 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// <summary>
         /// Prepares the <see cref="MenuFlyout"/> for the saved source codes
         /// </summary>
+        /// <param name="favorite">The action when the selected item is favorited/unfavorited</param>
+        /// <param name="favorited">Indicates the favorited state for the current item</param>
+        /// <param name="rename">The action when the item is renamed</param>
+        /// <param name="share">The action when the users selects a share method for the item</param>
+        /// <param name="delete">The action when the user requests to delete the item</param>
         public static MenuFlyout PrepareSavedSourceCodeMenuFlyout(
             [NotNull] Action favorite, bool favorited, 
             [NotNull] Action rename,
@@ -63,7 +68,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
         {
             MenuFlyout menu = new MenuFlyout();
             menu.Items?.AddItem(LocalizationManager.GetResource(favorited ? "Unfavorite" : "Favorite"),
-                (favorited ? 0xE249 : 0xE195).ToSegoeMDL2Icon(), favorite);
+                (favorited ? 0xE195 : 0xE249).ToSegoeMDL2Icon(), favorite);
             menu.Items?.AddItem(LocalizationManager.GetResource("Rename"), 0xE104.ToSegoeMDL2Icon(), rename);
             MenuFlyoutSubItem sub = new MenuFlyoutSubItem { Text = LocalizationManager.GetResource("Share") };
             sub.Items?.AddItem(LocalizationManager.GetResource("Clipboard"), 0xEF20.ToSegoeMDL2Icon(), () => share(SourceCodeShareType.Clipboard));

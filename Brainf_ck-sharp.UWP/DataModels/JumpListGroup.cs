@@ -16,6 +16,11 @@ namespace Brainf_ck_sharp_UWP.DataModels
             Key = key;
         }
 
+        public JumpListGroup([NotNull] IGrouping<TKey, TItems> group) : base(group)
+        {
+            Key = group.Key;
+        }
+
         /// <summary>
         /// Key that represents the group of objects and used as group header.
         /// </summary>

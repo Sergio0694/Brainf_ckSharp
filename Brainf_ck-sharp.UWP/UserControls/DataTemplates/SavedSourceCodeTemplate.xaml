@@ -7,7 +7,8 @@
     mc:Ignorable="d"
     d:DesignHeight="60"
     d:DesignWidth="400"
-    RightTapped="SavedSourceCodeTemplate_OnRightTapped">
+    RightTapped="SavedSourceCodeTemplate_OnRightTapped"
+    Holding="SavedSourceCodeTemplate_OnHolding">
 
     <!--Root-->
     <Grid x:Name="RootGrid"

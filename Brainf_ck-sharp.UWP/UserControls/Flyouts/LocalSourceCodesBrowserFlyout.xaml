@@ -34,7 +34,9 @@
                     ItemClick="ListViewBase_OnItemClick">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <dataTemplates:SavedSourceCodeTemplate SourceCode="{Binding}"/>
+                            <dataTemplates:SavedSourceCodeTemplate 
+                                SourceCode="{Binding Item2}"
+                                CodeType="{Binding Item1}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                     <ListView.GroupStyle>
