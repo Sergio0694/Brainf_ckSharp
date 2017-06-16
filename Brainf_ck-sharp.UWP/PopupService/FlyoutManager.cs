@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -7,18 +8,18 @@ using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
-using Brainf_ck_sharp_UWP.FlyoutService.Interfaces;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
+using Brainf_ck_sharp_UWP.PopupService.Interfaces;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
+using Brainf_ck_sharp_UWP.PopupService.UI;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
-using FlyoutContainer = Brainf_ck_sharp_UWP.PopupService.UI.FlyoutContainer;
 
-namespace Brainf_ck_sharp_UWP.FlyoutService
+namespace Brainf_ck_sharp_UWP.PopupService
 {
     /// <summary>
     /// A class that exposes methods to manage flyouts to display across the app
@@ -27,8 +28,13 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
     {
         #region Constants
 
+        // Default size
         private const double MaxPopupHeight = 800;
         private const double MaxPopupWidth = 480;
+
+        // Stacked size
+        private const double MaxStackedPopupHeight = 740;
+        private const double MaxStackedPopupWidth = 420;
 
         #endregion
 
@@ -54,9 +60,9 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
         private async void FlyoutManager_VisibleBoundsChanged(ApplicationView sender, object args)
         {
             await Semaphore.WaitAsync();
-            foreach (Popup popup in PopupStack)
+            foreach ((Popup popup, int i) in PopupStack.Reverse().Select((p, i) => (p, i)))
             {
-                AdjustPopupSize(popup, popup.Child.To<FlyoutContainer>());
+                AdjustPopupSize(popup, popup.Child.To<FlyoutContainer>(), i > 0);
             }
             Semaphore.Release();
         }
@@ -130,7 +136,7 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
                 IsLightDismissEnabled = false,
                 Child = container
             };
-            AdjustPopupSize(popup, container);
+            AdjustPopupSize(popup, container, PopupStack.Count > 0);
             TaskCompletionSource<FlyoutResult> tcs = new TaskCompletionSource<FlyoutResult>();
             popup.Closed += (s, e) =>
             {
@@ -202,7 +208,7 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
                 IsLightDismissEnabled = false,
                 Child = container
             };
-            AdjustPopupSize(popup, container);
+            AdjustPopupSize(popup, container, PopupStack.Count > 0);
             popup.Closed += (s, e) => tcs.TrySetCanceled();
 
             // Display and animate the popup
@@ -229,38 +235,46 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
         /// </summary>
         /// <param name="popup">The popup to resize</param>
         /// <param name="container">The content hosted inside the <see cref="Popup"/> control</param>
-        private static void AdjustPopupSize([NotNull] Popup popup, [NotNull] FlyoutContainer container)
+        /// <param name="stacked">Indicates whether or not the current popup is not the first one being displayed</param>
+        private static void AdjustPopupSize([NotNull] Popup popup, [NotNull] FlyoutContainer container, bool stacked)
         {
+            // Calculate the current parameters
             double
                 width = ResolutionHelper.CurrentWidth,
-                height = ResolutionHelper.CurrentHeight;
-            if (width <= MaxPopupWidth)
+                height = ResolutionHelper.CurrentHeight,
+                maxWidth = stacked ? MaxStackedPopupWidth : MaxPopupWidth,
+                maxHeight = stacked ? MaxStackedPopupHeight : MaxPopupHeight;
+
+            // Update the width first
+            if (width <= maxWidth)
             {
                 container.Width = width;
                 popup.HorizontalOffset = 0;
             }
             else
             {
-                container.Width = MaxPopupWidth;
-                popup.HorizontalOffset = width / 2 - MaxPopupWidth / 2;
+                container.Width = maxWidth;
+                popup.HorizontalOffset = width / 2 - maxWidth / 2;
             }
+
+            // Calculate the height depending on the display mode
             if (container.DisplayMode == FlyoutDisplayMode.ScrollableContent)
             {
-                if (height <= MaxPopupHeight)
+                if (height <= maxHeight)
                 {
                     container.Height = height;
                     popup.VerticalOffset = 0;
                 }
                 else
                 {
-                    container.Height = MaxPopupHeight;
-                    popup.VerticalOffset = height / 2 - MaxPopupHeight / 2;
+                    container.Height = maxHeight;
+                    popup.VerticalOffset = height / 2 - maxHeight / 2;
                 }
             }
             else
             {
+                // Calculate the desired size and arrange the popup
                 Size desired = container.CalculateDesiredSize();
-                
                 if (desired.Height <= height)
                 {
                     container.Height = desired.Height;
