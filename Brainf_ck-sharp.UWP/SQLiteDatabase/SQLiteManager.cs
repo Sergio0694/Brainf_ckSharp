@@ -198,6 +198,16 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         }
 
         /// <summary>
+        /// Delets a saved source code from the database
+        /// </summary>
+        /// <param name="code">The code to delete</param>
+        public async Task DeleteCodeAsync([NotNull] SourceCode code)
+        {
+            await EnsureDatabaseConnectionAsync();
+            await DatabaseConnection.DeleteAsync(code);
+        }
+
+        /// <summary>
         /// Toggles the favorite status for a given code
         /// </summary>
         /// <param name="code">The target code to edit</param>

@@ -34,7 +34,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         // Forwards the favorite toggle event
         private void SavedSourceCodeTemplate_OnFavoriteToggleRequested(object sender, SourceCode e)
         {
-            ViewModel.ToggleFavorite(e);
+            ViewModel.ToggleFavorite(e).Forget();
         }
 
         private void SavedSourceCodeTemplate_OnRenameRequested(object sender, SourceCode e)
@@ -47,9 +47,10 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
             throw new NotImplementedException();
         }
 
+        // Forwards the delete item event
         private void SavedSourceCodeTemplate_OnDeleteRequested(object sender, SourceCode e)
         {
-            throw new NotImplementedException();
+            ViewModel.DeleteItemAsync(e).Forget();
         }
     }
 }

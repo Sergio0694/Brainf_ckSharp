@@ -7,6 +7,7 @@ using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.ViewModels.Abstract;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.ViewModels
 {
@@ -23,7 +24,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     select new JumpListGroup<SavedSourceCodeType, Tuple<SavedSourceCodeType, SourceCode>>(category.Type, items)).ToArray();
         }
 
-        public async void ToggleFavorite(SourceCode code)
+        /// <summary>
+        /// Toggles the favorite status for a given code and refreshes the UI
+        /// </summary>
+        /// <param name="code">The code to edit</param>
+        public async Task ToggleFavorite([NotNull] SourceCode code)
         {
             // Update the item in the database
             await SQLiteManager.Instance.ToggleFavoriteStatusAsync(code);
@@ -70,6 +75,23 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     favorites.Remove(favorites.First(entry => entry.Item2 == code));
                 else Source.Remove(favorites);
             }
+        }
+
+        /// <summary>
+        /// Deletes a saved code from the database
+        /// </summary>
+        /// <param name="code">The saved code to delete</param>
+        public async Task DeleteItemAsync([NotNull] SourceCode code)
+        {
+            // Delete the code from the database
+            await SQLiteManager.Instance.DeleteCodeAsync(code);
+
+            // Update the UI
+            JumpListGroup<SavedSourceCodeType, Tuple<SavedSourceCodeType, SourceCode>> section = Source.FirstOrDefault(
+                group => group.Key == (code.Favorited ? SavedSourceCodeType.Favorite : SavedSourceCodeType.Original));
+            if (section.Any(entry => entry.Item2 != code))
+                section.Remove(section.First(entry => entry.Item2 == code));
+            else Source.Remove(section);
         }
     }
 }
