@@ -79,6 +79,7 @@
         <ScrollViewer 
             Grid.Row="1"
             Visibility="Collapsed"
+            VerticalScrollBarVisibility="Hidden"
             x:Name="ContentScroller"/>
         
         <!--Confirm button-->

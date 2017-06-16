@@ -60,9 +60,9 @@ namespace Brainf_ck_sharp_UWP.PopupService
         private async void FlyoutManager_VisibleBoundsChanged(ApplicationView sender, object args)
         {
             await Semaphore.WaitAsync();
-            foreach ((Popup popup, int i) in PopupStack.Reverse().Select((p, i) => (p, i)))
+            foreach ((FlyoutDisplayInfo info, int i) in PopupStack.Reverse().Select((p, i) => (p, i)))
             {
-                AdjustPopupSize(popup, popup.Child.To<FlyoutContainer>(), i > 0);
+                AdjustPopupSize(info, i > 0);
             }
             Semaphore.Release();
         }
@@ -71,7 +71,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         private readonly SemaphoreSlim Semaphore = new SemaphoreSlim(1);
 
         // The current popup control
-        private Stack<Popup> PopupStack { get; } = new Stack<Popup>();
+        private Stack<FlyoutDisplayInfo> PopupStack { get; } = new Stack<FlyoutDisplayInfo>();
 
         /// <summary>
         /// Closes the current popup, if there's one displayed
@@ -79,9 +79,9 @@ namespace Brainf_ck_sharp_UWP.PopupService
         private async Task TryCloseAsync()
         {
             await Semaphore.WaitAsync();
-            if (PopupStack.Count > 0 && PopupStack.Peek().IsOpen)
+            if (PopupStack.Count > 0 && PopupStack.Peek().Popup.IsOpen)
             {
-                Popup popup = PopupStack.Pop();
+                Popup popup = PopupStack.Pop().Popup;
                 if (PopupStack.Count == 0) Messenger.Default.Send(new FlyoutClosedNotificationMessage());
                 await popup.StartCompositionFadeSlideAnimationAsync(null, 0, TranslationAxis.Y, 0, 20, 250, null, null, EasingFunctionNames.CircleEaseOut);
                 popup.IsOpen = false;
@@ -105,7 +105,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             Messenger.Default.Send(new FlyoutOpenedMessage());
             if (!stack)
             {
-                foreach (Popup previous in PopupStack) previous.IsOpen = false;
+                foreach (FlyoutDisplayInfo previous in PopupStack) previous.Popup.IsOpen = false;
                 PopupStack.Clear();
             }
 
@@ -136,7 +136,8 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 IsLightDismissEnabled = false,
                 Child = container
             };
-            AdjustPopupSize(popup, container, PopupStack.Count > 0);
+            FlyoutDisplayInfo info = new FlyoutDisplayInfo(popup, mode);
+            AdjustPopupSize(info, PopupStack.Count > 0);
             TaskCompletionSource<FlyoutResult> tcs = new TaskCompletionSource<FlyoutResult>();
             popup.Closed += (s, e) =>
             {
@@ -144,7 +145,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             };
 
             // Display and animate the popup
-            PopupStack.Push(popup);
+            PopupStack.Push(info);
             popup.SetVisualOpacity(0);
             popup.IsOpen = true;
             await popup.StartCompositionFadeSlideAnimationAsync(null, 1, TranslationAxis.Y, 20, 0, 250, null, null, EasingFunctionNames.CircleEaseOut);
@@ -170,7 +171,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             Messenger.Default.Send(new FlyoutOpenedMessage());
             if (!stack)
             {
-                foreach (Popup previous in PopupStack) previous.IsOpen = false;
+                foreach (FlyoutDisplayInfo previous in PopupStack) previous.Popup.IsOpen = false;
                 PopupStack.Clear();
             }
 
@@ -208,11 +209,12 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 IsLightDismissEnabled = false,
                 Child = container
             };
-            AdjustPopupSize(popup, container, PopupStack.Count > 0);
+            FlyoutDisplayInfo info = new FlyoutDisplayInfo(popup, mode);
+            AdjustPopupSize(info, PopupStack.Count > 0);
             popup.Closed += (s, e) => tcs.TrySetCanceled();
 
             // Display and animate the popup
-            PopupStack.Push(popup);
+            PopupStack.Push(info);
             popup.SetVisualOpacity(0);
             popup.IsOpen = true;
             await popup.StartCompositionFadeSlideAnimationAsync(null, 1, TranslationAxis.Y, 20, 0, 250, null, null, EasingFunctionNames.CircleEaseOut);
@@ -236,47 +238,40 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <summary>
         /// Adjusts the size of a popup based on the current screen size
         /// </summary>
-        /// <param name="popup">The popup to resize</param>
-        /// <param name="container">The content hosted inside the <see cref="Popup"/> control</param>
+        /// <param name="info">The wrapped info on the popup to resize and its content</param>
         /// <param name="stacked">Indicates whether or not the current popup is not the first one being displayed</param>
-        private static void AdjustPopupSize([NotNull] Popup popup, [NotNull] FlyoutContainer container, bool stacked)
+        private static void AdjustPopupSize([NotNull] FlyoutDisplayInfo info, bool stacked)
         {
             // Calculate the current parameters
             double
                 width = ResolutionHelper.CurrentWidth,
                 height = ResolutionHelper.CurrentHeight,
                 maxWidth = stacked ? MaxStackedPopupWidth : MaxPopupWidth,
-                maxHeight = stacked ? MaxStackedPopupHeight : MaxPopupHeight;
+                maxHeight = stacked ? MaxStackedPopupHeight : MaxPopupHeight,
+                margin = UniversalAPIsHelper.IsMobileDevice ? 0 : 24; // The minimum margin to the edges of the screen
 
             // Update the width first
-            if (width <= maxWidth)
-            {
-                container.Width = width;
-                popup.HorizontalOffset = 0;
-            }
-            else
-            {
-                container.Width = maxWidth;
-                popup.HorizontalOffset = width / 2 - maxWidth / 2;
-            }
+            if (width - margin <= maxWidth) info.Container.Width = width - margin;
+            else info.Container.Width = maxWidth - margin;
+            info.Popup.HorizontalOffset = width / 2 - info.Container.Width / 2;
 
             // Calculate the height depending on the display mode
-            if (container.DisplayMode == FlyoutDisplayMode.ScrollableContent)
+            if (info.DisplayMode == FlyoutDisplayMode.ScrollableContent)
             {
-                if (height - 24 <= maxHeight) container.Height = height - 24;
-                else container.Height = maxHeight;
-                popup.VerticalOffset = height / 2 - container.Height / 2;
+                if (height - margin <= maxHeight) info.Container.Height = height - margin;
+                else info.Container.Height = maxHeight;
+                info.Popup.VerticalOffset = height / 2 - info.Container.Height / 2;
             }
             else
             {
                 // Calculate the desired size and arrange the popup
-                Size desired = container.CalculateDesiredSize();
-                if (desired.Height <= height + 24)
+                Size desired = info.Container.CalculateDesiredSize();
+                if (desired.Height <= height + margin)
                 {
-                    container.Height = desired.Height;
+                    info.Container.Height = desired.Height;
                 }
-                else container.Height = height - 24;
-                popup.VerticalOffset = height / 2 - container.Height / 2;
+                else info.Container.Height = height - margin;
+                info.Popup.VerticalOffset = (height / 2 - info.Container.Height / 2) / 2;
             }
         }
     }

@@ -46,7 +46,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         /// <summary>
         /// Gets the current display mode for the flyout host
         /// </summary>
-        public FlyoutDisplayMode DisplayMode { get; private set; }
+        private FlyoutDisplayMode _DisplayMode;
 
         // The content currently hosted by the container
         private FrameworkElement _Content;
@@ -59,7 +59,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         /// <param name="margin">The optional margins to set to the content of the popup to show</param>
         public void SetupUI([NotNull] String title, FrameworkElement content, Thickness? margin)
         {
-            DisplayMode = FlyoutDisplayMode.ScrollableContent;
+            _DisplayMode = FlyoutDisplayMode.ScrollableContent;
             TitleBlock.Text = title;
             Grid.SetRow(content, 1);
             content.Margin = margin ?? new Thickness(12, 0, 0, 0);
@@ -76,7 +76,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         public void SetupFixedUI([NotNull] String title, FrameworkElement content, double width)
         {
             _Content = content;
-            DisplayMode = FlyoutDisplayMode.ActualHeight;
+            _DisplayMode = FlyoutDisplayMode.ActualHeight;
             TitleBlock.Text = title;
             ContentScroller.Content = content;
             ContentScroller.Visibility = Visibility.Visible;
@@ -102,7 +102,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         /// </summary>
         public Size CalculateDesiredSize()
         {
-            if (DisplayMode != FlyoutDisplayMode.ActualHeight) throw new InvalidOperationException("Invalid display mode");
+            if (_DisplayMode != FlyoutDisplayMode.ActualHeight) throw new InvalidOperationException("Invalid display mode");
             _Content.Measure(new Size(Width - 2, double.PositiveInfinity)); // Consider the side 1-px borders
             double buttonHeight = ConfirmButton.Visibility == Visibility.Visible ? 60 : 0;
             return new Size(Width, 52 + _Content.DesiredSize.Height + buttonHeight + 2);
