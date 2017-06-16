@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.FlyoutService
+﻿namespace Brainf_ck_sharp_UWP.PopupService.Misc
 {
     /// <summary>
     /// Indicates the display mode for a new flyout to show

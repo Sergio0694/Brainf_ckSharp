@@ -139,13 +139,13 @@
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
     <Compile Include="DataModels\SQLite\SourceCodeTitleScore.cs" />
     <Compile Include="Enums\SourceCodeShareType.cs" />
-    <Compile Include="FlyoutService\FlyoutClosedResult.cs" />
-    <Compile Include="FlyoutService\FlyoutDisplayMode.cs" />
-    <Compile Include="FlyoutService\Interfaces\IEventConfirmedContent.cs" />
-    <Compile Include="FlyoutService\Interfaces\IValidableDialog.cs" />
+    <Compile Include="PopupService\Misc\FlyoutClosedResult.cs" />
+    <Compile Include="PopupService\Misc\FlyoutDisplayMode.cs" />
+    <Compile Include="PopupService\Interfaces\IEventConfirmedContent.cs" />
+    <Compile Include="PopupService\Interfaces\IValidableDialog.cs" />
     <Compile Include="Helpers\BitHelper.cs" />
     <Compile Include="Helpers\Brainf_ckFormatterHelper.cs" />
-    <Compile Include="FlyoutService\FlyoutManager.cs" />
+    <Compile Include="PopupService\FlyoutManager.cs" />
     <Compile Include="Helpers\Extensions\MiscExtensions.cs" />
     <Compile Include="Helpers\Extensions\NumericExtensions.cs" />
     <Compile Include="Helpers\Extensions\UIExtensions.cs" />
@@ -220,7 +220,7 @@
     <Compile Include="UserControls\DataTemplates\UnicodeCharacterTemplate.xaml.cs">
       <DependentUpon>UnicodeCharacterTemplate.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\FlyoutContainer.xaml.cs">
+    <Compile Include="PopupService\UI\FlyoutContainer.xaml.cs">
       <DependentUpon>FlyoutContainer.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DataTemplates\MemoryCellTemplate.xaml.cs">
@@ -385,7 +385,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Flyouts\FlyoutContainer.xaml">
+    <Page Include="PopupService\UI\FlyoutContainer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

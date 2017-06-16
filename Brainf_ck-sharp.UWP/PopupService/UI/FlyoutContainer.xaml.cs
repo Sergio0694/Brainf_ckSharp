@@ -3,16 +3,16 @@ using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.FlyoutService;
 using Brainf_ck_sharp_UWP.FlyoutService.Interfaces;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
+using Brainf_ck_sharp_UWP.PopupService.Misc;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations.Behaviours;
 using UICompositionAnimations.Behaviours.Effects.Base;
 
-namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
+namespace Brainf_ck_sharp_UWP.PopupService.UI
 {
     /// <summary>
     /// A container to display different popups across the app

@@ -10,11 +10,12 @@ using Brainf_ck_sharp_UWP.FlyoutService.Interfaces;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
-using Brainf_ck_sharp_UWP.UserControls.Flyouts;
+using Brainf_ck_sharp_UWP.PopupService.Misc;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
+using FlyoutContainer = Brainf_ck_sharp_UWP.PopupService.UI.FlyoutContainer;
 
 namespace Brainf_ck_sharp_UWP.FlyoutService
 {
@@ -87,6 +88,7 @@ namespace Brainf_ck_sharp_UWP.FlyoutService
         /// <param name="title">The title of the new flyout to show</param>
         /// <param name="content">The content to show inside the flyout</param>
         /// <param name="margin">The optional margins to set to the content of the popup to show</param>
+        /// <param name="mode">The desired display mode for the flyout</param>
         public async Task<FlyoutResult> ShowAsync([NotNull] String title, [NotNull] FrameworkElement content, [CanBeNull] Thickness? margin = null,
             FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent)
         {
