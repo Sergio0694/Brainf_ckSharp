@@ -48,6 +48,13 @@ namespace Brainf_ck_sharp_UWP.DataModels.SQLite
         public uint Flags { get; set; }
 
         /// <summary>
+        /// Gets or sets the enabled breakpoints for this source code
+        /// </summary>
+        /// <remarks>Each bit set to 1 represents a breakpoint on the n-th line</remarks>
+        [Column(nameof(Breakpoints)), Default]
+        public byte[] Breakpoints { get; set; }
+
+        /// <summary>
         /// Gets or sets a <see cref="DateTime"/> object that indicates the creation time
         /// </summary>
         [Ignore]

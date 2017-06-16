@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.Helpers
 {
@@ -36,6 +38,23 @@ namespace Brainf_ck_sharp_UWP.Helpers
             if (n < 0 || n > 31) throw new ArgumentOutOfRangeException("The position must be between 0 and 31");
             uint bit = (value >> n) & 1;
             return bit == 1;
+        }
+
+        /// <summary>
+        /// Expands a byte array in an array of bool values where each one indicates the 0/1 flag at the n-th bit
+        /// </summary>
+        /// <param name="bits">The source bits to expand</param>
+        public static bool[] Expand([NotNull] byte[] bits)
+        {
+            bool[] result = new bool[bits.Length * 8];
+            foreach ((byte b, int i) in bits.Select((b, i) => (b, i)))
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    result[i + j] = ((b >> j) & 0x1) == 0x1;
+                }
+            }
+            return result;
         }
     }
 }
