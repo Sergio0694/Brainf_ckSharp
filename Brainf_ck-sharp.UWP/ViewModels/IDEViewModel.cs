@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Text;
 using Brainf_ck_sharp;
+using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
@@ -30,6 +31,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         // A UI-bound function that asks the user to pick a name to save a new source code
         private readonly Func<String, Task<String>> SaveNameSelector;
 
+        /// <summary>
+        /// Creates a new instance to manage the IDE
+        /// </summary>
+        /// <param name="document">The target document that contains the source code to edit</param>
+        /// <param name="nameSelector">A function that prompts the user to enter a name to save a new source code in the app</param>
         public IDEViewModel([NotNull] ITextDocument document, [NotNull] Func<String, Task<String>> nameSelector)
         {
             Document = document;
@@ -89,17 +95,28 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             Document.GetText(TextGetOptions.None, out String text);
             switch (type)
             {
+                // Save an already existing file
                 case CodeSaveType.Save:
                     if (LoadedCode == null) throw new InvalidOperationException("There isn't a loaded source code to save");
                     await SQLiteManager.Instance.SaveCodeAsync(LoadedCode, text);
+                    UpdateGitDiffStatusOnSave();
                     break;
+
+                // Save the current code as a new file
                 case CodeSaveType.SaveAs:
                     String name = await SaveNameSelector(text);
                     if (!String.IsNullOrEmpty(name))
                     {
-                        await SQLiteManager.Instance.SaveCodeAsync(name, text);
-                        NotificationsManager.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("CodeSaved"),
-                            LocalizationManager.GetResource("CodeSavedBody"), NotificationType.Default);
+                        AsyncOperationResult<CategorizedSourceCode> result = await SQLiteManager.Instance.SaveCodeAsync(name, text);
+                        if (result)
+                        {
+                            // Update the local code reference, the git diff indicators and notify the UI with the new save buttons state
+                            _CategorizedCode = result.Result;
+                            NotificationsManager.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("CodeSaved"),
+                                LocalizationManager.GetResource("CodeSavedBody"), NotificationType.Default);
+                            UpdateGitDiffStatusOnSave();
+                            Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(true, true));
+                        }
                     }
                     break;
                 default:
@@ -242,6 +259,15 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         [NotNull]
         public ObservableCollection<GitDiffLineStatus> DiffStatusSource { get; } = new ObservableCollection<GitDiffLineStatus>();
 
+        // Updates the git diff indicators when the current source code is saved
+        private void UpdateGitDiffStatusOnSave()
+        {
+            for (int i = 0; i < DiffStatusSource.Count; i++)
+            {
+                if (DiffStatusSource[i] == GitDiffLineStatus.Edited) DiffStatusSource[i] = GitDiffLineStatus.Saved;
+            }
+        }
+
         /// <summary>
         /// Updates the diff indicators for the current source code being edited
         /// </summary>
@@ -277,8 +303,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 }
 
                 // Replace the current item if needed
-                if (source[i] != DiffStatusSource[i])
+                if (source[i] != DiffStatusSource[i] &&
+                    !(DiffStatusSource[i] == GitDiffLineStatus.Saved && source[i] == GitDiffLineStatus.Undefined))
+                {
                     DiffStatusSource[i] = source[i];
+                }
             }
 
             // Remove the exceeding items

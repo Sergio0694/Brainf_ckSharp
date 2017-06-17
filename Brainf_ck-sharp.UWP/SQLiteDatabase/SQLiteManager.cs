@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Storage;
+using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
@@ -182,10 +183,10 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         /// </summary>
         /// <param name="title">The title of the source code to save</param>
         /// <param name="code">The code to save</param>
-        public async Task<bool> SaveCodeAsync([NotNull] String title, [NotNull] String code)
+        public async Task<AsyncOperationResult<CategorizedSourceCode>> SaveCodeAsync([NotNull] String title, [NotNull] String code)
         {
             await EnsureDatabaseConnectionAsync();
-            if (!await CheckExistingName(title)) return false;
+            if (!await CheckExistingName(title)) return AsyncOperationStatus.Faulted;
             SourceCode entry = new SourceCode
             {
                 Uid = Guid.NewGuid().ToString(),
@@ -195,7 +196,7 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
                 ModifiedTime = DateTime.Now
             };
             await DatabaseConnection.InsertAsync(entry);
-            return true;
+            return new CategorizedSourceCode(SavedSourceCodeType.Original, entry);
         }
 
         /// <summary>
