@@ -13,7 +13,7 @@ using Brainf_ck_sharp_UWP.ViewModels;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
 {
-    public sealed partial class LocalSourceCodesBrowserFlyout : UserControl, IEventConfirmedContent<SourceCode>
+    public sealed partial class LocalSourceCodesBrowserFlyout : UserControl, IEventConfirmedContent<CategorizedSourceCode>
     {
         public LocalSourceCodesBrowserFlyout()
         {
@@ -23,16 +23,16 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
 
         public LocalSourceCodesBrowserFlyoutViewModel ViewModel => DataContext.To<LocalSourceCodesBrowserFlyoutViewModel>();
 
-        public event EventHandler<SourceCode> ContentConfirmed;
+        public event EventHandler<CategorizedSourceCode> ContentConfirmed;
 
-        public SourceCode Result { get; private set; }
+        public CategorizedSourceCode Result { get; private set; }
 
         private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
         {
             if (e.ClickedItem is CategorizedSourceCode item)
             {
-                Result = item.Code;
-                ContentConfirmed?.Invoke(this, item.Code);
+                Result = item;
+                ContentConfirmed?.Invoke(this, item);
             }
         }
 

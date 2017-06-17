@@ -56,10 +56,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         Messenger.Default.Register<SaveSourceCodeRequestMessage>(this, m => ManageSaveCodeRequest(m.RequestType).Forget());
                         Messenger.Default.Register<SourceCodeLoadingRequestedMessage>(this, m =>
                         {
-                            LoadedCode = m.RequestedCode;
-                            LoadedCodeChanged?.Invoke(this, m.RequestedCode);
-                            Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(true, true));
+                            _CategorizedCode = m.RequestedCode;
+                            LoadedCodeChanged?.Invoke(this, m.RequestedCode.Code);
+                            Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(m.RequestedCode.Type != SavedSourceCodeType.Sample, true));
                         });
+                        Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(false, true)); // Default save buttons status
                         SendMessages();
                     }
                     else Messenger.Default.Unregister(this);
@@ -67,10 +68,12 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             }
         }
 
+        private CategorizedSourceCode _CategorizedCode;
+
         /// <summary>
         /// Gets the source code currently loaded, if present
         /// </summary>
-        public SourceCode LoadedCode { get; private set; }
+        public SourceCode LoadedCode => _CategorizedCode?.Code;
 
         /// <summary>
         /// Raised whenever the current loaded source code changes

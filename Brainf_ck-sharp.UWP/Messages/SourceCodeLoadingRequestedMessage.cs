@@ -11,12 +11,12 @@ namespace Brainf_ck_sharp_UWP.Messages
         /// <summary>
         /// The selected code to load
         /// </summary>
-        public SourceCode RequestedCode { get; }
+        public CategorizedSourceCode RequestedCode { get; }
 
         /// <summary>
         /// Initializes a new message for the given code
         /// </summary>
         /// <param name="code">The code selected by the user</param>
-        public SourceCodeLoadingRequestedMessage([NotNull] SourceCode code) => RequestedCode = code;
+        public SourceCodeLoadingRequestedMessage([NotNull] CategorizedSourceCode code) => RequestedCode = code;
     }
 }

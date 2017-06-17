@@ -168,7 +168,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
         {
             LocalSourceCodesBrowserFlyout flyout = new LocalSourceCodesBrowserFlyout();
             await flyout.ViewModel.LoadGroupsAsync();
-            FlyoutClosedResult<SourceCode> result = await FlyoutManager.Instance.ShowAsync<LocalSourceCodesBrowserFlyout, SourceCode>(
+            FlyoutClosedResult<CategorizedSourceCode> result = await FlyoutManager.Instance.ShowAsync<LocalSourceCodesBrowserFlyout, CategorizedSourceCode>(
                 LocalizationManager.GetResource("CodeLibrary"), flyout, new Thickness());
             if (result) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(result.Value));
         }
