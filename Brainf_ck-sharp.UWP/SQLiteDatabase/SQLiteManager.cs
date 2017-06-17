@@ -160,7 +160,10 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
                 original = new List<SourceCode>();
             foreach (SourceCode code in codes)
             {
-                if (SamplesMap.Any(sample => sample.Uid.Equals(Guid.Parse(code.Uid)))) samples.AddSorted(code, entry => entry.Title);
+                if (SamplesMap.Any(sample => sample.Uid.Equals(Guid.Parse(code.Uid))))
+                {
+                    samples.AddSorted(code, entry => SamplesMap.IndexOf(sample => sample.Uid.Equals(Guid.Parse(entry.Uid))));
+                }
                 else if (code.Favorited) favorites.AddSorted(code, entry => entry.Title);
                 else original.AddSorted(code, entry => entry.Title);
             }
