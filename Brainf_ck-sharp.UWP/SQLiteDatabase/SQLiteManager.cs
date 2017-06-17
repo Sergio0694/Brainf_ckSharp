@@ -183,7 +183,8 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         /// </summary>
         /// <param name="title">The title of the source code to save</param>
         /// <param name="code">The code to save</param>
-        public async Task<AsyncOperationResult<CategorizedSourceCode>> SaveCodeAsync([NotNull] String title, [NotNull] String code)
+        /// <param name="breakpoints">The list of lines with an enabled breakpoint</param>
+        public async Task<AsyncOperationResult<CategorizedSourceCode>> SaveCodeAsync([NotNull] String title, [NotNull] String code, [CanBeNull] IReadOnlyCollection<int> breakpoints)
         {
             await EnsureDatabaseConnectionAsync();
             if (!await CheckExistingName(title)) return AsyncOperationStatus.Faulted;
@@ -193,7 +194,8 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
                 Code = code,
                 Title = title,
                 CreatedTime = DateTime.Now,
-                ModifiedTime = DateTime.Now
+                ModifiedTime = DateTime.Now,
+                Breakpoints = breakpoints == null ? null : BitHelper.Compress(breakpoints)
             };
             await DatabaseConnection.InsertAsync(entry);
             return new CategorizedSourceCode(SavedSourceCodeType.Original, entry);
@@ -204,11 +206,13 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         /// </summary>
         /// <param name="code">The source code that's being edited</param>
         /// <param name="text">The updated text to save</param>
-        public async Task SaveCodeAsync([NotNull] SourceCode code, [NotNull] String text)
+        /// <param name="breakpoints">The list of lines with an enabled breakpoint</param>
+        public async Task SaveCodeAsync([NotNull] SourceCode code, [NotNull] String text, [CanBeNull] IReadOnlyCollection<int> breakpoints)
         {
             await EnsureDatabaseConnectionAsync();
             code.Code = text;
             code.ModifiedTime = DateTime.Now;
+            code.Breakpoints = breakpoints == null ? null : BitHelper.Compress(breakpoints);
             await DatabaseConnection.UpdateAsync(code);
         }
 

@@ -20,6 +20,7 @@ using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
 using Brainf_ck_sharp_UWP.ViewModels;
+using JetBrains.Annotations;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 
@@ -31,9 +32,14 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             Loaded += IDEView_Loaded;
             this.InitializeComponent();
-            DataContext = new IDEViewModel(EditBox.Document, PickSaveNameAsync);
+            DataContext = new IDEViewModel(EditBox.Document, PickSaveNameAsync, () => BreakpointsInfo.Keys);
             ViewModel.PlayRequested += ViewModel_PlayRequested;
-            ViewModel.LoadedCodeChanged += (_, e) => LoadCode(e.Code, true);
+            ViewModel.LoadedCodeChanged += (_, e) =>
+            {
+                LoadCode(e.Code, true);
+                if (e.Breakpoints == null) ClearBreakpoints();
+                else RestoreBreakpoints(BitHelper.Expand(e.Breakpoints));
+            };
             ViewModel.TextCleared += (_, e) => ClearBreakpoints();
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             _PreviousText = text;
@@ -466,6 +472,28 @@ namespace Brainf_ck_sharp_UWP.Views
             BreakLinesCanvas.Children.Clear();
         }
 
+        // Shows the breakpoints from an input list of lines
+        private void RestoreBreakpoints(IReadOnlyCollection<int> lines)
+        {
+            // Get the text
+            EditBox.Document.GetText(TextGetOptions.None, out String code);
+
+            // Get the actual positions for each line start
+            List<int> indexes = new List<int>();
+            int line = 0;
+            for (int i = 0; i < code.Length; i++)
+                if (code[i] == '\r' && lines.Contains(line++))
+                    indexes.Add(i);
+
+            // Draw the breakpoints again
+            foreach (int i in indexes)
+            {
+                ITextRange range = EditBox.Document.GetRange(i, i);
+                range.GetRect(PointOptions.Transform, out Rect rect, out _);
+                AddSingleBreakpoint(code, i, rect.Top);
+            }
+        }
+
         // Adds/removes a breakpoint when tapping on the left side bar
         private void BreakpointsCanvas_Tapped(object sender, TappedRoutedEventArgs e)
         {
@@ -485,7 +513,21 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Get the line number
             EditBox.Document.GetText(TextGetOptions.None, out String text);
-            (int y, _) = text.FindCoordinates(range.StartPosition);
+            
+            // Add the breakpoint
+            AddSingleBreakpoint(text, range.StartPosition, line.Top);
+        }
+
+        /// <summary>
+        /// Adds a single breakpoint to the UI and the backup list
+        /// </summary>
+        /// <param name="text">The current text, if available</param>
+        /// <param name="start">The start index for the breakpoint</param>
+        /// <param name="offset">The vertical offset of the selected line</param>
+        private void AddSingleBreakpoint([CanBeNull] String text, int start, double offset)
+        {
+            if (text == null) EditBox.Document.GetText(TextGetOptions.None, out text);
+            (int y, _) = text.FindCoordinates(start);
 
             // Setup the breakpoint
             if (BreakpointsInfo.TryGetValue(y, out (Ellipse Breakpoint, Rectangle LineIndicator) previous))
@@ -506,7 +548,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     Stroke = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("BreakpointBorderBrush"),
                     StrokeThickness = 1,
                     Margin = new Thickness(3, 3, 0, 0),
-                    RenderTransform = new TranslateTransform { Y = line.Top - 2 }
+                    RenderTransform = new TranslateTransform { Y = offset - 2 }
                 };
                 BreakpointsCanvas.Children.Add(ellipse);
                 Rectangle rect = new Rectangle
@@ -514,7 +556,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     Height = 19.9, // Approximate line height
                     Width = BreakLinesCanvas.ActualWidth,
                     Fill = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("BreakpointLineBrush"),
-                    RenderTransform = new TranslateTransform { Y = line.Top - 2 } // -2 to adjust the position with the cursor rectangle
+                    RenderTransform = new TranslateTransform { Y = offset - 2 } // -2 to adjust the position with the cursor rectangle
                 };
                 BreakLinesCanvas.Children.Add(rect);
 

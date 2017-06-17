@@ -31,15 +31,21 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         // A UI-bound function that asks the user to pick a name to save a new source code
         private readonly Func<String, Task<String>> SaveNameSelector;
 
+        // A function that retrieves the list of breakpoints currently present in the code
+        private readonly Func<IReadOnlyCollection<int>> BreakpointsExtractor;
+
         /// <summary>
         /// Creates a new instance to manage the IDE
         /// </summary>
         /// <param name="document">The target document that contains the source code to edit</param>
         /// <param name="nameSelector">A function that prompts the user to enter a name to save a new source code in the app</param>
-        public IDEViewModel([NotNull] ITextDocument document, [NotNull] Func<String, Task<String>> nameSelector)
+        /// <param name="breakpointsExtractor">A function that retrieves the active breakpoints</param>
+        public IDEViewModel([NotNull] ITextDocument document, [NotNull] Func<String, 
+            Task<String>> nameSelector, [NotNull] Func<IReadOnlyCollection<int>> breakpointsExtractor)
         {
             Document = document;
             SaveNameSelector = nameSelector;
+            BreakpointsExtractor = breakpointsExtractor;
         }
 
         private bool _IsEnabled;
@@ -93,12 +99,15 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         private async Task ManageSaveCodeRequest(CodeSaveType type)
         {
             Document.GetText(TextGetOptions.None, out String text);
+            IReadOnlyCollection<int>
+                raw = BreakpointsExtractor(),
+                breakpoints = raw.Count > 0 ? raw : null;
             switch (type)
             {
                 // Save an already existing file
                 case CodeSaveType.Save:
                     if (LoadedCode == null) throw new InvalidOperationException("There isn't a loaded source code to save");
-                    await SQLiteManager.Instance.SaveCodeAsync(LoadedCode, text);
+                    await SQLiteManager.Instance.SaveCodeAsync(LoadedCode, text, breakpoints);
                     UpdateGitDiffStatusOnSave();
                     break;
 
@@ -107,7 +116,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     String name = await SaveNameSelector(text);
                     if (!String.IsNullOrEmpty(name))
                     {
-                        AsyncOperationResult<CategorizedSourceCode> result = await SQLiteManager.Instance.SaveCodeAsync(name, text);
+                        AsyncOperationResult<CategorizedSourceCode> result = await SQLiteManager.Instance.SaveCodeAsync(name, text, breakpoints);
                         if (result)
                         {
                             // Update the local code reference, the git diff indicators and notify the UI with the new save buttons state
