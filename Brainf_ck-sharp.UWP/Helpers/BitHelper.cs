@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 
@@ -41,17 +42,41 @@ namespace Brainf_ck_sharp_UWP.Helpers
         }
 
         /// <summary>
-        /// Expands a byte array in an array of bool values where each one indicates the 0/1 flag at the n-th bit
+        /// Compresses a collection of int values into a byte array, where each bit 
+        /// set to 1 at the n-th position represents an int value in the input list
         /// </summary>
-        /// <param name="bits">The source bits to expand</param>
-        public static bool[] Expand([NotNull] byte[] bits)
+        /// <param name="values">The values to compress</param>
+        public static byte[] Compress([NotNull] IReadOnlyCollection<int> values)
         {
-            bool[] result = new bool[bits.Length * 8];
-            foreach ((byte b, int i) in bits.Select((b, i) => (b, i)))
+            HashSet<int> set = new HashSet<int>(values);
+            int max = values.Max();
+            byte[] result = new byte[max % 8 == 0 ? max / 8 : max / 8 + 1];
+            for (int i = 0; i < result.Length; i++)
             {
+                byte b = 0;
                 for (int j = 0; j < 8; j++)
                 {
-                    result[i + j] = ((b >> j) & 0x1) == 0x1;
+                    if (set.Contains(i * 8 + j)) b |= 0x1;
+                    b <<= 1;
+                }
+                result[i] = b;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Expands a byte array in an array of int values where each one indicates the 0/1 flag at the n-th bit
+        /// </summary>
+        /// <param name="bits">The source bits to expand</param>
+        public static IReadOnlyCollection<int> Expand([NotNull] byte[] bits)
+        {
+            List<int> result = new List<int>();
+            for (int i = 0; i < bits.Length; i++)
+            {
+                for (int j = 7; j >= 0; j--)
+                {
+                    if ((bits[i] >> j & 0x1) == 0x1)
+                        result.Add(i * 8 + (7 - j));
                 }
             }
             return result;
