@@ -371,6 +371,10 @@
           <source>Header comments</source>
           <target state="translated">Header commentato</target>
         </trans-unit>
+        <trans-unit id="Debug" translate="yes" xml:space="preserve">
+          <source>Debug</source>
+          <target state="new">Debug</target>
+        </trans-unit>
       </group>
     </body>
   </file>

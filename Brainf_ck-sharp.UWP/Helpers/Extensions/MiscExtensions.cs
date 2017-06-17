@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -39,6 +41,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
         /// <param name="text">The input text</param>
         /// <param name="index">The target text index</param>
         /// <param name="newline">The newline character to use</param>
+        /// <remarks>The returned indexes are 1-based</remarks>
         public static (int Y, int X) FindCoordinates([NotNull] this String text, int index, char newline = '\r')
         {
             int
@@ -54,6 +57,24 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
                 else col++;
             }
             return (row, col);
+        }
+
+        /// <summary>
+        /// Finds the indexes of the first character of each line indicated in the input
+        /// </summary>
+        /// <param name="text">The text to analyze</param>
+        /// <param name="lines">The list of lines to look for</param>
+        /// <param name="newline">The newline character to use</param>
+        /// <remarks>The input lines list must have its elements 1-based</remarks>
+        [Pure]
+        public static IReadOnlyList<int> FindIndexes([NotNull] this String text, [NotNull] IReadOnlyCollection<int> lines, char newline = '\r')
+        {
+            List<int> indexes = new List<int>();
+            int line = 0;
+            for (int i = 0; i < text.Length; i++)
+                if (text[i] == '\r' && lines.Contains(++line))
+                    indexes.Add(i);
+            return indexes;
         }
     }
 }

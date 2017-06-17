@@ -66,10 +66,29 @@ namespace Brainf_ck_sharp_UWP.Views
 
         private void ViewModel_PlayRequested(object sender, (String Stdin, bool Debug) e)
         {
+            // Get the text and initialize the session
             EditBox.Document.GetText(TextGetOptions.None, out String text);
-            InterpreterExecutionSession session = Brainf_ckInterpreter.InitializeSession(new[] { text }, e.Stdin, 64, 1000);
+            InterpreterExecutionSession session;
+            if (e.Debug)
+            {
+                // Get the lines with a breakpoint and deconstruct the source in executable chuncks
+                IReadOnlyCollection<int> 
+                    lines = BreakpointsInfo.Keys.OrderBy(key => key).Select(i => i - 1).ToArray(), // i -1 to move from 1 to 0-based indexes
+                    indexes = text.FindIndexes(lines);
+                List<String> chuncks = new List<String>();
+                int previous = 0;
+                foreach (int breakpoint in indexes.Concat(new[] { text.Length - 1 }))
+                {
+                    chuncks.Add(text.Substring(previous, breakpoint - previous));
+                    previous = breakpoint;
+                }
+                session = Brainf_ckInterpreter.InitializeSession(chuncks, e.Stdin, 64, 1000);
+            }
+            else session = Brainf_ckInterpreter.InitializeSession(new[] { text }, e.Stdin, 64, 1000);
+
+            // Display the execution popup
             IDERunResultFlyout flyout = new IDERunResultFlyout(session);
-            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("RunTitle"), flyout, new Thickness()).Forget();
+            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource(e.Debug ? "Debug" : "RunTitle"), flyout, new Thickness()).Forget();
             flyout.ViewModel.LoadGroupsAsync().Forget();
         }
 
@@ -486,11 +505,7 @@ namespace Brainf_ck_sharp_UWP.Views
             EditBox.Document.GetText(TextGetOptions.None, out String code);
 
             // Get the actual positions for each line start
-            List<int> indexes = new List<int>();
-            int line = 0;
-            for (int i = 0; i < code.Length; i++)
-                if (code[i] == '\r' && lines.Contains(line++))
-                    indexes.Add(i);
+            IReadOnlyCollection<int> indexes = code.FindIndexes(lines);
 
             // Draw the breakpoints again
             foreach (int i in indexes)
@@ -534,8 +549,10 @@ namespace Brainf_ck_sharp_UWP.Views
         /// <param name="offset">The vertical offset of the selected line</param>
         private void AddSingleBreakpoint([CanBeNull] String text, int start, double offset)
         {
+            // Get the target line
             if (text == null) EditBox.Document.GetText(TextGetOptions.None, out text);
             (int y, _) = text.FindCoordinates(start);
+            if (y == 1) return; // Can't place a breakpoint on the first line
 
             // Setup the breakpoint
             if (BreakpointsInfo.TryGetValue(y, out (Ellipse Breakpoint, Rectangle LineIndicator) previous))
