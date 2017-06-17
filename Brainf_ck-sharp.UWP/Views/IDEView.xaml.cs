@@ -16,10 +16,12 @@ using Brainf_ck_sharp;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
 using Brainf_ck_sharp_UWP.ViewModels;
+using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
@@ -39,8 +41,13 @@ namespace Brainf_ck_sharp_UWP.Views
                 LoadCode(e.Code, true);
                 if (e.Breakpoints == null) ClearBreakpoints();
                 else RestoreBreakpoints(BitHelper.Expand(e.Breakpoints));
+                Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
             };
-            ViewModel.TextCleared += (_, e) => ClearBreakpoints();
+            ViewModel.TextCleared += (_, e) =>
+            {
+                ClearBreakpoints();
+                Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
+            };
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             _PreviousText = text;
         }
@@ -57,10 +64,10 @@ namespace Brainf_ck_sharp_UWP.Views
             return result == FlyoutResult.Confirmed ? flyout.Title : null;
         }
 
-        private void ViewModel_PlayRequested(object sender, string e)
+        private void ViewModel_PlayRequested(object sender, (String Stdin, bool Debug) e)
         {
             EditBox.Document.GetText(TextGetOptions.None, out String text);
-            InterpreterExecutionSession session = Brainf_ckInterpreter.InitializeSession(new[] { text }, e, 64, 1000);
+            InterpreterExecutionSession session = Brainf_ckInterpreter.InitializeSession(new[] { text }, e.Stdin, 64, 1000);
             IDERunResultFlyout flyout = new IDERunResultFlyout(session);
             FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("RunTitle"), flyout, new Thickness()).Forget();
             flyout.ViewModel.LoadGroupsAsync().Forget();
@@ -516,6 +523,7 @@ namespace Brainf_ck_sharp_UWP.Views
             
             // Add the breakpoint
             AddSingleBreakpoint(text, range.StartPosition, line.Top);
+            Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
         }
 
         /// <summary>

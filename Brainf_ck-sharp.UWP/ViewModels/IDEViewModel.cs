@@ -64,7 +64,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     {
                         Messenger.Default.Register<OperatorAddedMessage>(this, op => InsertSingleCharacter(op.Operator));
                         Messenger.Default.Register<ClearScreenMessage>(this, m => TryClearScreen());
-                        Messenger.Default.Register<PlayScriptMessage>(this, m => PlayRequested?.Invoke(this, m.StdinBuffer));
+                        Messenger.Default.Register<PlayScriptMessage>(this, m => PlayRequested?.Invoke(this, (m.StdinBuffer, m.Type == ScriptPlayType.Debug)));
                         Messenger.Default.Register<SaveSourceCodeRequestMessage>(this, m => ManageSaveCodeRequest(m.RequestType).Forget());
                         Messenger.Default.Register<SourceCodeLoadingRequestedMessage>(this, m =>
                         {
@@ -137,7 +137,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Raised whenever the user requests to play the current script
         /// </summary>
-        public event EventHandler<String> PlayRequested;
+        public event EventHandler<(String Stdin, bool Debug)> PlayRequested;
 
         // Indicates whether or not the IDE contains at least a valid operator
         private bool _CanExecute;
@@ -154,7 +154,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             bool executable = Brainf_ckInterpreter.FindOperators(code);
             if (_CanExecute != executable)
             {
-                Messenger.Default.Send(new IDEExecutableStatusChangedMessage(executable));
+                Messenger.Default.Send(new IDEExecutableStatusChangedMessage(executable, BreakpointsExtractor().Count > 0));
                 _CanExecute = executable;
             }
             if (valid)

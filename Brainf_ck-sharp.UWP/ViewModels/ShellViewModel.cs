@@ -11,6 +11,14 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         {
             Messenger.Default.Register<ConsoleAvailableActionStatusChangedMessage>(this, ProcessConsoleActionsStatusChangedMessage);
             Messenger.Default.Register<IDEExecutableStatusChangedMessage>(this, m => IDECodeAvailable = m.Executable);
+            Messenger.Default.Register< DebugStatusChangedMessage>(this, m =>
+            {
+                if (_DebugAvailable != m.DebugAvailable)
+                {
+                    _DebugAvailable = m.DebugAvailable;
+                    RaisePropertyChanged(() => DebugAvailable);
+                }
+            });
             Messenger.Default.Register<SaveButtonsEnabledStatusChangedMessage>(this, m =>
             {
                 SaveAvailable = m.SaveEnabled;
@@ -120,8 +128,19 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         public bool IDECodeAvailable
         {
             get => _IDECodeAvailable;
-            private set => Set(ref _IDECodeAvailable, value);
+            private set
+            {
+                if (Set(ref _IDECodeAvailable, value))
+                    RaisePropertyChanged(() => DebugAvailable);
+            }
         }
+
+        private bool _DebugAvailable;
+
+        /// <summary>
+        /// Gets whether or not the IDE debug button is enabled
+        /// </summary>
+        public bool DebugAvailable => IDECodeAvailable && _DebugAvailable;
 
         private bool _SaveAvailable;
 

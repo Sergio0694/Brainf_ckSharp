@@ -36,6 +36,7 @@ namespace Brainf_ck_sharp_UWP.Messages.Actions
     public enum ScriptPlayType
     {
         Default,
-        RepeatedCommand
+        RepeatedCommand,
+        Debug
     }
 }

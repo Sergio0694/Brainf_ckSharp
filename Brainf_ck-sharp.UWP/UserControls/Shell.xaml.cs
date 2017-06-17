@@ -128,6 +128,8 @@ namespace Brainf_ck_sharp_UWP.UserControls
 
         public void RequestPlay() => SendPlayRequestMessage(ScriptPlayType.Default);
 
+        public void RequestDebug() => SendPlayRequestMessage(ScriptPlayType.Debug);
+
         public void RequestRepeatLastConsoleScript() => SendPlayRequestMessage(ScriptPlayType.RepeatedCommand);
 
         public void RequestShowMemoryState()

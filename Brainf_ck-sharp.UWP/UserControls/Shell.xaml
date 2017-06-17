@@ -219,8 +219,8 @@
                     Label="Debug"
                     Icon="&#xEBE8;"
                     x:Uid="DebugButton"
-                    IsEnabled="False"
-                    Click="{x:Bind RequestPlay}"/>
+                    IsEnabled="{x:Bind ViewModel.DebugAvailable, Mode=OneWay, FallbackValue=False}"
+                    Click="{x:Bind RequestDebug}"/>
             </customCommandBar:CommandBarWithButtonsAnimations.PrimaryCommands>
             <customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
                 <customCommandBar:CustomCommandBarButton

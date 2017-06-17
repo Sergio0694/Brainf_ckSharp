@@ -14,6 +14,7 @@
         /// Default constructor for a given state
         /// </summary>
         /// <param name="executable">The current IDE state</param>
-        public IDEExecutableStatusChangedMessage(bool executable) => Executable = executable;
+        /// <param name="debug">Indicates whether or not there are any breakpoints in the IDE</param>
+        public IDEExecutableStatusChangedMessage(bool executable, bool debug) => Executable = executable;
     }
 }
