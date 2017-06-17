@@ -367,6 +367,10 @@
           <source>The new source code has been saved correctly</source>
           <target state="new">The new source code has been saved correctly</target>
         </trans-unit>
+        <trans-unit id="HeaderComments" translate="yes" xml:space="preserve">
+          <source>Header comments</source>
+          <target state="new">Header comments</target>
+        </trans-unit>
       </group>
     </body>
   </file>

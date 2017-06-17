@@ -390,4 +390,7 @@
   <data name="CodeSavedBody" xml:space="preserve">
     <value>The new source code has been saved correctly</value>
   </data>
+  <data name="HeaderComments" xml:space="preserve">
+    <value>Header comments</value>
+  </data>
 </root>

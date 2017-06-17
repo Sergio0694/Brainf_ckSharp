@@ -103,7 +103,9 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
             ("HelloWorld.txt", "Hello world!", Guid.Parse("6B4C55E6-7009-48EC-96C5-C73552D9F257")),
             ("UnicodeValue.txt", LocalizationManager.GetResource("UnicodeValue"), Guid.Parse("10768D40-5E3D-4787-9CB8-2A0ABBE26EFC")),
             ("UnicodeSum.txt", LocalizationManager.GetResource("UnicodeSum"), Guid.Parse("78BAA70A-0DAF-4BB6-B09A-CDA9537D2FFF")),
-            ("Sum.txt", LocalizationManager.GetResource("Sum"),  Guid.Parse("0441153F-E40A-4AEC-8373-8A552697778B"))
+            ("Sum.txt", LocalizationManager.GetResource("Sum"),  Guid.Parse("0441153F-E40A-4AEC-8373-8A552697778B")),
+            ("HeaderComments.txt", LocalizationManager.GetResource("HeaderComments"),  Guid.Parse("63156CB7-1BD1-46EA-A705-AC2ADD4A5F11")),
+            ("ExecuteIfZero.txt", "if (x == 0) then { }",  Guid.Parse("6DABC8A8-E32C-49A1-A348-CF836FEF276D"))
         };
 
         /// <summary>
