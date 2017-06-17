@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
 using GalaSoft.MvvmLight.Messaging;
 
@@ -44,11 +45,13 @@ namespace Brainf_ck_sharp_UWP.UserControls
                     case ConsoleStatusUpdateMessage console:
                         ErrorRun.Text = console.ErrorPosition.ToString();
                         CharRun.Text = console.Character.ToString();
+                        FileGrid.Visibility = Visibility.Collapsed;
                         break;
                     case IDEStatusUpdateMessage ide:
                         RowRun.Text = ide.Row.ToString();
                         ColumnRun.Text = ide.Column.ToString();
-                        FileBlock.Text = ide.Filename;
+                        FileGrid.Visibility = ide.FilenameVisibile.ToVisibility();
+                        FileBlock.Text = ide.Filename ?? String.Empty;
                         if (ide.Status == IDEStatus.FaultedIDE) IDEErrorRun.Text = $"[{ide.ErrorRow}, {ide.ErrorColumn}]";
                         break;
                     default: throw new ArgumentOutOfRangeException();

@@ -35,9 +35,6 @@
                             Target="RowBlock.Visibility"
                             Value="Collapsed"/>
                         <Setter
-                            Target="FileGrid.Visibility"
-                            Value="Collapsed"/>
-                        <Setter
                             Target="ColumnBlock.Visibility"
                             Value="Collapsed"/>
                         <Setter
@@ -52,9 +49,6 @@
                             Value="#FFCA5100"/>
                         <Setter
                             Target="RowBlock.Visibility"
-                            Value="Collapsed"/>
-                        <Setter
-                            Target="FileGrid.Visibility"
                             Value="Collapsed"/>
                         <Setter
                             Target="ColumnBlock.Visibility"
@@ -81,9 +75,6 @@
                         <Setter
                             Target="CharBlock.Visibility"
                             Value="Collapsed"/>
-                        <Setter
-                            Target="FileGrid.Visibility"
-                            Value="Visible"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="IDEErrorState">
@@ -102,9 +93,6 @@
                             Value="Collapsed"/>
                         <Setter
                             Target="IDEErrorBlock.Visibility"
-                            Value="Visible"/>
-                        <Setter
-                            Target="FileGrid.Visibility"
                             Value="Visible"/>
                     </VisualState.Setters>
                 </VisualState>
@@ -176,7 +164,7 @@
         <TextBlock 
             x:Name="ColumnBlock"
             Foreground="White"
-            Margin="16,0,0,0"
+            Margin="16,0,8,0"
             FontSize="12"
             VerticalAlignment="Center"
             IsTextScaleFactorEnabled="False"
@@ -210,7 +198,7 @@
             x:Name="FileGrid"
             Visibility="Collapsed"
             Grid.Column="5"
-            Margin="16,0,8,0">
+            Margin="8,0,8,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>

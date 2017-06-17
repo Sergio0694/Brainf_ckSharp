@@ -273,4 +273,19 @@
   <data name="ShareCompletedBody" xml:space="preserve">
     <value>Il codice selezionato è stato condiviso correttamente</value>
   </data>
+  <data name="RenameCode" xml:space="preserve">
+    <value>Rinomina codice</value>
+  </data>
+  <data name="SaveCode" xml:space="preserve">
+    <value>Salva codice</value>
+  </data>
+  <data name="CodeSaved" xml:space="preserve">
+    <value>Codice salvato</value>
+  </data>
+  <data name="CodeSavedBody" xml:space="preserve">
+    <value>Il nuovo codice sorgente è stato salvato correttamente</value>
+  </data>
+  <data name="HeaderComments" xml:space="preserve">
+    <value>Header commentato</value>
+  </data>
 </root>

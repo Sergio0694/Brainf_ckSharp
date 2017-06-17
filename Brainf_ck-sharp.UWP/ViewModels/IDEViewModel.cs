@@ -116,6 +116,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                                 LocalizationManager.GetResource("CodeSavedBody"), NotificationType.Default);
                             UpdateGitDiffStatusOnSave();
                             Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(true, true));
+                            SendMessages(text);
                         }
                     }
                     break;
@@ -149,12 +150,12 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             }
             if (valid)
             {
-                Messenger.Default.Send(new IDEStatusUpdateMessage(LocalizationManager.GetResource("Ready"), row, col, String.Empty));
+                Messenger.Default.Send(new IDEStatusUpdateMessage(LocalizationManager.GetResource("Ready"), row, col, _CategorizedCode?.Code.Title));
             }
             else
             {
                 (int y, int x) = code.FindCoordinates(error);
-                Messenger.Default.Send(new IDEStatusUpdateMessage(LocalizationManager.GetResource("Warning"), row, col, y, x, String.Empty));
+                Messenger.Default.Send(new IDEStatusUpdateMessage(LocalizationManager.GetResource("Warning"), row, col, y, x, _CategorizedCode?.Code.Title));
             }
         }
 
@@ -181,6 +182,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         private void TryClearScreen()
         {
             Document.SetText(TextSetOptions.None, String.Empty);
+            _CategorizedCode = null;
+            Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(false, true));
             SendMessages();
         }
 
@@ -263,9 +266,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         private void UpdateGitDiffStatusOnSave()
         {
             for (int i = 0; i < DiffStatusSource.Count; i++)
-            {
-                if (DiffStatusSource[i] == GitDiffLineStatus.Edited) DiffStatusSource[i] = GitDiffLineStatus.Saved;
-            }
+                if (DiffStatusSource[i] == GitDiffLineStatus.Edited)
+                    DiffStatusSource[i] = GitDiffLineStatus.Saved;
         }
 
         /// <summary>

@@ -353,23 +353,23 @@
         </trans-unit>
         <trans-unit id="RenameCode" translate="yes" xml:space="preserve">
           <source>Rename code</source>
-          <target state="new">Rename code</target>
+          <target state="translated">Rinomina codice</target>
         </trans-unit>
         <trans-unit id="SaveCode" translate="yes" xml:space="preserve">
           <source>Save code</source>
-          <target state="new">Save code</target>
+          <target state="translated">Salva codice</target>
         </trans-unit>
         <trans-unit id="CodeSaved" translate="yes" xml:space="preserve">
           <source>Code saved</source>
-          <target state="new">Code saved</target>
+          <target state="translated">Codice salvato</target>
         </trans-unit>
         <trans-unit id="CodeSavedBody" translate="yes" xml:space="preserve">
           <source>The new source code has been saved correctly</source>
-          <target state="new">The new source code has been saved correctly</target>
+          <target state="translated">Il nuovo codice sorgente è stato salvato correttamente</target>
         </trans-unit>
         <trans-unit id="HeaderComments" translate="yes" xml:space="preserve">
           <source>Header comments</source>
-          <target state="new">Header comments</target>
+          <target state="translated">Header commentato</target>
         </trans-unit>
       </group>
     </body>
