@@ -260,12 +260,14 @@
                     x:Uid="SaveButton"
                     Icon="&#xE105;"
                     Click="{x:Bind RequestSaveSourceCode}"
+                    IsEnabled="{x:Bind ViewModel.SaveAvailable, Mode=OneWay, FallbackValue=False}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Save as"
                     x:Uid="SaveAsButton"
                     Icon="&#xEA35;"
                     Click="{x:Bind RequestSaveSourceCodeAs}"
+                    IsEnabled="{x:Bind ViewModel.SaveAsAvailable, Mode=OneWay, FallbackValue=False}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
             </customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
         </customCommandBar:CommandBarWithButtonsAnimations>

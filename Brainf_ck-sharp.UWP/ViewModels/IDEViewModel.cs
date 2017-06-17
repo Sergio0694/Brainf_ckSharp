@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.UI.Text;
 using Brainf_ck_sharp;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
+using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.PopupService;
+using Brainf_ck_sharp_UWP.PopupService.Misc;
+using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.ViewModels.Abstract;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
@@ -22,7 +27,14 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         // The current document that's linked to the view
         private readonly ITextDocument Document;
 
-        public IDEViewModel([NotNull] ITextDocument document) => Document = document;
+        // A UI-bound function that asks the user to pick a name to save a new source code
+        private readonly Func<String, Task<String>> SaveNameSelector;
+
+        public IDEViewModel([NotNull] ITextDocument document, [NotNull] Func<String, Task<String>> nameSelector)
+        {
+            Document = document;
+            SaveNameSelector = nameSelector;
+        }
 
         private bool _IsEnabled;
 
@@ -41,10 +53,54 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         Messenger.Default.Register<OperatorAddedMessage>(this, op => InsertSingleCharacter(op.Operator));
                         Messenger.Default.Register<ClearScreenMessage>(this, m => TryClearScreen());
                         Messenger.Default.Register<PlayScriptMessage>(this, m => PlayRequested?.Invoke(this, m.StdinBuffer));
+                        Messenger.Default.Register<SaveSourceCodeRequestMessage>(this, m => ManageSaveCodeRequest(m.RequestType).Forget());
+                        Messenger.Default.Register<SourceCodeLoadingRequestedMessage>(this, m =>
+                        {
+                            LoadedCode = m.RequestedCode;
+                            LoadedCodeChanged?.Invoke(this, m.RequestedCode);
+                            Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(true, true));
+                        });
                         SendMessages();
                     }
                     else Messenger.Default.Unregister(this);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets the source code currently loaded, if present
+        /// </summary>
+        public SourceCode LoadedCode { get; private set; }
+
+        /// <summary>
+        /// Raised whenever the current loaded source code changes
+        /// </summary>
+        public event EventHandler<SourceCode> LoadedCodeChanged; 
+
+        /// <summary>
+        /// Saves the current source code in the database
+        /// </summary>
+        /// <param name="type">The requested save operation</param>
+        private async Task ManageSaveCodeRequest(CodeSaveType type)
+        {
+            Document.GetText(TextGetOptions.None, out String text);
+            switch (type)
+            {
+                case CodeSaveType.Save:
+                    if (LoadedCode == null) throw new InvalidOperationException("There isn't a loaded source code to save");
+                    await SQLiteManager.Instance.SaveCodeAsync(LoadedCode, text);
+                    break;
+                case CodeSaveType.SaveAs:
+                    String name = await SaveNameSelector(text);
+                    if (!String.IsNullOrEmpty(name))
+                    {
+                        await SQLiteManager.Instance.SaveCodeAsync(name, text);
+                        NotificationsManager.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("CodeSaved"),
+                            LocalizationManager.GetResource("CodeSavedBody"), NotificationType.Default);
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
 

@@ -194,6 +194,19 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         }
 
         /// <summary>
+        /// Saves the changes to a source code
+        /// </summary>
+        /// <param name="code">The source code that's being edited</param>
+        /// <param name="text">The updated text to save</param>
+        public async Task SaveCodeAsync([NotNull] SourceCode code, [NotNull] String text)
+        {
+            await EnsureDatabaseConnectionAsync();
+            code.Code = text;
+            code.ModifiedTime = DateTime.Now;
+            await DatabaseConnection.UpdateAsync(code);
+        }
+
+        /// <summary>
         /// Checks whether or not there is a saved source code with the same title
         /// </summary>
         /// <param name="name">The title to check</param>

@@ -384,4 +384,10 @@
   <data name="SaveCode" xml:space="preserve">
     <value>Save code</value>
   </data>
+  <data name="CodeSaved" xml:space="preserve">
+    <value>Code saved</value>
+  </data>
+  <data name="CodeSavedBody" xml:space="preserve">
+    <value>The new source code has been saved correctly</value>
+  </data>
 </root>

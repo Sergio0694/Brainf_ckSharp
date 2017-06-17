@@ -11,6 +11,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         {
             Messenger.Default.Register<ConsoleAvailableActionStatusChangedMessage>(this, ProcessConsoleActionsStatusChangedMessage);
             Messenger.Default.Register<IDEExecutableStatusChangedMessage>(this, m => IDECodeAvailable = m.Executable);
+            Messenger.Default.Register<SaveButtonsEnabledStatusChangedMessage>(this, m =>
+            {
+                SaveAvailable = m.SaveEnabled;
+                SaveAsAvailable = m.SaveAsEnabled;
+            });
         }
 
         // Enables or disables the console buttons when needed
@@ -116,6 +121,28 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         {
             get => _IDECodeAvailable;
             private set => Set(ref _IDECodeAvailable, value);
+        }
+
+        private bool _SaveAvailable;
+
+        /// <summary>
+        /// Gets whether or not it is possible to save the current source code
+        /// </summary>
+        public bool SaveAvailable
+        {
+            get => _SaveAvailable;
+            private set => Set(ref _SaveAvailable, value);
+        }
+
+        private bool _SaveAsAvailable;
+
+        /// <summary>
+        /// Gets or sets whether or not is possible to save the current code as a new file
+        /// </summary>
+        public bool SaveAsAvailable
+        {
+            get => _SaveAsAvailable;
+            private set => Set(ref _SaveAsAvailable, value);
         }
     }
 }

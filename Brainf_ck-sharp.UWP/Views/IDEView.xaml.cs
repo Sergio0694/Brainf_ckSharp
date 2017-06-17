@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.UI;
@@ -12,17 +13,12 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using Brainf_ck_sharp;
 using Brainf_ck_sharp.ReturnTypes;
-using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Messages;
-using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
-using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
 using Brainf_ck_sharp_UWP.ViewModels;
-using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 
@@ -34,33 +30,24 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             Loaded += IDEView_Loaded;
             this.InitializeComponent();
-            DataContext = new IDEViewModel(EditBox.Document);
+            DataContext = new IDEViewModel(EditBox.Document, PickSaveNameAsync);
             ViewModel.PlayRequested += ViewModel_PlayRequested;
+            ViewModel.LoadedCodeChanged += (_, e) => LoadCode(e.Code, true);
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             _PreviousText = text;
-            Messenger.Default.Register<SourceCodeLoadingRequestedMessage>(this, m =>
-            {
-                _LoadedCode = m.RequestedCode;
-                LoadCode(m.RequestedCode.Code, true);
-            });
-            Messenger.Default.Register<SaveSourceCodeRequestMessage>(this, m => ManageSaveCodeRequest(m.RequestType));
         }
 
-        private async void ManageSaveCodeRequest(CodeSaveType type)
+        /// <summary>
+        /// Prompts the user to select a file name to save the current source code
+        /// </summary>
+        /// <param name="code">The source code that's being saved</param>
+        private async Task<String> PickSaveNameAsync(String code)
         {
-            EditBox.Document.GetText(TextGetOptions.None, out String text);
-            SaveCodePromptFlyout flyout = new SaveCodePromptFlyout(text, null);
-            var result = await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("SaveCode"), flyout, new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight);
-            if (result == FlyoutResult.Confirmed)
-            {
-                await SQLiteManager.Instance.SaveCodeAsync(flyout.Title, text);
-                NotificationsManager.ShowNotification(0xEC24.ToSegoeMDL2Icon(), "Code saved", "The new source code has been saved correctly",
-                    NotificationType.Default);
-            }
+            SaveCodePromptFlyout flyout = new SaveCodePromptFlyout(code, null);
+            FlyoutResult result = await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("SaveCode"), 
+                flyout, new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight);
+            return result == FlyoutResult.Confirmed ? flyout.Title : null;
         }
-
-        // Gets the loaded code the user is currently working on, if present
-        private SourceCode _LoadedCode;
 
         private void ViewModel_PlayRequested(object sender, string e)
         {
@@ -84,12 +71,12 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             // Keep the line numbers and the current cursor in sync with the code
             float target = (float)(_Top - 12 - EditBox.VerticalScrollViewerOffset);
-            LinesGrid.SetVisualOffsetAsync(TranslationAxis.Y, target);
-            IndentationInfoList.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset));
-            GitDiffListView.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset));
+            LinesGrid.SetVisualOffset(TranslationAxis.Y, target);
+            IndentationInfoList.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset));
+            GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset));
             Point selectionOffset = EditBox.ActualSelectionVerticalOffset;
-            CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
-            CursorRectangle.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
+            CursorBorder.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
+            CursorRectangle.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
             CursorTransform.X = -EditBox.HorizontalScrollViewerOffset;
             GuidesTransform.Y = -EditBox.VerticalScrollViewerOffset;
             GuidesTransform.X = -EditBox.HorizontalScrollViewerOffset;
@@ -107,13 +94,13 @@ namespace Brainf_ck_sharp_UWP.Views
         public void AdjustTopMargin(double height)
         {
             _Top = height;
-            LinesGrid.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height - 12)); // Adjust the initial offset of the line numbers and indicators
-            IndentationInfoList.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height + 10));
-            GitDiffListView.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height + 10));
-            CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(height + 8));
-            CursorRectangle.SetVisualOffsetAsync(TranslationAxis.Y, (float) (height + 8));
-            CursorRectangle.SetVisualOffsetAsync(TranslationAxis.X, 4);
-            BracketsParentGrid.SetVisualOffsetAsync(TranslationAxis.Y, (float)height);
+            LinesGrid.SetVisualOffset(TranslationAxis.Y, (float)(height - 12)); // Adjust the initial offset of the line numbers and indicators
+            IndentationInfoList.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
+            GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
+            CursorBorder.SetVisualOffset(TranslationAxis.Y, (float)(height + 8));
+            CursorRectangle.SetVisualOffset(TranslationAxis.Y, (float) (height + 8));
+            CursorRectangle.SetVisualOffset(TranslationAxis.X, 4);
+            BracketsParentGrid.SetVisualOffset(TranslationAxis.Y, (float)height);
             EditBox.Padding = new Thickness(4, _Top + 8, 4, 8);
             EditBox.ScrollBarMargin = new Thickness(0, _Top, 0, 0);
         }
@@ -124,6 +111,8 @@ namespace Brainf_ck_sharp_UWP.Views
             DrawLineNumbers();
             DrawBracketGuides(null);
             ViewModel.UpdateIndentationInfo(_Brackets);
+            EditBox.Document.GetText(TextGetOptions.None, out String code);
+            ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code);
         }
 
         #region UI overlays
@@ -227,8 +216,8 @@ namespace Brainf_ck_sharp_UWP.Views
                     Y1 = 0,
                     Y2 = top
                 };
-                guide.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 30 + open.Top));
-                guide.SetVisualOffsetAsync(TranslationAxis.X, (float)(open.X + 6));
+                guide.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 30 + open.Top));
+                guide.SetVisualOffset(TranslationAxis.X, (float)(open.X + 6));
                 BracketGuidesCanvas.Children.Add(guide);
             }
         }
@@ -343,7 +332,6 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Get the updated text
             EditBox.Document.GetText(TextGetOptions.None, out text);
-            ViewModel.UpdateGitDiffStatus(_LoadedCode?.Code ?? _PreviousText, text);
             _PreviousText = text;
 
             // Update the bracket guides
@@ -355,12 +343,12 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Move the cursor to the right position
             Point selectionOffset = EditBox.ActualSelectionVerticalOffset;
-            CursorRectangle.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
-            CursorRectangle.SetVisualOffsetAsync(TranslationAxis.X, (float)(selectionOffset.X + 4));
+            CursorRectangle.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
+            CursorRectangle.SetVisualOffset(TranslationAxis.X, (float)(selectionOffset.X + 4));
 
             // Update the visibility and the position of the cursor
             CursorBorder.SetVisualOpacity(EditBox.Document.Selection.Length.Abs() > 0 ? 0 : 1);
-            CursorBorder.SetVisualOffsetAsync(TranslationAxis.Y, (float)(_Top + 8 + EditBox.ActualSelectionVerticalOffset.Y));
+            CursorBorder.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 8 + EditBox.ActualSelectionVerticalOffset.Y));
 
             // Notify the UI
             ViewModel.SendMessages(text);
@@ -439,7 +427,7 @@ namespace Brainf_ck_sharp_UWP.Views
             DrawLineNumbers();
             DrawBracketGuides(code);
             ViewModel.UpdateIndentationInfo(_Brackets);
-            ViewModel.UpdateGitDiffStatus(_LoadedCode?.Code ?? _PreviousText, code);
+            ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code);
             ViewModel.SendMessages(code);
 
             // Restore the handlers

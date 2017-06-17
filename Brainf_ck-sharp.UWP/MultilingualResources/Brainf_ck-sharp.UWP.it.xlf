@@ -359,6 +359,14 @@
           <source>Save code</source>
           <target state="new">Save code</target>
         </trans-unit>
+        <trans-unit id="CodeSaved" translate="yes" xml:space="preserve">
+          <source>Code saved</source>
+          <target state="new">Code saved</target>
+        </trans-unit>
+        <trans-unit id="CodeSavedBody" translate="yes" xml:space="preserve">
+          <source>The new source code has been saved correctly</source>
+          <target state="new">The new source code has been saved correctly</target>
+        </trans-unit>
       </group>
     </body>
   </file>
