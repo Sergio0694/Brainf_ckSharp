@@ -17,4 +17,9 @@
     
     <!--Warning brush-->
     <SolidColorBrush x:Key="OrangeWarningBrush" Color="#FFFFAA00"/>
+    
+    <!--Breakpoints-->
+    <SolidColorBrush x:Key="BreakpointFillBrush" Color="#FFE51400"/>
+    <SolidColorBrush x:Key="BreakpointBorderBrush" Color="#FFF4DFDD"/>
+    <SolidColorBrush x:Key="BreakpointLineBrush" Color="#40FF0000"/>
 </ResourceDictionary>

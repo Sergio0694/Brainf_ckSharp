@@ -177,6 +177,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         }
 
         /// <summary>
+        /// Raised whenever the current text is cleared
+        /// </summary>
+        public event EventHandler TextCleared; 
+
+        /// <summary>
         /// Clears the current content in the document
         /// </summary>
         private void TryClearScreen()
@@ -185,6 +190,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             _CategorizedCode = null;
             Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(false, true));
             SendMessages();
+            TextCleared?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>

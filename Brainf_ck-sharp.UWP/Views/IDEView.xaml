@@ -182,9 +182,16 @@
         </VisualStateManager.VisualStateGroups>
 
         <!--Breakpoints canvas-->
-        <Canvas Background="#FF333333"/>
+        <Canvas 
+            Background="#FF333333"
+            IsHitTestVisible="False"/>
+        <Canvas 
+            Grid.Column="0"
+            Background="Transparent"
+            x:Name="BreakpointsCanvas"
+            Tapped="BreakpointsCanvas_Tapped"/>
 
-        <!--Line numbers grid-->
+            <!--Line numbers grid-->
         <Canvas Grid.Column="1">
             <Grid 
                 x:Name="LinesGrid"
@@ -227,8 +234,15 @@
                 IsHitTestVisible="False"
                 x:Name="IndentationInfoList"/>
         </Canvas>
+        
+        <!--Breakpoints line indicators-->
+        <Canvas
+            Grid.Column="4"
+            x:Name="BreakLinesCanvas"
+            IsHitTestVisible="False"
+            SizeChanged="BreakLinesCanvas_OnSizeChanged"/>
 
-        <!--Code box-->
+            <!--Code box-->
         <inheritedControls:RichEditBoxWithVerticalOffsetInfo
             Grid.Column="4"
             Style="{StaticResource TransparentEditBox}"

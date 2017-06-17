@@ -9,6 +9,7 @@ using Windows.UI;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using Brainf_ck_sharp;
@@ -33,6 +34,7 @@ namespace Brainf_ck_sharp_UWP.Views
             DataContext = new IDEViewModel(EditBox.Document, PickSaveNameAsync);
             ViewModel.PlayRequested += ViewModel_PlayRequested;
             ViewModel.LoadedCodeChanged += (_, e) => LoadCode(e.Code, true);
+            ViewModel.TextCleared += (_, e) => ClearBreakpoints();
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             _PreviousText = text;
         }
@@ -72,6 +74,7 @@ namespace Brainf_ck_sharp_UWP.Views
             // Keep the line numbers and the current cursor in sync with the code
             float target = (float)(_Top - 12 - EditBox.VerticalScrollViewerOffset);
             LinesGrid.SetVisualOffset(TranslationAxis.Y, target);
+            BreakpointsCanvas.SetVisualOffset(TranslationAxis.Y, target);
             IndentationInfoList.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset));
             GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset));
             Point selectionOffset = EditBox.ActualSelectionVerticalOffset;
@@ -95,6 +98,8 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             _Top = height;
             LinesGrid.SetVisualOffset(TranslationAxis.Y, (float)(height - 12)); // Adjust the initial offset of the line numbers and indicators
+            BreakpointsCanvas.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
+            BreakLinesCanvas.Margin = new Thickness(0, height + 10, 0, 0);
             IndentationInfoList.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             CursorBorder.SetVisualOffset(TranslationAxis.Y, (float)(height + 8));
@@ -446,6 +451,83 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             LineCursorClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
             CursorBorder.Width = e.NewSize.Width;
+        }
+
+        /// <summary>
+        /// Gets the collection of current visualized breakpoints and their respective line numbers
+        /// </summary>
+        private readonly Dictionary<int, (Ellipse, Rectangle)> BreakpointsInfo = new Dictionary<int, (Ellipse, Rectangle)>();
+
+        // Clears the breakpoints from the UI and their info
+        private void ClearBreakpoints()
+        {
+            BreakpointsInfo.Clear();
+            BreakpointsCanvas.Children.Clear();
+            BreakLinesCanvas.Children.Clear();
+        }
+
+        // Adds/removes a breakpoint when tapping on the left side bar
+        private void BreakpointsCanvas_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            // Get the text point corresponding to the tap position
+            EditBox.Document.GetRange(0, 0).GetPoint(HorizontalCharacterAlignment.Left, VerticalCharacterAlignment.Top,
+                PointOptions.Transform, out Point start);
+            Point
+                tap = e.GetPosition(this),
+                target = new Point(start.X, tap.Y +                                     // Original Y position
+                                            EditBox.VerticalScrollViewerOffset -        // Consider the text scrolling
+                                            BreakpointsCanvas.GetVisual().Offset.Y +    // Subtract the canvas vertical offset (UI tweak)
+                                            start.Y);                                   // Add the initial offset of the text
+
+            // Get the range aligned to the left edge of the tapped line
+            ITextRange range = EditBox.Document.GetRangeFromPoint(target, PointOptions.None);
+            range.GetRect(PointOptions.Transform, out Rect line, out _);
+
+            // Get the line number
+            EditBox.Document.GetText(TextGetOptions.None, out String text);
+            (int y, _) = text.FindCoordinates(range.StartPosition);
+
+            // Setup the breakpoint
+            if (BreakpointsInfo.TryGetValue(y, out (Ellipse Breakpoint, Rectangle LineIndicator) previous))
+            {
+                // Remove the previous breakpoint
+                BreakpointsCanvas.Children.Remove(previous.Breakpoint);
+                BreakLinesCanvas.Children.Remove(previous.LineIndicator);
+                BreakpointsInfo.Remove(y);
+            }
+            else
+            {
+                // Update the UI
+                Ellipse ellipse = new Ellipse
+                {
+                    Width = 14,
+                    Height = 14,
+                    Fill = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("BreakpointFillBrush"),
+                    Stroke = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("BreakpointBorderBrush"),
+                    StrokeThickness = 1,
+                    Margin = new Thickness(3, 3, 0, 0),
+                    RenderTransform = new TranslateTransform { Y = line.Top - 2 }
+                };
+                BreakpointsCanvas.Children.Add(ellipse);
+                Rectangle rect = new Rectangle
+                {
+                    Height = 19.9, // Approximate line height
+                    Width = BreakLinesCanvas.ActualWidth,
+                    Fill = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("BreakpointLineBrush"),
+                    RenderTransform = new TranslateTransform { Y = line.Top - 2 } // -2 to adjust the position with the cursor rectangle
+                };
+                BreakLinesCanvas.Children.Add(rect);
+
+                // Store the info
+                BreakpointsInfo.Add(y, (ellipse, rect));
+            }
+        }
+
+        // Updates the width of the breakpoint lines
+        private void BreakLinesCanvas_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (FrameworkElement element in BreakLinesCanvas.Children.Cast<FrameworkElement>().ToArray())
+                element.Width = e.NewSize.Width;
         }
     }
 }
