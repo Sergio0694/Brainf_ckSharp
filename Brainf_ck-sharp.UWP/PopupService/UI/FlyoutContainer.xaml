@@ -104,5 +104,26 @@
                     FontWeight="SemiBold"/>
             </Grid>
         </Button>
+        
+        <!--Loading indicator-->
+        <Border
+            Grid.Row="0"
+            Grid.RowSpan="3"
+            x:Name="LoadingBorder"
+            IsHitTestVisible="False"
+            Canvas.ZIndex="10"
+            Margin="1"/>
+        <ProgressRing
+            Canvas.ZIndex="10"
+            IsHitTestVisible="False"
+            x:Name="LoadingRing"
+            IsActive="False"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Width="24"
+            Height="24"
+            Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
     </Grid>
 </UserControl>

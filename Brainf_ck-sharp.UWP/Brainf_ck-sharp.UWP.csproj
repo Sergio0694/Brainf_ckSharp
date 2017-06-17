@@ -149,6 +149,7 @@
     <Compile Include="Messages\Actions\DebugStatusChangedMessage.cs" />
     <Compile Include="Messages\Actions\SaveButtonsEnabledStatusChangedMessage.cs" />
     <Compile Include="Messages\Flyouts\NotificationCloseRequestmessage.cs" />
+    <Compile Include="PopupService\Interfaces\IBusyWorkingContent.cs" />
     <Compile Include="PopupService\Misc\FlyoutClosedResult.cs" />
     <Compile Include="PopupService\Misc\FlyoutDisplayInfo.cs" />
     <Compile Include="PopupService\Misc\FlyoutDisplayMode.cs" />

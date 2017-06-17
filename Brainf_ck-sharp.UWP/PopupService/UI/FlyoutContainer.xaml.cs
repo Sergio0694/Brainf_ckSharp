@@ -9,8 +9,12 @@ using Brainf_ck_sharp_UWP.PopupService.Interfaces;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
+using UICompositionAnimations;
 using UICompositionAnimations.Behaviours;
+using UICompositionAnimations.Behaviours.Effects;
 using UICompositionAnimations.Behaviours.Effects.Base;
+using UICompositionAnimations.Behaviours.Misc;
+using UICompositionAnimations.Enums;
 
 namespace Brainf_ck_sharp_UWP.PopupService.UI
 {
@@ -22,7 +26,11 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         public FlyoutContainer()
         {
             Loaded += FlyoutContainer_Loaded;
-            SizeChanged += (_, e) => _BackgroundAcrylic?.AdjustSize((float)e.NewSize.Width, (float)e.NewSize.Height);
+            SizeChanged += (_, e) =>
+            {
+                _BackgroundAcrylic?.AdjustSize((float) e.NewSize.Width, (float) e.NewSize.Height);
+                _LoadingAcrylic?.AdjustSize((float)e.NewSize.Width, (float)e.NewSize.Height);
+            };
             this.InitializeComponent();
             ConfirmButton.ManageControlPointerStates((p, value) => VisualStateManager.GoToState(this, value ? "Highlight" : "Default", false));
         }
@@ -30,12 +38,23 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         // The in-app acrylic brush for the background of the popup
         private AttachedStaticCompositionEffect<Border> _BackgroundAcrylic;
 
+        // The in-app acrylic brush for the background of the popup
+        private AttachedCompositeAnimatableCompositionEffect<Border> _LoadingAcrylic;
+
         // Initializes the acrylic effect
         private async void FlyoutContainer_Loaded(object sender, RoutedEventArgs e)
         {
+            // Background effect
             _BackgroundAcrylic = await BlurBorder.GetAttachedInAppSemiAcrylicEffectAsync(BlurBorder, 8, 800,
                 Color.FromArgb(byte.MaxValue, 0x1B, 0x1B, 0x1B), 0.8f,
                 Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
+
+            // Loading effect if needed
+            if (_Content is IBusyWorkingContent)
+            {
+                _LoadingAcrylic = await LoadingBorder.GetAttachedAnimatableBlurAndSaturationEffectAsync(4, 0, 1, 0.8f, true);
+                LoadingBorder.Visibility = Visibility.Collapsed;
+            }
         }
 
         /// <summary>
@@ -59,12 +78,13 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         /// <param name="margin">The optional margins to set to the content of the popup to show</param>
         public void SetupUI([NotNull] String title, FrameworkElement content, Thickness? margin)
         {
+            _Content = content;
             _DisplayMode = FlyoutDisplayMode.ScrollableContent;
             TitleBlock.Text = title;
             Grid.SetRow(content, 1);
             content.Margin = margin ?? new Thickness(12, 0, 0, 0);
             RootGrid.Children.Add(content);
-            InterfacesSetup(content);
+            InterfacesSetup();
         }
 
         /// <summary>
@@ -80,20 +100,45 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             TitleBlock.Text = title;
             ContentScroller.Content = content;
             ContentScroller.Visibility = Visibility.Visible;
-            InterfacesSetup(content);
+            InterfacesSetup();
         }
 
         /// <summary>
         /// Adjusts the UI according to the interfaces implemented by the current content
         /// </summary>
-        /// <param name="element"></param>
-        private void InterfacesSetup(FrameworkElement element)
+        private void InterfacesSetup()
         {
             // Show the button and bind its enabled status
-            if (element is IValidableDialog validable)
+            if (_Content is IValidableDialog validable)
             {
                 ConfirmButton.Visibility = Visibility.Visible;
                 validable.ValidStateChanged += (s, e) => ConfirmButton.IsEnabled = e;
+            }
+            
+            // Loading content
+            if (_Content is IBusyWorkingContent worker)
+            {
+                worker.WorkingStateChanged += (_, e) =>
+                {
+                    // Blur effect
+                    if (e) LoadingBorder.Visibility = Visibility.Visible;
+                    _LoadingAcrylic?.AnimateAsync(e ? FixedAnimationType.In : FixedAnimationType.Out, TimeSpan.FromMilliseconds(400)).ContinueWith(t =>
+                    {
+                        if (!e) LoadingBorder.Visibility = Visibility.Collapsed;
+                    });
+
+                    // Progress ring
+                    if (e)
+                    {
+                        LoadingRing.SetVisualOpacity(0);
+                        LoadingRing.IsActive = true;
+                        LoadingRing.StartCompositionFadeAnimation(null, 1, 400, null, EasingFunctionNames.Linear);
+                    }
+                    else
+                    {
+                        LoadingRing.StartCompositionFadeAnimation(null, 0, 400, null, EasingFunctionNames.Linear, () => LoadingRing.IsActive = false);
+                    }
+                };
             }
         }
 

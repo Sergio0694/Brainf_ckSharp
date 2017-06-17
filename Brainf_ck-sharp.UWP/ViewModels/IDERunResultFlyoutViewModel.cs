@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Brainf_ck_sharp.MemoryState;
@@ -14,7 +15,12 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 {
     public class IDERunResultFlyoutViewModel : JumpListViewModelBase<IDEResultSection, IDEResultSectionDataBase>
     {
-        private readonly InterpreterExecutionSession Session;
+        private InterpreterExecutionSession Session { get; set; }
+
+        /// <summary>
+        /// Gets whether or not the breakpoint management buttons are currently visible
+        /// </summary>
+        public bool BreakpointMode => Session.CanContinue;
 
         public IDERunResultFlyoutViewModel([NotNull] InterpreterExecutionSession session) => Session = session;
 
@@ -70,5 +76,31 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 return source;
             });
         }
+
+        /// <summary>
+        /// Raised whenever the loading status changes for the control
+        /// </summary>
+        public event EventHandler<bool> LoadingStateChanged; 
+
+        // Continues a script from its current state
+        private async void ManageDebugSessionAsync(bool runToCompletion)
+        {
+            LoadingStateChanged?.Invoke(this, true);
+            await Task.Delay(500);
+            Session = await Task.Run(() => runToCompletion ? Session.RunToCompletion() : Session.Continue());
+            await LoadGroupsAsync();
+            await Task.Delay(500);
+            LoadingStateChanged?.Invoke(this, false);
+        }
+
+        /// <summary>
+        /// Continues the execution from the current breakpoint
+        /// </summary>
+        public void Continue() => ManageDebugSessionAsync(false);
+
+        /// <summary>
+        /// Runs the script until the end, skipping other breakpoints along the way, if present
+        /// </summary>
+        public void RunToCompletion() => ManageDebugSessionAsync(true);
     }
 }

@@ -152,7 +152,7 @@
         <!--Breakpoints control buttons-->
         <Grid 
             Grid.Row="1"
-            Visibility="Collapsed">
+            Visibility="{x:Bind ViewModel.BreakpointMode, Mode=OneWay, FallbackValue=Collapsed}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -162,7 +162,8 @@
             <customControls:IDESessionBreakpointOptionControl
                 Height="60"
                 Title="Continue"
-                x:Uid="ContinueButton">
+                x:Uid="ContinueButton"
+                Tapped="{x:Bind ViewModel.Continue}">
                 <customControls:IDESessionBreakpointOptionControl.IconContent>
                     <Grid>
                         <Polygon 
@@ -179,7 +180,8 @@
                 Grid.Column="1"
                 Height="60"
                 Title="Skip"
-                x:Uid="SkipButton">
+                x:Uid="SkipButton"
+                Tapped="{x:Bind ViewModel.RunToCompletion}">
                 <customControls:IDESessionBreakpointOptionControl.IconContent>
                     <Grid>
                         <Grid.ColumnDefinitions>
