@@ -14,7 +14,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         {
             this.InitializeComponent();
             DataContext = new IDERunResultFlyoutViewModel(session);
-            ViewModel.LoadingStateChanged += (_, e) => WorkingStateChanged?.Invoke(this, e);
+            ViewModel.LoadingStateChanged += (_, e) =>
+            {
+                WorkingStateChanged?.Invoke(this, e.Loading);
+                if (!e.IsIntermediate) ButtonsOutStoryboard.Begin();
+            };
         }
 
         public IDERunResultFlyoutViewModel ViewModel => DataContext.To<IDERunResultFlyoutViewModel>();

@@ -80,18 +80,17 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Raised whenever the loading status changes for the control
         /// </summary>
-        public event EventHandler<bool> LoadingStateChanged; 
+        public event EventHandler<(bool Loading, bool IsIntermediate)> LoadingStateChanged; 
 
         // Continues a script from its current state
         private async void ManageDebugSessionAsync(bool runToCompletion)
         {
-            LoadingStateChanged?.Invoke(this, true);
+            LoadingStateChanged?.Invoke(this, (true, true));
             await Task.Delay(500);
             Session = await Task.Run(() => runToCompletion ? Session.RunToCompletion() : Session.Continue());
             await LoadGroupsAsync();
-            RaisePropertyChanged(() => BreakpointMode);
             await Task.Delay(500);
-            LoadingStateChanged?.Invoke(this, false);
+            LoadingStateChanged?.Invoke(this, (false, BreakpointMode));
         }
 
         /// <summary>
