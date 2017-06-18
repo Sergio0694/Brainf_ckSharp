@@ -178,5 +178,9 @@ namespace Brainf_ck_sharp_UWP.UserControls
         public void RequestSaveSourceCode() => Messenger.Default.Send(new SaveSourceCodeRequestMessage(CodeSaveType.Save));
 
         public void RequestSaveSourceCodeAs() => Messenger.Default.Send(new SaveSourceCodeRequestMessage(CodeSaveType.SaveAs));
+
+        public void RequestIDEUndo() => Messenger.Default.Send(new IDEUndoRedoRequestMessage(UndoRedoOperation.Undo));
+
+        public void RequestIDERedo() => Messenger.Default.Send(new IDEUndoRedoRequestMessage(UndoRedoOperation.Redo));
     }
 }

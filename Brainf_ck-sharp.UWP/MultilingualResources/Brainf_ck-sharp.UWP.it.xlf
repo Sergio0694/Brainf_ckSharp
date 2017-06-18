@@ -375,6 +375,14 @@
           <source>Debug</source>
           <target state="translated">Debug</target>
         </trans-unit>
+        <trans-unit id="RedoButton.Label" translate="yes" xml:space="preserve">
+          <source>Redo</source>
+          <target state="new">Redo</target>
+        </trans-unit>
+        <trans-unit id="UndoButton.Label" translate="yes" xml:space="preserve">
+          <source>Undo</source>
+          <target state="new">Undo</target>
+        </trans-unit>
       </group>
     </body>
   </file>

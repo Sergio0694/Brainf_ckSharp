@@ -221,6 +221,17 @@
                     x:Uid="DebugButton"
                     IsEnabled="{x:Bind ViewModel.DebugAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind RequestDebug}"/>
+                <customCommandBar:CustomCommandBarSeparator/>
+                <customCommandBar:CustomCommandBarButton
+                    Label="Undo"
+                    Icon="&#xE10E;"
+                    x:Uid="UndoButton"
+                    Click="{x:Bind RequestIDEUndo}"/>
+                <customCommandBar:CustomCommandBarButton
+                    Label="Redo"
+                    Icon="&#xE10D;"
+                    x:Uid="RedoButton"
+                    Click="{x:Bind RequestIDERedo}"/>
             </customCommandBar:CommandBarWithButtonsAnimations.PrimaryCommands>
             <customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
                 <customCommandBar:CustomCommandBarButton

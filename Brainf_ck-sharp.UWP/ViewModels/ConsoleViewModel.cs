@@ -76,7 +76,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             private set
             {
                 if (Set(ref _CanRestart, value))
-                    Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Restart, value));
+                    Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.Restart, value));
             }
         }
 
@@ -122,11 +122,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         // Broadcasts the messages to reflect the current console status
         private void SendCommandAvailableMessages(bool? forcedStatus = null)
         {
-            Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Play, forcedStatus ?? CommandAvailable));
-            Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Undo, forcedStatus ?? CommandAvailable));
-            Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.Clear, forcedStatus ?? CommandAvailable));
+            Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.Play, forcedStatus ?? CommandAvailable));
+            Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.DeleteLastCharacter, forcedStatus ?? CommandAvailable));
+            Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.Clear, forcedStatus ?? CommandAvailable));
             bool script = Source.Skip(forcedStatus == false ? 0 : 1).Where(model => model is ConsoleUserCommand).Cast<ConsoleUserCommand>().Any(model => model.Command.Length > 0);
-            Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.RepeatLastScript, script));
+            Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.RepeatLastScript, script));
             if (Source.Last() is ConsoleUserCommand command &&
                 command.Command.Length > 0 && forcedStatus != false)
             {
@@ -136,7 +136,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     : new ConsoleStatusUpdateMessage(IDEStatus.FaultedConsole, LocalizationManager.GetResource("Warning"), command.Command.Length, error));
             }
             else Messenger.Default.Send(new ConsoleStatusUpdateMessage(IDEStatus.Console, LocalizationManager.GetResource("Ready"), 0, 0));
-            Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.ClearScreen, ClearScreenAvailable));
+            Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.ClearScreen, ClearScreenAvailable));
         }
 
         /// <summary>

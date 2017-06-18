@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -48,9 +47,9 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
             _Disposed = true;
             try
             {
-                PrimaryCommands.TypedForEach<CustomCommandBarButton>(button =>
+                PrimaryCommands.TypedForEach<ICustomCommandBarPrimaryItem>(item =>
                 {
-                    button.ExtraConditionStateChanged -= Button_ExtraConditionStateChanged;
+                    item.Dispose();
                 });
             }
             catch
@@ -70,12 +69,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
             // Hide the secondary buttons and the buttons that require additional conditions
             this.Loaded += (s, e) =>
             {
-                PrimaryCommands.TypedForEach<CustomCommandBarButton>(button =>
+                PrimaryCommands.TypedForEach<ICustomCommandBarPrimaryItem>(button =>
                 {
                     button.ExtraConditionStateChanged += Button_ExtraConditionStateChanged;
                     if (!button.DefaultButton || !button.ExtraCondition)
                     {
-                        button.Visibility = Visibility.Collapsed;
+                        button.Control.Visibility = Visibility.Collapsed;
                     }
                 });
             };
@@ -83,8 +82,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
 
         private void Button_ExtraConditionStateChanged(object sender, bool e)
         {
-            CustomCommandBarButton button = sender.To<CustomCommandBarButton>();
-            button.Visibility = e ? (button.DefaultButton == PrimaryContentEnabled).ToVisibility() : Visibility.Collapsed;
+            ICustomCommandBarPrimaryItem item = sender.To<ICustomCommandBarPrimaryItem>();
+            item.Control.Visibility = e ? (item.DefaultButton == PrimaryContentEnabled).ToVisibility() : Visibility.Collapsed;
         }
 
         private bool _PrimaryContentEnabled = true;
@@ -136,10 +135,10 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
             Storyboard fadeOut = null;
 
             // Get the buttons to hide
-            CustomCommandBarButton[] pendingButtons =
+            ICustomCommandBarPrimaryItem[] pendingButtons =
                 (from control in PrimaryCommands
-                let button = control.To<CustomCommandBarButton>()
-                where button.Visibility == Visibility.Visible
+                let button = control.To<ICustomCommandBarPrimaryItem>()
+                where button.Control.Visibility == Visibility.Visible
                 select button).ToArray();
             if (pendingButtons.Length == 0 || _Disposed)
             {
@@ -150,26 +149,25 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
             // Fade out the buttons that are actually visible and get the last Storyboard
             for (int i = 0; i < pendingButtons.Length; i++)
             {
-                CustomCommandBarButton pendingButton = pendingButtons[i];
+                ICustomCommandBarPrimaryItem pendingButton = pendingButtons[i];
                 if (i != pendingButtons.Length - 1)
                 {
-                    pendingButton.StartXAMLTransformFadeSlideAnimation(null, 0, TranslationAxis.X, 0, -ButtonsAnimationOffset, ContentAnimationDuration, null, null, EasingFunctionNames.CircleEaseOut);
+                    pendingButton.Control.StartXAMLTransformFadeSlideAnimation(null, 0, TranslationAxis.X, 0, -ButtonsAnimationOffset, ContentAnimationDuration, null, null, EasingFunctionNames.CircleEaseOut);
                     await Task.Delay(ButtonsFadeDelayBetweenAnimations);
                 }
-                else fadeOut = pendingButton.GetXAMLTransformFadeSlideStoryboard(1, 0, TranslationAxis.X, 0, -ButtonsAnimationOffset, ContentAnimationDuration, EasingFunctionNames.CircleEaseOut);
+                else fadeOut = pendingButton.Control.GetXAMLTransformFadeSlideStoryboard(1, 0, TranslationAxis.X, 0, -ButtonsAnimationOffset, ContentAnimationDuration, EasingFunctionNames.CircleEaseOut);
             }
 
             // Resume the rest of the method when the last Storyboard completes
-            Debug.Assert(fadeOut != null, "The target Storyboard shouldn't be null here");
             fadeOut.Completed += async (s, e) =>
             {
                 // Collapse the pending buttons
-                foreach (CustomCommandBarButton button in pendingButtons) button.Visibility = Visibility.Collapsed;
+                foreach (ICustomCommandBarPrimaryItem button in pendingButtons) button.Control.Visibility = Visibility.Collapsed;
 
                 // Get the list of buttons to display
-                CustomCommandBarButton[] upcomingButtons =
+                ICustomCommandBarPrimaryItem[] upcomingButtons =
                     (from control in PrimaryCommands
-                    let button = control.To<CustomCommandBarButton>()
+                    let button = control.To<ICustomCommandBarPrimaryItem>()
                     where button.DefaultButton == primaryContentEnabled && button.ExtraCondition
                     select button).ToArray();
 
@@ -183,19 +181,18 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
                 Storyboard fadeIn = null;
                 for (int i = upcomingButtons.Length - 1; i >= 0; i--)
                 {
-                    CustomCommandBarButton pendingButton = upcomingButtons[i];
-                    pendingButton.Opacity = 0;
-                    pendingButton.Visibility = Visibility.Visible;
+                    ICustomCommandBarPrimaryItem pendingButton = upcomingButtons[i];
+                    pendingButton.Control.Opacity = 0;
+                    pendingButton.Control.Visibility = Visibility.Visible;
                     if (i != upcomingButtons.Length - 1)
                     {
-                        pendingButton.StartXAMLTransformFadeSlideAnimation(0, pendingButton.DesiredOpacity, TranslationAxis.X, -ButtonsAnimationOffset, 0, ContentAnimationDuration, null, null, EasingFunctionNames.CircleEaseOut);
+                        pendingButton.Control.StartXAMLTransformFadeSlideAnimation(0, pendingButton.DesiredOpacity, TranslationAxis.X, -ButtonsAnimationOffset, 0, ContentAnimationDuration, null, null, EasingFunctionNames.CircleEaseOut);
                         await Task.Delay(ButtonsFadeDelayBetweenAnimations);
                     }
-                    else fadeIn = pendingButton.GetXAMLTransformFadeSlideStoryboard(0, 1, TranslationAxis.X, -ButtonsAnimationOffset, 0, ContentAnimationDuration, EasingFunctionNames.CircleEaseOut);
+                    else fadeIn = pendingButton.Control.GetXAMLTransformFadeSlideStoryboard(0, 1, TranslationAxis.X, -ButtonsAnimationOffset, 0, ContentAnimationDuration, EasingFunctionNames.CircleEaseOut);
                 }
 
                 // Start the target Storyboard and finally store the new parameter value and release the semaphore when the animation completes
-                Debug.Assert(fadeIn != null, "The target Storyboard really shouldn't be null here (we were almost there...)");
                 fadeIn.Completed += (sender, eventArgs) =>
                 {
                     PrimaryContentEnabled = primaryContentEnabled;

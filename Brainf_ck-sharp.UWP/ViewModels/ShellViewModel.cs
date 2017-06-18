@@ -9,7 +9,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
     {
         public ShellViewModel()
         {
-            Messenger.Default.Register<ConsoleAvailableActionStatusChangedMessage>(this, ProcessConsoleActionsStatusChangedMessage);
+            Messenger.Default.Register<AvailableActionStatusChangedMessage>(this, ProcessConsoleActionsStatusChangedMessage);
             Messenger.Default.Register<IDEExecutableStatusChangedMessage>(this, m => IDECodeAvailable = m.Executable);
             Messenger.Default.Register< DebugStatusChangedMessage>(this, m =>
             {
@@ -27,26 +27,26 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         }
 
         // Enables or disables the console buttons when needed
-        private void ProcessConsoleActionsStatusChangedMessage(ConsoleAvailableActionStatusChangedMessage message)
+        private void ProcessConsoleActionsStatusChangedMessage(AvailableActionStatusChangedMessage message)
         {
             switch (message.Action)
             {
-                case ConsoleAction.Play:
+                case SharedAction.Play:
                     PlayAvailable = message.Status;
                     break;
-                case ConsoleAction.Restart:
+                case SharedAction.Restart:
                     RestartAvailable = message.Status;
                     break;
-                case ConsoleAction.Clear:
+                case SharedAction.Clear:
                     ClearAvailable = message.Status;
                     break;
-                case ConsoleAction.Undo:
+                case SharedAction.DeleteLastCharacter:
                     UndoAvailable = message.Status;
                     break;
-                case ConsoleAction.ClearScreen:
+                case SharedAction.ClearScreen:
                     ClearScreenAvailable = message.Status;
                     break;
-                case ConsoleAction.RepeatLastScript:
+                case SharedAction.RepeatLastScript:
                     RepeatLastScriptAvailable = message.Status;
                     break;
                 default:

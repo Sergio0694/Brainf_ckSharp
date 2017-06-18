@@ -3,12 +3,12 @@
     /// <summary>
     /// A message that signals whenever an action for the console changes its status
     /// </summary>
-    public class ConsoleAvailableActionStatusChangedMessage
+    public class AvailableActionStatusChangedMessage
     {
         /// <summary>
         /// Gets the current action that changed its status
         /// </summary>
-        public ConsoleAction Action { get; }
+        public SharedAction Action { get; }
 
         /// <summary>
         /// Gets the new status for the action
@@ -20,7 +20,7 @@
         /// </summary>
         /// <param name="action">The current action</param>
         /// <param name="status">The new status for the action</param>
-        public ConsoleAvailableActionStatusChangedMessage(ConsoleAction action, bool status)
+        public AvailableActionStatusChangedMessage(SharedAction action, bool status)
         {
             Action = action;
             Status = status;
@@ -28,15 +28,17 @@
     }
 
     /// <summary>
-    /// Indicates a console action that can be performed
+    /// Indicates an action that can be performed either in the console or in the IDE
     /// </summary>
-    public enum ConsoleAction
+    public enum SharedAction
     {
         Play,
         Restart,
         Clear,
-        Undo,
+        DeleteLastCharacter,
         ClearScreen,
-        RepeatLastScript
+        RepeatLastScript,
+        Undo,
+        Redo
     }
 }

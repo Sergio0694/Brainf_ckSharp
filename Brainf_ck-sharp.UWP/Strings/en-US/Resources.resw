@@ -396,4 +396,10 @@
   <data name="HeaderComments" xml:space="preserve">
     <value>Header comments</value>
   </data>
+  <data name="RedoButton.Label" xml:space="preserve">
+    <value>Redo</value>
+  </data>
+  <data name="UndoButton.Label" xml:space="preserve">
+    <value>Undo</value>
+  </data>
 </root>

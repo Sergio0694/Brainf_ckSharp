@@ -147,6 +147,7 @@
     <Compile Include="Helpers\StorageHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\ShareCharmsHelper.cs" />
     <Compile Include="Messages\Actions\DebugStatusChangedMessage.cs" />
+    <Compile Include="Messages\Actions\IDEUndoRedoRequestMessage.cs" />
     <Compile Include="Messages\Actions\SaveButtonsEnabledStatusChangedMessage.cs" />
     <Compile Include="Messages\Flyouts\NotificationCloseRequestmessage.cs" />
     <Compile Include="PopupService\Interfaces\IBusyWorkingContent.cs" />
@@ -172,7 +173,7 @@
     <Compile Include="Helpers\WindowsAPIs\StatusBarHelper.cs" />
     <Compile Include="Messages\Actions\ClearConsoleLineMessage.cs" />
     <Compile Include="Messages\Actions\ClearScreenMessage.cs" />
-    <Compile Include="Messages\Actions\ConsoleAvailableActionStatusChangedMessage.cs" />
+    <Compile Include="Messages\Actions\AvailableActionStatusChangedMessage.cs" />
     <Compile Include="Messages\Actions\ConsoleMemoryStateChangedMessage.cs" />
     <Compile Include="Messages\Actions\IDEExecutableStatusChangedMessage.cs" />
     <Compile Include="Messages\Actions\PlayScriptMessage.cs" />
@@ -261,6 +262,8 @@
     <Compile Include="UserControls\Header\HeaderControl.xaml.cs">
       <DependentUpon>HeaderControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\InheritedControls\CustomCommandBar\CustomCommandBarSeparator.cs" />
+    <Compile Include="UserControls\InheritedControls\CustomCommandBar\ICustomCommandBarPrimaryItem.cs" />
     <Compile Include="UserControls\InheritedControls\FixedRadExpanderControl.cs" />
     <Compile Include="UserControls\InheritedControls\InAppAcrylicGrid.cs" />
     <Compile Include="UserControls\InheritedControls\RichEditBoxWithVerticalOffsetInfo.cs" />

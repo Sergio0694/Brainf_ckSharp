@@ -148,7 +148,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         public void SendMessages([CanBeNull] String code = null)
         {
             if (code == null) Document.GetText(TextGetOptions.None, out code);
-            Messenger.Default.Send(new ConsoleAvailableActionStatusChangedMessage(ConsoleAction.ClearScreen, code.Length > 1));
+            Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.ClearScreen, code.Length > 1));
             (bool valid, int error) = Brainf_ckInterpreter.CheckSourceSyntax(code);
             (int row, int col) = code.FindCoordinates(Document.Selection.StartPosition);
             bool executable = Brainf_ckInterpreter.FindOperators(code);
