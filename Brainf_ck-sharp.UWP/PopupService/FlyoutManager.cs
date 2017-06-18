@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.UI.Composition;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Hosting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
@@ -273,6 +277,105 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 else info.Container.Height = height - margin;
                 info.Popup.VerticalOffset = (height / 2 - info.Container.Height / 2) / 2;
             }
+        }
+
+        /// <summary>
+        /// Shows a given content inside a popup with an animation and offset similar of an attached Flyout
+        /// </summary>
+        /// <param name="content">The control to show</param>
+        /// <param name="rect">The target area to try not to cover</param>
+        /// <param name="tryCenter">Indicates whether or not to try to center the popup to the source control</param>
+        public static Popup ShowCustomContextFlyoutAsync([NotNull] FrameworkElement content, Rect rect, bool tryCenter = false)
+        {
+            // Calculate the target size
+            content.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            if (content.DesiredSize.Width > ResolutionHelper.CurrentWidth - 24)
+            {
+                content.Width = ResolutionHelper.CurrentWidth;
+                content.Measure(new Size(content.Width, double.PositiveInfinity));
+                content.Height = content.DesiredSize.Height;
+            }
+            else if (content.DesiredSize.Height > ResolutionHelper.CurrentHeight - 24)
+            {
+                content.Height = ResolutionHelper.CurrentHeight;
+                content.Measure(new Size(double.PositiveInfinity, content.Height));
+                content.Width = content.DesiredSize.Width;
+            }
+            else
+            {
+                content.Width = content.DesiredSize.Width;
+                content.Height = content.DesiredSize.Height;
+            }
+
+            // Adjust the display size and position
+            (double, double) CalculateSizeAndOffset()
+            {
+                // Calculate the final offset
+                double x = 0, y = 0;
+                if (content.Height <= rect.Top - 8)
+                {
+                    y = rect.Top - content.Height - 8;
+                }
+                else if (content.Height + 8 < ResolutionHelper.CurrentHeight)
+                {
+                    y = 8;
+                }
+                if (content.Width < ResolutionHelper.CurrentWidth - rect.Left)
+                {
+                    x = rect.Left;
+                }
+                else if (content.Width < ResolutionHelper.CurrentWidth)
+                {
+                    x = ResolutionHelper.CurrentWidth - content.Width;
+                }
+
+                // Shift the target position left if needed
+                if (tryCenter)
+                {
+                    double
+                        offset = content.Width / 2,
+                        half = rect.Width / 2;
+                    if (x > offset - half) x -= offset - half;
+                    else if (x > 8) x = 8;
+                }
+                return (x, y);
+            }
+
+            // Create the new popup
+            (double hx, double vy) = CalculateSizeAndOffset();
+            Popup popup = new Popup
+            {
+                IsLightDismissEnabled = true,
+                HorizontalOffset = hx,
+                VerticalOffset = vy
+            };
+
+            // Create the grid with the content and its drop shadow
+            Grid parent = new Grid();
+            Grid grid = new Grid();
+            parent.Children.Add(grid);
+            Border border = new Border();
+            border.SetVisualOpacity(0);
+            grid.Children.Add(border);
+            grid.Children.Add(content);
+
+            // Prepare the shadow for the popup content
+            Visual elementVisual = ElementCompositionPreview.GetElementVisual(content);
+            Compositor compositor = elementVisual.Compositor;
+            SpriteVisual visual = compositor.CreateSpriteVisual();
+            DropShadow shadow = compositor.CreateDropShadow();
+            visual.Shadow = shadow;
+            visual.Size = new Vector2((float)content.Width + 1, (float)content.Height + 1);
+            visual.Offset = new Vector3(-0.5f, -0.5f, 0);
+            ElementCompositionPreview.SetElementChildVisual(border, visual);
+
+            // Assign the popup content
+            popup.Child = parent;
+            grid.SetVisualOpacity(0);
+            popup.IsOpen = true;
+            grid.StartCompositionFadeSlideAnimation(0, 1, TranslationAxis.Y, 20, 0, 200, null, null, EasingFunctionNames.CircleEaseOut);
+            border.StartCompositionFadeAnimation(0, 1, 200, null, EasingFunctionNames.Linear);
+            return popup;
         }
     }
 }

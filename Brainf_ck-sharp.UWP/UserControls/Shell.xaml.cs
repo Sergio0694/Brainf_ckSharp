@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -12,12 +13,13 @@ using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages;
-using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
+using Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar;
+using Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations;
@@ -166,6 +168,16 @@ namespace Brainf_ck_sharp_UWP.UserControls
             FlyoutClosedResult<CategorizedSourceCode> result = await FlyoutManager.Instance.ShowAsync<LocalSourceCodesBrowserFlyout, CategorizedSourceCode>(
                 LocalizationManager.GetResource("CodeLibrary"), flyout, new Thickness());
             if (result) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(result.Value));
+        }
+
+        // Shows the small navigation keyboard popup
+        private void MoveButton_Click(object sender, RoutedEventArgs e)
+        {
+            VirtualArrowsKeyboardControl keyboard = new VirtualArrowsKeyboardControl();
+            CustomCommandBarButton button = (CustomCommandBarButton)sender;
+            Point point = button.GetVisualCoordinates();
+            Rect area = new Rect(point, new Size(button.ActualWidth, button.ActualHeight));
+            FlyoutManager.ShowCustomContextFlyoutAsync(keyboard, area, true);
         }
     }
 }

@@ -150,6 +150,7 @@
     <Compile Include="Messages\Actions\IDENewLineRequestedMessage.cs" />
     <Compile Include="Messages\Actions\IDEUndoRedoRequestMessage.cs" />
     <Compile Include="Messages\Actions\SaveButtonsEnabledStatusChangedMessage.cs" />
+    <Compile Include="Messages\Actions\VirtualArrowKeyPressedMessage.cs" />
     <Compile Include="Messages\Flyouts\NotificationCloseRequestmessage.cs" />
     <Compile Include="PopupService\Interfaces\IBusyWorkingContent.cs" />
     <Compile Include="PopupService\Misc\FlyoutClosedResult.cs" />
@@ -279,6 +280,9 @@
     </Compile>
     <Compile Include="UserControls\VirtualKeyboard\StdinHeader\KeyboardSectionHeaderButton.xaml.cs">
       <DependentUpon>KeyboardSectionHeaderButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\VirtualKeyboard\VirtualArrowsKeyboardControl.xaml.cs">
+      <DependentUpon>VirtualArrowsKeyboardControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\VirtualKeyboard\VirtualKeyboardControl.xaml.cs">
       <DependentUpon>VirtualKeyboardControl.xaml</DependentUpon>
@@ -472,6 +476,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\VirtualKeyboard\StdinHeader\KeyboardSectionHeaderButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\VirtualKeyboard\VirtualArrowsKeyboardControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

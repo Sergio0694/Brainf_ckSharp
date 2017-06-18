@@ -291,4 +291,16 @@
   <data name="Debug" xml:space="preserve">
     <value>Debug</value>
   </data>
+  <data name="RedoButton.Label" xml:space="preserve">
+    <value>Ripeti</value>
+  </data>
+  <data name="UndoButton.Label" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
+  <data name="NewLineButton.Label" xml:space="preserve">
+    <value>Nuova riga</value>
+  </data>
+  <data name="MoveButtonmLabel" xml:space="preserve">
+    <value>Sposta cursore</value>
+  </data>
 </root>

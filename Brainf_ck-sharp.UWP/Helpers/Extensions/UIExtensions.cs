@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using Windows.Devices.Input;
+using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
@@ -102,6 +103,15 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
             AddHandler(UIElement.PointerCanceledEvent, false, null);
             AddHandler(UIElement.PointerEnteredEvent, true, p => p != PointerDeviceType.Touch);
             AddHandler(UIElement.PointerReleasedEvent, false, p => p == PointerDeviceType.Touch);
+        }
+
+        /// <summary>
+        /// Returns the screen coordinates of the upper left corner of the input visual element
+        /// </summary>
+        /// <param name="element">The input element</param>
+        public static Point GetVisualCoordinates(this FrameworkElement element)
+        {
+            return element.TransformToVisual(Window.Current.Content).TransformPoint(new Point());
         }
     }
 }

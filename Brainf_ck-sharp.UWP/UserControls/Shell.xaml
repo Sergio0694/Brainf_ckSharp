@@ -223,6 +223,11 @@
                     Click="{x:Bind ViewModel.RequestDebug}"/>
                 <customCommandBar:CustomCommandBarSeparator/>
                 <customCommandBar:CustomCommandBarButton
+                    Label="Move"
+                    Icon="&#xE759;"
+                    x:Uid="MoveButton"
+                    Click="MoveButton_Click"/>
+                <customCommandBar:CustomCommandBarButton
                     Label="New line"
                     Icon="&#xE751;"
                     x:Uid="NewLineButton"

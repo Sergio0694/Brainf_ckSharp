@@ -72,6 +72,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         Messenger.Default.Register<SaveSourceCodeRequestMessage>(this, m => ManageSaveCodeRequest(m.RequestType).Forget());
                         Messenger.Default.Register<IDEUndoRedoRequestMessage>(this, m => ManageUndoRedoRequest(m.Operation));
                         Messenger.Default.Register<IDENewLineRequestedMessage>(this, m => NewLineInsertionRequested?.Invoke(this, EventArgs.Empty));
+                        Messenger.Default.Register<VirtualArrowKeyPressedMessage>(this, m => ManageVirtualArrowKeyPressed(m.Direction));
                         Messenger.Default.Register<SourceCodeLoadingRequestedMessage>(this, m =>
                         {
                             _CategorizedCode = m.RequestedCode;
@@ -121,6 +122,28 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         public event EventHandler TextCleared;
 
         #endregion
+
+        // Manages the selection when a virtual arrow key is pressed
+        private void ManageVirtualArrowKeyPressed(VirtualArrow direction)
+        {
+            switch (direction)
+            {
+                case VirtualArrow.Up:
+                    Document.Selection.MoveUp(TextRangeUnit.Line, 1, false);
+                    break;
+                case VirtualArrow.Left:
+                    Document.Selection.MoveLeft(TextRangeUnit.Character, 1, false);
+                    break;
+                case VirtualArrow.Down:
+                    Document.Selection.MoveDown(TextRangeUnit.Line, 1, false);
+                    break;
+                case VirtualArrow.Right:
+                    Document.Selection.MoveRight(TextRangeUnit.Character, 1, false);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
+            }
+        }
 
         /// <summary>
         /// Saves the current source code in the database

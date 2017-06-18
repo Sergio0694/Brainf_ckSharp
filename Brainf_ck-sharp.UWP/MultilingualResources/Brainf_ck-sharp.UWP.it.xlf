@@ -377,15 +377,19 @@
         </trans-unit>
         <trans-unit id="RedoButton.Label" translate="yes" xml:space="preserve">
           <source>Redo</source>
-          <target state="new">Redo</target>
+          <target state="translated">Ripeti</target>
         </trans-unit>
         <trans-unit id="UndoButton.Label" translate="yes" xml:space="preserve">
           <source>Undo</source>
-          <target state="new">Undo</target>
+          <target state="translated">Annulla</target>
         </trans-unit>
         <trans-unit id="NewLineButton.Label" translate="yes" xml:space="preserve">
           <source>New line</source>
-          <target state="new">New line</target>
+          <target state="translated">Nuova riga</target>
+        </trans-unit>
+        <trans-unit id="MoveButtonmLabel" translate="yes" xml:space="preserve">
+          <source>Move</source>
+          <target state="translated">Sposta cursore</target>
         </trans-unit>
       </group>
     </body>
