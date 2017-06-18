@@ -160,6 +160,7 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.UpdateIndentationInfo(_Brackets);
             EditBox.Document.GetText(TextGetOptions.None, out String code);
             ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code);
+            ViewModel.UpdateCanUndoRedoStatus();
         }
 
         #region UI overlays
@@ -472,6 +473,7 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.UpdateIndentationInfo(_Brackets);
             ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code);
             ViewModel.SendMessages(code);
+            ViewModel.UpdateCanUndoRedoStatus();
 
             // Restore the handlers
             EditBox.SelectionChanged += EditBox_OnSelectionChanged;

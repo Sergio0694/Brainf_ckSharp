@@ -55,6 +55,12 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 case SharedAction.RepeatLastScript:
                     RepeatLastScriptAvailable = message.Status;
                     break;
+                case SharedAction.Undo:
+                    UndoAvailable = message.Status;
+                    break;
+                case SharedAction.Redo:
+                    RedoAvailable = message.Status;
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -104,6 +110,17 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         {
             get => _UndoAvailable;
             private set => Set(ref _UndoAvailable, value);
+        }
+
+        private bool _RedoAvailable;
+
+        /// <summary>
+        /// Gets whether or not the redo function is enabled
+        /// </summary>
+        public bool RedoAvailable
+        {
+            get => _RedoAvailable;
+            private set => Set(ref _RedoAvailable, value);
         }
 
         private bool _PlayAvailable;

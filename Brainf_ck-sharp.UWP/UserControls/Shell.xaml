@@ -225,12 +225,14 @@
                 <customCommandBar:CustomCommandBarButton
                     Label="Undo"
                     Icon="&#xE10E;"
+                    IsEnabled="{x:Bind ViewModel.UndoAvailable, Mode=OneWay, FallbackValue=False}"
                     x:Uid="UndoButton"
                     Click="{x:Bind ViewModel.RequestIDEUndo}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Redo"
                     Icon="&#xE10D;"
                     x:Uid="RedoButton"
+                    IsEnabled="{x:Bind ViewModel.RedoAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestIDERedo}"/>
             </customCommandBar:CommandBarWithButtonsAnimations.PrimaryCommands>
             <customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>

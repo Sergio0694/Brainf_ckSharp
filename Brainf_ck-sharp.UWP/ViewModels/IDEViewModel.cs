@@ -66,6 +66,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         Messenger.Default.Register<ClearScreenMessage>(this, m => TryClearScreen());
                         Messenger.Default.Register<PlayScriptMessage>(this, m => PlayRequested?.Invoke(this, (m.StdinBuffer, m.Type == ScriptPlayType.Debug)));
                         Messenger.Default.Register<SaveSourceCodeRequestMessage>(this, m => ManageSaveCodeRequest(m.RequestType).Forget());
+                        Messenger.Default.Register<IDEUndoRedoRequestMessage>(this, m => ManageUndoRedoRequest(m.Operation));
                         Messenger.Default.Register<SourceCodeLoadingRequestedMessage>(this, m =>
                         {
                             _CategorizedCode = m.RequestedCode;
@@ -191,6 +192,60 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         }
 
         /// <summary>
+        /// Manages and executes an undo/redo request
+        /// </summary>
+        /// <param name="request">The requested operation</param>
+        private void ManageUndoRedoRequest(UndoRedoOperation request)
+        {
+            // Execute the requested operation, if possible
+            switch (request)
+            {
+                case UndoRedoOperation.Undo:
+                    if (_CanUndo) Document.Undo();
+                    break;
+                case UndoRedoOperation.Redo:
+                    if (_CanRedo) Document.Redo();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(request), request, null);
+            }
+
+            // Update the status
+            UpdateCanUndoRedoStatus();
+        }
+
+        // Indicates whether or not the document can undo the latest changes
+        private bool _CanUndo;
+
+        // Indicates whether or not the document can redo the latest undone changes
+        private bool _CanRedo;
+
+        /// <summary>
+        /// Updates the status of the undo and redo functions
+        /// </summary>
+        public void UpdateCanUndoRedoStatus()
+        {
+            // Get the updated status for the two features
+            bool
+                undo = Document.CanUndo(),
+                redo = Document.CanRedo();
+
+            // Send the messages if needed and update the local fields
+            if (_CanUndo != undo)
+            {
+                _CanUndo = undo;
+                Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.Undo, undo));
+            }
+            if (_CanRedo != redo)
+            {
+                _CanRedo = redo;
+                Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.Redo, redo));
+            }
+        }
+
+        #region Indentation info
+
+        /// <summary>
         /// Updates the indentation info for a given state
         /// </summary>
         /// <param name="brackets">The collection of brackets and their position in the current text</param>
@@ -259,6 +314,10 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             }
         }
 
+        #endregion
+
+        #region Git diff indicators
+
         /// <summary>
         /// Gets the items collection for the current instance
         /// </summary>
@@ -323,5 +382,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 diff--;
             }
         }
+
+        #endregion
     }
 }
