@@ -463,14 +463,27 @@ namespace Brainf_ck_sharp_UWP.Views
             EditBox.TextChanged -= EditBox_OnTextChanged;
             if (!overwrite) EditBox.Document.BeginUndoGroup();
 
-            // Paste and highlight the text
-            if (overwrite) EditBox.Document.Selection.SetRange(0, int.MaxValue);
-            EditBox.Document.Selection.SetText(TextSetOptions.None, code);
-            int start = EditBox.Document.Selection.StartPosition, end = EditBox.Document.Selection.EndPosition;
+            // Paste the text and get the target range
+            int start, end;
+            if (overwrite)
+            {
+                EditBox.Document.SetText(TextSetOptions.None, code);
+                start = 0;
+                end = code.Length;
+            }
+            else
+            {
+                EditBox.Document.Selection.SetText(TextSetOptions.None, code);
+                start = EditBox.Document.Selection.StartPosition;
+                end = EditBox.Document.Selection.EndPosition;
+            }
+
+            // Highlight the new text
             for (int i = start; i < end - 1; i++)
             {
                 ITextRange range = EditBox.Document.GetRange(i, i + 1);
-                range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(range.Character);
+                char c = range.Character;
+                range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(c);
             }
             if (overwrite) EditBox.Document.Selection.SetRange(0, 0);
             else EditBox.Document.Selection.StartPosition = end;

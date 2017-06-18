@@ -99,10 +99,14 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <param name="type">The requested save operation</param>
         private async Task ManageSaveCodeRequest(CodeSaveType type)
         {
+            // Get the text and the breakpoints
             Document.GetText(TextGetOptions.None, out String text);
             IReadOnlyCollection<int>
                 raw = BreakpointsExtractor(),
                 breakpoints = raw.Count > 0 ? raw : null;
+            if (text[text.Length - 1] == '\r') text = text.Substring(0, text.Length - 1); // Remove final '\r' to avoid addednew lines
+
+            // Save the file as requested
             switch (type)
             {
                 // Save an already existing file
