@@ -50,8 +50,17 @@ namespace Brainf_ck_sharp_UWP.Views
                 Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
             };
             ViewModel.CharInsertionRequested += ViewModel_CharInsertionRequested;
+            ViewModel.NewLineInsertionRequested += ViewModel_NewLineInsertionRequested;
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             _PreviousText = text;
+        }
+
+        // Inserts a new line at the current position
+        private void ViewModel_NewLineInsertionRequested(object sender, EventArgs e)
+        {
+            EditBox.Document.BeginUndoGroup();
+            EditBox.Document.Selection.SetText(TextSetOptions.None, "\r");
+            EditBox.Document.Selection.SetRange(EditBox.Document.Selection.StartPosition + 1, EditBox.Document.Selection.StartPosition + 1);
         }
 
         // Inserts a new character picked from the custom virtual keyboard

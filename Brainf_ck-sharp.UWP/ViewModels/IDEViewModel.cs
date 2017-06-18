@@ -25,6 +25,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 {
     public class IDEViewModel : ItemsCollectionViewModelBase<IDEIndentationLineInfo>
     {
+        #region Local fields
+
         // The current document that's linked to the view
         private readonly ITextDocument Document;
 
@@ -33,6 +35,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 
         // A function that retrieves the list of breakpoints currently present in the code
         private readonly Func<IReadOnlyCollection<int>> BreakpointsExtractor;
+
+        #endregion
 
         /// <summary>
         /// Creates a new instance to manage the IDE
@@ -67,6 +71,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         Messenger.Default.Register<PlayScriptMessage>(this, m => PlayRequested?.Invoke(this, (m.StdinBuffer, m.Type == ScriptPlayType.Debug)));
                         Messenger.Default.Register<SaveSourceCodeRequestMessage>(this, m => ManageSaveCodeRequest(m.RequestType).Forget());
                         Messenger.Default.Register<IDEUndoRedoRequestMessage>(this, m => ManageUndoRedoRequest(m.Operation));
+                        Messenger.Default.Register<IDENewLineRequestedMessage>(this, m => NewLineInsertionRequested?.Invoke(this, EventArgs.Empty));
                         Messenger.Default.Register<SourceCodeLoadingRequestedMessage>(this, m =>
                         {
                             _CategorizedCode = m.RequestedCode;
@@ -88,10 +93,34 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// </summary>
         public SourceCode LoadedCode => _CategorizedCode?.Code;
 
+        #region Events
+
         /// <summary>
         /// Raised whenever the current loaded source code changes
         /// </summary>
-        public event EventHandler<SourceCode> LoadedCodeChanged; 
+        public event EventHandler<SourceCode> LoadedCodeChanged;
+
+        /// <summary>
+        /// Raised whenever the user requests to play the current script
+        /// </summary>
+        public event EventHandler<(String Stdin, bool Debug)> PlayRequested;
+
+        /// <summary>
+        /// Raised whenever the user requests to add a new character with the virtual keyboard
+        /// </summary>
+        public event EventHandler<char> CharInsertionRequested;
+
+        /// <summary>
+        /// Raised whenever the user requests to insert a new '\r' character at the current position
+        /// </summary>
+        public event EventHandler NewLineInsertionRequested;
+
+        /// <summary>
+        /// Raised whenever the current text is cleared
+        /// </summary>
+        public event EventHandler TextCleared;
+
+        #endregion
 
         /// <summary>
         /// Saves the current source code in the database
@@ -139,11 +168,6 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             }
         }
 
-        /// <summary>
-        /// Raised whenever the user requests to play the current script
-        /// </summary>
-        public event EventHandler<(String Stdin, bool Debug)> PlayRequested;
-
         // Indicates whether or not the IDE contains at least a valid operator
         private bool _CanExecute;
 
@@ -172,16 +196,6 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 Messenger.Default.Send(new IDEStatusUpdateMessage(LocalizationManager.GetResource("Warning"), row, col, y, x, _CategorizedCode?.Code.Title));
             }
         }
-
-        /// <summary>
-        /// Raised whenever the user requests to add a new character with the virtual keyboard
-        /// </summary>
-        public event EventHandler<char> CharInsertionRequested; 
-
-        /// <summary>
-        /// Raised whenever the current text is cleared
-        /// </summary>
-        public event EventHandler TextCleared; 
 
         /// <summary>
         /// Clears the current content in the document

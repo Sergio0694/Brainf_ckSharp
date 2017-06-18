@@ -255,6 +255,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// </summary>
         public void RequestIDERedo() => Messenger.Default.Send(new IDEUndoRedoRequestMessage(UndoRedoOperation.Redo));
 
+        /// <summary>
+        /// Sends a message to the IDE to add a new '\r' character
+        /// </summary>
+        public void RequestAddIDENewLine() => Messenger.Default.Send(new IDENewLineRequestedMessage());
+
         #endregion
     }
 }

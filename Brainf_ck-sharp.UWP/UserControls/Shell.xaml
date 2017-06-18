@@ -223,6 +223,11 @@
                     Click="{x:Bind ViewModel.RequestDebug}"/>
                 <customCommandBar:CustomCommandBarSeparator/>
                 <customCommandBar:CustomCommandBarButton
+                    Label="New line"
+                    Icon="&#xE751;"
+                    x:Uid="NewLineButton"
+                    Click="{x:Bind ViewModel.RequestAddIDENewLine}"/>
+                <customCommandBar:CustomCommandBarButton
                     Label="Undo"
                     Icon="&#xE10E;"
                     IsEnabled="{x:Bind ViewModel.UndoAvailable, Mode=OneWay, FallbackValue=False}"

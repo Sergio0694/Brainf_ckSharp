@@ -402,4 +402,7 @@
   <data name="UndoButton.Label" xml:space="preserve">
     <value>Undo</value>
   </data>
+  <data name="NewLineButton.Label" xml:space="preserve">
+    <value>New line</value>
+  </data>
 </root>

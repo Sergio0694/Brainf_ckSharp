@@ -383,6 +383,10 @@
           <source>Undo</source>
           <target state="new">Undo</target>
         </trans-unit>
+        <trans-unit id="NewLineButton.Label" translate="yes" xml:space="preserve">
+          <source>New line</source>
+          <target state="new">New line</target>
+        </trans-unit>
       </group>
     </body>
   </file>
