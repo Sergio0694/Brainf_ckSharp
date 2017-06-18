@@ -384,14 +384,8 @@ namespace Brainf_ck_sharp_UWP.Views
                 ViewModel.UpdateIndentationInfo(_Brackets);
             }
 
-            // Move the cursor to the right position
-            Point selectionOffset = EditBox.ActualSelectionVerticalOffset;
-            CursorRectangle.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
-            CursorRectangle.SetVisualOffset(TranslationAxis.X, (float)(selectionOffset.X + 4));
-
-            // Update the visibility and the position of the cursor
-            CursorBorder.SetVisualOpacity(EditBox.Document.Selection.Length.Abs() > 0 ? 0 : 1);
-            CursorBorder.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 8 + EditBox.ActualSelectionVerticalOffset.Y));
+            // Update the cursor indicators
+            UpdateCursorRectangleAndIndicatorUI();
 
             // Notify the UI
             ViewModel.SendMessages(text);
@@ -405,6 +399,22 @@ namespace Brainf_ck_sharp_UWP.Views
             EditBox.TryScrollToSelection();
         }
 
+        /// <summary>
+        /// Updates the position of the rectangle that highlights the selected line and the custom cursor
+        /// </summary>
+        private void UpdateCursorRectangleAndIndicatorUI()
+        {
+            // Move the cursor to the right position
+            Point selectionOffset = EditBox.ActualSelectionVerticalOffset;
+            CursorRectangle.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
+            CursorRectangle.SetVisualOffset(TranslationAxis.X, (float)(selectionOffset.X + 4));
+
+            // Update the visibility and the position of the cursor
+            CursorBorder.SetVisualOpacity(EditBox.Document.Selection.Length.Abs() > 0 ? 0 : 1);
+            CursorBorder.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 8 + EditBox.ActualSelectionVerticalOffset.Y));
+        }
+
+        // Hides the custom cursor and highlights the line indicator
         private void EditBox_OnGotFocus(object sender, RoutedEventArgs e)
         {
             CursorAnimation.Stop();
@@ -412,6 +422,7 @@ namespace Brainf_ck_sharp_UWP.Views
             VisualStateManager.GoToState(this, "Focused", false);
         }
 
+        // Shows and animates the custom cursor and reduces the opacity of the selected line rectangle
         private void EditBox_OnLostFocus(object sender, RoutedEventArgs e)
         {
             CursorRectangle.Visibility = Visibility.Visible;
@@ -419,6 +430,7 @@ namespace Brainf_ck_sharp_UWP.Views
             VisualStateManager.GoToState(this, "Default", false);
         }
 
+        // Manually handles a paste operations within the IDE
         private async void EditBox_OnPaste(object sender, TextControlPasteEventArgs e)
         {
             // Retrieve the contents as plain text
@@ -474,6 +486,7 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code);
             ViewModel.SendMessages(code);
             ViewModel.UpdateCanUndoRedoStatus();
+            UpdateCursorRectangleAndIndicatorUI();
 
             // Restore the handlers
             EditBox.SelectionChanged += EditBox_OnSelectionChanged;
