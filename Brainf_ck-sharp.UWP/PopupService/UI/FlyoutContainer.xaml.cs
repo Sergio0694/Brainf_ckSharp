@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -39,7 +40,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         private AttachedStaticCompositionEffect<Border> _BackgroundAcrylic;
 
         // The in-app acrylic brush for the background of the popup
-        private AttachedCompositeAnimatableCompositionEffect<Border> _LoadingAcrylic;
+        private AttachedAnimatableCompositionEffect<Border> _LoadingAcrylic;
 
         // Initializes the acrylic effect
         private async void FlyoutContainer_Loaded(object sender, RoutedEventArgs e)
@@ -52,7 +53,9 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             // Loading effect if needed
             if (_Content is IBusyWorkingContent)
             {
-                _LoadingAcrylic = await LoadingBorder.GetAttachedAnimatableBlurAndSaturationEffectAsync(4, 0, 1, 0.8f, true);
+                _LoadingAcrylic = await LoadingBorder.GetAttachedAnimatableAcrylicEffectAsync(LoadingBorder,
+                    6, 0, false, Color.FromArgb(byte.MaxValue, 0x05, 0x05, 0x05), 0.2f,
+                    LoadingCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
                 LoadingBorder.Visibility = Visibility.Collapsed;
             }
         }
@@ -121,11 +124,21 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
                 worker.WorkingStateChanged += (_, e) =>
                 {
                     // Blur effect
-                    if (e) LoadingBorder.Visibility = Visibility.Visible;
-                    _LoadingAcrylic?.AnimateAsync(e ? FixedAnimationType.In : FixedAnimationType.Out, TimeSpan.FromMilliseconds(400)).ContinueWith(t =>
+                    if (e)
                     {
-                        if (!e) LoadingBorder.Visibility = Visibility.Collapsed;
-                    });
+                        LoadingBorder.SetVisualOpacity(0);
+                        LoadingBorder.Visibility = Visibility.Visible;
+                        LoadingBorder.StartCompositionFadeAnimation(null, 1, 200, null, EasingFunctionNames.Linear);
+                    }
+                    _LoadingAcrylic?.AnimateAsync(e ? FixedAnimationType.In : FixedAnimationType.Out, TimeSpan.FromMilliseconds(500));
+                    if (!e)
+                    {
+                        Task.Delay(300).ContinueWith(t =>
+                        {
+                            LoadingBorder.StartCompositionFadeAnimation(null, 0, 200, null, EasingFunctionNames.Linear,
+                                () => LoadingBorder.Visibility = Visibility.Collapsed);
+                        }, TaskScheduler.FromCurrentSynchronizationContext());
+                    }
 
                     // Progress ring
                     if (e)

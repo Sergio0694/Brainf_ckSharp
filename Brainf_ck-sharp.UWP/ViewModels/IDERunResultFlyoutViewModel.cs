@@ -89,6 +89,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             await Task.Delay(500);
             Session = await Task.Run(() => runToCompletion ? Session.RunToCompletion() : Session.Continue());
             await LoadGroupsAsync();
+            RaisePropertyChanged(() => BreakpointMode);
             await Task.Delay(500);
             LoadingStateChanged?.Invoke(this, false);
         }

@@ -107,12 +107,17 @@
         
         <!--Loading indicator-->
         <Border
-            Grid.Row="0"
-            Grid.RowSpan="3"
+            Grid.Row="1"
+            Grid.RowSpan="2"
             x:Name="LoadingBorder"
             IsHitTestVisible="False"
             Canvas.ZIndex="10"
             Margin="1"/>
+        <xaml:CanvasControl
+            Grid.Row="0"
+            x:Name="LoadingCanvas"
+            Opacity="0"
+            IsHitTestVisible="False"/>
         <ProgressRing
             Canvas.ZIndex="10"
             IsHitTestVisible="False"
