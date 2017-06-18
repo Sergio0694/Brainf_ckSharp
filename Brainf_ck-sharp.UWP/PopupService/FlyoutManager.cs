@@ -354,19 +354,9 @@ namespace Brainf_ck_sharp_UWP.PopupService
             Grid parent = new Grid();
             Grid grid = new Grid();
             parent.Children.Add(grid);
-            Border
-                borderRight = new Border(),
-                borderTop = new Border(),
-                borderLeft = new Border(),
-                borderBottom = new Border();
-            grid.Children.Add(borderRight);
-            grid.Children.Add(borderTop);
-            grid.Children.Add(borderLeft);
-            grid.Children.Add(borderBottom);
-            grid.Children.Add(content);
 
             // Setup the shadow function
-            void SetupShadowEdge(Border border, float x, float y)
+            void SetupShadowEdge(float x, float y)
             {
                 // Setup the shadow
                 Visual elementVisual = ElementCompositionPreview.GetElementVisual(content);
@@ -381,14 +371,20 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 InsetClip clip = compositor.CreateInsetClip();
                 clip.Offset = new Vector2(x, y);
                 visual.Clip = clip;
+                Border border = new Border();
+                grid.Children.Add(border);
                 ElementCompositionPreview.SetElementChildVisual(border, visual);
             }
 
-            // Build the shadow frame
-            SetupShadowEdge(borderRight, (float)content.Width, 0);
-            SetupShadowEdge(borderLeft, -(float)content.Width, 0);
-            SetupShadowEdge(borderTop, 0, -(float)content.Height);
-            SetupShadowEdge(borderBottom, 0, (float)content.Height);
+            // Build the shadow frame and insert the actual popup content
+            foreach ((float x, float y) in new (float, float)[]
+            {
+                ((float)content.Width, 0),
+                (-(float)content.Width, 0),
+                (0, -(float)content.Height),
+                (0, (float)content.Height)
+            }) SetupShadowEdge(x, y);
+            grid.Children.Add(content);
 
             // Assign the popup content
             popup.Child = parent;
