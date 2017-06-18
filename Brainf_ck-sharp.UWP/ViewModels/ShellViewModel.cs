@@ -2,14 +2,20 @@
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.ViewModels
 {
     public class ShellViewModel : ViewModelBase
     {
-        public ShellViewModel()
+        // A function that retrieves the current stdin buffer to use
+        [NotNull]
+        private readonly Func<String> StdinBufferExtractor;
+
+        public ShellViewModel([NotNull] Func<String> stdinExtractor)
         {
-            Messenger.Default.Register<AvailableActionStatusChangedMessage>(this, ProcessConsoleActionsStatusChangedMessage);
+            StdinBufferExtractor = stdinExtractor;
+            Messenger.Default.Register<AvailableActionStatusChangedMessage>(this, ProcessAvailableActionsStatusChangedMessage);
             Messenger.Default.Register<IDEExecutableStatusChangedMessage>(this, m => IDECodeAvailable = m.Executable);
             Messenger.Default.Register< DebugStatusChangedMessage>(this, m =>
             {
@@ -27,7 +33,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         }
 
         // Enables or disables the console buttons when needed
-        private void ProcessConsoleActionsStatusChangedMessage(AvailableActionStatusChangedMessage message)
+        private void ProcessAvailableActionsStatusChangedMessage(AvailableActionStatusChangedMessage message)
         {
             switch (message.Action)
             {
@@ -53,6 +59,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     throw new ArgumentOutOfRangeException();
             }
         }
+
+        #region Parameters
 
         private bool _RepeatLastScriptAvailable;
 
@@ -163,5 +171,73 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             get => _SaveAsAvailable;
             private set => Set(ref _SaveAsAvailable, value);
         }
+
+        #endregion
+
+        #region Messages forwarding
+
+        // Retrieves the current stdin buffer and then forwards the appropriate message
+        private void SendPlayRequestMessage(ScriptPlayType type)
+        {
+            String stdin = StdinBufferExtractor();
+            Messenger.Default.Send(new PlayScriptMessage(type, stdin));
+        }
+
+        /// <summary>
+        /// Sends a play request to the console or the IDE
+        /// </summary>
+        public void RequestPlay() => SendPlayRequestMessage(ScriptPlayType.Default);
+
+        /// <summary>
+        /// Sends a debug request to the IDE, if there is at least an active breakpoint
+        /// </summary>
+        public void RequestDebug() => SendPlayRequestMessage(ScriptPlayType.Debug);
+
+        /// <summary>
+        /// Sends a message to the console to repeat the last available script
+        /// </summary>
+        public void RequestRepeatLastConsoleScript() => SendPlayRequestMessage(ScriptPlayType.RepeatedCommand);
+
+        /// <summary>
+        /// Sends a message to clear the current command in the console
+        /// </summary>
+        public void RequestClearConsoleLine() => Messenger.Default.Send(new ClearConsoleLineMessage());
+
+        /// <summary>
+        /// Sends a message to delete the last character in the current console command
+        /// </summary>
+        public void RequestUndoConsoleCharacter() => Messenger.Default.Send(new UndoConsoleCharacterMessage());
+
+        /// <summary>
+        /// Sends a message to restart the console and reset the current machine state
+        /// </summary>
+        public void RequestRestartConsole() => Messenger.Default.Send(new RestartConsoleMessage());
+
+        /// <summary>
+        /// Sends a message to either the console or the IDE to clear the current content
+        /// </summary>
+        public void RequestClearScreen() => Messenger.Default.Send(new ClearScreenMessage());
+
+        /// <summary>
+        /// Sends a message to the IDE to save the current code that's being edited
+        /// </summary>
+        public void RequestSaveSourceCode() => Messenger.Default.Send(new SaveSourceCodeRequestMessage(CodeSaveType.Save));
+
+        /// <summary>
+        /// Sends a message to the IDE to save the current code as a new document
+        /// </summary>
+        public void RequestSaveSourceCodeAs() => Messenger.Default.Send(new SaveSourceCodeRequestMessage(CodeSaveType.SaveAs));
+
+        /// <summary>
+        /// Sends a message to the IDE to undo the latest change to the code
+        /// </summary>
+        public void RequestIDEUndo() => Messenger.Default.Send(new IDEUndoRedoRequestMessage(UndoRedoOperation.Undo));
+
+        /// <summary>
+        /// Sends a message to the IDE to redo the latest change to the code
+        /// </summary>
+        public void RequestIDERedo() => Messenger.Default.Send(new IDEUndoRedoRequestMessage(UndoRedoOperation.Redo));
+
+        #endregion
     }
 }

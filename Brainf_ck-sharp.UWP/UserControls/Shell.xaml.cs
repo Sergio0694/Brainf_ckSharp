@@ -39,7 +39,12 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 _KeyboardEffect?.AdjustSize();
             };
             this.InitializeComponent();
-            DataContext = new ShellViewModel();
+            DataContext = new ShellViewModel(() =>
+            {
+                String stdin = StdinHeader.StdinBuffer;
+                StdinHeader.ResetStdin();
+                return stdin;
+            });
             Console.ViewModel.IsEnabled = true;
 
             // Hide the title placeholder if needed
@@ -118,20 +123,18 @@ namespace Brainf_ck_sharp_UWP.UserControls
 
         #endregion
 
-        // Sends a message to request to execute the current script
-        private void SendPlayRequestMessage(ScriptPlayType type)
+        // Updates the UI and the view models when the user changes the current page
+        private void PivotControl_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            String stdin = StdinHeader.StdinBuffer;
-            StdinHeader.ResetStdin();
-            Messenger.Default.Send(new PlayScriptMessage(type, stdin));
+            int index = sender.To<Pivot>().SelectedIndex;
+            SharedCommandBar.SwitchContent(index == 0);
+            Console.ViewModel.IsEnabled = index == 0;
+            IDE.ViewModel.IsEnabled = index == 1;
         }
 
-        public void RequestPlay() => SendPlayRequestMessage(ScriptPlayType.Default);
-
-        public void RequestDebug() => SendPlayRequestMessage(ScriptPlayType.Debug);
-
-        public void RequestRepeatLastConsoleScript() => SendPlayRequestMessage(ScriptPlayType.RepeatedCommand);
-
+        /// <summary>
+        /// Shows the current console memory state in a flyout
+        /// </summary>
         public void RequestShowMemoryState()
         {
             IReadonlyTouringMachineState source = Console.ViewModel.State;
@@ -143,14 +146,9 @@ namespace Brainf_ck_sharp_UWP.UserControls
             FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("MemoryStateTitle"), viewer).Forget();
         }
 
-        public void RequestClearConsoleLine() => Messenger.Default.Send(new ClearConsoleLineMessage());
-
-        public void RequestUndoConsoleCharacter() => Messenger.Default.Send(new UndoConsoleCharacterMessage());
-
-        public void RequestRestartConsole() => Messenger.Default.Send(new RestartConsoleMessage());
-
-        public void RequestClearScreen() => Messenger.Default.Send(new ClearScreenMessage());
-
+        /// <summary>
+        /// Shows the flyout with the guide on the first 255 Unicode characters and their values
+        /// </summary>
         public void RequestShowUnicodeCharacters()
         {
             UnicodeCharactersGuideFlyout flyout = new UnicodeCharactersGuideFlyout();
@@ -158,14 +156,9 @@ namespace Brainf_ck_sharp_UWP.UserControls
             FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UnicodeTitle"), flyout).Forget();
         }
 
-        private void PivotControl_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            int index = sender.To<Pivot>().SelectedIndex;
-            SharedCommandBar.SwitchContent(index == 0);
-            Console.ViewModel.IsEnabled = index == 0;
-            IDE.ViewModel.IsEnabled = index == 1;
-        }
-
+        /// <summary>
+        /// Shows the current code library to the user
+        /// </summary>
         public async void RequestShowCodeLibrary()
         {
             LocalSourceCodesBrowserFlyout flyout = new LocalSourceCodesBrowserFlyout();
@@ -174,13 +167,5 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 LocalizationManager.GetResource("CodeLibrary"), flyout, new Thickness());
             if (result) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(result.Value));
         }
-
-        public void RequestSaveSourceCode() => Messenger.Default.Send(new SaveSourceCodeRequestMessage(CodeSaveType.Save));
-
-        public void RequestSaveSourceCodeAs() => Messenger.Default.Send(new SaveSourceCodeRequestMessage(CodeSaveType.SaveAs));
-
-        public void RequestIDEUndo() => Messenger.Default.Send(new IDEUndoRedoRequestMessage(UndoRedoOperation.Undo));
-
-        public void RequestIDERedo() => Messenger.Default.Send(new IDEUndoRedoRequestMessage(UndoRedoOperation.Redo));
     }
 }
