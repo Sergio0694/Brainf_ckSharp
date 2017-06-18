@@ -49,8 +49,17 @@ namespace Brainf_ck_sharp_UWP.Views
                 ClearBreakpoints();
                 Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
             };
+            ViewModel.CharInsertionRequested += ViewModel_CharInsertionRequested;
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             _PreviousText = text;
+        }
+
+        // Inserts a new character picked from the custom virtual keyboard
+        private void ViewModel_CharInsertionRequested(object sender, char e)
+        {
+            EditBox.Document.BeginUndoGroup();
+            EditBox.Document.Selection.SetText(TextSetOptions.None, e.ToString());
+            EditBox.Document.Selection.SetRange(EditBox.Document.Selection.StartPosition + 1, EditBox.Document.Selection.StartPosition + 1);
         }
 
         /// <summary>
@@ -286,7 +295,6 @@ namespace Brainf_ck_sharp_UWP.Views
             // Unsubscribe from the text events and batch the updates
             EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
             EditBox.TextChanged -= EditBox_OnTextChanged;
-            EditBox.Document.BatchDisplayUpdates();
 
             // Get the current text and backup the current index
             EditBox.Document.GetText(TextGetOptions.None, out String text);
@@ -362,11 +370,7 @@ namespace Brainf_ck_sharp_UWP.Views
             }
 
             // Display the text updates
-            int batch;
-            do
-            {
-                batch = EditBox.Document.ApplyDisplayUpdates();
-            } while (batch != 0);
+            EditBox.Document.EndUndoGroup();
 
             // Get the updated text
             EditBox.Document.GetText(TextGetOptions.None, out text);
@@ -598,5 +602,8 @@ namespace Brainf_ck_sharp_UWP.Views
             foreach (FrameworkElement element in BreakLinesCanvas.Children.Cast<FrameworkElement>().ToArray())
                 element.Width = e.NewSize.Width;
         }
+
+        // Begins a new undo group when the user presses a keyboard key (before the text is actually changed)
+        private void EditBox_OnKeyDown(object sender, KeyRoutedEventArgs e) => EditBox.Document.BeginUndoGroup();
     }
 }

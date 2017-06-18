@@ -242,7 +242,7 @@
             IsHitTestVisible="False"
             SizeChanged="BreakLinesCanvas_OnSizeChanged"/>
 
-            <!--Code box-->
+        <!--Code box-->
         <inheritedControls:RichEditBoxWithVerticalOffsetInfo
             Grid.Column="4"
             Style="{StaticResource TransparentEditBox}"
@@ -253,6 +253,7 @@
             ClipboardCopyFormat="PlainText"
             TextChanged="EditBox_OnTextChanged"
             SelectionChanged="EditBox_OnSelectionChanged"
+            KeyDown="EditBox_OnKeyDown"
             GotFocus="EditBox_OnGotFocus"
             LostFocus="EditBox_OnLostFocus"
             Paste="EditBox_OnPaste"

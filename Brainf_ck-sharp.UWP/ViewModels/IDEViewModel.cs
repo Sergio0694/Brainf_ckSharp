@@ -62,7 +62,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 {
                     if (value)
                     {
-                        Messenger.Default.Register<OperatorAddedMessage>(this, op => InsertSingleCharacter(op.Operator));
+                        Messenger.Default.Register<OperatorAddedMessage>(this, op => CharInsertionRequested?.Invoke(this, op.Operator));
                         Messenger.Default.Register<ClearScreenMessage>(this, m => TryClearScreen());
                         Messenger.Default.Register<PlayScriptMessage>(this, m => PlayRequested?.Invoke(this, (m.StdinBuffer, m.Type == ScriptPlayType.Debug)));
                         Messenger.Default.Register<SaveSourceCodeRequestMessage>(this, m => ManageSaveCodeRequest(m.RequestType).Forget());
@@ -169,21 +169,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         }
 
         /// <summary>
-        /// Inserts a new character from the virtual keyboard and scrolls the current line into view, if needed
+        /// Raised whenever the user requests to add a new character with the virtual keyboard
         /// </summary>
-        /// <param name="c">The received character</param>
-        private void InsertSingleCharacter(char c)
-        {
-            try
-            {
-                Document.Selection.SetText(TextSetOptions.None, c.ToString());
-                Document.Selection.SetRange(Document.Selection.StartPosition + 1, Document.Selection.StartPosition + 1);
-            }
-            catch
-            {
-                //
-            }
-        }
+        public event EventHandler<char> CharInsertionRequested; 
 
         /// <summary>
         /// Raised whenever the current text is cleared
