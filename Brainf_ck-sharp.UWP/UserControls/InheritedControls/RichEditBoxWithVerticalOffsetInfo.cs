@@ -100,5 +100,15 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
             if (current < 0) _TemplateScrollViewer.ChangeView(null, _TemplateScrollViewer.VerticalOffset + current, null, false);
             else if (current > viewport) _TemplateScrollViewer.ChangeView(null, _TemplateScrollViewer.VerticalOffset + (current - viewport) + 32, null, false);
         }
+
+        /// <summary>
+        /// Resets the current undo stack so that pressing Ctrl + Z can no longer restore previous states
+        /// </summary>
+        public void ResetUndoStack()
+        {
+            uint depth = Document.UndoLimit;
+            Document.UndoLimit = 0;
+            Document.UndoLimit = depth;
+        }
     }
 }

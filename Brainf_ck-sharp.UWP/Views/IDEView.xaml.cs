@@ -45,6 +45,7 @@ namespace Brainf_ck_sharp_UWP.Views
             };
             ViewModel.TextCleared += (_, e) =>
             {
+                EditBox.ResetUndoStack();
                 ClearBreakpoints();
                 Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
             };
@@ -443,7 +444,7 @@ namespace Brainf_ck_sharp_UWP.Views
             // Disable the handlers
             EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
             EditBox.TextChanged -= EditBox_OnTextChanged;
-            EditBox.Document.BatchDisplayUpdates();
+            if (!overwrite) EditBox.Document.BeginUndoGroup();
 
             // Paste and highlight the text
             if (overwrite) EditBox.Document.Selection.SetRange(0, int.MaxValue);
@@ -458,7 +459,8 @@ namespace Brainf_ck_sharp_UWP.Views
             else EditBox.Document.Selection.StartPosition = end;
 
             // Refresh the UI
-            EditBox.Document.ApplyDisplayUpdates();
+            if (overwrite) EditBox.ResetUndoStack();
+            else EditBox.Document.EndUndoGroup();
             EditBox.Document.GetText(TextGetOptions.None, out code);
             _PreviousText = code;
             DrawLineNumbers();
