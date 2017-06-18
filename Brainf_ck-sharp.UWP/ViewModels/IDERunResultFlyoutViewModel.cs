@@ -73,6 +73,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 IndexedModelWithValue<Brainf_ckMemoryCell>[] state = IndexedModelWithValue<Brainf_ckMemoryCell>.New(Session.CurrentResult.MachineState).ToArray();
                 source.Add(new JumpListGroup<IDEResultSection, IDEResultSectionDataBase>(
                     IDEResultSection.MemoryState, new[] { new IDEResultSectionStateData(state) }));
+
+                // Add the statistics
+                source.Add(GroupFromSection(IDEResultSection.Stats));
                 return source;
             });
         }

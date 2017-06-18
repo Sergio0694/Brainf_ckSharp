@@ -202,6 +202,9 @@
     <Compile Include="UserControls\BottomEdgeInfoBar.xaml.cs">
       <DependentUpon>BottomEdgeInfoBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\CustomControls\ScriptStatisticsDisplayControl.xaml.cs">
+      <DependentUpon>ScriptStatisticsDisplayControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\CustomControls\IDESessionBreakpointOptionControl.xaml.cs">
       <DependentUpon>IDESessionBreakpointOptionControl.xaml</DependentUpon>
     </Compile>
@@ -375,6 +378,10 @@
     <Page Include="UserControls\BottomEdgeInfoBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CustomControls\ScriptStatisticsDisplayControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\CustomControls\IDESessionBreakpointOptionControl.xaml">
       <Generator>MSBuild:Compile</Generator>

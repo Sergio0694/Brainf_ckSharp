@@ -25,6 +25,8 @@ namespace Brainf_ck_sharp_UWP.TemplateSelectors
                     case IDEResultSectionSessionData section when section.Section == IDEResultSection.ErrorLocation ||
                         section.Section == IDEResultSection.BreakpointReached:
                         return parent.FindResource<DataTemplate>("StopPositionTemplate");
+                    case IDEResultSectionSessionData section when section.Section == IDEResultSection.Stats:
+                        return parent.FindResource<DataTemplate>("StatisticsTemplate");
                     case IDEResultExceptionInfoData _:
                         return parent.FindResource<DataTemplate>("ExceptionInfoTemplate");
                     case IDEResultSectionStateData _:

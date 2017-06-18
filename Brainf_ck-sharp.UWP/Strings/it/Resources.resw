@@ -288,4 +288,7 @@
   <data name="HeaderComments" xml:space="preserve">
     <value>Header commentato</value>
   </data>
+  <data name="Debug" xml:space="preserve">
+    <value>Debug</value>
+  </data>
 </root>

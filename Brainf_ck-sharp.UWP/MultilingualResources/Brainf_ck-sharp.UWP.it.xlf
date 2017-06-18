@@ -373,7 +373,7 @@
         </trans-unit>
         <trans-unit id="Debug" translate="yes" xml:space="preserve">
           <source>Debug</source>
-          <target state="new">Debug</target>
+          <target state="translated">Debug</target>
         </trans-unit>
       </group>
     </body>
