@@ -24,8 +24,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
         // Initialize the effect brush
         private async void VirtualArrowsKeyboardControl_Loaded(object sender, RoutedEventArgs e)
         {
-            _BorderEffect = await EffectBorder.GetAttachedInAppSemiAcrylicEffectAsync(EffectBorder, 8, 800,
-                Color.FromArgb(byte.MaxValue, 30, 30, 30), 0.6f,
+            _BorderEffect = await EffectBorder.GetAttachedInAppSemiAcrylicEffectAsync(EffectBorder, 6, 600,
+                Color.FromArgb(byte.MaxValue, 0x1A, 0x1A, 0x1A), 0.6f,
                 Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
         }
 

@@ -285,7 +285,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="content">The control to show</param>
         /// <param name="rect">The target area to try not to cover</param>
         /// <param name="tryCenter">Indicates whether or not to try to center the popup to the source control</param>
-        public static Popup ShowCustomContextFlyoutAsync([NotNull] FrameworkElement content, Rect rect, bool tryCenter = false)
+        public static void ShowCustomContextFlyout([NotNull] FrameworkElement content, Rect rect, bool tryCenter = false)
         {
             // Calculate the target size
             content.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
@@ -354,28 +354,48 @@ namespace Brainf_ck_sharp_UWP.PopupService
             Grid parent = new Grid();
             Grid grid = new Grid();
             parent.Children.Add(grid);
-            Border border = new Border();
-            border.SetVisualOpacity(0);
-            grid.Children.Add(border);
+            Border
+                borderRight = new Border(),
+                borderTop = new Border(),
+                borderLeft = new Border(),
+                borderBottom = new Border();
+            grid.Children.Add(borderRight);
+            grid.Children.Add(borderTop);
+            grid.Children.Add(borderLeft);
+            grid.Children.Add(borderBottom);
             grid.Children.Add(content);
 
-            // Prepare the shadow for the popup content
-            Visual elementVisual = ElementCompositionPreview.GetElementVisual(content);
-            Compositor compositor = elementVisual.Compositor;
-            SpriteVisual visual = compositor.CreateSpriteVisual();
-            DropShadow shadow = compositor.CreateDropShadow();
-            visual.Shadow = shadow;
-            visual.Size = new Vector2((float)content.Width + 1, (float)content.Height + 1);
-            visual.Offset = new Vector3(-0.5f, -0.5f, 0);
-            ElementCompositionPreview.SetElementChildVisual(border, visual);
+            // Setup the shadow function
+            void SetupShadowEdge(Border border, float x, float y)
+            {
+                // Setup the shadow
+                Visual elementVisual = ElementCompositionPreview.GetElementVisual(content);
+                Compositor compositor = elementVisual.Compositor;
+                SpriteVisual visual = compositor.CreateSpriteVisual();
+                DropShadow shadow = compositor.CreateDropShadow();
+                visual.Shadow = shadow;
+                visual.Size = new Vector2((float)content.Width + 1, (float)content.Height + 1);
+                visual.Offset = new Vector3(-0.5f, -0.5f, 0);
+
+                // Clip it and add it to the visual tree
+                InsetClip clip = compositor.CreateInsetClip();
+                clip.Offset = new Vector2(x, y);
+                visual.Clip = clip;
+                ElementCompositionPreview.SetElementChildVisual(border, visual);
+            }
+
+            // Build the shadow frame
+            SetupShadowEdge(borderRight, (float)content.Width, 0);
+            SetupShadowEdge(borderLeft, -(float)content.Width, 0);
+            SetupShadowEdge(borderTop, 0, -(float)content.Height);
+            SetupShadowEdge(borderBottom, 0, (float)content.Height);
 
             // Assign the popup content
             popup.Child = parent;
             grid.SetVisualOpacity(0);
             popup.IsOpen = true;
             grid.StartCompositionFadeSlideAnimation(0, 1, TranslationAxis.Y, 20, 0, 200, null, null, EasingFunctionNames.CircleEaseOut);
-            border.StartCompositionFadeAnimation(0, 1, 200, null, EasingFunctionNames.Linear);
-            return popup;
+            grid.SetCompositionFadeSlideImplicitAnimation(ImplicitAnimationType.Hide, 1, 0, TranslationAxis.Y, 0, 8, 250, null, null, EasingFunctionNames.CircleEaseOut);
         }
     }
 }
