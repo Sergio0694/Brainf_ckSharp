@@ -53,8 +53,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
         // In-app products
         private const String CoffeeInAppStoreId = "9mtm2n891932";
         private const String PresentInAppStoreId = "9ntlgb7lh7kq";
-        private const String DonateInAppStoreId = "";
-        private const String VIPSupportInAppStoreId = "";
+        private const String DonateInAppStoreId = "9mvdsn65qdgh";
+        private const String VIPSupportInAppStoreId = "9p4ws1x7h5s8";
 
         /// <summary>
         /// Processes a donation in the Store
