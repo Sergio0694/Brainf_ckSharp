@@ -467,6 +467,18 @@
           <source>The Store generated a connection error when trying to process the purchase, try again</source>
           <target state="translated">Lo Store ha avuto un problema di connessione durante l'acquisto, prova di nuovo</target>
         </trans-unit>
+        <trans-unit id="DonationCompletedBody" translate="yes" xml:space="preserve">
+          <source>Thank you so much for supporting Brainf*ck#!</source>
+          <target state="translated">Grazie di cuore per il tuo supporto a Brainf*ck#!</target>
+        </trans-unit>
+        <trans-unit id="PurchaseCanceled" translate="yes" xml:space="preserve">
+          <source>Purchase canceled</source>
+          <target state="translated">Donazione annullata</target>
+        </trans-unit>
+        <trans-unit id="PurchaseCanceledBody" translate="yes" xml:space="preserve">
+          <source>The in-app purchase has not been completed</source>
+          <target state="translated">L'acquisto in-app non è stato completato</target>
+        </trans-unit>
       </group>
     </body>
   </file>

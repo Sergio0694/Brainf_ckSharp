@@ -51,8 +51,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
         }
 
         // In-app products
-        private const String CoffeeInAppStoreId = ""; // TODO
-        private const String PresentInAppStoreId = "";
+        private const String CoffeeInAppStoreId = "9mtm2n891932";
+        private const String PresentInAppStoreId = "9ntlgb7lh7kq";
         private const String DonateInAppStoreId = "";
         private const String VIPSupportInAppStoreId = "";
 
@@ -66,10 +66,10 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
             String id;
             switch (option)
             {
-                case 1: id = CoffeeInAppStoreId; break;
-                case 2: id = PresentInAppStoreId; break;
-                case 3: id = DonateInAppStoreId; break;
-                case 4: id = VIPSupportInAppStoreId; break;
+                case 0: id = CoffeeInAppStoreId; break;
+                case 1: id = PresentInAppStoreId; break;
+                case 2: id = DonateInAppStoreId; break;
+                case 3: id = VIPSupportInAppStoreId; break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -97,7 +97,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
             switch (result.Status)
             {
                 case StorePurchaseStatus.Succeeded:
-                    NotificationsManager.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("DonationCompleted"), "s", NotificationType.Default);
+                    NotificationsManager.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("DonationCompleted"), 
+                        LocalizationManager.GetResource("DonationCompletedBody"), NotificationType.Default);
                     store.ReportConsumableFulfillmentAsync(id, 1, Guid.NewGuid()).AsTask().Forget();
                     break;
                 case StorePurchaseStatus.NotPurchased:

@@ -447,8 +447,17 @@
   <data name="DonationCompleted" xml:space="preserve">
     <value>Donation completed</value>
   </data>
+  <data name="DonationCompletedBody" xml:space="preserve">
+    <value>Thank you so much for supporting Brainf*ck#!</value>
+  </data>
   <data name="DonationErrorBody" xml:space="preserve">
     <value>Something went wrong while trying to make the donation, try again later</value>
+  </data>
+  <data name="PurchaseCanceled" xml:space="preserve">
+    <value>Purchase canceled</value>
+  </data>
+  <data name="PurchaseCanceledBody" xml:space="preserve">
+    <value>The in-app purchase has not been completed</value>
   </data>
   <data name="RateStoreBlock.Text" xml:space="preserve">
     <value>Rate in the Store</value>

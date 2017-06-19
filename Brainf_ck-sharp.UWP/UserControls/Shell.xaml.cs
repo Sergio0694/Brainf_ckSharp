@@ -5,6 +5,7 @@ using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp.MemoryState;
@@ -38,8 +39,16 @@ namespace Brainf_ck_sharp_UWP.UserControls
             this.Loaded += Shell_Loaded;
             this.SizeChanged += (s, e) =>
             {
+                // Default effects
                 _HeaderEffect?.AdjustSize();
                 _KeyboardEffect?.AdjustSize();
+
+                // Loading popup, if present
+                if (_LoadingPopup?.Child is LoadingPopupControl child)
+                {
+                    child.Width = e.NewSize.Width;
+                    child.Height = e.NewSize.Height;
+                }
             };
             this.InitializeComponent();
             DataContext = new ShellViewModel(() =>
@@ -61,11 +70,42 @@ namespace Brainf_ck_sharp_UWP.UserControls
             // Flyout management
             Messenger.Default.Register<FlyoutOpenedMessage>(this, m => ManageFlyoutUI(true));
             Messenger.Default.Register<FlyoutClosedNotificationMessage>(this, m => ManageFlyoutUI(false));
+            Messenger.Default.Register<AppLoadingStatusChangedMessage>(this, m => ManageLoadingUI(m.Loading));
         }
 
         public ShellViewModel ViewModel => DataContext.To<ShellViewModel>();
 
         #region UI
+
+        // The current loading popup
+        private Popup _LoadingPopup;
+
+        // Manages the loading UI
+        private async void ManageLoadingUI(bool loading)
+        {
+            // Prepare and open a popup to cover the UI while the app is loading
+            if (loading)
+            {
+                LoadingPopupControl control = new LoadingPopupControl();
+                Popup popup = new Popup { Child = control };
+                control.Height = ActualHeight;
+                control.Width = ActualWidth;
+                control.SetVisualOpacity(0);
+                popup.IsOpen = true;
+                control.StartCompositionFadeAnimation(null, 1, 200, null, EasingFunctionNames.Linear);
+                _LoadingPopup = popup;
+            }
+            else
+            {
+                // Hide the popup if present
+                if (_LoadingPopup?.Child is LoadingPopupControl child)
+                {
+                    await child.StartCompositionFadeAnimationAsync(null, 0, 200, null, EasingFunctionNames.Linear);
+                    _LoadingPopup.IsOpen = false;
+                    _LoadingPopup = null;
+                }
+            }
+        }
 
         // Adjusts the UI when a flyout is displayed in the app
         private void ManageFlyoutUI(bool shown)

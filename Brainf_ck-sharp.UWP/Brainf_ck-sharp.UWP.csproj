@@ -230,6 +230,9 @@
     <Compile Include="UserControls\Flyouts\DevInfo\DevSupportPickerFlyout.xaml.cs">
       <DependentUpon>DevSupportPickerFlyout.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Flyouts\LoadingPopupControl.xaml.cs">
+      <DependentUpon>LoadingPopupControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Flyouts\LocalSourceCodesBrowserFlyout.xaml.cs">
       <DependentUpon>LocalSourceCodesBrowserFlyout.xaml</DependentUpon>
     </Compile>
@@ -478,6 +481,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Flyouts\IDERunResultFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\LoadingPopupControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

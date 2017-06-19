@@ -360,4 +360,13 @@
   <data name="StoreConnectionErrorBody" xml:space="preserve">
     <value>Lo Store ha avuto un problema di connessione durante l'acquisto, prova di nuovo</value>
   </data>
+  <data name="DonationCompletedBody" xml:space="preserve">
+    <value>Grazie di cuore per il tuo supporto a Brainf*ck#!</value>
+  </data>
+  <data name="PurchaseCanceled" xml:space="preserve">
+    <value>Donazione annullata</value>
+  </data>
+  <data name="PurchaseCanceledBody" xml:space="preserve">
+    <value>L'acquisto in-app non è stato completato</value>
+  </data>
 </root>
