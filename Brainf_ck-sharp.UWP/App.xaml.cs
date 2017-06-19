@@ -1,4 +1,5 @@
-﻿using Windows.ApplicationModel;
+﻿using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.UI.ViewManagement;
@@ -6,6 +7,7 @@ using Windows.UI.Xaml;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Resources;
+using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.UserControls;
 
 namespace Brainf_ck_sharp_UWP
@@ -61,6 +63,9 @@ namespace Brainf_ck_sharp_UWP
 
                 // Posizionare il frame nella finestra corrente
                 Window.Current.Content = shell;
+
+                // Sync the roaming source codes
+                Task.Run(() => SQLiteManager.Instance.TrySyncSharedCodesAsync());
             }
             _DefaultContent = shell;
             Window.Current.Activate();

@@ -41,6 +41,12 @@ namespace Brainf_ck_sharp_UWP.DataModels.SQLite
         public long Modified { get; set; }
 
         /// <summary>
+        /// Gets or sets the delete time for the current code
+        /// </summary>
+        [Column(nameof(Deleted)), NotNull, Default]
+        public long Deleted { get; set; }
+
+        /// <summary>
         /// Gets or sets the flags for the current instance
         /// </summary>
         /// <remarks>Bit 0 - Favorite</remarks>
@@ -72,6 +78,16 @@ namespace Brainf_ck_sharp_UWP.DataModels.SQLite
         {
             get => Modified != 0 ? DateTime.FromBinary(Modified) : DateTime.MinValue;
             set => Modified = value.ToBinary();
+        }
+
+        /// <summary>
+        /// Gets or sets a <see cref="DateTime"/> object that indicates the delete time
+        /// </summary>
+        [Ignore]
+        public DateTime DeletedTime
+        {
+            get => Deleted != 0 ? DateTime.FromBinary(Deleted) : DateTime.MinValue;
+            set => Deleted = value.ToBinary();
         }
 
         /// <summary>

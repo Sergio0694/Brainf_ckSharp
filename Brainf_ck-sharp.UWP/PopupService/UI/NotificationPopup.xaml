@@ -61,7 +61,7 @@
                 <TextBlock
                     Text="&#xE106;"
                     Style="{StaticResource FontIconTextBlockStyle}"
-                    IsTextScaleFactorEnabled="False"
+                    FontSize="10"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"/>
             </Button>

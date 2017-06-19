@@ -24,9 +24,14 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         #region Constants and parameters
 
         /// <summary>
-        /// Gets the name of the ShareTarget history database file
+        /// Gets the name of the local database
         /// </summary>
         private const String DatabaseFileName = "SourceCodes.db";
+
+        /// <summary>
+        /// Gets the name of the roaming database file name
+        /// </summary>
+        private const String RoamingDatabaseFileName = "RoamingCodes.db";
 
         /// <summary>
         /// Gets the path of the clean database
@@ -60,6 +65,23 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         // Private constructor to prevent the app from spawning multiple instances
         private SQLiteManager() { }
 
+        // Prepares a database connection to the target file
+        private static SQLiteAsyncConnection PrepareConnection([NotNull] StorageFile file)
+        {
+            try
+            {
+                SQLitePlatformWinRT platform = new SQLitePlatformWinRT();
+                SQLiteConnectionString connectionString = new SQLiteConnectionString(file.Path, true);
+                SQLiteConnectionWithLock connection = new SQLiteConnectionWithLock(platform, connectionString);
+                return new SQLiteAsyncConnection(() => connection);
+            }
+            catch
+            {
+                // Whops!
+                return null;
+            }
+        }
+
         /// <summary>
         /// Makes sure the exceptions database is open and connected
         /// </summary>
@@ -77,19 +99,104 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
                 }
 
                 // Initialize the connection
-                try
-                {
-                    SQLitePlatformWinRT platform = new SQLitePlatformWinRT();
-                    SQLiteConnectionString connectionString = new SQLiteConnectionString(database.Path, true);
-                    SQLiteConnectionWithLock connection = new SQLiteConnectionWithLock(platform, connectionString);
-                    DatabaseConnection = new SQLiteAsyncConnection(() => connection);
-                }
-                catch
-                {
-                    DatabaseConnection = null;
-                }
+                DatabaseConnection = PrepareConnection(database);
             }
             DatabaseSemaphore.Release();
+        }
+
+        /// <summary>
+        /// Syncs the saved source codes to the roaming folder
+        /// </summary>
+        public async Task TrySyncSharedCodesAsync()
+        {
+            // Initialize the local database if needed
+            await EnsureDatabaseConnectionAsync();
+            await DatabaseSemaphore.WaitAsync();
+            try
+            {
+                // Try to get the roaming database
+                SQLitePlatformWinRT platform = new SQLitePlatformWinRT();
+                if (await ApplicationData.Current.RoamingFolder.TryGetItemAsync(RoamingDatabaseFileName) is StorageFile roaming)
+                {
+                    // Get the database connection
+                    SQLiteConnectionString connectionString = new SQLiteConnectionString(roaming.Path, true);
+                    using (SQLiteConnectionWithLock rawConnection = new SQLiteConnectionWithLock(platform, connectionString))
+                    {
+                        // Get the async connection and query the work items
+                        SQLiteAsyncConnection connection = new SQLiteAsyncConnection(() => rawConnection);
+                        List<SourceCode>
+                            items = await connection.Table<SourceCode>().ToListAsync(),
+                            table = await DatabaseConnection.Table<SourceCode>().ToListAsync(),
+                            filtered = table.Where(item => !SamplesMap.Any(entry => entry.Uid.Equals(Guid.Parse(item.Uid)))).ToList();
+
+                        // Function that syncs from a source collection to the target database
+                        async Task SyncTablesAsync(IEnumerable<SourceCode> data, SQLiteAsyncConnection source)
+                        {
+                            // Iterate over all the items
+                            foreach (SourceCode code in data)
+                            {
+                                // Try to get the same item from the source connection
+                                SourceCode local = await source.Table<SourceCode>().Where(item => item.Uid == code.Uid).FirstOrDefaultAsync();
+                                if (local == null)
+                                {
+                                    // Item not found, insert it
+                                    if (await source.Table<SourceCode>().Where(item => item.Title == code.Title).FirstOrDefaultAsync() != null)
+                                    {
+                                        // Skip if there is another code with the same name
+                                        continue;
+                                    }
+                                    await source.InsertAsync(code);
+                                }
+                                else if (code.Modified > local.Modified ||
+                                         local.Deleted > 0 && code.Deleted == 0 && code.Modified > local.Deleted)
+                                {
+                                    // Item modified or changed after local deletion, update it or restore the remote version
+                                    if (await source.Table<SourceCode>().Where(item => item.Title == code.Title && item.Uid != code.Uid).FirstOrDefaultAsync() != null)
+                                    {
+                                        // Skop if the updated title is the same as another one in the table
+                                        continue;
+                                    }
+                                    await source.UpdateAsync(code);
+                                }
+                            }
+                        }
+
+                        // Sync the two databases
+                        await SyncTablesAsync(items, DatabaseConnection);
+                        await SyncTablesAsync(filtered, connection);
+                    }
+                }
+                else
+                {
+                    // Roaming file missing, initialize it
+                    StorageFile 
+                        cleanDatabase = await StorageFile.GetFileFromApplicationUriAsync(new Uri(CleanDatabaseUri)),
+                        database = await cleanDatabase.CopyAsync(ApplicationData.Current.RoamingFolder, RoamingDatabaseFileName);
+
+                    // Get the database connection
+                    SQLiteConnectionString connectionString = new SQLiteConnectionString(database.Path, true);
+                    using (SQLiteConnectionWithLock rawConnection = new SQLiteConnectionWithLock(platform, connectionString))
+                    {
+                        // Copy the local codes into the roaming database
+                        SQLiteAsyncConnection connection = new SQLiteAsyncConnection(() => rawConnection);
+                        List<SourceCode> table = await DatabaseConnection.Table<SourceCode>().ToListAsync();
+                        IEnumerable<SourceCode> candidates =
+                            from code in table
+                            where !SamplesMap.Any(entry => entry.Uid.Equals(Guid.Parse(code.Uid)))
+                            select code;
+                        await connection.InsertAllAsync(candidates);
+                    }
+                }
+            }
+            catch
+            {
+                // Skip!
+            }
+            finally
+            {
+                // Better not to forget about this, right?
+                DatabaseSemaphore.Release();
+            }
         }
 
         #endregion
@@ -245,7 +352,8 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         public async Task DeleteCodeAsync([NotNull] SourceCode code)
         {
             await EnsureDatabaseConnectionAsync();
-            await DatabaseConnection.DeleteAsync(code);
+            code.DeletedTime = DateTime.Now;
+            await DatabaseConnection.UpdateAsync(code);
         }
 
         /// <summary>
