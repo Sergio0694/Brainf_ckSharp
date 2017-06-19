@@ -292,6 +292,11 @@
                     Click="{x:Bind ViewModel.RequestSaveSourceCodeAs}"
                     IsEnabled="{x:Bind ViewModel.SaveAsAvailable, Mode=OneWay, FallbackValue=True}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
+                <customCommandBar:CustomCommandBarButton
+                    Label="About"
+                    x:Uid="AboutButton"
+                    Icon="&#xE939;"
+                    Click="AboutButton_Click"/>
             </customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
         </customCommandBar:CommandBarWithButtonsAnimations>
 

@@ -18,6 +18,7 @@ using Brainf_ck_sharp_UWP.Messages.IDEStatus;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
+using Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo;
 using Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar;
 using Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard;
 using Brainf_ck_sharp_UWP.ViewModels;
@@ -178,6 +179,13 @@ namespace Brainf_ck_sharp_UWP.UserControls
             Point point = button.GetVisualCoordinates();
             Rect area = new Rect(point, new Size(button.ActualWidth, button.ActualHeight));
             FlyoutManager.ShowCustomContextFlyout(keyboard, area, true);
+        }
+
+        // Shows the developer info
+        private void AboutButton_Click(object sender, RoutedEventArgs e)
+        {
+            DevInfoFlyout flyout = new DevInfoFlyout();
+            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("About"), flyout, new Thickness(0), FlyoutDisplayMode.ActualHeight).Forget();
         }
     }
 }

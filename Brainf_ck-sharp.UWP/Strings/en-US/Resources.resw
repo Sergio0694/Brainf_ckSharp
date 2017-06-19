@@ -408,4 +408,25 @@
   <data name="NewLineButton.Label" xml:space="preserve">
     <value>New line</value>
   </data>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="AboutButton.Label" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="ContactsBlock.Text" xml:space="preserve">
+    <value>Contacts</value>
+  </data>
+  <data name="DevelopedByPart2Run.Text" xml:space="preserve">
+    <value>Thanks to Andrea Salvati for his help with the original interpreter algorithm, and to Camil Demetrescu for the idea to port Brainf*ck# to Windows 10.</value>
+  </data>
+  <data name="DevelopedByRun.Text" xml:space="preserve">
+    <value>Developed by</value>
+  </data>
+  <data name="RateStoreBlock.Text" xml:space="preserve">
+    <value>Rate in the Store</value>
+  </data>
+  <data name="SendFeedbackBlock.Text" xml:space="preserve">
+    <value>Send feedback</value>
+  </data>
 </root>

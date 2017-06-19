@@ -391,6 +391,34 @@
           <source>Move</source>
           <target state="translated">Sposta cursore</target>
         </trans-unit>
+        <trans-unit id="About" translate="yes" xml:space="preserve">
+          <source>About</source>
+          <target state="translated">Informazioni</target>
+        </trans-unit>
+        <trans-unit id="AboutButton.Label" translate="yes" xml:space="preserve">
+          <source>About</source>
+          <target state="translated">Informazioni</target>
+        </trans-unit>
+        <trans-unit id="RateStoreBlock.Text" translate="yes" xml:space="preserve">
+          <source>Rate in the Store</source>
+          <target state="translated">Vota nello Store</target>
+        </trans-unit>
+        <trans-unit id="ContactsBlock.Text" translate="yes" xml:space="preserve">
+          <source>Contacts</source>
+          <target state="translated">Contatti</target>
+        </trans-unit>
+        <trans-unit id="DevelopedByPart2Run.Text" translate="yes" xml:space="preserve">
+          <source>Thanks to Andrea Salvati for his help with the original interpreter algorithm, and to Camil Demetrescu for the idea to port Brainf*ck# to Windows 10.</source>
+          <target state="translated">Grazie ad Andrea Salvati per il suo aiuto con l'algoritmo originale dell'interprete di Brainf*ck, e a Camil Demetrescu per l'idea di portare Brainf*ck# su Windows 10.</target>
+        </trans-unit>
+        <trans-unit id="DevelopedByRun.Text" translate="yes" xml:space="preserve">
+          <source>Developed by</source>
+          <target state="translated">Sviluppata da</target>
+        </trans-unit>
+        <trans-unit id="SendFeedbackBlock.Text" translate="yes" xml:space="preserve">
+          <source>Send feedback</source>
+          <target state="translated">Invia feedback</target>
+        </trans-unit>
       </group>
     </body>
   </file>
