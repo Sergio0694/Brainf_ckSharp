@@ -125,7 +125,8 @@ namespace Brainf_ck_sharp_UWP.Views
             // Keep the line numbers and the current cursor in sync with the code
             float target = (float)(_Top - 12 - EditBox.VerticalScrollViewerOffset);
             LinesGrid.SetVisualOffset(TranslationAxis.Y, target);
-            BreakpointsCanvas.SetVisualOffset(TranslationAxis.Y, target);
+            BreakpointsCanvas.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset));
+            BreakpointLinesTransform.Y = -EditBox.VerticalScrollViewerOffset;
             IndentationInfoList.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset));
             GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset));
             Point selectionOffset = EditBox.ActualSelectionVerticalOffset;
@@ -150,11 +151,11 @@ namespace Brainf_ck_sharp_UWP.Views
             _Top = height;
             LinesGrid.SetVisualOffset(TranslationAxis.Y, (float)(height - 12)); // Adjust the initial offset of the line numbers and indicators
             BreakpointsCanvas.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
-            BreakLinesCanvas.Margin = new Thickness(0, height + 10, 0, 0);
+            BreakLinesCanvas.Margin = new Thickness(0, (float)(height + 10), 0, 0);
             IndentationInfoList.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             CursorBorder.SetVisualOffset(TranslationAxis.Y, (float)(height + 8));
-            CursorRectangle.SetVisualOffset(TranslationAxis.Y, (float) (height + 8));
+            CursorRectangle.SetVisualOffset(TranslationAxis.Y, (float)(height + 8));
             CursorRectangle.SetVisualOffset(TranslationAxis.X, 4);
             BracketsParentGrid.SetVisualOffset(TranslationAxis.Y, (float)height);
             EditBox.Padding = new Thickness(4, _Top + 8, 4, 8);

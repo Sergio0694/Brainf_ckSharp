@@ -191,7 +191,7 @@
             x:Name="BreakpointsCanvas"
             Tapped="BreakpointsCanvas_Tapped"/>
 
-            <!--Line numbers grid-->
+        <!--Line numbers grid-->
         <Canvas Grid.Column="1">
             <Grid 
                 x:Name="LinesGrid"
@@ -240,7 +240,11 @@
             Grid.Column="4"
             x:Name="BreakLinesCanvas"
             IsHitTestVisible="False"
-            SizeChanged="BreakLinesCanvas_OnSizeChanged"/>
+            SizeChanged="BreakLinesCanvas_OnSizeChanged">
+            <Canvas.RenderTransform>
+                <TranslateTransform x:Name="BreakpointLinesTransform"/>
+            </Canvas.RenderTransform>
+        </Canvas>
 
         <!--Code box-->
         <inheritedControls:RichEditBoxWithVerticalOffsetInfo
