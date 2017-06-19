@@ -56,7 +56,11 @@ namespace Brainf_ck_sharp_UWP
                 // Setup the view mode
                 ApplicationView view = ApplicationView.GetForCurrentView();
                 view.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseVisible);
-                if (UniversalAPIsHelper.IsMobileDevice) view.VisibleBoundsChanged += App_VisibleBoundsChanged;
+                if (UniversalAPIsHelper.IsMobileDevice)
+                {
+                    view.VisibleBoundsChanged += (s, _) => UpdateVisibleBounds(s);
+                    Task.Delay(1000).ContinueWith(t => UpdateVisibleBounds(ApplicationView.GetForCurrentView()), TaskScheduler.FromCurrentSynchronizationContext());
+                }
 
                 // Enable the key listener
                 KeyEventsListener.IsEnabled = true;
@@ -71,7 +75,7 @@ namespace Brainf_ck_sharp_UWP
             Window.Current.Activate();
         }
 
-        private void App_VisibleBoundsChanged(ApplicationView sender, object args)
+        private void UpdateVisibleBounds(ApplicationView sender)
         {
             // Return if the content hasn't finished loading yet
             if (_DefaultContent == null) return;
@@ -80,6 +84,7 @@ namespace Brainf_ck_sharp_UWP
             if (sender.Orientation == ApplicationViewOrientation.Portrait)
             {
                 double navBarHeight = Window.Current.Bounds.Height - sender.VisibleBounds.Bottom;
+                if (navBarHeight < 0) navBarHeight = 0;
 
                 // Adjust the app UI
                 _DefaultContent.Margin = new Thickness(0, 0, 0, navBarHeight);
