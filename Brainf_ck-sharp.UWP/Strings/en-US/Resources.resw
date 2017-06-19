@@ -423,10 +423,46 @@
   <data name="DevelopedByRun.Text" xml:space="preserve">
     <value>Developed by</value>
   </data>
+  <data name="DevSupportTitle.Text" xml:space="preserve">
+    <value>Pick the support option for the developer of the app</value>
+  </data>
+  <data name="Donate" xml:space="preserve">
+    <value>Donate</value>
+  </data>
+  <data name="DonateButton.Text" xml:space="preserve">
+    <value>Donate</value>
+  </data>
+  <data name="DonateCoffee.PickerDescription" xml:space="preserve">
+    <value>Buy the developer a coffee</value>
+  </data>
+  <data name="DonateLove.PickerDescription" xml:space="preserve">
+    <value>Feeling generous? Choose this option to show the developer how much you love this app!</value>
+  </data>
+  <data name="DonatePresent.PickerDescription" xml:space="preserve">
+    <value>Make a small present to the developer to support the app</value>
+  </data>
+  <data name="DonateSupport.PickerDescription" xml:space="preserve">
+    <value>Actively support the app development with this bigger donation</value>
+  </data>
+  <data name="DonationCompleted" xml:space="preserve">
+    <value>Donation completed</value>
+  </data>
+  <data name="DonationErrorBody" xml:space="preserve">
+    <value>Something went wrong while trying to make the donation, try again later</value>
+  </data>
   <data name="RateStoreBlock.Text" xml:space="preserve">
     <value>Rate in the Store</value>
   </data>
   <data name="SendFeedbackBlock.Text" xml:space="preserve">
     <value>Send feedback</value>
+  </data>
+  <data name="SomethingBadHappened" xml:space="preserve">
+    <value>Something bad happened</value>
+  </data>
+  <data name="StoreConnectionError" xml:space="preserve">
+    <value>Store connection error</value>
+  </data>
+  <data name="StoreConnectionErrorBody" xml:space="preserve">
+    <value>The Store generated a connection error when trying to process the purchase, try again</value>
   </data>
 </root>

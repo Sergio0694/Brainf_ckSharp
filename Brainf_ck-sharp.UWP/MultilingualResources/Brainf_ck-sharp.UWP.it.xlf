@@ -419,6 +419,54 @@
           <source>Send feedback</source>
           <target state="translated">Invia feedback</target>
         </trans-unit>
+        <trans-unit id="DevSupportTitle.Text" translate="yes" xml:space="preserve">
+          <source>Pick the support option for the developer of the app</source>
+          <target state="translated">Scegli un'opzione di supporto per lo sviluppatore dell'app</target>
+        </trans-unit>
+        <trans-unit id="Donate" translate="yes" xml:space="preserve">
+          <source>Donate</source>
+          <target state="translated">Fai una donazione</target>
+        </trans-unit>
+        <trans-unit id="DonateButton.Text" translate="yes" xml:space="preserve">
+          <source>Donate</source>
+          <target state="translated">Fai una donazione</target>
+        </trans-unit>
+        <trans-unit id="DonateCoffee.PickerDescription" translate="yes" xml:space="preserve">
+          <source>Buy the developer a coffee</source>
+          <target state="translated">Offri un caffè allo sviluppatore</target>
+        </trans-unit>
+        <trans-unit id="DonateLove.PickerDescription" translate="yes" xml:space="preserve">
+          <source>Feeling generous? Choose this option to show the developer how much you love this app!</source>
+          <target state="translated">Ti senti generoso? Scegli questa opzione per mostrare allo sviluppatore quanto ti piace questa app!</target>
+        </trans-unit>
+        <trans-unit id="DonatePresent.PickerDescription" translate="yes" xml:space="preserve">
+          <source>Make a small present to the developer to support the app</source>
+          <target state="translated">Fai un piccolo regalo per supportare lo sviluppatore dell'app</target>
+        </trans-unit>
+        <trans-unit id="DonateSupport.PickerDescription" translate="yes" xml:space="preserve">
+          <source>Actively support the app development with this bigger donation</source>
+          <target state="translated">Supporta attivamente lo sviluppatore con questa donazione più grande</target>
+        </trans-unit>
+        <trans-unit id="DonationCompleted" translate="yes" xml:space="preserve">
+          <source>Donation completed</source>
+          <target state="translated">Donazione completata</target>
+        </trans-unit>
+        <trans-unit id="DonationErrorBody" translate="yes" xml:space="preserve">
+          <source>Something went wrong while trying to make the donation, try again later</source>
+          <target state="translated">C'è stato un errore durante la donazione, prova di nuovo</target>
+        </trans-unit>
+        <trans-unit id="SomethingBadHappened" translate="yes" xml:space="preserve">
+          <source>Something bad happened</source>
+          <target state="translated">È successo qualcosa</target>
+        </trans-unit>
+        <trans-unit id="StoreConnectionError" translate="yes" xml:space="preserve">
+          <source>Store connection error</source>
+          <target state="translated">Errore di connessione</target>
+        </trans-unit>
+        <trans-unit id="StoreConnectionErrorBody" translate="yes" xml:space="preserve">
+          <source>The Store generated a connection error when trying to process the purchase, try again</source>
+          <target state="translated">Lo Store ha avuto un problema di connessione durante l'acquisto, prova di nuovo</target>
+        </trans-unit>
       </group>
     </body>
   </file>

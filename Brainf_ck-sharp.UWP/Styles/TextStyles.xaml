@@ -7,6 +7,7 @@
     <Style TargetType="TextBlock" x:Key="FontIconTextBlockStyle">
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+        <Setter Property="IsTextScaleFactorEnabled" Value="False"/>
         <Setter Property="FontSize" Value="{StaticResource FontIconTextBlockSize}"/>
     </Style>
 

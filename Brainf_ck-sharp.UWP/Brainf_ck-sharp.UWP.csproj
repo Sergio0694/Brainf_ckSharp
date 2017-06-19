@@ -151,6 +151,7 @@
     <Compile Include="Messages\Actions\IDEUndoRedoRequestMessage.cs" />
     <Compile Include="Messages\Actions\SaveButtonsEnabledStatusChangedMessage.cs" />
     <Compile Include="Messages\Actions\VirtualArrowKeyPressedMessage.cs" />
+    <Compile Include="Messages\AppLoadingStatusChangedMessage.cs" />
     <Compile Include="Messages\Flyouts\NotificationCloseRequestmessage.cs" />
     <Compile Include="PopupService\Interfaces\IBusyWorkingContent.cs" />
     <Compile Include="PopupService\Misc\FlyoutClosedResult.cs" />
@@ -222,6 +223,12 @@
     </Compile>
     <Compile Include="UserControls\Flyouts\DevInfo\DevInfoFlyout.xaml.cs">
       <DependentUpon>DevInfoFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\DevInfo\DevSupportOptionEntryControl.xaml.cs">
+      <DependentUpon>DevSupportOptionEntryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\DevInfo\DevSupportPickerFlyout.xaml.cs">
+      <DependentUpon>DevSupportPickerFlyout.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Flyouts\LocalSourceCodesBrowserFlyout.xaml.cs">
       <DependentUpon>LocalSourceCodesBrowserFlyout.xaml</DependentUpon>
@@ -319,6 +326,15 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="Assets\Misc\CoffeeIA.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Misc\LoveIA.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Misc\PresentIA.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Misc\SourceCodesTemplateDatabase.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -328,6 +344,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Misc\noise.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Misc\Support.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Misc\Twitter.png">
@@ -447,6 +466,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Flyouts\DevInfo\DevInfoFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\DevInfo\DevSupportOptionEntryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\DevInfo\DevSupportPickerFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -30,7 +30,8 @@
         <TextBlock
             Margin="12,12,16,0"
             TextWrapping="Wrap"
-            FontWeight="SemiLight">
+            FontWeight="SemiLight"
+            IsTextScaleFactorEnabled="False">
             <Run 
                 Text="Developed by"
                 x:Uid="DevelopedByRun"/>
@@ -43,33 +44,77 @@
                 x:Uid="DevelopedByPart2Run"/>
         </TextBlock>
 
-        <!--Email button-->
-        <Button
-            Margin="12,12,0,0"
-            Height="40"
-            Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
-            Background="{ThemeResource SystemControlHighlightAccentBrush}"
-            MaxWidth="220"
-            HorizontalAlignment="Left"
-            Click="RateStoreButton_Click">
-            <Grid Margin="12,0,12,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <iconBoxToolkit:IconBox 
-                    Data="{StaticResource StoreLogo}"
-                    Margin="4"/>
-                <TextBlock
-                    Grid.Column="1"
-                    VerticalAlignment="Center"
-                    Margin="16,0,0,0"
-                    Text="Rate in the Store"
-                    x:Uid="RateStoreBlock"
-                    FontSize="15"
-                    FontWeight="Normal"/>
-            </Grid>
-        </Button>
+        <!--Main buttons-->
+        <Grid 
+            Margin="12,12,16,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Rate in the Store button-->
+            <Button
+                Height="40"
+                Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
+                Background="{ThemeResource SystemControlHighlightAccentBrush}"
+                MaxWidth="220"
+                HorizontalAlignment="Left"
+                Click="RateStoreButton_Click">
+                <Grid Margin="12,0,12,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <iconBoxToolkit:IconBox 
+                        Data="{StaticResource StoreLogo}"
+                        Margin="4"/>
+                    <TextBlock
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Margin="16,0,0,0"
+                        Text="Rate in the Store"
+                        x:Uid="RateStoreBlock"
+                        IsTextScaleFactorEnabled="False"
+                        TextWrapping="NoWrap"
+                        TextTrimming="CharacterEllipsis"
+                        FontSize="15"
+                        FontWeight="Normal"/>
+                </Grid>
+            </Button>
+            
+            <!--Donate button-->
+            <Button 
+                Margin="20,0,0,0"
+                HorizontalAlignment="Left"
+                MaxWidth="160"
+                Height="40"
+                Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
+                Background="{ThemeResource SystemControlHighlightListAccentLowBrush}"
+                Grid.Column="1"
+                Click="DonateButton_Click">
+                <Grid Margin="12,0,12,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Text="&#xED55;"
+                        Style="{StaticResource FontIconTextBlockStyle}"
+                        VerticalAlignment="Center"/>
+                    <TextBlock
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        IsTextScaleFactorEnabled="False"
+                        TextWrapping="NoWrap"
+                        TextTrimming="CharacterEllipsis"
+                        Margin="16,0,0,0"
+                        Text="Donate"
+                        x:Uid="DonateButton"
+                        FontSize="15"
+                        FontWeight="Normal"/>
+                </Grid>
+            </Button>
+        </Grid>
         
         <!--Contacts-->
         <Grid 
@@ -107,6 +152,9 @@
                             Margin="16,0,0,0"
                             Text="Send feedback"
                             x:Uid="SendFeedbackBlock"
+                            IsTextScaleFactorEnabled="False"
+                            TextWrapping="NoWrap"
+                            TextTrimming="CharacterEllipsis"
                             FontSize="15"
                             FontWeight="Normal"/>
                     </Grid>
@@ -132,6 +180,9 @@
                         <TextBlock
                             Grid.Column="1"
                             VerticalAlignment="Center"
+                            IsTextScaleFactorEnabled="False"
+                            TextWrapping="NoWrap"
+                            TextTrimming="CharacterEllipsis"
                             Margin="16,0,0,0"
                             Text="@SergioPedri"
                             FontSize="15"
