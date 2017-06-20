@@ -183,15 +183,12 @@
 
         <!--Breakpoints canvas-->
         <Canvas 
-            Background="#FF333333"
-            IsHitTestVisible="False"/>
-        <Canvas 
             Grid.Column="0"
-            Background="Transparent"
+            Background="#FF333333"
             x:Name="BreakpointsCanvas"
             Tapped="BreakpointsCanvas_Tapped"/>
 
-        <!--Line numbers grid-->
+            <!--Line numbers grid-->
         <Canvas Grid.Column="1">
             <Grid 
                 x:Name="LinesGrid"

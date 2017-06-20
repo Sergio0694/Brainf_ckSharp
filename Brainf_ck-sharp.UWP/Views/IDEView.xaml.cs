@@ -123,18 +123,26 @@ namespace Brainf_ck_sharp_UWP.Views
         private void Scroller_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             // Keep the line numbers and the current cursor in sync with the code
-            float target = (float)(_Top - 12 - EditBox.VerticalScrollViewerOffset);
+            float 
+                target = (float)(_Top - 12 - EditBox.VerticalScrollViewerOffset),
+                targetplus10 = (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset);
             LinesGrid.SetVisualOffset(TranslationAxis.Y, target);
-            BreakpointsCanvas.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset));
             BreakpointLinesTransform.Y = -EditBox.VerticalScrollViewerOffset;
-            IndentationInfoList.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset));
-            GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset));
+            IndentationInfoList.SetVisualOffset(TranslationAxis.Y, targetplus10);
+            GitDiffListView.SetVisualOffset(TranslationAxis.Y, targetplus10);
             Point selectionOffset = EditBox.ActualSelectionVerticalOffset;
             CursorBorder.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
             CursorRectangle.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
             CursorTransform.X = -EditBox.HorizontalScrollViewerOffset;
             GuidesTransform.Y = -EditBox.VerticalScrollViewerOffset;
             GuidesTransform.X = -EditBox.HorizontalScrollViewerOffset;
+            foreach (Ellipse breakpoint in BreakpointsCanvas.Children.Cast<Ellipse>().ToArray())
+            {
+                if (BreakpointsOffsetDictionary.TryGetValue(breakpoint, out double offset))
+                {
+                    breakpoint.RenderTransform.To<TranslateTransform>().Y = targetplus10 + offset;
+                }
+            }
         }
 
         public IDEViewModel ViewModel => DataContext.To<IDEViewModel>();
@@ -150,7 +158,6 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             _Top = height;
             LinesGrid.SetVisualOffset(TranslationAxis.Y, (float)(height - 12)); // Adjust the initial offset of the line numbers and indicators
-            BreakpointsCanvas.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             BreakLinesCanvas.Margin = new Thickness(0, (float)(height + 10), 0, 0);
             IndentationInfoList.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
@@ -378,13 +385,13 @@ namespace Brainf_ck_sharp_UWP.Views
                         refreshBrackets = true;
                     }
                 }
+
+                // Get the updated text
+                EditBox.Document.GetText(TextGetOptions.None, out text);
             }
 
             // Display the text updates
             EditBox.Document.EndUndoGroup();
-
-            // Get the updated text
-            EditBox.Document.GetText(TextGetOptions.None, out text);
             _PreviousText = text;
 
             // Update the bracket guides
@@ -401,7 +408,6 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.SendMessages(text);
 
             // Restore the event handlers
-            EditBox.Document.ApplyDisplayUpdates();
             EditBox.SelectionChanged += EditBox_OnSelectionChanged;
             EditBox.TextChanged += EditBox_OnTextChanged;
 
@@ -538,6 +544,7 @@ namespace Brainf_ck_sharp_UWP.Views
         private void ClearBreakpoints()
         {
             BreakpointsInfo.Clear();
+            BreakpointsOffsetDictionary.Clear();
             BreakpointsCanvas.Children.Clear();
             BreakLinesCanvas.Children.Clear();
         }
@@ -563,9 +570,17 @@ namespace Brainf_ck_sharp_UWP.Views
         // Adds/removes a breakpoint when tapping on the left side bar
         private void BreakpointsCanvas_Tapped(object sender, TappedRoutedEventArgs e)
         {
+            EditBox.Document.GetRange(0, 0).GetPoint(HorizontalCharacterAlignment.Left, VerticalCharacterAlignment.Top, 
+                PointOptions.None, out Point none);
+            EditBox.Document.GetRange(0, 0).GetPoint(HorizontalCharacterAlignment.Left, VerticalCharacterAlignment.Top,
+                PointOptions.NoVerticalScroll, out Point novertical);
+
             // Get the text point corresponding to the tap position
             EditBox.Document.GetRange(0, 0).GetPoint(HorizontalCharacterAlignment.Left, VerticalCharacterAlignment.Top,
                 PointOptions.Transform, out Point start);
+
+            System.Diagnostics.Debug.WriteLine("========= TAP =========");
+            System.Diagnostics.Debug.WriteLine($"None: {none.Y}, NoVert: {novertical.Y}, Transform: {start.Y}");
             Point
                 tap = e.GetPosition(this),
                 target = new Point(start.X, tap.Y +                                     // Original Y position
@@ -573,8 +588,17 @@ namespace Brainf_ck_sharp_UWP.Views
                                             BreakpointsCanvas.GetVisual().Offset.Y +    // Subtract the canvas vertical offset (UI tweak)
                                             start.Y);                                   // Add the initial offset of the text
 
+            Point point = new Point(start.X, tap.Y -
+                                             (_Top + 10) +
+                                             EditBox.VerticalScrollViewerOffset +
+                                             start.Y);
+
+            System.Diagnostics.Debug.WriteLine($"Tap: {tap.Y}, offset: {EditBox.VerticalScrollViewerOffset}, visual: {BreakpointsCanvas.GetVisual().Offset.Y}");
+
+            System.Diagnostics.Debug.WriteLine($"POINT: {point.Y}");
+
             // Get the range aligned to the left edge of the tapped line
-            ITextRange range = EditBox.Document.GetRangeFromPoint(target, PointOptions.None);
+            ITextRange range = EditBox.Document.GetRangeFromPoint(point, PointOptions.None);
             range.GetRect(PointOptions.Transform, out Rect line, out _);
 
             // Get the line number
@@ -584,6 +608,9 @@ namespace Brainf_ck_sharp_UWP.Views
             AddSingleBreakpoint(text, range.StartPosition, line.Top);
             Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
         }
+
+        // Local dictionary with the base offset of each breakpoint element
+        private readonly IDictionary<Ellipse, double> BreakpointsOffsetDictionary = new Dictionary<Ellipse, double>();
 
         /// <summary>
         /// Adds a single breakpoint to the UI and the backup list
@@ -604,6 +631,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 // Remove the previous breakpoint
                 BreakpointsCanvas.Children.Remove(previous.Breakpoint);
                 BreakLinesCanvas.Children.Remove(previous.LineIndicator);
+                BreakpointsOffsetDictionary.Remove(previous.Breakpoint);
                 BreakpointsInfo.Remove(y);
             }
             else
@@ -617,8 +645,12 @@ namespace Brainf_ck_sharp_UWP.Views
                     Stroke = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("BreakpointBorderBrush"),
                     StrokeThickness = 1,
                     Margin = new Thickness(3, 3, 0, 0),
-                    RenderTransform = new TranslateTransform { Y = offset - 2 }
+                    RenderTransform = new TranslateTransform
+                    {
+                        Y = _Top + 10 - EditBox.VerticalScrollViewerOffset + offset
+                    }
                 };
+                BreakpointsOffsetDictionary.Add(ellipse, offset);
                 BreakpointsCanvas.Children.Add(ellipse);
                 Rectangle rect = new Rectangle
                 {
