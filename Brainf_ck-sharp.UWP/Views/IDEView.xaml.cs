@@ -570,32 +570,15 @@ namespace Brainf_ck_sharp_UWP.Views
         // Adds/removes a breakpoint when tapping on the left side bar
         private void BreakpointsCanvas_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            EditBox.Document.GetRange(0, 0).GetPoint(HorizontalCharacterAlignment.Left, VerticalCharacterAlignment.Top, 
-                PointOptions.None, out Point none);
-            EditBox.Document.GetRange(0, 0).GetPoint(HorizontalCharacterAlignment.Left, VerticalCharacterAlignment.Top,
-                PointOptions.NoVerticalScroll, out Point novertical);
-
             // Get the text point corresponding to the tap position
             EditBox.Document.GetRange(0, 0).GetPoint(HorizontalCharacterAlignment.Left, VerticalCharacterAlignment.Top,
                 PointOptions.Transform, out Point start);
-
-            System.Diagnostics.Debug.WriteLine("========= TAP =========");
-            System.Diagnostics.Debug.WriteLine($"None: {none.Y}, NoVert: {novertical.Y}, Transform: {start.Y}");
             Point
                 tap = e.GetPosition(this),
-                target = new Point(start.X, tap.Y +                                     // Original Y position
-                                            EditBox.VerticalScrollViewerOffset -        // Consider the text scrolling
-                                            BreakpointsCanvas.GetVisual().Offset.Y +    // Subtract the canvas vertical offset (UI tweak)
-                                            start.Y);                                   // Add the initial offset of the text
-
-            Point point = new Point(start.X, tap.Y -
-                                             (_Top + 10) +
-                                             EditBox.VerticalScrollViewerOffset +
-                                             start.Y);
-
-            System.Diagnostics.Debug.WriteLine($"Tap: {tap.Y}, offset: {EditBox.VerticalScrollViewerOffset}, visual: {BreakpointsCanvas.GetVisual().Offset.Y}");
-
-            System.Diagnostics.Debug.WriteLine($"POINT: {point.Y}");
+                point = new Point(start.X, tap.Y -                                  // Original tap Y offset
+                                           (_Top + 10) +                            // Offset to the upper margin of the window
+                                           EditBox.VerticalScrollViewerOffset +     // Take the current vertical scrolling into account
+                                           start.Y);                                // Offset with respect to the relative text start Y offset
 
             // Get the range aligned to the left edge of the tapped line
             ITextRange range = EditBox.Document.GetRangeFromPoint(point, PointOptions.None);
@@ -624,6 +607,7 @@ namespace Brainf_ck_sharp_UWP.Views
             if (text == null) EditBox.Document.GetText(TextGetOptions.None, out text);
             (int y, _) = text.FindCoordinates(start);
             if (y == 1) return; // Can't place a breakpoint on the first line
+            if (!text.GetLine(y).Any(Brainf_ckInterpreter.Operators.Contains)) return; // Invalid line, no operators here
 
             // Setup the breakpoint
             if (BreakpointsInfo.TryGetValue(y, out (Ellipse Breakpoint, Rectangle LineIndicator) previous))
@@ -647,10 +631,10 @@ namespace Brainf_ck_sharp_UWP.Views
                     Margin = new Thickness(3, 3, 0, 0),
                     RenderTransform = new TranslateTransform
                     {
-                        Y = _Top + 10 - EditBox.VerticalScrollViewerOffset + offset
+                        Y = _Top + 10 - EditBox.VerticalScrollViewerOffset + offset - 2
                     }
                 };
-                BreakpointsOffsetDictionary.Add(ellipse, offset);
+                BreakpointsOffsetDictionary.Add(ellipse, offset - 2);
                 BreakpointsCanvas.Children.Add(ellipse);
                 Rectangle rect = new Rectangle
                 {
