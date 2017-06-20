@@ -474,4 +474,7 @@
   <data name="StoreConnectionErrorBody" xml:space="preserve">
     <value>The Store generated a connection error when trying to process the purchase, try again</value>
   </data>
+  <data name="BreakpointNotAllowedBlock.Text" xml:space="preserve">
+    <value>Can't place a breakpoint here</value>
+  </data>
 </root>

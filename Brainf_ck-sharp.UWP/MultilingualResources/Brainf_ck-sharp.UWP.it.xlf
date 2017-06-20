@@ -479,6 +479,10 @@
           <source>The in-app purchase has not been completed</source>
           <target state="translated">L'acquisto in-app non è stato completato</target>
         </trans-unit>
+        <trans-unit id="BreakpointNotAllowedBlock.Text" translate="yes" xml:space="preserve">
+          <source>Can't place a breakpoint here</source>
+          <target state="translated">Impossibile inserire un punto di interruzione qui</target>
+        </trans-unit>
       </group>
     </body>
   </file>

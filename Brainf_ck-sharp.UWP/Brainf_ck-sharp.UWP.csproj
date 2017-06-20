@@ -155,6 +155,7 @@
     <Compile Include="Messages\Actions\VirtualArrowKeyPressedMessage.cs" />
     <Compile Include="Messages\AppLoadingStatusChangedMessage.cs" />
     <Compile Include="Messages\Flyouts\NotificationCloseRequestmessage.cs" />
+    <Compile Include="Messages\IDEStatus\BreakpointErrorStatusChangedMessage.cs" />
     <Compile Include="PopupService\Interfaces\IBusyWorkingContent.cs" />
     <Compile Include="PopupService\Misc\FlyoutClosedResult.cs" />
     <Compile Include="PopupService\Misc\FlyoutDisplayInfo.cs" />

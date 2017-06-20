@@ -16,6 +16,7 @@
         <Setter Property="MaxLines" Value="1"/>
         <Setter Property="TextWrapping" Value="NoWrap"/>
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        <Setter Property="IsTextScaleFactorEnabled" Value="False"/>
     </Style>
 
     <!--A 1 line, trimmed TextBlock-->

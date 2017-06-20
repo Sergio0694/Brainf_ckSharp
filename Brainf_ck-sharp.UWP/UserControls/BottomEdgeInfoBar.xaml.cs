@@ -57,6 +57,10 @@ namespace Brainf_ck_sharp_UWP.UserControls
                     default: throw new ArgumentOutOfRangeException();
                 }
             });
+            Messenger.Default.Register<BreakpointErrorStatusChangedMessage>(this, m =>
+            {
+                VisualStateManager.GoToState(this, m.IsValid ? "BreakpointsDefaultStatus" : "BreakpointsErrorStatus", false);
+            });
         }
     }
 }

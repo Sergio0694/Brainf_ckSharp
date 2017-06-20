@@ -18,6 +18,7 @@ using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Messages.Actions;
+using Brainf_ck_sharp_UWP.Messages.IDEStatus;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
@@ -626,6 +627,9 @@ namespace Brainf_ck_sharp_UWP.Views
         // Local dictionary with the base offset of each breakpoint element
         private readonly IDictionary<Ellipse, double> BreakpointsOffsetDictionary = new Dictionary<Ellipse, double>();
 
+        // The guid to synchronize the invalid breakpoint messages being sent with a delay
+        private Guid _InvalidBreakpointMessageID;
+
         /// <summary>
         /// Adds a single breakpoint to the UI and the backup list
         /// </summary>
@@ -637,8 +641,21 @@ namespace Brainf_ck_sharp_UWP.Views
             // Get the target line
             if (text == null) EditBox.Document.GetText(TextGetOptions.None, out text);
             (int y, _) = text.FindCoordinates(start);
-            if (y == 1) return; // Can't place a breakpoint on the first line
-            if (!text.GetLine(y).Any(Brainf_ckInterpreter.Operators.Contains)) return; // Invalid line, no operators here
+            if (y == 1 || // Can't place a breakpoint on the first line
+                !text.GetLine(y).Any(Brainf_ckInterpreter.Operators.Contains)) // Invalid line, no operators here
+            {
+                // Send a message to signal the breakpoint can't be placed here
+                Guid id = Guid.NewGuid();
+                _InvalidBreakpointMessageID = id;
+                Messenger.Default.Send(new BreakpointErrorStatusChangedMessage(false));
+                Task.Delay(5000).ContinueWith(t =>
+                {
+                    // Only send the second message if no other messages were sent before this moment
+                    if (!_InvalidBreakpointMessageID.Equals(id)) return;
+                    Messenger.Default.Send(new BreakpointErrorStatusChangedMessage(true));
+                }, TaskScheduler.FromCurrentSynchronizationContext());
+                return;
+            }
 
             // Setup the breakpoint
             if (BreakpointsInfo.TryGetValue(y, out (Ellipse Breakpoint, Rectangle LineIndicator) previous))

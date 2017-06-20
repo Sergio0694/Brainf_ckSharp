@@ -369,4 +369,7 @@
   <data name="PurchaseCanceledBody" xml:space="preserve">
     <value>L'acquisto in-app non è stato completato</value>
   </data>
+  <data name="BreakpointNotAllowedBlock.Text" xml:space="preserve">
+    <value>Impossibile inserire un punto di interruzione qui</value>
+  </data>
 </root>

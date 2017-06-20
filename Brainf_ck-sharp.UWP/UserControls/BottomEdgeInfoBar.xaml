@@ -31,6 +31,9 @@
                         <Setter 
                             Target="RootGrid.Background"
                             Value="{ThemeResource SystemControlHighlightAltListAccentMediumBrush}"/>
+                        <Setter 
+                            Target="BreakpointErrorGrid.Background"
+                            Value="{ThemeResource SystemControlHighlightAltListAccentMediumBrush}"/>
                         <Setter
                             Target="RowBlock.Visibility"
                             Value="Collapsed"/>
@@ -46,6 +49,9 @@
                     <VisualState.Setters>
                         <Setter 
                             Target="RootGrid.Background"
+                            Value="#FFCA5100"/>
+                        <Setter 
+                            Target="BreakpointErrorGrid.Background"
                             Value="#FFCA5100"/>
                         <Setter
                             Target="RowBlock.Visibility"
@@ -66,6 +72,9 @@
                         <Setter 
                             Target="RootGrid.Background"
                             Value="{ThemeResource SystemControlHighlightAltListAccentMediumBrush}"/>
+                        <Setter 
+                            Target="BreakpointErrorGrid.Background"
+                            Value="{ThemeResource SystemControlHighlightAltListAccentMediumBrush}"/>
                         <Setter
                             Target="RowBlock.Visibility"
                             Value="Visible"/>
@@ -82,6 +91,9 @@
                         <Setter 
                             Target="RootGrid.Background"
                             Value="#FFA04A09"/>
+                        <Setter 
+                            Target="BreakpointErrorGrid.Background"
+                            Value="#FFA04A09"/>
                         <Setter
                             Target="RowBlock.Visibility"
                             Value="Visible"/>
@@ -97,10 +109,26 @@
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
+            <VisualStateGroup>
+                <VisualState x:Name="BreakpointsDefaultStatus">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="BreakpointErrorGrid.Visibility"
+                            Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="BreakpointsErrorStatus">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="BreakpointErrorGrid.Visibility"
+                            Value="Visible"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
         <!--State info-->
-        <TextBlock 
+        <TextBlock
             Text="Ready"
             x:Name="InfoBlock"
             Foreground="White"
@@ -108,7 +136,25 @@
             FontSize="12"
             FontWeight="SemiLight"
             VerticalAlignment="Center"
-            IsTextScaleFactorEnabled="False"/>
+            Style="{StaticResource TrimmedTextStyle}"/>
+        
+        <!--Breakpoint error-->
+        <Grid
+            Visibility="Collapsed"
+            x:Name="BreakpointErrorGrid"
+            Grid.Column="0"
+            Background="{ThemeResource SystemControlHighlightAccentBrush}">
+            <Canvas Background="#50000000"/>
+            <TextBlock
+                Text="Can't place a breakpoint here"
+                x:Uid="BreakpointNotAllowedBlock"
+                Foreground="White"
+                Margin="8,0,8,0"
+                FontSize="12"
+                FontWeight="SemiLight"
+                VerticalAlignment="Center"
+                Style="{StaticResource TrimmedTextStyle}"/>
+        </Grid>
 
         <!--Error position-->
         <TextBlock 
