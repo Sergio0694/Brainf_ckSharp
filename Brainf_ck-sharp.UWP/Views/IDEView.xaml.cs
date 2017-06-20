@@ -182,6 +182,7 @@ namespace Brainf_ck_sharp_UWP.Views
             EditBox.Document.GetText(TextGetOptions.None, out String code);
             ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
             ViewModel.UpdateCanUndoRedoStatus();
+            RemoveUnvalidatedBreakpointsAsync(code).Forget();
         }
 
         #region UI overlays
@@ -548,6 +549,7 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.SendMessages(code);
             ViewModel.UpdateCanUndoRedoStatus();
             UpdateCursorRectangleAndIndicatorUI();
+            if (!overwrite) RemoveUnvalidatedBreakpointsAsync(code).Forget();
 
             // Restore the handlers
             EditBox.SelectionChanged += EditBox_OnSelectionChanged;
@@ -579,6 +581,43 @@ namespace Brainf_ck_sharp_UWP.Views
             BreakpointsOffsetDictionary.Clear();
             BreakpointsCanvas.Children.Clear();
             BreakLinesCanvas.Children.Clear();
+        }
+
+        /// <summary>
+        /// Removes the invalid breakpoints after the text is edited
+        /// </summary>
+        /// <param name="text">The current text</param>
+        private async Task RemoveUnvalidatedBreakpointsAsync([NotNull] String text)
+        {
+            // Find the invalid breakpoints
+            IReadOnlyList<int> pending = await Task.Run(() =>
+            {
+                int[] current = BreakpointsInfo.Keys.ToArray();
+                List<int> removable = new List<int>();
+                foreach (int line in current)
+                {
+                    if (line < 2 ||
+                        line > text.Length ||
+                        !text.GetLine(line).Any(Brainf_ckInterpreter.Operators.Contains))
+                    {
+                        removable.Add(line);
+                    }
+                }
+                return removable.ToArray();
+            });
+
+            // Remove the target breakpoints
+            foreach (int target in pending)
+            {
+                if (BreakpointsInfo.TryGetValue(target, out (Ellipse Breakpoint, Rectangle LineIndicator) previous))
+                {
+                    // Remove the previous breakpoint
+                    BreakpointsCanvas.Children.Remove(previous.Breakpoint);
+                    BreakLinesCanvas.Children.Remove(previous.LineIndicator);
+                    BreakpointsOffsetDictionary.Remove(previous.Breakpoint);
+                    BreakpointsInfo.Remove(target);
+                }
+            }
         }
 
         // Shows the breakpoints from an input list of lines
