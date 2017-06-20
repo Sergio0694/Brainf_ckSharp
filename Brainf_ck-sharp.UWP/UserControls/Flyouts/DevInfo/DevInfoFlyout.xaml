@@ -40,6 +40,7 @@
                 FontWeight="SemiBold"/><Run Text="."/>
             <LineBreak/>
             <Run 
+                FontSize="14"
                 Text="Thanks to Andrea Salvati for his help with the original interpreter algorithm, and to Camil Demetrescu for the idea to port Brainf*ck# to Windows 10."
                 x:Uid="DevelopedByPart2Run"/>
         </TextBlock>
