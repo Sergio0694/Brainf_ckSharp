@@ -86,7 +86,7 @@
             <Button 
                 Margin="20,0,0,0"
                 HorizontalAlignment="Left"
-                MaxWidth="160"
+                MaxWidth="220"
                 Height="40"
                 Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
                 Background="{ThemeResource SystemControlHighlightListAccentLowBrush}"
@@ -98,7 +98,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock
-                        Text="&#xED55;"
+                        Text="&#xE0A5;"
                         Style="{StaticResource FontIconTextBlockStyle}"
                         VerticalAlignment="Center"/>
                     <TextBlock
