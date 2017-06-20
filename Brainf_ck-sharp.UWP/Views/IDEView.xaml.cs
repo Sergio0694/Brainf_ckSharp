@@ -642,22 +642,19 @@ namespace Brainf_ck_sharp_UWP.Views
         private void BreakpointsCanvas_Tapped(object sender, TappedRoutedEventArgs e)
         {
             // Get the text point corresponding to the tap position
-            EditBox.Document.GetRange(0, 0).GetPoint(HorizontalCharacterAlignment.Left, VerticalCharacterAlignment.Top,
-                PointOptions.Transform, out Point start);
             Point
                 tap = e.GetPosition(this),
-                point = new Point(start.X, tap.Y -                                  // Original tap Y offset
-                                           (_Top + 10) +                            // Offset to the upper margin of the window
-                                           EditBox.VerticalScrollViewerOffset +     // Take the current vertical scrolling into account
-                                           start.Y);                                // Offset with respect to the relative text start Y offset
+                point = new Point(0, tap.Y -                                // Original tap Y offset
+                                     (_Top + 10) +                          // Offset to the upper margin of the window
+                                     EditBox.VerticalScrollViewerOffset);   // Take the current vertical scrolling into account
 
             // Get the range aligned to the left edge of the tapped line
-            ITextRange range = EditBox.Document.GetRangeFromPoint(point, PointOptions.None);
+            ITextRange range = EditBox.Document.GetRangeFromPoint(point, PointOptions.ClientCoordinates);
             range.GetRect(PointOptions.Transform, out Rect line, out _);
 
             // Get the line number
             EditBox.Document.GetText(TextGetOptions.None, out String text);
-            
+
             // Add the breakpoint
             AddSingleBreakpoint(text, range.StartPosition, line.Top);
             Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
