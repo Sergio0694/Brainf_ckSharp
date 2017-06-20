@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
-using Windows.UI.Composition;
+using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Hosting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
@@ -355,27 +353,6 @@ namespace Brainf_ck_sharp_UWP.PopupService
             Grid grid = new Grid();
             parent.Children.Add(grid);
 
-            // Setup the shadow function
-            void SetupShadowEdge(float x, float y)
-            {
-                // Setup the shadow
-                Visual elementVisual = ElementCompositionPreview.GetElementVisual(content);
-                Compositor compositor = elementVisual.Compositor;
-                SpriteVisual visual = compositor.CreateSpriteVisual();
-                DropShadow shadow = compositor.CreateDropShadow();
-                visual.Shadow = shadow;
-                visual.Size = new Vector2((float)content.Width + 1, (float)content.Height + 1);
-                visual.Offset = new Vector3(-0.5f, -0.5f, 0);
-
-                // Clip it and add it to the visual tree
-                InsetClip clip = compositor.CreateInsetClip();
-                clip.Offset = new Vector2(x, y);
-                visual.Clip = clip;
-                Border border = new Border();
-                grid.Children.Add(border);
-                ElementCompositionPreview.SetElementChildVisual(border, visual);
-            }
-
             // Build the shadow frame and insert the actual popup content
             foreach ((float x, float y) in new (float, float)[]
             {
@@ -383,7 +360,15 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 (-(float)content.Width, 0),
                 (0, -(float)content.Height),
                 (0, (float)content.Height)
-            }) SetupShadowEdge(x, y);
+            })
+            {
+                // Setup the shadow
+                Border border = new Border();
+                grid.Children.Add(border);
+                content.AttachVisualShadow(border, true, 
+                    (float)content.Width + 1, (float)content.Height + 1,
+                    Colors.Black, 1, -0.5f, -0.5f, null, x, y);
+            }
             grid.Children.Add(content);
 
             // Assign the popup content
