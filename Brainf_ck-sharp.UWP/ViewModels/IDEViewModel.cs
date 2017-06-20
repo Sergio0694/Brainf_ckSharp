@@ -290,7 +290,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// Updates the indentation info for a given state
         /// </summary>
         /// <param name="brackets">The collection of brackets and their position in the current text</param>
-        public void UpdateIndentationInfo([CanBeNull] IReadOnlyList<(int, int, char)> brackets)
+        public async Task UpdateIndentationInfo([CanBeNull] IReadOnlyList<(int, int, char)> brackets)
         {
             // // Check the info is available
             if (brackets == null || brackets.Count == 0)
@@ -298,29 +298,35 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 Source.Clear();
                 return;
             }
-            int max = brackets.Max(entry => entry.Item1);
 
-            // Updates the indentation info displayed on the IDE
-            List<IDEIndentationLineInfo> source = new List<IDEIndentationLineInfo>();
-            uint depth = 0;
-            for (int i = 1; i <= max; i++)
+            // Prepare the updated source collection
+            List<IDEIndentationLineInfo> source = await Task.Run(() =>
             {
-                IReadOnlyList<(int, int, char)> line = brackets.Where(info => info.Item1 == i).ToArray();
-                if (line.Count == 0)
+                int max = brackets.Max(entry => entry.Item1);
+
+                // Updates the indentation info displayed on the IDE
+                List<IDEIndentationLineInfo> temp = new List<IDEIndentationLineInfo>();
+                uint depth = 0;
+                for (int i = 1; i <= max; i++)
                 {
-                    source.Add(new IDEIndentationLineInfo(depth == 0 ? IDEIndentationInfoLineType.Empty : IDEIndentationInfoLineType.Straight));
+                    IReadOnlyList<(int, int, char)> line = brackets.Where(info => info.Item1 == i).ToArray();
+                    if (line.Count == 0)
+                    {
+                        temp.Add(new IDEIndentationLineInfo(depth == 0 ? IDEIndentationInfoLineType.Empty : IDEIndentationInfoLineType.Straight));
+                    }
+                    else if (line[0].Item3 == '[')
+                    {
+                        depth++;
+                        temp.Add(new IDEIndentationOpenBracketLineInfo(depth));
+                    }
+                    else if (line[0].Item3 == ']')
+                    {
+                        depth--;
+                        temp.Add(new IDEIndentationLineInfo(IDEIndentationInfoLineType.ClosedBracket));
+                    }
                 }
-                else if (line[0].Item3 == '[')
-                {
-                    depth++;
-                    source.Add(new IDEIndentationOpenBracketLineInfo(depth));
-                }
-                else if (line[0].Item3 == ']')
-                {
-                    depth--;
-                    source.Add(new IDEIndentationLineInfo(IDEIndentationInfoLineType.ClosedBracket));
-                }
-            }
+                return temp;
+            });
             
             // Update the source collection
             for (int i = 0; i < source.Count; i++)
@@ -378,7 +384,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// </summary>
         /// <param name="previous">The previous code</param>
         /// <param name="current">The current code</param>
-        public void UpdateGitDiffStatus([NotNull] String previous, [NotNull] String current)
+        public async Task UpdateGitDiffStatus([NotNull] String previous, [NotNull] String current)
         {
             // Clear the current indicators if the two strings are the same
             if (previous.Equals(current))
@@ -387,16 +393,21 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 return;
             }
 
-            String[]
-                currentLines = current.Split('\r'),
-                previousLines = previous.Replace("\n", "").Split('\r').Take(currentLines.Length).ToArray();
-            List<GitDiffLineStatus> source = new List<GitDiffLineStatus>();
-            for (int i = 0; i < currentLines.Length - 1; i++)
+            // Prepare the updated source
+            List<GitDiffLineStatus> source = await Task.Run(() =>
             {
-                if (i > previousLines.Length - 1) source.Add(GitDiffLineStatus.Edited);
-                else source.Add(currentLines[i].Equals(previousLines[i]) ? GitDiffLineStatus.Undefined : GitDiffLineStatus.Edited);
-                // TODO: actually implement this
-            }
+                String[]
+                    currentLines = current.Split('\r'),
+                    previousLines = previous.Replace("\n", "").Split('\r').Take(currentLines.Length).ToArray();
+                List<GitDiffLineStatus> temp = new List<GitDiffLineStatus>();
+                for (int i = 0; i < currentLines.Length - 1; i++)
+                {
+                    if (i > previousLines.Length - 1) temp.Add(GitDiffLineStatus.Edited);
+                    else temp.Add(currentLines[i].Equals(previousLines[i]) ? GitDiffLineStatus.Undefined : GitDiffLineStatus.Edited);
+                    // TODO: actually implement this
+                }
+                return temp;
+            });
 
             // Update the source collection
             for (int i = 0; i < source.Count; i++)

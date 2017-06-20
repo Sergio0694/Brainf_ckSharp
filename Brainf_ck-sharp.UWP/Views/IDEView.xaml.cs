@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
@@ -173,10 +174,12 @@ namespace Brainf_ck_sharp_UWP.Views
         private void EditBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
             DrawLineNumbers();
-            DrawBracketGuides(null);
-            ViewModel.UpdateIndentationInfo(_Brackets);
+            DrawBracketGuides(null).ContinueWith(t =>
+            {
+                ViewModel.UpdateIndentationInfo(t.Result).Forget();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
             EditBox.Document.GetText(TextGetOptions.None, out String code);
-            ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code);
+            ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
             ViewModel.UpdateCanUndoRedoStatus();
         }
 
@@ -185,56 +188,77 @@ namespace Brainf_ck_sharp_UWP.Views
         /// <summary>
         /// Updates the line numbers shown next to the code edit box
         /// </summary>
-        private void DrawLineNumbers()
+        private async void DrawLineNumbers()
         {
             // Draw the line numbers in the TextBlock next to the code
-            int count = EditBox.GetLinesCount();
-            StringBuilder builder = new StringBuilder();
-            for (int i = 1; i < count; i++)
+            EditBox.Document.GetText(TextGetOptions.None, out String text);
+            LineBlock.Text = await Task.Run(() =>
             {
-                builder.Append($"\n{i}");
-            }
-            LineBlock.Text = builder.ToString();
+                int count = text.Split('\r').Length;
+                StringBuilder builder = new StringBuilder();
+                for (int i = 1; i < count; i++)
+                {
+                    builder.Append($"\n{i}");
+                }
+                return builder.ToString();
+            });
         }
 
         // The backup of the indexes of the brackets in the text
         private IReadOnlyList<(int, int, char)> _Brackets;
 
+        // Brackets semaphore to avoid concurrent operations
+        private readonly SemaphoreSlim BracketGuidesSemaphore = new SemaphoreSlim(1);
+
+        // Cancellation token for concurrent operations started unvoluntarily
+        private CancellationTokenSource _BracketGuidesCts;
+
         /// <summary>
         /// Redraws the column guides if necessary
         /// </summary>
         /// <param name="code">The current text, if already available</param>
-        private void DrawBracketGuides(String code)
+        private async Task<IReadOnlyList<(int, int, char)>> DrawBracketGuides(String code)
         {
             // Get the text, clear the current guides and make sure the syntax is currently valid
+            _BracketGuidesCts?.Cancel();
+            await BracketGuidesSemaphore.WaitAsync();
+            _BracketGuidesCts = new CancellationTokenSource();
             if (code == null) EditBox.Document.GetText(TextGetOptions.None, out code);
 
             // Check the current syntax
-            (bool valid, _) = Brainf_ckInterpreter.CheckSourceSyntax(code);
-            if (!valid)
+            (bool valid, _) = await Task.Run(() => Brainf_ckInterpreter.CheckSourceSyntax(code));
+            if (!valid || _BracketGuidesCts.IsCancellationRequested)
             {
                 BracketGuidesCanvas.Children.Clear();
                 _Brackets = null;
-                return;
+                BracketGuidesSemaphore.Release();
+                return null;
             }
 
             // Build the indexes for the current state
-            List<(int, int, char)> indexes = new List<(int, int, char)>();
-            foreach ((char c, int i) in code.Select((c, i) => (c, i)))
+            (List<(int, int, char)> indexes, bool zip) = await Task.Run(() =>
             {
-                if (c == '[' || c == ']')
+                List<(int, int, char)> pairs = new List<(int, int, char)>();
+                foreach ((char c, int i) in code.Select((c, i) => (c, i)))
                 {
-                    (int x, int y) = code.FindCoordinates(i);
-                    indexes.Add((x, y, c));
+                    if (c == '[' || c == ']')
+                    {
+                        (int x, int y) = code.FindCoordinates(i);
+                        pairs.Add((x, y, c));
+                    }
                 }
-            }
+                bool test = _Brackets?.Zip(pairs, (first, second) => first.Equals(second)).All(b => b) == true;
+                return (pairs, test);
+            });
 
             // Check if the brackets haven't been changed or moved
             if (_Brackets != null && 
                 _Brackets.Count == indexes.Count &&
-                _Brackets.Zip(indexes, (first, second) => first.Equals(second)).All(b => b))
+                zip || 
+                _BracketGuidesCts.IsCancellationRequested)
             {
-                return;
+                BracketGuidesSemaphore.Release();
+                return _Brackets;
             }
             _Brackets = indexes;
             BracketGuidesCanvas.Children.Clear();
@@ -243,6 +267,7 @@ namespace Brainf_ck_sharp_UWP.Views
             foreach ((char c, int i) in code.Select((c, i) => (c, i)))
             {
                 // Get the index of the corresponding closing bracket (only if they're not on the same line)
+                if (_BracketGuidesCts.IsCancellationRequested) break;
                 if (c != '[') continue;
                 int height = 0, target = -1;
                 bool newLine = false;
@@ -285,6 +310,8 @@ namespace Brainf_ck_sharp_UWP.Views
                 guide.SetVisualOffset(TranslationAxis.X, (float)(open.X + 6));
                 BracketGuidesCanvas.Children.Add(guide);
             }
+            BracketGuidesSemaphore.Release();
+            return indexes;
         }
 
         /// <summary>
@@ -397,8 +424,10 @@ namespace Brainf_ck_sharp_UWP.Views
             // Update the bracket guides
             if (refreshBrackets)
             {
-                DrawBracketGuides(text);
-                ViewModel.UpdateIndentationInfo(_Brackets);
+                DrawBracketGuides(text).ContinueWith(t =>
+                {
+                    ViewModel.UpdateIndentationInfo(t.Result).Forget();
+                }, TaskScheduler.FromCurrentSynchronizationContext());
             }
 
             // Update the cursor indicators
@@ -510,9 +539,11 @@ namespace Brainf_ck_sharp_UWP.Views
             EditBox.Document.GetText(TextGetOptions.None, out code);
             _PreviousText = code;
             DrawLineNumbers();
-            DrawBracketGuides(code);
-            ViewModel.UpdateIndentationInfo(_Brackets);
-            ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code);
+            DrawBracketGuides(code).ContinueWith(t =>
+            {
+                ViewModel.UpdateIndentationInfo(t.Result).Forget();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+            ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
             ViewModel.SendMessages(code);
             ViewModel.UpdateCanUndoRedoStatus();
             UpdateCursorRectangleAndIndicatorUI();

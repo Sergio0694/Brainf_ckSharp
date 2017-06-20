@@ -80,15 +80,6 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         }
 
         /// <summary>
-        /// Gets the number of text lines in the control
-        /// </summary>
-        public int GetLinesCount()
-        {
-            Document.GetText(TextGetOptions.None, out String text);
-            return text.Split('\r').Length;
-        }
-
-        /// <summary>
         /// Scrolls the control to make the current selection visible, if needed
         /// </summary>
         public void TryScrollToSelection()
