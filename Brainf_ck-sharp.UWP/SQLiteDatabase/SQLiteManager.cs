@@ -147,8 +147,11 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
                                     }
                                     await source.InsertAsync(code);
                                 }
-                                else if (code.Modified > local.Modified ||
-                                         local.Deleted > 0 && code.Deleted == 0 && code.Modified > local.Deleted)
+                                else if (code.Modified > local.Modified && // If the roaming item has been edited more recently...
+                                         code.Deleted == 0 && local.Deleted == 0 || // ...and both of them are not deleted
+                                         local.Deleted != 0 && // The local item has been deleted
+                                         code.Deleted == 0 && // The roaming item is not deleted...
+                                         code.ModifiedTime.CompareTo(local.DeletedTime) > 0) // ...and it's been modified after the local deletion
                                 {
                                     // Item modified or changed after local deletion, update it or restore the remote version
                                     if (await source.Table<SourceCode>().Where(item => item.Title == code.Title && item.Uid != code.Uid).FirstOrDefaultAsync() != null)
@@ -259,7 +262,7 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
             // Query the codes from the database
             await EnsureDatabaseConnectionAsync();
             await RefreshCodeSamplesAsync();
-            List<SourceCode> codes = await DatabaseConnection.Table<SourceCode>().ToListAsync();
+            List<SourceCode> codes = await DatabaseConnection.Table<SourceCode>().Where(code => code.Deleted == 0).ToListAsync();
 
             // Populate the three categories
             List<SourceCode>
