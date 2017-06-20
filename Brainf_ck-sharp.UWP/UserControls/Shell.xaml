@@ -187,6 +187,7 @@
                     Foreground="DarkGreen"
                     x:Uid="PlayButton"
                     DefaultButton="True"
+                    Style="{StaticResource ColoredAppbarButton}"
                     IsEnabled="{x:Bind ViewModel.PlayAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestPlay}"/>
                 <customCommandBar:CustomCommandBarButton
@@ -216,12 +217,14 @@
                     Icon="&#xE102;"
                     Foreground="DarkGreen"
                     x:Uid="PlayButton"
+                    Style="{StaticResource ColoredAppbarButton}"
                     IsEnabled="{x:Bind ViewModel.IDECodeAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestPlay}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Debug"
                     Icon="&#xEBE8;"
                     Foreground="{StaticResource RedDangerBrush}"
+                    Style="{StaticResource ColoredAppbarButton}"
                     x:Uid="DebugButton"
                     IsEnabled="{x:Bind ViewModel.DebugAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestDebug}"/>
