@@ -186,7 +186,9 @@
             Grid.Column="0"
             Background="#FF333333"
             x:Name="BreakpointsCanvas"
-            Tapped="BreakpointsCanvas_Tapped"/>
+            Tapped="BreakpointsCanvas_Tapped"
+            RightTapped="BreakpointsCanvas_OnRightTapped"
+            Holding="BreakpointsCanvas_OnHolding"/>
 
             <!--Line numbers grid-->
         <Canvas Grid.Column="1">

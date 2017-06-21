@@ -80,5 +80,17 @@ namespace Brainf_ck_sharp_UWP.Helpers
             menu.Items?.AddItem(LocalizationManager.GetResource("Delete"), 0xE107.ToSegoeMDL2Icon(), delete);
             return menu;
         }
+
+        /// <summary>
+        /// Prepares a <see cref="MenuFlyout"/> with some options for the active breakpoints in the IDE
+        /// </summary>
+        /// <param name="remove">The action to execute when the user requests to delete all the present breakpoints</param>
+        public static MenuFlyout PrepareBreakpointsMenuFlyout(
+            [NotNull] Action remove)
+        {
+            MenuFlyout menu = new MenuFlyout();
+            menu.Items?.AddItem(LocalizationManager.GetResource("RemoveAll"), 0xED60.ToSegoeMDL2Icon(), remove);
+            return menu;
+        }
     }
 }

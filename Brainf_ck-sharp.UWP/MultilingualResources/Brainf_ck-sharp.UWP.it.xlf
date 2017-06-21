@@ -483,6 +483,11 @@
           <source>Can't place a breakpoint here</source>
           <target state="translated">Impossibile inserire un punto di interruzione qui</target>
         </trans-unit>
+        <trans-unit id="RemoveAll" translate="yes" xml:space="preserve">
+          <source>Remove all</source>
+          <target state="translated">Rimuovi tutti</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Remove all the breakpoints from the IDE</note>
+        </trans-unit>
       </group>
     </body>
   </file>

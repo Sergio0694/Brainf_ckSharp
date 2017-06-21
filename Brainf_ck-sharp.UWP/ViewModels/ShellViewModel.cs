@@ -17,7 +17,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             StdinBufferExtractor = stdinExtractor;
             Messenger.Default.Register<AvailableActionStatusChangedMessage>(this, ProcessAvailableActionsStatusChangedMessage);
             Messenger.Default.Register<IDEExecutableStatusChangedMessage>(this, m => IDECodeAvailable = m.Executable);
-            Messenger.Default.Register< DebugStatusChangedMessage>(this, m =>
+            Messenger.Default.Register<DebugStatusChangedMessage>(this, m =>
             {
                 if (_DebugAvailable != m.DebugAvailable)
                 {

@@ -206,7 +206,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             bool executable = Brainf_ckInterpreter.FindOperators(code);
             if (_CanExecute != executable)
             {
-                Messenger.Default.Send(new IDEExecutableStatusChangedMessage(executable, BreakpointsExtractor().Count > 0));
+                Messenger.Default.Send(new IDEExecutableStatusChangedMessage(executable));
                 _CanExecute = executable;
             }
             if (valid)
@@ -219,6 +219,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 Messenger.Default.Send(new IDEStatusUpdateMessage(LocalizationManager.GetResource("Warning"), row, col, y, x, _CategorizedCode?.Code.Title));
             }
         }
+
+        /// <summary>
+        /// Sends a message to disable the debug mode when the current breakpoints get deleted
+        /// </summary>
+        public void SignalBreakpointsDeleted() => Messenger.Default.Send(new DebugStatusChangedMessage(false));
 
         /// <summary>
         /// Clears the current content in the document

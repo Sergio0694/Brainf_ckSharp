@@ -477,4 +477,8 @@
   <data name="BreakpointNotAllowedBlock.Text" xml:space="preserve">
     <value>Can't place a breakpoint here</value>
   </data>
+  <data name="RemoveAll" xml:space="preserve">
+    <value>Remove all</value>
+    <comment>Remove all the breakpoints from the IDE</comment>
+  </data>
 </root>

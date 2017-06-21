@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI;
+using Windows.UI.Input;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -760,5 +762,37 @@ namespace Brainf_ck_sharp_UWP.Views
                 GitDiffListView.SetVisualScale(null, (float)(size.Height / e.NewSize.Height), null);
             }
         }
+
+        #region Breakpoints context menu
+
+        // Shows the MenuFlyout when using a mouse or a pen
+        private void BreakpointsCanvas_OnRightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            if (e.PointerDeviceType == PointerDeviceType.Touch || BreakpointsInfo.Count == 0) return;
+            ShowMenuFlyout(e.GetPosition(this));
+        }
+
+        // Shows the MenuFlyout when the input device is a touch screen
+        private void BreakpointsCanvas_OnHolding(object sender, HoldingRoutedEventArgs e)
+        {
+            if (e.PointerDeviceType != PointerDeviceType.Touch ||
+                e.HoldingState != HoldingState.Started || BreakpointsInfo.Count == 0) return;
+            ShowMenuFlyout(e.GetPosition(this));
+        }
+
+        // Shows the MenuFlyout at the right position
+        private void ShowMenuFlyout(Point offset)
+        {
+            // Get the custom MenuFlyout
+            MenuFlyout menuFlyout = MenuFlyoutHelper.PrepareBreakpointsMenuFlyout(
+            () =>
+            {
+                ClearBreakpoints();
+                ViewModel.SignalBreakpointsDeleted();
+            });
+            menuFlyout.ShowAt(this, offset);
+        }
+
+        #endregion
     }
 }

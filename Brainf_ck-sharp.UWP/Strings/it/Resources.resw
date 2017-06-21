@@ -372,4 +372,8 @@
   <data name="BreakpointNotAllowedBlock.Text" xml:space="preserve">
     <value>Impossibile inserire un punto di interruzione qui</value>
   </data>
+  <data name="RemoveAll" xml:space="preserve">
+    <value>Rimuovi tutti</value>
+    <comment>Remove all the breakpoints from the IDE</comment>
+  </data>
 </root>
