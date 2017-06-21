@@ -24,7 +24,7 @@ namespace Brainf_ck_sharp_UWP
         /// </summary>
         public App()
         {
-#if DEBUG
+#if !DEBUG
             HockeyClient.Current.Configure("d992b6490330446db870404084b19c39");
 #endif
             Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(
