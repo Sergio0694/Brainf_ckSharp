@@ -418,7 +418,7 @@
     <value>Contacts</value>
   </data>
   <data name="DevelopedByPart2Run.Text" xml:space="preserve">
-    <value>Thanks to Andrea Salvati for his help with the original interpreter algorithm, and to Camil Demetrescu for the idea to port Brainf*ck# to Windows 10.</value>
+    <value>Thanks to Andrea Salvati for his help with the original interpreter algorithm, Camil Demetrescu for the idea to port Brainf*ck# to Windows 10 and Christopher Blackman for his help during the app development</value>
   </data>
   <data name="DevelopedByRun.Text" xml:space="preserve">
     <value>Developed by</value>
