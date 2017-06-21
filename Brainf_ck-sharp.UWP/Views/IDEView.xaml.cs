@@ -118,32 +118,16 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             // Start the cursor animation and subscribe the scroller event
             CursorAnimation.Begin();
-            ScrollViewer scroller = EditBox.FindChild<ScrollViewer>();
-            scroller.ViewChanged += Scroller_ViewChanged;
 
             // Setup the expression animations
-            EditBox.InnerScrollViewer.StartExpressionAnimation(LinesGrid, TranslationAxis.Y, TranslationAxis.Y, (float)(_Top - 12));
-            EditBox.InnerScrollViewer.StartExpressionAnimation(IndentationInfoList, TranslationAxis.Y, TranslationAxis.Y, (float)(_Top + 10));
-            EditBox.InnerScrollViewer.StartExpressionAnimation(GitDiffListView, TranslationAxis.Y, TranslationAxis.Y, (float)(_Top + 10));
-            EditBox.InnerScrollViewer.StartExpressionAnimation(BracketGuidesCanvas, TranslationAxis.Y, TranslationAxis.Y);
-            EditBox.InnerScrollViewer.StartExpressionAnimation(BracketGuidesCanvas, TranslationAxis.X, TranslationAxis.X);
-            EditBox.InnerScrollViewer.StartExpressionAnimation(CursorRectangle, TranslationAxis.Y, TranslationAxis.Y);
-            EditBox.InnerScrollViewer.StartExpressionAnimation(CursorRectangle, TranslationAxis.X, TranslationAxis.X);
-            EditBox.InnerScrollViewer.StartExpressionAnimation(CursorBorder, TranslationAxis.Y, TranslationAxis.Y);
-        }
-
-        // Updates the position of the line numbers when the edit box is scrolled
-        private void Scroller_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
-        {
-            // Keep the line numbers and the current cursor in sync with the code
-            float targetplus10 = (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset);
-            foreach (Ellipse breakpoint in BreakpointsCanvas.Children.Cast<Ellipse>().ToArray())
-            {
-                if (BreakpointsOffsetDictionary.TryGetValue(breakpoint, out double offset))
-                {
-                    breakpoint.RenderTransform.To<TranslateTransform>().Y = targetplus10 + offset;
-                }
-            }
+            LinesGrid.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top - 12));
+            IndentationInfoList.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 10));
+            GitDiffListView.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 10));
+            BracketGuidesCanvas.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
+            BracketGuidesCanvas.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.X);
+            CursorRectangle.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
+            CursorRectangle.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.X);
+            CursorBorder.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
         }
 
         public IDEViewModel ViewModel => DataContext.To<IDEViewModel>();
@@ -588,7 +572,6 @@ namespace Brainf_ck_sharp_UWP.Views
         private void ClearBreakpoints()
         {
             BreakpointsInfo.Clear();
-            BreakpointsOffsetDictionary.Clear();
             BreakpointsCanvas.Children.Clear();
             BreakLinesCanvas.Children.Clear();
         }
@@ -624,7 +607,6 @@ namespace Brainf_ck_sharp_UWP.Views
                     // Remove the previous breakpoint
                     BreakpointsCanvas.Children.Remove(previous.Breakpoint);
                     BreakLinesCanvas.Children.Remove(previous.LineIndicator);
-                    BreakpointsOffsetDictionary.Remove(previous.Breakpoint);
                     BreakpointsInfo.Remove(target);
                 }
             }
@@ -670,9 +652,6 @@ namespace Brainf_ck_sharp_UWP.Views
             Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
         }
 
-        // Local dictionary with the base offset of each breakpoint element
-        private readonly IDictionary<Ellipse, double> BreakpointsOffsetDictionary = new Dictionary<Ellipse, double>();
-
         // The guid to synchronize the invalid breakpoint messages being sent with a delay
         private Guid _InvalidBreakpointMessageID;
 
@@ -709,12 +688,11 @@ namespace Brainf_ck_sharp_UWP.Views
                 // Remove the previous breakpoint
                 BreakpointsCanvas.Children.Remove(previous.Breakpoint);
                 BreakLinesCanvas.Children.Remove(previous.LineIndicator);
-                BreakpointsOffsetDictionary.Remove(previous.Breakpoint);
                 BreakpointsInfo.Remove(y);
             }
             else
             {
-                // Update the UI
+                // Breakpoint ellipse
                 Ellipse ellipse = new Ellipse
                 {
                     Width = 14,
@@ -722,14 +700,16 @@ namespace Brainf_ck_sharp_UWP.Views
                     Fill = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("BreakpointFillBrush"),
                     Stroke = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("BreakpointBorderBrush"),
                     StrokeThickness = 1,
-                    Margin = new Thickness(3, 3, 0, 0),
                     RenderTransform = new TranslateTransform
                     {
-                        Y = _Top + 10 - EditBox.VerticalScrollViewerOffset + offset - 2
+                        X = 3,
+                        Y = _Top + 12 + offset
                     }
                 };
-                BreakpointsOffsetDictionary.Add(ellipse, offset - 2);
                 BreakpointsCanvas.Children.Add(ellipse);
+                ellipse.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
+
+                // Line highlight
                 Rectangle rect = new Rectangle
                 {
                     Height = 19.9, // Approximate line height
@@ -738,7 +718,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     RenderTransform = new TranslateTransform { Y = offset - 2 } // -2 to adjust the position with the cursor rectangle
                 };
                 BreakLinesCanvas.Children.Add(rect);
-                EditBox.InnerScrollViewer.StartExpressionAnimation(rect, TranslationAxis.Y, TranslationAxis.Y);
+                rect.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
 
                 // Store the info
                 BreakpointsInfo.Add(y, (ellipse, rect));
