@@ -278,7 +278,11 @@
                 Height="20"
                 BorderThickness="2"
                 BorderBrush="#20FFFFFF"
-                x:Name="CursorBorder"/>
+                x:Name="CursorBorder">
+                <Border.RenderTransform>
+                    <TranslateTransform x:Name="CursorBorderTransform"/>
+                </Border.RenderTransform>
+            </Border>
             
             <!--Virtual cursor-->
             <Rectangle 
