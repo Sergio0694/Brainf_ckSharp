@@ -748,12 +748,26 @@ namespace Brainf_ck_sharp_UWP.Views
         // Adjusts the vertical scaling of the indentation indicators
         private void IndentationInfoList_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (ViewModel.Source.Count == 0) IndentationInfoList.SetVisualScale(null, 1, null);
+            int count = ViewModel.Source.Count;
+            if (count < 3) IndentationInfoList.SetVisualScale(null, 1, null);
             else
             {
-                String lines = '\n'.Repeat(ViewModel.Source.Count - 1);
+                String lines = '\n'.Repeat(count - 1);
                 Size size = lines.MeasureText(15);
                 IndentationInfoList.SetVisualScale(null, (float) (size.Height / e.NewSize.Height), null);
+            }
+        }
+
+        // Adjusts the vertical scaling of the git lines diff indicators
+        private void GitDiffListView_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            int count = ViewModel.DiffStatusSource.Count;
+            if (count < 3) GitDiffListView.SetVisualScale(null, 1, null);
+            else
+            {
+                String lines = '\n'.Repeat(count - 1);
+                Size size = lines.MeasureText(15);
+                GitDiffListView.SetVisualScale(null, (float)(size.Height / e.NewSize.Height), null);
             }
         }
     }

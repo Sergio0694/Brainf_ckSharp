@@ -215,7 +215,8 @@
                 ItemTemplateSelector="{StaticResource DiffTemplateSelector}"
                 ScrollViewer.VerticalScrollBarVisibility="Hidden"
                 ScrollViewer.VerticalScrollMode="Disabled"
-                IsHitTestVisible="False"/>
+                IsHitTestVisible="False"
+                SizeChanged="GitDiffListView_OnSizeChanged"/>
         </Canvas>
 
         <!--Indentation indicators-->
