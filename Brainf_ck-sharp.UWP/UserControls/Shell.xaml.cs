@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI;
@@ -28,6 +27,7 @@ using UICompositionAnimations;
 using UICompositionAnimations.Behaviours;
 using UICompositionAnimations.Behaviours.Effects.Base;
 using UICompositionAnimations.Enums;
+using MemoryViewerFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState.MemoryViewerFlyout;
 
 namespace Brainf_ck_sharp_UWP.UserControls
 {
@@ -182,11 +182,8 @@ namespace Brainf_ck_sharp_UWP.UserControls
         {
             IReadonlyTouringMachineState source = Console.ViewModel.State;
             MemoryViewerFlyout viewer = new MemoryViewerFlyout();
-            Task.Run(() => IndexedModelWithValue<Brainf_ckMemoryCell>.New(source).ToArray()).ContinueWith(t =>
-            {
-                viewer.Source = t.Result;
-            }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
             FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("MemoryStateTitle"), viewer).Forget();
+            Task.Delay(100).ContinueWith(t => viewer.ViewModel.InitializeAsync(source), TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         /// <summary>

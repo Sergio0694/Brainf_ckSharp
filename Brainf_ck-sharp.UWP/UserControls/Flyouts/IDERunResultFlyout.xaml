@@ -5,12 +5,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:templateSelectors="using:Brainf_ck_sharp_UWP.TemplateSelectors"
-    xmlns:flyouts="using:Brainf_ck_sharp_UWP.UserControls.Flyouts"
     xmlns:attached="using:Brainf_ck_sharp_UWP.AttachedProperties"
     xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
     xmlns:customControls="using:Brainf_ck_sharp_UWP.UserControls.CustomControls"
     xmlns:jumpList="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList"
     xmlns:ideResult="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult"
+    xmlns:memoryState="using:Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -132,7 +132,7 @@
 
         <!--Memory state-->
         <DataTemplate x:Key="MemoryStateTemplate">
-            <flyouts:MemoryViewerFlyout
+            <memoryState:StandaloneMemoryViewerControl
                 Margin="12,0,0,-4"
                 Source="{Binding IndexedState}"/>
         </DataTemplate>

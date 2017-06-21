@@ -240,6 +240,9 @@
     <Compile Include="UserControls\Flyouts\LocalSourceCodesBrowserFlyout.xaml.cs">
       <DependentUpon>LocalSourceCodesBrowserFlyout.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Flyouts\MemoryState\StandaloneMemoryViewerControl.xaml.cs">
+      <DependentUpon>StandaloneMemoryViewerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Flyouts\SaveCodePromptFlyout.xaml.cs">
       <DependentUpon>SaveCodePromptFlyout.xaml</DependentUpon>
     </Compile>
@@ -274,7 +277,7 @@
     <Compile Include="UserControls\Flyouts\IDERunResultFlyout.xaml.cs">
       <DependentUpon>IDERunResultFlyout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\MemoryViewerFlyout.xaml.cs">
+    <Compile Include="UserControls\Flyouts\MemoryState\MemoryViewerFlyout.xaml.cs">
       <DependentUpon>MemoryViewerFlyout.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Flyouts\UnicodeCharactersGuideFlyout.xaml.cs">
@@ -319,6 +322,7 @@
     <Compile Include="ViewModels\IDEViewModel.cs" />
     <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase.cs" />
     <Compile Include="ViewModels\LocalSourceCodesBrowserFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\MemoryViewerFlyoutViewModel.cs" />
     <Compile Include="ViewModels\SaveCodePromptFlyoutViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\UnicodeCharactersGuideFlyoutViewModel.cs" />
@@ -540,7 +544,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Flyouts\MemoryViewerFlyout.xaml">
+    <Page Include="UserControls\Flyouts\MemoryState\StandaloneMemoryViewerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Flyouts\MemoryState\MemoryViewerFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
