@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -124,11 +123,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
             @this.Inlines.Clear();
             @this.Inlines.Add(new Run
             {
-                Text = code?.Aggregate(new StringBuilder(), (b, c) =>
-                {
-                    b.Append($"{c}{ZeroWidthSpace}");
-                    return b;
-                }).ToString() ?? String.Empty
+                Text = code?.Aggregate(c => $"{c}{ZeroWidthSpace}") ?? String.Empty
             });
         }
     }

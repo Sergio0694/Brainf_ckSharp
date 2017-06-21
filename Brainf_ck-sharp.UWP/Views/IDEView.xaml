@@ -229,7 +229,8 @@
                 ScrollViewer.VerticalScrollBarVisibility="Hidden"
                 ScrollViewer.VerticalScrollMode="Disabled"
                 IsHitTestVisible="False"
-                x:Name="IndentationInfoList"/>
+                x:Name="IndentationInfoList"
+                SizeChanged="IndentationInfoList_OnSizeChanged"/>
         </Canvas>
         
         <!--Breakpoints line indicators-->

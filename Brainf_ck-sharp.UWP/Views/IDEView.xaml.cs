@@ -744,5 +744,17 @@ namespace Brainf_ck_sharp_UWP.Views
 
         // Begins a new undo group when the user presses a keyboard key (before the text is actually changed)
         private void EditBox_OnKeyDown(object sender, KeyRoutedEventArgs e) => EditBox.Document.BeginUndoGroup();
+
+        // Adjusts the vertical scaling of the indentation indicators
+        private void IndentationInfoList_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (ViewModel.Source.Count == 0) IndentationInfoList.SetVisualScale(null, 1, null);
+            else
+            {
+                String lines = '\n'.Repeat(ViewModel.Source.Count - 1);
+                Size size = lines.MeasureText(15);
+                IndentationInfoList.SetVisualScale(null, (float) (size.Height / e.NewSize.Height), null);
+            }
+        }
     }
 }

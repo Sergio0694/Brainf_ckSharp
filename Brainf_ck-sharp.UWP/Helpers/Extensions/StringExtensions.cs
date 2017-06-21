@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using Windows.Foundation;
+using Windows.UI.Xaml.Controls;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.Helpers.Extensions
@@ -66,6 +70,53 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
             int offset = y - 1;
             if (offset < 0 || offset > lines.Length - 1) throw new ArgumentOutOfRangeException("The line number is invalid");
             return lines[offset];
+        }
+
+        /// <summary>
+        /// Aggregates a series of values into a <see cref="String"/> object in an efficient way
+        /// </summary>
+        /// <typeparam name="T">The type of the input values</typeparam>
+        /// <param name="source">The source collection</param>
+        /// <param name="converter">A function that converts each value to a text representation</param>
+        [Pure, NotNull]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static String Aggregate<T>([NotNull] this IEnumerable<T> source, Func<T, String> converter)
+        {
+            return source.Aggregate(new StringBuilder(), (b, s) =>
+            {
+                b.Append(converter(s));
+                return b;
+            }).ToString();
+        }
+
+        /// <summary>
+        /// Measures the rendering size of a text value
+        /// </summary>
+        /// <param name="text">The text to measure</param>
+        /// <param name="size">The font size to use for the measurement</param>
+        [Pure]
+        public static Size MeasureText([NotNull] this String text, int size)
+        {
+            TextBlock block = new TextBlock
+            {
+                FontSize = size,
+                Text = text
+            };
+            block.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            return block.DesiredSize;
+        }
+
+        /// <summary>
+        /// Repeats a given character a set number of times
+        /// </summary>
+        /// <param name="c">The character to repeat</param>
+        /// <param name="times">The repetitions in the resulting <see cref="String"/></param>
+        [Pure]
+        public static String Repeat(this char c, int times)
+        {
+            StringBuilder builder = new StringBuilder();
+            while (times-- > 0) builder.Append(c);
+            return builder.ToString();
         }
     }
 }
