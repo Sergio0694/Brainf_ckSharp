@@ -334,6 +334,7 @@ namespace Brainf_ck_sharp_UWP.Views
         // Gets the backup of the text in the IDE
         private String _PreviousText;
 
+        // Updates the syntax highlight and some UI overlays whenever the text selection changes
         private void EditBox_OnSelectionChanged(object sender, RoutedEventArgs e)
         {
             /* ====================
@@ -349,74 +350,84 @@ namespace Brainf_ck_sharp_UWP.Views
             int start = EditBox.Document.Selection.StartPosition;
 
             // Single character entered
-            bool refreshBrackets = false;
-            if (text.Length == _PreviousText.Length + 1)
+            bool textChanged = false;
+            try
             {
-                // Get the last character and apply the right color
-                ITextRange range = EditBox.Document.GetRange(start - 1, start);
-                range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(range.Character);
-
-                // No other work needed for all the operators except the [ bracket
-                if (!Brainf_ckInterpreter.Operators.Where(c => c != '[').Contains(range.Character) &&
-                    Brainf_ckInterpreter.CheckSourceSyntax(_PreviousText).Valid) // Skip the autocompletion if the code isn't valid
+                if (text.Length == _PreviousText.Length + 1)
                 {
-                    // Calculate the current indentation depth
-                    String trailer = text.Substring(0, range.StartPosition);
-                    int indents = trailer.Count(c => c == '[') - trailer.Count(c => c == ']');
-                    String tabs = Enumerable.Range(0, indents).Aggregate(new StringBuilder(), (b, c) =>
-                    {
-                        b.Append('\t');
-                        return b;
-                    }).ToString();
+                    // Get the last character and apply the right color
+                    ITextRange range = EditBox.Document.GetRange(start - 1, start);
+                    range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(range.Character);
 
-                    // Open [ bracket
-                    if (range.Character == '[')
+                    // No other work needed for all the operators except the [ bracket
+                    if (!Brainf_ckInterpreter.Operators.Where(c => c != '[').Contains(range.Character) &&
+                        Brainf_ckInterpreter.CheckSourceSyntax(_PreviousText).Valid) // Skip the autocompletion if the code isn't valid
                     {
-                        // Edge case: the user was already on an empty and indented line when opening the bracket
-                        bool edge = false;
-                        int lastCr = trailer.LastIndexOf('\r');
-                        if (lastCr != -1)
+                        // Calculate the current indentation depth
+                        String trailer = text.Substring(0, range.StartPosition);
+                        int indents = trailer.Count(c => c == '[') - trailer.Count(c => c == ']');
+                        String tabs = Enumerable.Range(0, indents).Aggregate(new StringBuilder(), (b, c) =>
                         {
-                            // Autocomplete without the first blank line
-                            String lastLine = trailer.Substring(lastCr, trailer.Length - lastCr);
-                            if (lastLine.Skip(1).All(c => c == '\t') && lastLine.Length == indents + 1)
+                            b.Append('\t');
+                            return b;
+                        }).ToString();
+
+                        // Open [ bracket
+                        if (range.Character == '[')
+                        {
+                            // Edge case: the user was already on an empty and indented line when opening the bracket
+                            bool edge = false;
+                            int lastCr = trailer.LastIndexOf('\r');
+                            if (lastCr != -1)
+                            {
+                                // Autocomplete without the first blank line
+                                String lastLine = trailer.Substring(lastCr, trailer.Length - lastCr);
+                                if (lastLine.Skip(1).All(c => c == '\t') && lastLine.Length == indents + 1)
+                                {
+                                    EditBox.Document.Selection.TypeText($"\r{tabs}\t\r{tabs}]");
+                                    edge = true;
+                                }
+                            }
+
+                            // Edge case: first line in the document
+                            if (range.StartPosition == 0)
                             {
                                 EditBox.Document.Selection.TypeText($"\r{tabs}\t\r{tabs}]");
                                 edge = true;
                             }
-                        }
 
-                        // Edge case: first line in the document
-                        if (range.StartPosition == 0)
-                        {
-                            EditBox.Document.Selection.TypeText($"\r{tabs}\t\r{tabs}]");
-                            edge = true;
-                        }
+                            // Default autocomplete: new line and [ ] brackets
+                            if (!edge)
+                            {
+                                range.Delete(TextRangeUnit.Character, 1);
+                                EditBox.Document.Selection.TypeText($"\r{tabs}[\r{tabs}\t\r{tabs}]");
+                            }
 
-                        // Default autocomplete: new line and [ ] brackets
-                        if (!edge)
-                        {
-                            range.Delete(TextRangeUnit.Character, 1);
-                            EditBox.Document.Selection.TypeText($"\r{tabs}[\r{tabs}\t\r{tabs}]");
+                            // Apply the right color and move the selection at the center of the brackets
+                            ITextRange bracketsRange = EditBox.Document.GetRange(start, EditBox.Document.Selection.EndPosition);
+                            bracketsRange.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar('[');
+                            EditBox.Document.Selection.Move(TextRangeUnit.Character, -(indents + 2));
+                            DrawLineNumbers();
+                            textChanged = true;
                         }
-                        
-                        // Apply the right color and move the selection at the center of the brackets
-                        ITextRange bracketsRange = EditBox.Document.GetRange(start, EditBox.Document.Selection.EndPosition);
-                        bracketsRange.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar('[');
-                        EditBox.Document.Selection.Move(TextRangeUnit.Character, -(indents + 2));
-                        DrawLineNumbers();
-                        refreshBrackets = true;
-                    }
-                    else if (range.Character == '\r')
-                    {
-                        // New line, tabs needed
-                        if (tabs.Length > 0) EditBox.Document.Selection.TypeText(tabs);
-                        DrawLineNumbers();
-                        refreshBrackets = true;
+                        else if (range.Character == '\r')
+                        {
+                            // New line, tabs needed
+                            if (tabs.Length > 0) EditBox.Document.Selection.TypeText(tabs);
+                            DrawLineNumbers();
+                            textChanged = true;
+                        }
                     }
                 }
+            }
+            catch
+            {
+                // This must never crash
+            }
 
-                // Get the updated text
+            // Refresh the current text if needed
+            if (textChanged)
+            {
                 EditBox.Document.GetText(TextGetOptions.None, out text);
             }
 
@@ -425,7 +436,7 @@ namespace Brainf_ck_sharp_UWP.Views
             _PreviousText = text;
 
             // Update the bracket guides
-            if (refreshBrackets)
+            if (textChanged)
             {
                 DrawBracketGuides(text).ContinueWith(t =>
                 {
