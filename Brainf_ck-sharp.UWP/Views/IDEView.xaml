@@ -239,11 +239,7 @@
             Grid.Column="4"
             x:Name="BreakLinesCanvas"
             IsHitTestVisible="False"
-            SizeChanged="BreakLinesCanvas_OnSizeChanged">
-            <Canvas.RenderTransform>
-                <TranslateTransform x:Name="BreakpointLinesTransform"/>
-            </Canvas.RenderTransform>
-        </Canvas>
+            SizeChanged="BreakLinesCanvas_OnSizeChanged"/>
 
         <!--Code box-->
         <inheritedControls:RichEditBoxWithVerticalOffsetInfo

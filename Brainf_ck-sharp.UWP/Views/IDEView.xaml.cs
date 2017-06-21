@@ -137,7 +137,6 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             // Keep the line numbers and the current cursor in sync with the code
             float targetplus10 = (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset);
-            BreakpointLinesTransform.Y = -EditBox.VerticalScrollViewerOffset;
             foreach (Ellipse breakpoint in BreakpointsCanvas.Children.Cast<Ellipse>().ToArray())
             {
                 if (BreakpointsOffsetDictionary.TryGetValue(breakpoint, out double offset))
@@ -739,6 +738,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     RenderTransform = new TranslateTransform { Y = offset - 2 } // -2 to adjust the position with the cursor rectangle
                 };
                 BreakLinesCanvas.Children.Add(rect);
+                EditBox.InnerScrollViewer.StartExpressionAnimation(rect, TranslationAxis.Y, TranslationAxis.Y);
 
                 // Store the info
                 BreakpointsInfo.Add(y, (ellipse, rect));
