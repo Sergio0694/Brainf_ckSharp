@@ -196,7 +196,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
         {
             UnicodeCharactersGuideFlyout flyout = new UnicodeCharactersGuideFlyout();
             FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UnicodeTitle"), flyout).Forget();
-            Task.Delay(250).ContinueWith(t => flyout.ViewModel.LoadAsync().Forget(), TaskScheduler.FromCurrentSynchronizationContext());
+            Task.Delay(200).ContinueWith(t => flyout.ViewModel.LoadAsync().Forget(), TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         /// <summary>

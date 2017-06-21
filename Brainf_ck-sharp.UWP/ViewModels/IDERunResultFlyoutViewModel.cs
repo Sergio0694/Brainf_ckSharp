@@ -15,14 +15,22 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 {
     public class IDERunResultFlyoutViewModel : JumpListViewModelBase<IDEResultSection, IDEResultSectionDataBase>
     {
+        /// <summary>
+        /// Gets the current execution session
+        /// </summary>
         private InterpreterExecutionSession Session { get; set; }
 
         /// <summary>
-        /// Gets whether or not the breakpoint management buttons are currently visible
+        /// Initializes the current view model with a function that returns the first session to display to the user
         /// </summary>
-        public bool BreakpointMode => Session.CanContinue;
-
-        public IDERunResultFlyoutViewModel([NotNull] InterpreterExecutionSession session) => Session = session;
+        /// <param name="factory">A function that returns the first execution session to show to the user</param>
+        public async Task InitializeAsync([NotNull] Func<InterpreterExecutionSession> factory)
+        {
+            Session = await Task.Run(factory);
+            RaiseBreakpointOptionsActiveStatusChanged(Session.CanContinue);
+            await LoadGroupsAsync();
+            InitializationCompleted?.Invoke(this, EventArgs.Empty);
+        }
 
         /* ===================
          * NOTE
@@ -81,19 +89,46 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         }
 
         /// <summary>
+        /// Raised when the initialization is completed and all the items to display have been loaded
+        /// </summary>
+        public event EventHandler InitializationCompleted;
+
+        /// <summary>
         /// Raised whenever the loading status changes for the control
         /// </summary>
-        public event EventHandler<(bool Loading, bool IsIntermediate)> LoadingStateChanged; 
+        public event EventHandler<bool> LoadingStateChanged;
+
+        /// <summary>
+        /// Raised whenever the status for the breakpoint options changes
+        /// </summary>
+        public event EventHandler<bool> BreakpointOptionsActiveStatusChanged;
+
+        // Field to keep track of the breakpoint options status
+        private bool _BreakpointButtonsEnabled;
+
+        /// <summary>
+        /// Raises the <see cref="BreakpointOptionsActiveStatusChanged"/> event if needed
+        /// </summary>
+        /// <param name="state">The new status for the breakpoint options</param>
+        private void RaiseBreakpointOptionsActiveStatusChanged(bool state)
+        {
+            if (_BreakpointButtonsEnabled != state)
+            {
+                _BreakpointButtonsEnabled = state;
+                BreakpointOptionsActiveStatusChanged?.Invoke(this, state);
+            }
+        }
 
         // Continues a script from its current state
         private async void ManageDebugSessionAsync(bool runToCompletion)
         {
-            LoadingStateChanged?.Invoke(this, (true, true));
+            LoadingStateChanged?.Invoke(this, true);
             await Task.Delay(500);
             Session = await Task.Run(() => runToCompletion ? Session.RunToCompletion() : Session.Continue());
             await LoadGroupsAsync();
             await Task.Delay(500);
-            LoadingStateChanged?.Invoke(this, (false, BreakpointMode));
+            LoadingStateChanged?.Invoke(this, false);
+            RaiseBreakpointOptionsActiveStatusChanged(Session.CanContinue);
         }
 
         /// <summary>

@@ -46,6 +46,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         public static readonly DependencyProperty ItemsHeightProperty = DependencyProperty.Register(
             nameof(ItemsHeight), typeof(double), typeof(UnicodeCharactersGuideFlyout), new PropertyMetadata(52d));
 
+        /// <inheritdoc cref="IAsyncLoadedContent"/>
         public event EventHandler LoadingCompleted;
     }
 }

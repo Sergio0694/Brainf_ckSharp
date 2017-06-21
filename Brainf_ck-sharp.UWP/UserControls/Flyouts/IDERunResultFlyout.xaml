@@ -35,6 +35,35 @@
                 From="1"
                 To="0"
                 Duration="0:0:0.5"/>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.IsHitTestVisible)">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <x:Boolean>False</x:Boolean>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard 
+            x:Name="ButtonsInStoryboard"
+            TargetName="ButtonsGrid">
+            <DoubleAnimation
+                Storyboard.TargetProperty="Height"
+                EnableDependentAnimation="True"
+                From="0"
+                To="60"
+                Duration="0:0:0.5"/>
+            <DoubleAnimation
+                Storyboard.TargetProperty="Opacity"
+                From="0"
+                To="1"
+                Duration="0:0:0.5"/>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.IsHitTestVisible)">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <x:Boolean>True</x:Boolean>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
         </Storyboard>
 
         <!--Stdout-->
@@ -182,10 +211,9 @@
 
         <!--Breakpoints control buttons-->
         <Grid 
-            Height="60"
+            Height="0"
             x:Name="ButtonsGrid"
-            Grid.Row="1"
-            Visibility="{x:Bind ViewModel.BreakpointMode, FallbackValue=Collapsed}">
+            Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>

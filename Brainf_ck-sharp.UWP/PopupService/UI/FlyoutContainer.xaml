@@ -114,8 +114,10 @@
             Grid.RowSpan="2"
             Margin="1,0,1,1">
             <ProgressRing
-                Width="32"
-                Height="32"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Width="24"
+                Height="24"
                 Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
                 IsActive="True"
                 x:Name="InitialProgressRing"/>

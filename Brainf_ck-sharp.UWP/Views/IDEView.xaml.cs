@@ -89,7 +89,7 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             // Get the text and initialize the session
             EditBox.Document.GetText(TextGetOptions.None, out String text);
-            InterpreterExecutionSession session;
+            Func<InterpreterExecutionSession> factory;
             if (e.Debug)
             {
                 // Get the lines with a breakpoint and deconstruct the source in executable chuncks
@@ -103,14 +103,14 @@ namespace Brainf_ck_sharp_UWP.Views
                     chuncks.Add(text.Substring(previous, breakpoint - previous));
                     previous = breakpoint;
                 }
-                session = Brainf_ckInterpreter.InitializeSession(chuncks, e.Stdin, 64, 1000);
+                factory = () => Brainf_ckInterpreter.InitializeSession(chuncks, e.Stdin, 64, 1000);
             }
-            else session = Brainf_ckInterpreter.InitializeSession(new[] { text }, e.Stdin, 64, 1000);
+            else factory = () => Brainf_ckInterpreter.InitializeSession(new[] { text }, e.Stdin, 64, 1000);
 
             // Display the execution popup
-            IDERunResultFlyout flyout = new IDERunResultFlyout(session);
+            IDERunResultFlyout flyout = new IDERunResultFlyout();
             FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource(e.Debug ? "Debug" : "RunTitle"), flyout, new Thickness()).Forget();
-            flyout.ViewModel.LoadGroupsAsync().Forget();
+            Task.Delay(100).ContinueWith(t => flyout.ViewModel.InitializeAsync(factory), TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         // Initializes the scroll events for the code
