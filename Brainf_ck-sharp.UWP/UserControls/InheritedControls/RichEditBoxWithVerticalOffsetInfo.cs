@@ -1,12 +1,9 @@
 ﻿using Windows.Foundation;
-using Windows.UI.Composition;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Hosting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using UICompositionAnimations;
 
 namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
 {

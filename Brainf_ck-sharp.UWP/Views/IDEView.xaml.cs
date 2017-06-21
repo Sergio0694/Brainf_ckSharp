@@ -127,6 +127,8 @@ namespace Brainf_ck_sharp_UWP.Views
             EditBox.InnerScrollViewer.StartExpressionAnimation(GitDiffListView, TranslationAxis.Y, TranslationAxis.Y, (float)(_Top + 10));
             EditBox.InnerScrollViewer.StartExpressionAnimation(BracketGuidesCanvas, TranslationAxis.Y, TranslationAxis.Y);
             EditBox.InnerScrollViewer.StartExpressionAnimation(BracketGuidesCanvas, TranslationAxis.X, TranslationAxis.X);
+            EditBox.InnerScrollViewer.StartExpressionAnimation(CursorRectangle, TranslationAxis.Y, TranslationAxis.Y);
+            EditBox.InnerScrollViewer.StartExpressionAnimation(CursorRectangle, TranslationAxis.X, TranslationAxis.X);
         }
 
         // Updates the position of the line numbers when the edit box is scrolled
@@ -137,8 +139,6 @@ namespace Brainf_ck_sharp_UWP.Views
             BreakpointLinesTransform.Y = -EditBox.VerticalScrollViewerOffset;
             Point selectionOffset = EditBox.ActualSelectionVerticalOffset;
             CursorBorder.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
-            CursorRectangle.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
-            CursorRectangle.SetVisualOffset(TranslationAxis.X, (float)-EditBox.HorizontalScrollViewerOffset);
             foreach (Ellipse breakpoint in BreakpointsCanvas.Children.Cast<Ellipse>().ToArray())
             {
                 if (BreakpointsOffsetDictionary.TryGetValue(breakpoint, out double offset))
@@ -165,8 +165,8 @@ namespace Brainf_ck_sharp_UWP.Views
             IndentationInfoList.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             CursorBorder.SetVisualOffset(TranslationAxis.Y, (float)(height + 8));
-            CursorRectangle.SetVisualOffset(TranslationAxis.Y, (float)(height + 8));
-            CursorRectangle.SetVisualOffset(TranslationAxis.X, 4);
+            CursorTransform.Y = height + 8;
+            CursorTransform.X = 4;
             BracketsParentGrid.SetVisualOffset(TranslationAxis.Y, (float)height);
             EditBox.Padding = new Thickness(4, _Top + 8, 4, 8);
             EditBox.ScrollBarMargin = new Thickness(0, _Top, 0, 0);
@@ -454,8 +454,8 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             // Move the cursor to the right position
             Point selectionOffset = EditBox.ActualSelectionVerticalOffset;
-            CursorRectangle.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
-            CursorRectangle.SetVisualOffset(TranslationAxis.X, (float)(selectionOffset.X + 4));
+            CursorTransform.Y = _Top + 8 + selectionOffset.Y;
+            CursorTransform.X = selectionOffset.X + 4;
 
             // Update the visibility and the position of the cursor
             CursorBorder.SetVisualOpacity(EditBox.Document.Selection.Length.Abs() > 0 ? 0 : 1);

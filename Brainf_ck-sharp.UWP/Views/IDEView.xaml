@@ -283,7 +283,11 @@
                 Width="1"
                 Height="20"
                 Fill="LightGray"
-                x:Name="CursorRectangle"/>
+                x:Name="CursorRectangle">
+                <Rectangle.RenderTransform>
+                    <TranslateTransform x:Name="CursorTransform"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
         </Canvas>
 
         <!--Canvas with the column guides-->
