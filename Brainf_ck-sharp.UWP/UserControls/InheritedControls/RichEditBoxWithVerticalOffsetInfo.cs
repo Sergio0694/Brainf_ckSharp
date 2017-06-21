@@ -1,10 +1,12 @@
-﻿using System;
-using Windows.Foundation;
+﻿using Windows.Foundation;
+using Windows.UI.Composition;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Hosting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using UICompositionAnimations;
 
 namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
 {
@@ -56,6 +58,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         /// Gets the inner ScrollViewer, once the control has been added to the visual tree and loaded
         /// </summary>
         private ScrollViewer _TemplateScrollViewer;
+
+        /// <summary>
+        /// Gets the inner <see cref="ScrollViewer"/> inside the control
+        /// </summary>
+        public ScrollViewer InnerScrollViewer => _TemplateScrollViewer;
 
         /// <summary>
         /// Gets the curent vertical offset of the inner ScrollViewer

@@ -116,28 +116,29 @@ namespace Brainf_ck_sharp_UWP.Views
         // Initializes the scroll events for the code
         private void IDEView_Loaded(object sender, RoutedEventArgs e)
         {
+            // Start the cursor animation and subscribe the scroller event
             CursorAnimation.Begin();
             ScrollViewer scroller = EditBox.FindChild<ScrollViewer>();
             scroller.ViewChanged += Scroller_ViewChanged;
+
+            // Setup the expression animations
+            EditBox.InnerScrollViewer.StartExpressionAnimation(LinesGrid, TranslationAxis.Y, TranslationAxis.Y, (float)(_Top - 12));
+            EditBox.InnerScrollViewer.StartExpressionAnimation(IndentationInfoList, TranslationAxis.Y, TranslationAxis.Y, (float)(_Top + 10));
+            EditBox.InnerScrollViewer.StartExpressionAnimation(GitDiffListView, TranslationAxis.Y, TranslationAxis.Y, (float)(_Top + 10));
+            EditBox.InnerScrollViewer.StartExpressionAnimation(BracketGuidesCanvas, TranslationAxis.Y, TranslationAxis.Y);
+            EditBox.InnerScrollViewer.StartExpressionAnimation(BracketGuidesCanvas, TranslationAxis.X, TranslationAxis.X);
         }
 
         // Updates the position of the line numbers when the edit box is scrolled
         private void Scroller_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             // Keep the line numbers and the current cursor in sync with the code
-            float 
-                target = (float)(_Top - 12 - EditBox.VerticalScrollViewerOffset),
-                targetplus10 = (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset);
-            LinesGrid.SetVisualOffset(TranslationAxis.Y, target);
+            float targetplus10 = (float)(_Top + 10 - EditBox.VerticalScrollViewerOffset);
             BreakpointLinesTransform.Y = -EditBox.VerticalScrollViewerOffset;
-            IndentationInfoList.SetVisualOffset(TranslationAxis.Y, targetplus10);
-            GitDiffListView.SetVisualOffset(TranslationAxis.Y, targetplus10);
             Point selectionOffset = EditBox.ActualSelectionVerticalOffset;
             CursorBorder.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
             CursorRectangle.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 8 + selectionOffset.Y));
-            CursorTransform.X = -EditBox.HorizontalScrollViewerOffset;
-            GuidesTransform.Y = -EditBox.VerticalScrollViewerOffset;
-            GuidesTransform.X = -EditBox.HorizontalScrollViewerOffset;
+            CursorRectangle.SetVisualOffset(TranslationAxis.X, (float)-EditBox.HorizontalScrollViewerOffset);
             foreach (Ellipse breakpoint in BreakpointsCanvas.Children.Cast<Ellipse>().ToArray())
             {
                 if (BreakpointsOffsetDictionary.TryGetValue(breakpoint, out double offset))
