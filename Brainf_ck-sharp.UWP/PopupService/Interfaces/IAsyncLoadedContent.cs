@@ -11,5 +11,10 @@ namespace Brainf_ck_sharp_UWP.PopupService.Interfaces
         /// Raised whenever the control finishes its initial loading process
         /// </summary>
         event EventHandler LoadingCompleted;
+
+        /// <summary>
+        /// Gets whether or not the loading event has still to be raised
+        /// </summary>
+        bool LoadingPending { get; }
     }
 }

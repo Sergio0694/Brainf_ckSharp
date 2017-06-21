@@ -157,12 +157,16 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             // Async loaded content
             if (_Content is IAsyncLoadedContent loading)
             {
-                InitialLoadingGrid.Visibility = Visibility.Visible;
-                loading.LoadingCompleted += (s, e) =>
+                // Setup the loading UI if needed
+                if (loading.LoadingPending)
                 {
-                    InitialProgressRing.StartCompositionScaleAnimation(1, 1.1f, 250, null, EasingFunctionNames.Linear);
-                    InitialLoadingGrid.StartCompositionFadeAnimation(1, 0, 250, null, EasingFunctionNames.Linear);
-                };
+                    InitialLoadingGrid.Visibility = Visibility.Visible;
+                    loading.LoadingCompleted += (s, e) =>
+                    {
+                        InitialProgressRing.StartCompositionScaleAnimation(1, 1.1f, 250, null, EasingFunctionNames.Linear);
+                        InitialLoadingGrid.StartCompositionFadeAnimation(1, 0, 250, null, EasingFunctionNames.Linear);
+                    };
+                }
             }
         }
 

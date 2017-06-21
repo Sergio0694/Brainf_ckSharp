@@ -23,7 +23,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
             DataContext = new UnicodeCharactersGuideFlyoutViewModel(
                 () => FirstGroupGrid.StartCompositionFadeSlideAnimation(null, 1, TranslationAxis.Y, 12, 0, 200, null, null, EasingFunctionNames.CircleEaseOut),
                 () => SecondGroupGrid.StartCompositionFadeSlideAnimation(null, 1, TranslationAxis.Y, 12, 0, 200, null, null, EasingFunctionNames.CircleEaseOut));
-            ViewModel.LoadingCompleted += (s, e) => LoadingCompleted?.Invoke(this, EventArgs.Empty);
+            ViewModel.LoadingCompleted += (s, e) =>
+            {
+                LoadingPending = false;
+                LoadingCompleted?.Invoke(this, EventArgs.Empty);
+            };
         }
 
         public UnicodeCharactersGuideFlyoutViewModel ViewModel => DataContext.To<UnicodeCharactersGuideFlyoutViewModel>();
@@ -48,5 +52,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
 
         /// <inheritdoc cref="IAsyncLoadedContent"/>
         public event EventHandler LoadingCompleted;
+
+        /// <inheritdoc cref="IAsyncLoadedContent"/>
+        public bool LoadingPending { get; private set; } = true;
     }
 }

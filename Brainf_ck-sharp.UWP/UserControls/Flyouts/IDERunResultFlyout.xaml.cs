@@ -16,7 +16,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
             {
                 WorkingStateChanged?.Invoke(this, e);
             };
-            ViewModel.InitializationCompleted += (s, e) => LoadingCompleted?.Invoke(this, EventArgs.Empty);
+            ViewModel.InitializationCompleted += (s, e) =>
+            {
+                LoadingPending = false;
+                LoadingCompleted?.Invoke(this, EventArgs.Empty);
+            };
             ViewModel.BreakpointOptionsActiveStatusChanged += (_, e) =>
             {
                 if (e) ButtonsInStoryboard.Begin();
@@ -31,5 +35,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
 
         /// <inheritdoc cref="IAsyncLoadedContent"/>
         public event EventHandler LoadingCompleted;
+
+        /// <inheritdoc cref="IAsyncLoadedContent"/>
+        public bool LoadingPending { get; private set; } = true;
     }
 }
