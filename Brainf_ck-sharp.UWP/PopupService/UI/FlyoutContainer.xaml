@@ -105,6 +105,23 @@
             </Grid>
         </Button>
         
+        <!--Initial loading indicator-->
+        <Grid
+            x:Name="InitialLoadingGrid"
+            Background="#20000000"
+            Visibility="Collapsed"
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Margin="1,0,1,1">
+            <ProgressRing
+                Width="32"
+                Height="32"
+                Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                IsActive="True"
+                x:Name="InitialProgressRing"/>
+        </Grid>
+        
+        
         <!--Loading indicator-->
         <Border
             Grid.Row="1"
@@ -112,7 +129,7 @@
             x:Name="LoadingBorder"
             IsHitTestVisible="False"
             Canvas.ZIndex="10"
-            Margin="1"/>
+            Margin="1,0,1,1"/>
         <xaml:CanvasControl
             Grid.Row="0"
             x:Name="LoadingCanvas"

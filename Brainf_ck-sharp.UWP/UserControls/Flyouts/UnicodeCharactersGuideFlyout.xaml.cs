@@ -1,11 +1,15 @@
-﻿using Windows.UI.Xaml;
+﻿using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.PopupService.Interfaces;
 using Brainf_ck_sharp_UWP.ViewModels;
+using UICompositionAnimations;
+using UICompositionAnimations.Enums;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
 {
-    public sealed partial class UnicodeCharactersGuideFlyout : UserControl
+    public sealed partial class UnicodeCharactersGuideFlyout : UserControl, IAsyncLoadedContent
     {
         public UnicodeCharactersGuideFlyout()
         {
@@ -14,7 +18,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
                 ItemsWidth = e.NewSize.Width / (e.NewSize.Width > 480 ? 5 : 4);
             };
             this.InitializeComponent();
-            DataContext = new UnicodeCharactersGuideFlyoutViewModel();
+            FirstGroupGrid.SetVisualOpacity(0);
+            SecondGroupGrid.SetVisualOpacity(0);
+            DataContext = new UnicodeCharactersGuideFlyoutViewModel(
+                () => FirstGroupGrid.StartCompositionFadeSlideAnimation(null, 1, TranslationAxis.Y, 12, 0, 200, null, null, EasingFunctionNames.CircleEaseOut),
+                () => SecondGroupGrid.StartCompositionFadeSlideAnimation(null, 1, TranslationAxis.Y, 12, 0, 200, null, null, EasingFunctionNames.CircleEaseOut));
+            ViewModel.LoadingCompleted += (s, e) => LoadingCompleted?.Invoke(this, EventArgs.Empty);
         }
 
         public UnicodeCharactersGuideFlyoutViewModel ViewModel => DataContext.To<UnicodeCharactersGuideFlyoutViewModel>();
@@ -36,5 +45,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
 
         public static readonly DependencyProperty ItemsHeightProperty = DependencyProperty.Register(
             nameof(ItemsHeight), typeof(double), typeof(UnicodeCharactersGuideFlyout), new PropertyMetadata(52d));
+
+        public event EventHandler LoadingCompleted;
     }
 }

@@ -16,7 +16,8 @@
             <!--[0-31] characters-->
             <Grid 
                 Height="56"
-                Margin="20,12,20,0">
+                Margin="20,12,20,0"
+                x:Name="FirstGroupGrid">
 
                 <!--Outer border-->
                 <Border 
@@ -90,7 +91,8 @@
             <!--[0-31] characters-->
             <Grid 
                 Height="56"
-                Margin="20,12,20,0">
+                Margin="20,12,20,0"
+                x:Name="SecondGroupGrid">
 
                 <!--Outer border-->
                 <Border 
