@@ -1,9 +1,15 @@
-﻿using Windows.Foundation;
+﻿using System;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
+using System.Threading.Tasks;
+using Windows.Foundation;
+using Windows.Storage.Streams;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
 {
@@ -99,17 +105,32 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         /// <summary>
         /// Resets the current undo stack so that pressing Ctrl + Z can no longer restore previous states
         /// </summary>
-        public void ResetUndoStack()
+        public void ResetTextAndUndoStack()
         {
-            if (!Document.CanUndo()) return;
             try
             {
-                Document.UndoLimit = 0;
-                Document.UndoLimit = 100;
+                using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
+                {
+                    Document.LoadFromStream(TextSetOptions.None, stream);
+                }
             }
             catch
             {
                 // Whops!
+            }
+        }
+
+        /// <summary>
+        /// Loads a text into the current document and resets the undo stack
+        /// </summary>
+        /// <param name="text">The input text to load</param>
+        public async Task LoadTextAsync([NotNull] String text)
+        {
+            using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
+            {
+                byte[] bytes = Encoding.Unicode.GetBytes(text);
+                await stream.WriteAsync(bytes.AsBuffer());
+                Document.LoadFromStream(TextSetOptions.None, stream);
             }
         }
     }

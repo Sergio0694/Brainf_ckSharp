@@ -57,7 +57,7 @@ namespace Brainf_ck_sharp_UWP.Views
             };
             ViewModel.TextCleared += (_, e) =>
             {
-                EditBox.ResetUndoStack();
+                EditBox.ResetTextAndUndoStack();
                 ClearBreakpoints();
                 Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
             };
@@ -505,7 +505,7 @@ namespace Brainf_ck_sharp_UWP.Views
         /// </summary>
         /// <param name="code">The code to load</param>
         /// <param name="overwrite">If true, the whole document will be replaced with the new code</param>
-        private void LoadCode(String code, bool overwrite)
+        private async void LoadCode(String code, bool overwrite)
         {
             // Disable the handlers
             EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
@@ -516,7 +516,8 @@ namespace Brainf_ck_sharp_UWP.Views
             int start, end;
             if (overwrite)
             {
-                EditBox.Document.SetText(TextSetOptions.None, code);
+                // Load a stream with the new text to also reset the undo stack
+                await EditBox.LoadTextAsync(code);
                 start = 0;
                 end = code.Length;
             }
@@ -538,15 +539,14 @@ namespace Brainf_ck_sharp_UWP.Views
             else EditBox.Document.Selection.StartPosition = end;
 
             // Refresh the UI
-            if (overwrite) EditBox.ResetUndoStack();
-            else EditBox.Document.EndUndoGroup();
+            if (!overwrite) EditBox.Document.EndUndoGroup();
             EditBox.Document.GetText(TextGetOptions.None, out code);
             _PreviousText = code;
             DrawLineNumbers();
             DrawBracketGuides(code).ContinueWith(t =>
             {
                 ViewModel.UpdateIndentationInfo(t.Result).Forget();
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
             ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
             ViewModel.SendMessages(code);
             ViewModel.UpdateCanUndoRedoStatus();
