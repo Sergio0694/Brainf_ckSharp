@@ -9,6 +9,7 @@ using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
+using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Messages;

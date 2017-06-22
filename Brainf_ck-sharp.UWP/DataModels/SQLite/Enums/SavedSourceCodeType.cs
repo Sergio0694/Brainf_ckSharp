@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.DataModels.SQLite
+﻿namespace Brainf_ck_sharp_UWP.DataModels.SQLite.Enums
 {
     /// <summary>
     /// Indicates the type of saved source code

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
+using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using GalaSoft.MvvmLight;
 using JetBrains.Annotations;

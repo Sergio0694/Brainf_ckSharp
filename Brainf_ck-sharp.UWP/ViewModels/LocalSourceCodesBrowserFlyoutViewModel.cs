@@ -6,6 +6,7 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
+using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
 using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;

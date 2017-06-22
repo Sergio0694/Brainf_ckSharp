@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.DataModels.SQLite
 {
