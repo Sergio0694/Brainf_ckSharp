@@ -325,10 +325,6 @@ namespace Brainf_ck_sharp_UWP.Views
              * Syntax highlight
              * ================= */
 
-            // Unsubscribe from the text events and batch the updates
-            EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
-            EditBox.TextChanged -= EditBox_OnTextChanged;
-
             // Get the current text and backup the current index
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             int start = EditBox.Document.Selection.StartPosition;
@@ -339,6 +335,10 @@ namespace Brainf_ck_sharp_UWP.Views
             {
                 if (text.Length == _PreviousText.Length + 1)
                 {
+                    // Unsubscribe from the text events and batch the updates
+                    EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
+                    EditBox.TextChanged -= EditBox_OnTextChanged;
+
                     // Get the last character and apply the right color
                     ITextRange range = EditBox.Document.GetRange(start - 1, start);
                     range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(range.Character);
@@ -402,6 +402,11 @@ namespace Brainf_ck_sharp_UWP.Views
                             textChanged = true;
                         }
                     }
+
+                    // Restore the event handlers
+                    EditBox.Document.EndUndoGroup();
+                    EditBox.SelectionChanged += EditBox_OnSelectionChanged;
+                    EditBox.TextChanged += EditBox_OnTextChanged;
                 }
             }
             catch
@@ -416,7 +421,6 @@ namespace Brainf_ck_sharp_UWP.Views
             }
 
             // Display the text updates
-            EditBox.Document.EndUndoGroup();
             _PreviousText = text;
 
             // Update the bracket guides
@@ -433,10 +437,6 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Notify the UI
             ViewModel.SendMessages(text);
-
-            // Restore the event handlers
-            EditBox.SelectionChanged += EditBox_OnSelectionChanged;
-            EditBox.TextChanged += EditBox_OnTextChanged;
 
             // Scroll if needed
             EditBox.TryScrollToSelection();
