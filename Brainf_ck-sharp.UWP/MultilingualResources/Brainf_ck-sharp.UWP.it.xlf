@@ -504,6 +504,11 @@
           <source>The selected code has been saved successfully as a C source file</source>
           <target state="translated">Il codice selezionato è stato salvato correttamente come un file sorgente C</target>
         </trans-unit>
+        <trans-unit id="NotModified" translate="yes" xml:space="preserve">
+          <source>Not modified</source>
+          <target state="new">Not modified</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Renamed name is the same as the original</note>
+        </trans-unit>
       </group>
     </body>
   </file>

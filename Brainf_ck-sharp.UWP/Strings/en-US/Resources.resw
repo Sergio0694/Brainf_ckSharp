@@ -493,4 +493,8 @@
   <data name="ExportCompletedBody" xml:space="preserve">
     <value>The selected code has been saved successfully as a C source file</value>
   </data>
+  <data name="NotModified" xml:space="preserve">
+    <value>Not modified</value>
+    <comment>Renamed name is the same as the original</comment>
+  </data>
 </root>

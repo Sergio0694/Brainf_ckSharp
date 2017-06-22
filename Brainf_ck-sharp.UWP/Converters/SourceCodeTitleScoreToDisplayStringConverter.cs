@@ -1,6 +1,5 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
-using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
@@ -22,6 +21,8 @@ namespace Brainf_ck_sharp_UWP.Converters
                     return LocalizationManager.GetResource("AlreadyUsed");
                 case SourceCodeTitleScore.Valid:
                     return LocalizationManager.GetResource("Available");
+                case SourceCodeTitleScore.NotModified:
+                    return LocalizationManager.GetResource("NotModified");
                 default:
                     throw new ArgumentOutOfRangeException();
             }
