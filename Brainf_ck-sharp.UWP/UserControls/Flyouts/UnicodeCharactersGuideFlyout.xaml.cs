@@ -18,11 +18,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
                 ItemsWidth = e.NewSize.Width / (e.NewSize.Width > 480 ? 5 : 4);
             };
             this.InitializeComponent();
-            FirstGroupGrid.SetVisualOpacity(0);
-            SecondGroupGrid.SetVisualOpacity(0);
+            FirstGroupControl.SetVisualOpacity(0);
+            SecondGroupControl.SetVisualOpacity(0);
             DataContext = new UnicodeCharactersGuideFlyoutViewModel(
-                () => FirstGroupGrid.StartCompositionFadeSlideAnimation(null, 1, TranslationAxis.Y, 12, 0, 200, null, null, EasingFunctionNames.CircleEaseOut),
-                () => SecondGroupGrid.StartCompositionFadeSlideAnimation(null, 1, TranslationAxis.Y, 12, 0, 200, null, null, EasingFunctionNames.CircleEaseOut));
+                () => FirstGroupControl.StartCompositionFadeSlideAnimation(null, 1, TranslationAxis.Y, 12, 0, 200, null, null, EasingFunctionNames.CircleEaseOut),
+                () => SecondGroupControl.StartCompositionFadeSlideAnimation(null, 1, TranslationAxis.Y, 12, 0, 200, null, null, EasingFunctionNames.CircleEaseOut));
             ViewModel.LoadingCompleted += (s, e) =>
             {
                 LoadingPending = false;

@@ -219,6 +219,9 @@
     <Compile Include="UserControls\CustomControls\TextValidatorControl.xaml.cs">
       <DependentUpon>TextValidatorControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\CustomControls\UnicodeNonVisibleCharactersGroupDisplayControl.xaml.cs">
+      <DependentUpon>UnicodeNonVisibleCharactersGroupDisplayControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml.cs">
       <DependentUpon>SavedSourceCodeTemplate.xaml</DependentUpon>
     </Compile>
@@ -481,6 +484,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\CustomControls\TextValidatorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CustomControls\UnicodeNonVisibleCharactersGroupDisplayControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

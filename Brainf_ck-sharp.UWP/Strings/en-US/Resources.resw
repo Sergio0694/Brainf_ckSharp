@@ -199,16 +199,16 @@
   <data name="Unicode.Label" xml:space="preserve">
     <value>Show Unicode characters</value>
   </data>
-  <data name="UnicodeGroup1Block.Text" xml:space="preserve">
+  <data name="FirstControlUnicodeGroup.Value" xml:space="preserve">
     <value>0 to 31</value>
   </data>
-  <data name="UnicodeGroup1InfoBlock.Text" xml:space="preserve">
+  <data name="FirstControlUnicodeGroup.Description" xml:space="preserve">
     <value>Control characters</value>
   </data>
-  <data name="UnicodeGroup2Block.Text" xml:space="preserve">
+  <data name="SecondControlUnicodeGroup.Value" xml:space="preserve">
     <value>128 to 159</value>
   </data>
-  <data name="UnicodeGroup2InfoBlock.Text" xml:space="preserve">
+  <data name="SecondControlUnicodeGroup.Description" xml:space="preserve">
     <value>Not visible</value>
     <comment>It's talking about a series of special characters</comment>
   </data>

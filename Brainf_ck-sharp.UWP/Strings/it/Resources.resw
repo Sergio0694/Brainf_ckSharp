@@ -97,19 +97,6 @@
   <data name="UnicodeTitle" xml:space="preserve">
     <value>Caratteri Unicode</value>
   </data>
-  <data name="UnicodeGroup1Block.Text" xml:space="preserve">
-    <value>Da 0 a 31</value>
-  </data>
-  <data name="UnicodeGroup1InfoBlock.Text" xml:space="preserve">
-    <value>Caratteri di controllo</value>
-  </data>
-  <data name="UnicodeGroup2Block.Text" xml:space="preserve">
-    <value>Da 128 a 159</value>
-  </data>
-  <data name="UnicodeGroup2InfoBlock.Text" xml:space="preserve">
-    <value>Non visibili</value>
-    <comment>It's talking about a series of special characters</comment>
-  </data>
   <data name="Ready" xml:space="preserve">
     <value>Pronto</value>
   </data>
@@ -375,5 +362,18 @@
   <data name="RemoveAll" xml:space="preserve">
     <value>Rimuovi tutti</value>
     <comment>Remove all the breakpoints from the IDE</comment>
+  </data>
+  <data name="FirstControlUnicodeGroup.Value" xml:space="preserve">
+    <value>Da 0 a 31</value>
+  </data>
+  <data name="FirstControlUnicodeGroup.Description" xml:space="preserve">
+    <value>Caratteri di controllo</value>
+  </data>
+  <data name="SecondControlUnicodeGroup.Value" xml:space="preserve">
+    <value>Da 128 a 159</value>
+  </data>
+  <data name="SecondControlUnicodeGroup.Description" xml:space="preserve">
+    <value>Non visibili</value>
+    <comment>It's talking about a series of special characters</comment>
   </data>
 </root>

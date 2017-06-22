@@ -118,23 +118,6 @@
           <source>Unicode characters</source>
           <target state="translated">Caratteri Unicode</target>
         </trans-unit>
-        <trans-unit id="UnicodeGroup1Block.Text" translate="yes" xml:space="preserve">
-          <source>0 to 31</source>
-          <target state="translated">Da 0 a 31</target>
-        </trans-unit>
-        <trans-unit id="UnicodeGroup1InfoBlock.Text" translate="yes" xml:space="preserve">
-          <source>Control characters</source>
-          <target state="translated">Caratteri di controllo</target>
-        </trans-unit>
-        <trans-unit id="UnicodeGroup2Block.Text" translate="yes" xml:space="preserve">
-          <source>128 to 159</source>
-          <target state="translated">Da 128 a 159</target>
-        </trans-unit>
-        <trans-unit id="UnicodeGroup2InfoBlock.Text" translate="yes" xml:space="preserve">
-          <source>Not visible</source>
-          <target state="translated">Non visibili</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">It's talking about a series of special characters</note>
-        </trans-unit>
         <trans-unit id="Ready" translate="yes" xml:space="preserve">
           <source>Ready</source>
           <target state="translated">Pronto</target>
@@ -487,6 +470,23 @@
           <source>Remove all</source>
           <target state="translated">Rimuovi tutti</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Remove all the breakpoints from the IDE</note>
+        </trans-unit>
+        <trans-unit id="FirstControlUnicodeGroup.Value" translate="yes" xml:space="preserve">
+          <source>0 to 31</source>
+          <target state="translated">Da 0 a 31</target>
+        </trans-unit>
+        <trans-unit id="FirstControlUnicodeGroup.Description" translate="yes" xml:space="preserve">
+          <source>Control characters</source>
+          <target state="translated">Caratteri di controllo</target>
+        </trans-unit>
+        <trans-unit id="SecondControlUnicodeGroup.Value" translate="yes" xml:space="preserve">
+          <source>128 to 159</source>
+          <target state="translated">Da 128 a 159</target>
+        </trans-unit>
+        <trans-unit id="SecondControlUnicodeGroup.Description" translate="yes" xml:space="preserve">
+          <source>Not visible</source>
+          <target state="translated">Non visibili</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">It's talking about a series of special characters</note>
         </trans-unit>
       </group>
     </body>

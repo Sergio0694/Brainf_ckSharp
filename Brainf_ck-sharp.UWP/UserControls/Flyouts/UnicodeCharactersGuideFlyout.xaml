@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:dataTemplates="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates"
+    xmlns:customControls="using:Brainf_ck_sharp_UWP.UserControls.CustomControls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
@@ -16,52 +17,10 @@
             <!--[0-31] characters-->
             <Grid 
                 Height="56"
-                Margin="20,12,20,0"
-                x:Name="FirstGroupGrid">
-
-                <!--Outer border-->
-                <Border 
-                    BorderThickness="2"
-                    BorderBrush="#20FFFFFF"/>
-
-                <!--Memory cell-->
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <!--Left value-->
-                    <Canvas Background="#20000000"/>
-                    <TextBlock 
-                        Text="0 to 31"
-                        x:Uid="UnicodeGroup1Block"
-                        FontSize="18"
-                        Foreground="LightGray"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        IsTextScaleFactorEnabled="False"
-                        Grid.Column="0"/>
-
-                    <!--Right character-->
-                    <Canvas 
-                        Background="#06FFFFFF"
-                        Grid.Column="1"/>
-                    <Viewbox
-                        StretchDirection="DownOnly"
-                        Grid.Column="1"
-                        Margin="12,0,12,0">
-                        <TextBlock
-                            Text="Control characters"
-                            IsTextScaleFactorEnabled="False"
-                            x:Uid="UnicodeGroup1InfoBlock"
-                            FontSize="18"
-                            FontWeight="SemiBold"
-                            Foreground="#FFA00000"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"/>
-                    </Viewbox>
-                </Grid>
+                Margin="20,12,20,0">
+                <customControls:UnicodeNonVisibleCharactersGroupDisplayControl
+                    x:Name="FirstGroupControl"
+                    x:Uid="FirstControlUnicodeGroup"/>
             </Grid>
 
             <!--[32-127] characters-->
@@ -91,52 +50,10 @@
             <!--[0-31] characters-->
             <Grid 
                 Height="56"
-                Margin="20,12,20,0"
-                x:Name="SecondGroupGrid">
-
-                <!--Outer border-->
-                <Border 
-                    BorderThickness="2"
-                    BorderBrush="#20FFFFFF"/>
-
-                <!--Memory cell-->
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <!--Left value-->
-                    <Canvas Background="#20000000"/>
-                    <TextBlock 
-                        Text="128 to 159"
-                        IsTextScaleFactorEnabled="False"
-                        x:Uid="UnicodeGroup2Block"
-                        FontSize="18"
-                        Foreground="LightGray"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        Grid.Column="0"/>
-
-                    <!--Right character-->
-                    <Canvas 
-                        Background="#06FFFFFF"
-                        Grid.Column="1"/>
-                    <Viewbox
-                        StretchDirection="DownOnly"
-                        Grid.Column="1"
-                        Margin="12,0,12,0">
-                        <TextBlock
-                            Text="Not visible"
-                            IsTextScaleFactorEnabled="False"
-                            x:Uid="UnicodeGroup2InfoBlock"
-                            FontSize="18"
-                            FontWeight="SemiBold"
-                            Foreground="#FFA00000"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"/>
-                    </Viewbox>
-                </Grid>
+                Margin="20,12,20,0">
+                <customControls:UnicodeNonVisibleCharactersGroupDisplayControl
+                    x:Name="SecondGroupControl"
+                    x:Uid="SecondControlUnicodeGroup"/>
             </Grid>
 
             <!--[160-255] characters-->
