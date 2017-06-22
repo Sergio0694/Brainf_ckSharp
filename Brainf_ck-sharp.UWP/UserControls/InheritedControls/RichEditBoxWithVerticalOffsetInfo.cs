@@ -101,9 +101,16 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         /// </summary>
         public void ResetUndoStack()
         {
-            uint depth = Document.UndoLimit;
-            Document.UndoLimit = 0;
-            Document.UndoLimit = depth;
+            if (!Document.CanUndo()) return;
+            try
+            {
+                Document.UndoLimit = 0;
+                Document.UndoLimit = 100;
+            }
+            catch
+            {
+                // Whops!
+            }
         }
     }
 }
