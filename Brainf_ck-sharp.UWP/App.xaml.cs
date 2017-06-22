@@ -9,6 +9,9 @@ using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Resources;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.UserControls;
+#if !DEBUG
+using Microsoft.HockeyApp;
+#endif
 
 namespace Brainf_ck_sharp_UWP
 {
