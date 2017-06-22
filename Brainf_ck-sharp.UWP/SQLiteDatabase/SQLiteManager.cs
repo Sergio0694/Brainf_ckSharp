@@ -147,11 +147,22 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
                                     }
                                     await source.InsertAsync(code);
                                 }
-                                else if (code.Modified > local.Modified && // If the roaming item has been edited more recently...
-                                         code.Deleted == 0 && local.Deleted == 0 || // ...and both of them are not deleted
-                                         local.Deleted != 0 && // The local item has been deleted
-                                         code.Deleted == 0 && // The roaming item is not deleted...
-                                         code.ModifiedTime.CompareTo(local.DeletedTime) > 0) // ...and it's been modified after the local deletion
+                                else if(
+                                    
+                                    // The two codes must have been edited in some way to be updated here
+                                    !(code.Modified == local.Modified && code.Deleted == local.Deleted) &&
+                                    
+                                    // The remote code has the same delete timestamp (can also be 0) but has been edited more recently
+                                    (code.ModifiedTime.CompareTo(local.ModifiedTime) > 0 && code.Deleted == local.Deleted ||
+                                    
+                                    // The remote code has been deleted but the remote one has been edited after that (so import that one again)
+                                    local.Deleted != 0 && code.Deleted == 0 && code.ModifiedTime.CompareTo(local.DeletedTime) > 0 ||
+                                    
+                                    // The remote code has been edited after the last edit time for the local version (so delete the local one)
+                                    local.Deleted == 0 && code.Deleted != 0 && code.DeletedTime.CompareTo(local.ModifiedTime) > 0 ||
+                                    
+                                    // Both the items are deleted, but the remote one has been deleted more recently (so copy its delete timestamp for future use)
+                                    local.Modified == code.Modified && local.Deleted != 0 && code.Deleted != 0 && code.DeletedTime.CompareTo(local.DeletedTime) > 0))
                                 {
                                     // Item modified or changed after local deletion, update it or restore the remote version
                                     if (await source.Table<SourceCode>().Where(item => item.Title == code.Title && item.Uid != code.Uid).FirstOrDefaultAsync() != null)
@@ -167,6 +178,17 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
                         // Sync the two databases
                         await SyncTablesAsync(items, DatabaseConnection);
                         await SyncTablesAsync(filtered, connection);
+
+                        // Execute the VACUUM commands
+                        try
+                        {
+                            await connection.ExecuteAsync("VACUUM;");
+                            await DatabaseConnection.ExecuteAsync("VACUUM;");
+                        }
+                        catch
+                        {
+                            // Who cares?
+                        }
                     }
                 }
                 else
