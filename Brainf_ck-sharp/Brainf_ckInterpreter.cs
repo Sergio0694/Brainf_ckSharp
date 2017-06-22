@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Brainf_ck_sharp.Helpers;
 using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp.ReturnTypes;
@@ -19,7 +20,7 @@ namespace Brainf_ck_sharp
         /// Gets the collection of valid Brainf_ck operators
         /// </summary>
         [NotNull]
-        public static readonly IReadOnlyCollection<char> Operators = new[] { '+', '-', '>', '<', '.', ',', '[', ']' };
+        public static IReadOnlyCollection<char> Operators { get; } = new[] { '+', '-', '>', '<', '.', ',', '[', ']' };
 
         #region Public APIs
 
@@ -473,6 +474,78 @@ namespace Brainf_ck_sharp
                 }
             }
             return height == 0;
+        }
+
+        #endregion
+
+        #region C translator
+
+        /// <summary>
+        /// Translates the input source code into its C equivalent
+        /// </summary>
+        /// <param name="source">The source code with the script to translate</param>
+        /// <param name="size">The size of the memory to use in the resulting code</param>
+        [PublicAPI]
+        [Pure, NotNull]
+        public static String TranslateToC([NotNull] String source, int size = 64)
+        {
+            // Arguments check
+            if (size <= 0) throw new ArgumentOutOfRangeException("The input size is not valid");
+            (bool valid, _) = CheckSourceSyntax(source);
+            if (!valid) throw new ArgumentException("The input source code isn't valid");
+
+            // Get the operators sequence and initialize the builder
+            source = Regex.Replace(source, ",{2,}", "."); // Optimize repeated , operators with a single operator
+            IReadOnlyList<char> executable = FindExecutableCode(source).ToArray();
+            StringBuilder builder = new StringBuilder();
+
+            // Prepare the header
+            builder.Append($@"#include <stdio.h>\n\nint main() {{\n\tchar array[{size}] = {{ 0 }};\n\tchar* ptr = array;\n\t");
+
+            // Local function to get the right tabs for each indented line
+            int depth = 1;
+            String GetTabs(int count)
+            {
+                StringBuilder tabBuilder = new StringBuilder();
+                while (count-- > 0) tabBuilder.Append('\t');
+                return tabBuilder.ToString();
+            }
+
+            // Convert the source
+            foreach (char c in executable)
+            {
+                switch (c)
+                {
+                    case '>':
+                        builder.Append($"{GetTabs(depth)}++ptr;");
+                        break;
+                    case '<':
+                        builder.Append($"{GetTabs(depth)}--ptr;");
+                        break;
+                    case '+':
+                        builder.Append($"{GetTabs(depth)}*ptr++;");
+                        break;
+                    case '-':
+                        builder.Append($"{GetTabs(depth)}*ptr--;");
+                        break;
+                    case '.':
+                        builder.Append($"{GetTabs(depth)}putchar(*ptr);");
+                        break;
+                    case ',':
+                        builder.Append($"{GetTabs(depth)}*ptr=getchar();");
+                        break;
+                    case '[':
+                        builder.Append($"{GetTabs(depth++)}while (*ptr) {{");
+                        break;
+                    case ']':
+                        builder.Append($"{GetTabs(--depth)}++ptr;");
+                        break;
+                }
+            }
+
+            // Add the final statement and return the translated source
+            builder.Append("\treturn 0;\n}");
+            return builder.ToString();
         }
 
         #endregion
