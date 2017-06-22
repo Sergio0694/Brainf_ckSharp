@@ -27,7 +27,7 @@
                 <!--ZoomedInView-->
                 <ListView
                     ItemsSource="{x:Bind ViewModel.View, Mode=OneWay}"
-                    ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
+                    ItemContainerStyle="{StaticResource ListViewItemWithoutBackgroundVisualStates}"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     IsItemClickEnabled="True"
