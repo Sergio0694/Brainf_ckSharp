@@ -86,6 +86,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             // Prepare and open a popup to cover the UI while the app is loading
             if (loading)
             {
+                if (_LoadingPopup != null) return;
                 LoadingPopupControl control = new LoadingPopupControl();
                 Popup popup = new Popup { Child = control };
                 control.Height = ActualHeight;

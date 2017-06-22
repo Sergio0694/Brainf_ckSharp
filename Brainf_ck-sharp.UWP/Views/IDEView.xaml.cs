@@ -512,8 +512,17 @@ namespace Brainf_ck_sharp_UWP.Views
             EditBox.TextChanged -= EditBox_OnTextChanged;
             if (!overwrite) EditBox.Document.BeginUndoGroup();
 
+            // Fade out the UI if needed
+            bool fade = !overwrite && code.Length > 1000;
+            if (fade)
+            {
+                Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
+                await Task.Delay(250);
+            }
+
             // Paste the text and get the target range
             int start, end;
+            SolidColorBrush selectionBackup = null;
             if (overwrite)
             {
                 // Load a stream with the new text to also reset the undo stack
@@ -524,6 +533,8 @@ namespace Brainf_ck_sharp_UWP.Views
             else
             {
                 EditBox.Document.Selection.SetText(TextSetOptions.None, code);
+                selectionBackup = EditBox.SelectionHighlightColor;
+                EditBox.SelectionHighlightColor = new SolidColorBrush(Colors.Transparent);
                 start = EditBox.Document.Selection.StartPosition;
                 end = EditBox.Document.Selection.EndPosition;
             }
@@ -539,7 +550,11 @@ namespace Brainf_ck_sharp_UWP.Views
             else EditBox.Document.Selection.StartPosition = end;
 
             // Refresh the UI
-            if (!overwrite) EditBox.Document.EndUndoGroup();
+            if (!overwrite)
+            {
+                EditBox.Document.EndUndoGroup();
+                EditBox.SelectionHighlightColor = selectionBackup;
+            }
             EditBox.Document.GetText(TextGetOptions.None, out code);
             _PreviousText = code;
             DrawLineNumbers();
@@ -556,6 +571,13 @@ namespace Brainf_ck_sharp_UWP.Views
             // Restore the handlers
             EditBox.SelectionChanged += EditBox_OnSelectionChanged;
             EditBox.TextChanged += EditBox_OnTextChanged;
+
+            // Restore the UI if needed
+            if (fade)
+            {
+                await Task.Delay(100);
+                Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
+            }
         }
 
         // Updates the clip size of the bracket guides container
