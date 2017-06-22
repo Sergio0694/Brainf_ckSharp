@@ -176,7 +176,6 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-        
         <!--Main content-->
         <SemanticZoom 
             Style="{StaticResource SemanticZoomCustomStyle}"
