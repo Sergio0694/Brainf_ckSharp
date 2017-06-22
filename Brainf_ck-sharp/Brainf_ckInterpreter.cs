@@ -500,7 +500,7 @@ namespace Brainf_ck_sharp
             StringBuilder builder = new StringBuilder();
 
             // Prepare the header
-            builder.Append($"#include <stdio.h>\n\nint main() {{\n\tchar array[{size}] = {{ 0 }};\n\tchar* ptr = array;\n\t");
+            builder.Append($"#include <stdio.h>\n\nint main() {{\n\tchar array[{size}] = {{ 0 }};\n\tchar* ptr = array;\n");
 
             // Local function to get the right tabs for each indented line
             int depth = 1;
@@ -523,22 +523,22 @@ namespace Brainf_ck_sharp
                         builder.Append($"{GetTabs(depth)}--ptr;\n");
                         break;
                     case '+':
-                        builder.Append($"{GetTabs(depth)}*ptr++;\n");
+                        builder.Append($"{GetTabs(depth)}(*ptr)++;\n");
                         break;
                     case '-':
-                        builder.Append($"{GetTabs(depth)}*ptr--;\n");
+                        builder.Append($"{GetTabs(depth)}(*ptr)--;\n");
                         break;
                     case '.':
                         builder.Append($"{GetTabs(depth)}putchar(*ptr);\n");
                         break;
                     case ',':
-                        builder.Append($"{GetTabs(depth)}*ptr=getchar();\n");
+                        builder.Append($"{GetTabs(depth)}while ((*ptr=getchar()) == '\\n') {{ }};\n");
                         break;
                     case '[':
                         builder.Append($"{GetTabs(depth++)}while (*ptr) {{\n");
                         break;
                     case ']':
-                        builder.Append($"{GetTabs(--depth)}++ptr;\n");
+                        builder.Append($"{GetTabs(--depth)}}}\n");
                         break;
                 }
             }
