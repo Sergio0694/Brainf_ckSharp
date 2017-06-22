@@ -13,12 +13,17 @@ using Brainf_ck_sharp_UWP.ViewModels;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
 {
-    public sealed partial class LocalSourceCodesBrowserFlyout : UserControl, IEventConfirmedContent<CategorizedSourceCode>
+    public sealed partial class LocalSourceCodesBrowserFlyout : UserControl, IAsyncLoadedContent, IEventConfirmedContent<CategorizedSourceCode>
     {
         public LocalSourceCodesBrowserFlyout()
         {
             this.InitializeComponent();
             DataContext = new LocalSourceCodesBrowserFlyoutViewModel();
+            ViewModel.LoadingCompleted += (s, e) =>
+            {
+                LoadingPending = false;
+                LoadingCompleted?.Invoke(this, EventArgs.Empty);
+            };
         }
 
         public LocalSourceCodesBrowserFlyoutViewModel ViewModel => DataContext.To<LocalSourceCodesBrowserFlyoutViewModel>();
@@ -77,5 +82,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         {
             ViewModel.DeleteItemAsync(e).Forget();
         }
+
+        /// <inheritdoc cref="IAsyncLoadedContent"/>
+        public event EventHandler LoadingCompleted;
+
+        /// <inheritdoc cref="IAsyncLoadedContent"/>
+        public bool LoadingPending { get; private set; } = true;
     }
 }

@@ -138,6 +138,7 @@
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationOpenBracketLineInfo.cs" />
     <Compile Include="DataModels\Misc\ScriptExceptionInfo.cs" />
     <Compile Include="DataModels\SQLite\CategorizedSourceCode.cs" />
+    <Compile Include="DataModels\SQLite\CategorizedSourceCodeWithSyntaxInfo.cs" />
     <Compile Include="DataModels\SQLite\Enums\SavedSourceCodeType.cs" />
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
     <Compile Include="DataModels\SQLite\Enums\SourceCodeTitleScore.cs" />

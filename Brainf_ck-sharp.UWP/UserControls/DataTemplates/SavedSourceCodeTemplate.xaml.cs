@@ -28,41 +28,32 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
         }
 
         /// <summary>
-        /// Gets or sets the source code to display on the control
+        /// Gets or sets the categorized source code to display on the control
         /// </summary>
-        public SourceCode SourceCode
+        public CategorizedSourceCodeWithSyntaxInfo CodeInfo
         {
-            get => (SourceCode)GetValue(SourceCodeProperty);
-            set => SetValue(SourceCodeProperty, value);
+            get => (CategorizedSourceCodeWithSyntaxInfo)GetValue(CodeInfoProperty);
+            set => SetValue(CodeInfoProperty, value);
         }
 
-        public static readonly DependencyProperty SourceCodeProperty = DependencyProperty.Register(
-            nameof(SourceCode), typeof(SourceCode), typeof(SavedSourceCodeTemplate), 
-            new PropertyMetadata(default(SourceCode), OnSourceCodePropertyChanged));
+        public static readonly DependencyProperty CodeInfoProperty = DependencyProperty.Register(
+            nameof(CodeInfo), typeof(CategorizedSourceCodeWithSyntaxInfo), typeof(SavedSourceCodeTemplate),
+            new PropertyMetadata(default(CategorizedSourceCodeWithSyntaxInfo), OnCodeInfoPropertyChanged));
 
-        private static void OnSourceCodePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnCodeInfoPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            SourceCode code = e.NewValue.To<SourceCode>();
+            // Unpack the parameters
+            CategorizedSourceCodeWithSyntaxInfo code = e.NewValue.To<CategorizedSourceCodeWithSyntaxInfo>();
             if (code == null) return;
+
+            // Title and code
             SavedSourceCodeTemplate @this = d.To<SavedSourceCodeTemplate>();
-            @this.TitleBlock.Text = code.Title;
+            @this.TitleBlock.Text = code.Code.Title;
             Span host = new Span();
-            Brainf_ckCodeInlineFormatter.SetSource(host, code.Code);
+            Brainf_ckCodeInlineFormatter.SetSource(host, code.Code.Code);
             @this.CodeBlock.Inlines.Clear();
             @this.CodeBlock.Inlines.Add(host);
         }
-
-        /// <summary>
-        /// Gets or sets the code type for the current instance
-        /// </summary>
-        public SavedSourceCodeType CodeType
-        {
-            get => (SavedSourceCodeType)GetValue(CodeTypeProperty);
-            set => SetValue(CodeTypeProperty, value);
-        }
-
-        public static readonly DependencyProperty CodeTypeProperty = DependencyProperty.Register(
-            nameof(CodeType), typeof(SavedSourceCodeType), typeof(SavedSourceCodeTemplate), new PropertyMetadata(default(SavedSourceCodeType)));
 
         #region Events
 
@@ -100,10 +91,10 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
         {
             // Get the custom MenuFlyout
             MenuFlyout menuFlyout = MenuFlyoutHelper.PrepareSavedSourceCodeMenuFlyout(
-                () => FavoriteToggleRequested?.Invoke(this, SourceCode), SourceCode.Favorited,
-                () => RenameRequested?.Invoke(this, SourceCode),
-                type => ShareRequested?.Invoke(this, (type, SourceCode)),
-                () => DeleteRequested?.Invoke(this, SourceCode));
+                () => FavoriteToggleRequested?.Invoke(this, CodeInfo?.Code), CodeInfo?.Code.Favorited == true,
+                () => RenameRequested?.Invoke(this, CodeInfo?.Code),
+                type => ShareRequested?.Invoke(this, (type, CodeInfo?.Code)),
+                () => DeleteRequested?.Invoke(this, CodeInfo?.Code));
             menuFlyout.Closed += (s, e) =>
             {
                 _FlyoutOpen = false;
@@ -119,7 +110,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
         // Animates the control and shows the MenuFlyout when the input device is a touch screen
         private void SavedSourceCodeTemplate_OnHolding(object sender, HoldingRoutedEventArgs e)
         {
-            if (CodeType == SavedSourceCodeType.Sample ||
+            if (CodeInfo?.Type == SavedSourceCodeType.Sample ||
                 e.PointerDeviceType != PointerDeviceType.Touch ||
                 e.HoldingState != HoldingState.Started) return;
             ShowMenuFlyout(e.GetPosition(this));
@@ -128,7 +119,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
         // Shows the MenuFlyout when using a mouse or a pen
         private void SavedSourceCodeTemplate_OnRightTapped(object sender, RightTappedRoutedEventArgs e)
         {
-            if (CodeType == SavedSourceCodeType.Sample ||
+            if (CodeInfo?.Type == SavedSourceCodeType.Sample ||
                 e.PointerDeviceType == PointerDeviceType.Touch) return;
             ShowMenuFlyout(e.GetPosition(this));
         }

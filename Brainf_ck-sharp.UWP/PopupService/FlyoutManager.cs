@@ -163,9 +163,10 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="margin">The optional margins to set to the content of the popup to show</param>
         /// <param name="mode">The desired display mode for the flyout</param>
         /// <param name="stack">Indicates whether or not the popup can be stacked on top of another open popup</param>
+        /// <param name="openCallback">An optional callback to invoke when the popup is displayed</param>
         public async Task<FlyoutClosedResult<TEvent>> ShowAsync<TContent, TEvent>(
             [NotNull] String title, [NotNull] TContent content, [CanBeNull] Thickness? margin = null, 
-            FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent, bool stack = false)
+            FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent, bool stack = false, [CanBeNull] Action openCallback = null)
             where TContent : FrameworkElement, IEventConfirmedContent<TEvent>
         {
             // Lock and close the existing popup, if needed
@@ -220,6 +221,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             popup.SetVisualOpacity(0);
             popup.IsOpen = true;
             await popup.StartCompositionFadeSlideAnimationAsync(null, 1, TranslationAxis.Y, 20, 0, 250, null, null, EasingFunctionNames.CircleEaseOut);
+            openCallback?.Invoke();
             Semaphore.Release();
 
             // Wait and return the right result

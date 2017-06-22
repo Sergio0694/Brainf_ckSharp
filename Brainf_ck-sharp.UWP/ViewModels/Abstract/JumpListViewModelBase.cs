@@ -87,8 +87,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.Abstract
         public async Task LoadGroupsAsync()
         {
             IList<JumpListGroup<TKey, TValue>> source = await OnLoadGroupsAsync();
-            LoadingCompleted?.Invoke(this, source.Count > 0);
             Source = new ObservableCollection<JumpListGroup<TKey, TValue>>(source);
+            LoadingCompleted?.Invoke(this, source.Count > 0);
         }
 
         /// <summary>
