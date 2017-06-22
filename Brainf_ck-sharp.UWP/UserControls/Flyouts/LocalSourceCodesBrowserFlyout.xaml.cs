@@ -58,12 +58,15 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         private async void SavedSourceCodeTemplate_OnShareRequested(object sender, (SourceCodeShareType Type, SourceCode Code) e)
         {
             AsyncOperationResult<bool> result = await ViewModel.ShareItemAsync(e.Type, e.Code);
-            if (result.Status == AsyncOperationStatus.RunToCompletion && result.Result)
+            if (result.Status == AsyncOperationStatus.RunToCompletion && 
+                result.Result &&
+                (e.Type == SourceCodeShareType.Clipboard || e.Type == SourceCodeShareType.LocalFile))
             {
                 NotificationsManager.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("ShareCompleted"),
                     LocalizationManager.GetResource("ShareCompletedBody"), NotificationType.Default);
             }
-            else if (result.Status != AsyncOperationStatus.Canceled)
+            else if (result.Status == AsyncOperationStatus.UnknownErrorHandled ||
+                     result.Status == AsyncOperationStatus.Faulted)
             {
                 NotificationsManager.ShowDefaultErrorNotification(LocalizationManager.GetResource("ShareError"), LocalizationManager.GetResource("ShareErrorBody"));
             }
