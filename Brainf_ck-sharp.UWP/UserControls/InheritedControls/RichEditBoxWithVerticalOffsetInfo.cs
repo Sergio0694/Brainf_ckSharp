@@ -79,7 +79,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
             get
             {
                 Document.Selection.GetRect(PointOptions.Transform, out Rect textRect, out _);
-                return new Point(textRect.X, textRect.Top - VerticalScrollViewerOffset);
+                return new Point(textRect.X, textRect.Top);
             }
         }
 

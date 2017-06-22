@@ -127,9 +127,9 @@ namespace Brainf_ck_sharp_UWP.Views
             GitDiffListView.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 10));
             BracketGuidesCanvas.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
             BracketGuidesCanvas.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.X);
-            CursorRectangle.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
+            CursorRectangle.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 8));
             CursorRectangle.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.X);
-            CursorBorder.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
+            CursorBorder.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 8));
         }
 
         public IDEViewModel ViewModel => DataContext.To<IDEViewModel>();
@@ -148,8 +148,6 @@ namespace Brainf_ck_sharp_UWP.Views
             BreakLinesCanvas.Margin = new Thickness(0, (float)(height + 10), 0, 0);
             IndentationInfoList.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
-            CursorBorderTransform.Y = height + 8;
-            CursorTransform.Y = height + 8;
             CursorTransform.X = 4;
             BracketsParentGrid.SetVisualOffset(TranslationAxis.Y, (float)height);
             EditBox.Padding = new Thickness(4, _Top + 8, 4, 8);
@@ -449,12 +447,12 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             // Move the cursor to the right position
             Point selectionOffset = EditBox.ActualSelectionVerticalOffset;
-            CursorTransform.Y = _Top + 8 + selectionOffset.Y;
+            CursorTransform.Y = selectionOffset.Y;
             CursorTransform.X = selectionOffset.X + 4;
 
             // Update the visibility and the position of the cursor
             CursorBorder.SetVisualOpacity(EditBox.Document.Selection.Length.Abs() > 0 ? 0 : 1);
-            CursorBorderTransform.Y = _Top + 8 + EditBox.ActualSelectionVerticalOffset.Y;
+            CursorBorderTransform.Y = selectionOffset.Y;
         }
 
         // Hides the custom cursor and highlights the line indicator
