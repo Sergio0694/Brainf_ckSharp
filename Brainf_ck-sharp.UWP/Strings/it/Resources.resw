@@ -376,4 +376,16 @@
     <value>Non visibili</value>
     <comment>It's talking about a series of special characters</comment>
   </data>
+  <data name="CSource" xml:space="preserve">
+    <value>Codice sorgente C</value>
+  </data>
+  <data name="ExportToC" xml:space="preserve">
+    <value>Esporta codice C</value>
+  </data>
+  <data name="ExportCompleted" xml:space="preserve">
+    <value>Esportazione completata</value>
+  </data>
+  <data name="ExportCompletedBody" xml:space="preserve">
+    <value>Il codice selezionato è stato salvato correttamente come un file sorgente C</value>
+  </data>
 </root>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
+using Brainf_ck_sharp;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
@@ -11,8 +12,10 @@ using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.ViewModels.Abstract;
+using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.ViewModels
@@ -141,6 +144,21 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 default:
                     throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
             }
+        }
+
+        /// <summary>
+        /// Exports a C translation of the given code
+        /// </summary>
+        /// <param name="code">The input code to translate</param>
+        public async Task<AsyncOperationResult<bool>> ExportToCAsync([NotNull] SourceCode code)
+        {
+            Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
+            StorageFile local = await StorageHelper.PickSaveFileAsync(code.Title, LocalizationManager.GetResource("CSource"), ".c");
+            if (local == null) return AsyncOperationStatus.Canceled;
+            String translation = await Task.Run(() => Brainf_ckInterpreter.TranslateToC(code.Code));
+            await FileIO.WriteTextAsync(local, translation);
+            Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
+            return true;
         }
 
         /// <summary>

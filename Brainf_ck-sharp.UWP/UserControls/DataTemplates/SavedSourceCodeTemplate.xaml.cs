@@ -77,6 +77,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
         /// </summary>
         public event EventHandler<SourceCode> DeleteRequested;
 
+        /// <summary>
+        /// Raised whenever the user requests to export the selected source code as a C program
+        /// </summary>
+        public event EventHandler<SourceCode> TranslateToCRequested; 
+
         #endregion
 
         #region Menu flyout management
@@ -94,6 +99,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
                 () => FavoriteToggleRequested?.Invoke(this, CodeInfo?.Code), CodeInfo?.Code.Favorited == true,
                 () => RenameRequested?.Invoke(this, CodeInfo?.Code),
                 type => ShareRequested?.Invoke(this, (type, CodeInfo?.Code)),
+                () => TranslateToCRequested?.Invoke(this, CodeInfo?.Code), CodeInfo?.IsSyntaxValid == true,
                 () => DeleteRequested?.Invoke(this, CodeInfo?.Code));
             menuFlyout.Closed += (s, e) =>
             {

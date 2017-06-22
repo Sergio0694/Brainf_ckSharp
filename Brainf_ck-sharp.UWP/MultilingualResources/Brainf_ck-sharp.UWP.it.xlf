@@ -488,6 +488,22 @@
           <target state="translated">Non visibili</target>
           <note from="MultilingualBuild" annotates="source" priority="2">It's talking about a series of special characters</note>
         </trans-unit>
+        <trans-unit id="CSource" translate="yes" xml:space="preserve">
+          <source>C source code</source>
+          <target state="translated">Codice sorgente C</target>
+        </trans-unit>
+        <trans-unit id="ExportToC" translate="yes" xml:space="preserve">
+          <source>Export C code</source>
+          <target state="translated">Esporta codice C</target>
+        </trans-unit>
+        <trans-unit id="ExportCompleted" translate="yes" xml:space="preserve">
+          <source>Export completed</source>
+          <target state="translated">Esportazione completata</target>
+        </trans-unit>
+        <trans-unit id="ExportCompletedBody" translate="yes" xml:space="preserve">
+          <source>The selected code has been saved successfully as a C source file</source>
+          <target state="translated">Il codice selezionato è stato salvato correttamente come un file sorgente C</target>
+        </trans-unit>
       </group>
     </body>
   </file>

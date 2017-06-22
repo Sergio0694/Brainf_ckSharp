@@ -39,7 +39,8 @@
                                 FavoriteToggleRequested="SavedSourceCodeTemplate_OnFavoriteToggleRequested"
                                 RenameRequested="SavedSourceCodeTemplate_OnRenameRequested"
                                 ShareRequested="SavedSourceCodeTemplate_OnShareRequested"
-                                DeleteRequested="SavedSourceCodeTemplate_OnDeleteRequested"/>
+                                DeleteRequested="SavedSourceCodeTemplate_OnDeleteRequested"
+                                TranslateToCRequested="SavedSourceCodeTemplate_OnTranslateToCRequested"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                     <ListView.GroupStyle>

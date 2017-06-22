@@ -481,4 +481,16 @@
     <value>Remove all</value>
     <comment>Remove all the breakpoints from the IDE</comment>
   </data>
+  <data name="CSource" xml:space="preserve">
+    <value>C source code</value>
+  </data>
+  <data name="ExportToC" xml:space="preserve">
+    <value>Export C code</value>
+  </data>
+  <data name="ExportCompleted" xml:space="preserve">
+    <value>Export completed</value>
+  </data>
+  <data name="ExportCompletedBody" xml:space="preserve">
+    <value>The selected code has been saved successfully as a C source file</value>
+  </data>
 </root>

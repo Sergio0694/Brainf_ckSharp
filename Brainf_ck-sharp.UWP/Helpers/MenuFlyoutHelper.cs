@@ -59,11 +59,14 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// <param name="favorited">Indicates the favorited state for the current item</param>
         /// <param name="rename">The action when the item is renamed</param>
         /// <param name="share">The action when the users selects a share method for the item</param>
+        /// <param name="translateToC">An action to execute when the user requests to save a C version of the input code</param>
+        /// <param name="syntaxValid">Indicates the syntax status for the given code</param>
         /// <param name="delete">The action when the user requests to delete the item</param>
         public static MenuFlyout PrepareSavedSourceCodeMenuFlyout(
             [NotNull] Action favorite, bool favorited, 
             [NotNull] Action rename,
             [NotNull] Action<SourceCodeShareType> share,
+            [NotNull] Action translateToC, bool syntaxValid,
             [NotNull] Action delete)
         {
             MenuFlyout menu = new MenuFlyout();
@@ -76,6 +79,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
             sub.Items?.AddItem(LocalizationManager.GetResource("Email"), 0xE715.ToSegoeMDL2Icon(), () => share(SourceCodeShareType.Email));
             sub.Items?.AddItem(LocalizationManager.GetResource("SaveFile"), 0xED43.ToSegoeMDL2Icon(), () => share(SourceCodeShareType.LocalFile));
             menu.Items?.Add(sub);
+            if (syntaxValid) menu.Items?.AddItem(LocalizationManager.GetResource("ExportToC"), 0xE756.ToSegoeMDL2Icon(), translateToC);
             menu.AddSeparator();
             menu.Items?.AddItem(LocalizationManager.GetResource("Delete"), 0xE107.ToSegoeMDL2Icon(), delete);
             return menu;

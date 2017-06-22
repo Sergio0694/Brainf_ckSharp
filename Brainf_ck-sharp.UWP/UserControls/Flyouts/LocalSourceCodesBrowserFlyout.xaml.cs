@@ -88,5 +88,16 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
 
         /// <inheritdoc cref="IAsyncLoadedContent"/>
         public bool LoadingPending { get; private set; } = true;
+
+        // Asks the user to export the selected code as a C source
+        private async void SavedSourceCodeTemplate_OnTranslateToCRequested(object sender, SourceCode e)
+        {
+            AsyncOperationResult<bool> result = await ViewModel.ExportToCAsync(e);
+            if (result.Status == AsyncOperationStatus.RunToCompletion && result.Result)
+            {
+                NotificationsManager.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("ExportCompleted"),
+                    LocalizationManager.GetResource("ExportCompletedBody"), NotificationType.Default);
+            }
+        }
     }
 }
