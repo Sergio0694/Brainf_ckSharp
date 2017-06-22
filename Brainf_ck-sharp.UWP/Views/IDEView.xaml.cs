@@ -19,6 +19,7 @@ using Brainf_ck_sharp;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
 using Brainf_ck_sharp_UWP.PopupService;
@@ -42,10 +43,17 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.PlayRequested += ViewModel_PlayRequested;
             ViewModel.LoadedCodeChanged += (_, e) =>
             {
+                // Load the code
                 LoadCode(e.Code, true);
                 if (e.Breakpoints == null) ClearBreakpoints();
                 else RestoreBreakpoints(BitHelper.Expand(e.Breakpoints));
                 Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
+
+                // Restore the UI
+                Task.Delay(250).ContinueWith(t =>
+                {
+                    Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
+                }, TaskScheduler.FromCurrentSynchronizationContext());
             };
             ViewModel.TextCleared += (_, e) =>
             {

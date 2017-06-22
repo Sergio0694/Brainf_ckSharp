@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.DataModels;
@@ -6,10 +7,12 @@ using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Interfaces;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.ViewModels;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
 {
@@ -32,10 +35,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
 
         public CategorizedSourceCode Result { get; private set; }
 
-        private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
+        private async void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
         {
             if (e.ClickedItem is CategorizedSourceCode item)
             {
+                Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
+                await Task.Delay(500); // Give some time to the UI to avoid hangs
                 Result = item;
                 ContentConfirmed?.Invoke(this, item);
             }
