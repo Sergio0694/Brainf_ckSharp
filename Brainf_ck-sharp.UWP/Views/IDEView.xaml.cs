@@ -19,6 +19,7 @@ using Brainf_ck_sharp;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
@@ -158,7 +159,9 @@ namespace Brainf_ck_sharp_UWP.Views
             GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             CursorTransform.X = 4;
             BracketsParentGrid.SetVisualOffset(TranslationAxis.Y, (float)height);
-            EditBox.Padding = new Thickness(4, _Top + 8, 4, 8);
+            EditBox.Padding = UniversalAPIsHelper.IsMobileDevice 
+                ? new Thickness(4, _Top + 8, 4, 8) 
+                : new Thickness(4, _Top + 8, 20, 16);
             EditBox.ScrollBarMargin = new Thickness(0, _Top, 0, 0);
         }
 
