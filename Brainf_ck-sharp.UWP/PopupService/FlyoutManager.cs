@@ -92,6 +92,23 @@ namespace Brainf_ck_sharp_UWP.PopupService
         }
 
         /// <summary>
+        /// Shows a simple message dialog with a title and a content
+        /// </summary>
+        /// <param name="title">The title of the message</param>
+        /// <param name="message">The message to show to the user</param>
+        public void Show([NotNull] String title, [NotNull] String message)
+        {
+            // Prepare the message and show it inside a popup
+            TextBlock block = new TextBlock
+            {
+                Text = message,
+                TextWrapping = TextWrapping.Wrap,
+                FontSize = 14
+            };
+            ShowAsync(title, block, new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight).Forget();
+        }
+
+        /// <summary>
         /// Shows a new flyout with the given parameters
         /// </summary>
         /// <param name="title">The title of the new flyout to show</param>

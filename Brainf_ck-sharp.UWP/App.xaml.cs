@@ -4,7 +4,9 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Resources;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
@@ -76,6 +78,9 @@ namespace Brainf_ck_sharp_UWP
 
                 // Posizionare il frame nella finestra corrente
                 Window.Current.Content = shell;
+
+                // Settings
+                AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.WelcomeMessageShown), false, false);
 
                 // Sync the roaming source codes
                 Task.Run(() => SQLiteManager.Instance.TrySyncSharedCodesAsync());

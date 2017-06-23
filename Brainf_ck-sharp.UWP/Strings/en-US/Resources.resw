@@ -497,4 +497,14 @@
     <value>Not modified</value>
     <comment>Renamed name is the same as the original</comment>
   </data>
+  <data name="DevMessage" xml:space="preserve">
+    <value>Developer message</value>
+  </data>
+  <data name="WelcomeText" xml:space="preserve">
+    <value>Welcome to Brainf*ck#!
+Thank you for downloading the app, I hope you'll enjoy using it!
+Please feel free to send me an email if you have suggestions or feedback, or if you found a bug, and I'll be happy to help.
+
+NOTE: the app might sometimes crash when using the virtual arrows keypad in the IDE or when loading a source code. That's due to a bug in one of the controls I'm using, I've already sent a feedback to Microsoft and hopefully that'll get fixed soon!</value>
+  </data>
 </root>

@@ -52,28 +52,35 @@
         <xaml:CanvasControl x:Name="Win2DCanvas"
                             Grid.Row="0"/>
         
-        <!--Title-->
-        <Canvas Grid.Row="0"
-                Background="#40000000"/>
-        <TextBlock Text="Title"
-                   x:Name="TitleBlock"
-                   VerticalAlignment="Center"
-                   Grid.Row="0"
-                   Margin="12,0,0,0"
-                   FontWeight="SemiLight"
-                   FontSize="20"/>
+        <!--Header-->
+        <Grid Grid.Row="0"
+              Background="#40000000">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-        <!--Close button-->
-        <Button Style="{ThemeResource WideButtonWithNoBackgroundStyle}"
-                Grid.Row="0"
-                HorizontalAlignment="Right"
-                Width="52"
-                Click="{x:Bind RequestClose}">
-            <TextBlock Text="&#xE10A;"
-                       Style="{StaticResource FontIconTextBlockStyle}"
+            <!--Title-->
+            <TextBlock Text="Title"
+                       x:Name="TitleBlock"
                        VerticalAlignment="Center"
-                       HorizontalAlignment="Center"/>
-        </Button>
+                       Style="{StaticResource TrimmedTextStyle}"
+                       Margin="12,0,8,0"
+                       FontWeight="SemiLight"
+                       FontSize="20"/>
+
+            <!--Close button-->
+            <Button Style="{ThemeResource WideButtonWithNoBackgroundStyle}"
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    Width="52"
+                    Click="{x:Bind RequestClose}">
+                <TextBlock Text="&#xE10A;"
+                           Style="{StaticResource FontIconTextBlockStyle}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
+            </Button>
+        </Grid>
         
         <!--Scroller for fixed content-->
         <ScrollViewer 

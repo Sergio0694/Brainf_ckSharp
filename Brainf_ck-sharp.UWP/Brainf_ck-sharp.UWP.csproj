@@ -143,6 +143,8 @@
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
     <Compile Include="DataModels\SQLite\Enums\SourceCodeTitleScore.cs" />
     <Compile Include="Enums\SourceCodeShareType.cs" />
+    <Compile Include="Helpers\Settings\AppSettingsKeys.cs" />
+    <Compile Include="Helpers\Settings\AppSettingsManager.cs" />
     <Compile Include="Helpers\DispatcherHelper.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\Extensions\StringExtensions.cs" />

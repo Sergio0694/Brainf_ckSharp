@@ -388,4 +388,17 @@
   <data name="ExportCompletedBody" xml:space="preserve">
     <value>Il codice selezionato è stato salvato correttamente come un file sorgente C</value>
   </data>
+  <data name="NotModified" xml:space="preserve">
+    <value>Non modificato</value>
+    <comment>Renamed name is the same as the original</comment>
+  </data>
+  <data name="DevMessage" xml:space="preserve">
+    <value>Messaggio dello sviluppatore</value>
+  </data>
+  <data name="WelcomeText" xml:space="preserve">
+    <value>Benvenuti in Brainf*ck#, grazie di aver scaricato quest'app!
+Potete mandarmi un messaggio email in qualsiasi momento se avete suggerimenti o feedback, o se avete trovato un bug, e sarò felice di aiutare.
+
+NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le frecce di navigazione nell'IDE o durante il caricamento di un codice sorgente salvato. Questo è dovuto ad un bug in uno dei controlli che l'app utilizza, ho già mandato una segnalazione a Microsoft e spero che si possa risolvere il problema al più presto!</value>
+  </data>
 </root>

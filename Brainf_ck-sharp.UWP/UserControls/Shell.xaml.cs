@@ -11,6 +11,7 @@ using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
@@ -151,6 +152,20 @@ namespace Brainf_ck_sharp_UWP.UserControls
             scroller.PointerExited += Scroller_PointerOut;
             scroller.PointerReleased += Scroller_PointerOut;
             scroller.PointerCaptureLost += Scroller_PointerOut;
+
+            // Welcome message
+            if (AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.WelcomeMessageShown), out bool shown) && !shown)
+            {
+                // Show the message
+                Task.Delay(1000).ContinueWith(t =>
+                {
+                    FlyoutManager.Instance.Show(LocalizationManager.GetResource("DevMessage"), 
+                        LocalizationManager.GetResource("WelcomeText"));
+                }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
+
+                // Update the setting
+                AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.WelcomeMessageShown), true, true);
+            }
         }
 
         // Disables the swipe gesture for the keyboard pivot (swiping that pivot causes the app to crash)
