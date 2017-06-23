@@ -522,6 +522,9 @@ namespace Brainf_ck_sharp_UWP.Views
 
             try
             {
+                // Adjust the input text
+                code = code.Replace("\n", "");
+
                 // Paste the text and get the target range
                 int start, end;
                 SolidColorBrush selectionBackup = null;
@@ -542,8 +545,11 @@ namespace Brainf_ck_sharp_UWP.Views
                 }
 
                 // Highlight the new text
+                int count = 0;
                 for (int i = start; i < end; i++)
                 {
+                    char test = code[count++];
+                    if (test < 33 || test > 126 && test < 161) continue;
                     ITextRange range = EditBox.Document.GetRange(i, i + 1);
                     char c = range.Character;
                     range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(c);
@@ -599,6 +605,8 @@ namespace Brainf_ck_sharp_UWP.Views
             LineCursorClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
             CursorBorder.Width = e.NewSize.Width;
         }
+
+        #region Breakpoints
 
         /// <summary>
         /// Gets the collection of current visualized breakpoints and their respective line numbers
@@ -768,6 +776,8 @@ namespace Brainf_ck_sharp_UWP.Views
             foreach (FrameworkElement element in BreakLinesCanvas.Children.Cast<FrameworkElement>().ToArray())
                 element.Width = e.NewSize.Width;
         }
+
+        #endregion
 
         // Begins a new undo group when the user presses a keyboard key (before the text is actually changed)
         private void EditBox_OnKeyDown(object sender, KeyRoutedEventArgs e) => EditBox.Document.BeginUndoGroup();
