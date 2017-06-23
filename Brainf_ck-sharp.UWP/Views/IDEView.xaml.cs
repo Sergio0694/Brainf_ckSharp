@@ -520,53 +520,60 @@ namespace Brainf_ck_sharp_UWP.Views
                 await Task.Delay(250);
             }
 
-            // Paste the text and get the target range
-            int start, end;
-            SolidColorBrush selectionBackup = null;
-            if (overwrite)
+            try
             {
-                // Load a stream with the new text to also reset the undo stack
-                await EditBox.LoadTextAsync(code);
-                start = 0;
-                end = code.Length;
-            }
-            else
-            {
-                EditBox.Document.Selection.SetText(TextSetOptions.None, code);
-                selectionBackup = EditBox.SelectionHighlightColor;
-                EditBox.SelectionHighlightColor = new SolidColorBrush(Colors.Transparent);
-                start = EditBox.Document.Selection.StartPosition;
-                end = EditBox.Document.Selection.EndPosition;
-            }
+                // Paste the text and get the target range
+                int start, end;
+                SolidColorBrush selectionBackup = null;
+                if (overwrite)
+                {
+                    // Load a stream with the new text to also reset the undo stack
+                    await EditBox.LoadTextAsync(code);
+                    start = 0;
+                    end = code.Length;
+                }
+                else
+                {
+                    EditBox.Document.Selection.SetText(TextSetOptions.None, code);
+                    selectionBackup = EditBox.SelectionHighlightColor;
+                    EditBox.SelectionHighlightColor = new SolidColorBrush(Colors.Transparent);
+                    start = EditBox.Document.Selection.StartPosition;
+                    end = EditBox.Document.Selection.EndPosition;
+                }
 
-            // Highlight the new text
-            for (int i = start; i < end - 1; i++)
-            {
-                ITextRange range = EditBox.Document.GetRange(i, i + 1);
-                char c = range.Character;
-                range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(c);
-            }
-            if (overwrite) EditBox.Document.Selection.SetRange(0, 0);
-            else EditBox.Document.Selection.StartPosition = end;
+                // Highlight the new text
+                for (int i = start; i < end; i++)
+                {
+                    ITextRange range = EditBox.Document.GetRange(i, i + 1);
+                    char c = range.Character;
+                    range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(c);
+                }
+                if (overwrite) EditBox.Document.Selection.SetRange(0, 0);
+                else EditBox.Document.Selection.StartPosition = end;
 
-            // Refresh the UI
-            if (!overwrite)
-            {
-                EditBox.Document.EndUndoGroup();
-                EditBox.SelectionHighlightColor = selectionBackup;
+                // Refresh the UI
+                if (!overwrite)
+                {
+                    EditBox.Document.EndUndoGroup();
+                    EditBox.SelectionHighlightColor = selectionBackup;
+                }
+                EditBox.Document.GetText(TextGetOptions.None, out code);
+                _PreviousText = code;
+                DrawLineNumbers();
+                DrawBracketGuides(code).ContinueWith(t =>
+                {
+                    ViewModel.UpdateIndentationInfo(t.Result).Forget();
+                }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
+                ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
+                ViewModel.SendMessages(code);
+                ViewModel.UpdateCanUndoRedoStatus();
+                UpdateCursorRectangleAndIndicatorUI();
+                if (!overwrite) RemoveUnvalidatedBreakpointsAsync(code).Forget();
             }
-            EditBox.Document.GetText(TextGetOptions.None, out code);
-            _PreviousText = code;
-            DrawLineNumbers();
-            DrawBracketGuides(code).ContinueWith(t =>
+            catch
             {
-                ViewModel.UpdateIndentationInfo(t.Result).Forget();
-            }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
-            ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
-            ViewModel.SendMessages(code);
-            ViewModel.UpdateCanUndoRedoStatus();
-            UpdateCursorRectangleAndIndicatorUI();
-            if (!overwrite) RemoveUnvalidatedBreakpointsAsync(code).Forget();
+                // Can't crash here, have things to do, people to see
+            }
 
             // Restore the handlers
             EditBox.SelectionChanged += EditBox_OnSelectionChanged;
