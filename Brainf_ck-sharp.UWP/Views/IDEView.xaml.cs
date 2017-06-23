@@ -588,7 +588,7 @@ namespace Brainf_ck_sharp_UWP.Views
             // Restore the UI if needed
             if (fade)
             {
-                await Task.Delay(100);
+                await Task.Delay(150);
                 Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
             }
         }

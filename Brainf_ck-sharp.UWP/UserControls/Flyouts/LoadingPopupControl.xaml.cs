@@ -20,7 +20,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         private async void LoadingPopupControl_Loaded(object sender, RoutedEventArgs e)
         {
             _BlurEffect = await EffectBorder.GetAttachedInAppSemiAcrylicEffectAsync(EffectBorder,
-                6, 400, Colors.Black, 0.4f, Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
+                6, 400, Colors.Black, 0.5f, Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
         }
 
         // The in-app acrylic blur effect
