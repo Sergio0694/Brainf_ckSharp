@@ -315,20 +315,31 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 uint depth = 0;
                 for (int i = 1; i <= max; i++)
                 {
-                    IReadOnlyList<(int, int, char)> line = brackets.Where(info => info.Item1 == i).ToArray();
-                    if (line.Count == 0)
+                    // Parse the first item
+                    IReadOnlyList<(int, int, char Bracket)> entries = brackets.Where(info => info.Item1 == i).ToArray();
+                    if (entries.Count == 0)
                     {
                         temp.Add(new IDEIndentationLineInfo(depth == 0 ? IDEIndentationInfoLineType.Empty : IDEIndentationInfoLineType.Straight));
                     }
-                    else if (line[0].Item3 == '[')
+                    else if (entries[0].Bracket == '[')
                     {
                         depth++;
                         temp.Add(new IDEIndentationOpenBracketLineInfo(depth));
                     }
-                    else if (line[0].Item3 == ']')
+                    else if (entries[0].Bracket == ']')
                     {
                         depth--;
                         temp.Add(new IDEIndentationLineInfo(IDEIndentationInfoLineType.ClosedBracket));
+                    }
+
+                    // Edge case, multiple brackets on the same line
+                    if (entries.Count > 1)
+                    {
+                        foreach ((int, int, char Bracket) entry in entries.Skip(1))
+                        {
+                            if (entry.Bracket == '[') depth++;
+                            else if (entry.Bracket == ']') depth--;
+                        }
                     }
                 }
                 return temp;
