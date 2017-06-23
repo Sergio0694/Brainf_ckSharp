@@ -98,8 +98,15 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
             double
                 viewport = _TemplateScrollViewer.ViewportHeight - ScrollBarMargin.Top, // The current visible area, excluding additional padding
                 current = rect.Top - _TemplateScrollViewer.VerticalOffset; // The actual transformed Y position, considering the scrolling
-            if (current < 0) _TemplateScrollViewer.ChangeView(null, _TemplateScrollViewer.VerticalOffset + current, null, false);
-            else if (current > viewport) _TemplateScrollViewer.ChangeView(null, _TemplateScrollViewer.VerticalOffset + (current - viewport) + 32, null, false);
+            double? horizontal;
+            if (rect.Left < _TemplateScrollViewer.HorizontalOffset)
+                horizontal = rect.Left - 12;
+            else if (rect.Left > _TemplateScrollViewer.ViewportWidth + _TemplateScrollViewer.HorizontalOffset - 20)
+                horizontal = rect.Left - _TemplateScrollViewer.ViewportWidth + 32;
+            else horizontal = null;
+            if (current < 0) _TemplateScrollViewer.ChangeView(horizontal, _TemplateScrollViewer.VerticalOffset + current, null, false);
+            else if (current > viewport) _TemplateScrollViewer.ChangeView(horizontal, _TemplateScrollViewer.VerticalOffset + (current - viewport) + 32, null, false);
+            else _TemplateScrollViewer.ChangeView(horizontal, null, null, false);
         }
 
         /// <summary>

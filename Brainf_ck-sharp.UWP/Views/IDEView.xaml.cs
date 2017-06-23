@@ -161,7 +161,7 @@ namespace Brainf_ck_sharp_UWP.Views
             BracketsParentGrid.SetVisualOffset(TranslationAxis.Y, (float)height);
             EditBox.Padding = UniversalAPIsHelper.IsMobileDevice 
                 ? new Thickness(4, _Top + 8, 4, 8) 
-                : new Thickness(4, _Top + 8, 20, 16);
+                : new Thickness(4, _Top + 8, 20, 20);
             EditBox.ScrollBarMargin = new Thickness(0, _Top, 0, 0);
         }
 
