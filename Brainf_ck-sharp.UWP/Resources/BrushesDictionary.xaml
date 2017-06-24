@@ -1,0 +1,25 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!--Default fade out accent brush (button normal state)-->
+    <SolidColorBrush x:Key="AccentBrushLowFade"/>
+    
+    <!--Highlight accent brush (button highlight state)-->
+    <SolidColorBrush x:Key="AccentBrushMediumFade"/>
+    
+    <!--Sub MenuFlyout brushes-->
+    <SolidColorBrush x:Key="SubMenuFlyoutPointerOverBrush"/>
+    <SolidColorBrush x:Key="SubMenuFlyoutOpenedBrush"/>
+    
+    <!--Red danger brush-->
+    <SolidColorBrush x:Key="RedDangerBrush" Color="#FFDC232B"/>
+    
+    <!--Warning brush-->
+    <SolidColorBrush x:Key="OrangeWarningBrush" Color="#FFFFAA00"/>
+    
+    <!--Breakpoints-->
+    <SolidColorBrush x:Key="BreakpointFillBrush" Color="#FFE51400"/>
+    <SolidColorBrush x:Key="BreakpointBorderBrush" Color="#FFF4DFDD"/>
+    <SolidColorBrush x:Key="BreakpointLineBrush" Color="#34FF0000"/>
+</ResourceDictionary>

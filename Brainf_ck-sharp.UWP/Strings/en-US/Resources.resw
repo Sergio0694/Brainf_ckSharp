@@ -1,0 +1,510 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ExEmptyStdin" xml:space="preserve">
+    <value>Stdin buffer exhausted</value>
+  </data>
+  <data name="ExLowerBound" xml:space="preserve">
+    <value>Lower bound exceeded</value>
+  </data>
+  <data name="ExMaxStdout" xml:space="preserve">
+    <value>Stdout buffer length limit exceeded</value>
+  </data>
+  <data name="ExMaxValue" xml:space="preserve">
+    <value>Max value exceeded</value>
+  </data>
+  <data name="ExNegativeValue" xml:space="preserve">
+    <value>Negative value</value>
+  </data>
+  <data name="ExUpperBound" xml:space="preserve">
+    <value>Upper bound exceeded</value>
+  </data>
+  <data name="InterpreterError" xml:space="preserve">
+    <value>Interpreter error</value>
+  </data>
+  <data name="RowTitleRun.Text" xml:space="preserve">
+    <value>Row</value>
+    <comment>Keep this short to 2-4 characters (abbreviate if needed)</comment>
+  </data>
+  <data name="run" xml:space="preserve">
+    <value>run</value>
+  </data>
+  <data name="ShortCharacter" xml:space="preserve">
+    <value>Char</value>
+    <comment>Keep this short to 2-4 characters (abbreviate if needed)</comment>
+  </data>
+  <data name="ShortColumn" xml:space="preserve">
+    <value>Col</value>
+    <comment>Keep this short to 2-4 characters (abbreviate if needed)</comment>
+  </data>
+  <data name="ThresholdExceeded" xml:space="preserve">
+    <value>Time threshold exceeded</value>
+  </data>
+  <data name="WrongBrackets" xml:space="preserve">
+    <value>Mismatched parentheses</value>
+  </data>
+  <data name="RestartRun.Text" xml:space="preserve">
+    <value>RESTART</value>
+    <comment>Keep this uppercase</comment>
+  </data>
+  <data name="Exception" xml:space="preserve">
+    <value>thrown</value>
+  </data>
+  <data name="InternalError" xml:space="preserve">
+    <value>error</value>
+  </data>
+  <data name="SyntaxError" xml:space="preserve">
+    <value>syntax error</value>
+  </data>
+  <data name="Threshold" xml:space="preserve">
+    <value>runtime error</value>
+  </data>
+  <data name="Clear.Label" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="MemoryState.Label" xml:space="preserve">
+    <value>Memory state</value>
+  </data>
+  <data name="PlayButton.Label" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="Restart.Label" xml:space="preserve">
+    <value>Restart</value>
+  </data>
+  <data name="Undo.Label" xml:space="preserve">
+    <value>Undo</value>
+  </data>
+  <data name="Clrscr.Label" xml:space="preserve">
+    <value>Clear screen</value>
+  </data>
+  <data name="MemoryStateTitle" xml:space="preserve">
+    <value>Memory state</value>
+  </data>
+  <data name="Unicode.Label" xml:space="preserve">
+    <value>Show Unicode characters</value>
+  </data>
+  <data name="FirstControlUnicodeGroup.Value" xml:space="preserve">
+    <value>0 to 31</value>
+  </data>
+  <data name="FirstControlUnicodeGroup.Description" xml:space="preserve">
+    <value>Control characters</value>
+  </data>
+  <data name="SecondControlUnicodeGroup.Value" xml:space="preserve">
+    <value>128 to 159</value>
+  </data>
+  <data name="SecondControlUnicodeGroup.Description" xml:space="preserve">
+    <value>Not visible</value>
+    <comment>It's talking about a series of special characters</comment>
+  </data>
+  <data name="UnicodeTitle" xml:space="preserve">
+    <value>Unicode characters</value>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="BreakpointReached" xml:space="preserve">
+    <value>Breakpoint reached</value>
+  </data>
+  <data name="ErrorLocation" xml:space="preserve">
+    <value>Error location</value>
+  </data>
+  <data name="ErrorType" xml:space="preserve">
+    <value>Error type</value>
+  </data>
+  <data name="Loops" xml:space="preserve">
+    <value>nested loops</value>
+    <comment>This will be "n nested loops"</comment>
+  </data>
+  <data name="MemoryCells" xml:space="preserve">
+    <value>memory cells</value>
+  </data>
+  <data name="NoLoops" xml:space="preserve">
+    <value>No nested loops</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Position</value>
+    <comment>The position of a wrong operator in a source code</comment>
+  </data>
+  <data name="SingleLoop" xml:space="preserve">
+    <value>1 nested loop</value>
+  </data>
+  <data name="SourceCode" xml:space="preserve">
+    <value>Source code</value>
+  </data>
+  <data name="StackTrace" xml:space="preserve">
+    <value>Stack trace</value>
+  </data>
+  <data name="Stats" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="LowercaseAtPosition" xml:space="preserve">
+    <value>at position</value>
+  </data>
+  <data name="LowercaseOperators" xml:space="preserve">
+    <value>operators</value>
+  </data>
+  <data name="LowercaseSingleOperator" xml:space="preserve">
+    <value>1 operator</value>
+  </data>
+  <data name="ContinueButton.Title" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="RepeatScript.Label" xml:space="preserve">
+    <value>Repeat last script</value>
+  </data>
+  <data name="SkipButton.Title" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="CodeLibrary" xml:space="preserve">
+    <value>Code library</value>
+  </data>
+  <data name="CodeLibraryButton.Label" xml:space="preserve">
+    <value>Browse code library</value>
+  </data>
+  <data name="Favorites" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+  <data name="MoreCodes" xml:space="preserve">
+    <value>source codes</value>
+  </data>
+  <data name="OneCode" xml:space="preserve">
+    <value>1 source code</value>
+  </data>
+  <data name="PersonalCodes" xml:space="preserve">
+    <value>Personal codes</value>
+  </data>
+  <data name="RunTitle" xml:space="preserve">
+    <value>Run</value>
+  </data>
+  <data name="SampleCodes" xml:space="preserve">
+    <value>Sample codes</value>
+  </data>
+  <data name="Sum" xml:space="preserve">
+    <value>Sum</value>
+  </data>
+  <data name="UnicodeSum" xml:space="preserve">
+    <value>Unicode sum</value>
+  </data>
+  <data name="UnicodeValue" xml:space="preserve">
+    <value>Unicode value</value>
+  </data>
+  <data name="SaveAsButton.Label" xml:space="preserve">
+    <value>Save as</value>
+  </data>
+  <data name="SaveButton.Label" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="AlreadyUsed" xml:space="preserve">
+    <value>Already used</value>
+  </data>
+  <data name="Available" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="Clipboard" xml:space="preserve">
+    <value>Copy to clipboard</value>
+  </data>
+  <data name="CodePreviewBlock.Text" xml:space="preserve">
+    <value>Code preview:</value>
+  </data>
+  <data name="CodeTitleBox.PlaceholderText" xml:space="preserve">
+    <value>Enter the code title</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Send via email</value>
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value>Empty</value>
+    <comment>Empty title for a code to save</comment>
+  </data>
+  <data name="Favorite" xml:space="preserve">
+    <value>Favorite</value>
+    <comment>Add to favorites</comment>
+  </data>
+  <data name="FilenameBlock.Text" xml:space="preserve">
+    <value>File name:</value>
+  </data>
+  <data name="OSShare" xml:space="preserve">
+    <value>OS share</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="SaveFile" xml:space="preserve">
+    <value>Save file</value>
+  </data>
+  <data name="Share" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="Unfavorite" xml:space="preserve">
+    <value>Unfavorite</value>
+  </data>
+  <data name="PlainText" xml:space="preserve">
+    <value>Plain text</value>
+  </data>
+  <data name="ShareCompleted" xml:space="preserve">
+    <value>Share completed</value>
+  </data>
+  <data name="ShareCompletedBody" xml:space="preserve">
+    <value>The selected source code has been shared correctly</value>
+  </data>
+  <data name="SharedCode" xml:space="preserve">
+    <value>Brainf*ck shared code</value>
+  </data>
+  <data name="ShareError" xml:space="preserve">
+    <value>Share error</value>
+  </data>
+  <data name="ShareErrorBody" xml:space="preserve">
+    <value>There was an error while sharing the code, try again later</value>
+  </data>
+  <data name="RenameCode" xml:space="preserve">
+    <value>Rename code</value>
+  </data>
+  <data name="SaveCode" xml:space="preserve">
+    <value>Save code</value>
+  </data>
+  <data name="CodeSaved" xml:space="preserve">
+    <value>Code saved</value>
+  </data>
+  <data name="CodeSavedBody" xml:space="preserve">
+    <value>The new source code has been saved correctly</value>
+  </data>
+  <data name="Debug" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="HeaderComments" xml:space="preserve">
+    <value>Header comments</value>
+  </data>
+  <data name="RedoButton.Label" xml:space="preserve">
+    <value>Redo</value>
+  </data>
+  <data name="UndoButton.Label" xml:space="preserve">
+    <value>Undo</value>
+  </data>
+  <data name="MoveButtonmLabel" xml:space="preserve">
+    <value>Move</value>
+  </data>
+  <data name="NewLineButton.Label" xml:space="preserve">
+    <value>New line</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="AboutButton.Label" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="ContactsBlock.Text" xml:space="preserve">
+    <value>Contacts</value>
+  </data>
+  <data name="DevelopedByPart2Run.Text" xml:space="preserve">
+    <value>Thanks to Andrea Salvati for his help with the original interpreter algorithm, Camil Demetrescu for the idea to port Brainf*ck# to Windows 10 and Christopher Blackman for his help during the app development</value>
+  </data>
+  <data name="DevelopedByRun.Text" xml:space="preserve">
+    <value>Developed by</value>
+  </data>
+  <data name="DevSupportTitle.Text" xml:space="preserve">
+    <value>Pick the support option for the developer of the app</value>
+  </data>
+  <data name="Donate" xml:space="preserve">
+    <value>Donate</value>
+  </data>
+  <data name="DonateButton.Text" xml:space="preserve">
+    <value>Donate</value>
+  </data>
+  <data name="DonateCoffee.PickerDescription" xml:space="preserve">
+    <value>Buy the developer a coffee</value>
+  </data>
+  <data name="DonateLove.PickerDescription" xml:space="preserve">
+    <value>Feeling generous? Choose this option to show the developer how much you love this app!</value>
+  </data>
+  <data name="DonatePresent.PickerDescription" xml:space="preserve">
+    <value>Make a small present to the developer to support the app</value>
+  </data>
+  <data name="DonateSupport.PickerDescription" xml:space="preserve">
+    <value>Actively support the app development with this bigger donation</value>
+  </data>
+  <data name="DonationCompleted" xml:space="preserve">
+    <value>Donation completed</value>
+  </data>
+  <data name="DonationCompletedBody" xml:space="preserve">
+    <value>Thank you so much for supporting Brainf*ck#!</value>
+  </data>
+  <data name="DonationErrorBody" xml:space="preserve">
+    <value>Something went wrong while trying to make the donation, try again later</value>
+  </data>
+  <data name="PurchaseCanceled" xml:space="preserve">
+    <value>Purchase canceled</value>
+  </data>
+  <data name="PurchaseCanceledBody" xml:space="preserve">
+    <value>The in-app purchase has not been completed</value>
+  </data>
+  <data name="RateStoreBlock.Text" xml:space="preserve">
+    <value>Rate in the Store</value>
+  </data>
+  <data name="SendFeedbackBlock.Text" xml:space="preserve">
+    <value>Send feedback</value>
+  </data>
+  <data name="SomethingBadHappened" xml:space="preserve">
+    <value>Something bad happened</value>
+  </data>
+  <data name="StoreConnectionError" xml:space="preserve">
+    <value>Store connection error</value>
+  </data>
+  <data name="StoreConnectionErrorBody" xml:space="preserve">
+    <value>The Store generated a connection error when trying to process the purchase, try again</value>
+  </data>
+  <data name="BreakpointNotAllowedBlock.Text" xml:space="preserve">
+    <value>Can't place a breakpoint here</value>
+  </data>
+  <data name="RemoveAll" xml:space="preserve">
+    <value>Remove all</value>
+    <comment>Remove all the breakpoints from the IDE</comment>
+  </data>
+  <data name="CSource" xml:space="preserve">
+    <value>C source code</value>
+  </data>
+  <data name="ExportToC" xml:space="preserve">
+    <value>Export C code</value>
+  </data>
+  <data name="ExportCompleted" xml:space="preserve">
+    <value>Export completed</value>
+  </data>
+  <data name="ExportCompletedBody" xml:space="preserve">
+    <value>The selected code has been saved successfully as a C source file</value>
+  </data>
+  <data name="NotModified" xml:space="preserve">
+    <value>Not modified</value>
+    <comment>Renamed name is the same as the original</comment>
+  </data>
+  <data name="DevMessage" xml:space="preserve">
+    <value>Developer message</value>
+  </data>
+  <data name="WelcomeText" xml:space="preserve">
+    <value>Welcome to Brainf*ck#!
+Thank you for downloading the app, I hope you'll enjoy using it!
+Please feel free to send me an email if you have suggestions or feedback, or if you found a bug, and I'll be happy to help.
+
+NOTE: the app might sometimes crash when using the virtual arrows keypad in the IDE or when loading a source code. That's due to a bug in one of the controls I'm using, I've already sent a feedback to Microsoft and hopefully that'll get fixed soon!</value>
+  </data>
+</root>

@@ -19,7 +19,7 @@ namespace Brainf_ck_sharp_Test
             Assert.IsTrue(!result.CanContinue);
             Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
                           result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
-            Assert.IsTrue(result.CurrentResult.MachineState.Current == 5);
+            Assert.IsTrue(result.CurrentResult.MachineState.Current.Value == 5);
         }
 
         [TestMethod]
@@ -32,13 +32,13 @@ namespace Brainf_ck_sharp_Test
             Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
                           result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached) &&
                           result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
-            Assert.IsTrue(result.CurrentResult.MachineState.Current == 2);
+            Assert.IsTrue(result.CurrentResult.MachineState.Current.Value == 2);
              InterpreterExecutionSession step = result.Continue();
             Assert.IsNotNull(step);
             Assert.IsFalse(step.CanContinue);
             Assert.IsTrue(step.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
                           step.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
-            Assert.IsTrue(step.CurrentResult.MachineState.Current == 1);
+            Assert.IsTrue(step.CurrentResult.MachineState.Current.Value == 1);
         }
 
         [TestMethod]
@@ -51,13 +51,13 @@ namespace Brainf_ck_sharp_Test
             Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
                           result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached) &&
                           result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
-            Assert.IsTrue(result.CurrentResult.MachineState.Current == 5);
+            Assert.IsTrue(result.CurrentResult.MachineState.Current.Value == 5);
             InterpreterExecutionSession step = result.Continue();
             Assert.IsNotNull(step);
             Assert.IsFalse(step.CanContinue);
             Assert.IsTrue(step.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
                           step.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
-            Assert.IsTrue(step.CurrentResult.MachineState.Current == 2);
+            Assert.IsTrue(step.CurrentResult.MachineState.Current.Value == 2);
         }
 
         [TestMethod]
@@ -70,19 +70,19 @@ namespace Brainf_ck_sharp_Test
             Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
                           result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached) &&
                           result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
-            Assert.IsTrue(result.CurrentResult.MachineState.Current == 2);
+            Assert.IsTrue(result.CurrentResult.MachineState.Current.Value == 2);
             InterpreterExecutionSession step = result.RunToCompletion();
             Assert.IsNotNull(step);
             Assert.IsFalse(step.CanContinue);
             Assert.IsTrue(step.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
                           step.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
-            Assert.IsTrue(step.CurrentResult.MachineState.Current == 2);
+            Assert.IsTrue(step.CurrentResult.MachineState.Current.Value == 2);
             while (result.CanContinue) result = result.Continue();
             Assert.IsNotNull(result);
             Assert.IsFalse(result.CanContinue);
             Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
                           result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
-            Assert.IsTrue(result.CurrentResult.MachineState.Current == 2);
+            Assert.IsTrue(result.CurrentResult.MachineState.Current.Value == 2);
         }
 
         [TestMethod]
@@ -95,13 +95,13 @@ namespace Brainf_ck_sharp_Test
             Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
                           result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached) &&
                           result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
-            Assert.IsTrue(result.CurrentResult.MachineState.Current == 5);
+            Assert.IsTrue(result.CurrentResult.MachineState.Current.Value == 5);
             InterpreterExecutionSession step = result.RunToCompletion();
             Assert.IsNotNull(step);
             Assert.IsFalse(step.CanContinue);
             Assert.IsTrue(step.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
                           step.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
-            Assert.IsTrue(step.CurrentResult.MachineState.Current == 5);
+            Assert.IsTrue(step.CurrentResult.MachineState.Current.Value == 5);
         }
 
         [TestMethod]
@@ -114,7 +114,7 @@ namespace Brainf_ck_sharp_Test
             Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
                           result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached) &&
                           result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
-            Assert.IsTrue(result.CurrentResult.MachineState.Current == 5);
+            Assert.IsTrue(result.CurrentResult.MachineState.Current.Value == 5);
             result = result.Continue();
             Assert.IsNotNull(result);
             Assert.IsTrue(result.CanContinue);

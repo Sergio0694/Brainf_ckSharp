@@ -1,0 +1,196 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo.DevInfoFlyout"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:iconBoxToolkit="using:Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit"
+    mc:Ignorable="d"
+    d:DesignHeight="400"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        
+        <!--Store SVG logo-->
+        <x:String x:Key="StoreLogo">
+            M5.1000295,18.900024L5.1000295,22.900024 10.100022,23.600037 10.100022,18.900024z M16.699989,18.700012L10.299974,18.800049 10.299974,23.5 
+            16.699989,24.400024z M9.9999867,13.700012L5.1000295,14.400024 4.9999929,18.5 9.9999867,18.5z M16.799965,12.800049L10.299974,13.600037 
+            10.299974,18.5 16.799965,18.5z M22.49997,6.3000488L27.099999,7.9000244 27.099999,30.300049 22.49997,32 0,27.600037 0,10.5z 
+            M13.100019,2L13.199994,2.7000122C12.199995,3.1000366,11.299973,3.8000488,11.400009,5L11.400009,7.6000366 10.699998,7.7000122 
+            10.699998,4.5C10.699998,4.5,10.799973,2.9000244,13.100019,2z M16.299965,1.5C16.299965,1.5,18.699987,1.7000122,18.899998,4.2000122L18.899998,6.2000122 
+            18.199987,6.3000488 18.199987,4C18.199987,4,17.999975,1.9000244,15.299967,2.1000366L15.100016,2.1000366 
+            14.999979,1.6000366C15.400003,1.5,15.799966,1.5,16.299965,1.5z M11.900008,0C11.900008,0,14.400004,0.30004883,14.600017,2.9000244L14.600017,7 
+            13.999981,7.1000366 13.900005,7.1000366 13.900005,2.7000122C13.900005,2.7000122 13.600018,0.5 10.799973,0.70001221 10.799973,0.70001221 
+            6.499991,1.2000122 6.7000032,3.8000488L6.7000032,8.6000366 5.9999919,8.6000366 5.9999919,3.2000122C5.9999919,3.2000122,6.1000281,0.10003662,11.900008,0z
+        </x:String>
+    </UserControl.Resources>
+
+    <StackPanel>
+
+        <!--General info-->
+        <TextBlock
+            Margin="12,12,16,0"
+            TextWrapping="Wrap"
+            FontWeight="SemiLight"
+            IsTextScaleFactorEnabled="False">
+            <Run 
+                Text="Developed by"
+                x:Uid="DevelopedByRun"/>
+            <Run 
+                Text="Sergio Pedri"
+                FontWeight="SemiBold"/><Run Text="."/>
+            <LineBreak/>
+            <Run 
+                FontSize="14"
+                Text="Thanks to Andrea Salvati for his help with the original interpreter algorithm, Camil Demetrescu for the idea to port Brainf*ck# to Windows 10 and Christopher Blackman for his help during the app development"
+                x:Uid="DevelopedByPart2Run"/>
+        </TextBlock>
+
+        <!--Main buttons-->
+        <Grid 
+            Margin="12,12,16,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Rate in the Store button-->
+            <Button
+                Height="40"
+                Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
+                Background="{ThemeResource SystemControlHighlightAccentBrush}"
+                MaxWidth="220"
+                HorizontalAlignment="Left"
+                Click="RateStoreButton_Click">
+                <Grid Margin="12,0,12,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <iconBoxToolkit:IconBox 
+                        Data="{StaticResource StoreLogo}"
+                        Margin="4"/>
+                    <TextBlock
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Margin="16,0,0,0"
+                        Text="Rate in the Store"
+                        x:Uid="RateStoreBlock"
+                        IsTextScaleFactorEnabled="False"
+                        TextWrapping="NoWrap"
+                        TextTrimming="CharacterEllipsis"
+                        FontSize="15"
+                        FontWeight="Normal"/>
+                </Grid>
+            </Button>
+            
+            <!--Donate button-->
+            <Button 
+                Margin="20,0,0,0"
+                HorizontalAlignment="Left"
+                MaxWidth="220"
+                Height="40"
+                Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
+                Background="{ThemeResource SystemControlHighlightListAccentLowBrush}"
+                Grid.Column="1"
+                Click="DonateButton_Click">
+                <Grid Margin="12,0,12,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Text="&#xE0A5;"
+                        Style="{StaticResource FontIconTextBlockStyle}"
+                        VerticalAlignment="Center"/>
+                    <TextBlock
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        IsTextScaleFactorEnabled="False"
+                        TextWrapping="NoWrap"
+                        TextTrimming="CharacterEllipsis"
+                        Margin="16,0,0,0"
+                        Text="Donate"
+                        x:Uid="DonateButton"
+                        FontSize="15"
+                        FontWeight="Normal"/>
+                </Grid>
+            </Button>
+        </Grid>
+        
+        <!--Contacts-->
+        <Grid 
+            Background="#20000000"
+            Margin="0,12,0,0">
+            <StackPanel>
+                <TextBlock
+                    Text="Contacts"
+                    x:Uid="ContactsBlock"
+                    Margin="12,12,0,0"
+                    FontSize="16"
+                    FontWeight="Normal"/>
+
+                <!--Email button-->
+                <Button
+                    Margin="12,16,0,0"
+                    Height="40"
+                    Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
+                    Background="{ThemeResource SystemControlHighlightAccentBrush}"
+                    MaxWidth="220"
+                    HorizontalAlignment="Left"
+                    Click="SendEmailButton_Click">
+                    <Grid Margin="12,0,12,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Text="&#xE166;"
+                            Style="{StaticResource FontIconTextBlockStyle}"
+                            VerticalAlignment="Center"/>
+                        <TextBlock
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Margin="16,0,0,0"
+                            Text="Send feedback"
+                            x:Uid="SendFeedbackBlock"
+                            IsTextScaleFactorEnabled="False"
+                            TextWrapping="NoWrap"
+                            TextTrimming="CharacterEllipsis"
+                            FontSize="15"
+                            FontWeight="Normal"/>
+                    </Grid>
+                </Button>
+
+                <!--Twitter button-->
+                <Button
+                    Margin="12,16,0,16"
+                    Height="40"
+                    Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
+                    Background="#FF1DA1F2"
+                    MaxWidth="220"
+                    HorizontalAlignment="Left"
+                    Click="TwitterButton_Click">
+                    <Grid Margin="12,0,12,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image
+                            Source="/Assets/Misc/Twitter.png"
+                            Height="20"/>
+                        <TextBlock
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            IsTextScaleFactorEnabled="False"
+                            TextWrapping="NoWrap"
+                            TextTrimming="CharacterEllipsis"
+                            Margin="16,0,0,0"
+                            Text="@SergioPedri"
+                            FontSize="15"
+                            FontWeight="Normal"/>
+                    </Grid>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</UserControl>

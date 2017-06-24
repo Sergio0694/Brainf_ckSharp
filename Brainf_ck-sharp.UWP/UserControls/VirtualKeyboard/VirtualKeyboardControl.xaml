@@ -1,0 +1,75 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.VirtualKeyboardControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <!--Operators pad-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <!--First row (><+-)-->
+        <controls:KeyboardButton
+            Text=">"
+            Description="++ptr"
+            Click="NextButton_Tapped"/>
+        <controls:KeyboardButton
+            Text="&lt;"
+            Description="--ptr"
+            Grid.Row="0"
+            Grid.Column="1"
+            Click="BackButton_Tapped"/>
+        <controls:KeyboardButton
+            Text="+"
+            Description="(*ptr)++"
+            Grid.Row="0"
+            Grid.Column="2"
+            Click="PlusButton_Tapped"/>
+        <controls:KeyboardButton
+            Text="-"
+            Description="(*ptr)--"
+            Grid.Row="0"
+            Grid.Column="3"
+            Click="MinusButton_Tapped"/>
+        
+        <!--Second row ([].,)-->
+        <controls:KeyboardButton
+            Text="["
+            Description="while (*ptr) {"
+            Grid.Row="1"
+            Grid.Column="0"
+            Click="OpenBracketButton_Tapped"/>
+        <controls:KeyboardButton
+            Text="]"
+            Description="}"
+            Grid.Row="1"
+            Grid.Column="1"
+            Click="CloseBracketButton_Tapped"/>
+        <controls:KeyboardButton
+            Text="."
+            Description="putchar(*ptr)"
+            Grid.Row="1"
+            Grid.Column="2"
+            Click="PointButton_Tapped"/>
+        <controls:KeyboardButton
+            Text=","
+            Description="*ptr = getchar()"
+            Grid.Row="1"
+            Grid.Column="3"
+            Click="CommaButton_Tapped"/>
+    </Grid>
+</UserControl>

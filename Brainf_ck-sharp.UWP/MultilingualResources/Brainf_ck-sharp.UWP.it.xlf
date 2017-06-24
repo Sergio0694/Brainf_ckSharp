@@ -1,0 +1,530 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="it" original="BRAINF_CK-SHARP.UWP/STRINGS/EN-US/RESOURCES.RESW" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6810.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="BRAINF_CK-SHARP.UWP/STRINGS/EN-US/RESOURCES.RESW" datatype="resx">
+        <trans-unit id="RowTitleRun.Text" translate="yes" xml:space="preserve">
+          <source>Row</source>
+          <target state="translated">Ri</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Keep this short to 2-4 characters (abbreviate if needed)</note>
+        </trans-unit>
+        <trans-unit id="ShortCharacter" translate="yes" xml:space="preserve">
+          <source>Char</source>
+          <target state="translated">Car</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Keep this short to 2-4 characters (abbreviate if needed)</note>
+        </trans-unit>
+        <trans-unit id="ShortColumn" translate="yes" xml:space="preserve">
+          <source>Col</source>
+          <target state="translated">Col</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Keep this short to 2-4 characters (abbreviate if needed)</note>
+        </trans-unit>
+        <trans-unit id="ExEmptyStdin" translate="yes" xml:space="preserve">
+          <source>Stdin buffer exhausted</source>
+          <target state="translated">Buffer Stdin esaurito</target>
+        </trans-unit>
+        <trans-unit id="ExLowerBound" translate="yes" xml:space="preserve">
+          <source>Lower bound exceeded</source>
+          <target state="translated">Limite inferiore superato</target>
+        </trans-unit>
+        <trans-unit id="ExMaxStdout" translate="yes" xml:space="preserve">
+          <source>Stdout buffer length limit exceeded</source>
+          <target state="translated">Limite lunghezza buffer Stdout superato</target>
+        </trans-unit>
+        <trans-unit id="ExMaxValue" translate="yes" xml:space="preserve">
+          <source>Max value exceeded</source>
+          <target state="translated">Valore massimo superato</target>
+        </trans-unit>
+        <trans-unit id="ExNegativeValue" translate="yes" xml:space="preserve">
+          <source>Negative value</source>
+          <target state="translated">Valore negativo</target>
+        </trans-unit>
+        <trans-unit id="ExUpperBound" translate="yes" xml:space="preserve">
+          <source>Upper bound exceeded</source>
+          <target state="translated">Limite superiore superato</target>
+        </trans-unit>
+        <trans-unit id="InterpreterError" translate="yes" xml:space="preserve">
+          <source>Interpreter error</source>
+          <target state="translated">Errore interprete</target>
+        </trans-unit>
+        <trans-unit id="ThresholdExceeded" translate="yes" xml:space="preserve">
+          <source>Time threshold exceeded</source>
+          <target state="translated">Limite di tempo superato</target>
+        </trans-unit>
+        <trans-unit id="WrongBrackets" translate="yes" xml:space="preserve">
+          <source>Mismatched parentheses</source>
+          <target state="translated">Parentesi non corrispondenti</target>
+        </trans-unit>
+        <trans-unit id="run" translate="yes" xml:space="preserve">
+          <source>run</source>
+          <target state="translated">esegui</target>
+        </trans-unit>
+        <trans-unit id="RestartRun.Text" translate="yes" xml:space="preserve">
+          <source>RESTART</source>
+          <target state="translated">RIAVVIO</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Keep this uppercase</note>
+        </trans-unit>
+        <trans-unit id="Exception" translate="yes" xml:space="preserve">
+          <source>thrown</source>
+          <target state="translated">eccezione</target>
+        </trans-unit>
+        <trans-unit id="InternalError" translate="yes" xml:space="preserve">
+          <source>error</source>
+          <target state="translated">errore</target>
+        </trans-unit>
+        <trans-unit id="SyntaxError" translate="yes" xml:space="preserve">
+          <source>syntax error</source>
+          <target state="translated">errore sintassi</target>
+        </trans-unit>
+        <trans-unit id="Threshold" translate="yes" xml:space="preserve">
+          <source>runtime error</source>
+          <target state="translated">errore runtime</target>
+        </trans-unit>
+        <trans-unit id="Clear.Label" translate="yes" xml:space="preserve">
+          <source>Clear</source>
+          <target state="translated">Cancella</target>
+        </trans-unit>
+        <trans-unit id="MemoryState.Label" translate="yes" xml:space="preserve">
+          <source>Memory state</source>
+          <target state="translated">Stato memoria</target>
+        </trans-unit>
+        <trans-unit id="PlayButton.Label" translate="yes" xml:space="preserve">
+          <source>Play</source>
+          <target state="translated">Esegui</target>
+        </trans-unit>
+        <trans-unit id="Undo.Label" translate="yes" xml:space="preserve">
+          <source>Undo</source>
+          <target state="translated">Annulla</target>
+        </trans-unit>
+        <trans-unit id="Restart.Label" translate="yes" xml:space="preserve">
+          <source>Restart</source>
+          <target state="translated">Riavvia</target>
+        </trans-unit>
+        <trans-unit id="Clrscr.Label" translate="yes" xml:space="preserve">
+          <source>Clear screen</source>
+          <target state="translated">Pulisci lo schermo</target>
+        </trans-unit>
+        <trans-unit id="MemoryStateTitle" translate="yes" xml:space="preserve">
+          <source>Memory state</source>
+          <target state="translated">Stato memoria</target>
+        </trans-unit>
+        <trans-unit id="Unicode.Label" translate="yes" xml:space="preserve">
+          <source>Show Unicode characters</source>
+          <target state="translated">Mostra caratteri Unicode</target>
+        </trans-unit>
+        <trans-unit id="UnicodeTitle" translate="yes" xml:space="preserve">
+          <source>Unicode characters</source>
+          <target state="translated">Caratteri Unicode</target>
+        </trans-unit>
+        <trans-unit id="Ready" translate="yes" xml:space="preserve">
+          <source>Ready</source>
+          <target state="translated">Pronto</target>
+        </trans-unit>
+        <trans-unit id="Warning" translate="yes" xml:space="preserve">
+          <source>Warning</source>
+          <target state="translated">Attenzione</target>
+        </trans-unit>
+        <trans-unit id="Position" translate="yes" xml:space="preserve">
+          <source>Position</source>
+          <target state="translated">Posizione</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">The position of a wrong operator in a source code</note>
+        </trans-unit>
+        <trans-unit id="BreakpointReached" translate="yes" xml:space="preserve">
+          <source>Breakpoint reached</source>
+          <target state="translated">Punto di interruzione raggiunto</target>
+        </trans-unit>
+        <trans-unit id="ErrorLocation" translate="yes" xml:space="preserve">
+          <source>Error location</source>
+          <target state="translated">Posizione errore</target>
+        </trans-unit>
+        <trans-unit id="ErrorType" translate="yes" xml:space="preserve">
+          <source>Error type</source>
+          <target state="translated">Tipo errore</target>
+        </trans-unit>
+        <trans-unit id="SourceCode" translate="yes" xml:space="preserve">
+          <source>Source code</source>
+          <target state="translated">Codice sorgente</target>
+        </trans-unit>
+        <trans-unit id="StackTrace" translate="yes" xml:space="preserve">
+          <source>Stack trace</source>
+          <target state="translated">Stack trace</target>
+        </trans-unit>
+        <trans-unit id="Stats" translate="yes" xml:space="preserve">
+          <source>Statistics</source>
+          <target state="translated">Statistiche</target>
+        </trans-unit>
+        <trans-unit id="Loops" translate="yes" xml:space="preserve">
+          <source>nested loops</source>
+          <target state="translated">cicli annidati</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">This will be "n nested loops"</note>
+        </trans-unit>
+        <trans-unit id="MemoryCells" translate="yes" xml:space="preserve">
+          <source>memory cells</source>
+          <target state="translated">celle di memoria</target>
+        </trans-unit>
+        <trans-unit id="NoLoops" translate="yes" xml:space="preserve">
+          <source>No nested loops</source>
+          <target state="translated">Nessun ciclo annidato</target>
+        </trans-unit>
+        <trans-unit id="SingleLoop" translate="yes" xml:space="preserve">
+          <source>1 nested loop</source>
+          <target state="translated">1 ciclo annidato</target>
+        </trans-unit>
+        <trans-unit id="LowercaseAtPosition" translate="yes" xml:space="preserve">
+          <source>at position</source>
+          <target state="translated">in posizione</target>
+        </trans-unit>
+        <trans-unit id="LowercaseOperators" translate="yes" xml:space="preserve">
+          <source>operators</source>
+          <target state="translated">operatori</target>
+        </trans-unit>
+        <trans-unit id="LowercaseSingleOperator" translate="yes" xml:space="preserve">
+          <source>1 operator</source>
+          <target state="translated">1 operatore</target>
+        </trans-unit>
+        <trans-unit id="RepeatScript.Label" translate="yes" xml:space="preserve">
+          <source>Repeat last script</source>
+          <target state="translated">Ripeti ultimo script</target>
+        </trans-unit>
+        <trans-unit id="ContinueButton.Title" translate="yes" xml:space="preserve">
+          <source>Continue</source>
+          <target state="translated">Continua</target>
+        </trans-unit>
+        <trans-unit id="SkipButton.Title" translate="yes" xml:space="preserve">
+          <source>Skip</source>
+          <target state="translated">Salta</target>
+        </trans-unit>
+        <trans-unit id="Favorites" translate="yes" xml:space="preserve">
+          <source>Favorites</source>
+          <target state="translated">Preferiti</target>
+        </trans-unit>
+        <trans-unit id="PersonalCodes" translate="yes" xml:space="preserve">
+          <source>Personal codes</source>
+          <target state="translated">Codici personali</target>
+        </trans-unit>
+        <trans-unit id="SampleCodes" translate="yes" xml:space="preserve">
+          <source>Sample codes</source>
+          <target state="translated">Codici di esempio</target>
+        </trans-unit>
+        <trans-unit id="MoreCodes" translate="yes" xml:space="preserve">
+          <source>source codes</source>
+          <target state="translated">codici sorgente</target>
+        </trans-unit>
+        <trans-unit id="OneCode" translate="yes" xml:space="preserve">
+          <source>1 source code</source>
+          <target state="translated">1 codice sorgente</target>
+        </trans-unit>
+        <trans-unit id="CodeLibrary" translate="yes" xml:space="preserve">
+          <source>Code library</source>
+          <target state="translated">Libreria codici</target>
+        </trans-unit>
+        <trans-unit id="CodeLibraryButton.Label" translate="yes" xml:space="preserve">
+          <source>Browse code library</source>
+          <target state="translated">Sfoglia libreria codici</target>
+        </trans-unit>
+        <trans-unit id="Sum" translate="yes" xml:space="preserve">
+          <source>Sum</source>
+          <target state="translated">Somma</target>
+        </trans-unit>
+        <trans-unit id="UnicodeSum" translate="yes" xml:space="preserve">
+          <source>Unicode sum</source>
+          <target state="translated">Somma Unicode</target>
+        </trans-unit>
+        <trans-unit id="UnicodeValue" translate="yes" xml:space="preserve">
+          <source>Unicode value</source>
+          <target state="translated">Valore Unicode</target>
+        </trans-unit>
+        <trans-unit id="RunTitle" translate="yes" xml:space="preserve">
+          <source>Run</source>
+          <target state="translated">Esegui</target>
+        </trans-unit>
+        <trans-unit id="SaveAsButton.Label" translate="yes" xml:space="preserve">
+          <source>Save as</source>
+          <target state="translated">Salva con nome</target>
+        </trans-unit>
+        <trans-unit id="SaveButton.Label" translate="yes" xml:space="preserve">
+          <source>Save</source>
+          <target state="translated">Salva</target>
+        </trans-unit>
+        <trans-unit id="FilenameBlock.Text" translate="yes" xml:space="preserve">
+          <source>File name:</source>
+          <target state="translated">Nome file:</target>
+        </trans-unit>
+        <trans-unit id="CodePreviewBlock.Text" translate="yes" xml:space="preserve">
+          <source>Code preview:</source>
+          <target state="translated">Anteprima codice:</target>
+        </trans-unit>
+        <trans-unit id="CodeTitleBox.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Enter the code title</source>
+          <target state="translated">Inserisci un titolo</target>
+        </trans-unit>
+        <trans-unit id="AlreadyUsed" translate="yes" xml:space="preserve">
+          <source>Already used</source>
+          <target state="translated">Nome già in uso</target>
+        </trans-unit>
+        <trans-unit id="Available" translate="yes" xml:space="preserve">
+          <source>Available</source>
+          <target state="translated">Disponibile</target>
+        </trans-unit>
+        <trans-unit id="Empty" translate="yes" xml:space="preserve">
+          <source>Empty</source>
+          <target state="translated">Nome non valido</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Empty title for a code to save</note>
+        </trans-unit>
+        <trans-unit id="Clipboard" translate="yes" xml:space="preserve">
+          <source>Copy to clipboard</source>
+          <target state="translated">Copia negli appunti</target>
+        </trans-unit>
+        <trans-unit id="Delete" translate="yes" xml:space="preserve">
+          <source>Delete</source>
+          <target state="translated">Elimina</target>
+        </trans-unit>
+        <trans-unit id="Email" translate="yes" xml:space="preserve">
+          <source>Send via email</source>
+          <target state="translated">Invia per email</target>
+        </trans-unit>
+        <trans-unit id="Favorite" translate="yes" xml:space="preserve">
+          <source>Favorite</source>
+          <target state="translated">Aggiungi ai preferiti</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Add to favorites</note>
+        </trans-unit>
+        <trans-unit id="OSShare" translate="yes" xml:space="preserve">
+          <source>OS share</source>
+          <target state="translated">Condivisione OS</target>
+        </trans-unit>
+        <trans-unit id="Rename" translate="yes" xml:space="preserve">
+          <source>Rename</source>
+          <target state="translated">Rinomina</target>
+        </trans-unit>
+        <trans-unit id="SaveFile" translate="yes" xml:space="preserve">
+          <source>Save file</source>
+          <target state="translated">Salva file</target>
+        </trans-unit>
+        <trans-unit id="Share" translate="yes" xml:space="preserve">
+          <source>Share</source>
+          <target state="translated">Condividi</target>
+        </trans-unit>
+        <trans-unit id="Unfavorite" translate="yes" xml:space="preserve">
+          <source>Unfavorite</source>
+          <target state="translated">Rimuovi dai preferiti</target>
+        </trans-unit>
+        <trans-unit id="PlainText" translate="yes" xml:space="preserve">
+          <source>Plain text</source>
+          <target state="translated">Testo semplice</target>
+        </trans-unit>
+        <trans-unit id="SharedCode" translate="yes" xml:space="preserve">
+          <source>Brainf*ck shared code</source>
+          <target state="translated">Codice condiviso Brainf*ck#</target>
+        </trans-unit>
+        <trans-unit id="ShareError" translate="yes" xml:space="preserve">
+          <source>Share error</source>
+          <target state="translated">Errore condivisione</target>
+        </trans-unit>
+        <trans-unit id="ShareErrorBody" translate="yes" xml:space="preserve">
+          <source>There was an error while sharing the code, try again later</source>
+          <target state="translated">C'è stato un errore durante la condivisione del codice, riprova più tardi</target>
+        </trans-unit>
+        <trans-unit id="ShareCompleted" translate="yes" xml:space="preserve">
+          <source>Share completed</source>
+          <target state="translated">Condivisione completata</target>
+        </trans-unit>
+        <trans-unit id="ShareCompletedBody" translate="yes" xml:space="preserve">
+          <source>The selected source code has been shared correctly</source>
+          <target state="translated">Il codice selezionato è stato condiviso correttamente</target>
+        </trans-unit>
+        <trans-unit id="RenameCode" translate="yes" xml:space="preserve">
+          <source>Rename code</source>
+          <target state="translated">Rinomina codice</target>
+        </trans-unit>
+        <trans-unit id="SaveCode" translate="yes" xml:space="preserve">
+          <source>Save code</source>
+          <target state="translated">Salva codice</target>
+        </trans-unit>
+        <trans-unit id="CodeSaved" translate="yes" xml:space="preserve">
+          <source>Code saved</source>
+          <target state="translated">Codice salvato</target>
+        </trans-unit>
+        <trans-unit id="CodeSavedBody" translate="yes" xml:space="preserve">
+          <source>The new source code has been saved correctly</source>
+          <target state="translated">Il nuovo codice sorgente è stato salvato correttamente</target>
+        </trans-unit>
+        <trans-unit id="HeaderComments" translate="yes" xml:space="preserve">
+          <source>Header comments</source>
+          <target state="translated">Header commentato</target>
+        </trans-unit>
+        <trans-unit id="Debug" translate="yes" xml:space="preserve">
+          <source>Debug</source>
+          <target state="translated">Debug</target>
+        </trans-unit>
+        <trans-unit id="RedoButton.Label" translate="yes" xml:space="preserve">
+          <source>Redo</source>
+          <target state="translated">Ripeti</target>
+        </trans-unit>
+        <trans-unit id="UndoButton.Label" translate="yes" xml:space="preserve">
+          <source>Undo</source>
+          <target state="translated">Annulla</target>
+        </trans-unit>
+        <trans-unit id="NewLineButton.Label" translate="yes" xml:space="preserve">
+          <source>New line</source>
+          <target state="translated">Nuova riga</target>
+        </trans-unit>
+        <trans-unit id="MoveButtonmLabel" translate="yes" xml:space="preserve">
+          <source>Move</source>
+          <target state="translated">Sposta cursore</target>
+        </trans-unit>
+        <trans-unit id="About" translate="yes" xml:space="preserve">
+          <source>About</source>
+          <target state="translated">Informazioni</target>
+        </trans-unit>
+        <trans-unit id="AboutButton.Label" translate="yes" xml:space="preserve">
+          <source>About</source>
+          <target state="translated">Informazioni</target>
+        </trans-unit>
+        <trans-unit id="RateStoreBlock.Text" translate="yes" xml:space="preserve">
+          <source>Rate in the Store</source>
+          <target state="translated">Vota nello Store</target>
+        </trans-unit>
+        <trans-unit id="ContactsBlock.Text" translate="yes" xml:space="preserve">
+          <source>Contacts</source>
+          <target state="translated">Contatti</target>
+        </trans-unit>
+        <trans-unit id="DevelopedByPart2Run.Text" translate="yes" xml:space="preserve">
+          <source>Thanks to Andrea Salvati for his help with the original interpreter algorithm, Camil Demetrescu for the idea to port Brainf*ck# to Windows 10 and Christopher Blackman for his help during the app development</source>
+          <target state="translated">Grazie ad Andrea Salvati per il suo aiuto con l'algoritmo originale dell'interprete di Brainf*ck, Camil Demetrescu per l'idea di portare Brainf*ck# su Windows 10 e Christopher Blackman per il suo aiuto durante lo sviluppo dell'app</target>
+        </trans-unit>
+        <trans-unit id="DevelopedByRun.Text" translate="yes" xml:space="preserve">
+          <source>Developed by</source>
+          <target state="translated">Sviluppata da</target>
+        </trans-unit>
+        <trans-unit id="SendFeedbackBlock.Text" translate="yes" xml:space="preserve">
+          <source>Send feedback</source>
+          <target state="translated">Invia feedback</target>
+        </trans-unit>
+        <trans-unit id="DevSupportTitle.Text" translate="yes" xml:space="preserve">
+          <source>Pick the support option for the developer of the app</source>
+          <target state="translated">Scegli un'opzione di supporto per lo sviluppatore dell'app</target>
+        </trans-unit>
+        <trans-unit id="Donate" translate="yes" xml:space="preserve">
+          <source>Donate</source>
+          <target state="translated">Fai una donazione</target>
+        </trans-unit>
+        <trans-unit id="DonateButton.Text" translate="yes" xml:space="preserve">
+          <source>Donate</source>
+          <target state="translated">Fai una donazione</target>
+        </trans-unit>
+        <trans-unit id="DonateCoffee.PickerDescription" translate="yes" xml:space="preserve">
+          <source>Buy the developer a coffee</source>
+          <target state="translated">Offri un caffè allo sviluppatore</target>
+        </trans-unit>
+        <trans-unit id="DonateLove.PickerDescription" translate="yes" xml:space="preserve">
+          <source>Feeling generous? Choose this option to show the developer how much you love this app!</source>
+          <target state="translated">Ti senti generoso? Scegli questa opzione per mostrare allo sviluppatore quanto ti piace questa app!</target>
+        </trans-unit>
+        <trans-unit id="DonatePresent.PickerDescription" translate="yes" xml:space="preserve">
+          <source>Make a small present to the developer to support the app</source>
+          <target state="translated">Fai un piccolo regalo per supportare lo sviluppatore dell'app</target>
+        </trans-unit>
+        <trans-unit id="DonateSupport.PickerDescription" translate="yes" xml:space="preserve">
+          <source>Actively support the app development with this bigger donation</source>
+          <target state="translated">Supporta attivamente lo sviluppatore con questa donazione più grande</target>
+        </trans-unit>
+        <trans-unit id="DonationCompleted" translate="yes" xml:space="preserve">
+          <source>Donation completed</source>
+          <target state="translated">Donazione completata</target>
+        </trans-unit>
+        <trans-unit id="DonationErrorBody" translate="yes" xml:space="preserve">
+          <source>Something went wrong while trying to make the donation, try again later</source>
+          <target state="translated">C'è stato un errore durante la donazione, prova di nuovo</target>
+        </trans-unit>
+        <trans-unit id="SomethingBadHappened" translate="yes" xml:space="preserve">
+          <source>Something bad happened</source>
+          <target state="translated">È successo qualcosa</target>
+        </trans-unit>
+        <trans-unit id="StoreConnectionError" translate="yes" xml:space="preserve">
+          <source>Store connection error</source>
+          <target state="translated">Errore di connessione</target>
+        </trans-unit>
+        <trans-unit id="StoreConnectionErrorBody" translate="yes" xml:space="preserve">
+          <source>The Store generated a connection error when trying to process the purchase, try again</source>
+          <target state="translated">Lo Store ha avuto un problema di connessione durante l'acquisto, prova di nuovo</target>
+        </trans-unit>
+        <trans-unit id="DonationCompletedBody" translate="yes" xml:space="preserve">
+          <source>Thank you so much for supporting Brainf*ck#!</source>
+          <target state="translated">Grazie di cuore per il tuo supporto a Brainf*ck#!</target>
+        </trans-unit>
+        <trans-unit id="PurchaseCanceled" translate="yes" xml:space="preserve">
+          <source>Purchase canceled</source>
+          <target state="translated">Donazione annullata</target>
+        </trans-unit>
+        <trans-unit id="PurchaseCanceledBody" translate="yes" xml:space="preserve">
+          <source>The in-app purchase has not been completed</source>
+          <target state="translated">L'acquisto in-app non è stato completato</target>
+        </trans-unit>
+        <trans-unit id="BreakpointNotAllowedBlock.Text" translate="yes" xml:space="preserve">
+          <source>Can't place a breakpoint here</source>
+          <target state="translated">Impossibile inserire un punto di interruzione qui</target>
+        </trans-unit>
+        <trans-unit id="RemoveAll" translate="yes" xml:space="preserve">
+          <source>Remove all</source>
+          <target state="translated">Rimuovi tutti</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Remove all the breakpoints from the IDE</note>
+        </trans-unit>
+        <trans-unit id="FirstControlUnicodeGroup.Value" translate="yes" xml:space="preserve">
+          <source>0 to 31</source>
+          <target state="translated">Da 0 a 31</target>
+        </trans-unit>
+        <trans-unit id="FirstControlUnicodeGroup.Description" translate="yes" xml:space="preserve">
+          <source>Control characters</source>
+          <target state="translated">Caratteri di controllo</target>
+        </trans-unit>
+        <trans-unit id="SecondControlUnicodeGroup.Value" translate="yes" xml:space="preserve">
+          <source>128 to 159</source>
+          <target state="translated">Da 128 a 159</target>
+        </trans-unit>
+        <trans-unit id="SecondControlUnicodeGroup.Description" translate="yes" xml:space="preserve">
+          <source>Not visible</source>
+          <target state="translated">Non visibili</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">It's talking about a series of special characters</note>
+        </trans-unit>
+        <trans-unit id="CSource" translate="yes" xml:space="preserve">
+          <source>C source code</source>
+          <target state="translated">Codice sorgente C</target>
+        </trans-unit>
+        <trans-unit id="ExportToC" translate="yes" xml:space="preserve">
+          <source>Export C code</source>
+          <target state="translated">Esporta codice C</target>
+        </trans-unit>
+        <trans-unit id="ExportCompleted" translate="yes" xml:space="preserve">
+          <source>Export completed</source>
+          <target state="translated">Esportazione completata</target>
+        </trans-unit>
+        <trans-unit id="ExportCompletedBody" translate="yes" xml:space="preserve">
+          <source>The selected code has been saved successfully as a C source file</source>
+          <target state="translated">Il codice selezionato è stato salvato correttamente come un file sorgente C</target>
+        </trans-unit>
+        <trans-unit id="NotModified" translate="yes" xml:space="preserve">
+          <source>Not modified</source>
+          <target state="translated">Non modificato</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Renamed name is the same as the original</note>
+        </trans-unit>
+        <trans-unit id="DevMessage" translate="yes" xml:space="preserve">
+          <source>Developer message</source>
+          <target state="translated">Messaggio dello sviluppatore</target>
+        </trans-unit>
+        <trans-unit id="WelcomeText" translate="yes" xml:space="preserve">
+          <source>Welcome to Brainf*ck#!
+Thank you for downloading the app, I hope you'll enjoy using it!
+Please feel free to send me an email if you have suggestions or feedback, or if you found a bug, and I'll be happy to help.
+
+NOTE: the app might sometimes crash when using the virtual arrows keypad in the IDE or when loading a source code. That's due to a bug in one of the controls I'm using, I've already sent a feedback to Microsoft and hopefully that'll get fixed soon!</source>
+          <target state="translated">Benvenuti in Brainf*ck#, grazie di aver scaricato quest'app!
+Potete mandarmi un messaggio email in qualsiasi momento se avete suggerimenti o feedback, o se avete trovato un bug, e sarò felice di aiutare.
+
+NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le frecce di navigazione nell'IDE o durante il caricamento di un codice sorgente salvato. Questo è dovuto ad un bug in uno dei controlli che l'app utilizza, ho già mandato una segnalazione a Microsoft e spero che si possa risolvere il problema al più presto!</target>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

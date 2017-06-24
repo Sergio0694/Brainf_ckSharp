@@ -1,0 +1,45 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit.IconBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="RootControl"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    PointerPressed="OnPointerPressed"
+    PointerReleased="OnPointerReleased"
+    mc:Ignorable="d">
+
+    <!--Root-->
+    <Grid x:Name="RootPanel"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch"
+          Background="{Binding ElementName=RootControl, Path=Background}">
+
+        <!--Visual states-->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="CommonStates">
+                <VisualState x:Name="Normal">
+                    <Storyboard />
+                </VisualState>
+                <VisualState x:Name="Pressed">
+                    <Storyboard>
+                        <PointerDownThemeAnimation Storyboard.TargetName="RootPanel" />
+                        <DoubleAnimation Duration="0:0:0.1"
+                                         Storyboard.TargetName="RootPanel"
+                                         Storyboard.TargetProperty="Opacity"
+                                         To="0.5" />
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <!--SVG image-->
+        <Path Margin="{Binding ElementName=RootControl, Path=Padding}"
+              Data="{Binding ElementName=RootControl, Path=DataGeometry}"
+              Fill="{Binding ElementName=RootControl, Path=Foreground}"
+              Stretch="Uniform"
+              StrokeThickness="{Binding ElementName=RootControl, Path=PathThickness}" />
+    </Grid>
+</UserControl>

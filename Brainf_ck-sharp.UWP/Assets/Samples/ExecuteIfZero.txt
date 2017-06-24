@@ -1,0 +1,18 @@
+[
+	This program will perform a logic check on the first cell and will run
+	a portion of the code only if that cell is 0. Then it will move back to the
+	first cell, whether the code has been run or not.
+]
+TODO: leave this cell to 0 to run the code or add a getchar here to skip
+>+< 1 in temp cell
+[
+	>- if x != 0 temp goes to 0
+]
+> move to temp cell
+[
+	-> reset temp cell
+	> move to next cell
+	{ TODO: insert code here }
+	< return to 0 to end loop
+]
+<< return to starting cell

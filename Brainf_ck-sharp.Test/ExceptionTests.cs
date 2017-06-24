@@ -94,6 +94,17 @@ namespace Brainf_ck_sharp_Test
         }
 
         [TestMethod]
+        public void ExceptionText7Extended()
+        {
+            const String script = "[ [] ok [[ [] ok [] [] [] ] ok ] [ ] ] [ ]";
+            InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success) &&
+                          result.HasFlag(InterpreterExitCode.NoOutput));
+            Assert.AreEqual(result.Output, String.Empty);
+        }
+
+        [TestMethod]
         public void ExceptionTest8()
         {
             const String script = "ncencewonwe";

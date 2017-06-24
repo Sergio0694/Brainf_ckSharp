@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Brainf_ck_sharp.Helpers;
+using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp.ReturnTypes;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp
 {
     /// <summary>
-    /// Classe statica che interpreta ed esegue il debug in modo asincrono dei codici sorgenti in Brainfuck
+    /// A simple class that handles all the Brainf_ck code and interprets it
     /// </summary>
     public static class Brainf_ckInterpreter
     {
@@ -18,7 +20,7 @@ namespace Brainf_ck_sharp
         /// Gets the collection of valid Brainf_ck operators
         /// </summary>
         [NotNull]
-        public static readonly IReadOnlyCollection<char> Operators = new[] { '+', '-', '>', '<', '.', ',', '[', ']' };
+        public static IReadOnlyCollection<char> Operators { get; } = new[] { '+', '-', '>', '<', '.', ',', '[', ']' };
 
         #region Public APIs
 
@@ -47,9 +49,13 @@ namespace Brainf_ck_sharp
         [PublicAPI]
         [Pure, NotNull]
         public static InterpreterResult Run([NotNull] String source, [NotNull] String arguments,
-            [NotNull] TouringMachineState state, int? threshold = null)
+            [NotNull] IReadonlyTouringMachineState state, int? threshold = null)
         {
-            return TryRun(source, arguments, state.Clone(), threshold);
+            if (state is TouringMachineState touring)
+            {
+                return TryRun(source, arguments, touring.Clone(), threshold);
+            }
+            throw new ArgumentException();
         }
 
         /// <summary>
@@ -65,7 +71,7 @@ namespace Brainf_ck_sharp
             int size = 64, int? threshold = null)
         {
             TouringMachineState state = new TouringMachineState(size);
-            IReadOnlyList<IReadOnlyList<char>> chunks = source.Select(FindExecutableCode).ToArray();
+            IReadOnlyList<IReadOnlyList<char>> chunks = source.Select(chunk => FindExecutableCode(chunk).ToArray()).ToArray();
             if (chunks.Count == 0 || chunks.Any(group => group.Count == 0))
             {
                 return new InterpreterExecutionSession(
@@ -108,11 +114,15 @@ namespace Brainf_ck_sharp
         public static (bool Valid, int ErrorPosition) CheckSourceSyntax([NotNull] String source)
         {
             // Iterate over all the characters in the source
-            int height = 0;
+            int height = 0, error = 0;
             for (int i = 0; i < source.Length; i++)
             {
                 // Check the parentheses
-                if (source[i] == '[') height++;
+                if (source[i] == '[')
+                {
+                    if (height == 0) error = i;
+                    height++;
+                }
                 else if (source[i] == ']')
                 {
                     if (height == 0) return (false, i);
@@ -121,8 +131,16 @@ namespace Brainf_ck_sharp
             }
 
             // Edge case or valid return
-            return height == 0 ? (true, 0) : (false, source.Length - 1);
+            return height == 0 ? (true, 0) : (false, error);
         }
+        
+        /// <summary>
+        /// Checks whether or not the given source code contains at least one executable operator
+        /// </summary>
+        /// <param name="source">The source code to analyze</param>
+        [PublicAPI]
+        [Pure]
+        public static bool FindOperators([NotNull] String source) => FindExecutableCode(source).Any();
 
         #endregion
 
@@ -290,7 +308,7 @@ namespace Brainf_ck_sharp
                                 skip = loop.Count;
 
                                 // Execute the loop if the current value is greater than 0
-                                if (state.Current > 0 || jump != null && !reached)
+                                if (state.Current.Value > 0 || jump != null && !reached)
                                 {
                                     InterpreterWorkingData inner = TryRunCore(loop, depth + (uint)i + 1, reached);
                                     partial += inner.TotalOperations;
@@ -303,12 +321,12 @@ namespace Brainf_ck_sharp
                                             inner.StackFrames.Concat(new[] { operators.Select(op => op.Operator).Take(i + 1) }), inner.Position, reached, partial);
                                     }
                                 }
-                                else if (state.Current == 0) partial++;
+                                else if (state.Current.Value == 0) partial++;
                                 break;
 
                             // }
                             case ']':
-                                if (state.Current == 0 || jump != null && !reached)
+                                if (state.Current.Value == 0 || jump != null && !reached)
                                 {
                                     // Loop end
                                     return new InterpreterWorkingData(InterpreterExitCode.Success, null, depth + (uint)i, reached,
@@ -332,7 +350,7 @@ namespace Brainf_ck_sharp
                                                                       InterpreterExitCode.StdoutBufferLimitExceeded,
                                                                       new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached, partial);
                                 }
-                                output.Append(Convert.ToChar(state.Current));
+                                output.Append(state.Current.Character);
                                 partial++;
                                 break;
 
@@ -409,7 +427,7 @@ namespace Brainf_ck_sharp
         internal static InterpreterExecutionSession ContinueSession([NotNull] InterpreterExecutionSession session)
         {
             InterpreterResult step = TryRun(session.DebugData.Source, session.DebugData.Stdin, session.DebugData.Stdout,
-                session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.ElapsedTime, session.CurrentResult.TotalOperations,
+                (TouringMachineState)session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.ElapsedTime, session.CurrentResult.TotalOperations,
                 session.CurrentResult.BreakpointPosition, session.DebugData.Breakpoints);
             return new InterpreterExecutionSession(step, session.DebugData);
         }
@@ -422,7 +440,7 @@ namespace Brainf_ck_sharp
         internal static InterpreterExecutionSession RunSessionToCompletion([NotNull] InterpreterExecutionSession session)
         {
             InterpreterResult step = TryRun(session.DebugData.Source, session.DebugData.Stdin, session.DebugData.Stdout,
-                session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.ElapsedTime, session.CurrentResult.TotalOperations,
+                (TouringMachineState)session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.ElapsedTime, session.CurrentResult.TotalOperations,
                 session.CurrentResult.BreakpointPosition, null);
             return new InterpreterExecutionSession(step, session.DebugData);
         }
@@ -432,10 +450,9 @@ namespace Brainf_ck_sharp
         /// </summary>
         /// <param name="source">The input source code</param>
         [NotNull, LinqTunnel]
-        private static IReadOnlyList<char> FindExecutableCode([NotNull] String source) =>
-        (from c in source
-            where Operators.Contains(c)
-            select c).ToArray();
+        private static IEnumerable<char> FindExecutableCode([NotNull] String source) => from c in source
+                                                                                        where Operators.Contains(c)
+                                                                                        select c;
 
         /// <summary>
         /// Checks whether or not the syntax in the input operators is valid
@@ -457,6 +474,78 @@ namespace Brainf_ck_sharp
                 }
             }
             return height == 0;
+        }
+
+        #endregion
+
+        #region C translator
+
+        /// <summary>
+        /// Translates the input source code into its C equivalent
+        /// </summary>
+        /// <param name="source">The source code with the script to translate</param>
+        /// <param name="size">The size of the memory to use in the resulting code</param>
+        [PublicAPI]
+        [Pure, NotNull]
+        public static String TranslateToC([NotNull] String source, int size = 64)
+        {
+            // Arguments check
+            if (size <= 0) throw new ArgumentOutOfRangeException("The input size is not valid");
+            (bool valid, _) = CheckSourceSyntax(source);
+            if (!valid) throw new ArgumentException("The input source code isn't valid");
+
+            // Get the operators sequence and initialize the builder
+            source = Regex.Replace(source, ",{2,}", "."); // Optimize repeated , operators with a single operator
+            IReadOnlyList<char> executable = FindExecutableCode(source).ToArray();
+            StringBuilder builder = new StringBuilder();
+
+            // Prepare the header
+            builder.Append($"#include <stdio.h>\n\nint main() {{\n\tchar array[{size}] = {{ 0 }};\n\tchar* ptr = array;\n");
+
+            // Local function to get the right tabs for each indented line
+            int depth = 1;
+            String GetTabs(int count)
+            {
+                StringBuilder tabBuilder = new StringBuilder();
+                while (count-- > 0) tabBuilder.Append('\t');
+                return tabBuilder.ToString();
+            }
+
+            // Convert the source
+            foreach (char c in executable)
+            {
+                switch (c)
+                {
+                    case '>':
+                        builder.Append($"{GetTabs(depth)}++ptr;\n");
+                        break;
+                    case '<':
+                        builder.Append($"{GetTabs(depth)}--ptr;\n");
+                        break;
+                    case '+':
+                        builder.Append($"{GetTabs(depth)}(*ptr)++;\n");
+                        break;
+                    case '-':
+                        builder.Append($"{GetTabs(depth)}(*ptr)--;\n");
+                        break;
+                    case '.':
+                        builder.Append($"{GetTabs(depth)}putchar(*ptr);\n");
+                        break;
+                    case ',':
+                        builder.Append($"{GetTabs(depth)}while ((*ptr=getchar()) == '\\n') {{ }};\n");
+                        break;
+                    case '[':
+                        builder.Append($"{GetTabs(depth++)}while (*ptr) {{\n");
+                        break;
+                    case ']':
+                        builder.Append($"{GetTabs(--depth)}}}\n");
+                        break;
+                }
+            }
+
+            // Add the final statement and return the translated source
+            builder.Append("\treturn 0;\n}");
+            return builder.ToString();
         }
 
         #endregion

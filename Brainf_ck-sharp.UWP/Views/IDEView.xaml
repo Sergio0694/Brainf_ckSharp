@@ -1,0 +1,309 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp_UWP.Views.IDEView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
+    xmlns:templateSelectors="using:Brainf_ck_sharp_UWP.TemplateSelectors"
+    xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        
+        <!--Animation for the manual cursor-->
+        <Storyboard x:Name="CursorAnimation">
+            <DoubleAnimation
+                Storyboard.TargetName="CursorRectangle"
+                Storyboard.TargetProperty="Opacity"
+                To="0"
+                From="1"
+                Duration="0:0:0.5"
+                AutoReverse="True"
+                RepeatBehavior="Forever"/>
+        </Storyboard>
+        
+        <!--Depth converters-->
+        <converters:DepthToVisibilityConverter x:Key="DepthConverter"/>
+        <converters:SingleDigitConverterWithFallback x:Key="DepthDigitCOnverter"/>
+        
+        <!--Indentation guide info-->
+        <DataTemplate x:Key="IDEIndentationInfoOpenBracketTemplate">
+            <Grid 
+                HorizontalAlignment="Stretch"
+                Height="19.94998046875">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="12"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Rectangle
+                    HorizontalAlignment="Center"
+                    Width="1"
+                    Fill="DarkGray"
+                    VerticalAlignment="Stretch"
+                    Visibility="{Binding Depth, Converter={StaticResource DepthConverter}, FallbackValue=Collapsed}"/>
+                <Border
+                    BorderThickness="1"
+                    BorderBrush="DarkGray"
+                    Grid.Row="1">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Text="{Binding Depth, Converter={StaticResource DepthDigitCOnverter}, ConverterParameter=•}"
+                        IsTextScaleFactorEnabled="False"
+                        FontSize="8"
+                        Foreground="GhostWhite"
+                        Margin="0,-1,0,0"/>
+                </Border>
+                <Rectangle
+                    HorizontalAlignment="Center"
+                    Width="1"
+                    Fill="DarkGray"
+                    Grid.Row="2"
+                    VerticalAlignment="Stretch"/>
+            </Grid>
+        </DataTemplate>
+        
+        <!--Straight line-->
+        <DataTemplate x:Key="IDEIndentationInfoStraightLineTemplate">
+            <Rectangle
+                HorizontalAlignment="Center"
+                Width="1"
+                Height="19.94998046875"
+                Fill="DarkGray"/>
+        </DataTemplate>
+        
+        <!--Closed bracket-->
+        <DataTemplate x:Key="IDEIndentationInfoClosedBracketTemplate">
+            <Grid 
+                Height="19.94998046875"
+                HorizontalAlignment="Stretch">
+                <Rectangle
+                    VerticalAlignment="Stretch"
+                    HorizontalAlignment="Center"
+                    Width="1"
+                    Fill="DarkGray"/>
+                <Rectangle
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Width="6"
+                    Height="1"
+                    Fill="DarkGray"/>
+            </Grid>
+        </DataTemplate>
+
+        <!--Empty line-->
+        <DataTemplate x:Key="IDEIndentationInfoEmptyLineTemplate">
+            <Grid Height="19.94998046875"/>
+        </DataTemplate>
+
+        <!--Info template selector-->
+        <templateSelectors:IDEIndentationInfoTemplateSelector x:Key="IndentationInfoTemplateSelector"/>
+        
+        <!--Diff empty line-->
+        <DataTemplate x:Key="DiffEmptyLineTemplate">
+            <Grid Height="19.94998046875"/>
+        </DataTemplate>
+
+        <!--Diff updated saved line-->
+        <DataTemplate x:Key="DiffSavedLineTemplate">
+            <StackPanel 
+                Height="19.94998046875"
+                Orientation="Horizontal"
+                HorizontalAlignment="Center">
+                <Rectangle
+                    Fill="#FF3B4927"
+                    Width="1"
+                    VerticalAlignment="Stretch"/>
+                <Rectangle
+                    Width="4"
+                    Fill="#FF577430"/>
+                <Rectangle
+                    Fill="#FF3B4927"
+                    Width="1"
+                    VerticalAlignment="Stretch"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <!--Diff updated saved line-->
+        <DataTemplate x:Key="DiffChangedLineTemplate">
+            <StackPanel 
+                Height="19.94998046875"
+                Orientation="Horizontal"
+                HorizontalAlignment="Center">
+                <Rectangle
+                    Fill="#FF878851"
+                    Width="1"
+                    VerticalAlignment="Stretch"/>
+                <Rectangle
+                    Width="4"
+                    Fill="#FFEFF284"/>
+                <Rectangle
+                    Fill="#FF878851"
+                    Width="1"
+                    VerticalAlignment="Stretch"/>
+            </StackPanel>
+        </DataTemplate>
+        
+        <!--Git diff template selector-->
+        <templateSelectors:GitDiffLineStatusTemplateSelector x:Key="DiffTemplateSelector"/>
+    </UserControl.Resources>
+
+    <!--Root-->
+    <Grid Background="#FF1E1E1E">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="28"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="12"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Visual states-->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="Default">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="CursorBorder.BorderBrush"
+                            Value="#20FFFFFF"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Focused">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="CursorBorder.BorderBrush"
+                            Value="#30FFFFFF"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <!--Breakpoints canvas-->
+        <Canvas 
+            Grid.Column="0"
+            Background="#FF333333"
+            x:Name="BreakpointsCanvas"
+            Tapped="BreakpointsCanvas_Tapped"
+            RightTapped="BreakpointsCanvas_OnRightTapped"
+            Holding="BreakpointsCanvas_OnHolding"/>
+
+            <!--Line numbers grid-->
+        <Canvas Grid.Column="1">
+            <Grid 
+                x:Name="LinesGrid"
+                Width="28">
+                <TextBlock
+                    FontSize="15"
+                    Text="0"
+                    Foreground="#FF237CAD"
+                    HorizontalAlignment="Right"
+                    TextAlignment="Right"
+                    TextTrimming="CharacterEllipsis"
+                    x:Name="LineBlock"/>
+            </Grid>
+        </Canvas>
+        
+        <!--Git diff indicators-->
+        <Canvas Grid.Column="2">
+            <ListView
+                x:Name="GitDiffListView"
+                HorizontalAlignment="Stretch"
+                Width="10"
+                ItemsSource="{x:Bind ViewModel.DiffStatusSource}"
+                ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
+                ItemTemplateSelector="{StaticResource DiffTemplateSelector}"
+                ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                ScrollViewer.VerticalScrollMode="Disabled"
+                IsHitTestVisible="False"
+                SizeChanged="GitDiffListView_OnSizeChanged"/>
+        </Canvas>
+
+        <!--Indentation indicators-->
+        <Canvas Grid.Column="3">
+            <ListView
+                Width="12"
+                HorizontalAlignment="Stretch"
+                ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+                ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
+                ItemTemplateSelector="{StaticResource IndentationInfoTemplateSelector}"
+                ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                ScrollViewer.VerticalScrollMode="Disabled"
+                IsHitTestVisible="False"
+                x:Name="IndentationInfoList"
+                SizeChanged="IndentationInfoList_OnSizeChanged"/>
+        </Canvas>
+        
+        <!--Breakpoints line indicators-->
+        <Canvas
+            Grid.Column="4"
+            x:Name="BreakLinesCanvas"
+            IsHitTestVisible="False"
+            SizeChanged="BreakLinesCanvas_OnSizeChanged"/>
+
+        <!--Code box-->
+        <inheritedControls:RichEditBoxWithVerticalOffsetInfo
+            Grid.Column="4"
+            Style="{StaticResource TransparentEditBox}"
+            x:Name="EditBox"
+            TextWrapping="NoWrap"
+            IsSpellCheckEnabled="False"
+            IsTextPredictionEnabled="False"
+            ClipboardCopyFormat="PlainText"
+            TextChanged="EditBox_OnTextChanged"
+            SelectionChanged="EditBox_OnSelectionChanged"
+            KeyDown="EditBox_OnKeyDown"
+            GotFocus="EditBox_OnGotFocus"
+            LostFocus="EditBox_OnLostFocus"
+            Paste="EditBox_OnPaste"
+            Margin="0"/>
+        
+        <!--Current line cursor-->
+        <Canvas 
+            Grid.Column="4"
+            IsHitTestVisible="False"
+            SizeChanged="LineCursorCanvas_SizeChanged">
+            <Canvas.Clip>
+                <RectangleGeometry x:Name="LineCursorClip"/>
+            </Canvas.Clip>
+            
+            <!--Current line highlight-->
+            <Border 
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                Height="20"
+                BorderThickness="2"
+                BorderBrush="#20FFFFFF"
+                x:Name="CursorBorder">
+                <Border.RenderTransform>
+                    <TranslateTransform x:Name="CursorBorderTransform"/>
+                </Border.RenderTransform>
+            </Border>
+            
+            <!--Virtual cursor-->
+            <Rectangle 
+                Width="1"
+                Height="20"
+                Fill="LightGray"
+                x:Name="CursorRectangle">
+                <Rectangle.RenderTransform>
+                    <TranslateTransform x:Name="CursorTransform"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+        </Canvas>
+
+        <!--Canvas with the column guides-->
+        <Grid
+            Grid.Column="4"
+            IsHitTestVisible="False"
+            SizeChanged="BracketsGrid_SizeChanged"
+            x:Name="BracketsParentGrid">
+            <Grid.Clip>
+                <RectangleGeometry x:Name="BracketsClip"/>
+            </Grid.Clip>
+            <Canvas x:Name="BracketGuidesCanvas"/>
+        </Grid>
+    </Grid>
+</UserControl>

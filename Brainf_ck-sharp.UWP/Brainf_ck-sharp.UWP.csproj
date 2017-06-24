@@ -1,0 +1,698 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{F80A99AB-BB3F-4833-9725-B6010B718687}</ProjectGuid>
+    <OutputType>AppContainerExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Brainf_ck_sharp_UWP</RootNamespace>
+    <AssemblyName>Brainf_ck-sharp.UWP</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.15063.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
+    <PackageCertificateKeyFile>Brainf_ck-sharp.UWP_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>6FA628215907FF752772AE357DC3DE1CDDCB5412</PackageCertificateThumbprint>
+    <HockeyAppResourceId>d992b6490330446db870404084b19c39</HockeyAppResourceId>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
+  <PropertyGroup Label="MultilingualAppToolkit">
+    <MultilingualAppToolkitVersion>4.0</MultilingualAppToolkitVersion>
+    <MultilingualFallbackLanguage>en-US</MultilingualFallbackLanguage>
+    <TranslationReport Condition="'$(Configuration)' == 'Release'">true</TranslationReport>
+    <SuppressPseudoWarning Condition="'$(Configuration)' == 'Debug'">true</SuppressPseudoWarning>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AttachedProperties\Brainf_ckCodeInlineFormatter.cs" />
+    <Compile Include="AttachedProperties\CharacterToRotationHelper.cs" />
+    <Compile Include="AttachedProperties\RunInlineHelper.cs" />
+    <Compile Include="Converters\BoolToAccentBrushOrFallbackConverter.cs" />
+    <Compile Include="Converters\SourceCodeTitleScoreToDisplayStringConverter.cs" />
+    <Compile Include="Converters\CharacterWithFallbackConverter.cs" />
+    <Compile Include="Converters\DepthToVisibilityConverter.cs" />
+    <Compile Include="Converters\ExceptionTypeConverter.cs" />
+    <Compile Include="Converters\IDESectionToDisplayNameConverter.cs" />
+    <Compile Include="Converters\IDESectionToUppercaseDisplayNameConverter.cs" />
+    <Compile Include="Converters\IndexToVisibilityConverter.cs" />
+    <Compile Include="Converters\SourceCodesNumberDescriptionConverter.cs" />
+    <Compile Include="Converters\PositiveValueToBrushConverter.cs" />
+    <Compile Include="Converters\ReadableCharactersConverter.cs" />
+    <Compile Include="Converters\SingleDigitConverterWithFallback.cs" />
+    <Compile Include="Converters\SourceCodeTypeConverter.cs" />
+    <Compile Include="DataModels\AsyncOperationResult.cs" />
+    <Compile Include="DataModels\IDEResults\IDEResultExceptionInfoData.cs" />
+    <Compile Include="DataModels\Misc\CharactersChunkModel.cs" />
+    <Compile Include="DataModels\ConsoleModels\ConsoleCommandModelBase.cs" />
+    <Compile Include="DataModels\ConsoleModels\ConsoleCommandResult.cs" />
+    <Compile Include="DataModels\ConsoleModels\ConsoleExceptionResult.cs" />
+    <Compile Include="DataModels\ConsoleModels\ConsoleRestartCommand.cs" />
+    <Compile Include="DataModels\ConsoleModels\ConsoleUserCommand.cs" />
+    <Compile Include="DataModels\IDEResults\IDEResultSection.cs" />
+    <Compile Include="DataModels\IDEResults\IDEResultSectionDataBase.cs" />
+    <Compile Include="DataModels\IDEResults\IDEResultSectionSessionData.cs" />
+    <Compile Include="DataModels\IDEResults\IDEResultSectionStateData.cs" />
+    <Compile Include="DataModels\JumpListGroup.cs" />
+    <Compile Include="DataModels\Misc\GitDiffLineStatus.cs" />
+    <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationLineInfo.cs" />
+    <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationInfoLineType.cs" />
+    <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationOpenBracketLineInfo.cs" />
+    <Compile Include="DataModels\Misc\ScriptExceptionInfo.cs" />
+    <Compile Include="DataModels\SQLite\CategorizedSourceCode.cs" />
+    <Compile Include="DataModels\SQLite\CategorizedSourceCodeWithSyntaxInfo.cs" />
+    <Compile Include="DataModels\SQLite\Enums\SavedSourceCodeType.cs" />
+    <Compile Include="DataModels\SQLite\SourceCode.cs" />
+    <Compile Include="DataModels\SQLite\Enums\SourceCodeTitleScore.cs" />
+    <Compile Include="Enums\SourceCodeShareType.cs" />
+    <Compile Include="Helpers\Settings\AppSettingsKeys.cs" />
+    <Compile Include="Helpers\Settings\AppSettingsManager.cs" />
+    <Compile Include="Helpers\DispatcherHelper.cs" />
+    <Compile Include="Helpers\EmailHelper.cs" />
+    <Compile Include="Helpers\Extensions\StringExtensions.cs" />
+    <Compile Include="Helpers\Extensions\_IEnumerableExtensions.cs" />
+    <Compile Include="Helpers\StorageHelper.cs" />
+    <Compile Include="Helpers\WindowsAPIs\ShareCharmsHelper.cs" />
+    <Compile Include="Messages\Actions\DebugStatusChangedMessage.cs" />
+    <Compile Include="Messages\Actions\IDENewLineRequestedMessage.cs" />
+    <Compile Include="Messages\Actions\IDEUndoRedoRequestMessage.cs" />
+    <Compile Include="Messages\Actions\SaveButtonsEnabledStatusChangedMessage.cs" />
+    <Compile Include="Messages\Actions\VirtualArrowKeyPressedMessage.cs" />
+    <Compile Include="Messages\AppLoadingStatusChangedMessage.cs" />
+    <Compile Include="Messages\Flyouts\NotificationCloseRequestmessage.cs" />
+    <Compile Include="Messages\IDEStatus\BreakpointErrorStatusChangedMessage.cs" />
+    <Compile Include="PopupService\Interfaces\IAsyncLoadedContent.cs" />
+    <Compile Include="PopupService\Interfaces\IBusyWorkingContent.cs" />
+    <Compile Include="PopupService\Misc\FlyoutClosedResult.cs" />
+    <Compile Include="PopupService\Misc\FlyoutDisplayInfo.cs" />
+    <Compile Include="PopupService\Misc\FlyoutDisplayMode.cs" />
+    <Compile Include="PopupService\Interfaces\IEventConfirmedContent.cs" />
+    <Compile Include="PopupService\Interfaces\IValidableDialog.cs" />
+    <Compile Include="Helpers\BitHelper.cs" />
+    <Compile Include="Helpers\Brainf_ckFormatterHelper.cs" />
+    <Compile Include="PopupService\FlyoutManager.cs" />
+    <Compile Include="Helpers\Extensions\MiscExtensions.cs" />
+    <Compile Include="Helpers\Extensions\NumericExtensions.cs" />
+    <Compile Include="Helpers\Extensions\UIExtensions.cs" />
+    <Compile Include="Helpers\IndexedModelWithValue.cs" />
+    <Compile Include="Helpers\LocalizationManager.cs" />
+    <Compile Include="Helpers\MenuFlyoutHelper.cs" />
+    <Compile Include="Helpers\XAMLResourcesHelper.cs" />
+    <Compile Include="Helpers\WindowsAPIs\KeyEventsListener.cs" />
+    <Compile Include="Helpers\WindowsAPIs\ResolutionHelper.cs" />
+    <Compile Include="Helpers\WindowsAPIs\TitleBarHelper.cs" />
+    <Compile Include="Helpers\WindowsAPIs\UniversalAPIsHelper.cs" />
+    <Compile Include="Helpers\WindowsAPIs\StatusBarHelper.cs" />
+    <Compile Include="Messages\Actions\ClearConsoleLineMessage.cs" />
+    <Compile Include="Messages\Actions\ClearScreenMessage.cs" />
+    <Compile Include="Messages\Actions\AvailableActionStatusChangedMessage.cs" />
+    <Compile Include="Messages\Actions\ConsoleMemoryStateChangedMessage.cs" />
+    <Compile Include="Messages\Actions\IDEExecutableStatusChangedMessage.cs" />
+    <Compile Include="Messages\Actions\PlayScriptMessage.cs" />
+    <Compile Include="Messages\Actions\RestartConsoleMessage.cs" />
+    <Compile Include="Messages\Actions\SaveSourceCodeRequestMessage.cs" />
+    <Compile Include="Messages\Actions\UndoConsoleCharacterMessage.cs" />
+    <Compile Include="Messages\Flyouts\FlyoutClosedNotificationMessage.cs" />
+    <Compile Include="Messages\Flyouts\FlyoutCloseRequestMessage.cs" />
+    <Compile Include="Messages\Flyouts\FlyoutOpenedMessage.cs" />
+    <Compile Include="Messages\IDEStatus\ConsoleStatusUpdateMessage.cs" />
+    <Compile Include="Messages\IDEStatus\IDEStatusUpdateMessage.cs" />
+    <Compile Include="Messages\IDEStatus\IDEStatusUpdateMessageBase.cs" />
+    <Compile Include="Messages\OperatorAddedMessage.cs" />
+    <Compile Include="Messages\SourceCodeLoadingRequestedMessage.cs" />
+    <Compile Include="PopupService\Misc\NotificationType.cs" />
+    <Compile Include="PopupService\NotificationsManager.cs" />
+    <Compile Include="PopupService\UI\NotificationPopup.xaml.cs">
+      <DependentUpon>NotificationPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\BrushResourcesManager.cs" />
+    <Compile Include="SQLiteDatabase\SQLiteManager.cs" />
+    <Compile Include="TemplateSelectors\GitDiffLineStatusTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\ConsoleLineTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\IDEIndentationInfoTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\IDERunResultTemplateSelector.cs" />
+    <Compile Include="UserControls\BottomEdgeInfoBar.xaml.cs">
+      <DependentUpon>BottomEdgeInfoBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CustomControls\ScriptStatisticsDisplayControl.xaml.cs">
+      <DependentUpon>ScriptStatisticsDisplayControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CustomControls\IDESessionBreakpointOptionControl.xaml.cs">
+      <DependentUpon>IDESessionBreakpointOptionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CustomControls\TextValidatorControl.xaml.cs">
+      <DependentUpon>TextValidatorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CustomControls\UnicodeNonVisibleCharactersGroupDisplayControl.xaml.cs">
+      <DependentUpon>UnicodeNonVisibleCharactersGroupDisplayControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml.cs">
+      <DependentUpon>SavedSourceCodeTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\JumpList\JumpListZoomedOutHeaderTemplate.xaml.cs">
+      <DependentUpon>JumpListZoomedOutHeaderTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\DevInfo\DevInfoFlyout.xaml.cs">
+      <DependentUpon>DevInfoFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\DevInfo\DevSupportOptionEntryControl.xaml.cs">
+      <DependentUpon>DevSupportOptionEntryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\DevInfo\DevSupportPickerFlyout.xaml.cs">
+      <DependentUpon>DevSupportPickerFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\LoadingPopupControl.xaml.cs">
+      <DependentUpon>LoadingPopupControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\LocalSourceCodesBrowserFlyout.xaml.cs">
+      <DependentUpon>LocalSourceCodesBrowserFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\MemoryState\StandaloneMemoryViewerControl.xaml.cs">
+      <DependentUpon>StandaloneMemoryViewerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\SaveCodePromptFlyout.xaml.cs">
+      <DependentUpon>SaveCodePromptFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\IconBoxToolkit\IconBox.xaml.cs">
+      <DependentUpon>IconBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\IconBoxToolkit\PathGeometryConverter.cs" />
+    <Compile Include="UserControls\IconBoxToolkit\PathGeometryConverterExtensions.cs" />
+    <Compile Include="UserControls\InheritedControls\CustomCommandBar\CommandBarWithButtonsAnimations.cs" />
+    <Compile Include="UserControls\InheritedControls\CustomCommandBar\CustomCommandBarButton.cs" />
+    <Compile Include="UserControls\DataTemplates\CompactCharactersChunkViewerTemplate.xaml.cs">
+      <DependentUpon>CompactCharactersChunkViewerTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CustomControls\ErrorCharacterDisplayControl.xaml.cs">
+      <DependentUpon>ErrorCharacterDisplayControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\JumpList\JumpListZoomedInHeaderTemplate.xaml.cs">
+      <DependentUpon>JumpListZoomedInHeaderTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\JumpList\IDEResult\IDEResultZoomedOutHeaderTemplate.xaml.cs">
+      <DependentUpon>IDEResultZoomedOutHeaderTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\UnicodeCharacterTemplate.xaml.cs">
+      <DependentUpon>UnicodeCharacterTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PopupService\UI\FlyoutContainer.xaml.cs">
+      <DependentUpon>FlyoutContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\MemoryCellTemplate.xaml.cs">
+      <DependentUpon>MemoryCellTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\IDERunResultFlyout.xaml.cs">
+      <DependentUpon>IDERunResultFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\MemoryState\MemoryViewerFlyout.xaml.cs">
+      <DependentUpon>MemoryViewerFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\UnicodeCharactersGuideFlyout.xaml.cs">
+      <DependentUpon>UnicodeCharactersGuideFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Header\HeaderButtonControl.xaml.cs">
+      <DependentUpon>HeaderButtonControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Header\HeaderControl.xaml.cs">
+      <DependentUpon>HeaderControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\InheritedControls\CustomCommandBar\CustomCommandBarSeparator.cs" />
+    <Compile Include="UserControls\InheritedControls\CustomCommandBar\ICustomCommandBarPrimaryItem.cs" />
+    <Compile Include="UserControls\InheritedControls\FixedRadExpanderControl.cs" />
+    <Compile Include="UserControls\InheritedControls\InAppAcrylicGrid.cs" />
+    <Compile Include="UserControls\InheritedControls\RichEditBoxWithVerticalOffsetInfo.cs" />
+    <Compile Include="UserControls\Shell.xaml.cs">
+      <DependentUpon>Shell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\VirtualKeyboard\Controls\CompactCharactersViewerControl.xaml.cs">
+      <DependentUpon>CompactCharactersViewerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\VirtualKeyboard\StdinHeader\KeyboardHeaderControl.xaml.cs">
+      <DependentUpon>KeyboardHeaderControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\VirtualKeyboard\StdinHeader\KeyboardSectionHeaderButton.xaml.cs">
+      <DependentUpon>KeyboardSectionHeaderButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\VirtualKeyboard\VirtualArrowsKeyboardControl.xaml.cs">
+      <DependentUpon>VirtualArrowsKeyboardControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\VirtualKeyboard\VirtualKeyboardControl.xaml.cs">
+      <DependentUpon>VirtualKeyboardControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\VirtualKeyboard\Controls\KeyboardButton.xaml.cs">
+      <DependentUpon>KeyboardButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Abstract\JumpListViewModelBase.cs" />
+    <Compile Include="ViewModels\CompactCharactersViewerControlViewModel.cs" />
+    <Compile Include="ViewModels\ConsoleViewModel.cs" />
+    <Compile Include="ViewModels\IDERunResultFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\IDEViewModel.cs" />
+    <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase.cs" />
+    <Compile Include="ViewModels\LocalSourceCodesBrowserFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\MemoryViewerFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\SaveCodePromptFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="ViewModels\UnicodeCharactersGuideFlyoutViewModel.cs" />
+    <Compile Include="Views\ConsoleView.xaml.cs">
+      <DependentUpon>ConsoleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\IDEView.xaml.cs">
+      <DependentUpon>IDEView.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+    <Content Include="Assets\AppList\AppList.scale-100.png" />
+    <Content Include="Assets\AppList\AppList.scale-125.png" />
+    <Content Include="Assets\AppList\AppList.scale-150.png" />
+    <Content Include="Assets\AppList\AppList.scale-200.png" />
+    <Content Include="Assets\AppList\AppList.scale-400.png" />
+    <Content Include="Assets\AppList\AppList.targetsize-16_altform-unplated.png" />
+    <Content Include="Assets\AppList\AppList.targetsize-20_altform-unplated.png" />
+    <Content Include="Assets\AppList\AppList.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\AppList\AppList.targetsize-256_altform-unplated.png" />
+    <Content Include="Assets\AppList\AppList.targetsize-30_altform-unplated.png" />
+    <Content Include="Assets\AppList\AppList.targetsize-32_altform-unplated.png" />
+    <Content Include="Assets\AppList\AppList.targetsize-36_altform-unplated.png" />
+    <Content Include="Assets\AppList\AppList.targetsize-40_altform-unplated.png" />
+    <Content Include="Assets\AppList\AppList.targetsize-48_altform-unplated.png" />
+    <Content Include="Assets\AppList\AppList.targetsize-60_altform-unplated.png" />
+    <Content Include="Assets\AppList\AppList.targetsize-64_altform-unplated.png" />
+    <Content Include="Assets\AppList\AppList.targetsize-72_altform-unplated.png" />
+    <Content Include="Assets\AppList\AppList.targetsize-80_altform-unplated.png" />
+    <Content Include="Assets\AppList\AppList.targetsize-96_altform-unplated.png" />
+    <Content Include="Assets\Brainf_ck_sharp.svg" />
+    <Content Include="Assets\Large\Large310x310Logo.scale-100.png" />
+    <Content Include="Assets\Large\Large310x310Logo.scale-125.png" />
+    <Content Include="Assets\Large\Large310x310Logo.scale-150.png" />
+    <Content Include="Assets\Large\Large310x310Logo.scale-200.png" />
+    <Content Include="Assets\Large\Large310x310Logo.scale-400.png" />
+    <Content Include="Assets\Medium\Medium150x150Logo.scale-100.png" />
+    <Content Include="Assets\Medium\Medium150x150Logo.scale-125.png" />
+    <Content Include="Assets\Medium\Medium150x150Logo.scale-150.png" />
+    <Content Include="Assets\Medium\Medium150x150Logo.scale-200.png" />
+    <Content Include="Assets\Medium\Medium150x150Logo.scale-400.png" />
+    <Content Include="Assets\Misc\CoffeeIA.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Misc\lightnoise.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Misc\LoveIA.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Misc\PresentIA.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Misc\SourceCodesTemplateDatabase.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Brainf_ck-sharp.UWP_TemporaryKey.pfx" />
+    <None Include="Connected Services\HockeyApp\ConnectedService.json" />
+    <PRIResource Include="Strings\it\Resources.resw" />
+    <PRIResource Include="Strings\en-US\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Misc\noise.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Misc\Support.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Misc\Twitter.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\ExecuteIfZero.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\HeaderComments.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\HelloWorld.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\Sum.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\UnicodeSum.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\UnicodeValue.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Small\Small71x71Logo.scale-100.png" />
+    <Content Include="Assets\Small\Small71x71Logo.scale-125.png" />
+    <Content Include="Assets\Small\Small71x71Logo.scale-150.png" />
+    <Content Include="Assets\Small\Small71x71Logo.scale-200.png" />
+    <Content Include="Assets\Small\Small71x71Logo.scale-400.png" />
+    <Content Include="Assets\SplashScreen\SplashScreen.scale-100.png" />
+    <Content Include="Assets\SplashScreen\SplashScreen.scale-125.png" />
+    <Content Include="Assets\SplashScreen\SplashScreen.scale-150.png" />
+    <Content Include="Assets\SplashScreen\SplashScreen.scale-200.png" />
+    <Content Include="Assets\SplashScreen\SplashScreen.scale-400.png" />
+    <Content Include="Assets\Store\StoreLogo.scale-100.png" />
+    <Content Include="Assets\Store\StoreLogo.scale-125.png" />
+    <Content Include="Assets\Store\StoreLogo.scale-150.png" />
+    <Content Include="Assets\Store\StoreLogo.scale-200.png" />
+    <Content Include="Assets\Store\StoreLogo.scale-400.png" />
+    <Content Include="Assets\Wide\Wide310x150Logo.scale-100.png" />
+    <Content Include="Assets\Wide\Wide310x150Logo.scale-125.png" />
+    <Content Include="Assets\Wide\Wide310x150Logo.scale-150.png" />
+    <Content Include="Assets\Wide\Wide310x150Logo.scale-200.png" />
+    <Content Include="Assets\Wide\Wide310x150Logo.scale-400.png" />
+    <Content Include="Properties\Default.rd.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="PopupService\UI\NotificationPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\BrushesDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Styles\ButtonStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Styles\MenuFlyoutStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Styles\MiscStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Styles\TextStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="UserControls\BottomEdgeInfoBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CustomControls\ScriptStatisticsDisplayControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\CustomControls\IDESessionBreakpointOptionControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\CustomControls\TextValidatorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CustomControls\UnicodeNonVisibleCharactersGroupDisplayControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DataTemplates\CompactCharactersChunkViewerTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CustomControls\ErrorCharacterDisplayControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\DataTemplates\JumpList\JumpListZoomedInHeaderTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DataTemplates\JumpList\IDEResult\IDEResultZoomedOutHeaderTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DataTemplates\JumpList\JumpListZoomedOutHeaderTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\DataTemplates\UnicodeCharacterTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PopupService\UI\FlyoutContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DataTemplates\MemoryCellTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\DevInfo\DevInfoFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\DevInfo\DevSupportOptionEntryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\DevInfo\DevSupportPickerFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\IDERunResultFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\LoadingPopupControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\LocalSourceCodesBrowserFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\MemoryState\StandaloneMemoryViewerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Flyouts\MemoryState\MemoryViewerFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\SaveCodePromptFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\UnicodeCharactersGuideFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Header\HeaderButtonControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Header\HeaderControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\IconBoxToolkit\IconBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Shell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\VirtualKeyboard\Controls\CompactCharactersViewerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\VirtualKeyboard\StdinHeader\KeyboardHeaderControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\VirtualKeyboard\StdinHeader\KeyboardSectionHeaderButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\VirtualKeyboard\VirtualArrowsKeyboardControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\VirtualKeyboard\VirtualKeyboardControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\VirtualKeyboard\Controls\KeyboardButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConsoleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\IDEView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="HockeySDK.UWP">
+      <Version>4.1.6</Version>
+    </PackageReference>
+    <PackageReference Include="JetBrains.Annotations">
+      <Version>10.4.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.ApplicationInsights.WindowsApps">
+      <Version>1.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>5.3.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp">
+      <Version>1.4.1</Version>
+    </PackageReference>
+    <PackageReference Include="MvvmLightLibs">
+      <Version>5.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="SQLite.Net-PCL">
+      <Version>3.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="SQLite.Net.Async-PCL">
+      <Version>3.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="SQLite.Net.Core-PCL">
+      <Version>3.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Telerik.UI.for.UniversalWindowsPlatform">
+      <Version>1.0.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="UICompositionAnimations">
+      <Version>2.5.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Brainf_ck-sharp\Brainf_ck-sharp.csproj">
+      <Project>{29c20cf8-6019-427b-9987-e6059ba657e4}</Project>
+      <Name>Brainf_ck-sharp</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <XliffResource Include="MultilingualResources\Brainf_ck-sharp.UWP.it.xlf" />
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="Microsoft.VCLibs, Version=14.0">
+      <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
+    </SDKReference>
+    <SDKReference Include="SQLite.UWP.2015, Version=3.19.3">
+      <Name>SQLite for Universal Windows Platform</Name>
+    </SDKReference>
+    <SDKReference Include="WindowsMobile, Version=10.0.15063.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
+    </SDKReference>
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets" Label="MultilingualAppToolkit" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\v$(MultilingualAppToolkitVersion)\Microsoft.Multilingual.PriResources.targets')" />
+  <Target Name="MATPrerequisite" BeforeTargets="PrepareForBuild" Condition="!Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets')" Label="MultilingualAppToolkit">
+    <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
