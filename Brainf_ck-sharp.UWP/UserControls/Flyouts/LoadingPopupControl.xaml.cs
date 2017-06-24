@@ -18,7 +18,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         private async void LoadingPopupControl_Loaded(object sender, RoutedEventArgs e)
         {
             await EffectBorder.AttachCompositionInAppCustomAcrylicEffectAsync(EffectBorder,
-                6, 400, Colors.Black, 0.5f, Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: true);
+                6, 400, Colors.Black, 0.5f, 0.2f, Win2DCanvas, new Uri("ms-appx:///Assets/Misc/lightnoise.png"), disposeOnUnload: true);
         }
     }
 }

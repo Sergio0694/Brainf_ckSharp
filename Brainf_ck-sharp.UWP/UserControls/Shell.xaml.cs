@@ -122,7 +122,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             if (UniversalAPIsHelper.IsMobileDevice)
             {
                 await HeaderBorder.AttachCompositionInAppCustomAcrylicEffectAsync(HeaderBorder, 8, 800,
-                    Color.FromArgb(byte.MaxValue, 30, 30, 30), 0.6f,
+                    Color.FromArgb(byte.MaxValue, 30, 30, 30), 0.6f, null,
                     HeaderCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
                 OperatorsKeyboard.Background = new SolidColorBrush(Color.FromArgb(byte.MaxValue, 10, 10, 10));
             }

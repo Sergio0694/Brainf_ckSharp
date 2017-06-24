@@ -20,7 +20,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
         private async void VirtualArrowsKeyboardControl_Loaded(object sender, RoutedEventArgs e)
         {
             await EffectBorder.AttachCompositionInAppCustomAcrylicEffectAsync(EffectBorder, 6, 600,
-                Color.FromArgb(byte.MaxValue, 0x1A, 0x1A, 0x1A), 0.6f,
+                Color.FromArgb(byte.MaxValue, 0x1A, 0x1A, 0x1A), 0.6f, null,
                 Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: true);
         }
 

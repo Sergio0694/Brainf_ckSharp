@@ -25,7 +25,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
             if (Children.Contains(_Win2DCanvas)) return;
             Children.Add(_Win2DCanvas);
             await this.AttachCompositionInAppCustomAcrylicEffectAsync(this, 8, 800,
-                Color.FromArgb(byte.MaxValue, 34, 34, 34), 0.6f,
+                Color.FromArgb(byte.MaxValue, 34, 34, 34), 0.6f, null,
                 _Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
         }
 

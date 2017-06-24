@@ -376,6 +376,9 @@
     <Content Include="Assets\Misc\CoffeeIA.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Misc\lightnoise.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Misc\LoveIA.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -651,7 +654,7 @@
       <Version>1.0.0.3</Version>
     </PackageReference>
     <PackageReference Include="UICompositionAnimations">
-      <Version>2.4.4</Version>
+      <Version>2.5.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

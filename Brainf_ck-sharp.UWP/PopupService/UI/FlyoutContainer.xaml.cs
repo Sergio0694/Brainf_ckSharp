@@ -38,7 +38,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         {
             // Background effect
             await BlurBorder.AttachCompositionInAppCustomAcrylicEffectAsync(BlurBorder, 8, 800,
-                Color.FromArgb(byte.MaxValue, 0x1B, 0x1B, 0x1B), 0.8f,
+                Color.FromArgb(byte.MaxValue, 0x1B, 0x1B, 0x1B), 0.8f, null,
                 Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: true);
 
             // Loading effect if needed

@@ -9,7 +9,6 @@ using Brainf_ck_sharp_UWP.Resources;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations.Behaviours;
-using UICompositionAnimations.Behaviours.Effects;
 
 namespace Brainf_ck_sharp_UWP.PopupService.UI
 {
@@ -41,7 +40,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             await AcrylicBorder.AttachCompositionInAppCustomAcrylicEffectAsync(AcrylicBorder, 8, 800,
                 Type == NotificationType.Default 
                 ? BrushResourcesManager.Instance.AccentBrush.Color
-                : XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("OrangeWarningBrush").Color, 0.5f,
+                : XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("OrangeWarningBrush").Color, 0.5f, null,
                 Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: true);
         }
 
