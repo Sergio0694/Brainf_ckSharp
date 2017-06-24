@@ -13,7 +13,6 @@ using JetBrains.Annotations;
 using UICompositionAnimations;
 using UICompositionAnimations.Behaviours;
 using UICompositionAnimations.Behaviours.Effects;
-using UICompositionAnimations.Behaviours.Effects.Base;
 using UICompositionAnimations.Behaviours.Misc;
 using UICompositionAnimations.Enums;
 
@@ -27,17 +26,9 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         public FlyoutContainer()
         {
             Loaded += FlyoutContainer_Loaded;
-            SizeChanged += (_, e) =>
-            {
-                _BackgroundAcrylic?.AdjustSize((float) e.NewSize.Width, (float) e.NewSize.Height);
-                _LoadingAcrylic?.AdjustSize((float)e.NewSize.Width, (float)e.NewSize.Height);
-            };
             this.InitializeComponent();
             ConfirmButton.ManageControlPointerStates((p, value) => VisualStateManager.GoToState(this, value ? "Highlight" : "Default", false));
         }
-
-        // The in-app acrylic brush for the background of the popup
-        private AttachedStaticCompositionEffect<Border> _BackgroundAcrylic;
 
         // The in-app acrylic brush for the background of the popup
         private AttachedAnimatableCompositionEffect<Border> _LoadingAcrylic;
@@ -46,16 +37,16 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         private async void FlyoutContainer_Loaded(object sender, RoutedEventArgs e)
         {
             // Background effect
-            _BackgroundAcrylic = await BlurBorder.GetAttachedInAppSemiAcrylicEffectAsync(BlurBorder, 8, 800,
+            await BlurBorder.AttachCompositionInAppCustomAcrylicEffectAsync(BlurBorder, 8, 800,
                 Color.FromArgb(byte.MaxValue, 0x1B, 0x1B, 0x1B), 0.8f,
-                Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
+                Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: true);
 
             // Loading effect if needed
             if (_Content is IBusyWorkingContent)
             {
-                _LoadingAcrylic = await LoadingBorder.GetAttachedAnimatableAcrylicEffectAsync(LoadingBorder,
+                _LoadingAcrylic = await LoadingBorder.AttachCompositionAnimatableInAppCustomAcrylicEffectAsync(LoadingBorder,
                     6, 0, false, Color.FromArgb(byte.MaxValue, 0x05, 0x05, 0x05), 0.2f,
-                    LoadingCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
+                    LoadingCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: true);
                 LoadingBorder.Visibility = Visibility.Collapsed;
             }
         }

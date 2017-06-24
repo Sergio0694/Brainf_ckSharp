@@ -26,7 +26,6 @@ using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations;
 using UICompositionAnimations.Behaviours;
-using UICompositionAnimations.Behaviours.Effects.Base;
 using UICompositionAnimations.Enums;
 using MemoryViewerFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState.MemoryViewerFlyout;
 
@@ -40,10 +39,6 @@ namespace Brainf_ck_sharp_UWP.UserControls
             this.Loaded += Shell_Loaded;
             this.SizeChanged += (s, e) =>
             {
-                // Default effects
-                _HeaderEffect?.AdjustSize();
-                _KeyboardEffect?.AdjustSize();
-
                 // Loading popup, if present
                 if (_LoadingPopup?.Child is LoadingPopupControl child)
                 {
@@ -116,12 +111,6 @@ namespace Brainf_ck_sharp_UWP.UserControls
             FadeCanvas.StartCompositionFadeAnimation(null, shown ? 1 : 0, 250, null, EasingFunctionNames.Linear);
         }
 
-        // Acrylic brush for the header
-        private AttachedStaticCompositionEffect<Border> _HeaderEffect;
-
-        // Acrylic brush for the virtual keyboard
-        private AttachedStaticCompositionEffect<Border> _KeyboardEffect;
-
         // Initialize the effects
         private async void Shell_Loaded(object sender, RoutedEventArgs e)
         {
@@ -132,16 +121,16 @@ namespace Brainf_ck_sharp_UWP.UserControls
             IDE.AdjustTopMargin(HeaderGrid.ActualHeight);
             if (UniversalAPIsHelper.IsMobileDevice)
             {
-                _HeaderEffect = await HeaderBorder.GetAttachedInAppSemiAcrylicEffectAsync(HeaderBorder, 8, 800,
+                await HeaderBorder.AttachCompositionInAppCustomAcrylicEffectAsync(HeaderBorder, 8, 800,
                     Color.FromArgb(byte.MaxValue, 30, 30, 30), 0.6f,
                     HeaderCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
                 OperatorsKeyboard.Background = new SolidColorBrush(Color.FromArgb(byte.MaxValue, 10, 10, 10));
             }
             else
             {
-                _HeaderEffect = await HeaderBorder.GetAttachedSemiAcrylicEffectAsync(Color.FromArgb(byte.MaxValue, 30, 30, 30), 0.8f,
+                await HeaderBorder.AttachCompositionCustomAcrylicEffectAsync(Color.FromArgb(byte.MaxValue, 30, 30, 30), 0.8f,
                     HeaderCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
-                _KeyboardEffect = await KeyboardBorder.GetAttachedSemiAcrylicEffectAsync(Color.FromArgb(byte.MaxValue, 16, 16, 16), 0.95f,
+                await KeyboardBorder.AttachCompositionCustomAcrylicEffectAsync(Color.FromArgb(byte.MaxValue, 16, 16, 16), 0.95f,
                     KeyboardCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
             }
 

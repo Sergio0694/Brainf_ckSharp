@@ -9,7 +9,7 @@ using Brainf_ck_sharp_UWP.Resources;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations.Behaviours;
-using UICompositionAnimations.Behaviours.Effects.Base;
+using UICompositionAnimations.Behaviours.Effects;
 
 namespace Brainf_ck_sharp_UWP.PopupService.UI
 {
@@ -25,7 +25,6 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         public NotificationPopup([NotNull] String title, [NotNull] String icon, [NotNull] String content, NotificationType type)
         {
             Loaded += NotificationPopup_Loaded;
-            SizeChanged += (_, e) => _AcrylicEffect?.AdjustSize(e.NewSize.Width, e.NewSize.Height);
             this.InitializeComponent();
             TitleBlock.Text = title;
             SymbolBlock.Text = icon;
@@ -36,17 +35,14 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         // Gets the current type of notification
         private readonly NotificationType Type;
 
-        // The background in-app acrylic effect for the notification background
-        private AttachedStaticCompositionEffect<Border> _AcrylicEffect;
-
         // Initializes the acrylic effect
         private async void NotificationPopup_Loaded(object sender, RoutedEventArgs e)
         {
-            _AcrylicEffect = await AcrylicBorder.GetAttachedInAppSemiAcrylicEffectAsync(AcrylicBorder, 8, 800,
+            await AcrylicBorder.AttachCompositionInAppCustomAcrylicEffectAsync(AcrylicBorder, 8, 800,
                 Type == NotificationType.Default 
                 ? BrushResourcesManager.Instance.AccentBrush.Color
                 : XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("OrangeWarningBrush").Color, 0.5f,
-                Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
+                Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: true);
         }
 
         // Signals a request to close the notification

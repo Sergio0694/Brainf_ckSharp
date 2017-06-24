@@ -5,7 +5,6 @@ using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations.Behaviours;
-using UICompositionAnimations.Behaviours.Effects.Base;
 
 namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
 {
@@ -13,20 +12,16 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
     {
         public VirtualArrowsKeyboardControl()
         {
-            SizeChanged += (_, e) => _BorderEffect?.AdjustSize(e.NewSize.Width, e.NewSize.Height);
             Loaded += VirtualArrowsKeyboardControl_Loaded;
             this.InitializeComponent();
         }
 
-        // In-app acrylic brush effect
-        private AttachedStaticCompositionEffect<Border> _BorderEffect;
-
         // Initialize the effect brush
         private async void VirtualArrowsKeyboardControl_Loaded(object sender, RoutedEventArgs e)
         {
-            _BorderEffect = await EffectBorder.GetAttachedInAppSemiAcrylicEffectAsync(EffectBorder, 6, 600,
+            await EffectBorder.AttachCompositionInAppCustomAcrylicEffectAsync(EffectBorder, 6, 600,
                 Color.FromArgb(byte.MaxValue, 0x1A, 0x1A, 0x1A), 0.6f,
-                Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
+                Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: true);
         }
 
         #region Key messages
