@@ -136,6 +136,7 @@
             Grid.Row="1"
             Grid.RowSpan="2"
             x:Name="LoadingBorder"
+            Visibility="Collapsed"
             IsHitTestVisible="False"
             Canvas.ZIndex="10"
             Margin="1,0,1,1"/>

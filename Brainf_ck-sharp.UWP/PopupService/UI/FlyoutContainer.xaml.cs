@@ -47,7 +47,6 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
                 _LoadingAcrylic = await LoadingBorder.AttachCompositionAnimatableInAppCustomAcrylicEffectAsync(LoadingBorder,
                     6, 0, false, Color.FromArgb(byte.MaxValue, 0x05, 0x05, 0x05), 0.2f,
                     LoadingCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: true);
-                LoadingBorder.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -155,7 +154,8 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
                     loading.LoadingCompleted += (s, e) =>
                     {
                         InitialProgressRing.StartCompositionScaleAnimation(1, 1.1f, 250, null, EasingFunctionNames.Linear);
-                        InitialLoadingGrid.StartCompositionFadeAnimation(1, 0, 250, null, EasingFunctionNames.Linear);
+                        InitialLoadingGrid.StartCompositionFadeAnimation(1, 0, 250, null, EasingFunctionNames.Linear, 
+                            () => InitialLoadingGrid.Visibility = Visibility.Collapsed);
                     };
                 }
             }
