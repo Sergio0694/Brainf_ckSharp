@@ -32,7 +32,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="MenuFlyoutPresenter">
                     <Grid>
-                        <inheritedControls:InAppAcrylicGrid/>
+                        <inheritedControls:InAppAcrylicGrid DisposeOnUnload="True"/>
                         <Grid Background="{TemplateBinding Background}"
                               x:Name="ContentGrid">
                             <ScrollViewer x:Name="MenuFlyoutPresenterScrollViewer"
