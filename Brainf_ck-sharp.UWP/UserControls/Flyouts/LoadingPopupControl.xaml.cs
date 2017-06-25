@@ -12,6 +12,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         {
             Loaded += LoadingPopupControl_Loaded;
             this.InitializeComponent();
+            Unloaded += (s, e) =>
+            {
+                Win2DCanvas.RemoveFromVisualTree();
+                Win2DCanvas = null;
+            };
         }
 
         // Setup the effect

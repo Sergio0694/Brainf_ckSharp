@@ -74,7 +74,7 @@
                     Grid.Column="1"
                     HorizontalAlignment="Right"
                     Width="52"
-                    Click="{x:Bind RequestClose}">
+                    Click="CloseButton_Click">
                 <TextBlock Text="&#xE10A;"
                            Style="{StaticResource FontIconTextBlockStyle}"
                            VerticalAlignment="Center"

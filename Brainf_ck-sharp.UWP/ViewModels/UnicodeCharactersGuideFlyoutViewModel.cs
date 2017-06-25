@@ -15,7 +15,6 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Gets the second items collection for the current instance
         /// </summary>
-        [NotNull]
         public ObservableCollection<int> SecondSource
         {
             get => _SecondSource;
@@ -55,6 +54,15 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             DisplaySecondControlGroup();
             SecondSource = new ObservableCollection<int>(second);
             LoadingCompleted?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <inheritdoc/>
+        public override void Cleanup()
+        {
+            base.Cleanup();
+            SecondSource.Clear();
+            SecondSource = null;
+            LoadingCompleted = null;
         }
     }
 }

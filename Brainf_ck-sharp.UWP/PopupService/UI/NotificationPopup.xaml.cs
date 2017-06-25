@@ -29,6 +29,11 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             SymbolBlock.Text = icon;
             ContentBlock.Text = content;
             Type = type;
+            Unloaded += (s, e) =>
+            {
+                Win2DCanvas.RemoveFromVisualTree();
+                Win2DCanvas = null;
+            };
         }
 
         // Gets the current type of notification

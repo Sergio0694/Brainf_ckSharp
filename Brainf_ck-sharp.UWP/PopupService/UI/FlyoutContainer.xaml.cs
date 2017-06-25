@@ -25,9 +25,22 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
     {
         public FlyoutContainer()
         {
+            Unloaded += FlyoutContainer_Unloaded;
             Loaded += FlyoutContainer_Loaded;
             this.InitializeComponent();
             ConfirmButton.ManageControlPointerStates((p, value) => VisualStateManager.GoToState(this, value ? "Highlight" : "Default", false));
+        }
+
+        // Resources cleanup
+        private void FlyoutContainer_Unloaded(object sender, RoutedEventArgs e)
+        {
+            LoadingCanvas.RemoveFromVisualTree();
+            LoadingCanvas = null;
+            Win2DCanvas.RemoveFromVisualTree();
+            Win2DCanvas = null;
+            _DetachContent?.Invoke();
+            _DetachContent = null;
+            _Content = null;
         }
 
         // The in-app acrylic brush for the background of the popup
@@ -63,6 +76,10 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         // The content currently hosted by the container
         private FrameworkElement _Content;
 
+        // An action that removes the custom content once no longer needed
+        [CanBeNull]
+        private Action _DetachContent;
+
         /// <summary>
         /// Prepares the container to show a given element
         /// </summary>
@@ -77,6 +94,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             Grid.SetRow(content, 1);
             content.Margin = margin ?? new Thickness(12, 0, 0, 0);
             RootGrid.Children.Add(content);
+            _DetachContent = () => RootGrid.Children.Remove(content);
             InterfacesSetup();
         }
 
@@ -93,6 +111,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             TitleBlock.Text = title;
             ContentScroller.Content = content;
             ContentScroller.Visibility = Visibility.Visible;
+            _DetachContent = () => ContentScroller.Content = content;
             InterfacesSetup();
         }
 
@@ -183,5 +202,8 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             Confirmed = true;
             RequestClose();
         }
+
+        // Closes the popup without confirm
+        private void CloseButton_Click(object sender, RoutedEventArgs e) => RequestClose();
     }
 }

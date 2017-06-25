@@ -150,6 +150,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                     throw new ArgumentException("The desired display mode is not valid");
             }
 
+            // Create the popup to display
             Popup popup = new Popup
             {
                 IsLightDismissEnabled = false,
@@ -158,10 +159,15 @@ namespace Brainf_ck_sharp_UWP.PopupService
             FlyoutDisplayInfo info = new FlyoutDisplayInfo(popup, mode);
             AdjustPopupSize(info, PopupStack.Count > 0);
             TaskCompletionSource<FlyoutResult> tcs = new TaskCompletionSource<FlyoutResult>();
-            popup.Closed += (s, e) =>
+
+            // Setup the closed handler
+            void CloseHandler(object s, object e)
             {
                 tcs.SetResult(container.Confirmed ? FlyoutResult.Confirmed : FlyoutResult.Canceled);
-            };
+                popup.Child = null;
+                popup.Closed -= CloseHandler;
+            }
+            popup.Closed += CloseHandler;
 
             // Display and animate the popup
             PopupStack.Push(info);
@@ -231,7 +237,15 @@ namespace Brainf_ck_sharp_UWP.PopupService
             };
             FlyoutDisplayInfo info = new FlyoutDisplayInfo(popup, mode);
             AdjustPopupSize(info, PopupStack.Count > 0);
-            popup.Closed += (s, e) => tcs.TrySetCanceled();
+
+            // Prepare the closed handler
+            void CloseHandler(object s, object e)
+            {
+                tcs.TrySetCanceled();
+                popup.Child = null;
+                popup.Closed -= CloseHandler;
+            }
+            popup.Closed += CloseHandler;
 
             // Display and animate the popup
             PopupStack.Push(info);

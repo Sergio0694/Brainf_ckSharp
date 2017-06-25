@@ -23,6 +23,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
             DataContext = new SaveCodePromptFlyoutViewModel(name);
             ViewModel.ValidStatusChanged += ViewModel_ValidStatusChanged;
             Brainf_ckCodeInlineFormatter.SetSource(CodeSpan, code);
+            Unloaded += (s, e) =>
+            {
+                this.Bindings.StopTracking();
+                ViewModel.Cleanup();
+                DataContext = null;
+                ValidStateChanged = null;
+            };
         }
 
         private void ViewModel_ValidStatusChanged(object sender, bool e) => ValidStateChanged?.Invoke(this, e);

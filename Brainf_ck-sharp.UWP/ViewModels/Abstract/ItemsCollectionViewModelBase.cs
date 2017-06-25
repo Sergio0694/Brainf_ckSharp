@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
-using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.ViewModels.Abstract
 {
@@ -15,7 +14,6 @@ namespace Brainf_ck_sharp_UWP.ViewModels.Abstract
         /// <summary>
         /// Gets the items collection for the current instance
         /// </summary>
-        [NotNull]
         public ObservableCollection<T> Source
         {
             get => _Source;
@@ -42,6 +40,14 @@ namespace Brainf_ck_sharp_UWP.ViewModels.Abstract
             if (IsEmpty) return false;
             Source = new ObservableCollection<T>();
             return true;
+        }
+
+        /// <inheritdoc cref="ViewModelBase.Cleanup"/>
+        public override void Cleanup()
+        {
+            base.Cleanup();
+            Source.Clear();
+            Source = null;
         }
     }
 }

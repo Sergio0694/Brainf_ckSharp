@@ -26,6 +26,14 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
                 if (e) ButtonsInStoryboard.Begin();
                 else ButtonsOutStoryboard.Begin();
             };
+            this.Unloaded += (s, e) =>
+            {
+                this.Bindings.StopTracking();
+                ViewModel.Cleanup();
+                DataContext = null;
+                WorkingStateChanged = null;
+                LoadingCompleted = null;
+            };
         }
 
         public IDERunResultFlyoutViewModel ViewModel => DataContext.To<IDERunResultFlyoutViewModel>();

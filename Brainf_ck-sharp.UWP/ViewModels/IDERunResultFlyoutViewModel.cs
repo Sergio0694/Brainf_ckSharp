@@ -88,6 +88,15 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             });
         }
 
+        /// <inheritdoc/>
+        public override void Cleanup()
+        {
+            base.Cleanup();
+            InitializationCompleted = null;
+            LoadingStateChanged = null;
+            BreakpointOptionsActiveStatusChanged = null;
+        }
+
         /// <summary>
         /// Raised when the initialization is completed and all the items to display have been loaded
         /// </summary>

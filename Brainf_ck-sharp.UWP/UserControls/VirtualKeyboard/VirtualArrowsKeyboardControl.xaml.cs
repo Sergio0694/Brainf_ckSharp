@@ -14,6 +14,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
         {
             Loaded += VirtualArrowsKeyboardControl_Loaded;
             this.InitializeComponent();
+            Unloaded += (s, e) =>
+            {
+                Win2DCanvas.RemoveFromVisualTree();
+                Win2DCanvas = null;
+            };
         }
 
         // Initialize the effect brush

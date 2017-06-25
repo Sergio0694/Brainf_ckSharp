@@ -21,7 +21,9 @@
         <Border 
             x:Name="AcrylicBorder"
             Grid.RowSpan="2"/>
-        <xaml:CanvasControl x:Name="Win2DCanvas"/>
+        <xaml:CanvasControl 
+            Grid.Row="0"
+            x:Name="Win2DCanvas"/>
         
         <!--Header-->
         <Grid 
