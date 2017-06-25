@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -53,14 +52,6 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             await BlurBorder.AttachCompositionInAppCustomAcrylicEffectAsync(BlurBorder, 8, 800,
                 Color.FromArgb(byte.MaxValue, 0x1B, 0x1B, 0x1B), 0.8f, null,
                 Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: true);
-
-            // Loading effect if needed
-            if (_Content is IBusyWorkingContent)
-            {
-                _LoadingAcrylic = await LoadingBorder.AttachCompositionAnimatableInAppCustomAcrylicEffectAsync(LoadingBorder,
-                    6, 0, false, Color.FromArgb(byte.MaxValue, 0x05, 0x05, 0x05), 0.2f,
-                    LoadingCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: true);
-            }
         }
 
         /// <summary>
@@ -130,35 +121,37 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             // Loading content
             if (_Content is IBusyWorkingContent worker)
             {
-                worker.WorkingStateChanged += (_, e) =>
+                worker.WorkingStateChanged += async (_, e) =>
                 {
-                    // Blur effect
-                    if (e)
+                    // Load the effect if needed
+                    if (_LoadingAcrylic == null)
                     {
-                        LoadingBorder.SetVisualOpacity(0);
-                        LoadingBorder.Visibility = Visibility.Visible;
-                        LoadingBorder.StartCompositionFadeAnimation(null, 1, 200, null, EasingFunctionNames.Linear);
-                    }
-                    _LoadingAcrylic?.AnimateAsync(e ? FixedAnimationType.In : FixedAnimationType.Out, TimeSpan.FromMilliseconds(500));
-                    if (!e)
-                    {
-                        Task.Delay(300).ContinueWith(t =>
-                        {
-                            LoadingBorder.StartCompositionFadeAnimation(null, 0, 200, null, EasingFunctionNames.Linear,
-                                () => LoadingBorder.Visibility = Visibility.Collapsed);
-                        }, TaskScheduler.FromCurrentSynchronizationContext());
+                        _LoadingAcrylic = await LoadingBorder.AttachCompositionAnimatableInAppCustomAcrylicEffectAsync(LoadingBorder,
+                            8, 0, false, Colors.Black, 0.4f,
+                            LoadingCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: true);
                     }
 
-                    // Progress ring
+                    // Fade in
                     if (e)
                     {
+                        // Blur effect
+                        LoadingBorder.SetVisualOpacity(0);
+                        LoadingGrid.Visibility = Visibility.Visible;
+                        LoadingBorder.StartCompositionFadeAnimation(null, 1, 200, null, EasingFunctionNames.Linear);
+
+                        // Loading ring
                         LoadingRing.SetVisualOpacity(0);
                         LoadingRing.IsActive = true;
                         LoadingRing.StartCompositionFadeAnimation(null, 1, 400, null, EasingFunctionNames.Linear);
                     }
-                    else
+                    _LoadingAcrylic?.AnimateAsync(e ? FixedAnimationType.In : FixedAnimationType.Out, TimeSpan.FromMilliseconds(500));
+
+                    // Fade out
+                    if (!e)
                     {
                         LoadingRing.StartCompositionFadeAnimation(null, 0, 400, null, EasingFunctionNames.Linear, () => LoadingRing.IsActive = false);
+                        LoadingBorder.StartCompositionFadeAnimation(null, 0, 200, 300, EasingFunctionNames.Linear,
+                            () => LoadingGrid.Visibility = Visibility.Collapsed);
                     }
                 };
             }
