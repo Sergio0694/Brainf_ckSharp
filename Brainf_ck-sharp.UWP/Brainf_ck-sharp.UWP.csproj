@@ -20,6 +20,9 @@
     <PackageCertificateKeyFile>Brainf_ck-sharp.UWP_TemporaryKey.pfx</PackageCertificateKeyFile>
     <PackageCertificateThumbprint>6FA628215907FF752772AE357DC3DE1CDDCB5412</PackageCertificateThumbprint>
     <HockeyAppResourceId>d992b6490330446db870404084b19c39</HockeyAppResourceId>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -654,7 +657,7 @@
       <Version>1.0.0.3</Version>
     </PackageReference>
     <PackageReference Include="UICompositionAnimations">
-      <Version>2.5.1</Version>
+      <Version>2.5.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

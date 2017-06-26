@@ -3,7 +3,7 @@
   <Identity Name="22f146d8-043c-450e-a7ac-1d274e594180" Publisher="CN=Sergio Pedri" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="22f146d8-043c-450e-a7ac-1d274e594180" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>Brainf_ck-sharp.UWP</DisplayName>
+    <DisplayName>Brainf*ck#</DisplayName>
     <PublisherDisplayName>Sergio Pedri</PublisherDisplayName>
     <Logo>assets\Store\StoreLogo.png</Logo>
   </Properties>
@@ -16,7 +16,8 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Brainf_ck_sharp.UWP.App">
       <uap:VisualElements DisplayName="Brainf*ck#" Square150x150Logo="assets\Medium\Medium150x150Logo.png" Square44x44Logo="assets\AppList\AppList.png" Description="Brainf*ck# UWP" BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="assets\Wide\Wide310x150Logo.png" Square71x71Logo="assets\Small\Small71x71Logo.png" Square310x310Logo="assets\Large\Large310x310Logo.png"></uap:DefaultTile>
+        <uap:DefaultTile Wide310x150Logo="assets\Wide\Wide310x150Logo.png" Square71x71Logo="assets\Small\Small71x71Logo.png" Square310x310Logo="assets\Large\Large310x310Logo.png">
+        </uap:DefaultTile>
         <uap:SplashScreen Image="assets\SplashScreen\SplashScreen.png" />
       </uap:VisualElements>
     </Application>

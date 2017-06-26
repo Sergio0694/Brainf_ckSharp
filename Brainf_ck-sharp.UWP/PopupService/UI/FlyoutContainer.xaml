@@ -74,7 +74,7 @@
                     Grid.Column="1"
                     HorizontalAlignment="Right"
                     Width="52"
-                    Click="{x:Bind RequestClose}">
+                    Click="CloseButton_Click">
                 <TextBlock Text="&#xE10A;"
                            Style="{StaticResource FontIconTextBlockStyle}"
                            VerticalAlignment="Center"
@@ -115,7 +115,7 @@
         <!--Initial loading indicator-->
         <Grid
             x:Name="InitialLoadingGrid"
-            Background="#20000000"
+            Background="#28000000"
             Visibility="Collapsed"
             Grid.Row="1"
             Grid.RowSpan="2"
@@ -132,29 +132,28 @@
         
         
         <!--Loading indicator-->
-        <Border
+        <Grid
             Grid.Row="1"
             Grid.RowSpan="2"
-            x:Name="LoadingBorder"
-            IsHitTestVisible="False"
-            Canvas.ZIndex="10"
-            Margin="1,0,1,1"/>
-        <xaml:CanvasControl
-            Grid.Row="0"
-            x:Name="LoadingCanvas"
-            Opacity="0"
-            IsHitTestVisible="False"/>
-        <ProgressRing
             Canvas.ZIndex="10"
             IsHitTestVisible="False"
-            x:Name="LoadingRing"
-            IsActive="False"
-            Grid.Row="0"
-            Grid.RowSpan="2"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center"
-            Width="24"
-            Height="24"
-            Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+            Margin="1,0,1,1"
+            x:Name="LoadingGrid"
+            Visibility="Collapsed">
+            <Border x:Name="LoadingBorder"/>
+            <xaml:CanvasControl
+                Grid.Row="0"
+                x:Name="LoadingCanvas"
+                Opacity="0"
+                IsHitTestVisible="False"/>
+            <ProgressRing
+                x:Name="LoadingRing"
+                IsActive="False"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Width="24"
+                Height="24"
+                Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+        </Grid>
     </Grid>
 </UserControl>

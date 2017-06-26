@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -25,9 +24,22 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
     {
         public FlyoutContainer()
         {
+            Unloaded += FlyoutContainer_Unloaded;
             Loaded += FlyoutContainer_Loaded;
             this.InitializeComponent();
             ConfirmButton.ManageControlPointerStates((p, value) => VisualStateManager.GoToState(this, value ? "Highlight" : "Default", false));
+        }
+
+        // Resources cleanup
+        private void FlyoutContainer_Unloaded(object sender, RoutedEventArgs e)
+        {
+            LoadingCanvas.RemoveFromVisualTree();
+            LoadingCanvas = null;
+            Win2DCanvas.RemoveFromVisualTree();
+            Win2DCanvas = null;
+            _DetachContent?.Invoke();
+            _DetachContent = null;
+            _Content = null;
         }
 
         // The in-app acrylic brush for the background of the popup
@@ -40,15 +52,6 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             await BlurBorder.AttachCompositionInAppCustomAcrylicEffectAsync(BlurBorder, 8, 800,
                 Color.FromArgb(byte.MaxValue, 0x1B, 0x1B, 0x1B), 0.8f, null,
                 Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: true);
-
-            // Loading effect if needed
-            if (_Content is IBusyWorkingContent)
-            {
-                _LoadingAcrylic = await LoadingBorder.AttachCompositionAnimatableInAppCustomAcrylicEffectAsync(LoadingBorder,
-                    6, 0, false, Color.FromArgb(byte.MaxValue, 0x05, 0x05, 0x05), 0.2f,
-                    LoadingCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: true);
-                LoadingBorder.Visibility = Visibility.Collapsed;
-            }
         }
 
         /// <summary>
@@ -64,6 +67,10 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         // The content currently hosted by the container
         private FrameworkElement _Content;
 
+        // An action that removes the custom content once no longer needed
+        [CanBeNull]
+        private Action _DetachContent;
+
         /// <summary>
         /// Prepares the container to show a given element
         /// </summary>
@@ -78,6 +85,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             Grid.SetRow(content, 1);
             content.Margin = margin ?? new Thickness(12, 0, 0, 0);
             RootGrid.Children.Add(content);
+            _DetachContent = () => RootGrid.Children.Remove(content);
             InterfacesSetup();
         }
 
@@ -94,6 +102,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             TitleBlock.Text = title;
             ContentScroller.Content = content;
             ContentScroller.Visibility = Visibility.Visible;
+            _DetachContent = () => ContentScroller.Content = content;
             InterfacesSetup();
         }
 
@@ -112,35 +121,37 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             // Loading content
             if (_Content is IBusyWorkingContent worker)
             {
-                worker.WorkingStateChanged += (_, e) =>
+                worker.WorkingStateChanged += async (_, e) =>
                 {
-                    // Blur effect
-                    if (e)
+                    // Load the effect if needed
+                    if (_LoadingAcrylic == null)
                     {
-                        LoadingBorder.SetVisualOpacity(0);
-                        LoadingBorder.Visibility = Visibility.Visible;
-                        LoadingBorder.StartCompositionFadeAnimation(null, 1, 200, null, EasingFunctionNames.Linear);
-                    }
-                    _LoadingAcrylic?.AnimateAsync(e ? FixedAnimationType.In : FixedAnimationType.Out, TimeSpan.FromMilliseconds(500));
-                    if (!e)
-                    {
-                        Task.Delay(300).ContinueWith(t =>
-                        {
-                            LoadingBorder.StartCompositionFadeAnimation(null, 0, 200, null, EasingFunctionNames.Linear,
-                                () => LoadingBorder.Visibility = Visibility.Collapsed);
-                        }, TaskScheduler.FromCurrentSynchronizationContext());
+                        _LoadingAcrylic = await LoadingBorder.AttachCompositionAnimatableInAppCustomAcrylicEffectAsync(LoadingBorder,
+                            8, 0, false, Colors.Black, 0.2f,
+                            LoadingCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: true);
                     }
 
-                    // Progress ring
+                    // Fade in
                     if (e)
                     {
+                        // Blur effect
+                        LoadingBorder.SetVisualOpacity(0);
+                        LoadingGrid.Visibility = Visibility.Visible;
+                        LoadingBorder.StartCompositionFadeAnimation(null, 1, 200, null, EasingFunctionNames.Linear);
+
+                        // Loading ring
                         LoadingRing.SetVisualOpacity(0);
                         LoadingRing.IsActive = true;
                         LoadingRing.StartCompositionFadeAnimation(null, 1, 400, null, EasingFunctionNames.Linear);
                     }
-                    else
+                    _LoadingAcrylic?.AnimateAsync(e ? FixedAnimationType.In : FixedAnimationType.Out, TimeSpan.FromMilliseconds(500));
+
+                    // Fade out
+                    if (!e)
                     {
                         LoadingRing.StartCompositionFadeAnimation(null, 0, 400, null, EasingFunctionNames.Linear, () => LoadingRing.IsActive = false);
+                        LoadingBorder.StartCompositionFadeAnimation(null, 0, 200, 300, EasingFunctionNames.Linear,
+                            () => LoadingGrid.Visibility = Visibility.Collapsed);
                     }
                 };
             }
@@ -155,7 +166,8 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
                     loading.LoadingCompleted += (s, e) =>
                     {
                         InitialProgressRing.StartCompositionScaleAnimation(1, 1.1f, 250, null, EasingFunctionNames.Linear);
-                        InitialLoadingGrid.StartCompositionFadeAnimation(1, 0, 250, null, EasingFunctionNames.Linear);
+                        InitialLoadingGrid.StartCompositionFadeAnimation(1, 0, 250, null, EasingFunctionNames.Linear, 
+                            () => InitialLoadingGrid.Visibility = Visibility.Collapsed);
                     };
                 }
             }
@@ -183,5 +195,8 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             Confirmed = true;
             RequestClose();
         }
+
+        // Closes the popup without confirm
+        private void CloseButton_Click(object sender, RoutedEventArgs e) => RequestClose();
     }
 }

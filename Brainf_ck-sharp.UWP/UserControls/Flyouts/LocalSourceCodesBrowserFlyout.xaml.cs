@@ -27,6 +27,14 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
                 LoadingPending = false;
                 LoadingCompleted?.Invoke(this, EventArgs.Empty);
             };
+            Unloaded += (s, e) =>
+            {
+                this.Bindings.StopTracking();
+                ViewModel.Cleanup();
+                DataContext = null;
+                ContentConfirmed = null;
+                LoadingCompleted = null;
+            };
         }
 
         public LocalSourceCodesBrowserFlyoutViewModel ViewModel => DataContext.To<LocalSourceCodesBrowserFlyoutViewModel>();

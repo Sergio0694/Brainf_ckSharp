@@ -28,6 +28,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
                 LoadingPending = false;
                 LoadingCompleted?.Invoke(this, EventArgs.Empty);
             };
+            Unloaded += (s, e) =>
+            {
+                this.Bindings.StopTracking();
+                ViewModel.Cleanup();
+                DataContext = null;
+                LoadingCompleted = null;
+            };
         }
 
         public UnicodeCharactersGuideFlyoutViewModel ViewModel => DataContext.To<UnicodeCharactersGuideFlyoutViewModel>();

@@ -9,6 +9,13 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 {
     public class SaveCodePromptFlyoutViewModel : ViewModelBase
     {
+        /// <inheritdoc cref="ViewModelBase.Cleanup"/>
+        public override void Cleanup()
+        {
+            base.Cleanup();
+            ValidStatusChanged = null;
+        }
+
         /// <summary>
         /// Gets the current name for the code, if it's already saved in the app
         /// </summary>

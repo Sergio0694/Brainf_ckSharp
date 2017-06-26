@@ -29,5 +29,12 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// Raised whenever the initialization process completes
         /// </summary>
         public event EventHandler InitializationCompleted;
+
+        /// <inheritdoc/>
+        public override void Cleanup()
+        {
+            base.Cleanup();
+            InitializationCompleted = null;
+        }
     }
 }

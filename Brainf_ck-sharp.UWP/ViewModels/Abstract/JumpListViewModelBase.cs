@@ -13,9 +13,10 @@ namespace Brainf_ck_sharp_UWP.ViewModels.Abstract
     /// <summary>
     /// An abstract class to be used inside a ViewModel for a page with a JumpList
     /// </summary>
-    public abstract class JumpListViewModelBase<TKey, TValue> : ViewModelBase, IDisposable
+    public abstract class JumpListViewModelBase<TKey, TValue> : ViewModelBase
     {
-        public virtual void Dispose()
+        /// <inheritdoc cref="ViewModelBase.Cleanup"/>
+        public override void Cleanup()
         {
             LoadingCompleted = null;
             Source?.Clear();

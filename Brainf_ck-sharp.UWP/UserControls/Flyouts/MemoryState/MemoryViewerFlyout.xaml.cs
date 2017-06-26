@@ -22,6 +22,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState
                 LoadingPending = false;
                 LoadingCompleted?.Invoke(this, EventArgs.Empty);
             };
+            Unloaded += (s, e) =>
+            {
+                this.Bindings.StopTracking();
+                ViewModel.Cleanup();
+                DataContext = null;
+                LoadingCompleted = null;
+            };
         }
 
         public MemoryViewerFlyoutViewModel ViewModel => DataContext.To<MemoryViewerFlyoutViewModel>();
