@@ -76,6 +76,14 @@ namespace Brainf_ck_sharp_UWP.PopupService
         private Stack<FlyoutDisplayInfo> PopupStack { get; } = new Stack<FlyoutDisplayInfo>();
 
         /// <summary>
+        /// Disables the currently open flyouts so that the user can't interact with them as long as there's another one on top of them
+        /// </summary>
+        private void DisableOpenFlyouts()
+        {
+            foreach (FlyoutDisplayInfo info in PopupStack) info.Popup.IsHitTestVisible = false;
+        }
+
+        /// <summary>
         /// Closes the current popup, if there's one displayed
         /// </summary>
         private async Task TryCloseAsync()
@@ -83,10 +91,14 @@ namespace Brainf_ck_sharp_UWP.PopupService
             await Semaphore.WaitAsync();
             if (PopupStack.Count > 0 && PopupStack.Peek().Popup.IsOpen)
             {
+                // Close the current popup
                 Popup popup = PopupStack.Pop().Popup;
                 if (PopupStack.Count == 0) Messenger.Default.Send(new FlyoutClosedNotificationMessage());
                 await popup.StartCompositionFadeSlideAnimationAsync(null, 0, TranslationAxis.Y, 0, 20, 250, null, null, EasingFunctionNames.CircleEaseOut);
                 popup.IsOpen = false;
+
+                // Resto the previous popup, if present
+                if (PopupStack.Count > 0) PopupStack.Peek().Popup.IsHitTestVisible = true;
             }
             Semaphore.Release();
         }
@@ -171,6 +183,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             popup.Closed += CloseHandler;
 
             // Display and animate the popup
+            DisableOpenFlyouts();
             PopupStack.Push(info);
             popup.SetVisualOpacity(0);
             popup.IsOpen = true;
@@ -250,6 +263,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             popup.Closed += CloseHandler;
 
             // Display and animate the popup
+            DisableOpenFlyouts();
             PopupStack.Push(info);
             popup.SetVisualOpacity(0);
             popup.IsOpen = true;

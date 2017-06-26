@@ -121,8 +121,9 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
         private void ShowChangelogButton_Click(object sender, RoutedEventArgs e)
         {
             ChangelogViewFlyout flyout = new ChangelogViewFlyout();
+            Task.Delay(100).ContinueWith(t => flyout.ViewModel.LoadGroupsAsync(), TaskScheduler.FromCurrentSynchronizationContext()).Forget();
             FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Changelog"), flyout, new Thickness(),
-                FlyoutDisplayMode.ScrollableContent, true, () => flyout.ViewModel.LoadGroupsAsync().Forget()).Forget();
+                FlyoutDisplayMode.ScrollableContent, true).Forget();
         }
     }
 }
