@@ -6,6 +6,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -18,6 +19,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
         public DevInfoFlyout()
         {
             this.InitializeComponent();
+            BuildRun.Text = AppSettingsManager.AppVersion;
         }
 
         // The current ProductId for Brainf*ck#

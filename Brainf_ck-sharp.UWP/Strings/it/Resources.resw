@@ -401,4 +401,10 @@ Potete mandarmi un messaggio email in qualsiasi momento se avete suggerimenti o 
 
 NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le frecce di navigazione nell'IDE o durante il caricamento di un codice sorgente salvato. Questo è dovuto ad un bug in uno dei controlli che l'app utilizza, ho già mandato una segnalazione a Microsoft e spero che si possa risolvere il problema al più presto!</value>
   </data>
+  <data name="ReleaseNotesBlock.Text" xml:space="preserve">
+    <value>Note di versione</value>
+  </data>
+  <data name="AppBuildNumber.Text" xml:space="preserve">
+    <value>Numero build</value>
+  </data>
 </root>

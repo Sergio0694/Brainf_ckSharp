@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:iconBoxToolkit="using:Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit"
     mc:Ignorable="d"
-    d:DesignHeight="400"
+    d:DesignHeight="600"
     d:DesignWidth="400">
     <UserControl.Resources>
         
@@ -121,17 +121,16 @@
         <Grid 
             Background="#20000000"
             Margin="0,12,0,0">
-            <StackPanel>
+            <StackPanel Margin="12,12,0,0">
                 <TextBlock
                     Text="Contacts"
                     x:Uid="ContactsBlock"
-                    Margin="12,12,0,0"
                     FontSize="16"
                     FontWeight="Normal"/>
 
                 <!--Email button-->
                 <Button
-                    Margin="12,16,0,0"
+                    Margin="0,16,0,0"
                     Height="40"
                     Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
                     Background="{ThemeResource SystemControlHighlightAccentBrush}"
@@ -163,7 +162,7 @@
 
                 <!--Twitter button-->
                 <Button
-                    Margin="12,16,0,16"
+                    Margin="0,16,0,16"
                     Height="40"
                     Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
                     Background="#FF1DA1F2"
@@ -190,6 +189,81 @@
                             FontWeight="Normal"/>
                     </Grid>
                 </Button>
+            </StackPanel>
+        </Grid>
+
+        <!--Version info-->
+        <Grid 
+            Background="#20000000"
+            Margin="0,8,0,0">
+            <StackPanel Margin="12,12,0,0">
+                <TextBlock
+                    Text="Release notes"
+                    x:Uid="ReleaseNotesBlock"
+                    FontSize="16"
+                    FontWeight="Normal"/>
+
+                <!--Changelog button-->
+                <Button
+                    Margin="0,16,0,0"
+                    Height="40"
+                    Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
+                    Background="{ThemeResource SystemControlHighlightAccentBrush}"
+                    MaxWidth="220"
+                    HorizontalAlignment="Left"
+                    Click="SendEmailButton_Click">
+                    <Grid Margin="12,0,12,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Text="&#xEA8D;"
+                            Style="{StaticResource FontIconTextBlockStyle}"
+                            VerticalAlignment="Center"/>
+                        <TextBlock
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Margin="16,0,0,0"
+                            Text="Send feedback"
+                            x:Uid="SendFeedbackBlock"
+                            IsTextScaleFactorEnabled="False"
+                            TextWrapping="NoWrap"
+                            TextTrimming="CharacterEllipsis"
+                            FontSize="15"
+                            FontWeight="Normal"/>
+                    </Grid>
+                </Button>
+
+                <!--Build version-->
+                <Grid VerticalAlignment="Top"
+                      Margin="0,16,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock TextWrapping="Wrap"
+                               FontWeight="SemiLight"
+                               Text="&#xE98F;"
+                               FontFamily="Segoe MDL2 Assets"
+                               Foreground="{StaticResource AccentBrushLowFade}"
+                               FontSize="{StaticResource FontIconTextBlockSize}"
+                               Margin="0,3,0,0"/>
+                    <TextBlock Foreground="#FFF0F0F0"
+                               TextWrapping="Wrap"
+                               FontWeight="SemiLight"
+                               Grid.Column="1"
+                               Margin="4,0,0,0">
+                        <Run Text="Build version"
+                             FontSize="14"
+                             x:Uid="AppBuildNumber"/><Run Text=":" FontSize="14"/>
+                        <Run x:Name="BuildRun"
+                             Text="2017.102.26.0"
+                             FontSize="15"
+                             FontWeight="SemiBold"
+                             Foreground="#FFE0E0E0"/>
+                    </TextBlock>
+                </Grid>
             </StackPanel>
         </Grid>
     </StackPanel>
