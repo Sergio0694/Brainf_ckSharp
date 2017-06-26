@@ -117,6 +117,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
             }
         }
 
+        // Shows the changelog flyout
         private void ShowChangelogButton_Click(object sender, RoutedEventArgs e)
         {
             ChangelogViewFlyout flyout = new ChangelogViewFlyout();

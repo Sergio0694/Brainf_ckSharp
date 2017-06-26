@@ -407,4 +407,10 @@ NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le
   <data name="AppBuildNumber.Text" xml:space="preserve">
     <value>Numero build</value>
   </data>
+  <data name="ChangelogBlock.Text" xml:space="preserve">
+    <value>Novità</value>
+  </data>
+  <data name="Changelog" xml:space="preserve">
+    <value>Novità</value>
+  </data>
 </root>

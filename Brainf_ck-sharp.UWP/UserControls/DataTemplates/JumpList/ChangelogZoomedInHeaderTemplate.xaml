@@ -4,9 +4,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.Resources>
+        
+        <!--Changelog date converter-->
+        <converters:DateTimeToDateStringConverter x:Key="ShortDateConverter"/>
+    </UserControl.Resources>
 
     <!--Root-->
     <Grid 
@@ -41,7 +47,7 @@
         <TextBlock Text="{x:Bind ViewModel.Key.BuildVersion, FallbackValue=2016.1006.42.0}"
                    Style="{StaticResource TextBlockMainTemplateStyle}"
                    x:Name="GroupNameBlock"
-                   FontSize="22"
+                   FontSize="20"
                    FontWeight="Normal"
                    Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
                    Margin="0"
@@ -53,6 +59,6 @@
                    FontWeight="SemiLight"
                    VerticalAlignment="Center"
                    Grid.Column="1"
-                   Text="{x:Bind ViewModel.Key.ReleaseDate, FallbackValue=6/10/2016}"/>
+                   Text="{x:Bind ViewModel.Key.ReleaseDate, Converter={StaticResource ShortDateConverter}, FallbackValue=6/10/2016}"/>
     </Grid>
 </UserControl>

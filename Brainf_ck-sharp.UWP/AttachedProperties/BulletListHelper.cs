@@ -35,7 +35,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
             for (int i = 0; i < inlines.Count; i++)
             {
                 String inlineEnd = i == inlines.Count - 1 ? "" : "\n";
-                @this.Inlines.Add(new Run { Text = $"•{inlines[i]}{inlineEnd}" });
+                @this.Inlines.Add(new Run { Text = $"• {inlines[i]}{inlineEnd}" });
             }
         }
     }

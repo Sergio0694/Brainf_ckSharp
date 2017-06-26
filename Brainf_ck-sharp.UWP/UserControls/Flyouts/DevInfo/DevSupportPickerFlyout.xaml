@@ -9,7 +9,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid Background="#20000000">
+    <Grid Background="#40000000">
         <StackPanel>
 
             <!--Page description-->
