@@ -13,6 +13,7 @@
     <!--Memory cells list-->
     <ListView ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
               x:Name="MemoryList"
+              IsHitTestVisible="False"
               CanDrag="False">
         <ListView.Header>
             <Grid Height="12"/>

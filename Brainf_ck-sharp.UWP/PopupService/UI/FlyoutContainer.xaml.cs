@@ -127,7 +127,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
                     if (_LoadingAcrylic == null)
                     {
                         _LoadingAcrylic = await LoadingBorder.AttachCompositionAnimatableInAppCustomAcrylicEffectAsync(LoadingBorder,
-                            8, 0, false, Colors.Black, 0.4f,
+                            8, 0, false, Colors.Black, 0.2f,
                             LoadingCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: true);
                     }
 

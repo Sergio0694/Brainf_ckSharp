@@ -115,7 +115,7 @@
         <!--Initial loading indicator-->
         <Grid
             x:Name="InitialLoadingGrid"
-            Background="#40000000"
+            Background="#28000000"
             Visibility="Collapsed"
             Grid.Row="1"
             Grid.RowSpan="2"
