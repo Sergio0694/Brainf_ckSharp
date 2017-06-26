@@ -510,6 +510,9 @@ NOTE: the app might sometimes crash when using the virtual arrows keypad in the 
   <data name="AppBuildNumber.Text" xml:space="preserve">
     <value>Build version</value>
   </data>
+  <data name="ChangelogBlock.Text" xml:space="preserve">
+    <value>Changelog</value>
+  </data>
   <data name="ReleaseNotesBlock.Text" xml:space="preserve">
     <value>Release notes</value>
   </data>

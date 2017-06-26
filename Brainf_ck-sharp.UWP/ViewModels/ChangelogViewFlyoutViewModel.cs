@@ -1,0 +1,60 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Brainf_ck_sharp_UWP.DataModels;
+using Brainf_ck_sharp_UWP.DataModels.Misc;
+using Brainf_ck_sharp_UWP.ViewModels.Abstract;
+
+namespace Brainf_ck_sharp_UWP.ViewModels
+{
+    public class ChangelogViewFlyoutViewModel : JumpListViewModelBase<ChangelogReleaseInfo, IReadOnlyList<String>>
+    {
+        // Private synchronization semaphore for the singleton changelog list
+        private static readonly SemaphoreSlim ChangelogSemaphore = new SemaphoreSlim(1);
+
+        // Singleton instance of the changelog entries collection
+        private static IList<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<String>>> _Changelog;
+
+        protected override async Task<IList<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<String>>>> OnLoadGroupsAsync()
+        {
+            await ChangelogSemaphore.WaitAsync();
+            if (_Changelog == null) _Changelog = await Task.Run(() => GetChangelogData());
+            ChangelogSemaphore.Release();
+            return _Changelog;
+        }
+
+        // Builds the changelog items collection to show to the user
+        private static IList<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<String>>> GetChangelogData()
+        {
+            // Create the output collection
+            return new List<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<String>>>
+            {
+                CreateChangelogEntry("1.1.0.0", 2017, 7, 5, new List<String>
+                {
+                    "Release notes section added to the info flyout",
+                    "Minor fixes and improvements"
+                }),
+                CreateChangelogEntry("1.0.0.0", 2017, 6, 27, new List<String>
+                {
+                    "Initial release"
+                })
+            };
+        }
+
+        /// <summary>
+        /// Creates a new group to display in the changelog view
+        /// </summary>
+        /// <param name="version">The release official version number</param>
+        /// <param name="year">The release year</param>
+        /// <param name="month">The release month</param>
+        /// <param name="day">The release day</param>
+        /// <param name="changes">A collection of changes in the current release</param>
+        private static JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<String>> CreateChangelogEntry(
+            String version, int year, int month, int day, List<String> changes)
+        {
+            return new JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<String>>(
+                new ChangelogReleaseInfo(Version.Parse(version), new DateTime(year, month, day)), new List<List<String>> { changes });
+        }
+    }
+}

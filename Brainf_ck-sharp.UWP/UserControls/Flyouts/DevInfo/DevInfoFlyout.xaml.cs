@@ -48,7 +48,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
         {
             DevSupportPickerFlyout flyout = new DevSupportPickerFlyout();
             FlyoutClosedResult<int> result = await FlyoutManager.Instance.ShowAsync<DevSupportPickerFlyout, int>(
-                LocalizationManager.GetResource("Donate"), flyout, new Thickness(0), FlyoutDisplayMode.ActualHeight, true);
+                LocalizationManager.GetResource("Donate"), flyout, new Thickness(), FlyoutDisplayMode.ActualHeight, true);
             if (result) ProcessDonationAsync(result.Value).Forget();
         }
 
@@ -115,6 +115,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
                     NotificationsManager.ShowDefaultErrorNotification($"{LocalizationManager.GetResource("SomethingBadHappened")} :'(", LocalizationManager.GetResource("DonationErrorBody"));
                     break;
             }
+        }
+
+        private void ShowChangelogButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChangelogViewFlyout flyout = new ChangelogViewFlyout();
+            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Changelog"), flyout, new Thickness(),
+                FlyoutDisplayMode.ScrollableContent, true, () => flyout.ViewModel.LoadGroupsAsync().Forget()).Forget();
         }
     }
 }

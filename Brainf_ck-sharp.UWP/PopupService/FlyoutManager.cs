@@ -116,8 +116,9 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="margin">The optional margins to set to the content of the popup to show</param>
         /// <param name="mode">The desired display mode for the flyout</param>
         /// <param name="stack">Indicates whether or not the popup can be stacked on top of another open popup</param>
+        /// <param name="openCallback">An optional callback to invoke when the popup is displayed</param>
         public async Task<FlyoutResult> ShowAsync([NotNull] String title, [NotNull] FrameworkElement content, [CanBeNull] Thickness? margin = null,
-            FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent, bool stack = false)
+            FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent, bool stack = false, [CanBeNull] Action openCallback = null)
         {
             // Lock and close the existing popup, if needed
             await Semaphore.WaitAsync();
@@ -175,6 +176,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             popup.IsOpen = true;
             await popup.StartCompositionFadeSlideAnimationAsync(null, 1, TranslationAxis.Y, 20, 0, 250, null, null, EasingFunctionNames.CircleEaseOut);
             Semaphore.Release();
+            openCallback?.Invoke();
             return await tcs.Task;
         }
 
@@ -252,8 +254,8 @@ namespace Brainf_ck_sharp_UWP.PopupService
             popup.SetVisualOpacity(0);
             popup.IsOpen = true;
             await popup.StartCompositionFadeSlideAnimationAsync(null, 1, TranslationAxis.Y, 20, 0, 250, null, null, EasingFunctionNames.CircleEaseOut);
-            openCallback?.Invoke();
             Semaphore.Release();
+            openCallback?.Invoke();
 
             // Wait and return the right result
             return await tcs.Task.ContinueWith(t => t.Status == TaskStatus.RanToCompletion

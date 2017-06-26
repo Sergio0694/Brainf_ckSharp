@@ -1,0 +1,71 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo.ChangelogViewFlyout"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:attachedProperties="using:Brainf_ck_sharp_UWP.AttachedProperties"
+    xmlns:jumpList="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        
+        <!--Changelog entry style-->
+        <Style TargetType="TextBlock" x:Key="ChangelogStyle">
+            <Setter Property="FontWeight" Value="Light"/>
+            <Setter Property="Foreground" Value="#FFE0E0E0"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Margin" Value="0,4,16,0"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+    </UserControl.Resources>
+
+    <!--Main content-->
+    <SemanticZoom Style="{StaticResource SemanticZoomCustomStyle}">
+        <SemanticZoom.ZoomedInView>
+
+            <!--ZoomedInView-->
+            <ListView 
+                ItemsSource="{x:Bind ViewModel.View, Mode=OneWay}"
+                ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                IsItemClickEnabled="False">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock
+                            Style="{StaticResource ChangelogStyle}"
+                            attachedProperties:BulletListHelper.SourceList="{Binding}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.GroupStyle>
+                    <GroupStyle HeaderContainerStyle="{StaticResource GroupsViewListHeaderStyle}">
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <jumpList:ChangelogZoomedInHeaderTemplate
+                                    Margin="12,8,16,4"/>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ListView.GroupStyle>
+            </ListView>
+        </SemanticZoom.ZoomedInView>
+        <SemanticZoom.ZoomedOutView>
+
+            <!--ZoomedOutView-->
+            <ListView 
+                ItemsSource="{x:Bind ViewModel.CollectionGroups, Mode=OneWay}"
+                Style="{StaticResource GenericJumpListPickerStyle}"
+                ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <jumpList:JumpListZoomedOutHeaderTemplate
+                            Title="{Binding Group.Key}"
+                            Description="Hello"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </SemanticZoom.ZoomedOutView>
+    </SemanticZoom>
+</UserControl>

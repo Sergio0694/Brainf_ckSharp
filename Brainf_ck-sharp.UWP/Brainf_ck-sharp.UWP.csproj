@@ -107,6 +107,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AttachedProperties\Brainf_ckCodeInlineFormatter.cs" />
+    <Compile Include="AttachedProperties\BulletListHelper.cs" />
     <Compile Include="AttachedProperties\CharacterToRotationHelper.cs" />
     <Compile Include="AttachedProperties\RunInlineHelper.cs" />
     <Compile Include="Converters\BoolToAccentBrushOrFallbackConverter.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="Converters\SourceCodeTypeConverter.cs" />
     <Compile Include="DataModels\AsyncOperationResult.cs" />
     <Compile Include="DataModels\IDEResults\IDEResultExceptionInfoData.cs" />
+    <Compile Include="DataModels\Misc\ChangelogReleaseInfo.cs" />
     <Compile Include="DataModels\Misc\CharactersChunkModel.cs" />
     <Compile Include="DataModels\ConsoleModels\ConsoleCommandModelBase.cs" />
     <Compile Include="DataModels\ConsoleModels\ConsoleCommandResult.cs" />
@@ -228,11 +230,17 @@
     <Compile Include="UserControls\CustomControls\UnicodeNonVisibleCharactersGroupDisplayControl.xaml.cs">
       <DependentUpon>UnicodeNonVisibleCharactersGroupDisplayControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\DataTemplates\JumpList\ChangelogZoomedInHeaderTemplate.xaml.cs">
+      <DependentUpon>ChangelogZoomedInHeaderTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml.cs">
       <DependentUpon>SavedSourceCodeTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DataTemplates\JumpList\JumpListZoomedOutHeaderTemplate.xaml.cs">
       <DependentUpon>JumpListZoomedOutHeaderTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\DevInfo\ChangelogViewFlyout.xaml.cs">
+      <DependentUpon>ChangelogViewFlyout.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Flyouts\DevInfo\DevInfoFlyout.xaml.cs">
       <DependentUpon>DevInfoFlyout.xaml</DependentUpon>
@@ -325,6 +333,7 @@
       <DependentUpon>KeyboardButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Abstract\JumpListViewModelBase.cs" />
+    <Compile Include="ViewModels\ChangelogViewFlyoutViewModel.cs" />
     <Compile Include="ViewModels\CompactCharactersViewerControlViewModel.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
     <Compile Include="ViewModels\IDERunResultFlyoutViewModel.cs" />
@@ -508,6 +517,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\DataTemplates\JumpList\ChangelogZoomedInHeaderTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -533,6 +546,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\DataTemplates\MemoryCellTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\DevInfo\ChangelogViewFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

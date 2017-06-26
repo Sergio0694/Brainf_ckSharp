@@ -532,6 +532,10 @@ NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le
           <source>Build version</source>
           <target state="translated">Numero build</target>
         </trans-unit>
+        <trans-unit id="ChangelogBlock.Text" translate="yes" xml:space="preserve">
+          <source>Changelog</source>
+          <target state="new">Changelog</target>
+        </trans-unit>
       </group>
     </body>
   </file>
