@@ -46,8 +46,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
         // Show the donation options
         private async void DonateButton_Click(object sender, RoutedEventArgs e)
         {
-            DevSupportPickerFlyout flyout = new DevSupportPickerFlyout();
-            FlyoutClosedResult<int> result = await FlyoutManager.Instance.ShowAsync<DevSupportPickerFlyout, int>(
+            Donations.DevSupportPickerFlyout flyout = new Donations.DevSupportPickerFlyout();
+            FlyoutClosedResult<int> result = await FlyoutManager.Instance.ShowAsync<Donations.DevSupportPickerFlyout, int>(
                 LocalizationManager.GetResource("Donate"), flyout, new Thickness(), FlyoutDisplayMode.ActualHeight, true);
             if (result) ProcessDonationAsync(result.Value).Forget();
         }

@@ -9,7 +9,7 @@ using Brainf_ck_sharp_UWP.ViewModels.Abstract;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.ViewModels
+namespace Brainf_ck_sharp_UWP.ViewModels.DataTemplatesViewModels
 {
     public class CompactCharactersViewerControlViewModel : ItemsCollectionViewModelBase<CharactersChunkModel>
     {

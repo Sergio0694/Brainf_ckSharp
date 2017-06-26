@@ -1,10 +1,11 @@
 ﻿<UserControl
-    x:Class="Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo.DevSupportPickerFlyout"
+    x:Class="Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo.Donations.DevSupportPickerFlyout"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:donations="using:Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo.Donations"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -23,7 +24,7 @@
             <Button 
                 Style="{StaticResource WideButtonWithNoBackgroundStyle}"
                 Click="Coffee_Click">
-                <local:DevSupportOptionEntryControl ImageData="/Assets/Misc/CoffeeIA.png"
+                <donations:DevSupportOptionEntryControl ImageData="/Assets/Misc/CoffeeIA.png"
                                                     PickerTitle="0.99$"
                                                     PickerDescription="Buy the developer a coffee"
                                                     x:Uid="DonateCoffee"/>
@@ -31,7 +32,7 @@
             <Button
                 Style="{StaticResource WideButtonWithNoBackgroundStyle}"
                 Click="Present_Click">
-                <local:DevSupportOptionEntryControl ImageData="/Assets/Misc/PresentIA.png"
+                <donations:DevSupportOptionEntryControl ImageData="/Assets/Misc/PresentIA.png"
                                                     PickerTitle="2.99$"
                                                     PickerDescription="Make a small present to the developer to support the app"
                                                     x:Uid="DonatePresent"/>
@@ -39,7 +40,7 @@
             <Button
                 Style="{StaticResource WideButtonWithNoBackgroundStyle}"
                 Click="Support_Click">
-                <local:DevSupportOptionEntryControl ImageData="/Assets/Misc/Support.png"
+                <donations:DevSupportOptionEntryControl ImageData="/Assets/Misc/Support.png"
                                                     PickerTitle="4.99$"
                                                     PickerDescription="Actively support the app development with this bigger donation"
                                                     x:Uid="DonateSupport"/>
@@ -47,7 +48,7 @@
             <Button
                 Style="{StaticResource WideButtonWithNoBackgroundStyle}"
                 Click="Love_Click">
-                <local:DevSupportOptionEntryControl ImageData="/Assets/Misc/LoveIA.png"
+                <donations:DevSupportOptionEntryControl ImageData="/Assets/Misc/LoveIA.png"
                                                     PickerTitle="9.99$"
                                                     PickerDescription="Feeling generous? Choose this option to show the developer how much you love this app!"
                                                     x:Uid="DonateLove"/>

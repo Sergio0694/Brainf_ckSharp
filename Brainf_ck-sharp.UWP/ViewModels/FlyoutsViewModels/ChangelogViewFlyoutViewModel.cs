@@ -6,9 +6,9 @@ using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.ViewModels.Abstract;
 
-namespace Brainf_ck_sharp_UWP.ViewModels
+namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
 {
-    public class ChangelogViewFlyoutViewModel : JumpListViewModelBase<ChangelogReleaseInfo, IReadOnlyList<String>>
+    public class ChangelogViewFlyoutViewModel : JumpListViewModelBase<ChangelogReleaseInfo, IReadOnlyList<string>>
     {
         // Private synchronization semaphore for the singleton changelog list
         private static readonly SemaphoreSlim ChangelogSemaphore = new SemaphoreSlim(1);

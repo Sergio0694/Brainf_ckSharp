@@ -231,7 +231,7 @@
     <Compile Include="UserControls\CustomControls\UnicodeNonVisibleCharactersGroupDisplayControl.xaml.cs">
       <DependentUpon>UnicodeNonVisibleCharactersGroupDisplayControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\DataTemplates\JumpList\ChangelogZoomedInHeaderTemplate.xaml.cs">
+    <Compile Include="UserControls\DataTemplates\JumpList\Changelog\ChangelogZoomedInHeaderTemplate.xaml.cs">
       <DependentUpon>ChangelogZoomedInHeaderTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml.cs">
@@ -246,10 +246,10 @@
     <Compile Include="UserControls\Flyouts\DevInfo\DevInfoFlyout.xaml.cs">
       <DependentUpon>DevInfoFlyout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\DevInfo\DevSupportOptionEntryControl.xaml.cs">
+    <Compile Include="UserControls\Flyouts\DevInfo\Donations\DevSupportOptionEntryControl.xaml.cs">
       <DependentUpon>DevSupportOptionEntryControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\DevInfo\DevSupportPickerFlyout.xaml.cs">
+    <Compile Include="UserControls\Flyouts\DevInfo\Donations\DevSupportPickerFlyout.xaml.cs">
       <DependentUpon>DevSupportPickerFlyout.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Flyouts\LoadingPopupControl.xaml.cs">
@@ -334,17 +334,17 @@
       <DependentUpon>KeyboardButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Abstract\JumpListViewModelBase.cs" />
-    <Compile Include="ViewModels\ChangelogViewFlyoutViewModel.cs" />
-    <Compile Include="ViewModels\CompactCharactersViewerControlViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\ChangelogViewFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\DataTemplatesViewModels\CompactCharactersViewerControlViewModel.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
-    <Compile Include="ViewModels\IDERunResultFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\IDERunResultFlyoutViewModel.cs" />
     <Compile Include="ViewModels\IDEViewModel.cs" />
     <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase.cs" />
-    <Compile Include="ViewModels\LocalSourceCodesBrowserFlyoutViewModel.cs" />
-    <Compile Include="ViewModels\MemoryViewerFlyoutViewModel.cs" />
-    <Compile Include="ViewModels\SaveCodePromptFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\LocalSourceCodesBrowserFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\MemoryViewerFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\SaveCodePromptFlyoutViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
-    <Compile Include="ViewModels\UnicodeCharactersGuideFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\UnicodeCharactersGuideFlyoutViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>
@@ -518,7 +518,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\DataTemplates\JumpList\ChangelogZoomedInHeaderTemplate.xaml">
+    <Page Include="UserControls\DataTemplates\JumpList\Changelog\ChangelogZoomedInHeaderTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -558,11 +558,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Flyouts\DevInfo\DevSupportOptionEntryControl.xaml">
+    <Page Include="UserControls\Flyouts\DevInfo\Donations\DevSupportOptionEntryControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Flyouts\DevInfo\DevSupportPickerFlyout.xaml">
+    <Page Include="UserControls\Flyouts\DevInfo\Donations\DevSupportPickerFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -701,6 +701,7 @@
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

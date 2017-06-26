@@ -6,7 +6,7 @@ using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 
-namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList
+namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.Changelog
 {
     public sealed partial class ChangelogZoomedInHeaderTemplate : UserControl
     {
