@@ -34,6 +34,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 {
                     "Release notes section added to the info flyout",
                     "Added a missing description to the statistics section in the IDE result view",
+                    "The compact memory viewer is now refreshed correctly when the console is restarted",
                     "UI adjustments to the in-app flyouts on mobile phones and small screens",
                     "Minor fixes and improvements"
                 }),

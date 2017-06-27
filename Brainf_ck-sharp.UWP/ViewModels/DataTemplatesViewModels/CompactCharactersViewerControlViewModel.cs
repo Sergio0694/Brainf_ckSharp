@@ -19,6 +19,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.DataTemplatesViewModels
             RefreshSourceAsync(TouringMachineStateProvider.Initialize(64)).Forget();
         }
 
+        // Refreshes the compact memory view
         private async Task RefreshSourceAsync([NotNull] IReadonlyTouringMachineState state)
         {
             List<CharactersChunkModel> data = await Task.Run(() =>
