@@ -48,7 +48,8 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
         /// <param name="list">The list to edit</param>
         /// <param name="editedItem">The item that has just been edited</param>
         /// <param name="selectors">The functions that return a comparable value from an item</param>
-        public static void EnsureSorted<TValue>(
+        /// <returns>A value that indicates whether or not the input list has been changed</returns>
+        public static bool EnsureSorted<TValue>(
             [NotNull] this IList<TValue> list, [NotNull] TValue editedItem,
             [NotNull] params Func<TValue, IComparable>[] selectors) where TValue : class
         {
@@ -63,11 +64,14 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
 
             // Make sure the edited item is sorted correctly
             int index = sorted.IndexOf(editedItem);
+            bool reordered = false;
             if (list.IndexOf(editedItem) != index)
             {
                 list.Remove(editedItem);
                 list.Insert(index, editedItem);
+                reordered = true;
             }
+            return reordered;
         }
 
         /// <summary>
