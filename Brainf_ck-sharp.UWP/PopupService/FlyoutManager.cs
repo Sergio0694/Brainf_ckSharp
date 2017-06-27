@@ -295,34 +295,43 @@ namespace Brainf_ck_sharp_UWP.PopupService
         {
             // Calculate the current parameters
             double
-                width = ResolutionHelper.CurrentWidth,
-                height = ResolutionHelper.CurrentHeight,
+                screenWidth = ResolutionHelper.CurrentWidth,
+                screenHeight = ResolutionHelper.CurrentHeight,
                 maxWidth = stacked ? MaxStackedPopupWidth : MaxPopupWidth,
                 maxHeight = stacked ? MaxStackedPopupHeight : MaxPopupHeight,
-                margin = UniversalAPIsHelper.IsMobileDevice ? 0 : 24; // The minimum margin to the edges of the screen
+                margin = UniversalAPIsHelper.IsMobileDevice ? 12 : 24; // The minimum margin to the edges of the screen
 
             // Update the width first
-            if (width - margin <= maxWidth) info.Container.Width = width - margin;
+            if (screenWidth - margin <= maxWidth) info.Container.Width = screenWidth - (UniversalAPIsHelper.IsMobileDevice ? 0 : margin);
             else info.Container.Width = maxWidth - margin;
-            info.Popup.HorizontalOffset = width / 2 - info.Container.Width / 2;
+            info.Popup.HorizontalOffset = screenWidth / 2 - info.Container.Width / 2;
 
             // Calculate the height depending on the display mode
             if (info.DisplayMode == FlyoutDisplayMode.ScrollableContent)
             {
-                if (height - margin <= maxHeight) info.Container.Height = height - margin;
-                else info.Container.Height = maxHeight;
-                info.Popup.VerticalOffset = height / 2 - info.Container.Height / 2;
+                // Edge case for tiny screens not on mobile phones
+                if (!UniversalAPIsHelper.IsMobileDevice && screenHeight < 400)
+                {
+                    info.Container.Height = screenHeight;
+                    info.Popup.VerticalOffset = 0;
+                }
+                else
+                {
+                    // Calculate and adjust the right popup height
+                    info.Container.Height = screenHeight - margin <= maxHeight
+                        ? screenHeight - (UniversalAPIsHelper.IsMobileDevice ? 0 : margin)
+                        : maxHeight;
+                    info.Popup.VerticalOffset = screenHeight / 2 - info.Container.Height / 2;
+                }
             }
             else
             {
                 // Calculate the desired size and arrange the popup
                 Size desired = info.Container.CalculateDesiredSize();
-                if (desired.Height <= height + margin)
-                {
-                    info.Container.Height = desired.Height;
-                }
-                else info.Container.Height = height - margin;
-                info.Popup.VerticalOffset = (height / 2 - info.Container.Height / 2) / 2;
+                info.Container.Height = desired.Height <= screenHeight + margin 
+                    ? desired.Height 
+                    : screenHeight - (UniversalAPIsHelper.IsMobileDevice ? 0 : margin);
+                info.Popup.VerticalOffset = (screenHeight / 2 - info.Container.Height / 2) / 2;
             }
         }
 

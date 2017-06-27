@@ -30,9 +30,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             // Create the output collection
             return new List<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<String>>>
             {
-                CreateChangelogEntry("1.1.0.0", 2017, 7, 5, new List<String>
+                CreateChangelogEntry("1.1.0.0", 2017, 6, 30, new List<String>
                 {
                     "Release notes section added to the info flyout",
+                    "Added a missing description to the statistics section in the IDE result view",
+                    "UI adjustments to the in-app flyouts on mobile phones and small screens",
                     "Minor fixes and improvements"
                 }),
                 CreateChangelogEntry("1.0.0.0", 2017, 6, 27, new List<String>
