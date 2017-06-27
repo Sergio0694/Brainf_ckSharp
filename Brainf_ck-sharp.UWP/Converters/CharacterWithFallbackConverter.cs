@@ -12,7 +12,7 @@ namespace Brainf_ck_sharp_UWP.Converters
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             char c = value.To<char>();
-            return c > 31 && c < 128 || c > 159 ? c.ToString() : ((int)c).ToString();
+            return c > 32 && c < 127 || c > 160 && c != 173 ? c.ToString() : ((int)c).ToString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
