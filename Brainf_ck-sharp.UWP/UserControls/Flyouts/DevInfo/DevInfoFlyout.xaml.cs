@@ -19,7 +19,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
         public DevInfoFlyout()
         {
             this.InitializeComponent();
-            BuildRun.Text = AppSettingsManager.AppVersion;
+            BuildBlock.Text = AppSettingsManager.AppVersion;
         }
 
         // The current ProductId for Brainf*ck#

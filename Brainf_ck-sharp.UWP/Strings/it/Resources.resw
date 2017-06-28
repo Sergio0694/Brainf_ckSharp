@@ -404,9 +404,6 @@ NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le
   <data name="ReleaseNotesBlock.Text" xml:space="preserve">
     <value>Note di versione</value>
   </data>
-  <data name="AppBuildNumber.Text" xml:space="preserve">
-    <value>Numero build</value>
-  </data>
   <data name="ChangelogBlock.Text" xml:space="preserve">
     <value>Novità</value>
   </data>
