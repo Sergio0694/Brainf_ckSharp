@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Windows.Services.Store;
 using Windows.System;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Helpers;
@@ -123,7 +124,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
             ChangelogViewFlyout flyout = new ChangelogViewFlyout();
             Task.Delay(100).ContinueWith(t => flyout.ViewModel.LoadGroupsAsync(), TaskScheduler.FromCurrentSynchronizationContext()).Forget();
             FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Changelog"), flyout, new Thickness(),
-                FlyoutDisplayMode.ScrollableContent, true).Forget();
+                FlyoutDisplayMode.ScrollableContent, true, null, Color.FromArgb(byte.MaxValue, 0x14, 0x14, 0x14),0.95f).Forget();
         }
     }
 }
