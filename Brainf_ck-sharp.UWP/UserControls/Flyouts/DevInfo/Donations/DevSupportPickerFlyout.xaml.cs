@@ -3,7 +3,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.PopupService.Interfaces;
 
-namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
+namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo.Donations
 {
     public sealed partial class DevSupportPickerFlyout : UserControl, IEventConfirmedContent<int>
     {

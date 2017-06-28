@@ -2,7 +2,7 @@
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
-namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
+namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo.Donations
 {
     public sealed partial class DevSupportOptionEntryControl : UserControl
     {

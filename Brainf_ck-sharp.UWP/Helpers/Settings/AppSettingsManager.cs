@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.ApplicationModel;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 using JetBrains.Annotations;
@@ -87,5 +88,18 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         }
 
         #endregion
+
+        /// <summary>
+        /// Gets the app current version in the format "Major.Minor.Build.Revision"
+        /// </summary>
+        [NotNull]
+        public static String AppVersion
+        {
+            get
+            {
+                PackageVersion currentVersion = Package.Current.Id.Version;
+                return $"{currentVersion.Major}.{currentVersion.Minor}.{currentVersion.Build}.{currentVersion.Revision}";
+            }
+        }
     }
 }

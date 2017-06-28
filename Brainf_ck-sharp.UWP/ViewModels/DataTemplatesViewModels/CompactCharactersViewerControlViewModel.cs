@@ -9,7 +9,7 @@ using Brainf_ck_sharp_UWP.ViewModels.Abstract;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.ViewModels
+namespace Brainf_ck_sharp_UWP.ViewModels.DataTemplatesViewModels
 {
     public class CompactCharactersViewerControlViewModel : ItemsCollectionViewModelBase<CharactersChunkModel>
     {
@@ -19,6 +19,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             RefreshSourceAsync(TouringMachineStateProvider.Initialize(64)).Forget();
         }
 
+        // Refreshes the compact memory view
         private async Task RefreshSourceAsync([NotNull] IReadonlyTouringMachineState state)
         {
             List<CharactersChunkModel> data = await Task.Run(() =>

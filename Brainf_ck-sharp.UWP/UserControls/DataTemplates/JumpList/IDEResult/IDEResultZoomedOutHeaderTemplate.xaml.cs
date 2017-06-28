@@ -98,6 +98,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult
                         foreach (Run run in inlines) @this.InfoBlock.Inlines.Add(run);
                         @this.InfoBlock.FontWeight = FontWeights.Normal;
                         break;
+                    case IDEResultSectionSessionData section when section.Section == IDEResultSection.Stats:
+                        @this.InfoBlock.Text = section.Session.CurrentResult.TotalOperations > 1
+                            ? $"{section.Session.CurrentResult.TotalOperations} {LocalizationManager.GetResource("LowercaseOperators")}"
+                            : LocalizationManager.GetResource("LowercaseSingleOperator");
+                        @this.InfoBlock.Foreground = new SolidColorBrush(Colors.LightGray);
+                        @this.InfoBlock.FontWeight = FontWeights.Normal;
+                        break;
                     case IDEResultExceptionInfoData exception:
                         String message = ExceptionTypeConverter.Convert(exception.Info.ExceptionType);
                         @this.InfoBlock.Text = $"{message[0].ToString().ToUpperInvariant()}{message.Substring(1)}";

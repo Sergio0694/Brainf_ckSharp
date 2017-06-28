@@ -6,6 +6,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -18,6 +19,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
         public DevInfoFlyout()
         {
             this.InitializeComponent();
+            BuildRun.Text = AppSettingsManager.AppVersion;
         }
 
         // The current ProductId for Brainf*ck#
@@ -44,9 +46,9 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
         // Show the donation options
         private async void DonateButton_Click(object sender, RoutedEventArgs e)
         {
-            DevSupportPickerFlyout flyout = new DevSupportPickerFlyout();
-            FlyoutClosedResult<int> result = await FlyoutManager.Instance.ShowAsync<DevSupportPickerFlyout, int>(
-                LocalizationManager.GetResource("Donate"), flyout, new Thickness(0), FlyoutDisplayMode.ActualHeight, true);
+            Donations.DevSupportPickerFlyout flyout = new Donations.DevSupportPickerFlyout();
+            FlyoutClosedResult<int> result = await FlyoutManager.Instance.ShowAsync<Donations.DevSupportPickerFlyout, int>(
+                LocalizationManager.GetResource("Donate"), flyout, new Thickness(), FlyoutDisplayMode.ActualHeight, true);
             if (result) ProcessDonationAsync(result.Value).Forget();
         }
 
@@ -113,6 +115,15 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
                     NotificationsManager.ShowDefaultErrorNotification($"{LocalizationManager.GetResource("SomethingBadHappened")} :'(", LocalizationManager.GetResource("DonationErrorBody"));
                     break;
             }
+        }
+
+        // Shows the changelog flyout
+        private void ShowChangelogButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChangelogViewFlyout flyout = new ChangelogViewFlyout();
+            Task.Delay(100).ContinueWith(t => flyout.ViewModel.LoadGroupsAsync(), TaskScheduler.FromCurrentSynchronizationContext()).Forget();
+            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Changelog"), flyout, new Thickness(),
+                FlyoutDisplayMode.ScrollableContent, true).Forget();
         }
     }
 }

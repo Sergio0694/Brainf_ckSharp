@@ -90,6 +90,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             Source.Add(new ConsoleRestartCommand());
             State = TouringMachineStateProvider.Initialize(64);
             Source.Add(new ConsoleUserCommand());
+            Messenger.Default.Send(new ConsoleMemoryStateChangedMessage(State));
         }
 
         /// <summary>

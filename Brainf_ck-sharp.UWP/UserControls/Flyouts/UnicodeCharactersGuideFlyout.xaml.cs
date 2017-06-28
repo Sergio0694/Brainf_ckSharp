@@ -3,7 +3,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.PopupService.Interfaces;
-using Brainf_ck_sharp_UWP.ViewModels;
+using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 

@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:iconBoxToolkit="using:Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit"
     mc:Ignorable="d"
-    d:DesignHeight="400"
+    d:DesignHeight="600"
     d:DesignWidth="400">
     <UserControl.Resources>
         
@@ -85,7 +85,7 @@
             
             <!--Donate button-->
             <Button 
-                Margin="20,0,0,0"
+                Margin="16,0,0,0"
                 HorizontalAlignment="Left"
                 MaxWidth="220"
                 Height="40"
@@ -121,38 +121,120 @@
         <Grid 
             Background="#20000000"
             Margin="0,12,0,0">
-            <StackPanel>
+            <StackPanel Margin="12,12,16,12">
                 <TextBlock
                     Text="Contacts"
                     x:Uid="ContactsBlock"
-                    Margin="12,12,0,0"
                     FontSize="16"
                     FontWeight="Normal"/>
 
-                <!--Email button-->
+                <!--Email and Twitter buttons-->
+                <Grid 
+                    Margin="0,16,0,0"
+                    Height="40">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Email button-->
+                    <Button
+                        Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
+                        Background="{ThemeResource SystemControlHighlightAccentBrush}"
+                        MaxWidth="220"
+                        HorizontalAlignment="Left"
+                        Click="SendEmailButton_Click">
+                        <Grid Margin="12,0,12,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="&#xE166;"
+                                Style="{StaticResource FontIconTextBlockStyle}"
+                                VerticalAlignment="Center"/>
+                            <TextBlock
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Margin="16,0,0,0"
+                                Text="Send feedback"
+                                x:Uid="SendFeedbackBlock"
+                                IsTextScaleFactorEnabled="False"
+                                TextWrapping="NoWrap"
+                                TextTrimming="CharacterEllipsis"
+                                FontSize="15"
+                                FontWeight="Normal"/>
+                        </Grid>
+                    </Button>
+
+                    <!--Twitter button-->
+                    <Button
+                        Margin="16,0,0,0"
+                        Grid.Column="1"
+                        Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
+                        Background="#FF1DA1F2"
+                        MaxWidth="220"
+                        HorizontalAlignment="Left"
+                        Click="TwitterButton_Click">
+                        <Grid Margin="12,0,12,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image
+                                Source="/Assets/Misc/Twitter.png"
+                                Height="20"/>
+                            <TextBlock
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                IsTextScaleFactorEnabled="False"
+                                TextWrapping="NoWrap"
+                                TextTrimming="CharacterEllipsis"
+                                Margin="16,0,0,0"
+                                Text="@SergioPedri"
+                                FontSize="15"
+                                FontWeight="Normal"/>
+                        </Grid>
+                    </Button>
+                </Grid>
+            </StackPanel>
+        </Grid>
+
+        <!--Version info-->
+        <Grid 
+            Background="#20000000"
+            Margin="0,8,0,8">
+            <StackPanel Margin="12,12,0,0">
+                <TextBlock
+                    Text="Release notes"
+                    x:Uid="ReleaseNotesBlock"
+                    FontSize="16"
+                    FontWeight="Normal"/>
+
+                <!--Changelog button-->
                 <Button
-                    Margin="12,16,0,0"
+                    Margin="0,16,0,0"
                     Height="40"
                     Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
                     Background="{ThemeResource SystemControlHighlightAccentBrush}"
                     MaxWidth="220"
                     HorizontalAlignment="Left"
-                    Click="SendEmailButton_Click">
+                    Click="ShowChangelogButton_Click">
                     <Grid Margin="12,0,12,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock
-                            Text="&#xE166;"
+                            Text="&#xEA8D;"
                             Style="{StaticResource FontIconTextBlockStyle}"
                             VerticalAlignment="Center"/>
                         <TextBlock
                             Grid.Column="1"
                             VerticalAlignment="Center"
                             Margin="16,0,0,0"
-                            Text="Send feedback"
-                            x:Uid="SendFeedbackBlock"
+                            Text="Changelog"
+                            x:Uid="ChangelogBlock"
                             IsTextScaleFactorEnabled="False"
                             TextWrapping="NoWrap"
                             TextTrimming="CharacterEllipsis"
@@ -161,35 +243,34 @@
                     </Grid>
                 </Button>
 
-                <!--Twitter button-->
-                <Button
-                    Margin="12,16,0,16"
-                    Height="40"
-                    Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
-                    Background="#FF1DA1F2"
-                    MaxWidth="220"
-                    HorizontalAlignment="Left"
-                    Click="TwitterButton_Click">
-                    <Grid Margin="12,0,12,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Image
-                            Source="/Assets/Misc/Twitter.png"
-                            Height="20"/>
-                        <TextBlock
-                            Grid.Column="1"
-                            VerticalAlignment="Center"
-                            IsTextScaleFactorEnabled="False"
-                            TextWrapping="NoWrap"
-                            TextTrimming="CharacterEllipsis"
-                            Margin="16,0,0,0"
-                            Text="@SergioPedri"
-                            FontSize="15"
-                            FontWeight="Normal"/>
-                    </Grid>
-                </Button>
+                <!--Build version-->
+                <Grid VerticalAlignment="Top"
+                      Margin="0,16,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="&#xE98F;"
+                               FontFamily="Segoe MDL2 Assets"
+                               Foreground="{StaticResource AccentBrushLowFade}"
+                               FontSize="{StaticResource FontIconTextBlockSize}"
+                               Margin="0,3,0,0"/>
+                    <TextBlock Foreground="#FFF0F0F0"
+                               TextWrapping="Wrap"
+                               FontWeight="Normal"
+                               Grid.Column="1"
+                               Margin="8,0,0,0">
+                        <Run Text="Build version"
+                             FontSize="14"
+                             x:Uid="AppBuildNumber"/><Run Text=":" FontSize="14"/>
+                        <Run x:Name="BuildRun"
+                             Text="2017.102.26.0"
+                             FontSize="15"
+                             FontWeight="SemiBold"
+                             Foreground="#FFE0E0E0"/>
+                    </TextBlock>
+                </Grid>
             </StackPanel>
         </Grid>
     </StackPanel>

@@ -5,14 +5,13 @@ using Brainf_ck_sharp_UWP.Helpers.Extensions;
 namespace Brainf_ck_sharp_UWP.Converters
 {
     /// <summary>
-    /// A converter that returns a printable character or the string representation of its value
+    /// Converts a <see cref="DateTime"/> date into its short date representation
     /// </summary>
-    public class CharacterWithFallbackConverter : IValueConverter
+    public class DateTimeToDateStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            char c = value.To<char>();
-            return c > 32 && c < 127 || c > 160 && c != 173 ? c.ToString() : ((int)c).ToString();
+            return value.To<DateTime>().ToString("d");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

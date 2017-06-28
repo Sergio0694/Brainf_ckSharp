@@ -18,7 +18,7 @@ using Brainf_ck_sharp_UWP.ViewModels.Abstract;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.ViewModels
+namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
 {
     public class LocalSourceCodesBrowserFlyoutViewModel : JumpListViewModelBase<SavedSourceCodeType, CategorizedSourceCodeWithSyntaxInfo>
     {
@@ -168,12 +168,20 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <param name="title">The new title to assign to the code</param>
         public async Task RenameItemAsync([NotNull] SourceCode code, [NotNull] String title)
         {
+            // Update the item in the database
             await SQLiteManager.Instance.RenameCodeAsync(code, title);
 
+            // Ensure the items in the edited section are sorted
             JumpListGroup<SavedSourceCodeType, CategorizedSourceCodeWithSyntaxInfo> section = Source.FirstOrDefault(
                 group => group.Key == (code.Favorited ? SavedSourceCodeType.Favorite : SavedSourceCodeType.Original));
             CategorizedSourceCodeWithSyntaxInfo item = section.First(entry => entry.Code == code);
-            section.EnsureSorted(item, entry => entry.Code.Title);
+            if (!section.EnsureSorted(item, entry => entry.Code.Title))
+            {
+                // Force an UI refresh
+                int index = section.IndexOf(item);
+                section.Remove(item);
+                section.Insert(index, item);
+            }
         }
     }
 }

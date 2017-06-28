@@ -107,9 +107,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AttachedProperties\Brainf_ckCodeInlineFormatter.cs" />
+    <Compile Include="AttachedProperties\BulletListHelper.cs" />
     <Compile Include="AttachedProperties\CharacterToRotationHelper.cs" />
     <Compile Include="AttachedProperties\RunInlineHelper.cs" />
     <Compile Include="Converters\BoolToAccentBrushOrFallbackConverter.cs" />
+    <Compile Include="Converters\DateTimeToDateStringConverter.cs" />
     <Compile Include="Converters\SourceCodeTitleScoreToDisplayStringConverter.cs" />
     <Compile Include="Converters\CharacterWithFallbackConverter.cs" />
     <Compile Include="Converters\DepthToVisibilityConverter.cs" />
@@ -124,6 +126,7 @@
     <Compile Include="Converters\SourceCodeTypeConverter.cs" />
     <Compile Include="DataModels\AsyncOperationResult.cs" />
     <Compile Include="DataModels\IDEResults\IDEResultExceptionInfoData.cs" />
+    <Compile Include="DataModels\Misc\ChangelogReleaseInfo.cs" />
     <Compile Include="DataModels\Misc\CharactersChunkModel.cs" />
     <Compile Include="DataModels\ConsoleModels\ConsoleCommandModelBase.cs" />
     <Compile Include="DataModels\ConsoleModels\ConsoleCommandResult.cs" />
@@ -228,19 +231,25 @@
     <Compile Include="UserControls\CustomControls\UnicodeNonVisibleCharactersGroupDisplayControl.xaml.cs">
       <DependentUpon>UnicodeNonVisibleCharactersGroupDisplayControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\DataTemplates\JumpList\Changelog\ChangelogZoomedInHeaderTemplate.xaml.cs">
+      <DependentUpon>ChangelogZoomedInHeaderTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml.cs">
       <DependentUpon>SavedSourceCodeTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DataTemplates\JumpList\JumpListZoomedOutHeaderTemplate.xaml.cs">
       <DependentUpon>JumpListZoomedOutHeaderTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Flyouts\DevInfo\ChangelogViewFlyout.xaml.cs">
+      <DependentUpon>ChangelogViewFlyout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Flyouts\DevInfo\DevInfoFlyout.xaml.cs">
       <DependentUpon>DevInfoFlyout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\DevInfo\DevSupportOptionEntryControl.xaml.cs">
+    <Compile Include="UserControls\Flyouts\DevInfo\Donations\DevSupportOptionEntryControl.xaml.cs">
       <DependentUpon>DevSupportOptionEntryControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\DevInfo\DevSupportPickerFlyout.xaml.cs">
+    <Compile Include="UserControls\Flyouts\DevInfo\Donations\DevSupportPickerFlyout.xaml.cs">
       <DependentUpon>DevSupportPickerFlyout.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Flyouts\LoadingPopupControl.xaml.cs">
@@ -325,16 +334,17 @@
       <DependentUpon>KeyboardButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Abstract\JumpListViewModelBase.cs" />
-    <Compile Include="ViewModels\CompactCharactersViewerControlViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\ChangelogViewFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\DataTemplatesViewModels\CompactCharactersViewerControlViewModel.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
-    <Compile Include="ViewModels\IDERunResultFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\IDERunResultFlyoutViewModel.cs" />
     <Compile Include="ViewModels\IDEViewModel.cs" />
     <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase.cs" />
-    <Compile Include="ViewModels\LocalSourceCodesBrowserFlyoutViewModel.cs" />
-    <Compile Include="ViewModels\MemoryViewerFlyoutViewModel.cs" />
-    <Compile Include="ViewModels\SaveCodePromptFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\LocalSourceCodesBrowserFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\MemoryViewerFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\SaveCodePromptFlyoutViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
-    <Compile Include="ViewModels\UnicodeCharactersGuideFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\UnicodeCharactersGuideFlyoutViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>
@@ -508,6 +518,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\DataTemplates\JumpList\Changelog\ChangelogZoomedInHeaderTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -536,15 +550,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\Flyouts\DevInfo\ChangelogViewFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\Flyouts\DevInfo\DevInfoFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Flyouts\DevInfo\DevSupportOptionEntryControl.xaml">
+    <Page Include="UserControls\Flyouts\DevInfo\Donations\DevSupportOptionEntryControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Flyouts\DevInfo\DevSupportPickerFlyout.xaml">
+    <Page Include="UserControls\Flyouts\DevInfo\Donations\DevSupportPickerFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -657,7 +675,7 @@
       <Version>1.0.0.3</Version>
     </PackageReference>
     <PackageReference Include="UICompositionAnimations">
-      <Version>2.5.3</Version>
+      <Version>2.5.4</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -683,6 +701,7 @@
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

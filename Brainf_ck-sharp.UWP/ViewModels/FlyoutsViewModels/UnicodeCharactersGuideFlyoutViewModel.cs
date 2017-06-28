@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Brainf_ck_sharp_UWP.ViewModels.Abstract;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.ViewModels
+namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
 {
     public class UnicodeCharactersGuideFlyoutViewModel : ItemsCollectionViewModelBase<int>
     {

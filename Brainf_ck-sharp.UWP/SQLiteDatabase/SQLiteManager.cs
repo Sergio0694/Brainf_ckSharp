@@ -319,8 +319,12 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         /// <param name="breakpoints">The list of lines with an enabled breakpoint</param>
         public async Task<AsyncOperationResult<CategorizedSourceCode>> SaveCodeAsync([NotNull] String title, [NotNull] String code, [CanBeNull] IReadOnlyCollection<int> breakpoints)
         {
+            // Check the name and remove the existing deleted codes with the same name, if present
             await EnsureDatabaseConnectionAsync();
             if (!await CheckExistingName(title)) return AsyncOperationStatus.Faulted;
+            await RemovePendingDeletedItemsAsync(title);
+
+            // Create and store the new code
             SourceCode entry = new SourceCode
             {
                 Uid = Guid.NewGuid().ToString(),
@@ -356,7 +360,19 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         public async Task<bool> CheckExistingName([NotNull] String name)
         {
             await EnsureDatabaseConnectionAsync();
-            return await DatabaseConnection.Table<SourceCode>().Where(row => row.Title == name).FirstOrDefaultAsync() == null;
+            return await DatabaseConnection.Table<SourceCode>().Where(row => row.Title == name && row.Deleted == 0).FirstOrDefaultAsync() == null;
+        }
+
+        /// <summary>
+        /// Removes the deleted codes with a given title from the database
+        /// </summary>
+        /// <param name="title">The title of the deleted codes to removes</param>
+        private async Task RemovePendingDeletedItemsAsync([NotNull] String title)
+        {
+            List<SourceCode> existing = await DatabaseConnection.Table<SourceCode>().Where(row => row.Title == title && row.Deleted != 0).ToListAsync();
+            if (existing.Count > 0)
+                foreach (SourceCode pending in existing)
+                    await DatabaseConnection.DeleteAsync(pending);
         }
 
         /// <summary>
@@ -367,6 +383,7 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         public async Task RenameCodeAsync([NotNull] SourceCode code, [NotNull] String name)
         {
             await EnsureDatabaseConnectionAsync();
+            await RemovePendingDeletedItemsAsync(name);
             code.Title = name;
             await DatabaseConnection.UpdateAsync(code);
         }

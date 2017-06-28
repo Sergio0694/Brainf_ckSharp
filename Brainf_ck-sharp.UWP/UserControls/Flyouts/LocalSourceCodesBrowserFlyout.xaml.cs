@@ -11,7 +11,7 @@ using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Interfaces;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
-using Brainf_ck_sharp_UWP.ViewModels;
+using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts

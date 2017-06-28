@@ -76,6 +76,14 @@ namespace Brainf_ck_sharp_UWP.PopupService
         private Stack<FlyoutDisplayInfo> PopupStack { get; } = new Stack<FlyoutDisplayInfo>();
 
         /// <summary>
+        /// Disables the currently open flyouts so that the user can't interact with them as long as there's another one on top of them
+        /// </summary>
+        private void DisableOpenFlyouts()
+        {
+            foreach (FlyoutDisplayInfo info in PopupStack) info.Popup.IsHitTestVisible = false;
+        }
+
+        /// <summary>
         /// Closes the current popup, if there's one displayed
         /// </summary>
         private async Task TryCloseAsync()
@@ -83,10 +91,14 @@ namespace Brainf_ck_sharp_UWP.PopupService
             await Semaphore.WaitAsync();
             if (PopupStack.Count > 0 && PopupStack.Peek().Popup.IsOpen)
             {
+                // Close the current popup
                 Popup popup = PopupStack.Pop().Popup;
                 if (PopupStack.Count == 0) Messenger.Default.Send(new FlyoutClosedNotificationMessage());
                 await popup.StartCompositionFadeSlideAnimationAsync(null, 0, TranslationAxis.Y, 0, 20, 250, null, null, EasingFunctionNames.CircleEaseOut);
                 popup.IsOpen = false;
+
+                // Resto the previous popup, if present
+                if (PopupStack.Count > 0) PopupStack.Peek().Popup.IsHitTestVisible = true;
             }
             Semaphore.Release();
         }
@@ -116,8 +128,9 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="margin">The optional margins to set to the content of the popup to show</param>
         /// <param name="mode">The desired display mode for the flyout</param>
         /// <param name="stack">Indicates whether or not the popup can be stacked on top of another open popup</param>
+        /// <param name="openCallback">An optional callback to invoke when the popup is displayed</param>
         public async Task<FlyoutResult> ShowAsync([NotNull] String title, [NotNull] FrameworkElement content, [CanBeNull] Thickness? margin = null,
-            FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent, bool stack = false)
+            FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent, bool stack = false, [CanBeNull] Action openCallback = null)
         {
             // Lock and close the existing popup, if needed
             await Semaphore.WaitAsync();
@@ -170,11 +183,13 @@ namespace Brainf_ck_sharp_UWP.PopupService
             popup.Closed += CloseHandler;
 
             // Display and animate the popup
+            DisableOpenFlyouts();
             PopupStack.Push(info);
             popup.SetVisualOpacity(0);
             popup.IsOpen = true;
             await popup.StartCompositionFadeSlideAnimationAsync(null, 1, TranslationAxis.Y, 20, 0, 250, null, null, EasingFunctionNames.CircleEaseOut);
             Semaphore.Release();
+            openCallback?.Invoke();
             return await tcs.Task;
         }
 
@@ -248,12 +263,13 @@ namespace Brainf_ck_sharp_UWP.PopupService
             popup.Closed += CloseHandler;
 
             // Display and animate the popup
+            DisableOpenFlyouts();
             PopupStack.Push(info);
             popup.SetVisualOpacity(0);
             popup.IsOpen = true;
             await popup.StartCompositionFadeSlideAnimationAsync(null, 1, TranslationAxis.Y, 20, 0, 250, null, null, EasingFunctionNames.CircleEaseOut);
-            openCallback?.Invoke();
             Semaphore.Release();
+            openCallback?.Invoke();
 
             // Wait and return the right result
             return await tcs.Task.ContinueWith(t => t.Status == TaskStatus.RanToCompletion
@@ -279,34 +295,43 @@ namespace Brainf_ck_sharp_UWP.PopupService
         {
             // Calculate the current parameters
             double
-                width = ResolutionHelper.CurrentWidth,
-                height = ResolutionHelper.CurrentHeight,
+                screenWidth = ResolutionHelper.CurrentWidth,
+                screenHeight = ResolutionHelper.CurrentHeight,
                 maxWidth = stacked ? MaxStackedPopupWidth : MaxPopupWidth,
                 maxHeight = stacked ? MaxStackedPopupHeight : MaxPopupHeight,
-                margin = UniversalAPIsHelper.IsMobileDevice ? 0 : 24; // The minimum margin to the edges of the screen
+                margin = UniversalAPIsHelper.IsMobileDevice ? 12 : 24; // The minimum margin to the edges of the screen
 
             // Update the width first
-            if (width - margin <= maxWidth) info.Container.Width = width - margin;
+            if (screenWidth - margin <= maxWidth) info.Container.Width = screenWidth - (UniversalAPIsHelper.IsMobileDevice ? 0 : margin);
             else info.Container.Width = maxWidth - margin;
-            info.Popup.HorizontalOffset = width / 2 - info.Container.Width / 2;
+            info.Popup.HorizontalOffset = screenWidth / 2 - info.Container.Width / 2;
 
             // Calculate the height depending on the display mode
             if (info.DisplayMode == FlyoutDisplayMode.ScrollableContent)
             {
-                if (height - margin <= maxHeight) info.Container.Height = height - margin;
-                else info.Container.Height = maxHeight;
-                info.Popup.VerticalOffset = height / 2 - info.Container.Height / 2;
+                // Edge case for tiny screens not on mobile phones
+                if (!UniversalAPIsHelper.IsMobileDevice && screenHeight < 400)
+                {
+                    info.Container.Height = screenHeight;
+                    info.Popup.VerticalOffset = 0;
+                }
+                else
+                {
+                    // Calculate and adjust the right popup height
+                    info.Container.Height = screenHeight - margin <= maxHeight
+                        ? screenHeight - (UniversalAPIsHelper.IsMobileDevice ? 0 : margin)
+                        : maxHeight;
+                    info.Popup.VerticalOffset = screenHeight / 2 - info.Container.Height / 2;
+                }
             }
             else
             {
                 // Calculate the desired size and arrange the popup
                 Size desired = info.Container.CalculateDesiredSize();
-                if (desired.Height <= height + margin)
-                {
-                    info.Container.Height = desired.Height;
-                }
-                else info.Container.Height = height - margin;
-                info.Popup.VerticalOffset = (height / 2 - info.Container.Height / 2) / 2;
+                info.Container.Height = desired.Height <= screenHeight + margin 
+                    ? desired.Height 
+                    : screenHeight - (UniversalAPIsHelper.IsMobileDevice ? 0 : margin);
+                info.Popup.VerticalOffset = (screenHeight / 2 - info.Container.Height / 2) / 2;
             }
         }
 

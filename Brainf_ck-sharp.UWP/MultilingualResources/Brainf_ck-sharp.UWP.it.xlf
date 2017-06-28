@@ -524,6 +524,22 @@ Potete mandarmi un messaggio email in qualsiasi momento se avete suggerimenti o 
 
 NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le frecce di navigazione nell'IDE o durante il caricamento di un codice sorgente salvato. Questo è dovuto ad un bug in uno dei controlli che l'app utilizza, ho già mandato una segnalazione a Microsoft e spero che si possa risolvere il problema al più presto!</target>
         </trans-unit>
+        <trans-unit id="ReleaseNotesBlock.Text" translate="yes" xml:space="preserve">
+          <source>Release notes</source>
+          <target state="translated">Note di versione</target>
+        </trans-unit>
+        <trans-unit id="AppBuildNumber.Text" translate="yes" xml:space="preserve">
+          <source>Build version</source>
+          <target state="translated">Numero build</target>
+        </trans-unit>
+        <trans-unit id="ChangelogBlock.Text" translate="yes" xml:space="preserve">
+          <source>Changelog</source>
+          <target state="translated">Novità</target>
+        </trans-unit>
+        <trans-unit id="Changelog" translate="yes" xml:space="preserve">
+          <source>Changelog</source>
+          <target state="translated">Novità</target>
+        </trans-unit>
       </group>
     </body>
   </file>
