@@ -77,13 +77,17 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 // Always show the source code
                 source.Add(GroupFromSection(IDEResultSection.SourceCode));
 
-                // Calculate the memory state info and add it to the queue
-                IndexedModelWithValue<Brainf_ckMemoryCell>[] state = IndexedModelWithValue<Brainf_ckMemoryCell>.New(Session.CurrentResult.MachineState).ToArray();
-                source.Add(new JumpListGroup<IDEResultSection, IDEResultSectionDataBase>(
-                    IDEResultSection.MemoryState, new[] { new IDEResultSectionStateData(state) }));
+                // Add the memory state and the statistics only if the code was executed
+                if (!Session.CurrentResult.HasFlag(InterpreterExitCode.MismatchedParentheses))
+                {
+                    // Calculate the memory state info and add it to the queue
+                    IndexedModelWithValue<Brainf_ckMemoryCell>[] state = IndexedModelWithValue<Brainf_ckMemoryCell>.New(Session.CurrentResult.MachineState).ToArray();
+                    source.Add(new JumpListGroup<IDEResultSection, IDEResultSectionDataBase>(
+                        IDEResultSection.MemoryState, new[] { new IDEResultSectionStateData(state) }));
 
-                // Add the statistics
-                source.Add(GroupFromSection(IDEResultSection.Stats));
+                    // Add the statistics
+                    source.Add(GroupFromSection(IDEResultSection.Stats));
+                }
                 return source;
             });
         }

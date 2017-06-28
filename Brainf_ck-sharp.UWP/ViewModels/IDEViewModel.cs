@@ -204,7 +204,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.ClearScreen, code.Length > 1));
             (bool valid, int error) = Brainf_ckInterpreter.CheckSourceSyntax(code);
             (int row, int col) = code.FindCoordinates(Document.Selection.StartPosition);
-            bool executable = Brainf_ckInterpreter.FindOperators(code);
+            bool executable = Brainf_ckInterpreter.FindOperators(code) && valid;
             if (_CanExecute != executable)
             {
                 Messenger.Default.Send(new IDEExecutableStatusChangedMessage(executable));
