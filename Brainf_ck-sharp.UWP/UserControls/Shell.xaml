@@ -240,10 +240,16 @@
                     x:Uid="NewLineButton"
                     Click="{x:Bind ViewModel.RequestAddIDENewLine}"/>
                 <customCommandBar:CustomCommandBarButton
+                    Label="Delete"
+                    Icon="&#xE750;"
+                    x:Uid="DeleteButton"
+                    IsEnabled="{x:Bind ViewModel.DeleteAvailable, Mode=OneWay, FallbackValue=False}"
+                    Click="{x:Bind ViewModel.RequestIDEDeleteAction}"/>
+                <customCommandBar:CustomCommandBarButton
                     Label="Undo"
                     Icon="&#xE10E;"
                     IsEnabled="{x:Bind ViewModel.UndoAvailable, Mode=OneWay, FallbackValue=False}"
-                    x:Uid="UndoButton"
+                    x:Uid="Undo"
                     Click="{x:Bind ViewModel.RequestIDEUndo}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Redo"

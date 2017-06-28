@@ -158,6 +158,7 @@
     <Compile Include="Helpers\StorageHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\ShareCharmsHelper.cs" />
     <Compile Include="Messages\Actions\DebugStatusChangedMessage.cs" />
+    <Compile Include="Messages\Actions\IDEDeleteCharacterRequestMessage.cs" />
     <Compile Include="Messages\Actions\IDENewLineRequestedMessage.cs" />
     <Compile Include="Messages\Actions\IDEUndoRedoRequestMessage.cs" />
     <Compile Include="Messages\Actions\SaveButtonsEnabledStatusChangedMessage.cs" />
