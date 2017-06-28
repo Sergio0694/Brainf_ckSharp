@@ -516,4 +516,10 @@ NOTE: the app might sometimes crash when using the virtual arrows keypad in the 
   <data name="Changelog" xml:space="preserve">
     <value>Changelog</value>
   </data>
+  <data name="QuickMemoryViewerButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Quick memory view</value>
+  </data>
+  <data name="VirtualKeyboardButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Brainf*ck# operators keyboard</value>
+  </data>
 </root>

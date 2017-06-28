@@ -282,7 +282,7 @@
                 <customCommandBar:CustomCommandBarButton
                     Label="Browse code library"
                     x:Uid="CodeLibraryButton"
-                    Icon="&#xE756;"
+                    Icon="&#xED25;"
                     Click="{x:Bind RequestShowCodeLibrary}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
@@ -302,7 +302,7 @@
                 <customCommandBar:CustomCommandBarButton
                     Label="About"
                     x:Uid="AboutButton"
-                    Icon="&#xE939;"
+                    Icon="&#xED15;"
                     Click="AboutButton_Click"/>
             </customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
         </customCommandBar:CommandBarWithButtonsAnimations>

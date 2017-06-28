@@ -536,6 +536,14 @@ NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le
           <source>Changelog</source>
           <target state="translated">Novità</target>
         </trans-unit>
+        <trans-unit id="QuickMemoryViewerButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Quick memory view</source>
+          <target state="translated">Vista rapida memoria</target>
+        </trans-unit>
+        <trans-unit id="VirtualKeyboardButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Brainf*ck# operators keyboard</source>
+          <target state="translated">Tastiera operatori Brainf*ck#</target>
+        </trans-unit>
       </group>
     </body>
   </file>

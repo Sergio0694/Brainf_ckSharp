@@ -410,4 +410,10 @@ NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le
   <data name="Changelog" xml:space="preserve">
     <value>Novità</value>
   </data>
+  <data name="QuickMemoryViewerButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Vista rapida memoria</value>
+  </data>
+  <data name="VirtualKeyboardButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Tastiera operatori Brainf*ck#</value>
+  </data>
 </root>
