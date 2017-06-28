@@ -5,6 +5,7 @@
     /// </summary>
     public enum AppSettingsKeys
     {
-        WelcomeMessageShown
+        WelcomeMessageShown,
+        ByteOverflowModeEnabled
     }
 }

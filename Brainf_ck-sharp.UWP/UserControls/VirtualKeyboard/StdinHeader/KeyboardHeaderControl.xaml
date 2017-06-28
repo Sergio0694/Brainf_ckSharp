@@ -72,10 +72,13 @@
             
             <!--Toggle button-->
             <ToggleButton
+                x:Name="OverflowSwitchButton"
                 x:Uid="OverflowSwitchButton"
                 ToolTipService.ToolTip="Toggle overflow mode"
                 Margin="-1,0,0,0"
                 Padding="1,0,0,0"
+                Checked="{x:Bind ToggleOverflowMode}"
+                Unchecked="{x:Bind ToggleOverflowMode}"
                 Style="{StaticResource WideToggleButtonWithAccentColor}">
 
                 <!--Icon-->

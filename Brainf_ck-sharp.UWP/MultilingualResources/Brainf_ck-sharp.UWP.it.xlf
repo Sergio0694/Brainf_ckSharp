@@ -546,7 +546,7 @@ NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le
         </trans-unit>
         <trans-unit id="OverflowSwitchButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Toggle overflow mode</source>
-          <target state="new">Toggle overflow mode</target>
+          <target state="translated">Cambia modalità overflow</target>
         </trans-unit>
       </group>
     </body>
