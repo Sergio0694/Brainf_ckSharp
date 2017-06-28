@@ -9,7 +9,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
     {
         public KeyboardSectionHeaderButton()
         {
-            this.InitializeComponent(); VisualStateManager.GoToState(this, "Default", false);
+            this.InitializeComponent();
+            VisualStateManager.GoToState(this, "Default", false);
         }
 
         /// <summary>

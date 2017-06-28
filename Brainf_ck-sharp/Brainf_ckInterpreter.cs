@@ -153,7 +153,7 @@ namespace Brainf_ck_sharp
         /// <summary>
         /// Gets the maximum allowed size for the output buffer
         /// </summary>
-        private const int StdoutBufferSizeLimit = 512;
+        private const int StdoutBufferSizeLimit = 1024;
 
         /// <summary>
         /// Executes the input script

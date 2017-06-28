@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using Brainf_ck_sharp;
+using Brainf_ck_sharp.Enums;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
@@ -114,9 +115,9 @@ namespace Brainf_ck_sharp_UWP.Views
                     chuncks.Add(text.Substring(previous, breakpoint - previous));
                     previous = breakpoint;
                 }
-                factory = () => Brainf_ckInterpreter.InitializeSession(chuncks, e.Stdin, 64, 1000);
+                factory = () => Brainf_ckInterpreter.InitializeSession(chuncks, e.Stdin, OverflowMode.ByteOverflow, 64, 1000);
             }
-            else factory = () => Brainf_ckInterpreter.InitializeSession(new[] { text }, e.Stdin, 64, 1000);
+            else factory = () => Brainf_ckInterpreter.InitializeSession(new[] { text }, e.Stdin, OverflowMode.ByteOverflow, 64, 1000);
 
             // Display the execution popup
             IDERunResultFlyout flyout = new IDERunResultFlyout();

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Brainf_ck_sharp;
+using Brainf_ck_sharp.Enums;
 using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels.ConsoleModels;
@@ -190,7 +191,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             CanRestart = true;
             SendCommandAvailableMessages(false);
             String command = ((ConsoleUserCommand)Source.LastOrDefault()).Command;
-            InterpreterResult result = await Task.Run(() => Brainf_ckInterpreter.Run(command, stdin, State, 1000));
+            InterpreterResult result = await Task.Run(() => Brainf_ckInterpreter.Run(command, stdin, State, OverflowMode.ByteOverflow, 1000));
             if (result.HasFlag(InterpreterExitCode.Success) &&
                 result.HasFlag(InterpreterExitCode.TextOutput))
             {

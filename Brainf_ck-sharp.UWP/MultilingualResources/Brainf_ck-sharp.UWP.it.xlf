@@ -544,6 +544,10 @@ NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le
           <source>Delete</source>
           <target state="translated">Cancella</target>
         </trans-unit>
+        <trans-unit id="OverflowSwitchButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Toggle overflow mode</source>
+          <target state="new">Toggle overflow mode</target>
+        </trans-unit>
       </group>
     </body>
   </file>

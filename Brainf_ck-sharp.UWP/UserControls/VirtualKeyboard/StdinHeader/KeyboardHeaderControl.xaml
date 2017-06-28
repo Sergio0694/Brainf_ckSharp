@@ -14,12 +14,13 @@
             <ColumnDefinition Width="48"/>
             <ColumnDefinition Width="48"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="48"/>
         </Grid.ColumnDefinitions>
         
         <!--Decorator on the top left-->
         <Rectangle
             Grid.ColumnSpan="2"
-            Fill="{ThemeResource TextControlBorderBrush}"
+            Fill="{ThemeResource ShellSeparatorLineFillBrush}"
             VerticalAlignment="Top"
             Height="1"
             Canvas.ZIndex="1"/>
@@ -44,8 +45,48 @@
         <!--Stdin-->
         <TextBox 
             Grid.Column="2"
+            Canvas.ZIndex="2"
             Style="{StaticResource DarkTextBox}"
             PlaceholderText="Stdin buffer"
             x:Name="StdinBox"/>
+        
+        <!--Overflow selector-->
+        <Grid Grid.Column="3">
+            
+            <!--Custom border-->
+            <Rectangle
+                Fill="{ThemeResource ShellSeparatorLineFillBrush}"
+                VerticalAlignment="Top"
+                Canvas.ZIndex="1"
+                Height="1"/>
+            <Rectangle
+                Fill="{ThemeResource ShellSeparatorLineFillBrush}"
+                HorizontalAlignment="Right"
+                Canvas.ZIndex="1"
+                Width="1"/>
+            <Rectangle
+                Fill="{ThemeResource ShellSeparatorLineFillBrush}"
+                VerticalAlignment="Bottom"
+                Canvas.ZIndex="1"
+                Height="1"/>
+            
+            <!--Toggle button-->
+            <ToggleButton
+                x:Uid="OverflowSwitchButton"
+                ToolTipService.ToolTip="Toggle overflow mode"
+                Margin="-1,0,0,0"
+                Padding="1,0,0,0"
+                Style="{StaticResource WideToggleButtonWithAccentColor}">
+
+                <!--Icon-->
+                <TextBlock
+                    FontFamily="Segoe MDL2 Assets"
+                    FontSize="{StaticResource FontIconTextBlockSize}"
+                    IsTextScaleFactorEnabled="False"
+                    Text="&#xE1CA;"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+            </ToggleButton>
+        </Grid>
     </Grid>
 </UserControl>
