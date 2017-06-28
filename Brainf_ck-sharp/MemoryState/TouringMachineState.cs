@@ -103,7 +103,23 @@ namespace Brainf_ck_sharp.MemoryState
         [Pure, NotNull]
         internal TouringMachineState Clone() => new TouringMachineState(Memory) { Position = Position };
 
-        #region Overflow checks
+        #region Overflow
+
+        /// <inheritdoc cref="IReadonlyTouringMachineState"/>
+        public IReadonlyTouringMachineState ApplyByteOverflow()
+        {
+            // Quickly copy the current state without values greater than 255 (replace with Parallel.For when supported)
+            ushort[] copy = new ushort[Count];
+            unsafe
+            {
+                fixed (ushort* cp = copy, mp = Memory)
+                    for (int i = 0; i < Count; i++)
+                        cp[i] = mp[i] > byte.MaxValue
+                            ? (ushort)(mp[i] % byte.MaxValue)
+                            : mp[i];
+            }
+            return new TouringMachineState(copy) { Position = Position };
+        }
 
         /// <summary>
         /// Gets whether or not the current cell is zero

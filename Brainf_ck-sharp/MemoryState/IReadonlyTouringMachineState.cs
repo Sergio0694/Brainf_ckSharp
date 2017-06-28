@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp.MemoryState
 {
@@ -16,5 +17,11 @@ namespace Brainf_ck_sharp.MemoryState
         /// Gets the current value for the memory state
         /// </summary>
         Brainf_ckMemoryCell Current { get; }
+
+        /// <summary>
+        /// Returns a new instance where all the cells have been updated to be lower than 255
+        /// </summary>
+        [NotNull]
+        IReadonlyTouringMachineState ApplyByteOverflow();
     }
 }
