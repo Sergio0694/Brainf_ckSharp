@@ -30,10 +30,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             // Create the output collection
             return new List<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<String>>>
             {
-                CreateChangelogEntry("1.1.1.0", 2017, 7, 5, new List<String>
+                CreateChangelogEntry("1.1.1.0", 2017, 7, 4, new List<String>
                 {
                     "Added a button to delete the previous character in the IDE",
                     "It is no longer possible to try to run code with a syntax error from the IDE",
+                    "Fixed an issue that was causing the save button to be disabled when navigating away and then back into the IDE",
                     "Minor UI tweaks"
                 }),
                 CreateChangelogEntry("1.1.0.0", 2017, 6, 30, new List<String>

@@ -53,6 +53,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             BreakpointsExtractor = breakpointsExtractor;
         }
 
+        // Indicates whether or not the view model instance hasn't already been enabled before
+        private bool _Startup = true;
+
         private bool _IsEnabled;
 
         /// <summary>
@@ -85,8 +88,12 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                             if (Document.Selection.Length == 0 && Document.Selection.StartPosition > 0) Document.Selection.StartPosition--;
                             Document.Selection.SetText(TextSetOptions.None, String.Empty);
                         });
-                        Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(false, true)); // Default save buttons status
                         SendMessages();
+                        if (_Startup)
+                        {
+                            Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(false, true)); // Default save buttons status
+                            _Startup = false;
+                        }
                     }
                     else Messenger.Default.Unregister(this);
                 }
