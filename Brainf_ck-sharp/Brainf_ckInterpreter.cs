@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Brainf_ck_sharp.Enums;
 using Brainf_ck_sharp.Helpers;
 using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp.ReturnTypes;
@@ -29,14 +30,15 @@ namespace Brainf_ck_sharp
         /// </summary>
         /// <param name="source">The source code with the script to execute</param>
         /// <param name="arguments">The arguments for the script</param>
+        /// <param name="mode">Indicates the desired overflow mode for the script to run</param>
         /// <param name="size">The size of the memory to use to run the script</param>
         /// <param name="threshold">The optional time threshold to run the script</param>
         [PublicAPI]
         [Pure, NotNull]
-        public static InterpreterResult Run([NotNull] String source, [NotNull] String arguments,
+        public static InterpreterResult Run([NotNull] String source, [NotNull] String arguments, OverflowMode mode = OverflowMode.ShortNoOverflow,
             int size = 64, int? threshold = null)
         {
-            return TryRun(source, arguments, new TouringMachineState(size), threshold);
+            return TryRun(source, arguments, new TouringMachineState(size), mode, threshold);
         }
 
         /// <summary>
@@ -45,15 +47,16 @@ namespace Brainf_ck_sharp
         /// <param name="source">The source code with the script to execute</param>
         /// <param name="arguments">The arguments for the script</param>
         /// <param name="state">The initial memory state to run the script</param>
+        /// <param name="mode">Indicates the desired overflow mode for the script to run</param>
         /// <param name="threshold">The optional time threshold to run the script</param>
         [PublicAPI]
         [Pure, NotNull]
         public static InterpreterResult Run([NotNull] String source, [NotNull] String arguments,
-            [NotNull] IReadonlyTouringMachineState state, int? threshold = null)
+            [NotNull] IReadonlyTouringMachineState state, OverflowMode mode = OverflowMode.ShortNoOverflow, int? threshold = null)
         {
             if (state is TouringMachineState touring)
             {
-                return TryRun(source, arguments, touring.Clone(), threshold);
+                return TryRun(source, arguments, touring.Clone(), mode, threshold);
             }
             throw new ArgumentException();
         }
@@ -63,12 +66,13 @@ namespace Brainf_ck_sharp
         /// </summary>
         /// <param name="source">The source code to use to initialize the session. A breakpoint will be added at the start of each code chunk after the first one</param>
         /// <param name="arguments">The optional arguments for the script</param>
+        /// <param name="mode">Indicates the desired overflow mode for the script to run</param>
         /// <param name="size">The size of the memory state to use for the session</param>
         /// <param name="threshold">An optional time threshold for the execution of the whole session</param>
         [PublicAPI]
         [Pure, NotNull]
         public static InterpreterExecutionSession InitializeSession([NotNull] IReadOnlyList<String> source, [NotNull] String arguments,
-            int size = 64, int? threshold = null)
+            OverflowMode mode = OverflowMode.ShortNoOverflow, int size = 64, int? threshold = null)
         {
             TouringMachineState state = new TouringMachineState(size);
             IReadOnlyList<IReadOnlyList<char>> chunks = source.Select(chunk => FindExecutableCode(chunk).ToArray()).ToArray();
@@ -76,7 +80,7 @@ namespace Brainf_ck_sharp
             {
                 return new InterpreterExecutionSession(
                     new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.NoCodeInterpreted, state,
-                    TimeSpan.Zero, String.Empty, String.Empty, 0, null, null), null);
+                    TimeSpan.Zero, String.Empty, String.Empty, 0, null, null), null, mode);
             }
 
             List<Brainf_ckBinaryItem> executable = new List<Brainf_ckBinaryItem>();
@@ -93,15 +97,15 @@ namespace Brainf_ck_sharp
             {
                 return new InterpreterExecutionSession(
                     new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.MismatchedParentheses, state,
-                    TimeSpan.Zero, String.Empty, executable.Select(op => op.Operator).AggregateToString(), 0, null, null), null);
+                    TimeSpan.Zero, String.Empty, executable.Select(op => op.Operator).AggregateToString(), 0, null, null), null, mode);
             }
 
             // Prepare the input and output arguments
             Queue<char> input = arguments.Length > 0 ? new Queue<char>(arguments) : new Queue<char>();
             StringBuilder output = new StringBuilder();
 
-            InterpreterResult result = TryRun(executable, input, output, state, threshold, TimeSpan.Zero, 0, null, breakpoints.Count > 0 ? breakpoints : null);
-            return new InterpreterExecutionSession(result, new SessionDebugData(executable, input, output, threshold, breakpoints));
+            InterpreterResult result = TryRun(executable, input, output, state, mode, threshold, TimeSpan.Zero, 0, null, breakpoints.Count > 0 ? breakpoints : null);
+            return new InterpreterExecutionSession(result, new SessionDebugData(executable, input, output, threshold, breakpoints), mode);
         }
 
         /// <summary>
@@ -157,10 +161,11 @@ namespace Brainf_ck_sharp
         /// <param name="source">The source code with the script to execute</param>
         /// <param name="arguments">The arguments for the script</param>
         /// <param name="state">The initial memory state to run the script</param>
+        /// <param name="mode">Indicates the desired overflow mode for the script to run</param>
         /// <param name="threshold">The optional time threshold to run the script</param>
         [Pure, NotNull]
         private static InterpreterResult TryRun([NotNull] String source, [NotNull] String arguments,
-            [NotNull] TouringMachineState state, int? threshold)
+            [NotNull] TouringMachineState state, OverflowMode mode, int? threshold)
         {
             // Get the operators to execute and check if the source is empty
             IReadOnlyList<Brainf_ckBinaryItem> executable = FindExecutableCode(source).Select((c, i) => new Brainf_ckBinaryItem((uint)i, c)).ToArray();
@@ -182,7 +187,7 @@ namespace Brainf_ck_sharp
             StringBuilder output = new StringBuilder();
 
             // Execute the code
-            return TryRun(executable, input, output, state, threshold, TimeSpan.Zero, 0, null, null);
+            return TryRun(executable, input, output, state, mode, threshold, TimeSpan.Zero, 0, null, null);
         }
 
         /// <summary>
@@ -192,6 +197,7 @@ namespace Brainf_ck_sharp
         /// <param name="input">The stdin buffer</param>
         /// <param name="output">The stdout buffer</param>
         /// <param name="state">The curret memory state to run or continue the script</param>
+        /// <param name="mode">Indicates the desired overflow mode for the script to run</param>
         /// <param name="threshold">The optional time threshold for the execution of the script</param>
         /// <param name="elapsed">The elapsed time since the beginning of the script (if there's an execution session in progress)</param>
         /// <param name="operations">The number of previous operations executed in the current script, if it's being resumed</param>
@@ -199,7 +205,7 @@ namespace Brainf_ck_sharp
         /// <param name="breakpoints">The optional list of breakpoints in the input source code</param>
         [Pure, NotNull]
         private static InterpreterResult TryRun([NotNull] IReadOnlyList<Brainf_ckBinaryItem> executable, [NotNull] Queue<char> input, [NotNull] StringBuilder output,
-            [NotNull] TouringMachineState state, int? threshold, TimeSpan elapsed, uint operations, uint? jump, IReadOnlyList<uint> breakpoints)
+            [NotNull] TouringMachineState state, OverflowMode mode, int? threshold, TimeSpan elapsed, uint operations, uint? jump, IReadOnlyList<uint> breakpoints)
         {
             // Preliminary tests
             if (executable.Count == 0) throw new ArgumentException("The source code can't be empty");
@@ -281,7 +287,8 @@ namespace Brainf_ck_sharp
                             // *ptr++
                             case '+':
                                 if (jump != null && !reached) continue;
-                                if (state.CanIncrement) state.Plus();
+                                if (mode == OverflowMode.ByteOverflow && state.IsAtByteMax) state.Input((char)0);
+                                else if (state.CanIncrement) state.Plus();
                                 else return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                        InterpreterExitCode.ExceptionThrown |
                                                                        InterpreterExitCode.MaxValueExceeded,
@@ -293,6 +300,7 @@ namespace Brainf_ck_sharp
                             case '-':
                                 if (jump != null && !reached) continue;
                                 if (state.CanDecrement) state.Minus();
+                                else if (mode == OverflowMode.ByteOverflow) state.Input((char)byte.MaxValue);
                                 else return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                        InterpreterExitCode.ExceptionThrown |
                                                                        InterpreterExitCode.NegativeValue,
@@ -357,7 +365,21 @@ namespace Brainf_ck_sharp
                             // *ptr = getch()
                             case ',':
                                 if (jump != null && !reached) continue;
-                                if (input.Count > 0) state.Input(input.Dequeue());
+                                if (input.Count > 0)
+                                {
+                                    // Read the new character
+                                    char c = input.Dequeue();
+                                    if (mode == OverflowMode.ShortNoOverflow)
+                                    {
+                                        // Insert it if possible when the overflow is disabled
+                                        if (c <= short.MaxValue) state.Input(c);
+                                        else return new InterpreterWorkingData(InterpreterExitCode.Failure |
+                                                                               InterpreterExitCode.ExceptionThrown |
+                                                                               InterpreterExitCode.NegativeValue,
+                                                                               new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached, partial);
+                                    }
+                                    else state.Input((char)(c % byte.MaxValue));
+                                }
                                 else return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                        InterpreterExitCode.ExceptionThrown |
                                                                        InterpreterExitCode.StdinBufferExhausted,
@@ -427,9 +449,9 @@ namespace Brainf_ck_sharp
         internal static InterpreterExecutionSession ContinueSession([NotNull] InterpreterExecutionSession session)
         {
             InterpreterResult step = TryRun(session.DebugData.Source, session.DebugData.Stdin, session.DebugData.Stdout,
-                (TouringMachineState)session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.ElapsedTime, session.CurrentResult.TotalOperations,
-                session.CurrentResult.BreakpointPosition, session.DebugData.Breakpoints);
-            return new InterpreterExecutionSession(step, session.DebugData);
+                (TouringMachineState)session.CurrentResult.MachineState, session.Mode, session.DebugData.Threshold, session.CurrentResult.ElapsedTime, 
+                session.CurrentResult.TotalOperations, session.CurrentResult.BreakpointPosition, session.DebugData.Breakpoints);
+            return new InterpreterExecutionSession(step, session.DebugData, session.Mode);
         }
 
         /// <summary>
@@ -440,9 +462,9 @@ namespace Brainf_ck_sharp
         internal static InterpreterExecutionSession RunSessionToCompletion([NotNull] InterpreterExecutionSession session)
         {
             InterpreterResult step = TryRun(session.DebugData.Source, session.DebugData.Stdin, session.DebugData.Stdout,
-                (TouringMachineState)session.CurrentResult.MachineState, session.DebugData.Threshold, session.CurrentResult.ElapsedTime, session.CurrentResult.TotalOperations,
-                session.CurrentResult.BreakpointPosition, null);
-            return new InterpreterExecutionSession(step, session.DebugData);
+                (TouringMachineState)session.CurrentResult.MachineState, session.Mode, session.DebugData.Threshold, session.CurrentResult.ElapsedTime, 
+                session.CurrentResult.TotalOperations, session.CurrentResult.BreakpointPosition, null);
+            return new InterpreterExecutionSession(step, session.DebugData, session.Mode);
         }
 
         /// <summary>

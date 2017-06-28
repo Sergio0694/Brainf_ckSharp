@@ -103,6 +103,20 @@ namespace Brainf_ck_sharp.MemoryState
         [Pure, NotNull]
         internal TouringMachineState Clone() => new TouringMachineState(Memory) { Position = Position };
 
+        #region Overflow checks
+
+        /// <summary>
+        /// Gets whether or not the current cell is zero
+        /// </summary>
+        internal bool IsAtZero => Memory[Position] == 0;
+
+        /// <summary>
+        /// Gets whether or not the current cell is at 255
+        /// </summary>
+        internal bool IsAtByteMax => Memory[Position] == byte.MaxValue;
+
+        #endregion
+
         #region IReadOnlyList<ushort>
 
         /// <inheritdoc cref="IEnumerable{T}"/>

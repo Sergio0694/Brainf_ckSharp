@@ -1,4 +1,5 @@
 ﻿using System;
+using Brainf_ck_sharp.Enums;
 using Brainf_ck_sharp.Helpers;
 using JetBrains.Annotations;
 
@@ -22,6 +23,11 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// </summary>
         public bool CanContinue => CurrentResult.HasFlag(InterpreterExitCode.Success) &&
                                    CurrentResult.HasFlag(InterpreterExitCode.BreakpointReached);
+
+        /// <summary>
+        /// Gets the overflow mode being used in the current session
+        /// </summary>
+        public OverflowMode Mode { get; }
 
         /// <summary>
         /// Continues the script execution from the current state
@@ -60,10 +66,12 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// </summary>
         /// <param name="result">The current result</param>
         /// <param name="data">The debug data associated with the current state</param>
-        internal InterpreterExecutionSession(InterpreterResult result, SessionDebugData data)
+        /// <param name="mode">Indicates the desired overflow mode for the script to run</param>
+        internal InterpreterExecutionSession(InterpreterResult result, SessionDebugData data, OverflowMode mode)
         {
             CurrentResult = result;
             DebugData = data;
+            Mode = mode;
         }
 
         /// <summary>
@@ -72,7 +80,7 @@ namespace Brainf_ck_sharp.ReturnTypes
         [Pure, NotNull]
         internal InterpreterExecutionSession Clone()
         {
-            return new InterpreterExecutionSession(CurrentResult.Clone(), DebugData.Clone());
+            return new InterpreterExecutionSession(CurrentResult.Clone(), DebugData.Clone(), Mode);
         }
 
         #endregion
