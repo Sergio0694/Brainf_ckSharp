@@ -413,4 +413,7 @@ NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le
   <data name="VirtualKeyboardButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Tastiera operatori Brainf*ck#</value>
   </data>
+  <data name="DeleteButton.Label" xml:space="preserve">
+    <value>Cancella</value>
+  </data>
 </root>

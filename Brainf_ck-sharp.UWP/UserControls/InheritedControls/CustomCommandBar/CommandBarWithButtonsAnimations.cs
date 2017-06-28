@@ -181,11 +181,17 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
 
                 // Fade in the pending buttons and get the last Storyboard
                 Storyboard fadeIn = null;
+                foreach (ICustomCommandBarPrimaryItem upcoming in upcomingButtons)
+                {
+                    // Preliminary loop needed to avoid UI glitches on small screens (if the buttons don't fit)
+                    upcoming.Control.Opacity = 0;
+                    upcoming.Control.Visibility = Visibility.Visible;
+                }
+                
+                // Actual fade in loop
                 for (int i = upcomingButtons.Length - 1; i >= 0; i--)
                 {
                     ICustomCommandBarPrimaryItem pendingButton = upcomingButtons[i];
-                    pendingButton.Control.Opacity = 0;
-                    pendingButton.Control.Visibility = Visibility.Visible;
                     if (i > 0)
                     {
                         pendingButton.Control.StartXAMLTransformFadeSlideAnimation(0, pendingButton.DesiredOpacity, TranslationAxis.X, -ButtonsAnimationOffset, 0, ContentAnimationDuration, null, null, EasingFunctionNames.CircleEaseOut);
