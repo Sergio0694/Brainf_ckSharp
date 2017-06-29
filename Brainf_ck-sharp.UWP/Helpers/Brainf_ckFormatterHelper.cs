@@ -24,6 +24,19 @@ namespace Brainf_ck_sharp_UWP.Helpers
         };
 
         /// <summary>
+        /// Checks whether or not two operators have the same highlighted color
+        /// </summary>
+        /// <param name="first">The first operator</param>
+        /// <param name="second">The second operator</param>
+        public static bool HaveSameColor(char first, char second) => first == second ||
+                                                                     first == '>' && second == '<' ||
+                                                                     first == '<' && second == '>' ||
+                                                                     first == '+' && second == '-' ||
+                                                                     first == '-' && second == '+' ||
+                                                                     first == '[' && second == ']' ||
+                                                                     first == ']' && second == '[';
+
+        /// <summary>
         /// Returns the corresponding color from a given character in a Brainf_ck source code
         /// </summary>
         /// <param name="c">The character to parse</param>

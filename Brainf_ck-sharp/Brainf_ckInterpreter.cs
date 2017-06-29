@@ -20,7 +20,7 @@ namespace Brainf_ck_sharp
         /// Gets the collection of valid Brainf_ck operators
         /// </summary>
         [NotNull]
-        public static IReadOnlyCollection<char> Operators { get; } = new[] { '+', '-', '>', '<', '.', ',', '[', ']' };
+        public static IReadOnlyCollection<char> Operators { get; } = new HashSet<char>(new[] { '+', '-', '>', '<', '.', ',', '[', ']' });
 
         #region Public APIs
 
