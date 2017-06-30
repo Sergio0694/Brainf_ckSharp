@@ -535,7 +535,7 @@ NOTE: the app might sometimes crash when using the virtual arrows keypad in the 
     <value>A real ninjacat!</value>
   </data>
   <data name="ARealNinjacatBody" xml:space="preserve">
-    <value>It's awesome to know you're having fun with the app so far!
+    <value>It's great to know you're having fun with the app so far!
 Would you like to post a review in the Store to support the developer?</value>
   </data>
   <data name="ConfirmBlock.Text" xml:space="preserve">

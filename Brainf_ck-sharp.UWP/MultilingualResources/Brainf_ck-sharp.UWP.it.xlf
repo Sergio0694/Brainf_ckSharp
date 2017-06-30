@@ -575,7 +575,7 @@ NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le
           <target state="translated">Un vero ninjacat!</target>
         </trans-unit>
         <trans-unit id="ARealNinjacatBody" translate="yes" xml:space="preserve">
-          <source>It's awesome to know you're having fun with the app so far!
+          <source>It's great to know you're having fun with the app so far!
 Would you like to post a review in the Store to support the developer?</source>
           <target state="translated">È fantastico sapere che ti stai divertendo con l'app!
 Vorresti pubblicare una recensione nello Store per mostrare il tuo supporto allo sviluppatore?</target>

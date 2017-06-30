@@ -111,6 +111,9 @@ namespace Brainf_ck_sharp_UWP.UserControls
             FadeCanvas.StartCompositionFadeAnimation(null, shown ? 1 : 0, 250, null, EasingFunctionNames.Linear);
         }
 
+        // The delay in ms for the startup prompts tp display to the user
+        private const int StartupPromptsPopupDelay = 1400;
+
         // Initialize the effects
         private async void Shell_Loaded(object sender, RoutedEventArgs e)
         {
@@ -146,7 +149,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             if (AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.WelcomeMessageShown), out bool shown) && !shown)
             {
                 // Show the message
-                Task.Delay(2000).ContinueWith(t =>
+                Task.Delay(StartupPromptsPopupDelay).ContinueWith(t =>
                 {
                     FlyoutManager.Instance.Show(LocalizationManager.GetResource("DevMessage"), LocalizationManager.GetResource("WelcomeText"));
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
@@ -158,7 +161,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                      AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.AppStartups), out uint startups) && startups > 4)
             {
                 // Show the review prompt
-                Task.Delay(2000).ContinueWith(t =>
+                Task.Delay(StartupPromptsPopupDelay).ContinueWith(t =>
                 {
                     ReviewPromptFlyout reviewFlyout = new ReviewPromptFlyout();
                     FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("HowsItGoing"), reviewFlyout, 

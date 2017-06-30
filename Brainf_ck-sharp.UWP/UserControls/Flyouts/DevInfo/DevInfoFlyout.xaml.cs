@@ -23,13 +23,14 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
             BuildBlock.Text = AppSettingsManager.AppVersion;
         }
 
-        // The current ProductId for Brainf*ck#
-        private const String ProductId = "9nblgggzhvq5";
-
         // Opens the Store review page for the app
         private void RateStoreButton_Click(object sender, RoutedEventArgs e)
         {
-            Launcher.LaunchUriAsync(new Uri($"ms-windows-store://review/?ProductId={ProductId}")).AsTask().Forget();
+            LauncherHelper.OpenStoreAppReviewPageAsync().AsTask().Forget();
+            if (AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.ReviewPromptShown), out bool reviewed) && !reviewed)
+            {
+                AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.ReviewPromptShown), true, SettingSaveMode.OverwriteIfExisting);
+            }
         }
 
         // Sends a feedback email
