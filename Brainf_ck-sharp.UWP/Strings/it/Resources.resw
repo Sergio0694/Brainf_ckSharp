@@ -281,9 +281,6 @@
   <data name="RedoButton.Label" xml:space="preserve">
     <value>Ripeti</value>
   </data>
-  <data name="UndoButton.Label" xml:space="preserve">
-    <value>Annulla</value>
-  </data>
   <data name="NewLineButton.Label" xml:space="preserve">
     <value>Nuova riga</value>
   </data>
@@ -404,13 +401,19 @@ NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le
   <data name="ReleaseNotesBlock.Text" xml:space="preserve">
     <value>Note di versione</value>
   </data>
-  <data name="AppBuildNumber.Text" xml:space="preserve">
-    <value>Numero build</value>
-  </data>
   <data name="ChangelogBlock.Text" xml:space="preserve">
     <value>Novità</value>
   </data>
   <data name="Changelog" xml:space="preserve">
     <value>Novità</value>
+  </data>
+  <data name="QuickMemoryViewerButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Vista rapida memoria</value>
+  </data>
+  <data name="VirtualKeyboardButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Tastiera operatori Brainf*ck#</value>
+  </data>
+  <data name="DeleteButton.Label" xml:space="preserve">
+    <value>Cancella</value>
   </data>
 </root>

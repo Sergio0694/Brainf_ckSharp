@@ -399,9 +399,6 @@
   <data name="RedoButton.Label" xml:space="preserve">
     <value>Redo</value>
   </data>
-  <data name="UndoButton.Label" xml:space="preserve">
-    <value>Undo</value>
-  </data>
   <data name="MoveButtonmLabel" xml:space="preserve">
     <value>Move</value>
   </data>
@@ -507,9 +504,6 @@ Please feel free to send me an email if you have suggestions or feedback, or if 
 
 NOTE: the app might sometimes crash when using the virtual arrows keypad in the IDE or when loading a source code. That's due to a bug in one of the controls I'm using, I've already sent a feedback to Microsoft and hopefully that'll get fixed soon!</value>
   </data>
-  <data name="AppBuildNumber.Text" xml:space="preserve">
-    <value>Build version</value>
-  </data>
   <data name="ChangelogBlock.Text" xml:space="preserve">
     <value>Changelog</value>
   </data>
@@ -518,5 +512,14 @@ NOTE: the app might sometimes crash when using the virtual arrows keypad in the 
   </data>
   <data name="Changelog" xml:space="preserve">
     <value>Changelog</value>
+  </data>
+  <data name="QuickMemoryViewerButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Quick memory view</value>
+  </data>
+  <data name="VirtualKeyboardButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Brainf*ck# operators keyboard</value>
+  </data>
+  <data name="DeleteButton.Label" xml:space="preserve">
+    <value>Delete</value>
   </data>
 </root>

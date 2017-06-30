@@ -157,6 +157,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
                 }
                 else fadeOut = pendingButton.Control.GetXAMLTransformFadeSlideStoryboard(1, 0, TranslationAxis.X, 0, -ButtonsAnimationOffset, ContentAnimationDuration, EasingFunctionNames.CircleEaseOut);
             }
+            if (fadeOut == null) throw new InvalidOperationException();
 
             // Resume the rest of the method when the last Storyboard completes
             fadeOut.Completed += async (s, e) =>
@@ -171,6 +172,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
                     where button.DefaultButton == primaryContentEnabled && button.ExtraCondition
                     select button).ToArray();
 
+                // Skip if there are no buttons to show
                 if (upcomingButtons.Length == 0 || _Disposed)
                 {
                     ButtonsSemaphore.Release();
@@ -179,18 +181,25 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
 
                 // Fade in the pending buttons and get the last Storyboard
                 Storyboard fadeIn = null;
+                foreach (ICustomCommandBarPrimaryItem upcoming in upcomingButtons)
+                {
+                    // Preliminary loop needed to avoid UI glitches on small screens (if the buttons don't fit)
+                    upcoming.Control.Opacity = 0;
+                    upcoming.Control.Visibility = Visibility.Visible;
+                }
+                
+                // Actual fade in loop
                 for (int i = upcomingButtons.Length - 1; i >= 0; i--)
                 {
                     ICustomCommandBarPrimaryItem pendingButton = upcomingButtons[i];
-                    pendingButton.Control.Opacity = 0;
-                    pendingButton.Control.Visibility = Visibility.Visible;
-                    if (i != upcomingButtons.Length - 1)
+                    if (i > 0)
                     {
                         pendingButton.Control.StartXAMLTransformFadeSlideAnimation(0, pendingButton.DesiredOpacity, TranslationAxis.X, -ButtonsAnimationOffset, 0, ContentAnimationDuration, null, null, EasingFunctionNames.CircleEaseOut);
                         await Task.Delay(ButtonsFadeDelayBetweenAnimations);
                     }
                     else fadeIn = pendingButton.Control.GetXAMLTransformFadeSlideStoryboard(0, 1, TranslationAxis.X, -ButtonsAnimationOffset, 0, ContentAnimationDuration, EasingFunctionNames.CircleEaseOut);
                 }
+                if (fadeIn == null) throw new InvalidOperationException();
 
                 // Start the target Storyboard and finally store the new parameter value and release the semaphore when the animation completes
                 fadeIn.Completed += (sender, eventArgs) =>

@@ -38,6 +38,7 @@
         DeleteLastCharacter,
         ClearScreen,
         RepeatLastScript,
+        Delete,
         Undo,
         Redo
     }

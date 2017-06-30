@@ -20,7 +20,7 @@ namespace Brainf_ck_sharp
         /// Gets the collection of valid Brainf_ck operators
         /// </summary>
         [NotNull]
-        public static IReadOnlyCollection<char> Operators { get; } = new[] { '+', '-', '>', '<', '.', ',', '[', ']' };
+        public static IReadOnlyCollection<char> Operators { get; } = new HashSet<char>(new[] { '+', '-', '>', '<', '.', ',', '[', ']' });
 
         #region Public APIs
 
@@ -226,7 +226,7 @@ namespace Brainf_ck_sharp
                     // Check the current elapsed time
                     if (threshold.HasValue && timer.ElapsedMilliseconds > threshold.Value + elapsed.TotalMilliseconds)
                     {
-                        return new InterpreterWorkingData(InterpreterExitCode.Failure | InterpreterExitCode.ThresholdExceeded, new[] { new char[0] }, depth, false, 0);
+                        return new InterpreterWorkingData(InterpreterExitCode.Failure | InterpreterExitCode.ThresholdExceeded, new[] { new char[0] }, depth, false, partial);
                     }
 
                     // Iterate over all the commands

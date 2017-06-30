@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
+using Brainf_ck_sharp;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 
@@ -39,17 +41,45 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
 
         private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            // Unpack the arguments
             Span @this = d.To<Span>();
-            String
-                raw = e.NewValue.To<String>(),
-                code = Regex.Replace(raw, @"[^\+\-\[\]\.,><]", "");
-            IEnumerable<Run> runs =
-                from c in code
-                let text = $"{c}{ZeroWidthSpace}"
-                let brush = new SolidColorBrush(Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(c))
-                select new Run { Text = text, Foreground = brush };
+            String raw = e.NewValue.To<String>();
+
+            // Parse the input code
+            StringBuilder builder = new StringBuilder();
+            char last = raw[0];
+            List<Run> inlines = new List<Run>();
+            foreach (char c in raw)
+            {
+                // Only display the language operators
+                if (!Brainf_ckInterpreter.Operators.Contains(c)) continue;
+                if (!Brainf_ckFormatterHelper.HaveSameColor(last, c))
+                {
+                    // Optimize the result by aggregating characters with the same color into the same inline
+                    inlines.Add(new Run
+                    {
+                        Text = builder.ToString(),
+                        Foreground = new SolidColorBrush(Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(last))
+                    });
+                    builder.Clear();
+                    last = c;
+                }
+                builder.Append($"{c}{ZeroWidthSpace}");
+            }
+
+            // Include the latest chunk of operators if present
+            if (builder.Length > 0)
+            {
+                inlines.Add(new Run
+                {
+                    Text = builder.ToString(),
+                    Foreground = new SolidColorBrush(Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(last))
+                });
+            }
+
+            // Append the formatted text
             @this.Inlines.Clear();
-            foreach (Run run in runs) @this.Inlines.Add(run);
+            foreach (Run run in inlines) @this.Inlines.Add(run);
         }
 
         public static IReadOnlyList<String> GetStackTrace(Span element)

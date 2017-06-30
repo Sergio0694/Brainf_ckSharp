@@ -61,6 +61,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 case SharedAction.Redo:
                     RedoAvailable = message.Status;
                     break;
+                case SharedAction.Delete:
+                    DeleteAvailable = message.Status;
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -99,6 +102,17 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         {
             get => _ClearAvailable;
             private set => Set(ref _ClearAvailable, value);
+        }
+
+        private bool _DeleteAvailable;
+
+        /// <summary>
+        /// Gets whether or not the undo delete is enabled in the IDE
+        /// </summary>
+        public bool DeleteAvailable
+        {
+            get => _DeleteAvailable;
+            private set => Set(ref _DeleteAvailable, value);
         }
 
         private bool _UndoAvailable;
@@ -259,6 +273,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// Sends a message to the IDE to add a new '\r' character
         /// </summary>
         public void RequestAddIDENewLine() => Messenger.Default.Send(new IDENewLineRequestedMessage());
+
+        /// <summary>
+        /// Sends a message to the IDE to delete the current character
+        /// </summary>
+        public void RequestIDEDeleteAction() => Messenger.Default.Send(new IDEDeleteCharacterRequestMessage());
 
         #endregion
     }

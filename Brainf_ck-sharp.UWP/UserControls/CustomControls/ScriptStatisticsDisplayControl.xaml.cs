@@ -37,7 +37,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
                     seconds = info.ElapsedTime.Minutes > 9 ? info.ElapsedTime.Seconds.ToString() : $"0{info.ElapsedTime.Seconds}";
                 @this.TimeBlock.Text = $"{minutes}:{seconds}.{info.ElapsedTime.Milliseconds:000}";
                 @this.OperatorsBlock.Text = info.TotalOperations > 1
-                    ? $"{info.TotalOperations} {LocalizationManager.GetResource("LowercaseOperators")}"
+                    ? $"{info.TotalOperations:N0} {LocalizationManager.GetResource("LowercaseOperators")}"
                     : LocalizationManager.GetResource("LowercaseSingleOperator");
             }
         }

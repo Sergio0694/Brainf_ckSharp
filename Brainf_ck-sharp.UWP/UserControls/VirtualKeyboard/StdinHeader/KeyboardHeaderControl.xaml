@@ -30,12 +30,16 @@
             IconText="&#xE92E;"
             x:Name="KeyboardButton"
             IsSelected="True"
-            HeaderSelected="{x:Bind SelectKeyboard}"/>
+            HeaderSelected="{x:Bind SelectKeyboard}"
+            x:Uid="VirtualKeyboardButton"
+            ToolTipService.ToolTip="Brainf*ck# operators keyboard"/>
         <local:KeyboardSectionHeaderButton
             IconText="&#xE96A;"
             Grid.Column="1"
             x:Name="MemoryMapButton"
-            HeaderSelected="{x:Bind SelectMemoryView}"/>
+            HeaderSelected="{x:Bind SelectMemoryView}"
+            x:Uid="QuickMemoryViewerButton"
+            ToolTipService.ToolTip="Quick memory view"/>
         
         <!--Stdin-->
         <TextBox 

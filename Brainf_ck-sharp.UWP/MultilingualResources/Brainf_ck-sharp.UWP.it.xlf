@@ -362,10 +362,6 @@
           <source>Redo</source>
           <target state="translated">Ripeti</target>
         </trans-unit>
-        <trans-unit id="UndoButton.Label" translate="yes" xml:space="preserve">
-          <source>Undo</source>
-          <target state="translated">Annulla</target>
-        </trans-unit>
         <trans-unit id="NewLineButton.Label" translate="yes" xml:space="preserve">
           <source>New line</source>
           <target state="translated">Nuova riga</target>
@@ -528,10 +524,6 @@ NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le
           <source>Release notes</source>
           <target state="translated">Note di versione</target>
         </trans-unit>
-        <trans-unit id="AppBuildNumber.Text" translate="yes" xml:space="preserve">
-          <source>Build version</source>
-          <target state="translated">Numero build</target>
-        </trans-unit>
         <trans-unit id="ChangelogBlock.Text" translate="yes" xml:space="preserve">
           <source>Changelog</source>
           <target state="translated">Novità</target>
@@ -539,6 +531,18 @@ NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le
         <trans-unit id="Changelog" translate="yes" xml:space="preserve">
           <source>Changelog</source>
           <target state="translated">Novità</target>
+        </trans-unit>
+        <trans-unit id="QuickMemoryViewerButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Quick memory view</source>
+          <target state="translated">Vista rapida memoria</target>
+        </trans-unit>
+        <trans-unit id="VirtualKeyboardButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Brainf*ck# operators keyboard</source>
+          <target state="translated">Tastiera operatori Brainf*ck#</target>
+        </trans-unit>
+        <trans-unit id="DeleteButton.Label" translate="yes" xml:space="preserve">
+          <source>Delete</source>
+          <target state="translated">Cancella</target>
         </trans-unit>
       </group>
     </body>

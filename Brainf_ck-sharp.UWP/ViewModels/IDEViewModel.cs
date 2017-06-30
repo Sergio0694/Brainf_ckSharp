@@ -53,6 +53,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             BreakpointsExtractor = breakpointsExtractor;
         }
 
+        // Indicates whether or not the view model instance hasn't already been enabled before
+        private bool _Startup = true;
+
         private bool _IsEnabled;
 
         /// <summary>
@@ -80,8 +83,17 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                             LoadedCodeChanged?.Invoke(this, m.RequestedCode.Code);
                             Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(m.RequestedCode.Type != SavedSourceCodeType.Sample, true));
                         });
-                        Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(false, true)); // Default save buttons status
+                        Messenger.Default.Register<IDEDeleteCharacterRequestMessage>(this, m =>
+                        {
+                            if (Document.Selection.Length == 0 && Document.Selection.StartPosition > 0) Document.Selection.StartPosition--;
+                            Document.Selection.SetText(TextSetOptions.None, String.Empty);
+                        });
                         SendMessages();
+                        if (_Startup)
+                        {
+                            Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(false, true)); // Default save buttons status
+                            _Startup = false;
+                        }
                     }
                     else Messenger.Default.Unregister(this);
                 }
@@ -200,16 +212,22 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// </summary>
         public void SendMessages([CanBeNull] String code = null)
         {
+            // Initial checks
             if (code == null) Document.GetText(TextGetOptions.None, out code);
             Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.ClearScreen, code.Length > 1));
             (bool valid, int error) = Brainf_ckInterpreter.CheckSourceSyntax(code);
             (int row, int col) = code.FindCoordinates(Document.Selection.StartPosition);
-            bool executable = Brainf_ckInterpreter.FindOperators(code);
+            bool executable = Brainf_ckInterpreter.FindOperators(code) && valid;
+            Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.Delete, code.Length > 1 && Document.Selection.StartPosition > 0));
+
+            // Executable code
             if (_CanExecute != executable)
             {
                 Messenger.Default.Send(new IDEExecutableStatusChangedMessage(executable));
                 _CanExecute = executable;
             }
+
+            // Syntax status
             if (valid)
             {
                 Messenger.Default.Send(new IDEStatusUpdateMessage(LocalizationManager.GetResource("Ready"), row, col, _CategorizedCode?.Code.Title));

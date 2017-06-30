@@ -240,10 +240,16 @@
                     x:Uid="NewLineButton"
                     Click="{x:Bind ViewModel.RequestAddIDENewLine}"/>
                 <customCommandBar:CustomCommandBarButton
+                    Label="Delete"
+                    Icon="&#xE750;"
+                    x:Uid="DeleteButton"
+                    IsEnabled="{x:Bind ViewModel.DeleteAvailable, Mode=OneWay, FallbackValue=False}"
+                    Click="{x:Bind ViewModel.RequestIDEDeleteAction}"/>
+                <customCommandBar:CustomCommandBarButton
                     Label="Undo"
                     Icon="&#xE10E;"
                     IsEnabled="{x:Bind ViewModel.UndoAvailable, Mode=OneWay, FallbackValue=False}"
-                    x:Uid="UndoButton"
+                    x:Uid="Undo"
                     Click="{x:Bind ViewModel.RequestIDEUndo}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Redo"
@@ -282,7 +288,7 @@
                 <customCommandBar:CustomCommandBarButton
                     Label="Browse code library"
                     x:Uid="CodeLibraryButton"
-                    Icon="&#xE756;"
+                    Icon="&#xED25;"
                     Click="{x:Bind RequestShowCodeLibrary}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
@@ -302,7 +308,7 @@
                 <customCommandBar:CustomCommandBarButton
                     Label="About"
                     x:Uid="AboutButton"
-                    Icon="&#xE939;"
+                    Icon="&#xED15;"
                     Click="AboutButton_Click"/>
             </customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
         </customCommandBar:CommandBarWithButtonsAnimations>
