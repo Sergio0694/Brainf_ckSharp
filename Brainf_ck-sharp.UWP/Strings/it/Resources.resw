@@ -419,4 +419,10 @@ NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le
   <data name="OverflowSwitchButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Cambia modalità overflow</value>
   </data>
+  <data name="OverflowMode" xml:space="preserve">
+    <value>Modalità overflow</value>
+  </data>
+  <data name="OverflowModeBody" xml:space="preserve">
+    <value>Hai attivato la modalità byte overflow. Questo significa che il massimo valore di ogni cella di memoria sarà 255 e che incrementare una cella oltre quel valore (o decrementarla quando si trova già a 0) comporterà un overflow, cioè se a una cella viene aggiunto 1 da 255 verrà settata a 0, e se viene sottratto 1 da 0 raggiungerà il valore massimo di 255.</value>
+  </data>
 </root>

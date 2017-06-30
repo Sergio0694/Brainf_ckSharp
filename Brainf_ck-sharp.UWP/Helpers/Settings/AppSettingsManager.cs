@@ -35,8 +35,8 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         /// <typeparam name="T">The type of the object bound to the key</typeparam>
         /// <param name="key">The key to check</param>
         /// <param name="keyValue">The value to assign to the dictionary key</param>
-        /// <param name="overwrite">Indicates whether or not to overwrite the setting, if already present</param>
-        public void SetValue<T>(String key, T keyValue, bool overwrite)
+        /// <param name="mode">Indicates whether or not to overwrite the setting, if already present</param>
+        public void SetValue<T>(String key, T keyValue, SettingSaveMode mode)
         {
             // Roaming
             bool existing = false;
@@ -45,7 +45,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
             {
                 RoamingSettings.Add(key, keyValue);
             }
-            else if (overwrite) RoamingSettings[key] = keyValue;
+            else if (mode == SettingSaveMode.OverwriteIfExisting) RoamingSettings[key] = keyValue;
             else existing = RoamingSettings.TryGetValue(key, out roaming);
 
             // Local
@@ -53,7 +53,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
             {
                 LocalSettings.Add(key, existing ? roaming : keyValue);
             }
-            else if (overwrite) LocalSettings[key] = keyValue;
+            else if (mode == SettingSaveMode.OverwriteIfExisting) LocalSettings[key] = keyValue;
             else if (existing) LocalSettings[key] = roaming;
         }
 
@@ -88,6 +88,13 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         }
 
         #endregion
+
+        public void InitializeSettings()
+        {
+            SetValue(nameof(AppSettingsKeys.WelcomeMessageShown), false, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.ByteOverflowModeEnabled), false, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.OverflowToggleMessageShown), false, SettingSaveMode.SkipIfExisting);
+        }
 
         /// <summary>
         /// Gets the app current version in the format "Major.Minor.Build.Revision"

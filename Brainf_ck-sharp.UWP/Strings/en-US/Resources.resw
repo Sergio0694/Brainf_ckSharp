@@ -525,4 +525,10 @@ NOTE: the app might sometimes crash when using the virtual arrows keypad in the 
   <data name="OverflowSwitchButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Toggle overflow mode</value>
   </data>
+  <data name="OverflowMode" xml:space="preserve">
+    <value>Overflow mode</value>
+  </data>
+  <data name="OverflowModeBody" xml:space="preserve">
+    <value>You have enabled the byte overflow mode. This means that the maximum value of each memory cell will now be 255 and that increasing a cell over that value (or decreasing a cell that has a value equal to 0) will cause it to overflow, ie. if it's increased from 255 it will be set to 0, and if it's decreased from 0 it will reach 255.</value>
+  </data>
 </root>

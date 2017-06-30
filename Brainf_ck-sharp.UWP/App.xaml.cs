@@ -79,8 +79,7 @@ namespace Brainf_ck_sharp_UWP
                 Window.Current.Content = shell;
 
                 // Settings
-                AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.WelcomeMessageShown), false, false);
-                AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.ByteOverflowModeEnabled), false, false);
+                AppSettingsManager.Instance.InitializeSettings();
 
                 // Sync the roaming source codes
                 Task.Run(() => SQLiteManager.Instance.TrySyncSharedCodesAsync());

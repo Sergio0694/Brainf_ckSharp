@@ -155,6 +155,7 @@
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\Extensions\_IEnumerableExtensions.cs" />
+    <Compile Include="Helpers\Settings\SettingSaveMode.cs" />
     <Compile Include="Helpers\StorageHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\ShareCharmsHelper.cs" />
     <Compile Include="Messages\Actions\DebugStatusChangedMessage.cs" />

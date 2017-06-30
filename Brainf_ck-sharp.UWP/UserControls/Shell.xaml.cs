@@ -153,7 +153,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
 
                 // Update the setting
-                AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.WelcomeMessageShown), true, true);
+                AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.WelcomeMessageShown), true, SettingSaveMode.OverwriteIfExisting);
             }
         }
 
