@@ -226,10 +226,12 @@
                     Height="40"
                     Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
                     Background="{ThemeResource SystemControlHighlightAccentBrush}"
-                    MaxWidth="220"
+                    MinWidth="160"
                     HorizontalAlignment="Left"
                     Click="ShowChangelogButton_Click">
-                    <Grid Margin="12,0,12,0">
+                    <Grid 
+                        Margin="12,0,12,0"
+                        HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>

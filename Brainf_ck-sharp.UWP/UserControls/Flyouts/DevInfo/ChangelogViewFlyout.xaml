@@ -38,6 +38,9 @@
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     IsItemClickEnabled="False">
+                    <ListView.Footer>
+                        <Grid Height="12"/>
+                    </ListView.Footer>
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <TextBlock
