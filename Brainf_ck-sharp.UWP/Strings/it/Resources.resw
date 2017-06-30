@@ -425,4 +425,38 @@ NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le
   <data name="OverflowModeBody" xml:space="preserve">
     <value>Hai attivato la modalità byte overflow. Questo significa che il massimo valore di ogni cella di memoria sarà 255 e che incrementare una cella oltre quel valore (o decrementarla quando si trova già a 0) comporterà un overflow, cioè se a una cella viene aggiunto 1 da 255 verrà settata a 0, e se viene sottratto 1 da 0 raggiungerà il valore massimo di 255.</value>
   </data>
+  <data name="ThankYouBlock1.Text" xml:space="preserve">
+    <value>Grazie per aver scaricato</value>
+    <comment>This will be "Thank you for downloading Brainf*ck#!"</comment>
+  </data>
+  <data name="ThankYouBlock2.Text" xml:space="preserve">
+    <value>Come ti sei trovato fino ad ora?</value>
+    <comment>It's talking about the app itself</comment>
+  </data>
+  <data name="ConfirmBlock.Text" xml:space="preserve">
+    <value>Conferma</value>
+  </data>
+  <data name="ARealNinjacat" xml:space="preserve">
+    <value>Un vero ninjacat!</value>
+  </data>
+  <data name="ARealNinjacatBody" xml:space="preserve">
+    <value>È fantastico sapere che ti stai divertendo con l'app!
+Vorresti pubblicare una recensione nello Store per mostrare il tuo supporto allo sviluppatore?</value>
+  </data>
+  <data name="HowsItGoing" xml:space="preserve">
+    <value>Come sta andando?</value>
+  </data>
+  <data name="SendMail" xml:space="preserve">
+    <value>Invia email</value>
+  </data>
+  <data name="SorryBody" xml:space="preserve">
+    <value>Vorresti contattare lo sviluppatore e mandare il tuo feedback per fargli sapere se stai avendo dei problemi in particolare con l'app?
+In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app ancora migliore!</value>
+  </data>
+  <data name="SorryTitle" xml:space="preserve">
+    <value>Profondo dispiacere</value>
+  </data>
+  <data name="Sure" xml:space="preserve">
+    <value>Certo!</value>
+  </data>
 </root>

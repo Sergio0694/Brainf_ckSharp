@@ -558,17 +558,49 @@ NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le
         </trans-unit>
         <trans-unit id="ThankYouBlock1.Text" translate="yes" xml:space="preserve">
           <source>Thank you for downloading</source>
-          <target state="new">Thank you for downloading</target>
+          <target state="translated">Grazie per aver scaricato</target>
           <note from="MultilingualBuild" annotates="source" priority="2">This will be "Thank you for downloading Brainf*ck#!"</note>
         </trans-unit>
         <trans-unit id="ThankYouBlock2.Text" translate="yes" xml:space="preserve">
           <source>Are you enjoying it so far?</source>
-          <target state="new">Are you enjoying it so far?</target>
+          <target state="translated">Come ti sei trovato fino ad ora?</target>
           <note from="MultilingualBuild" annotates="source" priority="2">It's talking about the app itself</note>
         </trans-unit>
         <trans-unit id="ConfirmBlock.Text" translate="yes" xml:space="preserve">
           <source>Confirm</source>
-          <target state="new">Confirm</target>
+          <target state="translated">Conferma</target>
+        </trans-unit>
+        <trans-unit id="ARealNinjacat" translate="yes" xml:space="preserve">
+          <source>A real ninjacat!</source>
+          <target state="translated">Un vero ninjacat!</target>
+        </trans-unit>
+        <trans-unit id="ARealNinjacatBody" translate="yes" xml:space="preserve">
+          <source>It's awesome to know you're having fun with the app so far!
+Would you like to post a review in the Store to support the developer?</source>
+          <target state="translated">È fantastico sapere che ti stai divertendo con l'app!
+Vorresti pubblicare una recensione nello Store per mostrare il tuo supporto allo sviluppatore?</target>
+        </trans-unit>
+        <trans-unit id="HowsItGoing" translate="yes" xml:space="preserve">
+          <source>How's it going?</source>
+          <target state="translated">Come sta andando?</target>
+        </trans-unit>
+        <trans-unit id="SendMail" translate="yes" xml:space="preserve">
+          <source>Send email</source>
+          <target state="translated">Invia email</target>
+        </trans-unit>
+        <trans-unit id="SorryBody" translate="yes" xml:space="preserve">
+          <source>Would you like to contact the developer and send your feedback and let him know if you're having any problems in particular?
+This way he'll be able to help you!</source>
+          <target state="translated">Vorresti contattare lo sviluppatore e mandare il tuo feedback per fargli sapere se stai avendo dei problemi in particolare con l'app?
+In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app ancora migliore!</target>
+        </trans-unit>
+        <trans-unit id="SorryTitle" translate="yes" xml:space="preserve">
+          <source>Sorry about that</source>
+          <target state="translated">Profondo dispiacere</target>
+        </trans-unit>
+        <trans-unit id="Sure" translate="yes" xml:space="preserve">
+          <source>Sure!</source>
+          <target state="translated">Certo!</target>
         </trans-unit>
       </group>
     </body>

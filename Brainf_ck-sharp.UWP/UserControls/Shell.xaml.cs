@@ -146,18 +146,28 @@ namespace Brainf_ck_sharp_UWP.UserControls
             if (AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.WelcomeMessageShown), out bool shown) && !shown)
             {
                 // Show the message
-                Task.Delay(1000).ContinueWith(t =>
+                Task.Delay(2000).ContinueWith(t =>
                 {
-                    FlyoutManager.Instance.Show(LocalizationManager.GetResource("DevMessage"), 
-                        LocalizationManager.GetResource("WelcomeText"));
+                    FlyoutManager.Instance.Show(LocalizationManager.GetResource("DevMessage"), LocalizationManager.GetResource("WelcomeText"));
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
 
                 // Update the setting
                 AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.WelcomeMessageShown), true, SettingSaveMode.OverwriteIfExisting);
             }
+            else if (AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.ReviewPromptShown), out bool review) && !review &&
+                     AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.AppStartups), out uint startups) && startups > 4)
+            {
+                // Show the review prompt
+                Task.Delay(2000).ContinueWith(t =>
+                {
+                    ReviewPromptFlyout reviewFlyout = new ReviewPromptFlyout();
+                    FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("HowsItGoing"), reviewFlyout, 
+                        new Thickness(0, 12, 0, 0), FlyoutDisplayMode.ActualHeight).Forget();
+                }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
 
-            ReviewPromptFlyout reviewFlyout = new ReviewPromptFlyout();
-            FlyoutManager.Instance.ShowAsync("How's it going?", reviewFlyout, new Thickness(0, 12, 0, 0), FlyoutDisplayMode.ActualHeight).Forget();
+                // Update the setting
+                AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.ReviewPromptShown), true, SettingSaveMode.OverwriteIfExisting);
+            }
         }
 
         // Disables the swipe gesture for the keyboard pivot (swiping that pivot causes the app to crash)

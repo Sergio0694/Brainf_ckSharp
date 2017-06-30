@@ -7,6 +7,8 @@
     {
         WelcomeMessageShown,
         OverflowToggleMessageShown,
-        ByteOverflowModeEnabled
+        ByteOverflowModeEnabled,
+        ReviewPromptShown,
+        AppStartups
     }
 }

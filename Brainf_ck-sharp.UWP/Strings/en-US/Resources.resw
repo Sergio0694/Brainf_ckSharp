@@ -541,6 +541,9 @@ Would you like to post a review in the Store to support the developer?</value>
   <data name="ConfirmBlock.Text" xml:space="preserve">
     <value>Confirm</value>
   </data>
+  <data name="HowsItGoing" xml:space="preserve">
+    <value>How's it going?</value>
+  </data>
   <data name="SendMail" xml:space="preserve">
     <value>Send email</value>
   </data>

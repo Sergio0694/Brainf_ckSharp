@@ -89,11 +89,25 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
 
         #endregion
 
+        /// <summary>
+        /// Initializes the default app settings
+        /// </summary>
         public void InitializeSettings()
         {
             SetValue(nameof(AppSettingsKeys.WelcomeMessageShown), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.ByteOverflowModeEnabled), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.OverflowToggleMessageShown), false, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.ReviewPromptShown), false, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.AppStartups), 0u, SettingSaveMode.SkipIfExisting);
+        }
+
+        /// <summary>
+        /// Increments the current shared counter of startups for the app
+        /// </summary>
+        public void IncrementStartupsCount()
+        {
+            if (TryGetValue(nameof(AppSettingsKeys.AppStartups), out uint startups))
+                SetValue(nameof(AppSettingsKeys.AppStartups), startups + 1, SettingSaveMode.OverwriteIfExisting);
         }
 
         /// <summary>

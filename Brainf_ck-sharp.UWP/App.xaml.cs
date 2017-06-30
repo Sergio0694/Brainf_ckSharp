@@ -80,6 +80,7 @@ namespace Brainf_ck_sharp_UWP
 
                 // Settings
                 AppSettingsManager.Instance.InitializeSettings();
+                AppSettingsManager.Instance.IncrementStartupsCount();
 
                 // Sync the roaming source codes
                 Task.Run(() => SQLiteManager.Instance.TrySyncSharedCodesAsync());
