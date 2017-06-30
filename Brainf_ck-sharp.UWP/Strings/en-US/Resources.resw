@@ -522,4 +522,7 @@ NOTE: the app might sometimes crash when using the virtual arrows keypad in the 
   <data name="DeleteButton.Label" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="OverflowSwitchButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Toggle overflow mode</value>
+  </data>
 </root>

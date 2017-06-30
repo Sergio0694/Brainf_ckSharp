@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Brainf_ck_sharp;
+using Brainf_ck_sharp.Enums;
 using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels.ConsoleModels;
@@ -22,6 +23,15 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         public ConsoleViewModel()
         {
             Source.Add(new ConsoleUserCommand());
+            Messenger.Default.Register<OverflowModeChangedMessage>(this, m =>
+            {
+                // Check if the mode was enabled and a visual refresh is needed
+                if (m.Mode == OverflowMode.ByteOverflow && State.Any(cell => cell.Value > byte.MaxValue))
+                {
+                    State = State.ApplyByteOverflow();
+                    Messenger.Default.Send(new ConsoleMemoryStateChangedMessage(State));
+                }
+            });
         }
 
         /// <summary>
@@ -46,8 +56,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         Messenger.Default.Register<OperatorAddedMessage>(this, op => TryAddCommandCharacter(op.Operator));
                         Messenger.Default.Register<PlayScriptMessage>(this, m =>
                         {
-                            if (m.Type == ScriptPlayType.Default) ExecuteCommand(m.StdinBuffer).Forget();
-                            else if (m.Type == ScriptPlayType.RepeatedCommand) RepeatLastScript(m.StdinBuffer).Forget();
+                            if (m.Type == ScriptPlayType.Default) ExecuteCommand(m.StdinBuffer, m.Mode).Forget();
+                            else if (m.Type == ScriptPlayType.RepeatedCommand) RepeatLastScript(m.StdinBuffer, m.Mode).Forget();
                         });
                         Messenger.Default.Register<ClearConsoleLineMessage>(this, m => TryResetCommand());
                         Messenger.Default.Register<UndoConsoleCharacterMessage>(this, m => TryUndoLastCommandCharacter());
@@ -97,7 +107,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// Tries to repeat the previous command
         /// </summary>
         /// <param name="stdin">The current input buffer</param>
-        private async Task RepeatLastScript([NotNull] String stdin)
+        /// <param name="mode">The overflow mode to use</param>
+        private async Task RepeatLastScript([NotNull] String stdin, OverflowMode mode)
         {
             // Retrieve the current and the last command
             ConsoleUserCommand current = null, last = null;
@@ -111,7 +122,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 
             // Repeat the script
             current.UpdateCommand(last.Command);
-            await ExecuteCommand(stdin);
+            await ExecuteCommand(stdin, mode);
         }
 
         /// <summary>
@@ -184,13 +195,13 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Executes the current user command, if possible
         /// </summary>
-        public async Task ExecuteCommand([NotNull] String stdin)
+        public async Task ExecuteCommand([NotNull] String stdin, OverflowMode mode)
         {
             if (!CommandAvailable) return;
             CanRestart = true;
             SendCommandAvailableMessages(false);
             String command = ((ConsoleUserCommand)Source.LastOrDefault()).Command;
-            InterpreterResult result = await Task.Run(() => Brainf_ckInterpreter.Run(command, stdin, State, 1000));
+            InterpreterResult result = await Task.Run(() => Brainf_ckInterpreter.Run(command, stdin, State, mode, 1000));
             if (result.HasFlag(InterpreterExitCode.Success) &&
                 result.HasFlag(InterpreterExitCode.TextOutput))
             {

@@ -1,4 +1,7 @@
 ﻿using System;
+using Brainf_ck_sharp.Enums;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
@@ -14,6 +17,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 
         public ShellViewModel([NotNull] Func<String> stdinExtractor)
         {
+            // General messages
             StdinBufferExtractor = stdinExtractor;
             Messenger.Default.Register<AvailableActionStatusChangedMessage>(this, ProcessAvailableActionsStatusChangedMessage);
             Messenger.Default.Register<IDEExecutableStatusChangedMessage>(this, m => IDECodeAvailable = m.Executable);
@@ -30,6 +34,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 SaveAvailable = m.SaveEnabled;
                 SaveAsAvailable = m.SaveAsEnabled;
             });
+
+            // Overflow mode
+            Messenger.Default.Register<OverflowModeChangedMessage>(this, m => _OverflowMode = m.Mode);
+            AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.ByteOverflowModeEnabled), out bool overflow);
+            _OverflowMode = overflow ? OverflowMode.ByteOverflow : OverflowMode.ShortNoOverflow;
         }
 
         // Enables or disables the console buttons when needed
@@ -70,6 +79,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         }
 
         #region Parameters
+
+        // The current overflow mode to use
+        private OverflowMode _OverflowMode;
 
         private bool _RepeatLastScriptAvailable;
 
@@ -211,7 +223,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         private void SendPlayRequestMessage(ScriptPlayType type)
         {
             String stdin = StdinBufferExtractor();
-            Messenger.Default.Send(new PlayScriptMessage(type, stdin));
+            Messenger.Default.Send(new PlayScriptMessage(type, stdin, _OverflowMode));
         }
 
         /// <summary>

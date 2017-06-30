@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using Brainf_ck_sharp;
+using Brainf_ck_sharp.Enums;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
@@ -96,7 +97,7 @@ namespace Brainf_ck_sharp_UWP.Views
             return result == FlyoutResult.Confirmed ? flyout.Title : null;
         }
 
-        private void ViewModel_PlayRequested(object sender, (String Stdin, bool Debug) e)
+        private void ViewModel_PlayRequested(object sender, (String Stdin, OverflowMode Mode, bool Debug) e)
         {
             // Get the text and initialize the session
             EditBox.Document.GetText(TextGetOptions.None, out String text);
@@ -114,9 +115,9 @@ namespace Brainf_ck_sharp_UWP.Views
                     chuncks.Add(text.Substring(previous, breakpoint - previous));
                     previous = breakpoint;
                 }
-                factory = () => Brainf_ckInterpreter.InitializeSession(chuncks, e.Stdin, 64, 1000);
+                factory = () => Brainf_ckInterpreter.InitializeSession(chuncks, e.Stdin, e.Mode, 64, 1000);
             }
-            else factory = () => Brainf_ckInterpreter.InitializeSession(new[] { text }, e.Stdin, 64, 1000);
+            else factory = () => Brainf_ckInterpreter.InitializeSession(new[] { text }, e.Stdin, e.Mode, 64, 1000);
 
             // Display the execution popup
             IDERunResultFlyout flyout = new IDERunResultFlyout();

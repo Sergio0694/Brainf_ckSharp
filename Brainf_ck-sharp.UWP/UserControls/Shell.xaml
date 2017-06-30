@@ -137,6 +137,21 @@
 
                     <!--Header-->
                     <Grid Height="48">
+                        
+                        <!--Overlay for the expander-->
+                        <Rectangle
+                            Fill="{ThemeResource ShellSeparatorLineFillBrush}"
+                            VerticalAlignment="Top"
+                            Canvas.ZIndex="1"
+                            Height="1"
+                            Width="48"
+                            HorizontalAlignment="Right">
+                            <Rectangle.RenderTransform>
+                                <TranslateTransform X="48"/>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+                        
+                        <!--Stdin and pivot headers-->
                         <Canvas 
                             Grid.Row="0"
                             Background="#40000000"/>

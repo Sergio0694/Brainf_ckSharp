@@ -1,7 +1,11 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Brainf_ck_sharp.Enums;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Messages;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
 {
@@ -10,6 +14,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
         public KeyboardHeaderControl()
         {
             this.InitializeComponent();
+            AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.ByteOverflowModeEnabled), out bool overflow);
+            OverflowSwitchButton.IsChecked = overflow;
         }
 
         public void SelectKeyboard() => SelectedHeaderIndex = 0;
@@ -45,5 +51,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
         /// Resets the current Stdin buffer
         /// </summary>
         public void ResetStdin() => StdinBox.Text = String.Empty;
+
+        // Toggles the overflow mode currently selected
+        private void ToggleOverflowMode()
+        {
+            bool overflow = OverflowSwitchButton.IsChecked == true;
+            AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.ByteOverflowModeEnabled), overflow, true);
+            Messenger.Default.Send(new OverflowModeChangedMessage(overflow ? OverflowMode.ByteOverflow : OverflowMode.ShortNoOverflow));
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Brainf_ck_sharp.Enums;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.Messages.Actions
@@ -19,14 +20,21 @@ namespace Brainf_ck_sharp_UWP.Messages.Actions
         public String StdinBuffer { get; }
 
         /// <summary>
+        /// Gets the overflow mode to use to execute the script
+        /// </summary>
+        public OverflowMode Mode { get; }
+
+        /// <summary>
         /// Initializes a new instance with the given buffer
         /// </summary>
         /// <param name="type">The kind of requested operation</param>
         /// <param name="buffer">The Stdin buffer to use</param>
-        public PlayScriptMessage(ScriptPlayType type, [NotNull] String buffer)
+        /// <param name="mode">The overflow mode to use to run the script</param>
+        public PlayScriptMessage(ScriptPlayType type, [NotNull] String buffer, OverflowMode mode)
         {
             Type = type;
             StdinBuffer = buffer;
+            Mode = mode;
         }
     }
 
