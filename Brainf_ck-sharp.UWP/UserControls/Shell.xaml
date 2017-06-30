@@ -221,7 +221,7 @@
                 <customCommandBar:CustomCommandBarButton
                     Label="Undo"
                     Icon="&#xE750;"
-                    x:Uid="Undo"
+                    x:Uid="DeleteButton"
                     IsEnabled="{x:Bind ViewModel.UndoAvailable, Mode=OneWay, FallbackValue=False}"
                     DefaultButton="True"
                     Click="{x:Bind ViewModel.RequestUndoConsoleCharacter}"/>

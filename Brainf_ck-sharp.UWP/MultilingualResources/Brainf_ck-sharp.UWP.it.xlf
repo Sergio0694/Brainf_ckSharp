@@ -84,7 +84,7 @@
         </trans-unit>
         <trans-unit id="Clear.Label" translate="yes" xml:space="preserve">
           <source>Clear</source>
-          <target state="translated">Cancella</target>
+          <target state="translated">Cancella comando</target>
         </trans-unit>
         <trans-unit id="MemoryState.Label" translate="yes" xml:space="preserve">
           <source>Memory state</source>

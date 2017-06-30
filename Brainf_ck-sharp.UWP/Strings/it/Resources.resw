@@ -71,7 +71,7 @@
     <value>errore runtime</value>
   </data>
   <data name="Clear.Label" xml:space="preserve">
-    <value>Cancella</value>
+    <value>Cancella comando</value>
   </data>
   <data name="MemoryState.Label" xml:space="preserve">
     <value>Stato memoria</value>
