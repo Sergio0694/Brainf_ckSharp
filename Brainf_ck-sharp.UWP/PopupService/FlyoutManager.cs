@@ -104,6 +104,26 @@ namespace Brainf_ck_sharp_UWP.PopupService
         }
 
         /// <summary>
+        /// Closes all the currently displayed popups
+        /// </summary>
+        public async Task CloseAllAsync()
+        {
+            await Semaphore.WaitAsync();
+            if (PopupStack.Count > 0)
+            {
+                while (PopupStack.Count > 0)
+                {
+                    Popup popup = PopupStack.Pop().Popup;
+                    popup.StartCompositionFadeSlideAnimation(null, 0, TranslationAxis.Y, 0, 20, 250, null, null,
+                        EasingFunctionNames.CircleEaseOut, () => popup.IsOpen = false);
+                    await Task.Delay(80);
+                }
+                Messenger.Default.Send(new FlyoutClosedNotificationMessage());
+            }
+            Semaphore.Release();
+        }
+
+        /// <summary>
         /// Shows a simple message dialog with a title and a content
         /// </summary>
         /// <param name="title">The title of the message</param>
@@ -118,6 +138,74 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 FontSize = 14
             };
             ShowAsync(title, block, new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight).Forget();
+        }
+
+        /// <summary>
+        /// Shows a new flyout with a text content and a confirm button
+        /// </summary>
+        /// <param name="title">The title of the new flyout to show</param>
+        /// <param name="message">The text to show inside the flyout</param>
+        /// <param name="confirm">The text to display in the confirm button</param>
+        /// <param name="color">The optional override color for the confirm button</param>
+        /// <param name="stack">Indicates whether or not the popup can be stacked on top of another open popup</param>
+        public async Task<FlyoutResult> ShowAsync([NotNull] String title, [NotNull] String message, [NotNull] String confirm, 
+            [CanBeNull] Color? color = null, bool stack = false)
+        {
+            // Lock and close the existing popup, if needed
+            await Semaphore.WaitAsync();
+            Messenger.Default.Send(new FlyoutOpenedMessage());
+            if (!stack)
+            {
+                foreach (FlyoutDisplayInfo previous in PopupStack) previous.Popup.IsOpen = false;
+                PopupStack.Clear();
+            }
+
+            // Initialize the container and the target popup
+            FlyoutContainer container = new FlyoutContainer(null, null)
+            {
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch
+            };
+
+            // Prepare the flyout depending on the desired display mode
+            double width = CalculateExpectedWidth();
+            TextBlock block = new TextBlock
+            {
+                Text = message,
+                TextWrapping = TextWrapping.Wrap,
+                FontSize = 14,
+                Margin = new Thickness(12, 12, 16, 12)
+            };
+            container.SetupFixedUI(title, block, width);
+            container.SetupUI(confirm, color);
+
+            // Create the popup to display
+            Popup popup = new Popup
+            {
+                IsLightDismissEnabled = false,
+                Child = container
+            };
+            FlyoutDisplayInfo info = new FlyoutDisplayInfo(popup, FlyoutDisplayMode.ActualHeight);
+            AdjustPopupSize(info, PopupStack.Count > 0);
+            TaskCompletionSource<FlyoutResult> tcs = new TaskCompletionSource<FlyoutResult>();
+
+            // Setup the closed handler
+            void CloseHandler(object s, object e)
+            {
+                tcs.SetResult(container.Confirmed ? FlyoutResult.Confirmed : FlyoutResult.Canceled);
+                popup.Child = null;
+                popup.Closed -= CloseHandler;
+            }
+            popup.Closed += CloseHandler;
+
+            // Display and animate the popup
+            DisableOpenFlyouts();
+            PopupStack.Push(info);
+            popup.SetVisualOpacity(0);
+            popup.IsOpen = true;
+            await popup.StartCompositionFadeSlideAnimationAsync(null, 1, TranslationAxis.Y, 20, 0, 250, null, null, EasingFunctionNames.CircleEaseOut);
+            Semaphore.Release();
+            return await tcs.Task;
         }
 
         /// <summary>

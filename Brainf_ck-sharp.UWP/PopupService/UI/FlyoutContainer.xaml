@@ -22,14 +22,16 @@
             <VisualStateGroup>
                 <VisualState x:Name="Default">
                     <VisualState.Setters>
-                        <Setter 
+                        <Setter
+                            x:Name="DefaultSetter"
                             Target="ButtonContentGrid.Background"
                             Value="{StaticResource AccentBrushLowFade}"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Highlight">
                     <VisualState.Setters>
-                        <Setter 
+                        <Setter
+                            x:Name="HighlightSetter"
                             Target="ButtonContentGrid.Background"
                             Value="{StaticResource AccentBrushMediumFade}"/>
                     </VisualState.Setters>
@@ -64,6 +66,7 @@
             <TextBlock Text="Title"
                        x:Name="TitleBlock"
                        VerticalAlignment="Center"
+                       IsColorFontEnabled="True"
                        Style="{StaticResource TrimmedTextStyle}"
                        Margin="12,0,8,0"
                        FontWeight="SemiLight"
@@ -105,6 +108,8 @@
                     Background="#10000000"/>
                 <TextBlock 
                     Text="Confirm"
+                    x:Uid="ConfirmBlock"
+                    x:Name="ConfirmBlock"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
                     FontSize="18"

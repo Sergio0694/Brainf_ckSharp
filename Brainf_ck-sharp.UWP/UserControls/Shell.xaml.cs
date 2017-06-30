@@ -155,6 +155,9 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 // Update the setting
                 AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.WelcomeMessageShown), true, SettingSaveMode.OverwriteIfExisting);
             }
+
+            ReviewPromptFlyout reviewFlyout = new ReviewPromptFlyout();
+            FlyoutManager.Instance.ShowAsync("How's it going?", reviewFlyout, new Thickness(0, 12, 0, 0), FlyoutDisplayMode.ActualHeight).Forget();
         }
 
         // Disables the swipe gesture for the keyboard pivot (swiping that pivot causes the app to crash)

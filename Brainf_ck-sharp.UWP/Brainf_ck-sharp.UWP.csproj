@@ -255,6 +255,9 @@
     <Compile Include="UserControls\Flyouts\DevInfo\Donations\DevSupportPickerFlyout.xaml.cs">
       <DependentUpon>DevSupportPickerFlyout.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Flyouts\DevInfo\ReviewPromptFlyout.xaml.cs">
+      <DependentUpon>ReviewPromptFlyout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Flyouts\LoadingPopupControl.xaml.cs">
       <DependentUpon>LoadingPopupControl.xaml</DependentUpon>
     </Compile>
@@ -566,6 +569,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Flyouts\DevInfo\Donations\DevSupportPickerFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\DevInfo\ReviewPromptFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

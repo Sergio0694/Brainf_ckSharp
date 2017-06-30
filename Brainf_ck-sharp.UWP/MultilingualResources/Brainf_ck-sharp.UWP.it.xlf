@@ -556,6 +556,20 @@ NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le
           <source>You have enabled the byte overflow mode. This means that the maximum value of each memory cell will now be 255 and that increasing a cell over that value (or decreasing a cell that has a value equal to 0) will cause it to overflow, ie. if it's increased from 255 it will be set to 0, and if it's decreased from 0 it will reach 255.</source>
           <target state="translated">Hai attivato la modalità byte overflow. Questo significa che il massimo valore di ogni cella di memoria sarà 255 e che incrementare una cella oltre quel valore (o decrementarla quando si trova già a 0) comporterà un overflow, cioè se a una cella viene aggiunto 1 da 255 verrà settata a 0, e se viene sottratto 1 da 0 raggiungerà il valore massimo di 255.</target>
         </trans-unit>
+        <trans-unit id="ThankYouBlock1.Text" translate="yes" xml:space="preserve">
+          <source>Thank you for downloading</source>
+          <target state="new">Thank you for downloading</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">This will be "Thank you for downloading Brainf*ck#!"</note>
+        </trans-unit>
+        <trans-unit id="ThankYouBlock2.Text" translate="yes" xml:space="preserve">
+          <source>Are you enjoying it so far?</source>
+          <target state="new">Are you enjoying it so far?</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">It's talking about the app itself</note>
+        </trans-unit>
+        <trans-unit id="ConfirmBlock.Text" translate="yes" xml:space="preserve">
+          <source>Confirm</source>
+          <target state="new">Confirm</target>
+        </trans-unit>
       </group>
     </body>
   </file>
