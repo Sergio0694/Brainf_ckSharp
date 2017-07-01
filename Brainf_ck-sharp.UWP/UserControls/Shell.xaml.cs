@@ -145,6 +145,13 @@ namespace Brainf_ck_sharp_UWP.UserControls
             scroller.PointerReleased += Scroller_PointerOut;
             scroller.PointerCaptureLost += Scroller_PointerOut;
 
+            // Popups
+            ShowStartupPopups();
+        }
+
+        // Shows the startup popups when needed
+        private void ShowStartupPopups()
+        {
             // Welcome message
             if (AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.WelcomeMessageShown), out bool shown) && !shown)
             {
@@ -164,7 +171,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 Task.Delay(StartupPromptsPopupDelay).ContinueWith(t =>
                 {
                     ReviewPromptFlyout reviewFlyout = new ReviewPromptFlyout();
-                    FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("HowsItGoing"), reviewFlyout, 
+                    FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("HowsItGoing"), reviewFlyout,
                         new Thickness(0, 12, 0, 0), FlyoutDisplayMode.ActualHeight).Forget();
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
 

@@ -20,7 +20,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
         private async void SadButton_Click(object sender, RoutedEventArgs e)
         {
             FlyoutResult result = await FlyoutManager.Instance.ShowAsync($"😥 {LocalizationManager.GetResource("SorryTitle")}",
-                LocalizationManager.GetResource("SorryBody"), LocalizationManager.GetResource("SendMail"), "#80CE5C00".ToColor(), true);
+                LocalizationManager.GetResource("SorryBody"), LocalizationManager.GetResource("SendMail"), "#84007F41".ToColor(), true);
             if (result == FlyoutResult.Confirmed)
             {
                 await EmailHelper.SendFeedbackEmail();
