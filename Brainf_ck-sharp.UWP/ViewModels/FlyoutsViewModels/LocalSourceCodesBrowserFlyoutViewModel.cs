@@ -154,7 +154,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         {
             Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
             StorageFile local = await StorageHelper.PickSaveFileAsync(code.Title, LocalizationManager.GetResource("CSource"), ".c");
-            if (local == null) return AsyncOperationStatus.Canceled;
+            if (local == null)
+            {
+                Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
+                return AsyncOperationStatus.Canceled;
+            }
             String translation = await Task.Run(() => Brainf_ckInterpreter.TranslateToC(code.Code));
             await FileIO.WriteTextAsync(local, translation);
             Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
