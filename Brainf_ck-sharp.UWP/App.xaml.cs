@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.HockeyApp;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
@@ -10,8 +11,8 @@ using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Resources;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.UserControls;
-#if !DEBUG
-using Microsoft.HockeyApp;
+#if DEBUG
+using System.Diagnostics;
 #endif
 
 namespace Brainf_ck_sharp_UWP
@@ -27,7 +28,10 @@ namespace Brainf_ck_sharp_UWP
         /// </summary>
         public App()
         {
-#if !DEBUG
+#if DEBUG
+            if (!Debugger.IsAttached)
+                HockeyClient.Current.Configure("d992b6490330446db870404084b19c39");
+#else
             HockeyClient.Current.Configure("d992b6490330446db870404084b19c39");
 #endif
             Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(

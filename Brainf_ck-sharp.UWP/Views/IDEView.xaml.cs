@@ -240,8 +240,8 @@ namespace Brainf_ck_sharp_UWP.Views
                 {
                     if (c == '[' || c == ']')
                     {
-                        (int x, int y) = code.FindCoordinates(i);
-                        pairs.Add((x, y, c));
+                        (int y, int x) = code.FindCoordinates(i);
+                        pairs.Add((y, x, c));
                     }
                 }
                 bool test = _Brackets?.Zip(pairs, (first, second) => first.Equals(second)).All(b => b) == true;

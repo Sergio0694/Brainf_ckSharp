@@ -315,7 +315,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// Updates the indentation info for a given state
         /// </summary>
         /// <param name="brackets">The collection of brackets and their position in the current text</param>
-        public async Task UpdateIndentationInfo([CanBeNull] IReadOnlyList<(int, int, char)> brackets)
+        public async Task UpdateIndentationInfo([CanBeNull] IReadOnlyList<(int Y, int X, char Bracket)> brackets)
         {
             // // Check the info is available
             if (brackets == null || brackets.Count == 0)
@@ -327,7 +327,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             // Prepare the updated source collection
             List<IDEIndentationLineInfo> source = await Task.Run(() =>
             {
-                int max = brackets.Max(entry => entry.Item1);
+                // Get the max reached line number
+                int max = brackets.Max(entry => entry.Y);
 
                 // Updates the indentation info displayed on the IDE
                 List<IDEIndentationLineInfo> temp = new List<IDEIndentationLineInfo>();
@@ -335,15 +336,21 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 for (int i = 1; i <= max; i++)
                 {
                     // Parse the first item
-                    IReadOnlyList<(int, int, char Bracket)> entries = brackets.Where(info => info.Item1 == i).ToArray();
+                    IReadOnlyList<(int, int, char Bracket)> entries = brackets.Where(info => info.Y == i).ToArray();
                     if (entries.Count == 0)
                     {
                         temp.Add(new IDEIndentationLineInfo(depth == 0 ? IDEIndentationInfoLineType.Empty : IDEIndentationInfoLineType.Straight));
                     }
+                    else if (entries.Count > 1 && entries.Sum(entry => entry.Bracket == '[' ? 1 : -1) == 0)
+                    {
+                        // Edge case: multiple brackets opened and closed on the same line
+                        temp.Add(new IDEIndentationOpenBracketLineInfo(depth + 1, true));
+                        continue;
+                    }
                     else if (entries[0].Bracket == '[')
                     {
                         depth++;
-                        temp.Add(new IDEIndentationOpenBracketLineInfo(depth));
+                        temp.Add(new IDEIndentationOpenBracketLineInfo(depth, false));
                     }
                     else if (entries[0].Bracket == ']')
                     {
