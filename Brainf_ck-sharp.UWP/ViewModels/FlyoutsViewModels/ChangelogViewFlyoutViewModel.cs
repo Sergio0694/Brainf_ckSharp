@@ -34,6 +34,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 {
                     "Added the byte overflow optional mode to both the console and the IDE",
                     "Added a one-time popup to ask for feedback on the app",
+                    "Fixed a crash when using the virtual arrows keyboard in the IDE",
                     "Minor bug fixes and UI adjustments"
                 }),
                 CreateChangelogEntry("1.1.1.0", 2017, 7, 5, new List<String>

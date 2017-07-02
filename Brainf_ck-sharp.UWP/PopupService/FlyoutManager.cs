@@ -10,6 +10,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
@@ -435,8 +436,17 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="content">The control to show</param>
         /// <param name="rect">The target area to try not to cover</param>
         /// <param name="tryCenter">Indicates whether or not to try to center the popup to the source control</param>
-        public static void ShowCustomContextFlyout([NotNull] FrameworkElement content, Rect rect, bool tryCenter = false)
+        public async void ShowCustomContextFlyout([NotNull] FrameworkElement content, Rect rect, bool tryCenter = false)
         {
+            // Close existing popups if needed
+            await Semaphore.WaitAsync();
+            if (PopupStack.Count > 0)
+            {
+                foreach (FlyoutDisplayInfo info in PopupStack) info.Popup.IsOpen = false;
+                Messenger.Default.Send(new FlyoutClosedNotificationMessage());
+            }
+            foreach (Popup pending in VisualTreeHelper.GetOpenPopups(Window.Current)) pending.IsOpen = false;
+
             // Calculate the target size
             content.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             if (content.DesiredSize.Width > ResolutionHelper.CurrentWidth - 24)
@@ -495,7 +505,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             (double hx, double vy) = CalculateSizeAndOffset();
             Popup popup = new Popup
             {
-                IsLightDismissEnabled = true,
+                IsLightDismissEnabled = false,
                 HorizontalOffset = hx,
                 VerticalOffset = vy
             };
@@ -526,9 +536,38 @@ namespace Brainf_ck_sharp_UWP.PopupService
             // Assign the popup content
             popup.Child = parent;
             grid.SetVisualOpacity(0);
-            popup.IsOpen = true;
+
+            // Setup fade in and out animations
+            Grid hitGrid = new Grid
+            {
+                Background = new SolidColorBrush(Colors.Transparent),
+                Height = ResolutionHelper.CurrentHeight,
+                Width = ResolutionHelper.CurrentWidth
+            };
+            Popup hit = new Popup
+            {
+                Child = hitGrid,
+                IsLightDismissEnabled = false,
+                IsOpen = true
+            };
+            popup.IsOpen = true; // Open the context menu popup on top of the hit target
+            void ClosePopups()
+            {
+                // The manual animation here is a workaround for a crash with the implicit hide composition animations
+                hit.IsOpen = false;
+                grid.IsHitTestVisible = false;
+                grid.StartCompositionFadeSlideAnimation(1, 0, TranslationAxis.Y, 0, 8, 200, null, null, EasingFunctionNames.CircleEaseOut,
+                    () => popup.IsOpen = false);
+            }
+            hitGrid.Tapped += (_, e) => ClosePopups();
+            void WindowSizeHandler(object s, WindowSizeChangedEventArgs e)
+            {
+                Window.Current.SizeChanged -= WindowSizeHandler;
+                ClosePopups();
+            }
+            Window.Current.SizeChanged += WindowSizeHandler;
             grid.StartCompositionFadeSlideAnimation(0, 1, TranslationAxis.Y, 20, 0, 200, null, null, EasingFunctionNames.CircleEaseOut);
-            grid.SetCompositionFadeSlideImplicitAnimation(ImplicitAnimationType.Hide, 1, 0, TranslationAxis.Y, 0, 8, 250, null, null, EasingFunctionNames.CircleEaseOut);
+            Semaphore.Release();
         }
     }
 }

@@ -242,7 +242,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             CustomCommandBarButton button = (CustomCommandBarButton)sender;
             Point point = button.GetVisualCoordinates();
             Rect area = new Rect(point, new Size(button.ActualWidth, button.ActualHeight));
-            FlyoutManager.ShowCustomContextFlyout(keyboard, area, true);
+            FlyoutManager.Instance.ShowCustomContextFlyout(keyboard, area, true);
         }
 
         // Shows the developer info
