@@ -541,6 +541,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 }
                 else
                 {
+                    // Paste the text in the current selection
                     EditBox.Document.Selection.SetText(TextSetOptions.None, code);
                     selectionBackup = EditBox.SelectionHighlightColor;
                     EditBox.SelectionHighlightColor = new SolidColorBrush(Colors.Transparent);
@@ -558,11 +559,14 @@ namespace Brainf_ck_sharp_UWP.Views
                     char c = range.Character;
                     range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(c);
                 }
+
+                // Set the right selection position
                 if (overwrite) EditBox.Document.Selection.SetRange(0, 0);
                 else EditBox.Document.Selection.StartPosition = end;
 
                 // Refresh the UI
-                if (!overwrite)
+                if (overwrite) ViewModel.DiffStatusSource.Clear();
+                else
                 {
                     EditBox.Document.EndUndoGroup();
                     EditBox.SelectionHighlightColor = selectionBackup;
