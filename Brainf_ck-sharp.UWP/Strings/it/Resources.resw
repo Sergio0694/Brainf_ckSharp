@@ -300,7 +300,7 @@
     <value>Contatti</value>
   </data>
   <data name="DevelopedByPart2Run.Text" xml:space="preserve">
-    <value>Grazie ad Andrea Salvati per il suo aiuto con l'algoritmo originale dell'interprete di Brainf*ck, Camil Demetrescu per l'idea di portare Brainf*ck# su Windows 10 e Christopher Blackman per il suo aiuto durante lo sviluppo dell'app</value>
+    <value>Grazie ad Andrea Salvati per il suo aiuto con l'algoritmo originale dell'interprete di Brainf*ck, Camil Demetrescu per l'idea di portare Brainf*ck# su Windows 10 e Christopher Blackman per il suo aiuto durante lo sviluppo dell'app.</value>
   </data>
   <data name="DevelopedByRun.Text" xml:space="preserve">
     <value>Sviluppata da</value>

@@ -50,7 +50,7 @@
             <LineBreak/>
             <Run 
                 FontSize="14"
-                Text="Thanks to Andrea Salvati for his help with the original interpreter algorithm, Camil Demetrescu for the idea to port Brainf*ck# to Windows 10 and Christopher Blackman for his help during the app development"
+                Text="Thanks to Andrea Salvati for his help with the original interpreter algorithm, Camil Demetrescu for the idea to port Brainf*ck# to Windows 10 and Christopher Blackman for his help during the app development."
                 x:Uid="DevelopedByPart2Run"/>
         </TextBlock>
 
@@ -77,11 +77,11 @@
                     </Grid.ColumnDefinitions>
                     <iconBoxToolkit:IconBox 
                         Data="{StaticResource StoreLogo}"
-                        Margin="4"/>
+                        Margin="0,8,8,8"/>
                     <TextBlock
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        Margin="16,0,0,0"
+                        Margin="8,0,0,0"
                         Text="Rate in the Store"
                         x:Uid="RateStoreBlock"
                         IsTextScaleFactorEnabled="False"
@@ -159,7 +159,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock
-                                Text="&#xE166;"
+                                Text="&#xE89C;"
                                 Style="{StaticResource FontIconTextBlockStyle}"
                                 VerticalAlignment="Center"/>
                             <TextBlock
@@ -192,14 +192,14 @@
                             </Grid.ColumnDefinitions>
                             <Image
                                 Source="/Assets/Misc/Twitter.png"
-                                Height="20"/>
+                                Height="16"/>
                             <TextBlock
                                 Grid.Column="1"
                                 VerticalAlignment="Center"
                                 IsTextScaleFactorEnabled="False"
                                 TextWrapping="NoWrap"
                                 TextTrimming="CharacterEllipsis"
-                                Margin="16,0,0,0"
+                                Margin="12,0,0,0"
                                 Text="@SergioPedri"
                                 FontSize="15"
                                 FontWeight="Normal"/>
@@ -226,7 +226,7 @@
                     Height="40"
                     Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
                     Background="{ThemeResource SystemControlHighlightAccentBrush}"
-                    MinWidth="160"
+                    MinWidth="140"
                     HorizontalAlignment="Left"
                     Click="ShowChangelogButton_Click">
                     <Grid 

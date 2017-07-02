@@ -387,8 +387,8 @@
           <target state="translated">Contatti</target>
         </trans-unit>
         <trans-unit id="DevelopedByPart2Run.Text" translate="yes" xml:space="preserve">
-          <source>Thanks to Andrea Salvati for his help with the original interpreter algorithm, Camil Demetrescu for the idea to port Brainf*ck# to Windows 10 and Christopher Blackman for his help during the app development</source>
-          <target state="translated">Grazie ad Andrea Salvati per il suo aiuto con l'algoritmo originale dell'interprete di Brainf*ck, Camil Demetrescu per l'idea di portare Brainf*ck# su Windows 10 e Christopher Blackman per il suo aiuto durante lo sviluppo dell'app</target>
+          <source>Thanks to Andrea Salvati for his help with the original interpreter algorithm, Camil Demetrescu for the idea to port Brainf*ck# to Windows 10 and Christopher Blackman for his help during the app development.</source>
+          <target state="translated">Grazie ad Andrea Salvati per il suo aiuto con l'algoritmo originale dell'interprete di Brainf*ck, Camil Demetrescu per l'idea di portare Brainf*ck# su Windows 10 e Christopher Blackman per il suo aiuto durante lo sviluppo dell'app.</target>
         </trans-unit>
         <trans-unit id="DevelopedByRun.Text" translate="yes" xml:space="preserve">
           <source>Developed by</source>
