@@ -192,7 +192,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         {
                             // Update the local code reference, the git diff indicators and notify the UI with the new save buttons state
                             _CategorizedCode = result.Result;
-                            NotificationsManager.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("CodeSaved"),
+                            NotificationsManager.Instance.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("CodeSaved"),
                                 LocalizationManager.GetResource("CodeSavedBody"), NotificationType.Default);
                             UpdateGitDiffStatusOnSave();
                             Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(true, true));

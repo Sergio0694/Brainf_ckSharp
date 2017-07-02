@@ -5,8 +5,10 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.PopupService.UI;
+using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
@@ -16,24 +18,37 @@ namespace Brainf_ck_sharp_UWP.PopupService
     /// <summary>
     /// A static class that manages the in-app notifications
     /// </summary>
-    public static class NotificationsManager
+    public sealed class NotificationsManager
     {
+        /// <summary>
+        /// Gets the singleton instance to use to manage the notifications
+        /// </summary>
+        public static NotificationsManager Instance { get; } = new NotificationsManager();
+
+        // Initializes the singleton instance and subscribes to the messages
+        private NotificationsManager()
+        {
+            Messenger.Default.Register<NotificationCloseRequestMessage>(this, m => CloseNotificationPopupAsync().Forget());
+        }
+
         /// <summary>
         /// The Popup that's currently displayed
         /// </summary>
-        private static Popup _CurrentPopup;
+        private Popup _CurrentPopup;
 
         /// <summary>
         /// Semaphore to avoid race conditions when setting the current Popup
         /// </summary>
-        private static readonly SemaphoreSlim NotificationSemaphore = new SemaphoreSlim(1);
+        private readonly SemaphoreSlim NotificationSemaphore = new SemaphoreSlim(1);
+
+        #region Public APIs
 
         /// <summary>
         /// Shows a notification error with the default icon and settings
         /// </summary>
         /// <param name="title">The title of the notification</param>
         /// <param name="content">The content to show in the notification</param>
-        public static void ShowDefaultErrorNotification([NotNull] String title, [NotNull] String content)
+        public void ShowDefaultErrorNotification([NotNull] String title, [NotNull] String content)
         {
             ShowNotification(0xE7BA.ToSegoeMDL2Icon(), title, content, NotificationType.Error);
         }
@@ -46,7 +61,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="content">The content of the notification</param>
         /// <param name="type">The type of notification to show</param>
         /// <param name="duration">The time interval before the nofitication disappears</param>
-        public static void ShowNotification(
+        public void ShowNotification(
             [NotNull] String icon, [NotNull] String title, [NotNull] String content, NotificationType type, TimeSpan? duration = null)
         {
             DispatcherHelper.RunOnUIThreadAsync(async () =>
@@ -66,13 +81,13 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 popup.Child = notificationPopup;
 
                 // Close the previous notification, if present
-                await CloseNotificationPopup(_CurrentPopup);
+                await CloseNotificationPopupAsync();
 
                 // Wait the semaphore
                 await NotificationSemaphore.WaitAsync();
 
                 // Local timer to automatically close the notification
-                Task.Delay(timespan).ContinueWith(t => CloseNotificationPopup(popup), TaskScheduler.FromCurrentSynchronizationContext()).Forget();
+                Task.Delay(timespan).ContinueWith(t => CloseNotificationPopupAsync(popup), TaskScheduler.FromCurrentSynchronizationContext()).Forget();
 
                 // Set the current Popup, show it and start its animation
                 _CurrentPopup = popup;
@@ -87,11 +102,28 @@ namespace Brainf_ck_sharp_UWP.PopupService
             });
         }
 
+        #endregion
+
+        /// <summary>
+        /// Closes the current notification, if present
+        /// </summary>
+        private async Task CloseNotificationPopupAsync()
+        {
+            await NotificationSemaphore.WaitAsync();
+            if (_CurrentPopup?.IsOpen == true)
+            {
+                await _CurrentPopup.StartCompositionFadeSlideAnimationAsync(1, 0, TranslationAxis.Y, 0, 10, 200, null, 0, EasingFunctionNames.SineEaseOut);
+                _CurrentPopup.IsOpen = false;
+                _CurrentPopup = null;
+            }
+            NotificationSemaphore.Release();
+        }
+
         /// <summary>
         /// Close a target notification
         /// </summary>
         /// <param name="popup">The Popup that contains the notification to close</param>
-        private static async Task CloseNotificationPopup([CanBeNull] Popup popup)
+        private async Task CloseNotificationPopupAsync([CanBeNull] Popup popup)
         {
             if (popup == null) return;
             await NotificationSemaphore.WaitAsync();

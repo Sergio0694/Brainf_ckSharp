@@ -80,13 +80,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
                 result.Result &&
                 (e.Type == SourceCodeShareType.Clipboard || e.Type == SourceCodeShareType.LocalFile))
             {
-                NotificationsManager.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("ShareCompleted"),
+                NotificationsManager.Instance.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("ShareCompleted"),
                     LocalizationManager.GetResource("ShareCompletedBody"), NotificationType.Default);
             }
             else if (result.Status == AsyncOperationStatus.UnknownErrorHandled ||
                      result.Status == AsyncOperationStatus.Faulted)
             {
-                NotificationsManager.ShowDefaultErrorNotification(LocalizationManager.GetResource("ShareError"), LocalizationManager.GetResource("ShareErrorBody"));
+                NotificationsManager.Instance.ShowDefaultErrorNotification(LocalizationManager.GetResource("ShareError"), LocalizationManager.GetResource("ShareErrorBody"));
             }
         }
 
@@ -108,7 +108,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
             AsyncOperationResult<bool> result = await ViewModel.ExportToCAsync(e);
             if (result.Status == AsyncOperationStatus.RunToCompletion && result.Result)
             {
-                NotificationsManager.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("ExportCompleted"),
+                NotificationsManager.Instance.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("ExportCompleted"),
                     LocalizationManager.GetResource("ExportCompletedBody"), NotificationType.Default);
             }
         }
