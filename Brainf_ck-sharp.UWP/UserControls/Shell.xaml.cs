@@ -239,10 +239,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
         private void MoveButton_Click(object sender, RoutedEventArgs e)
         {
             VirtualArrowsKeyboardControl keyboard = new VirtualArrowsKeyboardControl();
-            CustomCommandBarButton button = (CustomCommandBarButton)sender;
-            Point point = button.GetVisualCoordinates();
-            Rect area = new Rect(point, new Size(button.ActualWidth, button.ActualHeight));
-            FlyoutManager.Instance.ShowCustomContextFlyout(keyboard, area, true);
+            FlyoutManager.Instance.ShowCustomContextFlyout(keyboard, sender.To<FrameworkElement>(), true);
         }
 
         // Shows the developer info

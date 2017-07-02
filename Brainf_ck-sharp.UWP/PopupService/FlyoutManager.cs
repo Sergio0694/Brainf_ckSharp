@@ -46,6 +46,12 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// </summary>
         public static FlyoutManager Instance { get; } = new FlyoutManager();
 
+        /// <summary>
+        /// Gets an action that closes the current custom context menu, if present
+        /// </summary>
+        [CanBeNull]
+        private Action _CloseContextMenu;
+
         // Private constructor that initializes the event handlers (can't be a static class due to the Messenger class)
         private FlyoutManager()
         {
@@ -54,9 +60,18 @@ namespace Brainf_ck_sharp_UWP.PopupService
             SystemNavigationManager.GetForCurrentView().BackRequested += (_, e) =>
             {
                 if (PopupStack.Count > 0) e.Handled = true; // Not thread-safe, but anyways
-                TryCloseAsync().Forget();
+                if (_CloseContextMenu != null)
+                {
+                    e.Handled = true;
+                    _CloseContextMenu?.Invoke();
+                }
+                else TryCloseAsync().Forget();
             };
-            KeyEventsListener.Esc += (s, _) => TryCloseAsync().Forget();
+            KeyEventsListener.Esc += (s, _) =>
+            {
+                if (_CloseContextMenu != null) _CloseContextMenu?.Invoke();
+                else TryCloseAsync().Forget();
+            };
         }
 
         // Adjusts the size of the current popup when the window is resized
@@ -75,6 +90,28 @@ namespace Brainf_ck_sharp_UWP.PopupService
 
         // The current popup control
         private Stack<FlyoutDisplayInfo> PopupStack { get; } = new Stack<FlyoutDisplayInfo>();
+
+        /// <summary>
+        /// Closes all the currently displayed popups
+        /// </summary>
+        public async Task CloseAllAsync()
+        {
+            await Semaphore.WaitAsync();
+            if (PopupStack.Count > 0)
+            {
+                while (PopupStack.Count > 0)
+                {
+                    Popup popup = PopupStack.Pop().Popup;
+                    popup.StartCompositionFadeSlideAnimation(null, 0, TranslationAxis.Y, 0, 20, 250, null, null,
+                        EasingFunctionNames.CircleEaseOut, () => popup.IsOpen = false);
+                    await Task.Delay(80);
+                }
+                Messenger.Default.Send(new FlyoutClosedNotificationMessage());
+            }
+            Semaphore.Release();
+        }
+
+        #region Tools
 
         /// <summary>
         /// Disables the currently open flyouts so that the user can't interact with them as long as there's another one on top of them
@@ -105,24 +142,66 @@ namespace Brainf_ck_sharp_UWP.PopupService
         }
 
         /// <summary>
-        /// Closes all the currently displayed popups
+        /// Calculates the expected width for a flyout to display
         /// </summary>
-        public async Task CloseAllAsync()
+        private static double CalculateExpectedWidth()
         {
-            await Semaphore.WaitAsync();
-            if (PopupStack.Count > 0)
-            {
-                while (PopupStack.Count > 0)
-                {
-                    Popup popup = PopupStack.Pop().Popup;
-                    popup.StartCompositionFadeSlideAnimation(null, 0, TranslationAxis.Y, 0, 20, 250, null, null,
-                        EasingFunctionNames.CircleEaseOut, () => popup.IsOpen = false);
-                    await Task.Delay(80);
-                }
-                Messenger.Default.Send(new FlyoutClosedNotificationMessage());
-            }
-            Semaphore.Release();
+            double width = ResolutionHelper.CurrentWidth;
+            return width <= MaxPopupWidth ? width : MaxPopupWidth;
         }
+
+        /// <summary>
+        /// Adjusts the size of a popup based on the current screen size
+        /// </summary>
+        /// <param name="info">The wrapped info on the popup to resize and its content</param>
+        /// <param name="stacked">Indicates whether or not the current popup is not the first one being displayed</param>
+        private static void AdjustPopupSize([NotNull] FlyoutDisplayInfo info, bool stacked)
+        {
+            // Calculate the current parameters
+            double
+                screenWidth = ResolutionHelper.CurrentWidth,
+                screenHeight = ResolutionHelper.CurrentHeight,
+                maxWidth = stacked ? MaxStackedPopupWidth : MaxPopupWidth,
+                maxHeight = stacked ? MaxStackedPopupHeight : MaxPopupHeight,
+                margin = UniversalAPIsHelper.IsMobileDevice ? 12 : 24; // The minimum margin to the edges of the screen
+
+            // Update the width first
+            if (screenWidth - margin <= maxWidth) info.Container.Width = screenWidth - (UniversalAPIsHelper.IsMobileDevice ? 0 : margin);
+            else info.Container.Width = maxWidth - margin;
+            info.Popup.HorizontalOffset = screenWidth / 2 - info.Container.Width / 2;
+
+            // Calculate the height depending on the display mode
+            if (info.DisplayMode == FlyoutDisplayMode.ScrollableContent)
+            {
+                // Edge case for tiny screens not on mobile phones
+                if (!UniversalAPIsHelper.IsMobileDevice && screenHeight < 400)
+                {
+                    info.Container.Height = screenHeight;
+                    info.Popup.VerticalOffset = 0;
+                }
+                else
+                {
+                    // Calculate and adjust the right popup height
+                    info.Container.Height = screenHeight - margin <= maxHeight
+                        ? screenHeight - (UniversalAPIsHelper.IsMobileDevice ? 0 : margin)
+                        : maxHeight;
+                    info.Popup.VerticalOffset = screenHeight / 2 - info.Container.Height / 2;
+                }
+            }
+            else
+            {
+                // Calculate the desired size and arrange the popup
+                Size desired = info.Container.CalculateDesiredSize();
+                info.Container.Height = desired.Height <= screenHeight + margin
+                    ? desired.Height
+                    : screenHeight - (UniversalAPIsHelper.IsMobileDevice ? 0 : margin);
+                info.Popup.VerticalOffset = (screenHeight / 2 - info.Container.Height / 2) / 2;
+            }
+        }
+
+        #endregion
+
+        #region Show APIs
 
         /// <summary>
         /// Shows a simple message dialog with a title and a content
@@ -372,72 +451,22 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 : FlyoutClosedResult<TEvent>.Closed);
         }
 
-        /// <summary>
-        /// Calculates the expected width for a flyout to display
-        /// </summary>
-        private static double CalculateExpectedWidth()
-        {
-            double width = ResolutionHelper.CurrentWidth;
-            return width <= MaxPopupWidth ? width : MaxPopupWidth;
-        }
+        #endregion
 
-        /// <summary>
-        /// Adjusts the size of a popup based on the current screen size
-        /// </summary>
-        /// <param name="info">The wrapped info on the popup to resize and its content</param>
-        /// <param name="stacked">Indicates whether or not the current popup is not the first one being displayed</param>
-        private static void AdjustPopupSize([NotNull] FlyoutDisplayInfo info, bool stacked)
-        {
-            // Calculate the current parameters
-            double
-                screenWidth = ResolutionHelper.CurrentWidth,
-                screenHeight = ResolutionHelper.CurrentHeight,
-                maxWidth = stacked ? MaxStackedPopupWidth : MaxPopupWidth,
-                maxHeight = stacked ? MaxStackedPopupHeight : MaxPopupHeight,
-                margin = UniversalAPIsHelper.IsMobileDevice ? 12 : 24; // The minimum margin to the edges of the screen
-
-            // Update the width first
-            if (screenWidth - margin <= maxWidth) info.Container.Width = screenWidth - (UniversalAPIsHelper.IsMobileDevice ? 0 : margin);
-            else info.Container.Width = maxWidth - margin;
-            info.Popup.HorizontalOffset = screenWidth / 2 - info.Container.Width / 2;
-
-            // Calculate the height depending on the display mode
-            if (info.DisplayMode == FlyoutDisplayMode.ScrollableContent)
-            {
-                // Edge case for tiny screens not on mobile phones
-                if (!UniversalAPIsHelper.IsMobileDevice && screenHeight < 400)
-                {
-                    info.Container.Height = screenHeight;
-                    info.Popup.VerticalOffset = 0;
-                }
-                else
-                {
-                    // Calculate and adjust the right popup height
-                    info.Container.Height = screenHeight - margin <= maxHeight
-                        ? screenHeight - (UniversalAPIsHelper.IsMobileDevice ? 0 : margin)
-                        : maxHeight;
-                    info.Popup.VerticalOffset = screenHeight / 2 - info.Container.Height / 2;
-                }
-            }
-            else
-            {
-                // Calculate the desired size and arrange the popup
-                Size desired = info.Container.CalculateDesiredSize();
-                info.Container.Height = desired.Height <= screenHeight + margin 
-                    ? desired.Height 
-                    : screenHeight - (UniversalAPIsHelper.IsMobileDevice ? 0 : margin);
-                info.Popup.VerticalOffset = (screenHeight / 2 - info.Container.Height / 2) / 2;
-            }
-        }
+        #region Context menu APIs
 
         /// <summary>
         /// Shows a given content inside a popup with an animation and offset similar of an attached Flyout
         /// </summary>
         /// <param name="content">The control to show</param>
-        /// <param name="rect">The target area to try not to cover</param>
+        /// <param name="target">The target element to try not to cover</param>
         /// <param name="tryCenter">Indicates whether or not to try to center the popup to the source control</param>
-        public async void ShowCustomContextFlyout([NotNull] FrameworkElement content, Rect rect, bool tryCenter = false)
+        public async void ShowCustomContextFlyout([NotNull] FrameworkElement content, [NotNull] FrameworkElement target, bool tryCenter = false)
         {
+            // Calculate the target area for the context menu
+            Point point = target.GetVisualCoordinates();
+            Rect rect = new Rect(point, new Size(target.ActualWidth, target.ActualHeight));
+
             // Close existing popups if needed
             await Semaphore.WaitAsync();
             if (PopupStack.Count > 0)
@@ -468,25 +497,29 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
 
             // Adjust the display size and position
-            (double, double) CalculateSizeAndOffset()
+            (double x, double y) CalculateOffset()
             {
                 // Calculate the final offset
-                double x = 0, y = 0;
+                double
+                    x = 0,
+                    y = 0,
+                    width = ResolutionHelper.CurrentWidth,
+                    height = ResolutionHelper.CurrentHeight;
                 if (content.Height <= rect.Top - 8)
                 {
                     y = rect.Top - content.Height - 8;
                 }
-                else if (content.Height + 8 < ResolutionHelper.CurrentHeight)
+                else if (content.Height + 8 < height)
                 {
                     y = 8;
                 }
-                if (content.Width < ResolutionHelper.CurrentWidth - rect.Left)
+                if (content.Width < width - rect.Left)
                 {
                     x = rect.Left;
                 }
-                else if (content.Width < ResolutionHelper.CurrentWidth)
+                else if (content.Width < width)
                 {
-                    x = ResolutionHelper.CurrentWidth - content.Width;
+                    x = width - content.Width;
                 }
 
                 // Shift the target position left if needed
@@ -501,13 +534,13 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 return (x, y);
             }
 
-            // Create the new popup
-            (double hx, double vy) = CalculateSizeAndOffset();
+            // Create the popup to display
+            (double hx, double vy) = CalculateOffset();
             Popup popup = new Popup
             {
                 IsLightDismissEnabled = false,
-                HorizontalOffset = hx,
-                VerticalOffset = vy
+                VerticalOffset = vy,
+                HorizontalOffset = hx
             };
 
             // Create the grid with the content and its drop shadow
@@ -537,7 +570,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             popup.Child = parent;
             grid.SetVisualOpacity(0);
 
-            // Setup fade in and out animations
+            // Setup the hit target grid and its popup
             Grid hitGrid = new Grid
             {
                 Background = new SolidColorBrush(Colors.Transparent),
@@ -550,24 +583,45 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 IsLightDismissEnabled = false,
                 IsOpen = true
             };
-            popup.IsOpen = true; // Open the context menu popup on top of the hit target
+
+            // Local functions
             void ClosePopups()
             {
                 // The manual animation here is a workaround for a crash with the implicit hide composition animations
+                _CloseContextMenu = null;
                 hit.IsOpen = false;
                 grid.IsHitTestVisible = false;
                 grid.StartCompositionFadeSlideAnimation(1, 0, TranslationAxis.Y, 0, 8, 200, null, null, EasingFunctionNames.CircleEaseOut,
                     () => popup.IsOpen = false);
             }
-            hitGrid.Tapped += (_, e) => ClosePopups();
+            bool sizeHandled = true;
             void WindowSizeHandler(object s, WindowSizeChangedEventArgs e)
             {
-                Window.Current.SizeChanged -= WindowSizeHandler;
-                ClosePopups();
+                if (sizeHandled)
+                {
+                    sizeHandled = false;
+                    Window.Current.SizeChanged -= WindowSizeHandler;
+                    ClosePopups();
+                }
             }
+
+            // Setup the event handlers and display the popup
+            popup.Closed += (s, e) =>
+            {
+                if (sizeHandled)
+                {
+                    sizeHandled = false;
+                    Window.Current.SizeChanged -= WindowSizeHandler;
+                }
+            };
+            _CloseContextMenu = ClosePopups;
+            popup.IsOpen = true; // Open the context menu popup on top of the hit target
+            hitGrid.Tapped += (_, e) => ClosePopups();
             Window.Current.SizeChanged += WindowSizeHandler;
             grid.StartCompositionFadeSlideAnimation(0, 1, TranslationAxis.Y, 20, 0, 200, null, null, EasingFunctionNames.CircleEaseOut);
             Semaphore.Release();
         }
+
+        #endregion
     }
 }
