@@ -21,6 +21,7 @@ using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
+using UICompositionAnimations.XAMLTransform;
 
 namespace Brainf_ck_sharp_UWP.PopupService
 {
@@ -201,7 +202,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
 
         #endregion
 
-        #region Show APIs
+        #region Flyout APIs
 
         /// <summary>
         /// Shows a simple message dialog with a title and a content
@@ -497,7 +498,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
 
             // Adjust the display size and position
-            (double x, double y) CalculateOffset()
+            (double x, double y) CalculateOffset(Rect area)
             {
                 // Calculate the final offset
                 double
@@ -505,17 +506,17 @@ namespace Brainf_ck_sharp_UWP.PopupService
                     y = 0,
                     width = ResolutionHelper.CurrentWidth,
                     height = ResolutionHelper.CurrentHeight;
-                if (content.Height <= rect.Top - 8)
+                if (content.Height <= area.Top - 8)
                 {
-                    y = rect.Top - content.Height - 8;
+                    y = area.Top - content.Height - 8;
                 }
                 else if (content.Height + 8 < height)
                 {
                     y = 8;
                 }
-                if (content.Width < width - rect.Left)
+                if (content.Width < width - area.Left)
                 {
-                    x = rect.Left;
+                    x = area.Left;
                 }
                 else if (content.Width < width)
                 {
@@ -527,7 +528,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 {
                     double
                         offset = content.Width / 2,
-                        half = rect.Width / 2;
+                        half = area.Width / 2;
                     if (x > offset - half) x -= offset - half;
                     else if (x > 8) x = 8;
                 }
@@ -535,7 +536,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
 
             // Create the popup to display
-            (double hx, double vy) = CalculateOffset();
+            (double hx, double vy) = CalculateOffset(rect);
             Popup popup = new Popup
             {
                 IsLightDismissEnabled = false,
@@ -620,6 +621,24 @@ namespace Brainf_ck_sharp_UWP.PopupService
             Window.Current.SizeChanged += WindowSizeHandler;
             grid.StartCompositionFadeSlideAnimation(0, 1, TranslationAxis.Y, 20, 0, 200, null, null, EasingFunctionNames.CircleEaseOut);
             Semaphore.Release();
+
+            // Adjust the offset after a delay, if needed
+            Task.Delay(250).ContinueWith(t =>
+            {
+                // Check the updated target position
+                point = target.GetVisualCoordinates();
+                Rect delayedRect = new Rect(point, new Size(target.ActualWidth, target.ActualHeight));
+                if (delayedRect.Left.EqualsWithDelta(rect.Left) &&
+                    delayedRect.Top.EqualsWithDelta(rect.Top) ||
+                    !popup.IsOpen) return;
+
+                // Animate the popup to the new offset
+                (hx, vy) = CalculateOffset(delayedRect);
+                XAMLTransformToolkit.PrepareStory(
+                    XAMLTransformToolkit.CreateDoubleAnimation(popup, "HorizontalOffset", null, hx, 250, EasingFunctionNames.CircleEaseOut, true),
+                    XAMLTransformToolkit.CreateDoubleAnimation(popup, "VerticalOffset", null, vy, 250, EasingFunctionNames.CircleEaseOut, true)).Begin();
+
+            }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
         }
 
         #endregion
