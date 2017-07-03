@@ -22,20 +22,6 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
         }
 
         /// <summary>
-        /// Tries to display the status bar
-        /// </summary>
-        /// <returns>The occluded height if the operation succedes</returns>
-        public static async Task<double> TryShowAsync()
-        {
-            StatusBar statusBar = GetCurrentStatusBarAsync();
-            if (statusBar == null) return 0;
-            statusBar.BackgroundColor = null;
-            statusBar.ForegroundColor = Colors.White;
-            await statusBar.ShowAsync();
-            return statusBar.OccludedRect.Height;
-        }
-
-        /// <summary>
         /// Tries to hide the status bar, if present
         /// </summary>
         public static IAsyncAction HideAsync() => GetCurrentStatusBarAsync()?.HideAsync();
