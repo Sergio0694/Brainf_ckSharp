@@ -17,6 +17,11 @@
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Brainf_ck_sharp.UWP.App">
       <uap:VisualElements DisplayName="Brainf*ck#" Square150x150Logo="assets\Medium\Medium150x150Logo.png" Square44x44Logo="assets\AppList\AppList.png" Description="Brainf*ck# UWP" BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="assets\Wide\Wide310x150Logo.png" Square71x71Logo="assets\Small\Small71x71Logo.png" Square310x310Logo="assets\Large\Large310x310Logo.png">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square150x150Logo" />
+            <uap:ShowOn Tile="wide310x150Logo" />
+            <uap:ShowOn Tile="square310x310Logo" />
+          </uap:ShowNameOnTiles>
         </uap:DefaultTile>
         <uap:SplashScreen Image="assets\SplashScreen\SplashScreen.png" />
       </uap:VisualElements>
