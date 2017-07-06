@@ -1,6 +1,7 @@
 ﻿using Windows.UI;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Helpers;
+using UICompositionAnimations.Brushes;
 
 namespace Brainf_ck_sharp_UWP.Resources
 {
@@ -53,6 +54,11 @@ namespace Brainf_ck_sharp_UWP.Resources
         /// Gets the RedDangerBrush brush (#FFDC232B)
         /// </summary>
         public SolidColorBrush RedDangerBrush { get; }
+
+        /// <summary>
+        /// Gets the light brush for the borders of visual elements in the app
+        /// </summary>
+        public LightingBrush BorderLightBrush { get; } = XAMLResourcesHelper.GetResourceValue<LightingBrush>("BorderLightBrush");
 
         #endregion
     }

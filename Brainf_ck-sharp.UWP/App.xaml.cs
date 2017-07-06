@@ -2,9 +2,11 @@
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media.Animation;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
@@ -12,6 +14,7 @@ using Brainf_ck_sharp_UWP.Resources;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.UserControls;
 using UICompositionAnimations.Lights;
+using UICompositionAnimations.XAMLTransform;
 #if DEBUG
 using System.Diagnostics;
 #endif
@@ -81,7 +84,8 @@ namespace Brainf_ck_sharp_UWP
                 KeyEventsListener.IsEnabled = true;
 
                 // Add the lights and store the content
-                shell.Lights.Add(new PointerPositionSpotLight());
+                PointerPositionSpotLight light = new PointerPositionSpotLight();
+                shell.Lights.Add(light);
                 Window.Current.Content = shell;
 
                 // Settings
@@ -92,7 +96,22 @@ namespace Brainf_ck_sharp_UWP
                 Task.Run(() => SQLiteManager.Instance.TrySyncSharedCodesAsync());
             }
             Window.Current.Activate();
+
+            // Setup the light effects on different devices
+            _LightsEnabled = UniversalAPIsHelper.IsDesktop;
+            if (!_LightsEnabled) BrushResourcesManager.Instance.BorderLightBrush.Opacity = 0;
+            shell.ManageControlPointerStates((type, _) =>
+            {
+                bool lightsVisible = type == PointerDeviceType.Mouse;
+                if (_LightsEnabled == lightsVisible) return;
+                _LightsEnabled = lightsVisible;
+                DoubleAnimation animation = XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.BorderLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200);
+                XAMLTransformToolkit.PrepareStory(animation).Begin();
+            });
         }
+
+        // Stores a temporary value indicating the last pointer type used in the app
+        private bool _LightsEnabled;
 
         private void UpdateVisibleBounds(ApplicationView sender)
         {
