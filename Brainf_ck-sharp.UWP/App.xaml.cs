@@ -3,18 +3,14 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
-using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Media;
-using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Resources;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.UserControls;
-using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Lights;
 #if DEBUG
 using System.Diagnostics;
@@ -46,7 +42,7 @@ namespace Brainf_ck_sharp_UWP
             this.Suspending += OnSuspending;
         }
 
-        private static Shell _DefaultContent;
+        private static Shell DefaultContent => Window.Current.Content.To<Shell>();
 
         /// <summary>
         /// Richiamato quando l'applicazione viene avviata normalmente dall'utente. All'avvio dell'applicazione
@@ -84,9 +80,9 @@ namespace Brainf_ck_sharp_UWP
                 // Enable the key listener
                 KeyEventsListener.IsEnabled = true;
 
-                // Posizionare il frame nella finestra corrente
-                Window.Current.Content = shell;
+                // Add the lights and store the content
                 shell.Lights.Add(new PointerPositionSpotLight());
+                Window.Current.Content = shell;
 
                 // Settings
                 AppSettingsManager.Instance.InitializeSettings();
@@ -95,14 +91,13 @@ namespace Brainf_ck_sharp_UWP
                 // Sync the roaming source codes
                 Task.Run(() => SQLiteManager.Instance.TrySyncSharedCodesAsync());
             }
-            _DefaultContent = shell;
             Window.Current.Activate();
         }
 
         private void UpdateVisibleBounds(ApplicationView sender)
         {
             // Return if the content hasn't finished loading yet
-            if (_DefaultContent == null) return;
+            if (DefaultContent == null) return;
 
             // Close the open flyout if the navigation bar has been changed
             if (sender.Orientation == ApplicationViewOrientation.Portrait)
@@ -111,7 +106,7 @@ namespace Brainf_ck_sharp_UWP
                 if (navBarHeight < 0) navBarHeight = 0;
 
                 // Adjust the app UI
-                _DefaultContent.Margin = new Thickness(0, 0, 0, navBarHeight);
+                DefaultContent.Margin = new Thickness(0, 0, 0, navBarHeight);
             }
             else
             {
@@ -123,14 +118,14 @@ namespace Brainf_ck_sharp_UWP
                 if (sender.VisibleBounds.Left.EqualsWithDelta(0) && sender.VisibleBounds.Right < windowBounds.Width)
                 {
                     double navBarWidth = windowBounds.Width - sender.VisibleBounds.Right;
-                    _DefaultContent.Margin = new Thickness(0, 0, navBarWidth, 0);
+                    DefaultContent.Margin = new Thickness(0, 0, navBarWidth, 0);
                 }
                 else if (sender.VisibleBounds.Left > 0 && sender.VisibleBounds.Width < windowBounds.Width)
                 {
                     // Adjust the right margin in the case the orientation is right
-                    _DefaultContent.Margin = new Thickness(sender.VisibleBounds.Left, 0, 0, 0);
+                    DefaultContent.Margin = new Thickness(sender.VisibleBounds.Left, 0, 0, 0);
                 }
-                else _DefaultContent.Margin = new Thickness();
+                else DefaultContent.Margin = new Thickness();
             }
         }
 
