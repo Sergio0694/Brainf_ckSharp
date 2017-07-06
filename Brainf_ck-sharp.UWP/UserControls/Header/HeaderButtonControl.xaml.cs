@@ -3,6 +3,8 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using UICompositionAnimations;
+using UICompositionAnimations.Enums;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Header
 {
@@ -12,6 +14,10 @@ namespace Brainf_ck_sharp_UWP.UserControls.Header
         {
             this.InitializeComponent();
             VisualStateManager.GoToState(this, "Default", false);
+            this.ManageControlPointerStates((_, value) =>
+            {
+                LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 1, 200, null, EasingFunctionNames.Linear);
+            });
         }
 
         /// <summary>

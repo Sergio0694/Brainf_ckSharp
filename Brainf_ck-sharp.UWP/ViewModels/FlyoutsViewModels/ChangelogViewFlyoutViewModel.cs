@@ -36,6 +36,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                     "Added a one-time popup to ask for feedback on the app",
                     "Fixed a crash when using the IDE virtual arrows keyboard",
                     "The in-app notifications are now dismissed correctly when tapping the button in the top right corner",
+                    "Added custom reveal-highlight effect to some UI elements (Fluent design)",
                     "Minor bug fixes and UI adjustments"
                 }),
                 CreateChangelogEntry("1.1.1.0", 2017, 7, 5, new List<String>

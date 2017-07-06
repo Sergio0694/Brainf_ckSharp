@@ -52,7 +52,14 @@
         
         <!--Overflow selector-->
         <Grid Grid.Column="3">
-            
+
+            <!--Light-->
+            <Border
+                x:Name="LightBorder"
+                Margin="0,0,1,0"
+                BorderThickness="1"
+                BorderBrush="{StaticResource BorderLightBrush}"/>
+
             <!--Custom border-->
             <Rectangle
                 Fill="{ThemeResource ShellSeparatorLineFillBrush}"

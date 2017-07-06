@@ -51,9 +51,17 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="1"/>
             </Grid.RowDefinitions>
+            
+            <!--Light-->
+            <Border
+                x:Name="LightBorder"
+                BorderThickness="1"
+                BorderBrush="{StaticResource BorderLightBrush}"
+                Grid.RowSpan="2"/>
 
             <!--Icon-->
             <TextBlock
+                Grid.Row="0"
                 Style="{StaticResource FontIconTextBlockStyle}"
                 Text="&#xEC4E;"
                 x:Name="IconBlock"

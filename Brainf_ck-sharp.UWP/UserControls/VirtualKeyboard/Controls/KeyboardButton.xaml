@@ -10,23 +10,34 @@
 
     <Button Style="{StaticResource WideButtonWithNoBackgroundStyle}"
             Click="Button_Clicked">
-        <StackPanel
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center">
-            <TextBlock 
-                Text="+"
-                TextAlignment="Center"
-                FontSize="24"
-                Foreground="White"
-                x:Name="OperatorBlock"/>
-            <TextBlock 
-                Text="*ptr++"
-                TextAlignment="Center"
-                FontSize="12"
-                Foreground="#80FFFFFF"
-                Margin="0,4,0,0"
-                FontWeight="SemiLight"
-                x:Name="InfoBlock"/>
-        </StackPanel>
+        <Grid>
+            
+            <!--Light-->
+            <Border
+                x:Name="LightBorder"
+                Margin="-2"
+                BorderThickness="1"
+                BorderBrush="{StaticResource BorderLightBrush}"/>
+
+            <!--Content-->
+            <StackPanel
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+                <TextBlock 
+                    Text="+"
+                    TextAlignment="Center"
+                    FontSize="24"
+                    Foreground="White"
+                    x:Name="OperatorBlock"/>
+                <TextBlock 
+                    Text="*ptr++"
+                    TextAlignment="Center"
+                    FontSize="12"
+                    Foreground="#80FFFFFF"
+                    Margin="0,4,0,0"
+                    FontWeight="SemiLight"
+                    x:Name="InfoBlock"/>
+            </StackPanel>
+        </Grid>
     </Button>
 </UserControl>

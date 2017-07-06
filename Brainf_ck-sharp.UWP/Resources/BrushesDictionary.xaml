@@ -1,7 +1,9 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:brushes="using:UICompositionAnimations.Brushes"
+    xmlns:lights="using:UICompositionAnimations.Lights">
+
     <!--Default fade out accent brush (button normal state)-->
     <SolidColorBrush x:Key="AccentBrushLowFade"/>
     
@@ -25,4 +27,9 @@
     
     <!--Misc-->
     <SolidColorBrush x:Key="ShellSeparatorLineFillBrush" Color="#FF6E6E6E"/>
+    
+    <!--Border light-->
+    <brushes:LightingBrush
+        x:Key="BorderLightBrush"
+        lights:PointerPositionSpotLight.IsTarget="True"/>
 </ResourceDictionary>

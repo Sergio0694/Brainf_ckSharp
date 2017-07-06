@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -20,7 +19,6 @@ using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo;
-using Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar;
 using Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
@@ -139,11 +137,20 @@ namespace Brainf_ck_sharp_UWP.UserControls
 
             // Disable the swipe gestures in the keyboard pivot
             ScrollViewer scroller = CommandsPivot.FindChild<ScrollViewer>();
-            scroller.PointerEntered += Scroller_PointerIn;
-            scroller.PointerMoved += Scroller_PointerIn;
-            scroller.PointerExited += Scroller_PointerOut;
-            scroller.PointerReleased += Scroller_PointerOut;
-            scroller.PointerCaptureLost += Scroller_PointerOut;
+            if (scroller != null)
+            {
+                scroller.PointerEntered += Scroller_PointerIn;
+                scroller.PointerMoved += Scroller_PointerIn;
+                scroller.PointerExited += Scroller_PointerOut;
+                scroller.PointerReleased += Scroller_PointerOut;
+                scroller.PointerCaptureLost += Scroller_PointerOut;
+            }
+
+            // Light border UI
+            ExpanderControl.FindChild<Button>("ExpanderStateButton").ManageControlPointerStates((_, value) =>
+            {
+                LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 1, 200, null, EasingFunctionNames.Linear);
+            });
 
             // Popups
             ShowStartupPopups();

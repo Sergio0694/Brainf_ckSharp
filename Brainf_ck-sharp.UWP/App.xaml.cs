@@ -3,14 +3,19 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
+using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media;
+using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Resources;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.UserControls;
+using UICompositionAnimations.Brushes;
+using UICompositionAnimations.Lights;
 #if DEBUG
 using System.Diagnostics;
 #endif
@@ -81,6 +86,7 @@ namespace Brainf_ck_sharp_UWP
 
                 // Posizionare il frame nella finestra corrente
                 Window.Current.Content = shell;
+                shell.Lights.Add(new PointerPositionSpotLight());
 
                 // Settings
                 AppSettingsManager.Instance.InitializeSettings();

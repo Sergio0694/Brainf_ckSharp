@@ -51,14 +51,23 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         
+        <!--Root-->
         <Grid x:Name="RootGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="2"/>
             </Grid.RowDefinitions>
+            
+            <!--Light-->
+            <Border
+                x:Name="LightBorder"
+                Grid.RowSpan="2"
+                BorderThickness="1"
+                BorderBrush="{StaticResource BorderLightBrush}"/>
 
             <!--Icon and title-->
             <RelativePanel
+                Grid.Row="0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
                 <TextBlock

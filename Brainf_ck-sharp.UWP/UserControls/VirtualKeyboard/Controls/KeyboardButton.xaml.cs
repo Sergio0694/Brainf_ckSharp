@@ -1,6 +1,9 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using UICompositionAnimations;
+using UICompositionAnimations.Enums;
 
 namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
 {
@@ -12,6 +15,10 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
         public KeyboardButton()
         {
             this.InitializeComponent();
+            this.ManageControlPointerStates((_, value) =>
+            {
+                LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 1, 200, null, EasingFunctionNames.Linear);
+            });
         }
 
         /// <summary>

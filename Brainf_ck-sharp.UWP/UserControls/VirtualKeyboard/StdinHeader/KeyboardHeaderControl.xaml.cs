@@ -8,6 +8,8 @@ using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.PopupService;
 using GalaSoft.MvvmLight.Messaging;
+using UICompositionAnimations;
+using UICompositionAnimations.Enums;
 
 namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
 {
@@ -18,6 +20,10 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
             this.InitializeComponent();
             AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.ByteOverflowModeEnabled), out bool overflow);
             OverflowSwitchButton.IsChecked = overflow;
+            OverflowSwitchButton.ManageControlPointerStates((_, value) =>
+            {
+                LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 1, 200, null, EasingFunctionNames.Linear);
+            });
         }
 
         public void SelectKeyboard() => SelectedHeaderIndex = 0;

@@ -116,12 +116,14 @@
                 IsExpandable="True"
                 IsExpanded="True"
                 ExpanderHitTargetAreaWidth="48"
-                AnimatedIndicatorContent="&#xE010;">
+                AnimatedIndicatorContent="&#xE010;"
+                x:Name="ExpanderControl">
                 <telerik:RadExpanderControl.AnimatedIndicatorContentTemplate>
                     <DataTemplate>
                         <Button 
                             Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
-                            Width="48">
+                            Width="48"
+                            x:Name="ExpanderStateButton">
                             <Button.Clip>
                                 <RectangleGeometry Rect="0,0,48,48"/>
                             </Button.Clip>
@@ -138,6 +140,18 @@
                     <!--Header-->
                     <Grid Height="48">
                         
+                        <!--Expander light-->
+                        <Border
+                            x:Name="LightBorder"
+                            Width="48"
+                            HorizontalAlignment="Right"
+                            BorderThickness="1"
+                            BorderBrush="{StaticResource BorderLightBrush}">
+                            <Border.RenderTransform>
+                                <TranslateTransform X="48"/>
+                            </Border.RenderTransform>
+                        </Border>
+
                         <!--Overlay for the expander-->
                         <Rectangle
                             Fill="{ThemeResource ShellSeparatorLineFillBrush}"

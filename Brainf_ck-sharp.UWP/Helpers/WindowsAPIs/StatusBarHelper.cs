@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Metadata;
-using Windows.UI;
 using Windows.UI.ViewManagement;
 
 namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
