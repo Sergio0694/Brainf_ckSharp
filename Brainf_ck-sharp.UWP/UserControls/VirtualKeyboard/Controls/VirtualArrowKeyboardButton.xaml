@@ -29,7 +29,7 @@
             <!--Wide light border-->
             <Border
                 x:Name="BackgroundBorder"
-                Background="{StaticResource ElementsWideLightBrush}"
+                Background="{StaticResource PopupElementsWideLightBrush}"
                 Opacity="0"/>
             
             <!--Icon-->

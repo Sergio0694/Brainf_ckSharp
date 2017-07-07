@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.HockeyApp;
+﻿using Microsoft.HockeyApp;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -8,7 +7,6 @@ using Windows.Foundation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Animation;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
@@ -111,25 +109,22 @@ namespace Brainf_ck_sharp_UWP
             Window.Current.Activate();
 
             // Setup the light effects on different devices
-            LightsEnabled = UniversalAPIsHelper.IsDesktop;
-            if (!LightsEnabled) BrushResourcesManager.Instance.BorderLightBrush.Opacity = 0;
-            shell.ManageControlPointerStates((type, _) =>
+            shell.ManageHostPointerStates((type, value) =>
             {
-                bool lightsVisible = type == PointerDeviceType.Mouse;
+                bool lightsVisible = type == PointerDeviceType.Mouse && value;
                 if (LightsEnabled == lightsVisible) return;
                 LightsEnabled = lightsVisible;
-                DoubleAnimation
-                    smallLightAnimation = XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.BorderLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200),
-                    wideLightAnimation = XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.ElementsWideLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200),
-                    lightBackgroundAnimation = XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.WideLightBrushDarkShadeBackground, "Opacity", null, lightsVisible ? 1 : 0, 200);
-                XAMLTransformToolkit.PrepareStory(smallLightAnimation, wideLightAnimation, lightBackgroundAnimation).Begin();
+                XAMLTransformToolkit.PrepareStory(
+                    XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.BorderLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true),
+                    XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.ElementsWideLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true),
+                    XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.WideLightBrushDarkShadeBackground, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true)).Begin();
             });
         }
 
         /// <summary>
         /// Gets whether or not the XAML lights are currently visible in the app, depending on the pointer device in use
         /// </summary>
-        public static bool LightsEnabled { get; private set; }
+        private bool LightsEnabled { get; set; }
 
         private void UpdateVisibleBounds(ApplicationView sender)
         {

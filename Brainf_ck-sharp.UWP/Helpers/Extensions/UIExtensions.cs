@@ -131,21 +131,17 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
         }
 
         /// <summary>
-        /// Adds an event handler to all the pointer events of the target popup
+        /// Adds an event handler to all the pointer events of the target element
         /// </summary>
-        /// <param name="popup">The popup to monitor</param>
+        /// <param name="element">The element to monitor</param>
         /// <param name="action"><para>An action to call every time a pointer event is raised. The bool parameter</para>
         /// <para>indicates whether the control is gaining or losing focus</para></param>
-        public static void ManagePopupHostPointerStates(this Popup popup, Action<PointerDeviceType, bool> action)
+        public static void ManageHostPointerStates(this UIElement element, Action<PointerDeviceType, bool> action)
         {
-            // Check
-            UIElement child = popup.Child;
-            if (child == null) throw new ArgumentException("The popup must have a valid child");
-
             // Nested functions that adds the actual handlers
             void AddHandler(RoutedEvent @event, bool state, Func<PointerDeviceType, bool> predicate)
             {
-                child.AddHandler(@event, new PointerEventHandler((_, e) =>
+                element.AddHandler(@event, new PointerEventHandler((_, e) =>
                 {
                     if (predicate == null || predicate(e.Pointer.PointerDeviceType))
                     {

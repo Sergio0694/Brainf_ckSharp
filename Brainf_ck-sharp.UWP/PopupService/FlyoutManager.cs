@@ -608,9 +608,9 @@ namespace Brainf_ck_sharp_UWP.PopupService
             };
             XamlLight.AddTargetBrush(
                 $"{PointerPositionSpotLight.GetIdStatic()}{popupLight.IdAppendage}",
-                BrushResourcesManager.Instance.ElementsWideLightBrush);
+                BrushResourcesManager.Instance.PopupElementsWideLightBrush);
             parent.Lights.Add(popupLight);
-            popup.ManagePopupHostPointerStates((type, value) =>
+            parent.ManageHostPointerStates((type, value) =>
             {
                 bool lightsVisible = type == PointerDeviceType.Mouse && value;
                 if (_ContextMenuLightsEnabled == lightsVisible) return;

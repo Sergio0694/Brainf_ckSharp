@@ -10,7 +10,13 @@
 
     <Button Style="{StaticResource WideButtonWithNoBackgroundStyle}"
             Click="Button_Clicked">
-        <Grid Background="{StaticResource WideLightBrushDarkShadeBackground}">
+        <Grid>
+            
+            <!--Light background-->
+            <Border
+                Opacity="0"
+                x:Name="LightDarkBackground"
+                Background="{StaticResource WideLightBrushDarkShadeBackground}"/>
 
             <!--Wide light border-->
             <Border
