@@ -23,7 +23,6 @@ using Brainf_ck_sharp_UWP.Resources;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
-using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Lights;
 using UICompositionAnimations.XAMLTransform;
@@ -613,12 +612,15 @@ namespace Brainf_ck_sharp_UWP.PopupService
             parent.Lights.Add(popupLight);
             popup.ManagePopupHostPointerStates((type, value) =>
             {
-                System.Diagnostics.Debug.WriteLine(value);
                 bool lightsVisible = type == PointerDeviceType.Mouse && value;
                 if (_ContextMenuLightsEnabled == lightsVisible) return;
                 _ContextMenuLightsEnabled = lightsVisible;
-                BrushResourcesManager.Instance.PopupElementsLightBrush.Opacity =
-                    BrushResourcesManager.Instance.PopupElementsWideLightBrush.Opacity = lightsVisible ? 1 : 0;
+                DoubleAnimation
+                    borderAnimation = XAMLTransformToolkit.CreateDoubleAnimation(
+                        BrushResourcesManager.Instance.PopupElementsLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true),
+                    surfaceAnimation = XAMLTransformToolkit.CreateDoubleAnimation(
+                        BrushResourcesManager.Instance.PopupElementsWideLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true);
+                XAMLTransformToolkit.PrepareStory(borderAnimation, surfaceAnimation).Begin();
             });
 
             // Local functions
