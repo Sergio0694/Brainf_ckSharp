@@ -7,8 +7,8 @@
     xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
     xmlns:controls="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls"
     mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignHeight="96"
+    d:DesignWidth="144">
 
     <!--Root-->
     <Grid
@@ -41,34 +41,50 @@
             Icon="&#xE010;"
             Grid.Row="0"
             Grid.Column="1"
-            Click="{x:Bind SendKeyUpMessage}"
-            Height="50"
-            Margin="0,-1,0,0"/>
+            Click="{x:Bind SendKeyUpMessage}"/>
         
         <!--Left-->
         <controls:VirtualArrowKeyboardButton
             Icon="&#xE00E;"
             Grid.Row="1"
             Grid.Column="0"
-            Click="{x:Bind SendKeyLeftMessage}"
-            Width="50"
-            Margin="-1,0,-1,0"/>
+            Click="{x:Bind SendKeyLeftMessage}"/>
         
         <!--Down-->
         <controls:VirtualArrowKeyboardButton
             Icon="&#xE011;"
             Grid.Row="1"
             Grid.Column="1"
-            Click="{x:Bind SendKeyDownMessage}"
-            Width="49"
-            Margin="0,0,-1,0"/>
+            Click="{x:Bind SendKeyDownMessage}"/>
         
         <!--Right-->
         <controls:VirtualArrowKeyboardButton
             Icon="&#xE00F;"
             Grid.Row="1"
             Grid.Column="2"
-            Click="{x:Bind SendKeyRightMessage}"
-            Width="49"/>
+            Click="{x:Bind SendKeyRightMessage}"/>
+        
+        <!--Light borders-->
+        <Rectangle
+            Height="1"
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            VerticalAlignment="Top"
+            Fill="{StaticResource PopupElementsLightBrush}"/>
+        <Rectangle
+            Width="1"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="1"
+            HorizontalAlignment="Left"
+            Fill="{StaticResource PopupElementsLightBrush}"/>
+        <Rectangle
+            Width="1"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="1"
+            HorizontalAlignment="Right"
+            Fill="{StaticResource PopupElementsLightBrush}"/>
     </Grid>
 </UserControl>

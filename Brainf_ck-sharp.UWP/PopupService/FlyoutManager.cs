@@ -611,7 +611,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 $"{PointerPositionSpotLight.GetIdStatic()}{popupLight.IdAppendage}",
                 BrushResourcesManager.Instance.ElementsWideLightBrush);
             parent.Lights.Add(popupLight);
-            parent.ManageControlPointerStates((type, value) =>
+            popup.ManagePopupHostPointerStates((type, value) =>
             {
                 System.Diagnostics.Debug.WriteLine(value);
                 bool lightsVisible = type == PointerDeviceType.Mouse && value;

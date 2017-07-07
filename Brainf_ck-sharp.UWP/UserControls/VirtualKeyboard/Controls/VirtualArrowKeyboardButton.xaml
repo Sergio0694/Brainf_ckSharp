@@ -31,13 +31,6 @@
                 x:Name="BackgroundBorder"
                 Background="{StaticResource ElementsWideLightBrush}"
                 Opacity="0"/>
-
-            <!--Light-->
-            <Border
-                x:Name="LightBorder"
-                Margin="0"
-                BorderThickness="1"
-                BorderBrush="{StaticResource PopupElementsLightBrush}"/>
             
             <!--Icon-->
             <TextBlock 
