@@ -1,4 +1,5 @@
-﻿using Microsoft.HockeyApp;
+﻿using System;
+using Microsoft.HockeyApp;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -46,7 +47,7 @@ namespace Brainf_ck_sharp_UWP
             this.Suspending += OnSuspending;
         }
 
-        private static Shell DefaultContent => Window.Current.Content.To<Shell>();
+        public static Shell DefaultContent => Window.Current.Content.To<Shell>();
 
         /// <summary>
         /// Richiamato quando l'applicazione viene avviata normalmente dall'utente. All'avvio dell'applicazione

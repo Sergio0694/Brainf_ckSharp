@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Core;
@@ -11,16 +12,20 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.PopupService.Interfaces;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.PopupService.UI;
+using Brainf_ck_sharp_UWP.Resources;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
+using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
+using UICompositionAnimations.Lights;
 using UICompositionAnimations.XAMLTransform;
 
 namespace Brainf_ck_sharp_UWP.PopupService
@@ -457,6 +462,11 @@ namespace Brainf_ck_sharp_UWP.PopupService
         #region Context menu APIs
 
         /// <summary>
+        /// Gets whether or not the XAML lights are currently visible in the open popups
+        /// </summary>
+        private bool _ContextMenuLightsEnabled;
+
+        /// <summary>
         /// Shows a given content inside a popup with an animation and offset similar of an attached Flyout
         /// </summary>
         /// <param name="content">The control to show</param>
@@ -585,6 +595,32 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 IsOpen = true
             };
 
+            // Lights setup
+            BrushResourcesManager.Instance.PopupElementsLightBrush.Opacity = 0;
+            BrushResourcesManager.Instance.PopupElementsWideLightBrush.Opacity = 0;
+            _ContextMenuLightsEnabled = false;
+            parent.Lights.Add(new PointerPositionSpotLight());
+            PointerPositionSpotLight popupLight = new PointerPositionSpotLight
+            {
+                Z = 30,
+                IdAppendage = "[Popup]",
+                Alpha = 0x10,
+                Shade = 0x10
+            };
+            XamlLight.AddTargetBrush(
+                $"{PointerPositionSpotLight.GetIdStatic()}{popupLight.IdAppendage}",
+                BrushResourcesManager.Instance.ElementsWideLightBrush);
+            parent.Lights.Add(popupLight);
+            parent.ManageControlPointerStates((type, value) =>
+            {
+                System.Diagnostics.Debug.WriteLine(value);
+                bool lightsVisible = type == PointerDeviceType.Mouse && value;
+                if (_ContextMenuLightsEnabled == lightsVisible) return;
+                _ContextMenuLightsEnabled = lightsVisible;
+                BrushResourcesManager.Instance.PopupElementsLightBrush.Opacity =
+                    BrushResourcesManager.Instance.PopupElementsWideLightBrush.Opacity = lightsVisible ? 1 : 0;
+            });
+
             // Local functions
             void ClosePopups()
             {
@@ -614,6 +650,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                     sizeHandled = false;
                     Window.Current.SizeChanged -= WindowSizeHandler;
                 }
+                parent.Lights.Clear();
             };
             _CloseContextMenu = ClosePopups;
             popup.IsOpen = true; // Open the context menu popup on top of the hit target

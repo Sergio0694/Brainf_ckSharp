@@ -5,24 +5,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    xmlns:controls="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
-    <UserControl.Resources>
-
-        <Style
-            TargetType="TextBlock"
-            x:Key="ArrowIndicatorTextBlockStyle"
-            BasedOn="{StaticResource FontIconTextBlockStyle}">
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="IsTextScaleFactorEnabled" Value="False"/>
-            <Setter Property="FontSize" Value="16"/>
-        </Style>
-    </UserControl.Resources>
 
     <!--Root-->
     <Grid
+        Background="Transparent"
         BorderThickness="1"
         BorderBrush="#FF404040">
         <Grid.RowDefinitions>
@@ -47,47 +37,38 @@
             x:Name="Win2DCanvas"/>
         
         <!--Up-->
-        <Button
+        <controls:VirtualArrowKeyboardButton
+            Icon="&#xE010;"
             Grid.Row="0"
             Grid.Column="1"
-            Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
-            Click="{x:Bind SendKeyUpMessage}">
-            <TextBlock 
-                Text="&#xE010;"
-                Style="{StaticResource ArrowIndicatorTextBlockStyle}"/>
-        </Button>
+            Click="{x:Bind SendKeyUpMessage}"
+            Height="50"
+            Margin="0,-1,0,0"/>
         
         <!--Left-->
-        <Button
+        <controls:VirtualArrowKeyboardButton
+            Icon="&#xE00E;"
             Grid.Row="1"
             Grid.Column="0"
-            Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
-            Click="{x:Bind SendKeyLeftMessage}">
-            <TextBlock 
-                Text="&#xE00E;"
-                Style="{StaticResource ArrowIndicatorTextBlockStyle}"/>
-        </Button>
+            Click="{x:Bind SendKeyLeftMessage}"
+            Width="50"
+            Margin="-1,0,-1,0"/>
         
         <!--Down-->
-        <Button
+        <controls:VirtualArrowKeyboardButton
+            Icon="&#xE011;"
             Grid.Row="1"
             Grid.Column="1"
-            Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
-            Click="{x:Bind SendKeyDownMessage}">
-            <TextBlock 
-                Text="&#xE011;"
-                Style="{StaticResource ArrowIndicatorTextBlockStyle}"/>
-        </Button>
+            Click="{x:Bind SendKeyDownMessage}"
+            Width="49"
+            Margin="0,0,-1,0"/>
         
         <!--Right-->
-        <Button
+        <controls:VirtualArrowKeyboardButton
+            Icon="&#xE00F;"
             Grid.Row="1"
             Grid.Column="2"
-            Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
-            Click="{x:Bind SendKeyRightMessage}">
-            <TextBlock 
-                Text="&#xE00F;"
-                Style="{StaticResource ArrowIndicatorTextBlockStyle}"/>
-        </Button>
+            Click="{x:Bind SendKeyRightMessage}"
+            Width="49"/>
     </Grid>
 </UserControl>

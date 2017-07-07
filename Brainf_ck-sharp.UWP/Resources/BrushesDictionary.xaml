@@ -28,13 +28,18 @@
     <!--Misc-->
     <SolidColorBrush x:Key="ShellSeparatorLineFillBrush" Color="#FF6E6E6E"/>
     
-    <!--Border light-->
+    <!--Border lights-->
     <brushes:LightingBrush
         x:Key="BorderLightBrush"
         lights:PointerPositionSpotLight.IsTarget="True"/>
+    <brushes:LightingBrush 
+        x:Key="PopupElementsLightBrush"
+        lights:PointerPositionSpotLight.IsTarget="True"
+        Opacity="0"/>
     
-    <!--Wide light brush-->
+    <!--Wide light brushes-->
     <brushes:LightingBrush x:Key="ElementsWideLightBrush"/>
+    <brushes:LightingBrush x:Key="PopupElementsWideLightBrush"/>
     
     <!--Light brush dark background-->
     <SolidColorBrush
