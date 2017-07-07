@@ -59,18 +59,11 @@
                 Background="{StaticResource ElementsWideLightBrush}"
                 Opacity="0"/>
 
-            <!--Light-->
-            <Border
-                x:Name="LightBorder"
-                Margin="0,0,1,0"
-                BorderThickness="1"
-                BorderBrush="{StaticResource BorderLightBrush}"/>
-
             <!--Custom border-->
             <Rectangle
                 Fill="{ThemeResource ShellSeparatorLineFillBrush}"
                 VerticalAlignment="Top"
-                Canvas.ZIndex="1"
+                Canvas.ZIndex="2"
                 Height="1"/>
             <Rectangle
                 Fill="{ThemeResource ShellSeparatorLineFillBrush}"
@@ -82,7 +75,15 @@
                 VerticalAlignment="Bottom"
                 Canvas.ZIndex="1"
                 Height="1"/>
-            
+
+            <!--Light-->
+            <Border
+                x:Name="OverflowLightBorder"
+                Margin="0,0,1,0"
+                BorderThickness="1"
+                Canvas.ZIndex="1"
+                BorderBrush="{StaticResource BorderLightBrush}"/>
+
             <!--Toggle button-->
             <ToggleButton
                 x:Name="OverflowSwitchButton"

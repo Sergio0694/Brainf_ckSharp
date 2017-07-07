@@ -19,7 +19,6 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
             this.ManageControlPointerStates((type, value) =>
             {
                 if (type != PointerDeviceType.Mouse) return;
-                LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 0.8, 200, null, EasingFunctionNames.Linear);
                 BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.8 : 0, 200, null, EasingFunctionNames.Linear);
                 LightDarkBackground.StartXAMLTransformFadeAnimation(null, value ? 1 : 0, 200, null, EasingFunctionNames.Linear);
             });

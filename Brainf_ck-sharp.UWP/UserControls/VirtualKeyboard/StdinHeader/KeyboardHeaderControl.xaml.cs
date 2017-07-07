@@ -24,8 +24,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
             OverflowSwitchButton.ManageControlPointerStates((type, value) =>
             {
                 if (type != PointerDeviceType.Mouse) return;
-                LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 1, 200, null, EasingFunctionNames.Linear);
-                BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.2 : 1, 200, null, EasingFunctionNames.Linear);
+                OverflowLightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 1, 200, null, EasingFunctionNames.Linear);
+                BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.4 : 0, 200, null, EasingFunctionNames.Linear);
             });
         }
 
