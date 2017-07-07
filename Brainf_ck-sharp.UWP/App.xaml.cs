@@ -6,6 +6,7 @@ using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
@@ -86,6 +87,17 @@ namespace Brainf_ck_sharp_UWP
                 // Add the lights and store the content
                 PointerPositionSpotLight light = new PointerPositionSpotLight();
                 shell.Lights.Add(light);
+                PointerPositionSpotLight wideLight = new PointerPositionSpotLight
+                {
+                    Z = 30,
+                    IdAppendage = "[Wide]",
+                    Alpha = 0x10,
+                    Shade = 0x10
+                };
+                XamlLight.AddTargetBrush(
+                    $"{PointerPositionSpotLight.GetIdStatic()}{wideLight.IdAppendage}",
+                    BrushResourcesManager.Instance.ElementsWideLightBrush);
+                shell.Lights.Add(wideLight);
                 Window.Current.Content = shell;
 
                 // Settings
@@ -98,20 +110,25 @@ namespace Brainf_ck_sharp_UWP
             Window.Current.Activate();
 
             // Setup the light effects on different devices
-            _LightsEnabled = UniversalAPIsHelper.IsDesktop;
-            if (!_LightsEnabled) BrushResourcesManager.Instance.BorderLightBrush.Opacity = 0;
+            LightsEnabled = UniversalAPIsHelper.IsDesktop;
+            if (!LightsEnabled) BrushResourcesManager.Instance.BorderLightBrush.Opacity = 0;
             shell.ManageControlPointerStates((type, _) =>
             {
                 bool lightsVisible = type == PointerDeviceType.Mouse;
-                if (_LightsEnabled == lightsVisible) return;
-                _LightsEnabled = lightsVisible;
-                DoubleAnimation animation = XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.BorderLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200);
-                XAMLTransformToolkit.PrepareStory(animation).Begin();
+                if (LightsEnabled == lightsVisible) return;
+                LightsEnabled = lightsVisible;
+                DoubleAnimation
+                    smallLightAnimation = XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.BorderLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200),
+                    wideLightAnimation = XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.ElementsWideLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200),
+                    lightBackgroundAnimation = XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.WideLightBrushDarkShadeBackground, "Opacity", null, lightsVisible ? 1 : 0, 200);
+                XAMLTransformToolkit.PrepareStory(smallLightAnimation, wideLightAnimation, lightBackgroundAnimation).Begin();
             });
         }
 
-        // Stores a temporary value indicating the last pointer type used in the app
-        private bool _LightsEnabled;
+        /// <summary>
+        /// Gets whether or not the XAML lights are currently visible in the app, depending on the pointer device in use
+        /// </summary>
+        public static bool LightsEnabled { get; private set; }
 
         private void UpdateVisibleBounds(ApplicationView sender)
         {

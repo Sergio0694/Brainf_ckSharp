@@ -32,4 +32,13 @@
     <brushes:LightingBrush
         x:Key="BorderLightBrush"
         lights:PointerPositionSpotLight.IsTarget="True"/>
+    
+    <!--Wide light brush-->
+    <brushes:LightingBrush x:Key="ElementsWideLightBrush"/>
+    
+    <!--Light brush dark background-->
+    <SolidColorBrush
+        x:Key="WideLightBrushDarkShadeBackground"
+        Color="#40000000"
+        Opacity="0"/>
 </ResourceDictionary>

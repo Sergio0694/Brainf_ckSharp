@@ -64,10 +64,18 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="2"/>
             </Grid.RowDefinitions>
-            
+
+            <!--Wide light border-->
+            <Border
+                x:Name="BackgroundBorder"
+                Background="{StaticResource ElementsWideLightBrush}"
+                Grid.RowSpan="2"
+                Opacity="0"/>
+
             <!--Light-->
             <Border
                 x:Name="LightBorder"
+                Grid.Row="0"
                 Grid.RowSpan="2"
                 BorderThickness="1"
                 BorderBrush="{StaticResource BorderLightBrush}"/>

@@ -18,6 +18,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
             this.ManageControlPointerStates((_, value) =>
             {
                 LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 1, 200, null, EasingFunctionNames.Linear);
+                BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.8 : 0, 200, null, EasingFunctionNames.Linear);
             });
         }
 

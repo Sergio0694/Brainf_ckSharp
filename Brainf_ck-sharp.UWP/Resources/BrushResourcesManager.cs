@@ -60,6 +60,16 @@ namespace Brainf_ck_sharp_UWP.Resources
         /// </summary>
         public LightingBrush BorderLightBrush { get; } = XAMLResourcesHelper.GetResourceValue<LightingBrush>("BorderLightBrush");
 
+        /// <summary>
+        /// Gets the light brush for the elements in the app
+        /// </summary>
+        public LightingBrush ElementsWideLightBrush { get; } = XAMLResourcesHelper.GetResourceValue<LightingBrush>("ElementsWideLightBrush");
+
+        /// <summary>
+        /// Gets the dark brush that acts as a shade background behind the elements wide light brush
+        /// </summary>
+        public SolidColorBrush WideLightBrushDarkShadeBackground { get; } = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("WideLightBrushDarkShadeBackground");
+
         #endregion
     }
 }

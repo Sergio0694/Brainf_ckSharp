@@ -139,7 +139,17 @@
 
                     <!--Header-->
                     <Grid Height="48">
-                        
+
+                        <!--Wide light border-->
+                        <Border
+                            x:Name="BackgroundBorder"
+                            Background="{StaticResource ElementsWideLightBrush}"
+                            Opacity="0">
+                            <Border.RenderTransform>
+                                <TranslateTransform X="48"/>
+                            </Border.RenderTransform>
+                        </Border>
+
                         <!--Expander light-->
                         <Border
                             x:Name="LightBorder"

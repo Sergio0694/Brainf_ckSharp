@@ -51,12 +51,20 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="1"/>
             </Grid.RowDefinitions>
-            
+
+            <!--Wide light border-->
+            <Border
+                x:Name="BackgroundBorder"
+                Grid.RowSpan="2"
+                Background="{StaticResource ElementsWideLightBrush}"
+                Opacity="0"/>
+
             <!--Light-->
             <Border
                 x:Name="LightBorder"
                 BorderThickness="1"
                 BorderBrush="{StaticResource BorderLightBrush}"
+                Grid.Row="0"
                 Grid.RowSpan="2"/>
 
             <!--Icon-->

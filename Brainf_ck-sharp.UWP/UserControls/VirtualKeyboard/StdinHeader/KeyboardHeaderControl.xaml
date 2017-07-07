@@ -53,6 +53,12 @@
         <!--Overflow selector-->
         <Grid Grid.Column="3">
 
+            <!--Wide light border-->
+            <Border
+                x:Name="BackgroundBorder"
+                Background="{StaticResource ElementsWideLightBrush}"
+                Opacity="0"/>
+
             <!--Light-->
             <Border
                 x:Name="LightBorder"

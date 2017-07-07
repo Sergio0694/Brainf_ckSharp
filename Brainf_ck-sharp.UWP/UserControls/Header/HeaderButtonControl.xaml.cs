@@ -17,6 +17,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Header
             this.ManageControlPointerStates((_, value) =>
             {
                 LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 1, 200, null, EasingFunctionNames.Linear);
+                BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.4 : 0, 200, null, EasingFunctionNames.Linear);
             });
         }
 
