@@ -26,7 +26,6 @@
             
             <!--Light-->
             <Border
-                x:Name="LightBorder"
                 Margin="-2"
                 BorderThickness="1"
                 Opacity="0.8"
