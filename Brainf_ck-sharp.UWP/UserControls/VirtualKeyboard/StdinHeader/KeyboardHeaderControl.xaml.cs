@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.Devices.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp.Enums;
@@ -20,10 +21,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
             this.InitializeComponent();
             AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.ByteOverflowModeEnabled), out bool overflow);
             OverflowSwitchButton.IsChecked = overflow;
-            OverflowSwitchButton.ManageControlPointerStates((_, value) =>
+            OverflowSwitchButton.ManageControlPointerStates((type, value) =>
             {
-                LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 1, 200, null, EasingFunctionNames.Linear);
-                BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.2 : 1, 200, null, EasingFunctionNames.Linear);
+                if (type != PointerDeviceType.Mouse) return;
+                OverflowLightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 1, 200, null, EasingFunctionNames.Linear);
+                BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.4 : 0, 200, null, EasingFunctionNames.Linear);
             });
         }
 

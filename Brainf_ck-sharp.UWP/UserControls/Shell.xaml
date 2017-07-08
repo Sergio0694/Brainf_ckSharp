@@ -142,6 +142,8 @@
 
                         <!--Wide light border-->
                         <Border
+                            Width="48"
+                            HorizontalAlignment="Right"
                             x:Name="BackgroundBorder"
                             Background="{StaticResource ElementsWideLightBrush}"
                             Opacity="0">
@@ -152,7 +154,7 @@
 
                         <!--Expander light-->
                         <Border
-                            x:Name="LightBorder"
+                            x:Name="ExpanderLightBorder"
                             Width="48"
                             HorizontalAlignment="Right"
                             BorderThickness="1"

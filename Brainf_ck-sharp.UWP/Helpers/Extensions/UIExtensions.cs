@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using JetBrains.Annotations;
@@ -127,6 +128,31 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
             AddHandler(UIElement.PointerCanceledEvent, false, null);
             AddHandler(UIElement.PointerEnteredEvent, true, p => p != PointerDeviceType.Touch);
             AddHandler(UIElement.PointerReleasedEvent, false, p => p == PointerDeviceType.Touch);
+        }
+
+        /// <summary>
+        /// Adds an event handler to all the pointer events of the target element
+        /// </summary>
+        /// <param name="element">The element to monitor</param>
+        /// <param name="action"><para>An action to call every time a pointer event is raised. The bool parameter</para>
+        /// <para>indicates whether the control is gaining or losing focus</para></param>
+        public static void ManageHostPointerStates(this UIElement element, Action<PointerDeviceType, bool> action)
+        {
+            // Nested functions that adds the actual handlers
+            void AddHandler(RoutedEvent @event, bool state, Func<PointerDeviceType, bool> predicate)
+            {
+                element.AddHandler(@event, new PointerEventHandler((_, e) =>
+                {
+                    if (predicate == null || predicate(e.Pointer.PointerDeviceType))
+                    {
+                        action(e.Pointer.PointerDeviceType, state);
+                    }
+                }), true);
+            }
+
+            // Add handlers
+            AddHandler(UIElement.PointerExitedEvent, false, null);
+            AddHandler(UIElement.PointerMovedEvent, true, p => p != PointerDeviceType.Touch);
         }
 
         /// <summary>

@@ -70,6 +70,16 @@ namespace Brainf_ck_sharp_UWP.Resources
         /// </summary>
         public SolidColorBrush WideLightBrushDarkShadeBackground { get; } = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("WideLightBrushDarkShadeBackground");
 
+        /// <summary>
+        /// Gets the light brush for the elements in the app popups
+        /// </summary>
+        public LightingBrush PopupElementsLightBrush { get; } = XAMLResourcesHelper.GetResourceValue<LightingBrush>("PopupElementsLightBrush");
+
+        /// <summary>
+        /// Gets the light brush for the popup elements in the app
+        /// </summary>
+        public LightingBrush PopupElementsWideLightBrush { get; } = XAMLResourcesHelper.GetResourceValue<LightingBrush>("PopupElementsWideLightBrush");
+
         #endregion
     }
 }

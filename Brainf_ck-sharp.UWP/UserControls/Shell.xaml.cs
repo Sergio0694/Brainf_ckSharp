@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Windows.Devices.Input;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -147,10 +148,11 @@ namespace Brainf_ck_sharp_UWP.UserControls
             }
 
             // Light border UI
-            ExpanderControl.FindChild<Button>("ExpanderStateButton").ManageControlPointerStates((_, value) =>
+            ExpanderControl.FindChild<Button>("ExpanderStateButton").ManageControlPointerStates((type, value) =>
             {
-                LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 1, 200, null, EasingFunctionNames.Linear);
-                BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.2 : 1, 200, null, EasingFunctionNames.Linear);
+                if (type != PointerDeviceType.Mouse) return;
+                ExpanderLightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 1, 200, null, EasingFunctionNames.Linear);
+                BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.4 : 0, 200, null, EasingFunctionNames.Linear);
             });
 
             // Popups

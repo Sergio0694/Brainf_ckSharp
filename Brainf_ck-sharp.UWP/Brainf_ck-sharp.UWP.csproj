@@ -325,6 +325,9 @@
     <Compile Include="UserControls\VirtualKeyboard\Controls\CompactCharactersViewerControl.xaml.cs">
       <DependentUpon>CompactCharactersViewerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\VirtualKeyboard\Controls\VirtualArrowKeyboardButton.xaml.cs">
+      <DependentUpon>VirtualArrowKeyboardButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\VirtualKeyboard\StdinHeader\KeyboardHeaderControl.xaml.cs">
       <DependentUpon>KeyboardHeaderControl.xaml</DependentUpon>
     </Compile>
@@ -625,6 +628,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\VirtualKeyboard\Controls\VirtualArrowKeyboardButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\VirtualKeyboard\StdinHeader\KeyboardHeaderControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -712,7 +719,6 @@
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -77,11 +77,28 @@
                     Grid.Column="1"
                     HorizontalAlignment="Right"
                     Width="52"
-                    Click="CloseButton_Click">
-                <TextBlock Text="&#xE10A;"
-                           Style="{StaticResource FontIconTextBlockStyle}"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"/>
+                    Click="CloseButton_Click"
+                    x:Name="CloseButton">
+                <Grid>
+
+                    <!--Wide light border-->
+                    <Border
+                        x:Name="BackgroundBorder"
+                        Opacity="0"/>
+                    
+                    <!--Light border-->
+                    <Border
+                        Opacity="0.8"
+                        x:Name="LightBorder"
+                        BorderThickness="2"
+                        Margin="-2"/>
+                    
+                    <!--Close icon-->
+                    <TextBlock Text="&#xE10A;"
+                               Style="{StaticResource FontIconTextBlockStyle}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+                </Grid>
             </Button>
         </Grid>
         
@@ -100,12 +117,25 @@
             Click="ConfirmButton_Click"
             x:Name="ConfirmButton"
             IsEnabled="False"
-            Visibility="Collapsed">
+            Visibility="Collapsed"
+            Margin="1,0,1,1">
             <Grid 
                 x:Name="ButtonContentGrid"
                 Background="{StaticResource AccentBrushLowFade}">
                 <Canvas
                     Background="#10000000"/>
+                
+                <!--Wide light border-->
+                <Border
+                    x:Name="ConfirmBackgroundBorder"
+                    Opacity="0"/>
+
+                <!--Light border-->
+                <Border
+                    x:Name="ConfirmLightBorder"
+                    BorderThickness="2"/>
+                
+                <!--Confirm text-->
                 <TextBlock 
                     Text="Confirm"
                     x:Uid="ConfirmBlock"

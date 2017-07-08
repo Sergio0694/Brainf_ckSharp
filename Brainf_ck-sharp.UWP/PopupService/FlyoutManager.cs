@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Core;
@@ -11,16 +12,20 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.PopupService.Interfaces;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.PopupService.UI;
+using Brainf_ck_sharp_UWP.Resources;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
+using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
+using UICompositionAnimations.Lights;
 using UICompositionAnimations.XAMLTransform;
 
 namespace Brainf_ck_sharp_UWP.PopupService
@@ -200,6 +205,58 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
         }
 
+        /// <summary>
+        /// Prepares a flyout container and its lights
+        /// </summary>
+        /// <param name="tint">The optional tint color for the confirm button</param>
+        /// <param name="colorMix">The optional color mix parameter for the confirm button</param>
+        private static (FlyoutContainer Container, Action DisposeLight) SetupFlyoutContainer(Color? tint, float? colorMix)
+        {
+            // Initialize the container and the target popup
+            LightingBrush
+                lightBrush = new LightingBrush(),
+                hoverBrush = new LightingBrush();
+            PointerPositionSpotLight.SetIsTarget(lightBrush, true);
+            FlyoutContainer container = new FlyoutContainer(tint, colorMix, lightBrush, hoverBrush)
+            {
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch
+            };
+
+            // Lights setup
+            lightBrush.Opacity = 0;
+            hoverBrush.Opacity = 0;
+            bool lightsEnabled = false;
+            container.Lights.Add(new PointerPositionSpotLight());
+            PointerPositionSpotLight popupLight = new PointerPositionSpotLight
+            {
+                Z = 30,
+                IdAppendage = "[Popup]",
+                Alpha = 0x10,
+                Shade = 0x10
+            };
+            XamlLight.AddTargetBrush($"{PointerPositionSpotLight.GetIdStatic()}{popupLight.IdAppendage}", hoverBrush);
+            container.Lights.Add(popupLight);
+            container.ManageHostPointerStates((type, value) =>
+            {
+                bool lightsVisible = type == PointerDeviceType.Mouse && value;
+                if (lightsEnabled == lightsVisible) return;
+                lightsEnabled = lightsVisible;
+                XAMLTransformToolkit.PrepareStory(
+                    XAMLTransformToolkit.CreateDoubleAnimation(lightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true),
+                    XAMLTransformToolkit.CreateDoubleAnimation(hoverBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true)).Begin();
+            });
+
+            // Return the results
+            return (container, () =>
+                {
+                    // Dispose the lights
+                    XamlLight.RemoveTargetBrush($"{PointerPositionSpotLight.GetIdStatic()}{popupLight.IdAppendage}", hoverBrush);
+                    container.Lights.Clear();
+                }
+                );
+        }
+
         #endregion
 
         #region Flyout APIs
@@ -242,11 +299,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
 
             // Initialize the container and the target popup
-            FlyoutContainer container = new FlyoutContainer(null, null)
-            {
-                VerticalAlignment = VerticalAlignment.Stretch,
-                HorizontalAlignment = HorizontalAlignment.Stretch
-            };
+            (FlyoutContainer container, Action dispose) = SetupFlyoutContainer(null, null);
 
             // Prepare the flyout depending on the desired display mode
             double width = CalculateExpectedWidth();
@@ -273,9 +326,11 @@ namespace Brainf_ck_sharp_UWP.PopupService
             // Setup the closed handler
             void CloseHandler(object s, object e)
             {
+                // Results
                 tcs.SetResult(container.Confirmed ? FlyoutResult.Confirmed : FlyoutResult.Canceled);
                 popup.Child = null;
                 popup.Closed -= CloseHandler;
+                dispose();
             }
             popup.Closed += CloseHandler;
 
@@ -314,11 +369,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
 
             // Initialize the container and the target popup
-            FlyoutContainer container = new FlyoutContainer(background, tintMix)
-            {
-                VerticalAlignment = VerticalAlignment.Stretch,
-                HorizontalAlignment = HorizontalAlignment.Stretch
-            };
+            (FlyoutContainer container, Action dispose) = SetupFlyoutContainer(background, tintMix);
 
             // Prepare the flyout depending on the desired display mode
             switch (mode)
@@ -348,9 +399,11 @@ namespace Brainf_ck_sharp_UWP.PopupService
             // Setup the closed handler
             void CloseHandler(object s, object e)
             {
+                // Results
                 tcs.SetResult(container.Confirmed ? FlyoutResult.Confirmed : FlyoutResult.Canceled);
                 popup.Child = null;
                 popup.Closed -= CloseHandler;
+                dispose();
             }
             popup.Closed += CloseHandler;
 
@@ -392,11 +445,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
 
             // Initialize the container and the target popup, and the confirm handler
-            FlyoutContainer container = new FlyoutContainer(background, tintMix)
-            {
-                VerticalAlignment = VerticalAlignment.Stretch,
-                HorizontalAlignment = HorizontalAlignment.Stretch
-            };
+            (FlyoutContainer container, Action dispose) = SetupFlyoutContainer(null, null);
 
             // Prepare the flyout depending on the desired display mode
             switch (mode)
@@ -431,9 +480,11 @@ namespace Brainf_ck_sharp_UWP.PopupService
             // Prepare the closed handler
             void CloseHandler(object s, object e)
             {
+                // Results
                 tcs.TrySetCanceled();
                 popup.Child = null;
                 popup.Closed -= CloseHandler;
+                dispose();
             }
             popup.Closed += CloseHandler;
 
@@ -455,6 +506,11 @@ namespace Brainf_ck_sharp_UWP.PopupService
         #endregion
 
         #region Context menu APIs
+
+        /// <summary>
+        /// Gets whether or not the XAML lights are currently visible in the open popups
+        /// </summary>
+        private bool _ContextMenuLightsEnabled;
 
         /// <summary>
         /// Shows a given content inside a popup with an animation and offset similar of an attached Flyout
@@ -585,6 +641,35 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 IsOpen = true
             };
 
+            // Lights setup
+            BrushResourcesManager.Instance.PopupElementsLightBrush.Opacity = 0;
+            BrushResourcesManager.Instance.PopupElementsWideLightBrush.Opacity = 0;
+            _ContextMenuLightsEnabled = false;
+            parent.Lights.Add(new PointerPositionSpotLight());
+            PointerPositionSpotLight popupLight = new PointerPositionSpotLight
+            {
+                Z = 30,
+                IdAppendage = "[Popup]",
+                Alpha = 0x10,
+                Shade = 0x10
+            };
+            XamlLight.AddTargetBrush(
+                $"{PointerPositionSpotLight.GetIdStatic()}{popupLight.IdAppendage}",
+                BrushResourcesManager.Instance.PopupElementsWideLightBrush);
+            parent.Lights.Add(popupLight);
+            parent.ManageHostPointerStates((type, value) =>
+            {
+                bool lightsVisible = type == PointerDeviceType.Mouse && value;
+                if (_ContextMenuLightsEnabled == lightsVisible) return;
+                _ContextMenuLightsEnabled = lightsVisible;
+                DoubleAnimation
+                    borderAnimation = XAMLTransformToolkit.CreateDoubleAnimation(
+                        BrushResourcesManager.Instance.PopupElementsLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true),
+                    surfaceAnimation = XAMLTransformToolkit.CreateDoubleAnimation(
+                        BrushResourcesManager.Instance.PopupElementsWideLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true);
+                XAMLTransformToolkit.PrepareStory(borderAnimation, surfaceAnimation).Begin();
+            });
+
             // Local functions
             void ClosePopups()
             {
@@ -614,6 +699,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                     sizeHandled = false;
                     Window.Current.SizeChanged -= WindowSizeHandler;
                 }
+                parent.Lights.Clear();
             };
             _CloseContextMenu = ClosePopups;
             popup.IsOpen = true; // Open the context menu popup on top of the hit target
