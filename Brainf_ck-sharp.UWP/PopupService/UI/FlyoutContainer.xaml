@@ -88,6 +88,7 @@
                     
                     <!--Light border-->
                     <Border
+                        Opacity="0.8"
                         x:Name="LightBorder"
                         BorderThickness="2"
                         Margin="-2"/>

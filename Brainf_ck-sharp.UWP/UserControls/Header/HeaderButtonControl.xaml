@@ -74,7 +74,7 @@
 
             <!--Light-->
             <Border
-                Opacity="0.8"
+                Opacity="0.6"
                 x:Name="LightBorder"
                 Grid.Row="0"
                 Grid.RowSpan="2"
