@@ -59,13 +59,30 @@
                 Width="28"
                 Height="28"
                 Click="{x:Bind RequestCloseNotification}"
-                Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}">
-                <TextBlock
-                    Text="&#xE106;"
-                    Style="{StaticResource FontIconTextBlockStyle}"
-                    FontSize="10"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"/>
+                Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
+                x:Name="CloseButton">
+                <Grid>
+
+                    <!--Wide light border-->
+                    <Border
+                        x:Name="BackgroundBorder"
+                        Opacity="0"/>
+
+                    <!--Light border-->
+                    <Border
+                        Opacity="0.8"
+                        x:Name="LightBorder"
+                        BorderThickness="1"
+                        Margin="-1"/>
+
+                    <!--Close icon-->
+                    <TextBlock
+                        Text="&#xE106;"
+                        Style="{StaticResource FontIconTextBlockStyle}"
+                        FontSize="10"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"/>
+                </Grid>
             </Button>
         </Grid>
 

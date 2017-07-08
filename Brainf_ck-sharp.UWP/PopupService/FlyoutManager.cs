@@ -249,12 +249,11 @@ namespace Brainf_ck_sharp_UWP.PopupService
 
             // Return the results
             return (container, () =>
-                {
-                    // Dispose the lights
-                    XamlLight.RemoveTargetBrush($"{PointerPositionSpotLight.GetIdStatic()}{popupLight.IdAppendage}", hoverBrush);
-                    container.Lights.Clear();
-                }
-                );
+            {
+                // Dispose the lights
+                XamlLight.RemoveTargetBrush($"{PointerPositionSpotLight.GetIdStatic()}{popupLight.IdAppendage}", hoverBrush);
+                container.Lights.Clear();
+            });
         }
 
         #endregion
