@@ -99,6 +99,18 @@ namespace Brainf_ck_sharp_UWP
                 shell.Lights.Add(wideLight);
                 Window.Current.Content = shell;
 
+                // Setup the light effects on different devices
+                shell.ManageHostPointerStates((type, value) =>
+                {
+                    bool lightsVisible = type == PointerDeviceType.Mouse && value;
+                    if (LightsEnabled == lightsVisible) return;
+                    LightsEnabled = lightsVisible;
+                    XAMLTransformToolkit.PrepareStory(
+                        XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.BorderLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true),
+                        XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.ElementsWideLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true),
+                        XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.WideLightBrushDarkShadeBackground, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true)).Begin();
+                });
+
                 // Settings
                 AppSettingsManager.Instance.InitializeSettings();
                 AppSettingsManager.Instance.IncrementStartupsCount();
@@ -107,18 +119,6 @@ namespace Brainf_ck_sharp_UWP
                 Task.Run(() => SQLiteManager.Instance.TrySyncSharedCodesAsync());
             }
             Window.Current.Activate();
-
-            // Setup the light effects on different devices
-            shell.ManageHostPointerStates((type, value) =>
-            {
-                bool lightsVisible = type == PointerDeviceType.Mouse && value;
-                if (LightsEnabled == lightsVisible) return;
-                LightsEnabled = lightsVisible;
-                XAMLTransformToolkit.PrepareStory(
-                    XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.BorderLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true),
-                    XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.ElementsWideLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true),
-                    XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.WideLightBrushDarkShadeBackground, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true)).Begin();
-            });
         }
 
         /// <summary>
