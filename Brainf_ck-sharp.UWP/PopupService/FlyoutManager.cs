@@ -12,18 +12,15 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Animation;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.PopupService.Interfaces;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.PopupService.UI;
-using Brainf_ck_sharp_UWP.Resources;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
-using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Lights;
 using UICompositionAnimations.XAMLTransform;
@@ -213,45 +210,36 @@ namespace Brainf_ck_sharp_UWP.PopupService
         private static (FlyoutContainer Container, Action DisposeLight) SetupFlyoutContainer(Color? tint, float? colorMix)
         {
             // Initialize the container and the target popup
-            LightingBrush
-                lightBrush = new LightingBrush(),
-                hoverBrush = new LightingBrush();
-            PointerPositionSpotLight.SetIsTarget(lightBrush, true);
-            FlyoutContainer container = new FlyoutContainer(tint, colorMix, lightBrush, hoverBrush)
+            FlyoutContainer container = new FlyoutContainer(tint, colorMix)
             {
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
 
             // Lights setup
-            lightBrush.Opacity = 0;
-            hoverBrush.Opacity = 0;
             bool lightsEnabled = false;
-            container.Lights.Add(new PointerPositionSpotLight());
-            PointerPositionSpotLight popupLight = new PointerPositionSpotLight
-            {
-                Z = 30,
-                IdAppendage = "[Popup]",
-                Alpha = 0x10,
-                Shade = 0x10
-            };
-            XamlLight.AddTargetBrush($"{PointerPositionSpotLight.GetIdStatic()}{popupLight.IdAppendage}", hoverBrush);
-            container.Lights.Add(popupLight);
+            PointerPositionSpotLight
+                light = new PointerPositionSpotLight(),
+                wideLight = new PointerPositionSpotLight
+                {
+                    Z = 30,
+                    IdAppendage = "[Popup]",
+                    Alpha = 0x10,
+                    Shade = 0x10
+                };
+            container.Lights.Add(light);
+            container.Lights.Add(wideLight);
             container.ManageHostPointerStates((type, value) =>
             {
                 bool lightsVisible = type == PointerDeviceType.Mouse && value;
                 if (lightsEnabled == lightsVisible) return;
-                lightsEnabled = lightsVisible;
-                XAMLTransformToolkit.PrepareStory(
-                    XAMLTransformToolkit.CreateDoubleAnimation(lightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true),
-                    XAMLTransformToolkit.CreateDoubleAnimation(hoverBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true)).Begin();
+                light.Active = wideLight.Active = lightsEnabled = lightsVisible;
             });
 
             // Return the results
             return (container, () =>
             {
                 // Dispose the lights
-                XamlLight.RemoveTargetBrush($"{PointerPositionSpotLight.GetIdStatic()}{popupLight.IdAppendage}", hoverBrush);
                 container.Lights.Clear();
             });
         }
@@ -641,32 +629,25 @@ namespace Brainf_ck_sharp_UWP.PopupService
             };
 
             // Lights setup
-            BrushResourcesManager.Instance.PopupElementsLightBrush.Opacity = 0;
-            BrushResourcesManager.Instance.PopupElementsWideLightBrush.Opacity = 0;
             _ContextMenuLightsEnabled = false;
-            parent.Lights.Add(new PointerPositionSpotLight());
-            PointerPositionSpotLight popupLight = new PointerPositionSpotLight
-            {
-                Z = 30,
-                IdAppendage = "[Popup]",
-                Alpha = 0x10,
-                Shade = 0x10
-            };
-            XamlLight.AddTargetBrush(
-                $"{PointerPositionSpotLight.GetIdStatic()}{popupLight.IdAppendage}",
-                BrushResourcesManager.Instance.PopupElementsWideLightBrush);
-            parent.Lights.Add(popupLight);
+            PointerPositionSpotLight 
+                light = new PointerPositionSpotLight { Active = false },
+                wideLight = new PointerPositionSpotLight
+                {
+                    Z = 30,
+                    IdAppendage = "[Popup]",
+                    Alpha = 0x10,
+                    Shade = 0x10,
+                    Active = false
+                };
+            parent.Lights.Add(light);
+            parent.Lights.Add(wideLight);
             parent.ManageHostPointerStates((type, value) =>
             {
                 bool lightsVisible = type == PointerDeviceType.Mouse && value;
                 if (_ContextMenuLightsEnabled == lightsVisible) return;
                 _ContextMenuLightsEnabled = lightsVisible;
-                DoubleAnimation
-                    borderAnimation = XAMLTransformToolkit.CreateDoubleAnimation(
-                        BrushResourcesManager.Instance.PopupElementsLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true),
-                    surfaceAnimation = XAMLTransformToolkit.CreateDoubleAnimation(
-                        BrushResourcesManager.Instance.PopupElementsWideLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true);
-                XAMLTransformToolkit.PrepareStory(borderAnimation, surfaceAnimation).Begin();
+                light.Active = wideLight.Active = lightsVisible;
             });
 
             // Local functions

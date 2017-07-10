@@ -2,6 +2,7 @@
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Helpers;
 using UICompositionAnimations.Brushes;
+using UICompositionAnimations.Lights;
 
 namespace Brainf_ck_sharp_UWP.Resources
 {
@@ -31,6 +32,7 @@ namespace Brainf_ck_sharp_UWP.Resources
             RedDangerBrush = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("RedDangerBrush");
             XAMLResourcesHelper.AssignValueToXAMLResource("SubMenuFlyoutPointerOverBrush", new SolidColorBrush(Color.FromArgb(0xA0, AccentBrush.Color.R, AccentBrush.Color.G, AccentBrush.Color.B)));
             XAMLResourcesHelper.AssignValueToXAMLResource("SubMenuFlyoutOpenedBrush", new SolidColorBrush(Color.FromArgb(0x70, AccentBrush.Color.R, AccentBrush.Color.G, AccentBrush.Color.B)));
+            XamlLight.AddTargetBrush($"{PointerPositionSpotLight.GetIdStatic()}[Popup]", XAMLResourcesHelper.GetResourceValue<LightingBrush>("PopupElementsWideLightBrush"));
         }
 
         #region Brushes
@@ -69,16 +71,6 @@ namespace Brainf_ck_sharp_UWP.Resources
         /// Gets the dark brush that acts as a shade background behind the elements wide light brush
         /// </summary>
         public SolidColorBrush WideLightBrushDarkShadeBackground { get; } = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("WideLightBrushDarkShadeBackground");
-
-        /// <summary>
-        /// Gets the light brush for the elements in the app popups
-        /// </summary>
-        public LightingBrush PopupElementsLightBrush { get; } = XAMLResourcesHelper.GetResourceValue<LightingBrush>("PopupElementsLightBrush");
-
-        /// <summary>
-        /// Gets the light brush for the popup elements in the app
-        /// </summary>
-        public LightingBrush PopupElementsWideLightBrush { get; } = XAMLResourcesHelper.GetResourceValue<LightingBrush>("PopupElementsWideLightBrush");
 
         #endregion
     }

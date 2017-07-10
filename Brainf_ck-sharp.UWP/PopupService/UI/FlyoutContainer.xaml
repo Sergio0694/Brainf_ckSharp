@@ -84,13 +84,15 @@
                     <!--Wide light border-->
                     <Border
                         x:Name="BackgroundBorder"
-                        Opacity="0"/>
+                        Opacity="0"
+                        Background="{StaticResource PopupElementsWideLightBrush}"/>
                     
                     <!--Light border-->
                     <Border
                         Opacity="0.8"
                         x:Name="LightBorder"
                         BorderThickness="2"
+                        BorderBrush="{StaticResource PopupElementsLightBrush}"
                         Margin="-2"/>
                     
                     <!--Close icon-->
@@ -128,12 +130,13 @@
                 <!--Wide light border-->
                 <Border
                     x:Name="ConfirmBackgroundBorder"
-                    Opacity="0"/>
+                    Opacity="0"
+                    Background="{StaticResource PopupElementsLightBrush}"/>
 
                 <!--Light border-->
                 <Border
-                    x:Name="ConfirmLightBorder"
-                    BorderThickness="2"/>
+                    BorderThickness="2"
+                    BorderBrush="{StaticResource PopupElementsWideLightBrush}"/>
                 
                 <!--Confirm text-->
                 <TextBlock 

@@ -16,7 +16,6 @@ using UICompositionAnimations;
 using UICompositionAnimations.Behaviours;
 using UICompositionAnimations.Behaviours.Effects;
 using UICompositionAnimations.Behaviours.Misc;
-using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
 
 namespace Brainf_ck_sharp_UWP.PopupService.UI
@@ -31,17 +30,13 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         /// </summary>
         /// <param name="tint">The optional tint color to use</param>
         /// <param name="tintMix">The optional mix value for the background tint color</param>
-        /// <param name="borderBrush">The brush for the light borders</param>
-        /// <param name="hoverBrush">The brush for the light hover effect</param>
-        public FlyoutContainer(Color? tint, float? tintMix, LightingBrush borderBrush, LightingBrush hoverBrush)
+        public FlyoutContainer(Color? tint, float? tintMix)
         {
             TintColor = tint;
             TintMix = tintMix;
             Unloaded += FlyoutContainer_Unloaded;
             Loaded += FlyoutContainer_Loaded;
             this.InitializeComponent();
-            LightBorder.BorderBrush = ConfirmLightBorder.BorderBrush = borderBrush;
-            BackgroundBorder.Background = ConfirmBackgroundBorder.Background = hoverBrush;
             ConfirmButton.ManageControlPointerStates((p, value) =>
             {
                 VisualStateManager.GoToState(this, value ? "Highlight" : "Default", false);
