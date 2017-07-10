@@ -142,10 +142,10 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             if (Source.Last() is ConsoleUserCommand command &&
                 command.Command.Length > 0 && forcedStatus != false)
             {
-                (bool valid, int error) = Brainf_ckInterpreter.CheckSourceSyntax(command.Command);
-                Messenger.Default.Send(valid 
+                SyntaxValidationResult result = Brainf_ckInterpreter.CheckSourceSyntax(command.Command);
+                Messenger.Default.Send(result.Valid 
                     ? new ConsoleStatusUpdateMessage(IDEStatus.Console, LocalizationManager.GetResource("Ready"), command.Command.Length, 0) 
-                    : new ConsoleStatusUpdateMessage(IDEStatus.FaultedConsole, LocalizationManager.GetResource("Warning"), command.Command.Length, error));
+                    : new ConsoleStatusUpdateMessage(IDEStatus.FaultedConsole, LocalizationManager.GetResource("Warning"), command.Command.Length, result.ErrorPosition));
             }
             else Messenger.Default.Send(new ConsoleStatusUpdateMessage(IDEStatus.Console, LocalizationManager.GetResource("Ready"), 0, 0));
             Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.ClearScreen, ClearScreenAvailable));

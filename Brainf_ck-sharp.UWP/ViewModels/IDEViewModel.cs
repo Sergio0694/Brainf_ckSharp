@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.UI.Text;
 using Brainf_ck_sharp;
 using Brainf_ck_sharp.Enums;
+using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
@@ -216,9 +217,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             // Initial checks
             if (code == null) Document.GetText(TextGetOptions.None, out code);
             Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.ClearScreen, code.Length > 1));
-            (bool valid, int error) = Brainf_ckInterpreter.CheckSourceSyntax(code);
+            SyntaxValidationResult result = Brainf_ckInterpreter.CheckSourceSyntax(code);
             (int row, int col) = code.FindCoordinates(Document.Selection.StartPosition);
-            bool executable = Brainf_ckInterpreter.FindOperators(code) && valid;
+            bool executable = Brainf_ckInterpreter.FindOperators(code) && result.Valid;
             Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.Delete, code.Length > 1 && Document.Selection.StartPosition > 0));
 
             // Executable code
@@ -229,13 +230,13 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             }
 
             // Syntax status
-            if (valid)
+            if (result.Valid)
             {
                 Messenger.Default.Send(new IDEStatusUpdateMessage(LocalizationManager.GetResource("Ready"), row, col, _CategorizedCode?.Code.Title));
             }
             else
             {
-                (int y, int x) = code.FindCoordinates(error);
+                (int y, int x) = code.FindCoordinates(result.ErrorPosition);
                 Messenger.Default.Send(new IDEStatusUpdateMessage(LocalizationManager.GetResource("Warning"), row, col, y, x, _CategorizedCode?.Code.Title));
             }
         }

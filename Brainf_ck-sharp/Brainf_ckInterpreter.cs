@@ -112,10 +112,10 @@ namespace Brainf_ck_sharp
         /// Checks whether or not the syntax in the input source code is valid
         /// </summary>
         /// <param name="source">The source code to analyze</param>
-        /// <returns>A bool value that indicates whether or not the source code is valid, and the position of the first syntax error, if there is at least one</returns>
+        /// <returns>A wrapper class that indicates whether or not the source code is valid, and the position of the first syntax error, if there is at least one</returns>
         [PublicAPI]
         [Pure]
-        public static (bool Valid, int ErrorPosition) CheckSourceSyntax([NotNull] String source)
+        public static SyntaxValidationResult CheckSourceSyntax([NotNull] String source)
         {
             // Iterate over all the characters in the source
             int height = 0, error = 0;
@@ -129,13 +129,13 @@ namespace Brainf_ck_sharp
                 }
                 else if (source[i] == ']')
                 {
-                    if (height == 0) return (false, i);
+                    if (height == 0) return new SyntaxValidationResult(false, i);
                     height--;
                 }
             }
 
             // Edge case or valid return
-            return height == 0 ? (true, 0) : (false, error);
+            return height == 0 ? new SyntaxValidationResult(true, 0) : new SyntaxValidationResult(false, error);
         }
         
         /// <summary>
@@ -513,8 +513,8 @@ namespace Brainf_ck_sharp
         {
             // Arguments check
             if (size <= 0) throw new ArgumentOutOfRangeException("The input size is not valid");
-            (bool valid, _) = CheckSourceSyntax(source);
-            if (!valid) throw new ArgumentException("The input source code isn't valid");
+            SyntaxValidationResult validationResult = CheckSourceSyntax(source);
+            if (!validationResult.Valid) throw new ArgumentException("The input source code isn't valid");
 
             // Get the operators sequence and initialize the builder
             source = Regex.Replace(source, ",{2,}", "."); // Optimize repeated , operators with a single operator

@@ -223,8 +223,8 @@ namespace Brainf_ck_sharp_UWP.Views
             if (code == null) EditBox.Document.GetText(TextGetOptions.None, out code);
 
             // Check the current syntax
-            (bool valid, _) = await Task.Run(() => Brainf_ckInterpreter.CheckSourceSyntax(code));
-            if (!valid || _BracketGuidesCts.IsCancellationRequested)
+            SyntaxValidationResult result = await Task.Run(() => Brainf_ckInterpreter.CheckSourceSyntax(code));
+            if (!result.Valid || _BracketGuidesCts.IsCancellationRequested)
             {
                 BracketGuidesCanvas.Children.Clear();
                 _Brackets = null;

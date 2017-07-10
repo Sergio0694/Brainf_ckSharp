@@ -1,4 +1,5 @@
 ﻿using Brainf_ck_sharp;
+using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
 using JetBrains.Annotations;
 
@@ -21,8 +22,8 @@ namespace Brainf_ck_sharp_UWP.DataModels.SQLite
         /// <param name="code">The current source code</param>
         public CategorizedSourceCodeWithSyntaxInfo(SavedSourceCodeType type, [NotNull] SourceCode code) : base(type, code)
         {
-            (bool valid, _) = Brainf_ckInterpreter.CheckSourceSyntax(code.Code);
-            IsSyntaxValid = valid;
+            SyntaxValidationResult result = Brainf_ckInterpreter.CheckSourceSyntax(code.Code);
+            IsSyntaxValid = result.Valid;
         }
     }
 }
