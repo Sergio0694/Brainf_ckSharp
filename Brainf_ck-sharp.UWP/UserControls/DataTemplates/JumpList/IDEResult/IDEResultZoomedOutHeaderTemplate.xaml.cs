@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Windows.Devices.Input;
 using Windows.UI;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
@@ -10,6 +11,8 @@ using Brainf_ck_sharp_UWP.Converters;
 using Brainf_ck_sharp_UWP.DataModels.IDEResults;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using UICompositionAnimations;
+using UICompositionAnimations.Enums;
 
 namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult
 {
@@ -18,7 +21,15 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult
         public IDEResultZoomedOutHeaderTemplate()
         {
             this.InitializeComponent();
-            this.ManageControlPointerStates((_, value) => VisualStateManager.GoToState(this, value ? "Highlight" : "Default", false));
+            this.ManageControlPointerStates((pointer, value) =>
+            {
+                // Visual states
+                VisualStateManager.GoToState(this, value ? "Highlight" : "Default", false);
+
+                // Lights
+                if (pointer != PointerDeviceType.Mouse) return;
+                LightBackground.StartXAMLTransformFadeAnimation(null, value ? 0.6 : 0, 200, null, EasingFunctionNames.Linear);
+            });
         }
 
         /// <summary>

@@ -89,7 +89,7 @@
                     
                     <!--Light border-->
                     <Border
-                        Opacity="0.8"
+                        Opacity="0.6"
                         x:Name="LightBorder"
                         BorderThickness="2"
                         BorderBrush="{StaticResource PopupElementsLightBrush}"
@@ -131,12 +131,13 @@
                 <Border
                     x:Name="ConfirmBackgroundBorder"
                     Opacity="0"
-                    Background="{StaticResource PopupElementsLightBrush}"/>
+                    Background="{StaticResource PopupElementsWideLightBrush}"/>
 
                 <!--Light border-->
                 <Border
+                    Opacity="0.6"
                     BorderThickness="2"
-                    BorderBrush="{StaticResource PopupElementsWideLightBrush}"/>
+                    BorderBrush="{StaticResource PopupElementsLightBrush}"/>
                 
                 <!--Confirm text-->
                 <TextBlock 
@@ -167,7 +168,6 @@
                 IsActive="True"
                 x:Name="InitialProgressRing"/>
         </Grid>
-        
         
         <!--Loading indicator-->
         <Grid

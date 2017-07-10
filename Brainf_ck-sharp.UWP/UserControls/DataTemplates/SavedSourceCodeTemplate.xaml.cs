@@ -13,6 +13,8 @@ using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
 using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using UICompositionAnimations;
+using UICompositionAnimations.Enums;
 
 namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
 {
@@ -21,10 +23,15 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
         public SavedSourceCodeTemplate()
         {
             this.InitializeComponent();
-            this.ManageControlPointerStates((_, value) =>
+            this.ManageControlPointerStates((pointer, value) =>
             {
+                // Visual states
                 if (value) VisualStateManager.GoToState(this, "Highlight", false);
                 else if (!_FlyoutOpen) VisualStateManager.GoToState(this, "Default", false);
+
+                // Lights
+                if (pointer != PointerDeviceType.Mouse) return;
+                LightBackground.StartXAMLTransformFadeAnimation(null, value ? 0.6 : 0, 200, null, EasingFunctionNames.Linear);
             });
         }
 
