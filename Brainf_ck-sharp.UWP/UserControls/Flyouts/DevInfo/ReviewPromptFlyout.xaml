@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -40,28 +41,46 @@
         </TextBlock>
 
         <!--Emojis-->
-        <Grid Margin="0,12,0,0">
+        <inheritedControls:LightBorderAndBackgroundOverlay Margin="0,12,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button
                 Style="{StaticResource WideButtonWithNoBackgroundStyle}"
-                Padding="12"
-                Click="SadButton_Click">
-                <TextBlock
-                    Text="😣"
-                    Style="{StaticResource EmojyBlockStyle}"/>
+                Click="SadButton_Click"
+                x:Name="SadButton">
+                <inheritedControls:LightBorderAndBackgroundOverlay
+                    Margin="-2"
+                    LightBorderThickness="2"
+                    LightBorderBrush="{StaticResource PopupElementsLightBrush}"
+                    LightBackgroundBrush="{StaticResource PopupElementsWideLightBrush}">
+                    
+                    <!--Sad-->
+                    <TextBlock
+                        Margin="12"
+                        Text="😣"
+                        Style="{StaticResource EmojyBlockStyle}"/>
+                </inheritedControls:LightBorderAndBackgroundOverlay>
             </Button>
             <Button
                 Grid.Column="1"
                 Style="{StaticResource WideButtonWithNoBackgroundStyle}"
-                Padding="12"
-                Click="HappyButton_Click">
-                <TextBlock
-                    Text="😄"
-                    Style="{StaticResource EmojyBlockStyle}"/>
+                Click="HappyButton_Click"
+                x:Name="HappyButton">
+                <inheritedControls:LightBorderAndBackgroundOverlay
+                    Margin="-2"
+                    LightBorderThickness="2"
+                    LightBorderBrush="{StaticResource PopupElementsLightBrush}"
+                    LightBackgroundBrush="{StaticResource PopupElementsWideLightBrush}">
+                    
+                    <!--Happy-->
+                    <TextBlock
+                        Margin="12"
+                        Text="😄"
+                        Style="{StaticResource EmojyBlockStyle}"/>
+                </inheritedControls:LightBorderAndBackgroundOverlay>
             </Button>
-        </Grid>
+        </inheritedControls:LightBorderAndBackgroundOverlay>
     </StackPanel>
 </UserControl>

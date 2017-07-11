@@ -1,6 +1,10 @@
 ﻿using System;
+using Windows.Devices.Input;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using UICompositionAnimations;
+using UICompositionAnimations.Enums;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo.Donations
 {
@@ -9,6 +13,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo.Donations
         public DevSupportOptionEntryControl()
         {
             this.InitializeComponent();
+            this.ManageControlPointerStates((pointer, value) =>
+            {
+                // Lights
+                if (pointer != PointerDeviceType.Mouse) return;
+                LightBackground.StartXAMLTransformFadeAnimation(null, value ? 0.6 : 0, 200, null, EasingFunctionNames.Linear);
+            });
         }
 
         /// <summary>

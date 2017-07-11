@@ -15,6 +15,21 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <!--Wide light border-->
+        <Border
+            x:Name="LightBackground"
+            Opacity="0"
+            Grid.ColumnSpan="2"
+            Background="{StaticResource PopupElementsWideLightBrush}"/>
+
+        <!--Light border-->
+        <Border
+            Opacity="0.6"
+            BorderThickness="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            BorderBrush="{StaticResource PopupElementsLightBrush}"/>
+
         <!--Image-->
         <Image Width="48"
                Height="48"

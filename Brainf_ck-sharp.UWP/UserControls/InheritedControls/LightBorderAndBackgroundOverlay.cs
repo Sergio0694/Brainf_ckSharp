@@ -40,6 +40,15 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         }
 
         /// <summary>
+        /// Gets or sets the thickness of the light border
+        /// </summary>
+        public Thickness LightBorderThickness
+        {
+            get => _LightBorder.BorderThickness;
+            set => _LightBorder.BorderThickness = value;
+        }
+
+        /// <summary>
         /// Gets or sets the <see cref="LightingBrush"/> to use as the reveal highlight border effect
         /// </summary>
         public LightingBrush LightBorderBrush
