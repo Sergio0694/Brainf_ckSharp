@@ -35,7 +35,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
                 if (pointer != PointerDeviceType.Mouse) return;
                 _LightBackground.StartXAMLTransformFadeAnimation(null, value ? 0.6 : 0, 200, null, EasingFunctionNames.Linear);
             });
-            Loaded += (s, e) => _BordersContainer.StartXAMLTransformFadeAnimation(null, 1, 200, 1000, EasingFunctionNames.Linear);
+            Loaded += (s, e) => _BordersContainer.StartXAMLTransformFadeAnimation(null, 1, 200, LoadingFadeInDelay, EasingFunctionNames.Linear);
             Unloaded += (s, e) => _BordersContainer.Opacity = 0;
         }
 
@@ -65,6 +65,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
             get => _LightBackground.Background as LightingBrush;
             set => _LightBackground.Background = value;
         }
+
+        /// <summary>
+        /// Gets or sets the duration of the initial fade in animation for the light brushes
+        /// </summary>
+        public int LoadingFadeInDelay { get; set; } = 1000;
 
         /// <summary>
         /// Gets or sets whether or not the lights are currently enabled and visible

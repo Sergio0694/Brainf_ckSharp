@@ -208,8 +208,10 @@
                                                 </PivotHeaderPanel.RenderTransform>
                                             </PivotHeaderPanel>
                                         </Grid>
-
-                                        <ItemsPresenter x:Name="PivotItemPresenter" Grid.ColumnSpan="3">
+                                        <ItemsPresenter 
+                                            x:Name="PivotItemPresenter" 
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3">
                                             <ItemsPresenter.RenderTransform>
                                                 <TransformGroup>
                                                     <TranslateTransform x:Name="ItemsPresenterTranslateTransform" />
@@ -1335,7 +1337,9 @@
                                           Glyph="&#xE10C;"
                                           Height="{ThemeResource AppBarExpandButtonCircleDiameter}" />
                             </Button>
-                            <Popup x:Name="OverflowPopup">
+                            <Popup 
+                                x:Name="OverflowPopup"
+                                Grid.Column="0">
                                 <Popup.RenderTransform>
                                     <TranslateTransform x:Name="OverflowPopupOffsetTransform" />
                                 </Popup.RenderTransform>
@@ -1368,6 +1372,7 @@
                             </Popup>
                             <Rectangle x:Name="HighContrastBorder"
                                        x:DeferLoadStrategy="Lazy"
+                                       Grid.Column="0"
                                        Grid.ColumnSpan="2"
                                        Visibility="Collapsed"
                                        VerticalAlignment="Stretch"
@@ -1403,7 +1408,8 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         LightBorderBrush="{StaticResource BorderLightBrush}"
-                        LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
+                        LightBackgroundBrush="{StaticResource ElementsWideLightBrush}"
+                        LoadingFadeInDelay="50">
                         <Grid.Resources>
                             <Style x:Name="LabelOnRightStyle" TargetType="AppBarButton">
                                 <Setter Property="Width" Value="NaN" />
@@ -1600,6 +1606,7 @@
                             </Viewbox>
                             <TextBlock x:Name="TextLabel"
                                        Grid.Row="1"
+                                       Grid.Column="0"
                                        Text="{TemplateBinding Label}"
                                        Foreground="{TemplateBinding Foreground}"
                                        FontSize="12"
@@ -1618,6 +1625,8 @@
                                        TextWrapping="NoWrap"
                                        HorizontalAlignment="Stretch"
                                        VerticalAlignment="Center"
+                                       Grid.Row="0"
+                                       Grid.Column="0"
                                        Margin="12,0,12,0"
                                        Padding="0,5,0,7"
                                        Visibility="Collapsed"
