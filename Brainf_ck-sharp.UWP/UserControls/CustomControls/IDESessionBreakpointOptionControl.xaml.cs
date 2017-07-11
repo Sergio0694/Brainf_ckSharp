@@ -1,7 +1,10 @@
 ﻿using System;
+using Windows.Devices.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using UICompositionAnimations;
+using UICompositionAnimations.Enums;
 
 namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
 {
@@ -10,7 +13,15 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
         public IDESessionBreakpointOptionControl()
         {
             this.InitializeComponent();
-            this.ManageControlPointerStates((_, value) => VisualStateManager.GoToState(this, value ? "Highlight" : "Default", false));
+            this.ManageControlPointerStates((pointer, value) =>
+            {
+                // Visual states
+                VisualStateManager.GoToState(this, value ? "Highlight" : "Default", false);
+
+                // Lights
+                if (pointer != PointerDeviceType.Mouse) return;
+                LightBackground.StartXAMLTransformFadeAnimation(null, value ? 0.6 : 0, 200, null, EasingFunctionNames.Linear);
+            });
         }
 
         /// <summary>

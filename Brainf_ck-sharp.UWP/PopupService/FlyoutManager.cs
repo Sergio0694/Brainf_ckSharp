@@ -224,7 +224,6 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 {
                     Z = 30,
                     IdAppendage = "[Popup]",
-                    Alpha = 0x10,
                     Shade = 0x10
                 };
             container.Lights.Add(light);
@@ -636,7 +635,6 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 {
                     Z = 30,
                     IdAppendage = "[Popup]",
-                    Alpha = 0x10,
                     Shade = 0x10,
                     Active = false
                 };

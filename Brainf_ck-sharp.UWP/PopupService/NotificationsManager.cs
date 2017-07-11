@@ -96,14 +96,12 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 notificationPopup.Lights.Add(new PointerPositionSpotLight
                 {
                     Z = 30,
-                    Alpha = 0x80,
                     Shade = 0x80
                 });
                 PointerPositionSpotLight popupLight = new PointerPositionSpotLight
                 {
                     Z = 30,
                     IdAppendage = "[Popup]",
-                    Alpha = 0x10,
                     Shade = 0x10
                 };
                 XamlLight.AddTargetBrush($"{PointerPositionSpotLight.GetIdStatic()}{popupLight.IdAppendage}", hoverBrush);

@@ -15,7 +15,6 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         public InAppAcrylicGrid()
         {
             IsHitTestVisible = false;
-            _Win2DCanvas = new CanvasControl();
             Loaded += InAppAcrylicGrid_Loaded;
         }
 
@@ -24,11 +23,14 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         /// </summary>
         public bool DisposeOnUnload { get; set; }
 
+        // Indicates whether or not the optional unload handler has been set up
+        private bool _UnloadHandlerAdded;
+
         // Initializes the effect when the control is rendered for the first time
         private async void InAppAcrylicGrid_Loaded(object sender, RoutedEventArgs e)
         {
             // UI setup
-            Loaded -= InAppAcrylicGrid_Loaded;
+            _Win2DCanvas = new CanvasControl();
             if (Children.Contains(_Win2DCanvas)) return;
             Children.Add(_Win2DCanvas);
             await this.AttachCompositionInAppCustomAcrylicEffectAsync(this, 8, 800,
@@ -36,8 +38,9 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
                 _Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: DisposeOnUnload);
 
             // Dispose setup
-            if (DisposeOnUnload)
+            if (DisposeOnUnload && !_UnloadHandlerAdded)
             {
+                _UnloadHandlerAdded = true;
                 Unloaded += (s, _) =>
                 {
                     _Win2DCanvas.RemoveFromVisualTree();

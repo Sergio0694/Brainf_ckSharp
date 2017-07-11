@@ -6,7 +6,6 @@ using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
@@ -90,12 +89,8 @@ namespace Brainf_ck_sharp_UWP
                 {
                     Z = 30,
                     IdAppendage = "[Wide]",
-                    Alpha = 0x10,
                     Shade = 0x10
                 };
-                XamlLight.AddTargetBrush(
-                    $"{PointerPositionSpotLight.GetIdStatic()}{wideLight.IdAppendage}",
-                    BrushResourcesManager.Instance.ElementsWideLightBrush);
                 shell.Lights.Add(wideLight);
                 Window.Current.Content = shell;
 
@@ -104,10 +99,8 @@ namespace Brainf_ck_sharp_UWP
                 {
                     bool lightsVisible = type == PointerDeviceType.Mouse && value;
                     if (LightsEnabled == lightsVisible) return;
-                    LightsEnabled = lightsVisible;
+                    light.Active = wideLight.Active = LightsEnabled = lightsVisible;
                     XAMLTransformToolkit.PrepareStory(
-                        XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.BorderLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true),
-                        XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.ElementsWideLightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true),
                         XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.WideLightBrushDarkShadeBackground, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true)).Begin();
                 });
 
