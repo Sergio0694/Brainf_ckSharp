@@ -31,16 +31,14 @@
     <!--Border lights-->
     <brushes:LightingBrush
         x:Key="BorderLightBrush"
-        lights:PointerPositionSpotLight.IsTarget="True"
-        Opacity="0"/>
+        lights:PointerPositionSpotLight.IsTarget="True"/>
     <brushes:LightingBrush 
         x:Key="PopupElementsLightBrush"
         lights:PointerPositionSpotLight.IsTarget="True"/>
     
     <!--Wide light brushes-->
     <brushes:LightingBrush 
-        x:Key="ElementsWideLightBrush"
-        Opacity="0"/>
+        x:Key="ElementsWideLightBrush"/>
     <brushes:LightingBrush x:Key="PopupElementsWideLightBrush"/>
     
     <!--Light brush dark background-->

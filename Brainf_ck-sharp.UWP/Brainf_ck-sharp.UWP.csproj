@@ -318,6 +318,8 @@
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\ICustomCommandBarPrimaryItem.cs" />
     <Compile Include="UserControls\InheritedControls\FixedRadExpanderControl.cs" />
     <Compile Include="UserControls\InheritedControls\InAppAcrylicGrid.cs" />
+    <Compile Include="UserControls\InheritedControls\LightBorderAndBackgroundOverlay.cs" />
+    <Compile Include="UserControls\InheritedControls\LightsContainerGrid.cs" />
     <Compile Include="UserControls\InheritedControls\RichEditBoxWithVerticalOffsetInfo.cs" />
     <Compile Include="UserControls\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
@@ -696,7 +698,7 @@
       <Version>1.0.0.4</Version>
     </PackageReference>
     <PackageReference Include="UICompositionAnimations">
-      <Version>2.6.3</Version>
+      <Version>2.6.4</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

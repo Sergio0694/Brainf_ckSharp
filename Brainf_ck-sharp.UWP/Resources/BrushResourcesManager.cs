@@ -30,9 +30,10 @@ namespace Brainf_ck_sharp_UWP.Resources
             AccentBrushMediumFadeBrush = new SolidColorBrush(Color.FromArgb(0xB0, AccentBrush.Color.R, AccentBrush.Color.G, AccentBrush.Color.B));
             XAMLResourcesHelper.AssignValueToXAMLResource("AccentBrushMediumFade", AccentBrushMediumFadeBrush);
             RedDangerBrush = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("RedDangerBrush");
-            XAMLResourcesHelper.AssignValueToXAMLResource("SubMenuFlyoutPointerOverBrush", new SolidColorBrush(Color.FromArgb(0xA0, AccentBrush.Color.R, AccentBrush.Color.G, AccentBrush.Color.B)));
-            XAMLResourcesHelper.AssignValueToXAMLResource("SubMenuFlyoutOpenedBrush", new SolidColorBrush(Color.FromArgb(0x70, AccentBrush.Color.R, AccentBrush.Color.G, AccentBrush.Color.B)));
+            XAMLResourcesHelper.AssignValueToXAMLResource("SubMenuFlyoutPointerOverBrush", new SolidColorBrush(Color.FromArgb(0x70, AccentBrush.Color.R, AccentBrush.Color.G, AccentBrush.Color.B)));
+            XAMLResourcesHelper.AssignValueToXAMLResource("SubMenuFlyoutOpenedBrush", new SolidColorBrush(Color.FromArgb(0x50, AccentBrush.Color.R, AccentBrush.Color.G, AccentBrush.Color.B)));
             XamlLight.AddTargetBrush($"{PointerPositionSpotLight.GetIdStatic()}[Popup]", XAMLResourcesHelper.GetResourceValue<LightingBrush>("PopupElementsWideLightBrush"));
+            XamlLight.AddTargetBrush($"{PointerPositionSpotLight.GetIdStatic()}[Wide]", XAMLResourcesHelper.GetResourceValue<LightingBrush>("ElementsWideLightBrush"));
         }
 
         #region Brushes
@@ -56,16 +57,6 @@ namespace Brainf_ck_sharp_UWP.Resources
         /// Gets the RedDangerBrush brush (#FFDC232B)
         /// </summary>
         public SolidColorBrush RedDangerBrush { get; }
-
-        /// <summary>
-        /// Gets the light brush for the borders of visual elements in the app
-        /// </summary>
-        public LightingBrush BorderLightBrush { get; } = XAMLResourcesHelper.GetResourceValue<LightingBrush>("BorderLightBrush");
-
-        /// <summary>
-        /// Gets the light brush for the elements in the app
-        /// </summary>
-        public LightingBrush ElementsWideLightBrush { get; } = XAMLResourcesHelper.GetResourceValue<LightingBrush>("ElementsWideLightBrush");
 
         /// <summary>
         /// Gets the dark brush that acts as a shade background behind the elements wide light brush
