@@ -244,7 +244,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     if (c == '[' || c == ']')
                     {
                         Coordinate coordinate = code.FindCoordinates(i1);
-                        pairs.Add(new IndentationCoordinateEntry(coordinate.Y, coordinate.X, c));
+                        pairs.Add(new IndentationCoordinateEntry(coordinate, c));
                     }
                     i1++;
                 }

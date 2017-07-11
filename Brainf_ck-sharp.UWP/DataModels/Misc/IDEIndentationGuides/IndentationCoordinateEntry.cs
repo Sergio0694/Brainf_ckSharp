@@ -18,12 +18,11 @@
         /// <summary>
         /// Creates a new instance with the given parameters
         /// </summary>
-        /// <param name="x">The horizontal coordinate</param>
-        /// <param name="y">The vertical coordinate</param>
+        /// <param name="position">The bracket coordinates</param>
         /// <param name="bracket">The bracket character</param>
-        public IndentationCoordinateEntry(int x, int y, char bracket)
+        public IndentationCoordinateEntry(Coordinate position, char bracket)
         {
-            Position = new Coordinate(x, y);
+            Position = position;
             Bracket = bracket;
         }
     }

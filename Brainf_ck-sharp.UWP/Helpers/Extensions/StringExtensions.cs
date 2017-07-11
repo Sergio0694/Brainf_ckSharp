@@ -37,7 +37,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
                 }
                 else col++;
             }
-            return new Coordinate(row, col);
+            return new Coordinate(col, row);
         }
 
         /// <summary>
