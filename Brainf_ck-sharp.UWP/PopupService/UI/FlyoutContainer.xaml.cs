@@ -43,9 +43,8 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
                 if (p != PointerDeviceType.Mouse) return;
                 ConfirmBackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.8 : 0, 200, null, EasingFunctionNames.Linear);
             });
-            CloseButton.ManageControlPointerStates((type, value) =>
+            CloseButton.ManageLightsPointerStates(value =>
             {
-                if (type != PointerDeviceType.Mouse) return;
                 BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.8 : 0, 200, null, EasingFunctionNames.Linear);
                 LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 0.4, 200, null, EasingFunctionNames.Linear);
             });

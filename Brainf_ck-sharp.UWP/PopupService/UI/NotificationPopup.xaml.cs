@@ -1,5 +1,4 @@
 ﻿using System;
-using Windows.Devices.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -39,9 +38,8 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             Type = type;
             LightBorder.BorderBrush = borderBrush;
             BackgroundBorder.Background = hoverBrush;
-            CloseButton.ManageControlPointerStates((p, value) =>
+            CloseButton.ManageLightsPointerStates(value =>
             {
-                if (p != PointerDeviceType.Mouse) return;
                 BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.6 : 0, 200, null, EasingFunctionNames.Linear);
                 LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 0.8, 200, null, EasingFunctionNames.Linear);
             });

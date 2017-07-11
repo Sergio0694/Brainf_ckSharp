@@ -1,5 +1,4 @@
 ﻿using System;
-using Windows.Devices.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
@@ -16,9 +15,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
         public KeyboardButton()
         {
             this.InitializeComponent();
-            this.ManageControlPointerStates((type, value) =>
+            this.ManageLightsPointerStates(value =>
             {
-                if (type != PointerDeviceType.Mouse) return;
                 BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.8 : 0, 200, null, EasingFunctionNames.Linear);
                 LightDarkBackground.StartXAMLTransformFadeAnimation(null, value ? 1 : 0, 200, null, EasingFunctionNames.Linear);
             });

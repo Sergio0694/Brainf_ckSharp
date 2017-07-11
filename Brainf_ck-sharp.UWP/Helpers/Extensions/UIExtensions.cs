@@ -5,6 +5,7 @@ using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.Helpers.Extensions
@@ -152,6 +153,24 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
             // Add handlers
             AddHandler(UIElement.PointerExitedEvent, false, null);
             AddHandler(UIElement.PointerMovedEvent, true, p => p != PointerDeviceType.Touch);
+        }
+
+        /// <summary>
+        /// Adds the appropriate handlers to a control to setup the light effects
+        /// </summary>
+        /// <param name="element">The element to monitor</param>
+        /// <param name="action">An action to call every time the light effects state should be changed</param>
+        public static void ManageLightsPointerStates(this UIElement element, Action<bool> action)
+        {
+            // Platform check
+            if (UniversalAPIsHelper.IsMobileDevice) return;
+
+            // Nested functions that adds the actual handlers
+            element.ManageHostPointerStates((pointer, value) =>
+            {
+                if (pointer != PointerDeviceType.Mouse) return;
+                action(value);
+            });
         }
 
         /// <summary>

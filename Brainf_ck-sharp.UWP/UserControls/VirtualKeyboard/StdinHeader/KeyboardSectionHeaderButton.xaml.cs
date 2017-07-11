@@ -1,5 +1,4 @@
 ﻿using System;
-using Windows.Devices.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
@@ -14,9 +13,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
         {
             this.InitializeComponent();
             VisualStateManager.GoToState(this, "Default", false);
-            this.ManageControlPointerStates((type, value) =>
+            this.ManageLightsPointerStates(value =>
             {
-                if (type != PointerDeviceType.Mouse) return;
                 LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 0.8, 200, null, EasingFunctionNames.Linear);
                 BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.4 : 0, 200, null, EasingFunctionNames.Linear);
             });

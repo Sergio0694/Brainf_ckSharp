@@ -62,13 +62,13 @@ namespace Brainf_ck_sharp_UWP
             Shell shell = Window.Current.Content as Shell;
             if (shell == null)
             {
-                // Creare un frame che agisca da contesto di navigazione e passare alla prima pagina
+                // Initialize the UI
+                BrushResourcesManager.InitializeOrRefreshInstance();
                 shell = new Shell();
 
                 // Handle the UI
                 if (UniversalAPIsHelper.IsMobileDevice) StatusBarHelper.HideAsync().Forget();
                 else TitleBarHelper.StyleAppTitleBar();
-                BrushResourcesManager.InitializeOrRefreshInstance();
 
                 // Setup the view mode
                 ApplicationView view = ApplicationView.GetForCurrentView();
@@ -83,28 +83,31 @@ namespace Brainf_ck_sharp_UWP
                 KeyEventsListener.IsEnabled = true;
 
                 // Add the lights and store the content
-                PointerPositionSpotLight 
-                    light = new PointerPositionSpotLight { Active = false },
-                    wideLight = new PointerPositionSpotLight
+                if (!UniversalAPIsHelper.IsMobileDevice)
                 {
-                    Z = 30,
-                    IdAppendage = "[Wide]",
-                    Shade = 0x10,
-                    Active = false
-                };
-                shell.Lights.Add(light);
-                shell.Lights.Add(wideLight);
-                Window.Current.Content = shell;
+                    PointerPositionSpotLight
+                        light = new PointerPositionSpotLight { Active = false },
+                        wideLight = new PointerPositionSpotLight
+                        {
+                            Z = 30,
+                            IdAppendage = "[Wide]",
+                            Shade = 0x10,
+                            Active = false
+                        };
+                    shell.Lights.Add(light);
+                    shell.Lights.Add(wideLight);
 
-                // Setup the light effects on different devices
-                shell.ManageHostPointerStates((type, value) =>
-                {
-                    bool lightsVisible = type == PointerDeviceType.Mouse && value;
-                    if (LightsEnabled == lightsVisible) return;
-                    light.Active = wideLight.Active = LightsEnabled = lightsVisible;
-                    XAMLTransformToolkit.PrepareStory(
-                        XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.WideLightBrushDarkShadeBackground, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true)).Begin();
-                });
+                    // Setup the light effects on different devices
+                    shell.ManageHostPointerStates((type, value) =>
+                    {
+                        bool lightsVisible = type == PointerDeviceType.Mouse && value;
+                        if (LightsEnabled == lightsVisible) return;
+                        light.Active = wideLight.Active = LightsEnabled = lightsVisible;
+                        XAMLTransformToolkit.PrepareStory(
+                            XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.WideLightBrushDarkShadeBackground, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true)).Begin();
+                    });
+                }
+                Window.Current.Content = shell;
 
                 // Settings
                 AppSettingsManager.Instance.InitializeSettings();
