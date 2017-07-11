@@ -83,14 +83,16 @@ namespace Brainf_ck_sharp_UWP
                 KeyEventsListener.IsEnabled = true;
 
                 // Add the lights and store the content
-                PointerPositionSpotLight light = new PointerPositionSpotLight();
-                shell.Lights.Add(light);
-                PointerPositionSpotLight wideLight = new PointerPositionSpotLight
+                PointerPositionSpotLight 
+                    light = new PointerPositionSpotLight { Active = false },
+                    wideLight = new PointerPositionSpotLight
                 {
                     Z = 30,
                     IdAppendage = "[Wide]",
-                    Shade = 0x10
+                    Shade = 0x10,
+                    Active = false
                 };
+                shell.Lights.Add(light);
                 shell.Lights.Add(wideLight);
                 Window.Current.Content = shell;
 

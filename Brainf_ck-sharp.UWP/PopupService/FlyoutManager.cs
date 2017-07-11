@@ -219,12 +219,13 @@ namespace Brainf_ck_sharp_UWP.PopupService
             // Lights setup
             bool lightsEnabled = false;
             PointerPositionSpotLight
-                light = new PointerPositionSpotLight(),
+                light = new PointerPositionSpotLight { Active = false },
                 wideLight = new PointerPositionSpotLight
                 {
                     Z = 30,
                     IdAppendage = "[Popup]",
-                    Shade = 0x10
+                    Shade = 0x10,
+                    Active = false
                 };
             container.Lights.Add(light);
             container.Lights.Add(wideLight);
