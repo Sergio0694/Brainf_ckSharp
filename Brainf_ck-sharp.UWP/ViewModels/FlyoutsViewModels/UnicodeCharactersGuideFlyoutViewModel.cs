@@ -48,11 +48,12 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         /// </summary>
         public async Task LoadAsync()
         {
-            (IEnumerable<int> first, IEnumerable<int> second) = await Task.Run(() => (Enumerable.Range(32, 96).ToArray(), Enumerable.Range(160, 96).ToArray()));
+            Tuple<IEnumerable<int>, IEnumerable<int>> sources = await Task.Run(() => Tuple.Create<IEnumerable<int>, IEnumerable<int>>(
+                Enumerable.Range(32, 96).ToArray(), Enumerable.Range(160, 96).ToArray()));
             DisplayFirstControlGroup();
-            Source = new ObservableCollection<int>(first);
+            Source = new ObservableCollection<int>(sources.Item1);
             DisplaySecondControlGroup();
-            SecondSource = new ObservableCollection<int>(second);
+            SecondSource = new ObservableCollection<int>(sources.Item2);
             LoadingCompleted?.Invoke(this, EventArgs.Empty);
         }
 

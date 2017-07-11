@@ -47,7 +47,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             {
                 if (type != PointerDeviceType.Mouse) return;
                 BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.8 : 0, 200, null, EasingFunctionNames.Linear);
-                LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 0.6, 200, null, EasingFunctionNames.Linear);
+                LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 0.4, 200, null, EasingFunctionNames.Linear);
             });
         }
 

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.DataModels;
+using Brainf_ck_sharp_UWP.DataModels.EventArgs;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
@@ -73,8 +74,9 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         }
 
         // Forwards the share event and displays a notification with the result of the share operation
-        private async void SavedSourceCodeTemplate_OnShareRequested(object sender, (SourceCodeShareType Type, SourceCode Code) e)
+        private async void SavedSourceCodeTemplate_OnShareRequested(object sender, SourceCodeShareEventArgs e)
         {
+            if (e.Code == null) return;
             AsyncOperationResult<bool> result = await ViewModel.ShareItemAsync(e.Type, e.Code);
             if (result.Status == AsyncOperationStatus.RunToCompletion && 
                 result.Result &&

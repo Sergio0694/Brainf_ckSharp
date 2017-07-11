@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Input;
@@ -16,6 +17,7 @@ using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.PopupService.Interfaces;
+using Brainf_ck_sharp_UWP.PopupService.InternalTypes;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.PopupService.UI;
 using GalaSoft.MvvmLight.Messaging;
@@ -81,9 +83,11 @@ namespace Brainf_ck_sharp_UWP.PopupService
         private async void FlyoutManager_VisibleBoundsChanged(ApplicationView sender, object args)
         {
             await Semaphore.WaitAsync();
-            foreach ((FlyoutDisplayInfo info, int i) in PopupStack.Reverse().Select((p, i) => (p, i)))
+            int i = 0;
+            foreach (FlyoutDisplayInfo info in PopupStack.Reverse())
             {
                 AdjustPopupSize(info, i > 0);
+                i++;
             }
             Semaphore.Release();
         }
@@ -207,7 +211,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// </summary>
         /// <param name="tint">The optional tint color for the confirm button</param>
         /// <param name="colorMix">The optional color mix parameter for the confirm button</param>
-        private static (FlyoutContainer Container, Action DisposeLight) SetupFlyoutContainer(Color? tint, float? colorMix)
+        private static Tuple<FlyoutContainer, Action> SetupFlyoutContainer(Color? tint, float? colorMix)
         {
             // Initialize the container and the target popup
             FlyoutContainer container = new FlyoutContainer(tint, colorMix)
@@ -237,7 +241,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             });
 
             // Return the results
-            return (container, () =>
+            return Tuple.Create<FlyoutContainer, Action>(container, () =>
             {
                 // Dispose the lights
                 container.Lights.Clear();
@@ -286,7 +290,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
 
             // Initialize the container and the target popup
-            (FlyoutContainer container, Action dispose) = SetupFlyoutContainer(null, null);
+            Tuple<FlyoutContainer, Action> setup = SetupFlyoutContainer(null, null);
 
             // Prepare the flyout depending on the desired display mode
             double width = CalculateExpectedWidth();
@@ -297,14 +301,14 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 FontSize = 14,
                 Margin = new Thickness(12, 12, 16, 12)
             };
-            container.SetupFixedUI(title, block, width);
-            container.SetupUI(confirm, color);
+            setup.Item1.SetupFixedUI(title, block, width);
+            setup.Item1.SetupUI(confirm, color);
 
             // Create the popup to display
             Popup popup = new Popup
             {
                 IsLightDismissEnabled = false,
-                Child = container
+                Child = setup.Item1
             };
             FlyoutDisplayInfo info = new FlyoutDisplayInfo(popup, FlyoutDisplayMode.ActualHeight);
             AdjustPopupSize(info, PopupStack.Count > 0);
@@ -314,10 +318,10 @@ namespace Brainf_ck_sharp_UWP.PopupService
             void CloseHandler(object s, object e)
             {
                 // Results
-                tcs.SetResult(container.Confirmed ? FlyoutResult.Confirmed : FlyoutResult.Canceled);
+                tcs.SetResult(setup.Item1.Confirmed ? FlyoutResult.Confirmed : FlyoutResult.Canceled);
                 popup.Child = null;
                 popup.Closed -= CloseHandler;
-                dispose();
+                setup.Item2();
             }
             popup.Closed += CloseHandler;
 
@@ -356,18 +360,18 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
 
             // Initialize the container and the target popup
-            (FlyoutContainer container, Action dispose) = SetupFlyoutContainer(background, tintMix);
+            Tuple<FlyoutContainer, Action> setup = SetupFlyoutContainer(background, tintMix);
 
             // Prepare the flyout depending on the desired display mode
             switch (mode)
             {
                 case FlyoutDisplayMode.ScrollableContent:
-                    container.SetupUI(title, content, margin);
+                    setup.Item1.SetupUI(title, content, margin);
                     break;
                 case FlyoutDisplayMode.ActualHeight:
                     double width = CalculateExpectedWidth();
                     if (margin != null) content.Margin = margin.Value;
-                    container.SetupFixedUI(title, content, width);
+                    setup.Item1.SetupFixedUI(title, content, width);
                     break;
                 default:
                     throw new ArgumentException("The desired display mode is not valid");
@@ -377,7 +381,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             Popup popup = new Popup
             {
                 IsLightDismissEnabled = false,
-                Child = container
+                Child = setup.Item1
             };
             FlyoutDisplayInfo info = new FlyoutDisplayInfo(popup, mode);
             AdjustPopupSize(info, PopupStack.Count > 0);
@@ -387,10 +391,10 @@ namespace Brainf_ck_sharp_UWP.PopupService
             void CloseHandler(object s, object e)
             {
                 // Results
-                tcs.SetResult(container.Confirmed ? FlyoutResult.Confirmed : FlyoutResult.Canceled);
+                tcs.SetResult(setup.Item1.Confirmed ? FlyoutResult.Confirmed : FlyoutResult.Canceled);
                 popup.Child = null;
                 popup.Closed -= CloseHandler;
-                dispose();
+                setup.Item2();
             }
             popup.Closed += CloseHandler;
 
@@ -432,18 +436,18 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
 
             // Initialize the container and the target popup, and the confirm handler
-            (FlyoutContainer container, Action dispose) = SetupFlyoutContainer(null, null);
+            Tuple<FlyoutContainer, Action> setup = SetupFlyoutContainer(null, null);
 
             // Prepare the flyout depending on the desired display mode
             switch (mode)
             {
                 case FlyoutDisplayMode.ScrollableContent:
-                    container.SetupUI(title, content, margin);
+                    setup.Item1.SetupUI(title, content, margin);
                     break;
                 case FlyoutDisplayMode.ActualHeight:
                     double width = CalculateExpectedWidth();
                     if (margin != null) content.Margin = margin.Value;
-                    container.SetupFixedUI(title, content, width);
+                    setup.Item1.SetupFixedUI(title, content, width);
                     break;
                 default:
                     throw new ArgumentException("The desired display mode is not valid");
@@ -459,7 +463,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             Popup popup = new Popup
             {
                 IsLightDismissEnabled = false,
-                Child = container
+                Child = setup.Item1
             };
             FlyoutDisplayInfo info = new FlyoutDisplayInfo(popup, mode);
             AdjustPopupSize(info, PopupStack.Count > 0);
@@ -471,7 +475,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 tcs.TrySetCanceled();
                 popup.Child = null;
                 popup.Closed -= CloseHandler;
-                dispose();
+                setup.Item2();
             }
             popup.Closed += CloseHandler;
 
@@ -541,7 +545,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
 
             // Adjust the display size and position
-            (double x, double y) CalculateOffset(Rect area)
+            Offset CalculateOffset(Rect area)
             {
                 // Calculate the final offset
                 double
@@ -570,21 +574,21 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 if (tryCenter)
                 {
                     double
-                        offset = content.Width / 2,
+                        contentOffset = content.Width / 2,
                         half = area.Width / 2;
-                    if (x > offset - half) x -= offset - half;
+                    if (x > contentOffset - half) x -= contentOffset - half;
                     else if (x > 8) x = 8;
                 }
-                return (x, y);
+                return new Offset(x, y);
             }
 
             // Create the popup to display
-            (double hx, double vy) = CalculateOffset(rect);
+            Offset offset = CalculateOffset(rect);
             Popup popup = new Popup
             {
                 IsLightDismissEnabled = false,
-                VerticalOffset = vy,
-                HorizontalOffset = hx
+                VerticalOffset = offset.Y,
+                HorizontalOffset = offset.X
             };
 
             // Create the grid with the content and its drop shadow
@@ -593,12 +597,12 @@ namespace Brainf_ck_sharp_UWP.PopupService
             parent.Children.Add(grid);
 
             // Build the shadow frame and insert the actual popup content
-            foreach ((float x, float y) in new (float, float)[]
+            foreach (Vector2 v in new[]
             {
-                ((float)content.Width, 0),
-                (-(float)content.Width, 0),
-                (0, -(float)content.Height),
-                (0, (float)content.Height)
+                new Vector2((float)content.Width, 0),
+                new Vector2(-(float)content.Width, 0),
+                new Vector2(0, -(float)content.Height),
+                new Vector2(0, (float)content.Height)
             })
             {
                 // Setup the shadow
@@ -606,7 +610,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 grid.Children.Add(border);
                 content.AttachVisualShadow(border, true, 
                     (float)content.Width + 1, (float)content.Height + 1,
-                    Colors.Black, 1, -0.5f, -0.5f, null, x, y);
+                    Colors.Black, 1, -0.5f, -0.5f, null, v.X, v.Y);
             }
             grid.Children.Add(content);
 
@@ -698,10 +702,10 @@ namespace Brainf_ck_sharp_UWP.PopupService
                     !popup.IsOpen) return;
 
                 // Animate the popup to the new offset
-                (hx, vy) = CalculateOffset(delayedRect);
+                offset = CalculateOffset(delayedRect);
                 XAMLTransformToolkit.PrepareStory(
-                    XAMLTransformToolkit.CreateDoubleAnimation(popup, "HorizontalOffset", null, hx, 250, EasingFunctionNames.CircleEaseOut, true),
-                    XAMLTransformToolkit.CreateDoubleAnimation(popup, "VerticalOffset", null, vy, 250, EasingFunctionNames.CircleEaseOut, true)).Begin();
+                    XAMLTransformToolkit.CreateDoubleAnimation(popup, "HorizontalOffset", null, offset.X, 250, EasingFunctionNames.CircleEaseOut, true),
+                    XAMLTransformToolkit.CreateDoubleAnimation(popup, "VerticalOffset", null, offset.Y, 250, EasingFunctionNames.CircleEaseOut, true)).Begin();
 
             }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
         }

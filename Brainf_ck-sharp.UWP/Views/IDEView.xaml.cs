@@ -16,8 +16,10 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using Brainf_ck_sharp;
-using Brainf_ck_sharp.Enums;
 using Brainf_ck_sharp.ReturnTypes;
+using Brainf_ck_sharp_UWP.DataModels.EventArgs;
+using Brainf_ck_sharp_UWP.DataModels.Misc;
+using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
@@ -97,7 +99,7 @@ namespace Brainf_ck_sharp_UWP.Views
             return result == FlyoutResult.Confirmed ? flyout.Title : null;
         }
 
-        private void ViewModel_PlayRequested(object sender, (String Stdin, OverflowMode Mode, bool Debug) e)
+        private void ViewModel_PlayRequested(object sender, PlayRequestedEventArgs e)
         {
             // Get the text and initialize the session
             EditBox.Document.GetText(TextGetOptions.None, out String text);
@@ -202,7 +204,7 @@ namespace Brainf_ck_sharp_UWP.Views
         }
 
         // The backup of the indexes of the brackets in the text
-        private IReadOnlyList<(int, int, char)> _Brackets;
+        private IReadOnlyList<IndentationCoordinateEntry> _Brackets;
 
         // Brackets semaphore to avoid concurrent operations
         private readonly SemaphoreSlim BracketGuidesSemaphore = new SemaphoreSlim(1);
@@ -214,7 +216,7 @@ namespace Brainf_ck_sharp_UWP.Views
         /// Redraws the column guides if necessary
         /// </summary>
         /// <param name="code">The current text, if already available</param>
-        private async Task<IReadOnlyList<(int, int, char)>> DrawBracketGuides(String code)
+        private async Task<IReadOnlyList<IndentationCoordinateEntry>> DrawBracketGuides(String code)
         {
             // Get the text, clear the current guides and make sure the syntax is currently valid
             _BracketGuidesCts?.Cancel();
@@ -233,42 +235,49 @@ namespace Brainf_ck_sharp_UWP.Views
             }
 
             // Build the indexes for the current state
-            (List<(int, int, char)> indexes, bool zip) = await Task.Run(() =>
+            Tuple<List<IndentationCoordinateEntry>, bool> workingSet = await Task.Run(() =>
             {
-                List<(int, int, char)> pairs = new List<(int, int, char)>();
-                foreach ((char c, int i) in code.Select((c, i) => (c, i)))
+                List<IndentationCoordinateEntry> pairs = new List<IndentationCoordinateEntry>();
+                int i1 = 0;
+                foreach (char c in code)
                 {
                     if (c == '[' || c == ']')
                     {
-                        (int y, int x) = code.FindCoordinates(i);
-                        pairs.Add((y, x, c));
+                        Coordinate coordinate = code.FindCoordinates(i1);
+                        pairs.Add(new IndentationCoordinateEntry(coordinate.Y, coordinate.X, c));
                     }
+                    i1++;
                 }
                 bool test = _Brackets?.Zip(pairs, (first, second) => first.Equals(second)).All(b => b) == true;
-                return (pairs, test);
+                return Tuple.Create(pairs, test);
             });
 
             // Check if the brackets haven't been changed or moved
             if (_Brackets != null && 
-                _Brackets.Count == indexes.Count &&
-                zip || 
+                _Brackets.Count == workingSet.Item1.Count &&
+                workingSet.Item2 || 
                 _BracketGuidesCts.IsCancellationRequested)
             {
                 BracketGuidesSemaphore.Release();
                 return _Brackets;
             }
-            _Brackets = indexes;
+            _Brackets = workingSet.Item1;
             BracketGuidesCanvas.Children.Clear();
 
             // Draw the guides for each brackets pair
-            foreach ((char c, int i) in code.Select((c, i) => (c, i)))
+            int i2 = 0;
+            foreach (char c in code)
             {
                 // Get the index of the corresponding closing bracket (only if they're not on the same line)
                 if (_BracketGuidesCts.IsCancellationRequested) break;
-                if (c != '[') continue;
+                if (c != '[')
+                {
+                    i2++;
+                    continue;
+                }
                 int height = 0, target = -1;
                 bool newLine = false;
-                for (int j = i + 1; j < code.Length; j++)
+                for (int j = i2 + 1; j < code.Length; j++)
                 {
                     char token = code[j];
                     if (token == '\r') newLine = true;
@@ -283,10 +292,14 @@ namespace Brainf_ck_sharp_UWP.Views
                         height--;
                     }
                 }
-                if (target == -1) continue;
+                if (target == -1)
+                {
+                    i2++;
+                    continue;
+                }
 
                 // Get the initial and ending range
-                ITextRange range = EditBox.Document.GetRange(i, i);
+                ITextRange range = EditBox.Document.GetRange(i2, i2);
                 range.GetRect(PointOptions.Transform, out Rect open, out _);
                 range = EditBox.Document.GetRange(target, target);
                 range.GetRect(PointOptions.Transform, out Rect close, out _);
@@ -306,9 +319,10 @@ namespace Brainf_ck_sharp_UWP.Views
                 guide.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 30 + open.Top));
                 guide.SetVisualOffset(TranslationAxis.X, (float)(open.X + 6));
                 BracketGuidesCanvas.Children.Add(guide);
+                i2++;
             }
             BracketGuidesSemaphore.Release();
-            return indexes;
+            return workingSet.Item1;
         }
 
         /// <summary>
@@ -619,7 +633,7 @@ namespace Brainf_ck_sharp_UWP.Views
         /// <summary>
         /// Gets the collection of current visualized breakpoints and their respective line numbers
         /// </summary>
-        private readonly Dictionary<int, (Ellipse, Rectangle)> BreakpointsInfo = new Dictionary<int, (Ellipse, Rectangle)>();
+        private readonly Dictionary<int, Tuple<Ellipse, Rectangle>> BreakpointsInfo = new Dictionary<int, Tuple<Ellipse, Rectangle>>();
 
         // Clears the breakpoints from the UI and their info
         private void ClearBreakpoints()
@@ -655,11 +669,11 @@ namespace Brainf_ck_sharp_UWP.Views
             // Remove the target breakpoints
             foreach (int target in pending)
             {
-                if (BreakpointsInfo.TryGetValue(target, out (Ellipse Breakpoint, Rectangle LineIndicator) previous))
+                if (BreakpointsInfo.TryGetValue(target, out Tuple<Ellipse, Rectangle> previous))
                 {
                     // Remove the previous breakpoint
-                    BreakpointsCanvas.Children.Remove(previous.Breakpoint);
-                    BreakLinesCanvas.Children.Remove(previous.LineIndicator);
+                    BreakpointsCanvas.Children.Remove(previous.Item1);
+                    BreakLinesCanvas.Children.Remove(previous.Item2);
                     BreakpointsInfo.Remove(target);
                 }
             }
@@ -718,9 +732,9 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             // Get the target line
             if (text == null) EditBox.Document.GetText(TextGetOptions.None, out text);
-            (int y, _) = text.FindCoordinates(start);
-            if (y == 1 || // Can't place a breakpoint on the first line
-                !text.GetLine(y).Any(Brainf_ckInterpreter.Operators.Contains)) // Invalid line, no operators here
+            Coordinate coordinate = text.FindCoordinates(start);
+            if (coordinate.Y == 1 || // Can't place a breakpoint on the first line
+                !text.GetLine(coordinate.Y).Any(Brainf_ckInterpreter.Operators.Contains)) // Invalid line, no operators here
             {
                 // Send a message to signal the breakpoint can't be placed here
                 Guid id = Guid.NewGuid();
@@ -736,12 +750,12 @@ namespace Brainf_ck_sharp_UWP.Views
             }
 
             // Setup the breakpoint
-            if (BreakpointsInfo.TryGetValue(y, out (Ellipse Breakpoint, Rectangle LineIndicator) previous))
+            if (BreakpointsInfo.TryGetValue(coordinate.Y, out Tuple<Ellipse, Rectangle> previous))
             {
                 // Remove the previous breakpoint
-                BreakpointsCanvas.Children.Remove(previous.Breakpoint);
-                BreakLinesCanvas.Children.Remove(previous.LineIndicator);
-                BreakpointsInfo.Remove(y);
+                BreakpointsCanvas.Children.Remove(previous.Item1);
+                BreakLinesCanvas.Children.Remove(previous.Item2);
+                BreakpointsInfo.Remove(coordinate.Y);
             }
             else
             {
@@ -774,7 +788,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 rect.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
 
                 // Store the info
-                BreakpointsInfo.Add(y, (ellipse, rect));
+                BreakpointsInfo.Add(coordinate.Y, Tuple.Create(ellipse, rect));
             }
         }
 

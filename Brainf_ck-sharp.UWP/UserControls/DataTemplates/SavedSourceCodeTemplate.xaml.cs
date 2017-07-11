@@ -8,9 +8,9 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Input;
 using Brainf_ck_sharp_UWP.AttachedProperties;
+using Brainf_ck_sharp_UWP.DataModels.EventArgs;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
-using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using UICompositionAnimations;
@@ -80,7 +80,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
         /// <summary>
         /// Raised whenever the user selects a share method to share the saved code
         /// </summary>
-        public event EventHandler<(SourceCodeShareType, SourceCode)> ShareRequested;
+        public event EventHandler<SourceCodeShareEventArgs> ShareRequested;
 
         /// <summary>
         /// Raised whenever the user requests to delete the current item
@@ -108,7 +108,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
             MenuFlyout menuFlyout = MenuFlyoutHelper.PrepareSavedSourceCodeMenuFlyout(
                 () => FavoriteToggleRequested?.Invoke(this, CodeInfo?.Code), CodeInfo?.Code.Favorited == true,
                 () => RenameRequested?.Invoke(this, CodeInfo?.Code),
-                type => ShareRequested?.Invoke(this, (type, CodeInfo?.Code)),
+                type => ShareRequested?.Invoke(this, new SourceCodeShareEventArgs(type, CodeInfo?.Code)),
                 () => TranslateToCRequested?.Invoke(this, CodeInfo?.Code), CodeInfo?.IsSyntaxValid == true,
                 () => DeleteRequested?.Invoke(this, CodeInfo?.Code));
             menuFlyout.Closed += (s, e) =>

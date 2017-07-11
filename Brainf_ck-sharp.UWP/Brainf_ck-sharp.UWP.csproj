@@ -125,6 +125,8 @@
     <Compile Include="Converters\SingleDigitConverterWithFallback.cs" />
     <Compile Include="Converters\SourceCodeTypeConverter.cs" />
     <Compile Include="DataModels\AsyncOperationResult.cs" />
+    <Compile Include="DataModels\EventArgs\PlayRequestedEventArgs.cs" />
+    <Compile Include="DataModels\EventArgs\SourceCodeShareEventArgs.cs" />
     <Compile Include="DataModels\IDEResults\IDEResultExceptionInfoData.cs" />
     <Compile Include="DataModels\Misc\ChangelogReleaseInfo.cs" />
     <Compile Include="DataModels\Misc\CharactersChunkModel.cs" />
@@ -138,14 +140,18 @@
     <Compile Include="DataModels\IDEResults\IDEResultSectionSessionData.cs" />
     <Compile Include="DataModels\IDEResults\IDEResultSectionStateData.cs" />
     <Compile Include="DataModels\JumpListGroup.cs" />
+    <Compile Include="DataModels\Misc\Coordinate.cs" />
     <Compile Include="DataModels\Misc\GitDiffLineStatus.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationLineInfo.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationInfoLineType.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationOpenBracketLineInfo.cs" />
+    <Compile Include="DataModels\Misc\IDEIndentationGuides\IndentationCoordinateEntry.cs" />
     <Compile Include="DataModels\Misc\ScriptExceptionInfo.cs" />
     <Compile Include="DataModels\SQLite\CategorizedSourceCode.cs" />
     <Compile Include="DataModels\SQLite\CategorizedSourceCodeWithSyntaxInfo.cs" />
     <Compile Include="DataModels\SQLite\Enums\SavedSourceCodeType.cs" />
+    <Compile Include="DataModels\SQLite\GroupedSourceCodesCategory.cs" />
+    <Compile Include="DataModels\SQLite\SampleCodeRecord.cs" />
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
     <Compile Include="DataModels\SQLite\Enums\SourceCodeTitleScore.cs" />
     <Compile Include="Enums\SourceCodeShareType.cs" />
@@ -171,6 +177,7 @@
     <Compile Include="Messages\OverflowModeChangedMessage.cs" />
     <Compile Include="PopupService\Interfaces\IAsyncLoadedContent.cs" />
     <Compile Include="PopupService\Interfaces\IBusyWorkingContent.cs" />
+    <Compile Include="PopupService\InternalTypes\Offset.cs" />
     <Compile Include="PopupService\Misc\FlyoutClosedResult.cs" />
     <Compile Include="PopupService\Misc\FlyoutDisplayInfo.cs" />
     <Compile Include="PopupService\Misc\FlyoutDisplayMode.cs" />
@@ -413,6 +420,7 @@
     <Content Include="Assets\Misc\SourceCodesTemplateDatabase.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Brainf_ck-sharp.UWP_StoreKey.pfx" />
     <None Include="Brainf_ck-sharp.UWP_TemporaryKey.pfx" />
     <None Include="Connected Services\HockeyApp\ConnectedService.json" />
     <PRIResource Include="Strings\it\Resources.resw" />
@@ -466,6 +474,7 @@
     <Content Include="Assets\Wide\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide\Wide310x150Logo.scale-400.png" />
+    <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -690,9 +699,6 @@
     </PackageReference>
     <PackageReference Include="SQLite.Net.Core-PCL">
       <Version>3.1.1</Version>
-    </PackageReference>
-    <PackageReference Include="System.ValueTuple">
-      <Version>4.3.1</Version>
     </PackageReference>
     <PackageReference Include="Telerik.UI.for.UniversalWindowsPlatform">
       <Version>1.0.0.4</Version>

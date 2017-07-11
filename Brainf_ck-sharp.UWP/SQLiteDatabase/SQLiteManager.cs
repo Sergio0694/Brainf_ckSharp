@@ -232,14 +232,14 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         /// <summary>
         /// Gets a collection of names for the code samples, and their hardcoded ID
         /// </summary>
-        private static readonly IReadOnlyCollection<(String Name, String FriendlyName, Guid Uid)> SamplesMap = new List<(String, String, Guid)>
+        private static readonly IReadOnlyCollection<SampleCodeRecord> SamplesMap = new List<SampleCodeRecord>
         {
-            ("HelloWorld.txt", "Hello world!", Guid.Parse("6B4C55E6-7009-48EC-96C5-C73552D9F257")),
-            ("UnicodeValue.txt", LocalizationManager.GetResource("UnicodeValue"), Guid.Parse("10768D40-5E3D-4787-9CB8-2A0ABBE26EFC")),
-            ("UnicodeSum.txt", LocalizationManager.GetResource("UnicodeSum"), Guid.Parse("78BAA70A-0DAF-4BB6-B09A-CDA9537D2FFF")),
-            ("Sum.txt", LocalizationManager.GetResource("Sum"),  Guid.Parse("0441153F-E40A-4AEC-8373-8A552697778B")),
-            ("HeaderComments.txt", LocalizationManager.GetResource("HeaderComments"),  Guid.Parse("63156CB7-1BD1-46EA-A705-AC2ADD4A5F11")),
-            ("ExecuteIfZero.txt", "if (x == 0) then { }",  Guid.Parse("6DABC8A8-E32C-49A1-A348-CF836FEF276D"))
+            new SampleCodeRecord("HelloWorld.txt", "Hello world!", Guid.Parse("6B4C55E6-7009-48EC-96C5-C73552D9F257")),
+            new SampleCodeRecord("UnicodeValue.txt", LocalizationManager.GetResource("UnicodeValue"), Guid.Parse("10768D40-5E3D-4787-9CB8-2A0ABBE26EFC")),
+            new SampleCodeRecord("UnicodeSum.txt", LocalizationManager.GetResource("UnicodeSum"), Guid.Parse("78BAA70A-0DAF-4BB6-B09A-CDA9537D2FFF")),
+            new SampleCodeRecord("Sum.txt", LocalizationManager.GetResource("Sum"),  Guid.Parse("0441153F-E40A-4AEC-8373-8A552697778B")),
+            new SampleCodeRecord("HeaderComments.txt", LocalizationManager.GetResource("HeaderComments"),  Guid.Parse("63156CB7-1BD1-46EA-A705-AC2ADD4A5F11")),
+            new SampleCodeRecord("ExecuteIfZero.txt", "if (x == 0) then { }",  Guid.Parse("6DABC8A8-E32C-49A1-A348-CF836FEF276D"))
         };
 
         /// <summary>
@@ -250,11 +250,11 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
             // Get the samples folder and iterate over the expected samples
             await EnsureDatabaseConnectionAsync();
             StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(SampleFilesPath);
-            foreach ((String name, String friendly, Guid uid) in SamplesMap)
+            foreach (SampleCodeRecord record in SamplesMap)
             {
                 // Get the source code file and look for an existing copy in the local database
-                StorageFile file = await folder.GetFileAsync(name);
-                String sUid = uid.ToString();
+                StorageFile file = await folder.GetFileAsync(record.Filename);
+                String sUid = record.Uid.ToString();
                 SourceCode row = await DatabaseConnection.Table<SourceCode>().Where(entry => entry.Uid == sUid).FirstOrDefaultAsync();
                 if (row == null)
                 {
@@ -262,8 +262,8 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
                     String code = await FileIO.ReadTextAsync(file);
                     row = new SourceCode
                     {
-                        Uid = uid.ToString(),
-                        Title = friendly,
+                        Uid = record.Uid.ToString(),
+                        Title = record.FriendlyName,
                         Code = code,
                         CreatedTime = DateTime.Now,
                         ModifiedTime = DateTime.Now
@@ -280,7 +280,7 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         /// <summary>
         /// Loads the saved source codes from the app database
         /// </summary>
-        public async Task<IList<(SavedSourceCodeType Type, IList<SourceCode> Items)>> LoadSavedCodesAsync()
+        public async Task<IList<GroupedSourceCodesCategory>> LoadSavedCodesAsync()
         {
             // Query the codes from the database
             await EnsureDatabaseConnectionAsync();
@@ -303,11 +303,11 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
             }
 
             // Aggregate and return the results
-            return new(SavedSourceCodeType, IList<SourceCode>)[]
+            return new[]
             {
-                (SavedSourceCodeType.Favorite, favorites.ToArray()),
-                (SavedSourceCodeType.Original, original.ToArray()),
-                (SavedSourceCodeType.Sample, samples.ToArray())
+                new GroupedSourceCodesCategory(SavedSourceCodeType.Favorite, favorites.ToArray()),
+                new GroupedSourceCodesCategory(SavedSourceCodeType.Original, original.ToArray()),
+                new GroupedSourceCodesCategory(SavedSourceCodeType.Sample, samples.ToArray())
             };
         }
 

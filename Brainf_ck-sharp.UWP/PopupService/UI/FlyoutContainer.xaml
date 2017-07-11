@@ -89,7 +89,7 @@
                     
                     <!--Light border-->
                     <Border
-                        Opacity="0.6"
+                        Opacity="0.4"
                         x:Name="LightBorder"
                         BorderThickness="2"
                         BorderBrush="{StaticResource PopupElementsLightBrush}"

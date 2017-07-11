@@ -21,7 +21,7 @@
       Un elemento Assembly il cui nome è "*Application*" si applica a tutti gli assembly
       nel pacchetto dell'applicazione. Gli asterischi non sono caratteri jolly.
     -->
-    <Assembly Name="*Application*" Dynamic="Excluded" />
+    <Assembly Name="*Application*" Dynamic="Required All" />
     
     
     <!-- Aggiungere qui le direttive di runtime specifiche dell'applicazione. -->

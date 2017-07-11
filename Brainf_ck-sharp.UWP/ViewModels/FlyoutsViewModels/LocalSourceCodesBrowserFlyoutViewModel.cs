@@ -24,7 +24,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
     {
         protected override async Task<IList<JumpListGroup<SavedSourceCodeType, CategorizedSourceCodeWithSyntaxInfo>>> OnLoadGroupsAsync()
         {
-            IList<(SavedSourceCodeType Type, IList<SourceCode> Items)> categories = await SQLiteManager.Instance.LoadSavedCodesAsync();
+            IList<GroupedSourceCodesCategory> categories = await SQLiteManager.Instance.LoadSavedCodesAsync();
             return await Task.Run(() =>
                 (from category in categories
                  where category.Items.Count > 0

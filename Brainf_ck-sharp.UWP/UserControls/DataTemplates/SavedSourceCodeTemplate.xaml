@@ -77,6 +77,6 @@
         <Rectangle Grid.Column="0"
                    VerticalAlignment="Bottom"
                    Height="1"
-                   Fill="#A0000000"/>
+                   Fill="#90000000"/>
     </Grid>
 </UserControl>

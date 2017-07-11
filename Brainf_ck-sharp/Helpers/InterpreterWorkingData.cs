@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Brainf_ck_sharp.ReturnTypes;
 using JetBrains.Annotations;
 
