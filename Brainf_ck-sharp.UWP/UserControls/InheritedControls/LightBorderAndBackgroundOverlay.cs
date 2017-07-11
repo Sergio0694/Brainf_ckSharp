@@ -56,5 +56,23 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
             get => _LightBackground.Background as LightingBrush;
             set => _LightBackground.Background = value;
         }
+
+        /// <summary>
+        /// Gets or sets whether or not the lights are currently enabled and visible
+        /// </summary>
+        public bool LightsEnabled
+        {
+            get { return GetValue(LightsEnabledProperty).To<bool>(); }
+            set { SetValue(LightsEnabledProperty, value); }
+        }
+
+        public static readonly DependencyProperty LightsEnabledProperty = DependencyProperty.Register(
+            nameof(LightsEnabled), typeof(bool), typeof(LightBorderAndBackgroundOverlay), new PropertyMetadata(true, OnLightsEnabledPropertyChanged));
+
+        private static void OnLightsEnabledPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            d.To<LightBorderAndBackgroundOverlay>()._LightBorder.StartXAMLTransformFadeAnimation(
+                null, e.NewValue.To<bool>() ? 0.4 : 0, 200, null, EasingFunctionNames.Linear);
+        }
     }
 }

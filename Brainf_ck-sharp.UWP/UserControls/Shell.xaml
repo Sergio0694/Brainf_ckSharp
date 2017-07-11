@@ -301,6 +301,7 @@
             </customCommandBar:CommandBarWithButtonsAnimations.PrimaryCommands>
             <customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
                 <customCommandBar:CustomCommandBarButton
+                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Repeat last script"
                     x:Uid="RepeatScript"
                     Icon="&#xE117;"
@@ -308,6 +309,7 @@
                     Click="{x:Bind ViewModel.RequestRepeatLastConsoleScript}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=0, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
+                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Restart"
                     x:Uid="Restart"
                     Icon="&#xE9F3;"
@@ -315,24 +317,28 @@
                     Click="{x:Bind ViewModel.RequestRestartConsole}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=0, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
+                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Clear screen"
                     x:Uid="Clrscr"
                     Icon="&#xEA99;"
                     IsEnabled="{x:Bind ViewModel.ClearScreenAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestClearScreen}"/>
                 <customCommandBar:CustomCommandBarButton
+                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Show Unicode characters"
                     x:Uid="Unicode"
                     Icon="&#xEBDB;"
                     Click="{x:Bind RequestShowUnicodeCharacters}"/>
                 <AppBarSeparator Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
+                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Browse code library"
                     x:Uid="CodeLibraryButton"
                     Icon="&#xED25;"
                     Click="{x:Bind RequestShowCodeLibrary}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
+                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Save"
                     x:Uid="SaveButton"
                     Icon="&#xE105;"
@@ -340,6 +346,7 @@
                     IsEnabled="{x:Bind ViewModel.SaveAvailable, Mode=OneWay, FallbackValue=False}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
+                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Save as"
                     x:Uid="SaveAsButton"
                     Icon="&#xEA35;"
@@ -347,6 +354,7 @@
                     IsEnabled="{x:Bind ViewModel.SaveAsAvailable, Mode=OneWay, FallbackValue=True}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
+                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="About"
                     x:Uid="AboutButton"
                     Icon="&#xED15;"
