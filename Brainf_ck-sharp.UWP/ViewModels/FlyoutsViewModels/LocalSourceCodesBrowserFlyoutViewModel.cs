@@ -24,7 +24,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
     {
         protected override async Task<IList<JumpListGroup<SavedSourceCodeType, CategorizedSourceCodeWithSyntaxInfo>>> OnLoadGroupsAsync()
         {
-            IList<(SavedSourceCodeType Type, IList<SourceCode> Items)> categories = await SQLiteManager.Instance.LoadSavedCodesAsync();
+            IList<GroupedSourceCodesCategory> categories = await SQLiteManager.Instance.LoadSavedCodesAsync();
             return await Task.Run(() =>
                 (from category in categories
                  where category.Items.Count > 0
@@ -154,7 +154,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         {
             Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
             StorageFile local = await StorageHelper.PickSaveFileAsync(code.Title, LocalizationManager.GetResource("CSource"), ".c");
-            if (local == null) return AsyncOperationStatus.Canceled;
+            if (local == null)
+            {
+                Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
+                return AsyncOperationStatus.Canceled;
+            }
             String translation = await Task.Run(() => Brainf_ckInterpreter.TranslateToC(code.Code));
             await FileIO.WriteTextAsync(local, translation);
             Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));

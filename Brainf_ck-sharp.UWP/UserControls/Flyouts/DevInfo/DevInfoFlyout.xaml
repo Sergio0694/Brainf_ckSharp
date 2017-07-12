@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:iconBoxToolkit="using:Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit"
+    xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -50,7 +51,7 @@
             <LineBreak/>
             <Run 
                 FontSize="14"
-                Text="Thanks to Andrea Salvati for his help with the original interpreter algorithm, Camil Demetrescu for the idea to port Brainf*ck# to Windows 10 and Christopher Blackman for his help during the app development"
+                Text="Thanks to Andrea Salvati for his help with the original interpreter algorithm, Camil Demetrescu for the idea to port Brainf*ck# to Windows 10 and Christopher Blackman for his help during the app development."
                 x:Uid="DevelopedByPart2Run"/>
         </TextBlock>
 
@@ -70,18 +71,23 @@
                 MaxWidth="220"
                 HorizontalAlignment="Left"
                 Click="RateStoreButton_Click">
-                <Grid Margin="12,0,12,0">
+                <inheritedControls:LightBorderAndBackgroundOverlay
+                    Margin="-2"
+                    LightBorderThickness="2"
+                    LightBorderBrush="{StaticResource BorderLightBrush}"
+                    LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
+                    <Grid Margin="12,0,12,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <iconBoxToolkit:IconBox 
                         Data="{StaticResource StoreLogo}"
-                        Margin="4"/>
+                        Margin="0,8,8,8"/>
                     <TextBlock
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        Margin="16,0,0,0"
+                        Margin="8,0,0,0"
                         Text="Rate in the Store"
                         x:Uid="RateStoreBlock"
                         IsTextScaleFactorEnabled="False"
@@ -90,6 +96,7 @@
                         FontSize="15"
                         FontWeight="Normal"/>
                 </Grid>
+                </inheritedControls:LightBorderAndBackgroundOverlay>
             </Button>
             
             <!--Donate button-->
@@ -102,7 +109,12 @@
                 Background="{ThemeResource SystemControlHighlightListAccentLowBrush}"
                 Grid.Column="1"
                 Click="DonateButton_Click">
-                <Grid Margin="12,0,12,0">
+                <inheritedControls:LightBorderAndBackgroundOverlay
+                    Margin="-2"
+                    LightBorderThickness="2"
+                    LightBorderBrush="{StaticResource BorderLightBrush}"
+                    LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
+                    <Grid Margin="12,0,12,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -123,6 +135,7 @@
                         FontSize="15"
                         FontWeight="Normal"/>
                 </Grid>
+                </inheritedControls:LightBorderAndBackgroundOverlay>
             </Button>
         </Grid>
         
@@ -153,27 +166,33 @@
                         MaxWidth="220"
                         HorizontalAlignment="Left"
                         Click="SendEmailButton_Click">
-                        <Grid Margin="12,0,12,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock
-                                Text="&#xE166;"
-                                Style="{StaticResource FontIconTextBlockStyle}"
-                                VerticalAlignment="Center"/>
-                            <TextBlock
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                Margin="16,0,0,0"
-                                Text="Send feedback"
-                                x:Uid="SendFeedbackBlock"
-                                IsTextScaleFactorEnabled="False"
-                                TextWrapping="NoWrap"
-                                TextTrimming="CharacterEllipsis"
-                                FontSize="15"
-                                FontWeight="Normal"/>
-                        </Grid>
+                        <inheritedControls:LightBorderAndBackgroundOverlay
+                            Margin="-2"
+                            LightBorderThickness="2"
+                            LightBorderBrush="{StaticResource BorderLightBrush}"
+                            LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
+                            <Grid Margin="12,0,12,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    Text="&#xE89C;"
+                                    Style="{StaticResource FontIconTextBlockStyle}"
+                                    VerticalAlignment="Center"/>
+                                <TextBlock
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Margin="16,0,0,0"
+                                    Text="Send feedback"
+                                    x:Uid="SendFeedbackBlock"
+                                    IsTextScaleFactorEnabled="False"
+                                    TextWrapping="NoWrap"
+                                    TextTrimming="CharacterEllipsis"
+                                    FontSize="15"
+                                    FontWeight="Normal"/>
+                            </Grid>
+                        </inheritedControls:LightBorderAndBackgroundOverlay>
                     </Button>
 
                     <!--Twitter button-->
@@ -185,25 +204,31 @@
                         MaxWidth="220"
                         HorizontalAlignment="Left"
                         Click="TwitterButton_Click">
-                        <Grid Margin="12,0,12,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Image
-                                Source="/Assets/Misc/Twitter.png"
-                                Height="20"/>
-                            <TextBlock
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                IsTextScaleFactorEnabled="False"
-                                TextWrapping="NoWrap"
-                                TextTrimming="CharacterEllipsis"
-                                Margin="16,0,0,0"
-                                Text="@SergioPedri"
-                                FontSize="15"
-                                FontWeight="Normal"/>
-                        </Grid>
+                        <inheritedControls:LightBorderAndBackgroundOverlay
+                            Margin="-2"
+                            LightBorderThickness="2"
+                            LightBorderBrush="{StaticResource BorderLightBrush}"
+                            LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
+                            <Grid Margin="12,0,12,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image
+                                    Source="/Assets/Misc/Twitter.png"
+                                    Height="16"/>
+                                <TextBlock
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    IsTextScaleFactorEnabled="False"
+                                    TextWrapping="NoWrap"
+                                    TextTrimming="CharacterEllipsis"
+                                    Margin="12,0,0,0"
+                                    Text="@SergioPedri"
+                                    FontSize="15"
+                                    FontWeight="Normal"/>
+                            </Grid>
+                        </inheritedControls:LightBorderAndBackgroundOverlay>
                     </Button>
                 </Grid>
             </StackPanel>
@@ -226,32 +251,38 @@
                     Height="40"
                     Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
                     Background="{ThemeResource SystemControlHighlightAccentBrush}"
-                    MinWidth="160"
+                    MinWidth="140"
                     HorizontalAlignment="Left"
                     Click="ShowChangelogButton_Click">
-                    <Grid 
-                        Margin="12,0,12,0"
-                        HorizontalAlignment="Center">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock
-                            Text="&#xEA8D;"
-                            Style="{StaticResource FontIconTextBlockStyle}"
-                            VerticalAlignment="Center"/>
-                        <TextBlock
-                            Grid.Column="1"
-                            VerticalAlignment="Center"
-                            Margin="16,0,0,0"
-                            Text="Changelog"
-                            x:Uid="ChangelogBlock"
-                            IsTextScaleFactorEnabled="False"
-                            TextWrapping="NoWrap"
-                            TextTrimming="CharacterEllipsis"
-                            FontSize="15"
-                            FontWeight="Normal"/>
-                    </Grid>
+                    <inheritedControls:LightBorderAndBackgroundOverlay
+                        Margin="-2"
+                        LightBorderThickness="2"
+                        LightBorderBrush="{StaticResource BorderLightBrush}"
+                        LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
+                        <Grid 
+                            Margin="12,0,12,0"
+                            HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="&#xEA8D;"
+                                Style="{StaticResource FontIconTextBlockStyle}"
+                                VerticalAlignment="Center"/>
+                            <TextBlock
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Margin="16,0,0,0"
+                                Text="Changelog"
+                                x:Uid="ChangelogBlock"
+                                IsTextScaleFactorEnabled="False"
+                                TextWrapping="NoWrap"
+                                TextTrimming="CharacterEllipsis"
+                                FontSize="15"
+                                FontWeight="Normal"/>
+                        </Grid>
+                    </inheritedControls:LightBorderAndBackgroundOverlay>
                 </Button>
 
                 <!--Build version-->

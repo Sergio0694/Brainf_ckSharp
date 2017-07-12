@@ -5,6 +5,10 @@
     /// </summary>
     public enum AppSettingsKeys
     {
-        WelcomeMessageShown
+        WelcomeMessageShown,
+        OverflowToggleMessageShown,
+        ByteOverflowModeEnabled,
+        ReviewPromptShown,
+        AppStartups
     }
 }

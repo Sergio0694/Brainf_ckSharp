@@ -5,7 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Text;
 using Brainf_ck_sharp;
+using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels;
+using Brainf_ck_sharp_UWP.DataModels.EventArgs;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
@@ -72,7 +74,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     {
                         Messenger.Default.Register<OperatorAddedMessage>(this, op => CharInsertionRequested?.Invoke(this, op.Operator));
                         Messenger.Default.Register<ClearScreenMessage>(this, m => TryClearScreen());
-                        Messenger.Default.Register<PlayScriptMessage>(this, m => PlayRequested?.Invoke(this, (m.StdinBuffer, m.Type == ScriptPlayType.Debug)));
+                        Messenger.Default.Register<PlayScriptMessage>(this, m => PlayRequested?.Invoke(this, new PlayRequestedEventArgs(m.StdinBuffer, m.Mode, m.Type == ScriptPlayType.Debug)));
                         Messenger.Default.Register<SaveSourceCodeRequestMessage>(this, m => ManageSaveCodeRequest(m.RequestType).Forget());
                         Messenger.Default.Register<IDEUndoRedoRequestMessage>(this, m => ManageUndoRedoRequest(m.Operation));
                         Messenger.Default.Register<IDENewLineRequestedMessage>(this, m => NewLineInsertionRequested?.Invoke(this, EventArgs.Empty));
@@ -117,7 +119,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Raised whenever the user requests to play the current script
         /// </summary>
-        public event EventHandler<(String Stdin, bool Debug)> PlayRequested;
+        public event EventHandler<PlayRequestedEventArgs> PlayRequested;
 
         /// <summary>
         /// Raised whenever the user requests to add a new character with the virtual keyboard
@@ -191,7 +193,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         {
                             // Update the local code reference, the git diff indicators and notify the UI with the new save buttons state
                             _CategorizedCode = result.Result;
-                            NotificationsManager.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("CodeSaved"),
+                            NotificationsManager.Instance.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("CodeSaved"),
                                 LocalizationManager.GetResource("CodeSavedBody"), NotificationType.Default);
                             UpdateGitDiffStatusOnSave();
                             Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(true, true));
@@ -215,9 +217,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             // Initial checks
             if (code == null) Document.GetText(TextGetOptions.None, out code);
             Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.ClearScreen, code.Length > 1));
-            (bool valid, int error) = Brainf_ckInterpreter.CheckSourceSyntax(code);
-            (int row, int col) = code.FindCoordinates(Document.Selection.StartPosition);
-            bool executable = Brainf_ckInterpreter.FindOperators(code) && valid;
+            SyntaxValidationResult result = Brainf_ckInterpreter.CheckSourceSyntax(code);
+            Coordinate previous = code.FindCoordinates(Document.Selection.StartPosition);
+            bool executable = Brainf_ckInterpreter.FindOperators(code) && result.Valid;
             Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.Delete, code.Length > 1 && Document.Selection.StartPosition > 0));
 
             // Executable code
@@ -228,14 +230,15 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             }
 
             // Syntax status
-            if (valid)
+            if (result.Valid)
             {
-                Messenger.Default.Send(new IDEStatusUpdateMessage(LocalizationManager.GetResource("Ready"), row, col, _CategorizedCode?.Code.Title));
+                Messenger.Default.Send(new IDEStatusUpdateMessage(LocalizationManager.GetResource("Ready"), previous.Y, previous.X, _CategorizedCode?.Code.Title));
             }
             else
             {
-                (int y, int x) = code.FindCoordinates(error);
-                Messenger.Default.Send(new IDEStatusUpdateMessage(LocalizationManager.GetResource("Warning"), row, col, y, x, _CategorizedCode?.Code.Title));
+                Coordinate coordinate = code.FindCoordinates(result.ErrorPosition);
+                Messenger.Default.Send(new IDEStatusUpdateMessage(LocalizationManager.GetResource("Warning"),
+                    previous.Y, previous.X, coordinate.Y, coordinate.X, _CategorizedCode?.Code.Title));
             }
         }
 
@@ -314,7 +317,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// Updates the indentation info for a given state
         /// </summary>
         /// <param name="brackets">The collection of brackets and their position in the current text</param>
-        public async Task UpdateIndentationInfo([CanBeNull] IReadOnlyList<(int, int, char)> brackets)
+        public async Task UpdateIndentationInfo([CanBeNull] IReadOnlyList<IndentationCoordinateEntry> brackets)
         {
             // // Check the info is available
             if (brackets == null || brackets.Count == 0)
@@ -326,7 +329,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             // Prepare the updated source collection
             List<IDEIndentationLineInfo> source = await Task.Run(() =>
             {
-                int max = brackets.Max(entry => entry.Item1);
+                // Get the max reached line number
+                int max = brackets.Max(entry => entry.Position.Y);
 
                 // Updates the indentation info displayed on the IDE
                 List<IDEIndentationLineInfo> temp = new List<IDEIndentationLineInfo>();
@@ -334,15 +338,21 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 for (int i = 1; i <= max; i++)
                 {
                     // Parse the first item
-                    IReadOnlyList<(int, int, char Bracket)> entries = brackets.Where(info => info.Item1 == i).ToArray();
+                    IReadOnlyList<IndentationCoordinateEntry> entries = brackets.Where(info => info.Position.Y == i).ToArray();
                     if (entries.Count == 0)
                     {
                         temp.Add(new IDEIndentationLineInfo(depth == 0 ? IDEIndentationInfoLineType.Empty : IDEIndentationInfoLineType.Straight));
                     }
+                    else if (entries.Count > 1 && entries.Sum(entry => entry.Bracket == '[' ? 1 : -1) == 0)
+                    {
+                        // Edge case: multiple brackets opened and closed on the same line
+                        temp.Add(new IDEIndentationOpenBracketLineInfo(depth + 1, true));
+                        continue;
+                    }
                     else if (entries[0].Bracket == '[')
                     {
                         depth++;
-                        temp.Add(new IDEIndentationOpenBracketLineInfo(depth));
+                        temp.Add(new IDEIndentationOpenBracketLineInfo(depth, false));
                     }
                     else if (entries[0].Bracket == ']')
                     {
@@ -353,7 +363,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     // Edge case, multiple brackets on the same line
                     if (entries.Count > 1)
                     {
-                        foreach ((int, int, char Bracket) entry in entries.Skip(1))
+                        foreach (IndentationCoordinateEntry entry in entries.Skip(1))
                         {
                             if (entry.Bracket == '[') depth++;
                             else if (entry.Bracket == ']') depth--;

@@ -28,12 +28,24 @@
                     <VisualState.Setters>
                         <Setter 
                             Target="RootGrid.Background"
-                            Value="#05FFFFFF"/>
+                            Value="#04FFFFFF"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        
+
+        <!--Wide light border-->
+        <Border
+            x:Name="LightBackground"
+            Opacity="0"
+            Background="{StaticResource ElementsWideLightBrush}"/>
+
+        <!--Light border-->
+        <Border
+            Opacity="0.6"
+            BorderThickness="2"
+            BorderBrush="{StaticResource BorderLightBrush}"/>
+
         <!--Content-->
         <StackPanel VerticalAlignment="Center"
                     Margin="12,12,16,12">
@@ -65,6 +77,6 @@
         <Rectangle Grid.Column="0"
                    VerticalAlignment="Bottom"
                    Height="1"
-                   Fill="#A0000000"/>
+                   Fill="#90000000"/>
     </Grid>
 </UserControl>

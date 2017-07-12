@@ -1,6 +1,9 @@
 ﻿using System;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using UICompositionAnimations;
+using UICompositionAnimations.Enums;
+using UICompositionAnimations.Helpers;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo.Donations
 {
@@ -9,6 +12,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo.Donations
         public DevSupportOptionEntryControl()
         {
             this.InitializeComponent();
+            this.ManageLightsPointerStates(value =>
+            {
+                // Lights
+                LightBackground.StartXAMLTransformFadeAnimation(null, value ? 0.6 : 0, 200, null, EasingFunctionNames.Linear);
+            });
         }
 
         /// <summary>

@@ -415,7 +415,7 @@
     <value>Contacts</value>
   </data>
   <data name="DevelopedByPart2Run.Text" xml:space="preserve">
-    <value>Thanks to Andrea Salvati for his help with the original interpreter algorithm, Camil Demetrescu for the idea to port Brainf*ck# to Windows 10 and Christopher Blackman for his help during the app development</value>
+    <value>Thanks to Andrea Salvati for his help with the original interpreter algorithm, Camil Demetrescu for the idea to port Brainf*ck# to Windows 10 and Christopher Blackman for his help during the app development.</value>
   </data>
   <data name="DevelopedByRun.Text" xml:space="preserve">
     <value>Developed by</value>
@@ -521,5 +521,48 @@ NOTE: the app might sometimes crash when using the virtual arrows keypad in the 
   </data>
   <data name="DeleteButton.Label" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="OverflowSwitchButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Toggle overflow mode</value>
+  </data>
+  <data name="OverflowMode" xml:space="preserve">
+    <value>Overflow mode</value>
+  </data>
+  <data name="OverflowModeBody" xml:space="preserve">
+    <value>You have enabled the byte overflow mode. This means that the maximum value of each memory cell will now be 255 and that increasing a cell over that value (or decreasing a cell that has a value equal to 0) will cause it to overflow, ie. if it's increased from 255 it will be set to 0, and if it's decreased from 0 it will reach 255.</value>
+  </data>
+  <data name="ARealNinjacat" xml:space="preserve">
+    <value>A real ninjacat!</value>
+  </data>
+  <data name="ARealNinjacatBody" xml:space="preserve">
+    <value>It's great to know you're having fun with the app so far!
+Would you like to post a review in the Store to support the developer?</value>
+  </data>
+  <data name="ConfirmBlock.Text" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="HowsItGoing" xml:space="preserve">
+    <value>How's it going?</value>
+  </data>
+  <data name="SendMail" xml:space="preserve">
+    <value>Send email</value>
+  </data>
+  <data name="SorryBody" xml:space="preserve">
+    <value>Would you like to contact the developer and send your feedback and let him know if you're having any problems in particular?
+This way he'll be able to help you!</value>
+  </data>
+  <data name="SorryTitle" xml:space="preserve">
+    <value>Sorry about that</value>
+  </data>
+  <data name="Sure" xml:space="preserve">
+    <value>Sure!</value>
+  </data>
+  <data name="ThankYouBlock1.Text" xml:space="preserve">
+    <value>Thank you for downloading</value>
+    <comment>This will be "Thank you for downloading Brainf*ck#!"</comment>
+  </data>
+  <data name="ThankYouBlock2.Text" xml:space="preserve">
+    <value>Are you enjoying it so far?</value>
+    <comment>It's talking about the app itself</comment>
   </data>
 </root>

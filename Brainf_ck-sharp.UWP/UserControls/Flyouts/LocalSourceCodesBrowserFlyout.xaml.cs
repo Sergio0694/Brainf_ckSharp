@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.DataModels;
+using Brainf_ck_sharp_UWP.DataModels.EventArgs;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
@@ -73,20 +74,21 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         }
 
         // Forwards the share event and displays a notification with the result of the share operation
-        private async void SavedSourceCodeTemplate_OnShareRequested(object sender, (SourceCodeShareType Type, SourceCode Code) e)
+        private async void SavedSourceCodeTemplate_OnShareRequested(object sender, SourceCodeShareEventArgs e)
         {
+            if (e.Code == null) return;
             AsyncOperationResult<bool> result = await ViewModel.ShareItemAsync(e.Type, e.Code);
             if (result.Status == AsyncOperationStatus.RunToCompletion && 
                 result.Result &&
                 (e.Type == SourceCodeShareType.Clipboard || e.Type == SourceCodeShareType.LocalFile))
             {
-                NotificationsManager.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("ShareCompleted"),
+                NotificationsManager.Instance.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("ShareCompleted"),
                     LocalizationManager.GetResource("ShareCompletedBody"), NotificationType.Default);
             }
             else if (result.Status == AsyncOperationStatus.UnknownErrorHandled ||
                      result.Status == AsyncOperationStatus.Faulted)
             {
-                NotificationsManager.ShowDefaultErrorNotification(LocalizationManager.GetResource("ShareError"), LocalizationManager.GetResource("ShareErrorBody"));
+                NotificationsManager.Instance.ShowDefaultErrorNotification(LocalizationManager.GetResource("ShareError"), LocalizationManager.GetResource("ShareErrorBody"));
             }
         }
 
@@ -108,7 +110,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
             AsyncOperationResult<bool> result = await ViewModel.ExportToCAsync(e);
             if (result.Status == AsyncOperationStatus.RunToCompletion && result.Result)
             {
-                NotificationsManager.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("ExportCompleted"),
+                NotificationsManager.Instance.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("ExportCompleted"),
                     LocalizationManager.GetResource("ExportCompletedBody"), NotificationType.Default);
             }
         }

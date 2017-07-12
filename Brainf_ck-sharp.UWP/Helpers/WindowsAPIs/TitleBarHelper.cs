@@ -18,8 +18,14 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
             titleBar.ForegroundColor = Colors.White;
             titleBar.BackgroundColor = Colors.Transparent;
+            titleBar.ButtonForegroundColor = Colors.White;
             titleBar.ButtonBackgroundColor = Colors.Transparent;
+            titleBar.ButtonHoverForegroundColor = Colors.White;
+            titleBar.ButtonHoverBackgroundColor = Color.FromArgb(0x50, 0, 0, 0);
+            titleBar.ButtonPressedForegroundColor = Colors.White;
+            titleBar.ButtonPressedBackgroundColor = Color.FromArgb(0x10, 0xFF, 0xFF, 0xFF);
             titleBar.InactiveBackgroundColor = Colors.Transparent;
+            titleBar.ButtonInactiveForegroundColor = Colors.White;
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
 
             // Handle the title bar state

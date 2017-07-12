@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.HockeyApp;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -10,8 +12,11 @@ using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Resources;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.UserControls;
-#if !DEBUG
-using Microsoft.HockeyApp;
+using UICompositionAnimations.Helpers;
+using UICompositionAnimations.Lights;
+using UICompositionAnimations.XAMLTransform;
+#if DEBUG
+using System.Diagnostics;
 #endif
 
 namespace Brainf_ck_sharp_UWP
@@ -27,7 +32,10 @@ namespace Brainf_ck_sharp_UWP
         /// </summary>
         public App()
         {
-#if !DEBUG
+#if DEBUG
+            if (!Debugger.IsAttached)
+                HockeyClient.Current.Configure("d992b6490330446db870404084b19c39");
+#else
             HockeyClient.Current.Configure("d992b6490330446db870404084b19c39");
 #endif
             Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(
@@ -37,7 +45,7 @@ namespace Brainf_ck_sharp_UWP
             this.Suspending += OnSuspending;
         }
 
-        private static Shell _DefaultContent;
+        public static Shell DefaultContent => Window.Current.Content.To<Shell>();
 
         /// <summary>
         /// Richiamato quando l'applicazione viene avviata normalmente dall'utente. All'avvio dell'applicazione
@@ -55,18 +63,18 @@ namespace Brainf_ck_sharp_UWP
             Shell shell = Window.Current.Content as Shell;
             if (shell == null)
             {
-                // Creare un frame che agisca da contesto di navigazione e passare alla prima pagina
+                // Initialize the UI
+                BrushResourcesManager.InitializeOrRefreshInstance();
                 shell = new Shell();
 
                 // Handle the UI
-                if (UniversalAPIsHelper.IsMobileDevice) StatusBarHelper.HideAsync().Forget();
+                if (ApiInformationHelper.IsMobileDevice) StatusBarHelper.HideAsync().Forget();
                 else TitleBarHelper.StyleAppTitleBar();
-                BrushResourcesManager.InitializeOrRefreshInstance();
 
                 // Setup the view mode
                 ApplicationView view = ApplicationView.GetForCurrentView();
                 view.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseVisible);
-                if (UniversalAPIsHelper.IsMobileDevice)
+                if (ApiInformationHelper.IsMobileDevice)
                 {
                     view.VisibleBoundsChanged += (s, _) => UpdateVisibleBounds(s);
                     Task.Delay(1000).ContinueWith(t => UpdateVisibleBounds(ApplicationView.GetForCurrentView()), TaskScheduler.FromCurrentSynchronizationContext());
@@ -75,23 +83,52 @@ namespace Brainf_ck_sharp_UWP
                 // Enable the key listener
                 KeyEventsListener.IsEnabled = true;
 
-                // Posizionare il frame nella finestra corrente
+                // Add the lights and store the content
+                if (!ApiInformationHelper.IsMobileDevice)
+                {
+                    PointerPositionSpotLight
+                        light = new PointerPositionSpotLight { Active = false },
+                        wideLight = new PointerPositionSpotLight
+                        {
+                            Z = 30,
+                            IdAppendage = "[Wide]",
+                            Shade = 0x10,
+                            Active = false
+                        };
+                    shell.Lights.Add(light);
+                    shell.Lights.Add(wideLight);
+
+                    // Setup the light effects on different devices
+                    shell.ManageHostPointerStates((type, value) =>
+                    {
+                        bool lightsVisible = type == PointerDeviceType.Mouse && value;
+                        if (LightsEnabled == lightsVisible) return;
+                        light.Active = wideLight.Active = LightsEnabled = lightsVisible;
+                        XAMLTransformToolkit.PrepareStory(
+                            XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.WideLightBrushDarkShadeBackground, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true)).Begin();
+                    });
+                }
                 Window.Current.Content = shell;
 
                 // Settings
-                AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.WelcomeMessageShown), false, false);
+                AppSettingsManager.Instance.InitializeSettings();
+                AppSettingsManager.Instance.IncrementStartupsCount();
 
                 // Sync the roaming source codes
                 Task.Run(() => SQLiteManager.Instance.TrySyncSharedCodesAsync());
             }
-            _DefaultContent = shell;
             Window.Current.Activate();
         }
+
+        /// <summary>
+        /// Gets whether or not the XAML lights are currently visible in the app, depending on the pointer device in use
+        /// </summary>
+        private bool LightsEnabled { get; set; }
 
         private void UpdateVisibleBounds(ApplicationView sender)
         {
             // Return if the content hasn't finished loading yet
-            if (_DefaultContent == null) return;
+            if (DefaultContent == null) return;
 
             // Close the open flyout if the navigation bar has been changed
             if (sender.Orientation == ApplicationViewOrientation.Portrait)
@@ -100,7 +137,7 @@ namespace Brainf_ck_sharp_UWP
                 if (navBarHeight < 0) navBarHeight = 0;
 
                 // Adjust the app UI
-                _DefaultContent.Margin = new Thickness(0, 0, 0, navBarHeight);
+                DefaultContent.Margin = new Thickness(0, 0, 0, navBarHeight);
             }
             else
             {
@@ -112,14 +149,14 @@ namespace Brainf_ck_sharp_UWP
                 if (sender.VisibleBounds.Left.EqualsWithDelta(0) && sender.VisibleBounds.Right < windowBounds.Width)
                 {
                     double navBarWidth = windowBounds.Width - sender.VisibleBounds.Right;
-                    _DefaultContent.Margin = new Thickness(0, 0, navBarWidth, 0);
+                    DefaultContent.Margin = new Thickness(0, 0, navBarWidth, 0);
                 }
                 else if (sender.VisibleBounds.Left > 0 && sender.VisibleBounds.Width < windowBounds.Width)
                 {
                     // Adjust the right margin in the case the orientation is right
-                    _DefaultContent.Margin = new Thickness(sender.VisibleBounds.Left, 0, 0, 0);
+                    DefaultContent.Margin = new Thickness(sender.VisibleBounds.Left, 0, 0, 0);
                 }
-                else _DefaultContent.Margin = new Thickness();
+                else DefaultContent.Margin = new Thickness();
             }
         }
 

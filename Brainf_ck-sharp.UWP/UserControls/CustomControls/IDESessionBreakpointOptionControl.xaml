@@ -26,12 +26,24 @@
                     <VisualState.Setters>
                         <Setter 
                             Target="RootGrid.Background"
-                            Value="#05FFFFFF"/>
+                            Value="#04FFFFFF"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        
+
+        <!--Wide light border-->
+        <Border
+            x:Name="LightBackground"
+            Opacity="0"
+            Background="{StaticResource ElementsWideLightBrush}"/>
+
+        <!--Light border-->
+        <Border
+            Opacity="0.6"
+            BorderThickness="2"
+            BorderBrush="{StaticResource BorderLightBrush}"/>
+
         <!--Content-->
         <Grid HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>

@@ -84,7 +84,7 @@
         </trans-unit>
         <trans-unit id="Clear.Label" translate="yes" xml:space="preserve">
           <source>Clear</source>
-          <target state="translated">Cancella</target>
+          <target state="translated">Cancella comando</target>
         </trans-unit>
         <trans-unit id="MemoryState.Label" translate="yes" xml:space="preserve">
           <source>Memory state</source>
@@ -387,8 +387,8 @@
           <target state="translated">Contatti</target>
         </trans-unit>
         <trans-unit id="DevelopedByPart2Run.Text" translate="yes" xml:space="preserve">
-          <source>Thanks to Andrea Salvati for his help with the original interpreter algorithm, Camil Demetrescu for the idea to port Brainf*ck# to Windows 10 and Christopher Blackman for his help during the app development</source>
-          <target state="translated">Grazie ad Andrea Salvati per il suo aiuto con l'algoritmo originale dell'interprete di Brainf*ck, Camil Demetrescu per l'idea di portare Brainf*ck# su Windows 10 e Christopher Blackman per il suo aiuto durante lo sviluppo dell'app</target>
+          <source>Thanks to Andrea Salvati for his help with the original interpreter algorithm, Camil Demetrescu for the idea to port Brainf*ck# to Windows 10 and Christopher Blackman for his help during the app development.</source>
+          <target state="translated">Grazie ad Andrea Salvati per il suo aiuto con l'algoritmo originale dell'interprete di Brainf*ck, Camil Demetrescu per l'idea di portare Brainf*ck# su Windows 10 e Christopher Blackman per il suo aiuto durante lo sviluppo dell'app.</target>
         </trans-unit>
         <trans-unit id="DevelopedByRun.Text" translate="yes" xml:space="preserve">
           <source>Developed by</source>
@@ -543,6 +543,64 @@ NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le
         <trans-unit id="DeleteButton.Label" translate="yes" xml:space="preserve">
           <source>Delete</source>
           <target state="translated">Cancella</target>
+        </trans-unit>
+        <trans-unit id="OverflowSwitchButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Toggle overflow mode</source>
+          <target state="translated">Cambia modalità overflow</target>
+        </trans-unit>
+        <trans-unit id="OverflowMode" translate="yes" xml:space="preserve">
+          <source>Overflow mode</source>
+          <target state="translated">Modalità overflow</target>
+        </trans-unit>
+        <trans-unit id="OverflowModeBody" translate="yes" xml:space="preserve">
+          <source>You have enabled the byte overflow mode. This means that the maximum value of each memory cell will now be 255 and that increasing a cell over that value (or decreasing a cell that has a value equal to 0) will cause it to overflow, ie. if it's increased from 255 it will be set to 0, and if it's decreased from 0 it will reach 255.</source>
+          <target state="translated">Hai attivato la modalità byte overflow. Questo significa che il massimo valore di ogni cella di memoria sarà 255 e che incrementare una cella oltre quel valore (o decrementarla quando si trova già a 0) comporterà un overflow, cioè se a una cella viene aggiunto 1 da 255 verrà settata a 0, e se viene sottratto 1 da 0 raggiungerà il valore massimo di 255.</target>
+        </trans-unit>
+        <trans-unit id="ThankYouBlock1.Text" translate="yes" xml:space="preserve">
+          <source>Thank you for downloading</source>
+          <target state="translated">Grazie per aver scaricato</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">This will be "Thank you for downloading Brainf*ck#!"</note>
+        </trans-unit>
+        <trans-unit id="ThankYouBlock2.Text" translate="yes" xml:space="preserve">
+          <source>Are you enjoying it so far?</source>
+          <target state="translated">Come ti sei trovato fino ad ora?</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">It's talking about the app itself</note>
+        </trans-unit>
+        <trans-unit id="ConfirmBlock.Text" translate="yes" xml:space="preserve">
+          <source>Confirm</source>
+          <target state="translated">Conferma</target>
+        </trans-unit>
+        <trans-unit id="ARealNinjacat" translate="yes" xml:space="preserve">
+          <source>A real ninjacat!</source>
+          <target state="translated">Un vero ninjacat!</target>
+        </trans-unit>
+        <trans-unit id="ARealNinjacatBody" translate="yes" xml:space="preserve">
+          <source>It's great to know you're having fun with the app so far!
+Would you like to post a review in the Store to support the developer?</source>
+          <target state="translated">È fantastico sapere che ti stai divertendo con l'app!
+Vorresti pubblicare una recensione nello Store per mostrare il tuo supporto allo sviluppatore?</target>
+        </trans-unit>
+        <trans-unit id="HowsItGoing" translate="yes" xml:space="preserve">
+          <source>How's it going?</source>
+          <target state="translated">Come sta andando?</target>
+        </trans-unit>
+        <trans-unit id="SendMail" translate="yes" xml:space="preserve">
+          <source>Send email</source>
+          <target state="translated">Invia email</target>
+        </trans-unit>
+        <trans-unit id="SorryBody" translate="yes" xml:space="preserve">
+          <source>Would you like to contact the developer and send your feedback and let him know if you're having any problems in particular?
+This way he'll be able to help you!</source>
+          <target state="translated">Vorresti contattare lo sviluppatore e mandare il tuo feedback per fargli sapere se stai avendo dei problemi in particolare con l'app?
+In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app ancora migliore!</target>
+        </trans-unit>
+        <trans-unit id="SorryTitle" translate="yes" xml:space="preserve">
+          <source>Sorry about that</source>
+          <target state="translated">Profondo dispiacere</target>
+        </trans-unit>
+        <trans-unit id="Sure" translate="yes" xml:space="preserve">
+          <source>Sure!</source>
+          <target state="translated">Certo!</target>
         </trans-unit>
       </group>
     </body>

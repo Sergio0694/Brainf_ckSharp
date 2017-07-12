@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
+using Brainf_ck_sharp_UWP.DataModels.Misc;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.Helpers.Extensions
@@ -22,7 +23,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
         /// <param name="newline">The newline character to use</param>
         /// <remarks>The returned indexes are 1-based</remarks>
         [Pure]
-        public static (int Y, int X) FindCoordinates([NotNull] this String text, int index, char newline = '\r')
+        public static Coordinate FindCoordinates([NotNull] this String text, int index, char newline = '\r')
         {
             int
                 row = 1,
@@ -36,7 +37,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
                 }
                 else col++;
             }
-            return (row, col);
+            return new Coordinate(col, row);
         }
 
         /// <summary>

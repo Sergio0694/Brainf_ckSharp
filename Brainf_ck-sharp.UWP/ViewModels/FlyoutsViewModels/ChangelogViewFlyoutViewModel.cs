@@ -30,7 +30,16 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             // Create the output collection
             return new List<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<String>>>
             {
-                CreateChangelogEntry("1.1.1.0", 2017, 7, 5, new List<String>
+                CreateChangelogEntry("1.2.0.0", 2017, 7, 18, new List<String>
+                {
+                    "Added the byte overflow optional mode to both the console and the IDE",
+                    "Added a one-time popup to ask for feedback on the app",
+                    "Fixed a crash when using the IDE virtual arrows keyboard",
+                    "The in-app notifications are now dismissed correctly when tapping the button in the top right corner",
+                    "Added custom reveal-highlight effect to some UI elements (Fluent design)",
+                    "Minor bug fixes and UI adjustments"
+                }),
+                CreateChangelogEntry("1.1.1.0", 2017, 7, 8, new List<String>
                 {
                     "Added a button to delete the previous character in the IDE",
                     "It is no longer possible to try to run code with a syntax error from the IDE",

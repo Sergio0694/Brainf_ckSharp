@@ -104,7 +104,8 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
             Span @this = d.To<Span>();
             IReadOnlyList<String> stack = e.NewValue.To<IReadOnlyList<String>>();
             List<Inline> inlines = new List<Inline>();
-            foreach ((String call, int i) in stack.Select((c, i) => (c, i)))
+            int i = 0;
+            foreach (String call in stack)
             {
                 // Insert the "at" separator if needed
                 if (i > 0)
@@ -123,6 +124,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
                 Span line = new Span();
                 SetSource(line, call);
                 inlines.Add(line);
+                i++;
             }
             @this.Inlines.Clear();
             foreach (Inline inline in inlines) @this.Inlines.Add(inline);

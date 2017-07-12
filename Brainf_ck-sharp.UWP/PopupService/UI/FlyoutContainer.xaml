@@ -22,14 +22,16 @@
             <VisualStateGroup>
                 <VisualState x:Name="Default">
                     <VisualState.Setters>
-                        <Setter 
+                        <Setter
+                            x:Name="DefaultSetter"
                             Target="ButtonContentGrid.Background"
                             Value="{StaticResource AccentBrushLowFade}"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Highlight">
                     <VisualState.Setters>
-                        <Setter 
+                        <Setter
+                            x:Name="HighlightSetter"
                             Target="ButtonContentGrid.Background"
                             Value="{StaticResource AccentBrushMediumFade}"/>
                     </VisualState.Setters>
@@ -64,6 +66,7 @@
             <TextBlock Text="Title"
                        x:Name="TitleBlock"
                        VerticalAlignment="Center"
+                       IsColorFontEnabled="True"
                        Style="{StaticResource TrimmedTextStyle}"
                        Margin="12,0,8,0"
                        FontWeight="SemiLight"
@@ -74,11 +77,30 @@
                     Grid.Column="1"
                     HorizontalAlignment="Right"
                     Width="52"
-                    Click="CloseButton_Click">
-                <TextBlock Text="&#xE10A;"
-                           Style="{StaticResource FontIconTextBlockStyle}"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"/>
+                    Click="CloseButton_Click"
+                    x:Name="CloseButton">
+                <Grid>
+
+                    <!--Wide light border-->
+                    <Border
+                        x:Name="BackgroundBorder"
+                        Opacity="0"
+                        Background="{StaticResource ElementsWideLightBrush}"/>
+                    
+                    <!--Light border-->
+                    <Border
+                        Opacity="0.4"
+                        x:Name="LightBorder"
+                        BorderThickness="2"
+                        BorderBrush="{StaticResource BorderLightBrush}"
+                        Margin="-2"/>
+                    
+                    <!--Close icon-->
+                    <TextBlock Text="&#xE10A;"
+                               Style="{StaticResource FontIconTextBlockStyle}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+                </Grid>
             </Button>
         </Grid>
         
@@ -97,14 +119,31 @@
             Click="ConfirmButton_Click"
             x:Name="ConfirmButton"
             IsEnabled="False"
-            Visibility="Collapsed">
+            Visibility="Collapsed"
+            Margin="1,0,1,1">
             <Grid 
                 x:Name="ButtonContentGrid"
                 Background="{StaticResource AccentBrushLowFade}">
                 <Canvas
                     Background="#10000000"/>
+                
+                <!--Wide light border-->
+                <Border
+                    x:Name="ConfirmBackgroundBorder"
+                    Opacity="0"
+                    Background="{StaticResource ElementsWideLightBrush}"/>
+
+                <!--Light border-->
+                <Border
+                    Opacity="0.4"
+                    BorderThickness="2"
+                    BorderBrush="{StaticResource BorderLightBrush}"/>
+                
+                <!--Confirm text-->
                 <TextBlock 
                     Text="Confirm"
+                    x:Uid="ConfirmBlock"
+                    x:Name="ConfirmBlock"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
                     FontSize="18"
@@ -129,7 +168,6 @@
                 IsActive="True"
                 x:Name="InitialProgressRing"/>
         </Grid>
-        
         
         <!--Loading indicator-->
         <Grid

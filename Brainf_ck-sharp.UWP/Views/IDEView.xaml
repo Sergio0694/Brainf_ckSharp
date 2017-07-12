@@ -65,7 +65,52 @@
                     VerticalAlignment="Stretch"/>
             </Grid>
         </DataTemplate>
-        
+
+        <!--Self-contained indentation guide info-->
+        <DataTemplate x:Key="IDESelfContainedIndentationInfoOpenBracketTemplate">
+            <Grid 
+                HorizontalAlignment="Stretch"
+                Height="19.94998046875">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="12"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Rectangle
+                    HorizontalAlignment="Center"
+                    Width="1"
+                    Fill="DarkGray"
+                    VerticalAlignment="Stretch"
+                    Visibility="{Binding Depth, Converter={StaticResource DepthConverter}, FallbackValue=Collapsed}"/>
+                <Border
+                    BorderThickness="1"
+                    BorderBrush="DarkGray"
+                    Grid.Row="1">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Text="{Binding Depth, Converter={StaticResource DepthDigitCOnverter}, ConverterParameter=•}"
+                        IsTextScaleFactorEnabled="False"
+                        FontSize="8"
+                        Foreground="GhostWhite"
+                        Margin="0,-1,0,0"/>
+                </Border>
+                <Rectangle
+                    HorizontalAlignment="Center"
+                    Width="1"
+                    Fill="DarkGray"
+                    Grid.Row="2"
+                    VerticalAlignment="Stretch"/>
+                <Rectangle
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Width="6"
+                    Height="1"
+                    Grid.Row="2"
+                    Fill="DarkGray"/>
+            </Grid>
+        </DataTemplate>
+
         <!--Straight line-->
         <DataTemplate x:Key="IDEIndentationInfoStraightLineTemplate">
             <Rectangle

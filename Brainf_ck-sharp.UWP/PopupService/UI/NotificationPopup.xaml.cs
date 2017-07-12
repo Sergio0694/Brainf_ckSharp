@@ -8,7 +8,10 @@ using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.Resources;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
+using UICompositionAnimations;
 using UICompositionAnimations.Behaviours;
+using UICompositionAnimations.Enums;
+using UICompositionAnimations.Helpers;
 
 namespace Brainf_ck_sharp_UWP.PopupService.UI
 {
@@ -29,6 +32,11 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             SymbolBlock.Text = icon;
             ContentBlock.Text = content;
             Type = type;
+            CloseButton.ManageLightsPointerStates(value =>
+            {
+                BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.6 : 0, 200, null, EasingFunctionNames.Linear);
+                LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 0.8, 200, null, EasingFunctionNames.Linear);
+            });
             Unloaded += (s, e) =>
             {
                 Win2DCanvas.RemoveFromVisualTree();

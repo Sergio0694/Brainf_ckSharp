@@ -8,6 +8,7 @@
         OpenBracket,
         Straight,
         ClosedBracket,
-        Empty
+        Empty,
+        SelfContained
     }
 }

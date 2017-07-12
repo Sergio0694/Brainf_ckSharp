@@ -4,27 +4,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    xmlns:controls="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls"
     mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400">
-    <UserControl.Resources>
-
-        <Style
-            TargetType="TextBlock"
-            x:Key="ArrowIndicatorTextBlockStyle"
-            BasedOn="{StaticResource FontIconTextBlockStyle}">
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="IsTextScaleFactorEnabled" Value="False"/>
-            <Setter Property="FontSize" Value="16"/>
-        </Style>
-    </UserControl.Resources>
+    d:DesignHeight="96"
+    d:DesignWidth="144">
 
     <!--Root-->
     <Grid
         BorderThickness="1"
-        BorderBrush="#FF404040">
+        BorderBrush="#FF404040"
+        Background="{StaticResource InAppGrayAcrylicBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="48"/>
             <RowDefinition Height="48"/>
@@ -35,59 +24,58 @@
             <ColumnDefinition Width="48"/>
         </Grid.ColumnDefinitions>
         
-        <!--Effect border-->
-        <Border
-            Grid.RowSpan="2"
-            Grid.ColumnSpan="3"
-            x:Name="EffectBorder"/>
-        <xaml:CanvasControl 
-            Grid.Row="0"
-            Grid.Column="0"
-            Opacity="0"
-            x:Name="Win2DCanvas"/>
-        
         <!--Up-->
-        <Button
+        <controls:VirtualArrowKeyboardButton
+            Icon="&#xE010;"
             Grid.Row="0"
             Grid.Column="1"
-            Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
-            Click="{x:Bind SendKeyUpMessage}">
-            <TextBlock 
-                Text="&#xE010;"
-                Style="{StaticResource ArrowIndicatorTextBlockStyle}"/>
-        </Button>
+            Click="{x:Bind SendKeyUpMessage}"/>
         
         <!--Left-->
-        <Button
+        <controls:VirtualArrowKeyboardButton
+            Icon="&#xE00E;"
             Grid.Row="1"
             Grid.Column="0"
-            Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
-            Click="{x:Bind SendKeyLeftMessage}">
-            <TextBlock 
-                Text="&#xE00E;"
-                Style="{StaticResource ArrowIndicatorTextBlockStyle}"/>
-        </Button>
+            Click="{x:Bind SendKeyLeftMessage}"/>
         
         <!--Down-->
-        <Button
+        <controls:VirtualArrowKeyboardButton
+            Icon="&#xE011;"
             Grid.Row="1"
             Grid.Column="1"
-            Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
-            Click="{x:Bind SendKeyDownMessage}">
-            <TextBlock 
-                Text="&#xE011;"
-                Style="{StaticResource ArrowIndicatorTextBlockStyle}"/>
-        </Button>
+            Click="{x:Bind SendKeyDownMessage}"/>
         
         <!--Right-->
-        <Button
+        <controls:VirtualArrowKeyboardButton
+            Icon="&#xE00F;"
             Grid.Row="1"
             Grid.Column="2"
-            Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
-            Click="{x:Bind SendKeyRightMessage}">
-            <TextBlock 
-                Text="&#xE00F;"
-                Style="{StaticResource ArrowIndicatorTextBlockStyle}"/>
-        </Button>
+            Click="{x:Bind SendKeyRightMessage}"/>
+        
+        <!--Light borders-->
+        <Rectangle
+            Height="1"
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            VerticalAlignment="Top"
+            Fill="{StaticResource BorderLightBrush}"
+            Opacity="0.6"/>
+        <Rectangle
+            Width="1"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="1"
+            HorizontalAlignment="Left"
+            Fill="{StaticResource BorderLightBrush}"
+            Opacity="0.6"/>
+        <Rectangle
+            Width="1"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="1"
+            HorizontalAlignment="Right"
+            Fill="{StaticResource BorderLightBrush}"
+            Opacity="0.6"/>
     </Grid>
 </UserControl>

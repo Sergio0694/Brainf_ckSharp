@@ -14,7 +14,9 @@
         /// Creates a new instance for a given loop depth
         /// </summary>
         /// <param name="depth">The depth of the new bracket</param>
-        public IDEIndentationOpenBracketLineInfo(uint depth) : base(IDEIndentationInfoLineType.OpenBracket)
+        /// <param name="selfContained">Indicates whether or not the brackets pair is closed on the same line</param>
+        public IDEIndentationOpenBracketLineInfo(uint depth, bool selfContained) 
+            : base(selfContained ? IDEIndentationInfoLineType.SelfContained : IDEIndentationInfoLineType.OpenBracket)
         {
             Depth = depth;
         }

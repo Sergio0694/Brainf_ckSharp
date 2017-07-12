@@ -1,19 +1,22 @@
 ﻿using System;
+using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.PopupService.Interfaces;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
+using Microsoft.Toolkit.Uwp;
 using UICompositionAnimations;
 using UICompositionAnimations.Behaviours;
 using UICompositionAnimations.Behaviours.Effects;
 using UICompositionAnimations.Behaviours.Misc;
 using UICompositionAnimations.Enums;
+using UICompositionAnimations.Helpers;
 
 namespace Brainf_ck_sharp_UWP.PopupService.UI
 {
@@ -34,7 +37,17 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             Unloaded += FlyoutContainer_Unloaded;
             Loaded += FlyoutContainer_Loaded;
             this.InitializeComponent();
-            ConfirmButton.ManageControlPointerStates((p, value) => VisualStateManager.GoToState(this, value ? "Highlight" : "Default", false));
+            ConfirmButton.ManageControlPointerStates((p, value) =>
+            {
+                VisualStateManager.GoToState(this, value ? "Highlight" : "Default", false);
+                if (p != PointerDeviceType.Mouse) return;
+                ConfirmBackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.8 : 0, 200, null, EasingFunctionNames.Linear);
+            });
+            CloseButton.ManageLightsPointerStates(value =>
+            {
+                BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.8 : 0, 200, null, EasingFunctionNames.Linear);
+                LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 0.4, 200, null, EasingFunctionNames.Linear);
+            });
         }
 
         // Resources cleanup
@@ -83,6 +96,26 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         // An action that removes the custom content once no longer needed
         [CanBeNull]
         private Action _DetachContent;
+
+        /// <summary>
+        /// Prepares the UI for a text content with a confirm button
+        /// </summary>
+        /// <param name="confirm">The text of the button</param>
+        /// <param name="color">The optional background color for the confirm button</param>
+        public void SetupUI([NotNull] String confirm, [CanBeNull] Color? color)
+        {
+            ConfirmBlock.Text = confirm;
+            if (color != null)
+            {
+                DefaultSetter.Value = new SolidColorBrush(color.Value);
+                HslColor hsl = color.Value.ToHsl();
+                hsl.L = hsl.L + 0.1 > 1 ? 1 : hsl.L + 0.1;
+                HighlightSetter.Value = new SolidColorBrush(Microsoft.Toolkit.Uwp.ColorHelper.FromHsl(hsl.H, hsl.S, hsl.L, hsl.A));
+                ButtonContentGrid.Background = new SolidColorBrush(color.Value);
+            }
+            ConfirmButton.IsEnabled = true;
+            ConfirmButton.Visibility = Visibility.Visible;
+        }
 
         /// <summary>
         /// Prepares the container to show a given element

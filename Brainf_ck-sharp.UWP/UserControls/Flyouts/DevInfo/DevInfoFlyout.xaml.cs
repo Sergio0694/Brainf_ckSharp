@@ -23,13 +23,14 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
             BuildBlock.Text = AppSettingsManager.AppVersion;
         }
 
-        // The current ProductId for Brainf*ck#
-        private const String ProductId = "9nblgggzhvq5";
-
         // Opens the Store review page for the app
         private void RateStoreButton_Click(object sender, RoutedEventArgs e)
         {
-            Launcher.LaunchUriAsync(new Uri($"ms-windows-store://review/?ProductId={ProductId}")).AsTask().Forget();
+            LauncherHelper.OpenStoreAppReviewPageAsync().AsTask().Forget();
+            if (AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.ReviewPromptShown), out bool reviewed) && !reviewed)
+            {
+                AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.ReviewPromptShown), true, SettingSaveMode.OverwriteIfExisting);
+            }
         }
 
         // Sends a feedback email
@@ -87,7 +88,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
             }
             catch
             {
-                NotificationsManager.ShowDefaultErrorNotification(
+                NotificationsManager.Instance.ShowDefaultErrorNotification(
                     LocalizationManager.GetResource("StoreConnectionError"), LocalizationManager.GetResource("StoreConnectionErrorBody"));
                 return;
             }
@@ -100,20 +101,20 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
             switch (result.Status)
             {
                 case StorePurchaseStatus.Succeeded:
-                    NotificationsManager.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("DonationCompleted"), 
+                    NotificationsManager.Instance.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("DonationCompleted"), 
                         LocalizationManager.GetResource("DonationCompletedBody"), NotificationType.Default);
                     store.ReportConsumableFulfillmentAsync(id, 1, Guid.NewGuid()).AsTask().Forget();
                     break;
                 case StorePurchaseStatus.NotPurchased:
-                    NotificationsManager.ShowDefaultErrorNotification(LocalizationManager.GetResource("PurchaseCanceled"), LocalizationManager.GetResource("PurchaseCanceledBody"));
+                    NotificationsManager.Instance.ShowDefaultErrorNotification(LocalizationManager.GetResource("PurchaseCanceled"), LocalizationManager.GetResource("PurchaseCanceledBody"));
                     break;
                 case StorePurchaseStatus.AlreadyPurchased:
                     store.ReportConsumableFulfillmentAsync(id, 1, Guid.NewGuid()).AsTask().Forget();
-                    NotificationsManager.ShowDefaultErrorNotification($"{LocalizationManager.GetResource("SomethingBadHappened")} :'(", LocalizationManager.GetResource("DonationErrorBody"));
+                    NotificationsManager.Instance.ShowDefaultErrorNotification($"{LocalizationManager.GetResource("SomethingBadHappened")} :'(", LocalizationManager.GetResource("DonationErrorBody"));
                     break;
                 default:
                     // Error
-                    NotificationsManager.ShowDefaultErrorNotification($"{LocalizationManager.GetResource("SomethingBadHappened")} :'(", LocalizationManager.GetResource("DonationErrorBody"));
+                    NotificationsManager.Instance.ShowDefaultErrorNotification($"{LocalizationManager.GetResource("SomethingBadHappened")} :'(", LocalizationManager.GetResource("DonationErrorBody"));
                     break;
             }
         }

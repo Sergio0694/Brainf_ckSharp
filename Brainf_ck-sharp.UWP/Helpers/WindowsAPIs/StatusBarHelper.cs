@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Metadata;
-using Windows.UI;
 using Windows.UI.ViewManagement;
 
 namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
@@ -19,20 +17,6 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
         private static StatusBar GetCurrentStatusBarAsync()
         {
             return ApiInformation.IsTypePresent(StatusBarString) ? StatusBar.GetForCurrentView() : null;
-        }
-
-        /// <summary>
-        /// Tries to display the status bar
-        /// </summary>
-        /// <returns>The occluded height if the operation succedes</returns>
-        public static async Task<double> TryShowAsync()
-        {
-            StatusBar statusBar = GetCurrentStatusBarAsync();
-            if (statusBar == null) return 0;
-            statusBar.BackgroundColor = null;
-            statusBar.ForegroundColor = Colors.White;
-            await statusBar.ShowAsync();
-            return statusBar.OccludedRect.Height;
         }
 
         /// <summary>

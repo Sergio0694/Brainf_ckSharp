@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:brushes="using:UICompositionAnimations.Brushes">
+
     <!--Default fade out accent brush (button normal state)-->
     <SolidColorBrush x:Key="AccentBrushLowFade"/>
     
@@ -22,4 +23,21 @@
     <SolidColorBrush x:Key="BreakpointFillBrush" Color="#FFE51400"/>
     <SolidColorBrush x:Key="BreakpointBorderBrush" Color="#FFF4DFDD"/>
     <SolidColorBrush x:Key="BreakpointLineBrush" Color="#34FF0000"/>
+    
+    <!--Misc-->
+    <SolidColorBrush x:Key="ShellSeparatorLineFillBrush" Color="#FF6E6E6E"/>
+    
+    <!--Lights-->
+    <SolidColorBrush x:Key="BorderLightBrush"/>
+    <SolidColorBrush x:Key="ElementsWideLightBrush"/>
+    <SolidColorBrush x:Key="WideLightBrushDarkShadeBackground"/>
+    
+    <!--Acrylic brush-->
+    <brushes:CustomAcrylicBrush
+        x:Key="InAppGrayAcrylicBrush"
+        Mode="InAppBlur"
+        BlurAmount="8"
+        Tint="#FF222222"
+        TintMix="0.6"
+        NoiseTextureUri="/Assets/Misc/noise.png"/>
 </ResourceDictionary>

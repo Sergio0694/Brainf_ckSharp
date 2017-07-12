@@ -12,10 +12,11 @@
     <SolidColorBrush x:Key="MenuFlyoutBackgroundColor" Color="#FF282828"/>
     <SolidColorBrush x:Key="MenuFlyoutBorderBrush" Color="#FF454545"/>
     <x:Double x:Key="MenuFlyoutTextSize">14</x:Double>
+    <SolidColorBrush x:Key="MenuFlyoutPointerOverHighlightBrush" Color="#10FFFFFF"/>
+    <SolidColorBrush x:Key="MenuFlyoutPointerPressedHighlightBrush" Color="#14FFFFFF"/>
 
     <!-- Default style for Windows.UI.Xaml.Controls.MenuFlyoutPresenter -->
     <Style TargetType="MenuFlyoutPresenter">
-        <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="{StaticResource MenuFlyoutBorderBrush}" />
         <Setter Property="BorderThickness" Value="{ThemeResource FlyoutBorderThemeThickness}" />
         <Setter Property="Padding" Value="{ThemeResource MenuFlyoutPresenterThemePadding}" />
@@ -31,29 +32,25 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="MenuFlyoutPresenter">
-                    <Grid>
-                        <inheritedControls:InAppAcrylicGrid DisposeOnUnload="True"/>
-                        <Grid Background="{TemplateBinding Background}"
-                              x:Name="ContentGrid">
-                            <ScrollViewer x:Name="MenuFlyoutPresenterScrollViewer"
-                                          Padding="{TemplateBinding Padding}"
-                                          Margin="{TemplateBinding BorderThickness}"
-                                          MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.FlyoutContentMinWidth}"
-                                          HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
-                                          HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                                          VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
-                                          VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
-                                          IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}"
-                                          IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}"
-                                          ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}"
-                                          AutomationProperties.AccessibilityView="Raw">
-                                <ItemsPresenter Margin="0,8,0,8"/>
-                            </ScrollViewer>
-                            <Border x:Name="MenuFlyoutPresenterBorder"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"/>
-                        </Grid>
-                    </Grid>
+                    <inheritedControls:LightsContainerGrid Background="{StaticResource InAppGrayAcrylicBrush}">
+                        <ScrollViewer x:Name="MenuFlyoutPresenterScrollViewer"
+                                      Padding="{TemplateBinding Padding}"
+                                      Margin="{TemplateBinding BorderThickness}"
+                                      MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.FlyoutContentMinWidth}"
+                                      HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
+                                      HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                      VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
+                                      VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                                      IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}"
+                                      IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}"
+                                      ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}"
+                                      AutomationProperties.AccessibilityView="Raw">
+                            <ItemsPresenter Margin="0,8,0,8"/>
+                        </ScrollViewer>
+                        <Border x:Name="MenuFlyoutPresenterBorder"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"/>
+                    </inheritedControls:LightsContainerGrid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -90,13 +87,16 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="MenuFlyoutSubItem">
-                    <Grid x:Name="LayoutRoot"
-                          Padding="0,8,0,8"
-                          BorderBrush="#FF757575" 
-                          BorderThickness="{TemplateBinding BorderThickness}"
-                          MinHeight="{StaticResource MenuFlyoutMinHeight}"
-                          MinWidth="{StaticResource MenuFlyoutMinWidth}"
-                          MaxWidth="{StaticResource MenuFlyoutMaxWidth}">
+                    <inheritedControls:LightBorderAndBackgroundOverlay 
+                        x:Name="LayoutRoot"
+                        Padding="0"
+                        BorderBrush="#FF757575" 
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        MinHeight="{StaticResource MenuFlyoutMinHeight}"
+                        MinWidth="{StaticResource MenuFlyoutMinWidth}"
+                        MaxWidth="{StaticResource MenuFlyoutMaxWidth}"
+                        LightBorderBrush="{StaticResource BorderLightBrush}"
+                        LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal" />
@@ -166,7 +166,7 @@
                                 <VisualState x:Name="NarrowPadding"/>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Grid>
+                        <Grid Padding="0,8,0,8">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
@@ -190,7 +190,7 @@
                                       Foreground="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
                                       MirroredWhenRightToLeft="True" />
                         </Grid>
-                    </Grid>
+                    </inheritedControls:LightBorderAndBackgroundOverlay>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -201,21 +201,24 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="MenuFlyoutItem">
-                    <Grid x:Name="LayoutRoot" 
-                          Padding="0,8,0,8" 
-                          Background="{StaticResource MenuFlyoutBackgroundBrush}"
-                          BorderBrush="#FF757575" 
-                          BorderThickness="{TemplateBinding BorderThickness}" 
-                          MinHeight="{StaticResource MenuFlyoutMinHeight}"
-                          MinWidth="{StaticResource MenuFlyoutMinWidth}"
-                          MaxWidth="{StaticResource MenuFlyoutMaxWidth}">
+                    <inheritedControls:LightBorderAndBackgroundOverlay 
+                        x:Name="LayoutRoot" 
+                        Padding="0" 
+                        Background="{StaticResource MenuFlyoutBackgroundBrush}"
+                        BorderBrush="#FF757575" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        MinHeight="{StaticResource MenuFlyoutMinHeight}"
+                        MinWidth="{StaticResource MenuFlyoutMinWidth}"
+                        MaxWidth="{StaticResource MenuFlyoutMaxWidth}"
+                        LightBorderBrush="{StaticResource BorderLightBrush}"
+                        LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal" />
                                 <VisualState x:Name="PointerOver">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightListLowBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource MenuFlyoutPointerOverHighlightBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TextBlock" Storyboard.TargetProperty="Foreground">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightAltBaseHighBrush}" />
@@ -225,7 +228,7 @@
                                 <VisualState x:Name="Pressed">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightListMediumBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource MenuFlyoutPointerPressedHighlightBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TextBlock" Storyboard.TargetProperty="Foreground">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightAltBaseHighBrush}" />
@@ -262,8 +265,9 @@
                                 <VisualState x:Name="NarrowPadding"/>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel 
+                            Orientation="Horizontal"
+                            Padding="0,8,0,8">
                             <FontIcon  x:Name="TextBlock" 
                                        Margin="16,0,0,0"
                                        Glyph="{TemplateBinding Tag}" 
@@ -279,7 +283,7 @@
                                        FontWeight="SemiLight"
                                        FontSize="{StaticResource MenuFlyoutTextSize}"/>
                         </StackPanel>
-                    </Grid>
+                    </inheritedControls:LightBorderAndBackgroundOverlay>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

@@ -116,12 +116,14 @@
                 IsExpandable="True"
                 IsExpanded="True"
                 ExpanderHitTargetAreaWidth="48"
-                AnimatedIndicatorContent="&#xE010;">
+                AnimatedIndicatorContent="&#xE010;"
+                x:Name="ExpanderControl">
                 <telerik:RadExpanderControl.AnimatedIndicatorContentTemplate>
                     <DataTemplate>
                         <Button 
                             Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
-                            Width="48">
+                            Width="48"
+                            x:Name="ExpanderStateButton">
                             <Button.Clip>
                                 <RectangleGeometry Rect="0,0,48,48"/>
                             </Button.Clip>
@@ -137,6 +139,45 @@
 
                     <!--Header-->
                     <Grid Height="48">
+
+                        <!--Wide light border-->
+                        <Border
+                            Width="48"
+                            HorizontalAlignment="Right"
+                            x:Name="BackgroundBorder"
+                            Background="{StaticResource ElementsWideLightBrush}"
+                            Opacity="0">
+                            <Border.RenderTransform>
+                                <TranslateTransform X="48"/>
+                            </Border.RenderTransform>
+                        </Border>
+
+                        <!--Expander light-->
+                        <Border
+                            x:Name="ExpanderLightBorder"
+                            Width="48"
+                            HorizontalAlignment="Right"
+                            BorderThickness="1"
+                            BorderBrush="{StaticResource BorderLightBrush}">
+                            <Border.RenderTransform>
+                                <TranslateTransform X="48"/>
+                            </Border.RenderTransform>
+                        </Border>
+
+                        <!--Overlay for the expander-->
+                        <Rectangle
+                            Fill="{ThemeResource ShellSeparatorLineFillBrush}"
+                            VerticalAlignment="Top"
+                            Canvas.ZIndex="1"
+                            Height="1"
+                            Width="48"
+                            HorizontalAlignment="Right">
+                            <Rectangle.RenderTransform>
+                                <TranslateTransform X="48"/>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+                        
+                        <!--Stdin and pivot headers-->
                         <Canvas 
                             Grid.Row="0"
                             Background="#40000000"/>
@@ -206,7 +247,7 @@
                 <customCommandBar:CustomCommandBarButton
                     Label="Undo"
                     Icon="&#xE750;"
-                    x:Uid="Undo"
+                    x:Uid="DeleteButton"
                     IsEnabled="{x:Bind ViewModel.UndoAvailable, Mode=OneWay, FallbackValue=False}"
                     DefaultButton="True"
                     Click="{x:Bind ViewModel.RequestUndoConsoleCharacter}"/>
@@ -260,6 +301,7 @@
             </customCommandBar:CommandBarWithButtonsAnimations.PrimaryCommands>
             <customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
                 <customCommandBar:CustomCommandBarButton
+                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Repeat last script"
                     x:Uid="RepeatScript"
                     Icon="&#xE117;"
@@ -267,6 +309,7 @@
                     Click="{x:Bind ViewModel.RequestRepeatLastConsoleScript}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=0, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
+                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Restart"
                     x:Uid="Restart"
                     Icon="&#xE9F3;"
@@ -274,24 +317,28 @@
                     Click="{x:Bind ViewModel.RequestRestartConsole}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=0, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
+                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Clear screen"
                     x:Uid="Clrscr"
                     Icon="&#xEA99;"
                     IsEnabled="{x:Bind ViewModel.ClearScreenAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestClearScreen}"/>
                 <customCommandBar:CustomCommandBarButton
+                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Show Unicode characters"
                     x:Uid="Unicode"
                     Icon="&#xEBDB;"
                     Click="{x:Bind RequestShowUnicodeCharacters}"/>
                 <AppBarSeparator Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
+                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Browse code library"
                     x:Uid="CodeLibraryButton"
                     Icon="&#xED25;"
                     Click="{x:Bind RequestShowCodeLibrary}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
+                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Save"
                     x:Uid="SaveButton"
                     Icon="&#xE105;"
@@ -299,6 +346,7 @@
                     IsEnabled="{x:Bind ViewModel.SaveAvailable, Mode=OneWay, FallbackValue=False}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
+                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Save as"
                     x:Uid="SaveAsButton"
                     Icon="&#xEA35;"
@@ -306,6 +354,7 @@
                     IsEnabled="{x:Bind ViewModel.SaveAsAvailable, Mode=OneWay, FallbackValue=True}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
+                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="About"
                     x:Uid="AboutButton"
                     Icon="&#xED15;"

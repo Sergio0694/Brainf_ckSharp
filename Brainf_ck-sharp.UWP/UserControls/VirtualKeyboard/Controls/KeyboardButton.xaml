@@ -10,23 +10,46 @@
 
     <Button Style="{StaticResource WideButtonWithNoBackgroundStyle}"
             Click="Button_Clicked">
-        <StackPanel
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center">
-            <TextBlock 
-                Text="+"
-                TextAlignment="Center"
-                FontSize="24"
-                Foreground="White"
-                x:Name="OperatorBlock"/>
-            <TextBlock 
-                Text="*ptr++"
-                TextAlignment="Center"
-                FontSize="12"
-                Foreground="#80FFFFFF"
-                Margin="0,4,0,0"
-                FontWeight="SemiLight"
-                x:Name="InfoBlock"/>
-        </StackPanel>
+        <Grid>
+            
+            <!--Light background-->
+            <Border
+                Opacity="0"
+                x:Name="LightDarkBackground"
+                Background="{StaticResource WideLightBrushDarkShadeBackground}"/>
+
+            <!--Wide light border-->
+            <Border
+                x:Name="BackgroundBorder"
+                Background="{StaticResource ElementsWideLightBrush}"
+                Opacity="0"/>
+            
+            <!--Light-->
+            <Border
+                Margin="-2"
+                BorderThickness="1"
+                Opacity="0.8"
+                BorderBrush="{StaticResource BorderLightBrush}"/>
+
+            <!--Content-->
+            <StackPanel
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+                <TextBlock 
+                    Text="+"
+                    TextAlignment="Center"
+                    FontSize="24"
+                    Foreground="White"
+                    x:Name="OperatorBlock"/>
+                <TextBlock 
+                    Text="*ptr++"
+                    TextAlignment="Center"
+                    FontSize="12"
+                    Foreground="#80FFFFFF"
+                    Margin="0,4,0,0"
+                    FontWeight="SemiLight"
+                    x:Name="InfoBlock"/>
+            </StackPanel>
+        </Grid>
     </Button>
 </UserControl>
