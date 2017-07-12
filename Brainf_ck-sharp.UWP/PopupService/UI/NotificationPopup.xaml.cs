@@ -11,7 +11,6 @@ using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
 using UICompositionAnimations.Behaviours;
-using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
 
 namespace Brainf_ck_sharp_UWP.PopupService.UI
@@ -25,10 +24,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         /// <param name="icon">The icon to show next to the title</param>
         /// <param name="content">The text to show inside the notification</param>
         /// <param name="type">Indicates the kind of notification to show</param>
-        /// <param name="borderBrush">The brush for the light borders</param>
-        /// <param name="hoverBrush">The brush for the light hover effect</param>
-        public NotificationPopup([NotNull] String title, [NotNull] String icon, [NotNull] String content, NotificationType type,
-            LightingBrush borderBrush, LightingBrush hoverBrush)
+        public NotificationPopup([NotNull] String title, [NotNull] String icon, [NotNull] String content, NotificationType type)
         {
             Loaded += NotificationPopup_Loaded;
             this.InitializeComponent();
@@ -36,8 +32,6 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             SymbolBlock.Text = icon;
             ContentBlock.Text = content;
             Type = type;
-            LightBorder.BorderBrush = borderBrush;
-            BackgroundBorder.Background = hoverBrush;
             CloseButton.ManageLightsPointerStates(value =>
             {
                 BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.6 : 0, 200, null, EasingFunctionNames.Linear);

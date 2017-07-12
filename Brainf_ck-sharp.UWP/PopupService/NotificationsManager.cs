@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Input;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
@@ -13,10 +12,8 @@ using Brainf_ck_sharp_UWP.PopupService.UI;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
-using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Lights;
-using UICompositionAnimations.XAMLTransform;
 
 namespace Brainf_ck_sharp_UWP.PopupService
 {
@@ -82,47 +79,43 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 };
 
                 // Prepare the notification control
-                LightingBrush
-                    lightBrush = new LightingBrush(),
-                    hoverBrush = new LightingBrush();
-                PointerPositionSpotLight.SetIsTarget(lightBrush, true);
-                NotificationPopup notificationPopup = new NotificationPopup(title, icon, content, type, lightBrush, hoverBrush);
+                NotificationPopup notificationPopup = new NotificationPopup(title, icon, content, type);
                 popup.Child = notificationPopup;
 
                 // Lights setup
-                lightBrush.Opacity = 0;
-                hoverBrush.Opacity = 0;
-                bool lightsEnabled = false;
-                notificationPopup.Lights.Add(new PointerPositionSpotLight
+                if (!UniversalAPIsHelper.IsMobileDevice)
                 {
-                    Z = 30,
-                    Shade = 0x80
-                });
-                PointerPositionSpotLight popupLight = new PointerPositionSpotLight
-                {
-                    Z = 30,
-                    IdAppendage = "[Popup]",
-                    Shade = 0x10
-                };
-                XamlLight.AddTargetBrush($"{PointerPositionSpotLight.GetIdStatic()}{popupLight.IdAppendage}", hoverBrush);
-                notificationPopup.Lights.Add(popupLight);
-                notificationPopup.ManageHostPointerStates((p, value) =>
-                {
-                    bool lightsVisible = p == PointerDeviceType.Mouse && value;
-                    if (lightsEnabled == lightsVisible) return;
-                    lightsEnabled = lightsVisible;
-                    XAMLTransformToolkit.PrepareStory(
-                        XAMLTransformToolkit.CreateDoubleAnimation(lightBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true),
-                        XAMLTransformToolkit.CreateDoubleAnimation(hoverBrush, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true)).Begin();
-                });
+                    bool lightsEnabled = false;
+                    PointerPositionSpotLight
+                        light = new PointerPositionSpotLight
+                        {
+                            Z = 30,
+                            Shade = 0x80,
+                            Active = false
+                        },
+                        popupLight = new PointerPositionSpotLight
+                        {
+                            Z = 30,
+                            IdAppendage = "[Popup]",
+                            Shade = 0x10,
+                            Active = false
+                        };
+                    notificationPopup.Lights.Add(light);
+                    notificationPopup.Lights.Add(popupLight);
+                    notificationPopup.ManageHostPointerStates((p, value) =>
+                    {
+                        bool lightsVisible = p == PointerDeviceType.Mouse && value;
+                        if (lightsEnabled == lightsVisible) return;
+                        light.Active = popupLight.Active = lightsEnabled = lightsVisible;
+                    });
 
-                // Dispose the lights
-                popup.Closed += (s, e) =>
-                {
                     // Dispose the lights
-                    XamlLight.RemoveTargetBrush($"{PointerPositionSpotLight.GetIdStatic()}{popupLight.IdAppendage}", hoverBrush);
-                    notificationPopup.Lights.Clear();
-                };
+                    popup.Closed += (s, e) =>
+                    {
+                        // Dispose the lights
+                        notificationPopup.Lights.Clear();
+                    };
+                }
 
                 // Close the previous notification, if present
                 await CloseNotificationPopupAsync();
