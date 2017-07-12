@@ -74,8 +74,8 @@
                 <inheritedControls:LightBorderAndBackgroundOverlay
                     Margin="-2"
                     LightBorderThickness="2"
-                    LightBorderBrush="{StaticResource PopupElementsLightBrush}"
-                    LightBackgroundBrush="{StaticResource PopupElementsWideLightBrush}">
+                    LightBorderBrush="{StaticResource BorderLightBrush}"
+                    LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
                     <Grid Margin="12,0,12,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -112,8 +112,8 @@
                 <inheritedControls:LightBorderAndBackgroundOverlay
                     Margin="-2"
                     LightBorderThickness="2"
-                    LightBorderBrush="{StaticResource PopupElementsLightBrush}"
-                    LightBackgroundBrush="{StaticResource PopupElementsWideLightBrush}">
+                    LightBorderBrush="{StaticResource BorderLightBrush}"
+                    LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
                     <Grid Margin="12,0,12,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -169,8 +169,8 @@
                         <inheritedControls:LightBorderAndBackgroundOverlay
                             Margin="-2"
                             LightBorderThickness="2"
-                            LightBorderBrush="{StaticResource PopupElementsLightBrush}"
-                            LightBackgroundBrush="{StaticResource PopupElementsWideLightBrush}">
+                            LightBorderBrush="{StaticResource BorderLightBrush}"
+                            LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
                             <Grid Margin="12,0,12,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -207,8 +207,8 @@
                         <inheritedControls:LightBorderAndBackgroundOverlay
                             Margin="-2"
                             LightBorderThickness="2"
-                            LightBorderBrush="{StaticResource PopupElementsLightBrush}"
-                            LightBackgroundBrush="{StaticResource PopupElementsWideLightBrush}">
+                            LightBorderBrush="{StaticResource BorderLightBrush}"
+                            LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
                             <Grid Margin="12,0,12,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -257,8 +257,8 @@
                     <inheritedControls:LightBorderAndBackgroundOverlay
                         Margin="-2"
                         LightBorderThickness="2"
-                        LightBorderBrush="{StaticResource PopupElementsLightBrush}"
-                        LightBackgroundBrush="{StaticResource PopupElementsWideLightBrush}">
+                        LightBorderBrush="{StaticResource BorderLightBrush}"
+                        LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
                         <Grid 
                             Margin="12,0,12,0"
                             HorizontalAlignment="Center">

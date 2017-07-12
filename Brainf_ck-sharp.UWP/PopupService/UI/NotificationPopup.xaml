@@ -67,14 +67,14 @@
                     <Border
                         x:Name="BackgroundBorder"
                         Opacity="0"
-                        Background="{StaticResource PopupElementsWideLightBrush}"/>
+                        Background="{StaticResource ElementsWideLightBrush}"/>
 
                     <!--Light border-->
                     <Border
                         Opacity="0.4"
                         x:Name="LightBorder"
                         BorderThickness="1"
-                        BorderBrush="{StaticResource PopupElementsLightBrush}"
+                        BorderBrush="{StaticResource BorderLightBrush}"
                         Margin="-1"/>
 
                     <!--Close icon-->

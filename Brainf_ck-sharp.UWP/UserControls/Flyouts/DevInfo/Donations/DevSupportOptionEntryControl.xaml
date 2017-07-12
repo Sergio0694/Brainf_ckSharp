@@ -20,7 +20,7 @@
             x:Name="LightBackground"
             Opacity="0"
             Grid.ColumnSpan="2"
-            Background="{StaticResource PopupElementsWideLightBrush}"/>
+            Background="{StaticResource ElementsWideLightBrush}"/>
 
         <!--Light border-->
         <Border
@@ -28,7 +28,7 @@
             BorderThickness="2"
             Grid.Column="0"
             Grid.ColumnSpan="2"
-            BorderBrush="{StaticResource PopupElementsLightBrush}"/>
+            BorderBrush="{StaticResource BorderLightBrush}"/>
 
         <!--Image-->
         <Image Width="48"

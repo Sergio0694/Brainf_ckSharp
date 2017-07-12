@@ -53,8 +53,8 @@
                 <inheritedControls:LightBorderAndBackgroundOverlay
                     Margin="-2"
                     LightBorderThickness="2"
-                    LightBorderBrush="{StaticResource PopupElementsLightBrush}"
-                    LightBackgroundBrush="{StaticResource PopupElementsWideLightBrush}">
+                    LightBorderBrush="{StaticResource BorderLightBrush}"
+                    LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
                     
                     <!--Sad-->
                     <TextBlock
@@ -71,8 +71,8 @@
                 <inheritedControls:LightBorderAndBackgroundOverlay
                     Margin="-2"
                     LightBorderThickness="2"
-                    LightBorderBrush="{StaticResource PopupElementsLightBrush}"
-                    LightBackgroundBrush="{StaticResource PopupElementsWideLightBrush}">
+                    LightBorderBrush="{StaticResource BorderLightBrush}"
+                    LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
                     
                     <!--Happy-->
                     <TextBlock

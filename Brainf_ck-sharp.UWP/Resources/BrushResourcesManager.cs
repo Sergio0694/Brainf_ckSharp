@@ -39,26 +39,18 @@ namespace Brainf_ck_sharp_UWP.Resources
             {
                 SolidColorBrush t = new SolidColorBrush { Color = Colors.Transparent };
                 XAMLResourcesHelper.SetResourceValue("BorderLightBrush", t);
-                XAMLResourcesHelper.SetResourceValue("PopupElementsLightBrush", t);
                 XAMLResourcesHelper.SetResourceValue("ElementsWideLightBrush", t);
-                XAMLResourcesHelper.SetResourceValue("PopupElementsWideLightBrush", t);
                 XAMLResourcesHelper.SetResourceValue("WideLightBrushDarkShadeBackground", t);
             }
             else
             {
                 LightingBrush
                     bb = new LightingBrush(),
-                    pbb = new LightingBrush(),
-                    bwb = new LightingBrush(),
-                    pbwb = new LightingBrush();
+                    bwb = new LightingBrush();
                 PointerPositionSpotLight.SetIsTarget(bb, true);
-                PointerPositionSpotLight.SetIsTarget(pbb, true);
                 XamlLight.AddTargetBrush($"{PointerPositionSpotLight.GetIdStatic()}[Wide]", bwb);
-                XamlLight.AddTargetBrush($"{PointerPositionSpotLight.GetIdStatic()}[Popup]", pbwb);
-                XAMLResourcesHelper.SetResourceValue("BorderLightBrush", bb);
-                XAMLResourcesHelper.SetResourceValue("PopupElementsLightBrush", pbb);
-                XAMLResourcesHelper.SetResourceValue("ElementsWideLightBrush", bwb);
-                XAMLResourcesHelper.SetResourceValue("PopupElementsWideLightBrush", pbwb);
+                XAMLResourcesHelper.SetResourceValue("BorderLightBrush", bb, true);
+                XAMLResourcesHelper.SetResourceValue("ElementsWideLightBrush", bwb, true);
                 SolidColorBrush sb = new SolidColorBrush { Color = Color.FromArgb(0x10, 0, 0, 0), Opacity = 0 };
                 XAMLResourcesHelper.SetResourceValue("WideLightBrushDarkShadeBackground", sb);
                 WideLightBrushDarkShadeBackground = sb;

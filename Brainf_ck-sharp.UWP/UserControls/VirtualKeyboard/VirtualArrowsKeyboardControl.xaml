@@ -71,7 +71,7 @@
             Grid.Column="0"
             Grid.ColumnSpan="3"
             VerticalAlignment="Top"
-            Fill="{StaticResource PopupElementsLightBrush}"
+            Fill="{StaticResource BorderLightBrush}"
             Opacity="0.6"/>
         <Rectangle
             Width="1"
@@ -79,7 +79,7 @@
             Grid.RowSpan="2"
             Grid.Column="1"
             HorizontalAlignment="Left"
-            Fill="{StaticResource PopupElementsLightBrush}"
+            Fill="{StaticResource BorderLightBrush}"
             Opacity="0.6"/>
         <Rectangle
             Width="1"
@@ -87,7 +87,7 @@
             Grid.RowSpan="2"
             Grid.Column="1"
             HorizontalAlignment="Right"
-            Fill="{StaticResource PopupElementsLightBrush}"
+            Fill="{StaticResource BorderLightBrush}"
             Opacity="0.6"/>
     </Grid>
 </UserControl>

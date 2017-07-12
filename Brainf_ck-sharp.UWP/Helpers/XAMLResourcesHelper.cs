@@ -26,13 +26,14 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// <typeparam name="T">The Type of the resource</typeparam>
         /// <param name="resourceName">The name of the resource</param>
         /// <param name="value">The new value to use</param>
-        public static void SetResourceValue<T>([NotNull] String resourceName, T value)
+        /// <param name="weaklyTyped">Indicates whether or not a resource can be overridden with a different type</param>
+        public static void SetResourceValue<T>([NotNull] String resourceName, T value, bool weaklyTyped = false)
         {
             // Parameter check
             if (resourceName.Length == 0) throw new ArgumentException("The resource name is not valid");
 
             // Safe cast to be sure the target resource has the Type of the new value
-            if (Application.Current.Resources.ContainsKey(resourceName) &&
+            if (!weaklyTyped && Application.Current.Resources.ContainsKey(resourceName) &&
                 Application.Current.Resources[resourceName].GetType() != typeof(T))
             {
                 throw new InvalidOperationException("The target resource has a different type");

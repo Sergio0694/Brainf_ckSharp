@@ -27,6 +27,11 @@
     <!--Misc-->
     <SolidColorBrush x:Key="ShellSeparatorLineFillBrush" Color="#FF6E6E6E"/>
     
+    <!--Lights-->
+    <SolidColorBrush x:Key="BorderLightBrush"/>
+    <SolidColorBrush x:Key="ElementsWideLightBrush"/>
+    <SolidColorBrush x:Key="WideLightBrushDarkShadeBackground"/>
+    
     <!--Acrylic brush-->
     <brushes:CustomAcrylicBrush
         x:Key="InAppGrayAcrylicBrush"
