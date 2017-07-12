@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
     xmlns:controls="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls"
     mc:Ignorable="d"
     d:DesignHeight="96"
@@ -12,9 +11,9 @@
 
     <!--Root-->
     <Grid
-        Background="Transparent"
         BorderThickness="1"
-        BorderBrush="#FF404040">
+        BorderBrush="#FF404040"
+        Background="{StaticResource InAppGrayAcrylicBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="48"/>
             <RowDefinition Height="48"/>
@@ -24,17 +23,6 @@
             <ColumnDefinition Width="48"/>
             <ColumnDefinition Width="48"/>
         </Grid.ColumnDefinitions>
-        
-        <!--Effect border-->
-        <Border
-            Grid.RowSpan="2"
-            Grid.ColumnSpan="3"
-            x:Name="EffectBorder"/>
-        <xaml:CanvasControl 
-            Grid.Row="0"
-            Grid.Column="0"
-            Opacity="0"
-            x:Name="Win2DCanvas"/>
         
         <!--Up-->
         <controls:VirtualArrowKeyboardButton
