@@ -231,7 +231,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 wideLight = new PointerPositionSpotLight
                 {
                     Z = 30,
-                    IdAppendage = "[Wide]",
+                    IdAppendage = "[Popup]",
                     Shade = 0x10,
                     Active = false
                 };
@@ -614,7 +614,10 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 grid.Children.Add(border);
                 content.AttachVisualShadow(border, true, 
                     (float)content.Width + 1, (float)content.Height + 1,
-                    Colors.Black, 1, -0.5f, -0.5f, null, v.X, v.Y);
+                    Colors.Black, 1, -0.5f, -0.5f, 
+                    (v.X >= 0 ? v.X : -v.X) < 0.1 
+                    ? new Thickness(-4, 0, -4, 0) // Horizontal overstretch to fix UI glitch at the corners
+                    : new Thickness(0, -4, 0, -4), v.X, v.Y);
             }
             grid.Children.Add(content);
 
