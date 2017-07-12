@@ -17,7 +17,6 @@
 
     <!-- Default style for Windows.UI.Xaml.Controls.MenuFlyoutPresenter -->
     <Style TargetType="MenuFlyoutPresenter">
-        <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="{StaticResource MenuFlyoutBorderBrush}" />
         <Setter Property="BorderThickness" Value="{ThemeResource FlyoutBorderThemeThickness}" />
         <Setter Property="Padding" Value="{ThemeResource MenuFlyoutPresenterThemePadding}" />
@@ -33,28 +32,24 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="MenuFlyoutPresenter">
-                    <inheritedControls:LightsContainerGrid>
-                        <inheritedControls:InAppAcrylicGrid DisposeOnUnload="True"/>
-                        <Grid Background="{TemplateBinding Background}"
-                              x:Name="ContentGrid">
-                            <ScrollViewer x:Name="MenuFlyoutPresenterScrollViewer"
-                                          Padding="{TemplateBinding Padding}"
-                                          Margin="{TemplateBinding BorderThickness}"
-                                          MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.FlyoutContentMinWidth}"
-                                          HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
-                                          HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                                          VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
-                                          VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
-                                          IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}"
-                                          IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}"
-                                          ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}"
-                                          AutomationProperties.AccessibilityView="Raw">
-                                <ItemsPresenter Margin="0,8,0,8"/>
-                            </ScrollViewer>
-                            <Border x:Name="MenuFlyoutPresenterBorder"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"/>
-                        </Grid>
+                    <inheritedControls:LightsContainerGrid Background="{StaticResource InAppGrayAcrylicBrush}">
+                        <ScrollViewer x:Name="MenuFlyoutPresenterScrollViewer"
+                                      Padding="{TemplateBinding Padding}"
+                                      Margin="{TemplateBinding BorderThickness}"
+                                      MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.FlyoutContentMinWidth}"
+                                      HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
+                                      HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                      VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
+                                      VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                                      IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}"
+                                      IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}"
+                                      ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}"
+                                      AutomationProperties.AccessibilityView="Raw">
+                            <ItemsPresenter Margin="0,8,0,8"/>
+                        </ScrollViewer>
+                        <Border x:Name="MenuFlyoutPresenterBorder"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"/>
                     </inheritedControls:LightsContainerGrid>
                 </ControlTemplate>
             </Setter.Value>
