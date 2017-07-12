@@ -196,7 +196,6 @@
     <Compile Include="Helpers\WindowsAPIs\KeyEventsListener.cs" />
     <Compile Include="Helpers\WindowsAPIs\ResolutionHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\TitleBarHelper.cs" />
-    <Compile Include="Helpers\WindowsAPIs\UniversalAPIsHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\StatusBarHelper.cs" />
     <Compile Include="Messages\Actions\ClearConsoleLineMessage.cs" />
     <Compile Include="Messages\Actions\ClearScreenMessage.cs" />
@@ -703,7 +702,7 @@
       <Version>1.0.0.4</Version>
     </PackageReference>
     <PackageReference Include="UICompositionAnimations">
-      <Version>2.7.0</Version>
+      <Version>2.8.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

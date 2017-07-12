@@ -2,10 +2,10 @@
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using UICompositionAnimations;
 using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
+using UICompositionAnimations.Helpers;
 
 namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
 {
@@ -23,7 +23,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         public LightBorderAndBackgroundOverlay()
         {
             // Platform test
-            if (UniversalAPIsHelper.IsMobileDevice) return;
+            if (ApiInformationHelper.IsMobileDevice) return;
 
             // UI initialization
             _LightBackground = new Border { Opacity = 0 };

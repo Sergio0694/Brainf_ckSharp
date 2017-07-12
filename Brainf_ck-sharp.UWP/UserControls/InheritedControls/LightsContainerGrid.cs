@@ -1,7 +1,6 @@
 ﻿using Windows.Devices.Input;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
+using UICompositionAnimations.Helpers;
 using UICompositionAnimations.Lights;
 
 namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
@@ -17,7 +16,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         public LightsContainerGrid()
         {
             // Platform test
-            if (UniversalAPIsHelper.IsMobileDevice) return;
+            if (ApiInformationHelper.IsMobileDevice) return;
 
             // Lights setup
             PointerPositionSpotLight

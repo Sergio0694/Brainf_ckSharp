@@ -11,7 +11,6 @@ using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
@@ -25,6 +24,7 @@ using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations;
 using UICompositionAnimations.Behaviours;
 using UICompositionAnimations.Enums;
+using UICompositionAnimations.Helpers;
 using MemoryViewerFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState.MemoryViewerFlyout;
 
 namespace Brainf_ck_sharp_UWP.UserControls
@@ -54,7 +54,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             Console.ViewModel.IsEnabled = true;
 
             // Hide the title placeholder if needed
-            if (UniversalAPIsHelper.IsMobileDevice)
+            if (ApiInformationHelper.IsMobileDevice)
             {
                 PCPlaceholderGrid.Visibility = Visibility.Collapsed;
                 KeyboardCanvas.Visibility = Visibility.Collapsed;
@@ -120,7 +120,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             Messenger.Default.Send(new ConsoleStatusUpdateMessage(IDEStatus.Console, LocalizationManager.GetResource("Ready"), 0, 0));
             Console.AdjustTopMargin(HeaderGrid.ActualHeight + 8);
             IDE.AdjustTopMargin(HeaderGrid.ActualHeight);
-            if (UniversalAPIsHelper.IsMobileDevice)
+            if (ApiInformationHelper.IsMobileDevice)
             {
                 await HeaderBorder.AttachCompositionInAppCustomAcrylicEffectAsync(HeaderBorder, 8, 800,
                     Color.FromArgb(byte.MaxValue, 30, 30, 30), 0.6f, null,

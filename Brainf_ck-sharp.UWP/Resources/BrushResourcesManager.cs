@@ -1,8 +1,8 @@
 ﻿using Windows.UI;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Helpers;
-using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using UICompositionAnimations.Brushes;
+using UICompositionAnimations.Helpers;
 using UICompositionAnimations.Lights;
 
 namespace Brainf_ck_sharp_UWP.Resources
@@ -35,7 +35,7 @@ namespace Brainf_ck_sharp_UWP.Resources
             XAMLResourcesHelper.SetResourceValue("SubMenuFlyoutOpenedBrush", new SolidColorBrush(Color.FromArgb(0x50, AccentBrush.Color.R, AccentBrush.Color.G, AccentBrush.Color.B)));
 
             // Lights
-            if (UniversalAPIsHelper.IsMobileDevice)
+            if (ApiInformationHelper.IsMobileDevice)
             {
                 SolidColorBrush t = new SolidColorBrush { Color = Colors.Transparent };
                 XAMLResourcesHelper.SetResourceValue("BorderLightBrush", t);

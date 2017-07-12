@@ -5,7 +5,6 @@ using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.PopupService.Interfaces;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -17,6 +16,7 @@ using UICompositionAnimations.Behaviours;
 using UICompositionAnimations.Behaviours.Effects;
 using UICompositionAnimations.Behaviours.Misc;
 using UICompositionAnimations.Enums;
+using UICompositionAnimations.Helpers;
 
 namespace Brainf_ck_sharp_UWP.PopupService.UI
 {

@@ -5,6 +5,7 @@ using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using UICompositionAnimations.Helpers;
 
 namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.Changelog
 {

@@ -22,7 +22,6 @@ using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
@@ -34,6 +33,7 @@ using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
+using UICompositionAnimations.Helpers;
 
 namespace Brainf_ck_sharp_UWP.Views
 {
@@ -162,7 +162,7 @@ namespace Brainf_ck_sharp_UWP.Views
             GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             CursorTransform.X = 4;
             BracketsParentGrid.SetVisualOffset(TranslationAxis.Y, (float)height);
-            EditBox.Padding = UniversalAPIsHelper.IsMobileDevice 
+            EditBox.Padding = ApiInformationHelper.IsMobileDevice 
                 ? new Thickness(4, _Top + 8, 4, 8) 
                 : new Thickness(4, _Top + 8, 20, 20);
             EditBox.ScrollBarMargin = new Thickness(0, _Top, 0, 0);

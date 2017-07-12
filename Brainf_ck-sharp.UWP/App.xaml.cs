@@ -12,6 +12,7 @@ using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Resources;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.UserControls;
+using UICompositionAnimations.Helpers;
 using UICompositionAnimations.Lights;
 using UICompositionAnimations.XAMLTransform;
 #if DEBUG
@@ -67,13 +68,13 @@ namespace Brainf_ck_sharp_UWP
                 shell = new Shell();
 
                 // Handle the UI
-                if (UniversalAPIsHelper.IsMobileDevice) StatusBarHelper.HideAsync().Forget();
+                if (ApiInformationHelper.IsMobileDevice) StatusBarHelper.HideAsync().Forget();
                 else TitleBarHelper.StyleAppTitleBar();
 
                 // Setup the view mode
                 ApplicationView view = ApplicationView.GetForCurrentView();
                 view.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseVisible);
-                if (UniversalAPIsHelper.IsMobileDevice)
+                if (ApiInformationHelper.IsMobileDevice)
                 {
                     view.VisibleBoundsChanged += (s, _) => UpdateVisibleBounds(s);
                     Task.Delay(1000).ContinueWith(t => UpdateVisibleBounds(ApplicationView.GetForCurrentView()), TaskScheduler.FromCurrentSynchronizationContext());
@@ -83,7 +84,7 @@ namespace Brainf_ck_sharp_UWP
                 KeyEventsListener.IsEnabled = true;
 
                 // Add the lights and store the content
-                if (!UniversalAPIsHelper.IsMobileDevice)
+                if (!ApiInformationHelper.IsMobileDevice)
                 {
                     PointerPositionSpotLight
                         light = new PointerPositionSpotLight { Active = false },

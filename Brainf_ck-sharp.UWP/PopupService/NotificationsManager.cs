@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Input;
 using Windows.UI.Xaml.Controls.Primitives;
-using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
@@ -13,7 +12,9 @@ using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
+using UICompositionAnimations.Helpers;
 using UICompositionAnimations.Lights;
+using DispatcherHelper = Brainf_ck_sharp_UWP.Helpers.DispatcherHelper;
 
 namespace Brainf_ck_sharp_UWP.PopupService
 {
@@ -83,7 +84,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 popup.Child = notificationPopup;
 
                 // Lights setup
-                if (!UniversalAPIsHelper.IsMobileDevice)
+                if (!ApiInformationHelper.IsMobileDevice)
                 {
                     bool lightsEnabled = false;
                     PointerPositionSpotLight
