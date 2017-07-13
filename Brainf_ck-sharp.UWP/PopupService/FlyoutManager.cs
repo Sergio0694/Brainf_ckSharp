@@ -231,7 +231,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 wideLight = new PointerPositionSpotLight
                 {
                     Z = 30,
-                    IdAppendage = "[Popup]",
+                    IdAppendage = "[Wide]",
                     Shade = 0x10,
                     Active = false
                 };
