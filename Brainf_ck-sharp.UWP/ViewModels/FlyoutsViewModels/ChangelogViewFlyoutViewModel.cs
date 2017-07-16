@@ -30,6 +30,10 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             // Create the output collection
             return new List<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<String>>>
             {
+                CreateChangelogEntry("1.2.0.0", 2017, 7, 25, new List<String>
+                {
+                    "Minor UI improvements in the acrylic brush effect"
+                }),
                 CreateChangelogEntry("1.2.0.0", 2017, 7, 18, new List<String>
                 {
                     "Added the byte overflow optional mode to both the console and the IDE",
