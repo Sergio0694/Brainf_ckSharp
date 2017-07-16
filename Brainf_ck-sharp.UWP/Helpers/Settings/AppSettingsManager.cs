@@ -99,6 +99,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
             SetValue(nameof(AppSettingsKeys.OverflowToggleMessageShown), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.ReviewPromptShown), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.AppStartups), 0u, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.InAppBlurEnabled), false, SettingSaveMode.SkipIfExisting);
         }
 
         /// <summary>

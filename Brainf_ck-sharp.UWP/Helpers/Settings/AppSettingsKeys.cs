@@ -9,6 +9,7 @@
         OverflowToggleMessageShown,
         ByteOverflowModeEnabled,
         ReviewPromptShown,
-        AppStartups
+        AppStartups,
+        InAppBlurEnabled
     }
 }

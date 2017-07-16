@@ -59,6 +59,10 @@ namespace Brainf_ck_sharp_UWP
             Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "en-US";
 #endif
 
+            // Settings
+            AppSettingsManager.Instance.InitializeSettings();
+            AppSettingsManager.Instance.IncrementStartupsCount();
+
             // Initialize the window content
             Shell shell = Window.Current.Content as Shell;
             if (shell == null)
@@ -109,10 +113,6 @@ namespace Brainf_ck_sharp_UWP
                     });
                 }
                 Window.Current.Content = shell;
-
-                // Settings
-                AppSettingsManager.Instance.InitializeSettings();
-                AppSettingsManager.Instance.IncrementStartupsCount();
 
                 // Sync the roaming source codes
                 Task.Run(() => SQLiteManager.Instance.TrySyncSharedCodesAsync());
