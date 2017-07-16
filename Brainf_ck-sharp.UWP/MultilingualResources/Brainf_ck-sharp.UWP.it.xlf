@@ -602,6 +602,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Sure!</source>
           <target state="translated">Certo!</target>
         </trans-unit>
+        <trans-unit id="ToggleBlur.Label" translate="yes" xml:space="preserve">
+          <source>Toggle blur mode</source>
+          <target state="translated">Cambia modalità blur</target>
+        </trans-unit>
       </group>
     </body>
   </file>

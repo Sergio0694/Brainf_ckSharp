@@ -6,6 +6,7 @@ using Brainf_ck_sharp_UWP.Messages.Actions;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
+using UICompositionAnimations.Helpers;
 
 namespace Brainf_ck_sharp_UWP.ViewModels
 {
@@ -79,6 +80,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         }
 
         #region Parameters
+
+        /// <summary>
+        /// Gets whether or not the current device is a desktop
+        /// </summary>
+        public bool DesktopMode => ApiInformationHelper.IsDesktop;
 
         // The current overflow mode to use
         private OverflowMode _OverflowMode;

@@ -32,12 +32,29 @@
     <SolidColorBrush x:Key="ElementsWideLightBrush"/>
     <SolidColorBrush x:Key="WideLightBrushDarkShadeBackground"/>
     
-    <!--Acrylic brush-->
+    <!--CommandBar/ContextMenu brush-->
     <brushes:CustomAcrylicBrush
         x:Key="InAppGrayAcrylicBrush"
         Mode="InAppBlur"
         BlurAmount="8"
         Tint="#FF222222"
+        TintMix="0.6"
+        NoiseTextureUri="/Assets/Misc/noise.png"/>
+
+    <!--Header host backdrop blur brush-->
+    <brushes:CustomAcrylicBrush
+        x:Key="HeaderHostBackdropBlurBrush"
+        Mode="HostBackdrop"
+        Tint="#FF1E1E1E"
+        TintMix="0.8"
+        NoiseTextureUri="/Assets/Misc/noise.png"/>
+
+    <!--Header in-app acrylic brush-->
+    <brushes:CustomAcrylicBrush
+        x:Key="HeaderInAppAcrylicBrush"
+        Mode="InAppBlur"
+        BlurAmount="8"
+        Tint="#FF1E1E1E"
         TintMix="0.6"
         NoiseTextureUri="/Assets/Misc/noise.png"/>
 </ResourceDictionary>

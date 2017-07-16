@@ -7,7 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:virtualKeyboard="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard"
     xmlns:header="using:Brainf_ck_sharp_UWP.UserControls.Header"
-    xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
     xmlns:views="using:Brainf_ck_sharp_UWP.Views"
     xmlns:stdinHeader="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader"
     xmlns:telerik="using:Telerik.UI.Xaml.Controls.Primitives"
@@ -15,12 +14,13 @@
     xmlns:controls="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls"
     xmlns:customCommandBar="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar"
     xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
+    xmlns:brushes="using:UICompositionAnimations.Brushes"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
     <UserControl.Resources>
         
-        <!--Buttons visibility converter-->
+        <!--Converters-->
         <converters:IndexToVisibilityConverter x:Key="IndexToVisibilityConverter"/>
     </UserControl.Resources>
 
@@ -50,18 +50,11 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             
-            <!--CompositionBorder-->
-            <xaml:CanvasControl x:Name="HeaderCanvas"/>
-            <Border 
-                x:Name="HeaderBorder"
-                Grid.Row="0"
-                Grid.RowSpan="2"/>
-            
             <!--Title placeholder-->
             <Grid 
-                x:Name="PCPlaceholderGrid"
                 Grid.Row="0"
-                Height="32">
+                Height="32"
+                Visibility="{x:Bind ViewModel.DesktopMode, FallbackValue=Collapsed}">
                 
                 <!--App title-->
                 <TextBlock
@@ -101,14 +94,18 @@
         <!--Commands prompt-->
         <Grid
             x:Name="OperatorsKeyboard"
-            Background="#FF121212"
             RelativePanel.Above="SharedCommandBar"
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True">
-
-            <!--CompositionBorder-->
-            <xaml:CanvasControl x:Name="KeyboardCanvas"/>
-            <Border x:Name="KeyboardBorder"/>
+            <Grid.Background>
+                <brushes:CustomAcrylicBrush
+                    Mode="HostBackdrop"
+                    FallbackColor="#FF121212"
+                    UnsupportedEffectFallbackColor="#FF121212"
+                    Tint="#FF101010"
+                    TintMix="0.9"
+                    NoiseTextureUri="/Assets/Misc/noise.png"/>
+            </Grid.Background>
             
             <!--Expandable keyboard pivot-->
             <inheritedControls:FixedRadExpanderControl
@@ -359,6 +356,13 @@
                     x:Uid="AboutButton"
                     Icon="&#xED15;"
                     Click="AboutButton_Click"/>
+                <customCommandBar:CustomCommandBarButton
+                    Visibility="{x:Bind ViewModel.DesktopMode, FallbackValue=Collapsed}"
+                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
+                    Label="Toggle blur mode"
+                    x:Uid="ToggleBlur"
+                    Icon="&#xE771;"
+                    Click="ToggleBlurModeButton_Click"/>
             </customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
         </customCommandBar:CommandBarWithButtonsAnimations>
 

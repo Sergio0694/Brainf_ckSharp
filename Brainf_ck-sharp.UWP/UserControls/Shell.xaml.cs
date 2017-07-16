@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Helpers;
@@ -22,7 +20,7 @@ using Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations;
-using UICompositionAnimations.Behaviours;
+using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers;
 using MemoryViewerFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState.MemoryViewerFlyout;
@@ -53,12 +51,16 @@ namespace Brainf_ck_sharp_UWP.UserControls
             });
             Console.ViewModel.IsEnabled = true;
 
-            // Hide the title placeholder if needed
+            // Apply the in-app blur on mobile devices
             if (ApiInformationHelper.IsMobileDevice)
             {
-                PCPlaceholderGrid.Visibility = Visibility.Collapsed;
-                KeyboardCanvas.Visibility = Visibility.Collapsed;
-                KeyboardBorder.Visibility = Visibility.Collapsed;
+                HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>("HeaderInAppAcrylicBrush");
+            }
+            else
+            {
+                // Apply the desired blur effect
+                AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.InAppBlurEnabled), out bool inAppBlur);
+                HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(inAppBlur ? "HeaderInAppAcrylicBrush" : "HeaderHostBackdropBlurBrush");
             }
 
             // Flyout management
@@ -113,27 +115,13 @@ namespace Brainf_ck_sharp_UWP.UserControls
         private const int StartupPromptsPopupDelay = 1400;
 
         // Initialize the effects
-        private async void Shell_Loaded(object sender, RoutedEventArgs e)
+        private void Shell_Loaded(object sender, RoutedEventArgs e)
         {
             // UI setup
             FadeCanvas.SetVisualOpacity(0);
             Messenger.Default.Send(new ConsoleStatusUpdateMessage(IDEStatus.Console, LocalizationManager.GetResource("Ready"), 0, 0));
             Console.AdjustTopMargin(HeaderGrid.ActualHeight + 8);
             IDE.AdjustTopMargin(HeaderGrid.ActualHeight);
-            if (ApiInformationHelper.IsMobileDevice)
-            {
-                await HeaderBorder.AttachCompositionInAppCustomAcrylicEffectAsync(HeaderBorder, 8, 800,
-                    Color.FromArgb(byte.MaxValue, 30, 30, 30), 0.6f, null,
-                    HeaderCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
-                OperatorsKeyboard.Background = new SolidColorBrush(Color.FromArgb(byte.MaxValue, 10, 10, 10));
-            }
-            else
-            {
-                await HeaderBorder.AttachCompositionCustomAcrylicEffectAsync(Color.FromArgb(byte.MaxValue, 30, 30, 30), 0.8f,
-                    HeaderCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
-                await KeyboardBorder.AttachCompositionCustomAcrylicEffectAsync(Color.FromArgb(byte.MaxValue, 16, 16, 16), 0.95f,
-                    KeyboardCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
-            }
 
             // Disable the swipe gestures in the keyboard pivot
             ScrollViewer scroller = CommandsPivot.FindChild<ScrollViewer>();
@@ -255,6 +243,14 @@ namespace Brainf_ck_sharp_UWP.UserControls
         {
             DevInfoFlyout flyout = new DevInfoFlyout();
             FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("About"), flyout, new Thickness(0), FlyoutDisplayMode.ActualHeight).Forget();
+        }
+
+        // Changes the current header blur mode
+        private void ToggleBlurModeButton_Click(object sender, RoutedEventArgs e)
+        {
+            AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.InAppBlurEnabled), out bool inAppBlur);
+            AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.InAppBlurEnabled), !inAppBlur, SettingSaveMode.OverwriteIfExisting);
+            HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(inAppBlur ? "HeaderHostBackdropBlurBrush" :"HeaderInAppAcrylicBrush");
         }
     }
 }

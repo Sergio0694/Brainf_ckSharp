@@ -565,4 +565,7 @@ This way he'll be able to help you!</value>
     <value>Are you enjoying it so far?</value>
     <comment>It's talking about the app itself</comment>
   </data>
+  <data name="ToggleBlur.Label" xml:space="preserve">
+    <value>Toggle blur mode</value>
+  </data>
 </root>

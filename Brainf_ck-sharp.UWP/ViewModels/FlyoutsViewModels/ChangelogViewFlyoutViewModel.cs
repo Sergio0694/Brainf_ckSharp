@@ -32,7 +32,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             {
                 CreateChangelogEntry("1.2.0.0", 2017, 7, 25, new List<String>
                 {
-                    "Minor UI improvements in the acrylic brush effect"
+                    "Added an option on Windows 10 Desktop to toggle between the classic and in-app acrylic brush effect",
+                    "Minor UI improvements when running the app on a high-DPI screen"
                 }),
                 CreateChangelogEntry("1.2.0.0", 2017, 7, 18, new List<String>
                 {
