@@ -60,7 +60,10 @@
             <!--Title placeholder-->
             <Grid 
                 x:Name="PCPlaceholderGrid"
-                Grid.Row="0">
+                Grid.Row="0"
+                Height="32">
+                
+                <!--App title-->
                 <TextBlock
                     Foreground="White"
                     Text="Brainf*ck#"
@@ -68,9 +71,6 @@
                     FontWeight="SemiLight"
                     Margin="12,0,0,0"
                     VerticalAlignment="Center"/>
-                <Rectangle
-                    Height="32"
-                    HorizontalAlignment="Stretch"/>
             </Grid>
             
             <!--Header with pivot buttons-->
