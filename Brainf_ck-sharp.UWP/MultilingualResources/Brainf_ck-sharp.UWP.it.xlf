@@ -638,6 +638,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Same line</source>
           <target state="translated">Stessa riga</target>
         </trans-unit>
+        <trans-unit id="TabLength.Text" translate="yes" xml:space="preserve">
+          <source>Tab length</source>
+          <target state="translated">Lunghezza tabulazione</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -486,4 +486,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="SameLine" xml:space="preserve">
     <value>Stessa riga</value>
   </data>
+  <data name="TabLength.Text" xml:space="preserve">
+    <value>Lunghezza tabulazione</value>
+  </data>
 </root>

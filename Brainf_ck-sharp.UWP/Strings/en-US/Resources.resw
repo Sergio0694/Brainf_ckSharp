@@ -592,4 +592,7 @@ This way he'll be able to help you!</value>
   <data name="SettingsButton.Label" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="TabLength.Text" xml:space="preserve">
+    <value>Tab length</value>
+  </data>
 </root>

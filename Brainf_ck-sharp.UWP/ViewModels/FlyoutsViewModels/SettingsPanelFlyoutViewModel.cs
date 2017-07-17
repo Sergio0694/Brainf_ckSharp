@@ -58,6 +58,29 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         }
 
         /// <summary>
+        /// Gets the collection of the available tab lengths
+        /// </summary>
+        [NotNull]
+        public IReadOnlyCollection<int> TabLengthOptions { get; } = new[] { 4, 6, 8, 10, 12 };
+
+        private int _TabLengthSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength));
+
+        /// <summary>
+        /// Gets or sets the selected index for the tab length setting
+        /// </summary>
+        public int TabLengthSelectedIndex
+        {
+            get => _TabLengthSelectedIndex;
+            set
+            {
+                if (Set(ref _TabLengthSelectedIndex, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.TabLength), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the collection of the available brackets styles
         /// </summary>
         [NotNull]

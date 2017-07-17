@@ -9,14 +9,17 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
+    <!--Root-->
     <StackPanel Margin="12,12,16,20">
         
+        <!--IDE-->
         <TextBlock
             Text="IDE"
             FontWeight="Bold"
             FontSize="20"
             Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
 
+        <!--Auto indent-->
         <TextBlock
             Margin="0,8,0,0"
             TextWrapping="Wrap"
@@ -25,6 +28,7 @@
             Text="Auto indent brackets"/>
         <ToggleSwitch IsOn="{x:Bind ViewModel.AutoindentBrackets, Mode=TwoWay}"/>
 
+        <!--Brackets style-->
         <TextBlock
             Margin="0,4,0,0"
             Text="Brackets style"
@@ -36,6 +40,18 @@
             IsEnabled="{x:Bind ViewModel.AutoindentBrackets, Mode=OneWay}"
             MinWidth="180"/>
 
+        <!--Tab length-->
+        <TextBlock
+            Margin="0,12,0,0"
+            Text="Tab length"
+            x:Uid="TabLength"/>
+        <inheritedControls:AnimatedComboBox
+            Margin="0,8,0,0"
+            ItemsSource="{x:Bind ViewModel.TabLengthOptions}"
+            SelectedIndex="{x:Bind ViewModel.TabLengthSelectedIndex, Mode=TwoWay}"
+            MinWidth="180"/>
+
+        <!--UI-->
         <TextBlock
             Margin="0,16,0,0"
             Text="UI"
@@ -43,6 +59,7 @@
             FontSize="20"
             Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
 
+        <!--Blur mode-->
         <TextBlock
             Margin="0,8,0,0"
             x:Uid="BlurModeTitle"

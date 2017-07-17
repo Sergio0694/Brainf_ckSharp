@@ -15,6 +15,7 @@
         // Settings panel
         InAppBlurMode,
         AutoIndentBrackets,
-        BracketsStyle
+        BracketsStyle,
+        TabLength
     }
 }

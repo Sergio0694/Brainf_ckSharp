@@ -45,6 +45,7 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             Loaded += IDEView_Loaded;
             this.InitializeComponent();
+            ApplyCustomTabSpacing();
             DataContext = new IDEViewModel(EditBox.Document, PickSaveNameAsync, () => BreakpointsInfo.Keys);
             ViewModel.PlayRequested += ViewModel_PlayRequested;
             ViewModel.LoadedCodeChanged += (_, e) =>
@@ -64,6 +65,7 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.TextCleared += (_, e) =>
             {
                 EditBox.ResetTextAndUndoStack();
+                ApplyCustomTabSpacing();
                 ClearBreakpoints();
                 Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
             };
@@ -71,6 +73,15 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.NewLineInsertionRequested += ViewModel_NewLineInsertionRequested;
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             _PreviousText = text;
+        }
+
+        // Updates the tab length setting
+        private void ApplyCustomTabSpacing()
+        {
+            int
+                setting = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength)),
+                spaces = 4 + setting * 2; // Spacing options range from 4 to 12 at indexes [0..4]
+            EditBox.SetTabLength(spaces);
         }
 
         // Inserts a new line at the current position
@@ -566,6 +577,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 {
                     // Load a stream with the new text to also reset the undo stack
                     await EditBox.LoadTextAsync(code);
+                    ApplyCustomTabSpacing();
                     start = 0;
                     end = code.Length;
                 }
