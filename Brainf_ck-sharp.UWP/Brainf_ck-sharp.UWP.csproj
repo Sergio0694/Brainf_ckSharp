@@ -109,8 +109,10 @@
     <Compile Include="AttachedProperties\Brainf_ckCodeInlineFormatter.cs" />
     <Compile Include="AttachedProperties\BulletListHelper.cs" />
     <Compile Include="AttachedProperties\CharacterToRotationHelper.cs" />
+    <Compile Include="AttachedProperties\CustomPolygonBorderAngleHelper.cs" />
     <Compile Include="AttachedProperties\RunInlineHelper.cs" />
     <Compile Include="Converters\BoolToAccentBrushOrFallbackConverter.cs" />
+    <Compile Include="Converters\BoolToColorBrushConverter.cs" />
     <Compile Include="Converters\DateTimeToDateStringConverter.cs" />
     <Compile Include="Converters\DisplayScalingToMarginConverter.cs" />
     <Compile Include="Converters\SourceCodeTitleScoreToDisplayStringConverter.cs" />
@@ -247,6 +249,9 @@
     </Compile>
     <Compile Include="UserControls\CustomControls\UnicodeNonVisibleCharactersGroupDisplayControl.xaml.cs">
       <DependentUpon>UnicodeNonVisibleCharactersGroupDisplayControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\IDEThemes\IDEThemeDropDownPreviewTemplate.xaml.cs">
+      <DependentUpon>IDEThemeDropDownPreviewTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DataTemplates\IDEThemes\IDEThemePreviewTemplate.xaml.cs">
       <DependentUpon>IDEThemePreviewTemplate.xaml</DependentUpon>
@@ -548,6 +553,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\CustomControls\ErrorCharacterDisplayControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DataTemplates\IDEThemes\IDEThemeDropDownPreviewTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

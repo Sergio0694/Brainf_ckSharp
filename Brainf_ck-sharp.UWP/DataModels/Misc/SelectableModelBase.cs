@@ -1,12 +1,11 @@
-﻿using System;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 
 namespace Brainf_ck_sharp_UWP.DataModels.Misc
 {
     /// <summary>
     /// A base class for a selectable model that contains an item of a given type
     /// </summary>
-    public abstract class SelectableModelBase<T> : ViewModelBase, IDisposable
+    public abstract class SelectableModelBase<T> : ViewModelBase
     {
         /// <summary>
         /// Creates a new instance around the input item
@@ -22,22 +21,8 @@ namespace Brainf_ck_sharp_UWP.DataModels.Misc
         public bool IsSelected
         {
             get => _IsSelected;
-            set
-            {
-                if (Set(ref _IsSelected, value))
-                    IsSelectedPropertyChanged?.Invoke(this, value);
-            }
+            set => Set(ref _IsSelected, value);
         }
-
-        /// <summary>
-        /// Raised when the IsSelected property value is changed
-        /// </summary>
-        public event EventHandler<bool> IsSelectedPropertyChanged;
-
-        /// <summary>
-        /// Removes the current event handlers in this instance
-        /// </summary>
-        public void Dispose() => IsSelectedPropertyChanged = null;
 
         private T _InnerValue;
 

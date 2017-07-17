@@ -11,33 +11,11 @@
     <!--Root-->
     <StackPanel>
 
-        <!--Visual states-->
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState x:Name="Default">
-                    <VisualState.Setters>
-                        <Setter 
-                            Target="HeaderHighlightBorder.Background"
-                            Value="Transparent"/>
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="Highlight">
-                    <VisualState.Setters>
-                        <Setter 
-                            Target="HeaderHighlightBorder.Background"
-                            Value="#20FFFFFF"/>
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-
         <!--Theme title-->
         <Border 
             x:Name="HeaderBorder"
-            Background="#20000000">
-            <Border
-                Background="Transparent"
-                x:Name="HeaderHighlightBorder">
+            Background="#FF333333">
+            <Border Background="#20000000">
                 <TextBlock
                     IsTextScaleFactorEnabled="False"
                     Margin="12,4,0,4"
@@ -56,7 +34,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
-            <!--breakpoints pane-->
+            <!--Breakpoints pane-->
             <Canvas 
                 Background="#FF333333"
                 x:Name="BreakpointsCanvas"/>

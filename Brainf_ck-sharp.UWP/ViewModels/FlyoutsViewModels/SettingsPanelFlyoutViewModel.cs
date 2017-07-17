@@ -114,9 +114,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         /// Gets the collection of the available IDE themes
         /// </summary>
         [NotNull]
-        public IReadOnlyCollection<SelectableIDEThemeInfo> AvailableIDEThemes { get; } = new[]
+        public IReadOnlyList<SelectableIDEThemeInfo> AvailableIDEThemes { get; } = new[]
         {
-            new SelectableIDEThemeInfo(CodeThemes.Default),
+            new SelectableIDEThemeInfo(CodeThemes.Default) { IsSelected = true },
             new SelectableIDEThemeInfo(CodeThemes.Monokai),
             new SelectableIDEThemeInfo(CodeThemes.Dracula),
             new SelectableIDEThemeInfo(CodeThemes.Vim)
@@ -134,6 +134,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             {
                 if (Set(ref _IDEThemeSelectedIndex, value))
                 {
+                    for (int i = 0; i < AvailableIDEThemes.Count; i++)
+                        AvailableIDEThemes[i].IsSelected = i == value;
                     //AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.BracketsStyle), value, SettingSaveMode.OverwriteIfExisting);
                 }
             }

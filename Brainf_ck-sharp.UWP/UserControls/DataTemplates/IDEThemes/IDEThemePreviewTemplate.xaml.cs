@@ -2,7 +2,6 @@
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using UICompositionAnimations.Helpers.PointerEvents;
 
 namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes
 {
@@ -33,7 +32,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes
             {
                 @this.TitleBlock.Text = info.Name;
                 @this.BackgroundGrid.Background = info.Background.ToBrush().With(b => b.Opacity = 0.8);
-                @this.BreakpointsCanvas.Background = info.BreakpointsPaneBackground.ToBrush().With(b => b.Opacity = 0.8);
+                @this.BreakpointsCanvas.Background = @this.HeaderBorder.Background = info.BreakpointsPaneBackground.ToBrush().With(b => b.Opacity = 0.8);
                 @this.CommaRun.Foreground = info.HighlightMap[','].ToBrush();
                 @this.OperatorsRun.Foreground = @this.OperatorsRun2.Foreground = @this.OperatorsRun3.Foreground = info.HighlightMap['+'].ToBrush();
                 @this.BracketRun.Foreground = @this.BracketRun2.Foreground = info.HighlightMap['['].ToBrush();
