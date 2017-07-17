@@ -35,7 +35,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                     "Added a settings panel with new IDE formatting options",
                     "Added an option on Windows 10 Desktop to toggle between the classic and in-app acrylic brush effect",
                     "It is now possible to use the TAB key when writing text in the IDE",
-                    "Minor UI improvements when running the app on a high-DPI screen"
+                    "UI tweaks when running the app on a high-DPI screen",
+                    "Minor UI adjustments"
                 }),
                 CreateChangelogEntry("1.2.0.0", 2017, 7, 18, new List<String>
                 {

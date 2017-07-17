@@ -18,6 +18,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using Brainf_ck_sharp;
 using Brainf_ck_sharp.ReturnTypes;
+using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.EventArgs;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
@@ -187,7 +188,8 @@ namespace Brainf_ck_sharp_UWP.Views
             DrawLineNumbers();
             DrawBracketGuides(null).ContinueWith(t =>
             {
-                ViewModel.UpdateIndentationInfo(t.Result).Forget();
+                if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
+                ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
             }, TaskScheduler.FromCurrentSynchronizationContext());
             EditBox.Document.GetText(TextGetOptions.None, out String code);
             ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
@@ -229,7 +231,7 @@ namespace Brainf_ck_sharp_UWP.Views
         /// Redraws the column guides if necessary
         /// </summary>
         /// <param name="code">The current text, if already available</param>
-        private async Task<IReadOnlyList<IndentationCoordinateEntry>> DrawBracketGuides(String code)
+        private async Task<AsyncOperationResult<IReadOnlyList<IndentationCoordinateEntry>>> DrawBracketGuides(String code)
         {
             // Get the text, clear the current guides and make sure the syntax is currently valid
             _BracketGuidesCts?.Cancel();
@@ -243,8 +245,11 @@ namespace Brainf_ck_sharp_UWP.Views
             {
                 BracketGuidesCanvas.Children.Clear();
                 _Brackets = null;
+                bool cancelled = _BracketGuidesCts.IsCancellationRequested;
                 BracketGuidesSemaphore.Release();
-                return null;
+                return cancelled 
+                    ? AsyncOperationStatus.Canceled 
+                    : AsyncOperationResult<IReadOnlyList<IndentationCoordinateEntry>>.Explicit(null);
             }
 
             // Build the indexes for the current state
@@ -272,7 +277,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 _BracketGuidesCts.IsCancellationRequested)
             {
                 BracketGuidesSemaphore.Release();
-                return _Brackets;
+                return AsyncOperationResult<IReadOnlyList<IndentationCoordinateEntry>>.Explicit(_Brackets);
             }
             _Brackets = workingSet.Item1;
             BracketGuidesCanvas.Children.Clear();
@@ -479,7 +484,8 @@ namespace Brainf_ck_sharp_UWP.Views
             {
                 DrawBracketGuides(text).ContinueWith(t =>
                 {
-                    ViewModel.UpdateIndentationInfo(t.Result).Forget();
+                    if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
+                    ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
 
@@ -618,7 +624,8 @@ namespace Brainf_ck_sharp_UWP.Views
                 DrawLineNumbers();
                 DrawBracketGuides(code).ContinueWith(t =>
                 {
-                    ViewModel.UpdateIndentationInfo(t.Result).Forget();
+                    if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
+                    ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
                 ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
                 ViewModel.SendMessages(code);
