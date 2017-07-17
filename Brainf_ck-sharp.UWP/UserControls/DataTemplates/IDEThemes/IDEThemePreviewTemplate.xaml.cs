@@ -31,8 +31,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes
             if (info != null)
             {
                 @this.TitleBlock.Text = info.Name;
-                @this.BackgroundGrid.Background = info.Background.ToBrush();
-                @this.BreakpointsCanvas.Background = info.BreakpointsPaneBackground.ToBrush();
+                @this.BackgroundGrid.Background = info.Background.ToBrush().With(b => b.Opacity = 0.8);
+                @this.BreakpointsCanvas.Background = info.BreakpointsPaneBackground.ToBrush().With(b => b.Opacity = 0.8);
                 @this.CommaRun.Foreground = info.HighlightMap[','].ToBrush();
                 @this.OperatorsRun.Foreground = @this.OperatorsRun2.Foreground = @this.OperatorsRun3.Foreground = info.HighlightMap['+'].ToBrush();
                 @this.BracketRun.Foreground = @this.BracketRun2.Foreground = info.HighlightMap['['].ToBrush();

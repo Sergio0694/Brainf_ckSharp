@@ -84,7 +84,7 @@
             Margin="0,8,0,20"
             ItemsSource="{x:Bind ViewModel.AvailableIDEThemes}"
             SelectedIndex="{x:Bind ViewModel.IDEThemeSelectedIndex, Mode=TwoWay}"
-            ItemContainerStyle="{StaticResource ComboBoxItemStyleWithoutPadding}"
+            ItemContainerStyle="{StaticResource ComboBoxThemePreviewStyle}"
             MinWidth="180"
             MinHeight="108"
             Padding="1,0,0,1">
