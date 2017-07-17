@@ -10,7 +10,9 @@
     d:DesignWidth="400">
 
     <!--Root-->
-    <Grid x:Name="RootGrid">
+    <Grid 
+        x:Name="RootGrid"
+        Background="{StaticResource PopupInAppAcrylicBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="52"/>
             <RowDefinition Height="*"/>
@@ -46,13 +48,6 @@
             BorderBrush="#40FFFFFF"
             IsHitTestVisible="False"
             Canvas.ZIndex="1"/>
-
-        <!--Acrylic border-->
-        <Border x:Name="BlurBorder"
-                Grid.Row="0"
-                Grid.RowSpan="3"/>
-        <xaml:CanvasControl x:Name="Win2DCanvas"
-                            Grid.Row="0"/>
         
         <!--Header-->
         <Grid Grid.Row="0"
