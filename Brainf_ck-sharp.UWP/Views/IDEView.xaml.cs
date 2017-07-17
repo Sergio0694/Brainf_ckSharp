@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Devices.Input;
 using Windows.Foundation;
+using Windows.System;
 using Windows.UI;
 using Windows.UI.Input;
 using Windows.UI.Text;
@@ -817,7 +818,15 @@ namespace Brainf_ck_sharp_UWP.Views
         #endregion
 
         // Begins a new undo group when the user presses a keyboard key (before the text is actually changed)
-        private void EditBox_OnKeyDown(object sender, KeyRoutedEventArgs e) => EditBox.Document.BeginUndoGroup();
+        private void EditBox_OnKeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            EditBox.Document.BeginUndoGroup();
+            if (e.Key == VirtualKey.Tab)
+            {
+                EditBox.Document.Selection.TypeText("\t");
+                e.Handled = true;
+            }
+        }
 
         // Adjusts the vertical scaling of the indentation indicators
         private void IndentationInfoList_OnSizeChanged(object sender, SizeChangedEventArgs e)

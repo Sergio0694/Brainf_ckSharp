@@ -30,9 +30,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             // Create the output collection
             return new List<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<String>>>
             {
-                CreateChangelogEntry("1.2.0.0", 2017, 7, 25, new List<String>
+                CreateChangelogEntry("1.3.0.0", 2017, 7, 25, new List<String>
                 {
+                    "Added a settings panel with new IDE formatting options",
                     "Added an option on Windows 10 Desktop to toggle between the classic and in-app acrylic brush effect",
+                    "It is now possible to use the TAB key when writing text in the IDE",
                     "Minor UI improvements when running the app on a high-DPI screen"
                 }),
                 CreateChangelogEntry("1.2.0.0", 2017, 7, 18, new List<String>
