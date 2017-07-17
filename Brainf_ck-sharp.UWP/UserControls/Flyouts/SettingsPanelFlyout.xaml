@@ -21,12 +21,14 @@
             Margin="0,8,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Center"
+            x:Uid="AutoIndentTitle"
             Text="Auto indent brackets"/>
         <ToggleSwitch IsOn="{x:Bind ViewModel.AutoindentBrackets, Mode=TwoWay}"/>
 
         <TextBlock
             Margin="0,4,0,0"
-            Text="Brackets style"/>
+            Text="Brackets style"
+            x:Uid="BracketsStyleTitle"/>
         <inheritedControls:AnimatedComboBox
             Margin="0,8,0,0"
             ItemsSource="{x:Bind ViewModel.BracketsStyleOptions}"
@@ -43,6 +45,7 @@
 
         <TextBlock
             Margin="0,8,0,0"
+            x:Uid="BlurModeTitle"
             Text="Preferred blur mode"/>
         <inheritedControls:AnimatedComboBox
             Margin="0,8,0,0"

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using GalaSoft.MvvmLight;
@@ -17,8 +18,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         [NotNull]
         public IReadOnlyCollection<String> BlurModeOptions { get; } = new[]
         {
-            "Background blur",
-            "In-app blur"
+            LocalizationManager.GetResource("BackgroundBlur"),
+            LocalizationManager.GetResource("InAppBlur")
         };
 
         private int _BlurModeSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.InAppBlurMode));
@@ -62,8 +63,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         [NotNull]
         public IReadOnlyCollection<String> BracketsStyleOptions { get; } = new[]
         {
-            "New line",
-            "Same line"
+            LocalizationManager.GetResource("NewLine"),
+            LocalizationManager.GetResource("SameLine")
         };
 
         private int _BracketsStyleSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.BracketsStyle));
