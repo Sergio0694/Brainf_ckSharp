@@ -9,10 +9,15 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
     /// </summary>
     public sealed class Brainf_ckFormatterHelper
     {
-        private Brainf_ckFormatterHelper() => CurrentTheme = CodeThemeSelector.Vim;
+        // Private constructor that loads the initial theme
+        private Brainf_ckFormatterHelper() => CurrentTheme = CodeThemes.Default;
 
         private static Brainf_ckFormatterHelper _Instance;
 
+        /// <summary>
+        /// Gets the singleton instance of the class with the current theme ready to use
+        /// </summary>
+        [NotNull]
         public static Brainf_ckFormatterHelper Instance => _Instance ?? (_Instance = new Brainf_ckFormatterHelper());
 
         /// <summary>
