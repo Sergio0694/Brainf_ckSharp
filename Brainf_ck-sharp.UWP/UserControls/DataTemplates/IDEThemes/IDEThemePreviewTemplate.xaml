@@ -115,10 +115,9 @@
                 VerticalAlignment="Top"
                 Y1="0"
                 Y2="20"
-                StrokeDashArray="4">
-                <Line.Stroke>
-                    <SolidColorBrush Color="{Binding BracketsGuideColor, FallbackValue=#FFD3D3D3}"/>
-                </Line.Stroke>
+                StrokeDashArray="4"
+                Stroke="#FFD3D3D3"
+                x:Name="BracketsGuide">
                 <Line.RenderTransform>
                     <TranslateTransform
                         X="1"

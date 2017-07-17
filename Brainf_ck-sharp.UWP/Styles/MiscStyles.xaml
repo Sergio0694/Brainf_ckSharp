@@ -3,8 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
     xmlns:customCommandBar="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar"
-    xmlns:lights="using:UICompositionAnimations.Lights"
-    xmlns:ideThemes="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes">
+    xmlns:lights="using:UICompositionAnimations.Lights">
 
     <!--Custom Pivot without margins and headers-->
     <Style TargetType="Pivot" x:Key="PivotCustomStyle">

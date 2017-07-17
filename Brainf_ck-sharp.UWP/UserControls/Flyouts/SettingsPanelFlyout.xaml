@@ -98,9 +98,7 @@
                     </helpers:ComboBoxDataTemplateSelector.SelectedTemplate>
                     <helpers:ComboBoxDataTemplateSelector.DropDownTemplate>
                         <DataTemplate>
-                            <ideThemes:IDEThemeDropDownPreviewTemplate 
-                                MinWidth="180"
-                                Theme="{Binding}"/>
+                            <ideThemes:IDEThemeDropDownPreviewTemplate Theme="{Binding}"/>
                         </DataTemplate>
                     </helpers:ComboBoxDataTemplateSelector.DropDownTemplate>
                 </helpers:ComboBoxDataTemplateSelector>

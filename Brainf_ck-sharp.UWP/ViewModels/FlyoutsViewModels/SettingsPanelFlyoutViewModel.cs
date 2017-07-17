@@ -119,7 +119,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             new SelectableIDEThemeInfo(CodeThemes.Default) { IsSelected = true },
             new SelectableIDEThemeInfo(CodeThemes.Monokai),
             new SelectableIDEThemeInfo(CodeThemes.Dracula),
-            new SelectableIDEThemeInfo(CodeThemes.Vim)
+            new SelectableIDEThemeInfo(CodeThemes.Vim),
+            new SelectableIDEThemeInfo(CodeThemes.OneDark)
         };
 
         private int _IDEThemeSelectedIndex = 0;

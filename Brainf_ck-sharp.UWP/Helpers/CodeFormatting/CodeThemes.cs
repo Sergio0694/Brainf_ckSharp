@@ -1,5 +1,4 @@
 ﻿using Windows.UI;
-using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
 using JetBrains.Annotations;
 using Microsoft.Toolkit.Uwp;
@@ -54,5 +53,16 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
                                               "#FF171717".ToColor(), "#FF252525".ToColor(), "#FF727272".ToColor(),
                                               "#FF727272".ToColor(), 8, "#FF99B96F".ToColor(),
                                               "#FFDFDFDF".ToColor(), "#FFDFDFDF".ToColor(), "#FF999BBC".ToColor(), "#FFFFB3B2".ToColor(), "#FFFFBC77".ToColor()));
+
+        private static IDEThemeInfo _OneDark;
+
+        /// <summary>
+        /// Gets the Vim from the old-school code editor
+        /// </summary>
+        [NotNull]
+        public static IDEThemeInfo OneDark => _OneDark ?? (_OneDark = new IDEThemeInfo(
+                                                  "#FF282C34".ToColor(), "#FF383E49".ToColor(), "#FF5A5A5A".ToColor(),
+                                                  "#FF3C4049".ToColor(), null, "#FF5C6370".ToColor(),
+                                                  "#FFC0C0C0".ToColor(), "#FF56B6C2".ToColor(), "#FFABB2BF".ToColor(), "#FFD19A66".ToColor(), "#FFE06C75".ToColor(), "One Dark"));
     }
 }

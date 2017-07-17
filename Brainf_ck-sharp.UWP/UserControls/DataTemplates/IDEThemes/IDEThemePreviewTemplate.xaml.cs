@@ -1,5 +1,6 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 
@@ -40,6 +41,10 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes
                 @this.LineNumbersBlock.Foreground = info.LineNumberColor.ToBrush();
                 @this.CommentRun.Foreground = @this.CommentRun2.Foreground = info.CommentsColor.ToBrush();
                 @this.DotRun.Foreground = info.HighlightMap['.'].ToBrush();
+                @this.BracketsGuide.Stroke = info.BracketsGuideColor.ToBrush();
+                @this.BracketsGuide.StrokeDashArray = info.BracketsGuideStrokesLength.HasValue
+                    ? new DoubleCollection { info.BracketsGuideStrokesLength.Value }
+                    : null;
             }
         }
     }
