@@ -352,7 +352,6 @@
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <AppBarSeparator/>
                 <customCommandBar:CustomCommandBarButton
-                    Visibility="{x:Bind ViewModel.DesktopMode, FallbackValue=Collapsed}"
                     Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Settings"
                     x:Uid="SettingsButton"
