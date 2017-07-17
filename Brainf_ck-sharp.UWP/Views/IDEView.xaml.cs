@@ -22,7 +22,7 @@ using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Messages;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
 using Brainf_ck_sharp_UWP.Messages.UI;
@@ -384,6 +384,12 @@ namespace Brainf_ck_sharp_UWP.Views
                         // Open [ bracket
                         if (range.Character == '[')
                         {
+                            // Get the current settings
+                            bool autoFormat = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutoIndentBrackets));
+                            int formatMode = autoFormat
+                                ? AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.BracketsStyle))
+                                : default(int);
+
                             // Edge case: the user was already on an empty and indented line when opening the bracket
                             bool edge = false;
                             int lastCr = trailer.LastIndexOf('\r');
@@ -393,7 +399,7 @@ namespace Brainf_ck_sharp_UWP.Views
                                 String lastLine = trailer.Substring(lastCr, trailer.Length - lastCr);
                                 if (lastLine.Skip(1).All(c => c == '\t') && lastLine.Length == indents + 1)
                                 {
-                                    EditBox.Document.Selection.TypeText($"\r{tabs}\t\r{tabs}]");
+                                    EditBox.Document.Selection.TypeText(autoFormat ? $"\r{tabs}\t\r{tabs}]" : "]");
                                     edge = true;
                                 }
                             }
@@ -401,21 +407,29 @@ namespace Brainf_ck_sharp_UWP.Views
                             // Edge case: first line in the document
                             if (range.StartPosition == 0)
                             {
-                                EditBox.Document.Selection.TypeText($"\r{tabs}\t\r{tabs}]");
+                                EditBox.Document.Selection.TypeText(autoFormat ? $"\r{tabs}\t\r{tabs}]" : "]");
                                 edge = true;
                             }
 
                             // Default autocomplete: new line and [ ] brackets
                             if (!edge)
                             {
-                                range.Delete(TextRangeUnit.Character, 1);
-                                EditBox.Document.Selection.TypeText($"\r{tabs}[\r{tabs}\t\r{tabs}]");
+                                if (autoFormat)
+                                {
+                                    if (formatMode == 0) // New line
+                                    {
+                                        range.Delete(TextRangeUnit.Character, 1);
+                                        EditBox.Document.Selection.TypeText($"\r{tabs}[\r{tabs}\t\r{tabs}]");
+                                    }
+                                    else EditBox.Document.Selection.TypeText($"\r{tabs}\t\r{tabs}]");
+                                }
+                                else EditBox.Document.Selection.TypeText("]");
                             }
 
                             // Apply the right color and move the selection at the center of the brackets
                             ITextRange bracketsRange = EditBox.Document.GetRange(start, EditBox.Document.Selection.EndPosition);
                             bracketsRange.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar('[');
-                            EditBox.Document.Selection.Move(TextRangeUnit.Character, -(indents + 2));
+                            EditBox.Document.Selection.Move(TextRangeUnit.Character, -(autoFormat ? indents + 2 : 1));
                             DrawLineNumbers();
                             textChanged = true;
                         }

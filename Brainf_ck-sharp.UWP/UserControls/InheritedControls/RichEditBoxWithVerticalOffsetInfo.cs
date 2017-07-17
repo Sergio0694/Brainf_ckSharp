@@ -23,6 +23,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
             Loaded += (s, e) =>
             {
                 _TemplateScrollBar = _TemplateScrollViewer.FindChild<ScrollBar>();
+                if (_TemplateScrollBar == null) throw new NullReferenceException("Invalid template");
                 _TemplateScrollBar.Margin = ScrollBarMargin;
             };
         }
