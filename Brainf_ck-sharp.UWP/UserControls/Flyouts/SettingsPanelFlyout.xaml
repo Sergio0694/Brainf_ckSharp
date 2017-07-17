@@ -5,12 +5,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
+    xmlns:ideThemes="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes"
     mc:Ignorable="d"
-    d:DesignHeight="300"
+    d:DesignHeight="800"
     d:DesignWidth="400">
 
     <!--Root-->
-    <StackPanel Margin="12,12,16,20">
+    <StackPanel Margin="12,12,16,0">
         
         <!--IDE-->
         <TextBlock
@@ -35,6 +36,7 @@
             x:Uid="BracketsStyleTitle"/>
         <inheritedControls:AnimatedComboBox
             Margin="0,8,0,0"
+            ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
             ItemsSource="{x:Bind ViewModel.BracketsStyleOptions}"
             SelectedIndex="{x:Bind ViewModel.BracketsStyleSelectedIndex, Mode=TwoWay}"
             IsEnabled="{x:Bind ViewModel.AutoindentBrackets, Mode=OneWay}"
@@ -47,6 +49,7 @@
             x:Uid="TabLength"/>
         <inheritedControls:AnimatedComboBox
             Margin="0,8,0,0"
+            ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
             ItemsSource="{x:Bind ViewModel.TabLengthOptions}"
             SelectedIndex="{x:Bind ViewModel.TabLengthSelectedIndex, Mode=TwoWay}"
             MinWidth="180"/>
@@ -66,9 +69,30 @@
             Text="Preferred blur mode"/>
         <inheritedControls:AnimatedComboBox
             Margin="0,8,0,0"
+            ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
             ItemsSource="{x:Bind ViewModel.BlurModeOptions}"
             SelectedIndex="{x:Bind ViewModel.BlurModeSelectedIndex, Mode=TwoWay}"
             IsEnabled="{x:Bind ViewModel.HostBlurOptionSupported}"
             MinWidth="180"/>
+
+        <!--IDE theme-->
+        <TextBlock
+            Margin="0,12,0,0"
+            Text="IDE theme"
+            x:Uid="IDETheme"/>
+        <inheritedControls:AnimatedComboBox
+            Margin="0,8,0,20"
+            ItemsSource="{x:Bind ViewModel.AvailableIDEThemes}"
+            SelectedIndex="{x:Bind ViewModel.IDEThemeSelectedIndex, Mode=TwoWay}"
+            ItemContainerStyle="{StaticResource ComboBoxItemStyleWithoutPadding}"
+            MinWidth="180"
+            MinHeight="108"
+            Padding="1,0,0,1">
+            <inheritedControls:AnimatedComboBox.ItemTemplate>
+                <DataTemplate>
+                    <ideThemes:IDEThemePreviewTemplate Theme="{Binding}"/>
+                </DataTemplate>
+            </inheritedControls:AnimatedComboBox.ItemTemplate>
+        </inheritedControls:AnimatedComboBox>
     </StackPanel>
 </UserControl>

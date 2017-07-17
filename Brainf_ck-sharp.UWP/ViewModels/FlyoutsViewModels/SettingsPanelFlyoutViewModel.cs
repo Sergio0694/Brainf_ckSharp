@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using GalaSoft.MvvmLight;
@@ -103,6 +105,35 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 if (Set(ref _BracketsStyleSelectedIndex, value))
                 {
                     AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.BracketsStyle), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the collection of the available IDE themes
+        /// </summary>
+        [NotNull]
+        public IReadOnlyCollection<IDEThemeInfo> AvailableIDEThemes { get; } = new[]
+        {
+            CodeThemes.Default,
+            CodeThemes.Monokai,
+            CodeThemes.Dracula,
+            CodeThemes.Vim
+        };
+
+        private int _IDEThemeSelectedIndex = 0;
+
+        /// <summary>
+        /// Gets or sets the selected index for the IDE theme
+        /// </summary>
+        public int IDEThemeSelectedIndex
+        {
+            get => _IDEThemeSelectedIndex;
+            set
+            {
+                if (Set(ref _IDEThemeSelectedIndex, value))
+                {
+                    //AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.BracketsStyle), value, SettingSaveMode.OverwriteIfExisting);
                 }
             }
         }

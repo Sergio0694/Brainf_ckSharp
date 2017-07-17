@@ -1906,7 +1906,7 @@
     </Style>
 
     <!-- Default style for Windows.UI.Xaml.Controls.ComboBoxItem -->
-    <Style TargetType="ComboBoxItem">
+    <Style TargetType="ComboBoxItem" x:Key="FluentComboBoxItemContainerStyle">
         <Setter Property="Foreground" Value="{ThemeResource ComboBoxItemForeground}" />
         <Setter Property="Background" Value="{ThemeResource ComboBoxItemBackground}" />
         <Setter Property="TabNavigation" Value="Local" />
@@ -2070,5 +2070,10 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <!--Custom style with no padding and margins-->
+    <Style TargetType="ComboBoxItem" x:Key="ComboBoxItemStyleWithoutPadding" BasedOn="{StaticResource FluentComboBoxItemContainerStyle}">
+        <Setter Property="Padding" Value="0" />
     </Style>
 </ResourceDictionary>

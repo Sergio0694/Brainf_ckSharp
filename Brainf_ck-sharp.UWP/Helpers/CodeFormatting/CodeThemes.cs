@@ -51,7 +51,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
         [NotNull]
         public static IDEThemeInfo Vim => _Vim ?? (_Vim = new IDEThemeInfo(
                                               "#FF171717".ToColor(), "#FF252525".ToColor(), "#FF727272".ToColor(),
-                                              "#FF727272".ToColor(), 8, "#99B96F".ToColor(),
+                                              "#FF727272".ToColor(), 8, "#FF99B96F".ToColor(),
                                               "#FFDFDFDF".ToColor(), "#FFDFDFDF".ToColor(), "#FF999BBC".ToColor(), "#FFFFB3B2".ToColor(), "#FFFFBC77".ToColor()));
     }
 }

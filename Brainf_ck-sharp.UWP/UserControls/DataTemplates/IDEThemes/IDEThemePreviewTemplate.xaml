@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="300"
+    d:DesignHeight="108"
     d:DesignWidth="400">
 
     <!--Root-->
@@ -14,12 +14,16 @@
         <!--Theme title-->
         <Border Background="#20000000">
             <TextBlock
-                Margin="0,4,0,4"
-                Text="Monokai"/>
+                IsTextScaleFactorEnabled="False"
+                Margin="12,4,0,4"
+                Text="Default"
+                x:Name="TitleBlock"/>
         </Border>
         
         <!--Visual preview-->
-        <Grid Background="#FF1E1E1E">
+        <Grid 
+            Background="#FF1E1E1E"
+            x:Name="BackgroundGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20"/>
                 <ColumnDefinition Width="28"/>
@@ -27,18 +31,20 @@
             </Grid.ColumnDefinitions>
             
             <!--breakpoints pane-->
-            <Canvas Background="#FF333333"/>
+            <Canvas 
+                Background="#FF333333"
+                x:Name="BreakpointsCanvas"/>
             
             <!--Line numbers-->
             <TextBlock
+                IsTextScaleFactorEnabled="False"
                 Grid.Column="1"
                 FontSize="15"
                 HorizontalAlignment="Right"
                 TextAlignment="Right"
-                TextTrimming="CharacterEllipsis">
-                <TextBlock.Foreground>
-                    <SolidColorBrush Color="{x:Bind ViewModel.LineNumberColor, FallbackValue=#FF237CAD}"/>
-                </TextBlock.Foreground>
+                TextTrimming="CharacterEllipsis"
+                Foreground="#FF237CAD"
+                x:Name="LineNumbersBlock">
                 <Run Text="1"/><LineBreak/>
                 <Run Text="2"/><LineBreak/>
                 <Run Text="3"/><LineBreak/>
@@ -47,60 +53,51 @@
             
             <!--Code sample-->
             <TextBlock
-                Margin="20,0,0,0"
+                IsTextScaleFactorEnabled="False"
+                Margin="20,0,20,0"
                 Grid.Column="2"
                 FontSize="15">
-                <Run Text=",">
-                    <Run.Foreground>
-                        <SolidColorBrush Color="{x:Bind ViewModel.LineNumberColor, FallbackValue=#FFBDB76B}"/>
-                    </Run.Foreground>
-                </Run><Run Text="+++++">
-                    <Run.Foreground>
-                        <SolidColorBrush Color="{x:Bind ViewModel.LineNumberColor, FallbackValue=#FFFFFFFF}"/>
-                    </Run.Foreground>
-                </Run><Run Text="[">
-                    <Run.Foreground>
-                        <SolidColorBrush Color="{x:Bind ViewModel.LineNumberColor, FallbackValue=#FF569CD6}"/>
-                    </Run.Foreground>
-                </Run><LineBreak/>
-                <Run Text="      >">
-                    <Run.Foreground>
-                        <SolidColorBrush Color="{x:Bind ViewModel.LineNumberColor, FallbackValue=#FFDDDDDD}"/>
-                    </Run.Foreground>
-                </Run><Run Text="+">
-                    <Run.Foreground>
-                        <SolidColorBrush Color="{x:Bind ViewModel.LineNumberColor, FallbackValue=#FFFFFFFF}"/>
-                    </Run.Foreground>
-                </Run><Run Text="&lt;">
-                    <Run.Foreground>
-                        <SolidColorBrush Color="{x:Bind ViewModel.LineNumberColor, FallbackValue=#FFDDDDDD}"/>
-                    </Run.Foreground>
-                </Run><Run Text="-">
-                    <Run.Foreground>
-                        <SolidColorBrush Color="{x:Bind ViewModel.LineNumberColor, FallbackValue=#FFFFFFFF}"/>
-                    </Run.Foreground>
-                </Run>
-                <Run Text="Move to next cell"><Run.Foreground>
-                    <SolidColorBrush Color="{x:Bind ViewModel.LineNumberColor, FallbackValue=#FF52AF3D}"/>
-                </Run.Foreground></Run><LineBreak/>
-                <Run Text="]">
-                    <Run.Foreground>
-                        <SolidColorBrush Color="{x:Bind ViewModel.LineNumberColor, FallbackValue=#FF569CD6}"/>
-                    </Run.Foreground>
-                </Run><LineBreak/>
-                <Run Text=">">
-                    <Run.Foreground>
-                        <SolidColorBrush Color="{x:Bind ViewModel.LineNumberColor, FallbackValue=#FFDDDDDD}"/>
-                    </Run.Foreground>
-                </Run><Run Text=".">
-                    <Run.Foreground>
-                        <SolidColorBrush Color="{x:Bind ViewModel.LineNumberColor, FallbackValue=#FFCD5C5C}"/>
-                    </Run.Foreground>
-                </Run><Run Text="Print value">
-                    <Run.Foreground>
-                        <SolidColorBrush Color="{x:Bind ViewModel.LineNumberColor, FallbackValue=#FF52AF3D}"/>
-                    </Run.Foreground>
-                </Run>
+                <Run
+                    Foreground="#FFBDB76B"
+                    x:Name="CommaRun"
+                    Text=","/><Run 
+                    Text="+++++"
+                    Foreground="White"
+                    x:Name="OperatorsRun"/><Run 
+                    Text="["
+                    Foreground="#FF569CD6"
+                    x:Name="BracketRun"/><LineBreak/>
+                <Run 
+                    Text="      >"
+                    Foreground="#FFDDDDDD"
+                    x:Name="ArrowRun"/><Run 
+                    Text="+"
+                    Foreground="#FFFFFFFF"
+                    x:Name="OperatorsRun2"/><Run 
+                    Text="&lt;"
+                    Foreground="#FFDDDDDD"
+                    x:Name="ArrowRun2"/><Run 
+                    Text="-"
+                    Foreground="White"
+                    x:Name="OperatorsRun3"/>
+                <Run 
+                    Text="Move to next cell"
+                    Foreground="#FF52AF3D"
+                    x:Name="CommentRun"/><LineBreak/>
+                <Run 
+                    Text="]"
+                    Foreground="#FF569CD6"
+                    x:Name="BracketRun2"/><LineBreak/>
+                <Run 
+                    Text=">"
+                    Foreground="#FFDDDDDD"
+                    x:Name="ArrowRun3"/><Run 
+                    Text="."
+                    Foreground="#FFCD5C5C"
+                    x:Name="DotRun"/><Run 
+                    Text="Print value"
+                    Foreground="#FF52AF3D"
+                    x:Name="CommentRun2"/>
             </TextBlock>
             
             <!--Vertical guide-->
@@ -116,7 +113,7 @@
                 Y2="20"
                 StrokeDashArray="4">
                 <Line.Stroke>
-                    <SolidColorBrush Color="{x:Bind ViewModel.BracketsGuideColor, FallbackValue=#FFD3D3D3}"/>
+                    <SolidColorBrush Color="{Binding BracketsGuideColor, FallbackValue=#FFD3D3D3}"/>
                 </Line.Stroke>
                 <Line.RenderTransform>
                     <TranslateTransform

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Windows.UI;
 using JetBrains.Annotations;
 
@@ -9,6 +11,12 @@ namespace Brainf_ck_sharp_UWP.DataModels.Misc
     /// </summary>
     public sealed class IDEThemeInfo
     {
+        /// <summary>
+        /// Gets the name of the current theme
+        /// </summary>
+        [NotNull]
+        public String Name { get; }
+
         /// <summary>
         /// Gets the syntax highlight colors map for the available operators
         /// </summary>
@@ -59,10 +67,12 @@ namespace Brainf_ck_sharp_UWP.DataModels.Misc
         /// <param name="brackets">The foreground color for the square brackets</param>
         /// <param name="dot">The foreground color for the dot operator</param>
         /// <param name="comma">The foreground color for the comma operator</param>
+        /// <param name="name">The name of the new theme to create</param>
         public IDEThemeInfo(Color background, Color breakpoints, Color lineNumbers,
             Color bracketsGuide, int? bracketsGuideStrokesLength,
-            Color comments, Color arrows, Color arithmetic, Color brackets, Color dot, Color comma)
+            Color comments, Color arrows, Color arithmetic, Color brackets, Color dot, Color comma, [CallerMemberName] String name = null)
         {
+            Name = name ?? throw new NullReferenceException("Invalid theme name");
             Background = background;
             BreakpointsPaneBackground = breakpoints;
             LineNumberColor = lineNumbers;
