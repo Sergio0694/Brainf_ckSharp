@@ -238,7 +238,7 @@
             RightTapped="BreakpointsCanvas_OnRightTapped"
             Holding="BreakpointsCanvas_OnHolding"/>
 
-            <!--Line numbers grid-->
+        <!--Line numbers grid-->
         <Canvas Grid.Column="1">
             <Grid 
                 x:Name="LinesGrid"

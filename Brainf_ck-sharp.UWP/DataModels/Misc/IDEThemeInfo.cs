@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Windows.UI;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace Brainf_ck_sharp_UWP.DataModels.Misc
 {
@@ -10,17 +12,27 @@ namespace Brainf_ck_sharp_UWP.DataModels.Misc
         /// </summary>
         public IReadOnlyDictionary<char, Color> HighlightMap { get; }
 
+        public Color CommentsColor { get; }
+
         public Color Background { get; }
 
         public Color BreakpointsPaneBackground { get; }
 
-        public Color CommentsColor { get; }
+        public Color LineNumberColor { get; }
 
-        public IDEThemeInfo(Color background, Color breakpoints, Color comments,
-            Color arrows, Color arithmetic, Color brackets, Color dot, Color comma)
+        public Color BracketsGuideColor { get; }
+
+        public int? BracketsGuideStrokesLength { get; }
+
+        public IDEThemeInfo(Color background, Color breakpoints, Color lineNumbers,
+            Color bracketsGuide, int? bracketsGuideStrokesLength,
+            Color comments, Color arrows, Color arithmetic, Color brackets, Color dot, Color comma)
         {
             Background = background;
             BreakpointsPaneBackground = breakpoints;
+            LineNumberColor = lineNumbers;
+            BracketsGuideColor = bracketsGuide;
+            BracketsGuideStrokesLength = bracketsGuideStrokesLength;
             CommentsColor = comments;
             HighlightMap = new Dictionary<char, Color>
             {

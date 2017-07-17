@@ -9,9 +9,11 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
     /// </summary>
     public sealed class Brainf_ckFormatterHelper
     {
-        private Brainf_ckFormatterHelper() => CurrentTheme = CodeThemeSelector.Default;
+        private Brainf_ckFormatterHelper() => CurrentTheme = CodeThemeSelector.Vim;
 
-        public static Brainf_ckFormatterHelper Instance { get; } = new Brainf_ckFormatterHelper();
+        private static Brainf_ckFormatterHelper _Instance;
+
+        public static Brainf_ckFormatterHelper Instance => _Instance ?? (_Instance = new Brainf_ckFormatterHelper());
 
         /// <summary>
         /// Gets the syntax highlight colors map for the available operators

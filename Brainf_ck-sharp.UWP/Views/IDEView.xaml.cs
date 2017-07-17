@@ -49,6 +49,7 @@ namespace Brainf_ck_sharp_UWP.Views
             this.InitializeComponent();
             RootGrid.Background = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.Background);
             BreakpointsCanvas.Background = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.BreakpointsPaneBackground);
+            LineBlock.Foreground = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.LineNumberColor);
             ApplyCustomTabSpacing();
             DataContext = new IDEViewModel(EditBox.Document, PickSaveNameAsync, () => BreakpointsInfo.Keys);
             ViewModel.PlayRequested += ViewModel_PlayRequested;
@@ -332,8 +333,10 @@ namespace Brainf_ck_sharp_UWP.Views
                     Width = 1,
                     StrokeThickness = 1,
                     Height = top,
-                    Stroke = new SolidColorBrush(Colors.LightGray),
-                    StrokeDashArray = new DoubleCollection { 4 },
+                    Stroke = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideColor),
+                    StrokeDashArray = Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.HasValue 
+                        ? new DoubleCollection { Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.Value }
+                        : new DoubleCollection(),
                     Y1 = 0,
                     Y2 = top
                 };
@@ -345,18 +348,6 @@ namespace Brainf_ck_sharp_UWP.Views
             BracketGuidesSemaphore.Release();
             return workingSet.Item1;
         }
-
-        /// <summary>
-        /// Gets the approximate height of each line of code in the IDE
-        /// </summary>
-        public double LineApproximateHeight // TODO: approximate this when the lines count changes and bind it to the items height of the ListView
-        {
-            get => (double)GetValue(LineApproximateHeightProperty);
-            set => SetValue(LineApproximateHeightProperty, value);
-        }
-
-        public static readonly DependencyProperty LineApproximateHeightProperty = DependencyProperty.Register(
-            nameof(LineApproximateHeight), typeof(double), typeof(IDEView), new PropertyMetadata(19.94998046875));
 
         #endregion
 
