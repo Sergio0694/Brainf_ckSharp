@@ -11,7 +11,7 @@ using JetBrains.Annotations;
 using UICompositionAnimations;
 using UICompositionAnimations.Behaviours;
 using UICompositionAnimations.Enums;
-using UICompositionAnimations.Helpers;
+using UICompositionAnimations.Helpers.PointerEvents;
 
 namespace Brainf_ck_sharp_UWP.PopupService.UI
 {

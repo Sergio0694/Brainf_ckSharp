@@ -23,6 +23,7 @@ using UICompositionAnimations;
 using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers;
+using UICompositionAnimations.Helpers.PointerEvents;
 using MemoryViewerFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState.MemoryViewerFlyout;
 
 namespace Brainf_ck_sharp_UWP.UserControls
@@ -248,6 +249,9 @@ namespace Brainf_ck_sharp_UWP.UserControls
         // Changes the current header blur mode
         private void ToggleBlurModeButton_Click(object sender, RoutedEventArgs e)
         {
+            var settings = new SettingsPanelFlyout();
+            FlyoutManager.Instance.ShowAsync("Settings", settings, null, FlyoutDisplayMode.ActualHeight);
+
             AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.InAppBlurEnabled), out bool inAppBlur);
             AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.InAppBlurEnabled), !inAppBlur, SettingSaveMode.OverwriteIfExisting);
             HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(inAppBlur ? "HeaderHostBackdropBlurBrush" :"HeaderInAppAcrylicBrush");

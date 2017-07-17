@@ -4,7 +4,6 @@ using System.Linq;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Core;
@@ -225,30 +224,13 @@ namespace Brainf_ck_sharp_UWP.PopupService
             if (ApiInformationHelper.IsMobileDevice) return Tuple.Create<FlyoutContainer, Action>(container, null);
 
             // Lights setup
-            bool lightsEnabled = false;
-            PointerPositionSpotLight
-                light = new PointerPositionSpotLight { Active = false },
-                wideLight = new PointerPositionSpotLight
-                {
-                    Z = 30,
-                    IdAppendage = "[Wide]",
-                    Shade = 0x10,
-                    Active = false
-                };
-            container.Lights.Add(light);
-            container.Lights.Add(wideLight);
-            container.ManageHostPointerStates((type, value) =>
-            {
-                bool lightsVisible = type == PointerDeviceType.Mouse && value;
-                if (lightsEnabled == lightsVisible) return;
-                light.Active = wideLight.Active = lightsEnabled = lightsVisible;
-            });
+            LightsSourceHelper.SetIsLightsContainer(container, true);
 
             // Return the results
             return Tuple.Create<FlyoutContainer, Action>(container, () =>
             {
                 // Dispose the lights
-                container.Lights.Clear();
+                LightsSourceHelper.SetIsLightsContainer(container, false);
             });
         }
 
@@ -640,28 +622,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             };
 
             // Lights setup
-            if (!ApiInformationHelper.IsMobileDevice)
-            {
-                _ContextMenuLightsEnabled = false;
-                PointerPositionSpotLight
-                    light = new PointerPositionSpotLight { Active = false },
-                    wideLight = new PointerPositionSpotLight
-                    {
-                        Z = 30,
-                        IdAppendage = "[Wide]",
-                        Shade = 0x10,
-                        Active = false
-                    };
-                parent.Lights.Add(light);
-                parent.Lights.Add(wideLight);
-                parent.ManageHostPointerStates((type, value) =>
-                {
-                    bool lightsVisible = type == PointerDeviceType.Mouse && value;
-                    if (_ContextMenuLightsEnabled == lightsVisible) return;
-                    _ContextMenuLightsEnabled = lightsVisible;
-                    light.Active = wideLight.Active = lightsVisible;
-                });
-            }
+            LightsSourceHelper.SetIsLightsContainer(parent, true);
 
             // Local functions
             void ClosePopups()
@@ -692,7 +653,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                     sizeHandled = false;
                     Window.Current.SizeChanged -= WindowSizeHandler;
                 }
-                parent.Lights.Clear();
+                LightsSourceHelper.SetIsLightsContainer(parent, false);
             };
             _CloseContextMenu = ClosePopups;
             popup.IsOpen = true; // Open the context menu popup on top of the hit target

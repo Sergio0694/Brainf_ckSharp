@@ -16,7 +16,7 @@ using UICompositionAnimations.Behaviours;
 using UICompositionAnimations.Behaviours.Effects;
 using UICompositionAnimations.Behaviours.Misc;
 using UICompositionAnimations.Enums;
-using UICompositionAnimations.Helpers;
+using UICompositionAnimations.Helpers.PointerEvents;
 
 namespace Brainf_ck_sharp_UWP.PopupService.UI
 {
