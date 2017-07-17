@@ -514,11 +514,11 @@
 Thank you for downloading the app, I hope you'll enjoy using it!
 Please feel free to send me an email if you have suggestions or feedback, or if you found a bug, and I'll be happy to help.
 
-NOTE: the app might sometimes crash when using the virtual arrows keypad in the IDE or when loading a source code. That's due to a bug in one of the controls I'm using, I've already sent a feedback to Microsoft and hopefully that'll get fixed soon!</source>
+NOTE: the app might sometimes crash when loading a source code. That's due to a bug in one of the controls I'm using, I've already sent a feedback to Microsoft and hopefully that'll get fixed soon!</source>
           <target state="translated">Benvenuti in Brainf*ck#, grazie di aver scaricato quest'app!
 Potete mandarmi un messaggio email in qualsiasi momento se avete suggerimenti o feedback, o se avete trovato un bug, e sarò felice di aiutare.
 
-NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le frecce di navigazione nell'IDE o durante il caricamento di un codice sorgente salvato. Questo è dovuto ad un bug in uno dei controlli che l'app utilizza, ho già mandato una segnalazione a Microsoft e spero che si possa risolvere il problema al più presto!</target>
+NOTA: l'app potrebbe occasionalmente chiudersi durante il caricamento di un codice sorgente salvato. Questo è dovuto ad un bug in uno dei controlli che l'app utilizza, ho già mandato una segnalazione a Microsoft e spero che si possa risolvere il problema al più presto!</target>
         </trans-unit>
         <trans-unit id="ReleaseNotesBlock.Text" translate="yes" xml:space="preserve">
           <source>Release notes</source>
