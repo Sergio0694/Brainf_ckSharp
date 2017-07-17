@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.Devices.Input;
 using Windows.UI.Xaml.Controls.Primitives;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
@@ -86,35 +85,13 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 // Lights setup
                 if (!ApiInformationHelper.IsMobileDevice)
                 {
-                    bool lightsEnabled = false;
-                    PointerPositionSpotLight
-                        light = new PointerPositionSpotLight
-                        {
-                            Z = 30,
-                            Shade = 0x80,
-                            Active = false
-                        },
-                        popupLight = new PointerPositionSpotLight
-                        {
-                            Z = 30,
-                            IdAppendage = "[Wide]",
-                            Shade = 0x10,
-                            Active = false
-                        };
-                    notificationPopup.Lights.Add(light);
-                    notificationPopup.Lights.Add(popupLight);
-                    notificationPopup.ManageHostPointerStates((p, value) =>
-                    {
-                        bool lightsVisible = p == PointerDeviceType.Mouse && value;
-                        if (lightsEnabled == lightsVisible) return;
-                        light.Active = popupLight.Active = lightsEnabled = lightsVisible;
-                    });
+                    LightsSourceHelper.SetIsLightsContainer(notificationPopup, true);
 
                     // Dispose the lights
                     popup.Closed += (s, e) =>
                     {
                         // Dispose the lights
-                        notificationPopup.Lights.Clear();
+                        LightsSourceHelper.SetIsLightsContainer(notificationPopup, false);
                     };
                 }
 

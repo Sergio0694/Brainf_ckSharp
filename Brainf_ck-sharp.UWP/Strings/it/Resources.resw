@@ -459,7 +459,34 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="Sure" xml:space="preserve">
     <value>Certo!</value>
   </data>
-  <data name="ToggleBlur.Label" xml:space="preserve">
-    <value>Cambia modalità blur</value>
+  <data name="Settings" xml:space="preserve">
+    <value>Impostazioni</value>
+  </data>
+  <data name="SettingsButton.Label" xml:space="preserve">
+    <value>Impostazioni</value>
+  </data>
+  <data name="AutoIndentTitle.Text" xml:space="preserve">
+    <value>Indenta automaticamente parentesi</value>
+  </data>
+  <data name="BackgroundBlur" xml:space="preserve">
+    <value>Sfocatura sfondo</value>
+  </data>
+  <data name="BlurModeTitle.Text" xml:space="preserve">
+    <value>Modalità blur preferita</value>
+  </data>
+  <data name="BracketsStyleTitle.Text" xml:space="preserve">
+    <value>Formattazione parentesi</value>
+  </data>
+  <data name="InAppBlur" xml:space="preserve">
+    <value>Sfocatura in-app</value>
+  </data>
+  <data name="NewLine" xml:space="preserve">
+    <value>A capo</value>
+  </data>
+  <data name="SameLine" xml:space="preserve">
+    <value>Stessa riga</value>
+  </data>
+  <data name="TabLength.Text" xml:space="preserve">
+    <value>Lunghezza tabulazione</value>
   </data>
 </root>

@@ -112,6 +112,7 @@
     <Compile Include="AttachedProperties\RunInlineHelper.cs" />
     <Compile Include="Converters\BoolToAccentBrushOrFallbackConverter.cs" />
     <Compile Include="Converters\DateTimeToDateStringConverter.cs" />
+    <Compile Include="Converters\DisplayScalingToMarginConverter.cs" />
     <Compile Include="Converters\SourceCodeTitleScoreToDisplayStringConverter.cs" />
     <Compile Include="Converters\CharacterWithFallbackConverter.cs" />
     <Compile Include="Converters\DepthToVisibilityConverter.cs" />
@@ -171,10 +172,11 @@
     <Compile Include="Messages\Actions\IDEUndoRedoRequestMessage.cs" />
     <Compile Include="Messages\Actions\SaveButtonsEnabledStatusChangedMessage.cs" />
     <Compile Include="Messages\Actions\VirtualArrowKeyPressedMessage.cs" />
-    <Compile Include="Messages\AppLoadingStatusChangedMessage.cs" />
+    <Compile Include="Messages\UI\AppLoadingStatusChangedMessage.cs" />
     <Compile Include="Messages\Flyouts\NotificationCloseRequestmessage.cs" />
     <Compile Include="Messages\IDEStatus\BreakpointErrorStatusChangedMessage.cs" />
     <Compile Include="Messages\OverflowModeChangedMessage.cs" />
+    <Compile Include="Messages\UI\BlurModeChangedMessage.cs" />
     <Compile Include="PopupService\Interfaces\IAsyncLoadedContent.cs" />
     <Compile Include="PopupService\Interfaces\IBusyWorkingContent.cs" />
     <Compile Include="PopupService\InternalTypes\Offset.cs" />
@@ -277,11 +279,15 @@
     <Compile Include="UserControls\Flyouts\SaveCodePromptFlyout.xaml.cs">
       <DependentUpon>SaveCodePromptFlyout.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Flyouts\SettingsPanelFlyout.xaml.cs">
+      <DependentUpon>SettingsPanelFlyout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\IconBoxToolkit\IconBox.xaml.cs">
       <DependentUpon>IconBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\IconBoxToolkit\PathGeometryConverter.cs" />
     <Compile Include="UserControls\IconBoxToolkit\PathGeometryConverterExtensions.cs" />
+    <Compile Include="UserControls\InheritedControls\AnimatedComboBox.cs" />
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CommandBarWithButtonsAnimations.cs" />
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CustomCommandBarButton.cs" />
     <Compile Include="UserControls\DataTemplates\CompactCharactersChunkViewerTemplate.xaml.cs">
@@ -324,7 +330,6 @@
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\ICustomCommandBarPrimaryItem.cs" />
     <Compile Include="UserControls\InheritedControls\FixedRadExpanderControl.cs" />
     <Compile Include="UserControls\InheritedControls\LightBorderAndBackgroundOverlay.cs" />
-    <Compile Include="UserControls\InheritedControls\LightsContainerGrid.cs" />
     <Compile Include="UserControls\InheritedControls\RichEditBoxWithVerticalOffsetInfo.cs" />
     <Compile Include="UserControls\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
@@ -355,6 +360,7 @@
     <Compile Include="ViewModels\CompactCharactersViewerControlViewModel.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\IDERunResultFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\SettingsPanelFlyoutViewModel.cs" />
     <Compile Include="ViewModels\IDEViewModel.cs" />
     <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\LocalSourceCodesBrowserFlyoutViewModel.cs" />
@@ -613,6 +619,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\Flyouts\SettingsPanelFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\Flyouts\UnicodeCharactersGuideFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -702,7 +712,7 @@
       <Version>1.0.0.4</Version>
     </PackageReference>
     <PackageReference Include="UICompositionAnimations">
-      <Version>2.9.2</Version>
+      <Version>2.10.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

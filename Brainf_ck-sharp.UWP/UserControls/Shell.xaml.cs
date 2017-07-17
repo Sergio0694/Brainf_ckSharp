@@ -12,6 +12,7 @@ using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
@@ -23,6 +24,7 @@ using UICompositionAnimations;
 using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers;
+using UICompositionAnimations.Helpers.PointerEvents;
 using MemoryViewerFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState.MemoryViewerFlyout;
 
 namespace Brainf_ck_sharp_UWP.UserControls
@@ -59,14 +61,21 @@ namespace Brainf_ck_sharp_UWP.UserControls
             else
             {
                 // Apply the desired blur effect
-                AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.InAppBlurEnabled), out bool inAppBlur);
-                HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(inAppBlur ? "HeaderInAppAcrylicBrush" : "HeaderHostBackdropBlurBrush");
+                AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.InAppBlurMode), out int blurMode);
+                HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(blurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
             }
 
             // Flyout management
             Messenger.Default.Register<FlyoutOpenedMessage>(this, m => ManageFlyoutUI(true));
             Messenger.Default.Register<FlyoutClosedNotificationMessage>(this, m => ManageFlyoutUI(false));
             Messenger.Default.Register<AppLoadingStatusChangedMessage>(this, m => ManageLoadingUI(m.Loading));
+            Messenger.Default.Register<BlurModeChangedMessage>(this, m =>
+            {
+                if (!ApiInformationHelper.IsMobileDevice)
+                {
+                    HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(m.BlurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
+                }
+            });
         }
 
         public ShellViewModel ViewModel => DataContext.To<ShellViewModel>();
@@ -248,9 +257,8 @@ namespace Brainf_ck_sharp_UWP.UserControls
         // Changes the current header blur mode
         private void ToggleBlurModeButton_Click(object sender, RoutedEventArgs e)
         {
-            AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.InAppBlurEnabled), out bool inAppBlur);
-            AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.InAppBlurEnabled), !inAppBlur, SettingSaveMode.OverwriteIfExisting);
-            HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(inAppBlur ? "HeaderHostBackdropBlurBrush" :"HeaderInAppAcrylicBrush");
+            SettingsPanelFlyout settings = new SettingsPanelFlyout();
+            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Settings"), settings, null, FlyoutDisplayMode.ActualHeight).Forget();
         }
     }
 }

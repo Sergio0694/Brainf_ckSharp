@@ -4,7 +4,6 @@ using System.Linq;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Core;
@@ -210,12 +209,10 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <summary>
         /// Prepares a flyout container and its lights
         /// </summary>
-        /// <param name="tint">The optional tint color for the confirm button</param>
-        /// <param name="colorMix">The optional color mix parameter for the confirm button</param>
-        private static Tuple<FlyoutContainer, Action> SetupFlyoutContainer(Color? tint, float? colorMix)
+        private static Tuple<FlyoutContainer, Action> SetupFlyoutContainer()
         {
             // Initialize the container and the target popup
-            FlyoutContainer container = new FlyoutContainer(tint, colorMix)
+            FlyoutContainer container = new FlyoutContainer()
             {
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch
@@ -225,30 +222,13 @@ namespace Brainf_ck_sharp_UWP.PopupService
             if (ApiInformationHelper.IsMobileDevice) return Tuple.Create<FlyoutContainer, Action>(container, null);
 
             // Lights setup
-            bool lightsEnabled = false;
-            PointerPositionSpotLight
-                light = new PointerPositionSpotLight { Active = false },
-                wideLight = new PointerPositionSpotLight
-                {
-                    Z = 30,
-                    IdAppendage = "[Wide]",
-                    Shade = 0x10,
-                    Active = false
-                };
-            container.Lights.Add(light);
-            container.Lights.Add(wideLight);
-            container.ManageHostPointerStates((type, value) =>
-            {
-                bool lightsVisible = type == PointerDeviceType.Mouse && value;
-                if (lightsEnabled == lightsVisible) return;
-                light.Active = wideLight.Active = lightsEnabled = lightsVisible;
-            });
+            LightsSourceHelper.SetIsLightsContainer(container, true);
 
             // Return the results
             return Tuple.Create<FlyoutContainer, Action>(container, () =>
             {
                 // Dispose the lights
-                container.Lights.Clear();
+                LightsSourceHelper.SetIsLightsContainer(container, false);
             });
         }
 
@@ -294,7 +274,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
 
             // Initialize the container and the target popup
-            Tuple<FlyoutContainer, Action> setup = SetupFlyoutContainer(null, null);
+            Tuple<FlyoutContainer, Action> setup = SetupFlyoutContainer();
 
             // Prepare the flyout depending on the desired display mode
             double width = CalculateExpectedWidth();
@@ -348,11 +328,8 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="mode">The desired display mode for the flyout</param>
         /// <param name="stack">Indicates whether or not the popup can be stacked on top of another open popup</param>
         /// <param name="openCallback">An optional callback to invoke when the popup is displayed</param>
-        /// <param name="background">The optional custom background tint color for the popup to display</param>
-        /// <param name="tintMix">The optional custom background tint color mix for the popup to display</param>
         public async Task<FlyoutResult> ShowAsync([NotNull] String title, [NotNull] FrameworkElement content, [CanBeNull] Thickness? margin = null,
-            FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent, bool stack = false, [CanBeNull] Action openCallback = null,
-            Color? background = null, float? tintMix = null)
+            FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent, bool stack = false, [CanBeNull] Action openCallback = null)
         {
             // Lock and close the existing popup, if needed
             await Semaphore.WaitAsync();
@@ -364,7 +341,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
 
             // Initialize the container and the target popup
-            Tuple<FlyoutContainer, Action> setup = SetupFlyoutContainer(background, tintMix);
+            Tuple<FlyoutContainer, Action> setup = SetupFlyoutContainer();
 
             // Prepare the flyout depending on the desired display mode
             switch (mode)
@@ -422,12 +399,9 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="mode">The desired display mode for the flyout</param>
         /// <param name="stack">Indicates whether or not the popup can be stacked on top of another open popup</param>
         /// <param name="openCallback">An optional callback to invoke when the popup is displayed</param>
-        /// <param name="background">The optional custom background tint color for the popup to display</param>
-        /// <param name="tintMix">The optional custom background tint color mix for the popup to display</param>
         public async Task<FlyoutClosedResult<TEvent>> ShowAsync<TContent, TEvent>(
             [NotNull] String title, [NotNull] TContent content, [CanBeNull] Thickness? margin = null, 
-            FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent, bool stack = false, [CanBeNull] Action openCallback = null,
-            Color? background = null, float? tintMix = null)
+            FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent, bool stack = false, [CanBeNull] Action openCallback = null)
             where TContent : FrameworkElement, IEventConfirmedContent<TEvent>
         {
             // Lock and close the existing popup, if needed
@@ -440,7 +414,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
 
             // Initialize the container and the target popup, and the confirm handler
-            Tuple<FlyoutContainer, Action> setup = SetupFlyoutContainer(null, null);
+            Tuple<FlyoutContainer, Action> setup = SetupFlyoutContainer();
 
             // Prepare the flyout depending on the desired display mode
             switch (mode)
@@ -501,11 +475,6 @@ namespace Brainf_ck_sharp_UWP.PopupService
         #endregion
 
         #region Context menu APIs
-
-        /// <summary>
-        /// Gets whether or not the XAML lights are currently visible in the open popups
-        /// </summary>
-        private bool _ContextMenuLightsEnabled;
 
         /// <summary>
         /// Shows a given content inside a popup with an animation and offset similar of an attached Flyout
@@ -640,28 +609,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             };
 
             // Lights setup
-            if (!ApiInformationHelper.IsMobileDevice)
-            {
-                _ContextMenuLightsEnabled = false;
-                PointerPositionSpotLight
-                    light = new PointerPositionSpotLight { Active = false },
-                    wideLight = new PointerPositionSpotLight
-                    {
-                        Z = 30,
-                        IdAppendage = "[Wide]",
-                        Shade = 0x10,
-                        Active = false
-                    };
-                parent.Lights.Add(light);
-                parent.Lights.Add(wideLight);
-                parent.ManageHostPointerStates((type, value) =>
-                {
-                    bool lightsVisible = type == PointerDeviceType.Mouse && value;
-                    if (_ContextMenuLightsEnabled == lightsVisible) return;
-                    _ContextMenuLightsEnabled = lightsVisible;
-                    light.Active = wideLight.Active = lightsVisible;
-                });
-            }
+            LightsSourceHelper.SetIsLightsContainer(parent, true);
 
             // Local functions
             void ClosePopups()
@@ -692,7 +640,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                     sizeHandled = false;
                     Window.Current.SizeChanged -= WindowSizeHandler;
                 }
-                parent.Lights.Clear();
+                LightsSourceHelper.SetIsLightsContainer(parent, false);
             };
             _CloseContextMenu = ClosePopups;
             popup.IsOpen = true; // Open the context menu popup on top of the hit target

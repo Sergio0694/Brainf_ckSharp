@@ -13,6 +13,7 @@ using Brainf_ck_sharp_UWP.Resources;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.UserControls;
 using UICompositionAnimations.Helpers;
+using UICompositionAnimations.Helpers.PointerEvents;
 using UICompositionAnimations.Lights;
 using UICompositionAnimations.XAMLTransform;
 #if DEBUG
@@ -69,6 +70,14 @@ namespace Brainf_ck_sharp_UWP
             {
                 // Initialize the UI
                 BrushResourcesManager.InitializeOrRefreshInstance();
+                LightsSourceHelper.Initialize(
+                    () => new PointerPositionSpotLight(),
+                    () => new PointerPositionSpotLight
+                    {
+                        IdAppendage = "[Wide]",
+                        Z = 30,
+                        Shade = 0x10
+                    });
                 shell = new Shell();
 
                 // Handle the UI

@@ -24,9 +24,10 @@
                 RepeatBehavior="Forever"/>
         </Storyboard>
         
-        <!--Depth converters-->
+        <!--Converters-->
         <converters:DepthToVisibilityConverter x:Key="DepthConverter"/>
-        <converters:SingleDigitConverterWithFallback x:Key="DepthDigitCOnverter"/>
+        <converters:SingleDigitConverterWithFallback x:Key="DepthDigitConverter"/>
+        <converters:DisplayScalingToMarginConverter x:Key="DPIToMarginConverter"/>
         
         <!--Indentation guide info-->
         <DataTemplate x:Key="IDEIndentationInfoOpenBracketTemplate">
@@ -51,11 +52,11 @@
                     <TextBlock
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
-                        Text="{Binding Depth, Converter={StaticResource DepthDigitCOnverter}, ConverterParameter=•}"
+                        Text="{Binding Depth, Converter={StaticResource DepthDigitConverter}, ConverterParameter=•}"
                         IsTextScaleFactorEnabled="False"
                         FontSize="8"
                         Foreground="GhostWhite"
-                        Margin="0,-1,0,0"/>
+                        Margin="{Binding Converter={StaticResource DPIToMarginConverter}}"/>
                 </Border>
                 <Rectangle
                     HorizontalAlignment="Center"
@@ -89,11 +90,11 @@
                     <TextBlock
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
-                        Text="{Binding Depth, Converter={StaticResource DepthDigitCOnverter}, ConverterParameter=•}"
+                        Text="{Binding Depth, Converter={StaticResource DepthDigitConverter}, ConverterParameter=•}"
                         IsTextScaleFactorEnabled="False"
                         FontSize="8"
                         Foreground="GhostWhite"
-                        Margin="0,-1,0,0"/>
+                        Margin="{Binding Converter={StaticResource DPIToMarginConverter}}"/>
                 </Border>
                 <Rectangle
                     HorizontalAlignment="Center"
@@ -174,7 +175,7 @@
 
         <!--Diff updated saved line-->
         <DataTemplate x:Key="DiffChangedLineTemplate">
-            <StackPanel 
+            <StackPanel
                 Height="19.94998046875"
                 Orientation="Horizontal"
                 HorizontalAlignment="Center">
@@ -258,7 +259,7 @@
                 HorizontalAlignment="Stretch"
                 Width="10"
                 ItemsSource="{x:Bind ViewModel.DiffStatusSource}"
-                ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
+                ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStatesAndTabNavigation}"
                 ItemTemplateSelector="{StaticResource DiffTemplateSelector}"
                 ScrollViewer.VerticalScrollBarVisibility="Hidden"
                 ScrollViewer.VerticalScrollMode="Disabled"
@@ -272,7 +273,7 @@
                 Width="12"
                 HorizontalAlignment="Stretch"
                 ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
-                ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
+                ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStatesAndTabNavigation}"
                 ItemTemplateSelector="{StaticResource IndentationInfoTemplateSelector}"
                 ScrollViewer.VerticalScrollBarVisibility="Hidden"
                 ScrollViewer.VerticalScrollMode="Disabled"

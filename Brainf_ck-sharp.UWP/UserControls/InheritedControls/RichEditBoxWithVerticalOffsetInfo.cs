@@ -23,6 +23,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
             Loaded += (s, e) =>
             {
                 _TemplateScrollBar = _TemplateScrollViewer.FindChild<ScrollBar>();
+                if (_TemplateScrollBar == null) throw new NullReferenceException("Invalid template");
                 _TemplateScrollBar.Margin = ScrollBarMargin;
             };
         }
@@ -139,6 +140,19 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
                 await stream.WriteAsync(bytes.AsBuffer());
                 Document.LoadFromStream(TextSetOptions.None, stream);
             }
+        }
+
+        /// <summary>
+        /// Sets the default tab spacing value for the document in use
+        /// </summary>
+        /// <param name="length">The desired tab spacing value</param>
+        public void SetTabLength(int length)
+        {
+            if (length <= 0) throw new ArgumentOutOfRangeException("Invalid length value");
+            Document.DefaultTabStop = length * 3; // Each space has an approximate width of 3 points
+            ITextParagraphFormat format = Document.GetDefaultParagraphFormat();
+            format.ClearAllTabs();
+            Document.SetDefaultParagraphFormat(format);
         }
     }
 }

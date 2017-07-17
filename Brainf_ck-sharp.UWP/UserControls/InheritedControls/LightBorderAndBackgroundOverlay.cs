@@ -6,6 +6,7 @@ using UICompositionAnimations;
 using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers;
+using UICompositionAnimations.Helpers.PointerEvents;
 
 namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
 {
@@ -27,7 +28,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
 
             // UI initialization
             _LightBackground = new Border { Opacity = 0 };
-            _LightBorder = new Border {BorderThickness = new Thickness(1), Opacity = 0.4 };
+            _LightBorder = new Border { BorderThickness = new Thickness(1), Opacity = 0.4 };
             Grid bordersContainer = new Grid { Opacity = 0, HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
 
             // Setup the visual tree

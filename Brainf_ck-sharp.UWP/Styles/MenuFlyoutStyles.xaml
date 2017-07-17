@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls">
+    xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
+    xmlns:lights="using:UICompositionAnimations.Lights">
 
     <SolidColorBrush x:Key="MenuFlyoutBackgroundBrush" Color="Transparent"/>
     <x:Double x:Key="MenuFlyoutMinHeight">32</x:Double>
@@ -32,7 +33,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="MenuFlyoutPresenter">
-                    <inheritedControls:LightsContainerGrid Background="{StaticResource InAppGrayAcrylicBrush}">
+                    <Grid 
+                        lights:LightsSourceHelper.IsLightsContainer="True"
+                        Background="{StaticResource InAppGrayAcrylicBrush}">
                         <ScrollViewer x:Name="MenuFlyoutPresenterScrollViewer"
                                       Padding="{TemplateBinding Padding}"
                                       Margin="{TemplateBinding BorderThickness}"
@@ -50,7 +53,7 @@
                         <Border x:Name="MenuFlyoutPresenterBorder"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"/>
-                    </inheritedControls:LightsContainerGrid>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

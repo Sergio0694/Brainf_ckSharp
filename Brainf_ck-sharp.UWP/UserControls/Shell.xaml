@@ -350,19 +350,19 @@
                     Click="{x:Bind ViewModel.RequestSaveSourceCodeAs}"
                     IsEnabled="{x:Bind ViewModel.SaveAsAvailable, Mode=OneWay, FallbackValue=True}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
+                <AppBarSeparator/>
+                <customCommandBar:CustomCommandBarButton
+                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
+                    Label="Settings"
+                    x:Uid="SettingsButton"
+                    Icon="&#xE115;"
+                    Click="ToggleBlurModeButton_Click"/>
                 <customCommandBar:CustomCommandBarButton
                     Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="About"
                     x:Uid="AboutButton"
                     Icon="&#xED15;"
                     Click="AboutButton_Click"/>
-                <customCommandBar:CustomCommandBarButton
-                    Visibility="{x:Bind ViewModel.DesktopMode, FallbackValue=Collapsed}"
-                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
-                    Label="Toggle blur mode"
-                    x:Uid="ToggleBlur"
-                    Icon="&#xE771;"
-                    Click="ToggleBlurModeButton_Click"/>
             </customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
         </customCommandBar:CommandBarWithButtonsAnimations>
 

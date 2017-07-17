@@ -602,9 +602,45 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Sure!</source>
           <target state="translated">Certo!</target>
         </trans-unit>
-        <trans-unit id="ToggleBlur.Label" translate="yes" xml:space="preserve">
-          <source>Toggle blur mode</source>
-          <target state="translated">Cambia modalità blur</target>
+        <trans-unit id="Settings" translate="yes" xml:space="preserve">
+          <source>Settings</source>
+          <target state="translated">Impostazioni</target>
+        </trans-unit>
+        <trans-unit id="SettingsButton.Label" translate="yes" xml:space="preserve">
+          <source>Settings</source>
+          <target state="translated">Impostazioni</target>
+        </trans-unit>
+        <trans-unit id="AutoIndentTitle.Text" translate="yes" xml:space="preserve">
+          <source>Auto indent brackets</source>
+          <target state="translated">Indenta automaticamente parentesi</target>
+        </trans-unit>
+        <trans-unit id="BackgroundBlur" translate="yes" xml:space="preserve">
+          <source>Background blur</source>
+          <target state="translated">Sfocatura sfondo</target>
+        </trans-unit>
+        <trans-unit id="BlurModeTitle.Text" translate="yes" xml:space="preserve">
+          <source>Preferred blur mode</source>
+          <target state="translated">Modalità blur preferita</target>
+        </trans-unit>
+        <trans-unit id="BracketsStyleTitle.Text" translate="yes" xml:space="preserve">
+          <source>Brackets style</source>
+          <target state="translated">Formattazione parentesi</target>
+        </trans-unit>
+        <trans-unit id="InAppBlur" translate="yes" xml:space="preserve">
+          <source>In-app blur</source>
+          <target state="translated">Sfocatura in-app</target>
+        </trans-unit>
+        <trans-unit id="NewLine" translate="yes" xml:space="preserve">
+          <source>New line</source>
+          <target state="translated">A capo</target>
+        </trans-unit>
+        <trans-unit id="SameLine" translate="yes" xml:space="preserve">
+          <source>Same line</source>
+          <target state="translated">Stessa riga</target>
+        </trans-unit>
+        <trans-unit id="TabLength.Text" translate="yes" xml:space="preserve">
+          <source>Tab length</source>
+          <target state="translated">Lunghezza tabulazione</target>
         </trans-unit>
       </group>
     </body>

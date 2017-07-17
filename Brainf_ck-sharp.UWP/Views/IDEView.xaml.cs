@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Devices.Input;
 using Windows.Foundation;
+using Windows.System;
 using Windows.UI;
 using Windows.UI.Input;
 using Windows.UI.Text;
@@ -17,14 +18,16 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using Brainf_ck_sharp;
 using Brainf_ck_sharp.ReturnTypes;
+using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.EventArgs;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Messages;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
@@ -43,6 +46,7 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             Loaded += IDEView_Loaded;
             this.InitializeComponent();
+            ApplyCustomTabSpacing();
             DataContext = new IDEViewModel(EditBox.Document, PickSaveNameAsync, () => BreakpointsInfo.Keys);
             ViewModel.PlayRequested += ViewModel_PlayRequested;
             ViewModel.LoadedCodeChanged += (_, e) =>
@@ -62,6 +66,7 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.TextCleared += (_, e) =>
             {
                 EditBox.ResetTextAndUndoStack();
+                ApplyCustomTabSpacing();
                 ClearBreakpoints();
                 Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
             };
@@ -69,6 +74,15 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.NewLineInsertionRequested += ViewModel_NewLineInsertionRequested;
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             _PreviousText = text;
+        }
+
+        // Updates the tab length setting
+        private void ApplyCustomTabSpacing()
+        {
+            int
+                setting = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength)),
+                spaces = 4 + setting * 2; // Spacing options range from 4 to 12 at indexes [0..4]
+            EditBox.SetTabLength(spaces);
         }
 
         // Inserts a new line at the current position
@@ -174,7 +188,8 @@ namespace Brainf_ck_sharp_UWP.Views
             DrawLineNumbers();
             DrawBracketGuides(null).ContinueWith(t =>
             {
-                ViewModel.UpdateIndentationInfo(t.Result).Forget();
+                if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
+                ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
             }, TaskScheduler.FromCurrentSynchronizationContext());
             EditBox.Document.GetText(TextGetOptions.None, out String code);
             ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
@@ -216,7 +231,7 @@ namespace Brainf_ck_sharp_UWP.Views
         /// Redraws the column guides if necessary
         /// </summary>
         /// <param name="code">The current text, if already available</param>
-        private async Task<IReadOnlyList<IndentationCoordinateEntry>> DrawBracketGuides(String code)
+        private async Task<AsyncOperationResult<IReadOnlyList<IndentationCoordinateEntry>>> DrawBracketGuides(String code)
         {
             // Get the text, clear the current guides and make sure the syntax is currently valid
             _BracketGuidesCts?.Cancel();
@@ -230,8 +245,11 @@ namespace Brainf_ck_sharp_UWP.Views
             {
                 BracketGuidesCanvas.Children.Clear();
                 _Brackets = null;
+                bool cancelled = _BracketGuidesCts.IsCancellationRequested;
                 BracketGuidesSemaphore.Release();
-                return null;
+                return cancelled 
+                    ? AsyncOperationStatus.Canceled 
+                    : AsyncOperationResult<IReadOnlyList<IndentationCoordinateEntry>>.Explicit(null);
             }
 
             // Build the indexes for the current state
@@ -259,7 +277,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 _BracketGuidesCts.IsCancellationRequested)
             {
                 BracketGuidesSemaphore.Release();
-                return _Brackets;
+                return AsyncOperationResult<IReadOnlyList<IndentationCoordinateEntry>>.Explicit(_Brackets);
             }
             _Brackets = workingSet.Item1;
             BracketGuidesCanvas.Children.Clear();
@@ -317,7 +335,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     Y2 = top
                 };
                 guide.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 30 + open.Top));
-                guide.SetVisualOffset(TranslationAxis.X, (float)(open.X + 6));
+                guide.SetVisualOffset(TranslationAxis.X, (float)((close.X > open.X ? open.X : close.X) + 6));
                 BracketGuidesCanvas.Children.Add(guide);
                 i2++;
             }
@@ -383,6 +401,12 @@ namespace Brainf_ck_sharp_UWP.Views
                         // Open [ bracket
                         if (range.Character == '[')
                         {
+                            // Get the current settings
+                            bool autoFormat = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutoIndentBrackets));
+                            int formatMode = autoFormat
+                                ? AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.BracketsStyle))
+                                : default(int);
+
                             // Edge case: the user was already on an empty and indented line when opening the bracket
                             bool edge = false;
                             int lastCr = trailer.LastIndexOf('\r');
@@ -392,7 +416,7 @@ namespace Brainf_ck_sharp_UWP.Views
                                 String lastLine = trailer.Substring(lastCr, trailer.Length - lastCr);
                                 if (lastLine.Skip(1).All(c => c == '\t') && lastLine.Length == indents + 1)
                                 {
-                                    EditBox.Document.Selection.TypeText($"\r{tabs}\t\r{tabs}]");
+                                    EditBox.Document.Selection.TypeText(autoFormat ? $"\r{tabs}\t\r{tabs}]" : "]");
                                     edge = true;
                                 }
                             }
@@ -400,21 +424,29 @@ namespace Brainf_ck_sharp_UWP.Views
                             // Edge case: first line in the document
                             if (range.StartPosition == 0)
                             {
-                                EditBox.Document.Selection.TypeText($"\r{tabs}\t\r{tabs}]");
+                                EditBox.Document.Selection.TypeText(autoFormat ? $"\r{tabs}\t\r{tabs}]" : "]");
                                 edge = true;
                             }
 
                             // Default autocomplete: new line and [ ] brackets
                             if (!edge)
                             {
-                                range.Delete(TextRangeUnit.Character, 1);
-                                EditBox.Document.Selection.TypeText($"\r{tabs}[\r{tabs}\t\r{tabs}]");
+                                if (autoFormat)
+                                {
+                                    if (formatMode == 0) // New line
+                                    {
+                                        range.Delete(TextRangeUnit.Character, 1);
+                                        EditBox.Document.Selection.TypeText($"\r{tabs}[\r{tabs}\t\r{tabs}]");
+                                    }
+                                    else EditBox.Document.Selection.TypeText($"\r{tabs}\t\r{tabs}]");
+                                }
+                                else EditBox.Document.Selection.TypeText("]");
                             }
 
                             // Apply the right color and move the selection at the center of the brackets
                             ITextRange bracketsRange = EditBox.Document.GetRange(start, EditBox.Document.Selection.EndPosition);
                             bracketsRange.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar('[');
-                            EditBox.Document.Selection.Move(TextRangeUnit.Character, -(indents + 2));
+                            EditBox.Document.Selection.Move(TextRangeUnit.Character, -(autoFormat ? indents + 2 : 1));
                             DrawLineNumbers();
                             textChanged = true;
                         }
@@ -452,7 +484,8 @@ namespace Brainf_ck_sharp_UWP.Views
             {
                 DrawBracketGuides(text).ContinueWith(t =>
                 {
-                    ViewModel.UpdateIndentationInfo(t.Result).Forget();
+                    if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
+                    ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
 
@@ -550,6 +583,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 {
                     // Load a stream with the new text to also reset the undo stack
                     await EditBox.LoadTextAsync(code);
+                    ApplyCustomTabSpacing();
                     start = 0;
                     end = code.Length;
                 }
@@ -590,7 +624,8 @@ namespace Brainf_ck_sharp_UWP.Views
                 DrawLineNumbers();
                 DrawBracketGuides(code).ContinueWith(t =>
                 {
-                    ViewModel.UpdateIndentationInfo(t.Result).Forget();
+                    if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
+                    ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
                 ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
                 ViewModel.SendMessages(code);
@@ -802,7 +837,15 @@ namespace Brainf_ck_sharp_UWP.Views
         #endregion
 
         // Begins a new undo group when the user presses a keyboard key (before the text is actually changed)
-        private void EditBox_OnKeyDown(object sender, KeyRoutedEventArgs e) => EditBox.Document.BeginUndoGroup();
+        private void EditBox_OnKeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            EditBox.Document.BeginUndoGroup();
+            if (e.Key == VirtualKey.Tab)
+            {
+                EditBox.Document.Selection.TypeText("\t");
+                e.Handled = true;
+            }
+        }
 
         // Adjusts the vertical scaling of the indentation indicators
         private void IndentationInfoList_OnSizeChanged(object sender, SizeChangedEventArgs e)
