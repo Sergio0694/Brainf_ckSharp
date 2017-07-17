@@ -319,7 +319,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     Y2 = top
                 };
                 guide.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 30 + open.Top));
-                guide.SetVisualOffset(TranslationAxis.X, (float)(open.X + 6));
+                guide.SetVisualOffset(TranslationAxis.X, (float)((close.X > open.X ? open.X : close.X) + 6));
                 BracketGuidesCanvas.Children.Add(guide);
                 i2++;
             }
