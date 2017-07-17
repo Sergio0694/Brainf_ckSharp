@@ -24,9 +24,10 @@
                 RepeatBehavior="Forever"/>
         </Storyboard>
         
-        <!--Depth converters-->
+        <!--Converters-->
         <converters:DepthToVisibilityConverter x:Key="DepthConverter"/>
-        <converters:SingleDigitConverterWithFallback x:Key="DepthDigitCOnverter"/>
+        <converters:SingleDigitConverterWithFallback x:Key="DepthDigitConverter"/>
+        <converters:DisplayScalingToMarginConverter x:Key="DPIToMarginConverter"/>
         
         <!--Indentation guide info-->
         <DataTemplate x:Key="IDEIndentationInfoOpenBracketTemplate">
@@ -51,11 +52,11 @@
                     <TextBlock
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
-                        Text="{Binding Depth, Converter={StaticResource DepthDigitCOnverter}, ConverterParameter=•}"
+                        Text="{Binding Depth, Converter={StaticResource DepthDigitConverter}, ConverterParameter=•}"
                         IsTextScaleFactorEnabled="False"
                         FontSize="8"
                         Foreground="GhostWhite"
-                        Margin="0,-1,0,0"/>
+                        Margin="{Binding Converter={StaticResource DPIToMarginConverter}}"/>
                 </Border>
                 <Rectangle
                     HorizontalAlignment="Center"
@@ -89,11 +90,11 @@
                     <TextBlock
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
-                        Text="{Binding Depth, Converter={StaticResource DepthDigitCOnverter}, ConverterParameter=•}"
+                        Text="{Binding Depth, Converter={StaticResource DepthDigitConverter}, ConverterParameter=•}"
                         IsTextScaleFactorEnabled="False"
                         FontSize="8"
                         Foreground="GhostWhite"
-                        Margin="0,-1,0,0"/>
+                        Margin="{Binding Converter={StaticResource DPIToMarginConverter}}"/>
                 </Border>
                 <Rectangle
                     HorizontalAlignment="Center"
