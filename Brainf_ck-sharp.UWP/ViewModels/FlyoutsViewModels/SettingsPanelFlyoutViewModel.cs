@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
+using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
@@ -113,12 +114,12 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         /// Gets the collection of the available IDE themes
         /// </summary>
         [NotNull]
-        public IReadOnlyCollection<IDEThemeInfo> AvailableIDEThemes { get; } = new[]
+        public IReadOnlyCollection<SelectableIDEThemeInfo> AvailableIDEThemes { get; } = new[]
         {
-            CodeThemes.Default,
-            CodeThemes.Monokai,
-            CodeThemes.Dracula,
-            CodeThemes.Vim
+            new SelectableIDEThemeInfo(CodeThemes.Default),
+            new SelectableIDEThemeInfo(CodeThemes.Monokai),
+            new SelectableIDEThemeInfo(CodeThemes.Dracula),
+            new SelectableIDEThemeInfo(CodeThemes.Vim)
         };
 
         private int _IDEThemeSelectedIndex = 0;

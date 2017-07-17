@@ -1,7 +1,8 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.DataModels.Misc;
+using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using UICompositionAnimations.Helpers.PointerEvents;
 
 namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes
 {
@@ -13,21 +14,21 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes
         }
 
         /// <summary>
-        /// Gets or sets the current <see cref="IDEThemeInfo"/> instance to display in the preview
+        /// Gets or sets the current <see cref="SelectableIDEThemeInfo"/> instance to display in the preview
         /// </summary>
-        public IDEThemeInfo Theme
+        public SelectableIDEThemeInfo Theme
         {
-            get => GetValue(ThemeProperty).To<IDEThemeInfo>();
+            get => GetValue(ThemeProperty).To<SelectableIDEThemeInfo>();
             set => SetValue(ThemeProperty, value);
         }
 
         public static readonly DependencyProperty ThemeProperty = DependencyProperty.Register(
-            nameof(Theme), typeof(IDEThemeInfo), typeof(IDEThemePreviewTemplate), new PropertyMetadata(default(IDEThemeInfo), OnThemePropertyChanged));
+            nameof(Theme), typeof(SelectableIDEThemeInfo), typeof(IDEThemePreviewTemplate), new PropertyMetadata(default(SelectableIDEThemeInfo), OnThemePropertyChanged));
 
         private static void OnThemePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             IDEThemePreviewTemplate @this = d.To<IDEThemePreviewTemplate>();
-            IDEThemeInfo info = e.NewValue.To<IDEThemeInfo>();
+            IDEThemeInfo info = e.NewValue.To<SelectableIDEThemeInfo>()?.InnerValue;
             if (info != null)
             {
                 @this.TitleBlock.Text = info.Name;

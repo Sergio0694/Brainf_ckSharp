@@ -10,14 +10,40 @@
 
     <!--Root-->
     <StackPanel>
-        
+
+        <!--Visual states-->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="Default">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="HeaderHighlightBorder.Background"
+                            Value="Transparent"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Highlight">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="HeaderHighlightBorder.Background"
+                            Value="#20FFFFFF"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <!--Theme title-->
-        <Border Background="#20000000">
-            <TextBlock
-                IsTextScaleFactorEnabled="False"
-                Margin="12,4,0,4"
-                Text="Default"
-                x:Name="TitleBlock"/>
+        <Border 
+            x:Name="HeaderBorder"
+            Background="#20000000">
+            <Border
+                Background="Transparent"
+                x:Name="HeaderHighlightBorder">
+                <TextBlock
+                    IsTextScaleFactorEnabled="False"
+                    Margin="12,4,0,4"
+                    Text="Default"
+                    x:Name="TitleBlock"/>
+            </Border>
         </Border>
         
         <!--Visual preview-->
