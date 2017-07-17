@@ -5,11 +5,16 @@
     /// </summary>
     public enum AppSettingsKeys
     {
+        // General settings
         WelcomeMessageShown,
         OverflowToggleMessageShown,
         ByteOverflowModeEnabled,
         ReviewPromptShown,
         AppStartups,
-        InAppBlurEnabled
+
+        // Settings panel
+        InAppBlurMode,
+        AutoIndentBrackets,
+        BracketsStyle
     }
 }

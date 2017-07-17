@@ -2,7 +2,6 @@
     x:Class="Brainf_ck_sharp_UWP.UserControls.Flyouts.SettingsPanelFlyout"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Brainf_ck_sharp_UWP.UserControls.Flyouts"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
@@ -10,23 +9,46 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <StackPanel>
+    <StackPanel Margin="12,12,16,20">
+        
+        <TextBlock
+            Text="IDE"
+            FontWeight="Bold"
+            FontSize="20"
+            Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                Text="Auto indent brackets"/>
-            <ToggleSwitch
-                Grid.Column="1"/>
-        </Grid>
+        <TextBlock
+            Margin="0,8,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"
+            Text="Auto indent brackets"/>
+        <ToggleSwitch IsOn="{x:Bind ViewModel.AutoindentBrackets, Mode=TwoWay}"/>
 
-        <inheritedControls:AnimatedComboBox 
-            x:Name="ComboBox"
-            />
+        <TextBlock
+            Margin="0,4,0,0"
+            Text="Brackets style"/>
+        <inheritedControls:AnimatedComboBox
+            Margin="0,8,0,0"
+            ItemsSource="{x:Bind ViewModel.BracketsStyleOptions}"
+            SelectedIndex="{x:Bind ViewModel.BracketsStyleSelectedIndex, Mode=TwoWay}"
+            IsEnabled="{x:Bind ViewModel.AutoindentBrackets, Mode=OneWay}"
+            MinWidth="180"/>
+
+        <TextBlock
+            Margin="0,16,0,0"
+            Text="UI"
+            FontWeight="Bold"
+            FontSize="20"
+            Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+
+        <TextBlock
+            Margin="0,8,0,0"
+            Text="Preferred blur mode"/>
+        <inheritedControls:AnimatedComboBox
+            Margin="0,8,0,0"
+            ItemsSource="{x:Bind ViewModel.BlurModeOptions}"
+            SelectedIndex="{x:Bind ViewModel.BlurModeSelectedIndex, Mode=TwoWay}"
+            IsEnabled="{x:Bind ViewModel.HostBlurOptionSupported}"
+            MinWidth="180"/>
     </StackPanel>
 </UserControl>

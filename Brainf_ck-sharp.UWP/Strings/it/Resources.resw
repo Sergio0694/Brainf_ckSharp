@@ -459,7 +459,4 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="Sure" xml:space="preserve">
     <value>Certo!</value>
   </data>
-  <data name="ToggleBlur.Label" xml:space="preserve">
-    <value>Cambia modalità blur</value>
-  </data>
 </root>

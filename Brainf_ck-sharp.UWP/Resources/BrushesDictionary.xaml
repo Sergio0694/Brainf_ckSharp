@@ -41,6 +41,15 @@
         TintMix="0.6"
         NoiseTextureUri="/Assets/Misc/noise.png"/>
 
+    <!--ComboBox brush-->
+    <brushes:CustomAcrylicBrush
+        x:Key="ComboBoxAcrylicBrush"
+        Mode="InAppBlur"
+        BlurAmount="8"
+        Tint="#FF161616"
+        TintMix="0.6"
+        NoiseTextureUri="/Assets/Misc/noise.png"/>
+
     <!--Header host backdrop blur brush-->
     <brushes:CustomAcrylicBrush
         x:Key="HeaderHostBackdropBlurBrush"

@@ -1646,7 +1646,7 @@
         <Setter Property="Foreground" Value="{ThemeResource ComboBoxForeground}" />
         <Setter Property="Background" Value="{ThemeResource ComboBoxBackground}" />
         <Setter Property="BorderBrush" Value="{ThemeResource ComboBoxBorderBrush}" />
-        <Setter Property="BorderThickness" Value="{ThemeResource ComboBoxBorderThemeThickness}" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="TabNavigation" Value="Once" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
@@ -1865,7 +1865,7 @@
                             <Popup x:Name="Popup">
                                 <Border
                                     lights:LightsSourceHelper.IsLightsContainer="True"
-                                    Background="{StaticResource InAppGrayAcrylicBrush}" 
+                                    Background="{StaticResource ComboBoxAcrylicBrush}" 
                                     x:Name="PopupBorder"
                                     BorderBrush="{ThemeResource ComboBoxDropDownBorderBrush}"
                                     BorderThickness="{ThemeResource ComboBoxDropdownBorderThickness}"
