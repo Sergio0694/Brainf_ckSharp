@@ -174,7 +174,7 @@
 
         <!--Diff updated saved line-->
         <DataTemplate x:Key="DiffChangedLineTemplate">
-            <StackPanel 
+            <StackPanel
                 Height="19.94998046875"
                 Orientation="Horizontal"
                 HorizontalAlignment="Center">
@@ -258,7 +258,7 @@
                 HorizontalAlignment="Stretch"
                 Width="10"
                 ItemsSource="{x:Bind ViewModel.DiffStatusSource}"
-                ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
+                ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStatesAndTabNavigation}"
                 ItemTemplateSelector="{StaticResource DiffTemplateSelector}"
                 ScrollViewer.VerticalScrollBarVisibility="Hidden"
                 ScrollViewer.VerticalScrollMode="Disabled"
@@ -272,7 +272,7 @@
                 Width="12"
                 HorizontalAlignment="Stretch"
                 ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
-                ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
+                ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStatesAndTabNavigation}"
                 ItemTemplateSelector="{StaticResource IndentationInfoTemplateSelector}"
                 ScrollViewer.VerticalScrollBarVisibility="Hidden"
                 ScrollViewer.VerticalScrollMode="Disabled"

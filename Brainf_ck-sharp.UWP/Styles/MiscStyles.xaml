@@ -396,6 +396,14 @@
         </Setter>
     </Style>
 
+    <!--ListView item template without tab navigation-->
+    <Style 
+        TargetType="ListViewItem" 
+        x:Key="ListViewItemWithoutPointerVisualStatesAndTabNavigation" 
+        BasedOn="{StaticResource ListViewItemWithoutPointerVisualStates}">
+        <Setter Property="IsTabStop" Value="False"/>
+    </Style>
+
     <!--JumpList generic Style-->
     <Style TargetType="SemanticZoom" x:Name="SemanticZoomCustomStyle">
         <Setter Property="Background" Value="Transparent" />
