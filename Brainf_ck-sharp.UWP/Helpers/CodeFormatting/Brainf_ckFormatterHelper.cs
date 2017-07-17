@@ -1,27 +1,23 @@
-﻿using System.Collections.Generic;
-using Windows.UI;
+﻿using Windows.UI;
+using Brainf_ck_sharp_UWP.DataModels.Misc;
+using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers
+namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
 {
     /// <summary>
     /// A small class with some UI-related methods for the Brainf_ck language
     /// </summary>
-    public static class Brainf_ckFormatterHelper
+    public sealed class Brainf_ckFormatterHelper
     {
+        private Brainf_ckFormatterHelper() => CurrentTheme = CodeThemeSelector.Default;
+
+        public static Brainf_ckFormatterHelper Instance { get; } = new Brainf_ckFormatterHelper();
+
         /// <summary>
         /// Gets the syntax highlight colors map for the available operators
         /// </summary>
-        private static readonly IReadOnlyDictionary<char, Color> HighlightMap = new Dictionary<char, Color>
-        {
-            { '>', Color.FromArgb(byte.MaxValue, 0xDD, 0xDD, 0xDD) },
-            { '<', Color.FromArgb(byte.MaxValue, 0xDD, 0xDD, 0xDD) },
-            { '+', Colors.White },
-            { '-', Colors.White },
-            { '[', Color.FromArgb(byte.MaxValue, 0x56, 0x9C, 0xD6) },
-            { ']', Color.FromArgb(byte.MaxValue, 0x56, 0x9C, 0xD6) },
-            { '.', Colors.IndianRed },
-            { ',', Colors.DarkKhaki }
-        };
+        [NotNull]
+        public IDEThemeInfo CurrentTheme { get; private set; }
 
         /// <summary>
         /// Checks whether or not two operators have the same highlighted color
@@ -40,9 +36,9 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// Returns the corresponding color from a given character in a Brainf_ck source code
         /// </summary>
         /// <param name="c">The character to parse</param>
-        public static Color GetSyntaxHighlightColorFromChar(char c)
+        public Color GetSyntaxHighlightColorFromChar(char c)
         {
-            return HighlightMap.TryGetValue(c, out Color color) ? color : Color.FromArgb(byte.MaxValue, 0x52, 0xAF, 0x3D);
+            return CurrentTheme.HighlightMap.TryGetValue(c, out Color color) ? color : CurrentTheme.CommentsColor;
         }
     }
 }

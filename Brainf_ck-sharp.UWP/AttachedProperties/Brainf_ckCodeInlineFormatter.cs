@@ -8,7 +8,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp;
-using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 
 namespace Brainf_ck_sharp_UWP.AttachedProperties
@@ -59,7 +59,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
                     inlines.Add(new Run
                     {
                         Text = builder.ToString(),
-                        Foreground = new SolidColorBrush(Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(last))
+                        Foreground = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(last))
                     });
                     builder.Clear();
                     last = c;
@@ -73,7 +73,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
                 inlines.Add(new Run
                 {
                     Text = builder.ToString(),
-                    Foreground = new SolidColorBrush(Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(last))
+                    Foreground = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(last))
                 });
             }
 

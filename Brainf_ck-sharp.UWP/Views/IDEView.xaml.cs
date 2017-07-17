@@ -23,6 +23,7 @@ using Brainf_ck_sharp_UWP.DataModels.EventArgs;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
 using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages.Actions;
@@ -46,6 +47,8 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             Loaded += IDEView_Loaded;
             this.InitializeComponent();
+            RootGrid.Background = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.Background);
+            BreakpointsCanvas.Background = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.BreakpointsPaneBackground);
             ApplyCustomTabSpacing();
             DataContext = new IDEViewModel(EditBox.Document, PickSaveNameAsync, () => BreakpointsInfo.Keys);
             ViewModel.PlayRequested += ViewModel_PlayRequested;
@@ -383,7 +386,7 @@ namespace Brainf_ck_sharp_UWP.Views
 
                     // Get the last character and apply the right color
                     ITextRange range = EditBox.Document.GetRange(start - 1, start);
-                    range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(range.Character);
+                    range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(range.Character);
 
                     // No other work needed for all the operators except the [ bracket
                     if (!Brainf_ckInterpreter.Operators.Where(c => c != '[').Contains(range.Character) &&
@@ -445,7 +448,7 @@ namespace Brainf_ck_sharp_UWP.Views
 
                             // Apply the right color and move the selection at the center of the brackets
                             ITextRange bracketsRange = EditBox.Document.GetRange(start, EditBox.Document.Selection.EndPosition);
-                            bracketsRange.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar('[');
+                            bracketsRange.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar('[');
                             EditBox.Document.Selection.Move(TextRangeUnit.Character, -(autoFormat ? indents + 2 : 1));
                             DrawLineNumbers();
                             textChanged = true;
@@ -605,7 +608,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     if (test < 33 || test > 126 && test < 161) continue;
                     ITextRange range = EditBox.Document.GetRange(i, i + 1);
                     char c = range.Character;
-                    range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(c);
+                    range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(c);
                 }
 
                 // Set the right selection position

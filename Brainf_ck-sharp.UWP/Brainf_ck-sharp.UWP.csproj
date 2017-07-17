@@ -147,6 +147,7 @@
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationInfoLineType.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationOpenBracketLineInfo.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IndentationCoordinateEntry.cs" />
+    <Compile Include="DataModels\Misc\IDEThemeInfo.cs" />
     <Compile Include="DataModels\Misc\ScriptExceptionInfo.cs" />
     <Compile Include="DataModels\SQLite\CategorizedSourceCode.cs" />
     <Compile Include="DataModels\SQLite\CategorizedSourceCodeWithSyntaxInfo.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
     <Compile Include="DataModels\SQLite\Enums\SourceCodeTitleScore.cs" />
     <Compile Include="Enums\SourceCodeShareType.cs" />
+    <Compile Include="Helpers\CodeFormatting\CodeThemeSelector.cs" />
     <Compile Include="Helpers\LauncherHelper.cs" />
     <Compile Include="Helpers\Settings\AppSettingsKeys.cs" />
     <Compile Include="Helpers\Settings\AppSettingsManager.cs" />
@@ -186,7 +188,7 @@
     <Compile Include="PopupService\Interfaces\IEventConfirmedContent.cs" />
     <Compile Include="PopupService\Interfaces\IValidableDialog.cs" />
     <Compile Include="Helpers\BitHelper.cs" />
-    <Compile Include="Helpers\Brainf_ckFormatterHelper.cs" />
+    <Compile Include="Helpers\CodeFormatting\Brainf_ckFormatterHelper.cs" />
     <Compile Include="PopupService\FlyoutManager.cs" />
     <Compile Include="Helpers\Extensions\MiscExtensions.cs" />
     <Compile Include="Helpers\Extensions\NumericExtensions.cs" />
