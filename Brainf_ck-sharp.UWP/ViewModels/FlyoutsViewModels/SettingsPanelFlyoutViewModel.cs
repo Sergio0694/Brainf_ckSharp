@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+#if !DEBUG
+using System.Linq;
+#endif
 using System.Threading.Tasks;
 using Windows.Services.Store;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
