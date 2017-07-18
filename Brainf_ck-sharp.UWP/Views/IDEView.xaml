@@ -214,16 +214,17 @@
             <VisualStateGroup>
                 <VisualState x:Name="Default">
                     <VisualState.Setters>
-                        <Setter 
-                            Target="CursorBorder.BorderBrush"
-                            Value="#20FFFFFF"/>
+                        <Setter
+                            x:Name="DefaultStateSetter"
+                            Target="CursorBorder.Opacity"
+                            Value="0.8"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Focused">
                     <VisualState.Setters>
                         <Setter 
-                            Target="CursorBorder.BorderBrush"
-                            Value="#30FFFFFF"/>
+                            Target="CursorBorder.Opacity"
+                            Value="1"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -318,7 +319,7 @@
                 VerticalAlignment="Top"
                 Height="20"
                 BorderThickness="2"
-                BorderBrush="#20FFFFFF"
+                BorderBrush="#30FFFFFF"
                 x:Name="CursorBorder">
                 <Border.RenderTransform>
                     <TranslateTransform x:Name="CursorBorderTransform"/>

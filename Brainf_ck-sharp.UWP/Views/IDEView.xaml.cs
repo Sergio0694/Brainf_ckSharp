@@ -558,7 +558,7 @@ namespace Brainf_ck_sharp_UWP.Views
             CursorTransform.X = selectionOffset.X + 4;
 
             // Update the visibility and the position of the cursor
-            CursorBorder.SetVisualOpacity(EditBox.Document.Selection.Length.Abs() > 0 ? 0 : 1);
+            CursorBorder.Visibility = (EditBox.Document.Selection.Length.Abs() == 0).ToVisibility();
             CursorBorderTransform.Y = selectionOffset.Y;
         }
 
