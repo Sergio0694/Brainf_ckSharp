@@ -650,6 +650,14 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Tap to unlock</source>
           <target state="translated">Tocca per sbloccare</target>
         </trans-unit>
+        <trans-unit id="CommentRun.Text" translate="yes" xml:space="preserve">
+          <source>Move to next cell</source>
+          <target state="translated">Avanza a cella successiva</target>
+        </trans-unit>
+        <trans-unit id="CommentRun2.Text" translate="yes" xml:space="preserve">
+          <source>Print value</source>
+          <target state="translated">Stampa valore</target>
+        </trans-unit>
       </group>
     </body>
   </file>

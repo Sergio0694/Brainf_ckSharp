@@ -495,4 +495,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="TapToUnlock.Text" xml:space="preserve">
     <value>Tocca per sbloccare</value>
   </data>
+  <data name="CommentRun.Text" xml:space="preserve">
+    <value>Avanza a cella successiva</value>
+  </data>
+  <data name="CommentRun2.Text" xml:space="preserve">
+    <value>Stampa valore</value>
+  </data>
 </root>

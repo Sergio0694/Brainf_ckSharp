@@ -601,4 +601,10 @@ This way he'll be able to help you!</value>
   <data name="ThemesUnlocked" xml:space="preserve">
     <value>Themes pack unlocked</value>
   </data>
+  <data name="CommentRun.Text" xml:space="preserve">
+    <value>Move to next cell</value>
+  </data>
+  <data name="CommentRun2.Text" xml:space="preserve">
+    <value>Print value</value>
+  </data>
 </root>

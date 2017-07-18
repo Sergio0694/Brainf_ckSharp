@@ -87,7 +87,8 @@
                 <Run 
                     Text="Move to next cell"
                     Foreground="#FF52AF3D"
-                    x:Name="CommentRun"/><LineBreak/>
+                    x:Name="CommentRun"
+                    x:Uid="CommentRun"/><LineBreak/>
                 <Run 
                     Text="]"
                     Foreground="#FF569CD6"
@@ -101,7 +102,8 @@
                     x:Name="DotRun"/><Run 
                     Text="Print value"
                     Foreground="#FF52AF3D"
-                    x:Name="CommentRun2"/>
+                    x:Name="CommentRun2"
+                    x:Uid="CommentRun2"/>
             </TextBlock>
             
             <!--Vertical guide-->
