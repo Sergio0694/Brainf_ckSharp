@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
@@ -15,6 +14,12 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
 {
     public class SettingsPanelFlyoutViewModel : ViewModelBase
     {
+        public SettingsPanelFlyoutViewModel()
+        {
+            IDEThemeSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme));
+            AvailableIDEThemes[IDEThemeSelectedIndex].IsSelected = true;
+        }
+
         /// <summary>
         /// Gets the collection of the available blur modes
         /// </summary>
@@ -116,14 +121,14 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         [NotNull]
         public IReadOnlyList<SelectableIDEThemeInfo> AvailableIDEThemes { get; } = new[]
         {
-            new SelectableIDEThemeInfo(CodeThemes.Default) { IsSelected = true },
+            new SelectableIDEThemeInfo(CodeThemes.Default),
             new SelectableIDEThemeInfo(CodeThemes.Monokai),
             new SelectableIDEThemeInfo(CodeThemes.Dracula),
             new SelectableIDEThemeInfo(CodeThemes.Vim),
             new SelectableIDEThemeInfo(CodeThemes.OneDark)
         };
 
-        private int _IDEThemeSelectedIndex = 0;
+        private int _IDEThemeSelectedIndex;
 
         /// <summary>
         /// Gets or sets the selected index for the IDE theme
@@ -137,7 +142,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 {
                     for (int i = 0; i < AvailableIDEThemes.Count; i++)
                         AvailableIDEThemes[i].IsSelected = i == value;
-                    //AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.BracketsStyle), value, SettingSaveMode.OverwriteIfExisting);
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.SelectedIDETheme), value, SettingSaveMode.OverwriteIfExisting);
                 }
             }
         }

@@ -16,6 +16,7 @@
         InAppBlurMode,
         AutoIndentBrackets,
         BracketsStyle,
-        TabLength
+        TabLength,
+        SelectedIDETheme
     }
 }

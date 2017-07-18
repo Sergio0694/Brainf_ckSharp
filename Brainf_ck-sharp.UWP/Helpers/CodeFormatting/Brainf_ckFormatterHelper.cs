@@ -1,6 +1,6 @@
 ﻿using Windows.UI;
-using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
@@ -11,7 +11,28 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
     public sealed class Brainf_ckFormatterHelper
     {
         // Private constructor that loads the initial theme
-        private Brainf_ckFormatterHelper() => CurrentTheme = CodeThemes.Default;
+        private Brainf_ckFormatterHelper()
+        {
+            int theme = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme));
+            switch (theme)
+            {
+                case 1:
+                    CurrentTheme = CodeThemes.Monokai;
+                    break;
+                case 2:
+                    CurrentTheme = CodeThemes.Dracula;
+                    break;
+                case 3:
+                    CurrentTheme = CodeThemes.Vim;
+                    break;
+                case 4:
+                    CurrentTheme = CodeThemes.OneDark;
+                    break;
+                default:
+                    CurrentTheme = CodeThemes.Default;
+                    break;
+            }
+        }
 
         private static Brainf_ckFormatterHelper _Instance;
 
