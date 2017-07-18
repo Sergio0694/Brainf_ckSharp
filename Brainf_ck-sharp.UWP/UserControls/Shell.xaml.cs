@@ -258,15 +258,23 @@ namespace Brainf_ck_sharp_UWP.UserControls
         private async void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             // Show the settings panel
-            int theme = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme));
+            int
+                theme = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)),
+                tabs = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength));
             SettingsPanelFlyout settings = new SettingsPanelFlyout();
             await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Settings"), settings, null, FlyoutDisplayMode.ActualHeight);
-            if (AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)) != theme)
+            bool
+                themeChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)) != theme,
+                tabsChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength)) != tabs;
+            if (themeChanged || tabsChanged)
             {
                 // UI refresh needed
-                Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
-                await Task.Delay(500);
-                Messenger.Default.Send(new SelectedIDEThemeChangedMessage());
+                if (themeChanged)
+                {
+                    Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
+                    await Task.Delay(500);
+                }
+                Messenger.Default.Send(new IDESettingsChangedMessage(themeChanged, tabsChanged));
             }
         }
     }

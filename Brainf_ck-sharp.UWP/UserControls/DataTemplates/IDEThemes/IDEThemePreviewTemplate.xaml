@@ -120,7 +120,7 @@
                 x:Name="BracketsGuide">
                 <Line.RenderTransform>
                     <TranslateTransform
-                        X="1"
+                        X="2"
                         Y="22"/>
                 </Line.RenderTransform>
             </Line>
