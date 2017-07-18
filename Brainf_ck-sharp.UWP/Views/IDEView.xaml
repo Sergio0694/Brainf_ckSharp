@@ -291,6 +291,18 @@
             IsHitTestVisible="False"
             SizeChanged="BreakLinesCanvas_OnSizeChanged"/>
 
+        <!--Canvas with the column guides-->
+        <Grid
+            Grid.Column="4"
+            IsHitTestVisible="False"
+            SizeChanged="BracketsGrid_SizeChanged"
+            x:Name="BracketsParentGrid">
+            <Grid.Clip>
+                <RectangleGeometry x:Name="BracketsClip"/>
+            </Grid.Clip>
+            <Canvas x:Name="BracketGuidesCanvas"/>
+        </Grid>
+
         <!--Code box-->
         <inheritedControls:RichEditBoxWithVerticalOffsetInfo
             Grid.Column="4"
@@ -341,17 +353,5 @@
                 </Rectangle.RenderTransform>
             </Rectangle>
         </Canvas>
-
-        <!--Canvas with the column guides-->
-        <Grid
-            Grid.Column="4"
-            IsHitTestVisible="False"
-            SizeChanged="BracketsGrid_SizeChanged"
-            x:Name="BracketsParentGrid">
-            <Grid.Clip>
-                <RectangleGeometry x:Name="BracketsClip"/>
-            </Grid.Clip>
-            <Canvas x:Name="BracketGuidesCanvas"/>
-        </Grid>
     </Grid>
 </UserControl>
