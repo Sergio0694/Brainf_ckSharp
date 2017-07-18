@@ -109,8 +109,11 @@
     <Compile Include="AttachedProperties\Brainf_ckCodeInlineFormatter.cs" />
     <Compile Include="AttachedProperties\BulletListHelper.cs" />
     <Compile Include="AttachedProperties\CharacterToRotationHelper.cs" />
+    <Compile Include="AttachedProperties\CustomPolygonBorderAngleHelper.cs" />
     <Compile Include="AttachedProperties\RunInlineHelper.cs" />
     <Compile Include="Converters\BoolToAccentBrushOrFallbackConverter.cs" />
+    <Compile Include="Converters\BoolToColorBrushConverter.cs" />
+    <Compile Include="Converters\BoolToInvertedVisibilityConverter.cs" />
     <Compile Include="Converters\DateTimeToDateStringConverter.cs" />
     <Compile Include="Converters\DisplayScalingToMarginConverter.cs" />
     <Compile Include="Converters\SourceCodeTitleScoreToDisplayStringConverter.cs" />
@@ -147,7 +150,10 @@
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationInfoLineType.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationOpenBracketLineInfo.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IndentationCoordinateEntry.cs" />
+    <Compile Include="DataModels\Misc\Themes\IDEThemeInfo.cs" />
+    <Compile Include="DataModels\Misc\SelectableModelBase.cs" />
     <Compile Include="DataModels\Misc\ScriptExceptionInfo.cs" />
+    <Compile Include="DataModels\Misc\Themes\SelectableIDEThemeInfo.cs" />
     <Compile Include="DataModels\SQLite\CategorizedSourceCode.cs" />
     <Compile Include="DataModels\SQLite\CategorizedSourceCodeWithSyntaxInfo.cs" />
     <Compile Include="DataModels\SQLite\Enums\SavedSourceCodeType.cs" />
@@ -156,6 +162,8 @@
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
     <Compile Include="DataModels\SQLite\Enums\SourceCodeTitleScore.cs" />
     <Compile Include="Enums\SourceCodeShareType.cs" />
+    <Compile Include="Helpers\CodeFormatting\CodeThemes.cs" />
+    <Compile Include="Helpers\ComboBoxDataTemplateSelector.cs" />
     <Compile Include="Helpers\LauncherHelper.cs" />
     <Compile Include="Helpers\Settings\AppSettingsKeys.cs" />
     <Compile Include="Helpers\Settings\AppSettingsManager.cs" />
@@ -177,6 +185,7 @@
     <Compile Include="Messages\IDEStatus\BreakpointErrorStatusChangedMessage.cs" />
     <Compile Include="Messages\OverflowModeChangedMessage.cs" />
     <Compile Include="Messages\UI\BlurModeChangedMessage.cs" />
+    <Compile Include="Messages\UI\IDESettingsChangedMessage.cs" />
     <Compile Include="PopupService\Interfaces\IAsyncLoadedContent.cs" />
     <Compile Include="PopupService\Interfaces\IBusyWorkingContent.cs" />
     <Compile Include="PopupService\InternalTypes\Offset.cs" />
@@ -186,7 +195,7 @@
     <Compile Include="PopupService\Interfaces\IEventConfirmedContent.cs" />
     <Compile Include="PopupService\Interfaces\IValidableDialog.cs" />
     <Compile Include="Helpers\BitHelper.cs" />
-    <Compile Include="Helpers\Brainf_ckFormatterHelper.cs" />
+    <Compile Include="Helpers\CodeFormatting\Brainf_ckFormatterHelper.cs" />
     <Compile Include="PopupService\FlyoutManager.cs" />
     <Compile Include="Helpers\Extensions\MiscExtensions.cs" />
     <Compile Include="Helpers\Extensions\NumericExtensions.cs" />
@@ -242,6 +251,12 @@
     </Compile>
     <Compile Include="UserControls\CustomControls\UnicodeNonVisibleCharactersGroupDisplayControl.xaml.cs">
       <DependentUpon>UnicodeNonVisibleCharactersGroupDisplayControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\IDEThemes\IDEThemeDropDownPreviewTemplate.xaml.cs">
+      <DependentUpon>IDEThemeDropDownPreviewTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\IDEThemes\IDEThemePreviewTemplate.xaml.cs">
+      <DependentUpon>IDEThemePreviewTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DataTemplates\JumpList\Changelog\ChangelogZoomedInHeaderTemplate.xaml.cs">
       <DependentUpon>ChangelogZoomedInHeaderTemplate.xaml</DependentUpon>
@@ -540,6 +555,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\CustomControls\ErrorCharacterDisplayControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DataTemplates\IDEThemes\IDEThemeDropDownPreviewTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DataTemplates\IDEThemes\IDEThemePreviewTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

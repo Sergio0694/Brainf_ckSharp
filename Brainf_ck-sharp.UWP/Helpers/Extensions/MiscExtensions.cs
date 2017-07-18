@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using JetBrains.Annotations;
@@ -17,6 +18,17 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
         /// <param name="o">The object to cast</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T To<T>([CanBeNull] this object o) => (T)o;
+
+        /// <summary>
+        /// Applies a function to a given input and returns it (useful to edit items in a method chain)
+        /// </summary>
+        /// <param name="value">The item to edit and return</param>
+        /// <param name="updater">The function to use to edit the input item</param>
+        public static T With<T>(this T value, [NotNull] Action<T> updater)
+        {
+            updater(value);
+            return value;
+        }
 
         /// <summary>
         /// Suppresses the warnings when calling an async method without awaiting it

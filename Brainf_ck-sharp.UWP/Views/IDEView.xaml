@@ -198,7 +198,9 @@
     </UserControl.Resources>
 
     <!--Root-->
-    <Grid Background="#FF1E1E1E">
+    <Grid 
+        x:Name="RootGrid"
+        Background="#FF1E1E1E">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="28"/>
@@ -236,7 +238,7 @@
             RightTapped="BreakpointsCanvas_OnRightTapped"
             Holding="BreakpointsCanvas_OnHolding"/>
 
-            <!--Line numbers grid-->
+        <!--Line numbers grid-->
         <Canvas Grid.Column="1">
             <Grid 
                 x:Name="LinesGrid"

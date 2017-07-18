@@ -255,10 +255,27 @@ namespace Brainf_ck_sharp_UWP.UserControls
         }
 
         // Changes the current header blur mode
-        private void ToggleBlurModeButton_Click(object sender, RoutedEventArgs e)
+        private async void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
+            // Show the settings panel
+            int
+                theme = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)),
+                tabs = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength));
             SettingsPanelFlyout settings = new SettingsPanelFlyout();
-            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Settings"), settings, null, FlyoutDisplayMode.ActualHeight).Forget();
+            await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Settings"), settings, null, FlyoutDisplayMode.ActualHeight);
+            bool
+                themeChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)) != theme,
+                tabsChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength)) != tabs;
+            if (themeChanged || tabsChanged)
+            {
+                // UI refresh needed
+                if (themeChanged)
+                {
+                    Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
+                    await Task.Delay(500);
+                }
+                Messenger.Default.Send(new IDESettingsChangedMessage(themeChanged, tabsChanged));
+            }
         }
     }
 }

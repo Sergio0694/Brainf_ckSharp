@@ -356,7 +356,7 @@
                     Label="Settings"
                     x:Uid="SettingsButton"
                     Icon="&#xE115;"
-                    Click="ToggleBlurModeButton_Click"/>
+                    Click="SettingsButton_Click"/>
                 <customCommandBar:CustomCommandBarButton
                     Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="About"

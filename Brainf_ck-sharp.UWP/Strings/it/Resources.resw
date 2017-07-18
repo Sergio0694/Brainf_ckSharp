@@ -489,4 +489,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="TabLength.Text" xml:space="preserve">
     <value>Lunghezza tabulazione</value>
   </data>
+  <data name="ThemesUnlocked" xml:space="preserve">
+    <value>Pacchetto temi sbloccato</value>
+  </data>
+  <data name="TapToUnlock.Text" xml:space="preserve">
+    <value>Tocca per sbloccare</value>
+  </data>
 </root>

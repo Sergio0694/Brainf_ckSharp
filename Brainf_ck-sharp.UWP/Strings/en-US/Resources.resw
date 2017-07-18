@@ -595,4 +595,10 @@ This way he'll be able to help you!</value>
   <data name="TabLength.Text" xml:space="preserve">
     <value>Tab length</value>
   </data>
+  <data name="TapToUnlock.Text" xml:space="preserve">
+    <value>Tap to unlock</value>
+  </data>
+  <data name="ThemesUnlocked" xml:space="preserve">
+    <value>Themes pack unlocked</value>
+  </data>
 </root>

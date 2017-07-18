@@ -23,6 +23,7 @@ using Brainf_ck_sharp_UWP.DataModels.EventArgs;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
 using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages.Actions;
@@ -46,6 +47,9 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             Loaded += IDEView_Loaded;
             this.InitializeComponent();
+            RootGrid.Background = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.Background);
+            BreakpointsCanvas.Background = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.BreakpointsPaneBackground);
+            LineBlock.Foreground = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.LineNumberColor);
             ApplyCustomTabSpacing();
             DataContext = new IDEViewModel(EditBox.Document, PickSaveNameAsync, () => BreakpointsInfo.Keys);
             ViewModel.PlayRequested += ViewModel_PlayRequested;
@@ -74,6 +78,59 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.NewLineInsertionRequested += ViewModel_NewLineInsertionRequested;
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             _PreviousText = text;
+            Messenger.Default.Register<IDESettingsChangedMessage>(this, m => ApplyIDESettings(m.ThemeChanged, m.TabsLengthChanged));
+        }
+
+        // Apply the new IDE theme
+        private void ApplyIDESettings(bool themeChanged, bool tabsChanged)
+        {
+            // Disable the handlers
+            EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
+            EditBox.TextChanged -= EditBox_OnTextChanged;
+
+            // Update the tabs if needed
+            if (tabsChanged)
+            {
+                ApplyCustomTabSpacing();
+                if (!themeChanged) DrawBracketGuides(null, true).Forget();
+            }
+
+            // Update the current UI theme
+            if (themeChanged)
+            {
+                // Update the theme
+                Brainf_ckFormatterHelper.Instance.ReloadTheme();
+
+                // Main UI
+                RootGrid.Background = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.Background);
+                BreakpointsCanvas.Background = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.BreakpointsPaneBackground);
+                LineBlock.Foreground = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.LineNumberColor);
+
+                // Code highlight
+                EditBox.Document.GetText(TextGetOptions.None, out String text);
+                int count = 0;
+                for (int i = 0; i < text.Length; i++)
+                {
+                    char test = text[count++];
+                    if (test < 33 || test > 126 && test < 161) continue;
+                    ITextRange range = EditBox.Document.GetRange(i, i + 1);
+                    char c = range.Character;
+                    range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(c);
+                }
+
+                // Brackets guides
+                DrawBracketGuides(text, true).Forget();
+
+                // Release the UI
+                Task.Delay(500).ContinueWith(t =>
+                {
+                    Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
+                }, TaskScheduler.FromCurrentSynchronizationContext());
+            }
+
+            // Restore the handlers
+            EditBox.SelectionChanged += EditBox_OnSelectionChanged;
+            EditBox.TextChanged += EditBox_OnTextChanged;
         }
 
         // Updates the tab length setting
@@ -186,7 +243,7 @@ namespace Brainf_ck_sharp_UWP.Views
         private void EditBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
             DrawLineNumbers();
-            DrawBracketGuides(null).ContinueWith(t =>
+            DrawBracketGuides(null, false).ContinueWith(t =>
             {
                 if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
                 ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
@@ -231,7 +288,8 @@ namespace Brainf_ck_sharp_UWP.Views
         /// Redraws the column guides if necessary
         /// </summary>
         /// <param name="code">The current text, if already available</param>
-        private async Task<AsyncOperationResult<IReadOnlyList<IndentationCoordinateEntry>>> DrawBracketGuides(String code)
+        /// <param name="force">Indicates whether or not to always force a redraw of the column guides</param>
+        private async Task<AsyncOperationResult<IReadOnlyList<IndentationCoordinateEntry>>> DrawBracketGuides(String code, bool force)
         {
             // Get the text, clear the current guides and make sure the syntax is currently valid
             _BracketGuidesCts?.Cancel();
@@ -273,7 +331,7 @@ namespace Brainf_ck_sharp_UWP.Views
             // Check if the brackets haven't been changed or moved
             if (_Brackets != null && 
                 _Brackets.Count == workingSet.Item1.Count &&
-                workingSet.Item2 || 
+                workingSet.Item2 && !force || 
                 _BracketGuidesCts.IsCancellationRequested)
             {
                 BracketGuidesSemaphore.Release();
@@ -329,8 +387,10 @@ namespace Brainf_ck_sharp_UWP.Views
                     Width = 1,
                     StrokeThickness = 1,
                     Height = top,
-                    Stroke = new SolidColorBrush(Colors.LightGray),
-                    StrokeDashArray = new DoubleCollection { 4 },
+                    Stroke = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideColor),
+                    StrokeDashArray = Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.HasValue 
+                        ? new DoubleCollection { Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.Value }
+                        : new DoubleCollection(),
                     Y1 = 0,
                     Y2 = top
                 };
@@ -342,18 +402,6 @@ namespace Brainf_ck_sharp_UWP.Views
             BracketGuidesSemaphore.Release();
             return workingSet.Item1;
         }
-
-        /// <summary>
-        /// Gets the approximate height of each line of code in the IDE
-        /// </summary>
-        public double LineApproximateHeight // TODO: approximate this when the lines count changes and bind it to the items height of the ListView
-        {
-            get => (double)GetValue(LineApproximateHeightProperty);
-            set => SetValue(LineApproximateHeightProperty, value);
-        }
-
-        public static readonly DependencyProperty LineApproximateHeightProperty = DependencyProperty.Register(
-            nameof(LineApproximateHeight), typeof(double), typeof(IDEView), new PropertyMetadata(19.94998046875));
 
         #endregion
 
@@ -383,7 +431,7 @@ namespace Brainf_ck_sharp_UWP.Views
 
                     // Get the last character and apply the right color
                     ITextRange range = EditBox.Document.GetRange(start - 1, start);
-                    range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(range.Character);
+                    range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(range.Character);
 
                     // No other work needed for all the operators except the [ bracket
                     if (!Brainf_ckInterpreter.Operators.Where(c => c != '[').Contains(range.Character) &&
@@ -445,7 +493,7 @@ namespace Brainf_ck_sharp_UWP.Views
 
                             // Apply the right color and move the selection at the center of the brackets
                             ITextRange bracketsRange = EditBox.Document.GetRange(start, EditBox.Document.Selection.EndPosition);
-                            bracketsRange.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar('[');
+                            bracketsRange.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar('[');
                             EditBox.Document.Selection.Move(TextRangeUnit.Character, -(autoFormat ? indents + 2 : 1));
                             DrawLineNumbers();
                             textChanged = true;
@@ -482,7 +530,7 @@ namespace Brainf_ck_sharp_UWP.Views
             // Update the bracket guides
             if (textChanged)
             {
-                DrawBracketGuides(text).ContinueWith(t =>
+                DrawBracketGuides(text, false).ContinueWith(t =>
                 {
                     if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
                     ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
@@ -605,7 +653,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     if (test < 33 || test > 126 && test < 161) continue;
                     ITextRange range = EditBox.Document.GetRange(i, i + 1);
                     char c = range.Character;
-                    range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(c);
+                    range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(c);
                 }
 
                 // Set the right selection position
@@ -622,7 +670,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 EditBox.Document.GetText(TextGetOptions.None, out code);
                 _PreviousText = code;
                 DrawLineNumbers();
-                DrawBracketGuides(code).ContinueWith(t =>
+                DrawBracketGuides(code, false).ContinueWith(t =>
                 {
                     if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
                     ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();

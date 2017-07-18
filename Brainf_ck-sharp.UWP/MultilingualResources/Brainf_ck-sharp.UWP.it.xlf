@@ -642,6 +642,14 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Tab length</source>
           <target state="translated">Lunghezza tabulazione</target>
         </trans-unit>
+        <trans-unit id="ThemesUnlocked" translate="yes" xml:space="preserve">
+          <source>Themes pack unlocked</source>
+          <target state="translated">Pacchetto temi sbloccato</target>
+        </trans-unit>
+        <trans-unit id="TapToUnlock.Text" translate="yes" xml:space="preserve">
+          <source>Tap to unlock</source>
+          <target state="translated">Tocca per sbloccare</target>
+        </trans-unit>
       </group>
     </body>
   </file>

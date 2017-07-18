@@ -1,8 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Windows.Services.Store;
+using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
 using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
+using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages.UI;
+using Brainf_ck_sharp_UWP.PopupService;
+using Brainf_ck_sharp_UWP.PopupService.Misc;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
@@ -12,6 +19,17 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
 {
     public class SettingsPanelFlyoutViewModel : ViewModelBase
     {
+        public SettingsPanelFlyoutViewModel()
+        {
+            IDEThemeSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme));
+            AvailableIDEThemes[IDEThemeSelectedIndex].IsSelected = true;
+            if (!ThemesSelectorEnabled)
+            {
+                // Update the add-on license when needed
+                UpdateLicenseInfoAsync().Forget();
+            }
+        }
+
         /// <summary>
         /// Gets the collection of the available blur modes
         /// </summary>
@@ -103,6 +121,145 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 if (Set(ref _BracketsStyleSelectedIndex, value))
                 {
                     AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.BracketsStyle), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the collection of the available IDE themes
+        /// </summary>
+        [NotNull]
+        public IReadOnlyList<SelectableIDEThemeInfo> AvailableIDEThemes { get; } = new[]
+        {
+            new SelectableIDEThemeInfo(CodeThemes.Default),
+            new SelectableIDEThemeInfo(CodeThemes.Monokai),
+            new SelectableIDEThemeInfo(CodeThemes.Dracula),
+            new SelectableIDEThemeInfo(CodeThemes.Vim),
+            new SelectableIDEThemeInfo(CodeThemes.OneDark),
+            new SelectableIDEThemeInfo(CodeThemes.Base16)
+        };
+
+        private static bool _ThemesSelectorEnabled;
+
+        /// <summary>
+        /// Gets whether or not the themes selector is enabled
+        /// </summary>
+        public bool ThemesSelectorEnabled
+        {
+            get => _ThemesSelectorEnabled;
+            private set => Set(ref _ThemesSelectorEnabled, value);
+        }
+
+        private static bool _ThemesUnlockButtonEnabled;
+
+        /// <summary>
+        /// Gets whether or not the button to unlock the themes pack is enabled
+        /// </summary>
+        public bool ThemesUnlockButtonEnabled
+        {
+            get => _ThemesUnlockButtonEnabled;
+            private set => Set(ref _ThemesUnlockButtonEnabled, value);
+        }
+
+        private bool _ThemesPackLicenseLoading;
+
+        /// <summary>
+        /// Gets whether or not the themes pack license is currently available
+        /// </summary>
+        public bool ThemesPackLicenseLoading
+        {
+            get => _ThemesPackLicenseLoading;
+            private set => Set(ref _ThemesPackLicenseLoading, value);
+        }
+
+        // The Store ID of the themes pack
+        private const String ThemesPackID = "9p4q63ccfpbm";
+
+        // The Store instance to use
+        private static StoreContext _StoreContext;
+
+        // Updates the license for the themes pack
+#if DEBUG
+        private async Task UpdateLicenseInfoAsync()
+        {
+            ThemesPackLicenseLoading = true;
+            await Task.Delay(500);
+            ThemesSelectorEnabled = true;
+            ThemesUnlockButtonEnabled = false;
+            ThemesPackLicenseLoading = false;
+        }
+#else
+        private async Task UpdateLicenseInfoAsync()
+        {
+            ThemesPackLicenseLoading = true;
+            if (_StoreContext == null) _StoreContext = StoreContext.GetDefault();
+            StoreAppLicense license = await _StoreContext.GetAppLicenseAsync();
+            ThemesSelectorEnabled = license?.AddOnLicenses.FirstOrDefault(pair => pair.Key.Equals(ThemesPackID)).Value?.IsActive == true;
+            ThemesUnlockButtonEnabled = !ThemesSelectorEnabled;
+            ThemesPackLicenseLoading = false;
+        }
+#endif
+
+        /// <summary>
+        /// Tries to purchase the additional themes pack
+        /// </summary>
+        public async void TryPurchaseThemesPackAsync()
+        {
+            // Try to purchase the item
+            Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
+            StorePurchaseResult result;
+            if (_StoreContext == null) _StoreContext = StoreContext.GetDefault();
+            try
+            {
+                result = await _StoreContext.RequestPurchaseAsync(ThemesPackID);
+            }
+            catch
+            {
+                NotificationsManager.Instance.ShowDefaultErrorNotification(
+                    LocalizationManager.GetResource("StoreConnectionError"), LocalizationManager.GetResource("StoreConnectionErrorBody"));
+                return;
+            }
+            finally
+            {
+                Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
+            }
+
+            // Display the result
+            switch (result.Status)
+            {
+                case StorePurchaseStatus.Succeeded:
+                    NotificationsManager.Instance.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("ThemesUnlocked"),
+                        LocalizationManager.GetResource("DonationCompletedBody"), NotificationType.Default);
+                    ThemesSelectorEnabled = true;
+                    break;
+                case StorePurchaseStatus.NotPurchased:
+                    NotificationsManager.Instance.ShowDefaultErrorNotification(LocalizationManager.GetResource("PurchaseCanceled"), LocalizationManager.GetResource("PurchaseCanceledBody"));
+                    break;
+                case StorePurchaseStatus.AlreadyPurchased:
+                    ThemesSelectorEnabled = true;
+                    break;
+                default:
+                    // Error
+                    NotificationsManager.Instance.ShowDefaultErrorNotification($"{LocalizationManager.GetResource("SomethingBadHappened")} :'(", LocalizationManager.GetResource("DonationErrorBody"));
+                    break;
+            }
+        }
+
+        private int _IDEThemeSelectedIndex;
+
+        /// <summary>
+        /// Gets or sets the selected index for the IDE theme
+        /// </summary>
+        public int IDEThemeSelectedIndex
+        {
+            get => _IDEThemeSelectedIndex;
+            set
+            {
+                if (Set(ref _IDEThemeSelectedIndex, value))
+                {
+                    for (int i = 0; i < AvailableIDEThemes.Count; i++)
+                        AvailableIDEThemes[i].IsSelected = i == value;
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.SelectedIDETheme), value, SettingSaveMode.OverwriteIfExisting);
                 }
             }
         }
