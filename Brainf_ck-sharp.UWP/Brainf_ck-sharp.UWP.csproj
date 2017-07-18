@@ -113,6 +113,7 @@
     <Compile Include="AttachedProperties\RunInlineHelper.cs" />
     <Compile Include="Converters\BoolToAccentBrushOrFallbackConverter.cs" />
     <Compile Include="Converters\BoolToColorBrushConverter.cs" />
+    <Compile Include="Converters\BoolToInvertedVisibilityConverter.cs" />
     <Compile Include="Converters\DateTimeToDateStringConverter.cs" />
     <Compile Include="Converters\DisplayScalingToMarginConverter.cs" />
     <Compile Include="Converters\SourceCodeTitleScoreToDisplayStringConverter.cs" />

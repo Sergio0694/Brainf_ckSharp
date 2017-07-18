@@ -7,9 +7,13 @@
     xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
     xmlns:ideThemes="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes"
     xmlns:helpers="using:Brainf_ck_sharp_UWP.Helpers"
+    xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
     mc:Ignorable="d"
     d:DesignHeight="800"
     d:DesignWidth="400">
+    <UserControl.Resources>
+        <converters:BoolToInvertedVisibilityConverter x:Key="InvertedConverter"/>
+    </UserControl.Resources>
 
     <!--Root-->
     <StackPanel Margin="12,12,16,0">
@@ -81,28 +85,89 @@
             Margin="0,12,0,0"
             Text="IDE theme"
             x:Uid="IDETheme"/>
-        <inheritedControls:AnimatedComboBox
-            Margin="0,8,0,20"
-            ItemsSource="{x:Bind ViewModel.AvailableIDEThemes}"
-            SelectedIndex="{x:Bind ViewModel.IDEThemeSelectedIndex, Mode=TwoWay}"
-            ItemContainerStyle="{StaticResource ComboBoxWithoutSelectedVisualStatesStyle}"
-            MinWidth="180"
-            MinHeight="108"
-            Padding="1,1,0,1">
-            <inheritedControls:AnimatedComboBox.ItemTemplateSelector>
-                <helpers:ComboBoxDataTemplateSelector>
-                    <helpers:ComboBoxDataTemplateSelector.SelectedTemplate>
-                        <DataTemplate>
-                            <ideThemes:IDEThemePreviewTemplate Theme="{Binding}"/>
-                        </DataTemplate>
-                    </helpers:ComboBoxDataTemplateSelector.SelectedTemplate>
-                    <helpers:ComboBoxDataTemplateSelector.DropDownTemplate>
-                        <DataTemplate>
-                            <ideThemes:IDEThemeDropDownPreviewTemplate Theme="{Binding}"/>
-                        </DataTemplate>
-                    </helpers:ComboBoxDataTemplateSelector.DropDownTemplate>
-                </helpers:ComboBoxDataTemplateSelector>
-            </inheritedControls:AnimatedComboBox.ItemTemplateSelector>
-        </inheritedControls:AnimatedComboBox>
+        <Grid Margin="0,8,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!--Theme selector-->
+            <inheritedControls:AnimatedComboBox
+                ItemsSource="{x:Bind ViewModel.AvailableIDEThemes}"
+                SelectedIndex="{x:Bind ViewModel.IDEThemeSelectedIndex, Mode=TwoWay}"
+                ItemContainerStyle="{StaticResource ComboBoxWithoutSelectedVisualStatesStyle}"
+                MinWidth="180"
+                MinHeight="108"
+                Padding="1,1,0,1"
+                x:Name="ThemeSelector"
+                IsHitTestVisible="{x:Bind ViewModel.ThemesSelectorEnabled, Mode=OneWay, FallbackValue=False}">
+                <inheritedControls:AnimatedComboBox.ItemTemplateSelector>
+                    <helpers:ComboBoxDataTemplateSelector>
+                        <helpers:ComboBoxDataTemplateSelector.SelectedTemplate>
+                            <DataTemplate>
+                                <ideThemes:IDEThemePreviewTemplate Theme="{Binding}"/>
+                            </DataTemplate>
+                        </helpers:ComboBoxDataTemplateSelector.SelectedTemplate>
+                        <helpers:ComboBoxDataTemplateSelector.DropDownTemplate>
+                            <DataTemplate>
+                                <ideThemes:IDEThemeDropDownPreviewTemplate Theme="{Binding}"/>
+                            </DataTemplate>
+                        </helpers:ComboBoxDataTemplateSelector.DropDownTemplate>
+                    </helpers:ComboBoxDataTemplateSelector>
+                </inheritedControls:AnimatedComboBox.ItemTemplateSelector>
+            </inheritedControls:AnimatedComboBox>
+
+            <!--Unlock button-->
+            <Grid
+                Width="{Binding ElementName=ThemeSelector, Path=ActualWidth}"
+                Height="{Binding ElementName=ThemeSelector, Path=ActualHeight}"
+                Grid.Column="0"
+                Background="#60000000"
+                IsHitTestVisible="False"
+                Visibility="{x:Bind ViewModel.ThemesSelectorEnabled, Converter={StaticResource InvertedConverter}, Mode=OneWay, FallbackValue=Visible}"/>
+            <Button
+                Grid.Column="0"
+                Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
+                Width="{Binding ElementName=ThemeSelector, Path=ActualWidth}"
+                Height="{Binding ElementName=ThemeSelector, Path=ActualHeight}"
+                HorizontalAlignment="Left"
+                Visibility="{x:Bind ViewModel.ThemesUnlockButtonEnabled, Mode=OneWay, FallbackValue=Collapsed}"
+                Click="{x:Bind ViewModel.TryPurchaseThemesPackAsync}">
+                <Grid Background="Transparent">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            TextAlignment="Center"
+                            IsTextScaleFactorEnabled="False"
+                            Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                            Text="&#xE1F7;"
+                            FontFamily="Segoe MDL2 Assets"
+                            FontSize="32"/>
+                        <TextBlock
+                            Margin="0,8,0,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            TextAlignment="Center"
+                            IsTextScaleFactorEnabled="False"
+                            Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                            Text="Tap to unlock"
+                            FontSize="14"
+                            x:Uid="TapToUnlock"
+                            FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Grid>
+            </Button>
+            
+            <!--Loading ring-->
+            <ProgressRing
+                Grid.Column="1"
+                IsActive="{x:Bind ViewModel.ThemesPackLicenseLoading, Mode=OneWay, FallbackValue=True}"
+                Width="24"
+                Height="24"
+                Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                Margin="24,0,0,0"
+                HorizontalAlignment="Left"/>
+        </Grid>
     </StackPanel>
 </UserControl>

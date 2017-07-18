@@ -10,6 +10,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         {
             this.InitializeComponent();
             DataContext = new SettingsPanelFlyoutViewModel();
+            Unloaded += (s, e) =>
+            {
+                this.Bindings.StopTracking();
+                DataContext = null;
+            };
         }
 
         public SettingsPanelFlyoutViewModel ViewModel => DataContext.To<SettingsPanelFlyoutViewModel>();
