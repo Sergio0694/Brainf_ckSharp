@@ -64,5 +64,16 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
                                                   "#FF282C34".ToColor(), "#FF383E49".ToColor(), "#FF5A5A5A".ToColor(),
                                                   "#FF3C4049".ToColor(), null, "#FF5C6370".ToColor(),
                                                   "#FFC0C0C0".ToColor(), "#FF56B6C2".ToColor(), "#FFABB2BF".ToColor(), "#FFD19A66".ToColor(), "#FFE06C75".ToColor(), "One Dark"));
+
+        private static IDEThemeInfo _Base16;
+
+        /// <summary>
+        /// Gets the Vim from the old-school code editor
+        /// </summary>
+        [NotNull]
+        public static IDEThemeInfo Base16 => _Base16 ?? (_Base16 = new IDEThemeInfo(
+                                                  "#FF1D1F21".ToColor(), "#FF373B41".ToColor(), "#FF656767".ToColor(),
+                                                  "#FF373B41".ToColor(), null, "#FF969896".ToColor(),
+                                                  "#FFE0935A".ToColor(), "#FFC5C8C6".ToColor(), "#FFB393BC".ToColor(), "#FFB5BE63".ToColor(), "#FFCE6564".ToColor(), "Base 16"));
     }
 }

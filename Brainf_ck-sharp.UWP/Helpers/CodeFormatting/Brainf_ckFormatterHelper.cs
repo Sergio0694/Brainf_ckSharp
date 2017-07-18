@@ -31,6 +31,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
                 case 2: return CodeThemes.Dracula;
                 case 3: return CodeThemes.Vim;
                 case 4: return CodeThemes.OneDark;
+                case 5: return CodeThemes.Base16;
                 default: return CodeThemes.Default;
             }
         }

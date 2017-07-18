@@ -135,7 +135,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             new SelectableIDEThemeInfo(CodeThemes.Monokai),
             new SelectableIDEThemeInfo(CodeThemes.Dracula),
             new SelectableIDEThemeInfo(CodeThemes.Vim),
-            new SelectableIDEThemeInfo(CodeThemes.OneDark)
+            new SelectableIDEThemeInfo(CodeThemes.OneDark),
+            new SelectableIDEThemeInfo(CodeThemes.Base16)
         };
 
         private static bool _ThemesSelectorEnabled;
