@@ -184,6 +184,7 @@
     <Compile Include="Messages\IDEStatus\BreakpointErrorStatusChangedMessage.cs" />
     <Compile Include="Messages\OverflowModeChangedMessage.cs" />
     <Compile Include="Messages\UI\BlurModeChangedMessage.cs" />
+    <Compile Include="Messages\UI\SelectedIDEThemeChangedMessage.cs" />
     <Compile Include="PopupService\Interfaces\IAsyncLoadedContent.cs" />
     <Compile Include="PopupService\Interfaces\IBusyWorkingContent.cs" />
     <Compile Include="PopupService\InternalTypes\Offset.cs" />

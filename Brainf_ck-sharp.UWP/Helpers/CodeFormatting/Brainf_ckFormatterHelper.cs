@@ -11,28 +11,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
     public sealed class Brainf_ckFormatterHelper
     {
         // Private constructor that loads the initial theme
-        private Brainf_ckFormatterHelper()
-        {
-            int theme = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme));
-            switch (theme)
-            {
-                case 1:
-                    CurrentTheme = CodeThemes.Monokai;
-                    break;
-                case 2:
-                    CurrentTheme = CodeThemes.Dracula;
-                    break;
-                case 3:
-                    CurrentTheme = CodeThemes.Vim;
-                    break;
-                case 4:
-                    CurrentTheme = CodeThemes.OneDark;
-                    break;
-                default:
-                    CurrentTheme = CodeThemes.Default;
-                    break;
-            }
-        }
+        private Brainf_ckFormatterHelper() => CurrentTheme = LoadTheme();
 
         private static Brainf_ckFormatterHelper _Instance;
 
@@ -41,6 +20,25 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
         /// </summary>
         [NotNull]
         public static Brainf_ckFormatterHelper Instance => _Instance ?? (_Instance = new Brainf_ckFormatterHelper());
+
+        // Parses the theme in use from the settings
+        private IDEThemeInfo LoadTheme()
+        {
+            int theme = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme));
+            switch (theme)
+            {
+                case 1: return CodeThemes.Monokai;
+                case 2: return CodeThemes.Dracula;
+                case 3: return CodeThemes.Vim;
+                case 4: return CodeThemes.OneDark;
+                default: return CodeThemes.Default;
+            }
+        }
+
+        /// <summary>
+        /// Loads the current IDE theme in use from the local settings
+        /// </summary>
+        public void ReloadTheme() => CurrentTheme = LoadTheme();
 
         /// <summary>
         /// Gets the syntax highlight colors map for the available operators

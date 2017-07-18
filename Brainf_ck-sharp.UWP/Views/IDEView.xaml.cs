@@ -78,6 +78,40 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.NewLineInsertionRequested += ViewModel_NewLineInsertionRequested;
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             _PreviousText = text;
+            Messenger.Default.Register<SelectedIDEThemeChangedMessage>(this, m => ApplyTheme());
+        }
+
+        // Apply the new IDE theme
+        private void ApplyTheme()
+        {
+            // Update them theme
+            Brainf_ckFormatterHelper.Instance.ReloadTheme();
+
+            // Main UI
+            RootGrid.Background = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.Background);
+            BreakpointsCanvas.Background = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.BreakpointsPaneBackground);
+            LineBlock.Foreground = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.LineNumberColor);
+
+            // Code highlight
+            EditBox.Document.GetText(TextGetOptions.None, out String text);
+            int count = 0;
+            for (int i = 0; i < text.Length; i++)
+            {
+                char test = text[count++];
+                if (test < 33 || test > 126 && test < 161) continue;
+                ITextRange range = EditBox.Document.GetRange(i, i + 1);
+                char c = range.Character;
+                range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(c);
+            }
+
+            // Brackets guides
+            DrawBracketGuides(text).Forget();
+
+            // Release the UI
+            Task.Delay(500).ContinueWith(t =>
+            {
+                Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         // Updates the tab length setting
