@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -85,10 +86,14 @@ namespace Brainf_ck_sharp_UWP.UserControls
         // The current loading popup
         private Popup _LoadingPopup;
 
+        // The semaphore to avoid race conditions with the loading popup
+        private readonly SemaphoreSlim LoadingSemaphore = new SemaphoreSlim(1);
+
         // Manages the loading UI
         private async void ManageLoadingUI(bool loading)
         {
             // Prepare and open a popup to cover the UI while the app is loading
+            await LoadingSemaphore.WaitAsync();
             if (loading)
             {
                 if (_LoadingPopup != null) return;
@@ -111,6 +116,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                     _LoadingPopup = null;
                 }
             }
+            LoadingSemaphore.Release();
         }
 
         // Adjusts the UI when a flyout is displayed in the app
