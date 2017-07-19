@@ -22,6 +22,7 @@ using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.EventArgs;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
+using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
@@ -47,9 +48,7 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             Loaded += IDEView_Loaded;
             this.InitializeComponent();
-            RootGrid.Background = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.Background);
-            BreakpointsCanvas.Background = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.BreakpointsPaneBackground);
-            LineBlock.Foreground = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.LineNumberColor);
+            ApplyUITheme();
             ApplyCustomTabSpacing();
             DataContext = new IDEViewModel(EditBox.Document, PickSaveNameAsync, () => BreakpointsInfo.Keys);
             ViewModel.PlayRequested += ViewModel_PlayRequested;
@@ -81,7 +80,30 @@ namespace Brainf_ck_sharp_UWP.Views
             Messenger.Default.Register<IDESettingsChangedMessage>(this, m => ApplyIDESettings(m.ThemeChanged, m.TabsLengthChanged));
         }
 
-        // Apply the new IDE theme
+        // Updates the general UI settings
+        private void ApplyUITheme()
+        {
+            RootGrid.Background = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.Background);
+            BreakpointsCanvas.Background = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.BreakpointsPaneBackground);
+            LineBlock.Foreground = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.LineNumberColor);
+            if (Brainf_ckFormatterHelper.Instance.CurrentTheme.LineHighlightStyle == LineHighlightStyle.Outline)
+            {
+                CursorBorder.BorderThickness = new Thickness(2);
+                CursorBorder.BorderBrush = Brainf_ckFormatterHelper.Instance.CurrentTheme.LineHighlightColor.ToBrush();
+                CursorBorder.Background = Colors.Transparent.ToBrush();
+                Canvas.SetZIndex(BracketsParentGrid, 0);
+                Canvas.SetZIndex(CursorBorder, 1);
+            }
+            else
+            {
+                CursorBorder.BorderThickness = new Thickness(0);
+                CursorBorder.Background = Brainf_ckFormatterHelper.Instance.CurrentTheme.LineHighlightColor.ToBrush();
+                Canvas.SetZIndex(BracketsParentGrid, 1);
+                Canvas.SetZIndex(CursorBorder, 0);
+            }
+        }
+
+        // Applies the new IDE theme
         private void ApplyIDESettings(bool themeChanged, bool tabsChanged)
         {
             // Disable the handlers
@@ -102,9 +124,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 Brainf_ckFormatterHelper.Instance.ReloadTheme();
 
                 // Main UI
-                RootGrid.Background = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.Background);
-                BreakpointsCanvas.Background = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.BreakpointsPaneBackground);
-                LineBlock.Foreground = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.LineNumberColor);
+                ApplyUITheme();
 
                 // Code highlight
                 EditBox.Document.GetText(TextGetOptions.None, out String text);

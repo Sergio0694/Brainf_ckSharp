@@ -297,7 +297,8 @@
             Grid.Column="4"
             IsHitTestVisible="False"
             SizeChanged="BracketsGrid_SizeChanged"
-            x:Name="BracketsParentGrid">
+            x:Name="BracketsParentGrid"
+            Canvas.ZIndex="0">
             <Grid.Clip>
                 <RectangleGeometry x:Name="BracketsClip"/>
             </Grid.Clip>
@@ -320,7 +321,8 @@
                 Height="20"
                 BorderThickness="2"
                 BorderBrush="#30FFFFFF"
-                x:Name="CursorBorder">
+                x:Name="CursorBorder"
+                Canvas.ZIndex="1">
                 <Border.RenderTransform>
                     <TranslateTransform x:Name="CursorBorderTransform"/>
                 </Border.RenderTransform>
@@ -328,7 +330,7 @@
             
             <!--Virtual cursor-->
             <Rectangle
-                Canvas.ZIndex="1"
+                Canvas.ZIndex="2"
                 Width="1"
                 Height="20"
                 Fill="LightGray"
@@ -341,6 +343,7 @@
 
         <!--Code box-->
         <inheritedControls:RichEditBoxWithVerticalOffsetInfo
+            Canvas.ZIndex="3"
             Grid.Column="4"
             Style="{StaticResource TransparentEditBox}"
             x:Name="EditBox"
