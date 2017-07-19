@@ -233,11 +233,13 @@ namespace Brainf_ck_sharp_UWP.Views
             CursorRectangle.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 8));
             CursorRectangle.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.X);
             CursorBorder.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 8));
+            WhitespacesCanvas.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 10));
+            WhitespacesCanvas.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.X);
         }
 
         public IDEViewModel ViewModel => DataContext.To<IDEViewModel>();
 
-        // The current top margin
+        // The current top marginBracketsGrid_SizeChanged
         private double _Top;
 
         /// <summary>
@@ -249,7 +251,6 @@ namespace Brainf_ck_sharp_UWP.Views
             _Top = height;
             LinesGrid.SetVisualOffset(TranslationAxis.Y, (float)(height - 12)); // Adjust the initial offset of the line numbers and indicators
             BreakLinesCanvas.Margin = new Thickness(0, (float)(height + 10), 0, 0);
-            WhitespacesCanvas.Margin = new Thickness(0, (float)(height + 10), 0, 0);
             IndentationInfoList.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             CursorTransform.X = 4;
@@ -572,6 +573,12 @@ namespace Brainf_ck_sharp_UWP.Views
                 // Release
                 ControlCharactersSemaphore.Release();
             }
+        }
+
+        // Updates the clip size of the control character overlays container
+        private void WhitespaceParentGrid_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ControlCharactersClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
         }
 
         #endregion

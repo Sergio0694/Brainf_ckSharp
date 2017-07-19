@@ -293,17 +293,22 @@
             SizeChanged="BreakLinesCanvas_OnSizeChanged"/>
 
         <!--Whitespace indicators-->
-        <Canvas
-            Grid.Column="4"
-            x:Name="WhitespacesCanvas"
-            IsHitTestVisible="False"/>
+        <Grid Grid.Column="4"
+              IsHitTestVisible="False"
+              x:Name="WhitespaceParentGrid"
+              SizeChanged="WhitespaceParentGrid_OnSizeChanged">
+            <Grid.Clip>
+                <RectangleGeometry x:Name="ControlCharactersClip"/>
+            </Grid.Clip>
+            <Canvas x:Name="WhitespacesCanvas"/>
+        </Grid>
 
         <!--Canvas with the column guides-->
         <Grid
             Grid.Column="4"
             IsHitTestVisible="False"
-            SizeChanged="BracketsGrid_SizeChanged"
             x:Name="BracketsParentGrid"
+            SizeChanged="BracketsGrid_SizeChanged"
             Canvas.ZIndex="0">
             <Grid.Clip>
                 <RectangleGeometry x:Name="BracketsClip"/>
