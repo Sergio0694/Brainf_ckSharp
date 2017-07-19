@@ -68,7 +68,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
                                                   "#FF282C34".ToColor(), "#FF383E49".ToColor(), "#FF5A5A5A".ToColor(),
                                                   "#FF3C4049".ToColor(), null, "#FF5C6370".ToColor(),
                                                   "#FFC0C0C0".ToColor(), "#FF56B6C2".ToColor(), "#FFABB2BF".ToColor(), "#FFD19A66".ToColor(), "#FFE06C75".ToColor(),
-                                                  LineHighlightStyle.Fill, "#FF242631".ToColor(), "One Dark"));
+                                                  LineHighlightStyle.Fill, "#FF363A4F".ToColor(), "One Dark"));
 
         private static IDEThemeInfo _Base16;
 

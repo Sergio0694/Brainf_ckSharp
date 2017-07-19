@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml;
+﻿using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
@@ -45,6 +46,22 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes
                 @this.BracketsGuide.StrokeDashArray = info.BracketsGuideStrokesLength.HasValue
                     ? new DoubleCollection { info.BracketsGuideStrokesLength.Value }
                     : null;
+                if (info.LineHighlightStyle == LineHighlightStyle.Outline)
+                {
+                    @this.LineHighlightBorder.BorderBrush = info.LineHighlightColor.ToBrush();
+                    @this.LineHighlightBorder.Background = Colors.Transparent.ToBrush();
+                    Canvas.SetZIndex(@this.BracketsGuide, 0);
+                    Canvas.SetZIndex(@this.LineHighlightBorder, 1);
+                    @this.LineHighlightTransform.Y = 22;
+                }
+                else
+                {
+                    @this.LineHighlightBorder.Background = info.LineHighlightColor.ToBrush();
+                    Canvas.SetZIndex(@this.BracketsGuide, 1);
+                    Canvas.SetZIndex(@this.LineHighlightBorder, 0);
+                    @this.LineHighlightTransform.Y = 42;
+                }
+                @this.LineHighlightBorder.BorderThickness = new Thickness(info.LineHighlightStyle == LineHighlightStyle.Outline ? 2 : 0);
             }
         }
     }

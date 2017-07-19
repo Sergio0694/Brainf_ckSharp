@@ -660,7 +660,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         </trans-unit>
         <trans-unit id="Default" translate="yes" xml:space="preserve">
           <source>Default</source>
-          <target state="new">Default</target>
+          <target state="translated">Predefinito</target>
           <note from="MultilingualBuild" annotates="source" priority="2">The default theme</note>
         </trans-unit>
       </group>

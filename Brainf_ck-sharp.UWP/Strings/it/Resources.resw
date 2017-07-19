@@ -501,4 +501,8 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="CommentRun2.Text" xml:space="preserve">
     <value>Stampa valore</value>
   </data>
+  <data name="Default" xml:space="preserve">
+    <value>Predefinito</value>
+    <comment>The default theme</comment>
+  </data>
 </root>
