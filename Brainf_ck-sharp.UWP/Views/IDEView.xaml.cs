@@ -80,6 +80,8 @@ namespace Brainf_ck_sharp_UWP.Views
             Messenger.Default.Register<IDESettingsChangedMessage>(this, m => ApplyIDESettings(m.ThemeChanged, m.TabsLengthChanged));
         }
 
+        #region IDE theme
+
         // Updates the general UI settings
         private void ApplyUITheme()
         {
@@ -161,6 +163,8 @@ namespace Brainf_ck_sharp_UWP.Views
                 spaces = 4 + setting * 2; // Spacing options range from 4 to 12 at indexes [0..4]
             EditBox.SetTabLength(spaces);
         }
+
+        #endregion
 
         // Inserts a new line at the current position
         private void ViewModel_NewLineInsertionRequested(object sender, EventArgs e)
@@ -879,13 +883,43 @@ namespace Brainf_ck_sharp_UWP.Views
                 BreakpointsCanvas.Children.Add(ellipse);
                 ellipse.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
 
+                // Get the target line coordinates
+                int first = 0, last = -1;
+                bool found = false;
+                for (int i = start; i < text.Length; i++)
+                {
+                    if (Brainf_ckInterpreter.Operators.Contains(text[i]))
+                    {
+                        if (!found)
+                        {
+                            found = true;
+                            first = i;
+                        }
+                    }
+                    else if (found)
+                    {
+                        last = i;
+                        break;
+                    }
+                }
+
+                // Get the initial and ending range
+                ITextRange range = EditBox.Document.GetRange(first, first);
+                range.GetRect(PointOptions.Transform, out Rect open, out _);
+                range = EditBox.Document.GetRange(last, last);
+                range.GetRect(PointOptions.Transform, out Rect close, out _);
+
                 // Line highlight
                 Rectangle rect = new Rectangle
                 {
                     Height = 19.9, // Approximate line height
-                    Width = BreakLinesCanvas.ActualWidth,
+                    Width = close.Right - open.Left + 2,
                     Fill = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("BreakpointLineBrush"),
-                    RenderTransform = new TranslateTransform { Y = offset - 2 } // -2 to adjust the position with the cursor rectangle
+                    RenderTransform = new TranslateTransform
+                    {
+                        X = open.X + 2,
+                        Y = offset - 2 // -2 to adjust the position with the cursor rectangle
+                    }
                 };
                 BreakLinesCanvas.Children.Add(rect);
                 rect.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);

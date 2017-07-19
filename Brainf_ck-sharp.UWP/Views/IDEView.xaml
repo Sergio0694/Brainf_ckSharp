@@ -284,13 +284,6 @@
                 x:Name="IndentationInfoList"
                 SizeChanged="IndentationInfoList_OnSizeChanged"/>
         </Canvas>
-        
-        <!--Breakpoints line indicators-->
-        <Canvas
-            Grid.Column="4"
-            x:Name="BreakLinesCanvas"
-            IsHitTestVisible="False"
-            SizeChanged="BreakLinesCanvas_OnSizeChanged"/>
 
         <!--Canvas with the column guides-->
         <Grid
@@ -330,7 +323,7 @@
             
             <!--Virtual cursor-->
             <Rectangle
-                Canvas.ZIndex="2"
+                Canvas.ZIndex="3"
                 Width="1"
                 Height="20"
                 Fill="LightGray"
@@ -341,9 +334,17 @@
             </Rectangle>
         </Canvas>
 
+        <!--Breakpoints line indicators-->
+        <Canvas
+            Canvas.ZIndex="2"
+            Grid.Column="4"
+            x:Name="BreakLinesCanvas"
+            IsHitTestVisible="False"
+            SizeChanged="BreakLinesCanvas_OnSizeChanged"/>
+
         <!--Code box-->
         <inheritedControls:RichEditBoxWithVerticalOffsetInfo
-            Canvas.ZIndex="3"
+            Canvas.ZIndex="4"
             Grid.Column="4"
             Style="{StaticResource TransparentEditBox}"
             x:Name="EditBox"
