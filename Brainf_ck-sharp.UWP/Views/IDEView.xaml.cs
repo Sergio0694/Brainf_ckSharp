@@ -458,105 +458,120 @@ namespace Brainf_ck_sharp_UWP.Views
             }
         };
 
+        // The list of control character overlays
         private readonly List<Tuple<CharacterWithArea, UIElement>> ControlCharacterOverlays = new List<Tuple<CharacterWithArea, UIElement>>();
 
+        // Synchronization semaphore for the control character overlays
         private readonly SemaphoreSlim ControlCharactersSemaphore = new SemaphoreSlim(1);
 
         // Cancellation token for concurrent operations started unvoluntarily
         private CancellationTokenSource _ControlCharactersGuidesCts;
 
+        /// <summary>
+        /// Renders the current control characters
+        /// </summary>
+        /// <param name="code">The source code to use to parse the control characters</param>
         private async void RenderControlCharacters([NotNull] String code)
         {
             // Lock
             _ControlCharactersGuidesCts?.Cancel();
             await ControlCharactersSemaphore.WaitAsync();
-            _ControlCharactersGuidesCts = new CancellationTokenSource();
 
-            // Find the target characters
-            List<CharacterWithArea> characters = new List<CharacterWithArea>();
-            for (int i = 0; i < code.Length; i++)
+            try
             {
-                char c = code[i];
-                if (c == ' ')
+                // Edge case
+                if (code.Length < 2)
                 {
-                    ITextRange range = EditBox.Document.GetRange(i, i);
-                    range.GetRect(PointOptions.Transform, out Rect area, out _);
-                    characters.Add(new CharacterWithArea(area, c));
+                    ControlCharacterOverlays.Clear();
+                    WhitespacesCanvas.Children.Clear();
+                    return;
                 }
-                else if (c == '\t')
-                {
-                    ITextRange range = EditBox.Document.GetRange(i, i + 1);
-                    range.GetRect(PointOptions.Transform, out Rect area, out _);
-                    characters.Add(new CharacterWithArea(area, c));
-                }
-            }
+                _ControlCharactersGuidesCts = new CancellationTokenSource();
 
-            // Remove the invalidated elements from the previous list
-            if (_ControlCharactersGuidesCts.IsCancellationRequested)
-            {
-                ControlCharactersSemaphore.Release();
-                return;
-            }
-            for (int i = 0; i < ControlCharacterOverlays.Count;)
-            {
-                CharacterWithArea that = ControlCharacterOverlays[i].Item1;
-                if (characters.Any(c => c.Character == that.Character && c.Area.ApproximateEquals(that.Area)))
+                // Find the target characters
+                List<CharacterWithArea> characters = new List<CharacterWithArea>();
+                for (int i = 0; i < code.Length; i++)
                 {
-                    i++; // Go ahead in the loop
-                }
-                else
-                {
-                    WhitespacesCanvas.Children.Remove(ControlCharacterOverlays[i].Item2);
-                    ControlCharacterOverlays.RemoveAt(i);
-                }
-            }
-
-            // Add the new overlays
-            if (_ControlCharactersGuidesCts.IsCancellationRequested)
-            {
-                ControlCharactersSemaphore.Release();
-                return;
-            }
-            foreach (CharacterWithArea character in characters)
-            {
-                if (ControlCharacterOverlays.Any(c => c.Item1.Character == character.Character &&
-                                                      c.Item1.Area.ApproximateEquals(character.Area))) continue;
-
-                if (character.Character == ' ')
-                {
-                    Rectangle dot = new Rectangle
+                    char c = code[i];
+                    if (c == ' ')
                     {
-                        Width = 2,
-                        Height = 2,
-                        Fill = Colors.DimGray.ToBrush(),
-                        RenderTransform = new TranslateTransform
-                        {
-                            X = character.Area.Left + 5,
-                            Y = character.Area.Top + (character.Area.Bottom - character.Area.Top) / 2 - 1
-                        }
-                    };
-                    WhitespacesCanvas.Children.Add(dot);
-                    ControlCharacterOverlays.Add(Tuple.Create<CharacterWithArea, UIElement>(character, dot));
-                }
-                else if (character.Character == '\t')
-                {
-                    Path arrow = new Path
+                        ITextRange range = EditBox.Document.GetRange(i, i);
+                        range.GetRect(PointOptions.Transform, out Rect area, out _);
+                        characters.Add(new CharacterWithArea(area, c));
+                    }
+                    else if (c == '\t')
                     {
-                        Stroke = Colors.DimGray.ToBrush(),
-                        Data = TabIconData,
-                        RenderTransform = new TranslateTransform
+                        ITextRange range = EditBox.Document.GetRange(i, i + 1);
+                        range.GetRect(PointOptions.Transform, out Rect area, out _);
+                        characters.Add(new CharacterWithArea(area, c));
+                    }
+                }
+
+                // Remove the invalidated elements from the previous list
+                if (_ControlCharactersGuidesCts.IsCancellationRequested) return;
+                for (int i = 0; i < ControlCharacterOverlays.Count;)
+                {
+                    CharacterWithArea that = ControlCharacterOverlays[i].Item1;
+                    if (characters.Any(c => c.Character == that.Character && c.Area.ApproximateEquals(that.Area)))
+                    {
+                        i++; // Go ahead in the loop
+                    }
+                    else
+                    {
+                        WhitespacesCanvas.Children.Remove(ControlCharacterOverlays[i].Item2);
+                        ControlCharacterOverlays.RemoveAt(i);
+                    }
+                }
+
+                // Add the new overlays
+                if (_ControlCharactersGuidesCts.IsCancellationRequested) return;
+                foreach (CharacterWithArea character in characters)
+                {
+                    if (ControlCharacterOverlays.Any(c => c.Item1.Character == character.Character &&
+                                                          c.Item1.Area.ApproximateEquals(character.Area))) continue;
+
+                    if (character.Character == ' ')
+                    {
+                        Rectangle dot = new Rectangle
                         {
-                            X = character.Area.Left + (character.Area.Right - character.Area.Left) / 2,
-                            Y = character.Area.Top + (character.Area.Bottom - character.Area.Top) / 2 - 2
-                        }
-                    };
-                    WhitespacesCanvas.Children.Add(arrow);
-                    ControlCharacterOverlays.Add(Tuple.Create<CharacterWithArea, UIElement>(character, arrow));
+                            Width = 2,
+                            Height = 2,
+                            Fill = Colors.DimGray.ToBrush(),
+                            RenderTransform = new TranslateTransform
+                            {
+                                X = character.Area.Left + 5,
+                                Y = character.Area.Top + (character.Area.Bottom - character.Area.Top) / 2 - 1
+                            }
+                        };
+                        WhitespacesCanvas.Children.Add(dot);
+                        ControlCharacterOverlays.Add(Tuple.Create<CharacterWithArea, UIElement>(character, dot));
+                    }
+                    else if (character.Character == '\t')
+                    {
+                        Path arrow = new Path
+                        {
+                            Stroke = Colors.DimGray.ToBrush(),
+                            Data = TabIconData,
+                            RenderTransform = new TranslateTransform
+                            {
+                                X = character.Area.Left + (character.Area.Right - character.Area.Left) / 2,
+                                Y = character.Area.Top + (character.Area.Bottom - character.Area.Top) / 2 - 2
+                            }
+                        };
+                        WhitespacesCanvas.Children.Add(arrow);
+                        ControlCharacterOverlays.Add(Tuple.Create<CharacterWithArea, UIElement>(character, arrow));
+                    }
                 }
             }
-
-            // Release
-            ControlCharactersSemaphore.Release();
+            catch
+            {
+                // This isn't supposed to happen, like, at all
+            }
+            finally
+            {
+                // Release
+                ControlCharactersSemaphore.Release();
+            }
         }
 
         #endregion
@@ -831,6 +846,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
                     ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
+                RenderControlCharacters(code);
                 ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
                 ViewModel.SendMessages(code);
                 ViewModel.UpdateCanUndoRedoStatus();
