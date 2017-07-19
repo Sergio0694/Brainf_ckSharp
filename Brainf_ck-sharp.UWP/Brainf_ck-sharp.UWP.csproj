@@ -144,12 +144,13 @@
     <Compile Include="DataModels\IDEResults\IDEResultSectionSessionData.cs" />
     <Compile Include="DataModels\IDEResults\IDEResultSectionStateData.cs" />
     <Compile Include="DataModels\JumpListGroup.cs" />
+    <Compile Include="DataModels\Misc\CharactersInfo\CharacterWithArea.cs" />
     <Compile Include="DataModels\Misc\Coordinate.cs" />
     <Compile Include="DataModels\Misc\GitDiffLineStatus.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationLineInfo.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationInfoLineType.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationOpenBracketLineInfo.cs" />
-    <Compile Include="DataModels\Misc\IDEIndentationGuides\IndentationCoordinateEntry.cs" />
+    <Compile Include="DataModels\Misc\CharactersInfo\CharacterWithCoordinates.cs" />
     <Compile Include="DataModels\Misc\Themes\IDEThemeInfo.cs" />
     <Compile Include="DataModels\Misc\SelectableModelBase.cs" />
     <Compile Include="DataModels\Misc\ScriptExceptionInfo.cs" />

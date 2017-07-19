@@ -21,7 +21,7 @@ using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.EventArgs;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
+using Brainf_ck_sharp_UWP.DataModels.Misc.CharactersInfo;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
@@ -33,7 +33,6 @@ using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
-using Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
@@ -274,72 +273,8 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
             ViewModel.UpdateCanUndoRedoStatus();
             RemoveUnvalidatedBreakpointsAsync(code).Forget();
-
-            WhitespacesCanvas.Children.Clear();
-            for (int i = 0; i < code.Length; i++)
-            {
-                char c = code[i];
-                if (c != ' ' && c != '\t') continue;
-                if (c == ' ')
-                {
-                    ITextRange range = EditBox.Document.GetRange(i, i);
-                    range.GetRect(PointOptions.Transform, out Rect area, out _);
-                    Rectangle dot = new Rectangle
-                    {
-                        Width = 2,
-                        Height = 2,
-                        Fill = Colors.DimGray.ToBrush(),
-                        RenderTransform = new TranslateTransform
-                        {
-                            X = area.Left + 5,
-                            Y = area.Top + (area.Bottom - area.Top) / 2 - 1
-                        }
-                    };
-                    WhitespacesCanvas.Children.Add(dot);
-                }
-                else if (code[i] == '\t')
-                {
-                    ITextRange range = EditBox.Document.GetRange(i, i + 1);
-                    range.GetRect(PointOptions.Transform, out Rect area, out _);
-                    PathGeometry data = new PathGeometry
-                    {
-                        Figures = new PathFigureCollection
-                        {
-                            new PathFigure
-                            {
-                                StartPoint = new Point(0, 2),
-                                Segments = new PathSegmentCollection
-                                {
-                                    new LineSegment { Point = new Point(12, 2) },
-                                    new LineSegment { Point = new Point(8, 0) }
-                                }
-                            },
-                            new PathFigure
-                            {
-                                StartPoint = new Point(12, 2),
-                                Segments = new PathSegmentCollection
-                                {
-                                    new LineSegment { Point = new Point(8, 4) }
-                                }
-                            }
-                        }
-                    };
-                    Path arrow = new Path
-                    {
-                        Stroke = Colors.DimGray.ToBrush(),
-                        Data = data,
-                        RenderTransform = new TranslateTransform
-                        {
-                            X = area.Left + (area.Right - area.Left) / 2,
-                            Y = area.Top + (area.Bottom - area.Top) / 2 - 2
-                        }
-                    };
-                    WhitespacesCanvas.Children.Add(arrow);
-                }
-            }
+            RenderControlCharacters(code);
         }
-
-        #region UI overlays
 
         /// <summary>
         /// Updates the line numbers shown next to the code edit box
@@ -360,8 +295,10 @@ namespace Brainf_ck_sharp_UWP.Views
             });
         }
 
+        #region Bracket guides
+
         // The backup of the indexes of the brackets in the text
-        private IReadOnlyList<IndentationCoordinateEntry> _Brackets;
+        private IReadOnlyList<CharacterWithCoordinates> _Brackets;
 
         // Brackets semaphore to avoid concurrent operations
         private readonly SemaphoreSlim BracketGuidesSemaphore = new SemaphoreSlim(1);
@@ -374,7 +311,7 @@ namespace Brainf_ck_sharp_UWP.Views
         /// </summary>
         /// <param name="code">The current text, if already available</param>
         /// <param name="force">Indicates whether or not to always force a redraw of the column guides</param>
-        private async Task<AsyncOperationResult<IReadOnlyList<IndentationCoordinateEntry>>> DrawBracketGuides(String code, bool force)
+        private async Task<AsyncOperationResult<IReadOnlyList<CharacterWithCoordinates>>> DrawBracketGuides(String code, bool force)
         {
             // Get the text, clear the current guides and make sure the syntax is currently valid
             _BracketGuidesCts?.Cancel();
@@ -390,22 +327,22 @@ namespace Brainf_ck_sharp_UWP.Views
                 _Brackets = null;
                 bool cancelled = _BracketGuidesCts.IsCancellationRequested;
                 BracketGuidesSemaphore.Release();
-                return cancelled 
-                    ? AsyncOperationStatus.Canceled 
-                    : AsyncOperationResult<IReadOnlyList<IndentationCoordinateEntry>>.Explicit(null);
+                return cancelled
+                    ? AsyncOperationStatus.Canceled
+                    : AsyncOperationResult<IReadOnlyList<CharacterWithCoordinates>>.Explicit(null);
             }
 
             // Build the indexes for the current state
-            Tuple<List<IndentationCoordinateEntry>, bool> workingSet = await Task.Run(() =>
+            Tuple<List<CharacterWithCoordinates>, bool> workingSet = await Task.Run(() =>
             {
-                List<IndentationCoordinateEntry> pairs = new List<IndentationCoordinateEntry>();
+                List<CharacterWithCoordinates> pairs = new List<CharacterWithCoordinates>();
                 int i1 = 0;
                 foreach (char c in code)
                 {
                     if (c == '[' || c == ']')
                     {
                         Coordinate coordinate = code.FindCoordinates(i1);
-                        pairs.Add(new IndentationCoordinateEntry(coordinate, c));
+                        pairs.Add(new CharacterWithCoordinates(coordinate, c));
                     }
                     i1++;
                 }
@@ -414,13 +351,13 @@ namespace Brainf_ck_sharp_UWP.Views
             });
 
             // Check if the brackets haven't been changed or moved
-            if (_Brackets != null && 
+            if (_Brackets != null &&
                 _Brackets.Count == workingSet.Item1.Count &&
-                workingSet.Item2 && !force || 
+                workingSet.Item2 && !force ||
                 _BracketGuidesCts.IsCancellationRequested)
             {
                 BracketGuidesSemaphore.Release();
-                return AsyncOperationResult<IReadOnlyList<IndentationCoordinateEntry>>.Explicit(_Brackets);
+                return AsyncOperationResult<IReadOnlyList<CharacterWithCoordinates>>.Explicit(_Brackets);
             }
             _Brackets = workingSet.Item1;
             BracketGuidesCanvas.Children.Clear();
@@ -473,7 +410,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     StrokeThickness = 1,
                     Height = top,
                     Stroke = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideColor),
-                    StrokeDashArray = Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.HasValue 
+                    StrokeDashArray = Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.HasValue
                         ? new DoubleCollection { Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.Value }
                         : new DoubleCollection(),
                     Y1 = 0,
@@ -486,6 +423,140 @@ namespace Brainf_ck_sharp_UWP.Views
             }
             BracketGuidesSemaphore.Release();
             return workingSet.Item1;
+        }
+
+        #endregion
+
+        #region Control characters rendering
+
+        /// <summary>
+        /// Gets the icon data for the tab arrow indicator
+        /// </summary>
+        /// <remarks>A new instance is needed each time or the app will crash</remarks>
+        [NotNull]
+        private PathGeometry TabIconData => new PathGeometry
+        {
+            Figures = new PathFigureCollection
+            {
+                new PathFigure
+                {
+                    StartPoint = new Point(0, 2),
+                    Segments = new PathSegmentCollection
+                    {
+                        new LineSegment { Point = new Point(12, 2) },
+                        new LineSegment { Point = new Point(8, 0) }
+                    }
+                },
+                new PathFigure
+                {
+                    StartPoint = new Point(12, 2),
+                    Segments = new PathSegmentCollection
+                    {
+                        new LineSegment { Point = new Point(8, 4) }
+                    }
+                }
+            }
+        };
+
+        private readonly List<Tuple<CharacterWithArea, UIElement>> ControlCharacterOverlays = new List<Tuple<CharacterWithArea, UIElement>>();
+
+        private readonly SemaphoreSlim ControlCharactersSemaphore = new SemaphoreSlim(1);
+
+        // Cancellation token for concurrent operations started unvoluntarily
+        private CancellationTokenSource _ControlCharactersGuidesCts;
+
+        private async void RenderControlCharacters([NotNull] String code)
+        {
+            // Lock
+            _ControlCharactersGuidesCts?.Cancel();
+            await ControlCharactersSemaphore.WaitAsync();
+            _ControlCharactersGuidesCts = new CancellationTokenSource();
+
+            // Find the target characters
+            List<CharacterWithArea> characters = new List<CharacterWithArea>();
+            for (int i = 0; i < code.Length; i++)
+            {
+                char c = code[i];
+                if (c == ' ')
+                {
+                    ITextRange range = EditBox.Document.GetRange(i, i);
+                    range.GetRect(PointOptions.Transform, out Rect area, out _);
+                    characters.Add(new CharacterWithArea(area, c));
+                }
+                else if (c == '\t')
+                {
+                    ITextRange range = EditBox.Document.GetRange(i, i + 1);
+                    range.GetRect(PointOptions.Transform, out Rect area, out _);
+                    characters.Add(new CharacterWithArea(area, c));
+                }
+            }
+
+            // Remove the invalidated elements from the previous list
+            if (_ControlCharactersGuidesCts.IsCancellationRequested)
+            {
+                ControlCharactersSemaphore.Release();
+                return;
+            }
+            for (int i = 0; i < ControlCharacterOverlays.Count;)
+            {
+                CharacterWithArea that = ControlCharacterOverlays[i].Item1;
+                if (characters.Any(c => c.Character == that.Character && c.Area.ApproximateEquals(that.Area)))
+                {
+                    i++; // Go ahead in the loop
+                }
+                else
+                {
+                    WhitespacesCanvas.Children.Remove(ControlCharacterOverlays[i].Item2);
+                    ControlCharacterOverlays.RemoveAt(i);
+                }
+            }
+
+            // Add the new overlays
+            if (_ControlCharactersGuidesCts.IsCancellationRequested)
+            {
+                ControlCharactersSemaphore.Release();
+                return;
+            }
+            foreach (CharacterWithArea character in characters)
+            {
+                if (ControlCharacterOverlays.Any(c => c.Item1.Character == character.Character &&
+                                                      c.Item1.Area.ApproximateEquals(character.Area))) continue;
+
+                if (character.Character == ' ')
+                {
+                    Rectangle dot = new Rectangle
+                    {
+                        Width = 2,
+                        Height = 2,
+                        Fill = Colors.DimGray.ToBrush(),
+                        RenderTransform = new TranslateTransform
+                        {
+                            X = character.Area.Left + 5,
+                            Y = character.Area.Top + (character.Area.Bottom - character.Area.Top) / 2 - 1
+                        }
+                    };
+                    WhitespacesCanvas.Children.Add(dot);
+                    ControlCharacterOverlays.Add(Tuple.Create<CharacterWithArea, UIElement>(character, dot));
+                }
+                else if (character.Character == '\t')
+                {
+                    Path arrow = new Path
+                    {
+                        Stroke = Colors.DimGray.ToBrush(),
+                        Data = TabIconData,
+                        RenderTransform = new TranslateTransform
+                        {
+                            X = character.Area.Left + (character.Area.Right - character.Area.Left) / 2,
+                            Y = character.Area.Top + (character.Area.Bottom - character.Area.Top) / 2 - 2
+                        }
+                    };
+                    WhitespacesCanvas.Children.Add(arrow);
+                    ControlCharacterOverlays.Add(Tuple.Create<CharacterWithArea, UIElement>(character, arrow));
+                }
+            }
+
+            // Release
+            ControlCharactersSemaphore.Release();
         }
 
         #endregion
