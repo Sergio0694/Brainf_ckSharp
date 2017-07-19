@@ -336,7 +336,9 @@
                 Fill="LightGray"
                 x:Name="CursorRectangle">
                 <Rectangle.RenderTransform>
-                    <TranslateTransform x:Name="CursorTransform"/>
+                    <TranslateTransform 
+                        X="4"
+                        x:Name="CursorTransform"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
         </Canvas>

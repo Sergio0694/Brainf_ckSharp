@@ -225,6 +225,12 @@ namespace Brainf_ck_sharp_UWP.Views
             CursorAnimation.Begin();
 
             // Setup the expression animations
+            SetupExpressionAnimations();
+        }
+
+        // Starts the animation to keep the UI synced with the IDE text
+        private void SetupExpressionAnimations()
+        {
             LinesGrid.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top - 12));
             IndentationInfoList.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 10));
             GitDiffListView.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 10));
@@ -251,7 +257,6 @@ namespace Brainf_ck_sharp_UWP.Views
             BreakLinesCanvas.Margin = new Thickness(0, (float)(height + 10), 0, 0);
             IndentationInfoList.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
-            CursorTransform.X = 4;
             BracketsParentGrid.SetVisualOffset(TranslationAxis.Y, (float)height);
             EditBox.Padding = ApiInformationHelper.IsMobileDevice 
                 ? new Thickness(4, _Top + 8, 4, 8) 
