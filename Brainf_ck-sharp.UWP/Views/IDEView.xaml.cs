@@ -257,11 +257,32 @@ namespace Brainf_ck_sharp_UWP.Views
             BreakLinesCanvas.Margin = new Thickness(0, (float)(height + 10), 0, 0);
             IndentationInfoList.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
-            BracketsParentGrid.SetVisualOffset(TranslationAxis.Y, (float)height);
             EditBox.Padding = ApiInformationHelper.IsMobileDevice 
                 ? new Thickness(4, _Top + 8, 4, 8) 
                 : new Thickness(4, _Top + 8, 20, 20);
             EditBox.ScrollBarMargin = new Thickness(0, _Top, 0, 0);
+        }
+
+        /// <summary>
+        /// Refreshes the top margin of the content in the page
+        /// </summary>
+        /// <param name="height">The updated height of the top margin</param>
+        public void RefreshTopMargin(double height)
+        {
+            // Save the new height value and update the main animations
+            if ((_Top - height).Abs() < 0.1) return;
+
+            AdjustTopMargin(height);
+            SetupExpressionAnimations();
+            DrawBracketGuides(null, true).Forget();
+
+            // Update the breakpoints
+            int[] keys = BreakpointsInfo.Keys.ToArray();
+            if (keys.Length > 0)
+            {
+                ClearBreakpoints();
+                RestoreBreakpoints(keys);
+            }
         }
 
         // Updates the line numbers displayed next to the code box
