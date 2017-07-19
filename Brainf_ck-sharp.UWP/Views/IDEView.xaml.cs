@@ -33,6 +33,7 @@ using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
+using Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
@@ -249,6 +250,7 @@ namespace Brainf_ck_sharp_UWP.Views
             _Top = height;
             LinesGrid.SetVisualOffset(TranslationAxis.Y, (float)(height - 12)); // Adjust the initial offset of the line numbers and indicators
             BreakLinesCanvas.Margin = new Thickness(0, (float)(height + 10), 0, 0);
+            WhitespacesCanvas.Margin = new Thickness(0, (float)(height + 10), 0, 0);
             IndentationInfoList.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             CursorTransform.X = 4;
@@ -272,6 +274,69 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
             ViewModel.UpdateCanUndoRedoStatus();
             RemoveUnvalidatedBreakpointsAsync(code).Forget();
+
+            WhitespacesCanvas.Children.Clear();
+            for (int i = 0; i < code.Length; i++)
+            {
+                char c = code[i];
+                if (c != ' ' && c != '\t') continue;
+                if (c == ' ')
+                {
+                    ITextRange range = EditBox.Document.GetRange(i, i);
+                    range.GetRect(PointOptions.Transform, out Rect area, out _);
+                    Rectangle dot = new Rectangle
+                    {
+                        Width = 2,
+                        Height = 2,
+                        Fill = Colors.DimGray.ToBrush(),
+                        RenderTransform = new TranslateTransform
+                        {
+                            X = area.Left + 5,
+                            Y = area.Top + (area.Bottom - area.Top) / 2 - 1
+                        }
+                    };
+                    WhitespacesCanvas.Children.Add(dot);
+                }
+                else if (code[i] == '\t')
+                {
+                    ITextRange range = EditBox.Document.GetRange(i, i + 1);
+                    range.GetRect(PointOptions.Transform, out Rect area, out _);
+                    PathGeometry data = new PathGeometry
+                    {
+                        Figures = new PathFigureCollection
+                        {
+                            new PathFigure
+                            {
+                                StartPoint = new Point(0, 2),
+                                Segments = new PathSegmentCollection
+                                {
+                                    new LineSegment { Point = new Point(12, 2) },
+                                    new LineSegment { Point = new Point(8, 0) }
+                                }
+                            },
+                            new PathFigure
+                            {
+                                StartPoint = new Point(12, 2),
+                                Segments = new PathSegmentCollection
+                                {
+                                    new LineSegment { Point = new Point(8, 4) }
+                                }
+                            }
+                        }
+                    };
+                    Path arrow = new Path
+                    {
+                        Stroke = Colors.DimGray.ToBrush(),
+                        Data = data,
+                        RenderTransform = new TranslateTransform
+                        {
+                            X = area.Left + (area.Right - area.Left) / 2,
+                            Y = area.Top + (area.Bottom - area.Top) / 2 - 2
+                        }
+                    };
+                    WhitespacesCanvas.Children.Add(arrow);
+                }
+            }
         }
 
         #region UI overlays

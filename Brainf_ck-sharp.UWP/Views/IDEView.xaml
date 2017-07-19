@@ -292,6 +292,12 @@
             IsHitTestVisible="False"
             SizeChanged="BreakLinesCanvas_OnSizeChanged"/>
 
+        <!--Whitespace indicators-->
+        <Canvas
+            Grid.Column="4"
+            x:Name="WhitespacesCanvas"
+            IsHitTestVisible="False"/>
+
         <!--Canvas with the column guides-->
         <Grid
             Grid.Column="4"
