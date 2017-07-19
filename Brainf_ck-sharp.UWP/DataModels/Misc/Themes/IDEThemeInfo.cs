@@ -54,6 +54,16 @@ namespace Brainf_ck_sharp_UWP.DataModels.Misc.Themes
         public int? BracketsGuideStrokesLength { get; }
 
         /// <summary>
+        /// Gets the visual style for the line highlight
+        /// </summary>
+        public LineHighlightStyle LineHighlightStyle { get; }
+
+        /// <summary>
+        /// Gets the color for the line highlight
+        /// </summary>
+        public Color LineHighlightColor { get; }
+
+        /// <summary>
         /// Creates a new theme with the given parameters
         /// </summary>
         /// <param name="background">The IDE background color</param>
@@ -67,10 +77,13 @@ namespace Brainf_ck_sharp_UWP.DataModels.Misc.Themes
         /// <param name="brackets">The foreground color for the square brackets</param>
         /// <param name="dot">The foreground color for the dot operator</param>
         /// <param name="comma">The foreground color for the comma operator</param>
+        /// <param name="lineStyle">The line highlight style</param>
+        /// <param name="lineColor">The color of the line highlight</param>
         /// <param name="name">The name of the new theme to create</param>
         public IDEThemeInfo(Color background, Color breakpoints, Color lineNumbers,
             Color bracketsGuide, int? bracketsGuideStrokesLength,
-            Color comments, Color arrows, Color arithmetic, Color brackets, Color dot, Color comma, [CallerMemberName] String name = null)
+            Color comments, Color arrows, Color arithmetic, Color brackets, Color dot, Color comma,
+            LineHighlightStyle lineStyle, Color lineColor, [CallerMemberName] String name = null)
         {
             Name = name ?? throw new NullReferenceException("Invalid theme name");
             Background = background;
@@ -79,6 +92,8 @@ namespace Brainf_ck_sharp_UWP.DataModels.Misc.Themes
             BracketsGuideColor = bracketsGuide;
             BracketsGuideStrokesLength = bracketsGuideStrokesLength;
             CommentsColor = comments;
+            LineHighlightStyle = lineStyle;
+            LineHighlightColor = lineColor;
             HighlightMap = new Dictionary<char, Color>
             {
                 { '>', arrows },

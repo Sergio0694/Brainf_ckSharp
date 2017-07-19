@@ -607,4 +607,8 @@ This way he'll be able to help you!</value>
   <data name="CommentRun2.Text" xml:space="preserve">
     <value>Print value</value>
   </data>
+  <data name="Default" xml:space="preserve">
+    <value>Default</value>
+    <comment>The default theme</comment>
+  </data>
 </root>
