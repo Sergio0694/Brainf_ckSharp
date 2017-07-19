@@ -300,7 +300,7 @@
                 FontFamily="Segoe MDL2 Assets"
                 VerticalAlignment="Center"
                 Foreground="#E0FFFFFF"
-                FontSize="16"
+                FontSize="14"
                 Margin="8,2,0,0"/>
         </Grid>
     </Grid>

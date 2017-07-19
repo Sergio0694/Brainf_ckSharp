@@ -162,7 +162,8 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// </summary>
         /// <param name="info">The wrapped info on the popup to resize and its content</param>
         /// <param name="stacked">Indicates whether or not the current popup is not the first one being displayed</param>
-        private static void AdjustPopupSize([NotNull] FlyoutDisplayInfo info, bool stacked)
+        /// <param name="animateHeight">Indicates whether or not to animate the height resize</param>
+        private static void AdjustPopupSize([NotNull] FlyoutDisplayInfo info, bool stacked, bool animateHeight = false)
         {
             // Calculate the current parameters
             double
@@ -199,9 +200,15 @@ namespace Brainf_ck_sharp_UWP.PopupService
             {
                 // Calculate the desired size and arrange the popup
                 Size desired = info.Container.CalculateDesiredSize();
-                info.Container.Height = desired.Height <= screenHeight + margin
+                double height = desired.Height <= screenHeight + margin
                     ? desired.Height
                     : screenHeight - (ApiInformationHelper.IsMobileDevice ? 0 : margin);
+                if (animateHeight)
+                {
+                    XAMLTransformToolkit.PrepareStory(XAMLTransformToolkit.CreateDoubleAnimation(info.Container, "Height", null, height,
+                        100, EasingFunctionNames.CircleEaseOut, true)).Begin();
+                }
+                else info.Container.Height = height;
                 info.Popup.VerticalOffset = (screenHeight / 2 - info.Container.Height / 2) / 2;
             }
         }
@@ -365,7 +372,6 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 Child = setup.Item1
             };
             FlyoutDisplayInfo info = new FlyoutDisplayInfo(popup, mode);
-            AdjustPopupSize(info, PopupStack.Count > 0);
             TaskCompletionSource<FlyoutResult> tcs = new TaskCompletionSource<FlyoutResult>();
 
             // Setup the closed handler
@@ -384,7 +390,9 @@ namespace Brainf_ck_sharp_UWP.PopupService
             PopupStack.Push(info);
             popup.SetVisualOpacity(0);
             popup.IsOpen = true;
+            AdjustPopupSize(info, PopupStack.Count > 0);
             await popup.StartCompositionFadeSlideAnimationAsync(null, 1, TranslationAxis.Y, 20, 0, 250, null, null, EasingFunctionNames.CircleEaseOut);
+            if (mode == FlyoutDisplayMode.ActualHeight) AdjustPopupSize(info, PopupStack.Count > 0, true);
             Semaphore.Release();
             openCallback?.Invoke();
             return await tcs.Task;
@@ -444,7 +452,6 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 Child = setup.Item1
             };
             FlyoutDisplayInfo info = new FlyoutDisplayInfo(popup, mode);
-            AdjustPopupSize(info, PopupStack.Count > 0);
 
             // Prepare the closed handler
             void CloseHandler(object s, object e)
@@ -462,7 +469,9 @@ namespace Brainf_ck_sharp_UWP.PopupService
             PopupStack.Push(info);
             popup.SetVisualOpacity(0);
             popup.IsOpen = true;
+            AdjustPopupSize(info, PopupStack.Count > 0);
             await popup.StartCompositionFadeSlideAnimationAsync(null, 1, TranslationAxis.Y, 20, 0, 250, null, null, EasingFunctionNames.CircleEaseOut);
+            if (mode == FlyoutDisplayMode.ActualHeight) AdjustPopupSize(info, PopupStack.Count > 0, true);
             Semaphore.Release();
             openCallback?.Invoke();
 
