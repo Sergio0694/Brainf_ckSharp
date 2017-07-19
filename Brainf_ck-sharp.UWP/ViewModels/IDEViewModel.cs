@@ -89,6 +89,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                             _CategorizedCode = m.RequestedCode;
                             LoadedCodeChanged?.Invoke(this, m.RequestedCode.Code);
                             Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(m.RequestedCode.Type != SavedSourceCodeType.Sample, true));
+                            Messenger.Default.Send(new IDEPendingChangesStatusChangedMessage(false));
                         });
                         Messenger.Default.Register<IDEDeleteCharacterRequestMessage>(this, m =>
                         {
@@ -183,6 +184,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             // Save the file as requested
             await SQLiteManager.Instance.SaveCodeAsync(LoadedCode, text, breakpoints);
             UpdateGitDiffStatusOnSave();
+            Messenger.Default.Send(new IDEPendingChangesStatusChangedMessage(false));
         }
 
         /// <summary>
@@ -229,6 +231,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
+            Messenger.Default.Send(new IDEPendingChangesStatusChangedMessage(false));
         }
 
         // Indicates whether or not the IDE contains at least a valid operator
@@ -460,6 +463,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             if (previous.Equals(current))
             {
                 DiffStatusSource.Clear();
+                Messenger.Default.Send(new IDEPendingChangesStatusChangedMessage(false));
                 return;
             }
 
@@ -503,6 +507,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 DiffStatusSource.RemoveAt(DiffStatusSource.Count - 1);
                 diff--;
             }
+            Messenger.Default.Send(new IDEPendingChangesStatusChangedMessage(source.Any(state => state == GitDiffLineStatus.Edited)));
         }
 
         #endregion
