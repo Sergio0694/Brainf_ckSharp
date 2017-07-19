@@ -339,8 +339,7 @@
             Canvas.ZIndex="2"
             Grid.Column="4"
             x:Name="BreakLinesCanvas"
-            IsHitTestVisible="False"
-            SizeChanged="BreakLinesCanvas_OnSizeChanged"/>
+            IsHitTestVisible="False"/>
 
         <!--Code box-->
         <inheritedControls:RichEditBoxWithVerticalOffsetInfo

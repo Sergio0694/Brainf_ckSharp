@@ -204,7 +204,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 // Get the lines with a breakpoint and deconstruct the source in executable chuncks
                 IReadOnlyCollection<int> 
                     lines = BreakpointsInfo.Keys.OrderBy(key => key).Select(i => i - 1).ToArray(), // i -1 to move from 1 to 0-based indexes
-                    indexes = text.FindIndexes(lines);
+                    indexes = text.FindLineIndexes(lines);
                 List<String> chuncks = new List<String>();
                 int previous = 0;
                 foreach (int breakpoint in indexes.Concat(new[] { text.Length - 1 }))
@@ -264,18 +264,19 @@ namespace Brainf_ck_sharp_UWP.Views
         }
 
         // Updates the line numbers displayed next to the code box
-        private void EditBox_OnTextChanged(object sender, RoutedEventArgs e)
+        private async void EditBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
             DrawLineNumbers();
             DrawBracketGuides(null, false).ContinueWith(t =>
             {
                 if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
                 ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
             EditBox.Document.GetText(TextGetOptions.None, out String code);
             ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
             ViewModel.UpdateCanUndoRedoStatus();
-            RemoveUnvalidatedBreakpointsAsync(code).Forget();
+            await RemoveUnvalidatedBreakpointsAsync(code);
+            RefreshBreakpointsUI(code);
         }
 
         #region UI overlays
@@ -793,7 +794,7 @@ namespace Brainf_ck_sharp_UWP.Views
             EditBox.Document.GetText(TextGetOptions.None, out String code);
 
             // Get the actual positions for each line start
-            IReadOnlyCollection<int> indexes = code.FindIndexes(lines);
+            IReadOnlyCollection<int> indexes = code.FindLineIndexes(lines);
 
             // Draw the breakpoints again
             foreach (int i in indexes)
@@ -861,7 +862,31 @@ namespace Brainf_ck_sharp_UWP.Views
             range.GetRect(PointOptions.Transform, out Rect open, out _);
             range = EditBox.Document.GetRange(last, last);
             range.GetRect(PointOptions.Transform, out Rect close, out _);
-            return (open.X + 2, close.Right - open.Left + 4);
+            return (open.X + 2, close.Right - open.Left + 2);
+        }
+
+        /// <summary>
+        /// Refreshes the UI of the breakpoint overlays
+        /// </summary>
+        /// <param name="text">The current IDE text</param>
+        private void RefreshBreakpointsUI([NotNull] String text)
+        {
+            KeyValuePair<int, Tuple<Ellipse, Border>>[] pairs = BreakpointsInfo.ToArray();
+
+            // Get the actual positions for each line start
+            IReadOnlyList<int> indexes = text.FindLineIndexes(pairs.Select(p => p.Key - 1));
+            for (int i = 0; i < pairs.Length; i++)
+            {
+                KeyValuePair<int, Tuple<Ellipse, Border>> pair = pairs[i];
+                (double x, double width) = CalculateBreakpointCoordinates(text, indexes[i]);
+                Border border = pair.Value.Item2;
+                if (border.RenderTransform is TranslateTransform transform &&
+                    (transform.X - x).Abs() > 0.1)
+                {
+                    transform.X = x;
+                }
+                if ((border.Width - width).Abs() > 0.1) border.Width = width;
+            }
         }
 
         /// <summary>
@@ -940,13 +965,6 @@ namespace Brainf_ck_sharp_UWP.Views
                 // Store the info
                 BreakpointsInfo.Add(coordinate.Y, Tuple.Create(ellipse, border));
             }
-        }
-
-        // Updates the width of the breakpoint lines
-        private void BreakLinesCanvas_OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            foreach (FrameworkElement element in BreakLinesCanvas.Children.Cast<FrameworkElement>().ToArray())
-                element.Width = e.NewSize.Width;
         }
 
         #endregion
