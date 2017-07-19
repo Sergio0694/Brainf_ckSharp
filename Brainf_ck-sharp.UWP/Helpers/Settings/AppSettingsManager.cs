@@ -116,6 +116,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
             SetValue(nameof(AppSettingsKeys.BracketsStyle), 0, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.TabLength), 4, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.SelectedIDETheme), 0, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.AutosaveDocuments), false, SettingSaveMode.SkipIfExisting);
         }
 
         /// <summary>

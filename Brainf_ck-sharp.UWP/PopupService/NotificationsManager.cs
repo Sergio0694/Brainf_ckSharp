@@ -13,7 +13,6 @@ using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers;
 using UICompositionAnimations.Lights;
-using DispatcherHelper = Brainf_ck_sharp_UWP.Helpers.DispatcherHelper;
 
 namespace Brainf_ck_sharp_UWP.PopupService
 {

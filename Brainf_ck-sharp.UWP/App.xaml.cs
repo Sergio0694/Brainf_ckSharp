@@ -9,9 +9,11 @@ using Windows.UI.Xaml;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Resources;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.UserControls;
+using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations.Helpers;
 using UICompositionAnimations.Helpers.PointerEvents;
 using UICompositionAnimations.Lights;
@@ -176,10 +178,16 @@ namespace Brainf_ck_sharp_UWP
         /// </summary>
         /// <param name="sender">Origine della richiesta di sospensione.</param>
         /// <param name="e">Dettagli relativi alla richiesta di sospensione.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
-            var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: salvare lo stato dell'applicazione e arrestare eventuali attività eseguite in background
+            SuspendingDeferral deferral = e.SuspendingOperation.GetDeferral();
+            if (AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutosaveDocuments)))
+            {
+                // Waits for the autosave to be completed
+                IDEAutosaveTriggeredMessage message = new IDEAutosaveTriggeredMessage();
+                Messenger.Default.Send(message);
+                await message.Autosave;
+            }
             deferral.Complete();
         }
     }

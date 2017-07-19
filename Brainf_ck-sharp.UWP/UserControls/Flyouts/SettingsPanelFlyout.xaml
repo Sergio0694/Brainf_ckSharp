@@ -25,6 +25,15 @@
             FontSize="20"
             Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
 
+        <!--Autosave-->
+        <TextBlock
+            Margin="0,8,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"
+            x:Uid="AutosaveTitle"
+            Text="Autosave loaded documents"/>
+        <ToggleSwitch IsOn="{x:Bind ViewModel.AutosaveDocuments, Mode=TwoWay}"/>
+
         <!--Auto indent-->
         <TextBlock
             Margin="0,8,0,0"

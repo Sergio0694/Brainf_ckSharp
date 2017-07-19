@@ -53,6 +53,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             Document = document;
             SaveNameSelector = nameSelector;
             BreakpointsExtractor = breakpointsExtractor;
+            Messenger.Default.Register<IDEAutosaveTriggeredMessage>(this, async m =>
+            {
+                await TryAutosaveAsync();
+                m.ReportAutosaveCompleted();
+            });
         }
 
         // Indicates whether or not the view model instance hasn't already been enabled before
@@ -158,6 +163,26 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 default:
                     throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
             }
+        }
+
+        /// <summary>
+        /// Autosaves the current code file, if there's a loaded document in the IDE
+        /// </summary>
+        private async Task TryAutosaveAsync()
+        {
+            // State check
+            if (LoadedCode == null) return;
+
+            // Get the text and the breakpoints
+            Document.GetText(TextGetOptions.None, out String text);
+            IReadOnlyCollection<int>
+                raw = BreakpointsExtractor(),
+                breakpoints = raw.Count > 0 ? raw : null;
+            if (text[text.Length - 1] == '\r') text = text.Substring(0, text.Length - 1); // Remove final '\r' to avoid addednew lines
+
+            // Save the file as requested
+            await SQLiteManager.Instance.SaveCodeAsync(LoadedCode, text, breakpoints);
+            UpdateGitDiffStatusOnSave();
         }
 
         /// <summary>

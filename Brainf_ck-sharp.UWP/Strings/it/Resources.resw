@@ -505,4 +505,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
     <value>Predefinito</value>
     <comment>The default theme</comment>
   </data>
+  <data name="AutosaveTitle.Text" xml:space="preserve">
+    <value>Salvataggio automatico</value>
+  </data>
 </root>

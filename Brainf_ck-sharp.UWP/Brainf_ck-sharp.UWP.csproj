@@ -154,6 +154,7 @@
     <Compile Include="DataModels\Misc\SelectableModelBase.cs" />
     <Compile Include="DataModels\Misc\ScriptExceptionInfo.cs" />
     <Compile Include="DataModels\Misc\Themes\SelectableIDEThemeInfo.cs" />
+    <Compile Include="DataModels\Misc\Unit.cs" />
     <Compile Include="DataModels\SQLite\CategorizedSourceCode.cs" />
     <Compile Include="DataModels\SQLite\CategorizedSourceCodeWithSyntaxInfo.cs" />
     <Compile Include="DataModels\SQLite\Enums\SavedSourceCodeType.cs" />
@@ -168,7 +169,6 @@
     <Compile Include="Helpers\LauncherHelper.cs" />
     <Compile Include="Helpers\Settings\AppSettingsKeys.cs" />
     <Compile Include="Helpers\Settings\AppSettingsManager.cs" />
-    <Compile Include="Helpers\DispatcherHelper.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\Extensions\_IEnumerableExtensions.cs" />
@@ -176,6 +176,7 @@
     <Compile Include="Helpers\StorageHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\ShareCharmsHelper.cs" />
     <Compile Include="Messages\Actions\DebugStatusChangedMessage.cs" />
+    <Compile Include="Messages\Actions\IDEAutosaveTriggeredMessage.cs" />
     <Compile Include="Messages\Actions\IDEDeleteCharacterRequestMessage.cs" />
     <Compile Include="Messages\Actions\IDENewLineRequestedMessage.cs" />
     <Compile Include="Messages\Actions\IDEUndoRedoRequestMessage.cs" />

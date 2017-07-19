@@ -13,6 +13,7 @@
         AppStartups,
 
         // Settings panel
+        AutosaveDocuments,
         InAppBlurMode,
         AutoIndentBrackets,
         BracketsStyle,

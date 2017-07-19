@@ -611,4 +611,7 @@ This way he'll be able to help you!</value>
     <value>Default</value>
     <comment>The default theme</comment>
   </data>
+  <data name="AutosaveTitle.Text" xml:space="preserve">
+    <value>Autosave loaded documents</value>
+  </data>
 </root>

@@ -33,6 +33,23 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             }
         }
 
+        private bool _AutosaveDocuments = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutosaveDocuments));
+
+        /// <summary>
+        /// Gets or sets whether or not the IDE should automatically save the current document when leaving the app
+        /// </summary>
+        public bool AutosaveDocuments
+        {
+            get => _AutosaveDocuments;
+            set
+            {
+                if (Set(ref _AutosaveDocuments, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.AutosaveDocuments), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the collection of the available blur modes
         /// </summary>
