@@ -740,7 +740,7 @@ namespace Brainf_ck_sharp_UWP.Views
         /// <summary>
         /// Gets the collection of current visualized breakpoints and their respective line numbers
         /// </summary>
-        private readonly Dictionary<int, Tuple<Ellipse, Rectangle>> BreakpointsInfo = new Dictionary<int, Tuple<Ellipse, Rectangle>>();
+        private readonly Dictionary<int, Tuple<Ellipse, Border>> BreakpointsInfo = new Dictionary<int, Tuple<Ellipse, Border>>();
 
         // Clears the breakpoints from the UI and their info
         private void ClearBreakpoints()
@@ -776,7 +776,7 @@ namespace Brainf_ck_sharp_UWP.Views
             // Remove the target breakpoints
             foreach (int target in pending)
             {
-                if (BreakpointsInfo.TryGetValue(target, out Tuple<Ellipse, Rectangle> previous))
+                if (BreakpointsInfo.TryGetValue(target, out Tuple<Ellipse, Border> previous))
                 {
                     // Remove the previous breakpoint
                     BreakpointsCanvas.Children.Remove(previous.Item1);
@@ -857,7 +857,7 @@ namespace Brainf_ck_sharp_UWP.Views
             }
 
             // Setup the breakpoint
-            if (BreakpointsInfo.TryGetValue(coordinate.Y, out Tuple<Ellipse, Rectangle> previous))
+            if (BreakpointsInfo.TryGetValue(coordinate.Y, out Tuple<Ellipse, Border> previous))
             {
                 // Remove the previous breakpoint
                 BreakpointsCanvas.Children.Remove(previous.Item1);
@@ -910,22 +910,25 @@ namespace Brainf_ck_sharp_UWP.Views
                 range.GetRect(PointOptions.Transform, out Rect close, out _);
 
                 // Line highlight
-                Rectangle rect = new Rectangle
+                Border border = new Border
                 {
                     Height = 19.9, // Approximate line height
-                    Width = close.Right - open.Left + 2,
-                    Fill = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("BreakpointLineBrush"),
+                    Width = close.Right - open.Left + 4,
+                    Background = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("BreakpointLineBrush"),
+                    BorderThickness = new Thickness(1),
+                    BorderBrush = Colors.DimGray.ToBrush(),
+                    CornerRadius = new CornerRadius(1),
                     RenderTransform = new TranslateTransform
                     {
                         X = open.X + 2,
                         Y = offset - 2 // -2 to adjust the position with the cursor rectangle
                     }
                 };
-                BreakLinesCanvas.Children.Add(rect);
-                rect.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
+                BreakLinesCanvas.Children.Add(border);
+                border.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
 
                 // Store the info
-                BreakpointsInfo.Add(coordinate.Y, Tuple.Create(ellipse, rect));
+                BreakpointsInfo.Add(coordinate.Y, Tuple.Create(ellipse, border));
             }
         }
 
