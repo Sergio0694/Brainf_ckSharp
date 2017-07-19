@@ -830,6 +830,41 @@ namespace Brainf_ck_sharp_UWP.Views
         private Guid _InvalidBreakpointMessageID;
 
         /// <summary>
+        /// Calculates the visual coordinates and info for a breakpoint to insert at a given line
+        /// </summary>
+        /// <param name="text">The source text</param>
+        /// <param name="index">The breakpoint initial index</param>
+        private (double X, double Width) CalculateBreakpointCoordinates([NotNull] String text, int index)
+        {
+            // Get the target line coordinates
+            int first = 0, last = -1;
+            bool found = false;
+            for (int i = index; i < text.Length; i++)
+            {
+                if (Brainf_ckInterpreter.Operators.Contains(text[i]))
+                {
+                    if (!found)
+                    {
+                        found = true;
+                        first = i;
+                    }
+                }
+                else if (found)
+                {
+                    last = i;
+                    break;
+                }
+            }
+
+            // Get the initial and ending range
+            ITextRange range = EditBox.Document.GetRange(first, first);
+            range.GetRect(PointOptions.Transform, out Rect open, out _);
+            range = EditBox.Document.GetRange(last, last);
+            range.GetRect(PointOptions.Transform, out Rect close, out _);
+            return (open.X + 2, close.Right - open.Left + 4);
+        }
+
+        /// <summary>
         /// Adds a single breakpoint to the UI and the backup list
         /// </summary>
         /// <param name="text">The current text, if available</param>
@@ -883,44 +918,19 @@ namespace Brainf_ck_sharp_UWP.Views
                 BreakpointsCanvas.Children.Add(ellipse);
                 ellipse.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
 
-                // Get the target line coordinates
-                int first = 0, last = -1;
-                bool found = false;
-                for (int i = start; i < text.Length; i++)
-                {
-                    if (Brainf_ckInterpreter.Operators.Contains(text[i]))
-                    {
-                        if (!found)
-                        {
-                            found = true;
-                            first = i;
-                        }
-                    }
-                    else if (found)
-                    {
-                        last = i;
-                        break;
-                    }
-                }
-
-                // Get the initial and ending range
-                ITextRange range = EditBox.Document.GetRange(first, first);
-                range.GetRect(PointOptions.Transform, out Rect open, out _);
-                range = EditBox.Document.GetRange(last, last);
-                range.GetRect(PointOptions.Transform, out Rect close, out _);
-
                 // Line highlight
+                (double x, double width) = CalculateBreakpointCoordinates(text, start);
                 Border border = new Border
                 {
                     Height = 19.9, // Approximate line height
-                    Width = close.Right - open.Left + 4,
+                    Width = width,
                     Background = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("BreakpointLineBrush"),
                     BorderThickness = new Thickness(1),
                     BorderBrush = Colors.DimGray.ToBrush(),
                     CornerRadius = new CornerRadius(1),
                     RenderTransform = new TranslateTransform
                     {
-                        X = open.X + 2,
+                        X = x,
                         Y = offset - 2 // -2 to adjust the position with the cursor rectangle
                     }
                 };
