@@ -9,7 +9,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid>
+    <Grid Background="Transparent">
         <xaml:CanvasControl
             Opacity="0"
             IsHitTestVisible="False"
