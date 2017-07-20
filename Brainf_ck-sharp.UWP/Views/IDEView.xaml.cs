@@ -274,7 +274,7 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
             ViewModel.UpdateCanUndoRedoStatus();
             RemoveUnvalidatedBreakpointsAsync(code).Forget();
-            if (code.Length > 1) RenderControlCharacters(code);
+            if (code.Length > 1) RenderControlCharacters();
             else ClearControlCharacters();
         }
 
@@ -473,19 +473,19 @@ namespace Brainf_ck_sharp_UWP.Views
         private readonly int MinimumControlCharactersRenderingInterval = 600;
 
         // The queue of arguments to render the control characters after a delay
-        private readonly Queue<String> CodeHistoryQueue = new Queue<String>();
+        private int _PendingUpdates;
 
         /// <summary>
         /// Renders the current control characters
         /// </summary>
-        /// <param name="code">The source code to use to parse the control characters</param>
-        private async void RenderControlCharacters([NotNull] String code)
+        private async void RenderControlCharacters()
         {
             // Private function to render the characters
-            void RenderControlCharactersCode(String text)
+            void RenderControlCharactersCode()
             {
                 // Edge case
-                if (text.Length < 2)
+                EditBox.Document.GetText(TextGetOptions.None, out String code);
+                if (code.Length < 2)
                 {
                     ControlCharacterOverlays.Clear();
                     WhitespacesCanvas.Children.Clear();
@@ -494,9 +494,9 @@ namespace Brainf_ck_sharp_UWP.Views
 
                 // Find the target characters
                 List<CharacterWithArea> characters = new List<CharacterWithArea>();
-                for (int i = 0; i < text.Length; i++)
+                for (int i = 0; i < code.Length; i++)
                 {
-                    char c = text[i];
+                    char c = code[i];
                     if (c == ' ')
                     {
                         ITextRange range = EditBox.Document.GetRange(i, i);
@@ -567,19 +567,18 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Lock and add the delayed handler
             await ControlCharactersSemaphore.WaitAsync();
-            CodeHistoryQueue.Enqueue(code);
-            Task.Delay(500).ContinueWith(async t =>
+            _PendingUpdates++;
+            Task.Delay(MinimumControlCharactersRenderingInterval).ContinueWith(async t =>
             {
                 // Lock again and retrieve the current argument
                 await ControlCharactersSemaphore.WaitAsync();
                 try
                 {
-                    if (CodeHistoryQueue.Count == 0) return;
-                    String text = CodeHistoryQueue.Dequeue();
+                    if (_PendingUpdates == 0) return;
                     if (DateTime.Now.Subtract(_ControlCharactersRenderingTimestamp).TotalMilliseconds < MinimumControlCharactersRenderingInterval &&
-                        CodeHistoryQueue.Count > 0) return; // Skip if another handler was executed less than half a second ago
+                        _PendingUpdates > 0) return; // Skip if another handler was executed less than half a second ago
                     _ControlCharactersRenderingTimestamp = DateTime.Now;
-                    RenderControlCharactersCode(text); // Render the control characters
+                    RenderControlCharactersCode(); // Render the control characters
                 }
                 catch
                 {
@@ -599,7 +598,7 @@ namespace Brainf_ck_sharp_UWP.Views
         private async void ClearControlCharacters()
         {
             await ControlCharactersSemaphore.WaitAsync();
-            CodeHistoryQueue.Clear();
+            _PendingUpdates = 0;
             ControlCharacterOverlays.Clear();
             WhitespacesCanvas.Children.Clear();
             _ControlCharactersRenderingTimestamp = DateTime.Now;
@@ -884,7 +883,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
                     ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
-                RenderControlCharacters(code);
+                RenderControlCharacters();
                 ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
                 ViewModel.SendMessages(code);
                 ViewModel.UpdateCanUndoRedoStatus();
