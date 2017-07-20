@@ -33,6 +33,17 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
         [NotNull]
         public static IReadOnlyList<InstalledFont> Fonts => _Fonts ?? (_Fonts = GetFonts());
 
+        /// <summary>
+        /// Tries to retrieve an <see cref="InstalledFont"/> with the given name
+        /// </summary>
+        /// <param name="name">The name of the font to retrieve</param>
+        /// <param name="font">The resulting <see cref="InstalledFont"/> in case of success, null otherwise</param>
+        public static bool TryGetFont([NotNull] String name, out InstalledFont font)
+        {
+            font = Fonts.FirstOrDefault(f => f.Name.Equals(name));
+            return font != null;
+        }
+
         // Private constructor
         private InstalledFont([NotNull] String name)
         {
