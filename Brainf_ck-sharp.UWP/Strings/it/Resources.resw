@@ -508,4 +508,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="AutosaveTitle.Text" xml:space="preserve">
     <value>Salvataggio automatico</value>
   </data>
+  <data name="FontTypeTitle.Text" xml:space="preserve">
+    <value>Tipo carattere</value>
+  </data>
+  <data name="IDETheme.Text" xml:space="preserve">
+    <value>Tema</value>
+  </data>
 </root>

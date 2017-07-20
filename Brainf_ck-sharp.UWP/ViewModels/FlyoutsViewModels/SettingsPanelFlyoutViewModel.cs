@@ -146,6 +146,29 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         }
 
         /// <summary>
+        /// Gets the collection of the available font families for the IDE
+        /// </summary>
+        [NotNull]
+        public IReadOnlyCollection<InstalledFont> AvailableFonts { get; } = InstalledFont.Fonts;
+
+        private int _FontFamilySelectedIndex = 0;
+
+        /// <summary>
+        /// Gets or sets the selected index for the IDE font family
+        /// </summary>
+        public int FontFamilySelectedIndex
+        {
+            get => _FontFamilySelectedIndex;
+            set
+            {
+                if (Set(ref _FontFamilySelectedIndex, value))
+                {
+                    //AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.BracketsStyle), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the collection of the available IDE themes
         /// </summary>
         [NotNull]

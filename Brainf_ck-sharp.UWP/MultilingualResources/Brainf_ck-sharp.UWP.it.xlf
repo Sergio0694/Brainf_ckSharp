@@ -667,6 +667,14 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Autosave loaded documents</source>
           <target state="translated">Salvataggio automatico</target>
         </trans-unit>
+        <trans-unit id="FontTypeTitle.Text" translate="yes" xml:space="preserve">
+          <source>Font type</source>
+          <target state="translated">Tipo carattere</target>
+        </trans-unit>
+        <trans-unit id="IDETheme.Text" translate="yes" xml:space="preserve">
+          <source>Theme</source>
+          <target state="translated">Tema</target>
+        </trans-unit>
       </group>
     </body>
   </file>

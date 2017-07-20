@@ -614,4 +614,10 @@ This way he'll be able to help you!</value>
   <data name="AutosaveTitle.Text" xml:space="preserve">
     <value>Autosave loaded documents</value>
   </data>
+  <data name="FontTypeTitle.Text" xml:space="preserve">
+    <value>Font type</value>
+  </data>
+  <data name="IDETheme.Text" xml:space="preserve">
+    <value>Theme</value>
+  </data>
 </root>
