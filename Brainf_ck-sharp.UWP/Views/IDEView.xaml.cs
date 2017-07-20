@@ -77,7 +77,7 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.NewLineInsertionRequested += ViewModel_NewLineInsertionRequested;
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             _PreviousText = text;
-            Messenger.Default.Register<IDESettingsChangedMessage>(this, m => ApplyIDESettings(m.ThemeChanged, m.TabsLengthChanged));
+            Messenger.Default.Register<IDESettingsChangedMessage>(this, m => ApplyIDESettings(m.ThemeChanged, m.TabsLengthChanged, m.FontChanged));
         }
 
         // Updates the general UI settings
@@ -104,8 +104,9 @@ namespace Brainf_ck_sharp_UWP.Views
         }
 
         // Applies the new IDE theme
-        private void ApplyIDESettings(bool themeChanged, bool tabsChanged)
+        private void ApplyIDESettings(bool themeChanged, bool tabsChanged, bool fontChanged)
         {
+            System.Diagnostics.Debug.WriteLine("[STARTING]");
             // Disable the handlers
             EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
             EditBox.TextChanged -= EditBox_OnTextChanged;
@@ -114,7 +115,19 @@ namespace Brainf_ck_sharp_UWP.Views
             if (tabsChanged)
             {
                 ApplyCustomTabSpacing();
-                if (!themeChanged) DrawBracketGuides(null, true).Forget();
+            }
+
+            // Update the font type if needed
+            if (fontChanged)
+            {
+                // Refresh the text UI
+                String name = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+                if (InstalledFont.TryGetFont(name, out InstalledFont font))
+                {
+                    LineBlock.FontFamily = font.Family;
+                    EditBox.SetFontFamily(name);
+                    UpdateCursorRectangleAndIndicatorUI(); // Adjust the cursor position (a different font can have a different height)
+                }
             }
 
             // Update the current UI theme
@@ -138,9 +151,6 @@ namespace Brainf_ck_sharp_UWP.Views
                     range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(c);
                 }
 
-                // Brackets guides
-                DrawBracketGuides(text, true).Forget();
-
                 // Release the UI
                 Task.Delay(500).ContinueWith(t =>
                 {
@@ -148,9 +158,13 @@ namespace Brainf_ck_sharp_UWP.Views
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
 
+            // Column guides
+            DrawBracketGuides(null, true).Forget();
+
             // Restore the handlers
             EditBox.SelectionChanged += EditBox_OnSelectionChanged;
             EditBox.TextChanged += EditBox_OnTextChanged;
+            System.Diagnostics.Debug.WriteLine("[APPLIED]");
         }
 
         // Updates the tab length setting
@@ -223,11 +237,10 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             // Font setup
             String name = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
-            if (name != null && InstalledFont.TryGetFont(name, out _))
+            if (InstalledFont.TryGetFont(name, out InstalledFont font))
             {
-                ITextCharacterFormat format = EditBox.Document.GetDefaultCharacterFormat();
-                format.Name = name;
-                EditBox.Document.SetDefaultCharacterFormat(format);
+                LineBlock.FontFamily = font.Family;
+                EditBox.SetFontFamily(name);
             }
 
             // Start the cursor animation and subscribe the scroller event
@@ -932,7 +945,7 @@ namespace Brainf_ck_sharp_UWP.Views
             else
             {
                 String lines = '\n'.Repeat(count - 1);
-                Size size = lines.MeasureText(15);
+                Size size = lines.MeasureText(15, LineBlock.FontFamily);
                 IndentationInfoList.SetVisualScale(null, (float) (size.Height / e.NewSize.Height), null);
             }
         }
@@ -945,7 +958,7 @@ namespace Brainf_ck_sharp_UWP.Views
             else
             {
                 String lines = '\n'.Repeat(count - 1);
-                Size size = lines.MeasureText(15);
+                Size size = lines.MeasureText(15, LineBlock.FontFamily);
                 GitDiffListView.SetVisualScale(null, (float)(size.Height / e.NewSize.Height), null);
             }
         }
