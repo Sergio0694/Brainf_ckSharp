@@ -434,9 +434,9 @@ namespace Brainf_ck_sharp_UWP.Views
         /// <summary>
         /// Gets the icon data for the tab arrow indicator
         /// </summary>
-        /// <remarks>A new instance is needed each time or the app will crash</remarks>
+        /// <param name="length">The length of the arrow icon</param>
         [NotNull]
-        private PathGeometry TabIconData => new PathGeometry
+        private PathGeometry GetTabIconData(int length) => new PathGeometry
         {
             Figures = new PathFigureCollection
             {
@@ -445,16 +445,16 @@ namespace Brainf_ck_sharp_UWP.Views
                     StartPoint = new Point(0, 2),
                     Segments = new PathSegmentCollection
                     {
-                        new LineSegment { Point = new Point(12, 2) },
-                        new LineSegment { Point = new Point(8, 0) }
+                        new LineSegment { Point = new Point(length, 2) },
+                        new LineSegment { Point = new Point(length - 4, 0) }
                     }
                 },
                 new PathFigure
                 {
-                    StartPoint = new Point(12, 2),
+                    StartPoint = new Point(length, 2),
                     Segments = new PathSegmentCollection
                     {
-                        new LineSegment { Point = new Point(8, 4) }
+                        new LineSegment { Point = new Point(length - 4, 4) }
                     }
                 }
             }
@@ -549,18 +549,54 @@ namespace Brainf_ck_sharp_UWP.Views
                     }
                     else if (character.Character == '\t')
                     {
-                        Path arrow = new Path
+                        double width = character.Area.Right - character.Area.Left;
+                        if (width < 12)
                         {
-                            Stroke = Colors.DimGray.ToBrush(),
-                            Data = TabIconData,
-                            RenderTransform = new TranslateTransform
+                            // Small dot at the center
+                            Rectangle dot = new Rectangle
                             {
-                                X = character.Area.Left + (character.Area.Right - character.Area.Left) / 2,
-                                Y = character.Area.Top + (character.Area.Bottom - character.Area.Top) / 2 - 2
-                            }
-                        };
-                        WhitespacesCanvas.Children.Add(arrow);
-                        ControlCharacterOverlays.Add(Tuple.Create<CharacterWithArea, UIElement>(character, arrow));
+                                Width = 2,
+                                Height = 2,
+                                Fill = Colors.DimGray.ToBrush(),
+                                RenderTransform = new TranslateTransform
+                                {
+                                    X = character.Area.Left + width / 2 + 5,
+                                    Y = character.Area.Top + (character.Area.Bottom - character.Area.Top) / 2 - 1
+                                }
+                            };
+                            WhitespacesCanvas.Children.Add(dot);
+                            ControlCharacterOverlays.Add(Tuple.Create<CharacterWithArea, UIElement>(character, dot));
+                        }
+                        else if (width < 28)
+                        {
+                            Path arrow = new Path
+                            {
+                                Stroke = Colors.DimGray.ToBrush(),
+                                Data = GetTabIconData(8),
+                                RenderTransform = new TranslateTransform
+                                {
+                                    X = character.Area.Left + width / 2,
+                                    Y = character.Area.Top + (character.Area.Bottom - character.Area.Top) / 2 - 2
+                                }
+                            };
+                            WhitespacesCanvas.Children.Add(arrow);
+                            ControlCharacterOverlays.Add(Tuple.Create<CharacterWithArea, UIElement>(character, arrow));
+                        }
+                        else
+                        {
+                            Path arrow = new Path
+                            {
+                                Stroke = Colors.DimGray.ToBrush(),
+                                Data = GetTabIconData(12),
+                                RenderTransform = new TranslateTransform
+                                {
+                                    X = character.Area.Left + width / 2,
+                                    Y = character.Area.Top + (character.Area.Bottom - character.Area.Top) / 2 - 2
+                                }
+                            };
+                            WhitespacesCanvas.Children.Add(arrow);
+                            ControlCharacterOverlays.Add(Tuple.Create<CharacterWithArea, UIElement>(character, arrow));
+                        }
                     }
                 }
             }
