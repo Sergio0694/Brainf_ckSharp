@@ -145,6 +145,23 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             }
         }
 
+        private bool _RenderWhitespaces = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
+
+        /// <summary>
+        /// Gets or sets whether or not the IDE should render the control characters too
+        /// </summary>
+        public bool RenderWhitespaces
+        {
+            get => _RenderWhitespaces;
+            set
+            {
+                if (Set(ref _RenderWhitespaces, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.RenderWhitespaces), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the collection of the available IDE themes
         /// </summary>

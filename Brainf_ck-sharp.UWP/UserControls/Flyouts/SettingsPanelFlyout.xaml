@@ -68,9 +68,18 @@
             SelectedIndex="{x:Bind ViewModel.TabLengthSelectedIndex, Mode=TwoWay}"
             MinWidth="180"/>
 
+        <!--Render whitespaces-->
+        <TextBlock
+            Margin="0,12,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"
+            x:Uid="RenderWhitespacesTitle"
+            Text="Render whitespaces"/>
+        <ToggleSwitch IsOn="{x:Bind ViewModel.RenderWhitespaces, Mode=TwoWay}"/>
+
         <!--UI-->
         <TextBlock
-            Margin="0,16,0,0"
+            Margin="0,12,0,0"
             Text="UI"
             FontWeight="Bold"
             FontSize="20"

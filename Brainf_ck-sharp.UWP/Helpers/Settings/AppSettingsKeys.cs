@@ -18,6 +18,7 @@
         AutoIndentBrackets,
         BracketsStyle,
         TabLength,
-        SelectedIDETheme
+        SelectedIDETheme,
+        RenderWhitespaces
     }
 }
