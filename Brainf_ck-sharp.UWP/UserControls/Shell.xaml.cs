@@ -267,12 +267,14 @@ namespace Brainf_ck_sharp_UWP.UserControls
             int
                 theme = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)),
                 tabs = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength));
+            bool whitespaces = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
             SettingsPanelFlyout settings = new SettingsPanelFlyout();
             await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Settings"), settings, null, FlyoutDisplayMode.ActualHeight);
             bool
                 themeChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)) != theme,
-                tabsChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength)) != tabs;
-            if (themeChanged || tabsChanged)
+                tabsChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength)) != tabs,
+                whitespacesChanged = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces)) != whitespaces;
+            if (themeChanged || tabsChanged || whitespacesChanged)
             {
                 // UI refresh needed
                 if (themeChanged)
@@ -280,7 +282,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                     Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
                     await Task.Delay(500);
                 }
-                Messenger.Default.Send(new IDESettingsChangedMessage(themeChanged, tabsChanged));
+                Messenger.Default.Send(new IDESettingsChangedMessage(themeChanged, tabsChanged, whitespacesChanged));
             }
         }
     }

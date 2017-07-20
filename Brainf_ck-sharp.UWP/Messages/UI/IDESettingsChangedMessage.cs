@@ -16,14 +16,21 @@
         public bool TabsLengthChanged { get; }
 
         /// <summary>
+        /// Gets whether or not the IDE render whitespaces setting has been changed
+        /// </summary>
+        public bool WhitespacesChanged { get; }
+
+        /// <summary>
         /// Creates a new instance for a setting update event
         /// </summary>
         /// <param name="themeChanged">Indicates whether or not the theme has been changed</param>
         /// <param name="tabsChanged">Indicates whether or not the tab length setting has been changed</param>
-        public IDESettingsChangedMessage(bool themeChanged, bool tabsChanged)
+        /// <param name="whitespacesChanged">Indicates whether the IDE render whitespaces setting has been changed</param>
+        public IDESettingsChangedMessage(bool themeChanged, bool tabsChanged, bool whitespacesChanged)
         {
             ThemeChanged = themeChanged;
             TabsLengthChanged = tabsChanged;
+            WhitespacesChanged = whitespacesChanged;
         }
     }
 }

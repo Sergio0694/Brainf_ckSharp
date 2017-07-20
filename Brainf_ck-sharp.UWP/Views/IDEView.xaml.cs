@@ -77,7 +77,8 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.NewLineInsertionRequested += ViewModel_NewLineInsertionRequested;
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             _PreviousText = text;
-            Messenger.Default.Register<IDESettingsChangedMessage>(this, m => ApplyIDESettings(m.ThemeChanged, m.TabsLengthChanged));
+            _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
+            Messenger.Default.Register<IDESettingsChangedMessage>(this, ApplyIDESettings);
         }
 
         // Updates the general UI settings
@@ -104,21 +105,29 @@ namespace Brainf_ck_sharp_UWP.Views
         }
 
         // Applies the new IDE theme
-        private void ApplyIDESettings(bool themeChanged, bool tabsChanged)
+        private void ApplyIDESettings(IDESettingsChangedMessage message)
         {
             // Disable the handlers
             EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
             EditBox.TextChanged -= EditBox_OnTextChanged;
 
             // Update the tabs if needed
-            if (tabsChanged)
+            if (message.TabsLengthChanged)
             {
                 ApplyCustomTabSpacing();
-                if (!themeChanged) DrawBracketGuides(null, true).Forget();
+                if (!message.ThemeChanged) DrawBracketGuides(null, true).Forget();
+            }
+
+            // Update the render whitespaces setting
+            if (message.WhitespacesChanged)
+            {
+                bool renderWhitespaces = _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
+                if (renderWhitespaces) RenderControlCharacters();
+                else ClearControlCharacters();
             }
 
             // Update the current UI theme
-            if (themeChanged)
+            if (message.ThemeChanged)
             {
                 // Update the theme
                 Brainf_ckFormatterHelper.Instance.ReloadTheme();
@@ -274,8 +283,13 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
             ViewModel.UpdateCanUndoRedoStatus();
             RemoveUnvalidatedBreakpointsAsync(code).Forget();
-            if (code.Length > 1) RenderControlCharacters();
-            else ClearControlCharacters();
+
+            // Whitespaces rendering
+            if (_WhitespacesRenderingEnabled)
+            {
+                if (code.Length > 1) RenderControlCharacters();
+                else ClearControlCharacters();
+            }
         }
 
         /// <summary>
@@ -474,6 +488,9 @@ namespace Brainf_ck_sharp_UWP.Views
 
         // The queue of arguments to render the control characters after a delay
         private int _PendingUpdates;
+
+        // Indicates whether or not to display the control characters in the IDE
+        private bool _WhitespacesRenderingEnabled;
 
         /// <summary>
         /// Renders the current control characters
@@ -919,7 +936,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
                     ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
-                RenderControlCharacters();
+                if (_WhitespacesRenderingEnabled) RenderControlCharacters();
                 ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
                 ViewModel.SendMessages(code);
                 ViewModel.UpdateCanUndoRedoStatus();
