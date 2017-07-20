@@ -274,7 +274,8 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
             ViewModel.UpdateCanUndoRedoStatus();
             RemoveUnvalidatedBreakpointsAsync(code).Forget();
-            RenderControlCharacters(code);
+            if (code.Length > 1) RenderControlCharacters(code);
+            else ClearControlCharacters();
         }
 
         /// <summary>
@@ -465,8 +466,14 @@ namespace Brainf_ck_sharp_UWP.Views
         // Synchronization semaphore for the control character overlays
         private readonly SemaphoreSlim ControlCharactersSemaphore = new SemaphoreSlim(1);
 
-        // Cancellation token for concurrent operations started unvoluntarily
-        private CancellationTokenSource _ControlCharactersGuidesCts;
+        // The timestamp of the last redraw of the control characters
+        private DateTime _ControlCharactersRenderingTimestamp = DateTime.MinValue;
+
+        // The minimum delay between each redraw of the control characters
+        private readonly int MinimumControlCharactersRenderingInterval = 600;
+
+        // The queue of arguments to render the control characters after a delay
+        private readonly Queue<String> CodeHistoryQueue = new Queue<String>();
 
         /// <summary>
         /// Renders the current control characters
@@ -474,26 +481,22 @@ namespace Brainf_ck_sharp_UWP.Views
         /// <param name="code">The source code to use to parse the control characters</param>
         private async void RenderControlCharacters([NotNull] String code)
         {
-            // Lock
-            _ControlCharactersGuidesCts?.Cancel();
-            await ControlCharactersSemaphore.WaitAsync();
-
-            try
+            // Private function to render the characters
+            void RenderControlCharactersCode(String text)
             {
                 // Edge case
-                if (code.Length < 2)
+                if (text.Length < 2)
                 {
                     ControlCharacterOverlays.Clear();
                     WhitespacesCanvas.Children.Clear();
                     return;
                 }
-                _ControlCharactersGuidesCts = new CancellationTokenSource();
 
                 // Find the target characters
                 List<CharacterWithArea> characters = new List<CharacterWithArea>();
-                for (int i = 0; i < code.Length; i++)
+                for (int i = 0; i < text.Length; i++)
                 {
-                    char c = code[i];
+                    char c = text[i];
                     if (c == ' ')
                     {
                         ITextRange range = EditBox.Document.GetRange(i, i);
@@ -509,7 +512,6 @@ namespace Brainf_ck_sharp_UWP.Views
                 }
 
                 // Remove the invalidated elements from the previous list
-                if (_ControlCharactersGuidesCts.IsCancellationRequested) return;
                 for (int i = 0; i < ControlCharacterOverlays.Count;)
                 {
                     CharacterWithArea that = ControlCharacterOverlays[i].Item1;
@@ -525,12 +527,10 @@ namespace Brainf_ck_sharp_UWP.Views
                 }
 
                 // Add the new overlays
-                if (_ControlCharactersGuidesCts.IsCancellationRequested) return;
                 foreach (CharacterWithArea character in characters)
                 {
                     if (ControlCharacterOverlays.Any(c => c.Item1.Character == character.Character &&
                                                           c.Item1.Area.ApproximateEquals(character.Area))) continue;
-
                     if (character.Character == ' ')
                     {
                         Rectangle dot = new Rectangle
@@ -564,15 +564,46 @@ namespace Brainf_ck_sharp_UWP.Views
                     }
                 }
             }
-            catch
+
+            // Lock and add the delayed handler
+            await ControlCharactersSemaphore.WaitAsync();
+            CodeHistoryQueue.Enqueue(code);
+            Task.Delay(500).ContinueWith(async t =>
             {
-                // This isn't supposed to happen, like, at all
-            }
-            finally
-            {
-                // Release
-                ControlCharactersSemaphore.Release();
-            }
+                // Lock again and retrieve the current argument
+                await ControlCharactersSemaphore.WaitAsync();
+                try
+                {
+                    if (CodeHistoryQueue.Count == 0) return;
+                    String text = CodeHistoryQueue.Dequeue();
+                    if (DateTime.Now.Subtract(_ControlCharactersRenderingTimestamp).TotalMilliseconds < MinimumControlCharactersRenderingInterval &&
+                        CodeHistoryQueue.Count > 0) return; // Skip if another handler was executed less than half a second ago
+                    _ControlCharactersRenderingTimestamp = DateTime.Now;
+                    RenderControlCharactersCode(text); // Render the control characters
+                }
+                catch
+                {
+                    // Sorry, can't crash here
+                }
+                finally
+                {
+                    ControlCharactersSemaphore.Release();
+                }
+            }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
+            ControlCharactersSemaphore.Release();
+        }
+
+        /// <summary>
+        /// Clears the current control characters rendered on screen
+        /// </summary>
+        private async void ClearControlCharacters()
+        {
+            await ControlCharactersSemaphore.WaitAsync();
+            CodeHistoryQueue.Clear();
+            ControlCharacterOverlays.Clear();
+            WhitespacesCanvas.Children.Clear();
+            _ControlCharactersRenderingTimestamp = DateTime.Now;
+            ControlCharactersSemaphore.Release();
         }
 
         // Updates the clip size of the control character overlays container
