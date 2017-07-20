@@ -221,6 +221,15 @@ namespace Brainf_ck_sharp_UWP.Views
         // Initializes the scroll events for the code
         private void IDEView_Loaded(object sender, RoutedEventArgs e)
         {
+            // Font setup
+            String name = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+            if (name != null && InstalledFont.TryGetFont(name, out _))
+            {
+                ITextCharacterFormat format = EditBox.Document.GetDefaultCharacterFormat();
+                format.Name = name;
+                EditBox.Document.SetDefaultCharacterFormat(format);
+            }
+
             // Start the cursor animation and subscribe the scroller event
             CursorAnimation.Begin();
 
