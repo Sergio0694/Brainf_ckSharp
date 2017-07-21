@@ -5,14 +5,37 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="108"
-    d:DesignWidth="400">
+    d:DesignHeight="200"
+    d:DesignWidth="800">
 
-    <!--Root-->
-    <StackPanel>
+    <Grid
+        Background="#FF1E1E1E"
+        x:Name="BackgroundGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Breakpoints pane-->
+        <Border 
+            Background="#FF333333"
+            x:Name="BreakpointsCanvas"
+            Grid.Column="0"
+            Grid.RowSpan="3"
+            Width="20"
+            HorizontalAlignment="Left"/>
 
         <!--Theme title-->
-        <Border 
+        <Border
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
             x:Name="HeaderBorder"
             Background="#FF333333">
             <Border Background="#20000000">
@@ -23,22 +46,18 @@
                     x:Name="TitleBlock"/>
             </Border>
         </Border>
-        
+
         <!--Visual preview-->
-        <Grid 
-            Background="#FF1E1E1E"
-            x:Name="BackgroundGrid">
+        <Grid
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20"/>
                 <ColumnDefinition Width="28"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
-            <!--Breakpoints pane-->
-            <Canvas 
-                Background="#FF333333"
-                x:Name="BreakpointsCanvas"/>
-            
+
             <!--Line numbers-->
             <TextBlock
                 IsTextScaleFactorEnabled="False"
@@ -148,5 +167,5 @@
                     x:Uid="CommentRun2"/>
             </TextBlock>
         </Grid>
-    </StackPanel>
+    </Grid>
 </UserControl>
