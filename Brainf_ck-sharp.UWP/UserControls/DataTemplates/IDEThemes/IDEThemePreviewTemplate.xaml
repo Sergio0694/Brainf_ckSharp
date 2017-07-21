@@ -101,7 +101,8 @@
                 IsTextScaleFactorEnabled="False"
                 Margin="20,0,20,0"
                 Grid.Column="2"
-                FontSize="15">
+                FontSize="15"
+                x:Name="PreviewBlock">
                 <Run
                     Foreground="#FFBDB76B"
                     x:Name="CommaRun"

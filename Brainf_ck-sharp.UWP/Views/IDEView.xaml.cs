@@ -106,7 +106,6 @@ namespace Brainf_ck_sharp_UWP.Views
         // Applies the new IDE theme
         private void ApplyIDESettings(bool themeChanged, bool tabsChanged, bool fontChanged)
         {
-            System.Diagnostics.Debug.WriteLine("[STARTING]");
             // Disable the handlers
             EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
             EditBox.TextChanged -= EditBox_OnTextChanged;
@@ -164,7 +163,6 @@ namespace Brainf_ck_sharp_UWP.Views
             // Restore the handlers
             EditBox.SelectionChanged += EditBox_OnSelectionChanged;
             EditBox.TextChanged += EditBox_OnTextChanged;
-            System.Diagnostics.Debug.WriteLine("[APPLIED]");
         }
 
         // Updates the tab length setting

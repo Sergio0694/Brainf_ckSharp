@@ -1,9 +1,14 @@
-﻿using Windows.UI;
+﻿using System;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
+using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Messages.UI;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes
 {
@@ -12,6 +17,17 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes
         public IDEThemePreviewTemplate()
         {
             this.InitializeComponent();
+            String name = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+            if (InstalledFont.TryGetFont(name, out InstalledFont font))
+            {
+                LineNumbersBlock.FontFamily = font.Family;
+                PreviewBlock.FontFamily = font.Family;
+            }
+            Messenger.Default.Register<IDEThemePreviewFontChangedMessage>(this, m =>
+            {
+                LineNumbersBlock.FontFamily = m.Font.Family;
+                PreviewBlock.FontFamily = m.Font.Family;
+            });
         }
 
         /// <summary>

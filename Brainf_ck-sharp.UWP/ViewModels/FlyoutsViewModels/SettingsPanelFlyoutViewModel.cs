@@ -166,6 +166,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 if (Set(ref _FontFamilySelectedIndex, value))
                 {
                     AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.SelectedFontName), AvailableFonts[value].Name, SettingSaveMode.OverwriteIfExisting);
+                    Messenger.Default.Send(new IDEThemePreviewFontChangedMessage(AvailableFonts[value]));
                 }
             }
         }

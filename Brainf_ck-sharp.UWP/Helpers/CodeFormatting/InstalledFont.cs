@@ -88,7 +88,6 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
         [NotNull]
         private static readonly ISet<String> AllowedFonts = new HashSet<String>
         {
-            "Arial",
             "Calibri",
             "Cambria",
             "Candara",
