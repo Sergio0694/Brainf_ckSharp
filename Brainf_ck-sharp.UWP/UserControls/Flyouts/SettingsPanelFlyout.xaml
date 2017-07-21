@@ -89,6 +89,17 @@
             IsEnabled="{x:Bind ViewModel.HostBlurOptionSupported}"
             MinWidth="180"/>
 
+        <!--Show status bar-->
+        <TextBlock
+            Margin="0,12,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"
+            x:Uid="ShowStatusBarTitle"
+            Text="Show status bar"/>
+        <ToggleSwitch 
+            IsEnabled="{x:Bind ViewModel.StatusBarSupported}"
+            IsOn="{x:Bind ViewModel.ShowStatusBar, Mode=TwoWay}"/>
+
         <!--IDE theme-->
         <TextBlock
             Margin="0,12,0,0"

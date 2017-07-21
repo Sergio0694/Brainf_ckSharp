@@ -289,5 +289,27 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         /// Gets whether or not the current device is not a mobile phone
         /// </summary>
         public bool HostBlurOptionSupported => !ApiInformationHelper.IsMobileDevice;
+
+        private bool _ShowStatusBar = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ShowStatusBar));
+
+        /// <summary>
+        /// Gets or sets whether or not the status bar should be displayed on mobile phones
+        /// </summary>
+        public bool ShowStatusBar
+        {
+            get => _ShowStatusBar;
+            set
+            {
+                if (Set(ref _ShowStatusBar, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.ShowStatusBar), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets whether or not the current device is a mobile phone
+        /// </summary>
+        public bool StatusBarSupported => ApiInformationHelper.IsMobileDevice;
     }
 }
