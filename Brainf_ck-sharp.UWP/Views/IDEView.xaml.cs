@@ -68,6 +68,7 @@ namespace Brainf_ck_sharp_UWP.Views
             };
             ViewModel.TextCleared += (_, e) =>
             {
+                _PreviousText = "\r";
                 EditBox.ResetTextAndUndoStack();
                 ApplyCustomTabSpacing();
                 ClearBreakpoints();
