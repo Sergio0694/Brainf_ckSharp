@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.Messages.UI
+namespace Brainf_ck_sharp_UWP.Messages.UI
 {
     /// <summary>
     /// An empty message that signals that the IDE theme has been changed and the UI needs a refresh
@@ -16,6 +16,11 @@
         public bool TabsLengthChanged { get; }
 
         /// <summary>
+        /// Gets whether or not the IDE render whitespaces setting has been changed
+        /// </summary>
+        public bool WhitespacesChanged { get; }
+
+        /// <summary>
         /// Gets whether or not the IDE font type has been changed
         /// </summary>
         public bool FontChanged { get; }
@@ -26,11 +31,13 @@
         /// <param name="themeChanged">Indicates whether or not the theme has been changed</param>
         /// <param name="tabsChanged">Indicates whether or not the tab length setting has been changed</param>
         /// <param name="fontChanged">Indicates whether or not the font type has been changed</param>
-        public IDESettingsChangedMessage(bool themeChanged, bool tabsChanged, bool fontChanged)
+        /// <param name="whitespacesChanged">Indicates whether the IDE render whitespaces setting has been changed</param>
+        public IDESettingsChangedMessage(bool themeChanged, bool tabsChanged, bool fontChanged, bool whitespacesChanged)
         {
             ThemeChanged = themeChanged;
             TabsLengthChanged = tabsChanged;
             FontChanged = fontChanged;
+            WhitespacesChanged = whitespacesChanged;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.Helpers.Settings
+namespace Brainf_ck_sharp_UWP.Helpers.Settings
 {
     /// <summary>
     /// A collection of keys of application settings
@@ -20,6 +20,7 @@
         BracketsStyle,
         TabLength,
         SelectedIDETheme,
+        RenderWhitespaces
         SelectedFontName
     }
 }

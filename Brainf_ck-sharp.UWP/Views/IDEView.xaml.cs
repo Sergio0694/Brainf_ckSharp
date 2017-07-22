@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +21,7 @@ using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.EventArgs;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
+using Brainf_ck_sharp_UWP.DataModels.Misc.CharactersInfo;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
@@ -36,6 +36,7 @@ using Brainf_ck_sharp_UWP.UserControls.Flyouts;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers;
@@ -78,7 +79,8 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.NewLineInsertionRequested += ViewModel_NewLineInsertionRequested;
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             _PreviousText = text;
-            Messenger.Default.Register<IDESettingsChangedMessage>(this, m => ApplyIDESettings(m.ThemeChanged, m.TabsLengthChanged, m.FontChanged));
+            _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
+            Messenger.Default.Register<IDESettingsChangedMessage>(this, ApplyIDESettings);
         }
 
         #region IDE theme
@@ -107,18 +109,27 @@ namespace Brainf_ck_sharp_UWP.Views
         }
 
         // Applies the new IDE theme
-        private void ApplyIDESettings(bool themeChanged, bool tabsChanged, bool fontChanged)
+        private void ApplyIDESettings(IDESettingsChangedMessage message)
         {
             // Disable the handlers
             EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
             EditBox.TextChanged -= EditBox_OnTextChanged;
 
             // Update the tabs if needed
-            if (tabsChanged)
+            if (message.TabsLengthChanged)
             {
                 ApplyCustomTabSpacing();
+                if (!message.ThemeChanged) DrawBracketGuides(null, true).Forget();
             }
-
+            
+            // Update the render whitespaces setting
+            if (message.WhitespacesChanged)
+            {
+                bool renderWhitespaces = _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
+                if (renderWhitespaces) RenderControlCharacters();
+                else ClearControlCharacters();
+            }
+            
             // Update the font type if needed
             if (fontChanged)
             {
@@ -136,7 +147,7 @@ namespace Brainf_ck_sharp_UWP.Views
             }
 
             // Update the current UI theme
-            if (themeChanged)
+            if (message.ThemeChanged)
             {
                 // Update the theme
                 Brainf_ckFormatterHelper.Instance.ReloadTheme();
@@ -268,11 +279,13 @@ namespace Brainf_ck_sharp_UWP.Views
             CursorRectangle.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 8));
             CursorRectangle.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.X);
             CursorBorder.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 8));
+            WhitespacesCanvas.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 10));
+            WhitespacesCanvas.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.X);
         }
 
         public IDEViewModel ViewModel => DataContext.To<IDEViewModel>();
 
-        // The current top margin
+        // The current top marginBracketsGrid_SizeChanged
         private double _Top;
 
         /// <summary>
@@ -286,6 +299,9 @@ namespace Brainf_ck_sharp_UWP.Views
             BreakLinesCanvas.Margin = new Thickness(0, (float)(height + 10), 0, 0);
             IndentationInfoList.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
+            CursorTransform.X = 4;
+            BracketsParentGrid.SetVisualOffset(TranslationAxis.Y, (float)height);
+            WhitespacesCanvas.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             EditBox.Padding = ApiInformationHelper.IsMobileDevice 
                 ? new Thickness(4, _Top + 8, 4, 8) 
                 : new Thickness(4, _Top + 8, 20, 20);
@@ -328,9 +344,14 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.UpdateCanUndoRedoStatus();
             await RemoveUnvalidatedBreakpointsAsync(code);
             RefreshBreakpointsUI(code);
-        }
 
-        #region UI overlays
+            // Whitespaces rendering
+            if (_WhitespacesRenderingEnabled)
+            {
+                if (code.Length > 1) RenderControlCharacters();
+                else ClearControlCharacters();
+            }
+        }
 
         /// <summary>
         /// Updates the line numbers shown next to the code edit box
@@ -350,6 +371,8 @@ namespace Brainf_ck_sharp_UWP.Views
                 return builder.ToString();
             });
         }
+
+        #region Bracket guides
 
         // Adjusts the UI of some of the UI overlays when the selected font changes
         private void AdjustOverlaysUIOnFontChanged([NotNull] String font)
@@ -382,7 +405,7 @@ namespace Brainf_ck_sharp_UWP.Views
         }
 
         // The backup of the indexes of the brackets in the text
-        private IReadOnlyList<IndentationCoordinateEntry> _Brackets;
+        private IReadOnlyList<CharacterWithCoordinates> _Brackets;
 
         // Brackets semaphore to avoid concurrent operations
         private readonly SemaphoreSlim BracketGuidesSemaphore = new SemaphoreSlim(1);
@@ -395,7 +418,7 @@ namespace Brainf_ck_sharp_UWP.Views
         /// </summary>
         /// <param name="code">The current text, if already available</param>
         /// <param name="force">Indicates whether or not to always force a redraw of the column guides</param>
-        private async Task<AsyncOperationResult<IReadOnlyList<IndentationCoordinateEntry>>> DrawBracketGuides(String code, bool force)
+        private async Task<AsyncOperationResult<IReadOnlyList<CharacterWithCoordinates>>> DrawBracketGuides(String code, bool force)
         {
             // Get the text, clear the current guides and make sure the syntax is currently valid
             _BracketGuidesCts?.Cancel();
@@ -411,22 +434,22 @@ namespace Brainf_ck_sharp_UWP.Views
                 _Brackets = null;
                 bool cancelled = _BracketGuidesCts.IsCancellationRequested;
                 BracketGuidesSemaphore.Release();
-                return cancelled 
-                    ? AsyncOperationStatus.Canceled 
-                    : AsyncOperationResult<IReadOnlyList<IndentationCoordinateEntry>>.Explicit(null);
+                return cancelled
+                    ? AsyncOperationStatus.Canceled
+                    : AsyncOperationResult<IReadOnlyList<CharacterWithCoordinates>>.Explicit(null);
             }
 
             // Build the indexes for the current state
-            Tuple<List<IndentationCoordinateEntry>, bool> workingSet = await Task.Run(() =>
+            Tuple<List<CharacterWithCoordinates>, bool> workingSet = await Task.Run(() =>
             {
-                List<IndentationCoordinateEntry> pairs = new List<IndentationCoordinateEntry>();
+                List<CharacterWithCoordinates> pairs = new List<CharacterWithCoordinates>();
                 int i1 = 0;
                 foreach (char c in code)
                 {
                     if (c == '[' || c == ']')
                     {
                         Coordinate coordinate = code.FindCoordinates(i1);
-                        pairs.Add(new IndentationCoordinateEntry(coordinate, c));
+                        pairs.Add(new CharacterWithCoordinates(coordinate, c));
                     }
                     i1++;
                 }
@@ -435,13 +458,13 @@ namespace Brainf_ck_sharp_UWP.Views
             });
 
             // Check if the brackets haven't been changed or moved
-            if (_Brackets != null && 
+            if (_Brackets != null &&
                 _Brackets.Count == workingSet.Item1.Count &&
-                workingSet.Item2 && !force || 
+                workingSet.Item2 && !force ||
                 _BracketGuidesCts.IsCancellationRequested)
             {
                 BracketGuidesSemaphore.Release();
-                return AsyncOperationResult<IReadOnlyList<IndentationCoordinateEntry>>.Explicit(_Brackets);
+                return AsyncOperationResult<IReadOnlyList<CharacterWithCoordinates>>.Explicit(_Brackets);
             }
             _Brackets = workingSet.Item1;
             BracketGuidesCanvas.Children.Clear();
@@ -494,7 +517,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     StrokeThickness = 1,
                     Height = top,
                     Stroke = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideColor),
-                    StrokeDashArray = Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.HasValue 
+                    StrokeDashArray = Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.HasValue
                         ? new DoubleCollection { Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.Value }
                         : new DoubleCollection(),
                     Y1 = 0,
@@ -507,6 +530,165 @@ namespace Brainf_ck_sharp_UWP.Views
             }
             BracketGuidesSemaphore.Release();
             return workingSet.Item1;
+        }
+
+        #endregion
+
+        #region Control characters rendering
+
+        // Synchronization semaphore for the control character overlays
+        private readonly SemaphoreSlim ControlCharactersSemaphore = new SemaphoreSlim(1);
+
+        // The timestamp of the last redraw of the control characters
+        private DateTime _ControlCharactersRenderingTimestamp = DateTime.MinValue;
+
+        // The minimum delay between each redraw of the control characters
+        private readonly int MinimumControlCharactersRenderingInterval = 600;
+
+        // The queue of arguments to render the control characters after a delay
+        private int _PendingUpdates;
+
+        // Indicates whether or not to display the control characters in the IDE
+        private bool _WhitespacesRenderingEnabled;
+
+        // Gets the list of whitespace characters that need to be rendered
+        private IReadOnlyCollection<CharacterWithArea> _CharactersToRender = new List<CharacterWithArea>();
+
+        // Renders the whitespace characters indicators
+        private void WhitespacesCanvas_OnDraw(CanvasControl sender, CanvasDrawEventArgs args)
+        {
+            IReadOnlyCollection<CharacterWithArea> items = _CharactersToRender;
+            foreach (CharacterWithArea c in items)
+            {
+                if (c.Character == ' ')
+                {
+                    Rect dot = new Rect
+                    {
+                        Height = 2,
+                        Width = 2,
+                        X = c.Area.Left + 5,
+                        Y = c.Area.Top + (c.Area.Bottom - c.Area.Top) / 2 - 1
+                    };
+                    args.DrawingSession.FillRectangle(dot, Colors.DimGray);
+                }
+                else
+                {
+                    double width = c.Area.Right - c.Area.Left;
+                    if (width < 12)
+                    {
+                        // Small dot at the center
+                        Rect dot = new Rect
+                        {
+                            Height = 2,
+                            Width = 2,
+                            X = c.Area.Left + width / 2 + 5,
+                            Y = c.Area.Top + (c.Area.Bottom - c.Area.Top) / 2 - 1
+                        };
+                        args.DrawingSession.FillRectangle(dot, Colors.DimGray);
+                    }
+                    else
+                    {
+                        // Arrow indicator
+                        float
+                            x = (float)(c.Area.Left + width / 2),
+                            y = (float)(c.Area.Top + (c.Area.Bottom - c.Area.Top) / 2 - 2);
+                        int length = width < 28 ? 8 : 12;
+                        args.DrawingSession.DrawLine(x, y + 2, x + length, y + 2, Colors.DimGray);
+                        args.DrawingSession.DrawLine(x + length - 2, y, x + length, y + 2, Colors.DimGray);
+                        args.DrawingSession.DrawLine(x + length - 2, y + 4, x + length, y + 2, Colors.DimGray);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Renders the current control characters
+        /// </summary>
+        private async void RenderControlCharacters()
+        {
+            // Private function to render the characters
+            IReadOnlyCollection<CharacterWithArea> RenderControlCharactersCode()
+            {
+                // Edge case
+                EditBox.Document.GetText(TextGetOptions.None, out String code);
+                if (code.Length < 2)
+                {
+                    return new List<CharacterWithArea>();
+                }
+
+                // Find the target characters
+                List<CharacterWithArea> characters = new List<CharacterWithArea>();
+                for (int i = 0; i < code.Length; i++)
+                {
+                    char c = code[i];
+                    if (c == ' ')
+                    {
+                        ITextRange range = EditBox.Document.GetRange(i, i);
+                        range.GetRect(PointOptions.Transform, out Rect area, out _);
+                        characters.Add(new CharacterWithArea(area, c));
+                    }
+                    else if (c == '\t')
+                    {
+                        ITextRange range = EditBox.Document.GetRange(i, i + 1);
+                        range.GetRect(PointOptions.Transform, out Rect area, out _);
+                        characters.Add(new CharacterWithArea(area, c));
+                    }
+                }
+                return characters;
+            }
+
+            // Lock and add the delayed handler
+            await ControlCharactersSemaphore.WaitAsync();
+            _PendingUpdates++;
+            Task.Delay(MinimumControlCharactersRenderingInterval).ContinueWith(async t =>
+            {
+                // Lock again and retrieve the current argument
+                await ControlCharactersSemaphore.WaitAsync();
+                try
+                {
+                    if (_PendingUpdates == 0) return;
+                    if (DateTime.Now.Subtract(_ControlCharactersRenderingTimestamp).TotalMilliseconds < MinimumControlCharactersRenderingInterval &&
+                        _PendingUpdates > 0) return; // Skip if another handler was executed less than half a second ago
+                    _ControlCharactersRenderingTimestamp = DateTime.Now;
+                    _CharactersToRender = RenderControlCharactersCode(); // Render the control characters
+                    WhitespacesCanvas.Invalidate();
+                }
+                catch
+                {
+                    // Sorry, can't crash here
+                }
+                finally
+                {
+                    ControlCharactersSemaphore.Release();
+                }
+            }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
+            ControlCharactersSemaphore.Release();
+        }
+
+        /// <summary>
+        /// Clears the current control characters rendered on screen
+        /// </summary>
+        private async void ClearControlCharacters()
+        {
+            await ControlCharactersSemaphore.WaitAsync();
+            _PendingUpdates = 0;
+            _CharactersToRender = new List<CharacterWithArea>();
+            _ControlCharactersRenderingTimestamp = DateTime.Now;
+            ControlCharactersSemaphore.Release();
+            WhitespacesCanvas.Invalidate();
+        }
+
+        // Adjusts the size of the whitespace overlays canvas
+        private void EditBox_OnTextSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            WhitespacesCanvas.Height = e.NewSize.Height;
+            WhitespacesCanvas.Width = e.NewSize.Width;
+        }
+
+        // Updates the clip size of the control character overlays container
+        private void WhitespaceParentCanvas_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ControlCharactersClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
         }
 
         #endregion
@@ -723,6 +905,7 @@ namespace Brainf_ck_sharp_UWP.Views
             {
                 Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
                 await Task.Delay(250);
+                ClearControlCharacters();
             }
 
             try
@@ -781,6 +964,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
                     ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
+                if (_WhitespacesRenderingEnabled) RenderControlCharacters();
                 ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
                 ViewModel.SendMessages(code);
                 ViewModel.UpdateCanUndoRedoStatus();
