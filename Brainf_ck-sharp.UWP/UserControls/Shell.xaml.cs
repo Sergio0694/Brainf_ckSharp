@@ -83,6 +83,12 @@ namespace Brainf_ck_sharp_UWP.UserControls
 
         #region UI
 
+        /// <summary>
+        /// Sets whether or not the status bar placeholder for Windows 10 Mobile devices should be displayed
+        /// </summary>
+        /// <param name="show">The new value for the placeholder visibility</param>
+        public void ShowStatusBarPlaceholder(bool show) => StatusBarPlaceholder.Visibility = show.ToVisibility();
+
         // The current loading popup
         private Popup _LoadingPopup;
 

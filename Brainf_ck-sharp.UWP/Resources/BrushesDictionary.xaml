@@ -22,7 +22,7 @@
     <!--Breakpoints-->
     <SolidColorBrush x:Key="BreakpointFillBrush" Color="#FFE51400"/>
     <SolidColorBrush x:Key="BreakpointBorderBrush" Color="#FFF4DFDD"/>
-    <SolidColorBrush x:Key="BreakpointLineBrush" Color="#34FF0000"/>
+    <SolidColorBrush x:Key="BreakpointLineBrush" Color="#FF762C2C"/>
     
     <!--Misc-->
     <SolidColorBrush x:Key="ShellSeparatorLineFillBrush" Color="#FF6E6E6E"/>

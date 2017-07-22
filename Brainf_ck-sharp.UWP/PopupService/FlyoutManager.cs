@@ -390,9 +390,9 @@ namespace Brainf_ck_sharp_UWP.PopupService
             PopupStack.Push(info);
             popup.SetVisualOpacity(0);
             popup.IsOpen = true;
-            AdjustPopupSize(info, PopupStack.Count > 0);
+            AdjustPopupSize(info, PopupStack.Count > 1);
             await popup.StartCompositionFadeSlideAnimationAsync(null, 1, TranslationAxis.Y, 20, 0, 250, null, null, EasingFunctionNames.CircleEaseOut);
-            if (mode == FlyoutDisplayMode.ActualHeight) AdjustPopupSize(info, PopupStack.Count > 0, true);
+            if (mode == FlyoutDisplayMode.ActualHeight) AdjustPopupSize(info, PopupStack.Count > 1, true);
             Semaphore.Release();
             openCallback?.Invoke();
             return await tcs.Task;
@@ -469,9 +469,9 @@ namespace Brainf_ck_sharp_UWP.PopupService
             PopupStack.Push(info);
             popup.SetVisualOpacity(0);
             popup.IsOpen = true;
-            AdjustPopupSize(info, PopupStack.Count > 0);
+            AdjustPopupSize(info, PopupStack.Count > 1);
             await popup.StartCompositionFadeSlideAnimationAsync(null, 1, TranslationAxis.Y, 20, 0, 250, null, null, EasingFunctionNames.CircleEaseOut);
-            if (mode == FlyoutDisplayMode.ActualHeight) AdjustPopupSize(info, PopupStack.Count > 0, true);
+            if (mode == FlyoutDisplayMode.ActualHeight) AdjustPopupSize(info, PopupStack.Count > 1, true);
             Semaphore.Release();
             openCallback?.Invoke();
 

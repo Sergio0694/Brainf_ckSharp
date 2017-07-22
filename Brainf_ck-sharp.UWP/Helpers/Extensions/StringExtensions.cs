@@ -49,7 +49,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
         /// <param name="newline">The newline character to use</param>
         /// <remarks>The input lines list must have its elements 1-based</remarks>
         [Pure, NotNull]
-        public static IReadOnlyList<int> FindIndexes([NotNull] this String text, [NotNull] IReadOnlyCollection<int> lines, char newline = '\r')
+        public static IReadOnlyList<int> FindLineIndexes([NotNull] this String text, [NotNull] IEnumerable<int> lines, char newline = '\r')
         {
             List<int> indexes = new List<int>();
             int line = 0;
