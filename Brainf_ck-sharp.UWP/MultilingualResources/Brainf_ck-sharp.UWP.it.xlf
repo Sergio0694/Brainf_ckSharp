@@ -667,6 +667,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Autosave loaded documents</source>
           <target state="translated">Salvataggio automatico</target>
         </trans-unit>
+        <trans-unit id="ShowStatusBarTitle.Text" translate="yes" xml:space="preserve">
+          <source>Show status bar</source>
+          <target state="translated">Mostra status bar</target>
+        </trans-unit>
       </group>
     </body>
   </file>

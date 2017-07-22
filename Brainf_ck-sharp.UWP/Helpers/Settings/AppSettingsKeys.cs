@@ -13,6 +13,7 @@
         AppStartups,
 
         // Settings panel
+        ShowStatusBar,
         AutosaveDocuments,
         InAppBlurMode,
         AutoIndentBrackets,
