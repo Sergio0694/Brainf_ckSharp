@@ -68,6 +68,35 @@
             SelectedIndex="{x:Bind ViewModel.TabLengthSelectedIndex, Mode=TwoWay}"
             MinWidth="180"/>
 
+        <!--Font-->
+        <TextBlock
+            Margin="0,12,0,0"
+            Text="Font type"
+            x:Uid="FontTypeTitle"/>
+        <inheritedControls:AnimatedComboBox
+            Margin="0,8,0,0"
+            ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
+            ItemsSource="{x:Bind ViewModel.AvailableFonts}"
+            SelectedIndex="{x:Bind ViewModel.FontFamilySelectedIndex, Mode=TwoWay}"
+            MinWidth="180"
+            Height="40">
+            <inheritedControls:AnimatedComboBox.ItemTemplate>
+                <DataTemplate>
+                    <Viewbox 
+                        Margin="0,4,0,4"
+                        HorizontalAlignment="Left"
+                        StretchDirection="DownOnly">
+                        <TextBlock Text="{Binding Name}"
+                                   FontFamily="{Binding Family}"
+                                   TextTrimming="CharacterEllipsis"
+                                   FontSize="16"
+                                   TextWrapping="NoWrap"
+                                   IsTextScaleFactorEnabled="False"/>
+                    </Viewbox>
+                </DataTemplate>
+            </inheritedControls:AnimatedComboBox.ItemTemplate>
+        </inheritedControls:AnimatedComboBox>
+
         <!--UI-->
         <TextBlock
             Margin="0,16,0,0"
@@ -103,7 +132,7 @@
         <!--IDE theme-->
         <TextBlock
             Margin="0,12,0,0"
-            Text="IDE theme"
+            Text="Theme"
             x:Uid="IDETheme"/>
         <Grid Margin="0,8,0,20">
             <Grid.ColumnDefinitions>
@@ -125,12 +154,18 @@
                     <helpers:ComboBoxDataTemplateSelector>
                         <helpers:ComboBoxDataTemplateSelector.SelectedTemplate>
                             <DataTemplate>
-                                <ideThemes:IDEThemePreviewTemplate Theme="{Binding}"/>
+                                <ideThemes:IDEThemePreviewTemplate 
+                                    MinWidth="180"
+                                    MinHeight="108"
+                                    Theme="{Binding}"/>
                             </DataTemplate>
                         </helpers:ComboBoxDataTemplateSelector.SelectedTemplate>
                         <helpers:ComboBoxDataTemplateSelector.DropDownTemplate>
                             <DataTemplate>
-                                <ideThemes:IDEThemeDropDownPreviewTemplate Theme="{Binding}"/>
+                                <ideThemes:IDEThemeDropDownPreviewTemplate 
+                                    MinWidth="180"
+                                    MinHeight="108"
+                                    Theme="{Binding}"/>
                             </DataTemplate>
                         </helpers:ComboBoxDataTemplateSelector.DropDownTemplate>
                     </helpers:ComboBoxDataTemplateSelector>
@@ -142,7 +177,7 @@
                 Width="{Binding ElementName=ThemeSelector, Path=ActualWidth}"
                 Height="{Binding ElementName=ThemeSelector, Path=ActualHeight}"
                 Grid.Column="0"
-                Background="#60000000"
+                Background="#A0000000"
                 IsHitTestVisible="False"
                 Visibility="{x:Bind ViewModel.ThemesSelectorEnabled, Converter={StaticResource InvertedConverter}, Mode=OneWay, FallbackValue=Visible}"/>
             <Button

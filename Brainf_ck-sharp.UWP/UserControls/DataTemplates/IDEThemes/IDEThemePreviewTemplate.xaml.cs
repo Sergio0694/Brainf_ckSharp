@@ -1,9 +1,15 @@
-﻿using Windows.UI;
+﻿using System;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
+using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Messages.UI;
+using GalaSoft.MvvmLight.Messaging;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes
 {
@@ -12,6 +18,29 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes
         public IDEThemePreviewTemplate()
         {
             this.InitializeComponent();
+            String name = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+            if (InstalledFont.TryGetFont(name, out InstalledFont font))
+            {
+                UpdateUIOnFontFamilyChanged(font.Family);
+            }
+            Messenger.Default.Register<IDEThemePreviewFontChangedMessage>(this, m =>
+            {
+                UpdateUIOnFontFamilyChanged(m.Font.Family);
+            });
+        }
+
+        // Adjusts the UI when the font is changed
+        private void UpdateUIOnFontFamilyChanged([NotNull] FontFamily font)
+        {
+            LineNumbersBlock.FontFamily = font;
+            PreviewBlock.FontFamily = font;
+            double lineHeight = "Xg".MeasureText(15, font).Height;
+            LineHighlightBorder.Height = BracketsGuide.Height = lineHeight;
+            BracketsGuideTransform.Y = lineHeight + 2;
+            LineHighlightBorder.Height = lineHeight;
+            LineHighlightTransform.Y = Theme?.InnerValue.LineHighlightStyle == LineHighlightStyle.Fill
+                ? lineHeight * 2 + 2
+                : lineHeight + 2;
         }
 
         /// <summary>
@@ -52,14 +81,14 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes
                     @this.LineHighlightBorder.Background = Colors.Transparent.ToBrush();
                     Canvas.SetZIndex(@this.BracketsGuide, 0);
                     Canvas.SetZIndex(@this.LineHighlightBorder, 1);
-                    @this.LineHighlightTransform.Y = 22;
+                    @this.LineHighlightTransform.Y = "Xg".MeasureText(15, @this.LineNumbersBlock.FontFamily).Height + 2;
                 }
                 else
                 {
                     @this.LineHighlightBorder.Background = info.LineHighlightColor.ToBrush();
                     Canvas.SetZIndex(@this.BracketsGuide, 1);
                     Canvas.SetZIndex(@this.LineHighlightBorder, 0);
-                    @this.LineHighlightTransform.Y = 42;
+                    @this.LineHighlightTransform.Y = "Xg".MeasureText(15, @this.LineNumbersBlock.FontFamily).Height * 2 + 2;
                 }
                 @this.LineHighlightBorder.BorderThickness = new Thickness(info.LineHighlightStyle == LineHighlightStyle.Outline ? 2 : 0);
             }

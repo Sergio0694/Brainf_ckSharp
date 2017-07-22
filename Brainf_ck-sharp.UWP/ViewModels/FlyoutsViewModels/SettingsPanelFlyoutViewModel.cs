@@ -27,6 +27,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         {
             IDEThemeSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme));
             AvailableIDEThemes[IDEThemeSelectedIndex].IsSelected = true;
+            String fontName = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+            _FontFamilySelectedIndex = AvailableFonts.IndexOf(f => f.Name.Equals(String.IsNullOrEmpty(fontName) ? "Segoe UI" : fontName));
             if (!ThemesSelectorEnabled)
             {
                 // Update the add-on license when needed
@@ -142,6 +144,30 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 if (Set(ref _BracketsStyleSelectedIndex, value))
                 {
                     AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.BracketsStyle), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the collection of the available font families for the IDE
+        /// </summary>
+        [NotNull]
+        public IReadOnlyList<InstalledFont> AvailableFonts { get; } = InstalledFont.Fonts;
+
+        private int _FontFamilySelectedIndex;
+
+        /// <summary>
+        /// Gets or sets the selected index for the IDE font family
+        /// </summary>
+        public int FontFamilySelectedIndex
+        {
+            get => _FontFamilySelectedIndex;
+            set
+            {
+                if (Set(ref _FontFamilySelectedIndex, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.SelectedFontName), AvailableFonts[value].Name, SettingSaveMode.OverwriteIfExisting);
+                    Messenger.Default.Send(new IDEThemePreviewFontChangedMessage(AvailableFonts[value]));
                 }
             }
         }

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -507,6 +507,12 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   </data>
   <data name="AutosaveTitle.Text" xml:space="preserve">
     <value>Salvataggio automatico</value>
+  </data>
+  <data name="FontTypeTitle.Text" xml:space="preserve">
+    <value>Tipo carattere</value>
+  </data>
+  <data name="IDETheme.Text" xml:space="preserve">
+    <value>Tema</value>
   </data>
   <data name="ShowStatusBarTitle.Text" xml:space="preserve">
     <value>Mostra status bar</value>

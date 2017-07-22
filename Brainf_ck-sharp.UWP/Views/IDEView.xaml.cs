@@ -78,7 +78,7 @@ namespace Brainf_ck_sharp_UWP.Views
             ViewModel.NewLineInsertionRequested += ViewModel_NewLineInsertionRequested;
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             _PreviousText = text;
-            Messenger.Default.Register<IDESettingsChangedMessage>(this, m => ApplyIDESettings(m.ThemeChanged, m.TabsLengthChanged));
+            Messenger.Default.Register<IDESettingsChangedMessage>(this, m => ApplyIDESettings(m.ThemeChanged, m.TabsLengthChanged, m.FontChanged));
         }
 
         #region IDE theme
@@ -107,7 +107,7 @@ namespace Brainf_ck_sharp_UWP.Views
         }
 
         // Applies the new IDE theme
-        private void ApplyIDESettings(bool themeChanged, bool tabsChanged)
+        private void ApplyIDESettings(bool themeChanged, bool tabsChanged, bool fontChanged)
         {
             // Disable the handlers
             EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
@@ -117,7 +117,22 @@ namespace Brainf_ck_sharp_UWP.Views
             if (tabsChanged)
             {
                 ApplyCustomTabSpacing();
-                if (!themeChanged) DrawBracketGuides(null, true).Forget();
+            }
+
+            // Update the font type if needed
+            if (fontChanged)
+            {
+                // Refresh the text UI
+                String name = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+                if (InstalledFont.TryGetFont(name, out InstalledFont font))
+                {
+                    LineBlock.FontFamily = font.Family;
+                    EditBox.SetFontFamily(name);
+                    AdjustOverlaysUIOnFontChanged(name);
+                    UpdateCursorRectangleAndIndicatorUI(); // Adjust the cursor position (a different font can have a different height)
+                    AdjustIndentationIndicatorsVerticalStretch();
+                    AdjustGitDiffIndicatorsVerticalStretch();
+                }
             }
 
             // Update the current UI theme
@@ -141,15 +156,15 @@ namespace Brainf_ck_sharp_UWP.Views
                     range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(c);
                 }
 
-                // Brackets guides
-                DrawBracketGuides(text, true).Forget();
-
                 // Release the UI
                 Task.Delay(500).ContinueWith(t =>
                 {
                     Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
+
+            // Column guides
+            DrawBracketGuides(null, true).Forget();
 
             // Restore the handlers
             EditBox.SelectionChanged += EditBox_OnSelectionChanged;
@@ -226,6 +241,15 @@ namespace Brainf_ck_sharp_UWP.Views
         // Initializes the scroll events for the code
         private void IDEView_Loaded(object sender, RoutedEventArgs e)
         {
+            // Font setup
+            String name = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+            if (InstalledFont.TryGetFont(name, out InstalledFont font))
+            {
+                LineBlock.FontFamily = font.Family;
+                EditBox.SetFontFamily(name);
+                AdjustOverlaysUIOnFontChanged(name);
+            }
+
             // Start the cursor animation and subscribe the scroller event
             CursorAnimation.Begin();
 
@@ -325,6 +349,36 @@ namespace Brainf_ck_sharp_UWP.Views
                 }
                 return builder.ToString();
             });
+        }
+
+        // Adjusts the UI of some of the UI overlays when the selected font changes
+        private void AdjustOverlaysUIOnFontChanged([NotNull] String font)
+        {
+            FontFamily family = new FontFamily(String.IsNullOrEmpty(font) ? "Segoe UI" : font);
+            CursorBorder.Height = CursorRectangle.Height = "Xg".MeasureText(15, family).Height;
+            switch (font)
+            {
+                case "Calibri":
+                    LinesGridTransform.Y = 2;
+                    BracketGuidesCanvasTransform.Y = 0;
+                    IndentationInfoListTransform.Y = 0;
+                    break;
+                case "Cambria":
+                    LinesGridTransform.Y = 2;
+                    BracketGuidesCanvasTransform.Y = 0;
+                    IndentationInfoListTransform.Y = 0;
+                    break;
+                case "Consolas":
+                    LinesGridTransform.Y = 2;
+                    BracketGuidesCanvasTransform.Y = -4;
+                    IndentationInfoListTransform.Y = -1;
+                    break;
+                default:
+                    LinesGridTransform.Y = 0;
+                    BracketGuidesCanvasTransform.Y = 0;
+                    IndentationInfoListTransform.Y = 0;
+                    break;
+            }
         }
 
         // The backup of the indexes of the brackets in the text
@@ -1008,29 +1062,51 @@ namespace Brainf_ck_sharp_UWP.Views
         }
 
         // Adjusts the vertical scaling of the indentation indicators
-        private void IndentationInfoList_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        private void AdjustIndentationIndicatorsVerticalStretch(Size? newSize = null)
         {
+            if (newSize == null)
+            {
+                IndentationInfoList.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                newSize = IndentationInfoList.DesiredSize;
+            }
             int count = ViewModel.Source.Count;
             if (count < 3) IndentationInfoList.SetVisualScale(null, 1, null);
             else
             {
                 String lines = '\n'.Repeat(count - 1);
-                Size size = lines.MeasureText(15);
-                IndentationInfoList.SetVisualScale(null, (float) (size.Height / e.NewSize.Height), null);
+                Size size = lines.MeasureText(15, LineBlock.FontFamily);
+                IndentationInfoList.SetVisualScale(null, (float)(size.Height / newSize.Value.Height), null);
             }
         }
 
-        // Adjusts the vertical scaling of the git lines diff indicators
-        private void GitDiffListView_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        // Adjusts the stretch of the indentation indicators whenever the size of the indicators changes
+        private void IndentationInfoList_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
+            AdjustIndentationIndicatorsVerticalStretch(e.NewSize);
+        }
+
+        // Adjusts the vertical scaling of the git diff indicators
+        private void AdjustGitDiffIndicatorsVerticalStretch(Size? newSize = null)
+        {
+            if (newSize == null)
+            {
+                GitDiffListView.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                newSize = IndentationInfoList.DesiredSize;
+            }
             int count = ViewModel.DiffStatusSource.Count;
             if (count < 3) GitDiffListView.SetVisualScale(null, 1, null);
             else
             {
                 String lines = '\n'.Repeat(count - 1);
-                Size size = lines.MeasureText(15);
-                GitDiffListView.SetVisualScale(null, (float)(size.Height / e.NewSize.Height), null);
+                Size size = lines.MeasureText(15, LineBlock.FontFamily);
+                GitDiffListView.SetVisualScale(null, (float)(size.Height / newSize.Value.Height), null);
             }
+        }
+
+        // Adjusts the vertical scaling of the git diff indicators whenever the size of the indicators list changes
+        private void GitDiffListView_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            AdjustGitDiffIndicatorsVerticalStretch(e.NewSize);
         }
 
         #region Breakpoints context menu

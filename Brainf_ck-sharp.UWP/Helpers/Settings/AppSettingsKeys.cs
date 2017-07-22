@@ -19,6 +19,7 @@
         AutoIndentBrackets,
         BracketsStyle,
         TabLength,
-        SelectedIDETheme
+        SelectedIDETheme,
+        SelectedFontName
     }
 }
