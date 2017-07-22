@@ -90,7 +90,6 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
         {
             "Calibri",
             "Cambria",
-            "Candara",
             "Consolas",
             "Segoe UI"
         };

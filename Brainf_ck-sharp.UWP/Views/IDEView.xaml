@@ -252,6 +252,9 @@
                     TextAlignment="Right"
                     TextTrimming="CharacterEllipsis"
                     x:Name="LineBlock"/>
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="LinesGridTransform"/>
+                </Grid.RenderTransform>
             </Grid>
         </Canvas>
         
@@ -282,7 +285,11 @@
                 ScrollViewer.VerticalScrollMode="Disabled"
                 IsHitTestVisible="False"
                 x:Name="IndentationInfoList"
-                SizeChanged="IndentationInfoList_OnSizeChanged"/>
+                SizeChanged="IndentationInfoList_OnSizeChanged">
+                <ListView.RenderTransform>
+                    <TranslateTransform x:Name="IndentationInfoListTransform"/>
+                </ListView.RenderTransform>
+            </ListView>
         </Canvas>
         
         <!--Breakpoints line indicators-->
@@ -302,7 +309,11 @@
             <Grid.Clip>
                 <RectangleGeometry x:Name="BracketsClip"/>
             </Grid.Clip>
-            <Canvas x:Name="BracketGuidesCanvas"/>
+            <Canvas x:Name="BracketGuidesCanvas">
+                <Canvas.RenderTransform>
+                    <TranslateTransform x:Name="BracketGuidesCanvasTransform"/>
+                </Canvas.RenderTransform>
+            </Canvas>
         </Grid>
         
         <!--Current line cursor-->
