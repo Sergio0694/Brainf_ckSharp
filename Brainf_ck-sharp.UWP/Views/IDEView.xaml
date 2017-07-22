@@ -294,17 +294,17 @@
             SizeChanged="BreakLinesCanvas_OnSizeChanged"/>
 
         <!--Whitespace indicators-->
-        <Grid Grid.Column="4"
-              IsHitTestVisible="False"
-              x:Name="WhitespaceParentGrid"
-              SizeChanged="WhitespaceParentGrid_OnSizeChanged">
-            <Grid.Clip>
+        <Canvas
+            Grid.Column="4"
+            IsHitTestVisible="False"
+            SizeChanged="WhitespaceParentCanvas_OnSizeChanged">
+            <Canvas.Clip>
                 <RectangleGeometry x:Name="ControlCharactersClip"/>
-            </Grid.Clip>
+            </Canvas.Clip>
             <xaml:CanvasControl 
                 x:Name="WhitespacesCanvas"
                 Draw="WhitespacesCanvas_OnDraw"/>
-        </Grid>
+        </Canvas>
 
         <!--Canvas with the column guides-->
         <Grid

@@ -265,6 +265,7 @@ namespace Brainf_ck_sharp_UWP.Views
             GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             CursorTransform.X = 4;
             BracketsParentGrid.SetVisualOffset(TranslationAxis.Y, (float)height);
+            WhitespacesCanvas.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             EditBox.Padding = ApiInformationHelper.IsMobileDevice 
                 ? new Thickness(4, _Top + 8, 4, 8) 
                 : new Thickness(4, _Top + 8, 20, 20);
@@ -583,20 +584,20 @@ namespace Brainf_ck_sharp_UWP.Views
             await ControlCharactersSemaphore.WaitAsync();
             _PendingUpdates = 0;
             _CharactersToRender = new List<CharacterWithArea>();
-            WhitespacesCanvas.Invalidate();
             _ControlCharactersRenderingTimestamp = DateTime.Now;
             ControlCharactersSemaphore.Release();
+            WhitespacesCanvas.Invalidate();
         }
 
         // Adjusts the size of the whitespace overlays canvas
         private void EditBox_OnTextSizeChanged(object sender, SizeChangedEventArgs e)
         {
-           // WhitespacesCanvas.Height = e.NewSize.Height;
-          //  WhitespacesCanvas.Width = e.NewSize.Width;
+            WhitespacesCanvas.Height = e.NewSize.Height;
+            WhitespacesCanvas.Width = e.NewSize.Width;
         }
 
         // Updates the clip size of the control character overlays container
-        private void WhitespaceParentGrid_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        private void WhitespaceParentCanvas_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             ControlCharactersClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
         }
@@ -815,6 +816,7 @@ namespace Brainf_ck_sharp_UWP.Views
             {
                 Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
                 await Task.Delay(250);
+                ClearControlCharacters();
             }
 
             try
