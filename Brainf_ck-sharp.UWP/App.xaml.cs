@@ -149,10 +149,20 @@ namespace Brainf_ck_sharp_UWP
 
                 // Adjust the app UI
                 DefaultContent.Margin = new Thickness(0, 0, 0, navBarHeight);
+
+                // Show the status bar when needed
+                if (AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ShowStatusBar)))
+                {
+                    StatusBarHelper.TryShowAsync().Forget();
+                }
+                else StatusBarHelper.HideAsync().Forget();
             }
             else
             {
-                // Return if the StatusBar is still visible
+                // Hide the status bar
+                StatusBarHelper.HideAsync().Forget();
+
+                // Return if the status bar is still visible
                 Rect windowBounds = Window.Current.Bounds;
                 if (!StatusBarHelper.OccludedHeight.EqualsWithDelta(0)) return;
 

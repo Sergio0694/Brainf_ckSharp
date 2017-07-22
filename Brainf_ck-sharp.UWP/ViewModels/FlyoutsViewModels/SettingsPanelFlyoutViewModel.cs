@@ -10,6 +10,7 @@ using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -303,6 +304,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 if (Set(ref _ShowStatusBar, value))
                 {
                     AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.ShowStatusBar), value, SettingSaveMode.OverwriteIfExisting);
+                    if (value) StatusBarHelper.TryShowAsync().Forget();
+                    else StatusBarHelper.HideAsync().Forget();
                 }
             }
         }
