@@ -36,6 +36,7 @@ using Brainf_ck_sharp_UWP.UserControls.Flyouts;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers;
@@ -445,38 +446,6 @@ namespace Brainf_ck_sharp_UWP.Views
 
         #region Control characters rendering
 
-        /// <summary>
-        /// Gets the icon data for the tab arrow indicator
-        /// </summary>
-        /// <param name="length">The length of the arrow icon</param>
-        [NotNull]
-        private PathGeometry GetTabIconData(int length) => new PathGeometry
-        {
-            Figures = new PathFigureCollection
-            {
-                new PathFigure
-                {
-                    StartPoint = new Point(0, 2),
-                    Segments = new PathSegmentCollection
-                    {
-                        new LineSegment { Point = new Point(length, 2) },
-                        new LineSegment { Point = new Point(length - 4, 0) }
-                    }
-                },
-                new PathFigure
-                {
-                    StartPoint = new Point(length, 2),
-                    Segments = new PathSegmentCollection
-                    {
-                        new LineSegment { Point = new Point(length - 4, 4) }
-                    }
-                }
-            }
-        };
-
-        // The list of control character overlays
-        private readonly List<Tuple<CharacterWithArea, UIElement>> ControlCharacterOverlays = new List<Tuple<CharacterWithArea, UIElement>>();
-
         // Synchronization semaphore for the control character overlays
         private readonly SemaphoreSlim ControlCharactersSemaphore = new SemaphoreSlim(1);
 
@@ -492,21 +461,69 @@ namespace Brainf_ck_sharp_UWP.Views
         // Indicates whether or not to display the control characters in the IDE
         private bool _WhitespacesRenderingEnabled;
 
+        // Gets the list of whitespace characters that need to be rendered
+        private IReadOnlyCollection<CharacterWithArea> _CharactersToRender = new List<CharacterWithArea>();
+
+        // Renders the whitespace characters indicators
+        private void WhitespacesCanvas_OnDraw(CanvasControl sender, CanvasDrawEventArgs args)
+        {
+            IReadOnlyCollection<CharacterWithArea> items = _CharactersToRender;
+            foreach (CharacterWithArea c in items)
+            {
+                if (c.Character == ' ')
+                {
+                    Rect dot = new Rect
+                    {
+                        Height = 2,
+                        Width = 2,
+                        X = c.Area.Left + 5,
+                        Y = c.Area.Top + (c.Area.Bottom - c.Area.Top) / 2 - 1
+                    };
+                    args.DrawingSession.FillRectangle(dot, Colors.DimGray);
+                }
+                else
+                {
+                    double width = c.Area.Right - c.Area.Left;
+                    if (width < 12)
+                    {
+                        // Small dot at the center
+                        Rect dot = new Rect
+                        {
+                            Height = 2,
+                            Width = 2,
+                            X = c.Area.Left + width / 2 + 5,
+                            Y = c.Area.Top + (c.Area.Bottom - c.Area.Top) / 2 - 1
+                        };
+                        args.DrawingSession.FillRectangle(dot, Colors.DimGray);
+                    }
+                    else
+                    {
+                        // Arrow indicator
+                        float
+                            x = (float)(c.Area.Left + width / 2),
+                            y = (float)(c.Area.Top + (c.Area.Bottom - c.Area.Top) / 2 - 2);
+                        int length = width < 28 ? 8 : 12;
+                        args.DrawingSession.DrawLine(x, y + 2, x + length, y + 2, Colors.DimGray);
+                        args.DrawingSession.DrawLine(x + length - 2, y, x + length, y + 2, Colors.DimGray);
+                        args.DrawingSession.DrawLine(x + length - 2, y + 4, x + length, y + 2, Colors.DimGray);
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Renders the current control characters
         /// </summary>
         private async void RenderControlCharacters()
         {
             // Private function to render the characters
-            void RenderControlCharactersCode()
+            IReadOnlyCollection<CharacterWithArea> RenderControlCharactersCode()
             {
                 // Edge case
                 EditBox.Document.GetText(TextGetOptions.None, out String code);
                 if (code.Length < 2)
                 {
-                    ControlCharacterOverlays.Clear();
-                    WhitespacesCanvas.Children.Clear();
-                    return;
+                    return new List<CharacterWithArea>();
                 }
 
                 // Find the target characters
@@ -527,95 +544,7 @@ namespace Brainf_ck_sharp_UWP.Views
                         characters.Add(new CharacterWithArea(area, c));
                     }
                 }
-
-                // Remove the invalidated elements from the previous list
-                for (int i = 0; i < ControlCharacterOverlays.Count;)
-                {
-                    CharacterWithArea that = ControlCharacterOverlays[i].Item1;
-                    if (characters.Any(c => c.Character == that.Character && c.Area.ApproximateEquals(that.Area)))
-                    {
-                        i++; // Go ahead in the loop
-                    }
-                    else
-                    {
-                        WhitespacesCanvas.Children.Remove(ControlCharacterOverlays[i].Item2);
-                        ControlCharacterOverlays.RemoveAt(i);
-                    }
-                }
-
-                // Add the new overlays
-                foreach (CharacterWithArea character in characters)
-                {
-                    if (ControlCharacterOverlays.Any(c => c.Item1.Character == character.Character &&
-                                                          c.Item1.Area.ApproximateEquals(character.Area))) continue;
-                    if (character.Character == ' ')
-                    {
-                        Rectangle dot = new Rectangle
-                        {
-                            Width = 2,
-                            Height = 2,
-                            Fill = Colors.DimGray.ToBrush(),
-                            RenderTransform = new TranslateTransform
-                            {
-                                X = character.Area.Left + 5,
-                                Y = character.Area.Top + (character.Area.Bottom - character.Area.Top) / 2 - 1
-                            }
-                        };
-                        WhitespacesCanvas.Children.Add(dot);
-                        ControlCharacterOverlays.Add(Tuple.Create<CharacterWithArea, UIElement>(character, dot));
-                    }
-                    else if (character.Character == '\t')
-                    {
-                        double width = character.Area.Right - character.Area.Left;
-                        if (width < 12)
-                        {
-                            // Small dot at the center
-                            Rectangle dot = new Rectangle
-                            {
-                                Width = 2,
-                                Height = 2,
-                                Fill = Colors.DimGray.ToBrush(),
-                                RenderTransform = new TranslateTransform
-                                {
-                                    X = character.Area.Left + width / 2 + 5,
-                                    Y = character.Area.Top + (character.Area.Bottom - character.Area.Top) / 2 - 1
-                                }
-                            };
-                            WhitespacesCanvas.Children.Add(dot);
-                            ControlCharacterOverlays.Add(Tuple.Create<CharacterWithArea, UIElement>(character, dot));
-                        }
-                        else if (width < 28)
-                        {
-                            Path arrow = new Path
-                            {
-                                Stroke = Colors.DimGray.ToBrush(),
-                                Data = GetTabIconData(8),
-                                RenderTransform = new TranslateTransform
-                                {
-                                    X = character.Area.Left + width / 2,
-                                    Y = character.Area.Top + (character.Area.Bottom - character.Area.Top) / 2 - 2
-                                }
-                            };
-                            WhitespacesCanvas.Children.Add(arrow);
-                            ControlCharacterOverlays.Add(Tuple.Create<CharacterWithArea, UIElement>(character, arrow));
-                        }
-                        else
-                        {
-                            Path arrow = new Path
-                            {
-                                Stroke = Colors.DimGray.ToBrush(),
-                                Data = GetTabIconData(12),
-                                RenderTransform = new TranslateTransform
-                                {
-                                    X = character.Area.Left + width / 2,
-                                    Y = character.Area.Top + (character.Area.Bottom - character.Area.Top) / 2 - 2
-                                }
-                            };
-                            WhitespacesCanvas.Children.Add(arrow);
-                            ControlCharacterOverlays.Add(Tuple.Create<CharacterWithArea, UIElement>(character, arrow));
-                        }
-                    }
-                }
+                return characters;
             }
 
             // Lock and add the delayed handler
@@ -631,7 +560,8 @@ namespace Brainf_ck_sharp_UWP.Views
                     if (DateTime.Now.Subtract(_ControlCharactersRenderingTimestamp).TotalMilliseconds < MinimumControlCharactersRenderingInterval &&
                         _PendingUpdates > 0) return; // Skip if another handler was executed less than half a second ago
                     _ControlCharactersRenderingTimestamp = DateTime.Now;
-                    RenderControlCharactersCode(); // Render the control characters
+                    _CharactersToRender = RenderControlCharactersCode(); // Render the control characters
+                    WhitespacesCanvas.Invalidate();
                 }
                 catch
                 {
@@ -652,10 +582,17 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             await ControlCharactersSemaphore.WaitAsync();
             _PendingUpdates = 0;
-            ControlCharacterOverlays.Clear();
-            WhitespacesCanvas.Children.Clear();
+            _CharactersToRender = new List<CharacterWithArea>();
+            WhitespacesCanvas.Invalidate();
             _ControlCharactersRenderingTimestamp = DateTime.Now;
             ControlCharactersSemaphore.Release();
+        }
+
+        // Adjusts the size of the whitespace overlays canvas
+        private void EditBox_OnTextSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+           // WhitespacesCanvas.Height = e.NewSize.Height;
+          //  WhitespacesCanvas.Width = e.NewSize.Width;
         }
 
         // Updates the clip size of the control character overlays container

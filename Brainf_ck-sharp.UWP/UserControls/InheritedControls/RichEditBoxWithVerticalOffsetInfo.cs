@@ -55,13 +55,27 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            _TemplateScrollViewer = GetTemplateChild("ContentScroller") as ScrollViewer;
+            _TemplateScrollViewer = GetTemplateChild("ContentScroller").To<ScrollViewer>();
+            _TextPresenter = GetTemplateChild("ContentElement").To<ContentPresenter>();
+            _TextPresenter.SizeChanged += _TextPresenter_SizeChanged;
         }
 
         /// <summary>
-        /// Gets the inner ScrollViewer, once the control has been added to the visual tree and loaded
+        /// Raised whenever the size of the inner text changes
+        /// </summary>
+        public event SizeChangedEventHandler TextSizeChanged;
+
+        private void _TextPresenter_SizeChanged(object sender, SizeChangedEventArgs e) => TextSizeChanged?.Invoke(sender, e);
+
+        /// <summary>
+        /// Gets the inner <see cref="ScrollViewer"/>, once the control has been added to the visual tree and loaded
         /// </summary>
         private ScrollViewer _TemplateScrollViewer;
+
+        /// <summary>
+        /// Gets the inner <see cref="ContentPresenter"/>, once the control has been added to the visual tree and loaded
+        /// </summary>
+        private ContentPresenter _TextPresenter;
 
         /// <summary>
         /// Gets the inner <see cref="ScrollViewer"/> inside the control

@@ -7,6 +7,7 @@
     xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
     xmlns:templateSelectors="using:Brainf_ck_sharp_UWP.TemplateSelectors"
     xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
+    xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -300,7 +301,9 @@
             <Grid.Clip>
                 <RectangleGeometry x:Name="ControlCharactersClip"/>
             </Grid.Clip>
-            <Canvas x:Name="WhitespacesCanvas"/>
+            <xaml:CanvasControl 
+                x:Name="WhitespacesCanvas"
+                Draw="WhitespacesCanvas_OnDraw"/>
         </Grid>
 
         <!--Canvas with the column guides-->
@@ -368,6 +371,7 @@
             GotFocus="EditBox_OnGotFocus"
             LostFocus="EditBox_OnLostFocus"
             Paste="EditBox_OnPaste"
+            TextSizeChanged="EditBox_OnTextSizeChanged"
             Margin="0"/>
     </Grid>
 </UserControl>
