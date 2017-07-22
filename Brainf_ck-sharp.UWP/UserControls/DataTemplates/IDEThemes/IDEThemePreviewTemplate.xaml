@@ -27,7 +27,8 @@
             Background="#FF333333"
             x:Name="BreakpointsCanvas"
             Grid.Column="0"
-            Grid.RowSpan="3"
+            Grid.Row="1"
+            Grid.RowSpan="2"
             Width="20"
             HorizontalAlignment="Left"/>
 
@@ -93,7 +94,8 @@
                 <Line.RenderTransform>
                     <TranslateTransform
                         X="2"
-                        Y="22"/>
+                        Y="22"
+                        x:Name="BracketsGuideTransform"/>
                 </Line.RenderTransform>
             </Line>
 
