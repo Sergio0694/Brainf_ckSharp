@@ -508,4 +508,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="AutosaveTitle.Text" xml:space="preserve">
     <value>Salvataggio automatico</value>
   </data>
+  <data name="ShowStatusBarTitle.Text" xml:space="preserve">
+    <value>Mostra status bar</value>
+  </data>
 </root>

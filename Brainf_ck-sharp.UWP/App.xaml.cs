@@ -136,6 +136,23 @@ namespace Brainf_ck_sharp_UWP
         /// </summary>
         private bool LightsEnabled { get; set; }
 
+        private double _StatusBarHeight;
+
+        /// <summary>
+        /// Gets or sets the last detected height of the status bar
+        /// </summary>
+        private double ShowStatusBarPlaceholder
+        {
+            set
+            {
+                if ((_StatusBarHeight - value).Abs() > 0.1)
+                {
+                    _StatusBarHeight = value;
+                    DefaultContent?.ShowStatusBarPlaceholder(value > 0.1);
+                }
+            }
+        }
+
         private void UpdateVisibleBounds(ApplicationView sender)
         {
             // Return if the content hasn't finished loading yet
@@ -179,6 +196,7 @@ namespace Brainf_ck_sharp_UWP
                 }
                 else DefaultContent.Margin = new Thickness();
             }
+            ShowStatusBarPlaceholder = StatusBarHelper.OccludedHeight;
         }
 
         /// <summary>
