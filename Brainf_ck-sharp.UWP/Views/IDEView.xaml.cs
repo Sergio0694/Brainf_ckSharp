@@ -441,14 +441,14 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Single character entered
             bool textChanged = false;
-            try
+            if (text.Length == _PreviousText.Length + 1)
             {
-                if (text.Length == _PreviousText.Length + 1)
-                {
-                    // Unsubscribe from the text events and batch the updates
-                    EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
-                    EditBox.TextChanged -= EditBox_OnTextChanged;
+                // Unsubscribe from the text events and batch the updates
+                EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
+                EditBox.TextChanged -= EditBox_OnTextChanged;
 
+                try
+                {
                     // Get the last character and apply the right color
                     ITextRange range = EditBox.Document.GetRange(start - 1, start);
                     range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(range.Character);
@@ -526,16 +526,16 @@ namespace Brainf_ck_sharp_UWP.Views
                             textChanged = true;
                         }
                     }
-
-                    // Restore the event handlers
-                    EditBox.Document.EndUndoGroup();
-                    EditBox.SelectionChanged += EditBox_OnSelectionChanged;
-                    EditBox.TextChanged += EditBox_OnTextChanged;
                 }
-            }
-            catch
-            {
-                // This must never crash
+                catch
+                {
+                    // This must never crash
+                }
+
+                // Restore the event handlers
+                EditBox.Document.EndUndoGroup();
+                EditBox.SelectionChanged += EditBox_OnSelectionChanged;
+                EditBox.TextChanged += EditBox_OnTextChanged;
             }
 
             // Refresh the current text if needed
