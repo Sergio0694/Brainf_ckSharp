@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Windows.ApplicationModel;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -118,6 +118,8 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
             SetValue(nameof(AppSettingsKeys.SelectedIDETheme), 0, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.AutosaveDocuments), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.RenderWhitespaces), false, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.SelectedFontName), String.Empty, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.ShowStatusBar), false, SettingSaveMode.SkipIfExisting);
         }
 
         /// <summary>

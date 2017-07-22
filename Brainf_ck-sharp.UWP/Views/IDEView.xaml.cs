@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -69,6 +69,7 @@ namespace Brainf_ck_sharp_UWP.Views
             };
             ViewModel.TextCleared += (_, e) =>
             {
+                _PreviousText = "\r";
                 EditBox.ResetTextAndUndoStack();
                 ApplyCustomTabSpacing();
                 ClearBreakpoints();
@@ -81,6 +82,8 @@ namespace Brainf_ck_sharp_UWP.Views
             _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
             Messenger.Default.Register<IDESettingsChangedMessage>(this, ApplyIDESettings);
         }
+
+        #region IDE theme
 
         // Updates the general UI settings
         private void ApplyUITheme()
@@ -118,13 +121,29 @@ namespace Brainf_ck_sharp_UWP.Views
                 ApplyCustomTabSpacing();
                 if (!message.ThemeChanged) DrawBracketGuides(null, true).Forget();
             }
-
+            
             // Update the render whitespaces setting
             if (message.WhitespacesChanged)
             {
                 bool renderWhitespaces = _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
                 if (renderWhitespaces) RenderControlCharacters();
                 else ClearControlCharacters();
+            }
+            
+            // Update the font type if needed
+            if (fontChanged)
+            {
+                // Refresh the text UI
+                String name = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+                if (InstalledFont.TryGetFont(name, out InstalledFont font))
+                {
+                    LineBlock.FontFamily = font.Family;
+                    EditBox.SetFontFamily(name);
+                    AdjustOverlaysUIOnFontChanged(name);
+                    UpdateCursorRectangleAndIndicatorUI(); // Adjust the cursor position (a different font can have a different height)
+                    AdjustIndentationIndicatorsVerticalStretch();
+                    AdjustGitDiffIndicatorsVerticalStretch();
+                }
             }
 
             // Update the current UI theme
@@ -148,15 +167,15 @@ namespace Brainf_ck_sharp_UWP.Views
                     range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(c);
                 }
 
-                // Brackets guides
-                DrawBracketGuides(text, true).Forget();
-
                 // Release the UI
                 Task.Delay(500).ContinueWith(t =>
                 {
                     Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
+
+            // Column guides
+            DrawBracketGuides(null, true).Forget();
 
             // Restore the handlers
             EditBox.SelectionChanged += EditBox_OnSelectionChanged;
@@ -171,6 +190,8 @@ namespace Brainf_ck_sharp_UWP.Views
                 spaces = 4 + setting * 2; // Spacing options range from 4 to 12 at indexes [0..4]
             EditBox.SetTabLength(spaces);
         }
+
+        #endregion
 
         // Inserts a new line at the current position
         private void ViewModel_NewLineInsertionRequested(object sender, EventArgs e)
@@ -210,7 +231,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 // Get the lines with a breakpoint and deconstruct the source in executable chuncks
                 IReadOnlyCollection<int> 
                     lines = BreakpointsInfo.Keys.OrderBy(key => key).Select(i => i - 1).ToArray(), // i -1 to move from 1 to 0-based indexes
-                    indexes = text.FindIndexes(lines);
+                    indexes = text.FindLineIndexes(lines);
                 List<String> chuncks = new List<String>();
                 int previous = 0;
                 foreach (int breakpoint in indexes.Concat(new[] { text.Length - 1 }))
@@ -231,10 +252,25 @@ namespace Brainf_ck_sharp_UWP.Views
         // Initializes the scroll events for the code
         private void IDEView_Loaded(object sender, RoutedEventArgs e)
         {
+            // Font setup
+            String name = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+            if (InstalledFont.TryGetFont(name, out InstalledFont font))
+            {
+                LineBlock.FontFamily = font.Family;
+                EditBox.SetFontFamily(name);
+                AdjustOverlaysUIOnFontChanged(name);
+            }
+
             // Start the cursor animation and subscribe the scroller event
             CursorAnimation.Begin();
 
             // Setup the expression animations
+            SetupExpressionAnimations();
+        }
+
+        // Starts the animation to keep the UI synced with the IDE text
+        private void SetupExpressionAnimations()
+        {
             LinesGrid.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top - 12));
             IndentationInfoList.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 10));
             GitDiffListView.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 10));
@@ -272,19 +308,42 @@ namespace Brainf_ck_sharp_UWP.Views
             EditBox.ScrollBarMargin = new Thickness(0, _Top, 0, 0);
         }
 
+        /// <summary>
+        /// Refreshes the top margin of the content in the page
+        /// </summary>
+        /// <param name="height">The updated height of the top margin</param>
+        public void RefreshTopMargin(double height)
+        {
+            // Save the new height value and update the main animations
+            if ((_Top - height).Abs() < 0.1) return;
+
+            AdjustTopMargin(height);
+            SetupExpressionAnimations();
+            DrawBracketGuides(null, true).Forget();
+
+            // Update the breakpoints
+            int[] keys = BreakpointsInfo.Keys.ToArray();
+            if (keys.Length > 0)
+            {
+                ClearBreakpoints();
+                RestoreBreakpoints(keys);
+            }
+        }
+
         // Updates the line numbers displayed next to the code box
-        private void EditBox_OnTextChanged(object sender, RoutedEventArgs e)
+        private async void EditBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
             DrawLineNumbers();
             DrawBracketGuides(null, false).ContinueWith(t =>
             {
                 if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
                 ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
             EditBox.Document.GetText(TextGetOptions.None, out String code);
             ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
             ViewModel.UpdateCanUndoRedoStatus();
-            RemoveUnvalidatedBreakpointsAsync(code).Forget();
+            await RemoveUnvalidatedBreakpointsAsync(code);
+            RefreshBreakpointsUI(code);
 
             // Whitespaces rendering
             if (_WhitespacesRenderingEnabled)
@@ -314,6 +373,36 @@ namespace Brainf_ck_sharp_UWP.Views
         }
 
         #region Bracket guides
+
+        // Adjusts the UI of some of the UI overlays when the selected font changes
+        private void AdjustOverlaysUIOnFontChanged([NotNull] String font)
+        {
+            FontFamily family = new FontFamily(String.IsNullOrEmpty(font) ? "Segoe UI" : font);
+            CursorBorder.Height = CursorRectangle.Height = "Xg".MeasureText(15, family).Height;
+            switch (font)
+            {
+                case "Calibri":
+                    LinesGridTransform.Y = 2;
+                    BracketGuidesCanvasTransform.Y = 0;
+                    IndentationInfoListTransform.Y = 0;
+                    break;
+                case "Cambria":
+                    LinesGridTransform.Y = 2;
+                    BracketGuidesCanvasTransform.Y = 0;
+                    IndentationInfoListTransform.Y = 0;
+                    break;
+                case "Consolas":
+                    LinesGridTransform.Y = 2;
+                    BracketGuidesCanvasTransform.Y = -4;
+                    IndentationInfoListTransform.Y = -1;
+                    break;
+                default:
+                    LinesGridTransform.Y = 0;
+                    BracketGuidesCanvasTransform.Y = 0;
+                    IndentationInfoListTransform.Y = 0;
+                    break;
+            }
+        }
 
         // The backup of the indexes of the brackets in the text
         private IReadOnlyList<CharacterWithCoordinates> _Brackets;
@@ -620,14 +709,14 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Single character entered
             bool textChanged = false;
-            try
+            if (text.Length == _PreviousText.Length + 1)
             {
-                if (text.Length == _PreviousText.Length + 1)
-                {
-                    // Unsubscribe from the text events and batch the updates
-                    EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
-                    EditBox.TextChanged -= EditBox_OnTextChanged;
+                // Unsubscribe from the text events and batch the updates
+                EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
+                EditBox.TextChanged -= EditBox_OnTextChanged;
 
+                try
+                {
                     // Get the last character and apply the right color
                     ITextRange range = EditBox.Document.GetRange(start - 1, start);
                     range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(range.Character);
@@ -705,16 +794,16 @@ namespace Brainf_ck_sharp_UWP.Views
                             textChanged = true;
                         }
                     }
-
-                    // Restore the event handlers
-                    EditBox.Document.EndUndoGroup();
-                    EditBox.SelectionChanged += EditBox_OnSelectionChanged;
-                    EditBox.TextChanged += EditBox_OnTextChanged;
                 }
-            }
-            catch
-            {
-                // This must never crash
+                catch
+                {
+                    // This must never crash
+                }
+
+                // Restore the event handlers
+                EditBox.Document.EndUndoGroup();
+                EditBox.SelectionChanged += EditBox_OnSelectionChanged;
+                EditBox.TextChanged += EditBox_OnTextChanged;
             }
 
             // Refresh the current text if needed
@@ -917,7 +1006,7 @@ namespace Brainf_ck_sharp_UWP.Views
         /// <summary>
         /// Gets the collection of current visualized breakpoints and their respective line numbers
         /// </summary>
-        private readonly Dictionary<int, Tuple<Ellipse, Rectangle>> BreakpointsInfo = new Dictionary<int, Tuple<Ellipse, Rectangle>>();
+        private readonly Dictionary<int, Tuple<Ellipse, Border>> BreakpointsInfo = new Dictionary<int, Tuple<Ellipse, Border>>();
 
         // Clears the breakpoints from the UI and their info
         private void ClearBreakpoints()
@@ -953,7 +1042,7 @@ namespace Brainf_ck_sharp_UWP.Views
             // Remove the target breakpoints
             foreach (int target in pending)
             {
-                if (BreakpointsInfo.TryGetValue(target, out Tuple<Ellipse, Rectangle> previous))
+                if (BreakpointsInfo.TryGetValue(target, out Tuple<Ellipse, Border> previous))
                 {
                     // Remove the previous breakpoint
                     BreakpointsCanvas.Children.Remove(previous.Item1);
@@ -970,7 +1059,7 @@ namespace Brainf_ck_sharp_UWP.Views
             EditBox.Document.GetText(TextGetOptions.None, out String code);
 
             // Get the actual positions for each line start
-            IReadOnlyCollection<int> indexes = code.FindIndexes(lines);
+            IReadOnlyCollection<int> indexes = code.FindLineIndexes(lines);
 
             // Draw the breakpoints again
             foreach (int i in indexes)
@@ -1007,6 +1096,65 @@ namespace Brainf_ck_sharp_UWP.Views
         private Guid _InvalidBreakpointMessageID;
 
         /// <summary>
+        /// Calculates the visual coordinates and info for a breakpoint to insert at a given line
+        /// </summary>
+        /// <param name="text">The source text</param>
+        /// <param name="index">The breakpoint initial index</param>
+        private (double X, double Width) CalculateBreakpointCoordinates([NotNull] String text, int index)
+        {
+            // Get the target line coordinates
+            int first = 0, last = -1;
+            bool found = false;
+            for (int i = index; i < text.Length; i++)
+            {
+                if (Brainf_ckInterpreter.Operators.Contains(text[i]))
+                {
+                    if (!found)
+                    {
+                        found = true;
+                        first = i;
+                    }
+                }
+                else if (found)
+                {
+                    last = i;
+                    break;
+                }
+            }
+
+            // Get the initial and ending range
+            ITextRange range = EditBox.Document.GetRange(first, first);
+            range.GetRect(PointOptions.Transform, out Rect open, out _);
+            range = EditBox.Document.GetRange(last, last);
+            range.GetRect(PointOptions.Transform, out Rect close, out _);
+            return (open.X + 2, close.Right - open.Left + 2);
+        }
+
+        /// <summary>
+        /// Refreshes the UI of the breakpoint overlays
+        /// </summary>
+        /// <param name="text">The current IDE text</param>
+        private void RefreshBreakpointsUI([NotNull] String text)
+        {
+            KeyValuePair<int, Tuple<Ellipse, Border>>[] pairs = BreakpointsInfo.ToArray();
+
+            // Get the actual positions for each line start
+            IReadOnlyList<int> indexes = text.FindLineIndexes(pairs.Select(p => p.Key - 1));
+            for (int i = 0; i < pairs.Length; i++)
+            {
+                KeyValuePair<int, Tuple<Ellipse, Border>> pair = pairs[i];
+                (double x, double width) = CalculateBreakpointCoordinates(text, indexes[i]);
+                Border border = pair.Value.Item2;
+                if (border.RenderTransform is TranslateTransform transform &&
+                    (transform.X - x).Abs() > 0.1)
+                {
+                    transform.X = x;
+                }
+                if ((border.Width - width).Abs() > 0.1) border.Width = width;
+            }
+        }
+
+        /// <summary>
         /// Adds a single breakpoint to the UI and the backup list
         /// </summary>
         /// <param name="text">The current text, if available</param>
@@ -1034,7 +1182,7 @@ namespace Brainf_ck_sharp_UWP.Views
             }
 
             // Setup the breakpoint
-            if (BreakpointsInfo.TryGetValue(coordinate.Y, out Tuple<Ellipse, Rectangle> previous))
+            if (BreakpointsInfo.TryGetValue(coordinate.Y, out Tuple<Ellipse, Border> previous))
             {
                 // Remove the previous breakpoint
                 BreakpointsCanvas.Children.Remove(previous.Item1);
@@ -1061,26 +1209,27 @@ namespace Brainf_ck_sharp_UWP.Views
                 ellipse.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
 
                 // Line highlight
-                Rectangle rect = new Rectangle
+                (double x, double width) = CalculateBreakpointCoordinates(text, start);
+                Border border = new Border
                 {
                     Height = 19.9, // Approximate line height
-                    Width = BreakLinesCanvas.ActualWidth,
-                    Fill = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("BreakpointLineBrush"),
-                    RenderTransform = new TranslateTransform { Y = offset - 2 } // -2 to adjust the position with the cursor rectangle
+                    Width = width,
+                    Background = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("BreakpointLineBrush"),
+                    BorderThickness = new Thickness(1),
+                    BorderBrush = Colors.DimGray.ToBrush(),
+                    CornerRadius = new CornerRadius(1),
+                    RenderTransform = new TranslateTransform
+                    {
+                        X = x,
+                        Y = offset - 2 // -2 to adjust the position with the cursor rectangle
+                    }
                 };
-                BreakLinesCanvas.Children.Add(rect);
-                rect.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
+                BreakLinesCanvas.Children.Add(border);
+                border.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
 
                 // Store the info
-                BreakpointsInfo.Add(coordinate.Y, Tuple.Create(ellipse, rect));
+                BreakpointsInfo.Add(coordinate.Y, Tuple.Create(ellipse, border));
             }
-        }
-
-        // Updates the width of the breakpoint lines
-        private void BreakLinesCanvas_OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            foreach (FrameworkElement element in BreakLinesCanvas.Children.Cast<FrameworkElement>().ToArray())
-                element.Width = e.NewSize.Width;
         }
 
         #endregion
@@ -1097,29 +1246,51 @@ namespace Brainf_ck_sharp_UWP.Views
         }
 
         // Adjusts the vertical scaling of the indentation indicators
-        private void IndentationInfoList_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        private void AdjustIndentationIndicatorsVerticalStretch(Size? newSize = null)
         {
+            if (newSize == null)
+            {
+                IndentationInfoList.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                newSize = IndentationInfoList.DesiredSize;
+            }
             int count = ViewModel.Source.Count;
             if (count < 3) IndentationInfoList.SetVisualScale(null, 1, null);
             else
             {
                 String lines = '\n'.Repeat(count - 1);
-                Size size = lines.MeasureText(15);
-                IndentationInfoList.SetVisualScale(null, (float) (size.Height / e.NewSize.Height), null);
+                Size size = lines.MeasureText(15, LineBlock.FontFamily);
+                IndentationInfoList.SetVisualScale(null, (float)(size.Height / newSize.Value.Height), null);
             }
         }
 
-        // Adjusts the vertical scaling of the git lines diff indicators
-        private void GitDiffListView_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        // Adjusts the stretch of the indentation indicators whenever the size of the indicators changes
+        private void IndentationInfoList_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
+            AdjustIndentationIndicatorsVerticalStretch(e.NewSize);
+        }
+
+        // Adjusts the vertical scaling of the git diff indicators
+        private void AdjustGitDiffIndicatorsVerticalStretch(Size? newSize = null)
+        {
+            if (newSize == null)
+            {
+                GitDiffListView.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                newSize = IndentationInfoList.DesiredSize;
+            }
             int count = ViewModel.DiffStatusSource.Count;
             if (count < 3) GitDiffListView.SetVisualScale(null, 1, null);
             else
             {
                 String lines = '\n'.Repeat(count - 1);
-                Size size = lines.MeasureText(15);
-                GitDiffListView.SetVisualScale(null, (float)(size.Height / e.NewSize.Height), null);
+                Size size = lines.MeasureText(15, LineBlock.FontFamily);
+                GitDiffListView.SetVisualScale(null, (float)(size.Height / newSize.Value.Height), null);
             }
+        }
+
+        // Adjusts the vertical scaling of the git diff indicators whenever the size of the indicators list changes
+        private void GitDiffListView_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            AdjustGitDiffIndicatorsVerticalStretch(e.NewSize);
         }
 
         #region Breakpoints context menu

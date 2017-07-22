@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using JetBrains.Annotations;
 
@@ -48,7 +49,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
         /// <param name="newline">The newline character to use</param>
         /// <remarks>The input lines list must have its elements 1-based</remarks>
         [Pure, NotNull]
-        public static IReadOnlyList<int> FindIndexes([NotNull] this String text, [NotNull] IReadOnlyCollection<int> lines, char newline = '\r')
+        public static IReadOnlyList<int> FindLineIndexes([NotNull] this String text, [NotNull] IEnumerable<int> lines, char newline = '\r')
         {
             List<int> indexes = new List<int>();
             int line = 0;
@@ -95,13 +96,15 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
         /// </summary>
         /// <param name="text">The text to measure</param>
         /// <param name="size">The font size to use for the measurement</param>
+        /// <param name="font">The font of the <see cref="TextBlock"/> used to measure the text</param>
         [Pure]
-        public static Size MeasureText([NotNull] this String text, int size)
+        public static Size MeasureText([NotNull] this String text, int size, [NotNull] FontFamily font)
         {
             TextBlock block = new TextBlock
             {
                 FontSize = size,
-                Text = text
+                Text = text,
+                FontFamily = font
             };
             block.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             return block.DesiredSize;

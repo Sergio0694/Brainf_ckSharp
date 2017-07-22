@@ -253,6 +253,9 @@
                     TextAlignment="Right"
                     TextTrimming="CharacterEllipsis"
                     x:Name="LineBlock"/>
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="LinesGridTransform"/>
+                </Grid.RenderTransform>
             </Grid>
         </Canvas>
         
@@ -283,15 +286,12 @@
                 ScrollViewer.VerticalScrollMode="Disabled"
                 IsHitTestVisible="False"
                 x:Name="IndentationInfoList"
-                SizeChanged="IndentationInfoList_OnSizeChanged"/>
+                SizeChanged="IndentationInfoList_OnSizeChanged">
+                <ListView.RenderTransform>
+                    <TranslateTransform x:Name="IndentationInfoListTransform"/>
+                </ListView.RenderTransform>
+            </ListView>
         </Canvas>
-        
-        <!--Breakpoints line indicators-->
-        <Canvas
-            Grid.Column="4"
-            x:Name="BreakLinesCanvas"
-            IsHitTestVisible="False"
-            SizeChanged="BreakLinesCanvas_OnSizeChanged"/>
 
         <!--Whitespace indicators-->
         <Canvas
@@ -316,7 +316,11 @@
             <Grid.Clip>
                 <RectangleGeometry x:Name="BracketsClip"/>
             </Grid.Clip>
-            <Canvas x:Name="BracketGuidesCanvas"/>
+            <Canvas x:Name="BracketGuidesCanvas">
+                <Canvas.RenderTransform>
+                    <TranslateTransform x:Name="BracketGuidesCanvasTransform"/>
+                </Canvas.RenderTransform>
+            </Canvas>
         </Grid>
         
         <!--Current line cursor-->
@@ -344,20 +348,29 @@
             
             <!--Virtual cursor-->
             <Rectangle
-                Canvas.ZIndex="2"
+                Canvas.ZIndex="3"
                 Width="1"
                 Height="20"
                 Fill="LightGray"
                 x:Name="CursorRectangle">
                 <Rectangle.RenderTransform>
-                    <TranslateTransform x:Name="CursorTransform"/>
+                    <TranslateTransform 
+                        X="4"
+                        x:Name="CursorTransform"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
         </Canvas>
 
+        <!--Breakpoints line indicators-->
+        <Canvas
+            Canvas.ZIndex="2"
+            Grid.Column="4"
+            x:Name="BreakLinesCanvas"
+            IsHitTestVisible="False"/>
+
         <!--Code box-->
         <inheritedControls:RichEditBoxWithVerticalOffsetInfo
-            Canvas.ZIndex="3"
+            Canvas.ZIndex="4"
             Grid.Column="4"
             Style="{StaticResource TransparentEditBox}"
             x:Name="EditBox"

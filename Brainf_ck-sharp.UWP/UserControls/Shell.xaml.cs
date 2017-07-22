@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
@@ -82,6 +82,12 @@ namespace Brainf_ck_sharp_UWP.UserControls
         public ShellViewModel ViewModel => DataContext.To<ShellViewModel>();
 
         #region UI
+
+        /// <summary>
+        /// Sets whether or not the status bar placeholder for Windows 10 Mobile devices should be displayed
+        /// </summary>
+        /// <param name="show">The new value for the placeholder visibility</param>
+        public void ShowStatusBarPlaceholder(bool show) => StatusBarPlaceholder.Visibility = show.ToVisibility();
 
         // The current loading popup
         private Popup _LoadingPopup;
@@ -268,13 +274,15 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 theme = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)),
                 tabs = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength));
             bool whitespaces = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
+            String font = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
             SettingsPanelFlyout settings = new SettingsPanelFlyout();
             await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Settings"), settings, null, FlyoutDisplayMode.ActualHeight);
             bool
                 themeChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)) != theme,
                 tabsChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength)) != tabs,
+                fontChanged = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName))?.Equals(font) != true,
                 whitespacesChanged = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces)) != whitespaces;
-            if (themeChanged || tabsChanged || whitespacesChanged)
+            if (themeChanged || tabsChanged || fontChanged || whitespacesChanged)
             {
                 // UI refresh needed
                 if (themeChanged)
@@ -282,7 +290,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                     Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
                     await Task.Delay(500);
                 }
-                Messenger.Default.Send(new IDESettingsChangedMessage(themeChanged, tabsChanged, whitespacesChanged));
+                Messenger.Default.Send(new IDESettingsChangedMessage(themeChanged, tabsChanged, fontChanged, whitespacesChanged));
             }
         }
     }
