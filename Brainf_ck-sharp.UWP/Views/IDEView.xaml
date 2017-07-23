@@ -316,11 +316,13 @@
             <Grid.Clip>
                 <RectangleGeometry x:Name="BracketsClip"/>
             </Grid.Clip>
-            <Canvas x:Name="BracketGuidesCanvas">
-                <Canvas.RenderTransform>
+            <xaml:CanvasControl 
+                x:Name="BracketGuidesCanvas"
+                Draw="BracketGuidesCanvas_OnDraw">
+                <xaml:CanvasControl.RenderTransform>
                     <TranslateTransform x:Name="BracketGuidesCanvasTransform"/>
-                </Canvas.RenderTransform>
-            </Canvas>
+                </xaml:CanvasControl.RenderTransform>
+            </xaml:CanvasControl>
         </Grid>
         
         <!--Current line cursor-->

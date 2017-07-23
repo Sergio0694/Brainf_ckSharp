@@ -36,6 +36,7 @@ using Brainf_ck_sharp_UWP.UserControls.Flyouts;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
+using Microsoft.Graphics.Canvas.Geometry;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
@@ -431,7 +432,8 @@ namespace Brainf_ck_sharp_UWP.Views
             SyntaxValidationResult result = await Task.Run(() => Brainf_ckInterpreter.CheckSourceSyntax(code));
             if (!result.Valid || _BracketGuidesCts.IsCancellationRequested)
             {
-                BracketGuidesCanvas.Children.Clear();
+                _BracketsGuidesToRender = new List<object>();
+                BracketGuidesCanvas.Invalidate();
                 _Brackets = null;
                 bool cancelled = _BracketGuidesCts.IsCancellationRequested;
                 BracketGuidesSemaphore.Release();
@@ -468,9 +470,9 @@ namespace Brainf_ck_sharp_UWP.Views
                 return AsyncOperationResult<IReadOnlyList<CharacterWithCoordinates>>.Explicit(_Brackets);
             }
             _Brackets = workingSet.Item1;
-            BracketGuidesCanvas.Children.Clear();
 
             // Draw the guides for each brackets pair
+            List<object> coordinates = new List<object>();
             int i = 0;
             foreach (char c in code)
             {
@@ -526,11 +528,28 @@ namespace Brainf_ck_sharp_UWP.Views
                 };
                 guide.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 30 + open.Top));
                 guide.SetVisualOffset(TranslationAxis.X, (float)((close.X > open.X ? open.X : close.X) + 6));
-                BracketGuidesCanvas.Children.Add(guide);
+                coordinates.Add(Tuple.Create((float)top, (float)(_Top + 30 + open.Top), (float)((close.X > open.X ? open.X : close.X) + 6)));
                 i++;
             }
+            _BracketsGuidesToRender = coordinates;
+            BracketGuidesCanvas.Invalidate();
             BracketGuidesSemaphore.Release();
             return workingSet.Item1;
+        }
+
+        // Gets the list of column guides that need to be rendered
+        private IReadOnlyCollection<object> _BracketsGuidesToRender = new List<object>();
+
+        // Draws the column guides in the Win2D canvas
+        private void BracketGuidesCanvas_OnDraw(CanvasControl sender, CanvasDrawEventArgs args)
+        {
+            IEnumerable<Tuple<float, float, float>> items = _BracketsGuidesToRender.Cast<Tuple<float, float, float>>();
+            foreach (Tuple<float, float, float> guide in items)
+            {
+                CanvasStrokeStyle style = new CanvasStrokeStyle { CustomDashStyle = new[] { 4f, 4f } };
+                args.DrawingSession.DrawLine(guide.Item3, guide.Item2, guide.Item3, guide.Item2 + guide.Item1,
+                    Colors.Gray, 1, style);
+            }
         }
 
         #endregion
@@ -682,8 +701,8 @@ namespace Brainf_ck_sharp_UWP.Views
         // Adjusts the size of the whitespace overlays canvas
         private void EditBox_OnTextSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            WhitespacesCanvas.Height = e.NewSize.Height;
-            WhitespacesCanvas.Width = e.NewSize.Width;
+            WhitespacesCanvas.Height = WhitespacesCanvas.Height = e.NewSize.Height;
+            WhitespacesCanvas.Width = WhitespacesCanvas.Width = e.NewSize.Width;
         }
 
         // Updates the clip size of the control character overlays container
