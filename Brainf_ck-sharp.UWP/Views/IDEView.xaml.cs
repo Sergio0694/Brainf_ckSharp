@@ -444,15 +444,15 @@ namespace Brainf_ck_sharp_UWP.Views
             Tuple<List<CharacterWithCoordinates>, bool> workingSet = await Task.Run(() =>
             {
                 List<CharacterWithCoordinates> pairs = new List<CharacterWithCoordinates>();
-                int i1 = 0;
+                int index = 0;
                 foreach (char c in code)
                 {
                     if (c == '[' || c == ']')
                     {
-                        Coordinate coordinate = code.FindCoordinates(i1);
+                        Coordinate coordinate = code.FindCoordinates(index);
                         pairs.Add(new CharacterWithCoordinates(coordinate, c));
                     }
-                    i1++;
+                    index++;
                 }
                 bool test = _Brackets?.Zip(pairs, (first, second) => first.Equals(second)).All(b => b) == true;
                 return Tuple.Create(pairs, test);
@@ -471,19 +471,19 @@ namespace Brainf_ck_sharp_UWP.Views
             BracketGuidesCanvas.Children.Clear();
 
             // Draw the guides for each brackets pair
-            int i2 = 0;
+            int i = 0;
             foreach (char c in code)
             {
                 // Get the index of the corresponding closing bracket (only if they're not on the same line)
                 if (_BracketGuidesCts.IsCancellationRequested) break;
                 if (c != '[')
                 {
-                    i2++;
+                    i++;
                     continue;
                 }
                 int height = 0, target = -1;
                 bool newLine = false;
-                for (int j = i2 + 1; j < code.Length; j++)
+                for (int j = i + 1; j < code.Length; j++)
                 {
                     char token = code[j];
                     if (token == '\r') newLine = true;
@@ -500,12 +500,12 @@ namespace Brainf_ck_sharp_UWP.Views
                 }
                 if (target == -1)
                 {
-                    i2++;
+                    i++;
                     continue;
                 }
 
                 // Get the initial and ending range
-                ITextRange range = EditBox.Document.GetRange(i2, i2);
+                ITextRange range = EditBox.Document.GetRange(i, i);
                 range.GetRect(PointOptions.Transform, out Rect open, out _);
                 range = EditBox.Document.GetRange(target, target);
                 range.GetRect(PointOptions.Transform, out Rect close, out _);
@@ -527,7 +527,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 guide.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 30 + open.Top));
                 guide.SetVisualOffset(TranslationAxis.X, (float)((close.X > open.X ? open.X : close.X) + 6));
                 BracketGuidesCanvas.Children.Add(guide);
-                i2++;
+                i++;
             }
             BracketGuidesSemaphore.Release();
             return workingSet.Item1;
