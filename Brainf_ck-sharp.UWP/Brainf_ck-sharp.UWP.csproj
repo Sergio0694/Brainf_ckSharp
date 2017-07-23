@@ -270,6 +270,9 @@
     <Compile Include="UserControls\DataTemplates\JumpList\Changelog\ChangelogZoomedInHeaderTemplate.xaml.cs">
       <DependentUpon>ChangelogZoomedInHeaderTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\DataTemplates\JumpList\Settings\SettingsZoomedInHeaderTemplate.xaml.cs">
+      <DependentUpon>SettingsZoomedInHeaderTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml.cs">
       <DependentUpon>SavedSourceCodeTemplate.xaml</DependentUpon>
     </Compile>
@@ -585,6 +588,10 @@
     <Page Include="UserControls\DataTemplates\JumpList\Changelog\ChangelogZoomedInHeaderTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DataTemplates\JumpList\Settings\SettingsZoomedInHeaderTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>

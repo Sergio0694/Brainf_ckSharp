@@ -4,36 +4,26 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
-    xmlns:ideThemes="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes"
-    xmlns:helpers="using:Brainf_ck_sharp_UWP.Helpers"
-    xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
     xmlns:jumpList="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList"
     xmlns:settings="using:Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings"
     xmlns:templateSelectors="using:Brainf_ck_sharp_UWP.TemplateSelectors"
+    xmlns:jumpListSettings="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.Settings"
     mc:Ignorable="d"
     d:DesignHeight="800"
     d:DesignWidth="400">
     <UserControl.Resources>
         
-        <!--Section style-->
-        <Style TargetType="TextBlock" x:Key="SectionTitleStyle">
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Foreground" Value="{ThemeResource SystemControlHighlightAccentBrush}"/>
-        </Style>
-        
         <!--Section template selector-->
         <templateSelectors:SettingsSectionTemplateSelector x:Key="SectionSelector"/>
         
-        <!--IDE template-->
+        <!-- ReSharper disable once Xaml.RedundantResource (used by selector) -->
         <DataTemplate x:Key="IDESettingsTemplate">
-            <settings:IDESettingsSection/>
+            <settings:IDESettingsSection Margin="12,0,0,0"/>
         </DataTemplate>
-        
-        <!--UI template-->
+
+        <!-- ReSharper disable once Xaml.RedundantResource (used by selector)-->
         <DataTemplate x:Key="UISettingsTemplate">
-            <settings:UISettingsSection/>
+            <settings:UISettingsSection Margin="12,0,0,0"/>
         </DataTemplate>
     </UserControl.Resources>
 
@@ -54,12 +44,17 @@
                     VerticalAlignment="Stretch"
                     IsItemClickEnabled="False"
                     ItemTemplateSelector="{StaticResource SectionSelector}">
+                    <ListView.FooterTemplate>
+                        <DataTemplate>
+                            <Grid Height="12"/>
+                        </DataTemplate>
+                    </ListView.FooterTemplate>
                     <ListView.GroupStyle>
                         <GroupStyle HeaderContainerStyle="{StaticResource GroupsViewListHeaderStyle}">
                             <GroupStyle.HeaderTemplate>
                                 <DataTemplate>
-                                    <jumpList:JumpListZoomedInHeaderTemplate
-                                        Margin="12,8,16,4"
+                                    <jumpListSettings:SettingsZoomedInHeaderTemplate
+                                        Margin="12,12,16,12"
                                         Title="{Binding Key.Item1}"/>
                                 </DataTemplate>
                             </GroupStyle.HeaderTemplate>

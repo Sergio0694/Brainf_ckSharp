@@ -37,7 +37,7 @@
                     <VisualState.Setters>
                         <Setter 
                             Target="GroupNameBlock.Foreground"
-                            Value="#FF909090"/>
+                            Value="#80FFFFFF"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
