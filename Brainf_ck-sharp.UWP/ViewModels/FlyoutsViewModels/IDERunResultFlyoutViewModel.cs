@@ -8,12 +8,12 @@ using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.IDEResults;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Helpers;
-using Brainf_ck_sharp_UWP.ViewModels.Abstract;
+using Brainf_ck_sharp_UWP.ViewModels.Abstract.JumpList;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
 {
-    public class IDERunResultFlyoutViewModel : JumpListViewModelBase<IDEResultSection, IDEResultSectionDataBase>
+    public class IDERunResultFlyoutViewModel : DeferredJumpListViewModelBase<IDEResultSection, IDEResultSectionDataBase>
     {
         /// <summary>
         /// Gets the current execution session

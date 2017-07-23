@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-#if !DEBUG
-using System.Linq;
-#endif
 using System.Threading.Tasks;
 using Windows.Services.Store;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
@@ -18,12 +15,15 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations.Helpers;
+#if !DEBUG
+using System.Linq;
+#endif
 
-namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
+namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
 {
-    public class SettingsPanelFlyoutViewModel : ViewModelBase
+    public class SettingsViewModel : ViewModelBase
     {
-        public SettingsPanelFlyoutViewModel()
+        public SettingsViewModel()
         {
             IDEThemeSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme));
             AvailableIDEThemes[IDEThemeSelectedIndex].IsSelected = true;

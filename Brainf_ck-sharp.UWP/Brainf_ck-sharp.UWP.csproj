@@ -156,6 +156,8 @@
     <Compile Include="DataModels\Misc\ScriptExceptionInfo.cs" />
     <Compile Include="DataModels\Misc\Themes\SelectableIDEThemeInfo.cs" />
     <Compile Include="DataModels\Misc\Unit.cs" />
+    <Compile Include="DataModels\Settings\CategorizedSettingsViewModel.cs" />
+    <Compile Include="DataModels\Settings\SettingsSectionType.cs" />
     <Compile Include="DataModels\SQLite\CategorizedSourceCode.cs" />
     <Compile Include="DataModels\SQLite\CategorizedSourceCodeWithSyntaxInfo.cs" />
     <Compile Include="DataModels\SQLite\Enums\SavedSourceCodeType.cs" />
@@ -243,6 +245,7 @@
     <Compile Include="TemplateSelectors\ConsoleLineTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\IDEIndentationInfoTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\IDERunResultTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\SettingsSectionTemplateSelector.cs" />
     <Compile Include="UserControls\BottomEdgeInfoBar.xaml.cs">
       <DependentUpon>BottomEdgeInfoBar.xaml</DependentUpon>
     </Compile>
@@ -266,6 +269,9 @@
     </Compile>
     <Compile Include="UserControls\DataTemplates\JumpList\Changelog\ChangelogZoomedInHeaderTemplate.xaml.cs">
       <DependentUpon>ChangelogZoomedInHeaderTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\JumpList\Settings\SettingsZoomedInHeaderTemplate.xaml.cs">
+      <DependentUpon>SettingsZoomedInHeaderTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml.cs">
       <DependentUpon>SavedSourceCodeTemplate.xaml</DependentUpon>
@@ -300,8 +306,14 @@
     <Compile Include="UserControls\Flyouts\SaveCodePromptFlyout.xaml.cs">
       <DependentUpon>SaveCodePromptFlyout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\SettingsPanelFlyout.xaml.cs">
+    <Compile Include="UserControls\Flyouts\Settings\SettingsPanelFlyout.xaml.cs">
       <DependentUpon>SettingsPanelFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\Settings\Sections\IDESettingsSection.xaml.cs">
+      <DependentUpon>IDESettingsSection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\Settings\Sections\UISettingsSection.xaml.cs">
+      <DependentUpon>UISettingsSection.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\IconBoxToolkit\IconBox.xaml.cs">
       <DependentUpon>IconBox.xaml</DependentUpon>
@@ -376,12 +388,15 @@
     <Compile Include="UserControls\VirtualKeyboard\Controls\KeyboardButton.xaml.cs">
       <DependentUpon>KeyboardButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Abstract\JumpListViewModelBase.cs" />
+    <Compile Include="ViewModels\Abstract\JumpList\DeferredJumpListViewModelBase.cs" />
+    <Compile Include="ViewModels\Abstract\JumpList\JumpListViewModelBase.cs" />
+    <Compile Include="ViewModels\Abstract\JumpList\SyncJumpListViewModelBase.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\ChangelogViewFlyoutViewModel.cs" />
     <Compile Include="ViewModels\CompactCharactersViewerControlViewModel.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\IDERunResultFlyoutViewModel.cs" />
-    <Compile Include="ViewModels\FlyoutsViewModels\SettingsPanelFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\Settings\SettingsJumpListViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\Settings\SettingsViewModel.cs" />
     <Compile Include="ViewModels\IDEViewModel.cs" />
     <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\LocalSourceCodesBrowserFlyoutViewModel.cs" />
@@ -576,6 +591,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\DataTemplates\JumpList\Settings\SettingsZoomedInHeaderTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -648,7 +667,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Flyouts\SettingsPanelFlyout.xaml">
+    <Page Include="UserControls\Flyouts\Settings\SettingsPanelFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\Settings\Sections\IDESettingsSection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\Settings\Sections\UISettingsSection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -773,6 +800,7 @@
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

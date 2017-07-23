@@ -4,11 +4,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.ViewModels.Abstract;
+using Brainf_ck_sharp_UWP.ViewModels.Abstract.JumpList;
 
 namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
 {
-    public class ChangelogViewFlyoutViewModel : JumpListViewModelBase<ChangelogReleaseInfo, IReadOnlyList<string>>
+    public class ChangelogViewFlyoutViewModel : DeferredJumpListViewModelBase<ChangelogReleaseInfo, IReadOnlyList<string>>
     {
         // Private synchronization semaphore for the singleton changelog list
         private static readonly SemaphoreSlim ChangelogSemaphore = new SemaphoreSlim(1);

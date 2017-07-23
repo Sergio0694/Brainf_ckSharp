@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en-US" target-language="it" original="BRAINF_CK-SHARP.UWP/STRINGS/EN-US/RESOURCES.RESW" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
     <header>
@@ -678,6 +678,18 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         <trans-unit id="ShowStatusBarTitle.Text" translate="yes" xml:space="preserve">
           <source>Show status bar</source>
           <target state="translated">Mostra status bar</target>
+        </trans-unit>
+        <trans-unit id="LowercaseAvailableSettings" translate="yes" xml:space="preserve">
+          <source>available settings</source>
+          <target state="translated">impostazioni disponibili</target>
+        </trans-unit>
+        <trans-unit id="LowercaseSingleAvailableSettings" translate="yes" xml:space="preserve">
+          <source>available setting</source>
+          <target state="translated">impostazione disponibile</target>
+        </trans-unit>
+        <trans-unit id="ThemesPackLocked" translate="yes" xml:space="preserve">
+          <source>themes pack locked</source>
+          <target state="translated">pacchetto temi bloccato</target>
         </trans-unit>
       </group>
     </body>

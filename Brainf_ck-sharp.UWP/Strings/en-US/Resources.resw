@@ -623,4 +623,13 @@ This way he'll be able to help you!</value>
   <data name="ShowStatusBarTitle.Text" xml:space="preserve">
     <value>Show status bar</value>
   </data>
+  <data name="LowercaseAvailableSettings" xml:space="preserve">
+    <value>available settings</value>
+  </data>
+  <data name="LowercaseSingleAvailableSettings" xml:space="preserve">
+    <value>available setting</value>
+  </data>
+  <data name="ThemesPackLocked" xml:space="preserve">
+    <value>themes pack locked</value>
+  </data>
 </root>

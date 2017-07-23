@@ -1,0 +1,199 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings.Sections.IDESettingsSection"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
+    xmlns:helpers="using:Brainf_ck_sharp_UWP.Helpers"
+    xmlns:ideThemes="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes"
+    xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
+    mc:Ignorable="d"
+    d:DesignHeight="640"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+
+        <!--Visibility converter-->
+        <converters:BoolToInvertedVisibilityConverter x:Key="InvertedConverter"/>
+    </UserControl.Resources>
+
+    <StackPanel>
+        
+        <!--Autosave-->
+        <TextBlock
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"
+            x:Uid="AutosaveTitle"
+            Text="Autosave loaded documents"/>
+        <ToggleSwitch IsOn="{Binding ViewModel.AutosaveDocuments, Mode=TwoWay}"/>
+
+        <!--Auto indent-->
+        <TextBlock
+            Margin="0,8,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"
+            x:Uid="AutoIndentTitle"
+            Text="Auto indent brackets"/>
+        <ToggleSwitch IsOn="{Binding ViewModel.AutoindentBrackets, Mode=TwoWay}"/>
+
+        <!--Brackets style-->
+        <TextBlock
+            Margin="0,8,0,0"
+            Text="Brackets style"
+            x:Uid="BracketsStyleTitle"/>
+        <inheritedControls:AnimatedComboBox
+            Margin="0,8,0,0"
+            ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
+            ItemsSource="{Binding ViewModel.BracketsStyleOptions}"
+            SelectedIndex="{Binding ViewModel.BracketsStyleSelectedIndex, Mode=TwoWay}"
+            IsEnabled="{Binding ViewModel.AutoindentBrackets, Mode=OneWay}"
+            MinWidth="180"/>
+
+        <!--Tab length-->
+        <TextBlock
+            Margin="0,16,0,0"
+            Text="Tab length"
+            x:Uid="TabLength"/>
+        <inheritedControls:AnimatedComboBox
+            Margin="0,8,0,0"
+            ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
+            ItemsSource="{Binding ViewModel.TabLengthOptions}"
+            SelectedIndex="{Binding ViewModel.TabLengthSelectedIndex, Mode=TwoWay}"
+            MinWidth="180"/>
+
+        <!--Render whitespaces-->
+        <TextBlock
+            Margin="0,16,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"
+            x:Uid="RenderWhitespacesTitle"
+            Text="Render whitespaces"/>
+        <ToggleSwitch IsOn="{Binding ViewModel.RenderWhitespaces, Mode=TwoWay}"/>
+
+        <!--Font-->
+        <TextBlock
+            Margin="0,8,0,0"
+            Text="Font type"
+            x:Uid="FontTypeTitle"/>
+        <inheritedControls:AnimatedComboBox
+            Margin="0,8,0,0"
+            ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
+            ItemsSource="{Binding ViewModel.AvailableFonts}"
+            SelectedIndex="{Binding ViewModel.FontFamilySelectedIndex, Mode=TwoWay}"
+            MinWidth="180"
+            Height="40">
+            <inheritedControls:AnimatedComboBox.ItemTemplate>
+                <DataTemplate>
+                    <Viewbox 
+                        Margin="0,4,0,4"
+                        HorizontalAlignment="Left"
+                        StretchDirection="DownOnly">
+                        <TextBlock 
+                            Text="{Binding Name}"
+                            FontFamily="{Binding Family}"
+                            TextTrimming="CharacterEllipsis"
+                            FontSize="16"
+                            TextWrapping="NoWrap"
+                            IsTextScaleFactorEnabled="False"/>
+                    </Viewbox>
+                </DataTemplate>
+            </inheritedControls:AnimatedComboBox.ItemTemplate>
+        </inheritedControls:AnimatedComboBox>
+
+        <!--IDE theme-->
+        <TextBlock
+            Margin="0,16,0,0"
+            Text="Theme"
+            x:Uid="IDETheme"/>
+        <Grid Margin="0,8,0,00">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Theme selector-->
+            <inheritedControls:AnimatedComboBox
+                ItemsSource="{Binding ViewModel.AvailableIDEThemes}"
+                SelectedIndex="{Binding ViewModel.IDEThemeSelectedIndex, Mode=TwoWay}"
+                ItemContainerStyle="{StaticResource ComboBoxWithoutSelectedVisualStatesStyle}"
+                MinWidth="180"
+                MinHeight="108"
+                Padding="1,1,0,1"
+                x:Name="ThemeSelector"
+                IsHitTestVisible="{Binding ViewModel.ThemesSelectorEnabled, Mode=OneWay, FallbackValue=False}">
+                <inheritedControls:AnimatedComboBox.ItemTemplateSelector>
+                    <helpers:ComboBoxDataTemplateSelector>
+                        <helpers:ComboBoxDataTemplateSelector.SelectedTemplate>
+                            <DataTemplate>
+                                <ideThemes:IDEThemePreviewTemplate 
+                                    MinWidth="180"
+                                    MinHeight="108"
+                                    Theme="{Binding}"/>
+                            </DataTemplate>
+                        </helpers:ComboBoxDataTemplateSelector.SelectedTemplate>
+                        <helpers:ComboBoxDataTemplateSelector.DropDownTemplate>
+                            <DataTemplate>
+                                <ideThemes:IDEThemeDropDownPreviewTemplate 
+                                    MinWidth="180"
+                                    MinHeight="108"
+                                    Theme="{Binding}"/>
+                            </DataTemplate>
+                        </helpers:ComboBoxDataTemplateSelector.DropDownTemplate>
+                    </helpers:ComboBoxDataTemplateSelector>
+                </inheritedControls:AnimatedComboBox.ItemTemplateSelector>
+            </inheritedControls:AnimatedComboBox>
+
+            <!--Unlock button-->
+            <Grid
+                Width="{Binding ElementName=ThemeSelector, Path=ActualWidth}"
+                Height="{Binding ElementName=ThemeSelector, Path=ActualHeight}"
+                Grid.Column="0"
+                Background="#A0000000"
+                IsHitTestVisible="False"
+                Visibility="{Binding ViewModel.ThemesSelectorEnabled, Converter={StaticResource InvertedConverter}, Mode=OneWay, FallbackValue=Visible}"/>
+            <Button
+                Grid.Column="0"
+                Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
+                Width="{Binding ElementName=ThemeSelector, Path=ActualWidth}"
+                Height="{Binding ElementName=ThemeSelector, Path=ActualHeight}"
+                HorizontalAlignment="Left"
+                Visibility="{Binding ViewModel.ThemesUnlockButtonEnabled, Mode=OneWay, FallbackValue=Collapsed}"
+                Click="PurchaseButton_Click">
+                <Grid Background="Transparent">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            TextAlignment="Center"
+                            IsTextScaleFactorEnabled="False"
+                            Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                            Text="&#xE1F7;"
+                            FontFamily="Segoe MDL2 Assets"
+                            FontSize="32"/>
+                        <TextBlock
+                            Margin="0,8,0,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            TextAlignment="Center"
+                            IsTextScaleFactorEnabled="False"
+                            Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                            Text="Tap to unlock"
+                            FontSize="14"
+                            x:Uid="TapToUnlock"
+                            FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Grid>
+            </Button>
+
+            <!--Loading ring-->
+            <ProgressRing
+                Grid.Column="1"
+                IsActive="{Binding ViewModel.ThemesPackLicenseLoading, Mode=OneWay, FallbackValue=True}"
+                Width="24"
+                Height="24"
+                Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                Margin="24,0,0,0"
+                HorizontalAlignment="Left"/>
+        </Grid>
+    </StackPanel>
+</UserControl>
