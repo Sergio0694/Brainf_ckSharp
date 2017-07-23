@@ -20,7 +20,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         BracketsStyle,
         TabLength,
         SelectedIDETheme,
-        RenderWhitespaces
+        RenderWhitespaces,
         SelectedFontName
     }
 }

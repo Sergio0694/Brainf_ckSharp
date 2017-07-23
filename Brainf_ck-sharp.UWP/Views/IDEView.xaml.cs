@@ -121,17 +121,17 @@ namespace Brainf_ck_sharp_UWP.Views
                 ApplyCustomTabSpacing();
                 if (!message.ThemeChanged) DrawBracketGuides(null, true).Forget();
             }
-            
+
             // Update the render whitespaces setting
             if (message.WhitespacesChanged)
             {
                 bool renderWhitespaces = _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
-                if (renderWhitespaces) RenderControlCharacters();
+                if (renderWhitespaces && !message.FontChanged) RenderControlCharacters();
                 else ClearControlCharacters();
             }
-            
+
             // Update the font type if needed
-            if (fontChanged)
+            if (message.FontChanged)
             {
                 // Refresh the text UI
                 String name = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
@@ -143,6 +143,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     UpdateCursorRectangleAndIndicatorUI(); // Adjust the cursor position (a different font can have a different height)
                     AdjustIndentationIndicatorsVerticalStretch();
                     AdjustGitDiffIndicatorsVerticalStretch();
+                    if (_WhitespacesRenderingEnabled) RenderControlCharacters();
                 }
             }
 
