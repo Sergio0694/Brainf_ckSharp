@@ -7,6 +7,7 @@
     xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
     xmlns:templateSelectors="using:Brainf_ck_sharp_UWP.TemplateSelectors"
     xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
+    xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -252,6 +253,9 @@
                     TextAlignment="Right"
                     TextTrimming="CharacterEllipsis"
                     x:Name="LineBlock"/>
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="LinesGridTransform"/>
+                </Grid.RenderTransform>
             </Grid>
         </Canvas>
         
@@ -282,27 +286,41 @@
                 ScrollViewer.VerticalScrollMode="Disabled"
                 IsHitTestVisible="False"
                 x:Name="IndentationInfoList"
-                SizeChanged="IndentationInfoList_OnSizeChanged"/>
+                SizeChanged="IndentationInfoList_OnSizeChanged">
+                <ListView.RenderTransform>
+                    <TranslateTransform x:Name="IndentationInfoListTransform"/>
+                </ListView.RenderTransform>
+            </ListView>
         </Canvas>
-        
-        <!--Breakpoints line indicators-->
+
+        <!--Whitespace indicators-->
         <Canvas
             Grid.Column="4"
-            x:Name="BreakLinesCanvas"
             IsHitTestVisible="False"
-            SizeChanged="BreakLinesCanvas_OnSizeChanged"/>
+            SizeChanged="WhitespaceParentCanvas_OnSizeChanged">
+            <Canvas.Clip>
+                <RectangleGeometry x:Name="ControlCharactersClip"/>
+            </Canvas.Clip>
+            <xaml:CanvasControl 
+                x:Name="WhitespacesCanvas"
+                Draw="WhitespacesCanvas_OnDraw"/>
+        </Canvas>
 
         <!--Canvas with the column guides-->
         <Grid
             Grid.Column="4"
             IsHitTestVisible="False"
-            SizeChanged="BracketsGrid_SizeChanged"
             x:Name="BracketsParentGrid"
+            SizeChanged="BracketsGrid_SizeChanged"
             Canvas.ZIndex="0">
             <Grid.Clip>
                 <RectangleGeometry x:Name="BracketsClip"/>
             </Grid.Clip>
-            <Canvas x:Name="BracketGuidesCanvas"/>
+            <Canvas x:Name="BracketGuidesCanvas">
+                <Canvas.RenderTransform>
+                    <TranslateTransform x:Name="BracketGuidesCanvasTransform"/>
+                </Canvas.RenderTransform>
+            </Canvas>
         </Grid>
         
         <!--Current line cursor-->
@@ -330,20 +348,29 @@
             
             <!--Virtual cursor-->
             <Rectangle
-                Canvas.ZIndex="2"
+                Canvas.ZIndex="3"
                 Width="1"
                 Height="20"
                 Fill="LightGray"
                 x:Name="CursorRectangle">
                 <Rectangle.RenderTransform>
-                    <TranslateTransform x:Name="CursorTransform"/>
+                    <TranslateTransform 
+                        X="4"
+                        x:Name="CursorTransform"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
         </Canvas>
 
+        <!--Breakpoints line indicators-->
+        <Canvas
+            Canvas.ZIndex="2"
+            Grid.Column="4"
+            x:Name="BreakLinesCanvas"
+            IsHitTestVisible="False"/>
+
         <!--Code box-->
         <inheritedControls:RichEditBoxWithVerticalOffsetInfo
-            Canvas.ZIndex="3"
+            Canvas.ZIndex="4"
             Grid.Column="4"
             Style="{StaticResource TransparentEditBox}"
             x:Name="EditBox"
@@ -357,6 +384,7 @@
             GotFocus="EditBox_OnGotFocus"
             LostFocus="EditBox_OnLostFocus"
             Paste="EditBox_OnPaste"
+            TextSizeChanged="EditBox_OnTextSizeChanged"
             Margin="0"/>
     </Grid>
 </UserControl>

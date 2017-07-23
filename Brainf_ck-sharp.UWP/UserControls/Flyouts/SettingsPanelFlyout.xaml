@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
     x:Class="Brainf_ck_sharp_UWP.UserControls.Flyouts.SettingsPanelFlyout"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -12,171 +12,235 @@
     d:DesignHeight="800"
     d:DesignWidth="400">
     <UserControl.Resources>
+        
+        <!--Visibility converter-->
         <converters:BoolToInvertedVisibilityConverter x:Key="InvertedConverter"/>
+        
+        <!--Section style-->
+        <Style TargetType="TextBlock" x:Key="SectionTitleStyle">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="{ThemeResource SystemControlHighlightAccentBrush}"/>
+        </Style>
     </UserControl.Resources>
 
     <!--Root-->
-    <StackPanel Margin="12,12,16,0">
-        
-        <!--IDE-->
-        <TextBlock
-            Text="IDE"
-            FontWeight="Bold"
-            FontSize="20"
-            Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+    <ScrollViewer>
+        <StackPanel Margin="12,12,16,0">
 
-        <!--Autosave-->
-        <TextBlock
-            Margin="0,8,0,0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Center"
-            x:Uid="AutosaveTitle"
-            Text="Autosave loaded documents"/>
-        <ToggleSwitch IsOn="{x:Bind ViewModel.AutosaveDocuments, Mode=TwoWay}"/>
+            <!--IDE-->
+            <TextBlock
+                Text="IDE"
+                Style="{StaticResource SectionTitleStyle}"/>
 
-        <!--Auto indent-->
-        <TextBlock
-            Margin="0,8,0,0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Center"
-            x:Uid="AutoIndentTitle"
-            Text="Auto indent brackets"/>
-        <ToggleSwitch IsOn="{x:Bind ViewModel.AutoindentBrackets, Mode=TwoWay}"/>
+            <!--Autosave-->
+            <TextBlock
+                Margin="0,8,0,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                x:Uid="AutosaveTitle"
+                Text="Autosave loaded documents"/>
+            <ToggleSwitch IsOn="{x:Bind ViewModel.AutosaveDocuments, Mode=TwoWay}"/>
 
-        <!--Brackets style-->
-        <TextBlock
-            Margin="0,4,0,0"
-            Text="Brackets style"
-            x:Uid="BracketsStyleTitle"/>
-        <inheritedControls:AnimatedComboBox
-            Margin="0,8,0,0"
-            ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
-            ItemsSource="{x:Bind ViewModel.BracketsStyleOptions}"
-            SelectedIndex="{x:Bind ViewModel.BracketsStyleSelectedIndex, Mode=TwoWay}"
-            IsEnabled="{x:Bind ViewModel.AutoindentBrackets, Mode=OneWay}"
-            MinWidth="180"/>
+            <!--Auto indent-->
+            <TextBlock
+                Margin="0,8,0,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                x:Uid="AutoIndentTitle"
+                Text="Auto indent brackets"/>
+            <ToggleSwitch IsOn="{x:Bind ViewModel.AutoindentBrackets, Mode=TwoWay}"/>
 
-        <!--Tab length-->
-        <TextBlock
-            Margin="0,12,0,0"
-            Text="Tab length"
-            x:Uid="TabLength"/>
-        <inheritedControls:AnimatedComboBox
-            Margin="0,8,0,0"
-            ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
-            ItemsSource="{x:Bind ViewModel.TabLengthOptions}"
-            SelectedIndex="{x:Bind ViewModel.TabLengthSelectedIndex, Mode=TwoWay}"
-            MinWidth="180"/>
-
-        <!--UI-->
-        <TextBlock
-            Margin="0,16,0,0"
-            Text="UI"
-            FontWeight="Bold"
-            FontSize="20"
-            Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
-
-        <!--Blur mode-->
-        <TextBlock
-            Margin="0,8,0,0"
-            x:Uid="BlurModeTitle"
-            Text="Preferred blur mode"/>
-        <inheritedControls:AnimatedComboBox
-            Margin="0,8,0,0"
-            ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
-            ItemsSource="{x:Bind ViewModel.BlurModeOptions}"
-            SelectedIndex="{x:Bind ViewModel.BlurModeSelectedIndex, Mode=TwoWay}"
-            IsEnabled="{x:Bind ViewModel.HostBlurOptionSupported}"
-            MinWidth="180"/>
-
-        <!--IDE theme-->
-        <TextBlock
-            Margin="0,12,0,0"
-            Text="IDE theme"
-            x:Uid="IDETheme"/>
-        <Grid Margin="0,8,0,20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            
-            <!--Theme selector-->
+            <!--Brackets style-->
+            <TextBlock
+                Margin="0,8,0,0"
+                Text="Brackets style"
+                x:Uid="BracketsStyleTitle"/>
             <inheritedControls:AnimatedComboBox
-                ItemsSource="{x:Bind ViewModel.AvailableIDEThemes}"
-                SelectedIndex="{x:Bind ViewModel.IDEThemeSelectedIndex, Mode=TwoWay}"
-                ItemContainerStyle="{StaticResource ComboBoxWithoutSelectedVisualStatesStyle}"
+                Margin="0,8,0,0"
+                ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
+                ItemsSource="{x:Bind ViewModel.BracketsStyleOptions}"
+                SelectedIndex="{x:Bind ViewModel.BracketsStyleSelectedIndex, Mode=TwoWay}"
+                IsEnabled="{x:Bind ViewModel.AutoindentBrackets, Mode=OneWay}"
+                MinWidth="180"/>
+
+            <!--Tab length-->
+            <TextBlock
+                Margin="0,16,0,0"
+                Text="Tab length"
+                x:Uid="TabLength"/>
+            <inheritedControls:AnimatedComboBox
+                Margin="0,8,0,0"
+                ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
+                ItemsSource="{x:Bind ViewModel.TabLengthOptions}"
+                SelectedIndex="{x:Bind ViewModel.TabLengthSelectedIndex, Mode=TwoWay}"
+                MinWidth="180"/>
+
+            <!--Render whitespaces-->
+            <TextBlock
+                Margin="0,16,0,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                x:Uid="RenderWhitespacesTitle"
+                Text="Render whitespaces"/>
+            <ToggleSwitch IsOn="{x:Bind ViewModel.RenderWhitespaces, Mode=TwoWay}"/>
+
+            <!--Font-->
+            <TextBlock
+                Margin="0,8,0,0"
+                Text="Font type"
+                x:Uid="FontTypeTitle"/>
+            <inheritedControls:AnimatedComboBox
+                Margin="0,8,0,0"
+                ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
+                ItemsSource="{x:Bind ViewModel.AvailableFonts}"
+                SelectedIndex="{x:Bind ViewModel.FontFamilySelectedIndex, Mode=TwoWay}"
                 MinWidth="180"
-                MinHeight="108"
-                Padding="1,1,0,1"
-                x:Name="ThemeSelector"
-                IsHitTestVisible="{x:Bind ViewModel.ThemesSelectorEnabled, Mode=OneWay, FallbackValue=False}">
-                <inheritedControls:AnimatedComboBox.ItemTemplateSelector>
-                    <helpers:ComboBoxDataTemplateSelector>
-                        <helpers:ComboBoxDataTemplateSelector.SelectedTemplate>
-                            <DataTemplate>
-                                <ideThemes:IDEThemePreviewTemplate Theme="{Binding}"/>
-                            </DataTemplate>
-                        </helpers:ComboBoxDataTemplateSelector.SelectedTemplate>
-                        <helpers:ComboBoxDataTemplateSelector.DropDownTemplate>
-                            <DataTemplate>
-                                <ideThemes:IDEThemeDropDownPreviewTemplate Theme="{Binding}"/>
-                            </DataTemplate>
-                        </helpers:ComboBoxDataTemplateSelector.DropDownTemplate>
-                    </helpers:ComboBoxDataTemplateSelector>
-                </inheritedControls:AnimatedComboBox.ItemTemplateSelector>
+                Height="40">
+                <inheritedControls:AnimatedComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Viewbox 
+                            Margin="0,4,0,4"
+                            HorizontalAlignment="Left"
+                            StretchDirection="DownOnly">
+                            <TextBlock 
+                                Text="{Binding Name}"
+                                FontFamily="{Binding Family}"
+                                TextTrimming="CharacterEllipsis"
+                                FontSize="16"
+                                TextWrapping="NoWrap"
+                                IsTextScaleFactorEnabled="False"/>
+                        </Viewbox>
+                    </DataTemplate>
+                </inheritedControls:AnimatedComboBox.ItemTemplate>
             </inheritedControls:AnimatedComboBox>
 
-            <!--Unlock button-->
-            <Grid
-                Width="{Binding ElementName=ThemeSelector, Path=ActualWidth}"
-                Height="{Binding ElementName=ThemeSelector, Path=ActualHeight}"
-                Grid.Column="0"
-                Background="#60000000"
-                IsHitTestVisible="False"
-                Visibility="{x:Bind ViewModel.ThemesSelectorEnabled, Converter={StaticResource InvertedConverter}, Mode=OneWay, FallbackValue=Visible}"/>
-            <Button
-                Grid.Column="0"
-                Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
-                Width="{Binding ElementName=ThemeSelector, Path=ActualWidth}"
-                Height="{Binding ElementName=ThemeSelector, Path=ActualHeight}"
-                HorizontalAlignment="Left"
-                Visibility="{x:Bind ViewModel.ThemesUnlockButtonEnabled, Mode=OneWay, FallbackValue=Collapsed}"
-                Click="{x:Bind ViewModel.TryPurchaseThemesPackAsync}">
-                <Grid Background="Transparent">
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            TextAlignment="Center"
-                            IsTextScaleFactorEnabled="False"
-                            Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
-                            Text="&#xE1F7;"
-                            FontFamily="Segoe MDL2 Assets"
-                            FontSize="32"/>
-                        <TextBlock
-                            Margin="0,8,0,0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            TextAlignment="Center"
-                            IsTextScaleFactorEnabled="False"
-                            Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
-                            Text="Tap to unlock"
-                            FontSize="14"
-                            x:Uid="TapToUnlock"
-                            FontWeight="SemiBold"/>
-                    </StackPanel>
-                </Grid>
-            </Button>
-            
-            <!--Loading ring-->
-            <ProgressRing
-                Grid.Column="1"
-                IsActive="{x:Bind ViewModel.ThemesPackLicenseLoading, Mode=OneWay, FallbackValue=True}"
-                Width="24"
-                Height="24"
-                Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
-                Margin="24,0,0,0"
-                HorizontalAlignment="Left"/>
-        </Grid>
-    </StackPanel>
+            <!--IDE theme-->
+            <TextBlock
+                Margin="0,16,0,0"
+                Text="Theme"
+                x:Uid="IDETheme"/>
+            <Grid Margin="0,8,0,00">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Theme selector-->
+                <inheritedControls:AnimatedComboBox
+                    ItemsSource="{x:Bind ViewModel.AvailableIDEThemes}"
+                    SelectedIndex="{x:Bind ViewModel.IDEThemeSelectedIndex, Mode=TwoWay}"
+                    ItemContainerStyle="{StaticResource ComboBoxWithoutSelectedVisualStatesStyle}"
+                    MinWidth="180"
+                    MinHeight="108"
+                    Padding="1,1,0,1"
+                    x:Name="ThemeSelector"
+                    IsHitTestVisible="{x:Bind ViewModel.ThemesSelectorEnabled, Mode=OneWay, FallbackValue=False}">
+                    <inheritedControls:AnimatedComboBox.ItemTemplateSelector>
+                        <helpers:ComboBoxDataTemplateSelector>
+                            <helpers:ComboBoxDataTemplateSelector.SelectedTemplate>
+                                <DataTemplate>
+                                    <ideThemes:IDEThemePreviewTemplate 
+                                        MinWidth="180"
+                                        MinHeight="108"
+                                        Theme="{Binding}"/>
+                                </DataTemplate>
+                            </helpers:ComboBoxDataTemplateSelector.SelectedTemplate>
+                            <helpers:ComboBoxDataTemplateSelector.DropDownTemplate>
+                                <DataTemplate>
+                                    <ideThemes:IDEThemeDropDownPreviewTemplate 
+                                        MinWidth="180"
+                                        MinHeight="108"
+                                        Theme="{Binding}"/>
+                                </DataTemplate>
+                            </helpers:ComboBoxDataTemplateSelector.DropDownTemplate>
+                        </helpers:ComboBoxDataTemplateSelector>
+                    </inheritedControls:AnimatedComboBox.ItemTemplateSelector>
+                </inheritedControls:AnimatedComboBox>
+
+                <!--Unlock button-->
+                <Grid
+                    Width="{Binding ElementName=ThemeSelector, Path=ActualWidth}"
+                    Height="{Binding ElementName=ThemeSelector, Path=ActualHeight}"
+                    Grid.Column="0"
+                    Background="#A0000000"
+                    IsHitTestVisible="False"
+                    Visibility="{x:Bind ViewModel.ThemesSelectorEnabled, Converter={StaticResource InvertedConverter}, Mode=OneWay, FallbackValue=Visible}"/>
+                <Button
+                    Grid.Column="0"
+                    Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
+                    Width="{Binding ElementName=ThemeSelector, Path=ActualWidth}"
+                    Height="{Binding ElementName=ThemeSelector, Path=ActualHeight}"
+                    HorizontalAlignment="Left"
+                    Visibility="{x:Bind ViewModel.ThemesUnlockButtonEnabled, Mode=OneWay, FallbackValue=Collapsed}"
+                    Click="{x:Bind ViewModel.TryPurchaseThemesPackAsync}">
+                    <Grid Background="Transparent">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                TextAlignment="Center"
+                                IsTextScaleFactorEnabled="False"
+                                Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                                Text="&#xE1F7;"
+                                FontFamily="Segoe MDL2 Assets"
+                                FontSize="32"/>
+                            <TextBlock
+                                Margin="0,8,0,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                TextAlignment="Center"
+                                IsTextScaleFactorEnabled="False"
+                                Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                                Text="Tap to unlock"
+                                FontSize="14"
+                                x:Uid="TapToUnlock"
+                                FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Grid>
+                </Button>
+
+                <!--Loading ring-->
+                <ProgressRing
+                    Grid.Column="1"
+                    IsActive="{x:Bind ViewModel.ThemesPackLicenseLoading, Mode=OneWay, FallbackValue=True}"
+                    Width="24"
+                    Height="24"
+                    Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                    Margin="24,0,0,0"
+                    HorizontalAlignment="Left"/>
+            </Grid>
+
+            <!--UI-->
+            <TextBlock
+                Margin="0,20,0,0"
+                Text="UI"
+                Style="{StaticResource SectionTitleStyle}"/>
+
+            <!--Blur mode-->
+            <TextBlock
+                Margin="0,8,0,0"
+                x:Uid="BlurModeTitle"
+                Text="Preferred blur mode"/>
+            <inheritedControls:AnimatedComboBox
+                Margin="0,8,0,0"
+                ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
+                ItemsSource="{x:Bind ViewModel.BlurModeOptions}"
+                SelectedIndex="{x:Bind ViewModel.BlurModeSelectedIndex, Mode=TwoWay}"
+                IsEnabled="{x:Bind ViewModel.HostBlurOptionSupported}"
+                MinWidth="180"/>
+
+            <!--Show status bar-->
+            <TextBlock
+                Margin="0,16,0,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                x:Uid="ShowStatusBarTitle"
+                Text="Show status bar"/>
+            <ToggleSwitch 
+                IsEnabled="{x:Bind ViewModel.StatusBarSupported}"
+                IsOn="{x:Bind ViewModel.ShowStatusBar, Mode=TwoWay}"
+                Margin="0,0,0,12"/>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

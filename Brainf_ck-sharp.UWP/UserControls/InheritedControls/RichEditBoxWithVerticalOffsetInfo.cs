@@ -8,6 +8,7 @@ using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using JetBrains.Annotations;
 
@@ -55,13 +56,27 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            _TemplateScrollViewer = GetTemplateChild("ContentScroller") as ScrollViewer;
+            _TemplateScrollViewer = GetTemplateChild("ContentScroller").To<ScrollViewer>();
+            _TextPresenter = GetTemplateChild("ContentElement").To<ContentPresenter>();
+            _TextPresenter.SizeChanged += _TextPresenter_SizeChanged;
         }
 
         /// <summary>
-        /// Gets the inner ScrollViewer, once the control has been added to the visual tree and loaded
+        /// Raised whenever the size of the inner text changes
+        /// </summary>
+        public event SizeChangedEventHandler TextSizeChanged;
+
+        private void _TextPresenter_SizeChanged(object sender, SizeChangedEventArgs e) => TextSizeChanged?.Invoke(sender, e);
+
+        /// <summary>
+        /// Gets the inner <see cref="ScrollViewer"/>, once the control has been added to the visual tree and loaded
         /// </summary>
         private ScrollViewer _TemplateScrollViewer;
+
+        /// <summary>
+        /// Gets the inner <see cref="ContentPresenter"/>, once the control has been added to the visual tree and loaded
+        /// </summary>
+        private ContentPresenter _TextPresenter;
 
         /// <summary>
         /// Gets the inner <see cref="ScrollViewer"/> inside the control
@@ -153,6 +168,19 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
             ITextParagraphFormat format = Document.GetDefaultParagraphFormat();
             format.ClearAllTabs();
             Document.SetDefaultParagraphFormat(format);
+        }
+
+        /// <summary>
+        /// Sets the font for the text displayed in the control
+        /// </summary>
+        /// <param name="name">The name of the new font to use</param>
+        /// <remarks>The input name is not validated and should be checked before calling this method</remarks>
+        public void SetFontFamily([NotNull] String name)
+        {
+            ITextCharacterFormat format = Document.GetDefaultCharacterFormat();
+            format.Name = name;
+            Document.SetDefaultCharacterFormat(format);
+            Document.GetRange(0, int.MaxValue).CharacterFormat.Name = name;
         }
     }
 }

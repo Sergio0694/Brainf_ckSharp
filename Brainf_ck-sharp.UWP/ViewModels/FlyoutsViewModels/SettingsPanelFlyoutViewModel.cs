@@ -10,6 +10,7 @@ using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -26,6 +27,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         {
             IDEThemeSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme));
             AvailableIDEThemes[IDEThemeSelectedIndex].IsSelected = true;
+            String fontName = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+            _FontFamilySelectedIndex = AvailableFonts.IndexOf(f => f.Name.Equals(String.IsNullOrEmpty(fontName) ? "Segoe UI" : fontName));
             if (!ThemesSelectorEnabled)
             {
                 // Update the add-on license when needed
@@ -141,6 +144,47 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 if (Set(ref _BracketsStyleSelectedIndex, value))
                 {
                     AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.BracketsStyle), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
+
+        private bool _RenderWhitespaces = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
+
+        /// <summary>
+        /// Gets or sets whether or not the IDE should render the control characters too
+        /// </summary>
+        public bool RenderWhitespaces
+        {
+            get => _RenderWhitespaces;
+            set
+            {
+                if (Set(ref _RenderWhitespaces, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.RenderWhitespaces), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the collection of the available font families for the IDE
+        /// </summary>
+        [NotNull]
+        public IReadOnlyList<InstalledFont> AvailableFonts { get; } = InstalledFont.Fonts;
+
+        private int _FontFamilySelectedIndex;
+
+        /// <summary>
+        /// Gets or sets the selected index for the IDE font family
+        /// </summary>
+        public int FontFamilySelectedIndex
+        {
+            get => _FontFamilySelectedIndex;
+            set
+            {
+                if (Set(ref _FontFamilySelectedIndex, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.SelectedFontName), AvailableFonts[value].Name, SettingSaveMode.OverwriteIfExisting);
+                    Messenger.Default.Send(new IDEThemePreviewFontChangedMessage(AvailableFonts[value]));
                 }
             }
         }
@@ -289,5 +333,29 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         /// Gets whether or not the current device is not a mobile phone
         /// </summary>
         public bool HostBlurOptionSupported => !ApiInformationHelper.IsMobileDevice;
+
+        private bool _ShowStatusBar = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ShowStatusBar));
+
+        /// <summary>
+        /// Gets or sets whether or not the status bar should be displayed on mobile phones
+        /// </summary>
+        public bool ShowStatusBar
+        {
+            get => _ShowStatusBar;
+            set
+            {
+                if (Set(ref _ShowStatusBar, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.ShowStatusBar), value, SettingSaveMode.OverwriteIfExisting);
+                    if (value) StatusBarHelper.TryShowAsync().Forget();
+                    else StatusBarHelper.HideAsync().Forget();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets whether or not the current device is a mobile phone
+        /// </summary>
+        public bool StatusBarSupported => ApiInformationHelper.IsMobileDevice;
     }
 }

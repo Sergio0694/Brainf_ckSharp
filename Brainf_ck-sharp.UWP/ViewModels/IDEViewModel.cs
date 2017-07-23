@@ -9,6 +9,7 @@ using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.EventArgs;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
+using Brainf_ck_sharp_UWP.DataModels.Misc.CharactersInfo;
 using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
@@ -345,7 +346,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// Updates the indentation info for a given state
         /// </summary>
         /// <param name="brackets">The collection of brackets and their position in the current text</param>
-        public async Task UpdateIndentationInfo([CanBeNull] IReadOnlyList<IndentationCoordinateEntry> brackets)
+        public async Task UpdateIndentationInfo([CanBeNull] IReadOnlyList<CharacterWithCoordinates> brackets)
         {
             // // Check the info is available
             if (brackets == null || brackets.Count == 0)
@@ -366,23 +367,23 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 for (int i = 1; i <= max; i++)
                 {
                     // Parse the first item
-                    IReadOnlyList<IndentationCoordinateEntry> entries = brackets.Where(info => info.Position.Y == i).ToArray();
+                    IReadOnlyList<CharacterWithCoordinates> entries = brackets.Where(info => info.Position.Y == i).ToArray();
                     if (entries.Count == 0)
                     {
                         temp.Add(new IDEIndentationLineInfo(depth == 0 ? IDEIndentationInfoLineType.Empty : IDEIndentationInfoLineType.Straight));
                     }
-                    else if (entries.Count > 1 && entries.Sum(entry => entry.Bracket == '[' ? 1 : -1) == 0)
+                    else if (entries.Count > 1 && entries.Sum(entry => entry.Character == '[' ? 1 : -1) == 0)
                     {
                         // Edge case: multiple brackets opened and closed on the same line
                         temp.Add(new IDEIndentationOpenBracketLineInfo(depth + 1, true));
                         continue;
                     }
-                    else if (entries[0].Bracket == '[')
+                    else if (entries[0].Character == '[')
                     {
                         depth++;
                         temp.Add(new IDEIndentationOpenBracketLineInfo(depth, false));
                     }
-                    else if (entries[0].Bracket == ']')
+                    else if (entries[0].Character == ']')
                     {
                         depth--;
                         temp.Add(new IDEIndentationLineInfo(IDEIndentationInfoLineType.ClosedBracket));
@@ -391,10 +392,10 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     // Edge case, multiple brackets on the same line
                     if (entries.Count > 1)
                     {
-                        foreach (IndentationCoordinateEntry entry in entries.Skip(1))
+                        foreach (CharacterWithCoordinates entry in entries.Skip(1))
                         {
-                            if (entry.Bracket == '[') depth++;
-                            else if (entry.Bracket == ']') depth--;
+                            if (entry.Character == '[') depth++;
+                            else if (entry.Character == ']') depth--;
                         }
                     }
                 }

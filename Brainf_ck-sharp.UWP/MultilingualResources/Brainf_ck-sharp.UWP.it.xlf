@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en-US" target-language="it" original="BRAINF_CK-SHARP.UWP/STRINGS/EN-US/RESOURCES.RESW" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
     <header>
@@ -666,6 +666,18 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         <trans-unit id="AutosaveTitle.Text" translate="yes" xml:space="preserve">
           <source>Autosave loaded documents</source>
           <target state="translated">Salvataggio automatico</target>
+        </trans-unit>
+        <trans-unit id="FontTypeTitle.Text" translate="yes" xml:space="preserve">
+          <source>Font type</source>
+          <target state="translated">Tipo carattere</target>
+        </trans-unit>
+        <trans-unit id="IDETheme.Text" translate="yes" xml:space="preserve">
+          <source>Theme</source>
+          <target state="translated">Tema</target>
+        </trans-unit>
+        <trans-unit id="ShowStatusBarTitle.Text" translate="yes" xml:space="preserve">
+          <source>Show status bar</source>
+          <target state="translated">Mostra status bar</target>
         </trans-unit>
       </group>
     </body>
