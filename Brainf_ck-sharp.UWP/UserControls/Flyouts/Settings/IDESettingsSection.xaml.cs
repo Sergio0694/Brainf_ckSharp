@@ -12,6 +12,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings
             this.InitializeComponent();
         }
 
+        // Invokes the method to try to purchase the IDE themes pack
         private void PurchaseButton_Click(object sender, RoutedEventArgs e)
         {
             DataContext.To<SettingsViewModel>()?.TryPurchaseThemesPackAsync();

@@ -25,7 +25,7 @@
             VerticalAlignment="Center"
             x:Uid="AutosaveTitle"
             Text="Autosave loaded documents"/>
-        <ToggleSwitch IsOn="{Binding AutosaveDocuments, Mode=TwoWay}"/>
+        <ToggleSwitch IsOn="{Binding ViewModel.AutosaveDocuments, Mode=TwoWay}"/>
 
         <!--Auto indent-->
         <TextBlock
@@ -34,7 +34,7 @@
             VerticalAlignment="Center"
             x:Uid="AutoIndentTitle"
             Text="Auto indent brackets"/>
-        <ToggleSwitch IsOn="{Binding AutoindentBrackets, Mode=TwoWay}"/>
+        <ToggleSwitch IsOn="{Binding ViewModel.AutoindentBrackets, Mode=TwoWay}"/>
 
         <!--Brackets style-->
         <TextBlock
@@ -44,9 +44,9 @@
         <inheritedControls:AnimatedComboBox
             Margin="0,8,0,0"
             ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
-            ItemsSource="{Binding BracketsStyleOptions}"
-            SelectedIndex="{Binding BracketsStyleSelectedIndex, Mode=TwoWay}"
-            IsEnabled="{Binding AutoindentBrackets, Mode=OneWay}"
+            ItemsSource="{Binding ViewModel.BracketsStyleOptions}"
+            SelectedIndex="{Binding ViewModel.BracketsStyleSelectedIndex, Mode=TwoWay}"
+            IsEnabled="{Binding ViewModel.AutoindentBrackets, Mode=OneWay}"
             MinWidth="180"/>
 
         <!--Tab length-->
@@ -57,8 +57,8 @@
         <inheritedControls:AnimatedComboBox
             Margin="0,8,0,0"
             ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
-            ItemsSource="{Binding TabLengthOptions}"
-            SelectedIndex="{Binding TabLengthSelectedIndex, Mode=TwoWay}"
+            ItemsSource="{Binding ViewModel.TabLengthOptions}"
+            SelectedIndex="{Binding ViewModel.TabLengthSelectedIndex, Mode=TwoWay}"
             MinWidth="180"/>
 
         <!--Render whitespaces-->
@@ -68,7 +68,7 @@
             VerticalAlignment="Center"
             x:Uid="RenderWhitespacesTitle"
             Text="Render whitespaces"/>
-        <ToggleSwitch IsOn="{Binding RenderWhitespaces, Mode=TwoWay}"/>
+        <ToggleSwitch IsOn="{Binding ViewModel.RenderWhitespaces, Mode=TwoWay}"/>
 
         <!--Font-->
         <TextBlock
@@ -78,8 +78,8 @@
         <inheritedControls:AnimatedComboBox
             Margin="0,8,0,0"
             ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
-            ItemsSource="{Binding AvailableFonts}"
-            SelectedIndex="{Binding FontFamilySelectedIndex, Mode=TwoWay}"
+            ItemsSource="{Binding ViewModel.AvailableFonts}"
+            SelectedIndex="{Binding ViewModel.FontFamilySelectedIndex, Mode=TwoWay}"
             MinWidth="180"
             Height="40">
             <inheritedControls:AnimatedComboBox.ItemTemplate>
@@ -113,14 +113,14 @@
 
             <!--Theme selector-->
             <inheritedControls:AnimatedComboBox
-                ItemsSource="{Binding AvailableIDEThemes}"
-                SelectedIndex="{Binding IDEThemeSelectedIndex, Mode=TwoWay}"
+                ItemsSource="{Binding ViewModel.AvailableIDEThemes}"
+                SelectedIndex="{Binding ViewModel.IDEThemeSelectedIndex, Mode=TwoWay}"
                 ItemContainerStyle="{StaticResource ComboBoxWithoutSelectedVisualStatesStyle}"
                 MinWidth="180"
                 MinHeight="108"
                 Padding="1,1,0,1"
                 x:Name="ThemeSelector"
-                IsHitTestVisible="{Binding ThemesSelectorEnabled, Mode=OneWay, FallbackValue=False}">
+                IsHitTestVisible="{Binding ViewModel.ThemesSelectorEnabled, Mode=OneWay, FallbackValue=False}">
                 <inheritedControls:AnimatedComboBox.ItemTemplateSelector>
                     <helpers:ComboBoxDataTemplateSelector>
                         <helpers:ComboBoxDataTemplateSelector.SelectedTemplate>
@@ -150,14 +150,14 @@
                 Grid.Column="0"
                 Background="#A0000000"
                 IsHitTestVisible="False"
-                Visibility="{Binding ThemesSelectorEnabled, Converter={StaticResource InvertedConverter}, Mode=OneWay, FallbackValue=Visible}"/>
+                Visibility="{Binding ViewModel.ThemesSelectorEnabled, Converter={StaticResource InvertedConverter}, Mode=OneWay, FallbackValue=Visible}"/>
             <Button
                 Grid.Column="0"
                 Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
                 Width="{Binding ElementName=ThemeSelector, Path=ActualWidth}"
                 Height="{Binding ElementName=ThemeSelector, Path=ActualHeight}"
                 HorizontalAlignment="Left"
-                Visibility="{Binding ThemesUnlockButtonEnabled, Mode=OneWay, FallbackValue=Collapsed}"
+                Visibility="{Binding ViewModel.ThemesUnlockButtonEnabled, Mode=OneWay, FallbackValue=Collapsed}"
                 Click="PurchaseButton_Click">
                 <Grid Background="Transparent">
                     <StackPanel VerticalAlignment="Center">
@@ -188,7 +188,7 @@
             <!--Loading ring-->
             <ProgressRing
                 Grid.Column="1"
-                IsActive="{Binding ThemesPackLicenseLoading, Mode=OneWay, FallbackValue=True}"
+                IsActive="{Binding ViewModel.ThemesPackLicenseLoading, Mode=OneWay, FallbackValue=True}"
                 Width="24"
                 Height="24"
                 Foreground="{ThemeResource SystemControlHighlightAccentBrush}"

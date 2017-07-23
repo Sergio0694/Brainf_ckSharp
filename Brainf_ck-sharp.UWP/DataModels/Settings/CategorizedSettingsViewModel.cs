@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings;
+﻿using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings;
 
 namespace Brainf_ck_sharp_UWP.DataModels.Settings
 {

@@ -18,9 +18,9 @@
         <inheritedControls:AnimatedComboBox
             Margin="0,8,0,0"
             ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
-            ItemsSource="{Binding BlurModeOptions}"
-            SelectedIndex="{Binding BlurModeSelectedIndex, Mode=TwoWay}"
-            IsEnabled="{Binding HostBlurOptionSupported}"
+            ItemsSource="{Binding ViewModel.BlurModeOptions}"
+            SelectedIndex="{Binding ViewModel.BlurModeSelectedIndex, Mode=TwoWay}"
+            IsEnabled="{Binding ViewModel.HostBlurOptionSupported}"
             MinWidth="180"/>
 
         <!--Show status bar-->
@@ -31,7 +31,7 @@
             x:Uid="ShowStatusBarTitle"
             Text="Show status bar"/>
         <ToggleSwitch 
-            IsEnabled="{Binding StatusBarSupported}"
-            IsOn="{Binding ShowStatusBar, Mode=TwoWay}"/>
+            IsEnabled="{Binding ViewModel.StatusBarSupported}"
+            IsOn="{Binding ViewModel.ShowStatusBar, Mode=TwoWay}"/>
     </StackPanel>
 </UserControl>
