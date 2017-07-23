@@ -12,7 +12,16 @@
     d:DesignHeight="800"
     d:DesignWidth="400">
     <UserControl.Resources>
+        
+        <!--Visibility converter-->
         <converters:BoolToInvertedVisibilityConverter x:Key="InvertedConverter"/>
+        
+        <!--Section style-->
+        <Style TargetType="TextBlock" x:Key="SectionTitleStyle">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="{ThemeResource SystemControlHighlightAccentBrush}"/>
+        </Style>
     </UserControl.Resources>
 
     <!--Root-->
@@ -22,9 +31,7 @@
             <!--IDE-->
             <TextBlock
                 Text="IDE"
-                FontWeight="Bold"
-                FontSize="20"
-                Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                Style="{StaticResource SectionTitleStyle}"/>
 
             <!--Autosave-->
             <TextBlock
@@ -46,7 +53,7 @@
 
             <!--Brackets style-->
             <TextBlock
-                Margin="0,4,0,0"
+                Margin="0,8,0,0"
                 Text="Brackets style"
                 x:Uid="BracketsStyleTitle"/>
             <inheritedControls:AnimatedComboBox
@@ -59,7 +66,7 @@
 
             <!--Tab length-->
             <TextBlock
-                Margin="0,12,0,0"
+                Margin="0,16,0,0"
                 Text="Tab length"
                 x:Uid="TabLength"/>
             <inheritedControls:AnimatedComboBox
@@ -71,7 +78,7 @@
 
             <!--Render whitespaces-->
             <TextBlock
-                Margin="0,12,0,0"
+                Margin="0,16,0,0"
                 TextWrapping="Wrap"
                 VerticalAlignment="Center"
                 x:Uid="RenderWhitespacesTitle"
@@ -80,7 +87,7 @@
 
             <!--Font-->
             <TextBlock
-                Margin="0,12,0,0"
+                Margin="0,8,0,0"
                 Text="Font type"
                 x:Uid="FontTypeTitle"/>
             <inheritedControls:AnimatedComboBox
@@ -108,44 +115,12 @@
                 </inheritedControls:AnimatedComboBox.ItemTemplate>
             </inheritedControls:AnimatedComboBox>
 
-            <!--UI-->
-            <TextBlock
-                Margin="0,12,0,0"
-                Text="UI"
-                FontWeight="Bold"
-                FontSize="20"
-                Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
-
-            <!--Blur mode-->
-            <TextBlock
-                Margin="0,8,0,0"
-                x:Uid="BlurModeTitle"
-                Text="Preferred blur mode"/>
-            <inheritedControls:AnimatedComboBox
-                Margin="0,8,0,0"
-                ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
-                ItemsSource="{x:Bind ViewModel.BlurModeOptions}"
-                SelectedIndex="{x:Bind ViewModel.BlurModeSelectedIndex, Mode=TwoWay}"
-                IsEnabled="{x:Bind ViewModel.HostBlurOptionSupported}"
-                MinWidth="180"/>
-
-            <!--Show status bar-->
-            <TextBlock
-                Margin="0,12,0,0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                x:Uid="ShowStatusBarTitle"
-                Text="Show status bar"/>
-            <ToggleSwitch 
-                IsEnabled="{x:Bind ViewModel.StatusBarSupported}"
-                IsOn="{x:Bind ViewModel.ShowStatusBar, Mode=TwoWay}"/>
-
             <!--IDE theme-->
             <TextBlock
-                Margin="0,12,0,0"
+                Margin="0,16,0,0"
                 Text="Theme"
                 x:Uid="IDETheme"/>
-            <Grid Margin="0,8,0,20">
+            <Grid Margin="0,8,0,00">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -235,6 +210,37 @@
                     Margin="24,0,0,0"
                     HorizontalAlignment="Left"/>
             </Grid>
+
+            <!--UI-->
+            <TextBlock
+                Margin="0,20,0,0"
+                Text="UI"
+                Style="{StaticResource SectionTitleStyle}"/>
+
+            <!--Blur mode-->
+            <TextBlock
+                Margin="0,8,0,0"
+                x:Uid="BlurModeTitle"
+                Text="Preferred blur mode"/>
+            <inheritedControls:AnimatedComboBox
+                Margin="0,8,0,0"
+                ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
+                ItemsSource="{x:Bind ViewModel.BlurModeOptions}"
+                SelectedIndex="{x:Bind ViewModel.BlurModeSelectedIndex, Mode=TwoWay}"
+                IsEnabled="{x:Bind ViewModel.HostBlurOptionSupported}"
+                MinWidth="180"/>
+
+            <!--Show status bar-->
+            <TextBlock
+                Margin="0,16,0,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                x:Uid="ShowStatusBarTitle"
+                Text="Show status bar"/>
+            <ToggleSwitch 
+                IsEnabled="{x:Bind ViewModel.StatusBarSupported}"
+                IsOn="{x:Bind ViewModel.ShowStatusBar, Mode=TwoWay}"
+                Margin="0,0,0,12"/>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

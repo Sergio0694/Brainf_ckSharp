@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.ApplicationModel;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -18,6 +19,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes
         public IDEThemePreviewTemplate()
         {
             this.InitializeComponent();
+            if (DesignMode.DesignModeEnabled) return;
             String name = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
             if (InstalledFont.TryGetFont(name, out InstalledFont font))
             {
