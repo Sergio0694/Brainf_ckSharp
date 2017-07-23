@@ -5,9 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:jumpList="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList"
-    xmlns:settings="using:Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings"
     xmlns:templateSelectors="using:Brainf_ck_sharp_UWP.TemplateSelectors"
     xmlns:jumpListSettings="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.Settings"
+    xmlns:sections="using:Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings.Sections"
     mc:Ignorable="d"
     d:DesignHeight="800"
     d:DesignWidth="400">
@@ -18,12 +18,12 @@
         
         <!-- ReSharper disable once Xaml.RedundantResource (used by selector) -->
         <DataTemplate x:Key="IDESettingsTemplate">
-            <settings:IDESettingsSection Margin="12,0,0,0"/>
+            <sections:IDESettingsSection Margin="12,0,0,0"/>
         </DataTemplate>
 
         <!-- ReSharper disable once Xaml.RedundantResource (used by selector)-->
         <DataTemplate x:Key="UISettingsTemplate">
-            <settings:UISettingsSection Margin="12,0,0,0"/>
+            <sections:UISettingsSection Margin="12,0,0,0"/>
         </DataTemplate>
     </UserControl.Resources>
 

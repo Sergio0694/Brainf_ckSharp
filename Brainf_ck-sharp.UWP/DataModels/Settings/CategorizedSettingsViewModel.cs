@@ -43,8 +43,9 @@ namespace Brainf_ck_sharp_UWP.DataModels.Settings
                 switch (SectionType)
                 {
                     case SettingsSectionType.IDE:
-                        int settings = ViewModel.ThemesSelectorEnabled ? 7 : 6;
-                        return $"{settings} {LocalizationManager.GetResource("LowercaseAvailableSettings")}";
+                        return ViewModel.ThemesSelectorEnabled
+                            ? $"7 {LocalizationManager.GetResource("LowercaseAvailableSettings")}"
+                            : $"6 {LocalizationManager.GetResource("LowercaseAvailableSettings")}, {LocalizationManager.GetResource("ThemesPackLocked")}";
                     case SettingsSectionType.UI:
                         return $"1 {LocalizationManager.GetResource("LowercaseSingleAvailableSettings")}";
                     default:

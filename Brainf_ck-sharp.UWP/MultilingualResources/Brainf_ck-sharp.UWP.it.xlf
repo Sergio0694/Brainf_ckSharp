@@ -687,6 +687,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>available setting</source>
           <target state="translated">impostazione disponibile</target>
         </trans-unit>
+        <trans-unit id="ThemesPackLocked" translate="yes" xml:space="preserve">
+          <source>themes pack locked</source>
+          <target state="translated">pacchetto temi bloccato</target>
+        </trans-unit>
       </group>
     </body>
   </file>

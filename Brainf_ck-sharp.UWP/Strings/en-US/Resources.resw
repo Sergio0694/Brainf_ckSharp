@@ -629,4 +629,7 @@ This way he'll be able to help you!</value>
   <data name="LowercaseSingleAvailableSettings" xml:space="preserve">
     <value>available setting</value>
   </data>
+  <data name="ThemesPackLocked" xml:space="preserve">
+    <value>themes pack locked</value>
+  </data>
 </root>

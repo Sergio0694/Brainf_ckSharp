@@ -523,4 +523,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="LowercaseSingleAvailableSettings" xml:space="preserve">
     <value>impostazione disponibile</value>
   </data>
+  <data name="ThemesPackLocked" xml:space="preserve">
+    <value>pacchetto temi bloccato</value>
+  </data>
 </root>

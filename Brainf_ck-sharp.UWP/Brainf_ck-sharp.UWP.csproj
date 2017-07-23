@@ -309,10 +309,10 @@
     <Compile Include="UserControls\Flyouts\Settings\SettingsPanelFlyout.xaml.cs">
       <DependentUpon>SettingsPanelFlyout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\Settings\IDESettingsSection.xaml.cs">
+    <Compile Include="UserControls\Flyouts\Settings\Sections\IDESettingsSection.xaml.cs">
       <DependentUpon>IDESettingsSection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\Settings\UISettingsSection.xaml.cs">
+    <Compile Include="UserControls\Flyouts\Settings\Sections\UISettingsSection.xaml.cs">
       <DependentUpon>UISettingsSection.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\IconBoxToolkit\IconBox.xaml.cs">
@@ -671,11 +671,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Flyouts\Settings\IDESettingsSection.xaml">
+    <Page Include="UserControls\Flyouts\Settings\Sections\IDESettingsSection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Flyouts\Settings\UISettingsSection.xaml">
+    <Page Include="UserControls\Flyouts\Settings\Sections\UISettingsSection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
