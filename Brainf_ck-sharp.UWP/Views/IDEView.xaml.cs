@@ -697,6 +697,9 @@ namespace Brainf_ck_sharp_UWP.Views
         // Gets the backup of the text in the IDE
         private String _PreviousText;
 
+        // Gets the previous length of the text selection
+        private int _PreviousSelectionLength;
+
         // Updates the syntax highlight and some UI overlays whenever the text selection changes
         private void EditBox_OnSelectionChanged(object sender, RoutedEventArgs e)
         {
@@ -710,7 +713,8 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Single character entered
             bool textChanged = false;
-            if (text.Length == _PreviousText.Length + 1)
+            if (text.Length == _PreviousText.Length + 1 ||                                  // Single character added
+                _PreviousSelectionLength > 0 && EditBox.Document.Selection.Length == 0)     // Long text selected replaced with a single char
             {
                 // Unsubscribe from the text events and batch the updates
                 EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
@@ -815,6 +819,7 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Display the text updates
             _PreviousText = text;
+            _PreviousSelectionLength = EditBox.Document.Selection.Length;
 
             // Update the bracket guides
             if (textChanged)
@@ -959,6 +964,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 }
                 EditBox.Document.GetText(TextGetOptions.None, out code);
                 _PreviousText = code;
+                _PreviousSelectionLength = EditBox.Document.Selection.Length;
                 DrawLineNumbers();
                 DrawBracketGuides(code, false).ContinueWith(t =>
                 {
