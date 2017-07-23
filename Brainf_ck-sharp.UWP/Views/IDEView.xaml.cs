@@ -143,7 +143,11 @@ namespace Brainf_ck_sharp_UWP.Views
                     UpdateCursorRectangleAndIndicatorUI(); // Adjust the cursor position (a different font can have a different height)
                     AdjustIndentationIndicatorsVerticalStretch();
                     AdjustGitDiffIndicatorsVerticalStretch();
-                    if (_WhitespacesRenderingEnabled) RenderControlCharacters();
+                    if (_WhitespacesRenderingEnabled)
+                    {
+                        ClearControlCharacters();
+                        RenderControlCharacters();
+                    }
                 }
             }
 
@@ -386,21 +390,25 @@ namespace Brainf_ck_sharp_UWP.Views
                     LinesGridTransform.Y = 2;
                     BracketGuidesCanvasTransform.Y = 0;
                     IndentationInfoListTransform.Y = 0;
+                    WhitespacesTransform.Y = 0;
                     break;
                 case "Cambria":
                     LinesGridTransform.Y = 2;
                     BracketGuidesCanvasTransform.Y = 0;
                     IndentationInfoListTransform.Y = 0;
+                    WhitespacesTransform.Y = -1;
                     break;
                 case "Consolas":
                     LinesGridTransform.Y = 2;
                     BracketGuidesCanvasTransform.Y = -4;
                     IndentationInfoListTransform.Y = -1;
+                    WhitespacesTransform.Y = -2;
                     break;
                 default:
                     LinesGridTransform.Y = 0;
                     BracketGuidesCanvasTransform.Y = 0;
                     IndentationInfoListTransform.Y = 0;
+                    WhitespacesTransform.Y = 0;
                     break;
             }
         }
@@ -567,7 +575,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     {
                         Height = 2,
                         Width = 2,
-                        X = c.Area.Left + 5,
+                        X = c.Area.Left + (c.Area.Right - c.Area.Left) / 2 + 3,
                         Y = c.Area.Top + (c.Area.Bottom - c.Area.Top) / 2 - 1
                     };
                     args.DrawingSession.FillRectangle(dot, Colors.DimGray);
@@ -624,7 +632,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     char c = code[i];
                     if (c == ' ')
                     {
-                        ITextRange range = EditBox.Document.GetRange(i, i);
+                        ITextRange range = EditBox.Document.GetRange(i, i + 1);
                         range.GetRect(PointOptions.Transform, out Rect area, out _);
                         characters.Add(new CharacterWithArea(area, c));
                     }

@@ -303,7 +303,11 @@
             </Canvas.Clip>
             <xaml:CanvasControl 
                 x:Name="WhitespacesCanvas"
-                Draw="WhitespacesCanvas_OnDraw"/>
+                Draw="WhitespacesCanvas_OnDraw">
+                <xaml:CanvasControl.RenderTransform>
+                    <TranslateTransform x:Name="WhitespacesTransform"/>
+                </xaml:CanvasControl.RenderTransform>
+            </xaml:CanvasControl>
         </Canvas>
 
         <!--Canvas with the column guides-->
