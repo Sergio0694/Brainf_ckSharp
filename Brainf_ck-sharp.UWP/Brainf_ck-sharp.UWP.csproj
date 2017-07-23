@@ -388,7 +388,9 @@
     <Compile Include="UserControls\VirtualKeyboard\Controls\KeyboardButton.xaml.cs">
       <DependentUpon>KeyboardButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Abstract\JumpListViewModelBase.cs" />
+    <Compile Include="ViewModels\Abstract\JumpList\DeferredJumpListViewModelBase.cs" />
+    <Compile Include="ViewModels\Abstract\JumpList\JumpListViewModelBase.cs" />
+    <Compile Include="ViewModels\Abstract\JumpList\SyncJumpListViewModelBase.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\ChangelogViewFlyoutViewModel.cs" />
     <Compile Include="ViewModels\CompactCharactersViewerControlViewModel.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />

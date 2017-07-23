@@ -276,7 +276,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             bool whitespaces = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
             String font = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
             SettingsPanelFlyout settings = new SettingsPanelFlyout();
-            Task.Delay(100).ContinueWith(t => settings.ViewModel.LoadGroupsAsync().Forget(), TaskScheduler.FromCurrentSynchronizationContext()).Forget();
+            Task.Delay(100).ContinueWith(t => settings.ViewModel.LoadGroups(), TaskScheduler.FromCurrentSynchronizationContext()).Forget();
             await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Settings"), settings, new Thickness());
             bool
                 themeChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)) != theme,
