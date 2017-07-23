@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="Brainf_ck_sharp_UWP.UserControls.Flyouts.SettingsPanelFlyout"
+    x:Class="Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings.SettingsPanelFlyout"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -55,7 +55,7 @@
                                 <DataTemplate>
                                     <jumpListSettings:SettingsZoomedInHeaderTemplate
                                         Margin="12,12,16,12"
-                                        Title="{Binding Key.Item1}"/>
+                                        Title="{Binding Key.SectionType}"/>
                                 </DataTemplate>
                             </GroupStyle.HeaderTemplate>
                         </GroupStyle>
@@ -72,8 +72,8 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <jumpList:JumpListZoomedOutHeaderTemplate
-                                Title="{Binding Group.Key.Item1}"
-                                Description="{Binding Group.Key.Item2}"/>
+                                Title="{Binding Group.Key.SectionType}"
+                                Description="{Binding Group.Key.SectionDescription}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

@@ -2,7 +2,7 @@
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings;
 
-namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
+namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings
 {
     public sealed partial class SettingsPanelFlyout : UserControl
     {

@@ -306,7 +306,7 @@
     <Compile Include="UserControls\Flyouts\SaveCodePromptFlyout.xaml.cs">
       <DependentUpon>SaveCodePromptFlyout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\SettingsPanelFlyout.xaml.cs">
+    <Compile Include="UserControls\Flyouts\Settings\SettingsPanelFlyout.xaml.cs">
       <DependentUpon>SettingsPanelFlyout.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Flyouts\Settings\IDESettingsSection.xaml.cs">
@@ -667,7 +667,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Flyouts\SettingsPanelFlyout.xaml">
+    <Page Include="UserControls\Flyouts\Settings\SettingsPanelFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -517,4 +517,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="ShowStatusBarTitle.Text" xml:space="preserve">
     <value>Mostra status bar</value>
   </data>
+  <data name="LowercaseAvailableSettings" xml:space="preserve">
+    <value>impostazioni disponibili</value>
+  </data>
+  <data name="LowercaseSingleAvailableSettings" xml:space="preserve">
+    <value>impostazione disponibile</value>
+  </data>
 </root>

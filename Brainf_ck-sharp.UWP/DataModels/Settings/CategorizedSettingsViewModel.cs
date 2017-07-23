@@ -1,4 +1,7 @@
-﻿using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings;
+﻿using System;
+using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.DataModels.Settings
 {
@@ -15,6 +18,7 @@ namespace Brainf_ck_sharp_UWP.DataModels.Settings
         /// <summary>
         /// Gets the reference to the shared view model
         /// </summary>
+        [NotNull]
         public SettingsViewModel ViewModel { get; }
 
         /// <summary>
@@ -22,10 +26,31 @@ namespace Brainf_ck_sharp_UWP.DataModels.Settings
         /// </summary>
         /// <param name="type">The settings section type</param>
         /// <param name="viewModel">The shared <see cref="SettingsViewModel"/> instance</param>
-        public CategorizedSettingsViewModel(SettingsSectionType type, SettingsViewModel viewModel)
+        public CategorizedSettingsViewModel(SettingsSectionType type, [NotNull] SettingsViewModel viewModel)
         {
             SectionType = type;
             ViewModel = viewModel;
+        }
+
+        /// <summary>
+        /// Gets a small description of the section contents
+        /// </summary>
+        [NotNull]
+        public String SectionDescription
+        {
+            get
+            {
+                switch (SectionType)
+                {
+                    case SettingsSectionType.IDE:
+                        int settings = ViewModel.ThemesSelectorEnabled ? 7 : 6;
+                        return $"{settings} {LocalizationManager.GetResource("LowercaseAvailableSettings")}";
+                    case SettingsSectionType.UI:
+                        return $"1 {LocalizationManager.GetResource("LowercaseSingleAvailableSettings")}";
+                    default:
+                        throw new ArgumentOutOfRangeException("Invalid section type");
+                }
+            }
         }
     }
 }
