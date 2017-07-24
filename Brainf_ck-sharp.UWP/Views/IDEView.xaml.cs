@@ -1155,7 +1155,7 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             // Get the target line coordinates
             int first = 0, last = -1;
-            bool found = false;
+            bool found = false, space = false;
             for (int i = index; i < text.Length; i++)
             {
                 if (Brainf_ckInterpreter.Operators.Contains(text[i]))
@@ -1168,7 +1168,11 @@ namespace Brainf_ck_sharp_UWP.Views
                 }
                 else if (found)
                 {
+                    // Store the final index and break
                     last = i;
+
+                    // Check if there's an available space to extend the breakpoint indicator width
+                    if (text[i] == ' ' || text[i] == '\t' || text[i] == '\r') space = true;
                     break;
                 }
             }
@@ -1178,7 +1182,7 @@ namespace Brainf_ck_sharp_UWP.Views
             range.GetRect(PointOptions.Transform, out Rect open, out _);
             range = EditBox.Document.GetRange(last, last);
             range.GetRect(PointOptions.Transform, out Rect close, out _);
-            return (open.X + 2, close.Right - open.Left + 2);
+            return (open.X + 2, close.Right - open.Left + (space ? 3 : 2));
         }
 
         /// <summary>

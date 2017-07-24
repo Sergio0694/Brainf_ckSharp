@@ -32,9 +32,10 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             {
                 CreateChangelogEntry("1.3.0.0", 2017, 7, 26, new List<String>
                 {
-                    "Added a settings panel with new IDE formatting and UI options",
-                    "Added an optional themes pack to customize the colors in the IDE",
-                    "It is now possible to use the TAB key when writing text in the IDE",
+                    "Added a settings panel with new IDE formatting and UI options for PC and Mobile",
+                    "Added an optional themes pack to customize the IDE",
+                    "It is now possible to use the TAB key in the IDE",
+                    "Added a small icon in the bottom bar to indicate if the current document has unsaved changes",
                     "UI improvements when running the app on a high-DPI screen",
                     "Memory and performance improvements",
                     "Minor bug fixes and UI adjustments"

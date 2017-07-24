@@ -148,7 +148,7 @@
                 Width="{Binding ElementName=ThemeSelector, Path=ActualWidth}"
                 Height="{Binding ElementName=ThemeSelector, Path=ActualHeight}"
                 Grid.Column="0"
-                Background="#A0000000"
+                Background="#B0000000"
                 IsHitTestVisible="False"
                 Visibility="{Binding ViewModel.ThemesSelectorEnabled, Converter={StaticResource InvertedConverter}, Mode=OneWay, FallbackValue=Visible}"/>
             <Button
