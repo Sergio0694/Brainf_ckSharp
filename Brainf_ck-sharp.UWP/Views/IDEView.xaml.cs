@@ -302,7 +302,7 @@ namespace Brainf_ck_sharp_UWP.Views
             IndentationInfoList.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             CursorTransform.X = 4;
-            BracketsParentGrid.SetVisualOffset(TranslationAxis.Y, (float)height);
+            BracketGuidesCanvas.SetVisualOffset(TranslationAxis.Y, 0);
             WhitespacesCanvas.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             EditBox.Padding = ApiInformationHelper.IsMobileDevice 
                 ? new Thickness(4, _Top + 8, 4, 8) 
@@ -552,6 +552,12 @@ namespace Brainf_ck_sharp_UWP.Views
             }
         }
 
+        // Updates the clip size of the bracket guides container
+        private void BracketsGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            BracketsClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
+        }
+
         #endregion
 
         #region Control characters rendering
@@ -701,8 +707,8 @@ namespace Brainf_ck_sharp_UWP.Views
         // Adjusts the size of the whitespace overlays canvas
         private void EditBox_OnTextSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            WhitespacesCanvas.Height = WhitespacesCanvas.Height = e.NewSize.Height;
-            WhitespacesCanvas.Width = WhitespacesCanvas.Width = e.NewSize.Width;
+            WhitespacesCanvas.Height = BracketGuidesCanvas.Height = e.NewSize.Height + _Top;
+            WhitespacesCanvas.Width = BracketGuidesCanvas.Width = e.NewSize.Width;
         }
 
         // Updates the clip size of the control character overlays container
@@ -1012,12 +1018,6 @@ namespace Brainf_ck_sharp_UWP.Views
                 await Task.Delay(150);
                 Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
             }
-        }
-
-        // Updates the clip size of the bracket guides container
-        private void BracketsGrid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            BracketsClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
         }
 
         // Updates the clip size of the container of the unfocused text cursor

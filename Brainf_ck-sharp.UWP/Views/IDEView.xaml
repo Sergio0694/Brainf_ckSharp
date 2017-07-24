@@ -307,15 +307,15 @@
         </Canvas>
 
         <!--Canvas with the column guides-->
-        <Grid
+        <Canvas
             Grid.Column="4"
             IsHitTestVisible="False"
             x:Name="BracketsParentGrid"
             SizeChanged="BracketsGrid_SizeChanged"
             Canvas.ZIndex="0">
-            <Grid.Clip>
+            <Canvas.Clip>
                 <RectangleGeometry x:Name="BracketsClip"/>
-            </Grid.Clip>
+            </Canvas.Clip>
             <xaml:CanvasControl 
                 x:Name="BracketGuidesCanvas"
                 Draw="BracketGuidesCanvas_OnDraw">
@@ -323,7 +323,7 @@
                     <TranslateTransform x:Name="BracketGuidesCanvasTransform"/>
                 </xaml:CanvasControl.RenderTransform>
             </xaml:CanvasControl>
-        </Grid>
+        </Canvas>
         
         <!--Current line cursor-->
         <Canvas 
