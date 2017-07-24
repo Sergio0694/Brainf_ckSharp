@@ -305,7 +305,7 @@ namespace Brainf_ck_sharp_UWP.Views
             IndentationInfoList.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             CursorTransform.X = 4;
-            BracketsParentGrid.SetVisualOffset(TranslationAxis.Y, (float)height);
+            BracketGuidesCanvas.SetVisualOffset(TranslationAxis.Y, 0);
             WhitespacesCanvas.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             EditBox.Padding = ApiInformationHelper.IsMobileDevice 
                 ? new Thickness(4, _Top + 8, 4, 8) 
@@ -382,32 +382,34 @@ namespace Brainf_ck_sharp_UWP.Views
         // Adjusts the UI of some of the UI overlays when the selected font changes
         private void AdjustOverlaysUIOnFontChanged([NotNull] String font)
         {
-            FontFamily family = new FontFamily(String.IsNullOrEmpty(font) ? "Segoe UI" : font);
-            CursorBorder.Height = CursorRectangle.Height = "Xg".MeasureText(15, family).Height;
             switch (font)
             {
                 case "Calibri":
                     LinesGridTransform.Y = 2;
                     BracketGuidesCanvasTransform.Y = 0;
                     IndentationInfoListTransform.Y = 0;
+                    CursorBorder.Height = CursorRectangle.Height = 18;
                     WhitespacesTransform.Y = 0;
                     break;
                 case "Cambria":
                     LinesGridTransform.Y = 2;
                     BracketGuidesCanvasTransform.Y = 0;
                     IndentationInfoListTransform.Y = 0;
+                    CursorBorder.Height = CursorRectangle.Height = 18;
                     WhitespacesTransform.Y = -1;
                     break;
                 case "Consolas":
                     LinesGridTransform.Y = 2;
                     BracketGuidesCanvasTransform.Y = -4;
                     IndentationInfoListTransform.Y = -1;
+                    CursorBorder.Height = CursorRectangle.Height = 17;
                     WhitespacesTransform.Y = -2;
                     break;
                 default:
                     LinesGridTransform.Y = 0;
                     BracketGuidesCanvasTransform.Y = 0;
                     IndentationInfoListTransform.Y = 0;
+                    CursorBorder.Height = CursorRectangle.Height = 20;
                     WhitespacesTransform.Y = 0;
                     break;
             }
@@ -439,7 +441,8 @@ namespace Brainf_ck_sharp_UWP.Views
             SyntaxValidationResult result = await Task.Run(() => Brainf_ckInterpreter.CheckSourceSyntax(code));
             if (!result.Valid || _BracketGuidesCts.IsCancellationRequested)
             {
-                BracketGuidesCanvas.Children.Clear();
+                _BracketsGuidesToRender = new List<LineCoordinates>();
+                BracketGuidesCanvas.Invalidate();
                 _Brackets = null;
                 bool cancelled = _BracketGuidesCts.IsCancellationRequested;
                 BracketGuidesSemaphore.Release();
@@ -476,9 +479,9 @@ namespace Brainf_ck_sharp_UWP.Views
                 return AsyncOperationResult<IReadOnlyList<CharacterWithCoordinates>>.Explicit(_Brackets);
             }
             _Brackets = workingSet.Item1;
-            BracketGuidesCanvas.Children.Clear();
 
             // Draw the guides for each brackets pair
+            List<LineCoordinates> coordinates = new List<LineCoordinates>();
             int i = 0;
             foreach (char c in code)
             {
@@ -519,26 +522,63 @@ namespace Brainf_ck_sharp_UWP.Views
                 range.GetRect(PointOptions.Transform, out Rect close, out _);
 
                 // Render the new line guide
-                double top = close.Top - open.Bottom;
-                Line guide = new Line
-                {
-                    Width = 1,
-                    StrokeThickness = 1,
-                    Height = top,
-                    Stroke = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideColor),
-                    StrokeDashArray = Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.HasValue
-                        ? new DoubleCollection { Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.Value }
-                        : new DoubleCollection(),
-                    Y1 = 0,
-                    Y2 = top
-                };
-                guide.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 30 + open.Top));
-                guide.SetVisualOffset(TranslationAxis.X, (float)((close.X > open.X ? open.X : close.X) + 6));
-                BracketGuidesCanvas.Children.Add(guide);
+                coordinates.Add(new LineCoordinates(close.Top - open.Bottom, ((close.X > open.X ? open.X : close.X) + 6), (_Top + 30 + open.Top)));
                 i++;
             }
+            _BracketsGuidesToRender = coordinates;
+            BracketGuidesCanvas.Invalidate();
             BracketGuidesSemaphore.Release();
             return workingSet.Item1;
+        }
+
+        // Gets the list of column guides that need to be rendered
+        private IReadOnlyCollection<LineCoordinates> _BracketsGuidesToRender = new List<LineCoordinates>();
+
+        // Draws the column guides in the Win2D canvas
+        private void BracketGuidesCanvas_OnDraw(CanvasControl sender, CanvasDrawEventArgs args)
+        {
+            IEnumerable<LineCoordinates> lines = _BracketsGuidesToRender;
+            Color stroke = Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideColor;
+            if (Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.HasValue)
+            {
+                // Dashed line
+                int dash = Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.Value;
+                foreach (LineCoordinates line in lines)
+                {
+                    double y = 0;
+                    while (y <= line.Height)
+                    {
+                        args.DrawingSession.FillRectangle(new Rect
+                        {
+                            Width = 1,
+                            Height = y <= line.Height - dash ? dash : line.Height - y,
+                            X = line.X,
+                            Y = line.Y + y
+                        }, stroke);
+                        y += dash * 2;
+                    }
+                }
+            }
+            else
+            {
+                // Straight line at the target coordinates
+                foreach (LineCoordinates line in lines)
+                {
+                    args.DrawingSession.FillRectangle(new Rect
+                    {
+                        Width = 1,
+                        Height = line.Height,
+                        X = line.X,
+                        Y = line.Y
+                    }, stroke);
+                }
+            }
+        }
+
+        // Updates the clip size of the bracket guides container
+        private void BracketsGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            BracketsClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
         }
 
         #endregion
@@ -690,8 +730,8 @@ namespace Brainf_ck_sharp_UWP.Views
         // Adjusts the size of the whitespace overlays canvas
         private void EditBox_OnTextSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            WhitespacesCanvas.Height = e.NewSize.Height;
-            WhitespacesCanvas.Width = e.NewSize.Width;
+            WhitespacesCanvas.Height = BracketGuidesCanvas.Height = e.NewSize.Height + _Top;
+            WhitespacesCanvas.Width = BracketGuidesCanvas.Width = e.NewSize.Width;
         }
 
         // Updates the clip size of the control character overlays container
@@ -1001,12 +1041,6 @@ namespace Brainf_ck_sharp_UWP.Views
                 await Task.Delay(150);
                 Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
             }
-        }
-
-        // Updates the clip size of the bracket guides container
-        private void BracketsGrid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            BracketsClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
         }
 
         // Updates the clip size of the container of the unfocused text cursor

@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
     x:Class="Brainf_ck_sharp_UWP.Views.IDEView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -311,21 +311,23 @@
         </Canvas>
 
         <!--Canvas with the column guides-->
-        <Grid
+        <Canvas
             Grid.Column="4"
             IsHitTestVisible="False"
             x:Name="BracketsParentGrid"
             SizeChanged="BracketsGrid_SizeChanged"
             Canvas.ZIndex="0">
-            <Grid.Clip>
+            <Canvas.Clip>
                 <RectangleGeometry x:Name="BracketsClip"/>
-            </Grid.Clip>
-            <Canvas x:Name="BracketGuidesCanvas">
-                <Canvas.RenderTransform>
+            </Canvas.Clip>
+            <xaml:CanvasControl 
+                x:Name="BracketGuidesCanvas"
+                Draw="BracketGuidesCanvas_OnDraw">
+                <xaml:CanvasControl.RenderTransform>
                     <TranslateTransform x:Name="BracketGuidesCanvasTransform"/>
-                </Canvas.RenderTransform>
-            </Canvas>
-        </Grid>
+                </xaml:CanvasControl.RenderTransform>
+            </xaml:CanvasControl>
+        </Canvas>
         
         <!--Current line cursor-->
         <Canvas 
@@ -372,9 +374,23 @@
             x:Name="BreakLinesCanvas"
             IsHitTestVisible="False"/>
 
+        <!--Whitespace indicators-->
+        <Canvas
+            Canvas.ZIndex="4"
+            Grid.Column="4"
+            IsHitTestVisible="False"
+            SizeChanged="WhitespaceParentCanvas_OnSizeChanged">
+            <Canvas.Clip>
+                <RectangleGeometry x:Name="ControlCharactersClip"/>
+            </Canvas.Clip>
+            <xaml:CanvasControl 
+                x:Name="WhitespacesCanvas"
+                Draw="WhitespacesCanvas_OnDraw"/>
+        </Canvas>
+
         <!--Code box-->
         <inheritedControls:RichEditBoxWithVerticalOffsetInfo
-            Canvas.ZIndex="4"
+            Canvas.ZIndex="5"
             Grid.Column="4"
             Style="{StaticResource TransparentEditBox}"
             x:Name="EditBox"

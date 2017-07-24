@@ -77,27 +77,43 @@
             </TextBlock>
 
             <!--Vertical guide-->
-            <Line
+            <StackPanel
                 Canvas.ZIndex="0"
                 Grid.Column="2"
                 Width="1"
-                StrokeThickness="1"
-                Height="20"
-                Margin="20,0,0,0"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Y1="0"
-                Y2="20"
-                StrokeDashArray="4"
-                Stroke="#FFD3D3D3"
-                x:Name="BracketsGuide">
-                <Line.RenderTransform>
+                Margin="21,0,0,0"
+                x:Name="BracketsGuidePanel">
+                <StackPanel.Clip>
+                    <RectangleGeometry 
+                        Rect="0,0,1,20"
+                        x:Name="BracketsGuideClip"/>
+                </StackPanel.Clip>
+                <StackPanel.RenderTransform>
                     <TranslateTransform
-                        X="2"
                         Y="22"
                         x:Name="BracketsGuideTransform"/>
-                </Line.RenderTransform>
-            </Line>
+                </StackPanel.RenderTransform>
+                <Rectangle
+                    Height="3"
+                    Width="1"
+                    Fill="#FF717171"/>
+                <Rectangle
+                    Height="3"
+                    Width="1"
+                    Margin="0,3,0,0"
+                    Fill="#FF717171"/>
+                <Rectangle
+                    Height="3"
+                    Width="1"
+                    Margin="0,3,0,0"
+                    Fill="#FF717171"/>
+                <Rectangle
+                    Height="3"
+                    Width="1"
+                    Margin="0,3,0,0"
+                    Fill="#FF717171"/>
+            </StackPanel>
 
             <!--Line highlight-->
             <Border

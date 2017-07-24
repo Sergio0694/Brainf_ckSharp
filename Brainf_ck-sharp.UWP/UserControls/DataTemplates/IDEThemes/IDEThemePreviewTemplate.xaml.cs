@@ -1,9 +1,11 @@
 ﻿using System;
 using Windows.ApplicationModel;
+using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Shapes;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
@@ -37,7 +39,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes
             LineNumbersBlock.FontFamily = font;
             PreviewBlock.FontFamily = font;
             double lineHeight = "Xg".MeasureText(15, font).Height;
-            LineHighlightBorder.Height = BracketsGuide.Height = lineHeight;
+            LineHighlightBorder.Height = lineHeight;
+            BracketsGuideClip.Rect = new Rect(0, 0, 1, lineHeight);
             BracketsGuideTransform.Y = lineHeight + 2;
             LineHighlightBorder.Height = lineHeight;
             LineHighlightTransform.Y = Theme?.InnerValue.LineHighlightStyle == LineHighlightStyle.Fill
@@ -73,22 +76,43 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes
                 @this.LineNumbersBlock.Foreground = info.LineNumberColor.ToBrush();
                 @this.CommentRun.Foreground = @this.CommentRun2.Foreground = info.CommentsColor.ToBrush();
                 @this.DotRun.Foreground = info.HighlightMap['.'].ToBrush();
-                @this.BracketsGuide.Stroke = info.BracketsGuideColor.ToBrush();
-                @this.BracketsGuide.StrokeDashArray = info.BracketsGuideStrokesLength.HasValue
-                    ? new DoubleCollection { info.BracketsGuideStrokesLength.Value }
-                    : null;
+                @this.BracketsGuidePanel.Children.Clear();
+                if (info.BracketsGuideStrokesLength == null)
+                {
+                    // Add the single vertical line
+                    @this.BracketsGuidePanel.Children.Add(new Rectangle
+                    {
+                        Width = 1,
+                        Height = 32,
+                        Fill = info.BracketsGuideColor.ToBrush()
+                    });
+                }
+                else
+                {
+                    // 6 is arbitrary, but large enough in this situation
+                    for (int i = 0; i < 6; i++)
+                    {
+                        @this.BracketsGuidePanel.Children.Add(new Rectangle
+                        {
+                            Width = 1,
+                            Height = info.BracketsGuideStrokesLength.Value,
+                            Fill = info.BracketsGuideColor.ToBrush(),
+                            Margin = i > 0 ? new Thickness(0, info.BracketsGuideStrokesLength.Value, 0, 0) : new Thickness()
+                        });
+                    }
+                }
                 if (info.LineHighlightStyle == LineHighlightStyle.Outline)
                 {
                     @this.LineHighlightBorder.BorderBrush = info.LineHighlightColor.ToBrush();
                     @this.LineHighlightBorder.Background = Colors.Transparent.ToBrush();
-                    Canvas.SetZIndex(@this.BracketsGuide, 0);
+                    Canvas.SetZIndex(@this.BracketsGuidePanel, 0);
                     Canvas.SetZIndex(@this.LineHighlightBorder, 1);
                     @this.LineHighlightTransform.Y = "Xg".MeasureText(15, @this.LineNumbersBlock.FontFamily).Height + 2;
                 }
                 else
                 {
                     @this.LineHighlightBorder.Background = info.LineHighlightColor.ToBrush();
-                    Canvas.SetZIndex(@this.BracketsGuide, 1);
+                    Canvas.SetZIndex(@this.BracketsGuidePanel, 1);
                     Canvas.SetZIndex(@this.LineHighlightBorder, 0);
                     @this.LineHighlightTransform.Y = "Xg".MeasureText(15, @this.LineNumbersBlock.FontFamily).Height * 2 + 2;
                 }

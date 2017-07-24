@@ -18,7 +18,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
         [NotNull]
         public static IDEThemeInfo Default => _Default ?? (_Default = new IDEThemeInfo(
                                                   "#FF1E1E1E".ToColor(), "#FF333333".ToColor(), "#FF237CAD".ToColor(),
-                                                  Colors.LightGray, 4, "#FF52AF3D".ToColor(),
+                                                  "#FF717171".ToColor(), 3, "#FF52AF3D".ToColor(),
                                                   "#FFDDDDDD".ToColor(), Colors.White, "#FF569CD6".ToColor(), Colors.IndianRed, Colors.DarkKhaki,
                                                   LineHighlightStyle.Outline, "#30FFFFFF".ToColor(), LocalizationManager.GetResource("Default")));
 
@@ -54,7 +54,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
         [NotNull]
         public static IDEThemeInfo Vim => _Vim ?? (_Vim = new IDEThemeInfo(
                                               "#FF171717".ToColor(), "#FF252525".ToColor(), "#FF727272".ToColor(),
-                                              "#FF727272".ToColor(), 6, "#FF99B96F".ToColor(),
+                                              "#FF646464".ToColor(), 6, "#FF99B96F".ToColor(),
                                               "#FFDFDFDF".ToColor(), "#FFDFDFDF".ToColor(), "#FF999BBC".ToColor(), "#FFFFB3B2".ToColor(), "#FFFFBC77".ToColor(),
                                               LineHighlightStyle.Fill, "#FF222222".ToColor()));
 
