@@ -398,14 +398,14 @@ namespace Brainf_ck_sharp_UWP.Views
             {
                 case "Calibri":
                     LinesGridTransform.Y = 2;
-                    BracketGuidesCanvasTransform.Y = 0;
+                    BracketGuidesCanvasTransform.Y = -3;
                     IndentationInfoListTransform.Y = 0;
                     CursorBorder.Height = CursorRectangle.Height = 18;
                     WhitespacesTransform.Y = 0;
                     break;
                 case "Cambria":
                     LinesGridTransform.Y = 2;
-                    BracketGuidesCanvasTransform.Y = 0;
+                    BracketGuidesCanvasTransform.Y = -3;
                     IndentationInfoListTransform.Y = 0;
                     CursorBorder.Height = CursorRectangle.Height = 18;
                     WhitespacesTransform.Y = -1;

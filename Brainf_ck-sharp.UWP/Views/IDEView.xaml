@@ -216,7 +216,6 @@
                 <VisualState x:Name="Default">
                     <VisualState.Setters>
                         <Setter
-                            x:Name="DefaultStateSetter"
                             Target="CursorBorder.Opacity"
                             Value="0.8"/>
                     </VisualState.Setters>
