@@ -8,7 +8,6 @@ using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using JetBrains.Annotations;
 
@@ -59,6 +58,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
             _TemplateScrollViewer = GetTemplateChild("ContentScroller").To<ScrollViewer>();
             _TextPresenter = GetTemplateChild("ContentElement").To<ContentPresenter>();
             _TextPresenter.SizeChanged += _TextPresenter_SizeChanged;
+            if (_TemplateScrollViewer == null || _TextPresenter == null) throw new NullReferenceException("Invalid template content");
         }
 
         /// <summary>

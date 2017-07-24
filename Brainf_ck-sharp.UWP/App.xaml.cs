@@ -85,6 +85,7 @@ namespace Brainf_ck_sharp_UWP
                 // Handle the UI
                 if (ApiInformationHelper.IsMobileDevice) StatusBarHelper.HideAsync().Forget();
                 else TitleBarHelper.StyleAppTitleBar();
+                _StatusBarHeight = StatusBarHelper.OccludedHeight;
 
                 // Setup the view mode
                 ApplicationView view = ApplicationView.GetForCurrentView();

@@ -11,6 +11,7 @@ using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
@@ -150,8 +151,11 @@ namespace Brainf_ck_sharp_UWP.UserControls
             // UI setup
             FadeCanvas.SetVisualOpacity(0);
             Messenger.Default.Send(new ConsoleStatusUpdateMessage(IDEStatus.Console, LocalizationManager.GetResource("Ready"), 0, 0));
-            Console.AdjustTopMargin(HeaderGrid.ActualHeight + 8);
-            IDE.AdjustTopMargin(HeaderGrid.ActualHeight);
+            StatusBarPlaceholder.Visibility = (StatusBarHelper.OccludedHeight > 0).ToVisibility();
+            HeaderGrid.Measure(new Size(ActualWidth, double.PositiveInfinity));
+            double height = HeaderGrid.DesiredSize.Height;
+            Console.AdjustTopMargin(height + 8);
+            IDE.AdjustTopMargin(height);
 
             // Disable the swipe gestures in the keyboard pivot
             ScrollViewer scroller = CommandsPivot.FindChild<ScrollViewer>();

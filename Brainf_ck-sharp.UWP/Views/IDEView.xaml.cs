@@ -49,6 +49,7 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             Loaded += IDEView_Loaded;
             this.InitializeComponent();
+            LinesGrid.Opacity = 0;
             ApplyUITheme();
             ApplyCustomTabSpacing();
             DataContext = new IDEViewModel(EditBox.Document, PickSaveNameAsync, () => BreakpointsInfo.Keys);
@@ -254,9 +255,15 @@ namespace Brainf_ck_sharp_UWP.Views
             Task.Delay(100).ContinueWith(t => flyout.ViewModel.InitializeAsync(factory), TaskScheduler.FromCurrentSynchronizationContext());
         }
 
+        // Indicates whether or not the control has already been loaded
+        private bool _Loaded;
+
         // Initializes the scroll events for the code
         private void IDEView_Loaded(object sender, RoutedEventArgs e)
         {
+            // Skip repeated calls
+            if (_Loaded) return;
+
             // Font setup
             String name = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
             if (InstalledFont.TryGetFont(name, out InstalledFont font))
@@ -271,6 +278,8 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Setup the expression animations
             SetupExpressionAnimations();
+            LinesGrid.Opacity = 1;
+            _Loaded = true;
         }
 
         // Starts the animation to keep the UI synced with the IDE text
@@ -290,7 +299,7 @@ namespace Brainf_ck_sharp_UWP.Views
 
         public IDEViewModel ViewModel => DataContext.To<IDEViewModel>();
 
-        // The current top marginBracketsGrid_SizeChanged
+        // The current top height of the page header
         private double _Top;
 
         /// <summary>
@@ -322,7 +331,9 @@ namespace Brainf_ck_sharp_UWP.Views
             // Save the new height value and update the main animations
             if ((_Top - height).Abs() < 0.1) return;
 
+            // Setup the UI that needs to be adjusted
             AdjustTopMargin(height);
+            if (!_Loaded) return;
             SetupExpressionAnimations();
             DrawBracketGuides(null, true).Forget();
 
