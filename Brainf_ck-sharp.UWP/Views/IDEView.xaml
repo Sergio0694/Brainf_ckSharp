@@ -293,23 +293,6 @@
             </ListView>
         </Canvas>
 
-        <!--Whitespace indicators-->
-        <Canvas
-            Grid.Column="4"
-            IsHitTestVisible="False"
-            SizeChanged="WhitespaceParentCanvas_OnSizeChanged">
-            <Canvas.Clip>
-                <RectangleGeometry x:Name="ControlCharactersClip"/>
-            </Canvas.Clip>
-            <xaml:CanvasControl 
-                x:Name="WhitespacesCanvas"
-                Draw="WhitespacesCanvas_OnDraw">
-                <xaml:CanvasControl.RenderTransform>
-                    <TranslateTransform x:Name="WhitespacesTransform"/>
-                </xaml:CanvasControl.RenderTransform>
-            </xaml:CanvasControl>
-        </Canvas>
-
         <!--Canvas with the column guides-->
         <Canvas
             Grid.Column="4"
@@ -385,7 +368,11 @@
             </Canvas.Clip>
             <xaml:CanvasControl 
                 x:Name="WhitespacesCanvas"
-                Draw="WhitespacesCanvas_OnDraw"/>
+                Draw="WhitespacesCanvas_OnDraw">
+                <xaml:CanvasControl.RenderTransform>
+                    <TranslateTransform x:Name="WhitespacesTransform"/>
+                </xaml:CanvasControl.RenderTransform>
+            </xaml:CanvasControl>
         </Canvas>
 
         <!--Code box-->
