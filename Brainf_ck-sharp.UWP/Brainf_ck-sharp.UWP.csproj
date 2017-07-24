@@ -151,6 +151,7 @@
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationInfoLineType.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationOpenBracketLineInfo.cs" />
     <Compile Include="DataModels\Misc\CharactersInfo\CharacterWithCoordinates.cs" />
+    <Compile Include="DataModels\Misc\LineCoordinates.cs" />
     <Compile Include="DataModels\Misc\Themes\IDEThemeInfo.cs" />
     <Compile Include="DataModels\Misc\SelectableModelBase.cs" />
     <Compile Include="DataModels\Misc\ScriptExceptionInfo.cs" />

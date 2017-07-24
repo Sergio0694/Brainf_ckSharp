@@ -36,7 +36,6 @@ using Brainf_ck_sharp_UWP.UserControls.Flyouts;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
-using Microsoft.Graphics.Canvas.Geometry;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
@@ -432,7 +431,7 @@ namespace Brainf_ck_sharp_UWP.Views
             SyntaxValidationResult result = await Task.Run(() => Brainf_ckInterpreter.CheckSourceSyntax(code));
             if (!result.Valid || _BracketGuidesCts.IsCancellationRequested)
             {
-                _BracketsGuidesToRender = new List<object>();
+                _BracketsGuidesToRender = new List<LineCoordinates>();
                 BracketGuidesCanvas.Invalidate();
                 _Brackets = null;
                 bool cancelled = _BracketGuidesCts.IsCancellationRequested;
@@ -472,7 +471,7 @@ namespace Brainf_ck_sharp_UWP.Views
             _Brackets = workingSet.Item1;
 
             // Draw the guides for each brackets pair
-            List<object> coordinates = new List<object>();
+            List<LineCoordinates> coordinates = new List<LineCoordinates>();
             int i = 0;
             foreach (char c in code)
             {
@@ -513,22 +512,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 range.GetRect(PointOptions.Transform, out Rect close, out _);
 
                 // Render the new line guide
-                double top = close.Top - open.Bottom;
-                Line guide = new Line
-                {
-                    Width = 1,
-                    StrokeThickness = 1,
-                    Height = top,
-                    Stroke = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideColor),
-                    StrokeDashArray = Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.HasValue
-                        ? new DoubleCollection { Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.Value }
-                        : new DoubleCollection(),
-                    Y1 = 0,
-                    Y2 = top
-                };
-                guide.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 30 + open.Top));
-                guide.SetVisualOffset(TranslationAxis.X, (float)((close.X > open.X ? open.X : close.X) + 6));
-                coordinates.Add(Tuple.Create((float)top, (float)(_Top + 30 + open.Top), (float)((close.X > open.X ? open.X : close.X) + 6)));
+                coordinates.Add(new LineCoordinates(close.Top - open.Bottom, ((close.X > open.X ? open.X : close.X) + 6), (_Top + 30 + open.Top)));
                 i++;
             }
             _BracketsGuidesToRender = coordinates;
@@ -538,17 +522,46 @@ namespace Brainf_ck_sharp_UWP.Views
         }
 
         // Gets the list of column guides that need to be rendered
-        private IReadOnlyCollection<object> _BracketsGuidesToRender = new List<object>();
+        private IReadOnlyCollection<LineCoordinates> _BracketsGuidesToRender = new List<LineCoordinates>();
 
         // Draws the column guides in the Win2D canvas
         private void BracketGuidesCanvas_OnDraw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            IEnumerable<Tuple<float, float, float>> items = _BracketsGuidesToRender.Cast<Tuple<float, float, float>>();
-            foreach (Tuple<float, float, float> guide in items)
+            IEnumerable<LineCoordinates> lines = _BracketsGuidesToRender;
+            Color stroke = Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideColor;
+            if (Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.HasValue)
             {
-                CanvasStrokeStyle style = new CanvasStrokeStyle { CustomDashStyle = new[] { 4f, 4f } };
-                args.DrawingSession.DrawLine(guide.Item3, guide.Item2, guide.Item3, guide.Item2 + guide.Item1,
-                    Colors.Gray, 1, style);
+                // Dashed line
+                int dash = Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.Value;
+                foreach (LineCoordinates line in lines)
+                {
+                    double y = 0;
+                    while (y <= line.Height)
+                    {
+                        args.DrawingSession.FillRectangle(new Rect
+                        {
+                            Width = 1,
+                            Height = y <= line.Height - dash ? dash : line.Height - y,
+                            X = line.X,
+                            Y = line.Y + y
+                        }, stroke);
+                        y += dash * 2;
+                    }
+                }
+            }
+            else
+            {
+                // Straight line at the target coordinates
+                foreach (LineCoordinates line in lines)
+                {
+                    args.DrawingSession.FillRectangle(new Rect
+                    {
+                        Width = 1,
+                        Height = line.Height,
+                        X = line.X,
+                        Y = line.Y
+                    }, stroke);
+                }
             }
         }
 
