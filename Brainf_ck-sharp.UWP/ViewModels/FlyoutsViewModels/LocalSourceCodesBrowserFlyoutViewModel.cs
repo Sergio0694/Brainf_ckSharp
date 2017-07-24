@@ -12,16 +12,15 @@ using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
-using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
-using Brainf_ck_sharp_UWP.ViewModels.Abstract;
+using Brainf_ck_sharp_UWP.ViewModels.Abstract.JumpList;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
 {
-    public class LocalSourceCodesBrowserFlyoutViewModel : JumpListViewModelBase<SavedSourceCodeType, CategorizedSourceCodeWithSyntaxInfo>
+    public class LocalSourceCodesBrowserFlyoutViewModel : DeferredJumpListViewModelBase<SavedSourceCodeType, CategorizedSourceCodeWithSyntaxInfo>
     {
         protected override async Task<IList<JumpListGroup<SavedSourceCodeType, CategorizedSourceCodeWithSyntaxInfo>>> OnLoadGroupsAsync()
         {

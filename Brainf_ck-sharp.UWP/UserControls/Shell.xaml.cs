@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -27,6 +28,7 @@ using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers;
 using UICompositionAnimations.Helpers.PointerEvents;
 using MemoryViewerFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState.MemoryViewerFlyout;
+using SettingsPanelFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings.SettingsPanelFlyout;
 
 namespace Brainf_ck_sharp_UWP.UserControls
 {
@@ -87,7 +89,14 @@ namespace Brainf_ck_sharp_UWP.UserControls
         /// Sets whether or not the status bar placeholder for Windows 10 Mobile devices should be displayed
         /// </summary>
         /// <param name="show">The new value for the placeholder visibility</param>
-        public void ShowStatusBarPlaceholder(bool show) => StatusBarPlaceholder.Visibility = show.ToVisibility();
+        public void ShowStatusBarPlaceholder(bool show)
+        {
+            StatusBarPlaceholder.Visibility = show.ToVisibility();
+            HeaderGrid.Measure(new Size(ActualWidth, double.PositiveInfinity));
+            double height = HeaderGrid.DesiredSize.Height;
+            Console.AdjustTopMargin(height + 8);
+            IDE.RefreshTopMargin(height);
+        }
 
         // The current loading popup
         private Popup _LoadingPopup;
@@ -276,7 +285,8 @@ namespace Brainf_ck_sharp_UWP.UserControls
             bool whitespaces = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
             String font = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
             SettingsPanelFlyout settings = new SettingsPanelFlyout();
-            await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Settings"), settings);
+            Task.Delay(100).ContinueWith(t => settings.ViewModel.LoadGroups(), TaskScheduler.FromCurrentSynchronizationContext()).Forget();
+            await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Settings"), settings, new Thickness());
             bool
                 themeChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)) != theme,
                 tabsChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength)) != tabs,

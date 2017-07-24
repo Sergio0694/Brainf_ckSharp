@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
     x:Class="Brainf_ck_sharp_UWP.Views.IDEView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -291,6 +291,23 @@
                     <TranslateTransform x:Name="IndentationInfoListTransform"/>
                 </ListView.RenderTransform>
             </ListView>
+        </Canvas>
+
+        <!--Whitespace indicators-->
+        <Canvas
+            Grid.Column="4"
+            IsHitTestVisible="False"
+            SizeChanged="WhitespaceParentCanvas_OnSizeChanged">
+            <Canvas.Clip>
+                <RectangleGeometry x:Name="ControlCharactersClip"/>
+            </Canvas.Clip>
+            <xaml:CanvasControl 
+                x:Name="WhitespacesCanvas"
+                Draw="WhitespacesCanvas_OnDraw">
+                <xaml:CanvasControl.RenderTransform>
+                    <TranslateTransform x:Name="WhitespacesTransform"/>
+                </xaml:CanvasControl.RenderTransform>
+            </xaml:CanvasControl>
         </Canvas>
 
         <!--Canvas with the column guides-->
