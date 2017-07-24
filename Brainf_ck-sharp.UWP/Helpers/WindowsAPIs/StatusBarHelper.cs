@@ -15,11 +15,10 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
         // Gets the full namespace for the class
         private const String StatusBarString = "Windows.UI.ViewManagement.StatusBar";
 
-        // Returns the current status bar, if available
-        private static StatusBar GetCurrentStatusBarAsync()
-        {
-            return ApiInformation.IsTypePresent(StatusBarString) ? StatusBar.GetForCurrentView() : null;
-        }
+        /// <summary>
+        /// Gets the current status bar, if available
+        /// </summary>
+        private static StatusBar GetCurrentStatusBar() => ApiInformation.IsTypePresent(StatusBarString) ? StatusBar.GetForCurrentView() : null;
 
         /// <summary>
         /// Tries to display the status bar
@@ -27,7 +26,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
         /// <returns>The occluded height if the operation succedes</returns>
         public static async Task<double> TryShowAsync()
         {
-            StatusBar statusBar = GetCurrentStatusBarAsync();
+            StatusBar statusBar = GetCurrentStatusBar();
             if (statusBar == null) return 0;
             statusBar.BackgroundColor = null;
             statusBar.ForegroundColor = Colors.White;
@@ -38,11 +37,11 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
         /// <summary>
         /// Tries to hide the status bar, if present
         /// </summary>
-        public static IAsyncAction HideAsync() => GetCurrentStatusBarAsync()?.HideAsync();
+        public static IAsyncAction HideAsync() => GetCurrentStatusBar()?.HideAsync();
 
         /// <summary>
         /// Gets the occluded height of the status bar, if displayed
         /// </summary>
-        public static double OccludedHeight => GetCurrentStatusBarAsync()?.OccludedRect.Height ?? 0;
+        public static double OccludedHeight => GetCurrentStatusBar()?.OccludedRect.Height ?? 0;
     }
 }

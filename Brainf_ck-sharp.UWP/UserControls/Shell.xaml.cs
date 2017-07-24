@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -88,7 +89,14 @@ namespace Brainf_ck_sharp_UWP.UserControls
         /// Sets whether or not the status bar placeholder for Windows 10 Mobile devices should be displayed
         /// </summary>
         /// <param name="show">The new value for the placeholder visibility</param>
-        public void ShowStatusBarPlaceholder(bool show) => StatusBarPlaceholder.Visibility = show.ToVisibility();
+        public void ShowStatusBarPlaceholder(bool show)
+        {
+            StatusBarPlaceholder.Visibility = show.ToVisibility();
+            HeaderGrid.Measure(new Size(ActualWidth, double.PositiveInfinity));
+            double height = HeaderGrid.DesiredSize.Height;
+            Console.AdjustTopMargin(height + 8);
+            IDE.RefreshTopMargin(height);
+        }
 
         // The current loading popup
         private Popup _LoadingPopup;
