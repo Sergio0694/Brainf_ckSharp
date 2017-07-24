@@ -378,29 +378,31 @@ namespace Brainf_ck_sharp_UWP.Views
         // Adjusts the UI of some of the UI overlays when the selected font changes
         private void AdjustOverlaysUIOnFontChanged([NotNull] String font)
         {
-            FontFamily family = new FontFamily(String.IsNullOrEmpty(font) ? "Segoe UI" : font);
-            CursorBorder.Height = CursorRectangle.Height = "Xg".MeasureText(15, family).Height;
             switch (font)
             {
                 case "Calibri":
                     LinesGridTransform.Y = 2;
                     BracketGuidesCanvasTransform.Y = 0;
                     IndentationInfoListTransform.Y = 0;
+                    CursorBorder.Height = CursorRectangle.Height = 18;
                     break;
                 case "Cambria":
                     LinesGridTransform.Y = 2;
                     BracketGuidesCanvasTransform.Y = 0;
                     IndentationInfoListTransform.Y = 0;
+                    CursorBorder.Height = CursorRectangle.Height = 18;
                     break;
                 case "Consolas":
                     LinesGridTransform.Y = 2;
                     BracketGuidesCanvasTransform.Y = -4;
                     IndentationInfoListTransform.Y = -1;
+                    CursorBorder.Height = CursorRectangle.Height = 17;
                     break;
                 default:
                     LinesGridTransform.Y = 0;
                     BracketGuidesCanvasTransform.Y = 0;
                     IndentationInfoListTransform.Y = 0;
+                    CursorBorder.Height = CursorRectangle.Height = 20;
                     break;
             }
         }

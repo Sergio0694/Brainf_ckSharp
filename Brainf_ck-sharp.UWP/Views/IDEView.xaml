@@ -293,19 +293,6 @@
             </ListView>
         </Canvas>
 
-        <!--Whitespace indicators-->
-        <Canvas
-            Grid.Column="4"
-            IsHitTestVisible="False"
-            SizeChanged="WhitespaceParentCanvas_OnSizeChanged">
-            <Canvas.Clip>
-                <RectangleGeometry x:Name="ControlCharactersClip"/>
-            </Canvas.Clip>
-            <xaml:CanvasControl 
-                x:Name="WhitespacesCanvas"
-                Draw="WhitespacesCanvas_OnDraw"/>
-        </Canvas>
-
         <!--Canvas with the column guides-->
         <Canvas
             Grid.Column="4"
@@ -370,9 +357,23 @@
             x:Name="BreakLinesCanvas"
             IsHitTestVisible="False"/>
 
+        <!--Whitespace indicators-->
+        <Canvas
+            Canvas.ZIndex="4"
+            Grid.Column="4"
+            IsHitTestVisible="False"
+            SizeChanged="WhitespaceParentCanvas_OnSizeChanged">
+            <Canvas.Clip>
+                <RectangleGeometry x:Name="ControlCharactersClip"/>
+            </Canvas.Clip>
+            <xaml:CanvasControl 
+                x:Name="WhitespacesCanvas"
+                Draw="WhitespacesCanvas_OnDraw"/>
+        </Canvas>
+
         <!--Code box-->
         <inheritedControls:RichEditBoxWithVerticalOffsetInfo
-            Canvas.ZIndex="4"
+            Canvas.ZIndex="5"
             Grid.Column="4"
             Style="{StaticResource TransparentEditBox}"
             x:Name="EditBox"
