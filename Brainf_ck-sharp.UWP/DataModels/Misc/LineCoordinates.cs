@@ -8,17 +8,17 @@
         /// <summary>
         /// Gets the height of the line
         /// </summary>
-        public double Height { get; }
+        public float Height { get; }
 
         /// <summary>
         /// Gets the X coordinate of the line
         /// </summary>
-        public double X { get; }
+        public float X { get; }
 
         /// <summary>
         /// Gets the Y coordinate of the line
         /// </summary>
-        public double Y { get; }
+        public float Y { get; }
 
         /// <summary>
         /// Creates a new instance for a target line to draw
@@ -26,7 +26,7 @@
         /// <param name="height">The line height</param>
         /// <param name="x">The line X position</param>
         /// <param name="y">The line Y position</param>
-        public LineCoordinates(double height, double x, double y)
+        public LineCoordinates(float height, float x, float y)
         {
             Height = height;
             X = x;

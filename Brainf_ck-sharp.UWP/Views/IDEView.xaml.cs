@@ -36,6 +36,7 @@ using Brainf_ck_sharp_UWP.UserControls.Flyouts;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
+using Microsoft.Graphics.Canvas.Geometry;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
@@ -533,7 +534,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 range.GetRect(PointOptions.Transform, out Rect close, out _);
 
                 // Render the new line guide
-                coordinates.Add(new LineCoordinates(close.Top - open.Bottom, ((close.X > open.X ? open.X : close.X) + 6), (_Top + 30 + open.Top)));
+                coordinates.Add(new LineCoordinates((float)(close.Top - open.Bottom), (float)((close.X > open.X ? open.X : close.X) + 6), (float)(_Top + 30 + open.Top)));
                 i++;
             }
             _BracketsGuidesToRender = coordinates;
@@ -554,20 +555,10 @@ namespace Brainf_ck_sharp_UWP.Views
             {
                 // Dashed line
                 int dash = Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.Value;
+                CanvasStrokeStyle style = new CanvasStrokeStyle { CustomDashStyle = new[] { dash - 1f, dash + 1f } };
                 foreach (LineCoordinates line in lines)
                 {
-                    double y = 0;
-                    while (y <= line.Height)
-                    {
-                        args.DrawingSession.FillRectangle(new Rect
-                        {
-                            Width = 1,
-                            Height = y <= line.Height - dash ? dash : line.Height - y,
-                            X = line.X,
-                            Y = line.Y + y
-                        }, stroke);
-                        y += dash * 2;
-                    }
+                    args.DrawingSession.DrawLine(line.X + 0.5f, line.Y - 0.5f, line.X + 0.5f, line.Y + line.Height + 0.5f, stroke, 1, style);
                 }
             }
             else
