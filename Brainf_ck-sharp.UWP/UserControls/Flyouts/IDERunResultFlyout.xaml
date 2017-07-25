@@ -4,13 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:templateSelectors="using:Brainf_ck_sharp_UWP.TemplateSelectors"
     xmlns:attached="using:Brainf_ck_sharp_UWP.AttachedProperties"
     xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
     xmlns:customControls="using:Brainf_ck_sharp_UWP.UserControls.CustomControls"
     xmlns:jumpList="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList"
     xmlns:ideResult="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult"
     xmlns:memoryState="using:Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState"
+    xmlns:ideResults="using:Brainf_ck_sharp_UWP.TemplateSelectors.IDEResults"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -148,7 +148,8 @@
         </DataTemplate>
 
         <!--Template selector-->
-        <templateSelectors:IDERunResultTemplateSelector x:Key="ResultTemplateSelector"/>
+        <ideResults:IDERunResultTemplateSelector x:Key="ResultTemplateSelector"/>
+        <ideResults:IDERunResultHeaderTemplateSelector x:Key="HeaderTemplateSelector"/>
 
         <!--Headers converter-->
         <converters:IDESectionToDisplayNameConverter x:Key="HeadersConverter"/>
@@ -159,6 +160,13 @@
             <jumpList:JumpListZoomedInHeaderTemplate
                 Title="{Binding Key, Converter={StaticResource HeadersConverter}}"
                 Margin="12,8,16,0"/>
+        </DataTemplate>
+        
+        <!--Header with bottom margin-->
+        <DataTemplate x:Key="HeaderWithBottomMarginTemplate">
+            <jumpList:JumpListZoomedInHeaderTemplate
+                Title="{Binding Key, Converter={StaticResource HeadersConverter}}"
+                Margin="12,8,16,4"/>
         </DataTemplate>
 
         <!--Zoomed out default header-->
@@ -192,7 +200,7 @@
                     ItemTemplateSelector="{StaticResource ResultTemplateSelector}">
                     <ListView.GroupStyle>
                         <GroupStyle 
-                            HeaderTemplate="{StaticResource HeaderTemplate}"
+                            HeaderTemplateSelector="{StaticResource HeaderTemplateSelector}"
                             HeaderContainerStyle="{StaticResource GroupsViewListHeaderStyle}"/>
                     </ListView.GroupStyle>
                 </ListView>

@@ -16,7 +16,7 @@
               IsHitTestVisible="False"
               CanDrag="False">
         <ListView.Header>
-            <Grid Height="12"/>
+            <Grid Height="8"/>
         </ListView.Header>
         <ListView.ItemTemplate>
             <DataTemplate>

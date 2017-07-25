@@ -3,7 +3,7 @@ using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.DataModels.IDEResults;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 
-namespace Brainf_ck_sharp_UWP.TemplateSelectors
+namespace Brainf_ck_sharp_UWP.TemplateSelectors.IDEResults
 {
     /// <summary>
     /// A template selector for the flyout that shows the results for a script run in the IDE
@@ -16,14 +16,14 @@ namespace Brainf_ck_sharp_UWP.TemplateSelectors
             {
                 switch (item.To<IDEResultSectionDataBase>())
                 {
-                    case IDEResultSectionSessionData section when section.Section == IDEResultSection.Stdout:
+                    case IDEResultSectionSessionData section when section.Section == IDEResultSection.MemoryState:
                         return parent.FindResource<DataTemplate>("StdoutTemplate");
                     case IDEResultSectionSessionData section when section.Section == IDEResultSection.SourceCode:
                         return parent.FindResource<DataTemplate>("SourceCodeTemplate");
                     case IDEResultSectionSessionData section when section.Section == IDEResultSection.StackTrace:
                         return parent.FindResource<DataTemplate>("StackTraceTemplate");
                     case IDEResultSectionSessionData section when section.Section == IDEResultSection.ErrorLocation ||
-                        section.Section == IDEResultSection.BreakpointReached:
+                                                                  section.Section == IDEResultSection.BreakpointReached:
                         return parent.FindResource<DataTemplate>("StopPositionTemplate");
                     case IDEResultSectionSessionData section when section.Section == IDEResultSection.Stats:
                         return parent.FindResource<DataTemplate>("StatisticsTemplate");

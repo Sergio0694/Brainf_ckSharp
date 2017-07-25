@@ -632,4 +632,7 @@ This way he'll be able to help you!</value>
   <data name="ThemesPackLocked" xml:space="preserve">
     <value>themes pack locked</value>
   </data>
+  <data name="RenderWhitespacesTitle.Text" xml:space="preserve">
+    <value>Render whitespaces</value>
+  </data>
 </root>

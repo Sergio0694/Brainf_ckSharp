@@ -245,7 +245,8 @@
     <Compile Include="TemplateSelectors\GitDiffLineStatusTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\ConsoleLineTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\IDEIndentationInfoTemplateSelector.cs" />
-    <Compile Include="TemplateSelectors\IDERunResultTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\IDEResults\IDERunResultHeaderTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\IDEResults\IDERunResultTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\SettingsSectionTemplateSelector.cs" />
     <Compile Include="UserControls\BottomEdgeInfoBar.xaml.cs">
       <DependentUpon>BottomEdgeInfoBar.xaml</DependentUpon>
