@@ -1,6 +1,7 @@
 ﻿using System;
 using Brainf_ck_sharp.Enums;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using GalaSoft.MvvmLight;
@@ -35,6 +36,13 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 SaveAvailable = m.SaveEnabled;
                 SaveAsAvailable = m.SaveAsEnabled;
             });
+
+            // IDE save shortcut
+            KeyEventsListener.CtrlS += (s, _) =>
+            {
+                if (!SaveAvailable) return;
+                Messenger.Default.Send(new SaveSourceCodeRequestMessage(CodeSaveType.Save));
+            };
 
             // Overflow mode
             Messenger.Default.Register<OverflowModeChangedMessage>(this, m => _OverflowMode = m.Mode);

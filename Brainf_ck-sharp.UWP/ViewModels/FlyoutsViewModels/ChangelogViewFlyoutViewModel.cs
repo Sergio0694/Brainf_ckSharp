@@ -36,6 +36,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                     "Added an optional themes pack to customize the IDE",
                     "It is now possible to use the TAB key in the IDE",
                     "Added a small icon in the bottom bar to indicate if the current document has unsaved changes",
+                    "Added a Ctrl + S keyboard shortcut to quickly save the code in the IDE",
                     "UI improvements when running the app on a high-DPI screen",
                     "Memory and performance improvements",
                     "Minor bug fixes and UI adjustments"
