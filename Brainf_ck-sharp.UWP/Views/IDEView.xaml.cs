@@ -566,13 +566,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 // Straight line at the target coordinates
                 foreach (LineCoordinates line in lines)
                 {
-                    args.DrawingSession.FillRectangle(new Rect
-                    {
-                        Width = 1,
-                        Height = line.Height,
-                        X = line.X,
-                        Y = line.Y
-                    }, stroke);
+                    args.DrawingSession.DrawLine(line.X + 0.5f, line.Y, line.X + 0.5f, line.Y + line.Height, stroke);
                 }
             }
         }
