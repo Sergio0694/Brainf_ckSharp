@@ -157,7 +157,7 @@
                 Width="{Binding ElementName=ThemeSelector, Path=ActualWidth}"
                 Height="{Binding ElementName=ThemeSelector, Path=ActualHeight}"
                 HorizontalAlignment="Left"
-                Visibility="{Binding ViewModel.ThemesUnlockButtonEnabled, Mode=OneWay, FallbackValue=Collapsed}"
+                Visibility="{Binding ViewModel.ThemesSelectorEnabled, Converter={StaticResource InvertedConverter}, Mode=OneWay, FallbackValue=Visible}"
                 Click="PurchaseButton_Click">
                 <Grid Background="Transparent">
                     <StackPanel VerticalAlignment="Center">

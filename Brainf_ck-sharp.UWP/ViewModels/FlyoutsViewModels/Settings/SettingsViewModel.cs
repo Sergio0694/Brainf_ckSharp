@@ -216,17 +216,6 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
             private set => Set(ref _ThemesSelectorEnabled, value);
         }
 
-        private static bool _ThemesUnlockButtonEnabled;
-
-        /// <summary>
-        /// Gets whether or not the button to unlock the themes pack is enabled
-        /// </summary>
-        public bool ThemesUnlockButtonEnabled
-        {
-            get => _ThemesUnlockButtonEnabled;
-            private set => Set(ref _ThemesUnlockButtonEnabled, value);
-        }
-
         private bool _ThemesPackLicenseLoading;
 
         /// <summary>
@@ -245,26 +234,23 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         private static StoreContext _StoreContext;
 
         // Updates the license for the themes pack
+        private async Task UpdateLicenseInfoAsync()
+        {
+            ThemesPackLicenseLoading = true;
+            bool iapAvailable;
 #if DEBUG
-        private async Task UpdateLicenseInfoAsync()
-        {
-            ThemesPackLicenseLoading = true;
             await Task.Delay(500);
-            ThemesSelectorEnabled = true;
-            ThemesUnlockButtonEnabled = false;
-            ThemesPackLicenseLoading = false;
-        }
+            iapAvailable = true;
 #else
-        private async Task UpdateLicenseInfoAsync()
-        {
-            ThemesPackLicenseLoading = true;
             if (_StoreContext == null) _StoreContext = StoreContext.GetDefault();
             StoreAppLicense license = await _StoreContext.GetAppLicenseAsync();
-            ThemesSelectorEnabled = license?.AddOnLicenses.FirstOrDefault(pair => pair.Key.Equals(ThemesPackID)).Value?.IsActive == true;
-            ThemesUnlockButtonEnabled = !ThemesSelectorEnabled;
+            iapAvailable = license?.AddOnLicenses.FirstOrDefault(pair => pair.Key.Equals(ThemesPackID)).Value?.IsActive == true;
+#endif
+
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            ThemesSelectorEnabled = iapAvailable;
             ThemesPackLicenseLoading = false;
         }
-#endif
 
         /// <summary>
         /// Tries to purchase the additional themes pack
