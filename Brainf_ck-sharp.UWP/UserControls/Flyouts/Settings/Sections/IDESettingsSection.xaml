@@ -105,7 +105,7 @@
             Margin="0,16,0,0"
             Text="Theme"
             x:Uid="IDETheme"/>
-        <Grid Margin="0,8,0,00">
+        <Grid Margin="0,8,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -119,7 +119,6 @@
                 MinWidth="180"
                 MinHeight="108"
                 Padding="1,1,0,1"
-                x:Name="ThemeSelector"
                 IsHitTestVisible="{Binding ViewModel.ThemesSelectorEnabled, Mode=OneWay, FallbackValue=False}">
                 <inheritedControls:AnimatedComboBox.ItemTemplateSelector>
                     <helpers:ComboBoxDataTemplateSelector>
@@ -145,8 +144,8 @@
 
             <!--Unlock button-->
             <Grid
-                Width="{Binding ElementName=ThemeSelector, Path=ActualWidth}"
-                Height="{Binding ElementName=ThemeSelector, Path=ActualHeight}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
                 Grid.Column="0"
                 Background="#B0000000"
                 IsHitTestVisible="False"
@@ -154,9 +153,6 @@
             <Button
                 Grid.Column="0"
                 Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
-                Width="{Binding ElementName=ThemeSelector, Path=ActualWidth}"
-                Height="{Binding ElementName=ThemeSelector, Path=ActualHeight}"
-                HorizontalAlignment="Left"
                 Visibility="{Binding ViewModel.ThemesSelectorEnabled, Converter={StaticResource InvertedConverter}, Mode=OneWay, FallbackValue=Visible}"
                 Click="PurchaseButton_Click">
                 <Grid Background="Transparent">
