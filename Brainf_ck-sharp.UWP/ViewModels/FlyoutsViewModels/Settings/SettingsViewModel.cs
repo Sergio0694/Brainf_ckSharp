@@ -236,6 +236,14 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         // Updates the license for the themes pack
         private async Task UpdateLicenseInfoAsync()
         {
+            // Roaming check
+            if (AppSettingsManager.Instance.TryGetValue(ThemesPackID, out bool license) && license)
+            {
+                ThemesSelectorEnabled = true;
+                return;
+            }
+
+            // Setup the async loading
             ThemesPackLicenseLoading = true;
             bool iapAvailable;
 #if DEBUG
@@ -283,12 +291,14 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
                     NotificationsManager.Instance.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("ThemesUnlocked"),
                         LocalizationManager.GetResource("DonationCompletedBody"), NotificationType.Default);
                     ThemesSelectorEnabled = true;
+                    AppSettingsManager.Instance.SetValue(ThemesPackID, true, SettingSaveMode.OverwriteIfExisting);
                     break;
                 case StorePurchaseStatus.NotPurchased:
                     NotificationsManager.Instance.ShowDefaultErrorNotification(LocalizationManager.GetResource("PurchaseCanceled"), LocalizationManager.GetResource("PurchaseCanceledBody"));
                     break;
                 case StorePurchaseStatus.AlreadyPurchased:
                     ThemesSelectorEnabled = true;
+                    AppSettingsManager.Instance.SetValue(ThemesPackID, true, SettingSaveMode.OverwriteIfExisting);
                     break;
                 default:
                     // Error
