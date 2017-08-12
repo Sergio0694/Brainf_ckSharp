@@ -1110,8 +1110,10 @@ namespace Brainf_ck_sharp_UWP.Views
                     // Remove the previous breakpoint
                     BreakpointsCanvas.Children.Remove(previous.Item1);
                     BreakpointsInfo.Remove(target);
+                    BreakpointLinesCoordinates.Remove(previous.Item2);
                 }
             }
+            BracketGuidesCanvas.Invalidate();
         }
 
         // Shows the breakpoints from an input list of lines
