@@ -1162,7 +1162,7 @@ namespace Brainf_ck_sharp_UWP.Views
         /// </summary>
         /// <param name="text">The source text</param>
         /// <param name="index">The breakpoint initial index</param>
-        private (double X, double Width) CalculateBreakpointCoordinates([NotNull] String text, int index)
+        private (double X, double Y, double Width) CalculateBreakpointCoordinates([NotNull] String text, int index)
         {
             // Get the target line coordinates
             int first = 0, last = -1;
@@ -1193,7 +1193,7 @@ namespace Brainf_ck_sharp_UWP.Views
             range.GetRect(PointOptions.Transform, out Rect open, out _);
             range = EditBox.Document.GetRange(last, last);
             range.GetRect(PointOptions.Transform, out Rect close, out _);
-            return (open.X + 2, close.Right - open.Left + (space ? 3 : 2));
+            return (open.X + 2, open.Top, close.Right - open.Left + (space ? 3 : 2));
         }
 
         /// <summary>
@@ -1209,15 +1209,11 @@ namespace Brainf_ck_sharp_UWP.Views
             for (int i = 0; i < pairs.Length; i++)
             {
                 KeyValuePair<int, Tuple<Ellipse, Guid>> pair = pairs[i];
-                (double x, double width) = CalculateBreakpointCoordinates(text, indexes[i]);
-                /* Border border = pair.Value.Item2;
-                if (border.RenderTransform is TranslateTransform transform &&
-                    (transform.X - x).Abs() > 0.1)
-                {
-                    transform.X = x;
-                }
-                if ((border.Width - width).Abs() > 0.1) border.Width = width; */ // TODO
+                (double x, double y, double width) = CalculateBreakpointCoordinates(text, indexes[i]);
+                Rect rect = new Rect(x, _Top + 12 + y, width, _ApproximateLineHeight);
+                BreakpointLinesCoordinates[pair.Value.Item2] = rect;
             }
+            BracketGuidesCanvas.Invalidate();
         }
 
         private readonly IDictionary<Guid, Rect> BreakpointLinesCoordinates = new Dictionary<Guid, Rect>();
@@ -1278,7 +1274,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 ellipse.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
 
                 // Line highlight
-                (double x, double width) = CalculateBreakpointCoordinates(text, start);
+                (double x, _, double width) = CalculateBreakpointCoordinates(text, start);
                 Rect rect = new Rect(x, _Top + 12 + offset, width, _ApproximateLineHeight);
                 Guid guid = Guid.NewGuid();
                 BreakpointLinesCoordinates.Add(guid, rect);
