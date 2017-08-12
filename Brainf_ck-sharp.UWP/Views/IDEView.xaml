@@ -336,7 +336,7 @@
             
             <!--Virtual cursor-->
             <Rectangle
-                Canvas.ZIndex="3"
+                Canvas.ZIndex="2"
                 Width="1"
                 Height="20"
                 Fill="LightGray"
@@ -349,16 +349,9 @@
             </Rectangle>
         </Canvas>
 
-        <!--Breakpoints line indicators-->
-        <Canvas
-            Canvas.ZIndex="2"
-            Grid.Column="4"
-            x:Name="BreakLinesCanvas"
-            IsHitTestVisible="False"/>
-
         <!--Whitespace indicators-->
         <Canvas
-            Canvas.ZIndex="4"
+            Canvas.ZIndex="3"
             Grid.Column="4"
             IsHitTestVisible="False"
             SizeChanged="WhitespaceParentCanvas_OnSizeChanged">
@@ -376,7 +369,7 @@
 
         <!--Code box-->
         <inheritedControls:RichEditBoxWithVerticalOffsetInfo
-            Canvas.ZIndex="5"
+            Canvas.ZIndex="4"
             Grid.Column="4"
             Style="{StaticResource TransparentEditBox}"
             x:Name="EditBox"
