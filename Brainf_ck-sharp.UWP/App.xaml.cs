@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -15,9 +14,7 @@ using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.UserControls;
 using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations.Helpers;
-using UICompositionAnimations.Helpers.PointerEvents;
 using UICompositionAnimations.Lights;
-using UICompositionAnimations.XAMLTransform;
 #if DEBUG
 using System.Diagnostics;
 #endif
@@ -81,6 +78,7 @@ namespace Brainf_ck_sharp_UWP
                         Shade = 0x10
                     });
                 shell = new Shell();
+                LightsSourceHelper.SetIsLightsContainer(shell, true);
 
                 // Handle the UI
                 if (ApiInformationHelper.IsMobileDevice) StatusBarHelper.HideAsync().Forget();
@@ -98,32 +96,6 @@ namespace Brainf_ck_sharp_UWP
 
                 // Enable the key listener
                 KeyEventsListener.IsEnabled = true;
-
-                // Add the lights and store the content
-                if (!ApiInformationHelper.IsMobileDevice)
-                {
-                    PointerPositionSpotLight
-                        light = new PointerPositionSpotLight { Active = false },
-                        wideLight = new PointerPositionSpotLight
-                        {
-                            Z = 30,
-                            IdAppendage = "[Wide]",
-                            Shade = 0x10,
-                            Active = false
-                        };
-                    shell.Lights.Add(light);
-                    shell.Lights.Add(wideLight);
-
-                    // Setup the light effects on different devices
-                    shell.ManageHostPointerStates((type, value) =>
-                    {
-                        bool lightsVisible = type == PointerDeviceType.Mouse && value;
-                        if (LightsEnabled == lightsVisible) return;
-                        light.Active = wideLight.Active = LightsEnabled = lightsVisible;
-                        XAMLTransformToolkit.PrepareStory(
-                            XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.WideLightBrushDarkShadeBackground, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true)).Begin();
-                    });
-                }
                 Window.Current.Content = shell;
 
                 // Sync the roaming source codes
@@ -131,11 +103,6 @@ namespace Brainf_ck_sharp_UWP
             }
             Window.Current.Activate();
         }
-
-        /// <summary>
-        /// Gets whether or not the XAML lights are currently visible in the app, depending on the pointer device in use
-        /// </summary>
-        private bool LightsEnabled { get; set; }
 
         private double _StatusBarHeight;
 
