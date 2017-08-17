@@ -60,7 +60,11 @@ namespace Brainf_ck_sharp_UWP.Views
             {
                 // Load the code
                 LoadCode(e.Code, true);
-                if (e.Breakpoints == null) ClearBreakpoints();
+                if (e.Breakpoints == null)
+                {
+                    ClearBreakpoints();
+                    BracketGuidesCanvas.Invalidate();
+                }
                 else RestoreBreakpoints(BitHelper.Expand(e.Breakpoints));
                 Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
 
@@ -76,6 +80,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 EditBox.ResetTextAndUndoStack();
                 ApplyCustomTabSpacing();
                 ClearBreakpoints();
+                BracketGuidesCanvas.Invalidate();
                 Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
             };
             ViewModel.CharInsertionRequested += ViewModel_CharInsertionRequested;
@@ -182,8 +187,15 @@ namespace Brainf_ck_sharp_UWP.Views
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
 
-            // Column guides
+            // Column guides and breakpoints
             DrawBracketGuides(null, true).Forget();
+            if (message.FontChanged)
+            {
+                int[] breakpoints = BreakpointsInfo.Keys.ToArray();
+                ClearBreakpoints();
+                RestoreBreakpoints(breakpoints);
+                BracketGuidesCanvas.Invalidate();
+            }
 
             // Restore the handlers
             EditBox.SelectionChanged += EditBox_OnSelectionChanged;
@@ -1076,6 +1088,7 @@ namespace Brainf_ck_sharp_UWP.Views
         private void ClearBreakpoints()
         {
             BreakpointsInfo.Clear();
+            BreakpointLinesCoordinates.Clear();
             BreakpointsCanvas.Children.Clear();
         }
 
@@ -1373,6 +1386,7 @@ namespace Brainf_ck_sharp_UWP.Views
             () =>
             {
                 ClearBreakpoints();
+                BracketGuidesCanvas.Invalidate();
                 ViewModel.SignalBreakpointsDeleted();
             });
             menuFlyout.ShowAt(this, offset);
