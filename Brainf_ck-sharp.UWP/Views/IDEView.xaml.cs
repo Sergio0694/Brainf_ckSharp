@@ -191,7 +191,7 @@ namespace Brainf_ck_sharp_UWP.Views
             DrawBracketGuides(null, true).Forget();
             if (message.FontChanged)
             {
-                int[] breakpoints = BreakpointsInfo.Keys.ToArray();
+                int[] breakpoints = BreakpointsInfo.Keys.Select(i => i - 1).ToArray();
                 ClearBreakpoints();
                 RestoreBreakpoints(breakpoints);
                 BracketGuidesCanvas.Invalidate();
@@ -354,8 +354,10 @@ namespace Brainf_ck_sharp_UWP.Views
             int[] keys = BreakpointsInfo.Keys.ToArray();
             if (keys.Length > 0)
             {
+                int[] breakpoints = BreakpointsInfo.Keys.Select(i => i - 1).ToArray();
                 ClearBreakpoints();
-                RestoreBreakpoints(keys);
+                RestoreBreakpoints(breakpoints);
+                BracketGuidesCanvas.Invalidate();
             }
         }
 
@@ -406,6 +408,9 @@ namespace Brainf_ck_sharp_UWP.Views
         // The approximate height of a code line with the current font in use
         private double _ApproximateLineHeight =20;
 
+        // The adjustment vertical offset for the breakpoint line indicators
+        private double _BreakpointsLineOffset;
+
         // Adjusts the UI of some of the UI overlays when the selected font changes
         private void AdjustOverlaysUIOnFontChanged([NotNull] InstalledFont font)
         {
@@ -414,6 +419,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 case "Calibri":
                     LinesGridTransform.Y = 2;
                     BracketGuidesCanvasTransform.Y = -3;
+                    _BreakpointsLineOffset = 1;
                     IndentationInfoListTransform.Y = 0;
                     _ApproximateLineHeight = CursorBorder.Height = CursorRectangle.Height = 18;
                     WhitespacesTransform.Y = 0;
@@ -421,6 +427,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 case "Cambria":
                     LinesGridTransform.Y = 2;
                     BracketGuidesCanvasTransform.Y = -3;
+                    _BreakpointsLineOffset = 1;
                     IndentationInfoListTransform.Y = 0;
                     _ApproximateLineHeight = CursorBorder.Height = CursorRectangle.Height = 18;
                     WhitespacesTransform.Y = -1;
@@ -428,6 +435,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 case "Consolas":
                     LinesGridTransform.Y = 2;
                     BracketGuidesCanvasTransform.Y = -4;
+                    _BreakpointsLineOffset = 2;
                     IndentationInfoListTransform.Y = -1;
                     _ApproximateLineHeight = CursorBorder.Height = CursorRectangle.Height = 17;
                     WhitespacesTransform.Y = -2;
@@ -438,6 +446,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     IndentationInfoListTransform.Y = 0;
                     _ApproximateLineHeight = CursorBorder.Height = CursorRectangle.Height = 20;
                     WhitespacesTransform.Y = 0;
+                    _BreakpointsLineOffset = 0;
                     break;
             }
             _ApproximateLineHeight = "Xg".MeasureText(15, font.Family).Height;
@@ -1136,7 +1145,7 @@ namespace Brainf_ck_sharp_UWP.Views
             EditBox.Document.GetText(TextGetOptions.None, out String code);
 
             // Get the actual positions for each line start
-            IReadOnlyCollection<int> indexes = code.FindLineIndexes(lines);
+            IReadOnlyCollection<int> indexes = code.FindLineIndexes(lines).Select(i => i + 1).ToArray();
 
             // Draw the breakpoints again
             foreach (int i in indexes)
@@ -1225,7 +1234,7 @@ namespace Brainf_ck_sharp_UWP.Views
             {
                 KeyValuePair<int, Tuple<Ellipse, Guid>> pair = pairs[i];
                 (double x, double y, double width) = CalculateBreakpointCoordinates(text, indexes[i]);
-                Rect rect = new Rect(x, _Top + 12 + y, width, _ApproximateLineHeight);
+                Rect rect = new Rect(x, _Top + 10 + y + _BreakpointsLineOffset, width, _ApproximateLineHeight);
                 BreakpointLinesCoordinates[pair.Value.Item2] = rect;
             }
             BracketGuidesCanvas.Invalidate();
@@ -1282,7 +1291,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     RenderTransform = new TranslateTransform
                     {
                         X = 3,
-                        Y = _Top + 12 + offset + BracketGuidesCanvasTransform.Y
+                        Y = _Top + 10 + offset + _BreakpointsLineOffset
                     }
                 };
                 BreakpointsCanvas.Children.Add(ellipse);
@@ -1290,7 +1299,7 @@ namespace Brainf_ck_sharp_UWP.Views
 
                 // Line highlight
                 (double x, _, double width) = CalculateBreakpointCoordinates(text, start);
-                Rect rect = new Rect(x, _Top + 12 + offset, width, _ApproximateLineHeight);
+                Rect rect = new Rect(x, _Top + 10 + offset + _BreakpointsLineOffset, width, _ApproximateLineHeight);
                 Guid guid = Guid.NewGuid();
                 BreakpointLinesCoordinates.Add(guid, rect);
                 BracketGuidesCanvas.Invalidate();
