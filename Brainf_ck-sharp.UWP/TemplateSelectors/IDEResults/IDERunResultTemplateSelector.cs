@@ -16,7 +16,7 @@ namespace Brainf_ck_sharp_UWP.TemplateSelectors.IDEResults
             {
                 switch (item.To<IDEResultSectionDataBase>())
                 {
-                    case IDEResultSectionSessionData section when section.Section == IDEResultSection.MemoryState:
+                    case IDEResultSectionSessionData section when section.Section == IDEResultSection.Stdout:
                         return parent.FindResource<DataTemplate>("StdoutTemplate");
                     case IDEResultSectionSessionData section when section.Section == IDEResultSection.SourceCode:
                         return parent.FindResource<DataTemplate>("SourceCodeTemplate");
