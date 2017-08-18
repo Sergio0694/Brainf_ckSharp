@@ -105,14 +105,14 @@ namespace Brainf_ck_sharp_UWP.Views
                 CursorBorder.BorderBrush = Brainf_ckFormatterHelper.Instance.CurrentTheme.LineHighlightColor.ToBrush();
                 CursorBorder.Background = Colors.Transparent.ToBrush();
                 Canvas.SetZIndex(BracketsParentGrid, 0);
-                Canvas.SetZIndex(CursorBorder, 1);
+                Canvas.SetZIndex(CursorBorderParentCanvas, 1);
             }
             else
             {
                 CursorBorder.BorderThickness = new Thickness(0);
                 CursorBorder.Background = Brainf_ckFormatterHelper.Instance.CurrentTheme.LineHighlightColor.ToBrush();
                 Canvas.SetZIndex(BracketsParentGrid, 1);
-                Canvas.SetZIndex(CursorBorder, 0);
+                Canvas.SetZIndex(CursorBorderParentCanvas, 0);
             }
         }
 
