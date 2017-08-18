@@ -149,8 +149,6 @@ namespace Brainf_ck_sharp_UWP.Views
                     EditBox.SetFontFamily(name);
                     AdjustOverlaysUIOnFontChanged(font);
                     UpdateCursorRectangleAndIndicatorUI(); // Adjust the cursor position (a different font can have a different height)
-                    AdjustIndentationIndicatorsVerticalStretch();
-                    AdjustGitDiffIndicatorsVerticalStretch();
                     if (_WhitespacesRenderingEnabled)
                     {
                         ClearControlCharacters();
@@ -409,7 +407,7 @@ namespace Brainf_ck_sharp_UWP.Views
         private double _ApproximateLineHeight =20;
 
         // The adjustment vertical offset for the breakpoint line indicators
-        private double _BreakpointsLineOffset;
+        private double _BreakpointsLineOffset = -2;
 
         // Adjusts the UI of some of the UI overlays when the selected font changes
         private void AdjustOverlaysUIOnFontChanged([NotNull] InstalledFont font)
@@ -446,10 +444,11 @@ namespace Brainf_ck_sharp_UWP.Views
                     IndentationInfoListTransform.Y = 0;
                     _ApproximateLineHeight = CursorBorder.Height = CursorRectangle.Height = 20;
                     WhitespacesTransform.Y = 0;
-                    _BreakpointsLineOffset = 0;
+                    _BreakpointsLineOffset = -2;
                     break;
             }
             _ApproximateLineHeight = "Xg".MeasureText(15, font.Family).Height;
+            RefreshListViewsStretch();
         }
 
         // The backup of the indexes of the brackets in the text
@@ -1291,7 +1290,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     RenderTransform = new TranslateTransform
                     {
                         X = 3,
-                        Y = _Top + 10 + offset + _BreakpointsLineOffset
+                        Y = _Top + 10 + offset
                     }
                 };
                 BreakpointsCanvas.Children.Add(ellipse);
@@ -1323,20 +1322,15 @@ namespace Brainf_ck_sharp_UWP.Views
         }
 
         // Adjusts the vertical scaling of the indentation indicators
-        private void AdjustIndentationIndicatorsVerticalStretch(Size? newSize = null)
+        private void AdjustIndentationIndicatorsVerticalStretch(Size newSize)
         {
-            if (newSize == null)
-            {
-                IndentationInfoList.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                newSize = IndentationInfoList.DesiredSize;
-            }
             int count = ViewModel.Source.Count;
             if (count < 3) IndentationInfoList.SetVisualScale(null, 1, null);
             else
             {
                 String lines = '\n'.Repeat(count - 1);
                 Size size = lines.MeasureText(15, LineBlock.FontFamily);
-                IndentationInfoList.SetVisualScale(null, (float)(size.Height / newSize.Value.Height), null);
+                IndentationInfoList.SetVisualScale(null, (float)(size.Height / newSize.Height), null);
             }
         }
 
@@ -1347,20 +1341,15 @@ namespace Brainf_ck_sharp_UWP.Views
         }
 
         // Adjusts the vertical scaling of the git diff indicators
-        private void AdjustGitDiffIndicatorsVerticalStretch(Size? newSize = null)
+        private void AdjustGitDiffIndicatorsVerticalStretch(Size newSize)
         {
-            if (newSize == null)
-            {
-                GitDiffListView.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                newSize = IndentationInfoList.DesiredSize;
-            }
             int count = ViewModel.DiffStatusSource.Count;
             if (count < 3) GitDiffListView.SetVisualScale(null, 1, null);
             else
             {
                 String lines = '\n'.Repeat(count - 1);
                 Size size = lines.MeasureText(15, LineBlock.FontFamily);
-                GitDiffListView.SetVisualScale(null, (float)(size.Height / newSize.Value.Height), null);
+                GitDiffListView.SetVisualScale(null, (float)(size.Height / newSize.Height), null);
             }
         }
 
@@ -1368,6 +1357,13 @@ namespace Brainf_ck_sharp_UWP.Views
         private void GitDiffListView_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             AdjustGitDiffIndicatorsVerticalStretch(e.NewSize);
+        }
+
+        // Refreshes the size of the indicators
+        private void RefreshListViewsStretch()
+        {
+            AdjustIndentationIndicatorsVerticalStretch(new Size(IndentationInfoList.ActualWidth, IndentationInfoList.ActualHeight));
+            AdjustGitDiffIndicatorsVerticalStretch(new Size(GitDiffListView.ActualWidth, GitDiffListView.ActualHeight));
         }
 
         #region Breakpoints context menu
