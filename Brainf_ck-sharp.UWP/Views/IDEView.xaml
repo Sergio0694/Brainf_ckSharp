@@ -310,33 +310,38 @@
                 </xaml:CanvasControl.RenderTransform>
             </xaml:CanvasControl>
         </Canvas>
-        
-        <!--Current line cursor-->
-        <Canvas 
+
+        <!--Current line highlight-->
+        <Canvas
             Grid.Column="4"
             IsHitTestVisible="False"
-            SizeChanged="LineCursorCanvas_SizeChanged">
-            <Canvas.Clip>
-                <RectangleGeometry x:Name="LineCursorClip"/>
-            </Canvas.Clip>
-            
-            <!--Current line highlight-->
+            Canvas.ZIndex="1"
+            x:Name="CursorBorderParentCanvas">
             <Border 
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Top"
                 Height="20"
                 BorderThickness="2"
                 BorderBrush="#30FFFFFF"
-                x:Name="CursorBorder"
-                Canvas.ZIndex="1">
+                x:Name="CursorBorder">
                 <Border.RenderTransform>
                     <TranslateTransform x:Name="CursorBorderTransform"/>
                 </Border.RenderTransform>
             </Border>
+        </Canvas>
+
+        <!--Current line cursor-->
+        <Canvas 
+            Grid.Column="4"
+            IsHitTestVisible="False"
+            SizeChanged="LineCursorCanvas_SizeChanged"
+            Canvas.ZIndex="2">
+            <Canvas.Clip>
+                <RectangleGeometry x:Name="LineCursorClip"/>
+            </Canvas.Clip>
             
             <!--Virtual cursor-->
             <Rectangle
-                Canvas.ZIndex="3"
                 Width="1"
                 Height="20"
                 Fill="LightGray"
@@ -349,16 +354,9 @@
             </Rectangle>
         </Canvas>
 
-        <!--Breakpoints line indicators-->
-        <Canvas
-            Canvas.ZIndex="2"
-            Grid.Column="4"
-            x:Name="BreakLinesCanvas"
-            IsHitTestVisible="False"/>
-
         <!--Whitespace indicators-->
         <Canvas
-            Canvas.ZIndex="4"
+            Canvas.ZIndex="3"
             Grid.Column="4"
             IsHitTestVisible="False"
             SizeChanged="WhitespaceParentCanvas_OnSizeChanged">
@@ -376,7 +374,7 @@
 
         <!--Code box-->
         <inheritedControls:RichEditBoxWithVerticalOffsetInfo
-            Canvas.ZIndex="5"
+            Canvas.ZIndex="4"
             Grid.Column="4"
             Style="{StaticResource TransparentEditBox}"
             x:Name="EditBox"
