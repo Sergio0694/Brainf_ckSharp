@@ -237,7 +237,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         private async Task UpdateLicenseInfoAsync()
         {
             // Roaming check
-            if (AppSettingsManager.Instance.TryGetValue(ThemesPackID, out bool license) && license)
+            if (AppSettingsManager.Instance.TryGetValue(ThemesPackID, out bool backupLicense) && backupLicense)
             {
                 ThemesSelectorEnabled = true;
                 return;
