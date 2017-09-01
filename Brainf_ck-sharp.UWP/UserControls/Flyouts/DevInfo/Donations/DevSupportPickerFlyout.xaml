@@ -9,6 +9,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
+    <!--Root-->
     <Grid Background="#40000000">
         <StackPanel>
 

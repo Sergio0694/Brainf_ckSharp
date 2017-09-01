@@ -39,6 +39,7 @@ using JetBrains.Annotations;
 using Microsoft.Graphics.Canvas.Geometry;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Toolkit.Uwp;
+using Microsoft.Toolkit.Uwp.Helpers;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers;

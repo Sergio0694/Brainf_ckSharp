@@ -30,6 +30,10 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             // Create the output collection
             return new List<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<String>>>
             {
+                CreateChangelogEntry("1.3.1.0", 2017, 12, 9, new List<String>
+                {
+                    "Minor fixes and improvements"
+                }),
                 CreateChangelogEntry("1.3.0.0", 2017, 8, 26, new List<String>
                 {
                     "Added a settings panel with new IDE formatting and UI options for PC and Mobile",

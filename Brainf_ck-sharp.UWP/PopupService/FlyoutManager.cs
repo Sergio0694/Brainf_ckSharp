@@ -205,8 +205,8 @@ namespace Brainf_ck_sharp_UWP.PopupService
                     : screenHeight - (ApiInformationHelper.IsMobileDevice ? 0 : margin);
                 if (animateHeight)
                 {
-                    XAMLTransformToolkit.PrepareStory(XAMLTransformToolkit.CreateDoubleAnimation(info.Container, "Height", null, height,
-                        100, EasingFunctionNames.CircleEaseOut, true)).Begin();
+                    XAMLTransformToolkit.CreateDoubleAnimation(info.Container, "Height", null, height,
+                        100, EasingFunctionNames.CircleEaseOut, true).ToStoryboard().Begin();
                 }
                 else info.Container.Height = height;
                 info.Popup.VerticalOffset = (screenHeight / 2 - info.Container.Height / 2) / 2 + StatusBarHelper.OccludedHeight;
@@ -670,7 +670,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
 
                 // Animate the popup to the new offset
                 offset = CalculateOffset(delayedRect);
-                XAMLTransformToolkit.PrepareStory(
+                XAMLTransformToolkit.PrepareStoryboard(
                     XAMLTransformToolkit.CreateDoubleAnimation(popup, "HorizontalOffset", null, offset.X, 250, EasingFunctionNames.CircleEaseOut, true),
                     XAMLTransformToolkit.CreateDoubleAnimation(popup, "VerticalOffset", null, offset.Y, 250, EasingFunctionNames.CircleEaseOut, true)).Begin();
 

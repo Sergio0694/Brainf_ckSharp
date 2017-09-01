@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Microsoft.Toolkit.Uwp;
+using Microsoft.Toolkit.Uwp.Helpers;
 
 namespace Brainf_ck_sharp_UWP.Converters
 {

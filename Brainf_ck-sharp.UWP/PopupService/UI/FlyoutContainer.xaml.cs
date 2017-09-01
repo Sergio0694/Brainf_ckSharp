@@ -11,12 +11,14 @@ using Brainf_ck_sharp_UWP.PopupService.Misc;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using Microsoft.Toolkit.Uwp;
+using Microsoft.Toolkit.Uwp.Helpers;
 using UICompositionAnimations;
 using UICompositionAnimations.Behaviours;
 using UICompositionAnimations.Behaviours.Effects;
 using UICompositionAnimations.Behaviours.Misc;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers.PointerEvents;
+using ColorHelper = Microsoft.Toolkit.Uwp.Helpers.ColorHelper;
 
 namespace Brainf_ck_sharp_UWP.PopupService.UI
 {
@@ -85,7 +87,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
                 DefaultSetter.Value = new SolidColorBrush(color.Value);
                 HslColor hsl = color.Value.ToHsl();
                 hsl.L = hsl.L + 0.1 > 1 ? 1 : hsl.L + 0.1;
-                HighlightSetter.Value = new SolidColorBrush(Microsoft.Toolkit.Uwp.ColorHelper.FromHsl(hsl.H, hsl.S, hsl.L, hsl.A));
+                HighlightSetter.Value = new SolidColorBrush(ColorHelper.FromHsl(hsl.H, hsl.S, hsl.L, hsl.A));
                 ButtonContentGrid.Background = new SolidColorBrush(color.Value);
             }
             ConfirmButton.IsEnabled = true;

@@ -1,7 +1,7 @@
 ﻿using Windows.UI;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
 using JetBrains.Annotations;
-using Microsoft.Toolkit.Uwp;
+using Microsoft.Toolkit.Uwp.Helpers;
 
 namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
 {
