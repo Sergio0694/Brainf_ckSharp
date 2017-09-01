@@ -200,7 +200,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             if (!CommandAvailable) return;
             CanRestart = true;
             SendCommandAvailableMessages(false);
-            String command = ((ConsoleUserCommand)Source.LastOrDefault()).Command;
+            String command = Source.Last().To<ConsoleUserCommand>().Command;
             InterpreterResult result = await Task.Run(() => Brainf_ckInterpreter.Run(command, stdin, State, mode, 1000));
             if (result.HasFlag(InterpreterExitCode.Success) &&
                 result.HasFlag(InterpreterExitCode.TextOutput))

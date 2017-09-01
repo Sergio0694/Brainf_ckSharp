@@ -73,7 +73,8 @@
                     HorizontalAlignment="Right"
                     Width="52"
                     Click="CloseButton_Click"
-                    x:Name="CloseButton">
+                    x:Name="CloseButton"
+                    Margin="0,1,1,0">
                 <Grid>
 
                     <!--Wide light border-->
