@@ -32,6 +32,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             {
                 CreateChangelogEntry("1.3.1.0", 2017, 12, 9, new List<String>
                 {
+                    "Speed optimizations to the interpreter",
                     "Minor fixes and improvements"
                 }),
                 CreateChangelogEntry("1.3.0.0", 2017, 8, 26, new List<String>

@@ -17,10 +17,10 @@ namespace Brainf_ck_sharp.MemoryState
         [NotNull]
         private readonly ushort[] Memory;
 
-        /// <inheritdoc cref="IReadonlyTouringMachineState"/>
+        /// <inheritdoc/>
         public int Position { get; private set; }
 
-        /// <inheritdoc cref="IReadOnlyList{T}"/>
+        /// <inheritdoc/>
         public int Count { get; }
 
         /// <summary>
@@ -98,6 +98,11 @@ namespace Brainf_ck_sharp.MemoryState
         public bool CanDecrement => Memory[Position] > 0;
 
         /// <summary>
+        /// Resets the value in the current memory cell
+        /// </summary>
+        public void ResetCell() => Memory[Position] = 0;
+
+        /// <summary>
         /// Creates a copy of the current machine state
         /// </summary>
         [Pure, NotNull]
@@ -105,7 +110,7 @@ namespace Brainf_ck_sharp.MemoryState
 
         #region Overflow
 
-        /// <inheritdoc cref="IReadonlyTouringMachineState"/>
+        /// <inheritdoc/>
         public IReadonlyTouringMachineState ApplyByteOverflow()
         {
             // Quickly copy the current state without values greater than 255 (replace with Parallel.For when supported)
@@ -135,13 +140,13 @@ namespace Brainf_ck_sharp.MemoryState
 
         #region IReadOnlyList<ushort>
 
-        /// <inheritdoc cref="IEnumerable{T}"/>
+        /// <inheritdoc/>
         public IEnumerator<Brainf_ckMemoryCell> GetEnumerator() => Memory.Select((m, i) => new Brainf_ckMemoryCell(m, i == Position)).GetEnumerator();
 
-        /// <inheritdoc cref="IEnumerable"/>
+        /// <inheritdoc/>
         IEnumerator IEnumerable.GetEnumerator() => Memory.GetEnumerator();
 
-        /// <inheritdoc cref="IReadOnlyList{T}"/>
+        /// <inheritdoc/>
         public Brainf_ckMemoryCell this[int index] => new Brainf_ckMemoryCell(Memory[index], index == Position);
 
         #endregion

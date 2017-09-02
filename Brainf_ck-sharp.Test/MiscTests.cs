@@ -120,6 +120,47 @@ namespace Brainf_ck_sharp_Test
         }
 
         [TestMethod]
+        public void TotalOperationsOptimized1()
+        {
+            const int operations = 16730;
+            String[] hello = { ",[-", "]" };
+            InterpreterResult test = Brainf_ckInterpreter.Run(hello.Aggregate(String.Empty, (s, g) => s + g), "€");
+            Assert.IsTrue(test.TotalOperations == operations);
+        }
+
+        [TestMethod]
+        public void TotalOperationsOptimized2()
+        {
+            const int operations = 33482;
+            String[] hello = { ",+++[-", "]>+,++[", "-]++++." };
+            InterpreterResult test = Brainf_ckInterpreter.Run(hello.Aggregate(String.Empty, (s, g) => s + g), "€€");
+            Assert.IsTrue(test.TotalOperations == operations);
+            InterpreterExecutionSession
+                session = Brainf_ckInterpreter.InitializeSession(hello, "€€"),
+                skip = session.Continue().RunToCompletion(),
+                completion = session.RunToCompletion();
+            while (session.CanContinue) session = session.Continue();
+            Assert.IsTrue(completion.CurrentResult.TotalOperations == test.TotalOperations);
+            Assert.IsTrue(session.CurrentResult.TotalOperations == test.TotalOperations);
+            Assert.IsTrue(skip.CurrentResult.TotalOperations == test.TotalOperations);
+        }
+
+        [TestMethod]
+        public void TotalOperationsOptimized3()
+        {
+            String[] hello = { ",+++[-]", ">+++[-]", ",[", "-],[-", "]" };
+            InterpreterResult test = Brainf_ckInterpreter.Run(hello.Aggregate(String.Empty, (s, g) => s + g), "€€€");
+            InterpreterExecutionSession
+                session = Brainf_ckInterpreter.InitializeSession(hello, "€€€"),
+                skip = session.Continue().Continue().Continue().RunToCompletion(),
+                completion = session.RunToCompletion();
+            while (session.CanContinue) session = session.Continue();
+            Assert.IsTrue(completion.CurrentResult.TotalOperations == test.TotalOperations);
+            Assert.IsTrue(session.CurrentResult.TotalOperations == test.TotalOperations);
+            Assert.IsTrue(skip.CurrentResult.TotalOperations == test.TotalOperations);
+        }
+
+        [TestMethod]
         public void TotalOperations7()
         {
             String[] script = { "++++++[>+++++++", "+<-]>>,>>>,<<<[>+>+<<-]<[>+>-<<-]>[<+>-]>>>[>+>+<<", "-]<<<<[>+", ">", ">>>-<<<<<-]>[<+>-]>>>>>>,>>>,<<<[>+>+<<-]<<<<<<<[>+>>>>>>>-<<<<<<<<-]>>>>>>>>>>[>+>+<<-]<<", "<<<<<<<[>>>>>>>>>>-<<<<<<<<<<<+>-]>>>>>>>>>>>>>++[>++++++[>+++>++++>+++++<<<", "-]<-", "]>>---->------>+[<]<<<<<<<<<<<<<[>.[-]", "]", ">[[", "-]>]>>.[-]>>", ">>>>>>>>.>.<.<<<<<<<<[>.[-]]>[[-]>]>>.[-]>>>>", ".>>.[", "-]<[-]<.[-]<<<<<<<<<<<<<<[>>>++++++++++<", "<<-]>>>>>>[>>>++++++++++<<<-]>>>[<<<<<<<<<+>>>>>>>>>-]<<<<<<[<<<<+>>>>-]<<<", "<", "[", ">[>+>+<<-]>>[<", "<+>>-]<<<-]<[-]>>[-]>[>+++[>+++<-]>+<<[>+>>+<<<-]>>>[<<<+>>>-]<<[->->+<[>>>]>[<++++++++++>---------->>>>+<]<<<<<]>[", "-", "]>[<<+>>-]>>>>[<<<<<+>>>>>-]<<<<<<<[-]+>>]<<[+++++[>++++++++<-]>.[-]<<<]<<" };

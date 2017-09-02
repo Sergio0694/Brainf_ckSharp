@@ -316,6 +316,22 @@ namespace Brainf_ck_sharp
                             // while (*ptr) {
                             case '[':
 
+                                // Edge case - memory reset loop [-]
+                                if (state.Current.Value > 0 && jump == null &&
+                                    i + 2 < operators.Count &&
+                                    operators[i + 1].Operator == '-' && operators[i + 2].Operator == ']')
+                                {
+                                    // Check the position of the breakpoints
+                                    uint offset = operators[i].Offset;
+                                    if (breakpoints?.Any(b => b > offset && b <= offset + 2) != true)
+                                    {
+                                        partial += state.Current.Value * 2 + 1;
+                                        state.ResetCell();
+                                        skip = 2;
+                                        break;
+                                    }
+                                }
+
                                 // Extract the loop code and append the final ] character
                                 IReadOnlyList<Brainf_ckBinaryItem> loop = ExtractInnerLoop(operators, i).ToArray();
                                 skip = loop.Count;

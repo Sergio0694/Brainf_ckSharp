@@ -38,7 +38,6 @@ using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using Microsoft.Graphics.Canvas.Geometry;
 using Microsoft.Graphics.Canvas.UI.Xaml;
-using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Uwp.Helpers;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
@@ -240,6 +239,9 @@ namespace Brainf_ck_sharp_UWP.Views
             return result == FlyoutResult.Confirmed ? flyout.Title : null;
         }
 
+        // The maximum execution time for a script
+        private const int TimeThreshold = 2000;
+
         private void ViewModel_PlayRequested(object sender, PlayRequestedEventArgs e)
         {
             // Get the text and initialize the session
@@ -258,9 +260,9 @@ namespace Brainf_ck_sharp_UWP.Views
                     chuncks.Add(text.Substring(previous, breakpoint - previous));
                     previous = breakpoint;
                 }
-                factory = () => Brainf_ckInterpreter.InitializeSession(chuncks, e.Stdin, e.Mode, 64, 1000);
+                factory = () => Brainf_ckInterpreter.InitializeSession(chuncks, e.Stdin, e.Mode, threshold: TimeThreshold);
             }
-            else factory = () => Brainf_ckInterpreter.InitializeSession(new[] { text }, e.Stdin, e.Mode, 64, 1000);
+            else factory = () => Brainf_ckInterpreter.InitializeSession(new[] { text }, e.Stdin, e.Mode, threshold: TimeThreshold);
 
             // Display the execution popup
             IDERunResultFlyout flyout = new IDERunResultFlyout();
