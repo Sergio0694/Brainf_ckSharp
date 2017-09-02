@@ -127,7 +127,12 @@ namespace Brainf_ck_sharp_UWP.Views
             if (message.TabsLengthChanged)
             {
                 ApplyCustomTabSpacing();
-                if (!message.ThemeChanged) DrawBracketGuides(null, true).Forget();
+                if (!message.WhitespacesChanged || !message.FontChanged && _WhitespacesRenderingEnabled)
+                {
+                    ClearControlCharacters();
+                    RenderControlCharacters();
+                }
+                if (!message.FontChanged) UpdateCursorRectangleAndIndicatorUI();
             }
 
             // Update the render whitespaces setting
@@ -187,7 +192,7 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Column guides and breakpoints
             DrawBracketGuides(null, true).Forget();
-            if (message.FontChanged)
+            if (message.FontChanged || message.TabsLengthChanged)
             {
                 int[] breakpoints = BreakpointsInfo.Keys.Select(i => i - 1).ToArray();
                 ClearBreakpoints();
