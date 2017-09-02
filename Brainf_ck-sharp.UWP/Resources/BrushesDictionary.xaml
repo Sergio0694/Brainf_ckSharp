@@ -16,9 +16,6 @@
     <!--Red danger brush-->
     <SolidColorBrush x:Key="RedDangerBrush" Color="#FFDC232B"/>
     
-    <!--Warning brush-->
-    <SolidColorBrush x:Key="OrangeWarningBrush" Color="#FFFFAA00"/>
-    
     <!--Breakpoints-->
     <SolidColorBrush x:Key="BreakpointFillBrush" Color="#FFE51400"/>
     <SolidColorBrush x:Key="BreakpointBorderBrush" Color="#FFF4DFDD"/>
@@ -74,5 +71,21 @@
         BlurAmount="8"
         Tint="#FF1B1B1B"
         TintMix="0.8"
+        NoiseTextureUri="/Assets/Misc/noise.png"/>
+    
+    <!--Notification brushes-->
+    <brushes:CustomAcrylicBrush
+        x:Key="NotificationAcrylicBrush"
+        Mode="InAppBlur"
+        BlurAmount="8"
+        Tint="{StaticResource SystemAccentColor}"
+        TintMix="0.5"
+        NoiseTextureUri="/Assets/Misc/noise.png"/>
+    <brushes:CustomAcrylicBrush
+        x:Key="NotificationErrorAcrylicBrush"
+        Mode="InAppBlur"
+        BlurAmount="8"
+        Tint="#FFFFAA00"
+        TintMix="0.5"
         NoiseTextureUri="/Assets/Misc/noise.png"/>
 </ResourceDictionary>
