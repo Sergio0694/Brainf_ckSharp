@@ -23,6 +23,16 @@ namespace Brainf_ck_sharp
         [NotNull]
         public static IReadOnlyCollection<char> Operators { get; } = new HashSet<char>(new[] { '+', '-', '>', '<', '.', ',', '[', ']' });
 
+        /// <summary>
+        /// Gets the default size of the available memory
+        /// </summary>
+        public const int DefaultMemorySize = 64;
+
+        /// <summary>
+        /// Gets the maximum allowed size for the output buffer
+        /// </summary>
+        public const int StdoutBufferSizeLimit = 1024;
+
         #region Public APIs
 
         /// <summary>
@@ -36,7 +46,7 @@ namespace Brainf_ck_sharp
         [PublicAPI]
         [Pure, NotNull]
         public static InterpreterResult Run([NotNull] String source, [NotNull] String arguments, OverflowMode mode = OverflowMode.ShortNoOverflow,
-            int size = 64, int? threshold = null)
+            int size = DefaultMemorySize, int? threshold = null)
         {
             return TryRun(source, arguments, new TouringMachineState(size), mode, threshold);
         }
@@ -72,7 +82,7 @@ namespace Brainf_ck_sharp
         [PublicAPI]
         [Pure, NotNull]
         public static InterpreterExecutionSession InitializeSession([NotNull] IReadOnlyList<String> source, [NotNull] String arguments,
-            OverflowMode mode = OverflowMode.ShortNoOverflow, int size = 64, int? threshold = null)
+            OverflowMode mode = OverflowMode.ShortNoOverflow, int size = DefaultMemorySize, int? threshold = null)
         {
             TouringMachineState state = new TouringMachineState(size);
             IReadOnlyList<IReadOnlyList<char>> chunks = source.Select(chunk => FindExecutableCode(chunk).ToArray()).ToArray();
@@ -149,11 +159,6 @@ namespace Brainf_ck_sharp
         #endregion
 
         #region Interpreter implementation
-
-        /// <summary>
-        /// Gets the maximum allowed size for the output buffer
-        /// </summary>
-        private const int StdoutBufferSizeLimit = 1024;
 
         /// <summary>
         /// Executes the input script
@@ -509,7 +514,7 @@ namespace Brainf_ck_sharp
         /// <param name="size">The size of the memory to use in the resulting code</param>
         [PublicAPI]
         [Pure, NotNull]
-        public static String TranslateToC([NotNull] String source, int size = 64)
+        public static String TranslateToC([NotNull] String source, int size = DefaultMemorySize)
         {
             // Arguments check
             if (size <= 0) throw new ArgumentOutOfRangeException("The input size is not valid");

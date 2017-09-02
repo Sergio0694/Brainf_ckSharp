@@ -122,9 +122,10 @@ namespace Brainf_ck_sharp_Test
             InterpreterResult result = Brainf_ckInterpreter.Run(script, "€");
             Assert.IsNotNull(result);
             Assert.IsTrue(result.HasFlag(InterpreterExitCode.Failure) &&
+                          result.HasFlag(InterpreterExitCode.TextOutput) &&
                           result.HasFlag(InterpreterExitCode.ExceptionThrown) &&
                           result.HasFlag(InterpreterExitCode.StdoutBufferLimitExceeded));
-            Assert.AreEqual(result.Output.Length, 512);
+            Assert.AreEqual(result.Output.Length, Brainf_ckInterpreter.StdoutBufferSizeLimit);
         }
 
         [TestMethod]
