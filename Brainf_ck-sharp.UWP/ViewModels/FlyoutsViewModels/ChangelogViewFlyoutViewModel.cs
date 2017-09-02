@@ -30,7 +30,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             // Create the output collection
             return new List<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<String>>>
             {
-                CreateChangelogEntry("1.3.1.0", 2017, 12, 9, new List<String>
+                CreateChangelogEntry("1.3.1.0", 2017, 7, 9, new List<String>
                 {
                     "Added an option to clear the Stdin buffer when executing a script",
                     "Speed optimizations to the interpreter",

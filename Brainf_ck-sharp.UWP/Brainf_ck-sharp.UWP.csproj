@@ -20,7 +20,7 @@
     <PackageCertificateKeyFile>Brainf_ck-sharp.UWP_TemporaryKey.pfx</PackageCertificateKeyFile>
     <PackageCertificateThumbprint>6FA628215907FF752772AE357DC3DE1CDDCB5412</PackageCertificateThumbprint>
     <HockeyAppResourceId>d992b6490330446db870404084b19c39</HockeyAppResourceId>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
   </PropertyGroup>
@@ -803,7 +803,7 @@
     <SDKReference Include="Microsoft.VCLibs, Version=14.0">
       <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
     </SDKReference>
-    <SDKReference Include="SQLite.UWP.2015, Version=3.20.0">
+    <SDKReference Include="SQLite.UWP.2015, Version=3.20.1">
       <Name>SQLite for Universal Windows Platform</Name>
     </SDKReference>
     <SDKReference Include="WindowsMobile, Version=10.0.15063.0">
