@@ -317,7 +317,7 @@ namespace Brainf_ck_sharp
                             case '[':
 
                                 // Edge case - memory reset loop [-]
-                                if (state.Current.Value > 0 && jump == null &&
+                                if (state.Current.Value > 0 && (jump == null || jump != null && reached) &&
                                     i + 2 < operators.Count &&
                                     operators[i + 1].Operator == '-' && operators[i + 2].Operator == ']')
                                 {
