@@ -6,6 +6,7 @@
     public enum SettingsSectionType
     {
         IDE,
-        UI
+        UI,
+        Interpreter
     }
 }

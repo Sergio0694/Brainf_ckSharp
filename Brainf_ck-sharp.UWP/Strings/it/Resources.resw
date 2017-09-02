@@ -529,4 +529,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="RenderWhitespacesTitle.Text" xml:space="preserve">
     <value>Mostra spazi e tabulazioni</value>
   </data>
+  <data name="ClearStdinBuffer.Text" xml:space="preserve">
+    <value>Pulisci buffer Stdin dopo esecuzione</value>
+  </data>
+  <data name="Interpreter" xml:space="preserve">
+    <value>Interprete</value>
+  </data>
 </root>

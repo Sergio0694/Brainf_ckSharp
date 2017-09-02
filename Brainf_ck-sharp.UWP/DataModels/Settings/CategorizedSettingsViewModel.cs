@@ -48,6 +48,8 @@ namespace Brainf_ck_sharp_UWP.DataModels.Settings
                             : $"6 {LocalizationManager.GetResource("LowercaseAvailableSettings")}, {LocalizationManager.GetResource("ThemesPackLocked")}";
                     case SettingsSectionType.UI:
                         return $"1 {LocalizationManager.GetResource("LowercaseSingleAvailableSettings")}";
+                    case SettingsSectionType.Interpreter:
+                        return $"1 {LocalizationManager.GetResource("LowercaseSingleAvailableSettings")}";
                     default:
                         throw new ArgumentOutOfRangeException("Invalid section type");
                 }

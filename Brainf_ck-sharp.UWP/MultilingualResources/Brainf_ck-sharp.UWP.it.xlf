@@ -695,6 +695,14 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Render whitespaces</source>
           <target state="translated">Mostra spazi e tabulazioni</target>
         </trans-unit>
+        <trans-unit id="ClearStdinBuffer.Text" translate="yes" xml:space="preserve">
+          <source>Clear Stdin buffer on execution</source>
+          <target state="translated">Pulisci buffer Stdin dopo esecuzione</target>
+        </trans-unit>
+        <trans-unit id="Interpreter" translate="yes" xml:space="preserve">
+          <source>Interpreter</source>
+          <target state="translated">Interprete</target>
+        </trans-unit>
       </group>
     </body>
   </file>

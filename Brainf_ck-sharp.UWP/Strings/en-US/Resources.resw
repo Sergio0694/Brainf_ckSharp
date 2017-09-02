@@ -635,4 +635,10 @@ This way he'll be able to help you!</value>
   <data name="RenderWhitespacesTitle.Text" xml:space="preserve">
     <value>Render whitespaces</value>
   </data>
+  <data name="ClearStdinBuffer.Text" xml:space="preserve">
+    <value>Clear Stdin buffer on execution</value>
+  </data>
+  <data name="Interpreter" xml:space="preserve">
+    <value>Interpreter</value>
+  </data>
 </root>

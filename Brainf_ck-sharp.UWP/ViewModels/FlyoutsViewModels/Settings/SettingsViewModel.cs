@@ -354,5 +354,22 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         /// Gets whether or not the current device is a mobile phone
         /// </summary>
         public bool StatusBarSupported => ApiInformationHelper.IsMobileDevice;
+
+        private bool _ClearStdinBufferOnExecution = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ClearStdinBufferOnExecution));
+
+        /// <summary>
+        /// Gets or sets whether or not to clear the Stdin buffer when executing a script
+        /// </summary>
+        public bool ClearStdinBufferOnExecution
+        {
+            get => _ClearStdinBufferOnExecution;
+            set
+            {
+                if (Set(ref _ClearStdinBufferOnExecution, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.ClearStdinBufferOnExecution), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
     }
 }

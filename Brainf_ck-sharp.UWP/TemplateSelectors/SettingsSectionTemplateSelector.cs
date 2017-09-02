@@ -20,6 +20,8 @@ namespace Brainf_ck_sharp_UWP.TemplateSelectors
                         return parent.FindResource<DataTemplate>("IDESettingsTemplate");
                     case CategorizedSettingsViewModel section when section.SectionType == SettingsSectionType.UI:
                         return parent.FindResource<DataTemplate>("UISettingsTemplate");
+                    case CategorizedSettingsViewModel section when section.SectionType == SettingsSectionType.Interpreter:
+                        return parent.FindResource<DataTemplate>("InterpreterSettingsTemplate");
                 }
             }
             return null;

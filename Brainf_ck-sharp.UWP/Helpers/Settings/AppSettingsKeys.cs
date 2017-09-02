@@ -21,6 +21,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         TabLength,
         SelectedIDETheme,
         RenderWhitespaces,
-        SelectedFontName
+        SelectedFontName,
+        ClearStdinBufferOnExecution
     }
 }

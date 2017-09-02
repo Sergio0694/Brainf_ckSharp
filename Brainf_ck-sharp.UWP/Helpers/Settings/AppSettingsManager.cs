@@ -120,6 +120,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
             SetValue(nameof(AppSettingsKeys.RenderWhitespaces), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.SelectedFontName), String.Empty, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.ShowStatusBar), false, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.ClearStdinBufferOnExecution), true, SettingSaveMode.SkipIfExisting);
         }
 
         /// <summary>

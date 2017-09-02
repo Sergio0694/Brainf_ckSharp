@@ -32,6 +32,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             {
                 CreateChangelogEntry("1.3.1.0", 2017, 12, 9, new List<String>
                 {
+                    "Added an option to clear the Stdin buffer when executing a script",
                     "Speed optimizations to the interpreter",
                     "Minor fixes and improvements"
                 }),

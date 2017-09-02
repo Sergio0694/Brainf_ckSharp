@@ -52,7 +52,10 @@ namespace Brainf_ck_sharp_UWP.UserControls
             DataContext = new ShellViewModel(() =>
             {
                 String stdin = StdinHeader.StdinBuffer;
-                StdinHeader.ResetStdin();
+                if (AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.ClearStdinBufferOnExecution), out bool reset) && reset)
+                {
+                    StdinHeader.ResetStdin();
+                }
                 return stdin;
             });
             Console.ViewModel.IsEnabled = true;

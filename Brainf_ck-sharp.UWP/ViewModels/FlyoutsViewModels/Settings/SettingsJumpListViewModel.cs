@@ -30,7 +30,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
             return new List<JumpListGroup<CategorizedSettingsViewModel, CategorizedSettingsViewModel>>
             {
                 SpawnGroup(SettingsSectionType.IDE),
-                SpawnGroup(SettingsSectionType.UI)
+                SpawnGroup(SettingsSectionType.UI),
+                SpawnGroup(SettingsSectionType.Interpreter)
             };
         }
     }

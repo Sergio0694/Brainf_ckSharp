@@ -116,6 +116,7 @@
     <Compile Include="Converters\BoolToInvertedVisibilityConverter.cs" />
     <Compile Include="Converters\DateTimeToDateStringConverter.cs" />
     <Compile Include="Converters\DisplayScalingToMarginConverter.cs" />
+    <Compile Include="Converters\SettingsSectionTypeToUppercaseConverter.cs" />
     <Compile Include="Converters\SourceCodeTitleScoreToDisplayStringConverter.cs" />
     <Compile Include="Converters\CharacterWithFallbackConverter.cs" />
     <Compile Include="Converters\DepthToVisibilityConverter.cs" />
@@ -307,6 +308,9 @@
     </Compile>
     <Compile Include="UserControls\Flyouts\SaveCodePromptFlyout.xaml.cs">
       <DependentUpon>SaveCodePromptFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\Settings\Sections\InterpreterSettingsSection.xaml.cs">
+      <DependentUpon>InterpreterSettingsSection.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Flyouts\Settings\SettingsPanelFlyout.xaml.cs">
       <DependentUpon>SettingsPanelFlyout.xaml</DependentUpon>
@@ -668,6 +672,10 @@
     <Page Include="UserControls\Flyouts\SaveCodePromptFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\Settings\Sections\InterpreterSettingsSection.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\Flyouts\Settings\SettingsPanelFlyout.xaml">
       <SubType>Designer</SubType>

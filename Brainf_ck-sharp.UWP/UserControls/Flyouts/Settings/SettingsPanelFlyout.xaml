@@ -8,6 +8,7 @@
     xmlns:templateSelectors="using:Brainf_ck_sharp_UWP.TemplateSelectors"
     xmlns:jumpListSettings="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.Settings"
     xmlns:sections="using:Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings.Sections"
+    xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
     mc:Ignorable="d"
     d:DesignHeight="800"
     d:DesignWidth="400">
@@ -25,6 +26,14 @@
         <DataTemplate x:Key="UISettingsTemplate">
             <sections:UISettingsSection Margin="12,0,0,0"/>
         </DataTemplate>
+
+        <!-- ReSharper disable once Xaml.RedundantResource (used by selector)-->
+        <DataTemplate x:Key="InterpreterSettingsTemplate">
+            <sections:InterpreterSettingsSection Margin="12,0,0,0"/>
+        </DataTemplate>
+        
+        <!--Converter-->
+        <converters:SettingsSectionTypeToUppercaseConverter x:Key="SectionTitleConverter"/>
     </UserControl.Resources>
 
     <!--Root-->
@@ -55,7 +64,7 @@
                                 <DataTemplate>
                                     <jumpListSettings:SettingsZoomedInHeaderTemplate
                                         Margin="12,12,16,12"
-                                        Title="{Binding Key.SectionType}"/>
+                                        Title="{Binding Key.SectionType, Converter={StaticResource SectionTitleConverter}}"/>
                                 </DataTemplate>
                             </GroupStyle.HeaderTemplate>
                         </GroupStyle>
@@ -72,7 +81,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <jumpList:JumpListZoomedOutHeaderTemplate
-                                Title="{Binding Group.Key.SectionType}"
+                                Title="{Binding Group.Key.SectionType, Converter={StaticResource SectionTitleConverter}}"
                                 Description="{Binding Group.Key.SectionDescription}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
