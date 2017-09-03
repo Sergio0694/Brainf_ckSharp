@@ -6,7 +6,7 @@ namespace Brainf_ck_sharp.ReturnTypes
     /// Tipo enumerato che indica il risultato dell'interpretazione del codice
     /// </summary>
     [Flags]
-    public enum InterpreterExitCode : ushort
+    public enum InterpreterExitCode : uint
     {
         /// <summary>
         /// The code was interpreted successfully
@@ -86,6 +86,16 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// <summary>
         /// The script tried to print too many characters in the output buffer
         /// </summary>
-        StdoutBufferLimitExceeded = 1 << 15
+        StdoutBufferLimitExceeded = 1 << 15,
+
+        /// <summary>
+        /// The script tried to reference an undefined function
+        /// </summary>
+        UndefinedFunctionCalled = 1 << 16,
+
+        /// <summary>
+        /// The script tried to define a function with a value that was already mapped to another function
+        /// </summary>
+        DuplicateFunctionDefinition = 1 << 17
     }
 }
