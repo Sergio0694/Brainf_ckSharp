@@ -160,5 +160,17 @@ namespace Brainf_ck_sharp_Test
             Assert.AreEqual(result.ExceptionInfo?.ErrorPosition, 6);
             Assert.AreEqual(result.ExceptionInfo?.FaultedOperator, '-');
         }
+
+        [TestMethod]
+        public void SkippedLoopTest1()
+        {
+            const String script = "+>[++-]>-";
+            InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.HasFlag(InterpreterExitCode.ExceptionThrown) &&
+                          result.HasFlag(InterpreterExitCode.NoOutput));
+            Assert.AreEqual(result.Output, String.Empty);
+            Assert.IsTrue(result.TotalOperations == 4);
+        }
     }
 }
