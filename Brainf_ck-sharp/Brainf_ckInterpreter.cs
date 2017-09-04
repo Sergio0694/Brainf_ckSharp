@@ -117,7 +117,7 @@ namespace Brainf_ck_sharp
             StringBuilder output = new StringBuilder();
             Dictionary<uint, IReadOnlyList<Brainf_ckBinaryItem>> functions = new Dictionary<uint, IReadOnlyList<Brainf_ckBinaryItem>>();
 
-            // Execute the code // TODO: persist the functions mapping
+            // Execute the code
             InterpreterResult result = TryRun(executable, input, output, state, mode, threshold, TimeSpan.Zero, 0, null, breakpoints.Count > 0 ? breakpoints : null, functions);
             return new InterpreterExecutionSession(result, new SessionDebugData(executable, input, output, threshold, breakpoints), mode);
         }
@@ -282,7 +282,7 @@ namespace Brainf_ck_sharp
                     // Check the current elapsed time
                     if (threshold.HasValue && timer.ElapsedMilliseconds > threshold.Value + elapsed.TotalMilliseconds)
                     {
-                        return new InterpreterWorkingData(InterpreterExitCode.Failure | InterpreterExitCode.ThresholdExceeded, new[] { new char[0] }, depth, false, partial);
+                        return new InterpreterWorkingData(InterpreterExitCode.Failure | InterpreterExitCode.ThresholdExceeded, new[] { new Brainf_ckBinaryItem[0] }, depth, false, partial);
                     }
 
                     // Iterate over all the commands
@@ -304,7 +304,7 @@ namespace Brainf_ck_sharp
                             // First breakpoint in the current session
                             return new InterpreterWorkingData(InterpreterExitCode.Success |
                                                               InterpreterExitCode.BreakpointReached,
-                                                              new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, true, partial);
+                                                              new[] { operators.Take(i + 1) }, depth + (uint)i, true, partial);
                         }
 
                         // Keep track when the target breakpoint is reached and the previous execution is restored
@@ -320,7 +320,7 @@ namespace Brainf_ck_sharp
                                 else return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                        InterpreterExitCode.ExceptionThrown |
                                                                        InterpreterExitCode.UpperBoundExceeded,
-                                                                       new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached, partial);
+                                                                       new[] { operators.Take(i + 1) }, depth + (uint)i, reached, partial);
                                 partial++;
                                 break;
 
@@ -331,7 +331,7 @@ namespace Brainf_ck_sharp
                                 else return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                        InterpreterExitCode.ExceptionThrown |
                                                                        InterpreterExitCode.LowerBoundExceeded,
-                                                                       new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached, partial);
+                                                                       new[] { operators.Take(i + 1) }, depth + (uint)i, reached, partial);
                                 partial++;
                                 break;
 
@@ -343,7 +343,7 @@ namespace Brainf_ck_sharp
                                 else return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                        InterpreterExitCode.ExceptionThrown |
                                                                        InterpreterExitCode.MaxValueExceeded,
-                                                                       new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached, partial);
+                                                                       new[] { operators.Take(i + 1) }, depth + (uint)i, reached, partial);
                                 partial++;
                                 break;
 
@@ -355,7 +355,7 @@ namespace Brainf_ck_sharp
                                 else return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                        InterpreterExitCode.ExceptionThrown |
                                                                        InterpreterExitCode.NegativeValue,
-                                                                       new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached, partial);
+                                                                       new[] { operators.Take(i + 1) }, depth + (uint)i, reached, partial);
                                 partial++;
                                 break;
 
@@ -393,7 +393,7 @@ namespace Brainf_ck_sharp
                                         inner.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached))
                                     {
                                         return new InterpreterWorkingData(inner.ExitCode,
-                                            inner.StackFrames.Concat(new[] { operators.Select(op => op.Operator).Take(i + 1) }), inner.Position, reached, partial);
+                                            inner.StackFrames.Concat(new[] { operators.Take(i + 1) }), inner.Position, reached, partial);
                                     }
                                 }
                                 else if (state.Current.Value == 0) partial++;
@@ -423,7 +423,7 @@ namespace Brainf_ck_sharp
                                     return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                       InterpreterExitCode.ExceptionThrown |
                                                                       InterpreterExitCode.StdoutBufferLimitExceeded,
-                                                                      new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached, partial);
+                                                                      new[] { operators.Take(i + 1) }, depth + (uint)i, reached, partial);
                                 }
                                 output.Append(state.Current.Character);
                                 partial++;
@@ -443,14 +443,14 @@ namespace Brainf_ck_sharp
                                         else return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                                InterpreterExitCode.ExceptionThrown |
                                                                                InterpreterExitCode.NegativeValue,
-                                                                               new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached, partial);
+                                                                               new[] { operators.Take(i + 1) }, depth + (uint)i, reached, partial);
                                     }
                                     else state.Input((char)(c % byte.MaxValue));
                                 }
                                 else return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                        InterpreterExitCode.ExceptionThrown |
                                                                        InterpreterExitCode.StdinBufferExhausted,
-                                                                       new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached, partial);
+                                                                       new[] { operators.Take(i + 1) }, depth + (uint)i, reached, partial);
                                 partial++;
                                 break;
 
@@ -461,7 +461,7 @@ namespace Brainf_ck_sharp
                                     return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                       InterpreterExitCode.ExceptionThrown |
                                                                       InterpreterExitCode.DuplicateFunctionDefinition,
-                                                                      new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached, partial);
+                                                                      new[] { operators.Take(i + 1) }, depth + (uint)i, reached, partial);
                                 }
 
                                 // Extract the function code
@@ -483,7 +483,7 @@ namespace Brainf_ck_sharp
                                     return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                       InterpreterExitCode.ExceptionThrown |
                                                                       InterpreterExitCode.UndefinedFunctionCalled,
-                                        new[] { operators.Select(op => op.Operator).Take(i + 1) }, depth + (uint)i, reached, partial);
+                                        new[] { operators.Take(i + 1) }, depth + (uint)i, reached, partial);
                                 }
 
                                 // Call the function
@@ -495,7 +495,7 @@ namespace Brainf_ck_sharp
                                     executed.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached))
                                 {
                                     return new InterpreterWorkingData(executed.ExitCode,
-                                        executed.StackFrames.Concat(new[] { operators.Select(op => op.Operator).Take(i + 1) }), executed.Position, reached, partial);
+                                        executed.StackFrames.Concat(new[] { operators.Take(i + 1) }), executed.Position, reached, partial);
                                 }
                                 break;
                             default:
@@ -510,11 +510,15 @@ namespace Brainf_ck_sharp
             InterpreterWorkingData data = TryRunCore(executable, 0, false);
             timer.Stop();
 
-            // Reconstruct the stack trace that generated the error
-            IReadOnlyList<String> stackTrace = data.StackFrames == null
-                ? null
-                : (from frame in data.StackFrames
-                   select frame.AggregateToString()).ToArray();
+            // Prepare the source and the exception info, if needed
+            String code = executable.Select(op => op.Operator).AggregateToString();
+            InterpreterExceptionInfo info;
+            if (data.StackFrames != null)
+            {
+                IReadOnlyList<String> trace = data.StackFrames.Select(frame => new String(frame.Select(b => b.Operator).ToArray())).ToArray();
+                info = new InterpreterExceptionInfo(trace, (int)data.StackFrames.First(frame => frame.Any()).Last().Offset, code);
+            }
+            else info = null;
 
             // Reconstruct the functions list
             IReadOnlyList<FunctionDefinition> definitions = functions.Keys.OrderBy(key => key).Select(key =>
@@ -527,8 +531,8 @@ namespace Brainf_ck_sharp
             String text = output.ToString();
             return new InterpreterResult(
                 data.ExitCode | (text.Length > 0 ? InterpreterExitCode.TextOutput : InterpreterExitCode.NoOutput),
-                state, timer.Elapsed.Add(elapsed), text, executable.Select(op => op.Operator).AggregateToString(), operations + data.TotalOperations,
-                stackTrace, (data.ExitCode & InterpreterExitCode.BreakpointReached) == InterpreterExitCode.BreakpointReached ? (uint?)data.Position : null, definitions);
+                state, timer.Elapsed.Add(elapsed), text, code, operations + data.TotalOperations,
+                info, (data.ExitCode & InterpreterExitCode.BreakpointReached) == InterpreterExitCode.BreakpointReached ? (uint?)data.Position : null, definitions);
         }
 
         /// <summary>
