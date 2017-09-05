@@ -233,7 +233,7 @@ namespace Brainf_ck_sharp_Test
             const String argument = "9985", result = "99 * 85 = 8415";
             InterpreterResult test = Brainf_ckInterpreter.Run(script.Aggregate(String.Empty, (s, v) => s + v), argument);
             Assert.IsNotNull(test);
-            Assert.IsTrue(test.HasFlag(InterpreterExitCode.Success));
+            Assert.IsTrue(test.ExitCode.HasFlag(InterpreterExitCode.Success));
             Assert.AreEqual(test.Output, result);
             InterpreterExecutionSession
                 initial = Brainf_ckInterpreter.InitializeSession(script, argument),

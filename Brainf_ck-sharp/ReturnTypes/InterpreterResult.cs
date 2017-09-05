@@ -18,32 +18,6 @@ namespace Brainf_ck_sharp.ReturnTypes
         public InterpreterExitCode ExitCode { get; }
 
         /// <summary>
-        /// Checks whether or not the current <see cref="ExitCode"/> property contains a specific flag
-        /// </summary>
-        /// <param name="flag">The flag to check (it must have a single bit set)</param>
-        [PublicAPI]
-        [Pure]
-        public bool HasFlag(InterpreterExitCode flag)
-        {
-            // Check the flags set
-            bool found = false;
-            int bits = (ushort)flag;
-            for (int i = 0; i < 16; i++)
-            {
-                if ((bits & 1) == 1)
-                {
-                    if (found) throw new ArgumentException("The input value has more than a single flag set");
-                    found = true;
-                }
-                bits = bits >> 1;
-            }
-            if (!found) throw new ArgumentException("The input value doesn't have a flag set");
-
-            // Check whether or not the input flag is valid for this instance
-            return (ExitCode & flag) == flag;
-        }
-
-        /// <summary>
         /// Gets the resulting memory state after running the original script
         /// </summary>
         [NotNull]

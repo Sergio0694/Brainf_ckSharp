@@ -96,6 +96,11 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// <summary>
         /// The script tried to define a function with a value that was already mapped to another function
         /// </summary>
-        DuplicateFunctionDefinition = 1 << 17
+        DuplicateFunctionDefinition = 1 << 17,
+
+        /// <summary>
+        /// The script tried to define too many different functions
+        /// </summary>
+        FunctionsLimitExceeded = 1 << 18
     }
 }

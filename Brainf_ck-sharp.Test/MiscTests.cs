@@ -16,8 +16,8 @@ namespace Brainf_ck_sharp_Test
             const String script = "+++++";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success) &&
-                          result.HasFlag(InterpreterExitCode.NoOutput));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.IsTrue(result.TotalOperations == 5);
         }
@@ -28,8 +28,8 @@ namespace Brainf_ck_sharp_Test
             const String script = "++[-]";
             InterpreterResult result = Brainf_ckInterpreter.Run(script,String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success) &&
-                          result.HasFlag(InterpreterExitCode.NoOutput));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.IsTrue(result.TotalOperations == 7);
         }
@@ -40,8 +40,8 @@ namespace Brainf_ck_sharp_Test
             const String script = "++[>++[>+<-]<-]";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success) &&
-                          result.HasFlag(InterpreterExitCode.NoOutput));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.IsTrue(result.TotalOperations == 37);
         }
@@ -52,8 +52,8 @@ namespace Brainf_ck_sharp_Test
             String[] script = { "[.", ",]++[>++[>+<", "-]<-]" };
             InterpreterResult result = Brainf_ckInterpreter.Run(script.Aggregate(String.Empty, (s, v) => s + v), String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success) &&
-                          result.HasFlag(InterpreterExitCode.NoOutput));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.IsTrue(result.TotalOperations == 38);
             InterpreterExecutionSession

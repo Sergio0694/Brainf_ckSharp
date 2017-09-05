@@ -33,6 +33,11 @@ namespace Brainf_ck_sharp
         /// </summary>
         public const int StdoutBufferSizeLimit = 1024;
 
+        /// <summary>
+        /// Gets the maximum number of functions that can be defined in a single script
+        /// </summary>
+        public const int FunctionDefinitionsLimit = 128;
+
         #region Public APIs
 
         /// <summary>
@@ -461,6 +466,13 @@ namespace Brainf_ck_sharp
                                     return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                       InterpreterExitCode.ExceptionThrown |
                                                                       InterpreterExitCode.DuplicateFunctionDefinition,
+                                                                      new[] { operators.Take(i + 1) }, depth + (uint)i, reached, partial);
+                                }
+                                if (functions.Count == FunctionDefinitionsLimit)
+                                {
+                                    return new InterpreterWorkingData(InterpreterExitCode.Failure |
+                                                                      InterpreterExitCode.ExceptionThrown |
+                                                                      InterpreterExitCode.FunctionsLimitExceeded,
                                                                       new[] { operators.Take(i + 1) }, depth + (uint)i, reached, partial);
                                 }
 

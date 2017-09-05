@@ -21,8 +21,8 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// <summary>
         /// Gets whether or not the instance can continue its execution from its current state
         /// </summary>
-        public bool CanContinue => CurrentResult.HasFlag(InterpreterExitCode.Success) &&
-                                   CurrentResult.HasFlag(InterpreterExitCode.BreakpointReached);
+        public bool CanContinue => CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                                   CurrentResult.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached);
 
         /// <summary>
         /// Gets the overflow mode being used in the current session

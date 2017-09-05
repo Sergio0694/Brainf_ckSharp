@@ -15,7 +15,7 @@ namespace Brainf_ck_sharp_Test
             const String script = "+++++";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.IsTrue(result.MachineState.Current.Value == 5);
         }
@@ -26,7 +26,7 @@ namespace Brainf_ck_sharp_Test
             const String script = "+++++---";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.IsTrue(result.MachineState.Current.Value == 2);
         }
@@ -37,7 +37,7 @@ namespace Brainf_ck_sharp_Test
             const String script = ",++";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, "0");
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.IsTrue(result.MachineState.Current.Value == 50);
         }
@@ -48,7 +48,7 @@ namespace Brainf_ck_sharp_Test
             const String script = ",+++++++.";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, "0");
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success));
             Assert.AreEqual(result.Output, "7");
             Assert.IsTrue(result.MachineState.Current.Value == 55);
         }

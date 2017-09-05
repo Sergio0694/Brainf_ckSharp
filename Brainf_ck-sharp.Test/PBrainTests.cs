@@ -15,8 +15,8 @@ namespace Brainf_ck_sharp_Test
             const String script = "(+++):>:";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success) &&
-                          result.HasFlag(InterpreterExitCode.NoOutput));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
             Assert.IsTrue(result.MachineState[0].Value == 3 && result.MachineState[1].Value == 3);
             Assert.IsTrue(result.TotalOperations == 9);
         }
@@ -27,11 +27,23 @@ namespace Brainf_ck_sharp_Test
             const String script = "+(,[>+<-]>.)>+:";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, "a");
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success) &&
-                          result.HasFlag(InterpreterExitCode.TextOutput));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.TextOutput));
             Assert.IsTrue(result.MachineState.Current.Value == 'a');
             Assert.IsTrue(result.Output.Equals("a"));
             Assert.IsTrue(result.TotalOperations == 8 + 'a' * 5);
+        }
+
+        [TestMethod]
+        public void Test3()
+        {
+            const String script = ",[(+)-]";
+            InterpreterResult result = Brainf_ckInterpreter.Run(script, "€");
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.FunctionsLimitExceeded) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
         }
 
         [TestMethod]
