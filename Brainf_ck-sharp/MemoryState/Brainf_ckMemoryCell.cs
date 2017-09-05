@@ -5,7 +5,7 @@ namespace Brainf_ck_sharp.MemoryState
     /// <summary>
     /// Contains the information on a given memory cell in a <see cref="IReadonlyTouringMachineState"/> object
     /// </summary>
-    public struct Brainf_ckMemoryCell
+    public struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     {
         /// <summary>
         /// Gets whether or not the cell is currently selected

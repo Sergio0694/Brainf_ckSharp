@@ -71,5 +71,33 @@ namespace Brainf_ck_sharp_Test
                           result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
             Assert.IsTrue(result.CurrentResult.MachineState.Current.Value == 0);
         }
+
+        [TestMethod]
+        public void BreakpointTest3()
+        {
+            String[] script = { "++(>-+)", ">++:" };
+            InterpreterExecutionSession result = Brainf_ckInterpreter.InitializeSession(script, String.Empty);
+            Assert.IsNotNull(result);
+            result = result.Continue();
+            Assert.IsFalse(result.CanContinue);
+            Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
+                          result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) &&
+                          result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.NegativeValue) &&
+                          result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
+            Assert.IsTrue(result.CurrentResult.MachineState.Current.Value == 0);
+        }
+
+        [TestMethod]
+        public void BreakpointTest4()
+        {
+            String[] script = { "++(>,+.)", ">++:" };
+            InterpreterExecutionSession result = Brainf_ckInterpreter.InitializeSession(script, "a");
+            Assert.IsNotNull(result);
+            result = result.Continue();
+            Assert.IsFalse(result.CanContinue);
+            Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                          result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.TextOutput));
+            Assert.IsTrue(result.CurrentResult.MachineState.Current.Character == 'b');
+        }
     }
 }

@@ -461,6 +461,7 @@ namespace Brainf_ck_sharp
 
                             // func (
                             case '(':
+                                if (jump != null && !reached) continue;
                                 if (functions.ContainsKey(state.Current.Value))
                                 {
                                     return new InterpreterWorkingData(InterpreterExitCode.Failure |
