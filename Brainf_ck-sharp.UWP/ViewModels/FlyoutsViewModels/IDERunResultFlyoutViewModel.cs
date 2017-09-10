@@ -59,7 +59,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 }
                 if (Session.CurrentResult.Output.Length > 0) source.Add(GroupFromSection(IDEResultSection.Stdout));
 
-                // Error location when needed and stack trace, if present
+                // Error location when needed
                 if (Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown))
                 {
                     source.Add(GroupFromSection(IDEResultSection.ErrorLocation));
@@ -68,7 +68,10 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 {
                     source.Add(GroupFromSection(IDEResultSection.BreakpointReached));
                 }
+
+                // Add the proper stack trace
                 if (Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) ||
+                    Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.ThresholdExceeded) ||
                     Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached))
                 {
                     source.Add(GroupFromSection(IDEResultSection.StackTrace));
@@ -95,6 +98,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         /// <inheritdoc/>
         public override void Cleanup()
         {
+            Session.Dispose();
+            Session = null;
             base.Cleanup();
             InitializationCompleted = null;
             LoadingStateChanged = null;

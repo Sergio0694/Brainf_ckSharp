@@ -59,7 +59,9 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
                                                                      first == '+' && second == '-' ||
                                                                      first == '-' && second == '+' ||
                                                                      first == '[' && second == ']' ||
-                                                                     first == ']' && second == '[';
+                                                                     first == ']' && second == '[' ||
+                                                                     first == '(' && second == ')' ||
+                                                                     first == ')' && second == '(';
 
         /// <summary>
         /// Returns the corresponding color from a given character in a Brainf_ck source code

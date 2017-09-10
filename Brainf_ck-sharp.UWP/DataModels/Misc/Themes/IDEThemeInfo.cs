@@ -77,13 +77,16 @@ namespace Brainf_ck_sharp_UWP.DataModels.Misc.Themes
         /// <param name="brackets">The foreground color for the square brackets</param>
         /// <param name="dot">The foreground color for the dot operator</param>
         /// <param name="comma">The foreground color for the comma operator</param>
+        /// <param name="function"></param>
+        /// <param name="call"></param>
         /// <param name="lineStyle">The line highlight style</param>
         /// <param name="lineColor">The color of the line highlight</param>
         /// <param name="name">The name of the new theme to create</param>
-        public IDEThemeInfo(Color background, Color breakpoints, Color lineNumbers,
-            Color bracketsGuide, int? bracketsGuideStrokesLength,
-            Color comments, Color arrows, Color arithmetic, Color brackets, Color dot, Color comma,
-            LineHighlightStyle lineStyle, Color lineColor, [CallerMemberName] String name = null)
+        public IDEThemeInfo(
+            Color background, Color breakpoints, Color lineNumbers, 
+            Color bracketsGuide, int? bracketsGuideStrokesLength, 
+            Color comments, Color arrows, Color arithmetic, Color brackets, Color dot, Color comma, Color function, Color call, 
+            LineHighlightStyle lineStyle, Color lineColor, [CallerMemberName] string name = null)
         {
             Name = name ?? throw new NullReferenceException("Invalid theme name");
             Background = background;
@@ -103,7 +106,10 @@ namespace Brainf_ck_sharp_UWP.DataModels.Misc.Themes
                 { '[', brackets },
                 { ']', brackets },
                 { '.', dot },
-                { ',', comma }
+                { ',', comma },
+                { '(', function },
+                { ')', function },
+                { ':', call }
             };
         }
     }

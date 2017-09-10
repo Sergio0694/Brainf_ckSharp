@@ -817,9 +817,8 @@ namespace Brainf_ck_sharp_UWP.Views
                     ITextRange range = EditBox.Document.GetRange(start - 1, start);
                     range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(range.Character);
 
-                    // No other work needed for all the operators except the [ bracket
-                    if (!Brainf_ckInterpreter.Operators.Where(c => c != '[').Contains(range.Character) &&
-                        Brainf_ckInterpreter.CheckSourceSyntax(_PreviousText).Valid) // Skip the autocompletion if the code isn't valid
+                    // No other work needed for all the operators except the [ and ( brackets and the \r character
+                    if (Brainf_ckInterpreter.CheckSourceSyntax(_PreviousText).Valid) // Skip the autocompletion if the code isn't valid
                     {
                         // Calculate the current indentation depth
                         String trailer = text.Substring(0, range.StartPosition);
@@ -887,6 +886,15 @@ namespace Brainf_ck_sharp_UWP.Views
                             // New line, tabs needed
                             if (tabs.Length > 0) EditBox.Document.Selection.TypeText(tabs);
                             DrawLineNumbers();
+                            textChanged = true;
+                        }
+                        else if (range.Character == '(')
+                        {
+                            // Function definition
+                            EditBox.Document.Selection.TypeText(")");
+                            ITextRange bracketsRange = EditBox.Document.GetRange(start, EditBox.Document.Selection.EndPosition);
+                            bracketsRange.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar('(');
+                            EditBox.Document.Selection.Move(TextRangeUnit.Character, -1);
                             textChanged = true;
                         }
                     }

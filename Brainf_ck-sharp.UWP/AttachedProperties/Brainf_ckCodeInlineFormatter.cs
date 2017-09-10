@@ -105,25 +105,35 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
             IReadOnlyList<String> stack = e.NewValue.To<IReadOnlyList<String>>();
             List<Inline> inlines = new List<Inline>();
             int i = 0;
+            bool skipped = false;
             foreach (String call in stack)
             {
                 // Insert the "at" separator if needed
                 if (i > 0)
                 {
-                    inlines.Add(new LineBreak());
-                    inlines.Add(new Run
+                    if (skipped) skipped = false;
+                    else
                     {
-                        Text = "at",
-                        Foreground = new SolidColorBrush(Colors.DimGray),
-                        FontSize = @this.FontSize - 1
-                    });
-                    inlines.Add(new LineBreak());
+                        inlines.Add(new LineBreak());
+                        inlines.Add(new Run
+                        {
+                            Text = "at",
+                            Foreground = new SolidColorBrush(Colors.DimGray),
+                            FontSize = @this.FontSize - 1
+                        });
+                        inlines.Add(new LineBreak());
+                    }
                 }
 
-                // Add the formatted call line
-                Span line = new Span();
-                SetSource(line, call);
-                inlines.Add(line);
+                // Skip the first line if it's empty
+                if (call.Length == 0 && !skipped) skipped = true;
+                else
+                {
+                    // Add the formatted call line
+                    Span line = new Span();
+                    SetSource(line, call);
+                    inlines.Add(line);
+                }
                 i++;
             }
             @this.Inlines.Clear();
