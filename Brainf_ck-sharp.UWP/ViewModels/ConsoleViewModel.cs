@@ -202,13 +202,13 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             SendCommandAvailableMessages(false);
             String command = Source.Last().To<ConsoleUserCommand>().Command;
             InterpreterResult result = await Task.Run(() => Brainf_ckInterpreter.Run(command, stdin, State, mode, 1000));
-            if (result.HasFlag(InterpreterExitCode.Success) &&
-                result.HasFlag(InterpreterExitCode.TextOutput))
+            if (result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                result.ExitCode.HasFlag(InterpreterExitCode.TextOutput))
             {
                 // Text output
                 Source.Add(new ConsoleCommandResult(result.Output));
             }
-            else if (!result.HasFlag(InterpreterExitCode.Success))
+            else if (!result.ExitCode.HasFlag(InterpreterExitCode.Success))
             {
                 ScriptExceptionInfo info = ScriptExceptionInfo.FromResult(result);
                 Source.Add(new ConsoleExceptionResult(info));

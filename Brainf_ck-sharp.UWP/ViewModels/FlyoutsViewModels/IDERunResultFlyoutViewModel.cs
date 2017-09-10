@@ -51,7 +51,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 }
 
                 // Exception type (if present) and Stdout buffer (if it contains at least a character)
-                if (!Session.CurrentResult.HasFlag(InterpreterExitCode.Success))
+                if (!Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success))
                 {
                     ScriptExceptionInfo info = ScriptExceptionInfo.FromResult(Session.CurrentResult);
                     source.Add(new JumpListGroup<IDEResultSection, IDEResultSectionDataBase>(
@@ -60,16 +60,16 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 if (Session.CurrentResult.Output.Length > 0) source.Add(GroupFromSection(IDEResultSection.Stdout));
 
                 // Error location when needed and stack trace, if present
-                if (Session.CurrentResult.HasFlag(InterpreterExitCode.ExceptionThrown))
+                if (Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown))
                 {
                     source.Add(GroupFromSection(IDEResultSection.ErrorLocation));
                 }
-                else if (Session.CurrentResult.HasFlag(InterpreterExitCode.BreakpointReached))
+                else if (Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached))
                 {
                     source.Add(GroupFromSection(IDEResultSection.BreakpointReached));
                 }
-                if (Session.CurrentResult.HasFlag(InterpreterExitCode.ExceptionThrown) ||
-                    Session.CurrentResult.HasFlag(InterpreterExitCode.BreakpointReached))
+                if (Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) ||
+                    Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached))
                 {
                     source.Add(GroupFromSection(IDEResultSection.StackTrace));
                 }
@@ -78,7 +78,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 source.Add(GroupFromSection(IDEResultSection.SourceCode));
 
                 // Add the memory state and the statistics only if the code was executed
-                if (!Session.CurrentResult.HasFlag(InterpreterExitCode.MismatchedParentheses))
+                if (!Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.MismatchedParentheses))
                 {
                     // Calculate the memory state info and add it to the queue
                     IndexedModelWithValue<Brainf_ckMemoryCell>[] state = IndexedModelWithValue<Brainf_ckMemoryCell>.New(Session.CurrentResult.MachineState).ToArray();
@@ -137,7 +137,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         {
             LoadingStateChanged?.Invoke(this, true);
             await Task.Delay(500);
-            Session = await Task.Run(() => runToCompletion ? Session.RunToCompletion() : Session.Continue());
+            await Task.Run(() =>
+            {
+                if (runToCompletion) Session.RunToCompletion();
+                else Session.Continue();
+            });
             await LoadGroupsAsync();
             await Task.Delay(500);
             LoadingStateChanged?.Invoke(this, false);

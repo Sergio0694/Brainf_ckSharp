@@ -39,34 +39,34 @@ namespace Brainf_ck_sharp_UWP.DataModels.Misc
         public static ScriptExceptionInfo FromResult([NotNull] InterpreterResult result)
         {
             // Syntax error
-            if (result.HasFlag(InterpreterExitCode.MismatchedParentheses))
+            if (result.ExitCode.HasFlag(InterpreterExitCode.MismatchedParentheses))
             {
                 return new ScriptExceptionInfo(ScriptExceptionType.SyntaxError, LocalizationManager.GetResource("WrongBrackets"));
             }
 
             // Interpreter error
-            if (result.HasFlag(InterpreterExitCode.InternalException))
+            if (result.ExitCode.HasFlag(InterpreterExitCode.InternalException))
             {
                 return new ScriptExceptionInfo(ScriptExceptionType.InternalError, LocalizationManager.GetResource("InterpreterError"));
             }
 
             // Possible infinite loop
-            if (result.HasFlag(InterpreterExitCode.ThresholdExceeded))
+            if (result.ExitCode.HasFlag(InterpreterExitCode.ThresholdExceeded))
             {
                 return new ScriptExceptionInfo(ScriptExceptionType.ThresholdExceeded, LocalizationManager.GetResource("ThresholdExceeded"));
             }
 
             // Handled exception
-            if (result.HasFlag(InterpreterExitCode.ExceptionThrown))
+            if (result.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown))
             {
                 
                 String message;
-                if (result.HasFlag(InterpreterExitCode.LowerBoundExceeded)) message = LocalizationManager.GetResource("ExLowerBound");
-                else if (result.HasFlag(InterpreterExitCode.UpperBoundExceeded)) message = LocalizationManager.GetResource("ExUpperBound");
-                else if (result.HasFlag(InterpreterExitCode.NegativeValue)) message = LocalizationManager.GetResource("ExNegativeValue");
-                else if (result.HasFlag(InterpreterExitCode.MaxValueExceeded)) message = LocalizationManager.GetResource("ExMaxValue");
-                else if (result.HasFlag(InterpreterExitCode.StdinBufferExhausted)) message = LocalizationManager.GetResource("ExEmptyStdin");
-                else if (result.HasFlag(InterpreterExitCode.StdoutBufferLimitExceeded)) message = LocalizationManager.GetResource("ExMaxStdout");
+                if (result.ExitCode.HasFlag(InterpreterExitCode.LowerBoundExceeded)) message = LocalizationManager.GetResource("ExLowerBound");
+                else if (result.ExitCode.HasFlag(InterpreterExitCode.UpperBoundExceeded)) message = LocalizationManager.GetResource("ExUpperBound");
+                else if (result.ExitCode.HasFlag(InterpreterExitCode.NegativeValue)) message = LocalizationManager.GetResource("ExNegativeValue");
+                else if (result.ExitCode.HasFlag(InterpreterExitCode.MaxValueExceeded)) message = LocalizationManager.GetResource("ExMaxValue");
+                else if (result.ExitCode.HasFlag(InterpreterExitCode.StdinBufferExhausted)) message = LocalizationManager.GetResource("ExEmptyStdin");
+                else if (result.ExitCode.HasFlag(InterpreterExitCode.StdoutBufferLimitExceeded)) message = LocalizationManager.GetResource("ExMaxStdout");
                 else throw new InvalidOperationException("The interpreter exception type isn't valid");
                 return new ScriptExceptionInfo(ScriptExceptionType.RuntimeError, message);
             }
