@@ -78,7 +78,7 @@ namespace Brainf_ck_sharp_Test
             String[] script = { "++(>-+)", ">++:" };
             InterpreterExecutionSession result = Brainf_ckInterpreter.InitializeSession(script, String.Empty);
             Assert.IsNotNull(result);
-            result = result.Continue();
+            result.Continue();
             Assert.IsFalse(result.CanContinue);
             Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
                           result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) &&
@@ -93,7 +93,7 @@ namespace Brainf_ck_sharp_Test
             String[] script = { "++(>,+.)", ">++:" };
             InterpreterExecutionSession result = Brainf_ckInterpreter.InitializeSession(script, "a");
             Assert.IsNotNull(result);
-            result = result.Continue();
+            result.Continue();
             Assert.IsFalse(result.CanContinue);
             Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
                           result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.TextOutput));

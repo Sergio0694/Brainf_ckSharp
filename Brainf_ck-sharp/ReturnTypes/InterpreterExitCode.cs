@@ -101,6 +101,11 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// <summary>
         /// The script tried to define too many different functions
         /// </summary>
-        FunctionsLimitExceeded = 1 << 18
+        FunctionsLimitExceeded = 1 << 18,
+
+        /// <summary>
+        /// The script executed one or more recursive functions too many times
+        /// </summary>
+        StackLimitExceeded = 1 << 19
     }
 }

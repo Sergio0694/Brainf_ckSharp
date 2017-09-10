@@ -183,7 +183,7 @@ namespace Brainf_ck_sharp_Test
                           result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
             Assert.AreEqual(result.Output, String.Empty);
             InterpreterExecutionSession session = Brainf_ckInterpreter.InitializeSession(new[] { ",[", "-]" }, "a");
-            while (session.CanContinue) session = session.Continue();
+            while (session.CanContinue) session.Continue();
             Assert.IsTrue(result.TotalOperations == session.CurrentResult.TotalOperations);
         }
 
@@ -197,8 +197,21 @@ namespace Brainf_ck_sharp_Test
                           result.ExitCode.HasFlag(InterpreterExitCode.NegativeValue));
             Assert.AreEqual(result.Output, String.Empty);
             InterpreterExecutionSession session = Brainf_ckInterpreter.InitializeSession(new[] { ",[-", "-]" }, "a");
-            while (session.CanContinue) session = session.Continue();
+            while (session.CanContinue) session.Continue();
             Assert.IsTrue(result.TotalOperations == session.CurrentResult.TotalOperations);
+        }
+
+        [TestMethod]
+        public void DisposeTest()
+        {
+            String[] script = { "++[", ">+<-]>" };
+            using (InterpreterExecutionSession result = Brainf_ckInterpreter.InitializeSession(script, String.Empty))
+            {
+                Assert.IsTrue(result != null);
+                result.RunToCompletion();
+                Assert.IsTrue(!result.CanContinue);
+                Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success));
+            }
         }
     }
 }

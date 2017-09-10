@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Brainf_ck_sharp.Helpers;
 using Brainf_ck_sharp.MemoryState;
 using JetBrains.Annotations;
 
@@ -12,10 +11,6 @@ namespace Brainf_ck_sharp.ReturnTypes
     public sealed class InterpreterResult
     {
         #region Public APIs
-
-        // The current working data produced by the interpreter while executing the current script
-        [CanBeNull]
-        private readonly InterpreterWorkingData WorkingData;
 
         /// <summary>
         /// Gets the exit code for the interpreted script, with all the relevant flags
@@ -76,15 +71,13 @@ namespace Brainf_ck_sharp.ReturnTypes
 
         // Internal constructor
         internal InterpreterResult(
-            [NotNull] InterpreterWorkingData data,
+            InterpreterExitCode exitCode,
             [NotNull] TouringMachineState state, TimeSpan duration,
             [NotNull] String output, [NotNull] String code, uint operations, 
             [CanBeNull] InterpreterExceptionInfo info, uint? breakpoint,
             [NotNull] IReadOnlyList<FunctionDefinition> functions)
         {
-            WorkingData = data;
-            ExitCode = data.ExitCode |
-                       (output.Length > 0 ? InterpreterExitCode.TextOutput : InterpreterExitCode.NoOutput);
+            ExitCode = exitCode;
             _MachineState = state;
             ElapsedTime = duration;
             Output = output;
@@ -112,9 +105,7 @@ namespace Brainf_ck_sharp.ReturnTypes
         [Pure, NotNull]
         internal InterpreterResult Clone()
         {
-            return WorkingData != null
-                ? new InterpreterResult(WorkingData, _MachineState.Clone(), ElapsedTime, Output, SourceCode, TotalOperations, ExceptionInfo, BreakpointPosition, Functions)
-                : throw new InvalidOperationException("The source result can't be cloned");
+            return new InterpreterResult(ExitCode, _MachineState.Clone(), ElapsedTime, Output, SourceCode, TotalOperations, ExceptionInfo, BreakpointPosition, Functions);
         }
 
         #endregion
