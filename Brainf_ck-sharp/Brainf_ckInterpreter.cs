@@ -147,6 +147,7 @@ namespace Brainf_ck_sharp
         {
             // Check function brackets parity
             bool open = false;
+            int position = 0;
             for (int i = 0; i < source.Length; i++)
             {
                 switch (source[i])
@@ -154,6 +155,7 @@ namespace Brainf_ck_sharp
                     case '(':
                         if (open) return new SyntaxValidationResult(false, i);
                         open = true;
+                        position = i;
                         break;
                     case ')':
                         if (open) open = false;
@@ -161,6 +163,7 @@ namespace Brainf_ck_sharp
                         break;
                 }
             }
+            if (open) return new SyntaxValidationResult(false, position);
 
             // Prepare the inner check function
             SyntaxValidationResult CheckSyntaxCore(String code)

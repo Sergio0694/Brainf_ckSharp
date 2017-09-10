@@ -10,6 +10,14 @@ namespace Brainf_ck_sharp_Test
     public class PBrainTests
     {
         [TestMethod]
+        public void SyntaxTest1()
+        {
+            const String script = "++(  +";
+            SyntaxValidationResult result = Brainf_ckInterpreter.CheckSourceSyntax(script);
+            Assert.IsTrue(!result.Valid && result.ErrorPosition == 2);
+        }
+
+        [TestMethod]
         public void Test1()
         {
             const String script = "(+++):>:";
