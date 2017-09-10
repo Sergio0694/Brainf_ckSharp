@@ -99,16 +99,16 @@ namespace Brainf_ck_sharp
         {
             // Failure function
             TouringMachineState state = new TouringMachineState(size);
-            IEnumerable<InterpreterResult> GenerateFailure(InterpreterExitCode reason, String code)
+            IEnumerator<InterpreterResult> GenerateFailure(InterpreterExitCode reason, String code)
             {
-                return new[] { new InterpreterResult(InterpreterExitCode.Failure | reason, state, code) };
+                yield return new InterpreterResult(InterpreterExitCode.Failure | reason, state, code);
             }
 
             // Find the executable code
             IReadOnlyList<IReadOnlyList<char>> chunks = source.Select(chunk => FindExecutableCode(chunk).ToArray()).ToArray();
             if (chunks.Count == 0 || chunks.Any(group => group.Count == 0))
             {
-                return new InterpreterExecutionSession(GenerateFailure(InterpreterExitCode.NoCodeInterpreted, String.Empty).GetEnumerator(), null);
+                return new InterpreterExecutionSession(GenerateFailure(InterpreterExitCode.NoCodeInterpreted, String.Empty), null);
             }
 
             // Reconstruct the binary to run
@@ -125,14 +125,18 @@ namespace Brainf_ck_sharp
             if (!CheckSourceSyntax(executable))
             {
                 return new InterpreterExecutionSession(
-                    GenerateFailure(InterpreterExitCode.MismatchedParentheses, executable.Select(op => op.Operator).AggregateToString()).GetEnumerator(), null);
+                    GenerateFailure(InterpreterExitCode.MismatchedParentheses, executable.Select(op => op.Operator).AggregateToString()), null);
             }
 
             // Execute the code
             CancellationTokenSource cts = new CancellationTokenSource();
-            IEnumerable<InterpreterResult> results = TryRun(executable, arguments, state, mode, threshold, breakpoints, cts.Token);
-            IEnumerator<InterpreterResult> enumerator = results.GetEnumerator();
-            enumerator.MoveNext();
+            IEnumerator<InterpreterResult> enumerator = TryRun(executable, arguments, state, mode, threshold, breakpoints, cts.Token);
+            if (!enumerator.MoveNext())
+            {
+                // Initialization failed
+                return new InterpreterExecutionSession(
+                    GenerateFailure(InterpreterExitCode.InternalException, executable.Select(op => op.Operator).AggregateToString()), null);
+            }
             return new InterpreterExecutionSession(enumerator, cts);
         }
 
@@ -244,7 +248,16 @@ namespace Brainf_ck_sharp
             }
 
             // Execute the code
-            return TryRun(executable, arguments, state, mode, threshold, new uint[0], CancellationToken.None).Last();
+            using (IEnumerator<InterpreterResult> enumerator = TryRun(executable, arguments, state, mode, threshold, new uint[0], CancellationToken.None))
+            {
+                if (!enumerator.MoveNext())
+                {
+                    // Abort if the enumerator failed
+                    return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.InternalException,
+                                                 state, executable.Select(op => op.Operator).AggregateToString());
+                }
+                return enumerator.Current;
+            }
         }
 
         /// <summary>
@@ -257,8 +270,8 @@ namespace Brainf_ck_sharp
         /// <param name="threshold">The optional time threshold for the execution of the script</param>
         /// <param name="breakpoints">The list of breakpoints in the input source code</param>
         /// <param name="token">A <see cref="CancellationToken"/> used to signal when to bypass new breakpoints reached by the script</param>
-        [Pure, NotNull, ItemNotNull]
-        private static IEnumerable<InterpreterResult> TryRun(
+        [Pure, NotNull]
+        private static IEnumerator<InterpreterResult> TryRun(
             [NotNull] IReadOnlyList<Brainf_ckBinaryItem> executable, [NotNull] String arguments,
             [NotNull] TouringMachineState state, OverflowMode mode, int? threshold, [NotNull] IReadOnlyList<uint> breakpoints, CancellationToken token)
         {
