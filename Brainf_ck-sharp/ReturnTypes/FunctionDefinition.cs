@@ -28,7 +28,7 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// Creates a new instance with the given parameters
         /// </summary>
         /// <param name="value">The function value</param>
-        /// <param name="offset">Yhe function script offset</param>
+        /// <param name="offset">The function script offset</param>
         /// <param name="body">The function code</param>
         public FunctionDefinition(uint value, uint offset, [NotNull] String body)
         {

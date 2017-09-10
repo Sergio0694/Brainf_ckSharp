@@ -95,8 +95,7 @@ namespace Brainf_ck_sharp
             if (chunks.Count == 0 || chunks.Any(group => group.Count == 0))
             {
                 return new InterpreterExecutionSession(
-                    new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.NoCodeInterpreted, state,
-                    TimeSpan.Zero, String.Empty, String.Empty, 0, null, null, new FunctionDefinition[0]), null, mode);
+                    new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.NoCodeInterpreted, state, String.Empty), null, mode);
             }
 
             // Reconstruct the binary to run
@@ -114,7 +113,7 @@ namespace Brainf_ck_sharp
             {
                 return new InterpreterExecutionSession(
                     new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.MismatchedParentheses, state,
-                    TimeSpan.Zero, String.Empty, executable.Select(op => op.Operator).AggregateToString(), 0, null, null, new FunctionDefinition[0]), null, mode);
+                    executable.Select(op => op.Operator).AggregateToString()), null, mode);
             }
 
             // Prepare the input and output arguments
@@ -221,15 +220,14 @@ namespace Brainf_ck_sharp
             IReadOnlyList<Brainf_ckBinaryItem> executable = FindExecutableCode(source).Select((c, i) => new Brainf_ckBinaryItem((uint)i, c)).ToArray();
             if (executable.Count == 0)
             {
-                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.NoCodeInterpreted, state,
-                    TimeSpan.Zero, String.Empty, String.Empty, 0, null, null, new FunctionDefinition[0]);
+                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.NoCodeInterpreted, state, String.Empty);
             }
 
             // Check the code syntax
             if (!CheckSourceSyntax(executable))
             {
-                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.MismatchedParentheses, state, TimeSpan.Zero, String.Empty,
-                    executable.Select(op => op.Operator).AggregateToString(), 0, null, null, new FunctionDefinition[0]);
+                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.MismatchedParentheses, state,
+                    executable.Select(op => op.Operator).AggregateToString());
             }
 
             // Prepare the input and output arguments
@@ -543,8 +541,7 @@ namespace Brainf_ck_sharp
             // Return the interpreter result with all the necessary info
             String text = output.ToString();
             return new InterpreterResult(
-                data.ExitCode | (text.Length > 0 ? InterpreterExitCode.TextOutput : InterpreterExitCode.NoOutput),
-                state, timer.Elapsed.Add(elapsed), text, code, operations + data.TotalOperations,
+                data, state, timer.Elapsed.Add(elapsed), text, code, operations + data.TotalOperations,
                 info, (data.ExitCode & InterpreterExitCode.BreakpointReached) == InterpreterExitCode.BreakpointReached ? (uint?)data.Position : null, definitions);
         }
 

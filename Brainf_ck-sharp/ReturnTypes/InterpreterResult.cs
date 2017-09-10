@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Brainf_ck_sharp.Helpers;
 using Brainf_ck_sharp.MemoryState;
 using JetBrains.Annotations;
 
@@ -12,16 +13,22 @@ namespace Brainf_ck_sharp.ReturnTypes
     {
         #region Public APIs
 
+        // The current working data produced by the interpreter while executing the current script
+        [CanBeNull]
+        private readonly InterpreterWorkingData WorkingData;
+
         /// <summary>
         /// Gets the exit code for the interpreted script, with all the relevant flags
         /// </summary>
         public InterpreterExitCode ExitCode { get; }
 
+        private readonly TouringMachineState _MachineState;
+
         /// <summary>
         /// Gets the resulting memory state after running the original script
         /// </summary>
         [NotNull]
-        public IReadonlyTouringMachineState MachineState { get; }
+        public IReadonlyTouringMachineState MachineState => _MachineState;
 
         /// <summary>
         /// Gets the execution time for the interpreted script
@@ -69,13 +76,16 @@ namespace Brainf_ck_sharp.ReturnTypes
 
         // Internal constructor
         internal InterpreterResult(
-            InterpreterExitCode exitCode, [NotNull] TouringMachineState state, TimeSpan duration,
+            [NotNull] InterpreterWorkingData data,
+            [NotNull] TouringMachineState state, TimeSpan duration,
             [NotNull] String output, [NotNull] String code, uint operations, 
             [CanBeNull] InterpreterExceptionInfo info, uint? breakpoint,
             [NotNull] IReadOnlyList<FunctionDefinition> functions)
         {
-            ExitCode = exitCode;
-            MachineState = state;
+            WorkingData = data;
+            ExitCode = data.ExitCode |
+                       (output.Length > 0 ? InterpreterExitCode.TextOutput : InterpreterExitCode.NoOutput);
+            _MachineState = state;
             ElapsedTime = duration;
             Output = output;
             SourceCode = code;
@@ -85,14 +95,26 @@ namespace Brainf_ck_sharp.ReturnTypes
             Functions = functions;
         }
 
+        // Internal failure constructor
+        internal InterpreterResult(InterpreterExitCode result, [NotNull] TouringMachineState state, [NotNull] String code)
+        {
+            ExitCode = result;
+            _MachineState = state;
+            SourceCode = code;
+            Output = String.Empty;
+            ElapsedTime = TimeSpan.Zero;
+            Functions = new FunctionDefinition[0];
+        }
+
         /// <summary>
         /// Creates a copu of the current result
         /// </summary>
-        /// <returns></returns>
         [Pure, NotNull]
         internal InterpreterResult Clone()
         {
-            return new InterpreterResult(ExitCode, ((TouringMachineState)MachineState).Clone(), ElapsedTime, Output, SourceCode, TotalOperations, ExceptionInfo, BreakpointPosition, Functions);
+            return WorkingData != null
+                ? new InterpreterResult(WorkingData, _MachineState.Clone(), ElapsedTime, Output, SourceCode, TotalOperations, ExceptionInfo, BreakpointPosition, Functions)
+                : throw new InvalidOperationException("The source result can't be cloned");
         }
 
         #endregion
