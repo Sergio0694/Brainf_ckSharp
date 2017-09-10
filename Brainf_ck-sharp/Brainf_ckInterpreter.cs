@@ -274,6 +274,14 @@ namespace Brainf_ck_sharp
             // Internal recursive function that interpretes the code
             IEnumerable<InterpreterWorkingData> TryRunCore(IReadOnlyList<Brainf_ckBinaryItem> operators, uint position, ushort depth)
             {
+                // Verify that each call has at least an operator to execute
+                if (operators.Count == 0)
+                {
+                    yield return new InterpreterWorkingData(InterpreterExitCode.Failure | InterpreterExitCode.InternalException,
+                                                            new[] { new Brainf_ckBinaryItem[0] }, 0, operations);
+                    yield break;
+                }
+
                 // Outer do-while that repeats the code if there's a loop
                 bool repeat = false;
                 do
@@ -413,7 +421,7 @@ namespace Brainf_ck_sharp
                                 if (state.Current.Value == 0)
                                 {
                                     // Loop end
-                                    yield return new InterpreterWorkingData(InterpreterExitCode.Success, null, position + (uint)i, operations); // Increment the partial to include the closing ] bracket
+                                    yield return new InterpreterWorkingData(InterpreterExitCode.Success, null, position + (uint)i, operations);
                                     yield break;
                                 }
                                 else
