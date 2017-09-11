@@ -42,7 +42,7 @@ namespace Brainf_ck_sharp
         /// <summary>
         /// Gets the maximum number of recursive calls that can be performed by a script
         /// </summary>
-        public const int MaximumStackSize = 1024;
+        public const int MaximumStackSize = 512;
 
         #region Public APIs
 

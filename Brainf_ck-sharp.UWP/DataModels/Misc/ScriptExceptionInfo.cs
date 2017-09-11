@@ -67,6 +67,10 @@ namespace Brainf_ck_sharp_UWP.DataModels.Misc
                 else if (result.ExitCode.HasFlag(InterpreterExitCode.MaxValueExceeded)) message = LocalizationManager.GetResource("ExMaxValue");
                 else if (result.ExitCode.HasFlag(InterpreterExitCode.StdinBufferExhausted)) message = LocalizationManager.GetResource("ExEmptyStdin");
                 else if (result.ExitCode.HasFlag(InterpreterExitCode.StdoutBufferLimitExceeded)) message = LocalizationManager.GetResource("ExMaxStdout");
+                else if (result.ExitCode.HasFlag(InterpreterExitCode.UndefinedFunctionCalled)) message = LocalizationManager.GetResource("ExUndefinedFunction");
+                else if (result.ExitCode.HasFlag(InterpreterExitCode.DuplicateFunctionDefinition)) message = LocalizationManager.GetResource("ExDuplicateFunctionDefinition");
+                else if (result.ExitCode.HasFlag(InterpreterExitCode.FunctionsLimitExceeded)) message = LocalizationManager.GetResource("ExFunctionsLimitExceeded");
+                else if (result.ExitCode.HasFlag(InterpreterExitCode.StackLimitExceeded)) message = LocalizationManager.GetResource("ExStackLimitExceeded");
                 else throw new InvalidOperationException("The interpreter exception type isn't valid");
                 return new ScriptExceptionInfo(ScriptExceptionType.RuntimeError, message);
             }

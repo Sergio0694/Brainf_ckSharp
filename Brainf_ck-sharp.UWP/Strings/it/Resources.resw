@@ -535,4 +535,16 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="Interpreter" xml:space="preserve">
     <value>Interprete</value>
   </data>
+  <data name="ExDuplicateFunctionDefinition" xml:space="preserve">
+    <value>Definizione funzione duplicata</value>
+  </data>
+  <data name="ExFunctionsLimitExceeded" xml:space="preserve">
+    <value>Limite funzioni superato</value>
+  </data>
+  <data name="ExStackLimitExceeded" xml:space="preserve">
+    <value>Stack overflow</value>
+  </data>
+  <data name="ExUndefinedFunction" xml:space="preserve">
+    <value>Funzione non definita</value>
+  </data>
 </root>

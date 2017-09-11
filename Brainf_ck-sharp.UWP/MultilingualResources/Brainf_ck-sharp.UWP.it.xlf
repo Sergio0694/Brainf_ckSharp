@@ -703,6 +703,22 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Interpreter</source>
           <target state="translated">Interprete</target>
         </trans-unit>
+        <trans-unit id="ExDuplicateFunctionDefinition" translate="yes" xml:space="preserve">
+          <source>Duplicate function definition</source>
+          <target state="translated">Definizione funzione duplicata</target>
+        </trans-unit>
+        <trans-unit id="ExFunctionsLimitExceeded" translate="yes" xml:space="preserve">
+          <source>Functions limit exceeded</source>
+          <target state="translated">Limite funzioni superato</target>
+        </trans-unit>
+        <trans-unit id="ExStackLimitExceeded" translate="yes" xml:space="preserve">
+          <source>Stack overflow exception</source>
+          <target state="translated">Stack overflow</target>
+        </trans-unit>
+        <trans-unit id="ExUndefinedFunction" translate="yes" xml:space="preserve">
+          <source>Undefined function call</source>
+          <target state="translated">Funzione non definita</target>
+        </trans-unit>
       </group>
     </body>
   </file>

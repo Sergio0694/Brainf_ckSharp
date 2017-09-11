@@ -641,4 +641,16 @@ This way he'll be able to help you!</value>
   <data name="Interpreter" xml:space="preserve">
     <value>Interpreter</value>
   </data>
+  <data name="ExDuplicateFunctionDefinition" xml:space="preserve">
+    <value>Duplicate function definition</value>
+  </data>
+  <data name="ExFunctionsLimitExceeded" xml:space="preserve">
+    <value>Functions limit exceeded</value>
+  </data>
+  <data name="ExStackLimitExceeded" xml:space="preserve">
+    <value>Stack overflow exception</value>
+  </data>
+  <data name="ExUndefinedFunction" xml:space="preserve">
+    <value>Undefined function call</value>
+  </data>
 </root>
