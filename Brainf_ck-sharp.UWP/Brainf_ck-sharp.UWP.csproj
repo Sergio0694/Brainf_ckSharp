@@ -196,6 +196,7 @@
     <Compile Include="Messages\UI\BlurModeChangedMessage.cs" />
     <Compile Include="Messages\UI\IDESettingsChangedMessage.cs" />
     <Compile Include="Messages\UI\IDEThemePreviewFontChangedMessage.cs" />
+    <Compile Include="Messages\UI\PBrainButtonsVisibilityChangedMessage.cs" />
     <Compile Include="PopupService\Interfaces\IAsyncLoadedContent.cs" />
     <Compile Include="PopupService\Interfaces\IBusyWorkingContent.cs" />
     <Compile Include="PopupService\InternalTypes\Offset.cs" />

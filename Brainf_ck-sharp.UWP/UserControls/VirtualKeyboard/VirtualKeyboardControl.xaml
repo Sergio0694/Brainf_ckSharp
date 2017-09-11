@@ -20,7 +20,9 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition 
+                x:Name="PBrainColumn"
+                Width="0"/>
         </Grid.ColumnDefinitions>
         
         <!--First row (><+-)-->
@@ -75,6 +77,7 @@
 
         <!--Border with the PBrain operators-->
         <Border
+            x:Name="PBrainBorder"
             Grid.Column="4"
             Grid.Row="0"
             Grid.RowSpan="2"

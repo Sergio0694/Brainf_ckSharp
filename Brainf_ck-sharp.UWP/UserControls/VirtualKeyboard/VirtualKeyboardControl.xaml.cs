@@ -1,8 +1,13 @@
 ﻿using System;
+using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages;
+using Brainf_ck_sharp_UWP.Messages.UI;
 using GalaSoft.MvvmLight.Messaging;
+using UICompositionAnimations.Enums;
+using UICompositionAnimations.XAMLTransform;
 
 namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
 {
@@ -14,6 +19,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
         public VirtualKeyboardControl()
         {
             this.InitializeComponent();
+            if (!DesignMode.DesignModeEnabled &&
+                AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ShowPBrainButtons)))
+            {
+                // Show the PBrain buttons on startup, if needed
+                PBrainColumn.Width = new GridLength(1, GridUnitType.Star);
+            }
+            Messenger.Default.Register<PBrainButtonsVisibilityChangedMessage>(this, m => AnimateUI(m.Visible));
         }
 
         /// <summary>
@@ -53,5 +65,32 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
         private void CallButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed(':');
 
         #endregion
+
+        // The duration of the keyboard animation
+        private const int ExpansionAnimationDuration = 250;
+
+        // Animates the expansion/collapse of the PBrain keyboard section
+        private async void AnimateUI(bool extended)
+        {
+            if (extended)
+            {
+                PBrainBorder.Width = 0;
+                PBrainColumn.Width = new GridLength(1, GridUnitType.Auto);
+                await XAMLTransformToolkit.CreateDoubleAnimation(
+                    PBrainBorder, "Width", 0, ActualWidth / 5, ExpansionAnimationDuration,
+                    EasingFunctionNames.CircleEaseOut, true).ToStoryboard().WaitAsync();
+                PBrainColumn.Width = new GridLength(1, GridUnitType.Star);
+                PBrainBorder.Width = double.NaN;
+            }
+            else
+            {
+                PBrainBorder.Width = PBrainBorder.ActualWidth;
+                PBrainColumn.Width = new GridLength(1, GridUnitType.Auto);
+                await XAMLTransformToolkit.CreateDoubleAnimation(
+                    PBrainBorder, "Width", null, 0, ExpansionAnimationDuration,
+                    EasingFunctionNames.CircleEaseOut, true).ToStoryboard().WaitAsync();
+                PBrainColumn.Width = new GridLength(0);
+            }
+        }
     }
 }

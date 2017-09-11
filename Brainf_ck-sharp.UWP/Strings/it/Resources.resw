@@ -550,4 +550,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="StackFrames" xml:space="preserve">
     <value>stack frames</value>
   </data>
+  <data name="ShowPBrainButtons.Text" xml:space="preserve">
+    <value>Mostra pulsanti virtuali PBrain</value>
+  </data>
 </root>

@@ -723,6 +723,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>stack frames</source>
           <target state="translated">stack frames</target>
         </trans-unit>
+        <trans-unit id="ShowPBrainButtons.Text" translate="yes" xml:space="preserve">
+          <source>Show PBrain keyboard buttons</source>
+          <target state="translated">Mostra pulsanti virtuali PBrain</target>
+        </trans-unit>
       </group>
     </body>
   </file>
