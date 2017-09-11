@@ -653,4 +653,7 @@ This way he'll be able to help you!</value>
   <data name="ExUndefinedFunction" xml:space="preserve">
     <value>Undefined function call</value>
   </data>
+  <data name="StackFrames" xml:space="preserve">
+    <value>stack frames</value>
+  </data>
 </root>

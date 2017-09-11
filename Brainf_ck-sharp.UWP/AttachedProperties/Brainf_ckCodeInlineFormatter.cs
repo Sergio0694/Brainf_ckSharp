@@ -8,6 +8,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp;
+using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 
@@ -104,12 +105,13 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
             Span @this = d.To<Span>();
             IReadOnlyList<String> stack = e.NewValue.To<IReadOnlyList<String>>();
             List<Inline> inlines = new List<Inline>();
-            int i = 0;
+            int depth = 0;
             bool skipped = false;
-            foreach (String call in stack)
+            int count = -1;
+            foreach ((String call, int occurrences) in stack.CompressEqual((s1, s2) => s1.Equals(s2)))
             {
                 // Insert the "at" separator if needed
-                if (i > 0)
+                if (depth > 0)
                 {
                     if (skipped) skipped = false;
                     else
@@ -117,7 +119,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
                         inlines.Add(new LineBreak());
                         inlines.Add(new Run
                         {
-                            Text = "at",
+                            Text = $"at {(count > 1 ? $"[{count} {LocalizationManager.GetResource("StackFrames")}]" : String.Empty)}",
                             Foreground = new SolidColorBrush(Colors.DimGray),
                             FontSize = @this.FontSize - 1
                         });
@@ -134,7 +136,8 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
                     SetSource(line, call);
                     inlines.Add(line);
                 }
-                i++;
+                count = occurrences;
+                depth++;
             }
             @this.Inlines.Clear();
             foreach (Inline inline in inlines) @this.Inlines.Add(inline);

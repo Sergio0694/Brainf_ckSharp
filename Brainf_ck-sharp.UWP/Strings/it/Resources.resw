@@ -547,4 +547,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="ExUndefinedFunction" xml:space="preserve">
     <value>Funzione non definita</value>
   </data>
+  <data name="StackFrames" xml:space="preserve">
+    <value>stack frames</value>
+  </data>
 </root>

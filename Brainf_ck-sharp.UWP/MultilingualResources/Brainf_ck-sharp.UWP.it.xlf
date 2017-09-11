@@ -719,6 +719,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Undefined function call</source>
           <target state="translated">Funzione non definita</target>
         </trans-unit>
+        <trans-unit id="StackFrames" translate="yes" xml:space="preserve">
+          <source>stack frames</source>
+          <target state="translated">stack frames</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -100,5 +100,29 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
             }
             return -1;
         }
+
+        /// <summary>
+        /// Compresses the input sequence into a series of values without consecutive duplicates, indicating how many occurrences each item had in the original list
+        /// </summary>
+        /// <typeparam name="T">The type of the items in the list</typeparam>
+        /// <param name="items">The input list</param>
+        /// <param name="equalityComparer">A function to check if two items are equal</param>
+        public static IEnumerable<(T Item, int Occurrences)> CompressEqual<T>([NotNull] this IReadOnlyList<T> items, [NotNull] Func<T, T, bool> equalityComparer)
+        {
+            for (int i = 0; i < items.Count;)
+            {
+                // Count the number of consecutive occurrences
+                int n = 1;
+                for (int j = i + 1; j < items.Count; j++)
+                {
+                    if (equalityComparer(items[i], items[j])) n++;
+                    else break;
+                }
+
+                // Yield the new item, move ahead in the list
+                yield return (items[i], n);
+                i += n;
+            }
+        }
     }
 }
