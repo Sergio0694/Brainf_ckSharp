@@ -11,6 +11,45 @@ namespace Brainf_ck_sharp_Test
     public class MiscTests
     {
         [TestMethod]
+        public void StackTrace1()
+        {
+            const String script = ">+++[>++-[>>+>>>>-]]";
+            InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NegativeValue));
+            Assert.AreEqual(result.Output, String.Empty);
+            Assert.IsTrue(result.ExceptionInfo?.StackTrace.Count == 3);
+        }
+
+        [TestMethod]
+        public void StackTrace2()
+        {
+            String[] script = { ">+++[>++-[>>", "+]]"};
+            InterpreterExecutionSession result = Brainf_ckInterpreter.InitializeSession(script, String.Empty);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                          result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.NoOutput) &&
+                          result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached));
+            Assert.AreEqual(result.CurrentResult.Output, String.Empty);
+            Assert.IsTrue(result.CurrentResult.ExceptionInfo?.StackTrace.Count == 3);
+        }
+
+        [TestMethod]
+        public void StackTrace3()
+        {
+            String[] script = { "(>>>+", "++)>+++[>++-[>>+>>>>>:]]" };
+            InterpreterExecutionSession result = Brainf_ckInterpreter.InitializeSession(script, String.Empty);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                          result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.NoOutput) &&
+                          result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached));
+            Assert.AreEqual(result.CurrentResult.Output, String.Empty);
+            Assert.IsTrue(result.CurrentResult.ExceptionInfo?.StackTrace.Count == 4);
+        }
+
+        [TestMethod]
         public void TotalOperations1()
         {
             const String script = "+++++";

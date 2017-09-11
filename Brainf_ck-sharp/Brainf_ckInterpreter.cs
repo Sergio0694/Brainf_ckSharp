@@ -420,13 +420,13 @@ namespace Brainf_ck_sharp
                                     IEnumerable<InterpreterWorkingData> inner = TryRunCore(loop, position + (uint)i + 1, (ushort)(depth + 1));
                                     foreach (InterpreterWorkingData result in inner)
                                     {
-                                        if (!result.ExitCode.HasFlag(InterpreterExitCode.Success))
+                                        if (result.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached) ||
+                                            !result.ExitCode.HasFlag(InterpreterExitCode.Success))
                                         {
                                             yield return new InterpreterWorkingData(result.ExitCode,
                                                 result.StackFrames.Concat(new[] { operators.Take(i + 1) }), result.Position, result.TotalOperations);
-                                            yield break;
                                         }
-                                        if (result.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached)) yield return result;
+                                        if (!result.ExitCode.HasFlag(InterpreterExitCode.Success)) yield break;
                                     }
                                 }
                                 break;
@@ -548,12 +548,13 @@ namespace Brainf_ck_sharp
                                 IEnumerable<InterpreterWorkingData> executed = TryRunCore(functions[state.Current.Value], position + (uint)i + 1, (ushort)(depth + 1));
                                 foreach (InterpreterWorkingData result in executed)
                                 {
-                                    if (!result.ExitCode.HasFlag(InterpreterExitCode.Success))
+                                    if (result.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached) ||
+                                        !result.ExitCode.HasFlag(InterpreterExitCode.Success))
                                     {
-                                        yield return result;
-                                        yield break;
+                                        yield return new InterpreterWorkingData(result.ExitCode,
+                                            result.StackFrames.Concat(new[] { operators.Take(i + 1) }), result.Position, result.TotalOperations);
                                     }
-                                    if (result.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached)) yield return result;
+                                    if (!result.ExitCode.HasFlag(InterpreterExitCode.Success)) yield break;
                                 }
                                 break;
                             default:
