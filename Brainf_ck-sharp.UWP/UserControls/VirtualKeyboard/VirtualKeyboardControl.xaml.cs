@@ -46,6 +46,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
 
         private void CommaButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed(',');
 
+        private void FunctionOpenButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed('(');
+
+        private void FunctionCloseButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed(')');
+
+        private void CallButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed(':');
+
         #endregion
     }
 }

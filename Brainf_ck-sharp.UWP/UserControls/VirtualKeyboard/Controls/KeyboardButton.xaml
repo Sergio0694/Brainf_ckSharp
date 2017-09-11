@@ -34,7 +34,8 @@
             <!--Content-->
             <StackPanel
                 VerticalAlignment="Center"
-                HorizontalAlignment="Center">
+                HorizontalAlignment="Center"
+                x:Name="IconsPanel">
                 <TextBlock 
                     Text="+"
                     TextAlignment="Center"

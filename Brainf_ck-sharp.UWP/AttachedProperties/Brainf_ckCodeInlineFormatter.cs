@@ -156,12 +156,15 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
         public static readonly DependencyProperty UnformattedSourceProperty =
             DependencyProperty.RegisterAttached("UnformattedSource", typeof(String), typeof(Brainf_ckCodeInlineFormatter), new PropertyMetadata(String.Empty, OnUnformattedSourcePropertyChanged));
 
+        // The regex pattern to remove unwaanted characters
+        private static readonly String Pattern = $"[^{Brainf_ckInterpreter.Operators.Aggregate(c => $@"\{c}")}]";
+
         private static void OnUnformattedSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Span @this = d.To<Span>();
             String
                 raw = e.NewValue.To<String>(),
-                code = Regex.Replace(raw, @"[^\+\-\[\]\.,><]", "");
+                code = Regex.Replace(raw, Pattern, "");
             @this.Inlines.Clear();
             @this.Inlines.Add(new Run
             {
