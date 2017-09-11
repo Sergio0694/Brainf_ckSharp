@@ -518,6 +518,7 @@ namespace Brainf_ck_sharp
 
                                 // Store the function for later use
                                 functions.Add(state.Current.Value, function);
+                                operations++;
                                 break;
 
                             // )
