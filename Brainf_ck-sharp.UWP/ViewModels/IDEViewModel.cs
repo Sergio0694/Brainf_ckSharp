@@ -426,6 +426,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     {
                         // Calculate the final state at the end of the line
                         bool call = function, open = false, definition = false;
+                        uint backup = depth;
                         foreach (CharacterWithCoordinates info in entries)
                         {
                             switch (info.Character)
@@ -460,7 +461,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                                 // A new function has the precedence
                                 temp.Add(new IDEIndentationFunctionBracketInfo(depth > 0, IDEIndentationInfoLineType.SelfContainedFunction));
                             }
-                            else if (depth > 0) temp.Add(new IDEIndentationOpenLoopBracketLineInfo(depth, false));  // New depth level
+                            else if (depth > 0 && backup != depth) temp.Add(new IDEIndentationOpenLoopBracketLineInfo(depth, false));  // New depth level
                             else temp.Add(new IDEIndentationLineInfo(IDEIndentationInfoLineType.ClosedBracket));    // No indentation
                         }
                         else if (!call && function)
