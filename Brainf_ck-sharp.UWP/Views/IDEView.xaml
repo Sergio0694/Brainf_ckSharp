@@ -219,6 +219,89 @@
             </Grid>
         </DataTemplate>
 
+        <!--Open brackets inside a function-->
+        <DataTemplate x:Key="IDEIndentationInfoInFunctionOpenBracketTemplate">
+            <Grid 
+                HorizontalAlignment="Stretch"
+                Height="19.94998046875">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="12"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Rectangle
+                    HorizontalAlignment="Center"
+                    Width="1"
+                    Fill="{StaticResource BracketsIndicatorBorderBrush}"
+                    VerticalAlignment="Stretch"/>
+                <Border
+                    BorderThickness="1"
+                    BorderBrush="{StaticResource BracketsIndicatorBorderBrush}"
+                    Grid.Row="1"
+                    CornerRadius="2">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Text="{Binding Depth, Converter={StaticResource DepthDigitConverter}, ConverterParameter=•}"
+                        IsTextScaleFactorEnabled="False"
+                        FontSize="8"
+                        Foreground="{StaticResource BracketsIndicatorTextForegroundBrush}"
+                        Margin="{Binding Converter={StaticResource DPIToMarginConverter}}"/>
+                </Border>
+                <Rectangle
+                    HorizontalAlignment="Center"
+                    Width="1"
+                    Fill="{StaticResource BracketsIndicatorBorderBrush}"
+                    Grid.Row="2"
+                    VerticalAlignment="Stretch"/>
+            </Grid>
+        </DataTemplate>
+
+        <!--Self-contained indentation guide info-->
+        <DataTemplate x:Key="IDESelfContainedIndentationInfoInFunctionOpenBracketTemplate">
+            <Grid 
+                HorizontalAlignment="Stretch"
+                Height="19.94998046875">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="12"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Rectangle
+                    HorizontalAlignment="Center"
+                    Width="1"
+                    Fill="{StaticResource BracketsIndicatorBorderBrush}"
+                    VerticalAlignment="Stretch"/>
+                <Border
+                    BorderThickness="1"
+                    BorderBrush="{StaticResource BracketsIndicatorBorderBrush}"
+                    Grid.Row="1"
+                    CornerRadius="2">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Text="{Binding Depth, Converter={StaticResource DepthDigitConverter}, ConverterParameter=•}"
+                        IsTextScaleFactorEnabled="False"
+                        FontSize="8"
+                        Foreground="{StaticResource BracketsIndicatorTextForegroundBrush}"
+                        Margin="{Binding Converter={StaticResource DPIToMarginConverter}}"/>
+                </Border>
+                <Rectangle
+                    HorizontalAlignment="Center"
+                    Width="1"
+                    Fill="{StaticResource BracketsIndicatorBorderBrush}"
+                    Grid.Row="2"
+                    VerticalAlignment="Stretch"/>
+                <Rectangle
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Width="6"
+                    Height="1"
+                    Grid.Row="2"
+                    Fill="{StaticResource BracketsIndicatorBorderBrush}"/>
+            </Grid>
+        </DataTemplate>
+
         <!--Straight line-->
         <DataTemplate x:Key="IDEIndentationInfoStraightLineTemplate">
             <Rectangle

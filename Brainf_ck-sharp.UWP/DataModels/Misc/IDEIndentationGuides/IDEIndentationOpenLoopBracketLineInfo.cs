@@ -11,14 +11,21 @@
         public uint Depth { get; }
 
         /// <summary>
+        /// Gets whether or not the current indicator is nested in a function (regardless of its depth value)
+        /// </summary>
+        public bool Nested { get; }
+
+        /// <summary>
         /// Creates a new instance for a given loop depth
         /// </summary>
         /// <param name="depth">The depth of the new loop bracket</param>
         /// <param name="selfContained">Indicates whether or not the brackets pair is closed on the same line</param>
-        public IDEIndentationOpenLoopBracketLineInfo(uint depth, bool selfContained) 
+        /// <param name="nested">Gets whether or not the indicator is nested in a function</param>
+        public IDEIndentationOpenLoopBracketLineInfo(uint depth, bool selfContained, bool nested) 
             : base(selfContained ? IDEIndentationInfoLineType.SelfContainedLoop : IDEIndentationInfoLineType.OpenLoopBracket)
         {
             Depth = depth;
+            Nested = nested;
         }
     }
 }

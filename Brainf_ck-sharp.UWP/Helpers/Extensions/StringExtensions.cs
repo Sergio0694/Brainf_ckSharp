@@ -31,7 +31,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
                 col = 1;
             for (int i = 0; i < index; i++)
             {
-                if (text[i] == '\r')
+                if (text[i] == newline)
                 {
                     row++;
                     col = 1;
@@ -54,7 +54,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
             List<int> indexes = new List<int>();
             int line = 0;
             for (int i = 0; i < text.Length; i++)
-                if (text[i] == '\r' && lines.Contains(++line))
+                if (text[i] == newline && lines.Contains(++line))
                     indexes.Add(i);
             return indexes;
         }
