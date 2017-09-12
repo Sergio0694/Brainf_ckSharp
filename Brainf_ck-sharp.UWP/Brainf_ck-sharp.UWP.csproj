@@ -150,7 +150,8 @@
     <Compile Include="DataModels\Misc\GitDiffLineStatus.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationLineInfo.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationInfoLineType.cs" />
-    <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationOpenBracketLineInfo.cs" />
+    <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationFunctionBracketInfo.cs" />
+    <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationOpenLoopBracketLineInfo.cs" />
     <Compile Include="DataModels\Misc\CharactersInfo\CharacterWithCoordinates.cs" />
     <Compile Include="DataModels\Misc\LineCoordinates.cs" />
     <Compile Include="DataModels\Misc\Themes\IDEThemeInfo.cs" />

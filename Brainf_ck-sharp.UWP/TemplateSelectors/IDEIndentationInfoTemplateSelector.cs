@@ -13,10 +13,14 @@ namespace Brainf_ck_sharp_UWP.TemplateSelectors
             {
                 switch (item)
                 {
-                    case IDEIndentationOpenBracketLineInfo open:
-                        return parent.FindResource<DataTemplate>(open.LineType == IDEIndentationInfoLineType.OpenBracket
+                    case IDEIndentationOpenLoopBracketLineInfo open:
+                        return parent.FindResource<DataTemplate>(open.LineType == IDEIndentationInfoLineType.OpenLoopBracket
                             ? "IDEIndentationInfoOpenBracketTemplate"
                             : "IDESelfContainedIndentationInfoOpenBracketTemplate");
+                    case IDEIndentationFunctionBracketInfo function:
+                        return parent.FindResource<DataTemplate>(function.LineType == IDEIndentationInfoLineType.OpenFunctionBracket
+                            ? "IDEIndentationInfoOpenFunctionTemplate"
+                            : "IDESelfContainedIndentationInfoFunctionTemplate");
                     case IDEIndentationLineInfo info when info.LineType == IDEIndentationInfoLineType.Straight: 
                         return parent.FindResource<DataTemplate>("IDEIndentationInfoStraightLineTemplate");
                     case IDEIndentationLineInfo info when info.LineType == IDEIndentationInfoLineType.ClosedBracket:

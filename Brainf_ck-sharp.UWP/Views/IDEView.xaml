@@ -113,6 +113,107 @@
             </Grid>
         </DataTemplate>
 
+        <!--Function indentation guide info-->
+        <DataTemplate x:Key="IDEIndentationInfoOpenFunctionTemplate">
+            <Grid 
+                HorizontalAlignment="Stretch"
+                Height="19.94998046875">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="12"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Rectangle
+                    HorizontalAlignment="Center"
+                    Width="1"
+                    Fill="DarkGray"
+                    VerticalAlignment="Stretch"
+                    Visibility="{Binding Nested, FallbackValue=Collapsed}"/>
+                <Grid Grid.Row="1">
+                    <Ellipse
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Height="12"
+                        Width="12"
+                        Fill="DarkGray"/>
+                    <Ellipse
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Height="10"
+                        Width="10"
+                        Fill="#80000000"/>
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Text="f"
+                        IsTextScaleFactorEnabled="False"
+                        FontSize="8"
+                        Foreground="GhostWhite"
+                        Margin="{Binding Converter={StaticResource DPIToMarginConverter}}"/>
+                </Grid>
+                <Rectangle
+                    HorizontalAlignment="Center"
+                    Width="1"
+                    Fill="DarkGray"
+                    Grid.Row="2"
+                    VerticalAlignment="Stretch"/>
+            </Grid>
+        </DataTemplate>
+
+        <!--Self-contained function indentation guide info-->
+        <DataTemplate x:Key="IDESelfContainedIndentationInfoFunctionTemplate">
+            <Grid 
+                HorizontalAlignment="Stretch"
+                Height="19.94998046875">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="12"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Rectangle
+                    HorizontalAlignment="Center"
+                    Width="1"
+                    Fill="DarkGray"
+                    VerticalAlignment="Stretch"
+                    Visibility="{Binding Nested, FallbackValue=Collapsed}"/>
+                <Grid Grid.Row="1">
+                    <Ellipse
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Height="12"
+                        Width="12"
+                        Fill="DarkGray"/>
+                    <Ellipse
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Height="10"
+                        Width="10"
+                        Fill="#80000000"/>
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Text="f"
+                        IsTextScaleFactorEnabled="False"
+                        FontSize="8"
+                        Foreground="GhostWhite"
+                        Margin="{Binding Converter={StaticResource DPIToMarginConverter}}"/>
+                </Grid>
+                <Rectangle
+                    HorizontalAlignment="Center"
+                    Width="1"
+                    Fill="DarkGray"
+                    Grid.Row="2"
+                    VerticalAlignment="Stretch"/>
+                <Rectangle
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Width="6"
+                    Height="1"
+                    Grid.Row="2"
+                    Fill="DarkGray"/>
+            </Grid>
+        </DataTemplate>
+
         <!--Straight line-->
         <DataTemplate x:Key="IDEIndentationInfoStraightLineTemplate">
             <Rectangle

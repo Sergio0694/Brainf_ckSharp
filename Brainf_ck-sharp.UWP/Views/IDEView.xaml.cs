@@ -502,7 +502,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 int index = 0;
                 foreach (char c in code)
                 {
-                    if (c == '[' || c == ']')
+                    if (c == '[' || c == ']' || c == '(' || c == ')')
                     {
                         Coordinate coordinate = code.FindCoordinates(index);
                         pairs.Add(new CharacterWithCoordinates(coordinate, c));

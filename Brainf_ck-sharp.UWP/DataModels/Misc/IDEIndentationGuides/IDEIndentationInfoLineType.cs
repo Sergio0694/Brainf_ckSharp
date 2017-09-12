@@ -5,10 +5,12 @@
     /// </summary>
     public enum IDEIndentationInfoLineType
     {
-        OpenBracket,
+        OpenLoopBracket,
+        OpenFunctionBracket,
         Straight,
         ClosedBracket,
         Empty,
-        SelfContained
+        SelfContainedLoop,
+        SelfContainedFunction
     }
 }
