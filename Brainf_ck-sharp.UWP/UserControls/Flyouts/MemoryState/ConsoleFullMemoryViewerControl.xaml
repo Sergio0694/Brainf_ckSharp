@@ -34,6 +34,7 @@
         <!--Headers converter-->
         <converters:ConsoleMemoryViewerSectionDisplayNameConverter x:Key="HeadersConverter"/>
         <converters:ConsoleMemoryViewerSectionUppercaseNameConverter x:Key="UppercaseConverter"/>
+        <converters:ConsoleStateInfoSectionDescriptionConverter x:Key="DescriptionConverter"/>
         
         <!--Header-->
         <DataTemplate x:Key="HeaderTemplate">
@@ -44,9 +45,9 @@
 
         <!--Zoomed out default header-->
         <DataTemplate x:Key="ZoomedOutDefaultHeaderTemplate">
-            <consoleMemoryViewer:ConsoleMemoryViewerZoomedOutHeaderTemplate
+            <jumpList:JumpListZoomedOutHeaderTemplate
                 Title="{Binding Group.Key, Converter={StaticResource UppercaseConverter}}"
-                DataModel="{Binding Group.Sample}"/>
+                Description="{Binding Group.Sample, Converter={StaticResource DescriptionConverter}}"/>
         </DataTemplate>
     </UserControl.Resources>
 

@@ -114,6 +114,7 @@
     <Compile Include="Converters\BoolToAccentBrushOrFallbackConverter.cs" />
     <Compile Include="Converters\BoolToColorBrushConverter.cs" />
     <Compile Include="Converters\BoolToInvertedVisibilityConverter.cs" />
+    <Compile Include="Converters\ConsoleMemoryViewer\ConsoleStateInfoSectionDescriptionConverter.cs" />
     <Compile Include="Converters\DateTimeToDateStringConverter.cs" />
     <Compile Include="Converters\DisplayScalingToMarginConverter.cs" />
     <Compile Include="Converters\ConsoleMemoryViewer\ConsoleMemoryViewerSectionDisplayNameConverter.cs" />
@@ -282,9 +283,6 @@
     </Compile>
     <Compile Include="UserControls\DataTemplates\JumpList\Changelog\ChangelogZoomedInHeaderTemplate.xaml.cs">
       <DependentUpon>ChangelogZoomedInHeaderTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\DataTemplates\JumpList\ConsoleMemoryViewer\ConsoleMemoryViewerZoomedOutHeaderTemplate.xaml.cs">
-      <DependentUpon>ConsoleMemoryViewerZoomedOutHeaderTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DataTemplates\JumpList\Settings\SettingsZoomedInHeaderTemplate.xaml.cs">
       <DependentUpon>SettingsZoomedInHeaderTemplate.xaml</DependentUpon>
@@ -620,10 +618,6 @@
     <Page Include="UserControls\DataTemplates\JumpList\Changelog\ChangelogZoomedInHeaderTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\DataTemplates\JumpList\ConsoleMemoryViewer\ConsoleMemoryViewerZoomedOutHeaderTemplate.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\DataTemplates\JumpList\Settings\SettingsZoomedInHeaderTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
