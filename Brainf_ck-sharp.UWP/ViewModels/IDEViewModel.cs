@@ -409,7 +409,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         // Function to calculate the updated depth
                         uint CalculateAndShowDepth(uint target)
                         {
-                            int sum = entries.Aggregate((int)target, (s, v) => s + v.Character == '[' ? 1 : -1);
+                            int sum = (int)target + entries.Sum(e => e.Character == '[' ? 1 : -1);
                             if ((int)target + sum < 0) throw new InvalidOperationException("Invalid brackets sequence");
                             uint final = (uint)((int)target + sum);
                             if (target == 0 && final == 0) return final; // Brackets opened and closed on the same line, ignore
