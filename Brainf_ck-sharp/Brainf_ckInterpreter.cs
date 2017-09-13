@@ -60,7 +60,7 @@ namespace Brainf_ck_sharp
             [NotNull] String source, [NotNull] String arguments, 
             OverflowMode mode = OverflowMode.ShortNoOverflow, int size = DefaultMemorySize, int? threshold = null)
         {
-            return TryRun(source, arguments, new TouringMachineState(size), mode, threshold);
+            return TryRun(source, arguments, new TouringMachineState(size), new FunctionDefinition[0],  mode, threshold);
         }
 
         /// <summary>
@@ -77,9 +77,28 @@ namespace Brainf_ck_sharp
             [NotNull] String source, [NotNull] String arguments,
             [NotNull] IReadonlyTouringMachineState state, OverflowMode mode = OverflowMode.ShortNoOverflow, int? threshold = null)
         {
+            return Run(source, arguments, state, new FunctionDefinition[0], mode, threshold);
+        }
+
+        /// <summary>
+        /// Executes the given script and returns the result
+        /// </summary>
+        /// <param name="source">The source code with the script to execute</param>
+        /// <param name="arguments">The arguments for the script</param>
+        /// <param name="state">The initial memory state to run the script</param>
+        /// <param name="functions">The list of function definitions to start with</param>
+        /// <param name="mode">Indicates the desired overflow mode for the script to run</param>
+        /// <param name="threshold">The optional time threshold to run the script</param>
+        [PublicAPI]
+        [Pure, NotNull]
+        public static InterpreterResult Run(
+            [NotNull] String source, [NotNull] String arguments,
+            [NotNull] IReadonlyTouringMachineState state, [NotNull] IReadOnlyList<FunctionDefinition> functions, 
+            OverflowMode mode = OverflowMode.ShortNoOverflow, int? threshold = null)
+        {
             if (state is TouringMachineState touring)
             {
-                return TryRun(source, arguments, touring.Clone(), mode, threshold);
+                return TryRun(source, arguments, touring.Clone(), functions, mode, threshold);
             }
             throw new ArgumentException();
         }
@@ -130,7 +149,7 @@ namespace Brainf_ck_sharp
 
             // Execute the code
             CancellationTokenSource cts = new CancellationTokenSource();
-            IEnumerator<InterpreterResult> enumerator = TryRun(executable, arguments, state, mode, threshold, breakpoints, cts.Token);
+            IEnumerator<InterpreterResult> enumerator = TryRun(executable, arguments, state, new FunctionDefinition[0],  mode, threshold, breakpoints, cts.Token);
             if (!enumerator.MoveNext())
             {
                 // Initialization failed
@@ -227,11 +246,12 @@ namespace Brainf_ck_sharp
         /// <param name="source">The source code with the script to execute</param>
         /// <param name="arguments">The arguments for the script</param>
         /// <param name="state">The initial memory state to run the script</param>
+        /// <param name="functions">The list of function definitions to start with</param>
         /// <param name="mode">Indicates the desired overflow mode for the script to run</param>
         /// <param name="threshold">The optional time threshold to run the script</param>
         [Pure, NotNull]
         private static InterpreterResult TryRun([NotNull] String source, [NotNull] String arguments,
-            [NotNull] TouringMachineState state, OverflowMode mode, int? threshold)
+            [NotNull] TouringMachineState state, [NotNull] IReadOnlyList<FunctionDefinition> functions, OverflowMode mode, int? threshold)
         {
             // Get the operators to execute and check if the source is empty
             IReadOnlyList<Brainf_ckBinaryItem> executable = FindExecutableCode(source).Select((c, i) => new Brainf_ckBinaryItem((uint)i, c)).ToArray();
@@ -248,7 +268,7 @@ namespace Brainf_ck_sharp
             }
 
             // Execute the code
-            using (IEnumerator<InterpreterResult> enumerator = TryRun(executable, arguments, state, mode, threshold, new uint[0], CancellationToken.None))
+            using (IEnumerator<InterpreterResult> enumerator = TryRun(executable, arguments, state, functions, mode, threshold, new uint[0], CancellationToken.None))
             {
                 if (!enumerator.MoveNext())
                 {
@@ -266,6 +286,7 @@ namespace Brainf_ck_sharp
         /// <param name="executable">The source code of the scrpt to execute</param>
         /// <param name="arguments">The stdin buffer</param>
         /// <param name="state">The curret memory state to run or continue the script</param>
+        /// <param name="oldFunctions">The list of previous function definitions</param>
         /// <param name="mode">Indicates the desired overflow mode for the script to run</param>
         /// <param name="threshold">The optional time threshold for the execution of the script</param>
         /// <param name="breakpoints">The list of breakpoints in the input source code</param>
@@ -273,7 +294,8 @@ namespace Brainf_ck_sharp
         [Pure, NotNull]
         private static IEnumerator<InterpreterResult> TryRun(
             [NotNull] IReadOnlyList<Brainf_ckBinaryItem> executable, [NotNull] String arguments,
-            [NotNull] TouringMachineState state, OverflowMode mode, int? threshold, [NotNull] IReadOnlyList<uint> breakpoints, CancellationToken token)
+            [NotNull] TouringMachineState state, [NotNull] IReadOnlyList<FunctionDefinition> oldFunctions,
+            OverflowMode mode, int? threshold, [NotNull] IReadOnlyList<uint> breakpoints, CancellationToken token)
         {
             // Preliminary tests
             if (executable.Count == 0) throw new ArgumentException("The source code can't be empty");
@@ -284,8 +306,9 @@ namespace Brainf_ck_sharp
             Stopwatch timer = new Stopwatch();
             Queue<char> input = arguments.Length > 0 ? new Queue<char>(arguments) : new Queue<char>();
             StringBuilder output = new StringBuilder();
-            Dictionary<uint, IReadOnlyList<Brainf_ckBinaryItem>> functions = new Dictionary<uint, IReadOnlyList<Brainf_ckBinaryItem>>();
             String code = executable.Select(op => op.Operator).AggregateToString(); // Original source code
+            Dictionary<uint, IReadOnlyList<Brainf_ckBinaryItem>> functions = oldFunctions.ToDictionary<FunctionDefinition, uint, IReadOnlyList<Brainf_ckBinaryItem>>(
+                f => f.Value, f => f.Body.Select(c => new Brainf_ckBinaryItem(0, c)).ToArray());
 
             // Internal recursive function that interpretes the code
             IEnumerable<InterpreterWorkingData> TryRunCore(IReadOnlyList<Brainf_ckBinaryItem> operators, uint position, ushort depth)

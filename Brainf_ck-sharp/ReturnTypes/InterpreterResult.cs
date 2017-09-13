@@ -17,6 +17,7 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// </summary>
         public InterpreterExitCode ExitCode { get; }
 
+        // The underlying machine state used by the interpreter
         private readonly TouringMachineState _MachineState;
 
         /// <summary>
@@ -24,6 +25,12 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// </summary>
         [NotNull]
         public IReadonlyTouringMachineState MachineState => _MachineState;
+
+        /// <summary>
+        /// Gets a list of the defined functions in the script
+        /// </summary>
+        [NotNull]
+        public IReadOnlyList<FunctionDefinition> Functions { get; }
 
         /// <summary>
         /// Gets the execution time for the interpreted script
@@ -46,12 +53,6 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// </summary>
         [NotNull]
         public String SourceCode { get; }
-
-        /// <summary>
-        /// Gets a list of the defined functions in the script
-        /// </summary>
-        [NotNull]
-        public IReadOnlyList<FunctionDefinition> Functions { get; }
 
         /// <summary>
         /// If the script isn't executed successfully, gets all the relevant debug info
