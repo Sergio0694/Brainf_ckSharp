@@ -355,6 +355,24 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         /// </summary>
         public bool StatusBarSupported => ApiInformationHelper.IsMobileDevice;
 
+        private bool _ShowPBrainButtons = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ShowPBrainButtons));
+
+        /// <summary>
+        /// Gets or sets whether or not the PBrain buttons should be visible in the virtual keyboard
+        /// </summary>
+        public bool ShowPBrainButtons
+        {
+            get => _ShowPBrainButtons;
+            set
+            {
+                if (Set(ref _ShowPBrainButtons, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.ShowPBrainButtons), value, SettingSaveMode.OverwriteIfExisting);
+                    Messenger.Default.Send(new PBrainButtonsVisibilityChangedMessage(value));
+                }
+            }
+        }
+
         private bool _ClearStdinBufferOnExecution = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ClearStdinBufferOnExecution));
 
         /// <summary>

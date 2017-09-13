@@ -8,6 +8,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp;
+using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 
@@ -104,27 +105,39 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
             Span @this = d.To<Span>();
             IReadOnlyList<String> stack = e.NewValue.To<IReadOnlyList<String>>();
             List<Inline> inlines = new List<Inline>();
-            int i = 0;
-            foreach (String call in stack)
+            int depth = 0;
+            bool skipped = false;
+            int count = -1;
+            foreach ((String call, int occurrences) in stack.CompressEqual((s1, s2) => s1.Equals(s2)))
             {
                 // Insert the "at" separator if needed
-                if (i > 0)
+                if (depth > 0)
                 {
-                    inlines.Add(new LineBreak());
-                    inlines.Add(new Run
+                    if (skipped) skipped = false;
+                    else
                     {
-                        Text = "at",
-                        Foreground = new SolidColorBrush(Colors.DimGray),
-                        FontSize = @this.FontSize - 1
-                    });
-                    inlines.Add(new LineBreak());
+                        inlines.Add(new LineBreak());
+                        inlines.Add(new Run
+                        {
+                            Text = $"at {(count > 1 ? $"[{count} {LocalizationManager.GetResource("StackFrames")}]" : String.Empty)}",
+                            Foreground = new SolidColorBrush(Colors.DimGray),
+                            FontSize = @this.FontSize - 1
+                        });
+                        inlines.Add(new LineBreak());
+                    }
                 }
 
-                // Add the formatted call line
-                Span line = new Span();
-                SetSource(line, call);
-                inlines.Add(line);
-                i++;
+                // Skip the first line if it's empty
+                if (call.Length == 0 && !skipped) skipped = true;
+                else
+                {
+                    // Add the formatted call line
+                    Span line = new Span();
+                    SetSource(line, call);
+                    inlines.Add(line);
+                }
+                count = occurrences;
+                depth++;
             }
             @this.Inlines.Clear();
             foreach (Inline inline in inlines) @this.Inlines.Add(inline);
@@ -146,12 +159,15 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
         public static readonly DependencyProperty UnformattedSourceProperty =
             DependencyProperty.RegisterAttached("UnformattedSource", typeof(String), typeof(Brainf_ckCodeInlineFormatter), new PropertyMetadata(String.Empty, OnUnformattedSourcePropertyChanged));
 
+        // The regex pattern to remove unwaanted characters
+        private static readonly String Pattern = $"[^{Brainf_ckInterpreter.Operators.Aggregate(c => $@"\{c}")}]";
+
         private static void OnUnformattedSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Span @this = d.To<Span>();
             String
                 raw = e.NewValue.To<String>(),
-                code = Regex.Replace(raw, @"[^\+\-\[\]\.,><]", "");
+                code = Regex.Replace(raw, Pattern, "");
             @this.Inlines.Clear();
             @this.Inlines.Add(new Run
             {

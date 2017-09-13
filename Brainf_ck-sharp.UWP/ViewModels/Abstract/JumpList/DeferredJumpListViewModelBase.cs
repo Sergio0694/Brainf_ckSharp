@@ -12,7 +12,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.Abstract.JumpList
     /// </summary>
     public abstract class DeferredJumpListViewModelBase<TKey, TValue> : JumpListViewModelBase<TKey, TValue>
     {
-        /// <inheritdoc cref="GalaSoft.MvvmLight.ViewModelBase.Cleanup"/>
+        /// <inheritdoc/>
         public override void Cleanup()
         {
             LoadingCompleted = null;

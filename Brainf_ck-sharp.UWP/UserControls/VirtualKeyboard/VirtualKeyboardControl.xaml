@@ -20,6 +20,9 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition 
+                x:Name="PBrainColumn"
+                Width="0"/>
         </Grid.ColumnDefinitions>
         
         <!--First row (><+-)-->
@@ -71,5 +74,56 @@
             Grid.Row="1"
             Grid.Column="3"
             Click="CommaButton_Tapped"/>
+
+        <!--Border with the PBrain operators-->
+        <Border
+            x:Name="PBrainBorder"
+            Grid.Column="4"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            BorderThickness="4,0,0,0"
+            BorderBrush="#24000000">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="4"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <controls:KeyboardButton
+                    Text="("
+                    Description="f ("
+                    Click="FunctionOpenButton_Tapped"
+                    ContentMargin="0,2,0,0"/>
+                <Canvas 
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Background="#24000000"/>
+                <controls:KeyboardButton
+                    Text=")"
+                    Description=")"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    ContentMargin="0,2,0,0"
+                    Click="FunctionCloseButton_Tapped"/>
+                <Canvas 
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Background="#24000000"/>
+                <controls:KeyboardButton
+                    Text=":"
+                    Description="call"
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    ContentMargin="0,-2,0,0"
+                    Click="CallButton_Tapped"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

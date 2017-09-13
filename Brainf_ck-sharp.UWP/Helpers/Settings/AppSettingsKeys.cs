@@ -22,6 +22,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         SelectedIDETheme,
         RenderWhitespaces,
         SelectedFontName,
-        ClearStdinBufferOnExecution
+        ClearStdinBufferOnExecution,
+        ShowPBrainButtons
     }
 }

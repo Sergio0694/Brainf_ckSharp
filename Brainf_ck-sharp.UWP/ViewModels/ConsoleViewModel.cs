@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Brainf_ck_sharp;
@@ -73,7 +74,14 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Gets the current machine state to use to process the scripts
         /// </summary>
+        [NotNull]
         public IReadonlyTouringMachineState State { get; private set; } = TouringMachineStateProvider.Initialize(64);
+
+        /// <summary>
+        /// Gets the currently defined functions
+        /// </summary>
+        [NotNull]
+        public IReadOnlyList<FunctionDefinition> Functions { get; private set; } = new FunctionDefinition[0];
 
         private bool _CanRestart;
 
@@ -99,6 +107,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             CanRestart = false;
             Source.Add(new ConsoleRestartCommand());
             State = TouringMachineStateProvider.Initialize(64);
+            Functions = new FunctionDefinition[0];
             Source.Add(new ConsoleUserCommand());
             Messenger.Default.Send(new ConsoleMemoryStateChangedMessage(State));
         }
@@ -201,19 +210,20 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             CanRestart = true;
             SendCommandAvailableMessages(false);
             String command = Source.Last().To<ConsoleUserCommand>().Command;
-            InterpreterResult result = await Task.Run(() => Brainf_ckInterpreter.Run(command, stdin, State, mode, 1000));
-            if (result.HasFlag(InterpreterExitCode.Success) &&
-                result.HasFlag(InterpreterExitCode.TextOutput))
+            InterpreterResult result = await Task.Run(() => Brainf_ckInterpreter.Run(command, stdin, State, Functions, mode, 1000));
+            if (result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                result.ExitCode.HasFlag(InterpreterExitCode.TextOutput))
             {
                 // Text output
                 Source.Add(new ConsoleCommandResult(result.Output));
             }
-            else if (!result.HasFlag(InterpreterExitCode.Success))
+            else if (!result.ExitCode.HasFlag(InterpreterExitCode.Success))
             {
                 ScriptExceptionInfo info = ScriptExceptionInfo.FromResult(result);
                 Source.Add(new ConsoleExceptionResult(info));
             }
             State = result.MachineState;
+            Functions = result.Functions;
 
             // New user command
             Source.Add(new ConsoleUserCommand());

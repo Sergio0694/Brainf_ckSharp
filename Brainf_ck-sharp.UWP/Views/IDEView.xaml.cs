@@ -502,7 +502,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 int index = 0;
                 foreach (char c in code)
                 {
-                    if (c == '[' || c == ']')
+                    if (c == '[' || c == ']' || c == '(' || c == ')')
                     {
                         Coordinate coordinate = code.FindCoordinates(index);
                         pairs.Add(new CharacterWithCoordinates(coordinate, c));
@@ -815,11 +815,14 @@ namespace Brainf_ck_sharp_UWP.Views
                 {
                     // Get the last character and apply the right color
                     ITextRange range = EditBox.Document.GetRange(start - 1, start);
-                    range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(range.Character);
-
-                    // No other work needed for all the operators except the [ bracket
-                    if (!Brainf_ckInterpreter.Operators.Where(c => c != '[').Contains(range.Character) &&
-                        Brainf_ckInterpreter.CheckSourceSyntax(_PreviousText).Valid) // Skip the autocompletion if the code isn't valid
+                    char character = range.Character;
+                    if (!(start > 1 && text[start - 2] == '(' && character == '[') && // Allow to directly open a loop inside a function
+                        (!Brainf_ckInterpreter.CheckSourceSyntax(_PreviousText).Valid || character != '[' && character != '(' && character != '\r'))
+                    {
+                        // Avoid applying the syntax highlight twice
+                        range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(character);
+                    }
+                    else // Syntax highlight and autocompletion for the [, \r and ( characters
                     {
                         // Calculate the current indentation depth
                         String trailer = text.Substring(0, range.StartPosition);
@@ -831,7 +834,7 @@ namespace Brainf_ck_sharp_UWP.Views
                         }).ToString();
 
                         // Open [ bracket
-                        if (range.Character == '[')
+                        if (character == '[')
                         {
                             // Get the current settings
                             bool autoFormat = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutoIndentBrackets));
@@ -876,17 +879,26 @@ namespace Brainf_ck_sharp_UWP.Views
                             }
 
                             // Apply the right color and move the selection at the center of the brackets
-                            ITextRange bracketsRange = EditBox.Document.GetRange(start, EditBox.Document.Selection.EndPosition);
+                            ITextRange bracketsRange = EditBox.Document.GetRange(start - 1, EditBox.Document.Selection.EndPosition);
                             bracketsRange.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar('[');
                             EditBox.Document.Selection.Move(TextRangeUnit.Character, -(autoFormat ? indents + 2 : 1));
                             DrawLineNumbers();
                             textChanged = true;
                         }
-                        else if (range.Character == '\r')
+                        else if (character == '\r')
                         {
                             // New line, tabs needed
                             if (tabs.Length > 0) EditBox.Document.Selection.TypeText(tabs);
                             DrawLineNumbers();
+                            textChanged = true;
+                        }
+                        else if (character == '(')
+                        {
+                            // Function definition
+                            EditBox.Document.Selection.TypeText(")");
+                            ITextRange bracketsRange = EditBox.Document.GetRange(start - 1, EditBox.Document.Selection.EndPosition);
+                            bracketsRange.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar('(');
+                            EditBox.Document.Selection.Move(TextRangeUnit.Character, -1);
                             textChanged = true;
                         }
                     }

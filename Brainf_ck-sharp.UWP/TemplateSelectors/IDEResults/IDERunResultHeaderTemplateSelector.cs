@@ -20,6 +20,8 @@ namespace Brainf_ck_sharp_UWP.TemplateSelectors.IDEResults
                     case null: return null;
                     case IDEResultSection.MemoryState:
                         return parent.FindResource<DataTemplate>("HeaderWithBottomMarginTemplate");
+                    case IDEResultSection.FunctionDefinitions:
+                        return parent.FindResource<DataTemplate>("HeaderWithBottomMarginTemplate");
                     default:
                         return parent.FindResource<DataTemplate>("HeaderTemplate");
                 }

@@ -15,9 +15,9 @@ namespace Brainf_ck_sharp_Test
             const String script = "-";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Failure) &&
-                          result.HasFlag(InterpreterExitCode.ExceptionThrown) &&
-                          result.HasFlag(InterpreterExitCode.NegativeValue));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NegativeValue));
             Assert.AreEqual(result.Output, String.Empty);
         }
 
@@ -27,9 +27,9 @@ namespace Brainf_ck_sharp_Test
             const String script = "+[+]";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Failure) &&
-                          result.HasFlag(InterpreterExitCode.ExceptionThrown) &&
-                          result.HasFlag(InterpreterExitCode.MaxValueExceeded));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.MaxValueExceeded));
             Assert.AreEqual(result.Output, String.Empty);
         }
 
@@ -39,9 +39,9 @@ namespace Brainf_ck_sharp_Test
             const String script = "+[>+]";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Failure) &&
-                          result.HasFlag(InterpreterExitCode.ExceptionThrown) &&
-                          result.HasFlag(InterpreterExitCode.UpperBoundExceeded));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.UpperBoundExceeded));
             Assert.AreEqual(result.Output, String.Empty);
         }
 
@@ -51,9 +51,9 @@ namespace Brainf_ck_sharp_Test
             const String script = "<";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Failure) &&
-                          result.HasFlag(InterpreterExitCode.ExceptionThrown) &&
-                          result.HasFlag(InterpreterExitCode.LowerBoundExceeded));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.LowerBoundExceeded));
             Assert.AreEqual(result.Output, String.Empty);
         }
 
@@ -63,9 +63,9 @@ namespace Brainf_ck_sharp_Test
             const String script = ",";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Failure) &&
-                          result.HasFlag(InterpreterExitCode.ExceptionThrown) &&
-                          result.HasFlag(InterpreterExitCode.StdinBufferExhausted));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.StdinBufferExhausted));
             Assert.AreEqual(result.Output, String.Empty);
         }
 
@@ -75,8 +75,8 @@ namespace Brainf_ck_sharp_Test
             const String script = "+[]";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty, threshold: 1000);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Failure) &&
-                          result.HasFlag(InterpreterExitCode.ThresholdExceeded));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.ThresholdExceeded));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.AreEqual(result.ExceptionInfo?.ErrorPosition, 1);
             Assert.AreEqual(result.ExceptionInfo?.FaultedOperator, '[');
@@ -88,8 +88,8 @@ namespace Brainf_ck_sharp_Test
             const String script = "+[]]";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Failure) &&
-                          result.HasFlag(InterpreterExitCode.MismatchedParentheses));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.MismatchedParentheses));
             Assert.AreEqual(result.Output, String.Empty);
         }
 
@@ -99,8 +99,8 @@ namespace Brainf_ck_sharp_Test
             const String script = "[ [] ok [[ [] ok [] [] [] ] ok ] [ ] ] [ ]";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success) &&
-                          result.HasFlag(InterpreterExitCode.NoOutput));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
             Assert.AreEqual(result.Output, String.Empty);
         }
 
@@ -110,8 +110,8 @@ namespace Brainf_ck_sharp_Test
             const String script = "ncencewonwe";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Failure) &&
-                          result.HasFlag(InterpreterExitCode.NoCodeInterpreted));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NoCodeInterpreted));
             Assert.AreEqual(result.Output, String.Empty);
         }
 
@@ -121,10 +121,10 @@ namespace Brainf_ck_sharp_Test
             const String script = ",[.-]";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, "€");
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Failure) &&
-                          result.HasFlag(InterpreterExitCode.TextOutput) &&
-                          result.HasFlag(InterpreterExitCode.ExceptionThrown) &&
-                          result.HasFlag(InterpreterExitCode.StdoutBufferLimitExceeded));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.TextOutput) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.StdoutBufferLimitExceeded));
             Assert.AreEqual(result.Output.Length, Brainf_ckInterpreter.StdoutBufferSizeLimit);
         }
 
@@ -134,9 +134,9 @@ namespace Brainf_ck_sharp_Test
             const String script = "+++++[>+++>-<<-]";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Failure) &&
-                          result.HasFlag(InterpreterExitCode.ExceptionThrown) &&
-                          result.HasFlag(InterpreterExitCode.NegativeValue));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NegativeValue));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.IsTrue(result.ExceptionInfo?.StackTrace.Count == 2);
             Assert.AreEqual(result.ExceptionInfo?.StackTrace[0], ">+++>-");
@@ -151,14 +151,67 @@ namespace Brainf_ck_sharp_Test
             const String script = "+++++>-[>+++>-<<-]";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Failure) &&
-                          result.HasFlag(InterpreterExitCode.ExceptionThrown) &&
-                          result.HasFlag(InterpreterExitCode.NegativeValue));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NegativeValue));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.IsTrue(result.ExceptionInfo?.StackTrace.Count == 1);
             Assert.AreEqual(result.ExceptionInfo?.StackTrace[0], "+++++>-");
             Assert.AreEqual(result.ExceptionInfo?.ErrorPosition, 6);
             Assert.AreEqual(result.ExceptionInfo?.FaultedOperator, '-');
+        }
+
+        [TestMethod]
+        public void SkippedLoopTest1()
+        {
+            const String script = "+>[++-]>-";
+            InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
+            Assert.AreEqual(result.Output, String.Empty);
+            Assert.IsTrue(result.TotalOperations == 4);
+        }
+
+        [TestMethod]
+        public void StackTraceTest3()
+        {
+            const String script = ",[-]";
+            InterpreterResult result = Brainf_ckInterpreter.Run(script, "a");
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
+            Assert.AreEqual(result.Output, String.Empty);
+            InterpreterExecutionSession session = Brainf_ckInterpreter.InitializeSession(new[] { ",[", "-]" }, "a");
+            while (session.CanContinue) session.Continue();
+            Assert.IsTrue(result.TotalOperations == session.CurrentResult.TotalOperations);
+        }
+
+        [TestMethod]
+        public void StackTraceTest4()
+        {
+            const String script = ",[--]";
+            InterpreterResult result = Brainf_ckInterpreter.Run(script, "a");
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NegativeValue));
+            Assert.AreEqual(result.Output, String.Empty);
+            InterpreterExecutionSession session = Brainf_ckInterpreter.InitializeSession(new[] { ",[-", "-]" }, "a");
+            while (session.CanContinue) session.Continue();
+            Assert.IsTrue(result.TotalOperations == session.CurrentResult.TotalOperations);
+        }
+
+        [TestMethod]
+        public void DisposeTest()
+        {
+            String[] script = { "++[", ">+<-]>" };
+            using (InterpreterExecutionSession result = Brainf_ckInterpreter.InitializeSession(script, String.Empty))
+            {
+                Assert.IsTrue(result != null);
+                result.RunToCompletion();
+                Assert.IsTrue(!result.CanContinue);
+                Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success));
+            }
         }
     }
 }

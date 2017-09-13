@@ -12,6 +12,7 @@
         StackTrace,
         SourceCode,
         MemoryState,
-        Stats
+        Stats,
+        FunctionDefinitions
     }
 }

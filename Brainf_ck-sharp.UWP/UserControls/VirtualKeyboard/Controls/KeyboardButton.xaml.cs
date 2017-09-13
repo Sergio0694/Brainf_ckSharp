@@ -41,6 +41,15 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
         }
 
         /// <summary>
+        /// Gets or sets the margin applied to the content of the control
+        /// </summary>
+        public Thickness ContentMargin
+        {
+            get => IconsPanel.Margin;
+            set => IconsPanel.Margin = value;
+        }
+
+        /// <summary>
         /// Raised whenever the user clicks on the button instance
         /// </summary>
         public event RoutedEventHandler Click;

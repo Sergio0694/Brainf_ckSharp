@@ -20,6 +20,7 @@ using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo;
+using Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState;
 using Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
@@ -242,9 +243,20 @@ namespace Brainf_ck_sharp_UWP.UserControls
         public void RequestShowMemoryState()
         {
             IReadonlyTouringMachineState source = Console.ViewModel.State;
-            MemoryViewerFlyout viewer = new MemoryViewerFlyout();
-            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("MemoryStateTitle"), viewer).Forget();
-            Task.Delay(100).ContinueWith(t => viewer.ViewModel.InitializeAsync(source), TaskScheduler.FromCurrentSynchronizationContext());
+            if (Console.ViewModel.Functions.Count == 0)
+            {
+                // No available functions
+                MemoryViewerFlyout viewer = new MemoryViewerFlyout();
+                FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("MemoryStateTitle"), viewer).Forget();
+                Task.Delay(100).ContinueWith(t => viewer.ViewModel.InitializeAsync(source), TaskScheduler.FromCurrentSynchronizationContext());
+            }
+            else
+            {
+                // Full memory viewer
+                ConsoleFullMemoryViewerControl fullViewer = new ConsoleFullMemoryViewerControl(source, Console.ViewModel.Functions);
+                FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("CurrentState"), fullViewer, new Thickness()).Forget();
+                Task.Delay(100).ContinueWith(t => fullViewer.ViewModel.InitializeAsync(), TaskScheduler.FromCurrentSynchronizationContext());
+            }
         }
 
         /// <summary>

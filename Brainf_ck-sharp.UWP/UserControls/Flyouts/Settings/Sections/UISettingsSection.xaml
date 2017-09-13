@@ -33,5 +33,15 @@
         <ToggleSwitch 
             IsEnabled="{Binding ViewModel.StatusBarSupported}"
             IsOn="{Binding ViewModel.ShowStatusBar, Mode=TwoWay}"/>
+        
+        <!--Show PBrain keyboard-->
+        <TextBlock
+            Margin="0,8,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"
+            x:Uid="ShowPBrainButtons"
+            Text="Show PBrain keyboard buttons"/>
+        <ToggleSwitch 
+            IsOn="{Binding ViewModel.ShowPBrainButtons, Mode=TwoWay}"/>
     </StackPanel>
 </UserControl>

@@ -51,7 +51,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 }
 
                 // Exception type (if present) and Stdout buffer (if it contains at least a character)
-                if (!Session.CurrentResult.HasFlag(InterpreterExitCode.Success))
+                if (!Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success))
                 {
                     ScriptExceptionInfo info = ScriptExceptionInfo.FromResult(Session.CurrentResult);
                     source.Add(new JumpListGroup<IDEResultSection, IDEResultSectionDataBase>(
@@ -59,17 +59,20 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 }
                 if (Session.CurrentResult.Output.Length > 0) source.Add(GroupFromSection(IDEResultSection.Stdout));
 
-                // Error location when needed and stack trace, if present
-                if (Session.CurrentResult.HasFlag(InterpreterExitCode.ExceptionThrown))
+                // Error location when needed
+                if (Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown))
                 {
                     source.Add(GroupFromSection(IDEResultSection.ErrorLocation));
                 }
-                else if (Session.CurrentResult.HasFlag(InterpreterExitCode.BreakpointReached))
+                else if (Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached))
                 {
                     source.Add(GroupFromSection(IDEResultSection.BreakpointReached));
                 }
-                if (Session.CurrentResult.HasFlag(InterpreterExitCode.ExceptionThrown) ||
-                    Session.CurrentResult.HasFlag(InterpreterExitCode.BreakpointReached))
+
+                // Add the proper stack trace
+                if (Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) ||
+                    Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.ThresholdExceeded) ||
+                    Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached))
                 {
                     source.Add(GroupFromSection(IDEResultSection.StackTrace));
                 }
@@ -78,8 +81,16 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 source.Add(GroupFromSection(IDEResultSection.SourceCode));
 
                 // Add the memory state and the statistics only if the code was executed
-                if (!Session.CurrentResult.HasFlag(InterpreterExitCode.MismatchedParentheses))
+                if (!Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.MismatchedParentheses))
                 {
+                    // Functions, if present
+                    if (Session.CurrentResult.Functions.Count > 0)
+                    {
+                        IndexedModelWithValue<FunctionDefinition>[] functions = IndexedModelWithValue<FunctionDefinition>.New(Session.CurrentResult.Functions).ToArray();
+                        source.Add(new JumpListGroup<IDEResultSection, IDEResultSectionDataBase>(
+                            IDEResultSection.FunctionDefinitions, new[] { new IDEResultSectionFunctionsData(functions) }));
+                    }
+
                     // Calculate the memory state info and add it to the queue
                     IndexedModelWithValue<Brainf_ckMemoryCell>[] state = IndexedModelWithValue<Brainf_ckMemoryCell>.New(Session.CurrentResult.MachineState).ToArray();
                     source.Add(new JumpListGroup<IDEResultSection, IDEResultSectionDataBase>(
@@ -95,6 +106,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         /// <inheritdoc/>
         public override void Cleanup()
         {
+            Session.Dispose();
+            Session = null;
             base.Cleanup();
             InitializationCompleted = null;
             LoadingStateChanged = null;
@@ -137,7 +150,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         {
             LoadingStateChanged?.Invoke(this, true);
             await Task.Delay(500);
-            Session = await Task.Run(() => runToCompletion ? Session.RunToCompletion() : Session.Continue());
+            await Task.Run(() =>
+            {
+                if (runToCompletion) Session.RunToCompletion();
+                else Session.Continue();
+            });
             await LoadGroupsAsync();
             await Task.Delay(500);
             LoadingStateChanged?.Invoke(this, false);
