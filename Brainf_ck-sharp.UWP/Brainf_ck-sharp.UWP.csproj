@@ -133,6 +133,7 @@
     <Compile Include="DataModels\EventArgs\PlayRequestedEventArgs.cs" />
     <Compile Include="DataModels\EventArgs\SourceCodeShareEventArgs.cs" />
     <Compile Include="DataModels\IDEResults\IDEResultExceptionInfoData.cs" />
+    <Compile Include="DataModels\IDEResults\IDEResultSectionFunctionsData.cs" />
     <Compile Include="DataModels\Misc\ChangelogReleaseInfo.cs" />
     <Compile Include="DataModels\Misc\CharactersChunkModel.cs" />
     <Compile Include="DataModels\ConsoleModels\ConsoleCommandModelBase.cs" />
@@ -278,6 +279,9 @@
     <Compile Include="UserControls\DataTemplates\JumpList\Settings\SettingsZoomedInHeaderTemplate.xaml.cs">
       <DependentUpon>SettingsZoomedInHeaderTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\DataTemplates\FunctionDefinitionTemplate.xaml.cs">
+      <DependentUpon>FunctionDefinitionTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml.cs">
       <DependentUpon>SavedSourceCodeTemplate.xaml</DependentUpon>
     </Compile>
@@ -304,6 +308,9 @@
     </Compile>
     <Compile Include="UserControls\Flyouts\LocalSourceCodesBrowserFlyout.xaml.cs">
       <DependentUpon>LocalSourceCodesBrowserFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\MemoryState\FunctionDefinitionsViewerControl.xaml.cs">
+      <DependentUpon>FunctionDefinitionsViewerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Flyouts\MemoryState\StandaloneMemoryViewerControl.xaml.cs">
       <DependentUpon>StandaloneMemoryViewerControl.xaml</DependentUpon>
@@ -372,6 +379,7 @@
     <Compile Include="UserControls\InheritedControls\FixedRadExpanderControl.cs" />
     <Compile Include="UserControls\InheritedControls\LightBorderAndBackgroundOverlay.cs" />
     <Compile Include="UserControls\InheritedControls\RichEditBoxWithVerticalOffsetInfo.cs" />
+    <Compile Include="UserControls\InheritedControls\WrapPanel.cs" />
     <Compile Include="UserControls\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
@@ -603,6 +611,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserControls\DataTemplates\FunctionDefinitionTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -662,6 +674,10 @@
     <Page Include="UserControls\Flyouts\LocalSourceCodesBrowserFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\MemoryState\FunctionDefinitionsViewerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\Flyouts\MemoryState\StandaloneMemoryViewerControl.xaml">
       <Generator>MSBuild:Compile</Generator>

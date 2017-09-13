@@ -1,0 +1,70 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp_UWP.UserControls.DataTemplates.FunctionDefinitionTemplate"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:attachedProperties="using:Brainf_ck_sharp_UWP.AttachedProperties"
+    mc:Ignorable="d"
+    d:DesignHeight="76"
+    d:DesignWidth="120">
+
+    <!--Root-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!--Outer border-->
+        <Border 
+            BorderThickness="2"
+            BorderBrush="#20FFFFFF"/>
+        
+        <!--Memory cell-->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Left value-->
+            <Canvas Background="#20000000"/>
+            <TextBlock 
+                Margin="12,10,12,10"
+                Grid.Column="0"
+                Text="{Binding Value.Value}"
+                FontSize="16"
+                Foreground="LightGray"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"/>
+
+            <!--Right character-->
+            <Canvas 
+                Background="#06FFFFFF"
+                Grid.Column="1"/>
+            <TextBlock
+                Margin="12,10,12,10"
+                FontSize="16"
+                FontWeight="SemiBold"
+                Foreground="#FFAE0909"
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+                <TextBlock.RenderTransform>
+                    <TranslateTransform Y="-2"/>
+                </TextBlock.RenderTransform>
+                <Span attachedProperties:Brainf_ckCodeInlineFormatter.Source="{Binding Value.Body}"/>
+            </TextBlock>
+        </Grid>
+        
+        <!--Index-->
+        <TextBlock
+            Text="{Binding Index, FallbackValue=0}"
+            HorizontalAlignment="Left"
+            Grid.Row="1"
+            FontSize="14"
+            Foreground="#FFA9A9A9"
+            Margin="4,4,0,0"/>
+    </Grid>
+</UserControl>

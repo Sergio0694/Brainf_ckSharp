@@ -83,6 +83,14 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 // Add the memory state and the statistics only if the code was executed
                 if (!Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.MismatchedParentheses))
                 {
+                    // Functions, if present
+                    if (Session.CurrentResult.Functions.Count > 0)
+                    {
+                        IndexedModelWithValue<FunctionDefinition>[] functions = IndexedModelWithValue<FunctionDefinition>.New(Session.CurrentResult.Functions).ToArray();
+                        source.Add(new JumpListGroup<IDEResultSection, IDEResultSectionDataBase>(
+                            IDEResultSection.MemoryState, new[] { new IDEResultSectionFunctionsData(functions) }));
+                    }
+
                     // Calculate the memory state info and add it to the queue
                     IndexedModelWithValue<Brainf_ckMemoryCell>[] state = IndexedModelWithValue<Brainf_ckMemoryCell>.New(Session.CurrentResult.MachineState).ToArray();
                     source.Add(new JumpListGroup<IDEResultSection, IDEResultSectionDataBase>(

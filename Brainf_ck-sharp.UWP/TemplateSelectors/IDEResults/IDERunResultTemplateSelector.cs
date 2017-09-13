@@ -31,6 +31,8 @@ namespace Brainf_ck_sharp_UWP.TemplateSelectors.IDEResults
                         return parent.FindResource<DataTemplate>("ExceptionInfoTemplate");
                     case IDEResultSectionStateData _:
                         return parent.FindResource<DataTemplate>("MemoryStateTemplate");
+                    case IDEResultSectionFunctionsData _:
+                        return parent.FindResource<DataTemplate>("FunctionDefinitionsTemplate");
                 }
             }
             return null;
