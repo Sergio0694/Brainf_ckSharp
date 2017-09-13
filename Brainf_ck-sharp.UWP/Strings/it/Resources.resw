@@ -553,4 +553,15 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="ShowPBrainButtons.Text" xml:space="preserve">
     <value>Mostra pulsanti virtuali PBrain</value>
   </data>
+  <data name="FunctionDefinitionsTitle" xml:space="preserve">
+    <value>Funzioni definite</value>
+  </data>
+  <data name="DefinedFunction" xml:space="preserve">
+    <value>funzione definita</value>
+    <comment>This will be "1 defined function"</comment>
+  </data>
+  <data name="DefinedFunctions" xml:space="preserve">
+    <value>funzioni definite</value>
+    <comment>This will be "n defined functions"</comment>
+  </data>
 </root>

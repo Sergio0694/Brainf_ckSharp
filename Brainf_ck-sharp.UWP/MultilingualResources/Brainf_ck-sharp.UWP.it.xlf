@@ -727,6 +727,20 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Show PBrain keyboard buttons</source>
           <target state="translated">Mostra pulsanti virtuali PBrain</target>
         </trans-unit>
+        <trans-unit id="FunctionDefinitionsTitle" translate="yes" xml:space="preserve">
+          <source>Function definitions</source>
+          <target state="translated">Funzioni definite</target>
+        </trans-unit>
+        <trans-unit id="DefinedFunction" translate="yes" xml:space="preserve">
+          <source>defined function</source>
+          <target state="translated">funzione definita</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">This will be "1 defined function"</note>
+        </trans-unit>
+        <trans-unit id="DefinedFunctions" translate="yes" xml:space="preserve">
+          <source>defined functions</source>
+          <target state="translated">funzioni definite</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">This will be "n defined functions"</note>
+        </trans-unit>
       </group>
     </body>
   </file>

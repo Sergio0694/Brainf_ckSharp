@@ -38,6 +38,8 @@ namespace Brainf_ck_sharp_UWP.Converters
                     return LocalizationManager.GetResource("SourceCode");
                 case IDEResultSection.MemoryState:
                     return LocalizationManager.GetResource("MemoryStateTitle");
+                case IDEResultSection.FunctionDefinitions:
+                    return LocalizationManager.GetResource("FunctionDefinitionsTitle");
                 case IDEResultSection.Stats:
                     return LocalizationManager.GetResource("Stats");
                 default:

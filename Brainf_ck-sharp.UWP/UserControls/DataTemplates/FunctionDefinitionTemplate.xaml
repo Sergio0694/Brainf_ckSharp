@@ -50,7 +50,8 @@
                 Foreground="#FFAE0909"
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                HorizontalAlignment="Center">
+                HorizontalAlignment="Center"
+                TextWrapping="Wrap">
                 <TextBlock.RenderTransform>
                     <TranslateTransform Y="-2"/>
                 </TextBlock.RenderTransform>

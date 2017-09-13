@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:dataTemplates="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates"
+    xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -24,8 +25,7 @@
         </ListView.ItemTemplate>
         <ListView.ItemsPanel>
             <ItemsPanelTemplate>
-                <ItemsWrapGrid Orientation="Horizontal"
-                               MaximumRowsOrColumns="1"/>
+                <inheritedControls:WrapPanel Orientation="Horizontal"/>
             </ItemsPanelTemplate>
         </ListView.ItemsPanel>
     </ListView>

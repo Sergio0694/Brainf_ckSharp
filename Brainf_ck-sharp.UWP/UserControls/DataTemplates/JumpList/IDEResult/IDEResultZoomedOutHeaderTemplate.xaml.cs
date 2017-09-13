@@ -129,6 +129,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult
                         @this.InfoBlock.Foreground = new SolidColorBrush(Colors.LightGray);
                         @this.InfoBlock.FontWeight = FontWeights.Normal;
                         break;
+                    case IDEResultSectionFunctionsData state:
+                        @this.InfoBlock.Text = $"{state.IndexedDefinitions.Count} {LocalizationManager.GetResource(state.IndexedDefinitions.Count > 1 ? "DefinedFunctions" : "DefinedFunction")}";
+                        @this.InfoBlock.Foreground = new SolidColorBrush(Colors.LightGray);
+                        @this.InfoBlock.FontWeight = FontWeights.Normal;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException("Invalid section type");
                 }
             }
         }
