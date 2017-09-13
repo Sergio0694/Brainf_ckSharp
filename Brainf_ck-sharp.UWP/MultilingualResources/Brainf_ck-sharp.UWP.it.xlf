@@ -741,6 +741,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <target state="translated">funzioni definite</target>
           <note from="MultilingualBuild" annotates="source" priority="2">This will be "n defined functions"</note>
         </trans-unit>
+        <trans-unit id="CurrentState" translate="yes" xml:space="preserve">
+          <source>Current state</source>
+          <target state="translated">Stato console</target>
+        </trans-unit>
       </group>
     </body>
   </file>

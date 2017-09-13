@@ -564,4 +564,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
     <value>funzioni definite</value>
     <comment>This will be "n defined functions"</comment>
   </data>
+  <data name="CurrentState" xml:space="preserve">
+    <value>Stato console</value>
+  </data>
 </root>

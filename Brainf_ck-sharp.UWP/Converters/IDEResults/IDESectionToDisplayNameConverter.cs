@@ -4,7 +4,7 @@ using Brainf_ck_sharp_UWP.DataModels.IDEResults;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 
-namespace Brainf_ck_sharp_UWP.Converters
+namespace Brainf_ck_sharp_UWP.Converters.IDEResults
 {
     /// <summary>
     /// A converter that returns a readable string that describes the current section

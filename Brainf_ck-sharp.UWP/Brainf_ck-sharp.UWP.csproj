@@ -116,13 +116,15 @@
     <Compile Include="Converters\BoolToInvertedVisibilityConverter.cs" />
     <Compile Include="Converters\DateTimeToDateStringConverter.cs" />
     <Compile Include="Converters\DisplayScalingToMarginConverter.cs" />
+    <Compile Include="Converters\ConsoleMemoryViewer\ConsoleMemoryViewerSectionDisplayNameConverter.cs" />
+    <Compile Include="Converters\ConsoleMemoryViewer\ConsoleMemoryViewerSectionUppercaseNameConverter.cs" />
     <Compile Include="Converters\SettingsSectionTypeToUppercaseConverter.cs" />
     <Compile Include="Converters\SourceCodeTitleScoreToDisplayStringConverter.cs" />
     <Compile Include="Converters\CharacterWithFallbackConverter.cs" />
     <Compile Include="Converters\DepthToVisibilityConverter.cs" />
     <Compile Include="Converters\ExceptionTypeConverter.cs" />
-    <Compile Include="Converters\IDESectionToDisplayNameConverter.cs" />
-    <Compile Include="Converters\IDESectionToUppercaseDisplayNameConverter.cs" />
+    <Compile Include="Converters\IDEResults\IDESectionToDisplayNameConverter.cs" />
+    <Compile Include="Converters\IDEResults\IDESectionToUppercaseDisplayNameConverter.cs" />
     <Compile Include="Converters\IndexToVisibilityConverter.cs" />
     <Compile Include="Converters\SourceCodesNumberDescriptionConverter.cs" />
     <Compile Include="Converters\PositiveValueToBrushConverter.cs" />
@@ -130,6 +132,10 @@
     <Compile Include="Converters\SingleDigitConverterWithFallback.cs" />
     <Compile Include="Converters\SourceCodeTypeConverter.cs" />
     <Compile Include="DataModels\AsyncOperationResult.cs" />
+    <Compile Include="DataModels\ConsoleMemoryViewer\ConsoleMemoryViewerSection.cs" />
+    <Compile Include="DataModels\ConsoleMemoryViewer\MemoryViewerFunctionsSectionData.cs" />
+    <Compile Include="DataModels\ConsoleMemoryViewer\MemoryViewerMemoryCellsSectionData.cs" />
+    <Compile Include="DataModels\ConsoleMemoryViewer\MemoryViewerSectionBase.cs" />
     <Compile Include="DataModels\EventArgs\PlayRequestedEventArgs.cs" />
     <Compile Include="DataModels\EventArgs\SourceCodeShareEventArgs.cs" />
     <Compile Include="DataModels\IDEResults\IDEResultExceptionInfoData.cs" />
@@ -246,6 +252,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\BrushResourcesManager.cs" />
     <Compile Include="SQLiteDatabase\SQLiteManager.cs" />
+    <Compile Include="TemplateSelectors\ConsoleMemoryState\IDERunResultTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\GitDiffLineStatusTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\ConsoleLineTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\IDEIndentationInfoTemplateSelector.cs" />
@@ -275,6 +282,9 @@
     </Compile>
     <Compile Include="UserControls\DataTemplates\JumpList\Changelog\ChangelogZoomedInHeaderTemplate.xaml.cs">
       <DependentUpon>ChangelogZoomedInHeaderTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\JumpList\ConsoleMemoryViewer\ConsoleMemoryViewerZoomedOutHeaderTemplate.xaml.cs">
+      <DependentUpon>ConsoleMemoryViewerZoomedOutHeaderTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DataTemplates\JumpList\Settings\SettingsZoomedInHeaderTemplate.xaml.cs">
       <DependentUpon>SettingsZoomedInHeaderTemplate.xaml</DependentUpon>
@@ -311,6 +321,9 @@
     </Compile>
     <Compile Include="UserControls\Flyouts\MemoryState\FunctionDefinitionsViewerControl.xaml.cs">
       <DependentUpon>FunctionDefinitionsViewerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\MemoryState\ConsoleFullMemoryViewerControl.xaml.cs">
+      <DependentUpon>ConsoleFullMemoryViewerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Flyouts\MemoryState\StandaloneMemoryViewerControl.xaml.cs">
       <DependentUpon>StandaloneMemoryViewerControl.xaml</DependentUpon>
@@ -410,6 +423,7 @@
     <Compile Include="ViewModels\FlyoutsViewModels\ChangelogViewFlyoutViewModel.cs" />
     <Compile Include="ViewModels\CompactCharactersViewerControlViewModel.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\ConsoleFullMemoryViewerControlViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\IDERunResultFlyoutViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\Settings\SettingsJumpListViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\Settings\SettingsViewModel.cs" />
@@ -607,6 +621,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\DataTemplates\JumpList\ConsoleMemoryViewer\ConsoleMemoryViewerZoomedOutHeaderTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\DataTemplates\JumpList\Settings\SettingsZoomedInHeaderTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -676,6 +694,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Flyouts\MemoryState\FunctionDefinitionsViewerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Flyouts\MemoryState\ConsoleFullMemoryViewerControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

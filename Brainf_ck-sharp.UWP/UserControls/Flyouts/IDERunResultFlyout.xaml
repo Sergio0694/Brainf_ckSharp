@@ -11,6 +11,7 @@
     xmlns:ideResult="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult"
     xmlns:memoryState="using:Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState"
     xmlns:ideResults="using:Brainf_ck_sharp_UWP.TemplateSelectors.IDEResults"
+    xmlns:ideResults1="using:Brainf_ck_sharp_UWP.Converters.IDEResults"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -159,8 +160,8 @@
         <ideResults:IDERunResultHeaderTemplateSelector x:Key="HeaderTemplateSelector"/>
 
         <!--Headers converter-->
-        <converters:IDESectionToDisplayNameConverter x:Key="HeadersConverter"/>
-        <converters:IDESectionToUppercaseDisplayNameConverter x:Key="UppercaseConverter"/>
+        <ideResults1:IDESectionToDisplayNameConverter x:Key="HeadersConverter"/>
+        <ideResults1:IDESectionToUppercaseDisplayNameConverter x:Key="UppercaseConverter"/>
         
         <!--Header-->
         <DataTemplate x:Key="HeaderTemplate">

@@ -88,7 +88,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                     {
                         IndexedModelWithValue<FunctionDefinition>[] functions = IndexedModelWithValue<FunctionDefinition>.New(Session.CurrentResult.Functions).ToArray();
                         source.Add(new JumpListGroup<IDEResultSection, IDEResultSectionDataBase>(
-                            IDEResultSection.MemoryState, new[] { new IDEResultSectionFunctionsData(functions) }));
+                            IDEResultSection.FunctionDefinitions, new[] { new IDEResultSectionFunctionsData(functions) }));
                     }
 
                     // Calculate the memory state info and add it to the queue
