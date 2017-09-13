@@ -8,7 +8,6 @@
     xmlns:memoryState="using:Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState"
     xmlns:consoleMemoryState="using:Brainf_ck_sharp_UWP.TemplateSelectors.ConsoleMemoryState"
     xmlns:converters="using:Brainf_ck_sharp_UWP.Converters.ConsoleMemoryViewer"
-    xmlns:consoleMemoryViewer="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.ConsoleMemoryViewer"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -35,12 +34,13 @@
         <converters:ConsoleMemoryViewerSectionDisplayNameConverter x:Key="HeadersConverter"/>
         <converters:ConsoleMemoryViewerSectionUppercaseNameConverter x:Key="UppercaseConverter"/>
         <converters:ConsoleStateInfoSectionDescriptionConverter x:Key="DescriptionConverter"/>
+        <converters:ConsoleMemoryViewerSectionMarginConverter x:Key="MarginsConverter"/>
         
         <!--Header-->
         <DataTemplate x:Key="HeaderTemplate">
             <jumpList:JumpListZoomedInHeaderTemplate
                 Title="{Binding Key, Converter={StaticResource HeadersConverter}}"
-                Margin="12,8,16,4"/>
+                Margin="{Binding Key, Converter={StaticResource MarginsConverter}, ConverterParameter=12_8_16_4_8}"/>
         </DataTemplate>
 
         <!--Zoomed out default header-->
