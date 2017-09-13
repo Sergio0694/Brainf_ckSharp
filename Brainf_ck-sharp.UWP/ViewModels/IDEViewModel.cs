@@ -404,6 +404,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         // Standalone function on a single line
                         temp.Add(new IDEIndentationFunctionBracketInfo(depth > 0, IDEIndentationInfoLineType.SelfContainedFunction));
                     }
+                    else if (entries.Count == 2 && entries[0].Character == '[' && entries[1].Character == ']')
+                    {
+                        // Standalone function on a single line
+                        temp.Add(new IDEIndentationOpenLoopBracketLineInfo(depth + 1, true, function));
+                    }
                     else if (!entries.Any(e => e.Character == '(' || e.Character == ')'))
                     {
                         // Function to calculate the updated depth
@@ -497,10 +502,17 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     previous = Source[i],
                     next = source[i];
 
-                if (previous is IDEIndentationOpenLoopBracketLineInfo info &&
-                    next is IDEIndentationOpenLoopBracketLineInfo updated
-                    ? info.Depth == updated.Depth
-                    : previous.LineType == next.LineType)
+                // Check the current swap
+                if (previous.LineType == next.LineType &&
+                    (previous is IDEIndentationOpenLoopBracketLineInfo info &&
+                     next is IDEIndentationOpenLoopBracketLineInfo updated &&
+                     info.Depth == updated.Depth &&
+                     info.Nested == updated.Nested &&
+                     info.LineType == updated.LineType ||
+                        previous is IDEIndentationFunctionBracketInfo function &&
+                        next is IDEIndentationFunctionBracketInfo pending &&
+                        function.LineType == pending.LineType &&
+                        function.Nested == pending.Nested))
                 {
                     continue;
                 }
