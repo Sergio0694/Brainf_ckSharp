@@ -816,7 +816,8 @@ namespace Brainf_ck_sharp_UWP.Views
                     // Get the last character and apply the right color
                     ITextRange range = EditBox.Document.GetRange(start - 1, start);
                     char character = range.Character;
-                    if (!Brainf_ckInterpreter.CheckSourceSyntax(_PreviousText).Valid || character != '[' && character != '(' && character != '\r')
+                    if (!(start > 1 && text[start - 2] == '(' && character == '[') && // Allow to directly open a loop inside a function
+                        (!Brainf_ckInterpreter.CheckSourceSyntax(_PreviousText).Valid || character != '[' && character != '(' && character != '\r'))
                     {
                         // Avoid applying the syntax highlight twice
                         range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(character);
