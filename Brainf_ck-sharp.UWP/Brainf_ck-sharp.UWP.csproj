@@ -343,6 +343,12 @@
     <Compile Include="UserControls\Flyouts\Settings\Sections\UISettingsSection.xaml.cs">
       <DependentUpon>UISettingsSection.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Flyouts\UserGuide\LanguageIntroduction.xaml.cs">
+      <DependentUpon>LanguageIntroduction.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\UserGuide\OperatorDescriptionControl.xaml.cs">
+      <DependentUpon>OperatorDescriptionControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\IconBoxToolkit\IconBox.xaml.cs">
       <DependentUpon>IconBox.xaml</DependentUpon>
     </Compile>
@@ -726,6 +732,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Flyouts\UnicodeCharactersGuideFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\UserGuide\LanguageIntroduction.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\UserGuide\OperatorDescriptionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
