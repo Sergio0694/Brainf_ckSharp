@@ -62,6 +62,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 }
 
                 // Remove from the previous section
+                if (original == null) throw new InvalidOperationException("The source section can't be null");
                 if (original.Any(entry => entry.Code != code))
                     original.Remove(original.First(entry => entry.Code == code));
                 else Source.Remove(original);
@@ -69,6 +70,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             else
             {
                 // The item has been unfavorited
+                if (favorites == null) throw new InvalidOperationException("The source section can't be null");
                 if (original == null)
                 {
                     original = new JumpListGroup<SavedSourceCodeType, CategorizedSourceCodeWithSyntaxInfo>(
@@ -99,6 +101,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             // Update the UI
             JumpListGroup<SavedSourceCodeType, CategorizedSourceCodeWithSyntaxInfo> section = Source.FirstOrDefault(
                 group => group.Key == (code.Favorited ? SavedSourceCodeType.Favorite : SavedSourceCodeType.Original));
+            if (section == null) throw new InvalidOperationException("The source section can't be null");
             if (section.Any(entry => entry.Code != code))
                 section.Remove(section.First(entry => entry.Code == code));
             else Source.Remove(section);
@@ -111,6 +114,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         /// <param name="code">The code to share</param>
         public async Task<AsyncOperationResult<bool>> ShareItemAsync(SourceCodeShareType mode, [NotNull] SourceCode code)
         {
+            String @fixed = code.Code.Replace("\r", "\r\n"); // Adjust the new line character
             switch (mode)
             {
                 case SourceCodeShareType.Clipboard:
@@ -119,7 +123,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                     try
                     {
                         DataPackage package = new DataPackage { RequestedOperation = DataPackageOperation.Copy };
-                        package.SetText(code.Code);
+                        package.SetText(@fixed);
                         Clipboard.SetContent(package);
                         return true;
                     }
@@ -129,17 +133,17 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                         return false;
                     }
                 case SourceCodeShareType.OSShare:
-                    ShareCharmsHelper.ShareText(code.Title, code.Code);
+                    ShareCharmsHelper.ShareText(code.Title, @fixed);
                     return true;
                 case SourceCodeShareType.Email:
                     StorageFile file = await StorageHelper.CreateTemporaryFileAsync(code.Title, ".txt");
                     if (file == null) return AsyncOperationStatus.Canceled;
-                    await FileIO.WriteTextAsync(file, code.Code);
+                    await FileIO.WriteTextAsync(file, @fixed);
                     return await EmailHelper.SendEmail(String.Empty, LocalizationManager.GetResource("SharedCode"), null, file);
                 case SourceCodeShareType.LocalFile:
                     StorageFile local = await StorageHelper.PickSaveFileAsync(code.Title, LocalizationManager.GetResource("PlainText"), ".txt");
                     if (local == null) return AsyncOperationStatus.Canceled;
-                    await FileIO.WriteTextAsync(local, code.Code);
+                    await FileIO.WriteTextAsync(local, @fixed);
                     return true;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
@@ -178,6 +182,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             // Ensure the items in the edited section are sorted
             JumpListGroup<SavedSourceCodeType, CategorizedSourceCodeWithSyntaxInfo> section = Source.FirstOrDefault(
                 group => group.Key == (code.Favorited ? SavedSourceCodeType.Favorite : SavedSourceCodeType.Original));
+            if (section == null) throw new InvalidOperationException("The source section can't be null");
             CategorizedSourceCodeWithSyntaxInfo item = section.First(entry => entry.Code == code);
             if (!section.EnsureSorted(item, entry => entry.Code.Title))
             {
