@@ -1,5 +1,5 @@
 [
-	To use this program, you'll need to enter 4 numbers in the buffer:
+	To use this program, you'll need to enter 4 numbers in the buffer,
 	two for each number. If you want to sum a number that has a single digit,
 	you'll need to add a 0 before it.
 	For example, to sum 7 and 64, enter 0764 in the buffer.
@@ -8,7 +8,7 @@
 [
 	>++++++++<- 48 in cell 1
 ]
->>,>>>, read first number (x1; x2)
+>>,>>>, read first number _ x1; x2
 <<<
 [
 	>+>+<<- clone x1
@@ -35,7 +35,7 @@
 	<+>- restore copy of 48
 ]
 >>>>>> move after x2
-,>>>, read second one (y1; y2)
+,>>>, read second one _ y1; y2
 <<<
 [
 	>+>+<<- clone y1

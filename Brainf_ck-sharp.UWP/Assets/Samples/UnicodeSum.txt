@@ -14,7 +14,7 @@
 	]
 	<-
 ]
->>---- 32 in 3rd cell (space)
+>>---- 32 in 3rd cell, space char
 >+++++++ 43 in 4th
 >+ 61 in 5th
 <<<<
