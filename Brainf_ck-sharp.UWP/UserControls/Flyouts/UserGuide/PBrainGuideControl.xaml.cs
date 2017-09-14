@@ -2,9 +2,9 @@
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide
 {
-    public sealed partial class LanguageIntroduction : UserControl
+    public sealed partial class PBrainGuideControl : UserControl
     {
-        public LanguageIntroduction()
+        public PBrainGuideControl()
         {
             this.InitializeComponent();
         }

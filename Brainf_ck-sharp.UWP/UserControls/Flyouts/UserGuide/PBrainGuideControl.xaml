@@ -1,0 +1,44 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide.PBrainGuideControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="1000"
+    d:DesignWidth="400">
+
+    <StackPanel>
+
+        <TextBlock 
+            TextWrapping="WrapWholeWords"
+            Text="PBrain is an extension of the Brainf*ck language, created by Paul M. Parks. It adds support for functions, with the addition of the following operators:"/>
+
+        <local:OperatorDescriptionControl
+            Margin="0,16,0,0"
+            Operator="("
+            Description="Defines a function and binds it to the value of the current memory cells"
+            OperatorForegroundBrush="#FF009191"/>
+        <local:OperatorDescriptionControl
+            Margin="0,12,0,0"
+            Operator=")"
+            Description="Ends the current function definition"
+            OperatorForegroundBrush="#FF009191"/>
+        <local:OperatorDescriptionControl
+            Margin="0,12,0,0"
+            Operator=":"
+            Description="Call the function associated with the value of the current memory cell"
+            OperatorForegroundBrush="#FF1E7499"/>
+
+        <TextBlock 
+            Margin="0,16,0,0"
+            TextWrapping="WrapWholeWords">
+            <Run
+                FontFamily="Segoe MDL2 Assets"
+                Text="&#xE7BA;"
+                Foreground="OrangeRed"/>
+            <Run Text="A function definition must contain at least a Brainf*ck operator and its body can't be empty. Moreover, it is not possible to define nested functions."/>
+        </TextBlock>
+    </StackPanel>
+</UserControl>

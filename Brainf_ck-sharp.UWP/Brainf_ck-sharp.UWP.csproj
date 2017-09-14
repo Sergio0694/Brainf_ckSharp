@@ -343,6 +343,9 @@
     <Compile Include="UserControls\Flyouts\Settings\Sections\UISettingsSection.xaml.cs">
       <DependentUpon>UISettingsSection.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Flyouts\UserGuide\PBrainGuideControl.xaml.cs">
+      <DependentUpon>PBrainGuideControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Flyouts\UserGuide\LanguageIntroduction.xaml.cs">
       <DependentUpon>LanguageIntroduction.xaml</DependentUpon>
     </Compile>
@@ -734,6 +737,10 @@
     <Page Include="UserControls\Flyouts\UnicodeCharactersGuideFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\UserGuide\PBrainGuideControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\Flyouts\UserGuide\LanguageIntroduction.xaml">
       <SubType>Designer</SubType>
