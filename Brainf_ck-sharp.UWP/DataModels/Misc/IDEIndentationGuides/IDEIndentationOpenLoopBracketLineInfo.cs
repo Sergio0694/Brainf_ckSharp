@@ -27,5 +27,14 @@
             Depth = depth;
             Nested = nested;
         }
+
+        /// <inheritdoc/>
+        public override bool Equals(IDEIndentationLineInfo other)
+        {
+            return other is IDEIndentationOpenLoopBracketLineInfo info &&
+                   LineType == info.LineType &&
+                   Depth == info.Depth &&
+                   Nested == info.Nested;
+        }
     }
 }

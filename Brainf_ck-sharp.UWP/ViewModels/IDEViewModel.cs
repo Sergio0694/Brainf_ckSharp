@@ -503,19 +503,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     next = source[i];
 
                 // Check the current swap
-                if (previous.LineType == next.LineType &&
-                    (previous is IDEIndentationOpenLoopBracketLineInfo info &&
-                     next is IDEIndentationOpenLoopBracketLineInfo updated &&
-                     info.Depth == updated.Depth &&
-                     info.Nested == updated.Nested &&
-                     info.LineType == updated.LineType ||
-                        previous is IDEIndentationFunctionBracketInfo function &&
-                        next is IDEIndentationFunctionBracketInfo pending &&
-                        function.LineType == pending.LineType &&
-                        function.Nested == pending.Nested))
-                {
-                    continue;
-                }
+                if (previous.Equals(next)) continue;
                 Source[i] = source[i];
             }
 

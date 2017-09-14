@@ -25,5 +25,13 @@ namespace Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides
             }
             Nested = nested;
         }
+
+        /// <inheritdoc/>
+        public override bool Equals(IDEIndentationLineInfo other)
+        {
+            return other is IDEIndentationFunctionBracketInfo info &&
+                   LineType == info.LineType &&
+                   Nested == info.Nested;
+        }
     }
 }
