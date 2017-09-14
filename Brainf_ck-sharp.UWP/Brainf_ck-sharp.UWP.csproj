@@ -343,11 +343,20 @@
     <Compile Include="UserControls\Flyouts\Settings\Sections\UISettingsSection.xaml.cs">
       <DependentUpon>UISettingsSection.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Flyouts\UserGuide\CodeSamples\ResetLoopCodePreviewControl.xaml.cs">
+      <DependentUpon>ResetLoopCodePreviewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\UserGuide\CodeSamples\SimpleLoopCodePreviewControl.xaml.cs">
+      <DependentUpon>SimpleLoopCodePreviewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\UserGuide\CodeSamplesGuideControl.xaml.cs">
+      <DependentUpon>CodeSamplesGuideControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Flyouts\UserGuide\PBrainGuideControl.xaml.cs">
       <DependentUpon>PBrainGuideControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\UserGuide\LanguageIntroduction.xaml.cs">
-      <DependentUpon>LanguageIntroduction.xaml</DependentUpon>
+    <Compile Include="UserControls\Flyouts\UserGuide\LanguageIntroductionControl.xaml.cs">
+      <DependentUpon>LanguageIntroductionControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Flyouts\UserGuide\OperatorDescriptionControl.xaml.cs">
       <DependentUpon>OperatorDescriptionControl.xaml</DependentUpon>
@@ -738,11 +747,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\Flyouts\UserGuide\CodeSamples\ResetLoopCodePreviewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\UserGuide\CodeSamples\SimpleLoopCodePreviewControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Flyouts\UserGuide\CodeSamplesGuideControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\Flyouts\UserGuide\PBrainGuideControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Flyouts\UserGuide\LanguageIntroduction.xaml">
+    <Page Include="UserControls\Flyouts\UserGuide\LanguageIntroductionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
