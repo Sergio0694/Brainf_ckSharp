@@ -134,6 +134,7 @@
     <Compile Include="Converters\ReadableCharactersConverter.cs" />
     <Compile Include="Converters\SingleDigitConverterWithFallback.cs" />
     <Compile Include="Converters\SourceCodeTypeConverter.cs" />
+    <Compile Include="Converters\UserGuideSectionDescriptionConverter.cs" />
     <Compile Include="DataModels\AsyncOperationResult.cs" />
     <Compile Include="DataModels\ConsoleMemoryViewer\ConsoleMemoryViewerSection.cs" />
     <Compile Include="DataModels\ConsoleMemoryViewer\MemoryViewerFunctionsSectionData.cs" />
@@ -357,13 +358,13 @@
     <Compile Include="UserControls\Flyouts\UserGuide\CodeSamples\SimpleLoopCodePreviewControl.xaml.cs">
       <DependentUpon>SimpleLoopCodePreviewControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\UserGuide\CodeSamplesGuideControl.xaml.cs">
+    <Compile Include="UserControls\Flyouts\UserGuide\Sections\CodeSamplesGuideControl.xaml.cs">
       <DependentUpon>CodeSamplesGuideControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\UserGuide\PBrainGuideControl.xaml.cs">
+    <Compile Include="UserControls\Flyouts\UserGuide\Sections\PBrainGuideControl.xaml.cs">
       <DependentUpon>PBrainGuideControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\UserGuide\LanguageIntroductionControl.xaml.cs">
+    <Compile Include="UserControls\Flyouts\UserGuide\Sections\LanguageIntroductionControl.xaml.cs">
       <DependentUpon>LanguageIntroductionControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Flyouts\UserGuide\OperatorDescriptionControl.xaml.cs">
@@ -775,15 +776,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Flyouts\UserGuide\CodeSamplesGuideControl.xaml">
+    <Page Include="UserControls\Flyouts\UserGuide\Sections\CodeSamplesGuideControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Flyouts\UserGuide\PBrainGuideControl.xaml">
+    <Page Include="UserControls\Flyouts\UserGuide\Sections\PBrainGuideControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Flyouts\UserGuide\LanguageIntroductionControl.xaml">
+    <Page Include="UserControls\Flyouts\UserGuide\Sections\LanguageIntroductionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

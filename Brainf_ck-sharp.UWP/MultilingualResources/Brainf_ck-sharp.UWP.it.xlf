@@ -767,10 +767,6 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Loops and executes the current operators sequence if the value of the current cell is greater than 0</source>
           <target state="translated">Ripete il ciclo ed esegue la sequenza di operatori attuale se il valore della cella corrente è maggiore di 0</target>
         </trans-unit>
-        <trans-unit id="GuideOperator8.Text" translate="yes" xml:space="preserve">
-          <source>Reads a Unicode character from the Stdin buffer and stores its value in the current memory cell</source>
-          <target state="translated">Legge un carattere Unicode dal buffer Stdin e salva il suo valore nella cella di memoria attuale</target>
-        </trans-unit>
         <trans-unit id="GuideOperators7Part1.Text" translate="yes" xml:space="preserve">
           <source>Prints the Unicode character corresponding to the value of the current memory cell. The Unicode table is available in the app, under the</source>
           <target state="translated">Stampa il carattere Unicode corrispondente al valore della cella di memoria attuale. La tavola Unicode è disponibile nell'app, dal menu</target>
@@ -902,6 +898,22 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         <trans-unit id="GuidesInfoBlock.Text" translate="yes" xml:space="preserve">
           <source>Guides and info</source>
           <target state="translated">Guida e info</target>
+        </trans-unit>
+        <trans-unit id="GuideOperator8.Description" translate="yes" xml:space="preserve">
+          <source>Reads a Unicode character from the Stdin buffer and stores its value in the current memory cell</source>
+          <target state="translated">Legge un carattere Unicode dal buffer Stdin e salva il suo valore nella cella di memoria attuale</target>
+        </trans-unit>
+        <trans-unit id="GuideCodeSamplesDescription" translate="yes" xml:space="preserve">
+          <source>Some code samples to learn from</source>
+          <target state="translated">Alcuni esempi da cui imparare</target>
+        </trans-unit>
+        <trans-unit id="GuideIntroductionDescription" translate="yes" xml:space="preserve">
+          <source>Get to know the language</source>
+          <target state="translated">Conosci il linguaggio</target>
+        </trans-unit>
+        <trans-unit id="GuidePBrainDescription" translate="yes" xml:space="preserve">
+          <source>Make the language more powerful</source>
+          <target state="translated">Rendi il linguaggio più completo</target>
         </trans-unit>
       </group>
     </body>

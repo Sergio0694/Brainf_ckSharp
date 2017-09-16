@@ -697,7 +697,7 @@ This way he'll be able to help you!</value>
   <data name="GuideOperator6.Description" xml:space="preserve">
     <value>Loops and executes the current operators sequence if the value of the current cell is greater than 0</value>
   </data>
-  <data name="GuideOperator8.Text" xml:space="preserve">
+  <data name="GuideOperator8.Description" xml:space="preserve">
     <value>Reads a Unicode character from the Stdin buffer and stores its value in the current memory cell</value>
   </data>
   <data name="GuideOperators7Part1.Text" xml:space="preserve">
@@ -789,5 +789,14 @@ This way he'll be able to help you!</value>
   </data>
   <data name="UserGuideButton.Title" xml:space="preserve">
     <value>User guide</value>
+  </data>
+  <data name="GuideCodeSamplesDescription" xml:space="preserve">
+    <value>Some code samples to learn from</value>
+  </data>
+  <data name="GuideIntroductionDescription" xml:space="preserve">
+    <value>Get to know the language</value>
+  </data>
+  <data name="GuidePBrainDescription" xml:space="preserve">
+    <value>Make the language more powerful</value>
   </data>
 </root>

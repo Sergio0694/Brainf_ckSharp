@@ -584,9 +584,6 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="GuideOperator6.Description" xml:space="preserve">
     <value>Ripete il ciclo ed esegue la sequenza di operatori attuale se il valore della cella corrente è maggiore di 0</value>
   </data>
-  <data name="GuideOperator8.Text" xml:space="preserve">
-    <value>Legge un carattere Unicode dal buffer Stdin e salva il suo valore nella cella di memoria attuale</value>
-  </data>
   <data name="GuideOperators7Part1.Text" xml:space="preserve">
     <value>Stampa il carattere Unicode corrispondente al valore della cella di memoria attuale. La tavola Unicode è disponibile nell'app, dal menu</value>
   </data>
@@ -685,5 +682,17 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   </data>
   <data name="GuidesInfoBlock.Text" xml:space="preserve">
     <value>Guida e info</value>
+  </data>
+  <data name="GuideOperator8.Description" xml:space="preserve">
+    <value>Legge un carattere Unicode dal buffer Stdin e salva il suo valore nella cella di memoria attuale</value>
+  </data>
+  <data name="GuideCodeSamplesDescription" xml:space="preserve">
+    <value>Alcuni esempi da cui imparare</value>
+  </data>
+  <data name="GuideIntroductionDescription" xml:space="preserve">
+    <value>Conosci il linguaggio</value>
+  </data>
+  <data name="GuidePBrainDescription" xml:space="preserve">
+    <value>Rendi il linguaggio più completo</value>
   </data>
 </root>
