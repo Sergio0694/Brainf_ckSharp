@@ -767,7 +767,7 @@ This way he'll be able to help you!</value>
     <value>A good idea is to try to optimize the script in order to perform as few operations as possible — generally this also means that the final code will be shorter and easier to read.</value>
   </data>
   <data name="GuideSamples8.Text" xml:space="preserve">
-    <value>In this example, to print the word "Hello" two loops will be used to set two cells to values closer to the letters that will be printed. It'd definitely better to use a similar approach than to repeating the + operator 72 times to print the "H" character.</value>
+    <value>In this example, to print the word "Hello" two loops will be used to set two cells to values closer to the letters that will be printed. It's definitely better to use a similar approach than to repeating the + operator 72 times to print the "H" character.</value>
   </data>
   <data name="GuideSamples9.Text" xml:space="preserve">
     <value>This script will set the cells #2 and #3 to values closer to the characters that will be printed by the program, so that less operations will be needed to get to the actual values the code wants to display to the user.</value>
@@ -798,5 +798,20 @@ This way he'll be able to help you!</value>
   </data>
   <data name="GuidePBrainDescription" xml:space="preserve">
     <value>Make the language more powerful</value>
+  </data>
+  <data name="PBrainInfoLink.Text" xml:space="preserve">
+    <value>What's this?</value>
+  </data>
+  <data name="UserGuide" xml:space="preserve">
+    <value>Brainf*ck# guide</value>
+  </data>
+  <data name="UserGuideCodeSamples" xml:space="preserve">
+    <value>Code samples</value>
+  </data>
+  <data name="UserGuideIntroduction" xml:space="preserve">
+    <value>Introduction</value>
+  </data>
+  <data name="UserGuidePBrainExtensions" xml:space="preserve">
+    <value>PBrain extensions</value>
   </data>
 </root>

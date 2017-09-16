@@ -695,4 +695,19 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="GuidePBrainDescription" xml:space="preserve">
     <value>Rendi il linguaggio più completo</value>
   </data>
+  <data name="UserGuide" xml:space="preserve">
+    <value>Guida di Brainf*ck#</value>
+  </data>
+  <data name="PBrainInfoLink.Text" xml:space="preserve">
+    <value>Che cos'è?</value>
+  </data>
+  <data name="UserGuideCodeSamples" xml:space="preserve">
+    <value>Esempi di codice</value>
+  </data>
+  <data name="UserGuideIntroduction" xml:space="preserve">
+    <value>Introduzione</value>
+  </data>
+  <data name="UserGuidePBrainExtensions" xml:space="preserve">
+    <value>Estensione PBrain</value>
+  </data>
 </root>

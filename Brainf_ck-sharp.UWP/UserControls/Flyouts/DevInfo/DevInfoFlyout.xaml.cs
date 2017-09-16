@@ -132,7 +132,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
         private void UserGuideButton_Click(object sender, RoutedEventArgs e)
         {
             UserGuideViewerControl guide = new UserGuideViewerControl();
-            FlyoutManager.Instance.ShowAsync("User guide", guide, new Thickness()).Forget();
+            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UserGuide"), guide, new Thickness()).Forget();
         }
     }
 }

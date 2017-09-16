@@ -134,7 +134,9 @@
     <Compile Include="Converters\ReadableCharactersConverter.cs" />
     <Compile Include="Converters\SingleDigitConverterWithFallback.cs" />
     <Compile Include="Converters\SourceCodeTypeConverter.cs" />
-    <Compile Include="Converters\UserGuideSectionDescriptionConverter.cs" />
+    <Compile Include="Converters\UserGuide\UserGuideSectionDescriptionConverter.cs" />
+    <Compile Include="Converters\UserGuide\UserGuideSectionTitleConverter.cs" />
+    <Compile Include="Converters\UserGuide\UserGuideSectionTitleUppercaseConverter.cs" />
     <Compile Include="DataModels\AsyncOperationResult.cs" />
     <Compile Include="DataModels\ConsoleMemoryViewer\ConsoleMemoryViewerSection.cs" />
     <Compile Include="DataModels\ConsoleMemoryViewer\MemoryViewerFunctionsSectionData.cs" />

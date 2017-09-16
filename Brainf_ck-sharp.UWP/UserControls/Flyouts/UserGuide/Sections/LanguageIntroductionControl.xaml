@@ -66,6 +66,7 @@
         
         <!--Dot operator-->
         <Grid
+            Margin="0,12,0,0"
             HorizontalAlignment="Left"
             BorderThickness="2"
             BorderBrush="#20FFFFFF">

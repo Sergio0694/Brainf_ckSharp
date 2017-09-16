@@ -37,6 +37,10 @@
             HorizontalScrollMode="Auto"
             Grid.Row="1">
             <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="28"/>
@@ -47,11 +51,13 @@
                 <Border 
                     Background="#FF333333"
                     Grid.Column="0"
+                    Grid.RowSpan="2"
                     Width="20"
                     HorizontalAlignment="Left"/>
 
                 <!--Line numbers-->
                 <TextBlock
+                    Grid.Row="0"
                     IsTextScaleFactorEnabled="False"
                     Grid.Column="1"
                     FontSize="15"
@@ -74,6 +80,7 @@
                 <!--Vertical guide-->
                 <StackPanel
                     Canvas.ZIndex="0"
+                    Grid.Row="0"
                     Grid.Column="2"
                     Width="1"
                     HorizontalAlignment="Left"
@@ -109,6 +116,7 @@
                 <!--Second vertical guide-->
                 <StackPanel
                     Canvas.ZIndex="0"
+                    Grid.Row="0"
                     Grid.Column="2"
                     Width="1"
                     HorizontalAlignment="Left"
@@ -135,6 +143,7 @@
                     Canvas.ZIndex="2"
                     IsTextScaleFactorEnabled="False"
                     Margin="20,0,20,0"
+                    Grid.Row="0"
                     Grid.Column="2"
                     FontSize="15">
                     <Run 

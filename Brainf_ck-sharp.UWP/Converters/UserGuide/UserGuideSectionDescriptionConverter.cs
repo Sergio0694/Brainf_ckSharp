@@ -4,7 +4,7 @@ using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 
-namespace Brainf_ck_sharp_UWP.Converters
+namespace Brainf_ck_sharp_UWP.Converters.UserGuide
 {
     /// <summary>
     /// A simple converter for the description of the user guide sections

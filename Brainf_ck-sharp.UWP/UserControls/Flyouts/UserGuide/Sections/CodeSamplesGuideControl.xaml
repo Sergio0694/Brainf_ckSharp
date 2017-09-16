@@ -84,7 +84,7 @@
                 x:Uid="GuideSamples7"/>
             <LineBreak/>
             <Run 
-                Text="In this example, to print the word &quot;Hello&quot; two loops will be used to set two cells to values closer to the letters that will be printed. It'd definitely better to use a similar approach than to repeating the + operator 72 times to print the &quot;H&quot; character."
+                Text="In this example, to print the word &quot;Hello&quot; two loops will be used to set two cells to values closer to the letters that will be printed. It's definitely better to use a similar approach than to repeating the + operator 72 times to print the &quot;H&quot; character."
                 x:Uid="GuideSamples8"/>
         </TextBlock>
 

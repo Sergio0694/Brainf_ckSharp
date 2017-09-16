@@ -856,7 +856,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <target state="translated">È una buona idea cercare di ottimizzare gli script al fine di effettuare meno operazioni possibile — questo generalmente significa anche che il codice finale sarà più corto e più facile da comprendere.</target>
         </trans-unit>
         <trans-unit id="GuideSamples8.Text" translate="yes" xml:space="preserve">
-          <source>In this example, to print the word "Hello" two loops will be used to set two cells to values closer to the letters that will be printed. It'd definitely better to use a similar approach than to repeating the + operator 72 times to print the "H" character.</source>
+          <source>In this example, to print the word "Hello" two loops will be used to set two cells to values closer to the letters that will be printed. It's definitely better to use a similar approach than to repeating the + operator 72 times to print the "H" character.</source>
           <target state="translated">In questo esempio, per stampare la parola "Hello" saranno utilizzati due cicli per settare due celle di memoria a valori prossimi a quelli dei caratteri da stampare. È decisamente meglio un approccio simile rispetto a ripetere l'operatore + 72 volte solo per stampare il carattere "H".</target>
         </trans-unit>
         <trans-unit id="GuideSamples9.Text" translate="yes" xml:space="preserve">
@@ -914,6 +914,26 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         <trans-unit id="GuidePBrainDescription" translate="yes" xml:space="preserve">
           <source>Make the language more powerful</source>
           <target state="translated">Rendi il linguaggio più completo</target>
+        </trans-unit>
+        <trans-unit id="UserGuide" translate="yes" xml:space="preserve">
+          <source>Brainf*ck# guide</source>
+          <target state="translated">Guida di Brainf*ck#</target>
+        </trans-unit>
+        <trans-unit id="PBrainInfoLink.Text" translate="yes" xml:space="preserve">
+          <source>What's this?</source>
+          <target state="translated">Che cos'è?</target>
+        </trans-unit>
+        <trans-unit id="UserGuideCodeSamples" translate="yes" xml:space="preserve">
+          <source>Code samples</source>
+          <target state="translated">Esempi di codice</target>
+        </trans-unit>
+        <trans-unit id="UserGuideIntroduction" translate="yes" xml:space="preserve">
+          <source>Introduction</source>
+          <target state="translated">Introduzione</target>
+        </trans-unit>
+        <trans-unit id="UserGuidePBrainExtensions" translate="yes" xml:space="preserve">
+          <source>PBrain extensions</source>
+          <target state="translated">Estensione PBrain</target>
         </trans-unit>
       </group>
     </body>
