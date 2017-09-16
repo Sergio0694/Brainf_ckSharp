@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Text;
 using Brainf_ck_sharp;
@@ -342,22 +343,55 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 
         #region Indentation info
 
+        // The local backup of the brackets info
+        [CanBeNull]
+        private IReadOnlyList<CharacterWithCoordinates> _Brackets;
+
+        // Synchronization semaphore for the brackets field
+        private readonly SemaphoreSlim BracketsSemaphore = new SemaphoreSlim(1);
+
         /// <summary>
         /// Updates the indentation info for a given state
         /// </summary>
         /// <param name="brackets">The collection of brackets and their position in the current text</param>
         public async Task UpdateIndentationInfo([CanBeNull] IReadOnlyList<CharacterWithCoordinates> brackets)
         {
-            // // Check the info is available
+            // Lock
+            await BracketsSemaphore.WaitAsync();
+
+            // Check the info is available
             if (brackets == null || brackets.Count == 0)
             {
                 Source.Clear();
+                _Brackets = null;
+                BracketsSemaphore.Release();
                 return;
             }
 
             // Prepare the updated source collection
             List<IDEIndentationLineInfo> source = await Task.Run(() =>
             {
+                // Repetition check
+                if (_Brackets != null && _Brackets.Count == brackets.Count)
+                {
+                    bool equals = true;
+                    for (int i = 0; i < brackets.Count; i++)
+                    {
+                        CharacterWithCoordinates
+                            backup = _Brackets[i],
+                            local = brackets[i];
+                        if (backup.Character != local.Character ||
+                            backup.Position.Y != local.Position.Y)
+                        {
+                            equals = false;
+                            break;
+                        }
+                    }
+                    if (equals) return null;
+                    _Brackets = brackets;
+                }
+                else _Brackets = brackets;
+
                 // Get the max reached line number
                 int max = brackets.Max(entry => entry.Position.Y);
 
@@ -492,33 +526,40 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 }
                 return temp;
             });
-            
-            // Update the source collection
-            for (int i = 0; i < source.Count; i++)
+
+            // Update the UI if needed
+            if (source != null)
             {
-                // The source doesn't contain enough items
-                if (Source.Count - 1 < i)
+                // Update the source collection
+                for (int i = 0; i < source.Count; i++)
                 {
-                    Source.Add(source[i]);
+                    // The source doesn't contain enough items
+                    if (Source.Count - 1 < i)
+                    {
+                        Source.Add(source[i]);
+                    }
+
+                    // Replace the current item if needed
+                    IDEIndentationLineInfo
+                        previous = Source[i],
+                        next = source[i];
+
+                    // Check the current swap
+                    if (previous.Equals(next)) continue;
+                    Source[i] = source[i];
                 }
 
-                // Replace the current item if needed
-                IDEIndentationLineInfo
-                    previous = Source[i],
-                    next = source[i];
-
-                // Check the current swap
-                if (previous.Equals(next)) continue;
-                Source[i] = source[i];
+                // Remove the exceeding items
+                int diff = Source.Count - source.Count;
+                while (diff > 0)
+                {
+                    Source.RemoveAt(Source.Count - 1);
+                    diff--;
+                }
             }
 
-            // Remove the exceeding items
-            int diff = Source.Count - source.Count;
-            while (diff > 0)
-            {
-                Source.RemoveAt(Source.Count - 1);
-                diff--;
-            }
+            // Release
+            BracketsSemaphore.Release();
         }
 
         #endregion
