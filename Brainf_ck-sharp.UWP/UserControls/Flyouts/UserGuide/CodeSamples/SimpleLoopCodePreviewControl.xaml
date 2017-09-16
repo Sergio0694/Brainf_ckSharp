@@ -40,7 +40,8 @@
                 <TextBlock
                     IsTextScaleFactorEnabled="False"
                     Margin="12,4,0,4"
-                    Text="Copy the current value"/>
+                    Text="Copy the current value"
+                    x:Uid="GuideSampleSimpleLoopTitle"/>
             </Border>
         </Border>
 
@@ -140,9 +141,9 @@
                     Text="+"
                     Foreground="White"/>
                 <Run 
-                    Text="Copy in the 2n and 3rd cells"
+                    Text="Copy in the cells #1 and #2"
                     Foreground="#FF52AF3D"
-                    x:Uid="CommentRun"/><LineBreak/>
+                    x:Uid="GuideSampleSimpleLoopComment1"/><LineBreak/>
                 <Run 
                     Text="      &lt;"
                     Foreground="#FFDDDDDD"/><Run 
@@ -151,7 +152,7 @@
                 <Run 
                     Text="Decrement the first cell"
                     Foreground="#FF52AF3D"
-                    x:Uid="CommentRun"/><LineBreak/>
+                    x:Uid="GuideSampleSimpleLoopComment2"/><LineBreak/>
                 <Run 
                     Text="]"
                     Foreground="#FF569CD6"/><LineBreak/>
@@ -171,9 +172,9 @@
                     Text="-"
                     Foreground="White"/>
                 <Run 
-                    Text="Move second copy back"
+                    Text="Move second copy back to cell #0"
                     Foreground="#FF52AF3D"
-                    x:Uid="CommentRun2"/><LineBreak/>
+                    x:Uid="GuideSampleSimpleLoopComment3"/><LineBreak/>
                 <Run 
                     Text="]"
                     Foreground="#FF569CD6"/>

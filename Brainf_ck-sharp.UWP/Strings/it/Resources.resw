@@ -567,4 +567,120 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="CurrentState" xml:space="preserve">
     <value>Stato console</value>
   </data>
+  <data name="GuideIntroduction1.Text" xml:space="preserve">
+    <value>Brainf*ck è un linguaggio di programmazione esoterico inventato nel 1993 da Urban Müller.
+
+</value>
+  </data>
+  <data name="GuideIntroduction2.Text" xml:space="preserve">
+    <value>Il linguaggio stesso replica il funzionamento di una macchina di Touring, poiché lo stato dell'interprete è descritto solo da un vettore di memoria e da un puntatore che può spostarsi in due direzioni e modificare il valore delle celle di memoria, quando vi passa sopra.</value>
+  </data>
+  <data name="GuideIntroduction3.Text" xml:space="preserve">
+    <value>Un programma in Brainf*ck è composto di soli 8 operatori:</value>
+  </data>
+  <data name="GuideOperator1.Description" xml:space="preserve">
+    <value>Sposta il puntatore della memoria alla cella successiva</value>
+  </data>
+  <data name="GuideOperator2.Description" xml:space="preserve">
+    <value>Sposta il puntatore della memoria indietro</value>
+  </data>
+  <data name="GuideOperator3.Description" xml:space="preserve">
+    <value>Incrementa il valore della cella attuale</value>
+  </data>
+  <data name="GuideOperator4.Description" xml:space="preserve">
+    <value>Decrementa il valore della cella attuale</value>
+  </data>
+  <data name="GuideOperator5.Description" xml:space="preserve">
+    <value>Inizia un ciclo dalla cella attuale, solo se il suo valore è maggiore di 0</value>
+  </data>
+  <data name="GuideOperator6.Description" xml:space="preserve">
+    <value>Ripete il ciclo ed esegue la sequenza di operatori attuale se il valore della cella corrente è maggiore di 0</value>
+  </data>
+  <data name="GuideOperator8.Text" xml:space="preserve">
+    <value>Legge un carattere Unicode dal buffer Stdin e salva il suo valore nella cella di memoria attuale</value>
+  </data>
+  <data name="GuideOperators7Part1.Text" xml:space="preserve">
+    <value>Stampa il carattere Unicode corrispondente al valore della cella di memoria attuale. La tavola Unicode è disponibile nell'app, dal menu</value>
+  </data>
+  <data name="GuideOperators7Part2.Text" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="GuidePBrain.Text" xml:space="preserve">
+    <value>PBrain è un'estensione del linguaggio Brainf*ck, creata da Paul M. Parks, che aggiunge il supporto alle funzioni tramite l'introduzione dei seguenti nuovi operatori:</value>
+  </data>
+  <data name="GuidePBrainOperator1.Description" xml:space="preserve">
+    <value>Definisce una funzione a cui viene assegnato il valore della cella di memoria attuale</value>
+  </data>
+  <data name="GuidePBrainOperator2.Description" xml:space="preserve">
+    <value>Termina la definizione della funzione in corso</value>
+  </data>
+  <data name="GuidePBrainOperator3.Description" xml:space="preserve">
+    <value>Chiama la funzione associata al valore della cella di memoria attuale</value>
+  </data>
+  <data name="GuidePBrainWarning.Text" xml:space="preserve">
+    <value>Una definizione di funzione deve contenere almeno un operatore Brainf*ck e il suo corpo non può essere vuoto. Inoltre, non è possibile definire funzioni annidate.</value>
+  </data>
+  <data name="GuideSamplePrintHelloComment1.Text" xml:space="preserve">
+    <value>7 nella cella #0</value>
+  </data>
+  <data name="GuideSamplePrintHelloComment2.Text" xml:space="preserve">
+    <value>7 * 5 = 35 nella cella #1</value>
+  </data>
+  <data name="GuideSamplePrintHelloComment3.Text" xml:space="preserve">
+    <value>35 * 2 nella cella #2 e 35 * 3 nella #3</value>
+  </data>
+  <data name="GuideSamplePrintHelloComment4.Text" xml:space="preserve">
+    <value>Indietro all'inizio del loop e decremento</value>
+  </data>
+  <data name="GuideSamplePrintHelloComment5.Text" xml:space="preserve">
+    <value>Prepare e stampa i valori corretti</value>
+  </data>
+  <data name="GuideSamplePrintHelloTitle.Text" xml:space="preserve">
+    <value>Stampa "Hello"</value>
+  </data>
+  <data name="GuideSampleResetComment.Text" xml:space="preserve">
+    <value>Sottrai 1 ad ogni iterazione</value>
+  </data>
+  <data name="GuideSampleResetTitle.Text" xml:space="preserve">
+    <value>Resetta la cella attuale</value>
+  </data>
+  <data name="GuideSamples1.Text" xml:space="preserve">
+    <value>Una buona strategia per imparare a programmare in Brainf*ck, come in tutte le altre cose, consiste nell'iniziare da programmi più piccoli e semplici per poi renderli man mano più complessi col tempo.</value>
+  </data>
+  <data name="GuideSamples2.Text" xml:space="preserve">
+    <value>Per esempio, un'operazione comunque consiste nel resettare la cella attuale, a prescindere da quale fosse il suo valore.</value>
+  </data>
+  <data name="GuideSamples3.Text" xml:space="preserve">
+    <value>In questo caso può essere utilizzato un semplice ciclo:</value>
+  </data>
+  <data name="GuideSamples4.Text" xml:space="preserve">
+    <value>In molte situazioni è utile salvare una copia della cella attuale, per poter effettuare operazioni con il suo valore senza perdere il riferimento dello stato originario della cella di memoria.</value>
+  </data>
+  <data name="GuideSamples5.Text" xml:space="preserve">
+    <value>A questo fine, è possibile creare due copie separate del valore attuale, resettando la cella attuale, e successivamente spostare la seconda copia indietro nella posizione della cella iniziale, per ottenere il valore originario e una copia nella cella successiva.</value>
+  </data>
+  <data name="GuideSamples6.Text" xml:space="preserve">
+    <value>Tutte queste tecniche possono essere combinate per scrivere programmi più complessi.</value>
+  </data>
+  <data name="GuideSamples7.Text" xml:space="preserve">
+    <value>È una buona idea cercare di ottimizzare gli script al fine di effettuare meno operazioni possibile — questo generalmente significa anche che il codice finale sarà più corto e più facile da comprendere.</value>
+  </data>
+  <data name="GuideSamples8.Text" xml:space="preserve">
+    <value>In questo esempio, per stampare la parola "Hello" saranno utilizzati due cicli per settare due celle di memoria a valori prossimi a quelli dei caratteri da stampare. È decisamente meglio un approccio simile rispetto a ripetere l'operatore + 72 volte solo per stampare il carattere "H".</value>
+  </data>
+  <data name="GuideSamples9.Text" xml:space="preserve">
+    <value>Questo script setta le celle #2 e #3 ai valori più vicini a quelli dei caratteri che saranno stampati dal programma, in modo che siano necessarie meno operazioni possibile per raggiungere i valori che saranno effettivamente mostrati all'utente.</value>
+  </data>
+  <data name="GuideSampleSimpleLoopComment1.Text" xml:space="preserve">
+    <value>Copia nelle celle #1 e #2</value>
+  </data>
+  <data name="GuideSampleSimpleLoopComment2.Text" xml:space="preserve">
+    <value>Decrementa la prima cella</value>
+  </data>
+  <data name="GuideSampleSimpleLoopComment3.Text" xml:space="preserve">
+    <value>Sposta la seconda copia indietro nella cella #0</value>
+  </data>
+  <data name="GuideSampleSimpleLoopTitle.Text" xml:space="preserve">
+    <value>Copia valore attuale</value>
+  </data>
 </root>

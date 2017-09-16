@@ -745,6 +745,160 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Current state</source>
           <target state="translated">Stato console</target>
         </trans-unit>
+        <trans-unit id="GuideIntroduction1.Text" translate="yes" xml:space="preserve">
+          <source>Brainf*ck is an esoteric programming language invented in 1993 by Urban Müller.</source>
+          <target state="translated">Brainf*ck è un linguaggio di programmazione esoterico inventato nel 1993 da Urban Müller.
+
+</target>
+        </trans-unit>
+        <trans-unit id="GuideIntroduction2.Text" translate="yes" xml:space="preserve">
+          <source>The language itself replicates a Touring machine, as the state of the interpreter is only described of a memory array and a memory pointer than can move back and forth and change values of the memory cells, as it passes over them.</source>
+          <target state="translated">Il linguaggio stesso replica il funzionamento di una macchina di Touring, poiché lo stato dell'interprete è descritto solo da un vettore di memoria e da un puntatore che può spostarsi in due direzioni e modificare il valore delle celle di memoria, quando vi passa sopra.</target>
+        </trans-unit>
+        <trans-unit id="GuideIntroduction3.Text" translate="yes" xml:space="preserve">
+          <source>A Brainf*ck program is made up of only 8 operators:</source>
+          <target state="translated">Un programma in Brainf*ck è composto di soli 8 operatori:</target>
+        </trans-unit>
+        <trans-unit id="GuideOperator1.Description" translate="yes" xml:space="preserve">
+          <source>Moves the memory pointer to the next cell</source>
+          <target state="translated">Sposta il puntatore della memoria alla cella successiva</target>
+        </trans-unit>
+        <trans-unit id="GuideOperator2.Description" translate="yes" xml:space="preserve">
+          <source>Moves the memory pointer back</source>
+          <target state="translated">Sposta il puntatore della memoria indietro</target>
+        </trans-unit>
+        <trans-unit id="GuideOperator3.Description" translate="yes" xml:space="preserve">
+          <source>Increments the value of the current cell</source>
+          <target state="translated">Incrementa il valore della cella attuale</target>
+        </trans-unit>
+        <trans-unit id="GuideOperator4.Description" translate="yes" xml:space="preserve">
+          <source>Decrements the value of the current cell</source>
+          <target state="translated">Decrementa il valore della cella attuale</target>
+        </trans-unit>
+        <trans-unit id="GuideOperator5.Description" translate="yes" xml:space="preserve">
+          <source>Starts a loop on the current cell, only if its value is greater than 0</source>
+          <target state="translated">Inizia un ciclo dalla cella attuale, solo se il suo valore è maggiore di 0</target>
+        </trans-unit>
+        <trans-unit id="GuideOperator6.Description" translate="yes" xml:space="preserve">
+          <source>Loops and executes the current operators sequence if the value of the current cell is greater than 0</source>
+          <target state="translated">Ripete il ciclo ed esegue la sequenza di operatori attuale se il valore della cella corrente è maggiore di 0</target>
+        </trans-unit>
+        <trans-unit id="GuideOperator8.Text" translate="yes" xml:space="preserve">
+          <source>Reads a Unicode character from the Stdin buffer and stores its value in the current memory cell</source>
+          <target state="translated">Legge un carattere Unicode dal buffer Stdin e salva il suo valore nella cella di memoria attuale</target>
+        </trans-unit>
+        <trans-unit id="GuideOperators7Part1.Text" translate="yes" xml:space="preserve">
+          <source>Prints the Unicode character corresponding to the value of the current memory cell. The Unicode table is available in the app, under the</source>
+          <target state="translated">Stampa il carattere Unicode corrispondente al valore della cella di memoria attuale. La tavola Unicode è disponibile nell'app, dal menu</target>
+        </trans-unit>
+        <trans-unit id="GuideOperators7Part2.Text" translate="yes" xml:space="preserve">
+          <source>menu</source>
+          <target state="translated"></target>
+        </trans-unit>
+        <trans-unit id="GuidePBrain.Text" translate="yes" xml:space="preserve">
+          <source>PBrain is an extension of the Brainf*ck language, created by Paul M. Parks. It adds support for functions, with the addition of the following operators:</source>
+          <target state="translated">PBrain è un'estensione del linguaggio Brainf*ck, creata da Paul M. Parks, che aggiunge il supporto alle funzioni tramite l'introduzione dei seguenti nuovi operatori:</target>
+        </trans-unit>
+        <trans-unit id="GuidePBrainOperator1.Description" translate="yes" xml:space="preserve">
+          <source>Defines a function and binds it to the value of the current memory cell</source>
+          <target state="translated">Definisce una funzione a cui viene assegnato il valore della cella di memoria attuale</target>
+        </trans-unit>
+        <trans-unit id="GuidePBrainOperator2.Description" translate="yes" xml:space="preserve">
+          <source>Ends the current function definition</source>
+          <target state="translated">Termina la definizione della funzione in corso</target>
+        </trans-unit>
+        <trans-unit id="GuidePBrainOperator3.Description" translate="yes" xml:space="preserve">
+          <source>Calls the function associated with the value of the current memory cell</source>
+          <target state="translated">Chiama la funzione associata al valore della cella di memoria attuale</target>
+        </trans-unit>
+        <trans-unit id="GuidePBrainWarning.Text" translate="yes" xml:space="preserve">
+          <source>A function definition must contain at least a Brainf*ck operator and its body can't be empty. Moreover, it is not possible to define nested functions.</source>
+          <target state="translated">Una definizione di funzione deve contenere almeno un operatore Brainf*ck e il suo corpo non può essere vuoto. Inoltre, non è possibile definire funzioni annidate.</target>
+        </trans-unit>
+        <trans-unit id="GuideSamplePrintHelloComment1.Text" translate="yes" xml:space="preserve">
+          <source>7 in cell #0</source>
+          <target state="translated">7 nella cella #0</target>
+        </trans-unit>
+        <trans-unit id="GuideSamplePrintHelloComment2.Text" translate="yes" xml:space="preserve">
+          <source>7 * 5 = 35 in cell #1</source>
+          <target state="translated">7 * 5 = 35 nella cella #1</target>
+        </trans-unit>
+        <trans-unit id="GuideSamplePrintHelloComment3.Text" translate="yes" xml:space="preserve">
+          <source>35 * 2 in cell #2 and 35 * 3 in #3</source>
+          <target state="translated">35 * 2 nella cella #2 e 35 * 3 nella #3</target>
+        </trans-unit>
+        <trans-unit id="GuideSamplePrintHelloComment4.Text" translate="yes" xml:space="preserve">
+          <source>Back to loop start and decrement</source>
+          <target state="translated">Indietro all'inizio del loop e decremento</target>
+        </trans-unit>
+        <trans-unit id="GuideSamplePrintHelloComment5.Text" translate="yes" xml:space="preserve">
+          <source>Adjust the values and print</source>
+          <target state="translated">Prepare e stampa i valori corretti</target>
+        </trans-unit>
+        <trans-unit id="GuideSamplePrintHelloTitle.Text" translate="yes" xml:space="preserve">
+          <source>Print "Hello"</source>
+          <target state="translated">Stampa "Hello"</target>
+        </trans-unit>
+        <trans-unit id="GuideSampleResetComment.Text" translate="yes" xml:space="preserve">
+          <source>Subtract 1 each time</source>
+          <target state="translated">Sottrai 1 ad ogni iterazione</target>
+        </trans-unit>
+        <trans-unit id="GuideSampleResetTitle.Text" translate="yes" xml:space="preserve">
+          <source>Reset the current cell</source>
+          <target state="translated">Resetta la cella attuale</target>
+        </trans-unit>
+        <trans-unit id="GuideSamples1.Text" translate="yes" xml:space="preserve">
+          <source>A good strategy to learn how to code in Brainf*ck, as with everything else, is to start from simpler and smaller programs and to make them more complex along the way.</source>
+          <target state="translated">Una buona strategia per imparare a programmare in Brainf*ck, come in tutte le altre cose, consiste nell'iniziare da programmi più piccoli e semplici per poi renderli man mano più complessi col tempo.</target>
+        </trans-unit>
+        <trans-unit id="GuideSamples2.Text" translate="yes" xml:space="preserve">
+          <source>For example, a common operation is to reset the value of the current cell, whatever it may be.</source>
+          <target state="translated">Per esempio, un'operazione comunque consiste nel resettare la cella attuale, a prescindere da quale fosse il suo valore.</target>
+        </trans-unit>
+        <trans-unit id="GuideSamples3.Text" translate="yes" xml:space="preserve">
+          <source>A simple loop can be used in this case:</source>
+          <target state="translated">In questo caso può essere utilizzato un semplice ciclo:</target>
+        </trans-unit>
+        <trans-unit id="GuideSamples4.Text" translate="yes" xml:space="preserve">
+          <source>In many situations it is useful to make a copy of the current cell, to be able to perform some operations with its value, without losing track of the initial state of the memory cell.</source>
+          <target state="translated">In molte situazioni è utile salvare una copia della cella attuale, per poter effettuare operazioni con il suo valore senza perdere il riferimento dello stato originario della cella di memoria.</target>
+        </trans-unit>
+        <trans-unit id="GuideSamples5.Text" translate="yes" xml:space="preserve">
+          <source>To achieve this, it is possible to create two copies of the current value, resetting the current cell, and then move the second copy back to the first cell, to end up with the original value plus a copy in the following cell.</source>
+          <target state="translated">A questo fine, è possibile creare due copie separate del valore attuale, resettando la cella attuale, e successivamente spostare la seconda copia indietro nella posizione della cella iniziale, per ottenere il valore originario e una copia nella cella successiva.</target>
+        </trans-unit>
+        <trans-unit id="GuideSamples6.Text" translate="yes" xml:space="preserve">
+          <source>All these techniques can be combined to write more complex programs.</source>
+          <target state="translated">Tutte queste tecniche possono essere combinate per scrivere programmi più complessi.</target>
+        </trans-unit>
+        <trans-unit id="GuideSamples7.Text" translate="yes" xml:space="preserve">
+          <source>A good idea is to try to optimize the script in order to perform as few operations as possible — generally this also means that the final code will be shorter and easier to read.</source>
+          <target state="translated">È una buona idea cercare di ottimizzare gli script al fine di effettuare meno operazioni possibile — questo generalmente significa anche che il codice finale sarà più corto e più facile da comprendere.</target>
+        </trans-unit>
+        <trans-unit id="GuideSamples8.Text" translate="yes" xml:space="preserve">
+          <source>In this example, to print the word "Hello" two loops will be used to set two cells to values closer to the letters that will be printed. It'd definitely better to use a similar approach than to repeating the + operator 72 times to print the "H" character.</source>
+          <target state="translated">In questo esempio, per stampare la parola "Hello" saranno utilizzati due cicli per settare due celle di memoria a valori prossimi a quelli dei caratteri da stampare. È decisamente meglio un approccio simile rispetto a ripetere l'operatore + 72 volte solo per stampare il carattere "H".</target>
+        </trans-unit>
+        <trans-unit id="GuideSamples9.Text" translate="yes" xml:space="preserve">
+          <source>This script will set the cells #2 and #3 to values closer to the characters that will be printed by the program, so that less operations will be needed to get to the actual values the code wants to display to the user.</source>
+          <target state="translated">Questo script setta le celle #2 e #3 ai valori più vicini a quelli dei caratteri che saranno stampati dal programma, in modo che siano necessarie meno operazioni possibile per raggiungere i valori che saranno effettivamente mostrati all'utente.</target>
+        </trans-unit>
+        <trans-unit id="GuideSampleSimpleLoopComment1.Text" translate="yes" xml:space="preserve">
+          <source>Copy in the cells #1 and #2</source>
+          <target state="translated">Copia nelle celle #1 e #2</target>
+        </trans-unit>
+        <trans-unit id="GuideSampleSimpleLoopComment2.Text" translate="yes" xml:space="preserve">
+          <source>Decrement the first cell</source>
+          <target state="translated">Decrementa la prima cella</target>
+        </trans-unit>
+        <trans-unit id="GuideSampleSimpleLoopComment3.Text" translate="yes" xml:space="preserve">
+          <source>Move second copy back to cell #0</source>
+          <target state="translated">Sposta la seconda copia indietro nella cella #0</target>
+        </trans-unit>
+        <trans-unit id="GuideSampleSimpleLoopTitle.Text" translate="yes" xml:space="preserve">
+          <source>Copy the current value</source>
+          <target state="translated">Copia valore attuale</target>
+        </trans-unit>
       </group>
     </body>
   </file>

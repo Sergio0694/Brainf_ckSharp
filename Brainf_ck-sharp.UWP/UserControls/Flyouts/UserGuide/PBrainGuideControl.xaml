@@ -14,23 +14,27 @@
         <TextBlock 
             TextWrapping="WrapWholeWords"
             FontSize="14"
-            Text="PBrain is an extension of the Brainf*ck language, created by Paul M. Parks. It adds support for functions, with the addition of the following operators:"/>
+            Text="PBrain is an extension of the Brainf*ck language, created by Paul M. Parks. It adds support for functions, with the addition of the following operators:"
+            x:Uid="GuidePBrain"/>
 
         <!--Operators-->
         <local:OperatorDescriptionControl
             Margin="0,16,0,0"
             Operator="("
-            Description="Defines a function and binds it to the value of the current memory cells"
+            Description="Defines a function and binds it to the value of the current memory cell"
+            x:Uid="GuidePBrainOperator1"
             OperatorForegroundBrush="#FF009191"/>
         <local:OperatorDescriptionControl
             Margin="0,12,0,0"
             Operator=")"
             Description="Ends the current function definition"
+            x:Uid="GuidePBrainOperator2"
             OperatorForegroundBrush="#FF009191"/>
         <local:OperatorDescriptionControl
             Margin="0,12,0,0"
             Operator=":"
-            Description="Call the function associated with the value of the current memory cell"
+            Description="Calls the function associated with the value of the current memory cell"
+            x:Uid="GuidePBrainOperator3"
             OperatorForegroundBrush="#FF1E7499"/>
 
         <!--Warning-->
@@ -42,7 +46,9 @@
                 FontFamily="Segoe MDL2 Assets"
                 Text="&#xE7BA;"
                 Foreground="OrangeRed"/>
-            <Run Text="A function definition must contain at least a Brainf*ck operator and its body can't be empty. Moreover, it is not possible to define nested functions."/>
+            <Run 
+                Text="A function definition must contain at least a Brainf*ck operator and its body can't be empty. Moreover, it is not possible to define nested functions."
+                x:Uid="GuidePBrainWarning"/>
         </TextBlock>
     </StackPanel>
 </UserControl>

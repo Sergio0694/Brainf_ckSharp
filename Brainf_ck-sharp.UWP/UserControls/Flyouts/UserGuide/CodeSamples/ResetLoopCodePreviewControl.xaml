@@ -40,7 +40,8 @@
                 <TextBlock
                     IsTextScaleFactorEnabled="False"
                     Margin="12,4,0,4"
-                    Text="Reset the current cell"/>
+                    Text="Reset the current cell"
+                    x:Uid="GuideSampleResetTitle"/>
             </Border>
         </Border>
 
@@ -107,7 +108,7 @@
                 <Run 
                     Text="Subtract 1 each time"
                     Foreground="#FF52AF3D"
-                    x:Uid="CommentRun"/><LineBreak/>
+                    x:Uid="GuideSampleResetComment"/><LineBreak/>
                 <Run 
                     Text="]"
                     Foreground="#FF569CD6"/>

@@ -15,12 +15,12 @@
 
         <!--Introduction-->
         <DataTemplate x:Key="IntroductionSectionTemplate">
-            <local:LanguageIntroductionControl Margin="12,4,16,0"/>
+            <local:LanguageIntroductionControl Margin="12,4,16,8"/>
         </DataTemplate>
 
         <!--Introduction-->
         <DataTemplate x:Key="CodeSamplesectionTemplate">
-            <local:CodeSamplesGuideControl Margin="12,4,16,0"/>
+            <local:CodeSamplesGuideControl Margin="12,4,16,8"/>
         </DataTemplate>
 
         <!--Introduction-->
@@ -38,7 +38,7 @@
         <DataTemplate x:Key="HeaderTemplate">
             <jumpList:JumpListZoomedInHeaderTemplate
                 Title="{Binding Key}"
-                Margin="12,16,16,4"/>
+                Margin="12,8,16,4"/>
         </DataTemplate>
 
         <!--Zoomed out default header-->
