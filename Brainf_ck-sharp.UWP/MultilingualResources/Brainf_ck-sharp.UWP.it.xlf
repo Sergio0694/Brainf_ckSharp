@@ -394,19 +394,11 @@
           <source>Developed by</source>
           <target state="translated">Sviluppata da</target>
         </trans-unit>
-        <trans-unit id="SendFeedbackBlock.Text" translate="yes" xml:space="preserve">
-          <source>Send feedback</source>
-          <target state="translated">Invia feedback</target>
-        </trans-unit>
         <trans-unit id="DevSupportTitle.Text" translate="yes" xml:space="preserve">
           <source>Pick the support option for the developer of the app</source>
           <target state="translated">Scegli un'opzione di supporto per lo sviluppatore dell'app</target>
         </trans-unit>
         <trans-unit id="Donate" translate="yes" xml:space="preserve">
-          <source>Donate</source>
-          <target state="translated">Fai una donazione</target>
-        </trans-unit>
-        <trans-unit id="DonateButton.Text" translate="yes" xml:space="preserve">
           <source>Donate</source>
           <target state="translated">Fai una donazione</target>
         </trans-unit>
@@ -519,14 +511,6 @@ NOTE: the app might sometimes crash when loading a source code. That's due to a 
 Potete mandarmi un messaggio email in qualsiasi momento se avete suggerimenti o feedback, o se avete trovato un bug, e sarò felice di aiutare.
 
 NOTA: l'app potrebbe occasionalmente chiudersi durante il caricamento di un codice sorgente salvato. Questo è dovuto ad un bug in uno dei controlli che l'app utilizza, ho già mandato una segnalazione a Microsoft e spero che si possa risolvere il problema al più presto!</target>
-        </trans-unit>
-        <trans-unit id="ReleaseNotesBlock.Text" translate="yes" xml:space="preserve">
-          <source>Release notes</source>
-          <target state="translated">Note di versione</target>
-        </trans-unit>
-        <trans-unit id="ChangelogBlock.Text" translate="yes" xml:space="preserve">
-          <source>Changelog</source>
-          <target state="translated">Novità</target>
         </trans-unit>
         <trans-unit id="Changelog" translate="yes" xml:space="preserve">
           <source>Changelog</source>
@@ -898,6 +882,26 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         <trans-unit id="GuideSampleSimpleLoopTitle.Text" translate="yes" xml:space="preserve">
           <source>Copy the current value</source>
           <target state="translated">Copia valore attuale</target>
+        </trans-unit>
+        <trans-unit id="DonateButton.Title" translate="yes" xml:space="preserve">
+          <source>Donate</source>
+          <target state="translated">Fai una donazione</target>
+        </trans-unit>
+        <trans-unit id="ChangelogButton.Title" translate="yes" xml:space="preserve">
+          <source>Changelog</source>
+          <target state="translated">Note di versione</target>
+        </trans-unit>
+        <trans-unit id="SendFeedbackButton.Title" translate="yes" xml:space="preserve">
+          <source>Send feedback</source>
+          <target state="translated">Invia feedback</target>
+        </trans-unit>
+        <trans-unit id="UserGuideButton.Title" translate="yes" xml:space="preserve">
+          <source>User guide</source>
+          <target state="translated">Guida</target>
+        </trans-unit>
+        <trans-unit id="GuidesInfoBlock.Text" translate="yes" xml:space="preserve">
+          <source>Guides and info</source>
+          <target state="translated">Guida e info</target>
         </trans-unit>
       </group>
     </body>

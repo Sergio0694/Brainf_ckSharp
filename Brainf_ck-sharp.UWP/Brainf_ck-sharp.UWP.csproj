@@ -267,6 +267,9 @@
     <Compile Include="UserControls\BottomEdgeInfoBar.xaml.cs">
       <DependentUpon>BottomEdgeInfoBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\CustomControls\IconButtonWithTextContent.xaml.cs">
+      <DependentUpon>IconButtonWithTextContent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\CustomControls\ScriptStatisticsDisplayControl.xaml.cs">
       <DependentUpon>ScriptStatisticsDisplayControl.xaml</DependentUpon>
     </Compile>
@@ -609,6 +612,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="UserControls\BottomEdgeInfoBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CustomControls\IconButtonWithTextContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

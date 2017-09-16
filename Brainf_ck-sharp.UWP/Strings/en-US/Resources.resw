@@ -426,7 +426,7 @@
   <data name="Donate" xml:space="preserve">
     <value>Donate</value>
   </data>
-  <data name="DonateButton.Text" xml:space="preserve">
+  <data name="DonateButton.Title" xml:space="preserve">
     <value>Donate</value>
   </data>
   <data name="DonateCoffee.PickerDescription" xml:space="preserve">
@@ -458,9 +458,6 @@
   </data>
   <data name="RateStoreBlock.Text" xml:space="preserve">
     <value>Rate in the Store</value>
-  </data>
-  <data name="SendFeedbackBlock.Text" xml:space="preserve">
-    <value>Send feedback</value>
   </data>
   <data name="SomethingBadHappened" xml:space="preserve">
     <value>Something bad happened</value>
@@ -504,11 +501,11 @@ Please feel free to send me an email if you have suggestions or feedback, or if 
 
 NOTE: the app might sometimes crash when loading a source code. That's due to a bug in one of the controls I'm using, I've already sent a feedback to Microsoft and hopefully that'll get fixed soon!</value>
   </data>
-  <data name="ChangelogBlock.Text" xml:space="preserve">
+  <data name="ChangelogButton.Title" xml:space="preserve">
     <value>Changelog</value>
   </data>
-  <data name="ReleaseNotesBlock.Text" xml:space="preserve">
-    <value>Release notes</value>
+  <data name="GuidesInfoBlock.Text" xml:space="preserve">
+    <value>Guides and info</value>
   </data>
   <data name="Changelog" xml:space="preserve">
     <value>Changelog</value>
@@ -786,5 +783,11 @@ This way he'll be able to help you!</value>
   </data>
   <data name="GuideSampleSimpleLoopTitle.Text" xml:space="preserve">
     <value>Copy the current value</value>
+  </data>
+  <data name="SendFeedbackButton.Title" xml:space="preserve">
+    <value>Send feedback</value>
+  </data>
+  <data name="UserGuideButton.Title" xml:space="preserve">
+    <value>User guide</value>
   </data>
 </root>

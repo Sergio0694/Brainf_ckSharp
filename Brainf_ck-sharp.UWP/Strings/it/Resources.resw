@@ -305,16 +305,10 @@
   <data name="DevelopedByRun.Text" xml:space="preserve">
     <value>Sviluppata da</value>
   </data>
-  <data name="SendFeedbackBlock.Text" xml:space="preserve">
-    <value>Invia feedback</value>
-  </data>
   <data name="DevSupportTitle.Text" xml:space="preserve">
     <value>Scegli un'opzione di supporto per lo sviluppatore dell'app</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Fai una donazione</value>
-  </data>
-  <data name="DonateButton.Text" xml:space="preserve">
     <value>Fai una donazione</value>
   </data>
   <data name="DonateCoffee.PickerDescription" xml:space="preserve">
@@ -397,12 +391,6 @@
 Potete mandarmi un messaggio email in qualsiasi momento se avete suggerimenti o feedback, o se avete trovato un bug, e sarò felice di aiutare.
 
 NOTA: l'app potrebbe occasionalmente chiudersi durante il caricamento di un codice sorgente salvato. Questo è dovuto ad un bug in uno dei controlli che l'app utilizza, ho già mandato una segnalazione a Microsoft e spero che si possa risolvere il problema al più presto!</value>
-  </data>
-  <data name="ReleaseNotesBlock.Text" xml:space="preserve">
-    <value>Note di versione</value>
-  </data>
-  <data name="ChangelogBlock.Text" xml:space="preserve">
-    <value>Novità</value>
   </data>
   <data name="Changelog" xml:space="preserve">
     <value>Novità</value>
@@ -682,5 +670,20 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   </data>
   <data name="GuideSampleSimpleLoopTitle.Text" xml:space="preserve">
     <value>Copia valore attuale</value>
+  </data>
+  <data name="DonateButton.Title" xml:space="preserve">
+    <value>Fai una donazione</value>
+  </data>
+  <data name="ChangelogButton.Title" xml:space="preserve">
+    <value>Note di versione</value>
+  </data>
+  <data name="SendFeedbackButton.Title" xml:space="preserve">
+    <value>Invia feedback</value>
+  </data>
+  <data name="UserGuideButton.Title" xml:space="preserve">
+    <value>Guida</value>
+  </data>
+  <data name="GuidesInfoBlock.Text" xml:space="preserve">
+    <value>Guida e info</value>
   </data>
 </root>
