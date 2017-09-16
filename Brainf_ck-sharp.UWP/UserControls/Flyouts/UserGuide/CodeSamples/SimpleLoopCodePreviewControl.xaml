@@ -71,7 +71,8 @@
                 <Run Text="4"/><LineBreak/>
                 <Run Text="5"/><LineBreak/>
                 <Run Text="6"/><LineBreak/>
-                <Run Text="7"/>
+                <Run Text="7"/><LineBreak/>
+                <Run Text="8"/>
             </TextBlock>
 
             <!--Vertical guide-->
@@ -82,47 +83,18 @@
                 HorizontalAlignment="Left"
                 Margin="21,0,0,0">
                 <StackPanel.Clip>
-                    <RectangleGeometry 
-                        Rect="0,0,1,40"/>
+                    <RectangleGeometry Rect="0,0,1,40"/>
                 </StackPanel.Clip>
                 <StackPanel.RenderTransform>
-                    <TranslateTransform
-                        Y="22"/>
+                    <TranslateTransform Y="22"/>
                 </StackPanel.RenderTransform>
-                <Rectangle
-                    Height="3"
-                    Width="1"
-                    Fill="#FF717171"/>
-                <Rectangle
-                    Height="3"
-                    Width="1"
-                    Margin="0,3,0,0"
-                    Fill="#FF717171"/>
-                <Rectangle
-                    Height="3"
-                    Width="1"
-                    Margin="0,3,0,0"
-                    Fill="#FF717171"/>
-                <Rectangle
-                    Height="3"
-                    Width="1"
-                    Margin="0,3,0,0"
-                    Fill="#FF717171"/>
-                <Rectangle
-                    Height="3"
-                    Width="1"
-                    Margin="0,3,0,0"
-                    Fill="#FF717171"/>
-                <Rectangle
-                    Height="3"
-                    Width="1"
-                    Margin="0,3,0,0"
-                    Fill="#FF717171"/>
-                <Rectangle
-                    Height="3"
-                    Width="1"
-                    Margin="0,3,0,0"
-                    Fill="#FF717171"/>
+                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
             </StackPanel>
 
             <!--Second vertical guide-->
@@ -131,7 +103,7 @@
                 Grid.Column="2"
                 Width="1"
                 HorizontalAlignment="Left"
-                Margin="21,80,0,0">
+                Margin="21,100,0,0">
                 <StackPanel.Clip>
                     <RectangleGeometry 
                         Rect="0,0,1,20"/>
@@ -140,25 +112,12 @@
                     <TranslateTransform
                         Y="22"/>
                 </StackPanel.RenderTransform>
-                <Rectangle
-                    Height="3"
-                    Width="1"
-                    Fill="#FF717171"/>
-                <Rectangle
-                    Height="3"
-                    Width="1"
-                    Margin="0,3,0,0"
-                    Fill="#FF717171"/>
-                <Rectangle
-                    Height="3"
-                    Width="1"
-                    Margin="0,3,0,0"
-                    Fill="#FF717171"/>
-                <Rectangle
-                    Height="3"
-                    Width="1"
-                    Margin="0,3,0,0"
-                    Fill="#FF717171"/>
+                <Rectangle 
+                    Margin="0"
+                    Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
             </StackPanel>
 
             <!--Code sample-->
@@ -198,7 +157,8 @@
                     Foreground="#FF569CD6"/><LineBreak/>
                 <Run 
                     Text=">>"
-                    Foreground="#FFDDDDDD"/><Run 
+                    Foreground="#FFDDDDDD"/><LineBreak/>
+                <Run 
                     Text="["
                     Foreground="#FF569CD6"/><LineBreak/>
                 <Run 

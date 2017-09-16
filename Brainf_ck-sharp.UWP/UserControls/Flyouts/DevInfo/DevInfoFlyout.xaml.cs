@@ -10,6 +10,7 @@ using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
+using Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
@@ -125,6 +126,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
             Task.Delay(100).ContinueWith(t => flyout.ViewModel.LoadGroupsAsync(), TaskScheduler.FromCurrentSynchronizationContext()).Forget();
             FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Changelog"), flyout, new Thickness(),
                 FlyoutDisplayMode.ScrollableContent, true).Forget();
+        }
+
+        // Show the user guide
+        private void UserGuideButton_Click(object sender, RoutedEventArgs e)
+        {
+            UserGuideViewerControl guide = new UserGuideViewerControl();
+            FlyoutManager.Instance.ShowAsync("User guide", guide, new Thickness()).Forget();
         }
     }
 }

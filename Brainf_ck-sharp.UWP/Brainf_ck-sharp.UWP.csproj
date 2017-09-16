@@ -179,6 +179,7 @@
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
     <Compile Include="DataModels\SQLite\Enums\SourceCodeTitleScore.cs" />
     <Compile Include="Enums\SourceCodeShareType.cs" />
+    <Compile Include="Enums\UserGuideSection.cs" />
     <Compile Include="Helpers\CodeFormatting\CodeThemes.cs" />
     <Compile Include="DataModels\Misc\Themes\LineHighlightStyle.cs" />
     <Compile Include="Helpers\CodeFormatting\InstalledFont.cs" />
@@ -262,6 +263,7 @@
     <Compile Include="TemplateSelectors\IDEResults\IDERunResultHeaderTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\IDEResults\IDERunResultTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\SettingsSectionTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\UserGuideSectionTemplateSelector.cs" />
     <Compile Include="UserControls\BottomEdgeInfoBar.xaml.cs">
       <DependentUpon>BottomEdgeInfoBar.xaml</DependentUpon>
     </Compile>
@@ -343,6 +345,9 @@
     <Compile Include="UserControls\Flyouts\Settings\Sections\UISettingsSection.xaml.cs">
       <DependentUpon>UISettingsSection.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Flyouts\UserGuide\CodeSamples\PrintHelloCodePreviewControl.xaml.cs">
+      <DependentUpon>PrintHelloCodePreviewControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Flyouts\UserGuide\CodeSamples\ResetLoopCodePreviewControl.xaml.cs">
       <DependentUpon>ResetLoopCodePreviewControl.xaml</DependentUpon>
     </Compile>
@@ -360,6 +365,9 @@
     </Compile>
     <Compile Include="UserControls\Flyouts\UserGuide\OperatorDescriptionControl.xaml.cs">
       <DependentUpon>OperatorDescriptionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\UserGuide\UserGuideViewerControl.xaml.cs">
+      <DependentUpon>UserGuideViewerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\IconBoxToolkit\IconBox.xaml.cs">
       <DependentUpon>IconBox.xaml</DependentUpon>
@@ -445,6 +453,7 @@
     <Compile Include="ViewModels\FlyoutsViewModels\IDERunResultFlyoutViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\Settings\SettingsJumpListViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\Settings\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\UserGuideViewerControlViewModel.cs" />
     <Compile Include="ViewModels\IDEViewModel.cs" />
     <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\LocalSourceCodesBrowserFlyoutViewModel.cs" />
@@ -747,6 +756,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\Flyouts\UserGuide\CodeSamples\PrintHelloCodePreviewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\Flyouts\UserGuide\CodeSamples\ResetLoopCodePreviewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -768,6 +781,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Flyouts\UserGuide\OperatorDescriptionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\UserGuide\UserGuideViewerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

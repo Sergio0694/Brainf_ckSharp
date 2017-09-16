@@ -40,7 +40,6 @@
         <TextBlock
             Margin="12,12,16,0"
             TextWrapping="Wrap"
-            FontWeight="SemiLight"
             IsTextScaleFactorEnabled="False">
             <Run 
                 Text="Developed by"
@@ -244,6 +243,43 @@
                     x:Uid="ReleaseNotesBlock"
                     FontSize="16"
                     FontWeight="Normal"/>
+
+                <!--Email button-->
+                <Button
+                    Margin="0,12,0,0"
+                    Height="36"
+                        Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
+                        Background="{ThemeResource SystemControlHighlightAccentBrush}"
+                        MaxWidth="220"
+                        HorizontalAlignment="Left"
+                        Click="UserGuideButton_Click">
+                    <inheritedControls:LightBorderAndBackgroundOverlay
+                            Margin="-2"
+                            LightBorderThickness="2"
+                            LightBorderBrush="{StaticResource BorderLightBrush}"
+                            LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
+                        <Grid Margin="12,0,12,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                    Text="&#xE82D;"
+                                    Style="{StaticResource FontIconTextBlockStyle}"
+                                    VerticalAlignment="Center"/>
+                            <TextBlock
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Margin="16,0,0,0"
+                                    Text="User guide"
+                                    IsTextScaleFactorEnabled="False"
+                                    TextWrapping="NoWrap"
+                                    TextTrimming="CharacterEllipsis"
+                                    FontSize="15"
+                                    FontWeight="Normal"/>
+                        </Grid>
+                    </inheritedControls:LightBorderAndBackgroundOverlay>
+                </Button>
 
                 <!--Changelog button-->
                 <Button
