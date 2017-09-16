@@ -41,7 +41,27 @@
             VerticalAlignment="Center"
             x:Uid="ShowPBrainButtons"
             Text="Show PBrain keyboard buttons"/>
-        <ToggleSwitch 
-            IsOn="{Binding ViewModel.ShowPBrainButtons, Mode=TwoWay}"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ToggleSwitch 
+                IsOn="{Binding ViewModel.ShowPBrainButtons, Mode=TwoWay}"/>
+            <HyperlinkButton 
+                Margin="0,0,20,0"
+                HorizontalAlignment="Right"
+                Grid.Column="1"
+                Click="PBrainLinkButton_Click">
+                <TextBlock>
+                    <Run
+                        FontFamily="Segoe MDL2 Assets"
+                        Text="&#xEC26;"/>
+                    <Run 
+                        Text="What's this?"
+                        x:Uid="PBrainInfoLink"/>
+                </TextBlock>
+            </HyperlinkButton>
+        </Grid>
     </StackPanel>
 </UserControl>

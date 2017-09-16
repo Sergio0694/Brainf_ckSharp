@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:iconBoxToolkit="using:Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit"
     xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
+    xmlns:customControls="using:Brainf_ck_sharp_UWP.UserControls.CustomControls"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -40,7 +41,6 @@
         <TextBlock
             Margin="12,12,16,0"
             TextWrapping="Wrap"
-            FontWeight="SemiLight"
             IsTextScaleFactorEnabled="False">
             <Run 
                 Text="Developed by"
@@ -57,7 +57,8 @@
 
         <!--Main buttons-->
         <Grid 
-            Margin="12,12,16,0">
+            Margin="12,16,16,0"
+            Height="40">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -65,7 +66,6 @@
 
             <!--Rate in the Store button-->
             <Button
-                Height="40"
                 Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
                 Background="{ThemeResource SystemControlHighlightAccentBrush}"
                 MaxWidth="220"
@@ -100,43 +100,15 @@
             </Button>
             
             <!--Donate button-->
-            <Button 
-                Margin="16,0,0,0"
-                HorizontalAlignment="Left"
-                MaxWidth="220"
-                Height="40"
-                Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
-                Background="{ThemeResource SystemControlHighlightListAccentLowBrush}"
+            <customControls:IconButtonWithTextContent
                 Grid.Column="1"
-                Click="DonateButton_Click">
-                <inheritedControls:LightBorderAndBackgroundOverlay
-                    Margin="-2"
-                    LightBorderThickness="2"
-                    LightBorderBrush="{StaticResource BorderLightBrush}"
-                    LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
-                    <Grid Margin="12,0,12,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock
-                        Text="&#xE0A5;"
-                        Style="{StaticResource FontIconTextBlockStyle}"
-                        VerticalAlignment="Center"/>
-                    <TextBlock
-                        Grid.Column="1"
-                        VerticalAlignment="Center"
-                        IsTextScaleFactorEnabled="False"
-                        TextWrapping="NoWrap"
-                        TextTrimming="CharacterEllipsis"
-                        Margin="16,0,0,0"
-                        Text="Donate"
-                        x:Uid="DonateButton"
-                        FontSize="15"
-                        FontWeight="Normal"/>
-                </Grid>
-                </inheritedControls:LightBorderAndBackgroundOverlay>
-            </Button>
+                Margin="16,0,0,0"
+                BackgroundBrush="{ThemeResource SystemControlHighlightListAccentLowBrush}"
+                MaxWidth="220"
+                Icon="&#xE0A5;"
+                Title="Donate"
+                x:Uid="DonateButton"
+                Click="DonateButton_Click"/>
         </Grid>
         
         <!--Contacts-->
@@ -160,40 +132,13 @@
                     </Grid.ColumnDefinitions>
 
                     <!--Email button-->
-                    <Button
-                        Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
-                        Background="{ThemeResource SystemControlHighlightAccentBrush}"
+                    <customControls:IconButtonWithTextContent
+                        BackgroundBrush="{ThemeResource SystemControlHighlightAccentBrush}"
                         MaxWidth="220"
-                        HorizontalAlignment="Left"
-                        Click="SendEmailButton_Click">
-                        <inheritedControls:LightBorderAndBackgroundOverlay
-                            Margin="-2"
-                            LightBorderThickness="2"
-                            LightBorderBrush="{StaticResource BorderLightBrush}"
-                            LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
-                            <Grid Margin="12,0,12,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock
-                                    Text="&#xE89C;"
-                                    Style="{StaticResource FontIconTextBlockStyle}"
-                                    VerticalAlignment="Center"/>
-                                <TextBlock
-                                    Grid.Column="1"
-                                    VerticalAlignment="Center"
-                                    Margin="16,0,0,0"
-                                    Text="Send feedback"
-                                    x:Uid="SendFeedbackBlock"
-                                    IsTextScaleFactorEnabled="False"
-                                    TextWrapping="NoWrap"
-                                    TextTrimming="CharacterEllipsis"
-                                    FontSize="15"
-                                    FontWeight="Normal"/>
-                            </Grid>
-                        </inheritedControls:LightBorderAndBackgroundOverlay>
-                    </Button>
+                        Icon="&#xE89C;"
+                        Title="Send feedback"
+                        x:Uid="SendFeedbackButton"
+                        Click="SendEmailButton_Click"/>
 
                     <!--Twitter button-->
                     <Button
@@ -240,50 +185,41 @@
             Margin="0,8,0,8">
             <StackPanel Margin="12,12,0,0">
                 <TextBlock
-                    Text="Release notes"
-                    x:Uid="ReleaseNotesBlock"
+                    Text="Guides and info"
+                    x:Uid="GuidesInfoBlock"
                     FontSize="16"
                     FontWeight="Normal"/>
 
-                <!--Changelog button-->
-                <Button
-                    Margin="0,16,0,0"
+                <!--Buttons-->
+                <Grid
                     Height="40"
-                    Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
-                    Background="{ThemeResource SystemControlHighlightAccentBrush}"
-                    MinWidth="140"
-                    HorizontalAlignment="Left"
-                    Click="ShowChangelogButton_Click">
-                    <inheritedControls:LightBorderAndBackgroundOverlay
-                        Margin="-2"
-                        LightBorderThickness="2"
-                        LightBorderBrush="{StaticResource BorderLightBrush}"
-                        LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
-                        <Grid 
-                            Margin="12,0,12,0"
-                            HorizontalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock
-                                Text="&#xEA8D;"
-                                Style="{StaticResource FontIconTextBlockStyle}"
-                                VerticalAlignment="Center"/>
-                            <TextBlock
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                Margin="16,0,0,0"
-                                Text="Changelog"
-                                x:Uid="ChangelogBlock"
-                                IsTextScaleFactorEnabled="False"
-                                TextWrapping="NoWrap"
-                                TextTrimming="CharacterEllipsis"
-                                FontSize="15"
-                                FontWeight="Normal"/>
-                        </Grid>
-                    </inheritedControls:LightBorderAndBackgroundOverlay>
-                </Button>
+                    Margin="0,16,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!--User guide button-->
+                    <customControls:IconButtonWithTextContent
+                        BackgroundBrush="{ThemeResource SystemControlHighlightListAccentMediumBrush}"
+                        MaxWidth="220"
+                        Icon="&#xE82D;"
+                        Title="User guide"
+                        x:Uid="UserGuideButton"
+                        Click="UserGuideButton_Click"/>
+
+                    <!--Changelog button-->
+                    <customControls:IconButtonWithTextContent
+                        Margin="16,0,0,0"
+                        Grid.Column="1"
+                        BackgroundBrush="{ThemeResource SystemControlHighlightAccentBrush}"
+                        MinWidth="140"
+                        MaxWidth="220"
+                        Icon="&#xEA8D;"
+                        Title="Changelog"
+                        x:Uid="ChangelogButton"
+                        Click="ShowChangelogButton_Click"/>
+                </Grid>
 
                 <!--Build version-->
                 <Grid VerticalAlignment="Top"

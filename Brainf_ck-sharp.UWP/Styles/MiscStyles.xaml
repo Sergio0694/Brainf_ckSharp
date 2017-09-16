@@ -2212,4 +2212,12 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <!--Brackets guide rectangle-->
+    <Style TargetType="Rectangle" x:Key="BracketsGuideRectangleStyle">
+        <Setter Property="Width" Value="1"/>
+        <Setter Property="Height" Value="3"/>
+        <Setter Property="Fill" Value="#FF717171"/>
+        <Setter Property="Margin" Value="0,3,0,0"/>
+    </Style>
 </ResourceDictionary>

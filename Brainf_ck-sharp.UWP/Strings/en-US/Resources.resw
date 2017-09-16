@@ -426,7 +426,7 @@
   <data name="Donate" xml:space="preserve">
     <value>Donate</value>
   </data>
-  <data name="DonateButton.Text" xml:space="preserve">
+  <data name="DonateButton.Title" xml:space="preserve">
     <value>Donate</value>
   </data>
   <data name="DonateCoffee.PickerDescription" xml:space="preserve">
@@ -458,9 +458,6 @@
   </data>
   <data name="RateStoreBlock.Text" xml:space="preserve">
     <value>Rate in the Store</value>
-  </data>
-  <data name="SendFeedbackBlock.Text" xml:space="preserve">
-    <value>Send feedback</value>
   </data>
   <data name="SomethingBadHappened" xml:space="preserve">
     <value>Something bad happened</value>
@@ -504,11 +501,11 @@ Please feel free to send me an email if you have suggestions or feedback, or if 
 
 NOTE: the app might sometimes crash when loading a source code. That's due to a bug in one of the controls I'm using, I've already sent a feedback to Microsoft and hopefully that'll get fixed soon!</value>
   </data>
-  <data name="ChangelogBlock.Text" xml:space="preserve">
+  <data name="ChangelogButton.Title" xml:space="preserve">
     <value>Changelog</value>
   </data>
-  <data name="ReleaseNotesBlock.Text" xml:space="preserve">
-    <value>Release notes</value>
+  <data name="GuidesInfoBlock.Text" xml:space="preserve">
+    <value>Guides and info</value>
   </data>
   <data name="Changelog" xml:space="preserve">
     <value>Changelog</value>
@@ -672,5 +669,149 @@ This way he'll be able to help you!</value>
   </data>
   <data name="CurrentState" xml:space="preserve">
     <value>Current state</value>
+  </data>
+  <data name="GuideIntroduction1.Text" xml:space="preserve">
+    <value>Brainf*ck is an esoteric programming language invented in 1993 by Urban Müller.</value>
+  </data>
+  <data name="GuideIntroduction2.Text" xml:space="preserve">
+    <value>The language itself replicates a Touring machine, as the state of the interpreter is only described of a memory array and a memory pointer than can move back and forth and change values of the memory cells, as it passes over them.</value>
+  </data>
+  <data name="GuideIntroduction3.Text" xml:space="preserve">
+    <value>A Brainf*ck program is made up of only 8 operators:</value>
+  </data>
+  <data name="GuideOperator1.Description" xml:space="preserve">
+    <value>Moves the memory pointer to the next cell</value>
+  </data>
+  <data name="GuideOperator2.Description" xml:space="preserve">
+    <value>Moves the memory pointer back</value>
+  </data>
+  <data name="GuideOperator3.Description" xml:space="preserve">
+    <value>Increments the value of the current cell</value>
+  </data>
+  <data name="GuideOperator4.Description" xml:space="preserve">
+    <value>Decrements the value of the current cell</value>
+  </data>
+  <data name="GuideOperator5.Description" xml:space="preserve">
+    <value>Starts a loop on the current cell, only if its value is greater than 0</value>
+  </data>
+  <data name="GuideOperator6.Description" xml:space="preserve">
+    <value>Loops and executes the current operators sequence if the value of the current cell is greater than 0</value>
+  </data>
+  <data name="GuideOperator8.Description" xml:space="preserve">
+    <value>Reads a Unicode character from the Stdin buffer and stores its value in the current memory cell</value>
+  </data>
+  <data name="GuideOperators7Part1.Text" xml:space="preserve">
+    <value>Prints the Unicode character corresponding to the value of the current memory cell. The Unicode table is available in the app, under the</value>
+  </data>
+  <data name="GuideOperators7Part2.Text" xml:space="preserve">
+    <value>menu</value>
+  </data>
+  <data name="GuidePBrain.Text" xml:space="preserve">
+    <value>PBrain is an extension of the Brainf*ck language, created by Paul M. Parks. It adds support for functions, with the addition of the following operators:</value>
+  </data>
+  <data name="GuidePBrainOperator1.Description" xml:space="preserve">
+    <value>Defines a function and binds it to the value of the current memory cell</value>
+  </data>
+  <data name="GuidePBrainOperator2.Description" xml:space="preserve">
+    <value>Ends the current function definition</value>
+  </data>
+  <data name="GuidePBrainOperator3.Description" xml:space="preserve">
+    <value>Calls the function associated with the value of the current memory cell</value>
+  </data>
+  <data name="GuidePBrainWarning.Text" xml:space="preserve">
+    <value>A function definition must contain at least a Brainf*ck operator and its body can't be empty. Moreover, it is not possible to define nested functions.</value>
+  </data>
+  <data name="GuideSamplePrintHelloComment1.Text" xml:space="preserve">
+    <value>7 in cell #0</value>
+  </data>
+  <data name="GuideSamplePrintHelloComment2.Text" xml:space="preserve">
+    <value>7 * 5 = 35 in cell #1</value>
+  </data>
+  <data name="GuideSamplePrintHelloComment3.Text" xml:space="preserve">
+    <value>35 * 2 in cell #2 and 35 * 3 in #3</value>
+  </data>
+  <data name="GuideSamplePrintHelloComment4.Text" xml:space="preserve">
+    <value>Back to loop start and decrement</value>
+  </data>
+  <data name="GuideSamplePrintHelloComment5.Text" xml:space="preserve">
+    <value>Adjust the values and print</value>
+  </data>
+  <data name="GuideSamplePrintHelloTitle.Text" xml:space="preserve">
+    <value>Print "Hello"</value>
+  </data>
+  <data name="GuideSampleResetComment.Text" xml:space="preserve">
+    <value>Subtract 1 each time</value>
+  </data>
+  <data name="GuideSampleResetTitle.Text" xml:space="preserve">
+    <value>Reset the current cell</value>
+  </data>
+  <data name="GuideSamples1.Text" xml:space="preserve">
+    <value>A good strategy to learn how to code in Brainf*ck, as with everything else, is to start from simpler and smaller programs and to make them more complex along the way.</value>
+  </data>
+  <data name="GuideSamples2.Text" xml:space="preserve">
+    <value>For example, a common operation is to reset the value of the current cell, whatever it may be.</value>
+  </data>
+  <data name="GuideSamples3.Text" xml:space="preserve">
+    <value>A simple loop can be used in this case:</value>
+  </data>
+  <data name="GuideSamples4.Text" xml:space="preserve">
+    <value>In many situations it is useful to make a copy of the current cell, to be able to perform some operations with its value, without losing track of the initial state of the memory cell.</value>
+  </data>
+  <data name="GuideSamples5.Text" xml:space="preserve">
+    <value>To achieve this, it is possible to create two copies of the current value, resetting the current cell, and then move the second copy back to the first cell, to end up with the original value plus a copy in the following cell.</value>
+  </data>
+  <data name="GuideSamples6.Text" xml:space="preserve">
+    <value>All these techniques can be combined to write more complex programs.</value>
+  </data>
+  <data name="GuideSamples7.Text" xml:space="preserve">
+    <value>A good idea is to try to optimize the script in order to perform as few operations as possible — generally this also means that the final code will be shorter and easier to read.</value>
+  </data>
+  <data name="GuideSamples8.Text" xml:space="preserve">
+    <value>In this example, to print the word "Hello" two loops will be used to set two cells to values closer to the letters that will be printed. It's definitely better to use a similar approach than to repeating the + operator 72 times to print the "H" character.</value>
+  </data>
+  <data name="GuideSamples9.Text" xml:space="preserve">
+    <value>This script will set the cells #2 and #3 to values closer to the characters that will be printed by the program, so that less operations will be needed to get to the actual values the code wants to display to the user.</value>
+  </data>
+  <data name="GuideSampleSimpleLoopComment1.Text" xml:space="preserve">
+    <value>Copy in the cells #1 and #2</value>
+  </data>
+  <data name="GuideSampleSimpleLoopComment2.Text" xml:space="preserve">
+    <value>Decrement the first cell</value>
+  </data>
+  <data name="GuideSampleSimpleLoopComment3.Text" xml:space="preserve">
+    <value>Move second copy back to cell #0</value>
+  </data>
+  <data name="GuideSampleSimpleLoopTitle.Text" xml:space="preserve">
+    <value>Copy the current value</value>
+  </data>
+  <data name="SendFeedbackButton.Title" xml:space="preserve">
+    <value>Send feedback</value>
+  </data>
+  <data name="UserGuideButton.Title" xml:space="preserve">
+    <value>User guide</value>
+  </data>
+  <data name="GuideCodeSamplesDescription" xml:space="preserve">
+    <value>Some code samples to learn from</value>
+  </data>
+  <data name="GuideIntroductionDescription" xml:space="preserve">
+    <value>Get to know the language</value>
+  </data>
+  <data name="GuidePBrainDescription" xml:space="preserve">
+    <value>Make the language more powerful</value>
+  </data>
+  <data name="PBrainInfoLink.Text" xml:space="preserve">
+    <value>What's this?</value>
+  </data>
+  <data name="UserGuide" xml:space="preserve">
+    <value>Brainf*ck# guide</value>
+  </data>
+  <data name="UserGuideCodeSamples" xml:space="preserve">
+    <value>Code samples</value>
+  </data>
+  <data name="UserGuideIntroduction" xml:space="preserve">
+    <value>Introduction</value>
+  </data>
+  <data name="UserGuidePBrainExtensions" xml:space="preserve">
+    <value>PBrain extensions</value>
   </data>
 </root>

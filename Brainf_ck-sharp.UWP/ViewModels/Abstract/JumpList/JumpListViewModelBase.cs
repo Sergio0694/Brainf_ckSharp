@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml.Data;
 using Brainf_ck_sharp_UWP.DataModels;

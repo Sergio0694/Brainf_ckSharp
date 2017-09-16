@@ -178,7 +178,8 @@
                     x:Name="ArrowRun3"/><Run 
                     Text="."
                     Foreground="#FFCD5C5C"
-                    x:Name="DotRun"/><Run 
+                    x:Name="DotRun"/>
+                <Run 
                     Text="Print value"
                     Foreground="#FF52AF3D"
                     x:Name="CommentRun2"
