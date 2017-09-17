@@ -33,6 +33,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 CreateChangelogEntry("1.4.0.0", 2017, 1, 10, new List<String>
                 {
                     "Added new support for PBrain extensions",
+                    "Added a detailed user guide to the Brainf*ck language",
                     "IDE indentation guides rendering improved",
                     "Minor fixes and improvements"
                 }),

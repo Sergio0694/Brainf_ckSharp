@@ -26,7 +26,6 @@
         </Storyboard>
         
         <!--Converters-->
-        <converters:DepthToVisibilityConverter x:Key="DepthConverter"/>
         <converters:SingleDigitConverterWithFallback x:Key="DepthDigitConverter"/>
         <converters:DisplayScalingToMarginConverter x:Key="DPIToMarginConverter"/>
         
@@ -50,7 +49,7 @@
                     Width="1"
                     Fill="{StaticResource BracketsIndicatorBorderBrush}"
                     VerticalAlignment="Stretch"
-                    Visibility="{Binding Depth, Converter={StaticResource DepthConverter}, FallbackValue=Collapsed}"/>
+                    Visibility="{Binding Nested, FallbackValue=Collapsed}"/>
                 <Border
                     BorderThickness="1"
                     BorderBrush="{StaticResource BracketsIndicatorBorderBrush}"
@@ -88,7 +87,7 @@
                     Width="1"
                     Fill="{StaticResource BracketsIndicatorBorderBrush}"
                     VerticalAlignment="Stretch"
-                    Visibility="{Binding Depth, Converter={StaticResource DepthConverter}, FallbackValue=Collapsed}"/>
+                    Visibility="{Binding Nested, FallbackValue=Collapsed}"/>
                 <Border
                     BorderThickness="1"
                     BorderBrush="{StaticResource BracketsIndicatorBorderBrush}"

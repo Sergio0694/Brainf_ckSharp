@@ -124,7 +124,6 @@
     <Compile Include="Converters\SettingsSectionTypeToUppercaseConverter.cs" />
     <Compile Include="Converters\SourceCodeTitleScoreToDisplayStringConverter.cs" />
     <Compile Include="Converters\CharacterWithFallbackConverter.cs" />
-    <Compile Include="Converters\DepthToVisibilityConverter.cs" />
     <Compile Include="Converters\ExceptionTypeConverter.cs" />
     <Compile Include="Converters\IDEResults\IDESectionToDisplayNameConverter.cs" />
     <Compile Include="Converters\IDEResults\IDESectionToUppercaseDisplayNameConverter.cs" />
@@ -161,6 +160,7 @@
     <Compile Include="DataModels\Misc\CharactersInfo\CharacterWithArea.cs" />
     <Compile Include="DataModels\Misc\Coordinate.cs" />
     <Compile Include="DataModels\Misc\GitDiffLineStatus.cs" />
+    <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationInfoOpenLoopBracketType.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationLineInfo.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationInfoLineType.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationFunctionBracketInfo.cs" />

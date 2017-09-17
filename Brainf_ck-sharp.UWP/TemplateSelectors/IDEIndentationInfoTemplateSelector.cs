@@ -14,7 +14,7 @@ namespace Brainf_ck_sharp_UWP.TemplateSelectors
                 switch (item)
                 {
                     case IDEIndentationOpenLoopBracketLineInfo open:
-                        if (open.Nested)
+                        if (open.Type == IDEIndentationInfoOpenLoopBracketType.InFunction)
                         {
                             return parent.FindResource<DataTemplate>(open.LineType == IDEIndentationInfoLineType.OpenLoopBracket
                                 ? "IDEIndentationInfoInFunctionOpenBracketTemplate"

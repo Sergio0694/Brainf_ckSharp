@@ -414,7 +414,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         switch (entries[0].Character)
                         {
                             case '[':
-                                temp.Add(new IDEIndentationOpenLoopBracketLineInfo(function ? ++nested : ++depth, false, function));
+                                temp.Add(new IDEIndentationOpenLoopBracketLineInfo(function ? ++nested : ++depth, false,
+                                    function ? IDEIndentationInfoOpenLoopBracketType.InFunction : IDEIndentationInfoOpenLoopBracketType.Default));
                                 break;
                             case ']':
                                 if (function) nested--;
@@ -441,24 +442,37 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     else if (entries.Count == 2 && entries[0].Character == '[' && entries[1].Character == ']')
                     {
                         // Standalone function on a single line
-                        temp.Add(new IDEIndentationOpenLoopBracketLineInfo(depth + 1, true, function));
+                        temp.Add(new IDEIndentationOpenLoopBracketLineInfo(depth + 1, true,
+                            function ? IDEIndentationInfoOpenLoopBracketType.InFunction : IDEIndentationInfoOpenLoopBracketType.Default));
                     }
                     else if (!entries.Any(e => e.Character == '(' || e.Character == ')'))
                     {
                         // Function to calculate the updated depth
                         uint CalculateAndShowDepth(uint target)
                         {
-                            int sum = (int)target + entries.Sum(e => e.Character == '[' ? 1 : -1);
+                            int sum = entries.Sum(e => e.Character == '[' ? 1 : -1);
                             if ((int)target + sum < 0) throw new InvalidOperationException("Invalid brackets sequence");
                             uint final = (uint)((int)target + sum);
                             if (target == 0 && final == 0)
                             {
                                 // Brackets opened and closed on the same line
-                                temp.Add(new IDEIndentationOpenLoopBracketLineInfo(target + 1, true, function || depth > 0));
+                                IDEIndentationInfoOpenLoopBracketType type;
+                                if (function) type = IDEIndentationInfoOpenLoopBracketType.InFunction;
+                                else if (depth > 0) type = IDEIndentationInfoOpenLoopBracketType.Nested;
+                                else type = IDEIndentationInfoOpenLoopBracketType.Default;
+                                temp.Add(new IDEIndentationOpenLoopBracketLineInfo(target + 1, true, type));
                                 return final;
                             }
                             if (final == 0) temp.Add(new IDEIndentationLineInfo(IDEIndentationInfoLineType.ClosedBracket)); // All brackets closed
-                            else if (final >= target) temp.Add(new IDEIndentationOpenLoopBracketLineInfo(final, false, function)); // New indentation level
+                            else if (final >= target)
+                            {
+                                IDEIndentationInfoOpenLoopBracketType type;
+                                if (function) type = IDEIndentationInfoOpenLoopBracketType.InFunction;
+                                else if (target > 0) type = IDEIndentationInfoOpenLoopBracketType.Nested;
+                                else type = IDEIndentationInfoOpenLoopBracketType.Default;
+                                temp.Add(new IDEIndentationOpenLoopBracketLineInfo(final, false, type)); // New indentation level
+                            }
+                            else temp.Add(new IDEIndentationLineInfo(IDEIndentationInfoLineType.ClosedBracket)); // Indentation depth decreased
                             return final;
                         }
 
@@ -505,7 +519,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                                 // A new function has the precedence
                                 temp.Add(new IDEIndentationFunctionBracketInfo(depth > 0, IDEIndentationInfoLineType.SelfContainedFunction));
                             }
-                            else if (depth > 0 && backup != depth) temp.Add(new IDEIndentationOpenLoopBracketLineInfo(depth, false, false)); // New depth level
+                            else if (depth > 0 && backup != depth)
+                            {
+                                // New depth level
+                                temp.Add(new IDEIndentationOpenLoopBracketLineInfo(depth, false, IDEIndentationInfoOpenLoopBracketType.Nested));
+                            }
                             else temp.Add(new IDEIndentationLineInfo(IDEIndentationInfoLineType.ClosedBracket)); // No indentation
                         }
                         else if (!call && function)
