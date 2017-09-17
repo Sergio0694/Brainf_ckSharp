@@ -12,7 +12,7 @@ TODO _ leave this cell to 0 to run the code or add a getchar here to skip
 [
 	-> reset temp cell
 	> move to next cell
-	{ TODO: insert code here }
+	{ TODO insert code here }
 	< return to 0 to end loop
 ]
 << return to starting cell

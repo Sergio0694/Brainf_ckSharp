@@ -8,7 +8,7 @@
 [
 	>++++++++<- 48 in cell 1
 ]
->>,>>>, read first number _ x1; x2
+>>,>>>, read first number as x1; x2
 <<<
 [
 	>+>+<<- clone x1
@@ -35,7 +35,7 @@
 	<+>- restore copy of 48
 ]
 >>>>>> move after x2
-,>>>, read second one _ y1; y2
+,>>>, read second one as y1; y2
 <<<
 [
 	>+>+<<- clone y1
