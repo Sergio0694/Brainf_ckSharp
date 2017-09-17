@@ -240,7 +240,7 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             SaveCodePromptFlyout flyout = new SaveCodePromptFlyout(code, null);
             FlyoutResult result = await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("SaveCode"), 
-                flyout, new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight);
+                flyout, null, new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight);
             return result == FlyoutResult.Confirmed ? flyout.Title : null;
         }
 
@@ -271,7 +271,7 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Display the execution popup
             IDERunResultFlyout flyout = new IDERunResultFlyout();
-            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource(e.Debug ? "Debug" : "RunTitle"), flyout, new Thickness()).Forget();
+            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource(e.Debug ? "Debug" : "RunTitle"), flyout, null, new Thickness()).Forget();
             Task.Delay(100).ContinueWith(t => flyout.ViewModel.InitializeAsync(factory), TaskScheduler.FromCurrentSynchronizationContext());
         }
 

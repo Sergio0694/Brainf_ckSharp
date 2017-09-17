@@ -67,7 +67,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         {
             SaveCodePromptFlyout flyout = new SaveCodePromptFlyout(e.Code, e.Title);
             FlyoutResult result = await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("RenameCode"), 
-                flyout, new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight, true);
+                flyout, null, new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight, true);
             if (result == FlyoutResult.Confirmed)
             {
                 await ViewModel.RenameItemAsync(e, flyout.Title);

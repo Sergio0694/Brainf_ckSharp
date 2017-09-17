@@ -497,21 +497,6 @@
           <target state="translated">Non modificato</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Renamed name is the same as the original</note>
         </trans-unit>
-        <trans-unit id="DevMessage" translate="yes" xml:space="preserve">
-          <source>Developer message</source>
-          <target state="translated">Messaggio dello sviluppatore</target>
-        </trans-unit>
-        <trans-unit id="WelcomeText" translate="yes" xml:space="preserve">
-          <source>Welcome to Brainf*ck#!
-Thank you for downloading the app, I hope you'll enjoy using it!
-Please feel free to send me an email if you have suggestions or feedback, or if you found a bug, and I'll be happy to help.
-
-NOTE: the app might sometimes crash when loading a source code. That's due to a bug in one of the controls I'm using, I've already sent a feedback to Microsoft and hopefully that'll get fixed soon!</source>
-          <target state="translated">Benvenuti in Brainf*ck#, grazie di aver scaricato quest'app!
-Potete mandarmi un messaggio email in qualsiasi momento se avete suggerimenti o feedback, o se avete trovato un bug, e sarò felice di aiutare.
-
-NOTA: l'app potrebbe occasionalmente chiudersi durante il caricamento di un codice sorgente salvato. Questo è dovuto ad un bug in uno dei controlli che l'app utilizza, ho già mandato una segnalazione a Microsoft e spero che si possa risolvere il problema al più presto!</target>
-        </trans-unit>
         <trans-unit id="Changelog" translate="yes" xml:space="preserve">
           <source>Changelog</source>
           <target state="translated">Novità</target>
@@ -731,9 +716,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         </trans-unit>
         <trans-unit id="GuideIntroduction1.Text" translate="yes" xml:space="preserve">
           <source>Brainf*ck is an esoteric programming language invented in 1993 by Urban Müller.</source>
-          <target state="translated">Brainf*ck è un linguaggio di programmazione esoterico inventato nel 1993 da Urban Müller.
-
-</target>
+          <target state="translated">Brainf*ck è un linguaggio di programmazione esoterico inventato nel 1993 da Urban Müller.</target>
         </trans-unit>
         <trans-unit id="GuideIntroduction2.Text" translate="yes" xml:space="preserve">
           <source>The language itself replicates a Touring machine, as the state of the interpreter is only described of a memory array and a memory pointer than can move back and forth and change values of the memory cells, as it passes over them.</source>
@@ -833,7 +816,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         </trans-unit>
         <trans-unit id="GuideSamples2.Text" translate="yes" xml:space="preserve">
           <source>For example, a common operation is to reset the value of the current cell, whatever it may be.</source>
-          <target state="translated">Per esempio, un'operazione comunque consiste nel resettare la cella attuale, a prescindere da quale fosse il suo valore.</target>
+          <target state="translated">Per esempio, un'operazione comune consiste nel resettare la cella attuale, a prescindere da quale fosse il suo valore.</target>
         </trans-unit>
         <trans-unit id="GuideSamples3.Text" translate="yes" xml:space="preserve">
           <source>A simple loop can be used in this case:</source>
@@ -934,6 +917,26 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         <trans-unit id="UserGuidePBrainExtensions" translate="yes" xml:space="preserve">
           <source>PBrain extensions</source>
           <target state="translated">Estensione PBrain</target>
+        </trans-unit>
+        <trans-unit id="WelcomeTitle" translate="yes" xml:space="preserve">
+          <source>Welcome to Brainf*ck#!</source>
+          <target state="translated">Benvenuto in Brainf*ck#!</target>
+        </trans-unit>
+        <trans-unit id="WelcomePart1.Text" translate="yes" xml:space="preserve">
+          <source>Thank you for downloading the app, I hope you'll enjoy using it!</source>
+          <target state="translated">Grazie di aver scaricato quest'app!</target>
+        </trans-unit>
+        <trans-unit id="WelcomePart2.Text" translate="yes" xml:space="preserve">
+          <source>Please feel free to send me an email if you have suggestions or feedback, or if you found a bug, and I'll be happy to help.</source>
+          <target state="translated">Puoi mandarmi un messaggio email in qualsiasi momento se hai suggerimenti o feedback, o se hai trovato un bug, e sarò felice di aiutare.</target>
+        </trans-unit>
+        <trans-unit id="WelcomePart3.Text" translate="yes" xml:space="preserve">
+          <source>The app might sometimes crash when loading a source code. That's due to a bug in one of the controls I'm using, I've already sent a feedback to Microsoft and hopefully that'll get fixed soon!</source>
+          <target state="translated">L'app potrebbe occasionalmente chiudersi durante il caricamento di un codice sorgente salvato. Questo è dovuto ad un bug in uno dei controlli che l'app utilizza, ho già mandato una segnalazione a Microsoft e spero che si possa risolvere il problema al più presto!</target>
+        </trans-unit>
+        <trans-unit id="WelcomePart4.Text" translate="yes" xml:space="preserve">
+          <source>Before jumping straight into the app, it might be a good idea to read the user guide to make sure you remember all there is to know about the language!</source>
+          <target state="translated">Prima di passare subito all'azione, è una buona idea leggere la guida dell'app per essere sicuri di ricordarsi tutto ciò che c'è da sapere sul linguaggio!</target>
         </trans-unit>
       </group>
     </body>

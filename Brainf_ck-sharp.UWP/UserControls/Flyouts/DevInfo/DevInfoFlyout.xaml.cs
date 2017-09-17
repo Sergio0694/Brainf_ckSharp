@@ -124,7 +124,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
         {
             ChangelogViewFlyout flyout = new ChangelogViewFlyout();
             Task.Delay(100).ContinueWith(t => flyout.ViewModel.LoadGroupsAsync(), TaskScheduler.FromCurrentSynchronizationContext()).Forget();
-            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Changelog"), flyout, new Thickness(),
+            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Changelog"), flyout, null, new Thickness(),
                 FlyoutDisplayMode.ScrollableContent, true).Forget();
         }
 
@@ -132,7 +132,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
         private void UserGuideButton_Click(object sender, RoutedEventArgs e)
         {
             UserGuideViewerControl guide = new UserGuideViewerControl();
-            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UserGuide"), guide, new Thickness()).Forget();
+            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UserGuide"), guide, null, new Thickness()).Forget();
         }
     }
 }

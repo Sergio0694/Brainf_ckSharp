@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -21,6 +21,7 @@ using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState;
+using Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide;
 using Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
@@ -190,9 +191,17 @@ namespace Brainf_ck_sharp_UWP.UserControls
             if (AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.WelcomeMessageShown), out bool shown) && !shown)
             {
                 // Show the message
-                Task.Delay(StartupPromptsPopupDelay).ContinueWith(t =>
+                Task.Delay(StartupPromptsPopupDelay).ContinueWith(async t =>
                 {
-                    FlyoutManager.Instance.Show(LocalizationManager.GetResource("DevMessage"), LocalizationManager.GetResource("WelcomeText"));
+                    WelcomeMessageFlyout welcome = new WelcomeMessageFlyout();
+                    FlyoutResult result = await FlyoutManager.Instance.ShowAsync($"{LocalizationManager.GetResource("WelcomeTitle")} 😄", welcome, 
+                        LocalizationManager.GetResource("UserGuide"), new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight);
+                    if (result == FlyoutResult.Confirmed)
+                    {
+                        // Show the user guide
+                        UserGuideViewerControl guide = new UserGuideViewerControl();
+                        FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UserGuide"), guide, null, new Thickness()).Forget();
+                    }
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
 
                 // Update the setting
@@ -205,7 +214,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 Task.Delay(StartupPromptsPopupDelay).ContinueWith(t =>
                 {
                     ReviewPromptFlyout reviewFlyout = new ReviewPromptFlyout();
-                    FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("HowsItGoing"), reviewFlyout,
+                    FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("HowsItGoing"), reviewFlyout, null,
                         new Thickness(0, 12, 0, 0), FlyoutDisplayMode.ActualHeight).Forget();
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
 
@@ -254,7 +263,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             {
                 // Full memory viewer
                 ConsoleFullMemoryViewerControl fullViewer = new ConsoleFullMemoryViewerControl(source, Console.ViewModel.Functions);
-                FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("CurrentState"), fullViewer, new Thickness()).Forget();
+                FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("CurrentState"), fullViewer, null, new Thickness()).Forget();
                 Task.Delay(100).ContinueWith(t => fullViewer.ViewModel.InitializeAsync(), TaskScheduler.FromCurrentSynchronizationContext());
             }
         }
@@ -291,7 +300,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
         private void AboutButton_Click(object sender, RoutedEventArgs e)
         {
             DevInfoFlyout flyout = new DevInfoFlyout();
-            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("About"), flyout, new Thickness(0), FlyoutDisplayMode.ActualHeight).Forget();
+            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("About"), flyout, null, new Thickness(0), FlyoutDisplayMode.ActualHeight).Forget();
         }
 
         // Changes the current header blur mode
@@ -305,7 +314,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             String font = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
             SettingsPanelFlyout settings = new SettingsPanelFlyout();
             Task.Delay(100).ContinueWith(t => settings.ViewModel.LoadGroups(), TaskScheduler.FromCurrentSynchronizationContext()).Forget();
-            await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Settings"), settings, new Thickness());
+            await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Settings"), settings, null, new Thickness());
             bool
                 themeChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)) != theme,
                 tabsChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength)) != tabs,

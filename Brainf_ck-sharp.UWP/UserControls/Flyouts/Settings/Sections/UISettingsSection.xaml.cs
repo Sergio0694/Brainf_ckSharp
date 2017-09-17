@@ -19,7 +19,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings.Sections
         private async void PBrainLinkButton_Click(object sender, RoutedEventArgs e)
         {
             UserGuideViewerControl guide = new UserGuideViewerControl();
-            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UserGuide"), guide, new Thickness()).Forget();
+            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UserGuide"), guide, null, new Thickness()).Forget();
             await Task.Delay(600);
             guide.TryScrollToPBrainSection();
         }

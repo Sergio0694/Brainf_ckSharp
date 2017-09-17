@@ -13,29 +13,10 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="4"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <!--Breakpoints pane-->
-        <Border 
-            Background="#FF333333"
-            Grid.Column="0"
-            Grid.Row="1"
-            Grid.RowSpan="2"
-            Width="20"
-            HorizontalAlignment="Left"/>
 
         <!--Theme title-->
-        <Border
-            Grid.Row="0"
-            Grid.Column="0"
-            Grid.ColumnSpan="3"
-            Background="#FF333333">
+        <Border Background="#FF333333">
             <Border Background="#20000000">
                 <TextBlock
                     IsTextScaleFactorEnabled="False"
@@ -46,139 +27,161 @@
         </Border>
 
         <!--Visual preview-->
-        <Grid
-            Grid.Row="1"
-            Grid.Column="0"
-            Grid.ColumnSpan="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="28"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <ScrollViewer
+            VerticalScrollBarVisibility="Disabled"
+            VerticalScrollMode="Disabled"
+            IsVerticalRailEnabled="False"
+            HorizontalScrollBarVisibility="Hidden"
+            HorizontalScrollMode="Auto"
+            Grid.Row="1">
 
-            <!--Line numbers-->
-            <TextBlock
-                IsTextScaleFactorEnabled="False"
-                Grid.Column="1"
-                FontSize="15"
-                HorizontalAlignment="Right"
-                TextAlignment="Right"
-                TextTrimming="CharacterEllipsis"
-                Foreground="#FF237CAD"
-                Margin="0,1,0,0">
-                <Run Text="1"/><LineBreak/>
-                <Run Text="2"/><LineBreak/>
-                <Run Text="3"/><LineBreak/>
-                <Run Text="4"/><LineBreak/>
-                <Run Text="5"/><LineBreak/>
-                <Run Text="6"/><LineBreak/>
-                <Run Text="7"/><LineBreak/>
-                <Run Text="8"/>
-            </TextBlock>
+            <!--Preview grid-->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="28"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <!--Vertical guide-->
-            <StackPanel
-                Canvas.ZIndex="0"
-                Grid.Column="2"
-                Width="1"
-                HorizontalAlignment="Left"
-                Margin="21,0,0,0">
-                <StackPanel.Clip>
-                    <RectangleGeometry Rect="0,0,1,40"/>
-                </StackPanel.Clip>
-                <StackPanel.RenderTransform>
-                    <TranslateTransform Y="22"/>
-                </StackPanel.RenderTransform>
-                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
-                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
-                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
-                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
-                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
-                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
-                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
-            </StackPanel>
+                <!--Breakpoints pane-->
+                <Border 
+                    Background="#FF333333"
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Width="20"
+                    HorizontalAlignment="Left"/>
 
-            <!--Second vertical guide-->
-            <StackPanel
-                Canvas.ZIndex="0"
-                Grid.Column="2"
-                Width="1"
-                HorizontalAlignment="Left"
-                Margin="21,100,0,0">
-                <StackPanel.Clip>
-                    <RectangleGeometry 
-                        Rect="0,0,1,20"/>
-                </StackPanel.Clip>
-                <StackPanel.RenderTransform>
-                    <TranslateTransform
-                        Y="22"/>
-                </StackPanel.RenderTransform>
-                <Rectangle 
-                    Margin="0"
-                    Style="{StaticResource BracketsGuideRectangleStyle}"/>
-                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
-                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
-                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
-            </StackPanel>
+                <!--Line numbers-->
+                <TextBlock
+                    IsTextScaleFactorEnabled="False"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    FontSize="15"
+                    HorizontalAlignment="Right"
+                    TextAlignment="Right"
+                    TextTrimming="CharacterEllipsis"
+                    Foreground="#FF237CAD"
+                    Margin="0,1,0,0">
+                    <Run Text="1"/><LineBreak/>
+                    <Run Text="2"/><LineBreak/>
+                    <Run Text="3"/><LineBreak/>
+                    <Run Text="4"/><LineBreak/>
+                    <Run Text="5"/><LineBreak/>
+                    <Run Text="6"/><LineBreak/>
+                    <Run Text="7"/><LineBreak/>
+                    <Run Text="8"/>
+                </TextBlock>
 
-            <!--Code sample-->
-            <TextBlock
-                Canvas.ZIndex="2"
-                IsTextScaleFactorEnabled="False"
-                Margin="20,0,20,0"
-                Grid.Column="2"
-                FontSize="15">
-                <Run 
-                    Text="["
-                    Foreground="#FF569CD6"/><LineBreak/>
-                <Run 
-                    Text="      >"
-                    Foreground="#FFDDDDDD"/><Run 
-                    Text="+"
-                    Foreground="#FFFFFFFF"/><Run 
-                    Text=">"
-                    Foreground="#FFDDDDDD"/><Run 
-                    Text="+"
-                    Foreground="White"/>
-                <Run 
-                    Text="Copy in the cells #1 and #2"
-                    Foreground="#FF52AF3D"
-                    x:Uid="GuideSampleSimpleLoopComment1"/><LineBreak/>
-                <Run 
-                    Text="      &lt;"
-                    Foreground="#FFDDDDDD"/><Run 
-                    Text="+"
-                    Foreground="White"/>
-                <Run 
-                    Text="Decrement the first cell"
-                    Foreground="#FF52AF3D"
-                    x:Uid="GuideSampleSimpleLoopComment2"/><LineBreak/>
-                <Run 
-                    Text="]"
-                    Foreground="#FF569CD6"/><LineBreak/>
-                <Run 
-                    Text=">>"
-                    Foreground="#FFDDDDDD"/><LineBreak/>
-                <Run 
-                    Text="["
-                    Foreground="#FF569CD6"/><LineBreak/>
-                <Run 
-                    Text="      &lt;&lt;"
-                    Foreground="#FFDDDDDD"/><Run 
-                    Text="+"
-                    Foreground="#FFFFFFFF"/><Run 
-                    Text=">>"
-                    Foreground="#FFDDDDDD"/><Run 
-                    Text="-"
-                    Foreground="White"/>
-                <Run 
-                    Text="Move second copy back to cell #0"
-                    Foreground="#FF52AF3D"
-                    x:Uid="GuideSampleSimpleLoopComment3"/><LineBreak/>
-                <Run 
-                    Text="]"
-                    Foreground="#FF569CD6"/>
-            </TextBlock>
-        </Grid>
+                <!--Vertical guide-->
+                <StackPanel
+                    Canvas.ZIndex="0"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Width="1"
+                    HorizontalAlignment="Left"
+                    Margin="21,0,0,0">
+                    <StackPanel.Clip>
+                        <RectangleGeometry Rect="0,0,1,40"/>
+                    </StackPanel.Clip>
+                    <StackPanel.RenderTransform>
+                        <TranslateTransform Y="22"/>
+                    </StackPanel.RenderTransform>
+                    <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                    <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                    <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                    <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                    <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                    <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                    <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                </StackPanel>
+
+                <!--Second vertical guide-->
+                <StackPanel
+                    Canvas.ZIndex="0"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Width="1"
+                    HorizontalAlignment="Left"
+                    Margin="21,100,0,0">
+                    <StackPanel.Clip>
+                        <RectangleGeometry Rect="0,0,1,20"/>
+                    </StackPanel.Clip>
+                    <StackPanel.RenderTransform>
+                        <TranslateTransform Y="22"/>
+                    </StackPanel.RenderTransform>
+                    <Rectangle 
+                        Margin="0"
+                        Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                        <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                        <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                        <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                </StackPanel>
+
+                <!--Code sample-->
+                <TextBlock
+                    Canvas.ZIndex="2"
+                    IsTextScaleFactorEnabled="False"
+                    Margin="20,0,20,0"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    FontSize="15">
+                    <Run 
+                        Text="["
+                        Foreground="#FF569CD6"/><LineBreak/>
+                    <Run 
+                        Text="      >"
+                        Foreground="#FFDDDDDD"/><Run 
+                        Text="+"
+                        Foreground="#FFFFFFFF"/><Run 
+                        Text=">"
+                        Foreground="#FFDDDDDD"/><Run 
+                        Text="+"
+                        Foreground="White"/>
+                    <Run 
+                        Text="Copy in the cells #1 and #2"
+                        Foreground="#FF52AF3D"
+                        x:Uid="GuideSampleSimpleLoopComment1"/><LineBreak/>
+                    <Run 
+                        Text="      &lt;"
+                        Foreground="#FFDDDDDD"/><Run 
+                        Text="+"
+                        Foreground="White"/>
+                    <Run 
+                        Text="Decrement the first cell"
+                        Foreground="#FF52AF3D"
+                        x:Uid="GuideSampleSimpleLoopComment2"/><LineBreak/>
+                    <Run 
+                        Text="]"
+                        Foreground="#FF569CD6"/><LineBreak/>
+                    <Run 
+                        Text=">>"
+                        Foreground="#FFDDDDDD"/><LineBreak/>
+                    <Run 
+                        Text="["
+                        Foreground="#FF569CD6"/><LineBreak/>
+                    <Run 
+                        Text="      &lt;&lt;"
+                        Foreground="#FFDDDDDD"/><Run 
+                        Text="+"
+                        Foreground="#FFFFFFFF"/><Run 
+                        Text=">>"
+                        Foreground="#FFDDDDDD"/><Run 
+                        Text="-"
+                        Foreground="White"/>
+                    <Run 
+                        Text="Move second copy back to cell #0"
+                        Foreground="#FF52AF3D"
+                        x:Uid="GuideSampleSimpleLoopComment3"/><LineBreak/>
+                    <Run 
+                        Text="]"
+                        Foreground="#FF569CD6"/>
+                </TextBlock>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </UserControl>

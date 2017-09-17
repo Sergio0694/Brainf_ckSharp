@@ -219,7 +219,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         private static Tuple<FlyoutContainer, Action> SetupFlyoutContainer()
         {
             // Initialize the container and the target popup
-            FlyoutContainer container = new FlyoutContainer()
+            FlyoutContainer container = new FlyoutContainer
             {
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch
@@ -257,7 +257,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 TextWrapping = TextWrapping.Wrap,
                 FontSize = 14
             };
-            ShowAsync(title, block, new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight).Forget();
+            ShowAsync(title, block, null, new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight).Forget();
         }
 
         /// <summary>
@@ -293,7 +293,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 Margin = new Thickness(12, 12, 16, 12)
             };
             setup.Item1.SetupFixedUI(title, block, width);
-            setup.Item1.SetupUI(confirm, color);
+            setup.Item1.SetupButtonsUI(confirm, color);
 
             // Create the popup to display
             Popup popup = new Popup
@@ -331,12 +331,15 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// </summary>
         /// <param name="title">The title of the new flyout to show</param>
         /// <param name="content">The content to show inside the flyout</param>
+        /// <param name="confirm">The optional text to display in the confirm button</param>
         /// <param name="margin">The optional margins to set to the content of the popup to show</param>
         /// <param name="mode">The desired display mode for the flyout</param>
         /// <param name="stack">Indicates whether or not the popup can be stacked on top of another open popup</param>
         /// <param name="openCallback">An optional callback to invoke when the popup is displayed</param>
-        public async Task<FlyoutResult> ShowAsync([NotNull] String title, [NotNull] FrameworkElement content, [CanBeNull] Thickness? margin = null,
-            FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent, bool stack = false, [CanBeNull] Action openCallback = null)
+        public async Task<FlyoutResult> ShowAsync(
+            [NotNull] string title, [NotNull] FrameworkElement content, [CanBeNull] String confirm = null, 
+            [CanBeNull] Thickness? margin = null, FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent, 
+            bool stack = false, [CanBeNull] Action openCallback = null)
         {
             // Lock and close the existing popup, if needed
             await Semaphore.WaitAsync();
@@ -364,6 +367,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 default:
                     throw new ArgumentException("The desired display mode is not valid");
             }
+            if (confirm != null) setup.Item1.SetupButtonsUI(confirm, null); // Setup the confirm button
 
             // Create the popup to display
             Popup popup = new Popup

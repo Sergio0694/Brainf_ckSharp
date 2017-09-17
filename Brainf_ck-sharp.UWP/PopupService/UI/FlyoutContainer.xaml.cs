@@ -79,7 +79,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         /// </summary>
         /// <param name="confirm">The text of the button</param>
         /// <param name="color">The optional background color for the confirm button</param>
-        public void SetupUI([NotNull] String confirm, [CanBeNull] Color? color)
+        public void SetupButtonsUI([NotNull] String confirm, [CanBeNull] Color? color)
         {
             ConfirmBlock.Text = confirm;
             if (color != null)
