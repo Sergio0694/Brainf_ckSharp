@@ -162,17 +162,6 @@ namespace Brainf_ck_sharp_UWP.UserControls
             Console.AdjustTopMargin(height + 8);
             IDE.AdjustTopMargin(height);
 
-            // Disable the swipe gestures in the keyboard pivot
-            ScrollViewer scroller = CommandsPivot.FindChild<ScrollViewer>();
-            if (scroller != null)
-            {
-                scroller.PointerEntered += Scroller_PointerIn;
-                scroller.PointerMoved += Scroller_PointerIn;
-                scroller.PointerExited += Scroller_PointerOut;
-                scroller.PointerReleased += Scroller_PointerOut;
-                scroller.PointerCaptureLost += Scroller_PointerOut;
-            }
-
             // Light border UI
             ExpanderControl.FindChild<Button>("ExpanderStateButton").ManageLightsPointerStates(value =>
             {
@@ -221,18 +210,6 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 // Update the setting
                 AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.ReviewPromptShown), true, SettingSaveMode.OverwriteIfExisting);
             }
-        }
-
-        // Disables the swipe gesture for the keyboard pivot (swiping that pivot causes the app to crash)
-        private void Scroller_PointerIn(object sender, PointerRoutedEventArgs e)
-        {
-            sender.To<ScrollViewer>().HorizontalScrollMode = ScrollMode.Disabled;
-        }
-
-        // Restores the original scrolling settings when the pointer is outside the keyboard pivot
-        private void Scroller_PointerOut(object sender, PointerRoutedEventArgs e)
-        {
-            sender.To<ScrollViewer>().HorizontalScrollMode = ScrollMode.Enabled;
         }
 
         #endregion

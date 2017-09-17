@@ -120,7 +120,7 @@
                     Grid.Column="2"
                     Width="1"
                     HorizontalAlignment="Left"
-                    Margin="47,60,0,0">
+                    Margin="46,60,0,0">
                     <StackPanel.Clip>
                         <RectangleGeometry Rect="0,0,1,40"/>
                     </StackPanel.Clip>

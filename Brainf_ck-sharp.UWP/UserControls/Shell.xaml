@@ -192,7 +192,7 @@
                     </Grid>
                 </telerik:RadExpanderControl.Content>
                 <telerik:RadExpanderControl.ExpandableContent>
-                    <Pivot
+                    <inheritedControls:LockedPivot
                         Style="{StaticResource PivotCustomStyle}"
                         x:Name="CommandsPivot"
                         Height="180">
@@ -210,7 +210,7 @@
                                 <controls:CompactCharactersViewerControl/>
                             </Grid>
                         </PivotItem>
-                    </Pivot>
+                    </inheritedControls:LockedPivot>
                 </telerik:RadExpanderControl.ExpandableContent>
             </inheritedControls:FixedRadExpanderControl>
         </Grid>

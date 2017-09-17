@@ -86,10 +86,10 @@
                     HorizontalAlignment="Left"
                     Margin="21,0,0,0">
                     <StackPanel.Clip>
-                        <RectangleGeometry Rect="0,0,1,40"/>
+                        <RectangleGeometry Rect="0,0,1,42"/>
                     </StackPanel.Clip>
                     <StackPanel.RenderTransform>
-                        <TranslateTransform Y="22"/>
+                        <TranslateTransform Y="20"/>
                     </StackPanel.RenderTransform>
                     <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
                     <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
