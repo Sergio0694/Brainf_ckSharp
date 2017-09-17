@@ -59,14 +59,13 @@ namespace Brainf_ck_sharp_UWP
             Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "en-US";
 #endif
 
-            // Settings
-            AppSettingsManager.Instance.InitializeSettings();
-            AppSettingsManager.Instance.IncrementStartupsCount();
-
             // Initialize the window content
-            Shell shell = Window.Current.Content as Shell;
-            if (shell == null)
+            if (!(Window.Current.Content is Shell))
             {
+                // Settings
+                AppSettingsManager.Instance.InitializeSettings();
+                AppSettingsManager.Instance.IncrementStartupsCount();
+
                 // Initialize the UI
                 BrushResourcesManager.InitializeOrRefreshInstance();
                 LightsSourceHelper.Initialize(
@@ -77,7 +76,7 @@ namespace Brainf_ck_sharp_UWP
                         Z = 30,
                         Shade = 0x10
                     });
-                shell = new Shell();
+                Shell shell = new Shell();
                 LightsSourceHelper.SetIsLightsContainer(shell, true);
 
                 // Handle the UI

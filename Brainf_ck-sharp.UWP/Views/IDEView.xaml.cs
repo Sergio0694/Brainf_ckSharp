@@ -51,7 +51,7 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             Loaded += IDEView_Loaded;
             this.InitializeComponent();
-            LinesGrid.Opacity = 0;
+            LinesGrid.SetVisualOpacity(0);
             ApplyUITheme();
             ApplyCustomTabSpacing();
             DataContext = new IDEViewModel(EditBox.Document, PickSaveNameAsync, () => BreakpointsInfo.Keys);
@@ -298,7 +298,7 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Setup the expression animations
             SetupExpressionAnimations();
-            LinesGrid.Opacity = 1;
+            LinesGrid.StartCompositionFadeAnimation(null, 1, 100, 200, EasingFunctionNames.CircleEaseOut);
             _Loaded = true;
         }
 

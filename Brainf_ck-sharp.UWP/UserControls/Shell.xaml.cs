@@ -5,7 +5,6 @@ using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Input;
 using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Helpers;
@@ -170,8 +169,15 @@ namespace Brainf_ck_sharp_UWP.UserControls
             });
 
             // Popups
-            ShowStartupPopups();
+            if (!_StartupMessagesProcessed)
+            {
+                _StartupMessagesProcessed = true;
+                ShowStartupPopups();
+            }
         }
+
+        // Local field to keep track of the calls to the method below
+        private bool _StartupMessagesProcessed;
 
         // Shows the startup popups when needed
         private void ShowStartupPopups()
