@@ -550,7 +550,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
     <value>Brainf*ck è un linguaggio di programmazione esoterico inventato nel 1993 da Urban Müller.</value>
   </data>
   <data name="GuideIntroduction2.Text" xml:space="preserve">
-    <value>Il linguaggio stesso replica il funzionamento di una macchina di Touring, poiché lo stato dell'interprete è descritto solo da un vettore di memoria e da un puntatore che può spostarsi in due direzioni e modificare il valore delle celle di memoria, quando vi passa sopra.</value>
+    <value>Il linguaggio replica il funzionamento di una macchina di Turing, poiché lo stato dell'interprete è descritto solo da un vettore di memoria e da un puntatore che può spostarsi in due direzioni e modificare il valore delle celle di memoria, quando vi passa sopra.</value>
   </data>
   <data name="GuideIntroduction3.Text" xml:space="preserve">
     <value>Un programma in Brainf*ck è composto di soli 8 operatori:</value>

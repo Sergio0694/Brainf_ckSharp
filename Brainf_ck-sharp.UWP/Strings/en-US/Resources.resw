@@ -664,7 +664,7 @@ This way he'll be able to help you!</value>
     <value>Brainf*ck is an esoteric programming language invented in 1993 by Urban Müller.</value>
   </data>
   <data name="GuideIntroduction2.Text" xml:space="preserve">
-    <value>The language itself replicates a Touring machine, as the state of the interpreter is only described of a memory array and a memory pointer than can move back and forth and change values of the memory cells, as it passes over them.</value>
+    <value>The language replicates a Turing machine, as the state of the interpreter is only described of a memory array and a memory pointer than can move back and forth and change values of the memory cells, as it passes over them.</value>
   </data>
   <data name="GuideIntroduction3.Text" xml:space="preserve">
     <value>A Brainf*ck program is made up of only 8 operators:</value>
