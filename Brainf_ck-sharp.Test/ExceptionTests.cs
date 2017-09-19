@@ -170,7 +170,7 @@ namespace Brainf_ck_sharp_Test
             Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) &&
                           result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
             Assert.AreEqual(result.Output, String.Empty);
-            Assert.IsTrue(result.TotalOperations == 4);
+            Assert.IsTrue(result.TotalOperations == 5);
         }
 
         [TestMethod]

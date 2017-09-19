@@ -362,7 +362,7 @@ namespace Brainf_ck_sharp
                                     yield return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                             InterpreterExitCode.ExceptionThrown |
                                                                             InterpreterExitCode.UpperBoundExceeded,
-                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations);
+                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations + 1);
                                     yield break;
                                 }
                                 state.MoveNext();
@@ -376,7 +376,7 @@ namespace Brainf_ck_sharp
                                     yield return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                             InterpreterExitCode.ExceptionThrown |
                                                                             InterpreterExitCode.LowerBoundExceeded,
-                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations);
+                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations + 1);
                                     yield break;
                                 }
                                 state.MoveBack();
@@ -392,7 +392,7 @@ namespace Brainf_ck_sharp
                                     yield return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                             InterpreterExitCode.ExceptionThrown |
                                                                             InterpreterExitCode.MaxValueExceeded,
-                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations);
+                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations + 1);
                                     yield break;
                                 }
                                 operations++;
@@ -407,7 +407,7 @@ namespace Brainf_ck_sharp
                                     yield return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                             InterpreterExitCode.ExceptionThrown |
                                                                             InterpreterExitCode.NegativeValue,
-                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations);
+                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations + 1);
                                     yield break;
                                 }
                                 operations++;
@@ -477,7 +477,7 @@ namespace Brainf_ck_sharp
                                     yield return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                             InterpreterExitCode.ExceptionThrown |
                                                                             InterpreterExitCode.StdoutBufferLimitExceeded,
-                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations);
+                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations + 1);
                                     yield break;
                                 }
                                 output.Append(state.Current.Character);
@@ -498,7 +498,7 @@ namespace Brainf_ck_sharp
                                             yield return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                                     InterpreterExitCode.ExceptionThrown |
                                                                                     InterpreterExitCode.MaxValueExceeded,
-                                                                                    new[] { operators.Take(i + 1) }, position + (uint)i, operations);
+                                                                                    new[] { operators.Take(i + 1) }, position + (uint)i, operations + 1);
                                             yield break;
                                         }
                                         state.Input(c);
@@ -510,7 +510,7 @@ namespace Brainf_ck_sharp
                                     yield return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                             InterpreterExitCode.ExceptionThrown |
                                                                             InterpreterExitCode.StdinBufferExhausted,
-                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations);
+                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations + 1);
                                     yield break;
                                 }
                                 operations++;
@@ -523,7 +523,7 @@ namespace Brainf_ck_sharp
                                     yield return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                             InterpreterExitCode.ExceptionThrown |
                                                                             InterpreterExitCode.DuplicateFunctionDefinition,
-                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations);
+                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations + 1);
                                     yield break;
                                 }
                                 if (functions.Count == FunctionDefinitionsLimit)
@@ -531,7 +531,7 @@ namespace Brainf_ck_sharp
                                     yield return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                             InterpreterExitCode.ExceptionThrown |
                                                                             InterpreterExitCode.FunctionsLimitExceeded,
-                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations);
+                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations + 1);
                                     yield break;
                                 }
 
@@ -554,7 +554,7 @@ namespace Brainf_ck_sharp
                                     yield return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                             InterpreterExitCode.ExceptionThrown |
                                                                             InterpreterExitCode.UndefinedFunctionCalled,
-                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations);
+                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations + 1);
                                     yield break;
                                 }
                                 if (depth == MaximumStackSize)
@@ -562,7 +562,7 @@ namespace Brainf_ck_sharp
                                     yield return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                             InterpreterExitCode.ExceptionThrown |
                                                                             InterpreterExitCode.StackLimitExceeded,
-                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations);
+                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations + 1);
                                     yield break;
                                 }
 

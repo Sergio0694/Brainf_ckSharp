@@ -64,7 +64,7 @@ namespace Brainf_ck_sharp_Test
                           result.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) &&
                           result.ExitCode.HasFlag(InterpreterExitCode.UndefinedFunctionCalled));
             Assert.IsTrue(result.ExceptionInfo?.ErrorPosition == 7);
-            Assert.IsTrue(result.TotalOperations == 6);
+            Assert.IsTrue(result.TotalOperations == 7);
         }
 
         [TestMethod]
