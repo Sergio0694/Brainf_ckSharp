@@ -611,7 +611,9 @@ namespace Brainf_ck_sharp
                     if (data.StackFrames != null)
                     {
                         IReadOnlyList<String> trace = data.StackFrames.Select(frame => new String(frame.Select(b => b.Operator).ToArray())).ToArray();
-                        info = new InterpreterExceptionInfo(trace, (int)data.StackFrames.First(frame => frame.Any()).Last().Offset, code);
+                        info = trace.Count > 0
+                            ? new InterpreterExceptionInfo(trace, (int)data.StackFrames.First(frame => frame.Any()).Last().Offset, code)
+                            : null;
                     }
                     else info = null;
 
