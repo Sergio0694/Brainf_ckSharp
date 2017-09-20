@@ -149,7 +149,7 @@
                     <Run 
                         Text="      &lt;"
                         Foreground="#FFDDDDDD"/><Run 
-                        Text="+"
+                        Text="-"
                         Foreground="White"/>
                     <Run 
                         Text="Decrement the first cell"
