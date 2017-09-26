@@ -92,8 +92,7 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
             if (DatabaseConnection == null)
             {
                 // Get the local database file
-                StorageFile database = await ApplicationData.Current.LocalFolder.TryGetItemAsync(DatabaseFileName) as StorageFile;
-                if (database == null)
+                if (!(await ApplicationData.Current.LocalFolder.TryGetItemAsync(DatabaseFileName) is StorageFile database))
                 {
                     StorageFile cleanDatabase = await StorageFile.GetFileFromApplicationUriAsync(new Uri(CleanDatabaseUri));
                     database = await cleanDatabase.CopyAsync(ApplicationData.Current.LocalFolder, DatabaseFileName, NameCollisionOption.ReplaceExisting);
@@ -242,35 +241,53 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
             new SampleCodeRecord("ExecuteIfZero.txt", "if (x == 0) then { }",  Guid.Parse("6DABC8A8-E32C-49A1-A348-CF836FEF276D"))
         };
 
+        // Semaphore to synchronize the sample codes loading
+        private readonly SemaphoreSlim SampleCodesSemaphore = new SemaphoreSlim(1);
+
+        // A field to keep track of the code samples loading state
+        private bool _SamplesRefreshed;
+
         /// <summary>
         /// Refreshes the list of local code samples
         /// </summary>
         private async Task RefreshCodeSamplesAsync()
         {
             // Get the samples folder and iterate over the expected samples
-            await EnsureDatabaseConnectionAsync();
-            StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(SampleFilesPath);
-            foreach (SampleCodeRecord record in SamplesMap)
+            await SampleCodesSemaphore.WaitAsync();
+            if (!_SamplesRefreshed)
             {
-                // Get the source code file and look for an existing copy in the local database
-                StorageFile file = await folder.GetFileAsync(record.Filename);
-                String sUid = record.Uid.ToString();
-                SourceCode row = await DatabaseConnection.Table<SourceCode>().Where(entry => entry.Uid == sUid).FirstOrDefaultAsync();
-                if (row == null)
+                _SamplesRefreshed = true;
+                StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(SampleFilesPath);
+                foreach (SampleCodeRecord record in SamplesMap)
                 {
-                    // The code was missing, create a local copy in the database
+                    // Get the source code file and look for an existing copy in the local database
+                    StorageFile file = await folder.GetFileAsync(record.Filename);
                     String code = await FileIO.ReadTextAsync(file);
-                    row = new SourceCode
+                    String sUid = record.Uid.ToString();
+                    SourceCode row = await DatabaseConnection.Table<SourceCode>().Where(entry => entry.Uid == sUid).FirstOrDefaultAsync();
+                    if (row == null)
                     {
-                        Uid = record.Uid.ToString(),
-                        Title = record.FriendlyName,
-                        Code = code,
-                        CreatedTime = DateTime.Now,
-                        ModifiedTime = DateTime.Now
-                    };
-                    await DatabaseConnection.InsertAsync(row);
+                        // The code was missing, create a local copy in the database
+                        row = new SourceCode
+                        {
+                            Uid = record.Uid.ToString(),
+                            Title = record.FriendlyName,
+                            Code = code,
+                            CreatedTime = DateTime.Now,
+                            ModifiedTime = DateTime.Now
+                        };
+                        await DatabaseConnection.InsertAsync(row);
+                    }
+                    else if (!row.Code.Equals(code))
+                    {
+                        // Make sure the code is up to date
+                        row.Code = code;
+                        row.ModifiedTime = DateTime.Now;
+                        await DatabaseConnection.UpdateAsync(row);
+                    }
                 }
             }
+            SampleCodesSemaphore.Release();
         }
 
         #endregion
