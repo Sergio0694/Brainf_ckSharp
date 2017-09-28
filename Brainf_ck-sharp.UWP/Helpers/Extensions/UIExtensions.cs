@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using Windows.Foundation;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using JetBrains.Annotations;
@@ -107,5 +108,13 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
         {
             return element.TransformToVisual(Window.Current.Content).TransformPoint(new Point());
         }
+
+        /// <summary>
+        /// Returns a <see cref="SolidColorBrush"/> instance with the given color
+        /// </summary>
+        /// <param name="color">The source color</param>
+        [NotNull]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SolidColorBrush ToBrush(this Color color) => new SolidColorBrush(color);
     }
 }

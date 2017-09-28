@@ -46,28 +46,17 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
             // Raise the Esc event if needed
             if (args.VirtualKey == VirtualKey.Escape)
             {
-                if ((sender.GetKeyState(VirtualKey.LeftShift) & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down)
+                if ((sender.GetKeyState(VirtualKey.LeftShift) & CoreVirtualKeyStates.Down) != CoreVirtualKeyStates.Down)
                 {
-                    ShiftEsc?.Invoke(null, EventArgs.Empty);
+                    Esc?.Invoke(null, EventArgs.Empty);
                 }
-                else Esc?.Invoke(null, EventArgs.Empty);
                 return;
             }
 
             // Check if the events can be raised
-            if (modifier == VirtualKey.Control)
+            if (modifier == VirtualKey.Control && args.VirtualKey == VirtualKey.S)
             {
-                if (args.VirtualKey == VirtualKey.F) CtrlF?.Invoke(null, EventArgs.Empty);
-                else if (args.VirtualKey == VirtualKey.H) CtrlH?.Invoke(null, EventArgs.Empty);
-                else if (args.VirtualKey == VirtualKey.S) CtrlS?.Invoke(null, EventArgs.Empty);
-                else if (args.VirtualKey == VirtualKey.B) CtrlB?.Invoke(null, EventArgs.Empty);
-                else if (args.VirtualKey == VirtualKey.Q) CtrlQ?.Invoke(null, EventArgs.Empty);
-                else if (args.VirtualKey == VirtualKey.T) CtrlT?.Invoke(null, EventArgs.Empty);
-                else if (args.VirtualKey == VirtualKey.P)
-                {
-                    if ((sender.GetKeyState(VirtualKey.Menu) & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down) CtrlAltP?.Invoke(null, EventArgs.Empty);
-                    else CtrlP?.Invoke(null, EventArgs.Empty);
-                }
+                CtrlS?.Invoke(null, EventArgs.Empty);
             }
         }
 
@@ -79,49 +68,9 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
         public static event EventHandler Esc;
 
         /// <summary>
-        /// Raised whenever the user presses Ctrl + F
-        /// </summary>
-        public static event EventHandler CtrlF;
-
-        /// <summary>
         /// Raised whenever the user presses Ctrl + S
         /// </summary>
         public static event EventHandler CtrlS;
-
-        /// <summary>
-        /// Raised whenever the user presses Ctrl + H
-        /// </summary>
-        public static event EventHandler CtrlH;
-
-        /// <summary>
-        /// Raised whenever the user presses Ctrl + B
-        /// </summary>
-        public static event EventHandler CtrlB;
-
-        /// <summary>
-        /// Raised whenever the user presses Ctrl + Q
-        /// </summary>
-        public static event EventHandler CtrlQ;
-
-        /// <summary>
-        /// Raised whenever the user presses Ctrl + T
-        /// </summary>
-        public static event EventHandler CtrlT;
-
-        /// <summary>
-        /// Raised whenever the user presses Ctrl + P
-        /// </summary>
-        public static event EventHandler CtrlP;
-
-        /// <summary>
-        /// Raised whenever the user presses Ctrl + Alt + Q
-        /// </summary>
-        public static event EventHandler CtrlAltP;
-
-        /// <summary>
-        /// Raised whenever the user presses Shift + Esc
-        /// </summary>
-        public static event EventHandler ShiftEsc;
 
         #endregion
     }

@@ -34,7 +34,8 @@
             <!--Content-->
             <StackPanel
                 VerticalAlignment="Center"
-                HorizontalAlignment="Center">
+                HorizontalAlignment="Center"
+                x:Name="IconsPanel">
                 <TextBlock 
                     Text="+"
                     TextAlignment="Center"
@@ -48,6 +49,9 @@
                     Foreground="#80FFFFFF"
                     Margin="0,4,0,0"
                     FontWeight="SemiLight"
+                    MaxLines="1"
+                    TextWrapping="NoWrap"
+                    TextTrimming="CharacterEllipsis"
                     x:Name="InfoBlock"/>
             </StackPanel>
         </Grid>

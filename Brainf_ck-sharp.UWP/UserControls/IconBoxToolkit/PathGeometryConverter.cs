@@ -118,7 +118,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit
                         // XAML allows multiple points after M/m
                         _lastPoint = ReadPoint(cmd, !AllowComma);
 
-                        _figure = new PathFigure()
+                        _figure = new PathFigure
                         {
                             StartPoint = _lastPoint,
                             IsFilled = IsFilled,
@@ -133,7 +133,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit
                         {
                             _lastPoint = ReadPoint(cmd, !AllowComma);
 
-                            LineSegment _lineSegment = new LineSegment()
+                            LineSegment _lineSegment = new LineSegment
                             {
                                 Point = _lastPoint
                             };
@@ -163,7 +163,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit
                                 case 'V': _lastPoint.Y = ReadNumber(!AllowComma); break;
                             }
 
-                            LineSegment _lineSegment = new LineSegment()
+                            LineSegment _lineSegment = new LineSegment
                             {
                                 Point = _lastPoint
                             };
@@ -200,7 +200,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit
 
                             _lastPoint = ReadPoint(cmd, AllowComma);
 
-                            BezierSegment _bizierSegment = new BezierSegment()
+                            BezierSegment _bizierSegment = new BezierSegment
                             {
                                 Point1 = p,
                                 Point2 = _secondLastPoint,
@@ -235,7 +235,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit
                                 _lastPoint = ReadPoint(cmd, AllowComma);
                             }
 
-                            QuadraticBezierSegment _quadraticBezierSegment = new QuadraticBezierSegment()
+                            QuadraticBezierSegment _quadraticBezierSegment = new QuadraticBezierSegment
                             {
                                 Point1 = _secondLastPoint,
                                 Point2 = _lastPoint
@@ -263,7 +263,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit
 
                             _lastPoint = ReadPoint(cmd, AllowComma);
 
-                            ArcSegment _arcSegment = new ArcSegment()
+                            ArcSegment _arcSegment = new ArcSegment
                             {
                                 Point = _lastPoint,
                                 Size = new Size(w, h),
@@ -359,7 +359,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit
                 {
                     return false;
                 }
-                else if (_token == '1')
+                if (_token == '1')
                 {
                     return true;
                 }
@@ -380,7 +380,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit
         {
             if (!_figureStarted)
             {
-                _figure = new PathFigure()
+                _figure = new PathFigure
                 {
                     StartPoint = _lastStart
                 };
@@ -474,18 +474,15 @@ namespace Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit
 
                 return value * sign;
             }
-            else
-            {
-                string subString = _pathString.Substring(start, _curIndex - start);
+            string subString = _pathString.Substring(start, _curIndex - start);
 
-                try
-                {
-                    return System.Convert.ToDouble(subString, _formatProvider);
-                }
-                catch (FormatException except)
-                {
-                    throw new FormatException(string.Format("Unexpected character in path '{0}' at position {1}", _pathString, _curIndex - 1), except);
-                }
+            try
+            {
+                return System.Convert.ToDouble(subString, _formatProvider);
+            }
+            catch (FormatException except)
+            {
+                throw new FormatException(string.Format("Unexpected character in path '{0}' at position {1}", _pathString, _curIndex - 1), except);
             }
         }
 
@@ -539,10 +536,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit
 
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         bool More()
@@ -624,8 +618,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var path = value as string;
-            if (null != path)
+            if (value is String path)
                 return Convert(path);
             return null;
         }

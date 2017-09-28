@@ -10,7 +10,7 @@ using Brainf_ck_sharp_UWP.PopupService;
 using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
-using UICompositionAnimations.Helpers;
+using UICompositionAnimations.Helpers.PointerEvents;
 
 namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
 {
@@ -19,8 +19,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
         public KeyboardHeaderControl()
         {
             this.InitializeComponent();
-            AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.ByteOverflowModeEnabled), out bool overflow);
-            OverflowSwitchButton.IsChecked = overflow;
+            if (AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.ByteOverflowModeEnabled), out bool overflow) && overflow)
+            {
+                _ProgrammaticToggle = true;
+                OverflowSwitchButton.IsChecked = true;
+            }
             OverflowSwitchButton.ManageLightsPointerStates(value =>
             {
                 OverflowLightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 1, 200, null, EasingFunctionNames.Linear);
@@ -62,6 +65,9 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
         /// </summary>
         public void ResetStdin() => StdinBox.Text = String.Empty;
 
+        // Indicates whether or not the new toggle state was triggered by the code or by the user
+        private bool _ProgrammaticToggle;
+
         // Toggles the overflow mode currently selected
         private void ToggleOverflowMode()
         {
@@ -71,11 +77,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
             Messenger.Default.Send(new OverflowModeChangedMessage(overflow ? OverflowMode.ByteOverflow : OverflowMode.ShortNoOverflow));
 
             // Show the info message if needed
-            if (overflow && AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.OverflowToggleMessageShown), out bool shown) && !shown)
+            if (!_ProgrammaticToggle && overflow && 
+                AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.OverflowToggleMessageShown), out bool shown) && !shown)
             {
                 AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.OverflowToggleMessageShown), true, SettingSaveMode.OverwriteIfExisting);
                 FlyoutManager.Instance.Show(LocalizationManager.GetResource("OverflowMode"), LocalizationManager.GetResource("OverflowModeBody"));
             }
+            else if (_ProgrammaticToggle) _ProgrammaticToggle = false;
         }
     }
 }

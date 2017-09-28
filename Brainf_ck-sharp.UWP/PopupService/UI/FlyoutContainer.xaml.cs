@@ -11,12 +11,14 @@ using Brainf_ck_sharp_UWP.PopupService.Misc;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using Microsoft.Toolkit.Uwp;
+using Microsoft.Toolkit.Uwp.Helpers;
 using UICompositionAnimations;
 using UICompositionAnimations.Behaviours;
 using UICompositionAnimations.Behaviours.Effects;
 using UICompositionAnimations.Behaviours.Misc;
 using UICompositionAnimations.Enums;
-using UICompositionAnimations.Helpers;
+using UICompositionAnimations.Helpers.PointerEvents;
+using ColorHelper = Microsoft.Toolkit.Uwp.Helpers.ColorHelper;
 
 namespace Brainf_ck_sharp_UWP.PopupService.UI
 {
@@ -28,14 +30,9 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         /// <summary>
         /// Creates a new container that will load the desired background effect when displayed
         /// </summary>
-        /// <param name="tint">The optional tint color to use</param>
-        /// <param name="tintMix">The optional mix value for the background tint color</param>
-        public FlyoutContainer(Color? tint, float? tintMix)
+        public FlyoutContainer()
         {
-            TintColor = tint;
-            TintMix = tintMix;
             Unloaded += FlyoutContainer_Unloaded;
-            Loaded += FlyoutContainer_Loaded;
             this.InitializeComponent();
             ConfirmButton.ManageControlPointerStates((p, value) =>
             {
@@ -55,29 +52,9 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         {
             LoadingCanvas.RemoveFromVisualTree();
             LoadingCanvas = null;
-            Win2DCanvas.RemoveFromVisualTree();
-            Win2DCanvas = null;
             _DetachContent?.Invoke();
             _DetachContent = null;
             _Content = null;
-        }
-
-        // The in-app acrylic brush for the background of the popup
-        private AttachedAnimatableCompositionEffect<Border> _LoadingAcrylic;
-
-        // The optional custom tint color for the popup background
-        private readonly Color? TintColor;
-
-        // The optional custom tint mix level for the popup background
-        private readonly float? TintMix;
-
-        // Initializes the acrylic effect
-        private async void FlyoutContainer_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Background effect
-            await BlurBorder.AttachCompositionInAppCustomAcrylicEffectAsync(BlurBorder, 8, 800,
-                TintColor ?? Color.FromArgb(byte.MaxValue, 0x1B, 0x1B, 0x1B), TintMix ?? 0.8f, null,
-                Win2DCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: true);
         }
 
         /// <summary>
@@ -102,7 +79,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         /// </summary>
         /// <param name="confirm">The text of the button</param>
         /// <param name="color">The optional background color for the confirm button</param>
-        public void SetupUI([NotNull] String confirm, [CanBeNull] Color? color)
+        public void SetupButtonsUI([NotNull] String confirm, [CanBeNull] Color? color)
         {
             ConfirmBlock.Text = confirm;
             if (color != null)
@@ -110,7 +87,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
                 DefaultSetter.Value = new SolidColorBrush(color.Value);
                 HslColor hsl = color.Value.ToHsl();
                 hsl.L = hsl.L + 0.1 > 1 ? 1 : hsl.L + 0.1;
-                HighlightSetter.Value = new SolidColorBrush(Microsoft.Toolkit.Uwp.ColorHelper.FromHsl(hsl.H, hsl.S, hsl.L, hsl.A));
+                HighlightSetter.Value = new SolidColorBrush(ColorHelper.FromHsl(hsl.H, hsl.S, hsl.L, hsl.A));
                 ButtonContentGrid.Background = new SolidColorBrush(color.Value);
             }
             ConfirmButton.IsEnabled = true;
@@ -151,6 +128,9 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             _DetachContent = () => ContentScroller.Content = content;
             InterfacesSetup();
         }
+
+        // The in-app acrylic brush for the background of the popup
+        private AttachedAnimatableCompositionEffect<Border> _LoadingAcrylic;
 
         /// <summary>
         /// Adjusts the UI according to the interfaces implemented by the current content

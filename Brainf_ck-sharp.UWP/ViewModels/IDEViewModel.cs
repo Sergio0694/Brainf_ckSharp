@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Text;
 using Brainf_ck_sharp;
@@ -9,6 +10,7 @@ using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.EventArgs;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
+using Brainf_ck_sharp_UWP.DataModels.Misc.CharactersInfo;
 using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
@@ -53,6 +55,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             Document = document;
             SaveNameSelector = nameSelector;
             BreakpointsExtractor = breakpointsExtractor;
+            Messenger.Default.Register<IDEAutosaveTriggeredMessage>(this, async m =>
+            {
+                await TryAutosaveAsync();
+                m.ReportAutosaveCompleted();
+            });
         }
 
         // Indicates whether or not the view model instance hasn't already been enabled before
@@ -84,6 +91,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                             _CategorizedCode = m.RequestedCode;
                             LoadedCodeChanged?.Invoke(this, m.RequestedCode.Code);
                             Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(m.RequestedCode.Type != SavedSourceCodeType.Sample, true));
+                            Messenger.Default.Send(new IDEPendingChangesStatusChangedMessage(false));
                         });
                         Messenger.Default.Register<IDEDeleteCharacterRequestMessage>(this, m =>
                         {
@@ -161,6 +169,27 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         }
 
         /// <summary>
+        /// Autosaves the current code file, if there's a loaded document in the IDE
+        /// </summary>
+        private async Task TryAutosaveAsync()
+        {
+            // State check
+            if (LoadedCode == null) return;
+
+            // Get the text and the breakpoints
+            Document.GetText(TextGetOptions.None, out String text);
+            IReadOnlyCollection<int>
+                raw = BreakpointsExtractor(),
+                breakpoints = raw.Count > 0 ? raw : null;
+            if (text[text.Length - 1] == '\r') text = text.Substring(0, text.Length - 1); // Remove final '\r' to avoid addednew lines
+
+            // Save the file as requested
+            await SQLiteManager.Instance.SaveCodeAsync(LoadedCode, text, breakpoints);
+            UpdateGitDiffStatusOnSave();
+            Messenger.Default.Send(new IDEPendingChangesStatusChangedMessage(false));
+        }
+
+        /// <summary>
         /// Saves the current source code in the database
         /// </summary>
         /// <param name="type">The requested save operation</param>
@@ -204,6 +233,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
+            Messenger.Default.Send(new IDEPendingChangesStatusChangedMessage(false));
         }
 
         // Indicates whether or not the IDE contains at least a valid operator
@@ -313,97 +343,241 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 
         #region Indentation info
 
+        // The local backup of the brackets info
+        [CanBeNull]
+        private IReadOnlyList<CharacterWithCoordinates> _Brackets;
+
+        // Synchronization semaphore for the brackets field
+        private readonly SemaphoreSlim BracketsSemaphore = new SemaphoreSlim(1);
+
         /// <summary>
         /// Updates the indentation info for a given state
         /// </summary>
         /// <param name="brackets">The collection of brackets and their position in the current text</param>
-        public async Task UpdateIndentationInfo([CanBeNull] IReadOnlyList<IndentationCoordinateEntry> brackets)
+        public async Task UpdateIndentationInfo([CanBeNull] IReadOnlyList<CharacterWithCoordinates> brackets)
         {
-            // // Check the info is available
+            // Lock
+            await BracketsSemaphore.WaitAsync();
+
+            // Check the info is available
             if (brackets == null || brackets.Count == 0)
             {
                 Source.Clear();
+                _Brackets = null;
+                BracketsSemaphore.Release();
                 return;
             }
 
             // Prepare the updated source collection
             List<IDEIndentationLineInfo> source = await Task.Run(() =>
             {
+                // Repetition check
+                if (_Brackets != null && _Brackets.Count == brackets.Count)
+                {
+                    bool equals = true;
+                    for (int i = 0; i < brackets.Count; i++)
+                    {
+                        CharacterWithCoordinates
+                            backup = _Brackets[i],
+                            local = brackets[i];
+                        if (backup.Character != local.Character ||
+                            backup.Position.Y != local.Position.Y)
+                        {
+                            equals = false;
+                            break;
+                        }
+                    }
+                    if (equals) return null;
+                    _Brackets = brackets;
+                }
+                else _Brackets = brackets;
+
                 // Get the max reached line number
                 int max = brackets.Max(entry => entry.Position.Y);
 
                 // Updates the indentation info displayed on the IDE
                 List<IDEIndentationLineInfo> temp = new List<IDEIndentationLineInfo>();
-                uint depth = 0;
+                uint depth = 0, nested = 0;
+                bool function = false;
                 for (int i = 1; i <= max; i++)
                 {
                     // Parse the first item
-                    IReadOnlyList<IndentationCoordinateEntry> entries = brackets.Where(info => info.Position.Y == i).ToArray();
+                    IReadOnlyList<CharacterWithCoordinates> entries = brackets.Where(info => info.Position.Y == i).ToArray();
                     if (entries.Count == 0)
                     {
-                        temp.Add(new IDEIndentationLineInfo(depth == 0 ? IDEIndentationInfoLineType.Empty : IDEIndentationInfoLineType.Straight));
+                        // No brackets on the current line: keep the current state
+                        temp.Add(new IDEIndentationLineInfo(depth == 0 && nested == 0 ? IDEIndentationInfoLineType.Empty : IDEIndentationInfoLineType.Straight));
                     }
-                    else if (entries.Count > 1 && entries.Sum(entry => entry.Bracket == '[' ? 1 : -1) == 0)
+                    else if (entries.Count == 1)
                     {
-                        // Edge case: multiple brackets opened and closed on the same line
-                        temp.Add(new IDEIndentationOpenBracketLineInfo(depth + 1, true));
-                        continue;
-                    }
-                    else if (entries[0].Bracket == '[')
-                    {
-                        depth++;
-                        temp.Add(new IDEIndentationOpenBracketLineInfo(depth, false));
-                    }
-                    else if (entries[0].Bracket == ']')
-                    {
-                        depth--;
-                        temp.Add(new IDEIndentationLineInfo(IDEIndentationInfoLineType.ClosedBracket));
-                    }
-
-                    // Edge case, multiple brackets on the same line
-                    if (entries.Count > 1)
-                    {
-                        foreach (IndentationCoordinateEntry entry in entries.Skip(1))
+                        // Display the single bracket on the line
+                        switch (entries[0].Character)
                         {
-                            if (entry.Bracket == '[') depth++;
-                            else if (entry.Bracket == ']') depth--;
+                            case '[':
+                                temp.Add(new IDEIndentationOpenLoopBracketLineInfo(function ? ++nested : ++depth, false,
+                                    function ? IDEIndentationInfoOpenLoopBracketType.InFunction : IDEIndentationInfoOpenLoopBracketType.Default));
+                                break;
+                            case ']':
+                                if (function) nested--;
+                                else depth--;
+                                temp.Add(new IDEIndentationLineInfo(IDEIndentationInfoLineType.ClosedBracket));
+                                break;
+                            case '(':
+                                function = true;
+                                temp.Add(new IDEIndentationFunctionBracketInfo(depth > 0, IDEIndentationInfoLineType.OpenFunctionBracket));
+                                break;
+                            case ')':
+                                function = false;
+                                temp.Add(new IDEIndentationLineInfo(IDEIndentationInfoLineType.ClosedBracket));
+                                break;
+                            default:
+                                throw new InvalidOperationException("Invalid bracket character");
                         }
+                    }
+                    else if (entries.Count == 2 && entries[0].Character == '(' && entries[1].Character == ')')
+                    {
+                        // Standalone function on a single line
+                        temp.Add(new IDEIndentationFunctionBracketInfo(depth > 0, IDEIndentationInfoLineType.SelfContainedFunction));
+                    }
+                    else if (entries.Count == 2 && entries[0].Character == '[' && entries[1].Character == ']')
+                    {
+                        // Standalone function on a single line
+                        temp.Add(new IDEIndentationOpenLoopBracketLineInfo(depth + 1, true,
+                            function ? IDEIndentationInfoOpenLoopBracketType.InFunction : IDEIndentationInfoOpenLoopBracketType.Default));
+                    }
+                    else if (!entries.Any(e => e.Character == '(' || e.Character == ')'))
+                    {
+                        // Function to calculate the updated depth
+                        uint CalculateAndShowDepth(uint target)
+                        {
+                            int sum = entries.Sum(e => e.Character == '[' ? 1 : -1);
+                            if ((int)target + sum < 0) throw new InvalidOperationException("Invalid brackets sequence");
+                            uint final = (uint)((int)target + sum);
+                            if (target == 0 && final == 0)
+                            {
+                                // Brackets opened and closed on the same line
+                                IDEIndentationInfoOpenLoopBracketType type;
+                                if (function) type = IDEIndentationInfoOpenLoopBracketType.InFunction;
+                                else if (depth > 0) type = IDEIndentationInfoOpenLoopBracketType.Nested;
+                                else type = IDEIndentationInfoOpenLoopBracketType.Default;
+                                temp.Add(new IDEIndentationOpenLoopBracketLineInfo(target + 1, true, type));
+                                return final;
+                            }
+                            if (final == 0) temp.Add(new IDEIndentationLineInfo(IDEIndentationInfoLineType.ClosedBracket)); // All brackets closed
+                            else if (final >= target)
+                            {
+                                IDEIndentationInfoOpenLoopBracketType type;
+                                if (function) type = IDEIndentationInfoOpenLoopBracketType.InFunction;
+                                else if (target > 0) type = IDEIndentationInfoOpenLoopBracketType.Nested;
+                                else type = IDEIndentationInfoOpenLoopBracketType.Default;
+                                temp.Add(new IDEIndentationOpenLoopBracketLineInfo(final, false, type)); // New indentation level
+                            }
+                            else temp.Add(new IDEIndentationLineInfo(IDEIndentationInfoLineType.ClosedBracket)); // Indentation depth decreased
+                            return final;
+                        }
+
+                        // Display the right depth level
+                        if (function) nested = CalculateAndShowDepth(nested);
+                        else depth = CalculateAndShowDepth(depth);
+                    }
+                    else
+                    {
+                        // Calculate the final state at the end of the line
+                        bool call = function, open = false, definition = false;
+                        uint backup = depth;
+                        foreach (CharacterWithCoordinates info in entries)
+                        {
+                            switch (info.Character)
+                            {
+                                case '[':
+                                    if (function) nested++;
+                                    else depth++;
+                                    break;
+                                case ']':
+                                    if (function) nested--;
+                                    else depth--;
+                                    break;
+                                case '(':
+                                    function = true;
+                                    open = true;
+                                    break;
+                                case ')':
+                                    function = false;
+                                    if (open) definition = true;
+                                    break;
+                                default:
+                                    throw new InvalidOperationException("Invalid bracket character");
+                            }
+                        }
+
+                        // Display the right indicator
+                        if (call && !function)
+                        {
+                            // Previous call to function, now closed
+                            if (definition)
+                            {
+                                // A new function has the precedence
+                                temp.Add(new IDEIndentationFunctionBracketInfo(depth > 0, IDEIndentationInfoLineType.SelfContainedFunction));
+                            }
+                            else if (depth > 0 && backup != depth)
+                            {
+                                // New depth level
+                                temp.Add(new IDEIndentationOpenLoopBracketLineInfo(depth, false, IDEIndentationInfoOpenLoopBracketType.Nested));
+                            }
+                            else temp.Add(new IDEIndentationLineInfo(IDEIndentationInfoLineType.ClosedBracket)); // No indentation
+                        }
+                        else if (!call && function)
+                        {
+                            // Not in a call, but new function invoked on this line
+                            temp.Add(definition 
+                                ? new IDEIndentationFunctionBracketInfo(depth > 0, IDEIndentationInfoLineType.SelfContainedFunction)  // Self-contained precedence
+                                : new IDEIndentationFunctionBracketInfo(depth > 0, IDEIndentationInfoLineType.OpenFunctionBracket));  // New function call otherwise
+                        }
+                        else if (definition && !function)
+                        {
+                            // Precedence for the standalone function
+                            temp.Add(new IDEIndentationFunctionBracketInfo(depth > 0, IDEIndentationInfoLineType.SelfContainedFunction));
+                        }
+                        else if (function) temp.Add(new IDEIndentationFunctionBracketInfo(depth > 0, IDEIndentationInfoLineType.OpenFunctionBracket));
+                        else throw new InvalidOperationException("There must be either a ( or ) character at this point");
                     }
                 }
                 return temp;
             });
-            
-            // Update the source collection
-            for (int i = 0; i < source.Count; i++)
+
+            // Update the UI if needed
+            if (source != null)
             {
-                // The source doesn't contain enough items
-                if (Source.Count - 1 < i)
+                // Update the source collection
+                for (int i = 0; i < source.Count; i++)
                 {
-                    Source.Add(source[i]);
+                    // The source doesn't contain enough items
+                    if (Source.Count - 1 < i)
+                    {
+                        Source.Add(source[i]);
+                    }
+
+                    // Replace the current item if needed
+                    IDEIndentationLineInfo
+                        previous = Source[i],
+                        next = source[i];
+
+                    // Check the current swap
+                    if (previous.Equals(next)) continue;
+                    Source[i] = source[i];
                 }
 
-                // Replace the current item if needed
-                IDEIndentationLineInfo
-                    previous = Source[i],
-                    next = source[i];
-
-                if (previous is IDEIndentationOpenBracketLineInfo info &&
-                    next is IDEIndentationOpenBracketLineInfo updated
-                    ? info.Depth == updated.Depth
-                    : previous.LineType == next.LineType)
+                // Remove the exceeding items
+                int diff = Source.Count - source.Count;
+                while (diff > 0)
                 {
-                    continue;
+                    Source.RemoveAt(Source.Count - 1);
+                    diff--;
                 }
-                Source[i] = source[i];
             }
 
-            // Remove the exceeding items
-            int diff = Source.Count - source.Count;
-            while (diff > 0)
-            {
-                Source.RemoveAt(Source.Count - 1);
-                diff--;
-            }
+            // Release
+            BracketsSemaphore.Release();
         }
 
         #endregion
@@ -435,6 +609,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             if (previous.Equals(current))
             {
                 DiffStatusSource.Clear();
+                Messenger.Default.Send(new IDEPendingChangesStatusChangedMessage(false));
                 return;
             }
 
@@ -478,6 +653,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 DiffStatusSource.RemoveAt(DiffStatusSource.Count - 1);
                 diff--;
             }
+            Messenger.Default.Send(new IDEPendingChangesStatusChangedMessage(source.Any(state => state == GitDiffLineStatus.Edited)));
         }
 
         #endregion

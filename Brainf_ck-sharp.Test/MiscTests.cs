@@ -11,13 +11,52 @@ namespace Brainf_ck_sharp_Test
     public class MiscTests
     {
         [TestMethod]
+        public void StackTrace1()
+        {
+            const String script = ">+++[>++-[>>+>>>>-]]";
+            InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NegativeValue));
+            Assert.AreEqual(result.Output, String.Empty);
+            Assert.IsTrue(result.ExceptionInfo?.StackTrace.Count == 3);
+        }
+
+        [TestMethod]
+        public void StackTrace2()
+        {
+            String[] script = { ">+++[>++-[>>", "+]]"};
+            InterpreterExecutionSession result = Brainf_ckInterpreter.InitializeSession(script, String.Empty);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                          result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.NoOutput) &&
+                          result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached));
+            Assert.AreEqual(result.CurrentResult.Output, String.Empty);
+            Assert.IsTrue(result.CurrentResult.ExceptionInfo?.StackTrace.Count == 3);
+        }
+
+        [TestMethod]
+        public void StackTrace3()
+        {
+            String[] script = { "(>>>+", "++)>+++[>++-[>>+>>>>>:]]" };
+            InterpreterExecutionSession result = Brainf_ckInterpreter.InitializeSession(script, String.Empty);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                          result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.NoOutput) &&
+                          result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.BreakpointReached));
+            Assert.AreEqual(result.CurrentResult.Output, String.Empty);
+            Assert.IsTrue(result.CurrentResult.ExceptionInfo?.StackTrace.Count == 4);
+        }
+
+        [TestMethod]
         public void TotalOperations1()
         {
             const String script = "+++++";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success) &&
-                          result.HasFlag(InterpreterExitCode.NoOutput));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.IsTrue(result.TotalOperations == 5);
         }
@@ -28,8 +67,8 @@ namespace Brainf_ck_sharp_Test
             const String script = "++[-]";
             InterpreterResult result = Brainf_ckInterpreter.Run(script,String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success) &&
-                          result.HasFlag(InterpreterExitCode.NoOutput));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.IsTrue(result.TotalOperations == 7);
         }
@@ -40,8 +79,8 @@ namespace Brainf_ck_sharp_Test
             const String script = "++[>++[>+<-]<-]";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success) &&
-                          result.HasFlag(InterpreterExitCode.NoOutput));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.IsTrue(result.TotalOperations == 37);
         }
@@ -52,14 +91,15 @@ namespace Brainf_ck_sharp_Test
             String[] script = { "[.", ",]++[>++[>+<", "-]<-]" };
             InterpreterResult result = Brainf_ckInterpreter.Run(script.Aggregate(String.Empty, (s, v) => s + v), String.Empty);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.HasFlag(InterpreterExitCode.Success) &&
-                          result.HasFlag(InterpreterExitCode.NoOutput));
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
             Assert.AreEqual(result.Output, String.Empty);
             Assert.IsTrue(result.TotalOperations == 38);
             InterpreterExecutionSession
                 session = Brainf_ckInterpreter.InitializeSession(script, String.Empty),
-                completion = session.RunToCompletion();
-            while (session.CanContinue) session = session.Continue();
+                completion = Brainf_ckInterpreter.InitializeSession(script, String.Empty);
+            while (session.CanContinue) session.Continue();
+            completion.RunToCompletion();
             Assert.IsTrue(completion.CurrentResult.TotalOperations == 38);
             Assert.IsTrue(session.CurrentResult.TotalOperations == 38);
         }
@@ -72,8 +112,9 @@ namespace Brainf_ck_sharp_Test
             Assert.IsTrue(test.TotalOperations == 13);
             InterpreterExecutionSession
                 session = Brainf_ckInterpreter.InitializeSession(script, String.Empty),
-                completion = session.RunToCompletion();
-            while (session.CanContinue) session = session.Continue();
+                completion = Brainf_ckInterpreter.InitializeSession(script, String.Empty);
+            while (session.CanContinue) session.Continue();
+            completion.RunToCompletion();
             Assert.IsTrue(completion.CurrentResult.TotalOperations == 13);
             Assert.IsTrue(session.CurrentResult.TotalOperations == 13);
         }
@@ -85,8 +126,9 @@ namespace Brainf_ck_sharp_Test
             InterpreterResult test = Brainf_ckInterpreter.Run(script.Aggregate(String.Empty, (s, g) => s + g), String.Empty);
             InterpreterExecutionSession
                 session = Brainf_ckInterpreter.InitializeSession(script, String.Empty),
-                completion = session.RunToCompletion();
-            while (session.CanContinue) session = session.Continue();
+                completion = Brainf_ckInterpreter.InitializeSession(script, String.Empty);
+            while (session.CanContinue) session.Continue();
+            completion.RunToCompletion();
             Assert.IsTrue(completion.CurrentResult.TotalOperations == test.TotalOperations);
             Assert.IsTrue(session.CurrentResult.TotalOperations == test.TotalOperations);
         }
@@ -98,8 +140,9 @@ namespace Brainf_ck_sharp_Test
             InterpreterResult test = Brainf_ckInterpreter.Run(script.Aggregate(String.Empty, (s, g) => s + g), String.Empty);
             InterpreterExecutionSession
                 session = Brainf_ckInterpreter.InitializeSession(script, String.Empty),
-                completion = session.RunToCompletion();
-            while (session.CanContinue) session = session.Continue();
+                completion = Brainf_ckInterpreter.InitializeSession(script, String.Empty);
+            while (session.CanContinue) session.Continue();
+            completion.RunToCompletion();
             Assert.IsTrue(completion.CurrentResult.TotalOperations == test.TotalOperations);
             Assert.IsTrue(session.CurrentResult.TotalOperations == test.TotalOperations);
         }
@@ -111,12 +154,77 @@ namespace Brainf_ck_sharp_Test
             InterpreterResult test = Brainf_ckInterpreter.Run(hello.Aggregate(String.Empty, (s, g) => s + g), String.Empty);
             InterpreterExecutionSession
                 session = Brainf_ckInterpreter.InitializeSession(hello, String.Empty),
-                skip2 = session.Continue().Continue().RunToCompletion(),
-                completion = session.RunToCompletion();
-            while (session.CanContinue) session = session.Continue();
+                skip2 = Brainf_ckInterpreter.InitializeSession(hello, String.Empty),
+                completion = Brainf_ckInterpreter.InitializeSession(hello, String.Empty);
+            while (session.CanContinue) session.Continue();
+            skip2.Continue();
+            skip2.Continue();
+            skip2.RunToCompletion();
+            completion.RunToCompletion();
             Assert.IsTrue(completion.CurrentResult.TotalOperations == test.TotalOperations);
             Assert.IsTrue(session.CurrentResult.TotalOperations == test.TotalOperations);
             Assert.IsTrue(skip2.CurrentResult.TotalOperations == test.TotalOperations);
+        }
+
+        [TestMethod]
+        public void TotalOperationsSmall()
+        {
+            String[] hello = { "++[", "-]" };
+            InterpreterExecutionSession session = Brainf_ckInterpreter.InitializeSession(hello, "€");
+            while (session.CanContinue) session.Continue();
+            Assert.IsTrue(session.CurrentResult.TotalOperations == 7);
+        }
+
+        [TestMethod]
+        public void TotalOperationsOptimized1()
+        {
+            const int operations = 16730;
+            String[] hello = { ",[-", "]" };
+            InterpreterResult test = Brainf_ckInterpreter.Run(hello.Aggregate(String.Empty, (s, g) => s + g), "€");
+            Assert.IsTrue(test.TotalOperations == operations);
+            InterpreterExecutionSession session = Brainf_ckInterpreter.InitializeSession(hello, "€");
+            while (session.CanContinue) session.Continue();
+            Assert.IsTrue(session.CurrentResult.TotalOperations == operations);
+        }
+
+        [TestMethod]
+        public void TotalOperationsOptimized2()
+        {
+            const int operations = 33482;
+            String[] hello = { ",+++[-", "]>+,++[", "-]++++." };
+            InterpreterResult test = Brainf_ckInterpreter.Run(hello.Aggregate(String.Empty, (s, g) => s + g), "€€");
+            Assert.IsTrue(test.TotalOperations == operations);
+            InterpreterExecutionSession
+                session = Brainf_ckInterpreter.InitializeSession(hello, "€€"),
+                skip = Brainf_ckInterpreter.InitializeSession(hello, "€€"),
+                completion = Brainf_ckInterpreter.InitializeSession(hello, "€€");
+            while (session.CanContinue) session.Continue();
+            skip.Continue();
+            skip.RunToCompletion();
+            completion.RunToCompletion();
+            Assert.IsTrue(completion.CurrentResult.TotalOperations == test.TotalOperations);
+            Assert.IsTrue(session.CurrentResult.TotalOperations == test.TotalOperations);
+            Assert.IsTrue(skip.CurrentResult.TotalOperations == test.TotalOperations);
+        }
+
+        [TestMethod]
+        public void TotalOperationsOptimized3()
+        {
+            String[] hello = { ",+++[-]", ">+++[-]", ",[", "-],[-", "]" };
+            InterpreterResult test = Brainf_ckInterpreter.Run(hello.Aggregate(String.Empty, (s, g) => s + g), "€€€");
+            InterpreterExecutionSession
+                session = Brainf_ckInterpreter.InitializeSession(hello, "€€€"),
+                skip = Brainf_ckInterpreter.InitializeSession(hello, "€€€"),
+                completion = Brainf_ckInterpreter.InitializeSession(hello, "€€€");
+            while (session.CanContinue) session.Continue();
+            skip.Continue();
+            skip.Continue();
+            skip.Continue();
+            skip.RunToCompletion();
+            completion.RunToCompletion();
+            Assert.IsTrue(completion.CurrentResult.TotalOperations == test.TotalOperations);
+            Assert.IsTrue(session.CurrentResult.TotalOperations == test.TotalOperations);
+            Assert.IsTrue(skip.CurrentResult.TotalOperations == test.TotalOperations);
         }
 
         [TestMethod]
@@ -127,9 +235,13 @@ namespace Brainf_ck_sharp_Test
             InterpreterResult test = Brainf_ckInterpreter.Run(script.Aggregate(String.Empty, (s, g) => s + g), argument);
             InterpreterExecutionSession
                 session = Brainf_ckInterpreter.InitializeSession(script, argument),
-                skip2 = session.Continue().Continue().RunToCompletion(),
-                completion = session.RunToCompletion();
-            while (session.CanContinue) session = session.Continue();
+                skip2 = Brainf_ckInterpreter.InitializeSession(script, argument),
+                completion = Brainf_ckInterpreter.InitializeSession(script, argument);
+            while (session.CanContinue) session.Continue();
+            skip2.Continue();
+            skip2.Continue();
+            skip2.RunToCompletion();
+            completion.RunToCompletion();
             Assert.AreEqual(test.Output, result);
             Assert.AreEqual(completion.CurrentResult.Output, result);
             Assert.AreEqual(skip2.CurrentResult.Output, result);
@@ -147,9 +259,13 @@ namespace Brainf_ck_sharp_Test
             InterpreterResult test = Brainf_ckInterpreter.Run(script.Aggregate(String.Empty, (s, g) => s + g), argument);
             InterpreterExecutionSession
                 session = Brainf_ckInterpreter.InitializeSession(script, argument),
-                skip2 = session.Continue().Continue().RunToCompletion(),
-                completion = session.RunToCompletion();
-            while (session.CanContinue) session = session.Continue();
+                skip2 = Brainf_ckInterpreter.InitializeSession(script, argument),
+                completion = Brainf_ckInterpreter.InitializeSession(script, argument);
+            while (session.CanContinue) session.Continue();
+            skip2.Continue();
+            skip2.Continue();
+            skip2.RunToCompletion();
+            completion.RunToCompletion();
             Assert.AreEqual(test.Output, result);
             Assert.AreEqual(completion.CurrentResult.Output, result);
             Assert.AreEqual(skip2.CurrentResult.Output, result);
@@ -157,6 +273,21 @@ namespace Brainf_ck_sharp_Test
             Assert.IsTrue(completion.CurrentResult.TotalOperations == test.TotalOperations);
             Assert.IsTrue(session.CurrentResult.TotalOperations == test.TotalOperations);
             Assert.IsTrue(skip2.CurrentResult.TotalOperations == test.TotalOperations);
+        }
+
+        [TestMethod]
+        public void TotalOperations9()
+        {
+            const String script = "+>[+++-[++>>>]]+";
+            InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
+                          result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
+            Assert.AreEqual(result.Output, String.Empty);
+            Assert.IsTrue(result.TotalOperations == 4);
+            InterpreterExecutionSession session = Brainf_ckInterpreter.InitializeSession(new[] { "+>[+++", "-[++>>>]]+" }, String.Empty);
+            Assert.IsTrue(!session.CanContinue);
+            Assert.IsTrue(session.CurrentResult.TotalOperations == result.TotalOperations);
         }
     }
 }

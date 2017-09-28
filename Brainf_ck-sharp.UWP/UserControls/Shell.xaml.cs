@@ -1,31 +1,36 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
-using Windows.UI;
+using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo;
+using Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState;
+using Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide;
 using Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations;
-using UICompositionAnimations.Behaviours;
+using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers;
+using UICompositionAnimations.Helpers.PointerEvents;
 using MemoryViewerFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState.MemoryViewerFlyout;
+using SettingsPanelFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings.SettingsPanelFlyout;
 
 namespace Brainf_ck_sharp_UWP.UserControls
 {
@@ -48,36 +53,67 @@ namespace Brainf_ck_sharp_UWP.UserControls
             DataContext = new ShellViewModel(() =>
             {
                 String stdin = StdinHeader.StdinBuffer;
-                StdinHeader.ResetStdin();
+                if (AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.ClearStdinBufferOnExecution), out bool reset) && reset)
+                {
+                    StdinHeader.ResetStdin();
+                }
                 return stdin;
             });
             Console.ViewModel.IsEnabled = true;
 
-            // Hide the title placeholder if needed
+            // Apply the in-app blur on mobile devices
             if (ApiInformationHelper.IsMobileDevice)
             {
-                PCPlaceholderGrid.Visibility = Visibility.Collapsed;
-                KeyboardCanvas.Visibility = Visibility.Collapsed;
-                KeyboardBorder.Visibility = Visibility.Collapsed;
+                HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>("HeaderInAppAcrylicBrush");
+            }
+            else
+            {
+                // Apply the desired blur effect
+                AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.InAppBlurMode), out int blurMode);
+                HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(blurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
             }
 
             // Flyout management
             Messenger.Default.Register<FlyoutOpenedMessage>(this, m => ManageFlyoutUI(true));
             Messenger.Default.Register<FlyoutClosedNotificationMessage>(this, m => ManageFlyoutUI(false));
             Messenger.Default.Register<AppLoadingStatusChangedMessage>(this, m => ManageLoadingUI(m.Loading));
+            Messenger.Default.Register<BlurModeChangedMessage>(this, m =>
+            {
+                if (!ApiInformationHelper.IsMobileDevice)
+                {
+                    HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(m.BlurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
+                }
+            });
         }
 
         public ShellViewModel ViewModel => DataContext.To<ShellViewModel>();
 
         #region UI
 
+        /// <summary>
+        /// Sets whether or not the status bar placeholder for Windows 10 Mobile devices should be displayed
+        /// </summary>
+        /// <param name="show">The new value for the placeholder visibility</param>
+        public void ShowStatusBarPlaceholder(bool show)
+        {
+            StatusBarPlaceholder.Visibility = show.ToVisibility();
+            HeaderGrid.Measure(new Size(ActualWidth, double.PositiveInfinity));
+            double height = HeaderGrid.DesiredSize.Height;
+            Console.AdjustTopMargin(height + 8);
+            IDE.RefreshTopMargin(height);
+        }
+
         // The current loading popup
         private Popup _LoadingPopup;
+
+        // The semaphore to avoid race conditions with the loading popup
+        private readonly SemaphoreSlim LoadingSemaphore = new SemaphoreSlim(1);
 
         // Manages the loading UI
         private async void ManageLoadingUI(bool loading)
         {
             // Prepare and open a popup to cover the UI while the app is loading
+            await LoadingSemaphore.WaitAsync();
             if (loading)
             {
                 if (_LoadingPopup != null) return;
@@ -100,6 +136,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                     _LoadingPopup = null;
                 }
             }
+            LoadingSemaphore.Release();
         }
 
         // Adjusts the UI when a flyout is displayed in the app
@@ -113,38 +150,16 @@ namespace Brainf_ck_sharp_UWP.UserControls
         private const int StartupPromptsPopupDelay = 1400;
 
         // Initialize the effects
-        private async void Shell_Loaded(object sender, RoutedEventArgs e)
+        private void Shell_Loaded(object sender, RoutedEventArgs e)
         {
             // UI setup
             FadeCanvas.SetVisualOpacity(0);
             Messenger.Default.Send(new ConsoleStatusUpdateMessage(IDEStatus.Console, LocalizationManager.GetResource("Ready"), 0, 0));
-            Console.AdjustTopMargin(HeaderGrid.ActualHeight + 8);
-            IDE.AdjustTopMargin(HeaderGrid.ActualHeight);
-            if (ApiInformationHelper.IsMobileDevice)
-            {
-                await HeaderBorder.AttachCompositionInAppCustomAcrylicEffectAsync(HeaderBorder, 8, 800,
-                    Color.FromArgb(byte.MaxValue, 30, 30, 30), 0.6f, null,
-                    HeaderCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
-                OperatorsKeyboard.Background = new SolidColorBrush(Color.FromArgb(byte.MaxValue, 10, 10, 10));
-            }
-            else
-            {
-                await HeaderBorder.AttachCompositionCustomAcrylicEffectAsync(Color.FromArgb(byte.MaxValue, 30, 30, 30), 0.8f,
-                    HeaderCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
-                await KeyboardBorder.AttachCompositionCustomAcrylicEffectAsync(Color.FromArgb(byte.MaxValue, 16, 16, 16), 0.95f,
-                    KeyboardCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"));
-            }
-
-            // Disable the swipe gestures in the keyboard pivot
-            ScrollViewer scroller = CommandsPivot.FindChild<ScrollViewer>();
-            if (scroller != null)
-            {
-                scroller.PointerEntered += Scroller_PointerIn;
-                scroller.PointerMoved += Scroller_PointerIn;
-                scroller.PointerExited += Scroller_PointerOut;
-                scroller.PointerReleased += Scroller_PointerOut;
-                scroller.PointerCaptureLost += Scroller_PointerOut;
-            }
+            StatusBarPlaceholder.Visibility = (StatusBarHelper.OccludedHeight > 0).ToVisibility();
+            HeaderGrid.Measure(new Size(ActualWidth, double.PositiveInfinity));
+            double height = HeaderGrid.DesiredSize.Height;
+            Console.AdjustTopMargin(height + 8);
+            IDE.AdjustTopMargin(height);
 
             // Light border UI
             ExpanderControl.FindChild<Button>("ExpanderStateButton").ManageLightsPointerStates(value =>
@@ -154,8 +169,15 @@ namespace Brainf_ck_sharp_UWP.UserControls
             });
 
             // Popups
-            ShowStartupPopups();
+            if (!_StartupMessagesProcessed)
+            {
+                _StartupMessagesProcessed = true;
+                ShowStartupPopups();
+            }
         }
+
+        // Local field to keep track of the calls to the method below
+        private bool _StartupMessagesProcessed;
 
         // Shows the startup popups when needed
         private void ShowStartupPopups()
@@ -164,9 +186,17 @@ namespace Brainf_ck_sharp_UWP.UserControls
             if (AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.WelcomeMessageShown), out bool shown) && !shown)
             {
                 // Show the message
-                Task.Delay(StartupPromptsPopupDelay).ContinueWith(t =>
+                Task.Delay(StartupPromptsPopupDelay).ContinueWith(async t =>
                 {
-                    FlyoutManager.Instance.Show(LocalizationManager.GetResource("DevMessage"), LocalizationManager.GetResource("WelcomeText"));
+                    WelcomeMessageFlyout welcome = new WelcomeMessageFlyout();
+                    FlyoutResult result = await FlyoutManager.Instance.ShowAsync($"{LocalizationManager.GetResource("WelcomeTitle")} 😄", welcome, 
+                        LocalizationManager.GetResource("UserGuide"), new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight);
+                    if (result == FlyoutResult.Confirmed)
+                    {
+                        // Show the user guide
+                        UserGuideViewerControl guide = new UserGuideViewerControl();
+                        FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UserGuide"), guide, null, new Thickness()).Forget();
+                    }
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
 
                 // Update the setting
@@ -179,25 +209,13 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 Task.Delay(StartupPromptsPopupDelay).ContinueWith(t =>
                 {
                     ReviewPromptFlyout reviewFlyout = new ReviewPromptFlyout();
-                    FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("HowsItGoing"), reviewFlyout,
+                    FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("HowsItGoing"), reviewFlyout, null,
                         new Thickness(0, 12, 0, 0), FlyoutDisplayMode.ActualHeight).Forget();
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
 
                 // Update the setting
                 AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.ReviewPromptShown), true, SettingSaveMode.OverwriteIfExisting);
             }
-        }
-
-        // Disables the swipe gesture for the keyboard pivot (swiping that pivot causes the app to crash)
-        private void Scroller_PointerIn(object sender, PointerRoutedEventArgs e)
-        {
-            sender.To<ScrollViewer>().HorizontalScrollMode = ScrollMode.Disabled;
-        }
-
-        // Restores the original scrolling settings when the pointer is outside the keyboard pivot
-        private void Scroller_PointerOut(object sender, PointerRoutedEventArgs e)
-        {
-            sender.To<ScrollViewer>().HorizontalScrollMode = ScrollMode.Enabled;
         }
 
         #endregion
@@ -217,9 +235,20 @@ namespace Brainf_ck_sharp_UWP.UserControls
         public void RequestShowMemoryState()
         {
             IReadonlyTouringMachineState source = Console.ViewModel.State;
-            MemoryViewerFlyout viewer = new MemoryViewerFlyout();
-            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("MemoryStateTitle"), viewer).Forget();
-            Task.Delay(100).ContinueWith(t => viewer.ViewModel.InitializeAsync(source), TaskScheduler.FromCurrentSynchronizationContext());
+            if (Console.ViewModel.Functions.Count == 0)
+            {
+                // No available functions
+                MemoryViewerFlyout viewer = new MemoryViewerFlyout();
+                FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("MemoryStateTitle"), viewer).Forget();
+                Task.Delay(100).ContinueWith(t => viewer.ViewModel.InitializeAsync(source), TaskScheduler.FromCurrentSynchronizationContext());
+            }
+            else
+            {
+                // Full memory viewer
+                ConsoleFullMemoryViewerControl fullViewer = new ConsoleFullMemoryViewerControl(source, Console.ViewModel.Functions);
+                FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("CurrentState"), fullViewer, null, new Thickness()).Forget();
+                Task.Delay(100).ContinueWith(t => fullViewer.ViewModel.InitializeAsync(), TaskScheduler.FromCurrentSynchronizationContext());
+            }
         }
 
         /// <summary>
@@ -254,7 +283,36 @@ namespace Brainf_ck_sharp_UWP.UserControls
         private void AboutButton_Click(object sender, RoutedEventArgs e)
         {
             DevInfoFlyout flyout = new DevInfoFlyout();
-            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("About"), flyout, new Thickness(0), FlyoutDisplayMode.ActualHeight).Forget();
+            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("About"), flyout, null, new Thickness(0), FlyoutDisplayMode.ActualHeight).Forget();
+        }
+
+        // Changes the current header blur mode
+        private async void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Show the settings panel
+            int
+                theme = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)),
+                tabs = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength));
+            bool whitespaces = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
+            String font = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+            SettingsPanelFlyout settings = new SettingsPanelFlyout();
+            Task.Delay(100).ContinueWith(t => settings.ViewModel.LoadGroups(), TaskScheduler.FromCurrentSynchronizationContext()).Forget();
+            await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Settings"), settings, null, new Thickness());
+            bool
+                themeChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)) != theme,
+                tabsChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength)) != tabs,
+                fontChanged = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName))?.Equals(font) != true,
+                whitespacesChanged = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces)) != whitespaces;
+            if (themeChanged || tabsChanged || fontChanged || whitespacesChanged)
+            {
+                // UI refresh needed
+                if (themeChanged)
+                {
+                    Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
+                    await Task.Delay(500);
+                }
+                Messenger.Default.Send(new IDESettingsChangedMessage(themeChanged, tabsChanged, fontChanged, whitespacesChanged));
+            }
         }
     }
 }

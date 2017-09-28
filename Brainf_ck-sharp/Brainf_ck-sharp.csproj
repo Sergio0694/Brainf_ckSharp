@@ -14,7 +14,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="10.4.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="11.0.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
 
 </Project>

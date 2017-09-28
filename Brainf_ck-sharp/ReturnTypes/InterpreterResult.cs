@@ -17,37 +17,20 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// </summary>
         public InterpreterExitCode ExitCode { get; }
 
-        /// <summary>
-        /// Checks whether or not the current <see cref="ExitCode"/> property contains a specific flag
-        /// </summary>
-        /// <param name="flag">The flag to check (it must have a single bit set)</param>
-        [PublicAPI]
-        [Pure]
-        public bool HasFlag(InterpreterExitCode flag)
-        {
-            // Check the flags set
-            bool found = false;
-            int bits = (ushort)flag;
-            for (int i = 0; i < 16; i++)
-            {
-                if ((bits & 1) == 1)
-                {
-                    if (found) throw new ArgumentException("The input value has more than a single flag set");
-                    found = true;
-                }
-                bits = bits >> 1;
-            }
-            if (!found) throw new ArgumentException("The input value doesn't have a flag set");
-
-            // Check whether or not the input flag is valid for this instance
-            return (ExitCode & flag) == flag;
-        }
+        // The underlying machine state used by the interpreter
+        private readonly TouringMachineState _MachineState;
 
         /// <summary>
         /// Gets the resulting memory state after running the original script
         /// </summary>
         [NotNull]
-        public IReadonlyTouringMachineState MachineState { get; }
+        public IReadonlyTouringMachineState MachineState => _MachineState;
+
+        /// <summary>
+        /// Gets a list of the defined functions in the script
+        /// </summary>
+        [NotNull]
+        public IReadOnlyList<FunctionDefinition> Functions { get; }
 
         /// <summary>
         /// Gets the execution time for the interpreted script
@@ -88,41 +71,42 @@ namespace Brainf_ck_sharp.ReturnTypes
         internal uint? BreakpointPosition { get; }
 
         // Internal constructor
-        internal InterpreterResult(InterpreterExitCode exitCode, [NotNull] TouringMachineState state, TimeSpan duration,
-            [NotNull] String output, [NotNull] String code, uint operations, [CanBeNull] IReadOnlyList<String> stackTrace, uint? breakpoint)
+        internal InterpreterResult(
+            InterpreterExitCode exitCode,
+            [NotNull] TouringMachineState state, TimeSpan duration,
+            [NotNull] String output, [NotNull] String code, uint operations, 
+            [CanBeNull] InterpreterExceptionInfo info, uint? breakpoint,
+            [NotNull] IReadOnlyList<FunctionDefinition> functions)
         {
             ExitCode = exitCode;
-            MachineState = state;
+            _MachineState = state;
             ElapsedTime = duration;
             Output = output;
             SourceCode = code;
             TotalOperations = operations;
-            if (stackTrace != null) ExceptionInfo = new InterpreterExceptionInfo(stackTrace, code);
+            if (info != null) ExceptionInfo = info;
             if (breakpoint != null) BreakpointPosition = breakpoint;
+            Functions = functions;
         }
 
-        // Private constructor for the Clone method
-        private InterpreterResult(InterpreterExitCode exitCode, [NotNull] TouringMachineState state, TimeSpan duration,
-            [NotNull] String output, [NotNull] String code, uint operations, [CanBeNull] InterpreterExceptionInfo debugInfo, uint? breakpoint)
+        // Internal failure constructor
+        internal InterpreterResult(InterpreterExitCode result, [NotNull] TouringMachineState state, [NotNull] String code)
         {
-            ExitCode = exitCode;
-            MachineState = state;
-            ElapsedTime = duration;
-            Output = output;
+            ExitCode = result;
+            _MachineState = state;
             SourceCode = code;
-            TotalOperations = operations;
-            if (debugInfo != null) ExceptionInfo = debugInfo;
-            if (breakpoint != null) BreakpointPosition = breakpoint;
+            Output = String.Empty;
+            ElapsedTime = TimeSpan.Zero;
+            Functions = new FunctionDefinition[0];
         }
 
         /// <summary>
         /// Creates a copu of the current result
         /// </summary>
-        /// <returns></returns>
         [Pure, NotNull]
         internal InterpreterResult Clone()
         {
-            return new InterpreterResult(ExitCode, ((TouringMachineState)MachineState).Clone(), ElapsedTime, Output, SourceCode, TotalOperations, ExceptionInfo, BreakpointPosition);
+            return new InterpreterResult(ExitCode, _MachineState.Clone(), ElapsedTime, Output, SourceCode, TotalOperations, ExceptionInfo, BreakpointPosition, Functions);
         }
 
         #endregion

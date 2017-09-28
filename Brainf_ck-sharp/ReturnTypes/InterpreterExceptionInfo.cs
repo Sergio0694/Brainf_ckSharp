@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp.ReturnTypes
@@ -27,10 +26,10 @@ namespace Brainf_ck_sharp.ReturnTypes
         public int ErrorPosition { get; }
 
         // Internal constructor
-        internal InterpreterExceptionInfo([NotNull] IReadOnlyList<String> stackTrace, String source)
+        internal InterpreterExceptionInfo([NotNull] IReadOnlyList<String> stackTrace, int position, String source)
         {
             StackTrace = stackTrace;
-            ErrorPosition = stackTrace.Aggregate(0, (s, v) => s + v.Length) - 1;
+            ErrorPosition = position;
             FaultedOperator = source[ErrorPosition];
         }
     }

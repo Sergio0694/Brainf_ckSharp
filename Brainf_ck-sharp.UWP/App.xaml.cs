@@ -2,19 +2,19 @@
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Resources;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.UserControls;
+using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations.Helpers;
 using UICompositionAnimations.Lights;
-using UICompositionAnimations.XAMLTransform;
 #if DEBUG
 using System.Diagnostics;
 #endif
@@ -60,16 +60,29 @@ namespace Brainf_ck_sharp_UWP
 #endif
 
             // Initialize the window content
-            Shell shell = Window.Current.Content as Shell;
-            if (shell == null)
+            if (!(Window.Current.Content is Shell))
             {
+                // Settings
+                AppSettingsManager.Instance.InitializeSettings();
+                AppSettingsManager.Instance.IncrementStartupsCount();
+
                 // Initialize the UI
                 BrushResourcesManager.InitializeOrRefreshInstance();
-                shell = new Shell();
+                LightsSourceHelper.Initialize(
+                    () => new PointerPositionSpotLight(),
+                    () => new PointerPositionSpotLight
+                    {
+                        IdAppendage = "[Wide]",
+                        Z = 30,
+                        Shade = 0x10
+                    });
+                Shell shell = new Shell();
+                LightsSourceHelper.SetIsLightsContainer(shell, true);
 
                 // Handle the UI
                 if (ApiInformationHelper.IsMobileDevice) StatusBarHelper.HideAsync().Forget();
                 else TitleBarHelper.StyleAppTitleBar();
+                _StatusBarHeight = StatusBarHelper.OccludedHeight;
 
                 // Setup the view mode
                 ApplicationView view = ApplicationView.GetForCurrentView();
@@ -82,37 +95,7 @@ namespace Brainf_ck_sharp_UWP
 
                 // Enable the key listener
                 KeyEventsListener.IsEnabled = true;
-
-                // Add the lights and store the content
-                if (!ApiInformationHelper.IsMobileDevice)
-                {
-                    PointerPositionSpotLight
-                        light = new PointerPositionSpotLight { Active = false },
-                        wideLight = new PointerPositionSpotLight
-                        {
-                            Z = 30,
-                            IdAppendage = "[Wide]",
-                            Shade = 0x10,
-                            Active = false
-                        };
-                    shell.Lights.Add(light);
-                    shell.Lights.Add(wideLight);
-
-                    // Setup the light effects on different devices
-                    shell.ManageHostPointerStates((type, value) =>
-                    {
-                        bool lightsVisible = type == PointerDeviceType.Mouse && value;
-                        if (LightsEnabled == lightsVisible) return;
-                        light.Active = wideLight.Active = LightsEnabled = lightsVisible;
-                        XAMLTransformToolkit.PrepareStory(
-                            XAMLTransformToolkit.CreateDoubleAnimation(BrushResourcesManager.Instance.WideLightBrushDarkShadeBackground, "Opacity", null, lightsVisible ? 1 : 0, 200, enableDependecyAnimations: true)).Begin();
-                    });
-                }
                 Window.Current.Content = shell;
-
-                // Settings
-                AppSettingsManager.Instance.InitializeSettings();
-                AppSettingsManager.Instance.IncrementStartupsCount();
 
                 // Sync the roaming source codes
                 Task.Run(() => SQLiteManager.Instance.TrySyncSharedCodesAsync());
@@ -120,10 +103,22 @@ namespace Brainf_ck_sharp_UWP
             Window.Current.Activate();
         }
 
+        private double _StatusBarHeight;
+
         /// <summary>
-        /// Gets whether or not the XAML lights are currently visible in the app, depending on the pointer device in use
+        /// Gets or sets the last detected height of the status bar
         /// </summary>
-        private bool LightsEnabled { get; set; }
+        private double ShowStatusBarPlaceholder
+        {
+            set
+            {
+                if ((_StatusBarHeight - value).Abs() > 0.1)
+                {
+                    _StatusBarHeight = value;
+                    DefaultContent?.ShowStatusBarPlaceholder(value > 0.1);
+                }
+            }
+        }
 
         private void UpdateVisibleBounds(ApplicationView sender)
         {
@@ -138,10 +133,20 @@ namespace Brainf_ck_sharp_UWP
 
                 // Adjust the app UI
                 DefaultContent.Margin = new Thickness(0, 0, 0, navBarHeight);
+
+                // Show the status bar when needed
+                if (AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ShowStatusBar)))
+                {
+                    StatusBarHelper.TryShowAsync().Forget();
+                }
+                else StatusBarHelper.HideAsync().Forget();
             }
             else
             {
-                // Return if the StatusBar is still visible
+                // Hide the status bar
+                StatusBarHelper.HideAsync().Forget();
+
+                // Return if the status bar is still visible
                 Rect windowBounds = Window.Current.Bounds;
                 if (!StatusBarHelper.OccludedHeight.EqualsWithDelta(0)) return;
 
@@ -158,6 +163,7 @@ namespace Brainf_ck_sharp_UWP
                 }
                 else DefaultContent.Margin = new Thickness();
             }
+            ShowStatusBarPlaceholder = StatusBarHelper.OccludedHeight;
         }
 
         /// <summary>
@@ -167,10 +173,16 @@ namespace Brainf_ck_sharp_UWP
         /// </summary>
         /// <param name="sender">Origine della richiesta di sospensione.</param>
         /// <param name="e">Dettagli relativi alla richiesta di sospensione.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
-            var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: salvare lo stato dell'applicazione e arrestare eventuali attività eseguite in background
+            SuspendingDeferral deferral = e.SuspendingOperation.GetDeferral();
+            if (AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutosaveDocuments)))
+            {
+                // Waits for the autosave to be completed
+                IDEAutosaveTriggeredMessage message = new IDEAutosaveTriggeredMessage();
+                Messenger.Default.Send(message);
+                await message.Autosave;
+            }
             deferral.Complete();
         }
     }

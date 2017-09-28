@@ -13,7 +13,7 @@
         /// <summary>
         /// Creates a new message that wraps the input status
         /// </summary>
-        /// <param name="valid">The desired status for the operation</param>
+        /// <param name="valid">The desired status for the message</param>
         public BreakpointErrorStatusChangedMessage(bool valid) => IsValid = valid;
     }
 }

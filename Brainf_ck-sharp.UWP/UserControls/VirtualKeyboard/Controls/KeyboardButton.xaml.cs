@@ -3,7 +3,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
-using UICompositionAnimations.Helpers;
+using UICompositionAnimations.Helpers.PointerEvents;
 
 namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
 {
@@ -38,6 +38,15 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
         {
             get => InfoBlock.Text;
             set => InfoBlock.Text = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the margin applied to the content of the control
+        /// </summary>
+        public Thickness ContentMargin
+        {
+            get => IconsPanel.Margin;
+            set => IconsPanel.Margin = value;
         }
 
         /// <summary>

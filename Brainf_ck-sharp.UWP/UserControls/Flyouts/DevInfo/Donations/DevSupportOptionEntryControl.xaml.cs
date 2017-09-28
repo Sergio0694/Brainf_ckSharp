@@ -3,7 +3,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
-using UICompositionAnimations.Helpers;
+using UICompositionAnimations.Helpers.PointerEvents;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo.Donations
 {

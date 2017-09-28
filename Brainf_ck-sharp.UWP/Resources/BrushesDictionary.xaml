@@ -16,13 +16,10 @@
     <!--Red danger brush-->
     <SolidColorBrush x:Key="RedDangerBrush" Color="#FFDC232B"/>
     
-    <!--Warning brush-->
-    <SolidColorBrush x:Key="OrangeWarningBrush" Color="#FFFFAA00"/>
-    
     <!--Breakpoints-->
     <SolidColorBrush x:Key="BreakpointFillBrush" Color="#FFE51400"/>
     <SolidColorBrush x:Key="BreakpointBorderBrush" Color="#FFF4DFDD"/>
-    <SolidColorBrush x:Key="BreakpointLineBrush" Color="#34FF0000"/>
+    <SolidColorBrush x:Key="BreakpointLineBrush" Color="#FF762C2C"/>
     
     <!--Misc-->
     <SolidColorBrush x:Key="ShellSeparatorLineFillBrush" Color="#FF6E6E6E"/>
@@ -32,12 +29,63 @@
     <SolidColorBrush x:Key="ElementsWideLightBrush"/>
     <SolidColorBrush x:Key="WideLightBrushDarkShadeBackground"/>
     
-    <!--Acrylic brush-->
+    <!--CommandBar/ContextMenu brush-->
     <brushes:CustomAcrylicBrush
         x:Key="InAppGrayAcrylicBrush"
         Mode="InAppBlur"
         BlurAmount="8"
         Tint="#FF222222"
         TintMix="0.6"
+        NoiseTextureUri="/Assets/Misc/noise.png"/>
+
+    <!--ComboBox brush-->
+    <brushes:CustomAcrylicBrush
+        x:Key="ComboBoxAcrylicBrush"
+        Mode="InAppBlur"
+        BlurAmount="8"
+        Tint="#FF161616"
+        TintMix="0.6"
+        NoiseTextureUri="/Assets/Misc/noise.png"/>
+
+    <!--Header host backdrop blur brush-->
+    <brushes:CustomAcrylicBrush
+        x:Key="HeaderHostBackdropBlurBrush"
+        Mode="HostBackdrop"
+        Tint="#FF1E1E1E"
+        TintMix="0.8"
+        NoiseTextureUri="/Assets/Misc/noise.png"/>
+
+    <!--Header in-app acrylic brush-->
+    <brushes:CustomAcrylicBrush
+        x:Key="HeaderInAppAcrylicBrush"
+        Mode="InAppBlur"
+        BlurAmount="8"
+        Tint="#FF1E1E1E"
+        TintMix="0.6"
+        NoiseTextureUri="/Assets/Misc/noise.png"/>
+    
+    <!--Popup brush-->
+    <brushes:CustomAcrylicBrush
+        x:Key="PopupInAppAcrylicBrush"
+        Mode="InAppBlur"
+        BlurAmount="8"
+        Tint="#FF1B1B1B"
+        TintMix="0.8"
+        NoiseTextureUri="/Assets/Misc/noise.png"/>
+    
+    <!--Notification brushes-->
+    <brushes:CustomAcrylicBrush
+        x:Key="NotificationAcrylicBrush"
+        Mode="InAppBlur"
+        BlurAmount="8"
+        Tint="{StaticResource SystemAccentColor}"
+        TintMix="0.5"
+        NoiseTextureUri="/Assets/Misc/noise.png"/>
+    <brushes:CustomAcrylicBrush
+        x:Key="NotificationErrorAcrylicBrush"
+        Mode="InAppBlur"
+        BlurAmount="8"
+        Tint="#FFFFAA00"
+        TintMix="0.5"
         NoiseTextureUri="/Assets/Misc/noise.png"/>
 </ResourceDictionary>

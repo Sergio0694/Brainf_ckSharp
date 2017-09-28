@@ -18,7 +18,7 @@ namespace Brainf_ck_sharp.Helpers
         /// Gets the stack frames for the working set
         /// </summary>
         [CanBeNull]
-        public IEnumerable<IEnumerable<char>> StackFrames { get; }
+        public IEnumerable<IEnumerable<Brainf_ckBinaryItem>> StackFrames { get; }
 
         /// <summary>
         /// Gets the code position relative to the current working set
@@ -26,22 +26,16 @@ namespace Brainf_ck_sharp.Helpers
         public uint Position { get; }
 
         /// <summary>
-        /// Gets whether or not a breakpoint has been reached in the current working set
-        /// </summary>
-        public bool BreakpointReached { get; }
-
-        /// <summary>
         /// Gets the number of total evaluated operators in the current working set
         /// </summary>
         public uint TotalOperations { get; }
 
         // Internal constructor
-        public InterpreterWorkingData(InterpreterExitCode code, [CanBeNull] IEnumerable<IEnumerable<char>> frames, uint position, bool reached, uint operations)
+        public InterpreterWorkingData(InterpreterExitCode code, [CanBeNull] IEnumerable<IEnumerable<Brainf_ckBinaryItem>> frames, uint position, uint operations)
         {
             ExitCode = code;
             StackFrames = frames;
             Position = position;
-            BreakpointReached = reached;
             TotalOperations = operations;
         }
     }

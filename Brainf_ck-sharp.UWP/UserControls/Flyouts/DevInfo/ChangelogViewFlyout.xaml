@@ -27,7 +27,7 @@
     </UserControl.Resources>
 
     <!--Main content-->
-    <Grid>
+    <Grid Background="#20000000">
         <SemanticZoom Style="{StaticResource SemanticZoomCustomStyle}">
             <SemanticZoom.ZoomedInView>
 

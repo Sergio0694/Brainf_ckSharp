@@ -394,19 +394,11 @@
           <source>Developed by</source>
           <target state="translated">Sviluppata da</target>
         </trans-unit>
-        <trans-unit id="SendFeedbackBlock.Text" translate="yes" xml:space="preserve">
-          <source>Send feedback</source>
-          <target state="translated">Invia feedback</target>
-        </trans-unit>
         <trans-unit id="DevSupportTitle.Text" translate="yes" xml:space="preserve">
           <source>Pick the support option for the developer of the app</source>
           <target state="translated">Scegli un'opzione di supporto per lo sviluppatore dell'app</target>
         </trans-unit>
         <trans-unit id="Donate" translate="yes" xml:space="preserve">
-          <source>Donate</source>
-          <target state="translated">Fai una donazione</target>
-        </trans-unit>
-        <trans-unit id="DonateButton.Text" translate="yes" xml:space="preserve">
           <source>Donate</source>
           <target state="translated">Fai una donazione</target>
         </trans-unit>
@@ -505,29 +497,6 @@
           <target state="translated">Non modificato</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Renamed name is the same as the original</note>
         </trans-unit>
-        <trans-unit id="DevMessage" translate="yes" xml:space="preserve">
-          <source>Developer message</source>
-          <target state="translated">Messaggio dello sviluppatore</target>
-        </trans-unit>
-        <trans-unit id="WelcomeText" translate="yes" xml:space="preserve">
-          <source>Welcome to Brainf*ck#!
-Thank you for downloading the app, I hope you'll enjoy using it!
-Please feel free to send me an email if you have suggestions or feedback, or if you found a bug, and I'll be happy to help.
-
-NOTE: the app might sometimes crash when using the virtual arrows keypad in the IDE or when loading a source code. That's due to a bug in one of the controls I'm using, I've already sent a feedback to Microsoft and hopefully that'll get fixed soon!</source>
-          <target state="translated">Benvenuti in Brainf*ck#, grazie di aver scaricato quest'app!
-Potete mandarmi un messaggio email in qualsiasi momento se avete suggerimenti o feedback, o se avete trovato un bug, e sarò felice di aiutare.
-
-NOTA: l'app potrebbe occasionalmente chiudersi usando il cursore virtuale con le frecce di navigazione nell'IDE o durante il caricamento di un codice sorgente salvato. Questo è dovuto ad un bug in uno dei controlli che l'app utilizza, ho già mandato una segnalazione a Microsoft e spero che si possa risolvere il problema al più presto!</target>
-        </trans-unit>
-        <trans-unit id="ReleaseNotesBlock.Text" translate="yes" xml:space="preserve">
-          <source>Release notes</source>
-          <target state="translated">Note di versione</target>
-        </trans-unit>
-        <trans-unit id="ChangelogBlock.Text" translate="yes" xml:space="preserve">
-          <source>Changelog</source>
-          <target state="translated">Novità</target>
-        </trans-unit>
         <trans-unit id="Changelog" translate="yes" xml:space="preserve">
           <source>Changelog</source>
           <target state="translated">Novità</target>
@@ -601,6 +570,373 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         <trans-unit id="Sure" translate="yes" xml:space="preserve">
           <source>Sure!</source>
           <target state="translated">Certo!</target>
+        </trans-unit>
+        <trans-unit id="Settings" translate="yes" xml:space="preserve">
+          <source>Settings</source>
+          <target state="translated">Impostazioni</target>
+        </trans-unit>
+        <trans-unit id="SettingsButton.Label" translate="yes" xml:space="preserve">
+          <source>Settings</source>
+          <target state="translated">Impostazioni</target>
+        </trans-unit>
+        <trans-unit id="AutoIndentTitle.Text" translate="yes" xml:space="preserve">
+          <source>Auto indent brackets</source>
+          <target state="translated">Indenta automaticamente parentesi</target>
+        </trans-unit>
+        <trans-unit id="BackgroundBlur" translate="yes" xml:space="preserve">
+          <source>Background blur</source>
+          <target state="translated">Sfocatura sfondo</target>
+        </trans-unit>
+        <trans-unit id="BlurModeTitle.Text" translate="yes" xml:space="preserve">
+          <source>Preferred blur mode</source>
+          <target state="translated">Modalità blur preferita</target>
+        </trans-unit>
+        <trans-unit id="BracketsStyleTitle.Text" translate="yes" xml:space="preserve">
+          <source>Brackets style</source>
+          <target state="translated">Formattazione parentesi</target>
+        </trans-unit>
+        <trans-unit id="InAppBlur" translate="yes" xml:space="preserve">
+          <source>In-app blur</source>
+          <target state="translated">Sfocatura in-app</target>
+        </trans-unit>
+        <trans-unit id="NewLine" translate="yes" xml:space="preserve">
+          <source>New line</source>
+          <target state="translated">A capo</target>
+        </trans-unit>
+        <trans-unit id="SameLine" translate="yes" xml:space="preserve">
+          <source>Same line</source>
+          <target state="translated">Stessa riga</target>
+        </trans-unit>
+        <trans-unit id="TabLength.Text" translate="yes" xml:space="preserve">
+          <source>Tab length</source>
+          <target state="translated">Lunghezza tabulazione</target>
+        </trans-unit>
+        <trans-unit id="ThemesUnlocked" translate="yes" xml:space="preserve">
+          <source>Themes pack unlocked</source>
+          <target state="translated">Pacchetto temi sbloccato</target>
+        </trans-unit>
+        <trans-unit id="TapToUnlock.Text" translate="yes" xml:space="preserve">
+          <source>Tap to unlock</source>
+          <target state="translated">Tocca per sbloccare</target>
+        </trans-unit>
+        <trans-unit id="CommentRun.Text" translate="yes" xml:space="preserve">
+          <source>Move to next cell</source>
+          <target state="translated">Avanza a cella successiva</target>
+        </trans-unit>
+        <trans-unit id="CommentRun2.Text" translate="yes" xml:space="preserve">
+          <source>Print value</source>
+          <target state="translated">Stampa valore</target>
+        </trans-unit>
+        <trans-unit id="Default" translate="yes" xml:space="preserve">
+          <source>Default</source>
+          <target state="translated">Predefinito</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">The default theme</note>
+        </trans-unit>
+        <trans-unit id="AutosaveTitle.Text" translate="yes" xml:space="preserve">
+          <source>Autosave loaded documents</source>
+          <target state="translated">Salvataggio automatico</target>
+        </trans-unit>
+        <trans-unit id="FontTypeTitle.Text" translate="yes" xml:space="preserve">
+          <source>Font type</source>
+          <target state="translated">Tipo carattere</target>
+        </trans-unit>
+        <trans-unit id="IDETheme.Text" translate="yes" xml:space="preserve">
+          <source>Theme</source>
+          <target state="translated">Tema</target>
+        </trans-unit>
+        <trans-unit id="ShowStatusBarTitle.Text" translate="yes" xml:space="preserve">
+          <source>Show status bar</source>
+          <target state="translated">Mostra status bar</target>
+        </trans-unit>
+        <trans-unit id="LowercaseAvailableSettings" translate="yes" xml:space="preserve">
+          <source>available settings</source>
+          <target state="translated">impostazioni disponibili</target>
+        </trans-unit>
+        <trans-unit id="LowercaseSingleAvailableSettings" translate="yes" xml:space="preserve">
+          <source>available setting</source>
+          <target state="translated">impostazione disponibile</target>
+        </trans-unit>
+        <trans-unit id="ThemesPackLocked" translate="yes" xml:space="preserve">
+          <source>themes pack locked</source>
+          <target state="translated">pacchetto temi bloccato</target>
+        </trans-unit>
+        <trans-unit id="RenderWhitespacesTitle.Text" translate="yes" xml:space="preserve">
+          <source>Render whitespaces</source>
+          <target state="translated">Mostra spazi e tabulazioni</target>
+        </trans-unit>
+        <trans-unit id="ClearStdinBuffer.Text" translate="yes" xml:space="preserve">
+          <source>Clear Stdin buffer on execution</source>
+          <target state="translated">Pulisci buffer Stdin dopo esecuzione</target>
+        </trans-unit>
+        <trans-unit id="Interpreter" translate="yes" xml:space="preserve">
+          <source>Interpreter</source>
+          <target state="translated">Interprete</target>
+        </trans-unit>
+        <trans-unit id="ExDuplicateFunctionDefinition" translate="yes" xml:space="preserve">
+          <source>Duplicate function definition</source>
+          <target state="translated">Definizione funzione duplicata</target>
+        </trans-unit>
+        <trans-unit id="ExFunctionsLimitExceeded" translate="yes" xml:space="preserve">
+          <source>Functions limit exceeded</source>
+          <target state="translated">Limite funzioni superato</target>
+        </trans-unit>
+        <trans-unit id="ExStackLimitExceeded" translate="yes" xml:space="preserve">
+          <source>Stack overflow exception</source>
+          <target state="translated">Stack overflow</target>
+        </trans-unit>
+        <trans-unit id="ExUndefinedFunction" translate="yes" xml:space="preserve">
+          <source>Undefined function call</source>
+          <target state="translated">Funzione non definita</target>
+        </trans-unit>
+        <trans-unit id="StackFrames" translate="yes" xml:space="preserve">
+          <source>stack frames</source>
+          <target state="translated">stack frames</target>
+        </trans-unit>
+        <trans-unit id="ShowPBrainButtons.Text" translate="yes" xml:space="preserve">
+          <source>Show PBrain keyboard buttons</source>
+          <target state="translated">Mostra pulsanti virtuali PBrain</target>
+        </trans-unit>
+        <trans-unit id="FunctionDefinitionsTitle" translate="yes" xml:space="preserve">
+          <source>Function definitions</source>
+          <target state="translated">Funzioni definite</target>
+        </trans-unit>
+        <trans-unit id="DefinedFunction" translate="yes" xml:space="preserve">
+          <source>defined function</source>
+          <target state="translated">funzione definita</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">This will be "1 defined function"</note>
+        </trans-unit>
+        <trans-unit id="DefinedFunctions" translate="yes" xml:space="preserve">
+          <source>defined functions</source>
+          <target state="translated">funzioni definite</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">This will be "n defined functions"</note>
+        </trans-unit>
+        <trans-unit id="CurrentState" translate="yes" xml:space="preserve">
+          <source>Current state</source>
+          <target state="translated">Stato console</target>
+        </trans-unit>
+        <trans-unit id="GuideIntroduction1.Text" translate="yes" xml:space="preserve">
+          <source>Brainf*ck is an esoteric programming language invented in 1993 by Urban Müller.</source>
+          <target state="translated">Brainf*ck è un linguaggio di programmazione esoterico inventato nel 1993 da Urban Müller.</target>
+        </trans-unit>
+        <trans-unit id="GuideIntroduction2.Text" translate="yes" xml:space="preserve">
+          <source>The language replicates a Turing machine, as the state of the interpreter is only described of a memory array and a memory pointer than can move back and forth and change values of the memory cells, as it passes over them.</source>
+          <target state="translated">Il linguaggio replica il funzionamento di una macchina di Turing, poiché lo stato dell'interprete è descritto solo da un vettore di memoria e da un puntatore che può spostarsi in due direzioni e modificare il valore delle celle di memoria, quando vi passa sopra.</target>
+        </trans-unit>
+        <trans-unit id="GuideIntroduction3.Text" translate="yes" xml:space="preserve">
+          <source>A Brainf*ck program is made up of only 8 operators:</source>
+          <target state="translated">Un programma in Brainf*ck è composto di soli 8 operatori:</target>
+        </trans-unit>
+        <trans-unit id="GuideOperator1.Description" translate="yes" xml:space="preserve">
+          <source>Moves the memory pointer to the next cell</source>
+          <target state="translated">Sposta il puntatore della memoria alla cella successiva</target>
+        </trans-unit>
+        <trans-unit id="GuideOperator2.Description" translate="yes" xml:space="preserve">
+          <source>Moves the memory pointer back</source>
+          <target state="translated">Sposta il puntatore della memoria indietro</target>
+        </trans-unit>
+        <trans-unit id="GuideOperator3.Description" translate="yes" xml:space="preserve">
+          <source>Increments the value of the current cell</source>
+          <target state="translated">Incrementa il valore della cella attuale</target>
+        </trans-unit>
+        <trans-unit id="GuideOperator4.Description" translate="yes" xml:space="preserve">
+          <source>Decrements the value of the current cell</source>
+          <target state="translated">Decrementa il valore della cella attuale</target>
+        </trans-unit>
+        <trans-unit id="GuideOperator5.Description" translate="yes" xml:space="preserve">
+          <source>Starts a loop on the current cell, only if its value is greater than 0</source>
+          <target state="translated">Inizia un ciclo dalla cella attuale, solo se il suo valore è maggiore di 0</target>
+        </trans-unit>
+        <trans-unit id="GuideOperator6.Description" translate="yes" xml:space="preserve">
+          <source>Loops and executes the current operators sequence if the value of the current cell is greater than 0</source>
+          <target state="translated">Ripete il ciclo ed esegue la sequenza di operatori attuale se il valore della cella corrente è maggiore di 0</target>
+        </trans-unit>
+        <trans-unit id="GuideOperators7Part1.Text" translate="yes" xml:space="preserve">
+          <source>Prints the Unicode character corresponding to the value of the current memory cell. The Unicode table is available in the app, under the</source>
+          <target state="translated">Stampa il carattere Unicode corrispondente al valore della cella di memoria attuale. La tavola Unicode è disponibile nell'app, dal menu</target>
+        </trans-unit>
+        <trans-unit id="GuideOperators7Part2.Text" translate="yes" xml:space="preserve">
+          <source>menu</source>
+          <target state="translated"></target>
+        </trans-unit>
+        <trans-unit id="GuidePBrain.Text" translate="yes" xml:space="preserve">
+          <source>PBrain is an extension of the Brainf*ck language, created by Paul M. Parks. It adds support for functions, with the addition of the following operators:</source>
+          <target state="translated">PBrain è un'estensione del linguaggio Brainf*ck, creata da Paul M. Parks, che aggiunge il supporto alle funzioni tramite l'introduzione dei seguenti nuovi operatori:</target>
+        </trans-unit>
+        <trans-unit id="GuidePBrainOperator1.Description" translate="yes" xml:space="preserve">
+          <source>Defines a function and binds it to the value of the current memory cell</source>
+          <target state="translated">Definisce una funzione a cui viene assegnato il valore della cella di memoria attuale</target>
+        </trans-unit>
+        <trans-unit id="GuidePBrainOperator2.Description" translate="yes" xml:space="preserve">
+          <source>Ends the current function definition</source>
+          <target state="translated">Termina la definizione della funzione in corso</target>
+        </trans-unit>
+        <trans-unit id="GuidePBrainOperator3.Description" translate="yes" xml:space="preserve">
+          <source>Calls the function associated with the value of the current memory cell</source>
+          <target state="translated">Chiama la funzione associata al valore della cella di memoria attuale</target>
+        </trans-unit>
+        <trans-unit id="GuidePBrainWarning.Text" translate="yes" xml:space="preserve">
+          <source>A function definition must contain at least a Brainf*ck operator and its body can't be empty. Moreover, it is not possible to define nested functions.</source>
+          <target state="translated">Una definizione di funzione deve contenere almeno un operatore Brainf*ck e il suo corpo non può essere vuoto. Inoltre, non è possibile definire funzioni annidate.</target>
+        </trans-unit>
+        <trans-unit id="GuideSamplePrintHelloComment1.Text" translate="yes" xml:space="preserve">
+          <source>7 in cell #0</source>
+          <target state="translated">7 nella cella #0</target>
+        </trans-unit>
+        <trans-unit id="GuideSamplePrintHelloComment2.Text" translate="yes" xml:space="preserve">
+          <source>7 * 5 = 35 in cell #1</source>
+          <target state="translated">7 * 5 = 35 nella cella #1</target>
+        </trans-unit>
+        <trans-unit id="GuideSamplePrintHelloComment3.Text" translate="yes" xml:space="preserve">
+          <source>35 * 2 in cell #2 and 35 * 3 in #3</source>
+          <target state="translated">35 * 2 nella cella #2 e 35 * 3 nella #3</target>
+        </trans-unit>
+        <trans-unit id="GuideSamplePrintHelloComment4.Text" translate="yes" xml:space="preserve">
+          <source>Back to loop start and decrement</source>
+          <target state="translated">Indietro all'inizio del loop e decremento</target>
+        </trans-unit>
+        <trans-unit id="GuideSamplePrintHelloComment5.Text" translate="yes" xml:space="preserve">
+          <source>Adjust the values and print</source>
+          <target state="translated">Prepare e stampa i valori corretti</target>
+        </trans-unit>
+        <trans-unit id="GuideSamplePrintHelloTitle.Text" translate="yes" xml:space="preserve">
+          <source>Print "Hello"</source>
+          <target state="translated">Stampa "Hello"</target>
+        </trans-unit>
+        <trans-unit id="GuideSampleResetComment.Text" translate="yes" xml:space="preserve">
+          <source>Subtract 1 each time</source>
+          <target state="translated">Sottrai 1 ad ogni iterazione</target>
+        </trans-unit>
+        <trans-unit id="GuideSampleResetTitle.Text" translate="yes" xml:space="preserve">
+          <source>Reset the current cell</source>
+          <target state="translated">Resetta la cella attuale</target>
+        </trans-unit>
+        <trans-unit id="GuideSamples1.Text" translate="yes" xml:space="preserve">
+          <source>A good strategy to learn how to code in Brainf*ck, as with everything else, is to start from simpler and smaller programs and to make them more complex along the way.</source>
+          <target state="translated">Una buona strategia per imparare a programmare in Brainf*ck, come in tutte le altre cose, consiste nell'iniziare da programmi più piccoli e semplici per poi renderli man mano più complessi col tempo.</target>
+        </trans-unit>
+        <trans-unit id="GuideSamples2.Text" translate="yes" xml:space="preserve">
+          <source>For example, a common operation is to reset the value of the current cell, whatever it may be.</source>
+          <target state="translated">Per esempio, un'operazione comune consiste nel resettare la cella attuale, a prescindere da quale fosse il suo valore.</target>
+        </trans-unit>
+        <trans-unit id="GuideSamples3.Text" translate="yes" xml:space="preserve">
+          <source>A simple loop can be used in this case:</source>
+          <target state="translated">In questo caso può essere utilizzato un semplice ciclo:</target>
+        </trans-unit>
+        <trans-unit id="GuideSamples4.Text" translate="yes" xml:space="preserve">
+          <source>In many situations it is useful to make a copy of the current cell, to be able to perform some operations with its value, without losing track of the initial state of the memory cell.</source>
+          <target state="translated">In molte situazioni è utile salvare una copia della cella attuale, per poter effettuare operazioni con il suo valore senza perdere il riferimento dello stato originario della cella di memoria.</target>
+        </trans-unit>
+        <trans-unit id="GuideSamples5.Text" translate="yes" xml:space="preserve">
+          <source>To achieve this, it is possible to create two copies of the current value, resetting the current cell, and then move the second copy back to the first cell, to end up with the original value plus a copy in the following cell.</source>
+          <target state="translated">A questo fine, è possibile creare due copie separate del valore attuale, resettando la cella attuale, e successivamente spostare la seconda copia indietro nella posizione della cella iniziale, per ottenere il valore originario e una copia nella cella successiva.</target>
+        </trans-unit>
+        <trans-unit id="GuideSamples6.Text" translate="yes" xml:space="preserve">
+          <source>All these techniques can be combined to write more complex programs.</source>
+          <target state="translated">Tutte queste tecniche possono essere combinate per scrivere programmi più complessi.</target>
+        </trans-unit>
+        <trans-unit id="GuideSamples7.Text" translate="yes" xml:space="preserve">
+          <source>A good idea is to try to optimize the script in order to perform as few operations as possible — generally this also means that the final code will be shorter and easier to read.</source>
+          <target state="translated">È una buona idea cercare di ottimizzare gli script al fine di effettuare meno operazioni possibile — questo generalmente significa anche che il codice finale sarà più corto e più facile da comprendere.</target>
+        </trans-unit>
+        <trans-unit id="GuideSamples8.Text" translate="yes" xml:space="preserve">
+          <source>In this example, to print the word "Hello" two loops will be used to set two cells to values closer to the letters that will be printed. It's definitely better to use a similar approach than to repeating the + operator 72 times to print the "H" character.</source>
+          <target state="translated">In questo esempio, per stampare la parola "Hello" saranno utilizzati due cicli per settare due celle di memoria a valori prossimi a quelli dei caratteri da stampare. È decisamente meglio un approccio simile rispetto a ripetere l'operatore + 72 volte solo per stampare il carattere "H".</target>
+        </trans-unit>
+        <trans-unit id="GuideSamples9.Text" translate="yes" xml:space="preserve">
+          <source>This script will set the cells #2 and #3 to values closer to the characters that will be printed by the program, so that less operations will be needed to get to the actual values the code wants to display to the user.</source>
+          <target state="translated">Questo script setta le celle #2 e #3 ai valori più vicini a quelli dei caratteri che saranno stampati dal programma, in modo che siano necessarie meno operazioni possibile per raggiungere i valori che saranno effettivamente mostrati all'utente.</target>
+        </trans-unit>
+        <trans-unit id="GuideSampleSimpleLoopComment1.Text" translate="yes" xml:space="preserve">
+          <source>Copy in the cells #1 and #2</source>
+          <target state="translated">Copia nelle celle #1 e #2</target>
+        </trans-unit>
+        <trans-unit id="GuideSampleSimpleLoopComment2.Text" translate="yes" xml:space="preserve">
+          <source>Decrement the first cell</source>
+          <target state="translated">Decrementa la prima cella</target>
+        </trans-unit>
+        <trans-unit id="GuideSampleSimpleLoopComment3.Text" translate="yes" xml:space="preserve">
+          <source>Move second copy back to cell #0</source>
+          <target state="translated">Sposta la seconda copia indietro nella cella #0</target>
+        </trans-unit>
+        <trans-unit id="GuideSampleSimpleLoopTitle.Text" translate="yes" xml:space="preserve">
+          <source>Copy the current value</source>
+          <target state="translated">Copia valore attuale</target>
+        </trans-unit>
+        <trans-unit id="DonateButton.Title" translate="yes" xml:space="preserve">
+          <source>Donate</source>
+          <target state="translated">Fai una donazione</target>
+        </trans-unit>
+        <trans-unit id="ChangelogButton.Title" translate="yes" xml:space="preserve">
+          <source>Changelog</source>
+          <target state="translated">Note di versione</target>
+        </trans-unit>
+        <trans-unit id="SendFeedbackButton.Title" translate="yes" xml:space="preserve">
+          <source>Send feedback</source>
+          <target state="translated">Invia feedback</target>
+        </trans-unit>
+        <trans-unit id="UserGuideButton.Title" translate="yes" xml:space="preserve">
+          <source>User guide</source>
+          <target state="translated">Guida</target>
+        </trans-unit>
+        <trans-unit id="GuidesInfoBlock.Text" translate="yes" xml:space="preserve">
+          <source>Guides and info</source>
+          <target state="translated">Guida e info</target>
+        </trans-unit>
+        <trans-unit id="GuideOperator8.Description" translate="yes" xml:space="preserve">
+          <source>Reads a Unicode character from the Stdin buffer and stores its value in the current memory cell</source>
+          <target state="translated">Legge un carattere Unicode dal buffer Stdin e salva il suo valore nella cella di memoria attuale</target>
+        </trans-unit>
+        <trans-unit id="GuideCodeSamplesDescription" translate="yes" xml:space="preserve">
+          <source>Some code samples to learn from</source>
+          <target state="translated">Alcuni esempi da cui imparare</target>
+        </trans-unit>
+        <trans-unit id="GuideIntroductionDescription" translate="yes" xml:space="preserve">
+          <source>Get to know the language</source>
+          <target state="translated">Conosci il linguaggio</target>
+        </trans-unit>
+        <trans-unit id="GuidePBrainDescription" translate="yes" xml:space="preserve">
+          <source>Make the language more powerful</source>
+          <target state="translated">Rendi il linguaggio più completo</target>
+        </trans-unit>
+        <trans-unit id="UserGuide" translate="yes" xml:space="preserve">
+          <source>Brainf*ck# guide</source>
+          <target state="translated">Guida di Brainf*ck#</target>
+        </trans-unit>
+        <trans-unit id="PBrainInfoLink.Text" translate="yes" xml:space="preserve">
+          <source>What's this?</source>
+          <target state="translated">Che cos'è?</target>
+        </trans-unit>
+        <trans-unit id="UserGuideCodeSamples" translate="yes" xml:space="preserve">
+          <source>Code samples</source>
+          <target state="translated">Esempi di codice</target>
+        </trans-unit>
+        <trans-unit id="UserGuideIntroduction" translate="yes" xml:space="preserve">
+          <source>Introduction</source>
+          <target state="translated">Introduzione</target>
+        </trans-unit>
+        <trans-unit id="UserGuidePBrainExtensions" translate="yes" xml:space="preserve">
+          <source>PBrain extensions</source>
+          <target state="translated">Estensione PBrain</target>
+        </trans-unit>
+        <trans-unit id="WelcomeTitle" translate="yes" xml:space="preserve">
+          <source>Welcome to Brainf*ck#!</source>
+          <target state="translated">Benvenuto in Brainf*ck#!</target>
+        </trans-unit>
+        <trans-unit id="WelcomePart1.Text" translate="yes" xml:space="preserve">
+          <source>Thank you for downloading the app, I hope you'll enjoy using it!</source>
+          <target state="translated">Grazie di aver scaricato quest'app!</target>
+        </trans-unit>
+        <trans-unit id="WelcomePart2.Text" translate="yes" xml:space="preserve">
+          <source>Please feel free to send me an email if you have suggestions or feedback, or if you found a bug, and I'll be happy to help.</source>
+          <target state="translated">Puoi mandarmi un messaggio email in qualsiasi momento se hai suggerimenti o feedback, o se hai trovato un bug, e sarò felice di aiutare.</target>
+        </trans-unit>
+        <trans-unit id="WelcomePart3.Text" translate="yes" xml:space="preserve">
+          <source>The app might sometimes crash when loading a source code. That's due to a bug in one of the controls I'm using, I've already sent a feedback to Microsoft and hopefully that'll get fixed soon!</source>
+          <target state="translated">L'app potrebbe occasionalmente chiudersi durante il caricamento di un codice sorgente salvato. Questo è dovuto ad un bug in uno dei controlli che l'app utilizza, ho già mandato una segnalazione a Microsoft e spero che si possa risolvere il problema al più presto!</target>
+        </trans-unit>
+        <trans-unit id="WelcomePart4.Text" translate="yes" xml:space="preserve">
+          <source>Before jumping straight into the app, it might be a good idea to read the user guide to make sure you remember all there is to know about the language!</source>
+          <target state="translated">Prima di passare subito all'azione, è una buona idea leggere la guida dell'app per essere sicuri di ricordarsi tutto ciò che c'è da sapere sul linguaggio!</target>
         </trans-unit>
       </group>
     </body>

@@ -1,11 +1,13 @@
 ﻿using System;
 using Brainf_ck_sharp.Enums;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
+using UICompositionAnimations.Helpers;
 
 namespace Brainf_ck_sharp_UWP.ViewModels
 {
@@ -34,6 +36,13 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 SaveAvailable = m.SaveEnabled;
                 SaveAsAvailable = m.SaveAsEnabled;
             });
+
+            // IDE save shortcut
+            KeyEventsListener.CtrlS += (s, _) =>
+            {
+                if (!SaveAvailable) return;
+                Messenger.Default.Send(new SaveSourceCodeRequestMessage(CodeSaveType.Save));
+            };
 
             // Overflow mode
             Messenger.Default.Register<OverflowModeChangedMessage>(this, m => _OverflowMode = m.Mode);
@@ -79,6 +88,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         }
 
         #region Parameters
+
+        /// <summary>
+        /// Gets whether or not the current device is a desktop
+        /// </summary>
+        public bool DesktopMode => ApiInformationHelper.IsDesktop;
 
         // The current overflow mode to use
         private OverflowMode _OverflowMode;

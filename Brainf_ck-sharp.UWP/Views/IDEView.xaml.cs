@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Devices.Input;
 using Windows.Foundation;
+using Windows.System;
 using Windows.UI;
 using Windows.UI.Input;
 using Windows.UI.Text;
@@ -17,20 +18,27 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using Brainf_ck_sharp;
 using Brainf_ck_sharp.ReturnTypes;
+using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.EventArgs;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
+using Brainf_ck_sharp_UWP.DataModels.Misc.CharactersInfo;
+using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
 using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Messages;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
+using Microsoft.Graphics.Canvas.Geometry;
+using Microsoft.Graphics.Canvas.UI.Xaml;
+using Microsoft.Toolkit.Uwp.Helpers;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers;
@@ -43,13 +51,20 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             Loaded += IDEView_Loaded;
             this.InitializeComponent();
+            LinesGrid.SetVisualOpacity(0);
+            ApplyUITheme();
+            ApplyCustomTabSpacing();
             DataContext = new IDEViewModel(EditBox.Document, PickSaveNameAsync, () => BreakpointsInfo.Keys);
             ViewModel.PlayRequested += ViewModel_PlayRequested;
             ViewModel.LoadedCodeChanged += (_, e) =>
             {
                 // Load the code
                 LoadCode(e.Code, true);
-                if (e.Breakpoints == null) ClearBreakpoints();
+                if (e.Breakpoints == null)
+                {
+                    ClearBreakpoints();
+                    BracketGuidesCanvas.Invalidate();
+                }
                 else RestoreBreakpoints(BitHelper.Expand(e.Breakpoints));
                 Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
 
@@ -61,15 +76,145 @@ namespace Brainf_ck_sharp_UWP.Views
             };
             ViewModel.TextCleared += (_, e) =>
             {
+                _PreviousText = "\r";
                 EditBox.ResetTextAndUndoStack();
+                ApplyCustomTabSpacing();
                 ClearBreakpoints();
+                BracketGuidesCanvas.Invalidate();
                 Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
             };
             ViewModel.CharInsertionRequested += ViewModel_CharInsertionRequested;
             ViewModel.NewLineInsertionRequested += ViewModel_NewLineInsertionRequested;
             EditBox.Document.GetText(TextGetOptions.None, out String text);
             _PreviousText = text;
+            _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
+            Messenger.Default.Register<IDESettingsChangedMessage>(this, ApplyIDESettings);
         }
+
+        #region IDE theme
+
+        // Updates the general UI settings
+        private void ApplyUITheme()
+        {
+            RootGrid.Background = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.Background);
+            BreakpointsCanvas.Background = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.BreakpointsPaneBackground);
+            LineBlock.Foreground = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.CurrentTheme.LineNumberColor);
+            if (Brainf_ckFormatterHelper.Instance.CurrentTheme.LineHighlightStyle == LineHighlightStyle.Outline)
+            {
+                CursorBorder.BorderThickness = new Thickness(2);
+                CursorBorder.BorderBrush = Brainf_ckFormatterHelper.Instance.CurrentTheme.LineHighlightColor.ToBrush();
+                CursorBorder.Background = Colors.Transparent.ToBrush();
+                Canvas.SetZIndex(BracketsParentGrid, 0);
+                Canvas.SetZIndex(CursorBorderParentCanvas, 1);
+            }
+            else
+            {
+                CursorBorder.BorderThickness = new Thickness(0);
+                CursorBorder.Background = Brainf_ckFormatterHelper.Instance.CurrentTheme.LineHighlightColor.ToBrush();
+                Canvas.SetZIndex(BracketsParentGrid, 1);
+                Canvas.SetZIndex(CursorBorderParentCanvas, 0);
+            }
+        }
+
+        // Applies the new IDE theme
+        private void ApplyIDESettings(IDESettingsChangedMessage message)
+        {
+            // Disable the handlers
+            EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
+            EditBox.TextChanged -= EditBox_OnTextChanged;
+
+            // Update the tabs if needed
+            if (message.TabsLengthChanged)
+            {
+                ApplyCustomTabSpacing();
+                if (!message.WhitespacesChanged || !message.FontChanged && _WhitespacesRenderingEnabled)
+                {
+                    ClearControlCharacters();
+                    RenderControlCharacters();
+                }
+                if (!message.FontChanged) UpdateCursorRectangleAndIndicatorUI();
+            }
+
+            // Update the render whitespaces setting
+            if (message.WhitespacesChanged)
+            {
+                bool renderWhitespaces = _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
+                if (renderWhitespaces && !message.FontChanged) RenderControlCharacters();
+                else ClearControlCharacters();
+            }
+
+            // Update the font type if needed
+            if (message.FontChanged)
+            {
+                // Refresh the text UI
+                String name = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+                if (InstalledFont.TryGetFont(name, out InstalledFont font))
+                {
+                    LineBlock.FontFamily = font.Family;
+                    EditBox.SetFontFamily(name);
+                    AdjustOverlaysUIOnFontChanged(font);
+                    UpdateCursorRectangleAndIndicatorUI(); // Adjust the cursor position (a different font can have a different height)
+                    if (_WhitespacesRenderingEnabled)
+                    {
+                        ClearControlCharacters();
+                        RenderControlCharacters();
+                    }
+                }
+            }
+
+            // Update the current UI theme
+            if (message.ThemeChanged)
+            {
+                // Update the theme
+                Brainf_ckFormatterHelper.Instance.ReloadTheme();
+
+                // Main UI
+                ApplyUITheme();
+
+                // Code highlight
+                EditBox.Document.GetText(TextGetOptions.None, out String text);
+                int count = 0;
+                for (int i = 0; i < text.Length; i++)
+                {
+                    char test = text[count++];
+                    if (test < 33 || test > 126 && test < 161) continue;
+                    ITextRange range = EditBox.Document.GetRange(i, i + 1);
+                    char c = range.Character;
+                    range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(c);
+                }
+
+                // Release the UI
+                Task.Delay(500).ContinueWith(t =>
+                {
+                    Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
+                }, TaskScheduler.FromCurrentSynchronizationContext());
+            }
+
+            // Column guides and breakpoints
+            DrawBracketGuides(null, true).Forget();
+            if (message.FontChanged || message.TabsLengthChanged)
+            {
+                int[] breakpoints = BreakpointsInfo.Keys.Select(i => i - 1).ToArray();
+                ClearBreakpoints();
+                RestoreBreakpoints(breakpoints);
+                BracketGuidesCanvas.Invalidate();
+            }
+
+            // Restore the handlers
+            EditBox.SelectionChanged += EditBox_OnSelectionChanged;
+            EditBox.TextChanged += EditBox_OnTextChanged;
+        }
+
+        // Updates the tab length setting
+        private void ApplyCustomTabSpacing()
+        {
+            int
+                setting = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength)),
+                spaces = 4 + setting * 2; // Spacing options range from 4 to 12 at indexes [0..4]
+            EditBox.SetTabLength(spaces);
+        }
+
+        #endregion
 
         // Inserts a new line at the current position
         private void ViewModel_NewLineInsertionRequested(object sender, EventArgs e)
@@ -95,9 +240,12 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             SaveCodePromptFlyout flyout = new SaveCodePromptFlyout(code, null);
             FlyoutResult result = await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("SaveCode"), 
-                flyout, new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight);
+                flyout, null, new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight);
             return result == FlyoutResult.Confirmed ? flyout.Title : null;
         }
+
+        // The maximum execution time for a script
+        private const int TimeThreshold = 2000;
 
         private void ViewModel_PlayRequested(object sender, PlayRequestedEventArgs e)
         {
@@ -109,7 +257,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 // Get the lines with a breakpoint and deconstruct the source in executable chuncks
                 IReadOnlyCollection<int> 
                     lines = BreakpointsInfo.Keys.OrderBy(key => key).Select(i => i - 1).ToArray(), // i -1 to move from 1 to 0-based indexes
-                    indexes = text.FindIndexes(lines);
+                    indexes = text.FindLineIndexes(lines);
                 List<String> chuncks = new List<String>();
                 int previous = 0;
                 foreach (int breakpoint in indexes.Concat(new[] { text.Length - 1 }))
@@ -117,23 +265,46 @@ namespace Brainf_ck_sharp_UWP.Views
                     chuncks.Add(text.Substring(previous, breakpoint - previous));
                     previous = breakpoint;
                 }
-                factory = () => Brainf_ckInterpreter.InitializeSession(chuncks, e.Stdin, e.Mode, 64, 1000);
+                factory = () => Brainf_ckInterpreter.InitializeSession(chuncks, e.Stdin, e.Mode, threshold: TimeThreshold);
             }
-            else factory = () => Brainf_ckInterpreter.InitializeSession(new[] { text }, e.Stdin, e.Mode, 64, 1000);
+            else factory = () => Brainf_ckInterpreter.InitializeSession(new[] { text }, e.Stdin, e.Mode, threshold: TimeThreshold);
 
             // Display the execution popup
             IDERunResultFlyout flyout = new IDERunResultFlyout();
-            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource(e.Debug ? "Debug" : "RunTitle"), flyout, new Thickness()).Forget();
+            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource(e.Debug ? "Debug" : "RunTitle"), flyout, null, new Thickness()).Forget();
             Task.Delay(100).ContinueWith(t => flyout.ViewModel.InitializeAsync(factory), TaskScheduler.FromCurrentSynchronizationContext());
         }
+
+        // Indicates whether or not the control has already been loaded
+        private bool _Loaded;
 
         // Initializes the scroll events for the code
         private void IDEView_Loaded(object sender, RoutedEventArgs e)
         {
+            // Skip repeated calls
+            if (_Loaded) return;
+
+            // Font setup
+            String name = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+            if (InstalledFont.TryGetFont(name, out InstalledFont font))
+            {
+                LineBlock.FontFamily = font.Family;
+                EditBox.SetFontFamily(name);
+                AdjustOverlaysUIOnFontChanged(font);
+            }
+
             // Start the cursor animation and subscribe the scroller event
             CursorAnimation.Begin();
 
             // Setup the expression animations
+            SetupExpressionAnimations();
+            LinesGrid.StartCompositionFadeAnimation(null, 1, 100, 200, EasingFunctionNames.CircleEaseOut);
+            _Loaded = true;
+        }
+
+        // Starts the animation to keep the UI synced with the IDE text
+        private void SetupExpressionAnimations()
+        {
             LinesGrid.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top - 12));
             IndentationInfoList.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 10));
             GitDiffListView.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 10));
@@ -142,11 +313,13 @@ namespace Brainf_ck_sharp_UWP.Views
             CursorRectangle.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 8));
             CursorRectangle.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.X);
             CursorBorder.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 8));
+            WhitespacesCanvas.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y, (float)(_Top + 10));
+            WhitespacesCanvas.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.X);
         }
 
         public IDEViewModel ViewModel => DataContext.To<IDEViewModel>();
 
-        // The current top margin
+        // The current top height of the page header
         private double _Top;
 
         /// <summary>
@@ -157,32 +330,65 @@ namespace Brainf_ck_sharp_UWP.Views
         {
             _Top = height;
             LinesGrid.SetVisualOffset(TranslationAxis.Y, (float)(height - 12)); // Adjust the initial offset of the line numbers and indicators
-            BreakLinesCanvas.Margin = new Thickness(0, (float)(height + 10), 0, 0);
             IndentationInfoList.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             GitDiffListView.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             CursorTransform.X = 4;
-            BracketsParentGrid.SetVisualOffset(TranslationAxis.Y, (float)height);
+            BracketGuidesCanvas.SetVisualOffset(TranslationAxis.Y, 0);
+            WhitespacesCanvas.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
             EditBox.Padding = ApiInformationHelper.IsMobileDevice 
                 ? new Thickness(4, _Top + 8, 4, 8) 
                 : new Thickness(4, _Top + 8, 20, 20);
             EditBox.ScrollBarMargin = new Thickness(0, _Top, 0, 0);
         }
 
+        /// <summary>
+        /// Refreshes the top margin of the content in the page
+        /// </summary>
+        /// <param name="height">The updated height of the top margin</param>
+        public void RefreshTopMargin(double height)
+        {
+            // Save the new height value and update the main animations
+            if ((_Top - height).Abs() < 0.1) return;
+
+            // Setup the UI that needs to be adjusted
+            AdjustTopMargin(height);
+            if (!_Loaded) return;
+            SetupExpressionAnimations();
+            DrawBracketGuides(null, true).Forget();
+
+            // Update the breakpoints
+            int[] keys = BreakpointsInfo.Keys.ToArray();
+            if (keys.Length > 0)
+            {
+                int[] breakpoints = BreakpointsInfo.Keys.Select(i => i - 1).ToArray();
+                ClearBreakpoints();
+                RestoreBreakpoints(breakpoints);
+                BracketGuidesCanvas.Invalidate();
+            }
+        }
+
         // Updates the line numbers displayed next to the code box
-        private void EditBox_OnTextChanged(object sender, RoutedEventArgs e)
+        private async void EditBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
             DrawLineNumbers();
-            DrawBracketGuides(null).ContinueWith(t =>
+            DrawBracketGuides(null, false).ContinueWith(t =>
             {
-                ViewModel.UpdateIndentationInfo(t.Result).Forget();
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+                if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
+                ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
+            }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
             EditBox.Document.GetText(TextGetOptions.None, out String code);
             ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
             ViewModel.UpdateCanUndoRedoStatus();
-            RemoveUnvalidatedBreakpointsAsync(code).Forget();
-        }
+            await RemoveUnvalidatedBreakpointsAsync(code);
+            RefreshBreakpointsUI(code);
 
-        #region UI overlays
+            // Whitespaces rendering
+            if (_WhitespacesRenderingEnabled)
+            {
+                if (code.Length > 1) RenderControlCharacters();
+                else ClearControlCharacters();
+            }
+        }
 
         /// <summary>
         /// Updates the line numbers shown next to the code edit box
@@ -203,8 +409,58 @@ namespace Brainf_ck_sharp_UWP.Views
             });
         }
 
+        #region Bracket guides
+
+        // The approximate height of a code line with the current font in use
+        private double _ApproximateLineHeight =20;
+
+        // The adjustment vertical offset for the breakpoint line indicators
+        private double _BreakpointsLineOffset = -2;
+
+        // Adjusts the UI of some of the UI overlays when the selected font changes
+        private void AdjustOverlaysUIOnFontChanged([NotNull] InstalledFont font)
+        {
+            switch (font.Name)
+            {
+                case "Calibri":
+                    LinesGridTransform.Y = 2;
+                    BracketGuidesCanvasTransform.Y = -3;
+                    _BreakpointsLineOffset = 1;
+                    IndentationInfoListTransform.Y = 0;
+                    _ApproximateLineHeight = CursorBorder.Height = CursorRectangle.Height = 18;
+                    WhitespacesTransform.Y = 0;
+                    break;
+                case "Cambria":
+                    LinesGridTransform.Y = 2;
+                    BracketGuidesCanvasTransform.Y = -3;
+                    _BreakpointsLineOffset = 1;
+                    IndentationInfoListTransform.Y = 0;
+                    _ApproximateLineHeight = CursorBorder.Height = CursorRectangle.Height = 18;
+                    WhitespacesTransform.Y = -1;
+                    break;
+                case "Consolas":
+                    LinesGridTransform.Y = 2;
+                    BracketGuidesCanvasTransform.Y = -4;
+                    _BreakpointsLineOffset = 2;
+                    IndentationInfoListTransform.Y = -1;
+                    _ApproximateLineHeight = CursorBorder.Height = CursorRectangle.Height = 17;
+                    WhitespacesTransform.Y = -2;
+                    break;
+                default:
+                    LinesGridTransform.Y = 0;
+                    BracketGuidesCanvasTransform.Y = 0;
+                    IndentationInfoListTransform.Y = 0;
+                    _ApproximateLineHeight = CursorBorder.Height = CursorRectangle.Height = 20;
+                    WhitespacesTransform.Y = 0;
+                    _BreakpointsLineOffset = -2;
+                    break;
+            }
+            _ApproximateLineHeight = "Xg".MeasureText(15, font.Family).Height;
+            RefreshListViewsStretch();
+        }
+
         // The backup of the indexes of the brackets in the text
-        private IReadOnlyList<IndentationCoordinateEntry> _Brackets;
+        private IReadOnlyList<CharacterWithCoordinates> _Brackets;
 
         // Brackets semaphore to avoid concurrent operations
         private readonly SemaphoreSlim BracketGuidesSemaphore = new SemaphoreSlim(1);
@@ -216,7 +472,8 @@ namespace Brainf_ck_sharp_UWP.Views
         /// Redraws the column guides if necessary
         /// </summary>
         /// <param name="code">The current text, if already available</param>
-        private async Task<IReadOnlyList<IndentationCoordinateEntry>> DrawBracketGuides(String code)
+        /// <param name="force">Indicates whether or not to always force a redraw of the column guides</param>
+        private async Task<AsyncOperationResult<IReadOnlyList<CharacterWithCoordinates>>> DrawBracketGuides(String code, bool force)
         {
             // Get the text, clear the current guides and make sure the syntax is currently valid
             _BracketGuidesCts?.Cancel();
@@ -228,56 +485,60 @@ namespace Brainf_ck_sharp_UWP.Views
             SyntaxValidationResult result = await Task.Run(() => Brainf_ckInterpreter.CheckSourceSyntax(code));
             if (!result.Valid || _BracketGuidesCts.IsCancellationRequested)
             {
-                BracketGuidesCanvas.Children.Clear();
+                _BracketsGuidesToRender = new List<LineCoordinates>();
+                BracketGuidesCanvas.Invalidate();
                 _Brackets = null;
+                bool cancelled = _BracketGuidesCts.IsCancellationRequested;
                 BracketGuidesSemaphore.Release();
-                return null;
+                return cancelled
+                    ? AsyncOperationStatus.Canceled
+                    : AsyncOperationResult<IReadOnlyList<CharacterWithCoordinates>>.Explicit(null);
             }
 
             // Build the indexes for the current state
-            Tuple<List<IndentationCoordinateEntry>, bool> workingSet = await Task.Run(() =>
+            Tuple<List<CharacterWithCoordinates>, bool> workingSet = await Task.Run(() =>
             {
-                List<IndentationCoordinateEntry> pairs = new List<IndentationCoordinateEntry>();
-                int i1 = 0;
+                List<CharacterWithCoordinates> pairs = new List<CharacterWithCoordinates>();
+                int index = 0;
                 foreach (char c in code)
                 {
-                    if (c == '[' || c == ']')
+                    if (c == '[' || c == ']' || c == '(' || c == ')')
                     {
-                        Coordinate coordinate = code.FindCoordinates(i1);
-                        pairs.Add(new IndentationCoordinateEntry(coordinate, c));
+                        Coordinate coordinate = code.FindCoordinates(index);
+                        pairs.Add(new CharacterWithCoordinates(coordinate, c));
                     }
-                    i1++;
+                    index++;
                 }
                 bool test = _Brackets?.Zip(pairs, (first, second) => first.Equals(second)).All(b => b) == true;
                 return Tuple.Create(pairs, test);
             });
 
             // Check if the brackets haven't been changed or moved
-            if (_Brackets != null && 
+            if (_Brackets != null &&
                 _Brackets.Count == workingSet.Item1.Count &&
-                workingSet.Item2 || 
+                workingSet.Item2 && !force ||
                 _BracketGuidesCts.IsCancellationRequested)
             {
                 BracketGuidesSemaphore.Release();
-                return _Brackets;
+                return AsyncOperationResult<IReadOnlyList<CharacterWithCoordinates>>.Explicit(_Brackets);
             }
             _Brackets = workingSet.Item1;
-            BracketGuidesCanvas.Children.Clear();
 
             // Draw the guides for each brackets pair
-            int i2 = 0;
+            List<LineCoordinates> coordinates = new List<LineCoordinates>();
+            int i = 0;
             foreach (char c in code)
             {
                 // Get the index of the corresponding closing bracket (only if they're not on the same line)
                 if (_BracketGuidesCts.IsCancellationRequested) break;
                 if (c != '[')
                 {
-                    i2++;
+                    i++;
                     continue;
                 }
                 int height = 0, target = -1;
                 bool newLine = false;
-                for (int j = i2 + 1; j < code.Length; j++)
+                for (int j = i + 1; j < code.Length; j++)
                 {
                     char token = code[j];
                     if (token == '\r') newLine = true;
@@ -294,53 +555,241 @@ namespace Brainf_ck_sharp_UWP.Views
                 }
                 if (target == -1)
                 {
-                    i2++;
+                    i++;
                     continue;
                 }
 
                 // Get the initial and ending range
-                ITextRange range = EditBox.Document.GetRange(i2, i2);
+                ITextRange range = EditBox.Document.GetRange(i, i);
                 range.GetRect(PointOptions.Transform, out Rect open, out _);
                 range = EditBox.Document.GetRange(target, target);
                 range.GetRect(PointOptions.Transform, out Rect close, out _);
 
                 // Render the new line guide
-                double top = close.Top - open.Bottom;
-                Line guide = new Line
-                {
-                    Width = 1,
-                    StrokeThickness = 1,
-                    Height = top,
-                    Stroke = new SolidColorBrush(Colors.LightGray),
-                    StrokeDashArray = new DoubleCollection { 4 },
-                    Y1 = 0,
-                    Y2 = top
-                };
-                guide.SetVisualOffset(TranslationAxis.Y, (float)(_Top + 30 + open.Top));
-                guide.SetVisualOffset(TranslationAxis.X, (float)(open.X + 6));
-                BracketGuidesCanvas.Children.Add(guide);
-                i2++;
+                coordinates.Add(new LineCoordinates((float)(close.Top - open.Bottom), (float)((close.X > open.X ? open.X : close.X) + 6), (float)(_Top + 30 + open.Top)));
+                i++;
             }
+            _BracketsGuidesToRender = coordinates;
+            BracketGuidesCanvas.Invalidate();
             BracketGuidesSemaphore.Release();
             return workingSet.Item1;
         }
 
-        /// <summary>
-        /// Gets the approximate height of each line of code in the IDE
-        /// </summary>
-        public double LineApproximateHeight // TODO: approximate this when the lines count changes and bind it to the items height of the ListView
+        // Gets the list of column guides that need to be rendered
+        private IReadOnlyCollection<LineCoordinates> _BracketsGuidesToRender = new List<LineCoordinates>();
+
+        // Draws the column guides in the Win2D canvas
+        private void BracketGuidesCanvas_OnDraw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            get => (double)GetValue(LineApproximateHeightProperty);
-            set => SetValue(LineApproximateHeightProperty, value);
+            // Bracket guides
+            IEnumerable<LineCoordinates> lines = _BracketsGuidesToRender;
+            Color stroke = Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideColor;
+            if (Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.HasValue)
+            {
+                // Dashed line
+                int dash = Brainf_ckFormatterHelper.Instance.CurrentTheme.BracketsGuideStrokesLength.Value;
+                CanvasStrokeStyle style = new CanvasStrokeStyle { CustomDashStyle = new[] { dash - 1f, dash + 1f } };
+                foreach (LineCoordinates line in lines)
+                {
+                    args.DrawingSession.DrawLine(line.X + 0.5f, line.Y - 0.5f, line.X + 0.5f, line.Y + line.Height + 0.5f, stroke, 1, style);
+                }
+            }
+            else
+            {
+                // Straight line at the target coordinates
+                foreach (LineCoordinates line in lines)
+                {
+                    args.DrawingSession.DrawLine(line.X + 0.5f, line.Y, line.X + 0.5f, line.Y + line.Height, stroke);
+                }
+            }
+
+            // Breakpoints
+            IReadOnlyList<Rect> breakpoints = BreakpointLinesCoordinates.Values.ToArray();
+            foreach (Rect rect in breakpoints)
+            {
+                args.DrawingSession.FillRoundedRectangle(rect, 2, 2, Colors.DimGray);
+                args.DrawingSession.FillRoundedRectangle(new Rect
+                {
+                    Height = rect.Height - 2,
+                    Width = rect.Width - 2,
+                    X = rect.X + 1,
+                    Y = rect.Y + 1
+                }, 2, 2, "#FF762C2C".ToColor());
+            }
         }
 
-        public static readonly DependencyProperty LineApproximateHeightProperty = DependencyProperty.Register(
-            nameof(LineApproximateHeight), typeof(double), typeof(IDEView), new PropertyMetadata(19.94998046875));
+        // Updates the clip size of the bracket guides container
+        private void BracketsGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            BracketsClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
+        }
+
+        #endregion
+
+        #region Control characters rendering
+
+        // Synchronization semaphore for the control character overlays
+        private readonly SemaphoreSlim ControlCharactersSemaphore = new SemaphoreSlim(1);
+
+        // The timestamp of the last redraw of the control characters
+        private DateTime _ControlCharactersRenderingTimestamp = DateTime.MinValue;
+
+        // The minimum delay between each redraw of the control characters
+        private readonly int MinimumControlCharactersRenderingInterval = 600;
+
+        // The queue of arguments to render the control characters after a delay
+        private int _PendingUpdates;
+
+        // Indicates whether or not to display the control characters in the IDE
+        private bool _WhitespacesRenderingEnabled;
+
+        // Gets the list of whitespace characters that need to be rendered
+        private IReadOnlyCollection<CharacterWithArea> _CharactersToRender = new List<CharacterWithArea>();
+
+        // Renders the whitespace characters indicators
+        private void WhitespacesCanvas_OnDraw(CanvasControl sender, CanvasDrawEventArgs args)
+        {
+            IReadOnlyCollection<CharacterWithArea> items = _CharactersToRender;
+            foreach (CharacterWithArea c in items)
+            {
+                if (c.Character == ' ')
+                {
+                    Rect dot = new Rect
+                    {
+                        Height = 2,
+                        Width = 2,
+                        X = c.Area.Left + (c.Area.Right - c.Area.Left) / 2 + 3,
+                        Y = c.Area.Top + (c.Area.Bottom - c.Area.Top) / 2 - 1
+                    };
+                    args.DrawingSession.FillRectangle(dot, Colors.DimGray);
+                }
+                else
+                {
+                    double width = c.Area.Right - c.Area.Left;
+                    if (width < 12)
+                    {
+                        // Small dot at the center
+                        Rect dot = new Rect
+                        {
+                            Height = 2,
+                            Width = 2,
+                            X = c.Area.Left + width / 2 + 5,
+                            Y = c.Area.Top + (c.Area.Bottom - c.Area.Top) / 2 - 1
+                        };
+                        args.DrawingSession.FillRectangle(dot, Colors.DimGray);
+                    }
+                    else
+                    {
+                        // Arrow indicator
+                        float
+                            x = (float)(c.Area.Left + width / 2),
+                            y = (float)(c.Area.Top + (c.Area.Bottom - c.Area.Top) / 2 - 2);
+                        int length = width < 28 ? 8 : 12;
+                        args.DrawingSession.DrawLine(x, y + 2, x + length, y + 2, Colors.DimGray);
+                        args.DrawingSession.DrawLine(x + length - 2, y, x + length, y + 2, Colors.DimGray);
+                        args.DrawingSession.DrawLine(x + length - 2, y + 4, x + length, y + 2, Colors.DimGray);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Renders the current control characters
+        /// </summary>
+        private async void RenderControlCharacters()
+        {
+            // Private function to render the characters
+            IReadOnlyCollection<CharacterWithArea> RenderControlCharactersCode()
+            {
+                // Edge case
+                EditBox.Document.GetText(TextGetOptions.None, out String code);
+                if (code.Length < 2)
+                {
+                    return new List<CharacterWithArea>();
+                }
+
+                // Find the target characters
+                List<CharacterWithArea> characters = new List<CharacterWithArea>();
+                for (int i = 0; i < code.Length; i++)
+                {
+                    char c = code[i];
+                    if (c == ' ')
+                    {
+                        ITextRange range = EditBox.Document.GetRange(i, i + 1);
+                        range.GetRect(PointOptions.Transform, out Rect area, out _);
+                        characters.Add(new CharacterWithArea(area, c));
+                    }
+                    else if (c == '\t')
+                    {
+                        ITextRange range = EditBox.Document.GetRange(i, i + 1);
+                        range.GetRect(PointOptions.Transform, out Rect area, out _);
+                        characters.Add(new CharacterWithArea(area, c));
+                    }
+                }
+                return characters;
+            }
+
+            // Lock and add the delayed handler
+            await ControlCharactersSemaphore.WaitAsync();
+            _PendingUpdates++;
+            Task.Delay(MinimumControlCharactersRenderingInterval).ContinueWith(async t =>
+            {
+                // Lock again and retrieve the current argument
+                await ControlCharactersSemaphore.WaitAsync();
+                try
+                {
+                    if (_PendingUpdates == 0) return;
+                    if (DateTime.Now.Subtract(_ControlCharactersRenderingTimestamp).TotalMilliseconds < MinimumControlCharactersRenderingInterval &&
+                        _PendingUpdates > 0) return; // Skip if another handler was executed less than half a second ago
+                    _ControlCharactersRenderingTimestamp = DateTime.Now;
+                    _CharactersToRender = RenderControlCharactersCode(); // Render the control characters
+                    WhitespacesCanvas.Invalidate();
+                }
+                catch
+                {
+                    // Sorry, can't crash here
+                }
+                finally
+                {
+                    ControlCharactersSemaphore.Release();
+                }
+            }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
+            ControlCharactersSemaphore.Release();
+        }
+
+        /// <summary>
+        /// Clears the current control characters rendered on screen
+        /// </summary>
+        private async void ClearControlCharacters()
+        {
+            await ControlCharactersSemaphore.WaitAsync();
+            _PendingUpdates = 0;
+            _CharactersToRender = new List<CharacterWithArea>();
+            _ControlCharactersRenderingTimestamp = DateTime.Now;
+            ControlCharactersSemaphore.Release();
+            WhitespacesCanvas.Invalidate();
+        }
+
+        // Adjusts the size of the whitespace overlays canvas
+        private void EditBox_OnTextSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            WhitespacesCanvas.Height = BracketGuidesCanvas.Height = e.NewSize.Height + _Top;
+            WhitespacesCanvas.Width = BracketGuidesCanvas.Width = e.NewSize.Width;
+        }
+
+        // Updates the clip size of the control character overlays container
+        private void WhitespaceParentCanvas_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ControlCharactersClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
+        }
 
         #endregion
 
         // Gets the backup of the text in the IDE
         private String _PreviousText;
+
+        // Gets the previous length of the text selection
+        private int _PreviousSelectionLength;
 
         // Updates the syntax highlight and some UI overlays whenever the text selection changes
         private void EditBox_OnSelectionChanged(object sender, RoutedEventArgs e)
@@ -355,21 +804,25 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Single character entered
             bool textChanged = false;
-            try
+            if (text.Length == _PreviousText.Length + 1 ||                                  // Single character added
+                _PreviousSelectionLength > 0 && EditBox.Document.Selection.Length == 0)     // Long text selected replaced with a single char
             {
-                if (text.Length == _PreviousText.Length + 1)
-                {
-                    // Unsubscribe from the text events and batch the updates
-                    EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
-                    EditBox.TextChanged -= EditBox_OnTextChanged;
+                // Unsubscribe from the text events and batch the updates
+                EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
+                EditBox.TextChanged -= EditBox_OnTextChanged;
 
+                try
+                {
                     // Get the last character and apply the right color
                     ITextRange range = EditBox.Document.GetRange(start - 1, start);
-                    range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(range.Character);
-
-                    // No other work needed for all the operators except the [ bracket
-                    if (!Brainf_ckInterpreter.Operators.Where(c => c != '[').Contains(range.Character) &&
-                        Brainf_ckInterpreter.CheckSourceSyntax(_PreviousText).Valid) // Skip the autocompletion if the code isn't valid
+                    char character = range.Character;
+                    if (!(start > 1 && text[start - 2] == '(' && character == '[') && // Allow to directly open a loop inside a function
+                        (!Brainf_ckInterpreter.CheckSourceSyntax(_PreviousText).Valid || character != '[' && character != '(' && character != '\r'))
+                    {
+                        // Avoid applying the syntax highlight twice
+                        range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(character);
+                    }
+                    else // Syntax highlight and autocompletion for the [, \r and ( characters
                     {
                         // Calculate the current indentation depth
                         String trailer = text.Substring(0, range.StartPosition);
@@ -381,8 +834,14 @@ namespace Brainf_ck_sharp_UWP.Views
                         }).ToString();
 
                         // Open [ bracket
-                        if (range.Character == '[')
+                        if (character == '[')
                         {
+                            // Get the current settings
+                            bool autoFormat = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutoIndentBrackets));
+                            int formatMode = autoFormat
+                                ? AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.BracketsStyle))
+                                : default(int);
+
                             // Edge case: the user was already on an empty and indented line when opening the bracket
                             bool edge = false;
                             int lastCr = trailer.LastIndexOf('\r');
@@ -392,7 +851,7 @@ namespace Brainf_ck_sharp_UWP.Views
                                 String lastLine = trailer.Substring(lastCr, trailer.Length - lastCr);
                                 if (lastLine.Skip(1).All(c => c == '\t') && lastLine.Length == indents + 1)
                                 {
-                                    EditBox.Document.Selection.TypeText($"\r{tabs}\t\r{tabs}]");
+                                    EditBox.Document.Selection.TypeText(autoFormat ? $"\r{tabs}\t\r{tabs}]" : "]");
                                     edge = true;
                                 }
                             }
@@ -400,42 +859,59 @@ namespace Brainf_ck_sharp_UWP.Views
                             // Edge case: first line in the document
                             if (range.StartPosition == 0)
                             {
-                                EditBox.Document.Selection.TypeText($"\r{tabs}\t\r{tabs}]");
+                                EditBox.Document.Selection.TypeText(autoFormat ? $"\r{tabs}\t\r{tabs}]" : "]");
                                 edge = true;
                             }
 
                             // Default autocomplete: new line and [ ] brackets
                             if (!edge)
                             {
-                                range.Delete(TextRangeUnit.Character, 1);
-                                EditBox.Document.Selection.TypeText($"\r{tabs}[\r{tabs}\t\r{tabs}]");
+                                if (autoFormat)
+                                {
+                                    if (formatMode == 0) // New line
+                                    {
+                                        range.Delete(TextRangeUnit.Character, 1);
+                                        EditBox.Document.Selection.TypeText($"\r{tabs}[\r{tabs}\t\r{tabs}]");
+                                    }
+                                    else EditBox.Document.Selection.TypeText($"\r{tabs}\t\r{tabs}]");
+                                }
+                                else EditBox.Document.Selection.TypeText("]");
                             }
 
                             // Apply the right color and move the selection at the center of the brackets
-                            ITextRange bracketsRange = EditBox.Document.GetRange(start, EditBox.Document.Selection.EndPosition);
-                            bracketsRange.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar('[');
-                            EditBox.Document.Selection.Move(TextRangeUnit.Character, -(indents + 2));
+                            ITextRange bracketsRange = EditBox.Document.GetRange(start - 1, EditBox.Document.Selection.EndPosition);
+                            bracketsRange.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar('[');
+                            EditBox.Document.Selection.Move(TextRangeUnit.Character, -(autoFormat ? indents + 2 : 1));
                             DrawLineNumbers();
                             textChanged = true;
                         }
-                        else if (range.Character == '\r')
+                        else if (character == '\r')
                         {
                             // New line, tabs needed
                             if (tabs.Length > 0) EditBox.Document.Selection.TypeText(tabs);
                             DrawLineNumbers();
                             textChanged = true;
                         }
+                        else if (character == '(')
+                        {
+                            // Function definition
+                            EditBox.Document.Selection.TypeText(")");
+                            ITextRange bracketsRange = EditBox.Document.GetRange(start - 1, EditBox.Document.Selection.EndPosition);
+                            bracketsRange.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar('(');
+                            EditBox.Document.Selection.Move(TextRangeUnit.Character, -1);
+                            textChanged = true;
+                        }
                     }
-
-                    // Restore the event handlers
-                    EditBox.Document.EndUndoGroup();
-                    EditBox.SelectionChanged += EditBox_OnSelectionChanged;
-                    EditBox.TextChanged += EditBox_OnTextChanged;
                 }
-            }
-            catch
-            {
-                // This must never crash
+                catch
+                {
+                    // This must never crash
+                }
+
+                // Restore the event handlers
+                EditBox.Document.EndUndoGroup();
+                EditBox.SelectionChanged += EditBox_OnSelectionChanged;
+                EditBox.TextChanged += EditBox_OnTextChanged;
             }
 
             // Refresh the current text if needed
@@ -446,13 +922,15 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Display the text updates
             _PreviousText = text;
+            _PreviousSelectionLength = EditBox.Document.Selection.Length;
 
             // Update the bracket guides
             if (textChanged)
             {
-                DrawBracketGuides(text).ContinueWith(t =>
+                DrawBracketGuides(text, false).ContinueWith(t =>
                 {
-                    ViewModel.UpdateIndentationInfo(t.Result).Forget();
+                    if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
+                    ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
 
@@ -477,7 +955,7 @@ namespace Brainf_ck_sharp_UWP.Views
             CursorTransform.X = selectionOffset.X + 4;
 
             // Update the visibility and the position of the cursor
-            CursorBorder.SetVisualOpacity(EditBox.Document.Selection.Length.Abs() > 0 ? 0 : 1);
+            CursorBorder.Visibility = (EditBox.Document.Selection.Length.Abs() == 0).ToVisibility();
             CursorBorderTransform.Y = selectionOffset.Y;
         }
 
@@ -536,6 +1014,7 @@ namespace Brainf_ck_sharp_UWP.Views
             {
                 Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
                 await Task.Delay(250);
+                ClearControlCharacters();
             }
 
             try
@@ -550,6 +1029,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 {
                     // Load a stream with the new text to also reset the undo stack
                     await EditBox.LoadTextAsync(code);
+                    ApplyCustomTabSpacing();
                     start = 0;
                     end = code.Length;
                 }
@@ -571,7 +1051,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     if (test < 33 || test > 126 && test < 161) continue;
                     ITextRange range = EditBox.Document.GetRange(i, i + 1);
                     char c = range.Character;
-                    range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(c);
+                    range.CharacterFormat.ForegroundColor = Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(c);
                 }
 
                 // Set the right selection position
@@ -587,11 +1067,14 @@ namespace Brainf_ck_sharp_UWP.Views
                 }
                 EditBox.Document.GetText(TextGetOptions.None, out code);
                 _PreviousText = code;
+                _PreviousSelectionLength = EditBox.Document.Selection.Length;
                 DrawLineNumbers();
-                DrawBracketGuides(code).ContinueWith(t =>
+                DrawBracketGuides(code, false).ContinueWith(t =>
                 {
-                    ViewModel.UpdateIndentationInfo(t.Result).Forget();
+                    if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
+                    ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
+                if (_WhitespacesRenderingEnabled) RenderControlCharacters();
                 ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
                 ViewModel.SendMessages(code);
                 ViewModel.UpdateCanUndoRedoStatus();
@@ -615,12 +1098,6 @@ namespace Brainf_ck_sharp_UWP.Views
             }
         }
 
-        // Updates the clip size of the bracket guides container
-        private void BracketsGrid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            BracketsClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
-        }
-
         // Updates the clip size of the container of the unfocused text cursor
         private void LineCursorCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -633,14 +1110,14 @@ namespace Brainf_ck_sharp_UWP.Views
         /// <summary>
         /// Gets the collection of current visualized breakpoints and their respective line numbers
         /// </summary>
-        private readonly Dictionary<int, Tuple<Ellipse, Rectangle>> BreakpointsInfo = new Dictionary<int, Tuple<Ellipse, Rectangle>>();
+        private readonly Dictionary<int, Tuple<Ellipse, Guid>> BreakpointsInfo = new Dictionary<int, Tuple<Ellipse, Guid>>();
 
         // Clears the breakpoints from the UI and their info
         private void ClearBreakpoints()
         {
             BreakpointsInfo.Clear();
+            BreakpointLinesCoordinates.Clear();
             BreakpointsCanvas.Children.Clear();
-            BreakLinesCanvas.Children.Clear();
         }
 
         /// <summary>
@@ -669,14 +1146,15 @@ namespace Brainf_ck_sharp_UWP.Views
             // Remove the target breakpoints
             foreach (int target in pending)
             {
-                if (BreakpointsInfo.TryGetValue(target, out Tuple<Ellipse, Rectangle> previous))
+                if (BreakpointsInfo.TryGetValue(target, out Tuple<Ellipse, Guid> previous))
                 {
                     // Remove the previous breakpoint
                     BreakpointsCanvas.Children.Remove(previous.Item1);
-                    BreakLinesCanvas.Children.Remove(previous.Item2);
                     BreakpointsInfo.Remove(target);
+                    BreakpointLinesCoordinates.Remove(previous.Item2);
                 }
             }
+            BracketGuidesCanvas.Invalidate();
         }
 
         // Shows the breakpoints from an input list of lines
@@ -686,7 +1164,7 @@ namespace Brainf_ck_sharp_UWP.Views
             EditBox.Document.GetText(TextGetOptions.None, out String code);
 
             // Get the actual positions for each line start
-            IReadOnlyCollection<int> indexes = code.FindIndexes(lines);
+            IReadOnlyCollection<int> indexes = code.FindLineIndexes(lines).Select(i => i + 1).ToArray();
 
             // Draw the breakpoints again
             foreach (int i in indexes)
@@ -723,6 +1201,67 @@ namespace Brainf_ck_sharp_UWP.Views
         private Guid _InvalidBreakpointMessageID;
 
         /// <summary>
+        /// Calculates the visual coordinates and info for a breakpoint to insert at a given line
+        /// </summary>
+        /// <param name="text">The source text</param>
+        /// <param name="index">The breakpoint initial index</param>
+        private (double X, double Y, double Width) CalculateBreakpointCoordinates([NotNull] String text, int index)
+        {
+            // Get the target line coordinates
+            int first = 0, last = -1;
+            bool found = false, space = false;
+            for (int i = index; i < text.Length; i++)
+            {
+                if (Brainf_ckInterpreter.Operators.Contains(text[i]))
+                {
+                    if (!found)
+                    {
+                        found = true;
+                        first = i;
+                    }
+                }
+                else if (found)
+                {
+                    // Store the final index and break
+                    last = i;
+
+                    // Check if there's an available space to extend the breakpoint indicator width
+                    if (text[i] == ' ' || text[i] == '\t' || text[i] == '\r') space = true;
+                    break;
+                }
+            }
+
+            // Get the initial and ending range
+            ITextRange range = EditBox.Document.GetRange(first, first);
+            range.GetRect(PointOptions.Transform, out Rect open, out _);
+            range = EditBox.Document.GetRange(last, last);
+            range.GetRect(PointOptions.Transform, out Rect close, out _);
+            return (open.X + 2, open.Top, close.Right - open.Left + (space ? 3 : 2));
+        }
+
+        /// <summary>
+        /// Refreshes the UI of the breakpoint overlays
+        /// </summary>
+        /// <param name="text">The current IDE text</param>
+        private void RefreshBreakpointsUI([NotNull] String text)
+        {
+            KeyValuePair<int, Tuple<Ellipse, Guid>>[] pairs = BreakpointsInfo.ToArray();
+
+            // Get the actual positions for each line start
+            IReadOnlyList<int> indexes = text.FindLineIndexes(pairs.Select(p => p.Key - 1));
+            for (int i = 0; i < pairs.Length; i++)
+            {
+                KeyValuePair<int, Tuple<Ellipse, Guid>> pair = pairs[i];
+                (double x, double y, double width) = CalculateBreakpointCoordinates(text, indexes[i]);
+                Rect rect = new Rect(x, _Top + 10 + y + _BreakpointsLineOffset, width, _ApproximateLineHeight);
+                BreakpointLinesCoordinates[pair.Value.Item2] = rect;
+            }
+            BracketGuidesCanvas.Invalidate();
+        }
+
+        private readonly IDictionary<Guid, Rect> BreakpointLinesCoordinates = new Dictionary<Guid, Rect>();
+
+        /// <summary>
         /// Adds a single breakpoint to the UI and the backup list
         /// </summary>
         /// <param name="text">The current text, if available</param>
@@ -750,12 +1289,13 @@ namespace Brainf_ck_sharp_UWP.Views
             }
 
             // Setup the breakpoint
-            if (BreakpointsInfo.TryGetValue(coordinate.Y, out Tuple<Ellipse, Rectangle> previous))
+            if (BreakpointsInfo.TryGetValue(coordinate.Y, out Tuple<Ellipse, Guid> previous))
             {
                 // Remove the previous breakpoint
                 BreakpointsCanvas.Children.Remove(previous.Item1);
-                BreakLinesCanvas.Children.Remove(previous.Item2);
                 BreakpointsInfo.Remove(coordinate.Y);
+                BreakpointLinesCoordinates.Remove(previous.Item2);
+                BracketGuidesCanvas.Invalidate();
             }
             else
             {
@@ -770,64 +1310,80 @@ namespace Brainf_ck_sharp_UWP.Views
                     RenderTransform = new TranslateTransform
                     {
                         X = 3,
-                        Y = _Top + 12 + offset
+                        Y = _Top + 10 + offset
                     }
                 };
                 BreakpointsCanvas.Children.Add(ellipse);
                 ellipse.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
 
                 // Line highlight
-                Rectangle rect = new Rectangle
-                {
-                    Height = 19.9, // Approximate line height
-                    Width = BreakLinesCanvas.ActualWidth,
-                    Fill = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("BreakpointLineBrush"),
-                    RenderTransform = new TranslateTransform { Y = offset - 2 } // -2 to adjust the position with the cursor rectangle
-                };
-                BreakLinesCanvas.Children.Add(rect);
-                rect.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.Y);
+                (double x, _, double width) = CalculateBreakpointCoordinates(text, start);
+                Rect rect = new Rect(x, _Top + 10 + offset + _BreakpointsLineOffset, width, _ApproximateLineHeight);
+                Guid guid = Guid.NewGuid();
+                BreakpointLinesCoordinates.Add(guid, rect);
+                BracketGuidesCanvas.Invalidate();
 
                 // Store the info
-                BreakpointsInfo.Add(coordinate.Y, Tuple.Create(ellipse, rect));
+                BreakpointsInfo.Add(coordinate.Y, Tuple.Create(ellipse, guid));
             }
-        }
-
-        // Updates the width of the breakpoint lines
-        private void BreakLinesCanvas_OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            foreach (FrameworkElement element in BreakLinesCanvas.Children.Cast<FrameworkElement>().ToArray())
-                element.Width = e.NewSize.Width;
         }
 
         #endregion
 
         // Begins a new undo group when the user presses a keyboard key (before the text is actually changed)
-        private void EditBox_OnKeyDown(object sender, KeyRoutedEventArgs e) => EditBox.Document.BeginUndoGroup();
+        private void EditBox_OnKeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            EditBox.Document.BeginUndoGroup();
+            if (e.Key == VirtualKey.Tab)
+            {
+                EditBox.Document.Selection.TypeText("\t");
+                e.Handled = true;
+            }
+        }
 
         // Adjusts the vertical scaling of the indentation indicators
-        private void IndentationInfoList_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        private void AdjustIndentationIndicatorsVerticalStretch(Size newSize)
         {
             int count = ViewModel.Source.Count;
             if (count < 3) IndentationInfoList.SetVisualScale(null, 1, null);
             else
             {
                 String lines = '\n'.Repeat(count - 1);
-                Size size = lines.MeasureText(15);
-                IndentationInfoList.SetVisualScale(null, (float) (size.Height / e.NewSize.Height), null);
+                Size size = lines.MeasureText(15, LineBlock.FontFamily);
+                IndentationInfoList.SetVisualScale(null, (float)(size.Height / newSize.Height), null);
             }
         }
 
-        // Adjusts the vertical scaling of the git lines diff indicators
-        private void GitDiffListView_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        // Adjusts the stretch of the indentation indicators whenever the size of the indicators changes
+        private void IndentationInfoList_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            AdjustIndentationIndicatorsVerticalStretch(e.NewSize);
+        }
+
+        // Adjusts the vertical scaling of the git diff indicators
+        private void AdjustGitDiffIndicatorsVerticalStretch(Size newSize)
         {
             int count = ViewModel.DiffStatusSource.Count;
             if (count < 3) GitDiffListView.SetVisualScale(null, 1, null);
             else
             {
                 String lines = '\n'.Repeat(count - 1);
-                Size size = lines.MeasureText(15);
-                GitDiffListView.SetVisualScale(null, (float)(size.Height / e.NewSize.Height), null);
+                Size size = lines.MeasureText(15, LineBlock.FontFamily);
+                GitDiffListView.SetVisualScale(null, (float)(size.Height / newSize.Height), null);
             }
+        }
+
+        // Adjusts the vertical scaling of the git diff indicators whenever the size of the indicators list changes
+        private void GitDiffListView_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            AdjustGitDiffIndicatorsVerticalStretch(e.NewSize);
+        }
+
+        // Refreshes the size of the indicators
+        private void RefreshListViewsStretch()
+        {
+            AdjustIndentationIndicatorsVerticalStretch(new Size(IndentationInfoList.ActualWidth, IndentationInfoList.ActualHeight));
+            AdjustGitDiffIndicatorsVerticalStretch(new Size(GitDiffListView.ActualWidth, GitDiffListView.ActualHeight));
         }
 
         #region Breakpoints context menu
@@ -855,6 +1411,7 @@ namespace Brainf_ck_sharp_UWP.Views
             () =>
             {
                 ClearBreakpoints();
+                BracketGuidesCanvas.Invalidate();
                 ViewModel.SignalBreakpointsDeleted();
             });
             menuFlyout.ShowAt(this, offset);

@@ -4,13 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:templateSelectors="using:Brainf_ck_sharp_UWP.TemplateSelectors"
     xmlns:attached="using:Brainf_ck_sharp_UWP.AttachedProperties"
     xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
     xmlns:customControls="using:Brainf_ck_sharp_UWP.UserControls.CustomControls"
     xmlns:jumpList="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList"
     xmlns:ideResult="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult"
     xmlns:memoryState="using:Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState"
+    xmlns:ideResults="using:Brainf_ck_sharp_UWP.TemplateSelectors.IDEResults"
+    xmlns:IDEConverters="using:Brainf_ck_sharp_UWP.Converters.IDEResults"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -136,7 +137,14 @@
                 Margin="12,0,0,-4"
                 Source="{Binding IndexedState}"/>
         </DataTemplate>
-        
+
+        <!--Function definitions-->
+        <DataTemplate x:Key="FunctionDefinitionsTemplate">
+            <memoryState:FunctionDefinitionsViewerControl
+                Margin="12,0,0,-4"
+                Source="{Binding IndexedDefinitions}"/>
+        </DataTemplate>
+
         <!--Statistics-->
         <DataTemplate x:Key="StatisticsTemplate">
             <customControls:ScriptStatisticsDisplayControl 
@@ -148,17 +156,26 @@
         </DataTemplate>
 
         <!--Template selector-->
-        <templateSelectors:IDERunResultTemplateSelector x:Key="ResultTemplateSelector"/>
+        <ideResults:IDERunResultTemplateSelector x:Key="ResultTemplateSelector"/>
+        <ideResults:IDERunResultHeaderTemplateSelector x:Key="HeaderTemplateSelector"/>
 
         <!--Headers converter-->
-        <converters:IDESectionToDisplayNameConverter x:Key="HeadersConverter"/>
-        <converters:IDESectionToUppercaseDisplayNameConverter x:Key="UppercaseConverter"/>
+        <IDEConverters:IDESectionToDisplayNameConverter x:Key="HeadersConverter"/>
+        <IDEConverters:IDESectionToUppercaseDisplayNameConverter x:Key="UppercaseConverter"/>
+        <IDEConverters:IDESectionHeaderMarginConverter x:Key="MarginsConverter"/>
         
         <!--Header-->
         <DataTemplate x:Key="HeaderTemplate">
             <jumpList:JumpListZoomedInHeaderTemplate
                 Title="{Binding Key, Converter={StaticResource HeadersConverter}}"
                 Margin="12,8,16,0"/>
+        </DataTemplate>
+        
+        <!--Header with bottom margin-->
+        <DataTemplate x:Key="HeaderWithBottomMarginTemplate">
+            <jumpList:JumpListZoomedInHeaderTemplate
+                Title="{Binding Key, Converter={StaticResource HeadersConverter}}"
+                Margin="{Binding Key, Converter={StaticResource MarginsConverter}, ConverterParameter=12_8_16_4_8}"/>
         </DataTemplate>
 
         <!--Zoomed out default header-->
@@ -192,7 +209,7 @@
                     ItemTemplateSelector="{StaticResource ResultTemplateSelector}">
                     <ListView.GroupStyle>
                         <GroupStyle 
-                            HeaderTemplate="{StaticResource HeaderTemplate}"
+                            HeaderTemplateSelector="{StaticResource HeaderTemplateSelector}"
                             HeaderContainerStyle="{StaticResource GroupsViewListHeaderStyle}"/>
                     </ListView.GroupStyle>
                 </ListView>

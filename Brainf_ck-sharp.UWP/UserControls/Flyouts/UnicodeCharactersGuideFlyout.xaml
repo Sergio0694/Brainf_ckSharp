@@ -17,7 +17,7 @@
             <!--[0-31] characters-->
             <Grid 
                 Height="56"
-                Margin="20,12,20,0">
+                Margin="12,12,24,0">
                 <customControls:UnicodeNonVisibleCharactersGroupDisplayControl
                     x:Name="FirstGroupControl"
                     x:Uid="FirstControlUnicodeGroup"/>
@@ -50,7 +50,7 @@
             <!--[0-31] characters-->
             <Grid 
                 Height="56"
-                Margin="20,12,20,0">
+                Margin="12,12,24,0">
                 <customControls:UnicodeNonVisibleCharactersGroupDisplayControl
                     x:Name="SecondGroupControl"
                     x:Uid="SecondControlUnicodeGroup"/>

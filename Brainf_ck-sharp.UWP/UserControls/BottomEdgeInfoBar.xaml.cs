@@ -61,6 +61,10 @@ namespace Brainf_ck_sharp_UWP.UserControls
             {
                 VisualStateManager.GoToState(this, m.IsValid ? "BreakpointsDefaultStatus" : "BreakpointsErrorStatus", false);
             });
+            Messenger.Default.Register<IDEPendingChangesStatusChangedMessage>(this, m =>
+            {
+                VisualStateManager.GoToState(this, m.PendingChangesPresent ? "IDEPendingChangesState" : "IDENoPendingChangesState", false);
+            });
         }
     }
 }

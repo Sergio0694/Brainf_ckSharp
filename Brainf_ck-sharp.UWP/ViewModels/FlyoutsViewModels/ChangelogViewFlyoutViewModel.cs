@@ -4,11 +4,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.ViewModels.Abstract;
+using Brainf_ck_sharp_UWP.ViewModels.Abstract.JumpList;
 
 namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
 {
-    public class ChangelogViewFlyoutViewModel : JumpListViewModelBase<ChangelogReleaseInfo, IReadOnlyList<string>>
+    public class ChangelogViewFlyoutViewModel : DeferredJumpListViewModelBase<ChangelogReleaseInfo, IReadOnlyList<string>>
     {
         // Private synchronization semaphore for the singleton changelog list
         private static readonly SemaphoreSlim ChangelogSemaphore = new SemaphoreSlim(1);
@@ -30,6 +30,30 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             // Create the output collection
             return new List<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<String>>>
             {
+                CreateChangelogEntry("1.4.0.0", 2017, 1, 10, new List<String>
+                {
+                    "Added new support for PBrain extensions",
+                    "Added a detailed user guide to the Brainf*ck language",
+                    "IDE indentation guides rendering improved",
+                    "Minor fixes and improvements"
+                }),
+                CreateChangelogEntry("1.3.1.0", 2017, 7, 9, new List<String>
+                {
+                    "Added an option to clear the Stdin buffer when executing a script from the Console or the IDE",
+                    "Speed optimizations to the interpreter",
+                    "Minor fixes and improvements"
+                }),
+                CreateChangelogEntry("1.3.0.0", 2017, 8, 26, new List<String>
+                {
+                    "Added a settings panel with new IDE formatting and UI options for PC and Mobile",
+                    "Added an optional themes pack to customize the IDE",
+                    "It is now possible to use the TAB key in the IDE",
+                    "Added a small icon in the bottom bar to indicate if the current document has unsaved changes",
+                    "Added a Ctrl + S keyboard shortcut to quickly save the code in the IDE",
+                    "UI improvements when running the app on a high-DPI screen",
+                    "Memory and performance improvements",
+                    "Minor bug fixes and UI adjustments"
+                }),
                 CreateChangelogEntry("1.2.0.0", 2017, 7, 18, new List<String>
                 {
                     "Added the byte overflow optional mode to both the console and the IDE",

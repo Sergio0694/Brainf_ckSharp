@@ -10,10 +10,11 @@ using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Converters;
 using Brainf_ck_sharp_UWP.DataModels.IDEResults;
 using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
-using UICompositionAnimations.Helpers;
+using UICompositionAnimations.Helpers.PointerEvents;
 
 namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult
 {
@@ -98,7 +99,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult
                             new Run
                             {
                                 Text = c.ToString(),
-                                Foreground = new SolidColorBrush(Brainf_ckFormatterHelper.GetSyntaxHighlightColorFromChar(c))
+                                Foreground = new SolidColorBrush(Brainf_ckFormatterHelper.Instance.GetSyntaxHighlightColorFromChar(c))
                             },
                             new Run
                             {
@@ -128,6 +129,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult
                         @this.InfoBlock.Foreground = new SolidColorBrush(Colors.LightGray);
                         @this.InfoBlock.FontWeight = FontWeights.Normal;
                         break;
+                    case IDEResultSectionFunctionsData state:
+                        @this.InfoBlock.Text = $"{state.IndexedDefinitions.Count} {LocalizationManager.GetResource(state.IndexedDefinitions.Count > 1 ? "DefinedFunctions" : "DefinedFunction")}";
+                        @this.InfoBlock.Foreground = new SolidColorBrush(Colors.LightGray);
+                        @this.InfoBlock.FontWeight = FontWeights.Normal;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException("Invalid section type");
                 }
             }
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Windows.ApplicationModel;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -58,6 +58,18 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         }
 
         /// <summary>
+        /// Gets the setting with the specified key and throws an <see cref="ArgumentException"/> if it isn't found
+        /// </summary>
+        /// <typeparam name="T">The type of setting to retrieve</typeparam>
+        /// <param name="key">The key of the setting to get</param>
+        public T GetValue<T>([NotNull] String key)
+        {
+            bool found = TryGetValue(key, out T value);
+            if (!found) throw new ArgumentException("The setting with the given key was not present");
+            return value;
+        }
+
+        /// <summary>
         /// Reads a value from the dictionary and obtains it if present
         /// </summary>
         /// <typeparam name="T">The type of the object to retrieve</typeparam>
@@ -99,6 +111,17 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
             SetValue(nameof(AppSettingsKeys.OverflowToggleMessageShown), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.ReviewPromptShown), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.AppStartups), 0u, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.InAppBlurMode), 0, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.AutoIndentBrackets), true, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.BracketsStyle), 0, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.TabLength), 4, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.SelectedIDETheme), 0, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.AutosaveDocuments), false, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.RenderWhitespaces), false, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.SelectedFontName), String.Empty, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.ShowStatusBar), false, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.ClearStdinBufferOnExecution), true, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.ShowPBrainButtons), false, SettingSaveMode.SkipIfExisting);
         }
 
         /// <summary>

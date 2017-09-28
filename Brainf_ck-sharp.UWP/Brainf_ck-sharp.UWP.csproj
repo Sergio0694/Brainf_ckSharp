@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -20,7 +20,7 @@
     <PackageCertificateKeyFile>Brainf_ck-sharp.UWP_TemporaryKey.pfx</PackageCertificateKeyFile>
     <PackageCertificateThumbprint>6FA628215907FF752772AE357DC3DE1CDDCB5412</PackageCertificateThumbprint>
     <HockeyAppResourceId>d992b6490330446db870404084b19c39</HockeyAppResourceId>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
   </PropertyGroup>
@@ -109,25 +109,42 @@
     <Compile Include="AttachedProperties\Brainf_ckCodeInlineFormatter.cs" />
     <Compile Include="AttachedProperties\BulletListHelper.cs" />
     <Compile Include="AttachedProperties\CharacterToRotationHelper.cs" />
+    <Compile Include="AttachedProperties\CustomPolygonBorderAngleHelper.cs" />
     <Compile Include="AttachedProperties\RunInlineHelper.cs" />
     <Compile Include="Converters\BoolToAccentBrushOrFallbackConverter.cs" />
+    <Compile Include="Converters\BoolToColorBrushConverter.cs" />
+    <Compile Include="Converters\BoolToInvertedVisibilityConverter.cs" />
+    <Compile Include="Converters\ConsoleMemoryViewer\ConsoleMemoryViewerSectionMarginConverter.cs" />
+    <Compile Include="Converters\ConsoleMemoryViewer\ConsoleStateInfoSectionDescriptionConverter.cs" />
     <Compile Include="Converters\DateTimeToDateStringConverter.cs" />
+    <Compile Include="Converters\DisplayScalingToMarginConverter.cs" />
+    <Compile Include="Converters\ConsoleMemoryViewer\ConsoleMemoryViewerSectionDisplayNameConverter.cs" />
+    <Compile Include="Converters\ConsoleMemoryViewer\ConsoleMemoryViewerSectionUppercaseNameConverter.cs" />
+    <Compile Include="Converters\IDEResults\IDESectionHeaderMarginConverter.cs" />
+    <Compile Include="Converters\SettingsSectionTypeToUppercaseConverter.cs" />
     <Compile Include="Converters\SourceCodeTitleScoreToDisplayStringConverter.cs" />
     <Compile Include="Converters\CharacterWithFallbackConverter.cs" />
-    <Compile Include="Converters\DepthToVisibilityConverter.cs" />
     <Compile Include="Converters\ExceptionTypeConverter.cs" />
-    <Compile Include="Converters\IDESectionToDisplayNameConverter.cs" />
-    <Compile Include="Converters\IDESectionToUppercaseDisplayNameConverter.cs" />
+    <Compile Include="Converters\IDEResults\IDESectionToDisplayNameConverter.cs" />
+    <Compile Include="Converters\IDEResults\IDESectionToUppercaseDisplayNameConverter.cs" />
     <Compile Include="Converters\IndexToVisibilityConverter.cs" />
     <Compile Include="Converters\SourceCodesNumberDescriptionConverter.cs" />
     <Compile Include="Converters\PositiveValueToBrushConverter.cs" />
     <Compile Include="Converters\ReadableCharactersConverter.cs" />
     <Compile Include="Converters\SingleDigitConverterWithFallback.cs" />
     <Compile Include="Converters\SourceCodeTypeConverter.cs" />
+    <Compile Include="Converters\UserGuide\UserGuideSectionDescriptionConverter.cs" />
+    <Compile Include="Converters\UserGuide\UserGuideSectionTitleConverter.cs" />
+    <Compile Include="Converters\UserGuide\UserGuideSectionTitleUppercaseConverter.cs" />
     <Compile Include="DataModels\AsyncOperationResult.cs" />
+    <Compile Include="DataModels\ConsoleMemoryViewer\ConsoleMemoryViewerSection.cs" />
+    <Compile Include="DataModels\ConsoleMemoryViewer\MemoryViewerFunctionsSectionData.cs" />
+    <Compile Include="DataModels\ConsoleMemoryViewer\MemoryViewerMemoryCellsSectionData.cs" />
+    <Compile Include="DataModels\ConsoleMemoryViewer\MemoryViewerSectionBase.cs" />
     <Compile Include="DataModels\EventArgs\PlayRequestedEventArgs.cs" />
     <Compile Include="DataModels\EventArgs\SourceCodeShareEventArgs.cs" />
     <Compile Include="DataModels\IDEResults\IDEResultExceptionInfoData.cs" />
+    <Compile Include="DataModels\IDEResults\IDEResultSectionFunctionsData.cs" />
     <Compile Include="DataModels\Misc\ChangelogReleaseInfo.cs" />
     <Compile Include="DataModels\Misc\CharactersChunkModel.cs" />
     <Compile Include="DataModels\ConsoleModels\ConsoleCommandModelBase.cs" />
@@ -140,13 +157,23 @@
     <Compile Include="DataModels\IDEResults\IDEResultSectionSessionData.cs" />
     <Compile Include="DataModels\IDEResults\IDEResultSectionStateData.cs" />
     <Compile Include="DataModels\JumpListGroup.cs" />
+    <Compile Include="DataModels\Misc\CharactersInfo\CharacterWithArea.cs" />
     <Compile Include="DataModels\Misc\Coordinate.cs" />
     <Compile Include="DataModels\Misc\GitDiffLineStatus.cs" />
+    <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationInfoOpenLoopBracketType.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationLineInfo.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationInfoLineType.cs" />
-    <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationOpenBracketLineInfo.cs" />
-    <Compile Include="DataModels\Misc\IDEIndentationGuides\IndentationCoordinateEntry.cs" />
+    <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationFunctionBracketInfo.cs" />
+    <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationOpenLoopBracketLineInfo.cs" />
+    <Compile Include="DataModels\Misc\CharactersInfo\CharacterWithCoordinates.cs" />
+    <Compile Include="DataModels\Misc\LineCoordinates.cs" />
+    <Compile Include="DataModels\Misc\Themes\IDEThemeInfo.cs" />
+    <Compile Include="DataModels\Misc\SelectableModelBase.cs" />
     <Compile Include="DataModels\Misc\ScriptExceptionInfo.cs" />
+    <Compile Include="DataModels\Misc\Themes\SelectableIDEThemeInfo.cs" />
+    <Compile Include="DataModels\Misc\Unit.cs" />
+    <Compile Include="DataModels\Settings\CategorizedSettingsViewModel.cs" />
+    <Compile Include="DataModels\Settings\SettingsSectionType.cs" />
     <Compile Include="DataModels\SQLite\CategorizedSourceCode.cs" />
     <Compile Include="DataModels\SQLite\CategorizedSourceCodeWithSyntaxInfo.cs" />
     <Compile Include="DataModels\SQLite\Enums\SavedSourceCodeType.cs" />
@@ -155,10 +182,14 @@
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
     <Compile Include="DataModels\SQLite\Enums\SourceCodeTitleScore.cs" />
     <Compile Include="Enums\SourceCodeShareType.cs" />
+    <Compile Include="Enums\UserGuideSection.cs" />
+    <Compile Include="Helpers\CodeFormatting\CodeThemes.cs" />
+    <Compile Include="DataModels\Misc\Themes\LineHighlightStyle.cs" />
+    <Compile Include="Helpers\CodeFormatting\InstalledFont.cs" />
+    <Compile Include="Helpers\ComboBoxDataTemplateSelector.cs" />
     <Compile Include="Helpers\LauncherHelper.cs" />
     <Compile Include="Helpers\Settings\AppSettingsKeys.cs" />
     <Compile Include="Helpers\Settings\AppSettingsManager.cs" />
-    <Compile Include="Helpers\DispatcherHelper.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\Extensions\_IEnumerableExtensions.cs" />
@@ -166,15 +197,21 @@
     <Compile Include="Helpers\StorageHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\ShareCharmsHelper.cs" />
     <Compile Include="Messages\Actions\DebugStatusChangedMessage.cs" />
+    <Compile Include="Messages\Actions\IDEAutosaveTriggeredMessage.cs" />
     <Compile Include="Messages\Actions\IDEDeleteCharacterRequestMessage.cs" />
     <Compile Include="Messages\Actions\IDENewLineRequestedMessage.cs" />
     <Compile Include="Messages\Actions\IDEUndoRedoRequestMessage.cs" />
     <Compile Include="Messages\Actions\SaveButtonsEnabledStatusChangedMessage.cs" />
     <Compile Include="Messages\Actions\VirtualArrowKeyPressedMessage.cs" />
-    <Compile Include="Messages\AppLoadingStatusChangedMessage.cs" />
+    <Compile Include="Messages\IDEStatus\IDEPendingChangesStatusChangedMessage.cs" />
+    <Compile Include="Messages\UI\AppLoadingStatusChangedMessage.cs" />
     <Compile Include="Messages\Flyouts\NotificationCloseRequestmessage.cs" />
     <Compile Include="Messages\IDEStatus\BreakpointErrorStatusChangedMessage.cs" />
     <Compile Include="Messages\OverflowModeChangedMessage.cs" />
+    <Compile Include="Messages\UI\BlurModeChangedMessage.cs" />
+    <Compile Include="Messages\UI\IDESettingsChangedMessage.cs" />
+    <Compile Include="Messages\UI\IDEThemePreviewFontChangedMessage.cs" />
+    <Compile Include="Messages\UI\PBrainButtonsVisibilityChangedMessage.cs" />
     <Compile Include="PopupService\Interfaces\IAsyncLoadedContent.cs" />
     <Compile Include="PopupService\Interfaces\IBusyWorkingContent.cs" />
     <Compile Include="PopupService\InternalTypes\Offset.cs" />
@@ -184,7 +221,7 @@
     <Compile Include="PopupService\Interfaces\IEventConfirmedContent.cs" />
     <Compile Include="PopupService\Interfaces\IValidableDialog.cs" />
     <Compile Include="Helpers\BitHelper.cs" />
-    <Compile Include="Helpers\Brainf_ckFormatterHelper.cs" />
+    <Compile Include="Helpers\CodeFormatting\Brainf_ckFormatterHelper.cs" />
     <Compile Include="PopupService\FlyoutManager.cs" />
     <Compile Include="Helpers\Extensions\MiscExtensions.cs" />
     <Compile Include="Helpers\Extensions\NumericExtensions.cs" />
@@ -222,12 +259,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\BrushResourcesManager.cs" />
     <Compile Include="SQLiteDatabase\SQLiteManager.cs" />
+    <Compile Include="TemplateSelectors\ConsoleMemoryState\IDERunResultTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\GitDiffLineStatusTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\ConsoleLineTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\IDEIndentationInfoTemplateSelector.cs" />
-    <Compile Include="TemplateSelectors\IDERunResultTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\IDEResults\IDERunResultHeaderTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\IDEResults\IDERunResultTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\SettingsSectionTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\UserGuideSectionTemplateSelector.cs" />
     <Compile Include="UserControls\BottomEdgeInfoBar.xaml.cs">
       <DependentUpon>BottomEdgeInfoBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CustomControls\IconButtonWithTextContent.xaml.cs">
+      <DependentUpon>IconButtonWithTextContent.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\CustomControls\ScriptStatisticsDisplayControl.xaml.cs">
       <DependentUpon>ScriptStatisticsDisplayControl.xaml</DependentUpon>
@@ -241,8 +285,20 @@
     <Compile Include="UserControls\CustomControls\UnicodeNonVisibleCharactersGroupDisplayControl.xaml.cs">
       <DependentUpon>UnicodeNonVisibleCharactersGroupDisplayControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\DataTemplates\IDEThemes\IDEThemeDropDownPreviewTemplate.xaml.cs">
+      <DependentUpon>IDEThemeDropDownPreviewTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\IDEThemes\IDEThemePreviewTemplate.xaml.cs">
+      <DependentUpon>IDEThemePreviewTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\DataTemplates\JumpList\Changelog\ChangelogZoomedInHeaderTemplate.xaml.cs">
       <DependentUpon>ChangelogZoomedInHeaderTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\JumpList\Settings\SettingsZoomedInHeaderTemplate.xaml.cs">
+      <DependentUpon>SettingsZoomedInHeaderTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\FunctionDefinitionTemplate.xaml.cs">
+      <DependentUpon>FunctionDefinitionTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml.cs">
       <DependentUpon>SavedSourceCodeTemplate.xaml</DependentUpon>
@@ -265,11 +321,20 @@
     <Compile Include="UserControls\Flyouts\DevInfo\ReviewPromptFlyout.xaml.cs">
       <DependentUpon>ReviewPromptFlyout.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Flyouts\DevInfo\WelcomeMessageFlyout.xaml.cs">
+      <DependentUpon>WelcomeMessageFlyout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Flyouts\LoadingPopupControl.xaml.cs">
       <DependentUpon>LoadingPopupControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Flyouts\LocalSourceCodesBrowserFlyout.xaml.cs">
       <DependentUpon>LocalSourceCodesBrowserFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\MemoryState\FunctionDefinitionsViewerControl.xaml.cs">
+      <DependentUpon>FunctionDefinitionsViewerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\MemoryState\ConsoleFullMemoryViewerControl.xaml.cs">
+      <DependentUpon>ConsoleFullMemoryViewerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Flyouts\MemoryState\StandaloneMemoryViewerControl.xaml.cs">
       <DependentUpon>StandaloneMemoryViewerControl.xaml</DependentUpon>
@@ -277,11 +342,48 @@
     <Compile Include="UserControls\Flyouts\SaveCodePromptFlyout.xaml.cs">
       <DependentUpon>SaveCodePromptFlyout.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Flyouts\Settings\Sections\InterpreterSettingsSection.xaml.cs">
+      <DependentUpon>InterpreterSettingsSection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\Settings\SettingsPanelFlyout.xaml.cs">
+      <DependentUpon>SettingsPanelFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\Settings\Sections\IDESettingsSection.xaml.cs">
+      <DependentUpon>IDESettingsSection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\Settings\Sections\UISettingsSection.xaml.cs">
+      <DependentUpon>UISettingsSection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\UserGuide\CodeSamples\PrintHelloCodePreviewControl.xaml.cs">
+      <DependentUpon>PrintHelloCodePreviewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\UserGuide\CodeSamples\ResetLoopCodePreviewControl.xaml.cs">
+      <DependentUpon>ResetLoopCodePreviewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\UserGuide\CodeSamples\SimpleLoopCodePreviewControl.xaml.cs">
+      <DependentUpon>SimpleLoopCodePreviewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\UserGuide\Sections\CodeSamplesGuideControl.xaml.cs">
+      <DependentUpon>CodeSamplesGuideControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\UserGuide\Sections\PBrainGuideControl.xaml.cs">
+      <DependentUpon>PBrainGuideControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\UserGuide\Sections\LanguageIntroductionControl.xaml.cs">
+      <DependentUpon>LanguageIntroductionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\UserGuide\OperatorDescriptionControl.xaml.cs">
+      <DependentUpon>OperatorDescriptionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\UserGuide\UserGuideViewerControl.xaml.cs">
+      <DependentUpon>UserGuideViewerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\IconBoxToolkit\IconBox.xaml.cs">
       <DependentUpon>IconBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\IconBoxToolkit\PathGeometryConverter.cs" />
     <Compile Include="UserControls\IconBoxToolkit\PathGeometryConverterExtensions.cs" />
+    <Compile Include="UserControls\InheritedControls\AnimatedComboBox.cs" />
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CommandBarWithButtonsAnimations.cs" />
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CustomCommandBarButton.cs" />
     <Compile Include="UserControls\DataTemplates\CompactCharactersChunkViewerTemplate.xaml.cs">
@@ -324,8 +426,9 @@
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\ICustomCommandBarPrimaryItem.cs" />
     <Compile Include="UserControls\InheritedControls\FixedRadExpanderControl.cs" />
     <Compile Include="UserControls\InheritedControls\LightBorderAndBackgroundOverlay.cs" />
-    <Compile Include="UserControls\InheritedControls\LightsContainerGrid.cs" />
+    <Compile Include="UserControls\InheritedControls\LockedPivot.cs" />
     <Compile Include="UserControls\InheritedControls\RichEditBoxWithVerticalOffsetInfo.cs" />
+    <Compile Include="UserControls\InheritedControls\WrapPanel.cs" />
     <Compile Include="UserControls\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
@@ -350,11 +453,17 @@
     <Compile Include="UserControls\VirtualKeyboard\Controls\KeyboardButton.xaml.cs">
       <DependentUpon>KeyboardButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Abstract\JumpListViewModelBase.cs" />
+    <Compile Include="ViewModels\Abstract\JumpList\DeferredJumpListViewModelBase.cs" />
+    <Compile Include="ViewModels\Abstract\JumpList\JumpListViewModelBase.cs" />
+    <Compile Include="ViewModels\Abstract\JumpList\SyncJumpListViewModelBase.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\ChangelogViewFlyoutViewModel.cs" />
     <Compile Include="ViewModels\CompactCharactersViewerControlViewModel.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\ConsoleFullMemoryViewerControlViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\IDERunResultFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\Settings\SettingsJumpListViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\Settings\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\UserGuideViewerControlViewModel.cs" />
     <Compile Include="ViewModels\IDEViewModel.cs" />
     <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\LocalSourceCodesBrowserFlyoutViewModel.cs" />
@@ -513,6 +622,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\CustomControls\IconButtonWithTextContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\CustomControls\ScriptStatisticsDisplayControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -537,9 +650,25 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\DataTemplates\IDEThemes\IDEThemeDropDownPreviewTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DataTemplates\IDEThemes\IDEThemePreviewTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\DataTemplates\JumpList\Changelog\ChangelogZoomedInHeaderTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DataTemplates\JumpList\Settings\SettingsZoomedInHeaderTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\DataTemplates\FunctionDefinitionTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\DataTemplates\SavedSourceCodeTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -589,6 +718,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\Flyouts\DevInfo\WelcomeMessageFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\Flyouts\IDERunResultFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -600,6 +733,14 @@
     <Page Include="UserControls\Flyouts\LocalSourceCodesBrowserFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\MemoryState\FunctionDefinitionsViewerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Flyouts\MemoryState\ConsoleFullMemoryViewerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\Flyouts\MemoryState\StandaloneMemoryViewerControl.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -613,7 +754,55 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\Flyouts\Settings\Sections\InterpreterSettingsSection.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Flyouts\Settings\SettingsPanelFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\Settings\Sections\IDESettingsSection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\Settings\Sections\UISettingsSection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\Flyouts\UnicodeCharactersGuideFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\UserGuide\CodeSamples\PrintHelloCodePreviewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\UserGuide\CodeSamples\ResetLoopCodePreviewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\UserGuide\CodeSamples\SimpleLoopCodePreviewControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Flyouts\UserGuide\Sections\CodeSamplesGuideControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Flyouts\UserGuide\Sections\PBrainGuideControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Flyouts\UserGuide\Sections\LanguageIntroductionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\UserGuide\OperatorDescriptionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\UserGuide\UserGuideViewerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -675,19 +864,25 @@
       <Version>4.1.6</Version>
     </PackageReference>
     <PackageReference Include="JetBrains.Annotations">
-      <Version>10.4.0</Version>
+      <Version>11.0.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.ApplicationInsights.WindowsApps">
       <Version>1.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>5.3.3</Version>
+      <Version>5.4.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp">
-      <Version>1.5.0</Version>
+      <Version>2.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
+      <Version>2.0.0</Version>
     </PackageReference>
     <PackageReference Include="MvvmLightLibs">
       <Version>5.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="SharpDX.Direct2D1">
+      <Version>4.0.1</Version>
     </PackageReference>
     <PackageReference Include="SQLite.Net-PCL">
       <Version>3.1.1</Version>
@@ -698,11 +893,14 @@
     <PackageReference Include="SQLite.Net.Core-PCL">
       <Version>3.1.1</Version>
     </PackageReference>
+    <PackageReference Include="System.ValueTuple">
+      <Version>4.4.0</Version>
+    </PackageReference>
     <PackageReference Include="Telerik.UI.for.UniversalWindowsPlatform">
-      <Version>1.0.0.4</Version>
+      <Version>1.0.0.6</Version>
     </PackageReference>
     <PackageReference Include="UICompositionAnimations">
-      <Version>2.8.2</Version>
+      <Version>2.11.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -721,13 +919,14 @@
     <SDKReference Include="Microsoft.VCLibs, Version=14.0">
       <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
     </SDKReference>
-    <SDKReference Include="SQLite.UWP.2015, Version=3.19.3">
+    <SDKReference Include="SQLite.UWP.2015, Version=3.20.1">
       <Name>SQLite for Universal Windows Platform</Name>
     </SDKReference>
     <SDKReference Include="WindowsMobile, Version=10.0.15063.0">
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
