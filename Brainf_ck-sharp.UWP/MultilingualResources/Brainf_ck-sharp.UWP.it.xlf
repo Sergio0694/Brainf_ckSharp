@@ -366,10 +366,6 @@
           <source>New line</source>
           <target state="translated">Nuova riga</target>
         </trans-unit>
-        <trans-unit id="MoveButtonmLabel" translate="yes" xml:space="preserve">
-          <source>Move</source>
-          <target state="translated">Sposta cursore</target>
-        </trans-unit>
         <trans-unit id="About" translate="yes" xml:space="preserve">
           <source>About</source>
           <target state="translated">Informazioni</target>
@@ -937,6 +933,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         <trans-unit id="WelcomePart4.Text" translate="yes" xml:space="preserve">
           <source>Before jumping straight into the app, it might be a good idea to read the user guide to make sure you remember all there is to know about the language!</source>
           <target state="translated">Prima di passare subito all'azione, è una buona idea leggere la guida dell'app per essere sicuri di ricordarsi tutto ciò che c'è da sapere sul linguaggio!</target>
+        </trans-unit>
+        <trans-unit id="MoveButton.Label" translate="yes" xml:space="preserve">
+          <source>Move</source>
+          <target state="translated">Sposta cursore</target>
         </trans-unit>
       </group>
     </body>

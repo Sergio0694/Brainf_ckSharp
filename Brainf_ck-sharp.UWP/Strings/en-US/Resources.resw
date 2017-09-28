@@ -399,7 +399,7 @@
   <data name="RedoButton.Label" xml:space="preserve">
     <value>Redo</value>
   </data>
-  <data name="MoveButtonmLabel" xml:space="preserve">
+  <data name="MoveButton.Label" xml:space="preserve">
     <value>Move</value>
   </data>
   <data name="NewLineButton.Label" xml:space="preserve">

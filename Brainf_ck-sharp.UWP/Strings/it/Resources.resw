@@ -284,9 +284,6 @@
   <data name="NewLineButton.Label" xml:space="preserve">
     <value>Nuova riga</value>
   </data>
-  <data name="MoveButtonmLabel" xml:space="preserve">
-    <value>Sposta cursore</value>
-  </data>
   <data name="About" xml:space="preserve">
     <value>Informazioni</value>
   </data>
@@ -713,5 +710,8 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   </data>
   <data name="WelcomePart4.Text" xml:space="preserve">
     <value>Prima di passare subito all'azione, è una buona idea leggere la guida dell'app per essere sicuri di ricordarsi tutto ciò che c'è da sapere sul linguaggio!</value>
+  </data>
+  <data name="MoveButton.Label" xml:space="preserve">
+    <value>Sposta cursore</value>
   </data>
 </root>

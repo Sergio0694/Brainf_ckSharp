@@ -30,7 +30,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             // Create the output collection
             return new List<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<String>>>
             {
-                CreateChangelogEntry("1.4.0.0", 2017, 1, 10, new List<String>
+                CreateChangelogEntry("1.4.1.0", 2017, 8, 10, new List<String>
+                {
+                    "Minor improvements"
+                }),
+                CreateChangelogEntry("1.4.0.0", 2017, 28, 9, new List<String>
                 {
                     "Added new support for PBrain extensions",
                     "Added a detailed user guide to the Brainf*ck language",
