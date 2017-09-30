@@ -20,7 +20,7 @@ namespace Brainf_ck_sharp_UWP.DataModels.SQLite
         /// Gets or sets the title of the saved code
         /// </summary>
         [Column(nameof(Title)), NotNull, Unique]
-        public String Title { get; set; }
+        public virtual String Title { get; set; }
 
         /// <summary>
         /// Gets or sets the actual code stored as plain text

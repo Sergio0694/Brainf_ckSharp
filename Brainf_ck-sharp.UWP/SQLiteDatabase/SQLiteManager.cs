@@ -234,10 +234,10 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         private static readonly IReadOnlyCollection<SampleCodeRecord> SamplesMap = new List<SampleCodeRecord>
         {
             new SampleCodeRecord("HelloWorld.txt", "Hello world!", Guid.Parse("6B4C55E6-7009-48EC-96C5-C73552D9F257")),
-            new SampleCodeRecord("UnicodeValue.txt", LocalizationManager.GetResource("UnicodeValue"), Guid.Parse("10768D40-5E3D-4787-9CB8-2A0ABBE26EFC")),
-            new SampleCodeRecord("UnicodeSum.txt", LocalizationManager.GetResource("UnicodeSum"), Guid.Parse("78BAA70A-0DAF-4BB6-B09A-CDA9537D2FFF")),
-            new SampleCodeRecord("Sum.txt", LocalizationManager.GetResource("Sum"),  Guid.Parse("0441153F-E40A-4AEC-8373-8A552697778B")),
-            new SampleCodeRecord("HeaderComments.txt", LocalizationManager.GetResource("HeaderComments"),  Guid.Parse("63156CB7-1BD1-46EA-A705-AC2ADD4A5F11")),
+            new SampleCodeRecord("UnicodeValue.txt", LocalizationManager.GetResource("10768D40-5E3D-4787-9CB8-2A0ABBE26EFC"), Guid.Parse("10768D40-5E3D-4787-9CB8-2A0ABBE26EFC")),
+            new SampleCodeRecord("UnicodeSum.txt", LocalizationManager.GetResource("78BAA70A-0DAF-4BB6-B09A-CDA9537D2FFF"), Guid.Parse("78BAA70A-0DAF-4BB6-B09A-CDA9537D2FFF")),
+            new SampleCodeRecord("Sum.txt", LocalizationManager.GetResource("0441153F-E40A-4AEC-8373-8A552697778B"),  Guid.Parse("0441153F-E40A-4AEC-8373-8A552697778B")),
+            new SampleCodeRecord("HeaderComments.txt", LocalizationManager.GetResource("63156CB7-1BD1-46EA-A705-AC2ADD4A5F11"),  Guid.Parse("63156CB7-1BD1-46EA-A705-AC2ADD4A5F11")),
             new SampleCodeRecord("ExecuteIfZero.txt", "if (x == 0) then { }",  Guid.Parse("6DABC8A8-E32C-49A1-A348-CF836FEF276D"))
         };
 
@@ -313,7 +313,15 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
             {
                 if (SamplesMap.Any(sample => sample.Uid.Equals(Guid.Parse(code.Uid))))
                 {
-                    samples.AddSorted(code, entry => SamplesMap.IndexOf(sample => sample.Uid.Equals(Guid.Parse(entry.Uid))));
+                    SampleSourceCode wrapper = new SampleSourceCode
+                    {
+                        Uid = code.Uid,
+                        Title = code.Title,
+                        Code = code.Code,
+                        CreatedTime = code.CreatedTime,
+                        ModifiedTime = code.ModifiedTime
+                    };
+                    samples.AddSorted(wrapper, entry => SamplesMap.IndexOf(sample => sample.Uid.Equals(Guid.Parse(entry.Uid))));
                 }
                 else if (code.Favorited) favorites.AddSorted(code, entry => entry.Title);
                 else original.AddSorted(code, entry => entry.Title);
