@@ -177,15 +177,6 @@
   <data name="CodeLibraryButton.Label" xml:space="preserve">
     <value>Sfoglia libreria codici</value>
   </data>
-  <data name="Sum" xml:space="preserve">
-    <value>Somma</value>
-  </data>
-  <data name="UnicodeSum" xml:space="preserve">
-    <value>Somma Unicode</value>
-  </data>
-  <data name="UnicodeValue" xml:space="preserve">
-    <value>Valore Unicode</value>
-  </data>
   <data name="RunTitle" xml:space="preserve">
     <value>Esegui</value>
   </data>
@@ -272,9 +263,6 @@
   <data name="CodeSavedBody" xml:space="preserve">
     <value>Il nuovo codice sorgente è stato salvato correttamente</value>
   </data>
-  <data name="HeaderComments" xml:space="preserve">
-    <value>Header commentato</value>
-  </data>
   <data name="Debug" xml:space="preserve">
     <value>Debug</value>
   </data>
@@ -283,9 +271,6 @@
   </data>
   <data name="NewLineButton.Label" xml:space="preserve">
     <value>Nuova riga</value>
-  </data>
-  <data name="MoveButtonmLabel" xml:space="preserve">
-    <value>Sposta cursore</value>
   </data>
   <data name="About" xml:space="preserve">
     <value>Informazioni</value>
@@ -713,5 +698,20 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   </data>
   <data name="WelcomePart4.Text" xml:space="preserve">
     <value>Prima di passare subito all'azione, è una buona idea leggere la guida dell'app per essere sicuri di ricordarsi tutto ciò che c'è da sapere sul linguaggio!</value>
+  </data>
+  <data name="MoveButton.Label" xml:space="preserve">
+    <value>Sposta cursore</value>
+  </data>
+  <data name="0441153F-E40A-4AEC-8373-8A552697778B" xml:space="preserve">
+    <value>Somma</value>
+  </data>
+  <data name="78BAA70A-0DAF-4BB6-B09A-CDA9537D2FFF" xml:space="preserve">
+    <value>Somma Unicode</value>
+  </data>
+  <data name="10768D40-5E3D-4787-9CB8-2A0ABBE26EFC" xml:space="preserve">
+    <value>Valore Unicode</value>
+  </data>
+  <data name="63156CB7-1BD1-46EA-A705-AC2ADD4A5F11" xml:space="preserve">
+    <value>Header commentato</value>
   </data>
 </root>

@@ -19,6 +19,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// Returns the string with the given resource key
         /// </summary>
         /// <param name="resource">The key of the resource to retrieve</param>
+        [NotNull]
         public static String GetResource([NotNull] String resource)
         {
             try

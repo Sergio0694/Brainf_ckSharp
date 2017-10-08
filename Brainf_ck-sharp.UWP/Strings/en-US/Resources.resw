@@ -298,13 +298,13 @@
   <data name="SampleCodes" xml:space="preserve">
     <value>Sample codes</value>
   </data>
-  <data name="Sum" xml:space="preserve">
+  <data name="0441153F-E40A-4AEC-8373-8A552697778B" xml:space="preserve">
     <value>Sum</value>
   </data>
-  <data name="UnicodeSum" xml:space="preserve">
+  <data name="78BAA70A-0DAF-4BB6-B09A-CDA9537D2FFF" xml:space="preserve">
     <value>Unicode sum</value>
   </data>
-  <data name="UnicodeValue" xml:space="preserve">
+  <data name="10768D40-5E3D-4787-9CB8-2A0ABBE26EFC" xml:space="preserve">
     <value>Unicode value</value>
   </data>
   <data name="SaveAsButton.Label" xml:space="preserve">
@@ -393,13 +393,13 @@
   <data name="Debug" xml:space="preserve">
     <value>Debug</value>
   </data>
-  <data name="HeaderComments" xml:space="preserve">
+  <data name="63156CB7-1BD1-46EA-A705-AC2ADD4A5F11" xml:space="preserve">
     <value>Header comments</value>
   </data>
   <data name="RedoButton.Label" xml:space="preserve">
     <value>Redo</value>
   </data>
-  <data name="MoveButtonmLabel" xml:space="preserve">
+  <data name="MoveButton.Label" xml:space="preserve">
     <value>Move</value>
   </data>
   <data name="NewLineButton.Label" xml:space="preserve">

@@ -190,7 +190,8 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 else
                 {
                     // Calculate and adjust the right popup height
-                    info.Container.Height = screenHeight - margin <= maxHeight
+                    info.Container.Height = screenHeight - margin <= maxHeight ||                       // The expanded popup will cover the whole screen
+                                            ApiInformationHelper.IsMobileDevice && screenHeight < 860   // High-DPI phone, show a fullscreen popup anyways
                         ? screenHeight - (ApiInformationHelper.IsMobileDevice ? 0 : margin)
                         : maxHeight;
                     info.Popup.VerticalOffset = screenHeight / 2 - info.Container.Height / 2 + StatusBarHelper.OccludedHeight;

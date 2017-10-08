@@ -224,18 +224,6 @@
           <source>Browse code library</source>
           <target state="translated">Sfoglia libreria codici</target>
         </trans-unit>
-        <trans-unit id="Sum" translate="yes" xml:space="preserve">
-          <source>Sum</source>
-          <target state="translated">Somma</target>
-        </trans-unit>
-        <trans-unit id="UnicodeSum" translate="yes" xml:space="preserve">
-          <source>Unicode sum</source>
-          <target state="translated">Somma Unicode</target>
-        </trans-unit>
-        <trans-unit id="UnicodeValue" translate="yes" xml:space="preserve">
-          <source>Unicode value</source>
-          <target state="translated">Valore Unicode</target>
-        </trans-unit>
         <trans-unit id="RunTitle" translate="yes" xml:space="preserve">
           <source>Run</source>
           <target state="translated">Esegui</target>
@@ -350,10 +338,6 @@
           <source>The new source code has been saved correctly</source>
           <target state="translated">Il nuovo codice sorgente è stato salvato correttamente</target>
         </trans-unit>
-        <trans-unit id="HeaderComments" translate="yes" xml:space="preserve">
-          <source>Header comments</source>
-          <target state="translated">Header commentato</target>
-        </trans-unit>
         <trans-unit id="Debug" translate="yes" xml:space="preserve">
           <source>Debug</source>
           <target state="translated">Debug</target>
@@ -365,10 +349,6 @@
         <trans-unit id="NewLineButton.Label" translate="yes" xml:space="preserve">
           <source>New line</source>
           <target state="translated">Nuova riga</target>
-        </trans-unit>
-        <trans-unit id="MoveButtonmLabel" translate="yes" xml:space="preserve">
-          <source>Move</source>
-          <target state="translated">Sposta cursore</target>
         </trans-unit>
         <trans-unit id="About" translate="yes" xml:space="preserve">
           <source>About</source>
@@ -937,6 +917,26 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         <trans-unit id="WelcomePart4.Text" translate="yes" xml:space="preserve">
           <source>Before jumping straight into the app, it might be a good idea to read the user guide to make sure you remember all there is to know about the language!</source>
           <target state="translated">Prima di passare subito all'azione, è una buona idea leggere la guida dell'app per essere sicuri di ricordarsi tutto ciò che c'è da sapere sul linguaggio!</target>
+        </trans-unit>
+        <trans-unit id="MoveButton.Label" translate="yes" xml:space="preserve">
+          <source>Move</source>
+          <target state="translated">Sposta cursore</target>
+        </trans-unit>
+        <trans-unit id="0441153F-E40A-4AEC-8373-8A552697778B" translate="yes" xml:space="preserve">
+          <source>Sum</source>
+          <target state="translated">Somma</target>
+        </trans-unit>
+        <trans-unit id="78BAA70A-0DAF-4BB6-B09A-CDA9537D2FFF" translate="yes" xml:space="preserve">
+          <source>Unicode sum</source>
+          <target state="translated">Somma Unicode</target>
+        </trans-unit>
+        <trans-unit id="10768D40-5E3D-4787-9CB8-2A0ABBE26EFC" translate="yes" xml:space="preserve">
+          <source>Unicode value</source>
+          <target state="translated">Valore Unicode</target>
+        </trans-unit>
+        <trans-unit id="63156CB7-1BD1-46EA-A705-AC2ADD4A5F11" translate="yes" xml:space="preserve">
+          <source>Header comments</source>
+          <target state="translated">Header commentato</target>
         </trans-unit>
       </group>
     </body>
