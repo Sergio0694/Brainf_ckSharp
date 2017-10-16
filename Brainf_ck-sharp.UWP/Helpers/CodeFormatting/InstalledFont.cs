@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
+using SharpDX;
 using SharpDX.DirectWrite;
 
 namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
@@ -31,7 +32,23 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
         /// Gets the list of available fonts on the current device
         /// </summary>
         [NotNull]
-        public static IReadOnlyList<InstalledFont> Fonts => _Fonts ?? (_Fonts = GetFonts());
+        public static IReadOnlyList<InstalledFont> Fonts
+        {
+            get
+            {
+                // Return the current fonts list or try to generate one
+                if (_Fonts != null) return _Fonts;
+                try
+                {
+                    return _Fonts = GetFonts();
+                }
+                catch (SharpDXException)
+                {
+                    // Internal library exception, return the default font for now
+                    return new[] { new InstalledFont(DefaultSegoeFont) };
+                }
+            }
+        }
 
         /// <summary>
         /// Tries to retrieve an <see cref="InstalledFont"/> with the given name
@@ -82,6 +99,9 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
             return fontList.OrderBy(font => font.Name).ToArray();
         }
 
+        // Gets the default Segoe font name
+        private const String DefaultSegoeFont = "Segoe UI";
+
         /// <summary>
         /// Gets the list of allowed font families
         /// </summary>
@@ -91,7 +111,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
             "Calibri",
             "Cambria",
             "Consolas",
-            "Segoe UI"
+            DefaultSegoeFont
         };
     }
 }
