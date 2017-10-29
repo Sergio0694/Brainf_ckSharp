@@ -1,9 +1,8 @@
 ﻿using System;
-using Brainf_ck_sharp;
 using Brainf_ck_sharp.ReturnTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Brainf_ck_sharp_Test
+namespace Brainf_ck_sharp.Unit
 {
     [TestClass]
     [TestCategory(nameof(LoopTests))]
