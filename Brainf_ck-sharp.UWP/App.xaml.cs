@@ -69,7 +69,7 @@ namespace Brainf_ck_sharp_UWP
                 // Initialize the UI
                 BrushResourcesManager.InitializeOrRefreshInstance();
                 LightsSourceHelper.Initialize(
-                    () => new PointerPositionSpotLight(),
+                    () => new PointerPositionSpotLight { Shade = 0x60 },
                     () => new PointerPositionSpotLight
                     {
                         IdAppendage = "[Wide]",
