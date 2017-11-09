@@ -32,6 +32,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             {
                 CreateChangelogEntry("2.0.1.0", 2017, 11, 10, new List<String>
                 {
+                    "The app splash screen is now optional",
                     "Minor UI tweaks to the light effects"
                 }),
                 CreateChangelogEntry("2.0.0.0", 2017, 10, 20, new List<String>
