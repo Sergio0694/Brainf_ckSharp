@@ -901,7 +901,7 @@
       <Version>1.0.0.7</Version>
     </PackageReference>
     <PackageReference Include="UICompositionAnimations">
-      <Version>2.12.2</Version>
+      <Version>2.12.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
