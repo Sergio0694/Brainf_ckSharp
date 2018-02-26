@@ -3,7 +3,7 @@ A complete, full-featured Brainf*ck IDE/console for Windows 10
 
 <a href="https://www.microsoft.com/store/apps/9nblgggzhvq5"><img src="https://assets.windowsphone.com/85864462-9c82-451e-9355-a3d5f874397a/English_get-it-from-MS_InvariantCulture_Default.png" alt="Get it from Microsoft" width='280' /></a>
 
-## Main features
+## Overview
 
 ![App preview](http://i.pi.gy/BqADJ.jpg)
 
