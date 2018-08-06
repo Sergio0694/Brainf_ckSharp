@@ -892,7 +892,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 }
 
                 // Restore the event handlers
-                EditBox.Document.EndUndoGroup();
+                if (!ViewModel.DisableUndoGroupManagement) EditBox.Document.EndUndoGroup();
                 EditBox.SelectionChanged += EditBox_OnSelectionChanged;
                 EditBox.TextChanged += EditBox_OnTextChanged;
             }

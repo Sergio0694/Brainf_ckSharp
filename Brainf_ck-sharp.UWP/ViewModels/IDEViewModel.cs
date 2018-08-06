@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -290,12 +291,18 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         }
 
         /// <summary>
+        /// Gets whether or not the current text change is caused by an undo/redo action
+        /// </summary>
+        public bool DisableUndoGroupManagement { get; private set; }
+
+        /// <summary>
         /// Manages and executes an undo/redo request
         /// </summary>
         /// <param name="request">The requested operation</param>
         private void ManageUndoRedoRequest(UndoRedoOperation request)
         {
             // Execute the requested operation, if possible
+            DisableUndoGroupManagement = true;
             switch (request)
             {
                 case UndoRedoOperation.Undo:
@@ -309,6 +316,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             }
 
             // Update the status
+            DisableUndoGroupManagement = false;
             UpdateCanUndoRedoStatus();
         }
 
@@ -354,6 +362,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// Updates the indentation info for a given state
         /// </summary>
         /// <param name="brackets">The collection of brackets and their position in the current text</param>
+        [SuppressMessage("ReSharper", "AccessToModifiedClosure")]
         public async Task UpdateIndentationInfo([CanBeNull] IReadOnlyList<CharacterWithCoordinates> brackets)
         {
             // Lock
