@@ -42,7 +42,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
         /// </summary>
         /// <param name="title">The title of the text to share</param>
         /// <param name="text">The actual text to share</param>
-        public static void ShareText([NotNull] String title, [NotNull] String text)
+        public static void ShareText([NotNull] string title, [NotNull] string text)
         {
             // Makes sure the DataTransferManager is initialized
             if (!_Initialized)
@@ -73,14 +73,14 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
             /// <summary>
             /// Gets the title of the share operation
             /// </summary>
-            public String Title { get; }
+            public string Title { get; }
 
             /// <summary>
             /// Gets the current text to share
             /// </summary>
-            public String SharedText { get; }
+            public string SharedText { get; }
 
-            public ShareInfo(String title, String text)
+            public ShareInfo(String title, string text)
             {
                 Title = title;
                 SharedText = text;

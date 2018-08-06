@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
@@ -58,12 +57,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
         /// <summary>
         /// Gets the current text in the Stdin buffer
         /// </summary>
-        public String StdinBuffer => StdinBox.Text;
+        public string StdinBuffer => StdinBox.Text;
 
         /// <summary>
         /// Resets the current Stdin buffer
         /// </summary>
-        public void ResetStdin() => StdinBox.Text = String.Empty;
+        public void ResetStdin() => StdinBox.Text = string.Empty;
 
         // Indicates whether or not the new toggle state was triggered by the code or by the user
         private bool _ProgrammaticToggle;

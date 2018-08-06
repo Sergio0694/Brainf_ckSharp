@@ -10,12 +10,12 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
     /// </summary>
     public static class RunInlineHelper
     {
-        public static String GetBindableText(Run element)
+        public static string GetBindableText(Run element)
         {
-            return element.GetValue(BindableTextProperty).To<String>();
+            return element.GetValue(BindableTextProperty).To<string>();
         }
 
-        public static void SetBindableText(Run element, String value)
+        public static void SetBindableText(Run element, string value)
         {
             element?.SetValue(BindableTextProperty, value);
         }
@@ -25,7 +25,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
 
         private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            d.To<Run>().Text = e.NewValue.To<String>() ?? String.Empty;
+            d.To<Run>().Text = e.NewValue.To<string>() ?? string.Empty;
         }
     }
 }

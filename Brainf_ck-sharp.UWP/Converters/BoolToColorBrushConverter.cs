@@ -12,7 +12,7 @@ namespace Brainf_ck_sharp_UWP.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            String[] colors = parameter.To<String>()?.Split('_');
+            string[] colors = parameter.To<string>()?.Split('_');
             if (colors?.Length != 2) return null;
             return colors[value.To<bool>() ? 0 : 1].ToColor().ToBrush();
         }

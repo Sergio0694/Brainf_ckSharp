@@ -27,7 +27,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         {
             IDEThemeSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme));
             AvailableIDEThemes[IDEThemeSelectedIndex].IsSelected = true;
-            String fontName = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+            string fontName = AppSettingsManager.Instance.GetValue<string>(nameof(AppSettingsKeys.SelectedFontName));
             int index = AvailableFonts.IndexOf(f => f.Name.Equals(String.IsNullOrEmpty(fontName) ? "Segoe UI" : fontName));
             _FontFamilySelectedIndex = index != -1 ? index : AvailableFonts.IndexOf(f => f.Name.Equals("Segoe UI")); // Fallback when the selected font isn't available
             if (!ThemesSelectorEnabled)
@@ -58,7 +58,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         /// Gets the collection of the available blur modes
         /// </summary>
         [NotNull]
-        public IReadOnlyCollection<String> BlurModeOptions { get; } = new[]
+        public IReadOnlyCollection<string> BlurModeOptions { get; } = new[]
         {
             LocalizationManager.GetResource("BackgroundBlur"),
             LocalizationManager.GetResource("InAppBlur")
@@ -126,7 +126,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         /// Gets the collection of the available brackets styles
         /// </summary>
         [NotNull]
-        public IReadOnlyCollection<String> BracketsStyleOptions { get; } = new[]
+        public IReadOnlyCollection<string> BracketsStyleOptions { get; } = new[]
         {
             LocalizationManager.GetResource("NewLine"),
             LocalizationManager.GetResource("SameLine")
@@ -228,7 +228,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         }
 
         // The Store ID of the themes pack
-        private const String ThemesPackID = "9p4q63ccfpbm";
+        private const string ThemesPackID = "9p4q63ccfpbm";
 
         // The Store instance to use
         private static StoreContext _StoreContext;

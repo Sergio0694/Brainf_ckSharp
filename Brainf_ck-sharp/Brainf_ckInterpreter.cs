@@ -58,7 +58,7 @@ namespace Brainf_ck_sharp
         [PublicAPI]
         [Pure, NotNull]
         public static InterpreterResult Run(
-            [NotNull] String source, [NotNull] String arguments, 
+            [NotNull] string source, [NotNull] string arguments, 
             OverflowMode mode = OverflowMode.ShortNoOverflow, int size = DefaultMemorySize, int? threshold = null)
         {
             return TryRun(source, arguments, new TouringMachineState(size), new FunctionDefinition[0],  mode, threshold);
@@ -75,7 +75,7 @@ namespace Brainf_ck_sharp
         [PublicAPI]
         [Pure, NotNull]
         public static InterpreterResult Run(
-            [NotNull] String source, [NotNull] String arguments,
+            [NotNull] string source, [NotNull] string arguments,
             [NotNull] IReadonlyTouringMachineState state, OverflowMode mode = OverflowMode.ShortNoOverflow, int? threshold = null)
         {
             return Run(source, arguments, state, new FunctionDefinition[0], mode, threshold);
@@ -93,7 +93,7 @@ namespace Brainf_ck_sharp
         [PublicAPI]
         [Pure, NotNull]
         public static InterpreterResult Run(
-            [NotNull] String source, [NotNull] String arguments,
+            [NotNull] string source, [NotNull] string arguments,
             [NotNull] IReadonlyTouringMachineState state, [NotNull] IReadOnlyList<FunctionDefinition> functions, 
             OverflowMode mode = OverflowMode.ShortNoOverflow, int? threshold = null)
         {
@@ -114,12 +114,12 @@ namespace Brainf_ck_sharp
         /// <param name="threshold">An optional time threshold for the execution of the whole session</param>
         [PublicAPI]
         [Pure, NotNull]
-        public static InterpreterExecutionSession InitializeSession([NotNull] IReadOnlyList<String> source, [NotNull] String arguments,
+        public static InterpreterExecutionSession InitializeSession([NotNull] IReadOnlyList<string> source, [NotNull] string arguments,
             OverflowMode mode = OverflowMode.ShortNoOverflow, int size = DefaultMemorySize, int? threshold = null)
         {
             // Failure function
             TouringMachineState state = new TouringMachineState(size);
-            IEnumerator<InterpreterResult> GenerateFailure(InterpreterExitCode reason, String code)
+            IEnumerator<InterpreterResult> GenerateFailure(InterpreterExitCode reason, string code)
             {
                 yield return new InterpreterResult(InterpreterExitCode.Failure | reason, state, code);
             }
@@ -128,7 +128,7 @@ namespace Brainf_ck_sharp
             IReadOnlyList<IReadOnlyList<char>> chunks = source.Select(chunk => FindExecutableCode(chunk).ToArray()).ToArray();
             if (chunks.Count == 0 || chunks.Any(group => group.Count == 0))
             {
-                return new InterpreterExecutionSession(GenerateFailure(InterpreterExitCode.NoCodeInterpreted, String.Empty), null);
+                return new InterpreterExecutionSession(GenerateFailure(InterpreterExitCode.NoCodeInterpreted, string.Empty), null);
             }
 
             // Reconstruct the binary to run
@@ -167,7 +167,7 @@ namespace Brainf_ck_sharp
         /// <returns>A wrapper class that indicates whether or not the source code is valid, and the position of the first syntax error, if there is at least one</returns>
         [PublicAPI]
         [Pure]
-        public static SyntaxValidationResult CheckSourceSyntax([NotNull] String source)
+        public static SyntaxValidationResult CheckSourceSyntax([NotNull] string source)
         {
             // Check function brackets parity
             bool open = false;
@@ -235,7 +235,7 @@ namespace Brainf_ck_sharp
         /// <param name="source">The source code to analyze</param>
         [PublicAPI]
         [Pure]
-        public static bool FindOperators([NotNull] String source) => FindExecutableCode(source).Any();
+        public static bool FindOperators([NotNull] string source) => FindExecutableCode(source).Any();
 
         #endregion
 
@@ -251,14 +251,14 @@ namespace Brainf_ck_sharp
         /// <param name="mode">Indicates the desired overflow mode for the script to run</param>
         /// <param name="threshold">The optional time threshold to run the script</param>
         [Pure, NotNull]
-        private static InterpreterResult TryRun([NotNull] String source, [NotNull] String arguments,
+        private static InterpreterResult TryRun([NotNull] string source, [NotNull] string arguments,
             [NotNull] TouringMachineState state, [NotNull] IReadOnlyList<FunctionDefinition> functions, OverflowMode mode, int? threshold)
         {
             // Get the operators to execute and check if the source is empty
             IReadOnlyList<Brainf_ckBinaryItem> executable = FindExecutableCode(source).Select((c, i) => new Brainf_ckBinaryItem((uint)i, c)).ToArray();
             if (executable.Count == 0)
             {
-                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.NoCodeInterpreted, state, String.Empty);
+                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.NoCodeInterpreted, state, string.Empty);
             }
 
             // Check the code syntax
@@ -295,7 +295,7 @@ namespace Brainf_ck_sharp
         [Pure, NotNull]
         [SuppressMessage("ReSharper", "AccessToModifiedClosure")] // Operations counter in nested function
         private static IEnumerator<InterpreterResult> TryRun(
-            [NotNull] IReadOnlyList<Brainf_ckBinaryItem> executable, [NotNull] String arguments,
+            [NotNull] IReadOnlyList<Brainf_ckBinaryItem> executable, [NotNull] string arguments,
             [NotNull] TouringMachineState state, [NotNull] IEnumerable<FunctionDefinition> oldFunctions,
             OverflowMode mode, int? threshold, [NotNull] IReadOnlyList<uint> breakpoints, CancellationToken token)
         {
@@ -308,7 +308,7 @@ namespace Brainf_ck_sharp
             Stopwatch timer = new Stopwatch();
             Queue<char> input = arguments.Length > 0 ? new Queue<char>(arguments) : new Queue<char>();
             StringBuilder output = new StringBuilder();
-            String code = executable.Select(op => op.Operator).AggregateToString(); // Original source code
+            string code = executable.Select(op => op.Operator).AggregateToString(); // Original source code
             Dictionary<uint, IReadOnlyList<Brainf_ckBinaryItem>> functions = oldFunctions.ToDictionary<FunctionDefinition, uint, IReadOnlyList<Brainf_ckBinaryItem>>(
                 f => f.Value, f => f.Body.Select(c => new Brainf_ckBinaryItem(0, c)).ToArray());
 
@@ -612,7 +612,7 @@ namespace Brainf_ck_sharp
                     InterpreterExceptionInfo info;
                     if (data.StackFrames != null)
                     {
-                        IReadOnlyList<String> trace = data.StackFrames.Select(frame => new String(frame.Select(b => b.Operator).ToArray())).ToArray();
+                        IReadOnlyList<string> trace = data.StackFrames.Select(frame => new string(frame.Select(b => b.Operator).ToArray())).ToArray();
                         info = trace.Count > 0
                             ? new InterpreterExceptionInfo(trace, (int)data.StackFrames.First(frame => frame.Any()).Last().Offset, code)
                             : null;
@@ -623,11 +623,11 @@ namespace Brainf_ck_sharp
                     IReadOnlyList<FunctionDefinition> definitions = functions.Keys.OrderBy(key => key).Select(key =>
                     {
                         IReadOnlyList<Brainf_ckBinaryItem> blocks = functions[key];
-                        return new FunctionDefinition(key, blocks[0].Offset, new String(blocks.Select(b => b.Operator).ToArray()));
+                        return new FunctionDefinition(key, blocks[0].Offset, new string(blocks.Select(b => b.Operator).ToArray()));
                     }).ToArray();
 
                     // Return the interpreter result with all the necessary info
-                    String text = output.ToString();
+                    string text = output.ToString();
                     yield return new InterpreterResult(
                         data.ExitCode | (output.Length > 0 ? InterpreterExitCode.TextOutput : InterpreterExitCode.NoOutput), 
                         state, timer.Elapsed, text, code, data.TotalOperations,
@@ -693,7 +693,7 @@ namespace Brainf_ck_sharp
         /// </summary>
         /// <param name="source">The input source code</param>
         [NotNull, LinqTunnel]
-        private static IEnumerable<char> FindExecutableCode([NotNull] String source) => from c in source
+        private static IEnumerable<char> FindExecutableCode([NotNull] string source) => from c in source
                                                                                         where Operators.Contains(c)
                                                                                         select c;
 
@@ -730,7 +730,7 @@ namespace Brainf_ck_sharp
         /// <param name="size">The size of the memory to use in the resulting code</param>
         [PublicAPI]
         [Pure, NotNull]
-        public static String TranslateToC([NotNull] String source, int size = DefaultMemorySize)
+        public static string TranslateToC([NotNull] string source, int size = DefaultMemorySize)
         {
             // Arguments check
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size), "The input size is not valid");
@@ -751,7 +751,7 @@ namespace Brainf_ck_sharp
 
             // Local function to get the right tabs for each indented line
             int depth = 1;
-            String GetTabs(int count)
+            string GetTabs(int count)
             {
                 StringBuilder tabBuilder = new StringBuilder();
                 while (count-- > 0) tabBuilder.Append('\t');

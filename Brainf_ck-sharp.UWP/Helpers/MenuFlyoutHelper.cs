@@ -20,7 +20,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
         private static readonly double FlyoutMinWidth = XAMLResourcesHelper.GetResourceValue<double>("MenuFlyoutMinWidth");
 
         // Adds a new item to the target menu flyout
-        private static void AddItem([NotNull] this ICollection<MenuFlyoutItemBase> items, [NotNull] String text, [NotNull] String tag, [NotNull] Action click)
+        private static void AddItem([NotNull] this ICollection<MenuFlyoutItemBase> items, [NotNull] string text, [NotNull] string tag, [NotNull] Action click)
         {
             // Setup the new item to add
             MenuFlyoutItem menuItem = new MenuFlyoutItem

@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
@@ -16,7 +15,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
         /// <summary>
         /// Gets or sets the icon to display in the button
         /// </summary>
-        public String Icon
+        public string Icon
         {
             get => IconBlock.Text;
             set => IconBlock.Text = value;
@@ -25,7 +24,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
         /// <summary>
         /// Gets or sets the text content of the button
         /// </summary>
-        public String Title
+        public string Title
         {
             get => ContentBlock.Text;
             set => ContentBlock.Text = value;

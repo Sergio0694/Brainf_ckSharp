@@ -12,11 +12,11 @@ namespace Brainf_ck_sharp.Helpers
     internal static class Extensions
     {
         /// <summary>
-        /// Reconstructs a <see cref="String"/> from a sequence of characters
+        /// Reconstructs a <see cref="string"/> from a sequence of characters
         /// </summary>
         /// <param name="source">The source list of characters to concatenate</param>
         [Pure, NotNull]
-        public static String AggregateToString([NotNull] this IEnumerable<char> source)
+        public static string AggregateToString([NotNull] this IEnumerable<char> source)
         {
             return source.Aggregate(new StringBuilder(), (b, c) =>
             {

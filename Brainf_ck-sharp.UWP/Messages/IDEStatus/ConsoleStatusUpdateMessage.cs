@@ -1,5 +1,4 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.Messages.IDEStatus
 {
@@ -19,7 +18,7 @@ namespace Brainf_ck_sharp_UWP.Messages.IDEStatus
         public int ErrorPosition { get; }
 
         // Default constructor
-        public ConsoleStatusUpdateMessage(IDEStatus status, [NotNull] String info, int character, int error) : base(status, info)
+        public ConsoleStatusUpdateMessage(IDEStatus status, [NotNull] string info, int character, int error) : base(status, info)
         {
             Character = character;
             ErrorPosition = error;

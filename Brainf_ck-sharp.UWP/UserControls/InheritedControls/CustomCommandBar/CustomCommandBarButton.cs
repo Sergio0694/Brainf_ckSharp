@@ -11,12 +11,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
     /// </summary>
     public class CustomCommandBarButton : AppBarButton, ICustomCommandBarPrimaryItem
     {
-        private String _Icon;
+        private string _Icon;
 
         /// <summary>
-        /// The String that represents the target SymbolIcon to display
+        /// The string that represents the target SymbolIcon to display
         /// </summary>
-        public new String Icon
+        public new string Icon
         {
             get => _Icon;
             set

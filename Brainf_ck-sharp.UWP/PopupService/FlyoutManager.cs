@@ -249,7 +249,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// </summary>
         /// <param name="title">The title of the message</param>
         /// <param name="message">The message to show to the user</param>
-        public void Show([NotNull] String title, [NotNull] String message)
+        public void Show([NotNull] string title, [NotNull] string message)
         {
             // Prepare the message and show it inside a popup
             TextBlock block = new TextBlock
@@ -269,7 +269,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="confirm">The text to display in the confirm button</param>
         /// <param name="color">The optional override color for the confirm button</param>
         /// <param name="stack">Indicates whether or not the popup can be stacked on top of another open popup</param>
-        public async Task<FlyoutResult> ShowAsync([NotNull] String title, [NotNull] String message, [NotNull] String confirm, 
+        public async Task<FlyoutResult> ShowAsync([NotNull] string title, [NotNull] string message, [NotNull] string confirm, 
             [CanBeNull] Color? color = null, bool stack = false)
         {
             // Lock and close the existing popup, if needed
@@ -338,7 +338,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="stack">Indicates whether or not the popup can be stacked on top of another open popup</param>
         /// <param name="openCallback">An optional callback to invoke when the popup is displayed</param>
         public async Task<FlyoutResult> ShowAsync(
-            [NotNull] string title, [NotNull] FrameworkElement content, [CanBeNull] String confirm = null, 
+            [NotNull] string title, [NotNull] FrameworkElement content, [CanBeNull] string confirm = null, 
             [CanBeNull] Thickness? margin = null, FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent, 
             bool stack = false, [CanBeNull] Action openCallback = null)
         {
@@ -413,7 +413,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="stack">Indicates whether or not the popup can be stacked on top of another open popup</param>
         /// <param name="openCallback">An optional callback to invoke when the popup is displayed</param>
         public async Task<FlyoutClosedResult<TEvent>> ShowAsync<TContent, TEvent>(
-            [NotNull] String title, [NotNull] TContent content, [CanBeNull] Thickness? margin = null, 
+            [NotNull] string title, [NotNull] TContent content, [CanBeNull] Thickness? margin = null, 
             FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent, bool stack = false, [CanBeNull] Action openCallback = null)
             where TContent : FrameworkElement, IEventConfirmedContent<TEvent>
         {

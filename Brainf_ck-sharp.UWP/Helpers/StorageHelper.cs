@@ -20,7 +20,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// <param name="location">The initial location when looking for a file to pick</param>
         /// <param name="extensions">The desired extensions to filter the results</param>
         [MustUseReturnValue, ItemCanBeNull]
-        public static Task<StorageFile> PickFileAsync(PickerLocationId location, params String[] extensions)
+        public static Task<StorageFile> PickFileAsync(PickerLocationId location, params string[] extensions)
         {
             FileOpenPicker picker = new FileOpenPicker
             {
@@ -29,7 +29,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
             };
             foreach (String extension in extensions.Where(ext => !String.IsNullOrEmpty(ext)))
             {
-                String targetExtension;
+                string targetExtension;
                 if (!extension.Equals("*") && !extension.StartsWith(".")) targetExtension = $".{extension}";
                 else targetExtension = extension;
                 picker.FileTypeFilter.Add(targetExtension);
@@ -44,16 +44,16 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// <param name="fileType">The descriptive file type</param>
         /// <param name="extension">The desired extension for the file</param>
         [Pure, ItemCanBeNull]
-        public static Task<StorageFile> PickSaveFileAsync(String filename, String fileType, String extension)
+        public static Task<StorageFile> PickSaveFileAsync(String filename, string fileType, string extension)
         {
-            String validName = Path.GetInvalidFileNameChars().Where(filename.Contains).Aggregate(filename, (current, c) => current.Replace(c.ToString(), String.Empty));
+            string validName = Path.GetInvalidFileNameChars().Where(filename.Contains).Aggregate(filename, (current, c) => current.Replace(c.ToString(), string.Empty));
             if (validName.Length == 0) return null;
             FileSavePicker picker = new FileSavePicker
             {
                 DefaultFileExtension = extension,
                 SuggestedFileName = validName
             };
-            picker.FileTypeChoices.Add(fileType, new List<String> { extension });
+            picker.FileTypeChoices.Add(fileType, new List<string> { extension });
             return picker.PickSaveFileAsync().AsTask();
         }
 
@@ -63,9 +63,9 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// <param name="filename">The desired filename for the file</param>
         /// <param name="extension">The file extension to use</param>
         [MustUseReturnValue, ItemCanBeNull]
-        public static async Task<StorageFile> CreateTemporaryFileAsync(String filename, String extension)
+        public static async Task<StorageFile> CreateTemporaryFileAsync(String filename, string extension)
         {
-            String validName = Path.GetInvalidFileNameChars().Where(filename.Contains).Aggregate(filename, (current, c) => current.Replace(c.ToString(), String.Empty));
+            string validName = Path.GetInvalidFileNameChars().Where(filename.Contains).Aggregate(filename, (current, c) => current.Replace(c.ToString(), string.Empty));
             if (validName.Length == 0) return null;
             return await ApplicationData.Current.TemporaryFolder.CreateFileAsync($"{validName}{extension}", CreationCollisionOption.ReplaceExisting);
         }

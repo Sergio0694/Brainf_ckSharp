@@ -11,6 +11,7 @@ using Brainf_ck_sharp;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.AttachedProperties
 {
@@ -24,12 +25,12 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
         /// </summary>
         public const char ZeroWidthSpace = '\u200B';
 
-        public static String GetSource(Span element)
+        public static string GetSource(Span element)
         {
-            return element.GetValue(SourceProperty).To<String>();
+            return element.GetValue(SourceProperty).To<string>();
         }
 
-        public static void SetSource(Span element, String value)
+        public static void SetSource(Span element, string value)
         {
             element?.SetValue(SourceProperty, value);
         }
@@ -44,7 +45,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
         {
             // Unpack the arguments
             Span @this = d.To<Span>();
-            String raw = e.NewValue.To<String>();
+            string raw = e.NewValue.To<string>();
 
             // Parse the input code
             StringBuilder builder = new StringBuilder();
@@ -83,12 +84,14 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
             foreach (Run run in inlines) @this.Inlines.Add(run);
         }
 
-        public static IReadOnlyList<String> GetStackTrace(Span element)
+        [UsedImplicitly] // XAML attached property
+        public static IReadOnlyList<string> GetStackTrace(Span element)
         {
-            return element.GetValue(StackTraceProperty).To<IReadOnlyList<String>>();
+            return element.GetValue(StackTraceProperty).To<IReadOnlyList<string>>();
         }
 
-        public static void SetStackTrace(Span element, IReadOnlyList<String> value)
+        [UsedImplicitly]
+        public static void SetStackTrace(Span element, IReadOnlyList<string> value)
         {
             element?.SetValue(StackTraceProperty, value);
         }
@@ -97,13 +100,13 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
         /// A property that shows a formatted Brainf_ck stack trace to a <see cref="Span"/> object
         /// </summary>
         public static readonly DependencyProperty StackTraceProperty =
-            DependencyProperty.RegisterAttached("StackTrace", typeof(IReadOnlyList<String>), typeof(Brainf_ckCodeInlineFormatter), 
+            DependencyProperty.RegisterAttached("StackTrace", typeof(IReadOnlyList<string>), typeof(Brainf_ckCodeInlineFormatter), 
                 new PropertyMetadata(DependencyProperty.UnsetValue, OnStackTracePropertyPropertyChanged));
 
         private static void OnStackTracePropertyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Span @this = d.To<Span>();
-            IReadOnlyList<String> stack = e.NewValue.To<IReadOnlyList<String>>();
+            IReadOnlyList<string> stack = e.NewValue.To<IReadOnlyList<string>>();
             List<Inline> inlines = new List<Inline>();
             int depth = 0;
             bool skipped = false;
@@ -119,7 +122,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
                         inlines.Add(new LineBreak());
                         inlines.Add(new Run
                         {
-                            Text = $"at {(count > 1 ? $"[{count} {LocalizationManager.GetResource("StackFrames")}]" : String.Empty)}",
+                            Text = $"at {(count > 1 ? $"[{count} {LocalizationManager.GetResource("StackFrames")}]" : string.Empty)}",
                             Foreground = new SolidColorBrush(Colors.DimGray),
                             FontSize = @this.FontSize - 1
                         });
@@ -143,12 +146,14 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
             foreach (Inline inline in inlines) @this.Inlines.Add(inline);
         }
 
-        public static String GetUnformattedSource(Span element)
+        [UsedImplicitly]
+        public static string GetUnformattedSource(Span element)
         {
-            return element.GetValue(UnformattedSourceProperty).To<String>();
+            return element.GetValue(UnformattedSourceProperty).To<string>();
         }
 
-        public static void SetUnformattedSource(Span element, String value)
+        [UsedImplicitly]
+        public static void SetUnformattedSource(Span element, string value)
         {
             element?.SetValue(UnformattedSourceProperty, value);
         }
@@ -160,19 +165,16 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
             DependencyProperty.RegisterAttached("UnformattedSource", typeof(String), typeof(Brainf_ckCodeInlineFormatter), new PropertyMetadata(String.Empty, OnUnformattedSourcePropertyChanged));
 
         // The regex pattern to remove unwaanted characters
-        private static readonly String Pattern = $"[^{Brainf_ckInterpreter.Operators.Aggregate(c => $@"\{c}")}]";
+        private static readonly string Pattern = $"[^{Brainf_ckInterpreter.Operators.Aggregate(c => $@"\{c}")}]";
 
         private static void OnUnformattedSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Span @this = d.To<Span>();
-            String
-                raw = e.NewValue.To<String>(),
+            string
+                raw = e.NewValue.To<string>(),
                 code = Regex.Replace(raw, Pattern, "");
             @this.Inlines.Clear();
-            @this.Inlines.Add(new Run
-            {
-                Text = code?.Aggregate(c => $"{c}{ZeroWidthSpace}") ?? String.Empty
-            });
+            @this.Inlines.Add(new Run { Text = code.Aggregate(c => $"{c}{ZeroWidthSpace}") });
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp.ReturnTypes
@@ -13,7 +12,7 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// Gets the stack trace for the exception thrown when running the script
         /// </summary>
         [NotNull]
-        public IReadOnlyList<String> StackTrace { get; }
+        public IReadOnlyList<string> StackTrace { get; }
 
         /// <summary>
         /// Gets the operator that generated the exception in the script
@@ -26,7 +25,7 @@ namespace Brainf_ck_sharp.ReturnTypes
         public int ErrorPosition { get; }
 
         // Internal constructor
-        internal InterpreterExceptionInfo([NotNull] IReadOnlyList<String> stackTrace, int position, String source)
+        internal InterpreterExceptionInfo([NotNull] IReadOnlyList<string> stackTrace, int position, string source)
         {
             StackTrace = stackTrace;
             ErrorPosition = position;

@@ -16,7 +16,7 @@ namespace Brainf_ck_sharp_UWP.Converters
         {
             return value is uint u && u > 0 || value is int i && i > 0
                 ? XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("SystemControlHighlightAccentBrush")
-                : new SolidColorBrush(parameter.To<String>().ToColor());
+                : new SolidColorBrush(parameter.To<string>().ToColor());
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

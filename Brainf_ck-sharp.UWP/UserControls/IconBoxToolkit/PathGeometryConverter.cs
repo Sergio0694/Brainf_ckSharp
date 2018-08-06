@@ -9,7 +9,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit
     /// <summary>
     /// An SVG data parser, credits to Rafael Yousuf
     /// </summary>
-    public class PathGeometryConverter : IValueConverter
+    public sealed class PathGeometryConverter : IValueConverter
     {
         #region Const & Private Variables
 
@@ -31,6 +31,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit
         Point _secondLastPoint;   // The point before last point
 
         char _token;             // Non whitespace character returned by ReadToken
+
         #endregion
 
         #region Public Functionality
@@ -56,10 +57,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit
         /// </summary>
         /// <param name="geometry">Path Geometry object</param>
         /// <returns>String equivalent to PathGeometry contents</returns>
-        public string ConvertBack(PathGeometry geometry)
-        {
-            throw new NotImplementedException();
-        }
+        public string ConvertBack(PathGeometry geometry) => throw new NotImplementedException();
 
         #endregion
 
@@ -618,7 +616,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.IconBoxToolkit
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value is String path)
+            if (value is string path)
                 return Convert(path);
             return null;
         }

@@ -15,7 +15,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// </summary>
         /// <typeparam name="T">The Type of the resource to get</typeparam>
         /// <param name="resourceName">The name of the resource</param>
-        public static T GetResourceValue<T>([NotNull] String resourceName)
+        public static T GetResourceValue<T>([NotNull] string resourceName)
         {
             return Application.Current.Resources[resourceName].To<T>();
         }
@@ -27,7 +27,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// <param name="resourceName">The name of the resource</param>
         /// <param name="value">The new value to use</param>
         /// <param name="weaklyTyped">Indicates whether or not a resource can be overridden with a different type</param>
-        public static void SetResourceValue<T>([NotNull] String resourceName, T value, bool weaklyTyped = false)
+        public static void SetResourceValue<T>([NotNull] string resourceName, T value, bool weaklyTyped = false)
         {
             // Parameter check
             if (resourceName.Length == 0) throw new ArgumentException("The resource name is not valid");

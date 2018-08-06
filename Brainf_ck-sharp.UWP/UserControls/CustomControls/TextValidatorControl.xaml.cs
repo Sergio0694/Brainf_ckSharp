@@ -33,9 +33,9 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
         /// <summary>
         /// Gets or sets the text displayed next to the status icon
         /// </summary>
-        public String DisplayedInfo
+        public string DisplayedInfo
         {
-            get { return GetValue(DisplayedInfoProperty).To<String>(); }
+            get { return GetValue(DisplayedInfoProperty).To<string>(); }
             set { SetValue(DisplayedInfoProperty, value); }
         }
 
@@ -44,7 +44,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
 
         private static void OnDisplayedInfoPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            d.To<TextValidatorControl>().ValidatedTextBlock.Text = e.NewValue.To<String>() ?? String.Empty;
+            d.To<TextValidatorControl>().ValidatedTextBlock.Text = e.NewValue.To<string>() ?? string.Empty;
         }
     }
 }

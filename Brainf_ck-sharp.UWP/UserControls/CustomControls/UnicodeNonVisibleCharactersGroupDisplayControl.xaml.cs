@@ -15,7 +15,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
         /// <summary>
         /// Gets or sets the value to display for this characters group
         /// </summary>
-        public String Value
+        public string Value
         {
             get { return (String)GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
@@ -27,13 +27,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
 
         private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            d.To<UnicodeNonVisibleCharactersGroupDisplayControl>().ValueBlock.Text = e.NewValue.To<String>() ?? String.Empty;
+            d.To<UnicodeNonVisibleCharactersGroupDisplayControl>().ValueBlock.Text = e.NewValue.To<string>() ?? string.Empty;
         }
 
         /// <summary>
         /// Gets or sets the description to display for this characters group
         /// </summary>
-        public String Description
+        public string Description
         {
             get { return (String)GetValue(DescriptionProperty); }
             set { SetValue(DescriptionProperty, value); }
@@ -45,7 +45,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
 
         private static void OnDescriptionPropertyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            d.To<UnicodeNonVisibleCharactersGroupDisplayControl>().DescriptionBlock.Text = e.NewValue.To<String>() ?? String.Empty;
+            d.To<UnicodeNonVisibleCharactersGroupDisplayControl>().DescriptionBlock.Text = e.NewValue.To<string>() ?? string.Empty;
         }
     }
 }

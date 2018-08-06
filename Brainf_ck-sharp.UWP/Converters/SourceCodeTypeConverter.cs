@@ -16,7 +16,7 @@ namespace Brainf_ck_sharp_UWP.Converters
             return Convert(value.To<SavedSourceCodeType>());
         }
 
-        public static String Convert(SavedSourceCodeType type)
+        public static string Convert(SavedSourceCodeType type)
         {
             switch (type)
             {

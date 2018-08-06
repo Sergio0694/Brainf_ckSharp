@@ -28,7 +28,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList
         /// <summary>
         /// Gets or sets the title to display in the control
         /// </summary>
-        public String Title
+        public string Title
         {
             get => (String)GetValue(TitleProperty);
             set => SetValue(TitleProperty, value);
@@ -39,13 +39,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList
 
         private static void OnTitlePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            d.To<JumpListZoomedOutHeaderTemplate>().TitleBlock.Text = e.NewValue.To<String>() ?? String.Empty;
+            d.To<JumpListZoomedOutHeaderTemplate>().TitleBlock.Text = e.NewValue.To<string>() ?? string.Empty;
         }
 
         /// <summary>
         /// Gets or sets the description of the control
         /// </summary>
-        public String Description
+        public string Description
         {
             get => (String)GetValue(DescriptionProperty);
             set => SetValue(DescriptionProperty, value);
@@ -57,7 +57,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList
 
         private static void OnDescriptionPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            d.To<JumpListZoomedOutHeaderTemplate>().InfoBlock.Text = e.NewValue.To<String>() ?? String.Empty;
+            d.To<JumpListZoomedOutHeaderTemplate>().InfoBlock.Text = e.NewValue.To<string>() ?? string.Empty;
         }
     }
 }

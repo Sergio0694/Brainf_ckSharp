@@ -12,7 +12,7 @@ namespace Brainf_ck_sharp_UWP.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return value.To<int>() == int.Parse(parameter.To<String>())
+            return value.To<int>() == int.Parse(parameter.To<string>())
                 ? Visibility.Visible
                 : Visibility.Collapsed;
         }

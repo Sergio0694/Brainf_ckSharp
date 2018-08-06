@@ -36,7 +36,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         private readonly ITextDocument Document;
 
         // A UI-bound function that asks the user to pick a name to save a new source code
-        private readonly Func<String, Task<String>> SaveNameSelector;
+        private readonly Func<string, Task<string>> SaveNameSelector;
 
         // A function that retrieves the list of breakpoints currently present in the code
         private readonly Func<IReadOnlyCollection<int>> BreakpointsExtractor;
@@ -49,8 +49,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <param name="document">The target document that contains the source code to edit</param>
         /// <param name="nameSelector">A function that prompts the user to enter a name to save a new source code in the app</param>
         /// <param name="breakpointsExtractor">A function that retrieves the active breakpoints</param>
-        public IDEViewModel([NotNull] ITextDocument document, [NotNull] Func<String, 
-            Task<String>> nameSelector, [NotNull] Func<IReadOnlyCollection<int>> breakpointsExtractor)
+        public IDEViewModel([NotNull] ITextDocument document, [NotNull] Func<string, 
+            Task<string>> nameSelector, [NotNull] Func<IReadOnlyCollection<int>> breakpointsExtractor)
         {
             Document = document;
             SaveNameSelector = nameSelector;
@@ -96,7 +96,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         Messenger.Default.Register<IDEDeleteCharacterRequestMessage>(this, m =>
                         {
                             if (Document.Selection.Length == 0 && Document.Selection.StartPosition > 0) Document.Selection.StartPosition--;
-                            Document.Selection.SetText(TextSetOptions.None, String.Empty);
+                            Document.Selection.SetText(TextSetOptions.None, string.Empty);
                         });
                         SendMessages();
                         if (_Startup)
@@ -177,7 +177,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             if (LoadedCode == null) return;
 
             // Get the text and the breakpoints
-            Document.GetText(TextGetOptions.None, out String text);
+            Document.GetText(TextGetOptions.None, out string text);
             IReadOnlyCollection<int>
                 raw = BreakpointsExtractor(),
                 breakpoints = raw.Count > 0 ? raw : null;
@@ -196,7 +196,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         private async Task ManageSaveCodeRequest(CodeSaveType type)
         {
             // Get the text and the breakpoints
-            Document.GetText(TextGetOptions.None, out String text);
+            Document.GetText(TextGetOptions.None, out string text);
             IReadOnlyCollection<int>
                 raw = BreakpointsExtractor(),
                 breakpoints = raw.Count > 0 ? raw : null;
@@ -214,7 +214,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 
                 // Save the current code as a new file
                 case CodeSaveType.SaveAs:
-                    String name = await SaveNameSelector(text);
+                    string name = await SaveNameSelector(text);
                     if (!String.IsNullOrEmpty(name))
                     {
                         AsyncOperationResult<CategorizedSourceCode> result = await SQLiteManager.Instance.SaveCodeAsync(name, text, breakpoints);
@@ -242,7 +242,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Sends the status info messages for the current state
         /// </summary>
-        public void SendMessages([CanBeNull] String code = null)
+        public void SendMessages([CanBeNull] string code = null)
         {
             // Initial checks
             if (code == null) Document.GetText(TextGetOptions.None, out code);
@@ -282,7 +282,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// </summary>
         private void TryClearScreen()
         {
-            Document.SetText(TextSetOptions.None, String.Empty);
+            Document.SetText(TextSetOptions.None, string.Empty);
             _CategorizedCode = null;
             Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(false, true));
             SendMessages();
@@ -603,7 +603,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// </summary>
         /// <param name="previous">The previous code</param>
         /// <param name="current">The current code</param>
-        public async Task UpdateGitDiffStatus([NotNull] String previous, [NotNull] String current)
+        public async Task UpdateGitDiffStatus([NotNull] string previous, [NotNull] string current)
         {
             // Clear the current indicators if the two strings are the same
             if (previous.Equals(current))
@@ -616,7 +616,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             // Prepare the updated source
             List<GitDiffLineStatus> source = await Task.Run(() =>
             {
-                String[]
+                string[]
                     currentLines = current.Split('\r'),
                     previousLines = previous.Replace("\n", "").Split('\r').Take(currentLines.Length).ToArray();
                 List<GitDiffLineStatus> temp = new List<GitDiffLineStatus>();

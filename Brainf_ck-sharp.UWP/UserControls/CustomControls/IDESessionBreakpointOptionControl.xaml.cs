@@ -28,7 +28,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
         /// <summary>
         /// Gets or sets the title to display in the control
         /// </summary>
-        public String Title
+        public string Title
         {
             get => (String)GetValue(TitleProperty);
             set => SetValue(TitleProperty, value);
@@ -39,7 +39,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
 
         private static void OnTitlePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            d.To<IDESessionBreakpointOptionControl>().TitleBlock.Text = e.NewValue.To<String>() ?? String.Empty;
+            d.To<IDESessionBreakpointOptionControl>().TitleBlock.Text = e.NewValue.To<string>() ?? string.Empty;
         }
 
         /// <summary>

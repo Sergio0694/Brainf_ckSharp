@@ -36,6 +36,6 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
         /// </summary>
         /// <param name="value">The value to convert</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static String ToSegoeMDL2Icon(this int value) => Convert.ToChar(value).ToString();
+        public static string ToSegoeMDL2Icon(this int value) => Convert.ToChar(value).ToString();
     }
 }

@@ -85,7 +85,7 @@ namespace Brainf_ck_sharp_UWP.Views
             };
             ViewModel.CharInsertionRequested += ViewModel_CharInsertionRequested;
             ViewModel.NewLineInsertionRequested += ViewModel_NewLineInsertionRequested;
-            EditBox.Document.GetText(TextGetOptions.None, out String text);
+            EditBox.Document.GetText(TextGetOptions.None, out string text);
             _PreviousText = text;
             _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
             Messenger.Default.Register<IDESettingsChangedMessage>(this, ApplyIDESettings);
@@ -147,7 +147,7 @@ namespace Brainf_ck_sharp_UWP.Views
             if (message.FontChanged)
             {
                 // Refresh the text UI
-                String name = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+                string name = AppSettingsManager.Instance.GetValue<string>(nameof(AppSettingsKeys.SelectedFontName));
                 if (InstalledFont.TryGetFont(name, out InstalledFont font))
                 {
                     LineBlock.FontFamily = font.Family;
@@ -172,7 +172,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 ApplyUITheme();
 
                 // Code highlight
-                EditBox.Document.GetText(TextGetOptions.None, out String text);
+                EditBox.Document.GetText(TextGetOptions.None, out string text);
                 int count = 0;
                 for (int i = 0; i < text.Length; i++)
                 {
@@ -236,7 +236,7 @@ namespace Brainf_ck_sharp_UWP.Views
         /// Prompts the user to select a file name to save the current source code
         /// </summary>
         /// <param name="code">The source code that's being saved</param>
-        private async Task<String> PickSaveNameAsync(String code)
+        private async Task<string> PickSaveNameAsync(String code)
         {
             SaveCodePromptFlyout flyout = new SaveCodePromptFlyout(code, null);
             FlyoutResult result = await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("SaveCode"), 
@@ -250,7 +250,7 @@ namespace Brainf_ck_sharp_UWP.Views
         private void ViewModel_PlayRequested(object sender, PlayRequestedEventArgs e)
         {
             // Get the text and initialize the session
-            EditBox.Document.GetText(TextGetOptions.None, out String text);
+            EditBox.Document.GetText(TextGetOptions.None, out string text);
             Func<InterpreterExecutionSession> factory;
             if (e.Debug)
             {
@@ -258,7 +258,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 IReadOnlyCollection<int> 
                     lines = BreakpointsInfo.Keys.OrderBy(key => key).Select(i => i - 1).ToArray(), // i -1 to move from 1 to 0-based indexes
                     indexes = text.FindLineIndexes(lines);
-                List<String> chuncks = new List<String>();
+                List<string> chuncks = new List<string>();
                 int previous = 0;
                 foreach (int breakpoint in indexes.Concat(new[] { text.Length - 1 }))
                 {
@@ -285,7 +285,7 @@ namespace Brainf_ck_sharp_UWP.Views
             if (_Loaded) return;
 
             // Font setup
-            String name = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+            string name = AppSettingsManager.Instance.GetValue<string>(nameof(AppSettingsKeys.SelectedFontName));
             if (InstalledFont.TryGetFont(name, out InstalledFont font))
             {
                 LineBlock.FontFamily = font.Family;
@@ -376,8 +376,8 @@ namespace Brainf_ck_sharp_UWP.Views
                 if (t.Result.Status != AsyncOperationStatus.RunToCompletion) return;
                 ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
             }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
-            EditBox.Document.GetText(TextGetOptions.None, out String code);
-            ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
+            EditBox.Document.GetText(TextGetOptions.None, out string code);
+            ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? string.Empty, code).Forget();
             ViewModel.UpdateCanUndoRedoStatus();
             await RemoveUnvalidatedBreakpointsAsync(code);
             RefreshBreakpointsUI(code);
@@ -396,7 +396,7 @@ namespace Brainf_ck_sharp_UWP.Views
         private async void DrawLineNumbers()
         {
             // Draw the line numbers in the TextBlock next to the code
-            EditBox.Document.GetText(TextGetOptions.None, out String text);
+            EditBox.Document.GetText(TextGetOptions.None, out string text);
             LineBlock.Text = await Task.Run(() =>
             {
                 int count = text.Split('\r').Length;
@@ -702,7 +702,7 @@ namespace Brainf_ck_sharp_UWP.Views
             IReadOnlyCollection<CharacterWithArea> RenderControlCharactersCode()
             {
                 // Edge case
-                EditBox.Document.GetText(TextGetOptions.None, out String code);
+                EditBox.Document.GetText(TextGetOptions.None, out string code);
                 if (code.Length < 2)
                 {
                     return new List<CharacterWithArea>();
@@ -786,7 +786,7 @@ namespace Brainf_ck_sharp_UWP.Views
         #endregion
 
         // Gets the backup of the text in the IDE
-        private String _PreviousText;
+        private string _PreviousText;
 
         // Gets the previous length of the text selection
         private int _PreviousSelectionLength;
@@ -799,7 +799,7 @@ namespace Brainf_ck_sharp_UWP.Views
              * ================= */
 
             // Get the current text and backup the current index
-            EditBox.Document.GetText(TextGetOptions.None, out String text);
+            EditBox.Document.GetText(TextGetOptions.None, out string text);
             int start = EditBox.Document.Selection.StartPosition;
 
             // Single character entered
@@ -825,9 +825,9 @@ namespace Brainf_ck_sharp_UWP.Views
                     else // Syntax highlight and autocompletion for the [, \r and ( characters
                     {
                         // Calculate the current indentation depth
-                        String trailer = text.Substring(0, range.StartPosition);
+                        string trailer = text.Substring(0, range.StartPosition);
                         int indents = trailer.Count(c => c == '[') - trailer.Count(c => c == ']');
-                        String tabs = Enumerable.Range(0, indents).Aggregate(new StringBuilder(), (b, c) =>
+                        string tabs = Enumerable.Range(0, indents).Aggregate(new StringBuilder(), (b, c) =>
                         {
                             b.Append('\t');
                             return b;
@@ -840,7 +840,7 @@ namespace Brainf_ck_sharp_UWP.Views
                             bool autoFormat = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutoIndentBrackets));
                             int formatMode = autoFormat
                                 ? AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.BracketsStyle))
-                                : default(int);
+                                : default;
 
                             // Edge case: the user was already on an empty and indented line when opening the bracket
                             bool edge = false;
@@ -848,7 +848,7 @@ namespace Brainf_ck_sharp_UWP.Views
                             if (lastCr != -1)
                             {
                                 // Autocomplete without the first blank line
-                                String lastLine = trailer.Substring(lastCr, trailer.Length - lastCr);
+                                string lastLine = trailer.Substring(lastCr, trailer.Length - lastCr);
                                 if (lastLine.Skip(1).All(c => c == '\t') && lastLine.Length == indents + 1)
                                 {
                                     EditBox.Document.Selection.TypeText(autoFormat ? $"\r{tabs}\t\r{tabs}]" : "]");
@@ -981,11 +981,11 @@ namespace Brainf_ck_sharp_UWP.Views
             // Retrieve the contents as plain text
             e.Handled = true;
             DataPackageView view = Clipboard.GetContent();
-            String text;
+            string text;
             if (view.Contains(StandardDataFormats.Text)) text = await view.GetTextAsync();
             else if (view.Contains(StandardDataFormats.Rtf))
             {
-                String rtf = await view.GetRtfAsync();
+                string rtf = await view.GetRtfAsync();
                 RichEditBox provider = new RichEditBox();
                 provider.Document.SetText(TextSetOptions.FormatRtf, rtf);
                 provider.Document.GetText(TextGetOptions.None, out text);
@@ -1075,7 +1075,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
                 if (_WhitespacesRenderingEnabled) RenderControlCharacters();
-                ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? String.Empty, code).Forget();
+                ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? string.Empty, code).Forget();
                 ViewModel.SendMessages(code);
                 ViewModel.UpdateCanUndoRedoStatus();
                 UpdateCursorRectangleAndIndicatorUI();
@@ -1124,7 +1124,7 @@ namespace Brainf_ck_sharp_UWP.Views
         /// Removes the invalid breakpoints after the text is edited
         /// </summary>
         /// <param name="text">The current text</param>
-        private async Task RemoveUnvalidatedBreakpointsAsync([NotNull] String text)
+        private async Task RemoveUnvalidatedBreakpointsAsync([NotNull] string text)
         {
             // Find the invalid breakpoints
             IReadOnlyList<int> pending = await Task.Run(() =>
@@ -1161,7 +1161,7 @@ namespace Brainf_ck_sharp_UWP.Views
         private void RestoreBreakpoints(IReadOnlyCollection<int> lines)
         {
             // Get the text
-            EditBox.Document.GetText(TextGetOptions.None, out String code);
+            EditBox.Document.GetText(TextGetOptions.None, out string code);
 
             // Get the actual positions for each line start
             IReadOnlyCollection<int> indexes = code.FindLineIndexes(lines).Select(i => i + 1).ToArray();
@@ -1190,7 +1190,7 @@ namespace Brainf_ck_sharp_UWP.Views
             range.GetRect(PointOptions.Transform, out Rect line, out _);
 
             // Get the line number
-            EditBox.Document.GetText(TextGetOptions.None, out String text);
+            EditBox.Document.GetText(TextGetOptions.None, out string text);
 
             // Add the breakpoint
             AddSingleBreakpoint(text, range.StartPosition, line.Top);
@@ -1205,7 +1205,7 @@ namespace Brainf_ck_sharp_UWP.Views
         /// </summary>
         /// <param name="text">The source text</param>
         /// <param name="index">The breakpoint initial index</param>
-        private (double X, double Y, double Width) CalculateBreakpointCoordinates([NotNull] String text, int index)
+        private (double X, double Y, double Width) CalculateBreakpointCoordinates([NotNull] string text, int index)
         {
             // Get the target line coordinates
             int first = 0, last = -1;
@@ -1243,12 +1243,12 @@ namespace Brainf_ck_sharp_UWP.Views
         /// Refreshes the UI of the breakpoint overlays
         /// </summary>
         /// <param name="text">The current IDE text</param>
-        private void RefreshBreakpointsUI([NotNull] String text)
+        private void RefreshBreakpointsUI([NotNull] string text)
         {
             KeyValuePair<int, Tuple<Ellipse, Guid>>[] pairs = BreakpointsInfo.ToArray();
 
             // Get the actual positions for each line start
-            IReadOnlyList<int> indexes = text.FindLineIndexes(pairs.Select(p => p.Key - 1));
+            IReadOnlyList<int> indexes = text.FindLineIndexes(pairs.Select(p => p.Key - 1).ToArray());
             for (int i = 0; i < pairs.Length; i++)
             {
                 KeyValuePair<int, Tuple<Ellipse, Guid>> pair = pairs[i];
@@ -1267,7 +1267,7 @@ namespace Brainf_ck_sharp_UWP.Views
         /// <param name="text">The current text, if available</param>
         /// <param name="start">The start index for the breakpoint</param>
         /// <param name="offset">The vertical offset of the selected line</param>
-        private void AddSingleBreakpoint([CanBeNull] String text, int start, double offset)
+        private void AddSingleBreakpoint([CanBeNull] string text, int start, double offset)
         {
             // Get the target line
             if (text == null) EditBox.Document.GetText(TextGetOptions.None, out text);
@@ -1348,7 +1348,7 @@ namespace Brainf_ck_sharp_UWP.Views
             if (count < 3) IndentationInfoList.SetVisualScale(null, 1, null);
             else
             {
-                String lines = '\n'.Repeat(count - 1);
+                string lines = '\n'.Repeat(count - 1);
                 Size size = lines.MeasureText(15, LineBlock.FontFamily);
                 IndentationInfoList.SetVisualScale(null, (float)(size.Height / newSize.Height), null);
             }
@@ -1367,7 +1367,7 @@ namespace Brainf_ck_sharp_UWP.Views
             if (count < 3) GitDiffListView.SetVisualScale(null, 1, null);
             else
             {
-                String lines = '\n'.Repeat(count - 1);
+                string lines = '\n'.Repeat(count - 1);
                 Size size = lines.MeasureText(15, LineBlock.FontFamily);
                 GitDiffListView.SetVisualScale(null, (float)(size.Height / newSize.Height), null);
             }

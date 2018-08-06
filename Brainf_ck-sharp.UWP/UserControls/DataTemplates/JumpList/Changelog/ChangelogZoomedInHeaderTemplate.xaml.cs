@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.DataModels;
@@ -37,6 +36,6 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.Changelog
         // Private field to skip repeated calls of Bindings.Update()
         private object _LastDataContext;
 
-        public JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<String>> ViewModel => this.DataContext.To<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<String>>>();
+        public JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<string>> ViewModel => this.DataContext.To<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<string>>>();
     }
 }

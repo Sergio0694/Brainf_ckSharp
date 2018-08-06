@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml;
@@ -52,7 +51,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             this.InitializeComponent();
             DataContext = new ShellViewModel(() =>
             {
-                String stdin = StdinHeader.StdinBuffer;
+                string stdin = StdinHeader.StdinBuffer;
                 if (AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.ClearStdinBufferOnExecution), out bool reset) && reset)
                 {
                     StdinHeader.ResetStdin();
@@ -294,14 +293,14 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 theme = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)),
                 tabs = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength));
             bool whitespaces = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
-            String font = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+            string font = AppSettingsManager.Instance.GetValue<string>(nameof(AppSettingsKeys.SelectedFontName));
             SettingsPanelFlyout settings = new SettingsPanelFlyout();
             Task.Delay(100).ContinueWith(t => settings.ViewModel.LoadGroups(), TaskScheduler.FromCurrentSynchronizationContext()).Forget();
             await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Settings"), settings, null, new Thickness());
             bool
                 themeChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)) != theme,
                 tabsChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength)) != tabs,
-                fontChanged = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName))?.Equals(font) != true,
+                fontChanged = AppSettingsManager.Instance.GetValue<string>(nameof(AppSettingsKeys.SelectedFontName))?.Equals(font) != true,
                 whitespacesChanged = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces)) != whitespaces;
             if (themeChanged || tabsChanged || fontChanged || whitespacesChanged)
             {

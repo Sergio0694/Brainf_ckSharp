@@ -1,5 +1,4 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.DataModels.ConsoleModels
 {
@@ -8,13 +7,13 @@ namespace Brainf_ck_sharp_UWP.DataModels.ConsoleModels
     /// </summary>
     public sealed class ConsoleUserCommand : ConsoleCommandModelBase
     {
-        private String _Command = String.Empty;
+        private string _Command = string.Empty;
 
         /// <summary>
         /// Gets the current command being written by the user
         /// </summary>
         [NotNull]
-        public String Command
+        public string Command
         {
             get => _Command;
             private set => Set(ref _Command, value);
@@ -24,6 +23,6 @@ namespace Brainf_ck_sharp_UWP.DataModels.ConsoleModels
         /// Updates the current being written by the user
         /// </summary>
         /// <param name="command">The updated command line</param>
-        public void UpdateCommand([NotNull] String command) => Command = command;
+        public void UpdateCommand([NotNull] string command) => Command = command;
     }
 }

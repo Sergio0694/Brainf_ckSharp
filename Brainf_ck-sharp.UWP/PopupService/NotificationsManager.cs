@@ -49,7 +49,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// </summary>
         /// <param name="title">The title of the notification</param>
         /// <param name="content">The content to show in the notification</param>
-        public void ShowDefaultErrorNotification([NotNull] String title, [NotNull] String content)
+        public void ShowDefaultErrorNotification([NotNull] string title, [NotNull] string content)
         {
             ShowNotification(0xE7BA.ToSegoeMDL2Icon(), title, content, NotificationType.Error);
         }
@@ -63,7 +63,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="type">The type of notification to show</param>
         /// <param name="duration">The time interval before the nofitication disappears</param>
         public void ShowNotification(
-            [NotNull] String icon, [NotNull] String title, [NotNull] String content, NotificationType type, TimeSpan? duration = null)
+            [NotNull] string icon, [NotNull] string title, [NotNull] string content, NotificationType type, TimeSpan? duration = null)
         {
             DispatcherHelper.RunOnUIThreadAsync(async () =>
             {

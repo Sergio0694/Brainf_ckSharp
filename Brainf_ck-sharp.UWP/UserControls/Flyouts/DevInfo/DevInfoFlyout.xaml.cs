@@ -55,10 +55,10 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
         }
 
         // In-app products
-        private const String CoffeeInAppStoreId = "9mtm2n891932";
-        private const String PresentInAppStoreId = "9ntlgb7lh7kq";
-        private const String DonateInAppStoreId = "9mvdsn65qdgh";
-        private const String VIPSupportInAppStoreId = "9p4ws1x7h5s8";
+        private const string CoffeeInAppStoreId = "9mtm2n891932";
+        private const string PresentInAppStoreId = "9ntlgb7lh7kq";
+        private const string DonateInAppStoreId = "9mvdsn65qdgh";
+        private const string VIPSupportInAppStoreId = "9p4ws1x7h5s8";
 
         /// <summary>
         /// Processes a donation in the Store
@@ -67,7 +67,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
         public static async Task ProcessDonationAsync(int option)
         {
             // Get the id of the product to purchase
-            String id;
+            string id;
             switch (option)
             {
                 case 0: id = CoffeeInAppStoreId; break;

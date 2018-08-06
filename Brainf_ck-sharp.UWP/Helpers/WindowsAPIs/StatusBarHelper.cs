@@ -13,7 +13,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
     public static class StatusBarHelper
     {
         // Gets the full namespace for the class
-        private const String StatusBarString = "Windows.UI.ViewManagement.StatusBar";
+        private const string StatusBarString = "Windows.UI.ViewManagement.StatusBar";
 
         /// <summary>
         /// Gets the current status bar, if available

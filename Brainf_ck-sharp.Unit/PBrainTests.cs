@@ -1,5 +1,4 @@
-﻿using System;
-using Brainf_ck_sharp.ReturnTypes;
+﻿using Brainf_ck_sharp.ReturnTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Brainf_ck_sharp.Unit
@@ -11,7 +10,7 @@ namespace Brainf_ck_sharp.Unit
         [TestMethod]
         public void SyntaxTest1()
         {
-            const String script = "++(  +";
+            const string script = "++(  +";
             SyntaxValidationResult result = Brainf_ckInterpreter.CheckSourceSyntax(script);
             Assert.IsTrue(!result.Valid && result.ErrorPosition == 2);
         }
@@ -19,8 +18,8 @@ namespace Brainf_ck_sharp.Unit
         [TestMethod]
         public void Test1()
         {
-            const String script = "(+++):>:";
-            InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
+            const string script = "(+++):>:";
+            InterpreterResult result = Brainf_ckInterpreter.Run(script, string.Empty);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
                           result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
@@ -31,7 +30,7 @@ namespace Brainf_ck_sharp.Unit
         [TestMethod]
         public void Test2()
         {
-            const String script = "+(,[>+<-]>.)>+:";
+            const string script = "+(,[>+<-]>.)>+:";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, "a");
             Assert.IsNotNull(result);
             Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
@@ -44,7 +43,7 @@ namespace Brainf_ck_sharp.Unit
         [TestMethod]
         public void Test3()
         {
-            const String script = ",[(+)-]";
+            const string script = ",[(+)-]";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, "€");
             Assert.IsNotNull(result);
             Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
@@ -56,8 +55,8 @@ namespace Brainf_ck_sharp.Unit
         [TestMethod]
         public void Test4()
         {
-            const String script = "(++++):::";
-            InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
+            const string script = "(++++):::";
+            InterpreterResult result = Brainf_ckInterpreter.Run(script, string.Empty);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
                           result.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown) &&
@@ -69,8 +68,8 @@ namespace Brainf_ck_sharp.Unit
         [TestMethod]
         public void BreakpointTest1()
         {
-            String[] script = { "(+):+++++" };
-            InterpreterExecutionSession result = Brainf_ckInterpreter.InitializeSession(script, String.Empty);
+            string[] script = { "(+):+++++" };
+            InterpreterExecutionSession result = Brainf_ckInterpreter.InitializeSession(script, string.Empty);
             Assert.IsNotNull(result);
             Assert.IsFalse(result.CanContinue);
             Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Success) &&
@@ -81,8 +80,8 @@ namespace Brainf_ck_sharp.Unit
         [TestMethod]
         public void BreakpointTest2()
         {
-            String[] script = { "++(>-+)>++:" };
-            InterpreterExecutionSession result = Brainf_ckInterpreter.InitializeSession(script, String.Empty);
+            string[] script = { "++(>-+)>++:" };
+            InterpreterExecutionSession result = Brainf_ckInterpreter.InitializeSession(script, string.Empty);
             Assert.IsNotNull(result);
             Assert.IsFalse(result.CanContinue);
             Assert.IsTrue(result.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
@@ -95,8 +94,8 @@ namespace Brainf_ck_sharp.Unit
         [TestMethod]
         public void BreakpointTest3()
         {
-            String[] script = { "++(>-+)", ">++:" };
-            InterpreterExecutionSession result = Brainf_ckInterpreter.InitializeSession(script, String.Empty);
+            string[] script = { "++(>-+)", ">++:" };
+            InterpreterExecutionSession result = Brainf_ckInterpreter.InitializeSession(script, string.Empty);
             Assert.IsNotNull(result);
             result.Continue();
             Assert.IsFalse(result.CanContinue);
@@ -110,7 +109,7 @@ namespace Brainf_ck_sharp.Unit
         [TestMethod]
         public void BreakpointTest4()
         {
-            String[] script = { "++(>,+.)", ">++:" };
+            string[] script = { "++(>,+.)", ">++:" };
             InterpreterExecutionSession result = Brainf_ckInterpreter.InitializeSession(script, "a");
             Assert.IsNotNull(result);
             result.Continue();

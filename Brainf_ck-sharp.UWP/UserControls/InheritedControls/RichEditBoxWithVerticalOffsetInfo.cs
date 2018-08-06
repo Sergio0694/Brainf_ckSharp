@@ -147,7 +147,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         /// Loads a text into the current document and resets the undo stack
         /// </summary>
         /// <param name="text">The input text to load</param>
-        public async Task LoadTextAsync([NotNull] String text)
+        public async Task LoadTextAsync([NotNull] string text)
         {
             using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
             {
@@ -175,7 +175,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         /// </summary>
         /// <param name="name">The name of the new font to use</param>
         /// <remarks>The input name is not validated and should be checked before calling this method</remarks>
-        public void SetFontFamily([NotNull] String name)
+        public void SetFontFamily([NotNull] string name)
         {
             ITextCharacterFormat format = Document.GetDefaultCharacterFormat();
             format.Name = name;

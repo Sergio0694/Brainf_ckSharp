@@ -62,7 +62,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         /// </summary>
         /// <typeparam name="T">The type of setting to retrieve</typeparam>
         /// <param name="key">The key of the setting to get</param>
-        public T GetValue<T>([NotNull] String key)
+        public T GetValue<T>([NotNull] string key)
         {
             bool found = TryGetValue(key, out T value);
             if (!found) throw new ArgumentException("The setting with the given key was not present");
@@ -75,7 +75,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         /// <typeparam name="T">The type of the object to retrieve</typeparam>
         /// <param name="key">The key associated to the requested object</param>
         /// <param name="value">The desired value, if found in the settings</param>
-        public bool TryGetValue<T>([NotNull] String key, out T value)
+        public bool TryGetValue<T>([NotNull] string key, out T value)
         {
             // Check the roaming settings
             if (RoamingSettings.ContainsKey(key))
@@ -118,7 +118,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
             SetValue(nameof(AppSettingsKeys.SelectedIDETheme), 0, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.AutosaveDocuments), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.RenderWhitespaces), false, SettingSaveMode.SkipIfExisting);
-            SetValue(nameof(AppSettingsKeys.SelectedFontName), String.Empty, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.SelectedFontName), string.Empty, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.ShowStatusBar), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.ClearStdinBufferOnExecution), true, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.ShowPBrainButtons), false, SettingSaveMode.SkipIfExisting);
@@ -137,7 +137,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         /// Gets the app current version in the format "Major.Minor.Build.Revision"
         /// </summary>
         [NotNull]
-        public static String AppVersion
+        public static string AppVersion
         {
             get
             {

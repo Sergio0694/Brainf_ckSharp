@@ -46,13 +46,13 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// Gets the output produced by the script
         /// </summary>
         [NotNull]
-        public String Output { get; }
+        public string Output { get; }
 
         /// <summary>
         /// Gets the original raw source code for the interpreted script
         /// </summary>
         [NotNull]
-        public String SourceCode { get; }
+        public string SourceCode { get; }
 
         /// <summary>
         /// If the script isn't executed successfully, gets all the relevant debug info
@@ -74,7 +74,7 @@ namespace Brainf_ck_sharp.ReturnTypes
         internal InterpreterResult(
             InterpreterExitCode exitCode,
             [NotNull] TouringMachineState state, TimeSpan duration,
-            [NotNull] String output, [NotNull] String code, uint operations, 
+            [NotNull] string output, [NotNull] string code, uint operations, 
             [CanBeNull] InterpreterExceptionInfo info, uint? breakpoint,
             [NotNull] IReadOnlyList<FunctionDefinition> functions)
         {
@@ -90,12 +90,12 @@ namespace Brainf_ck_sharp.ReturnTypes
         }
 
         // Internal failure constructor
-        internal InterpreterResult(InterpreterExitCode result, [NotNull] TouringMachineState state, [NotNull] String code)
+        internal InterpreterResult(InterpreterExitCode result, [NotNull] TouringMachineState state, [NotNull] string code)
         {
             ExitCode = result;
             _MachineState = state;
             SourceCode = code;
-            Output = String.Empty;
+            Output = string.Empty;
             ElapsedTime = TimeSpan.Zero;
             Functions = new FunctionDefinition[0];
         }

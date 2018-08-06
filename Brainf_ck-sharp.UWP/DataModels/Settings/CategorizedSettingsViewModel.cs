@@ -36,7 +36,7 @@ namespace Brainf_ck_sharp_UWP.DataModels.Settings
         /// Gets a small description of the section contents
         /// </summary>
         [NotNull]
-        public String SectionDescription
+        public string SectionDescription
         {
             get
             {
