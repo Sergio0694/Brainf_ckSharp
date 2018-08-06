@@ -25,7 +25,6 @@ using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations;
 using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
-using UICompositionAnimations.Helpers;
 using UICompositionAnimations.Helpers.PointerEvents;
 using MemoryViewerFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState.MemoryViewerFlyout;
 using SettingsPanelFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings.SettingsPanelFlyout;
@@ -60,16 +59,9 @@ namespace Brainf_ck_sharp_UWP.UserControls
             Console.ViewModel.IsEnabled = true;
 
             // Apply the in-app blur on mobile devices
-            if (ApiInformationHelper.IsMobileDevice)
-            {
-                HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>("HeaderInAppAcrylicBrush");
-            }
-            else
-            {
-                // Apply the desired blur effect
-                AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.InAppBlurMode), out int blurMode);
-                HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(blurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
-            }
+            // Apply the desired blur effect
+            AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.InAppBlurMode), out int blurMode);
+            HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(blurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
 
             // Flyout management
             Messenger.Default.Register<FlyoutOpenedMessage>(this, m => ManageFlyoutUI(true));
@@ -77,10 +69,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             Messenger.Default.Register<AppLoadingStatusChangedMessage>(this, m => ManageLoadingUI(m.Loading));
             Messenger.Default.Register<BlurModeChangedMessage>(this, m =>
             {
-                if (!ApiInformationHelper.IsMobileDevice)
-                {
-                    HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(m.BlurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
-                }
+                HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(m.BlurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
             });
         }
 

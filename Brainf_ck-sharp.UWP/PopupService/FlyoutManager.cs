@@ -23,7 +23,6 @@ using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
-using UICompositionAnimations.Helpers;
 using UICompositionAnimations.Lights;
 using UICompositionAnimations.XAMLTransform;
 
@@ -171,10 +170,10 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 screenHeight = ResolutionHelper.CurrentHeight,
                 maxWidth = stacked ? MaxStackedPopupWidth : MaxPopupWidth,
                 maxHeight = stacked ? MaxStackedPopupHeight : MaxPopupHeight,
-                margin = ApiInformationHelper.IsMobileDevice ? 12 : 24; // The minimum margin to the edges of the screen
+                margin = 24; // The minimum margin to the edges of the screen
 
             // Update the width first
-            if (screenWidth - margin <= maxWidth) info.Container.Width = screenWidth - (ApiInformationHelper.IsMobileDevice ? 0 : margin);
+            if (screenWidth - margin <= maxWidth) info.Container.Width = screenWidth - margin;
             else info.Container.Width = maxWidth - margin;
             info.Popup.HorizontalOffset = screenWidth / 2 - info.Container.Width / 2;
 
@@ -182,16 +181,12 @@ namespace Brainf_ck_sharp_UWP.PopupService
             if (info.DisplayMode == FlyoutDisplayMode.ScrollableContent)
             {
                 // Edge case for tiny screens not on mobile phones
-                if (!ApiInformationHelper.IsMobileDevice && screenHeight < 400)
-                {
-                    info.Container.Height = screenHeight;
-                }
+                if (screenHeight < 400) info.Container.Height = screenHeight;
                 else
                 {
                     // Calculate and adjust the right popup height
-                    info.Container.Height = screenHeight - margin <= maxHeight ||                       // The expanded popup will cover the whole screen
-                                            ApiInformationHelper.IsMobileDevice && screenHeight < 860   // High-DPI phone, show a fullscreen popup anyways
-                        ? screenHeight - (ApiInformationHelper.IsMobileDevice ? 0 : margin)
+                    info.Container.Height = screenHeight - margin <= maxHeight // The expanded popup will cover the whole screen
+                        ? screenHeight - margin
                         : maxHeight;
                     info.Popup.VerticalOffset = screenHeight / 2 - info.Container.Height / 2;
                 }
@@ -202,7 +197,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 Size desired = info.Container.CalculateDesiredSize();
                 double height = desired.Height <= screenHeight + margin
                     ? desired.Height
-                    : screenHeight - (ApiInformationHelper.IsMobileDevice ? 0 : margin);
+                    : screenHeight - margin;
                 if (animateHeight)
                 {
                     XAMLTransformToolkit.CreateDoubleAnimation(info.Container, "Height", null, height,
@@ -224,9 +219,6 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
-
-            // Platform check
-            if (ApiInformationHelper.IsMobileDevice) return Tuple.Create<FlyoutContainer, Action>(container, null);
 
             // Lights setup
             LightsSourceHelper.SetIsLightsContainer(container, true);

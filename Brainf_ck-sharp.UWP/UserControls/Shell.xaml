@@ -53,8 +53,7 @@
             <!--Title placeholder-->
             <Grid 
                 Grid.Row="0"
-                Height="32"
-                Visibility="{x:Bind ViewModel.DesktopMode, FallbackValue=Collapsed}">
+                Height="32">
                 
                 <!--App title-->
                 <TextBlock

@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
@@ -13,7 +12,6 @@ using Brainf_ck_sharp_UWP.Resources;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.UserControls;
 using GalaSoft.MvvmLight.Messaging;
-using UICompositionAnimations.Helpers;
 using UICompositionAnimations.Lights;
 #if DEBUG
 using System.Diagnostics;
@@ -85,11 +83,6 @@ namespace Brainf_ck_sharp_UWP
                 // Setup the view mode
                 ApplicationView view = ApplicationView.GetForCurrentView();
                 view.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseVisible);
-                if (ApiInformationHelper.IsMobileDevice)
-                {
-                    view.VisibleBoundsChanged += (s, _) => UpdateVisibleBounds(s);
-                    Task.Delay(1000).ContinueWith(t => UpdateVisibleBounds(ApplicationView.GetForCurrentView()), TaskScheduler.FromCurrentSynchronizationContext());
-                }
 
                 // Enable the key listener
                 KeyEventsListener.IsEnabled = true;
@@ -99,41 +92,6 @@ namespace Brainf_ck_sharp_UWP
                 Task.Run(() => SQLiteManager.Instance.TrySyncSharedCodesAsync());
             }
             Window.Current.Activate();
-        }
-
-        private void UpdateVisibleBounds(ApplicationView sender)
-        {
-            // Return if the content hasn't finished loading yet
-            if (DefaultContent == null) return;
-
-            // Close the open flyout if the navigation bar has been changed
-            if (sender.Orientation == ApplicationViewOrientation.Portrait)
-            {
-                double navBarHeight = Window.Current.Bounds.Height - sender.VisibleBounds.Bottom;
-                if (navBarHeight < 0) navBarHeight = 0;
-
-                // Adjust the app UI
-                DefaultContent.Margin = new Thickness(0, 0, 0, navBarHeight);
-            }
-            else
-            {
-
-                // Return if the status bar is still visible
-                Rect windowBounds = Window.Current.Bounds;
-
-                // Set the left margin if the device orientation is left
-                if (sender.VisibleBounds.Left.EqualsWithDelta(0) && sender.VisibleBounds.Right < windowBounds.Width)
-                {
-                    double navBarWidth = windowBounds.Width - sender.VisibleBounds.Right;
-                    DefaultContent.Margin = new Thickness(0, 0, navBarWidth, 0);
-                }
-                else if (sender.VisibleBounds.Left > 0 && sender.VisibleBounds.Width < windowBounds.Width)
-                {
-                    // Adjust the right margin in the case the orientation is right
-                    DefaultContent.Margin = new Thickness(sender.VisibleBounds.Left, 0, 0, 0);
-                }
-                else DefaultContent.Margin = new Thickness();
-            }
         }
 
         /// <summary>

@@ -20,7 +20,6 @@
             ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
             ItemsSource="{Binding ViewModel.BlurModeOptions}"
             SelectedIndex="{Binding ViewModel.BlurModeSelectedIndex, Mode=TwoWay}"
-            IsEnabled="{Binding ViewModel.HostBlurOptionSupported}"
             MinWidth="180"/>
         
         <!--Show PBrain keyboard-->

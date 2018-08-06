@@ -82,17 +82,14 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 popup.Child = notificationPopup;
 
                 // Lights setup
-                if (!ApiInformationHelper.IsMobileDevice)
-                {
-                    LightsSourceHelper.SetIsLightsContainer(notificationPopup, true);
+                LightsSourceHelper.SetIsLightsContainer(notificationPopup, true);
 
+                // Dispose the lights
+                popup.Closed += (s, e) =>
+                {
                     // Dispose the lights
-                    popup.Closed += (s, e) =>
-                    {
-                        // Dispose the lights
-                        LightsSourceHelper.SetIsLightsContainer(notificationPopup, false);
-                    };
-                }
+                    LightsSourceHelper.SetIsLightsContainer(notificationPopup, false);
+                };
 
                 // Close the previous notification, if present
                 await CloseNotificationPopupAsync();

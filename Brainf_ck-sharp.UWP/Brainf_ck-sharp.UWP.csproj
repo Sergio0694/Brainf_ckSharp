@@ -891,7 +891,7 @@
       <Version>1.0.1</Version>
     </PackageReference>
     <PackageReference Include="UICompositionAnimations">
-      <Version>2.16.1</Version>
+      <Version>3.0.0-beta6</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
