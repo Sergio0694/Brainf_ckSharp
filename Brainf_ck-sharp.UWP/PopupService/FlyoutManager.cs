@@ -185,7 +185,6 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 if (!ApiInformationHelper.IsMobileDevice && screenHeight < 400)
                 {
                     info.Container.Height = screenHeight;
-                    info.Popup.VerticalOffset = StatusBarHelper.OccludedHeight;
                 }
                 else
                 {
@@ -194,7 +193,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                                             ApiInformationHelper.IsMobileDevice && screenHeight < 860   // High-DPI phone, show a fullscreen popup anyways
                         ? screenHeight - (ApiInformationHelper.IsMobileDevice ? 0 : margin)
                         : maxHeight;
-                    info.Popup.VerticalOffset = screenHeight / 2 - info.Container.Height / 2 + StatusBarHelper.OccludedHeight;
+                    info.Popup.VerticalOffset = screenHeight / 2 - info.Container.Height / 2;
                 }
             }
             else
@@ -210,7 +209,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                         100, EasingFunctionNames.CircleEaseOut, true).ToStoryboard().Begin();
                 }
                 else info.Container.Height = height;
-                info.Popup.VerticalOffset = (screenHeight / 2 - info.Container.Height / 2) / 2 + StatusBarHelper.OccludedHeight;
+                info.Popup.VerticalOffset = (screenHeight / 2 - info.Container.Height / 2) / 2;
             }
         }
 

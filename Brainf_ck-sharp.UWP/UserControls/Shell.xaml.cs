@@ -9,7 +9,6 @@ using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
@@ -89,19 +88,6 @@ namespace Brainf_ck_sharp_UWP.UserControls
 
         #region UI
 
-        /// <summary>
-        /// Sets whether or not the status bar placeholder for Windows 10 Mobile devices should be displayed
-        /// </summary>
-        /// <param name="show">The new value for the placeholder visibility</param>
-        public void ShowStatusBarPlaceholder(bool show)
-        {
-            StatusBarPlaceholder.Visibility = show.ToVisibility();
-            HeaderGrid.Measure(new Size(ActualWidth, double.PositiveInfinity));
-            double height = HeaderGrid.DesiredSize.Height;
-            Console.AdjustTopMargin(height + 8);
-            IDE.RefreshTopMargin(height);
-        }
-
         // The current loading popup
         private Popup _LoadingPopup;
 
@@ -154,7 +140,6 @@ namespace Brainf_ck_sharp_UWP.UserControls
             // UI setup
             FadeCanvas.SetVisualOpacity(0);
             Messenger.Default.Send(new ConsoleStatusUpdateMessage(IDEStatus.Console, LocalizationManager.GetResource("Ready"), 0, 0));
-            StatusBarPlaceholder.Visibility = (StatusBarHelper.OccludedHeight > 0).ToVisibility();
             HeaderGrid.Measure(new Size(ActualWidth, double.PositiveInfinity));
             double height = HeaderGrid.DesiredSize.Height;
             Console.AdjustTopMargin(height + 8);

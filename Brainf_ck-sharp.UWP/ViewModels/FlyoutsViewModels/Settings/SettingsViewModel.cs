@@ -7,7 +7,6 @@ using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -330,25 +329,6 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         /// Gets whether or not the current device is not a mobile phone
         /// </summary>
         public bool HostBlurOptionSupported => !ApiInformationHelper.IsMobileDevice;
-
-        private bool _ShowStatusBar = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ShowStatusBar));
-
-        /// <summary>
-        /// Gets or sets whether or not the status bar should be displayed on mobile phones
-        /// </summary>
-        public bool ShowStatusBar
-        {
-            get => _ShowStatusBar;
-            set
-            {
-                if (Set(ref _ShowStatusBar, value))
-                {
-                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.ShowStatusBar), value, SettingSaveMode.OverwriteIfExisting);
-                    if (value) StatusBarHelper.TryShowAsync().Forget();
-                    else StatusBarHelper.HideAsync().Forget();
-                }
-            }
-        }
 
         /// <summary>
         /// Gets whether or not the current device is a mobile phone

@@ -51,7 +51,7 @@ namespace Brainf_ck_sharp_UWP.DataModels.Settings
                     case SettingsSectionType.Interpreter:
                         return $"1 {LocalizationManager.GetResource("LowercaseSingleAvailableSettings")}";
                     default:
-                        throw new ArgumentOutOfRangeException("Invalid section type");
+                        throw new ArgumentOutOfRangeException(nameof(SectionDescription), "Invalid section type");
                 }
             }
         }
