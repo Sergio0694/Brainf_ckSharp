@@ -41,7 +41,6 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Toolkit.Uwp.Helpers;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
-using UICompositionAnimations.Helpers;
 
 namespace Brainf_ck_sharp_UWP.Views
 {
@@ -56,33 +55,8 @@ namespace Brainf_ck_sharp_UWP.Views
             ApplyCustomTabSpacing();
             DataContext = new IDEViewModel(EditBox.Document, PickSaveNameAsync, () => BreakpointsInfo.Keys);
             ViewModel.PlayRequested += ViewModel_PlayRequested;
-            ViewModel.LoadedCodeChanged += (_, e) =>
-            {
-                // Load the code
-                LoadCode(e.Code, true);
-                if (e.Breakpoints == null)
-                {
-                    ClearBreakpoints();
-                    BracketGuidesCanvas.Invalidate();
-                }
-                else RestoreBreakpoints(BitHelper.Expand(e.Breakpoints));
-                Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
-
-                // Restore the UI
-                Task.Delay(250).ContinueWith(t =>
-                {
-                    Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
-                }, TaskScheduler.FromCurrentSynchronizationContext());
-            };
-            ViewModel.TextCleared += (_, e) =>
-            {
-                _PreviousText = "\r";
-                EditBox.ResetTextAndUndoStack();
-                ApplyCustomTabSpacing();
-                ClearBreakpoints();
-                BracketGuidesCanvas.Invalidate();
-                Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
-            };
+            ViewModel.LoadedCodeChanged += ViewModel_LoadedCodeChanged;
+            ViewModel.TextCleared += ViewModel_TextCleared;
             ViewModel.CharInsertionRequested += ViewModel_CharInsertionRequested;
             ViewModel.NewLineInsertionRequested += ViewModel_NewLineInsertionRequested;
             EditBox.Document.GetText(TextGetOptions.None, out string text);
@@ -216,6 +190,39 @@ namespace Brainf_ck_sharp_UWP.Views
 
         #endregion
 
+        #region ViewModel main events
+
+        // Loads the requested code, when the user selects a saved file from his library
+        private void ViewModel_LoadedCodeChanged(object sender, DataModels.SQLite.SourceCode e)
+        {
+            // Load the code
+            LoadCode(e.Code, true);
+            if (e.Breakpoints == null)
+            {
+                ClearBreakpoints();
+                BracketGuidesCanvas.Invalidate();
+            }
+            else RestoreBreakpoints(BitHelper.Expand(e.Breakpoints));
+            Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
+
+            // Restore the UI
+            Task.Delay(250).ContinueWith(t =>
+            {
+                Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        // Handles the UI when the user clears the contents of the IDE
+        private void ViewModel_TextCleared(object sender, EventArgs e)
+        {
+            _PreviousText = "\r";
+            EditBox.ResetTextAndUndoStack();
+            ApplyCustomTabSpacing();
+            ClearBreakpoints();
+            BracketGuidesCanvas.Invalidate();
+            Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
+        }
+
         // Inserts a new line at the current position
         private void ViewModel_NewLineInsertionRequested(object sender, EventArgs e)
         {
@@ -232,18 +239,6 @@ namespace Brainf_ck_sharp_UWP.Views
             EditBox.Document.Selection.SetRange(EditBox.Document.Selection.StartPosition + 1, EditBox.Document.Selection.StartPosition + 1);
         }
 
-        /// <summary>
-        /// Prompts the user to select a file name to save the current source code
-        /// </summary>
-        /// <param name="code">The source code that's being saved</param>
-        private async Task<string> PickSaveNameAsync(String code)
-        {
-            SaveCodePromptFlyout flyout = new SaveCodePromptFlyout(code, null);
-            FlyoutResult result = await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("SaveCode"), 
-                flyout, null, new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight);
-            return result == FlyoutResult.Confirmed ? flyout.Title : null;
-        }
-
         // The maximum execution time for a script
         private const int TimeThreshold = 2000;
 
@@ -255,7 +250,7 @@ namespace Brainf_ck_sharp_UWP.Views
             if (e.Debug)
             {
                 // Get the lines with a breakpoint and deconstruct the source in executable chuncks
-                IReadOnlyCollection<int> 
+                IReadOnlyCollection<int>
                     lines = BreakpointsInfo.Keys.OrderBy(key => key).Select(i => i - 1).ToArray(), // i -1 to move from 1 to 0-based indexes
                     indexes = text.FindLineIndexes(lines);
                 List<string> chuncks = new List<string>();
@@ -273,6 +268,20 @@ namespace Brainf_ck_sharp_UWP.Views
             IDERunResultFlyout flyout = new IDERunResultFlyout();
             FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource(e.Debug ? "Debug" : "RunTitle"), flyout, null, new Thickness()).Forget();
             Task.Delay(100).ContinueWith(t => flyout.ViewModel.InitializeAsync(factory), TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Prompts the user to select a file name to save the current source code
+        /// </summary>
+        /// <param name="code">The source code that's being saved</param>
+        private async Task<string> PickSaveNameAsync(String code)
+        {
+            SaveCodePromptFlyout flyout = new SaveCodePromptFlyout(code, null);
+            FlyoutResult result = await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("SaveCode"), 
+                flyout, null, new Thickness(12, 12, 16, 12), FlyoutDisplayMode.ActualHeight);
+            return result == FlyoutResult.Confirmed ? flyout.Title : null;
         }
 
         // Indicates whether or not the control has already been loaded
@@ -335,36 +344,8 @@ namespace Brainf_ck_sharp_UWP.Views
             CursorTransform.X = 4;
             BracketGuidesCanvas.SetVisualOffset(TranslationAxis.Y, 0);
             WhitespacesCanvas.SetVisualOffset(TranslationAxis.Y, (float)(height + 10));
-            EditBox.Padding = ApiInformationHelper.IsMobileDevice 
-                ? new Thickness(4, _Top + 8, 8, 8) 
-                : new Thickness(4, _Top + 8, 20, 20);
+            EditBox.Padding = new Thickness(4, _Top + 8, 20, 20);
             EditBox.ScrollBarMargin = new Thickness(0, _Top, 0, 0);
-        }
-
-        /// <summary>
-        /// Refreshes the top margin of the content in the page
-        /// </summary>
-        /// <param name="height">The updated height of the top margin</param>
-        public void RefreshTopMargin(double height)
-        {
-            // Save the new height value and update the main animations
-            if ((_Top - height).Abs() < 0.1) return;
-
-            // Setup the UI that needs to be adjusted
-            AdjustTopMargin(height);
-            if (!_Loaded) return;
-            SetupExpressionAnimations();
-            DrawBracketGuides(null, true).Forget();
-
-            // Update the breakpoints
-            int[] keys = BreakpointsInfo.Keys.ToArray();
-            if (keys.Length > 0)
-            {
-                int[] breakpoints = BreakpointsInfo.Keys.Select(i => i - 1).ToArray();
-                ClearBreakpoints();
-                RestoreBreakpoints(breakpoints);
-                BracketGuidesCanvas.Invalidate();
-            }
         }
 
         // Updates the line numbers displayed next to the code box
@@ -785,6 +766,8 @@ namespace Brainf_ck_sharp_UWP.Views
 
         #endregion
 
+        #region Syntax highlight
+
         // Gets the backup of the text in the IDE
         private string _PreviousText;
 
@@ -1105,6 +1088,8 @@ namespace Brainf_ck_sharp_UWP.Views
             CursorBorder.Width = e.NewSize.Width;
         }
 
+        #endregion
+
         #region Breakpoints
 
         /// <summary>
@@ -1310,7 +1295,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     RenderTransform = new TranslateTransform
                     {
                         X = 3,
-                        Y = _Top + 10 + offset
+                        Y = _Top + 12 + offset
                     }
                 };
                 BreakpointsCanvas.Children.Add(ellipse);
@@ -1318,7 +1303,7 @@ namespace Brainf_ck_sharp_UWP.Views
 
                 // Line highlight
                 (double x, _, double width) = CalculateBreakpointCoordinates(text, start);
-                Rect rect = new Rect(x, _Top + 10 + offset + _BreakpointsLineOffset, width, _ApproximateLineHeight);
+                Rect rect = new Rect(x, _Top + 12 + offset + _BreakpointsLineOffset, width, _ApproximateLineHeight);
                 Guid guid = Guid.NewGuid();
                 BreakpointLinesCoordinates.Add(guid, rect);
                 BracketGuidesCanvas.Invalidate();
