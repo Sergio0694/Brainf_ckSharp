@@ -382,11 +382,6 @@
     <Compile Include="UserControls\Flyouts\UserGuide\UserGuideViewerControl.xaml.cs">
       <DependentUpon>UserGuideViewerControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\IconBoxToolkit\IconBox.xaml.cs">
-      <DependentUpon>IconBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\IconBoxToolkit\PathGeometryConverter.cs" />
-    <Compile Include="UserControls\IconBoxToolkit\PathGeometryConverterExtensions.cs" />
     <Compile Include="UserControls\InheritedControls\AnimatedComboBox.cs" />
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CommandBarWithButtonsAnimations.cs" />
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CustomCommandBarButton.cs" />
@@ -818,10 +813,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\IconBoxToolkit\IconBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UserControls\Shell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -884,6 +875,9 @@
     </PackageReference>
     <PackageReference Include="MvvmLightLibs">
       <Version>5.4.1</Version>
+    </PackageReference>
+    <PackageReference Include="RafaelWare.UWP.Toolkit.UI.Controls.IconBox">
+      <Version>2016.8.28.1527</Version>
     </PackageReference>
     <PackageReference Include="SharpDX.Direct2D1">
       <Version>4.1.0</Version>
