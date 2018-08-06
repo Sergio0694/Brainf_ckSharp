@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -292,14 +293,15 @@ namespace Brainf_ck_sharp
         /// <param name="breakpoints">The list of breakpoints in the input source code</param>
         /// <param name="token">A <see cref="CancellationToken"/> used to signal when to bypass new breakpoints reached by the script</param>
         [Pure, NotNull]
+        [SuppressMessage("ReSharper", "AccessToModifiedClosure")] // Operations counter in nested function
         private static IEnumerator<InterpreterResult> TryRun(
             [NotNull] IReadOnlyList<Brainf_ckBinaryItem> executable, [NotNull] String arguments,
-            [NotNull] TouringMachineState state, [NotNull] IReadOnlyList<FunctionDefinition> oldFunctions,
+            [NotNull] TouringMachineState state, [NotNull] IEnumerable<FunctionDefinition> oldFunctions,
             OverflowMode mode, int? threshold, [NotNull] IReadOnlyList<uint> breakpoints, CancellationToken token)
         {
             // Preliminary tests
             if (executable.Count == 0) throw new ArgumentException("The source code can't be empty");
-            if (threshold <= 0) throw new ArgumentOutOfRangeException("The threshold must be a positive value");
+            if (threshold <= 0) throw new ArgumentOutOfRangeException(nameof(threshold), "The threshold must be a positive value");
 
             // ReSharper disable once RedundantAssignment - Local parameters
             uint operations = 0; // This actually needs to be initialized before calling the function
@@ -581,7 +583,7 @@ namespace Brainf_ck_sharp
                                 }
                                 break;
                             default:
-                                throw new ArgumentOutOfRangeException("Invalid operator");
+                                throw new ArgumentOutOfRangeException(nameof(executable), "Invalid operator");
                         }
                     }
                 } while (repeat);
@@ -644,7 +646,7 @@ namespace Brainf_ck_sharp
         {
             // Initial checks
             if (source.Count == 0) throw new ArgumentException("The source code is empty");
-            if (index < 0 || index > source.Count - 2) throw new ArgumentOutOfRangeException("The target index is invalid");
+            if (index < 0 || index > source.Count - 2) throw new ArgumentOutOfRangeException(nameof(index), "The target index is invalid");
             if (source[index].Operator != '[') throw new ArgumentException("The target index doesn't point to the beginning of a loop");
 
             // Iterate from the first character of the loop to the final ] operator
@@ -671,7 +673,7 @@ namespace Brainf_ck_sharp
         {
             // Initial checks
             if (source.Count == 0) throw new ArgumentException("The source code is empty");
-            if (index < 0 || index > source.Count - 2) throw new ArgumentOutOfRangeException("The target index is invalid");
+            if (index < 0 || index > source.Count - 2) throw new ArgumentOutOfRangeException(nameof(index), "The target index is invalid");
             if (source[index].Operator != '(') throw new ArgumentException("The target index doesn't point to the beginning of a function");
 
             // Iterate from the first character of the function to the final operator
@@ -731,7 +733,7 @@ namespace Brainf_ck_sharp
         public static String TranslateToC([NotNull] String source, int size = DefaultMemorySize)
         {
             // Arguments check
-            if (size <= 0) throw new ArgumentOutOfRangeException("The input size is not valid");
+            if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size), "The input size is not valid");
             if (source.Any(c => c == '(' || c == ')' || c == ':'))
             {
                 throw new ArgumentException("The C translation function isn't supported when using PBrain operators");

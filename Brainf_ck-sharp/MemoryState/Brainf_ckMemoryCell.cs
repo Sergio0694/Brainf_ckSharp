@@ -1,26 +1,33 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp.MemoryState
 {
     /// <summary>
     /// Contains the information on a given memory cell in a <see cref="IReadonlyTouringMachineState"/> object
     /// </summary>
-    public struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
+    public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     {
         /// <summary>
         /// Gets whether or not the cell is currently selected
         /// </summary>
-        public bool Selected { get; }
+        public readonly bool Selected;
 
         /// <summary>
         /// Gets the value of the current cell
         /// </summary>
-        public uint Value { get; }
+        public readonly uint Value;
 
         /// <summary>
         /// Gets the corresponding character for the current cell
         /// </summary>
-        public char Character => Convert.ToChar(Value);
+        public char Character
+        {
+            [Pure]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Convert.ToChar(Value);
+        }
 
         /// <summary>
         /// Creates a new instance with the given value
