@@ -214,7 +214,8 @@
             RelativePanel.AlignRightWithPanel="True"
             RelativePanel.Above="InfoBar"
             Style="{StaticResource ScrollableCommandBarRevealStyle}"
-            CommandBarOverflowPresenterStyle="{StaticResource AcrylicCommandBarOverflowPresenter}">
+            CommandBarOverflowPresenterStyle="{StaticResource AcrylicCommandBarOverflowPresenter}"
+            Background="{StaticResource HostBackdropGrayAcrylicBrush}">
             <customCommandBar:CommandBarWithButtonsAnimations.PrimaryCommands>
                 
                 <!--Console buttons-->

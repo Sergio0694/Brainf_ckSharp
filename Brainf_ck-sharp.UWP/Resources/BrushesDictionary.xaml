@@ -38,6 +38,14 @@
         TintMix="0.6"
         NoiseTextureUri="/Assets/Misc/noise.png"/>
 
+    <!--CommandBar content brush-->
+    <brushes:CustomAcrylicBrush
+        x:Key="HostBackdropGrayAcrylicBrush"
+        Mode="HostBackdrop"
+        Tint="#FF181818"
+        TintMix="0.9"
+        NoiseTextureUri="/Assets/Misc/noise.png"/>
+
     <!--ComboBox brush-->
     <brushes:CustomAcrylicBrush
         x:Key="ComboBoxAcrylicBrush"
