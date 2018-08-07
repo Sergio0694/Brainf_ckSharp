@@ -100,15 +100,6 @@ namespace Brainf_ck_sharp.ReturnTypes
             Functions = new FunctionDefinition[0];
         }
 
-        /// <summary>
-        /// Creates a copu of the current result
-        /// </summary>
-        [Pure, NotNull]
-        internal InterpreterResult Clone()
-        {
-            return new InterpreterResult(ExitCode, _MachineState.Clone(), ElapsedTime, Output, SourceCode, TotalOperations, ExceptionInfo, BreakpointPosition, Functions);
-        }
-
         #endregion
     }
 }

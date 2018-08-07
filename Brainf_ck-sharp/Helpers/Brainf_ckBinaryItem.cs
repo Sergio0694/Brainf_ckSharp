@@ -3,7 +3,7 @@
     /// <summary>
     /// Wraps the operators in the source code of a given script
     /// </summary>
-    internal struct Brainf_ckBinaryItem
+    internal readonly struct Brainf_ckBinaryItem
     {
         /// <summary>
         /// Gets the offset of the current operator from the start of the script

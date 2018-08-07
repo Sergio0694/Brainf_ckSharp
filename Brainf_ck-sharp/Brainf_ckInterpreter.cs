@@ -190,7 +190,7 @@ namespace Brainf_ck_sharp
             if (open) return new SyntaxValidationResult(false, position);
 
             // Prepare the inner check function
-            SyntaxValidationResult CheckSyntaxCore(String code)
+            SyntaxValidationResult CheckSyntaxCore(string code)
             {
                 // Iterate over all the characters in the source
                 int height = 0, error = 0;
@@ -252,7 +252,7 @@ namespace Brainf_ck_sharp
         /// <param name="threshold">The optional time threshold to run the script</param>
         [Pure, NotNull]
         private static InterpreterResult TryRun([NotNull] string source, [NotNull] string arguments,
-            [NotNull] TouringMachineState state, [NotNull] IReadOnlyList<FunctionDefinition> functions, OverflowMode mode, int? threshold)
+            [NotNull] TouringMachineState state, [NotNull] IEnumerable<FunctionDefinition> functions, OverflowMode mode, int? threshold)
         {
             // Get the operators to execute and check if the source is empty
             IReadOnlyList<Brainf_ckBinaryItem> executable = FindExecutableCode(source).Select((c, i) => new Brainf_ckBinaryItem((uint)i, c)).ToArray();

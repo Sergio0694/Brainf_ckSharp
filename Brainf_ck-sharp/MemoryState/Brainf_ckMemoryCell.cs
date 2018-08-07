@@ -12,12 +12,12 @@ namespace Brainf_ck_sharp.MemoryState
         /// <summary>
         /// Gets whether or not the cell is currently selected
         /// </summary>
-        public readonly bool Selected;
+        public bool Selected { get; }
 
         /// <summary>
         /// Gets the value of the current cell
         /// </summary>
-        public readonly uint Value;
+        public uint Value { get; }
 
         /// <summary>
         /// Gets the corresponding character for the current cell
