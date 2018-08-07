@@ -14,7 +14,6 @@
     xmlns:controls="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls"
     xmlns:customCommandBar="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar"
     xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
-    xmlns:brushes="using:UICompositionAnimations.Brushes"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -95,17 +94,9 @@
             x:Name="OperatorsKeyboard"
             RelativePanel.Above="SharedCommandBar"
             RelativePanel.AlignLeftWithPanel="True"
-            RelativePanel.AlignRightWithPanel="True">
-            <Grid.Background>
-                <brushes:CustomAcrylicBrush
-                    Mode="HostBackdrop"
-                    FallbackColor="#FF121212"
-                    UnsupportedEffectFallbackColor="#FF121212"
-                    Tint="#FF101010"
-                    TintMix="0.9"
-                    NoiseTextureUri="/Assets/Misc/noise.png"/>
-            </Grid.Background>
-            
+            RelativePanel.AlignRightWithPanel="True"
+            Background="{StaticResource KeyboardBrush}">
+
             <!--Expandable keyboard pivot-->
             <inheritedControls:FixedRadExpanderControl
                 Margin="0"
