@@ -7,6 +7,7 @@ using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.PopupService.UI;
+using Brainf_ck_sharp_UWP.UserControls.InheritedControls;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
@@ -79,7 +80,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
 
                 // Prepare the notification control
                 NotificationPopup notificationPopup = new NotificationPopup(title, icon, content, type);
-                popup.Child = notificationPopup;
+                popup.Child = new PopupDropShadowGrid { ContainedGrid = notificationPopup };
 
                 // Lights setup
                 LightsSourceHelper.SetIsLightsContainer(notificationPopup, true);
