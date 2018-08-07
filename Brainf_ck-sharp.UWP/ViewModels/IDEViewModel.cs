@@ -415,7 +415,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                     if (entries.Count == 0)
                     {
                         // No brackets on the current line: keep the current state
-                        temp.Add(new IDEIndentationLineInfo(depth == 0 && nested == 0 ? IDEIndentationInfoLineType.Empty : IDEIndentationInfoLineType.Straight));
+                        temp.Add(new IDEIndentationLineInfo(depth == 0 && nested == 0 && !function ? IDEIndentationInfoLineType.Empty : IDEIndentationInfoLineType.Straight));
                     }
                     else if (entries.Count == 1)
                     {
