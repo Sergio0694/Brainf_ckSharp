@@ -3,6 +3,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.AttachedProperties
 {
@@ -11,6 +12,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
     /// </summary>
     public static class BulletListHelper
     {
+        [UsedImplicitly] // XAML attached property
         public static IReadOnlyList<string> GetSourceList(TextBlock element)
         {
             return element.GetValue(SourceListProperty).To<IReadOnlyList<string>>();

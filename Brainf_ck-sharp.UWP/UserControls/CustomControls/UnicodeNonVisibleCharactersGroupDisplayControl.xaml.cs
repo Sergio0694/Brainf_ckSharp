@@ -17,13 +17,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
         /// </summary>
         public string Value
         {
-            get { return (String)GetValue(ValueProperty); }
-            set { SetValue(ValueProperty, value); }
+            get => (string)GetValue(ValueProperty);
+            set => SetValue(ValueProperty, value);
         }
 
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            nameof(Value), typeof(String), typeof(UnicodeNonVisibleCharactersGroupDisplayControl), 
-            new PropertyMetadata(default(String), OnValuePropertyChanged));
+            nameof(Value), typeof(string), typeof(UnicodeNonVisibleCharactersGroupDisplayControl), 
+            new PropertyMetadata(default(string), OnValuePropertyChanged));
 
         private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -35,13 +35,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
         /// </summary>
         public string Description
         {
-            get { return (String)GetValue(DescriptionProperty); }
-            set { SetValue(DescriptionProperty, value); }
+            get => (string)GetValue(DescriptionProperty);
+            set => SetValue(DescriptionProperty, value);
         }
 
         public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
-            nameof(Description), typeof(String), typeof(UnicodeNonVisibleCharactersGroupDisplayControl),
-            new PropertyMetadata(default(String), OnDescriptionPropertyPropertyChanged));
+            nameof(Description), typeof(string), typeof(UnicodeNonVisibleCharactersGroupDisplayControl),
+            new PropertyMetadata(default(string), OnDescriptionPropertyPropertyChanged));
 
         private static void OnDescriptionPropertyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

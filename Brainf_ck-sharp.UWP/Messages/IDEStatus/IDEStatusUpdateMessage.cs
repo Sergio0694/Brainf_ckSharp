@@ -31,7 +31,7 @@ namespace Brainf_ck_sharp_UWP.Messages.IDEStatus
         /// <summary>
         /// Gets whether or not the filename should be visible to the user
         /// </summary>
-        public bool FilenameVisibile => !String.IsNullOrEmpty(Filename);
+        public bool FilenameVisibile => !string.IsNullOrEmpty(Filename);
 
         /// <summary>
         /// Gets the current filename, if available

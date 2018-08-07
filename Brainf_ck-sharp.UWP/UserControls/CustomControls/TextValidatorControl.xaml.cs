@@ -18,8 +18,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
         /// </summary>
         public bool Validated
         {
-            get { return (bool)GetValue(ValidatedProperty); }
-            set { SetValue(ValidatedProperty, value); }
+            get => (bool)GetValue(ValidatedProperty);
+            set => SetValue(ValidatedProperty, value);
         }
 
         public static readonly DependencyProperty ValidatedProperty = DependencyProperty.Register(
@@ -35,12 +35,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
         /// </summary>
         public string DisplayedInfo
         {
-            get { return GetValue(DisplayedInfoProperty).To<string>(); }
-            set { SetValue(DisplayedInfoProperty, value); }
+            get => GetValue(DisplayedInfoProperty).To<string>();
+            set => SetValue(DisplayedInfoProperty, value);
         }
 
         public static readonly DependencyProperty DisplayedInfoProperty = DependencyProperty.Register(
-            nameof(DisplayedInfo), typeof(String), typeof(TextValidatorControl), new PropertyMetadata(DependencyProperty.UnsetValue, OnDisplayedInfoPropertyChanged));
+            nameof(DisplayedInfo), typeof(string), typeof(TextValidatorControl), new PropertyMetadata(DependencyProperty.UnsetValue, OnDisplayedInfoPropertyChanged));
 
         private static void OnDisplayedInfoPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

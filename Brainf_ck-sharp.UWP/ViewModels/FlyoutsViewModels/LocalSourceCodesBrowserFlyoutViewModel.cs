@@ -139,7 +139,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                     StorageFile file = await StorageHelper.CreateTemporaryFileAsync(code.Title, ".txt");
                     if (file == null) return AsyncOperationStatus.Canceled;
                     await FileIO.WriteTextAsync(file, @fixed);
-                    return await EmailHelper.SendEmail(String.Empty, LocalizationManager.GetResource("SharedCode"), null, file);
+                    return await EmailHelper.SendEmail(string.Empty, LocalizationManager.GetResource("SharedCode"), null, file);
                 case SourceCodeShareType.LocalFile:
                     StorageFile local = await StorageHelper.PickSaveFileAsync(code.Title, LocalizationManager.GetResource("PlainText"), ".txt");
                     if (local == null) return AsyncOperationStatus.Canceled;

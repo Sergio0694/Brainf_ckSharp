@@ -30,12 +30,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList
         /// </summary>
         public string Title
         {
-            get => (String)GetValue(TitleProperty);
+            get => (string)GetValue(TitleProperty);
             set => SetValue(TitleProperty, value);
         }
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
-            nameof(Title), typeof(String), typeof(JumpListZoomedOutHeaderTemplate), new PropertyMetadata(default(String), OnTitlePropertyChanged));
+            nameof(Title), typeof(string), typeof(JumpListZoomedOutHeaderTemplate), new PropertyMetadata(default(string), OnTitlePropertyChanged));
 
         private static void OnTitlePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -47,13 +47,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList
         /// </summary>
         public string Description
         {
-            get => (String)GetValue(DescriptionProperty);
+            get => (string)GetValue(DescriptionProperty);
             set => SetValue(DescriptionProperty, value);
         }
 
         public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
-            nameof(Description), typeof(String), typeof(JumpListZoomedOutHeaderTemplate), 
-            new PropertyMetadata(default(String), OnDescriptionPropertyChanged));
+            nameof(Description), typeof(string), typeof(JumpListZoomedOutHeaderTemplate), 
+            new PropertyMetadata(default(string), OnDescriptionPropertyChanged));
 
         private static void OnDescriptionPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

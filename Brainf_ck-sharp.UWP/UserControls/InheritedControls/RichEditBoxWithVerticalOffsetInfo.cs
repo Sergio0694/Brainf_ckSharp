@@ -89,11 +89,6 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         public double VerticalScrollViewerOffset => _TemplateScrollViewer.VerticalOffset;
 
         /// <summary>
-        /// Gets the curent horizontal offset of the inner ScrollViewer
-        /// </summary>
-        public double HorizontalScrollViewerOffset => _TemplateScrollViewer.HorizontalOffset;
-
-        /// <summary>
         /// Gets the actual vertical offset of the current text selection
         /// </summary>
         public Point ActualSelectionVerticalOffset
@@ -163,7 +158,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         /// <param name="length">The desired tab spacing value</param>
         public void SetTabLength(int length)
         {
-            if (length <= 0) throw new ArgumentOutOfRangeException("Invalid length value");
+            if (length <= 0) throw new ArgumentOutOfRangeException(nameof(length), "Invalid length value");
             Document.DefaultTabStop = length * 3; // Each space has an approximate width of 3 points
             ITextParagraphFormat format = Document.GetDefaultParagraphFormat();
             format.ClearAllTabs();

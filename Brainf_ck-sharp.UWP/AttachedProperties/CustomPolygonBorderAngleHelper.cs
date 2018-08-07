@@ -3,6 +3,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.AttachedProperties
 {
@@ -11,6 +12,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
     /// </summary>
     public class CustomPolygonBorderAngleHelper
     {
+        [UsedImplicitly] // XAML attached property
         public static int GetCustomPolygonBorderAngle(Polygon element)
         {
             return element.GetValue(CustomPolygonBorderAngleProperty).To<int>();

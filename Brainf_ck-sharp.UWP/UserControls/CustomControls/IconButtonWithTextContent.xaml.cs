@@ -35,8 +35,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
         /// </summary>
         public Brush BackgroundBrush
         {
-            get { return GetValue(BackgroundBrushProperty).To<Brush>(); }
-            set { SetValue(BackgroundBrushProperty, value); }
+            get => GetValue(BackgroundBrushProperty).To<Brush>();
+            set => SetValue(BackgroundBrushProperty, value);
         }
 
         public static readonly DependencyProperty BackgroundBrushProperty = DependencyProperty.Register(

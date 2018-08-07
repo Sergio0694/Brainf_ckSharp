@@ -39,7 +39,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
         /// A property that shows a formatted Brainf_ck code to a <see cref="Span"/> object
         /// </summary>
         public static readonly DependencyProperty SourceProperty =
-            DependencyProperty.RegisterAttached("Source", typeof(String), typeof(Brainf_ckCodeInlineFormatter), new PropertyMetadata(String.Empty, OnPropertyChanged));
+            DependencyProperty.RegisterAttached("Source", typeof(string), typeof(Brainf_ckCodeInlineFormatter), new PropertyMetadata(string.Empty, OnPropertyChanged));
 
         private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -111,7 +111,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
             int depth = 0;
             bool skipped = false;
             int count = -1;
-            foreach ((String call, int occurrences) in stack.CompressEqual((s1, s2) => s1.Equals(s2)))
+            foreach ((string call, int occurrences) in stack.CompressEqual((s1, s2) => s1.Equals(s2)))
             {
                 // Insert the "at" separator if needed
                 if (depth > 0)
@@ -162,7 +162,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
         /// A property that shows an unformatted Brainf_ck code to a <see cref="Span"/> object (it just renders the characters)
         /// </summary>
         public static readonly DependencyProperty UnformattedSourceProperty =
-            DependencyProperty.RegisterAttached("UnformattedSource", typeof(String), typeof(Brainf_ckCodeInlineFormatter), new PropertyMetadata(String.Empty, OnUnformattedSourcePropertyChanged));
+            DependencyProperty.RegisterAttached("UnformattedSource", typeof(string), typeof(Brainf_ckCodeInlineFormatter), new PropertyMetadata(string.Empty, OnUnformattedSourcePropertyChanged));
 
         // The regex pattern to remove unwaanted characters
         private static readonly string Pattern = $"[^{Brainf_ckInterpreter.Operators.Aggregate(c => $@"\{c}")}]";

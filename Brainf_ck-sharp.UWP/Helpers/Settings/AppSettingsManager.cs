@@ -35,7 +35,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         /// <param name="key">The key to check</param>
         /// <param name="keyValue">The value to assign to the dictionary key</param>
         /// <param name="mode">Indicates whether or not to overwrite the setting, if already present</param>
-        public void SetValue<T>(String key, T keyValue, SettingSaveMode mode)
+        public void SetValue<T>(string key, T keyValue, SettingSaveMode mode)
         {
             // Roaming
             bool existing = false;
@@ -94,7 +94,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
                 value = temp;
                 return true;
             }
-            value = default(T);
+            value = default;
             return false;
         }
 

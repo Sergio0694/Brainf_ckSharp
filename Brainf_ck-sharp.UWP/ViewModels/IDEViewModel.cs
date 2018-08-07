@@ -216,7 +216,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 // Save the current code as a new file
                 case CodeSaveType.SaveAs:
                     string name = await SaveNameSelector(text);
-                    if (!String.IsNullOrEmpty(name))
+                    if (!string.IsNullOrEmpty(name))
                     {
                         AsyncOperationResult<CategorizedSourceCode> result = await SQLiteManager.Instance.SaveCodeAsync(name, text, breakpoints);
                         if (result)

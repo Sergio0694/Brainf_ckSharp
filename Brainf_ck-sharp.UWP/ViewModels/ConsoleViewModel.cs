@@ -196,7 +196,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         {
             if (!CommandAvailable) return;
             ConsoleUserCommand command = (ConsoleUserCommand)Source.Last();
-            command.UpdateCommand(String.Empty);
+            command.UpdateCommand(string.Empty);
             SendCommandAvailableMessages();
             ConsoleLineAddedOrModified?.Invoke(this, EventArgs.Empty);
         }

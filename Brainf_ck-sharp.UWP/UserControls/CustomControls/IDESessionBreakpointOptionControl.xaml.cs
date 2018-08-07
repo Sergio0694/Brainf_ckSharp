@@ -30,12 +30,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
         /// </summary>
         public string Title
         {
-            get => (String)GetValue(TitleProperty);
+            get => (string)GetValue(TitleProperty);
             set => SetValue(TitleProperty, value);
         }
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
-            nameof(Title), typeof(String), typeof(IDESessionBreakpointOptionControl), new PropertyMetadata(default(String), OnTitlePropertyChanged));
+            nameof(Title), typeof(string), typeof(IDESessionBreakpointOptionControl), new PropertyMetadata(default(string), OnTitlePropertyChanged));
 
         private static void OnTitlePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

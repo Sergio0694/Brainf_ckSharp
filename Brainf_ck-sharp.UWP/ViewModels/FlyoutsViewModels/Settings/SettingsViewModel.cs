@@ -26,7 +26,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
             IDEThemeSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme));
             AvailableIDEThemes[IDEThemeSelectedIndex].IsSelected = true;
             string fontName = AppSettingsManager.Instance.GetValue<string>(nameof(AppSettingsKeys.SelectedFontName));
-            int index = AvailableFonts.IndexOf(f => f.Name.Equals(String.IsNullOrEmpty(fontName) ? "Segoe UI" : fontName));
+            int index = AvailableFonts.IndexOf(f => f.Name.Equals(string.IsNullOrEmpty(fontName) ? "Segoe UI" : fontName));
             _FontFamilySelectedIndex = index != -1 ? index : AvailableFonts.IndexOf(f => f.Name.Equals("Segoe UI")); // Fallback when the selected font isn't available
             if (!ThemesSelectorEnabled)
             {

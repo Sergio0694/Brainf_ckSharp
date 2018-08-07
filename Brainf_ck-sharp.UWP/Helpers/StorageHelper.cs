@@ -27,7 +27,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
                 ViewMode = PickerViewMode.List,
                 SuggestedStartLocation = location
             };
-            foreach (String extension in extensions.Where(ext => !String.IsNullOrEmpty(ext)))
+            foreach (string extension in extensions.Where(ext => !string.IsNullOrEmpty(ext)))
             {
                 string targetExtension;
                 if (!extension.Equals("*") && !extension.StartsWith(".")) targetExtension = $".{extension}";
@@ -44,7 +44,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// <param name="fileType">The descriptive file type</param>
         /// <param name="extension">The desired extension for the file</param>
         [Pure, ItemCanBeNull]
-        public static Task<StorageFile> PickSaveFileAsync(String filename, string fileType, string extension)
+        public static Task<StorageFile> PickSaveFileAsync(string filename, string fileType, string extension)
         {
             string validName = Path.GetInvalidFileNameChars().Where(filename.Contains).Aggregate(filename, (current, c) => current.Replace(c.ToString(), string.Empty));
             if (validName.Length == 0) return null;
@@ -63,7 +63,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// <param name="filename">The desired filename for the file</param>
         /// <param name="extension">The file extension to use</param>
         [MustUseReturnValue, ItemCanBeNull]
-        public static async Task<StorageFile> CreateTemporaryFileAsync(String filename, string extension)
+        public static async Task<StorageFile> CreateTemporaryFileAsync(string filename, string extension)
         {
             string validName = Path.GetInvalidFileNameChars().Where(filename.Contains).Aggregate(filename, (current, c) => current.Replace(c.ToString(), string.Empty));
             if (validName.Length == 0) return null;

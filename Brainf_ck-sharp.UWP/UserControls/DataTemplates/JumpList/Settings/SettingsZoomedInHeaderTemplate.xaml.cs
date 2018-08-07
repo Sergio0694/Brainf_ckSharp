@@ -19,12 +19,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.Settings
         /// </summary>
         public string Title
         {
-            get => (String)GetValue(TitleProperty);
+            get => (string)GetValue(TitleProperty);
             set => SetValue(TitleProperty, value);
         }
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
-            nameof(Title), typeof(String), typeof(SettingsZoomedInHeaderTemplate), new PropertyMetadata(default(String), PropertyChangedCallback));
+            nameof(Title), typeof(string), typeof(SettingsZoomedInHeaderTemplate), new PropertyMetadata(default(string), PropertyChangedCallback));
 
         private static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

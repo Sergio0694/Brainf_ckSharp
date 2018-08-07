@@ -276,7 +276,7 @@ namespace Brainf_ck_sharp_UWP.Views
         /// Prompts the user to select a file name to save the current source code
         /// </summary>
         /// <param name="code">The source code that's being saved</param>
-        private async Task<string> PickSaveNameAsync(String code)
+        private async Task<string> PickSaveNameAsync(string code)
         {
             SaveCodePromptFlyout flyout = new SaveCodePromptFlyout(code, null);
             FlyoutResult result = await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("SaveCode"), 
@@ -454,7 +454,7 @@ namespace Brainf_ck_sharp_UWP.Views
         /// </summary>
         /// <param name="code">The current text, if already available</param>
         /// <param name="force">Indicates whether or not to always force a redraw of the column guides</param>
-        private async Task<AsyncOperationResult<IReadOnlyList<CharacterWithCoordinates>>> DrawBracketGuides(String code, bool force)
+        private async Task<AsyncOperationResult<IReadOnlyList<CharacterWithCoordinates>>> DrawBracketGuides(string code, bool force)
         {
             // Get the text, clear the current guides and make sure the syntax is currently valid
             _BracketGuidesCts?.Cancel();
@@ -616,7 +616,7 @@ namespace Brainf_ck_sharp_UWP.Views
         private DateTime _ControlCharactersRenderingTimestamp = DateTime.MinValue;
 
         // The minimum delay between each redraw of the control characters
-        private readonly int MinimumControlCharactersRenderingInterval = 600;
+        private const int MinimumControlCharactersRenderingInterval = 600;
 
         // The queue of arguments to render the control characters after a delay
         private int _PendingUpdates;
@@ -984,7 +984,7 @@ namespace Brainf_ck_sharp_UWP.Views
         /// </summary>
         /// <param name="code">The code to load</param>
         /// <param name="overwrite">If true, the whole document will be replaced with the new code</param>
-        private async void LoadCode(String code, bool overwrite)
+        private async void LoadCode(string code, bool overwrite)
         {
             // Disable the handlers
             EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
@@ -1114,18 +1114,7 @@ namespace Brainf_ck_sharp_UWP.Views
             // Find the invalid breakpoints
             IReadOnlyList<int> pending = await Task.Run(() =>
             {
-                int[] current = BreakpointsInfo.Keys.ToArray();
-                List<int> removable = new List<int>();
-                foreach (int line in current)
-                {
-                    if (line < 2 ||
-                        line > text.Length ||
-                        !text.GetLine(line).Any(Brainf_ckInterpreter.Operators.Contains))
-                    {
-                        removable.Add(line);
-                    }
-                }
-                return removable.ToArray();
+                return BreakpointsInfo.Keys.Where(line => line < 2 || line > text.Length || !text.GetLine(line).Any(Brainf_ckInterpreter.Operators.Contains)).ToArray();
             });
 
             // Remove the target breakpoints

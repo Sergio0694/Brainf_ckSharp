@@ -80,7 +80,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
             /// </summary>
             public string SharedText { get; }
 
-            public ShareInfo(String title, string text)
+            public ShareInfo(string title, string text)
             {
                 Title = title;
                 SharedText = text;

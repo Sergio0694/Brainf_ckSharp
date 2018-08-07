@@ -74,7 +74,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 Popup popup = new Popup
                 {
                     VerticalOffset = 20,
-                    HorizontalOffset = ResolutionHelper.CurrentWidth - 320,
+                    HorizontalOffset = ResolutionHelper.CurrentWidth - 320
                 };
 
                 // Prepare the notification control

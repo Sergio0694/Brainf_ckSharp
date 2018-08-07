@@ -34,11 +34,11 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// <param name="subject"></param>
         /// <param name="body">The optional body of the message</param>
         /// <param name="attachment">The optional attachment of the email message</param>
-        public static async Task<bool> SendEmail(String address, string subject = null, string body = null, StorageFile attachment = null)
+        public static async Task<bool> SendEmail(string address, string subject = null, string body = null, StorageFile attachment = null)
         {
             // Create the email message and prepare its info
             EmailMessage email = new EmailMessage();
-            if (!String.IsNullOrEmpty(address)) email.To.Add(new EmailRecipient(address));
+            if (!string.IsNullOrEmpty(address)) email.To.Add(new EmailRecipient(address));
             if (subject != null) email.Subject = subject;
             if (body != null) email.Body = body;
             if (attachment != null)
