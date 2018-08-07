@@ -1,5 +1,4 @@
 using System;
-using Windows.ApplicationModel;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 using JetBrains.Annotations;
@@ -131,19 +130,6 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         {
             if (TryGetValue(nameof(AppSettingsKeys.AppStartups), out uint startups))
                 SetValue(nameof(AppSettingsKeys.AppStartups), startups + 1, SettingSaveMode.OverwriteIfExisting);
-        }
-
-        /// <summary>
-        /// Gets the app current version in the format "Major.Minor.Build.Revision"
-        /// </summary>
-        [NotNull]
-        public static string AppVersion
-        {
-            get
-            {
-                PackageVersion currentVersion = Package.Current.Id.Version;
-                return $"{currentVersion.Major}.{currentVersion.Minor}.{currentVersion.Build}.{currentVersion.Revision}";
-            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.Services.Store;
 using Windows.System;
 using Windows.UI.Xaml;
@@ -12,6 +13,7 @@ using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Uwp.Helpers;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
 {
@@ -20,7 +22,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
         public DevInfoFlyout()
         {
             this.InitializeComponent();
-            BuildBlock.Text = AppSettingsManager.AppVersion;
+            PackageVersion version = SystemInformation.ApplicationVersion;
+            BuildBlock.Text = $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
         }
 
         // Opens the Store review page for the app
