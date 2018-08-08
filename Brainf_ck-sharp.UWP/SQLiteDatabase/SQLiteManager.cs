@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -107,6 +108,7 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         /// <summary>
         /// Syncs the saved source codes to the roaming folder
         /// </summary>
+        [SuppressMessage("ReSharper", "AccessToDisposedClosure")] // SQLite connection in using block
         public async Task TrySyncSharedCodesAsync()
         {
             // Initialize the local database if needed

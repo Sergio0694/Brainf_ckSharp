@@ -4,7 +4,6 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Actions;
@@ -42,8 +41,6 @@ namespace Brainf_ck_sharp_UWP
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
-
-        public static Shell DefaultContent => Window.Current.Content.To<Shell>();
 
         /// <summary>
         /// Richiamato quando l'applicazione viene avviata normalmente dall'utente. All'avvio dell'applicazione
