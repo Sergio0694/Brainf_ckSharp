@@ -9,6 +9,7 @@ using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.Input;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
@@ -1310,8 +1311,70 @@ namespace Brainf_ck_sharp_UWP.Views
             EditBox.Document.BeginUndoGroup();
             if (e.Key == VirtualKey.Tab)
             {
-                EditBox.Document.Selection.TypeText("\t");
+                // Setup
+                EditBox.Document.BatchDisplayUpdates();
+                EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
+                EditBox.TextChanged -= EditBox_OnTextChanged;
+
+                // Handle the special action
+                if (EditBox.Document.Selection.Length.Abs() < 2) EditBox.Document.Selection.TypeText("\t");
+                else if (Window.Current.CoreWindow.GetKeyState(VirtualKey.LeftShift).HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    // Shift back
+                    EditBox.Document.Selection.GetText(TextGetOptions.None, out string text);
+                    string[] lines = text.Split('\r');
+                    (int start, int end) = EditBox.Document.Selection.GetAbsPositions();
+                    int characters = 0, removed = 0;
+                    foreach (string line in lines)
+                    {
+                        if (line.StartsWith('\t'))
+                        {
+                            EditBox.Document.Selection.EndPosition = start + characters + 1;
+                            EditBox.Document.Selection.StartPosition = EditBox.Document.Selection.EndPosition - 1;
+                            EditBox.Document.Selection.SetText(TextSetOptions.None, string.Empty);
+                            characters += line.Length;
+                            removed++;
+                        }
+                        else characters += line.Length + 1;
+                    }
+                    EditBox.Document.Selection.StartPosition = start;
+                    EditBox.Document.Selection.EndPosition = end - removed;
+                }
+                else
+                {
+                    // Shift forward
+                    EditBox.Document.Selection.GetText(TextGetOptions.None, out string text);
+                    string[] lines = text.Split('\r');
+                    lines = lines.Take(lines.Length - 1).ToArray();
+                    (int start, int end) = EditBox.Document.Selection.GetAbsPositions();
+                    int characters = 0, added = 0;
+                    foreach (string line in lines)
+                    {
+                        EditBox.Document.Selection.StartPosition = EditBox.Document.Selection.EndPosition = start + characters;
+                        EditBox.Document.Selection.TypeText("\t");
+                        characters += line.Length + 2;
+                        added++;
+                    }
+                    EditBox.Document.Selection.StartPosition = start;
+                    EditBox.Document.Selection.EndPosition = end + added;
+                }
+
+                // Restore the UI
+                EditBox.Document.ApplyDisplayUpdates();
+                EditBox.Document.EndUndoGroup();
+                EditBox.SelectionChanged += EditBox_OnSelectionChanged;
+                EditBox.TextChanged += EditBox_OnTextChanged;
                 e.Handled = true;
+
+                // Apply UI updates
+                EditBox.Document.GetText(TextGetOptions.None, out string code);
+                _PreviousText = code;
+                _PreviousSelectionLength = EditBox.Document.Selection.Length;
+                DrawBracketGuides(code, false).Forget();
+                ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? string.Empty, code).Forget();
+                ViewModel.UpdateCanUndoRedoStatus();
+                RefreshBreakpointsUI(code);
+                RenderControlCharacters();
             }
         }
 
