@@ -111,8 +111,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
                 () => FavoriteToggleRequested?.Invoke(this, CodeInfo?.Code), CodeInfo?.Code.Favorited == true,
                 () => RenameRequested?.Invoke(this, CodeInfo?.Code),
                 type => ShareRequested?.Invoke(this, new SourceCodeShareEventArgs(type, CodeInfo?.Code)),
-                () => TranslateToCRequested?.Invoke(this, CodeInfo?.Code), 
-                CodeInfo?.IsSyntaxValid == true && CodeInfo?.Code.Code.Any(c => c == '(' || c == ')' || c == ':') != true, // Disable if invalid syntax or PBrain code
+                () => TranslateToCRequested?.Invoke(this, CodeInfo?.Code), CodeInfo?.IsSyntaxValid == true,
                 () => DeleteRequested?.Invoke(this, CodeInfo?.Code));
             menuFlyout.Closed += (s, e) =>
             {

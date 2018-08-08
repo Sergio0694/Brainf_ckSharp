@@ -194,6 +194,7 @@
     <Compile Include="DataModels\Misc\Themes\LineHighlightStyle.cs" />
     <Compile Include="Helpers\CodeFormatting\InstalledFont.cs" />
     <Compile Include="Helpers\ComboBoxDataTemplateSelector.cs" />
+    <Compile Include="Helpers\Extensions\TextExtensions.cs" />
     <Compile Include="Helpers\LauncherHelper.cs" />
     <Compile Include="Helpers\Settings\AppSettingsKeys.cs" />
     <Compile Include="Helpers\Settings\AppSettingsManager.cs" />

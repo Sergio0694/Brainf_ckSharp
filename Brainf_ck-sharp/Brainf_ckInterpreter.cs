@@ -125,7 +125,7 @@ namespace Brainf_ck_sharp
             }
 
             // Find the executable code
-            IReadOnlyList<IReadOnlyList<char>> chunks = source.Select(chunk => FindExecutableCode(chunk).ToArray()).ToArray();
+            IReadOnlyList<IReadOnlyList<Brainf_ckBinaryItem>> chunks = source.Select(FindExecutableCode).ToArray();
             if (chunks.Count == 0 || chunks.Any(group => group.Count == 0))
             {
                 return new InterpreterExecutionSession(GenerateFailure(InterpreterExitCode.NoCodeInterpreted, string.Empty), null);
@@ -138,7 +138,7 @@ namespace Brainf_ck_sharp
             for (int i = 0; i < chunks.Count; i++)
             {
                 if (i > 0) breakpoints.Add(offset);
-                executable.AddRange(chunks[i].Select(c => new Brainf_ckBinaryItem(offset++, c)));
+                executable.AddRange(chunks[i].Select(c => new Brainf_ckBinaryItem(offset++, c.Operator)));
             }
 
             // Check the code syntax
@@ -255,7 +255,7 @@ namespace Brainf_ck_sharp
             [NotNull] TouringMachineState state, [NotNull] IEnumerable<FunctionDefinition> functions, OverflowMode mode, int? threshold)
         {
             // Get the operators to execute and check if the source is empty
-            IReadOnlyList<Brainf_ckBinaryItem> executable = FindExecutableCode(source).Select((c, i) => new Brainf_ckBinaryItem((uint)i, c)).ToArray();
+            IReadOnlyList<Brainf_ckBinaryItem> executable = FindExecutableCode(source);
             if (executable.Count == 0)
             {
                 return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.NoCodeInterpreted, state, string.Empty);
@@ -303,7 +303,7 @@ namespace Brainf_ck_sharp
             if (executable.Count == 0) throw new ArgumentException("The source code can't be empty");
             if (threshold <= 0) throw new ArgumentOutOfRangeException(nameof(threshold), "The threshold must be a positive value");
 
-            // ReSharper disable once RedundantAssignment - Local parameters
+            // Local variables
             uint operations = 0; // This actually needs to be initialized before calling the function
             Stopwatch timer = new Stopwatch();
             Queue<char> input = arguments.Length > 0 ? new Queue<char>(arguments) : new Queue<char>();
@@ -692,10 +692,11 @@ namespace Brainf_ck_sharp
         /// Extracts the valid operators from a raw source code
         /// </summary>
         /// <param name="source">The input source code</param>
-        [NotNull, LinqTunnel]
-        private static IEnumerable<char> FindExecutableCode([NotNull] string source) => from c in source
-                                                                                        where Operators.Contains(c)
-                                                                                        select c;
+        [Pure, NotNull]
+        private static IReadOnlyList<Brainf_ckBinaryItem> FindExecutableCode([NotNull] string source) => (
+            from c in source
+            where Operators.Contains(c)
+            select c).Select((c, i) => new Brainf_ckBinaryItem((uint) i, c)).ToArray();
 
         /// <summary>
         /// Checks whether or not the syntax in the input operators is valid
@@ -734,21 +735,65 @@ namespace Brainf_ck_sharp
         {
             // Arguments check
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size), "The input size is not valid");
-            if (source.Any(c => c == '(' || c == ')' || c == ':'))
-            {
-                throw new ArgumentException("The C translation function isn't supported when using PBrain operators");
-            }
-            SyntaxValidationResult validationResult = CheckSourceSyntax(source);
-            if (!validationResult.Valid) throw new ArgumentException("The input source code isn't valid");
+            if (!CheckSourceSyntax(source).Valid) throw new ArgumentException("The input source code isn't valid");
 
             // Get the operators sequence and initialize the builder
-            source = Regex.Replace(source, ",{2,}", "."); // Optimize repeated , operators with a single operator
-            IReadOnlyList<char> executable = FindExecutableCode(source).ToArray();
+            bool pbrains = source.Any(c => c == '(' || c == ')' || c == ':');
+            IReadOnlyList<Brainf_ckBinaryItem> executable = FindExecutableCode(source);
             StringBuilder builder = new StringBuilder();
 
             // Prepare the header
-            builder.Append($"#include <stdio.h>\n\nint main() {{\n\tchar array[{size}] = {{ 0 }};\n\tchar* ptr = array;\n");
+            builder.Append("#include <stdio.h>\n\n" +
+                           $"char array[{size}] = {{ 0 }};\n" +
+                           "char* ptr = array;\n");
 
+            // Functions setup
+            if (pbrains)
+            {
+                builder.Append("void (*functions[255])();\n");
+                foreach (IReadOnlyList<Brainf_ckBinaryItem> function in executable.Where(op => op.Operator == '(').Select(op => ExtractFunction(executable, (int)op.Offset).ToArray()))
+                {
+                    builder.Append($"\nvoid f_{function[0].Offset - 1}() {{\n"); // Each function has the format f_{position of ( operator}
+                    AppendCode(builder, function);
+                    builder.Append("}\n");
+                }
+            }
+
+            // Write the main body
+            builder.Append("\nint main() {\n");
+            AppendCode(builder, pbrains ? MainParser(executable) : executable);
+
+            // Add the final statement and return the translated source
+            builder.Append("\treturn 0;\n}");
+            return builder.ToString();
+        }
+
+        /// <summary>
+        /// Extracts the body of the main function for the input script, including the ( operators for each declared function
+        /// </summary>
+        /// <param name="executable">The source script code to analyze</param>
+        private static IEnumerable<Brainf_ckBinaryItem> MainParser([NotNull] IEnumerable<Brainf_ckBinaryItem> executable)
+        {
+            bool function = false;
+            foreach (Brainf_ckBinaryItem item in executable)
+            {
+                if (item.Operator == '(')
+                {
+                    yield return item;
+                    function = true;
+                }
+                else if (item.Operator == ')') function = false;
+                else if (!function) yield return item;
+            }
+        }
+
+        /// <summary>
+        /// Appends the C translation of the input code snippet to the target <see cref="StringBuilder"/> instance
+        /// </summary>
+        /// <param name="builder">The <see cref="StringBuilder"/> to use to write the new C code</param>
+        /// <param name="executable">The source code snippet to translate</param>
+        private static void AppendCode([NotNull] StringBuilder builder, [NotNull] IEnumerable<Brainf_ckBinaryItem> executable)
+        {
             // Local function to get the right tabs for each indented line
             int depth = 1;
             string GetTabs(int count)
@@ -759,9 +804,9 @@ namespace Brainf_ck_sharp
             }
 
             // Convert the source
-            foreach (char c in executable)
+            foreach (Brainf_ckBinaryItem c in executable)
             {
-                switch (c)
+                switch (c.Operator)
                 {
                     case '>':
                         builder.Append($"{GetTabs(depth)}++ptr;\n");
@@ -787,12 +832,14 @@ namespace Brainf_ck_sharp
                     case ']':
                         builder.Append($"{GetTabs(--depth)}}}\n");
                         break;
+                    case '(':
+                        builder.Append($"{GetTabs(depth)}functions[*ptr] = &f_{c.Offset};\n");
+                        break;
+                    case ':':
+                        builder.Append($"{GetTabs(depth)}functions[*ptr]();\n");
+                        break;
                 }
             }
-
-            // Add the final statement and return the translated source
-            builder.Append("\treturn 0;\n}");
-            return builder.ToString();
         }
 
         #endregion
