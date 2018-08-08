@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -37,7 +36,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
         /// <typeparam name="T">The type of the resource to retrieve</typeparam>
         /// <param name="element">The starting element</param>
         /// <param name="name">The name of the target resource</param>
-        public static T FindResource<T>([NotNull] this FrameworkElement element, [NotNull] String name)
+        public static T FindResource<T>([NotNull] this FrameworkElement element, [NotNull] string name)
         {
             while (element != null)
             {
@@ -84,7 +83,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
         /// <param name="parent">The object that contains the UIElement to find</param>
         /// <param name="name">The name of the child to retrieve</param>
         [CanBeNull]
-        public static T FindChild<T>(this DependencyObject parent, [NotNull] String name) where T : FrameworkElement
+        public static T FindChild<T>(this DependencyObject parent, [NotNull] string name) where T : FrameworkElement
         {
             int children = VisualTreeHelper.GetChildrenCount(parent);
             for (int i = 0; i < children; i++)

@@ -37,18 +37,18 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult
         /// <summary>
         /// Gets or sets the title to display in the control
         /// </summary>
-        public String Title
+        public string Title
         {
-            get => (String)GetValue(TitleProperty);
+            get => (string)GetValue(TitleProperty);
             set => SetValue(TitleProperty, value);
         }
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
-            nameof(Title), typeof(String), typeof(IDEResultZoomedOutHeaderTemplate), new PropertyMetadata(default(String), OnTitlePropertyChanged));
+            nameof(Title), typeof(string), typeof(IDEResultZoomedOutHeaderTemplate), new PropertyMetadata(default(string), OnTitlePropertyChanged));
 
         private static void OnTitlePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            d.To<IDEResultZoomedOutHeaderTemplate>().TitleBlock.Text = e.NewValue.To<String>() ?? String.Empty;
+            d.To<IDEResultZoomedOutHeaderTemplate>().TitleBlock.Text = e.NewValue.To<string>() ?? string.Empty;
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult
                         @this.InfoBlock.FontWeight = FontWeights.Normal;
                         break;
                     case IDEResultExceptionInfoData exception:
-                        String message = ExceptionTypeConverter.Convert(exception.Info.ExceptionType);
+                        string message = ExceptionTypeConverter.Convert(exception.Info.ExceptionType);
                         @this.InfoBlock.Text = $"{message[0].ToString().ToUpperInvariant()}{message.Substring(1)}";
                         @this.InfoBlock.Foreground = new SolidColorBrush(Colors.DarkRed);
                         @this.InfoBlock.FontWeight = FontWeights.SemiBold;

@@ -15,7 +15,7 @@ namespace Brainf_ck_sharp_UWP.DataModels.Misc.Themes
         /// Gets the name of the current theme
         /// </summary>
         [NotNull]
-        public String Name { get; }
+        public string Name { get; }
 
         /// <summary>
         /// Gets the syntax highlight colors map for the available operators

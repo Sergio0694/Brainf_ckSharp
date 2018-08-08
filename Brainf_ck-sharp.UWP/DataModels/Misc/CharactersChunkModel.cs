@@ -56,8 +56,8 @@ namespace Brainf_ck_sharp_UWP.DataModels.Misc
         /// <param name="offset">The chunk offset in the memory state</param>
         public CharactersChunkModel([NotNull] Brainf_ckMemoryCell[] chunk, int offset)
         {
-            if (chunk.Length != 4) throw new ArgumentOutOfRangeException("The chunk must contain 4 memory cells");
-            if (offset < 0 || offset % 4 != 0) throw new ArgumentOutOfRangeException("The memory offset isn't valid");
+            if (chunk.Length != 4) throw new ArgumentOutOfRangeException(nameof(chunk), "The chunk must contain 4 memory cells");
+            if (offset < 0 || offset % 4 != 0) throw new ArgumentOutOfRangeException(nameof(offset), "The memory offset isn't valid");
             Chunk = chunk;
             BaseOffset = (uint)offset;
         }

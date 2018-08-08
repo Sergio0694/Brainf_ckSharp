@@ -10,7 +10,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
     public static class LauncherHelper
     {
         // The current ProductId for Brainf*ck#
-        private const String ProductId = "9nblgggzhvq5";
+        private const string ProductId = "9nblgggzhvq5";
 
         /// <summary>
         /// Opens the Store review page for the app

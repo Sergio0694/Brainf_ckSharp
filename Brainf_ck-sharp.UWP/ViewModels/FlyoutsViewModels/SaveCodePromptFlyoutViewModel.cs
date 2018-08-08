@@ -19,9 +19,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         /// <summary>
         /// Gets the current name for the code, if it's already saved in the app
         /// </summary>
-        private readonly String OriginalName;
+        private readonly string OriginalName;
 
-        public SaveCodePromptFlyoutViewModel([CanBeNull] String name) => OriginalName = name;
+        public SaveCodePromptFlyoutViewModel([CanBeNull] string name) => OriginalName = name;
 
         private bool _NameValid;
 
@@ -58,7 +58,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         /// Updates the status for a name candidate for a source code to save
         /// </summary>
         /// <param name="name">The desired name to use to save the source code</param>
-        public async Task ValidateNameAsync([NotNull] String name)
+        public async Task ValidateNameAsync([NotNull] string name)
         {
             if (name.Length == 0)
             {

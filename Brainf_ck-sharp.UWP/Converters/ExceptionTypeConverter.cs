@@ -20,7 +20,7 @@ namespace Brainf_ck_sharp_UWP.Converters
         /// Converts the given type into its representation
         /// </summary>
         /// <param name="type">The input type</param>
-        public static String Convert(ScriptExceptionType type)
+        public static string Convert(ScriptExceptionType type)
         {
             switch (type)
             {

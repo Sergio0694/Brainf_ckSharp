@@ -7,6 +7,7 @@ using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.PopupService.UI;
+using Brainf_ck_sharp_UWP.UserControls.InheritedControls;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
@@ -49,7 +50,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// </summary>
         /// <param name="title">The title of the notification</param>
         /// <param name="content">The content to show in the notification</param>
-        public void ShowDefaultErrorNotification([NotNull] String title, [NotNull] String content)
+        public void ShowDefaultErrorNotification([NotNull] string title, [NotNull] string content)
         {
             ShowNotification(0xE7BA.ToSegoeMDL2Icon(), title, content, NotificationType.Error);
         }
@@ -63,7 +64,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="type">The type of notification to show</param>
         /// <param name="duration">The time interval before the nofitication disappears</param>
         public void ShowNotification(
-            [NotNull] String icon, [NotNull] String title, [NotNull] String content, NotificationType type, TimeSpan? duration = null)
+            [NotNull] string icon, [NotNull] string title, [NotNull] string content, NotificationType type, TimeSpan? duration = null)
         {
             DispatcherHelper.RunOnUIThreadAsync(async () =>
             {
@@ -74,25 +75,22 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 Popup popup = new Popup
                 {
                     VerticalOffset = 20,
-                    HorizontalOffset = ResolutionHelper.CurrentWidth - 320,
+                    HorizontalOffset = ResolutionHelper.CurrentWidth - 320
                 };
 
                 // Prepare the notification control
                 NotificationPopup notificationPopup = new NotificationPopup(title, icon, content, type);
-                popup.Child = notificationPopup;
+                popup.Child = new PopupDropShadowGrid { ContainedGrid = notificationPopup };
 
                 // Lights setup
-                if (!ApiInformationHelper.IsMobileDevice)
-                {
-                    LightsSourceHelper.SetIsLightsContainer(notificationPopup, true);
+                LightsSourceHelper.SetIsLightsContainer(notificationPopup, true);
 
+                // Dispose the lights
+                popup.Closed += (s, e) =>
+                {
                     // Dispose the lights
-                    popup.Closed += (s, e) =>
-                    {
-                        // Dispose the lights
-                        LightsSourceHelper.SetIsLightsContainer(notificationPopup, false);
-                    };
-                }
+                    LightsSourceHelper.SetIsLightsContainer(notificationPopup, false);
+                };
 
                 // Close the previous notification, if present
                 await CloseNotificationPopupAsync();

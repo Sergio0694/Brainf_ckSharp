@@ -1,5 +1,4 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.Messages.IDEStatus
 {
@@ -17,10 +16,10 @@ namespace Brainf_ck_sharp_UWP.Messages.IDEStatus
         /// Gets the main info for the IDE status
         /// </summary>
         [NotNull]
-        public String Info { get; }
+        public string Info { get; }
 
         // Default constructor
-        protected IDEStatusUpdateMessageBase(IDEStatus status, [NotNull] String info)
+        protected IDEStatusUpdateMessageBase(IDEStatus status, [NotNull] string info)
         {
             Status = status;
             Info = info;

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp.MemoryState
@@ -28,8 +29,8 @@ namespace Brainf_ck_sharp.MemoryState
         /// </summary>
         public TouringMachineState(int size)
         {
-            if (size <= 0) throw new ArgumentOutOfRangeException("The size must be a positive number");
-            if (size > 4096) throw new ArgumentOutOfRangeException("The size can't be greater than 4096");
+            if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size), "The size must be a positive number");
+            if (size > 4096) throw new ArgumentOutOfRangeException(nameof(size), "The size can't be greater than 4096");
             Count = size;
             Memory = new ushort[size];
         }
@@ -50,56 +51,82 @@ namespace Brainf_ck_sharp.MemoryState
         /// Sets the current memory location to the value of a given character
         /// </summary>
         /// <param name="c">The input charachter to assign to the current memory location</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Input(char c) => Memory[Position] = c;
 
         /// <summary>
         /// Gets the value of the current memory position (*ptr)
         /// </summary>
-        public Brainf_ckMemoryCell Current => new Brainf_ckMemoryCell(Memory[Position], true);
+        public Brainf_ckMemoryCell Current
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => new Brainf_ckMemoryCell(Memory[Position], true);
+        }
 
         /// <summary>
         /// Checks whether or not it is possible to move the pointer forward
         /// </summary>
-        public bool CanMoveNext => Position < Count - 1;
+        public bool CanMoveNext
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Position < Count - 1;
+        }
 
         /// <summary>
         /// Moves the memory pointer forward
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void MoveNext() => Position++;
 
         /// <summary>
         /// Checks whether or not it is possible to move the pointer back
         /// </summary>
-        public bool CanMoveBack => Position > 0;
+        public bool CanMoveBack
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Position > 0;
+        }
 
         /// <summary>
         /// Moves the memory pointer back
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void MoveBack() => Position--;
 
         /// <summary>
         /// Increments the current memory location (*ptr++)
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Plus() => Memory[Position]++;
 
         /// <summary>
         /// Checks whether or not it is possible to increment the current memory location
         /// </summary>
-        public bool CanIncrement => Memory[Position] < ushort.MaxValue;
+        public bool CanIncrement
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Memory[Position] < ushort.MaxValue;
+        }
 
         /// <summary>
         /// Decrements the current memory location (*ptr--)
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Minus() => Memory[Position]--;
 
         /// <summary>
         /// Checks whether or not the current memory location is a positive number and can be decremented
         /// </summary>
-        public bool CanDecrement => Memory[Position] > 0;
+        public bool CanDecrement
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Memory[Position] > 0;
+        }
 
         /// <summary>
         /// Resets the value in the current memory cell
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ResetCell() => Memory[Position] = 0;
 
         /// <summary>
@@ -127,14 +154,13 @@ namespace Brainf_ck_sharp.MemoryState
         }
 
         /// <summary>
-        /// Gets whether or not the current cell is zero
-        /// </summary>
-        internal bool IsAtZero => Memory[Position] == 0;
-
-        /// <summary>
         /// Gets whether or not the current cell is at 255
         /// </summary>
-        internal bool IsAtByteMax => Memory[Position] == byte.MaxValue;
+        internal bool IsAtByteMax
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Memory[Position] == byte.MaxValue;
+        }
 
         #endregion
 
@@ -147,7 +173,11 @@ namespace Brainf_ck_sharp.MemoryState
         IEnumerator IEnumerable.GetEnumerator() => Memory.GetEnumerator();
 
         /// <inheritdoc/>
-        public Brainf_ckMemoryCell this[int index] => new Brainf_ckMemoryCell(Memory[index], index == Position);
+        public Brainf_ckMemoryCell this[int index]
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => new Brainf_ckMemoryCell(Memory[index], index == Position);
+        }
 
         #endregion
     }

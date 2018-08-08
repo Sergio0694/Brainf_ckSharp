@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.Helpers;
@@ -32,7 +31,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
             ScriptStatisticsDisplayControl @this = d.To<ScriptStatisticsDisplayControl>();
             if (e.NewValue is InterpreterResult info)
             {
-                String
+                string
                     minutes = info.ElapsedTime.Minutes > 9 ? info.ElapsedTime.Minutes.ToString() : $"0{info.ElapsedTime.Minutes}",
                     seconds = info.ElapsedTime.Minutes > 9 ? info.ElapsedTime.Seconds.ToString() : $"0{info.ElapsedTime.Seconds}";
                 @this.TimeBlock.Text = $"{minutes}:{seconds}.{info.ElapsedTime.Milliseconds:000}";

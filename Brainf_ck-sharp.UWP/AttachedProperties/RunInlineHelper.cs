@@ -2,6 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.AttachedProperties
 {
@@ -10,22 +11,23 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
     /// </summary>
     public static class RunInlineHelper
     {
-        public static String GetBindableText(Run element)
+        [UsedImplicitly] // XAML attached property
+        public static string GetBindableText(Run element)
         {
-            return element.GetValue(BindableTextProperty).To<String>();
+            return element.GetValue(BindableTextProperty).To<string>();
         }
 
-        public static void SetBindableText(Run element, String value)
+        public static void SetBindableText(Run element, string value)
         {
             element?.SetValue(BindableTextProperty, value);
         }
 
         public static readonly DependencyProperty BindableTextProperty =
-            DependencyProperty.RegisterAttached("BindableText", typeof(String), typeof(RunInlineHelper), new PropertyMetadata(String.Empty, OnPropertyChanged));
+            DependencyProperty.RegisterAttached("BindableText", typeof(string), typeof(RunInlineHelper), new PropertyMetadata(string.Empty, OnPropertyChanged));
 
         private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            d.To<Run>().Text = e.NewValue.To<String>() ?? String.Empty;
+            d.To<Run>().Text = e.NewValue.To<string>() ?? string.Empty;
         }
     }
 }

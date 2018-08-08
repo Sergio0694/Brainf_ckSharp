@@ -17,18 +17,18 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList
         /// <summary>
         /// Gets or sets the title to display in the control
         /// </summary>
-        public String Title
+        public string Title
         {
-            get => (String)GetValue(TitleProperty);
+            get => (string)GetValue(TitleProperty);
             set => SetValue(TitleProperty, value);
         }
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
-            nameof(Title), typeof(String), typeof(JumpListZoomedInHeaderTemplate), new PropertyMetadata(default(String), PropertyChangedCallback));
+            nameof(Title), typeof(string), typeof(JumpListZoomedInHeaderTemplate), new PropertyMetadata(default(string), PropertyChangedCallback));
 
         private static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            d.To<JumpListZoomedInHeaderTemplate>().Block.Text = e.NewValue.To<String>() ?? String.Empty;
+            d.To<JumpListZoomedInHeaderTemplate>().Block.Text = e.NewValue.To<string>() ?? string.Empty;
         }
     }
 }

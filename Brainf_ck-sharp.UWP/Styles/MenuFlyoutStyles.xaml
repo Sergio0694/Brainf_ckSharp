@@ -4,13 +4,12 @@
     xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
     xmlns:lights="using:UICompositionAnimations.Lights">
 
-    <SolidColorBrush x:Key="MenuFlyoutBackgroundBrush" Color="Transparent"/>
     <x:Double x:Key="MenuFlyoutMinHeight">32</x:Double>
     <x:Double x:Key="MenuFlyoutMinWidth">200</x:Double>
     <x:Double x:Key="MenuFlyoutMaxWidth">380</x:Double>
     <x:Double x:Key="MenuFlyoutSeparatorHeight">24</x:Double>
     <x:Double x:Key="MenuFlyoutHighDPIIconSize">20</x:Double>
-    <SolidColorBrush x:Key="MenuFlyoutBackgroundColor" Color="#FF282828"/>
+    <SolidColorBrush x:Key="MenuFlyoutBackgroundBrush" Color="#FF202020"/>
     <SolidColorBrush x:Key="MenuFlyoutBorderBrush" Color="#FF454545"/>
     <x:Double x:Key="MenuFlyoutTextSize">14</x:Double>
     <SolidColorBrush x:Key="MenuFlyoutPointerOverHighlightBrush" Color="#10FFFFFF"/>
@@ -18,7 +17,8 @@
 
     <!-- Default style for Windows.UI.Xaml.Controls.MenuFlyoutPresenter -->
     <Style TargetType="MenuFlyoutPresenter">
-        <Setter Property="BorderBrush" Value="{StaticResource MenuFlyoutBorderBrush}" />
+        <Setter Property="Background" Value="{StaticResource MenuFlyoutBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource MenuFlyoutBorderBrush}" />
         <Setter Property="BorderThickness" Value="{ThemeResource FlyoutBorderThemeThickness}" />
         <Setter Property="Padding" Value="{ThemeResource MenuFlyoutPresenterThemePadding}" />
         <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
@@ -29,13 +29,12 @@
         <Setter Property="ScrollViewer.IsVerticalRailEnabled" Value="False" />
         <Setter Property="ScrollViewer.ZoomMode" Value="Disabled" />
         <Setter Property="MaxWidth" Value="{ThemeResource FlyoutThemeMaxWidth}" />
-        <Setter Property="MinHeight" Value="{ThemeResource MenuFlyoutThemeMinHeight}"/>
+        <Setter Property="MinHeight" Value="{ThemeResource MenuFlyoutThemeMinHeight}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="MenuFlyoutPresenter">
-                    <Grid 
-                        lights:LightsSourceHelper.IsLightsContainer="True"
-                        Background="{StaticResource InAppGrayAcrylicBrush}">
+                    <Grid Background="{TemplateBinding Background}"
+                          lights:LightsSourceHelper.IsLightsContainer="True">
                         <ScrollViewer x:Name="MenuFlyoutPresenterScrollViewer"
                                       Padding="{TemplateBinding Padding}"
                                       Margin="{TemplateBinding BorderThickness}"
@@ -48,17 +47,16 @@
                                       IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}"
                                       ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}"
                                       AutomationProperties.AccessibilityView="Raw">
-                            <ItemsPresenter Margin="0,8,0,8"/>
+                            <ItemsPresenter Margin="0,8,0,8" />
                         </ScrollViewer>
-                        <Border x:Name="MenuFlyoutPresenterBorder"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"/>
+                        <Border x:Name="MenuFlyoutPresenterBorder" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-
 
     <!-- Default style for Windows.UI.Xaml.Controls.MenuFlyoutSeparator -->
     <Style TargetType="MenuFlyoutSeparator">

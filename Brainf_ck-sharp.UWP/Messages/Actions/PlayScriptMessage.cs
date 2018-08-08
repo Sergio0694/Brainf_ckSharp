@@ -1,5 +1,4 @@
-﻿using System;
-using Brainf_ck_sharp.Enums;
+﻿using Brainf_ck_sharp.Enums;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.Messages.Actions
@@ -17,7 +16,7 @@ namespace Brainf_ck_sharp_UWP.Messages.Actions
         /// <summary>
         /// Gets the buffer value for the current operation
         /// </summary>
-        public String StdinBuffer { get; }
+        public string StdinBuffer { get; }
 
         /// <summary>
         /// Gets the overflow mode to use to execute the script
@@ -30,7 +29,7 @@ namespace Brainf_ck_sharp_UWP.Messages.Actions
         /// <param name="type">The kind of requested operation</param>
         /// <param name="buffer">The Stdin buffer to use</param>
         /// <param name="mode">The overflow mode to use to run the script</param>
-        public PlayScriptMessage(ScriptPlayType type, [NotNull] String buffer, OverflowMode mode)
+        public PlayScriptMessage(ScriptPlayType type, [NotNull] string buffer, OverflowMode mode)
         {
             Type = type;
             StdinBuffer = buffer;

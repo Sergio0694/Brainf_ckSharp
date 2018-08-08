@@ -117,7 +117,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// </summary>
         /// <param name="stdin">The current input buffer</param>
         /// <param name="mode">The overflow mode to use</param>
-        private async Task RepeatLastScript([NotNull] String stdin, OverflowMode mode)
+        private async Task RepeatLastScript([NotNull] string stdin, OverflowMode mode)
         {
             // Retrieve the current and the last command
             ConsoleUserCommand current = null, last = null;
@@ -196,7 +196,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         {
             if (!CommandAvailable) return;
             ConsoleUserCommand command = (ConsoleUserCommand)Source.Last();
-            command.UpdateCommand(String.Empty);
+            command.UpdateCommand(string.Empty);
             SendCommandAvailableMessages();
             ConsoleLineAddedOrModified?.Invoke(this, EventArgs.Empty);
         }
@@ -204,12 +204,12 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Executes the current user command, if possible
         /// </summary>
-        public async Task ExecuteCommand([NotNull] String stdin, OverflowMode mode)
+        public async Task ExecuteCommand([NotNull] string stdin, OverflowMode mode)
         {
             if (!CommandAvailable) return;
             CanRestart = true;
             SendCommandAvailableMessages(false);
-            String command = Source.Last().To<ConsoleUserCommand>().Command;
+            string command = Source.Last().To<ConsoleUserCommand>().Command;
             InterpreterResult result = await Task.Run(() => Brainf_ckInterpreter.Run(command, stdin, State, Functions, mode, 1000));
             if (result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
                 result.ExitCode.HasFlag(InterpreterExitCode.TextOutput))

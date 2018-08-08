@@ -1,5 +1,4 @@
 using System;
-using Windows.ApplicationModel;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 using JetBrains.Annotations;
@@ -36,7 +35,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         /// <param name="key">The key to check</param>
         /// <param name="keyValue">The value to assign to the dictionary key</param>
         /// <param name="mode">Indicates whether or not to overwrite the setting, if already present</param>
-        public void SetValue<T>(String key, T keyValue, SettingSaveMode mode)
+        public void SetValue<T>(string key, T keyValue, SettingSaveMode mode)
         {
             // Roaming
             bool existing = false;
@@ -62,7 +61,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         /// </summary>
         /// <typeparam name="T">The type of setting to retrieve</typeparam>
         /// <param name="key">The key of the setting to get</param>
-        public T GetValue<T>([NotNull] String key)
+        public T GetValue<T>([NotNull] string key)
         {
             bool found = TryGetValue(key, out T value);
             if (!found) throw new ArgumentException("The setting with the given key was not present");
@@ -75,7 +74,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         /// <typeparam name="T">The type of the object to retrieve</typeparam>
         /// <param name="key">The key associated to the requested object</param>
         /// <param name="value">The desired value, if found in the settings</param>
-        public bool TryGetValue<T>([NotNull] String key, out T value)
+        public bool TryGetValue<T>([NotNull] string key, out T value)
         {
             // Check the roaming settings
             if (RoamingSettings.ContainsKey(key))
@@ -95,7 +94,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
                 value = temp;
                 return true;
             }
-            value = default(T);
+            value = default;
             return false;
         }
 
@@ -118,7 +117,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
             SetValue(nameof(AppSettingsKeys.SelectedIDETheme), 0, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.AutosaveDocuments), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.RenderWhitespaces), false, SettingSaveMode.SkipIfExisting);
-            SetValue(nameof(AppSettingsKeys.SelectedFontName), String.Empty, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.SelectedFontName), string.Empty, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.ShowStatusBar), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.ClearStdinBufferOnExecution), true, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.ShowPBrainButtons), false, SettingSaveMode.SkipIfExisting);
@@ -131,19 +130,6 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         {
             if (TryGetValue(nameof(AppSettingsKeys.AppStartups), out uint startups))
                 SetValue(nameof(AppSettingsKeys.AppStartups), startups + 1, SettingSaveMode.OverwriteIfExisting);
-        }
-
-        /// <summary>
-        /// Gets the app current version in the format "Major.Minor.Build.Revision"
-        /// </summary>
-        [NotNull]
-        public static String AppVersion
-        {
-            get
-            {
-                PackageVersion currentVersion = Package.Current.Id.Version;
-                return $"{currentVersion.Major}.{currentVersion.Minor}.{currentVersion.Build}.{currentVersion.Revision}";
-            }
         }
     }
 }

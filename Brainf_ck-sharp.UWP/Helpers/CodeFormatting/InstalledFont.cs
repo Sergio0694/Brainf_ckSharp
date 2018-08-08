@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
@@ -17,7 +16,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
         /// Gets the name of the font
         /// </summary>
         [NotNull]
-        public String Name { get; }
+        public string Name { get; }
 
         private Windows.UI.Xaml.Media.FontFamily _Family;
 
@@ -55,14 +54,14 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
         /// </summary>
         /// <param name="name">The name of the font to retrieve</param>
         /// <param name="font">The resulting <see cref="InstalledFont"/> in case of success, null otherwise</param>
-        public static bool TryGetFont([NotNull] String name, out InstalledFont font)
+        public static bool TryGetFont([NotNull] string name, out InstalledFont font)
         {
             font = Fonts.FirstOrDefault(f => f.Name.Equals(name));
             return font != null;
         }
 
         // Private constructor
-        private InstalledFont([NotNull] String name)
+        private InstalledFont([NotNull] string name)
         {
             Name = name;
         }
@@ -93,20 +92,20 @@ namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
                 }
 
                 // Gets the actual font family name to return
-                String name = familyNames.GetString(index);
+                string name = familyNames.GetString(index);
                 if (AllowedFonts.Contains(name)) fontList.Add(new InstalledFont(name));
             }
             return fontList.OrderBy(font => font.Name).ToArray();
         }
 
         // Gets the default Segoe font name
-        private const String DefaultSegoeFont = "Segoe UI";
+        private const string DefaultSegoeFont = "Segoe UI";
 
         /// <summary>
         /// Gets the list of allowed font families
         /// </summary>
         [NotNull]
-        private static readonly ISet<String> AllowedFonts = new HashSet<String>
+        private static readonly ISet<string> AllowedFonts = new HashSet<string>
         {
             "Calibri",
             "Cambria",

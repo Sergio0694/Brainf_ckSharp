@@ -1,6 +1,8 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using UICompositionAnimations;
+using UICompositionAnimations.Enums;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Header
 {
@@ -33,6 +35,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Header
             int index = e.NewValue.To<int>();
             @this.ConsoleButton.IsSelected = index == 0;
             @this.IDEButton.IsSelected = index == 1;
+            @this.SelectedRectangle.StartCompositionTranslationAnimation(index * 80, 0, 250, null, EasingFunctionNames.CircleEaseOut);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Brainf_ck_sharp_UWP.Converters.ConsoleMemoryViewer
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            String[] @params = parameter.To<String>().Split('_');
+            string[] @params = parameter.To<string>().Split('_');
             if (@params.Length != 5) throw new ArgumentException("Invalid margin parameter");
             double[] values = @params.Select(double.Parse).ToArray();
             switch (value.To<ConsoleMemoryViewerSection>())

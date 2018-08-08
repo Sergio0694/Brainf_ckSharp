@@ -17,7 +17,7 @@ namespace Brainf_ck_sharp.Helpers
         /// <summary>
         /// Gets the stack frames for the working set
         /// </summary>
-        [CanBeNull]
+        [CanBeNull, ItemNotNull]
         public IEnumerable<IEnumerable<Brainf_ckBinaryItem>> StackFrames { get; }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Brainf_ck_sharp.Helpers
         public uint TotalOperations { get; }
 
         // Internal constructor
-        public InterpreterWorkingData(InterpreterExitCode code, [CanBeNull] IEnumerable<IEnumerable<Brainf_ckBinaryItem>> frames, uint position, uint operations)
+        public InterpreterWorkingData(InterpreterExitCode code, [CanBeNull, ItemNotNull] IEnumerable<IEnumerable<Brainf_ckBinaryItem>> frames, uint position, uint operations)
         {
             ExitCode = code;
             StackFrames = frames;

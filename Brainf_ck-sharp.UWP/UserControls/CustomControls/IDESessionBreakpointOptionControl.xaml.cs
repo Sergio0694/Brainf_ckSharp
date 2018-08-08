@@ -28,18 +28,18 @@ namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
         /// <summary>
         /// Gets or sets the title to display in the control
         /// </summary>
-        public String Title
+        public string Title
         {
-            get => (String)GetValue(TitleProperty);
+            get => (string)GetValue(TitleProperty);
             set => SetValue(TitleProperty, value);
         }
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
-            nameof(Title), typeof(String), typeof(IDESessionBreakpointOptionControl), new PropertyMetadata(default(String), OnTitlePropertyChanged));
+            nameof(Title), typeof(string), typeof(IDESessionBreakpointOptionControl), new PropertyMetadata(default(string), OnTitlePropertyChanged));
 
         private static void OnTitlePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            d.To<IDESessionBreakpointOptionControl>().TitleBlock.Text = e.NewValue.To<String>() ?? String.Empty;
+            d.To<IDESessionBreakpointOptionControl>().TitleBlock.Text = e.NewValue.To<string>() ?? string.Empty;
         }
 
         /// <summary>

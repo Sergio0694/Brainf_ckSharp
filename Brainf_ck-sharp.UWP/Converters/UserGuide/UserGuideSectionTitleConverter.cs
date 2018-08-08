@@ -20,14 +20,14 @@ namespace Brainf_ck_sharp_UWP.Converters.UserGuide
         /// Converts a section to its localized name to display
         /// </summary>
         /// <param name="section">The current section</param>
-        public static String Convert(UserGuideSection section)
+        public static string Convert(UserGuideSection section)
         {
             switch (section)
             {
                 case UserGuideSection.Introduction: return LocalizationManager.GetResource("UserGuideIntroduction");
                 case UserGuideSection.Samples: return LocalizationManager.GetResource("UserGuideCodeSamples");
                 case UserGuideSection.PBrain: return LocalizationManager.GetResource("UserGuidePBrainExtensions");
-                default: return String.Empty;
+                default: return string.Empty;
             }
         }
 

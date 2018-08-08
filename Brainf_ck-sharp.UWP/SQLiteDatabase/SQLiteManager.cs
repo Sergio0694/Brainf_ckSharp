@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,22 +28,22 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         /// <summary>
         /// Gets the name of the local database
         /// </summary>
-        private const String DatabaseFileName = "SourceCodes.db";
+        private const string DatabaseFileName = "SourceCodes.db";
 
         /// <summary>
         /// Gets the name of the roaming database file name
         /// </summary>
-        private const String RoamingDatabaseFileName = "RoamingCodes.db";
+        private const string RoamingDatabaseFileName = "RoamingCodes.db";
 
         /// <summary>
         /// Gets the path of the clean database
         /// </summary>
-        private const String CleanDatabaseUri = "ms-appx:///Assets/Misc/SourceCodesTemplateDatabase.db";
+        private const string CleanDatabaseUri = "ms-appx:///Assets/Misc/SourceCodesTemplateDatabase.db";
 
         /// <summary>
         /// Gets the path of folder that contains the sample files
         /// </summary>
-        private static String SampleFilesPath { get; } = $@"{Package.Current.InstalledLocation.Path}\Assets\Samples\";
+        private static string SampleFilesPath { get; } = $@"{Package.Current.InstalledLocation.Path}\Assets\Samples\";
 
         /// <summary>
         /// The async connection to the local database in use
@@ -107,6 +108,7 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         /// <summary>
         /// Syncs the saved source codes to the roaming folder
         /// </summary>
+        [SuppressMessage("ReSharper", "AccessToDisposedClosure")] // SQLite connection in using block
         public async Task TrySyncSharedCodesAsync()
         {
             // Initialize the local database if needed
@@ -262,8 +264,8 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
                 {
                     // Get the source code file and look for an existing copy in the local database
                     StorageFile file = await folder.GetFileAsync(record.Filename);
-                    String code = await FileIO.ReadTextAsync(file);
-                    String sUid = record.Uid.ToString();
+                    string code = await FileIO.ReadTextAsync(file);
+                    string sUid = record.Uid.ToString();
                     SourceCode row = await DatabaseConnection.Table<SourceCode>().Where(entry => entry.Uid == sUid).FirstOrDefaultAsync();
                     if (row == null)
                     {
@@ -342,7 +344,7 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         /// <param name="title">The title of the source code to save</param>
         /// <param name="code">The code to save</param>
         /// <param name="breakpoints">The list of lines with an enabled breakpoint</param>
-        public async Task<AsyncOperationResult<CategorizedSourceCode>> SaveCodeAsync([NotNull] String title, [NotNull] String code, [CanBeNull] IReadOnlyCollection<int> breakpoints)
+        public async Task<AsyncOperationResult<CategorizedSourceCode>> SaveCodeAsync([NotNull] string title, [NotNull] string code, [CanBeNull] IReadOnlyCollection<int> breakpoints)
         {
             // Check the name and remove the existing deleted codes with the same name, if present
             await EnsureDatabaseConnectionAsync();
@@ -369,7 +371,7 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         /// <param name="code">The source code that's being edited</param>
         /// <param name="text">The updated text to save</param>
         /// <param name="breakpoints">The list of lines with an enabled breakpoint</param>
-        public async Task SaveCodeAsync([NotNull] SourceCode code, [NotNull] String text, [CanBeNull] IReadOnlyCollection<int> breakpoints)
+        public async Task SaveCodeAsync([NotNull] SourceCode code, [NotNull] string text, [CanBeNull] IReadOnlyCollection<int> breakpoints)
         {
             await EnsureDatabaseConnectionAsync();
             code.Code = text;
@@ -382,7 +384,7 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         /// Checks whether or not there is a saved source code with the same title
         /// </summary>
         /// <param name="name">The title to check</param>
-        public async Task<bool> CheckExistingName([NotNull] String name)
+        public async Task<bool> CheckExistingName([NotNull] string name)
         {
             await EnsureDatabaseConnectionAsync();
             return await DatabaseConnection.Table<SourceCode>().Where(row => row.Title == name && row.Deleted == 0).FirstOrDefaultAsync() == null;
@@ -392,7 +394,7 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         /// Removes the deleted codes with a given title from the database
         /// </summary>
         /// <param name="title">The title of the deleted codes to removes</param>
-        private async Task RemovePendingDeletedItemsAsync([NotNull] String title)
+        private async Task RemovePendingDeletedItemsAsync([NotNull] string title)
         {
             List<SourceCode> existing = await DatabaseConnection.Table<SourceCode>().Where(row => row.Title == title && row.Deleted != 0).ToListAsync();
             if (existing.Count > 0)
@@ -405,7 +407,7 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
         /// </summary>
         /// <param name="code">The source code to rename</param>
         /// <param name="name">The new name for the saved code</param>
-        public async Task RenameCodeAsync([NotNull] SourceCode code, [NotNull] String name)
+        public async Task RenameCodeAsync([NotNull] SourceCode code, [NotNull] string name)
         {
             await EnsureDatabaseConnectionAsync();
             await RemovePendingDeletedItemsAsync(name);

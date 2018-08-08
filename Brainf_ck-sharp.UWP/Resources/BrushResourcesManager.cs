@@ -2,7 +2,6 @@
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Helpers;
 using UICompositionAnimations.Brushes;
-using UICompositionAnimations.Helpers;
 using UICompositionAnimations.Lights;
 
 namespace Brainf_ck_sharp_UWP.Resources
@@ -35,26 +34,16 @@ namespace Brainf_ck_sharp_UWP.Resources
             XAMLResourcesHelper.SetResourceValue("SubMenuFlyoutOpenedBrush", new SolidColorBrush(Color.FromArgb(0x50, AccentBrush.Color.R, AccentBrush.Color.G, AccentBrush.Color.B)));
 
             // Lights
-            if (ApiInformationHelper.IsMobileDevice)
-            {
-                SolidColorBrush t = new SolidColorBrush { Color = Colors.Transparent };
-                XAMLResourcesHelper.SetResourceValue("BorderLightBrush", t);
-                XAMLResourcesHelper.SetResourceValue("ElementsWideLightBrush", t);
-                XAMLResourcesHelper.SetResourceValue("WideLightBrushDarkShadeBackground", t);
-            }
-            else
-            {
-                LightingBrush
-                    bb = new LightingBrush(),
-                    bwb = new LightingBrush();
-                PointerPositionSpotLight.SetIsTarget(bb, true);
-                XamlLight.AddTargetBrush($"{PointerPositionSpotLight.GetIdStatic()}[Wide]", bwb);
-                XAMLResourcesHelper.SetResourceValue("BorderLightBrush", bb, true);
-                XAMLResourcesHelper.SetResourceValue("ElementsWideLightBrush", bwb, true);
-                SolidColorBrush sb = new SolidColorBrush { Color = Color.FromArgb(0x10, 0, 0, 0), Opacity = 0 };
-                XAMLResourcesHelper.SetResourceValue("WideLightBrushDarkShadeBackground", sb);
-                WideLightBrushDarkShadeBackground = sb;
-            }
+            LightingBrush
+                bb = new LightingBrush(),
+                bwb = new LightingBrush();
+            PointerPositionSpotLight.SetIsTarget(bb, true);
+            XamlLight.AddTargetBrush($"{PointerPositionSpotLight.GetIdStatic()}[Wide]", bwb);
+            XAMLResourcesHelper.SetResourceValue("BorderLightBrush", bb, true);
+            XAMLResourcesHelper.SetResourceValue("ElementsWideLightBrush", bwb, true);
+            SolidColorBrush sb = new SolidColorBrush { Color = Color.FromArgb(0x10, 0, 0, 0), Opacity = 0 };
+            XAMLResourcesHelper.SetResourceValue("WideLightBrushDarkShadeBackground", sb);
+            WideLightBrushDarkShadeBackground = sb;
         }
 
         #region Brushes

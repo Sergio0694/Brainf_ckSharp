@@ -16,6 +16,8 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        
+        <!--Buttons-->
         <local:HeaderButtonControl
             Height="68"
             Width="80"
@@ -33,5 +35,16 @@
             x:Name="IDEButton"
             IsSelected="False"
             HeaderSelected="{x:Bind SelectIDE}"/>
+        
+        <!--Sliding indicator-->
+        <Canvas x:Name="SelectedRectangle"
+                Height="2"
+                Width="80"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Background="{ThemeResource SystemControlHighlightAccentBrush}"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                IsHitTestVisible="False"/>
     </Grid>
 </UserControl>

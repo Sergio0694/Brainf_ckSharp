@@ -14,7 +14,6 @@
     xmlns:controls="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls"
     xmlns:customCommandBar="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar"
     xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
-    xmlns:brushes="using:UICompositionAnimations.Brushes"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -53,8 +52,7 @@
             <!--Title placeholder-->
             <Grid 
                 Grid.Row="0"
-                Height="32"
-                Visibility="{x:Bind ViewModel.DesktopMode, FallbackValue=Collapsed}">
+                Height="32">
                 
                 <!--App title-->
                 <TextBlock
@@ -65,13 +63,6 @@
                     Margin="12,0,0,0"
                     VerticalAlignment="Center"/>
             </Grid>
-            
-            <!--Status bar placeholder-->
-            <Grid
-                Grid.Row="0"
-                Height="24"
-                Visibility="Collapsed"
-                x:Name="StatusBarPlaceholder"/>
             
             <!--Header with pivot buttons-->
             <header:HeaderControl
@@ -103,17 +94,9 @@
             x:Name="OperatorsKeyboard"
             RelativePanel.Above="SharedCommandBar"
             RelativePanel.AlignLeftWithPanel="True"
-            RelativePanel.AlignRightWithPanel="True">
-            <Grid.Background>
-                <brushes:CustomAcrylicBrush
-                    Mode="HostBackdrop"
-                    FallbackColor="#FF121212"
-                    UnsupportedEffectFallbackColor="#FF121212"
-                    Tint="#FF101010"
-                    TintMix="0.9"
-                    NoiseTextureUri="/Assets/Misc/noise.png"/>
-            </Grid.Background>
-            
+            RelativePanel.AlignRightWithPanel="True"
+            Background="{StaticResource KeyboardBrush}">
+
             <!--Expandable keyboard pivot-->
             <inheritedControls:FixedRadExpanderControl
                 Margin="0"
@@ -221,8 +204,9 @@
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True"
             RelativePanel.Above="InfoBar"
-            Style="{StaticResource ScrollableCommandBarStyle}"
-            CommandBarOverflowPresenterStyle="{StaticResource AcrylicCommandBarOverflowPresenter}">
+            Style="{StaticResource ScrollableCommandBarRevealStyle}"
+            CommandBarOverflowPresenterStyle="{StaticResource AcrylicCommandBarOverflowPresenter}"
+            Background="{StaticResource HostBackdropGrayAcrylicBrush}">
             <customCommandBar:CommandBarWithButtonsAnimations.PrimaryCommands>
                 
                 <!--Console buttons-->
@@ -232,7 +216,6 @@
                     Foreground="DarkGreen"
                     x:Uid="PlayButton"
                     DefaultButton="True"
-                    Style="{StaticResource ColoredAppbarButton}"
                     IsEnabled="{x:Bind ViewModel.PlayAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestPlay}"/>
                 <customCommandBar:CustomCommandBarButton
@@ -262,14 +245,12 @@
                     Icon="&#xE102;"
                     Foreground="DarkGreen"
                     x:Uid="PlayButton"
-                    Style="{StaticResource ColoredAppbarButton}"
                     IsEnabled="{x:Bind ViewModel.IDECodeAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestPlay}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Debug"
                     Icon="&#xEBE8;"
                     Foreground="{StaticResource RedDangerBrush}"
-                    Style="{StaticResource ColoredAppbarButton}"
                     x:Uid="DebugButton"
                     IsEnabled="{x:Bind ViewModel.DebugAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestDebug}"/>

@@ -25,7 +25,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Header
         /// <summary>
         /// Gets or sets the icon to display in the control (must have the format &#x[0-F]{4];)
         /// </summary>
-        public String IconText
+        public string IconText
         {
             get => IconBlock.Text;
             set => IconBlock.Text = value;
@@ -34,7 +34,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Header
         /// <summary>
         /// gets or sets the title of the button
         /// </summary>
-        public String Title
+        public string Title
         {
             get => TitleBlock.Text;
             set => TitleBlock.Text = value;

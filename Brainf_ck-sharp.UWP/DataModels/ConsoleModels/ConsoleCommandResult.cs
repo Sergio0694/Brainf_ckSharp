@@ -1,5 +1,4 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.DataModels.ConsoleModels
 {
@@ -12,12 +11,12 @@ namespace Brainf_ck_sharp_UWP.DataModels.ConsoleModels
         /// Gets the result for the current instance
         /// </summary>
         [NotNull]
-        public String Result { get; }
+        public string Result { get; }
 
         /// <summary>
         /// Initializes a new instance with the given result
         /// </summary>
         /// <param name="result">The result to display</param>
-        public ConsoleCommandResult([NotNull] String result) => Result = result;
+        public ConsoleCommandResult([NotNull] string result) => Result = result;
     }
 }

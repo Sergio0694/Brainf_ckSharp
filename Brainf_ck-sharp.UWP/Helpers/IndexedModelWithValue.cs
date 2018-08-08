@@ -29,7 +29,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// </summary>
         public int Index
         {
-            get { return _Index; }
+            get => _Index;
             private set => Set(ref _Index, value >= 0 ? value : throw new ArgumentOutOfRangeException(nameof(Index)));
         }
 

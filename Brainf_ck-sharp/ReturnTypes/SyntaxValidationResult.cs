@@ -3,7 +3,7 @@
     /// <summary>
     /// Indicates the result of a syntax validation check
     /// </summary>
-    public struct SyntaxValidationResult
+    public readonly struct SyntaxValidationResult
     {
         /// <summary>
         /// Gets whether or not the source code is valid and can be interpreted successfully

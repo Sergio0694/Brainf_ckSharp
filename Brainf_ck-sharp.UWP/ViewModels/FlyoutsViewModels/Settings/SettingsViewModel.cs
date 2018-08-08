@@ -7,16 +7,14 @@ using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
-using UICompositionAnimations.Helpers;
 #if !DEBUG
-using System.Linq;
+using System.Linq; //Used to check the license
 #endif
 
 namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
@@ -27,8 +25,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         {
             IDEThemeSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme));
             AvailableIDEThemes[IDEThemeSelectedIndex].IsSelected = true;
-            String fontName = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
-            int index = AvailableFonts.IndexOf(f => f.Name.Equals(String.IsNullOrEmpty(fontName) ? "Segoe UI" : fontName));
+            string fontName = AppSettingsManager.Instance.GetValue<string>(nameof(AppSettingsKeys.SelectedFontName));
+            int index = AvailableFonts.IndexOf(f => f.Name.Equals(string.IsNullOrEmpty(fontName) ? "Segoe UI" : fontName));
             _FontFamilySelectedIndex = index != -1 ? index : AvailableFonts.IndexOf(f => f.Name.Equals("Segoe UI")); // Fallback when the selected font isn't available
             if (!ThemesSelectorEnabled)
             {
@@ -42,6 +40,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         /// <summary>
         /// Gets or sets whether or not the IDE should automatically save the current document when leaving the app
         /// </summary>
+        [UsedImplicitly]
         public bool AutosaveDocuments
         {
             get => _AutosaveDocuments;
@@ -57,8 +56,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         /// <summary>
         /// Gets the collection of the available blur modes
         /// </summary>
-        [NotNull]
-        public IReadOnlyCollection<String> BlurModeOptions { get; } = new[]
+        [UsedImplicitly, NotNull]
+        public IReadOnlyCollection<string> BlurModeOptions { get; } = new[]
         {
             LocalizationManager.GetResource("BackgroundBlur"),
             LocalizationManager.GetResource("InAppBlur")
@@ -69,6 +68,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         /// <summary>
         /// Gets or sets the selected index for the custom blur mode
         /// </summary>
+        [UsedImplicitly]
         public int BlurModeSelectedIndex
         {
             get => _BlurModeSelectedIndex;
@@ -87,6 +87,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         /// <summary>
         /// Gets or sets whether or not the IDE should automatically indents new brackets
         /// </summary>
+        [UsedImplicitly]
         public bool AutoindentBrackets
         {
             get => _AutoindentBrackets;
@@ -102,7 +103,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         /// <summary>
         /// Gets the collection of the available tab lengths
         /// </summary>
-        [NotNull]
+        [UsedImplicitly, NotNull]
         public IReadOnlyCollection<int> TabLengthOptions { get; } = new[] { 4, 6, 8, 10, 12 };
 
         private int _TabLengthSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength));
@@ -110,6 +111,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         /// <summary>
         /// Gets or sets the selected index for the tab length setting
         /// </summary>
+        [UsedImplicitly]
         public int TabLengthSelectedIndex
         {
             get => _TabLengthSelectedIndex;
@@ -125,8 +127,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         /// <summary>
         /// Gets the collection of the available brackets styles
         /// </summary>
-        [NotNull]
-        public IReadOnlyCollection<String> BracketsStyleOptions { get; } = new[]
+        [UsedImplicitly, NotNull]
+        public IReadOnlyCollection<string> BracketsStyleOptions { get; } = new[]
         {
             LocalizationManager.GetResource("NewLine"),
             LocalizationManager.GetResource("SameLine")
@@ -137,6 +139,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         /// <summary>
         /// Gets or sets the selected index for the custom brackets style
         /// </summary>
+        [UsedImplicitly]
         public int BracketsStyleSelectedIndex
         {
             get => _BracketsStyleSelectedIndex;
@@ -154,6 +157,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         /// <summary>
         /// Gets or sets whether or not the IDE should render the control characters too
         /// </summary>
+        [UsedImplicitly]
         public bool RenderWhitespaces
         {
             get => _RenderWhitespaces;
@@ -177,6 +181,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         /// <summary>
         /// Gets or sets the selected index for the IDE font family
         /// </summary>
+        [UsedImplicitly]
         public int FontFamilySelectedIndex
         {
             get => _FontFamilySelectedIndex;
@@ -228,7 +233,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         }
 
         // The Store ID of the themes pack
-        private const String ThemesPackID = "9p4q63ccfpbm";
+        private const string ThemesPackID = "9p4q63ccfpbm";
 
         // The Store instance to use
         private static StoreContext _StoreContext;
@@ -326,40 +331,12 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
             }
         }
 
-        /// <summary>
-        /// Gets whether or not the current device is not a mobile phone
-        /// </summary>
-        public bool HostBlurOptionSupported => !ApiInformationHelper.IsMobileDevice;
-
-        private bool _ShowStatusBar = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ShowStatusBar));
-
-        /// <summary>
-        /// Gets or sets whether or not the status bar should be displayed on mobile phones
-        /// </summary>
-        public bool ShowStatusBar
-        {
-            get => _ShowStatusBar;
-            set
-            {
-                if (Set(ref _ShowStatusBar, value))
-                {
-                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.ShowStatusBar), value, SettingSaveMode.OverwriteIfExisting);
-                    if (value) StatusBarHelper.TryShowAsync().Forget();
-                    else StatusBarHelper.HideAsync().Forget();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets whether or not the current device is a mobile phone
-        /// </summary>
-        public bool StatusBarSupported => ApiInformationHelper.IsMobileDevice;
-
         private bool _ShowPBrainButtons = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ShowPBrainButtons));
 
         /// <summary>
         /// Gets or sets whether or not the PBrain buttons should be visible in the virtual keyboard
         /// </summary>
+        [UsedImplicitly]
         public bool ShowPBrainButtons
         {
             get => _ShowPBrainButtons;
@@ -378,6 +355,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         /// <summary>
         /// Gets or sets whether or not to clear the Stdin buffer when executing a script
         /// </summary>
+        [UsedImplicitly]
         public bool ClearStdinBufferOnExecution
         {
             get => _ClearStdinBufferOnExecution;

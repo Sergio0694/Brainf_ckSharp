@@ -24,7 +24,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
         /// <summary>
         /// Gets or sets the icon to display in the control (must have the format &#x[0-F]{4];)
         /// </summary>
-        public String IconText
+        public string IconText
         {
             get => IconBlock.Text;
             set => IconBlock.Text = value;

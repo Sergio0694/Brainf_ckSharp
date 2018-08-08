@@ -73,11 +73,11 @@ namespace Brainf_ck_sharp_UWP.DataModels
         public static implicit operator AsyncOperationResult<T>(AsyncOperationStatus status)
         {
             if (status == AsyncOperationStatus.RunToCompletion) throw new InvalidCastException("This implicit operator is not valid in this case");
-            return new AsyncOperationResult<T>(default(T), status, null);
+            return new AsyncOperationResult<T>(default, status, null);
         }
 
         // Failed web call
-        public static implicit operator AsyncOperationResult<T>([NotNull] Exception e) => new AsyncOperationResult<T>(default(T), AsyncOperationStatus.Faulted, e);
+        public static implicit operator AsyncOperationResult<T>([NotNull] Exception e) => new AsyncOperationResult<T>(default, AsyncOperationStatus.Faulted, e);
     }
 
     /// <summary>

@@ -1,5 +1,4 @@
-﻿using System;
-using Brainf_ck_sharp.Enums;
+﻿using Brainf_ck_sharp.Enums;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.DataModels.EventArgs
@@ -13,7 +12,7 @@ namespace Brainf_ck_sharp_UWP.DataModels.EventArgs
         /// Gets the current stdin buffer
         /// </summary>
         [NotNull]
-        public String Stdin { get; }
+        public string Stdin { get; }
 
         /// <summary>
         /// Gets the overflow mode to use to execute the script
@@ -31,7 +30,7 @@ namespace Brainf_ck_sharp_UWP.DataModels.EventArgs
         /// <param name="stdin">The stdin buffer</param>
         /// <param name="mode">The requested execution mode</param>
         /// <param name="debug">Indicates whether or not to execute the code in debug mode</param>
-        public PlayRequestedEventArgs([NotNull] String stdin, OverflowMode mode, bool debug)
+        public PlayRequestedEventArgs([NotNull] string stdin, OverflowMode mode, bool debug)
         {
             Stdin = stdin;
             Mode = mode;

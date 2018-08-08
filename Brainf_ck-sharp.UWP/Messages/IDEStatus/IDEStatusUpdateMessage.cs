@@ -31,16 +31,16 @@ namespace Brainf_ck_sharp_UWP.Messages.IDEStatus
         /// <summary>
         /// Gets whether or not the filename should be visible to the user
         /// </summary>
-        public bool FilenameVisibile => !String.IsNullOrEmpty(Filename);
+        public bool FilenameVisibile => !string.IsNullOrEmpty(Filename);
 
         /// <summary>
         /// Gets the current filename, if available
         /// </summary>
         [CanBeNull]
-        public String Filename { get; }
+        public string Filename { get; }
 
         // Default constructor
-        public IDEStatusUpdateMessage([NotNull] String info, int row, int column, [CanBeNull] String filename) 
+        public IDEStatusUpdateMessage([NotNull] string info, int row, int column, [CanBeNull] string filename) 
             : base(IDEStatus.IDE, info)
         {
             Row = row;
@@ -49,7 +49,7 @@ namespace Brainf_ck_sharp_UWP.Messages.IDEStatus
         }
 
         // Faulted constructor
-        public IDEStatusUpdateMessage([NotNull] String info, int row, int column, int errorRow, int errorColumn, [CanBeNull] String filename) 
+        public IDEStatusUpdateMessage([NotNull] string info, int row, int column, int errorRow, int errorColumn, [CanBeNull] string filename) 
             : base(IDEStatus.FaultedIDE, info)
         {
             Row = row;

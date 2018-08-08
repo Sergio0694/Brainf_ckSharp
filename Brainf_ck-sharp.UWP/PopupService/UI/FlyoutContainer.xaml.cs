@@ -79,7 +79,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         /// </summary>
         /// <param name="confirm">The text of the button</param>
         /// <param name="color">The optional background color for the confirm button</param>
-        public void SetupButtonsUI([NotNull] String confirm, [CanBeNull] Color? color)
+        public void SetupButtonsUI([NotNull] string confirm, [CanBeNull] Color? color)
         {
             ConfirmBlock.Text = confirm;
             if (color != null)
@@ -100,7 +100,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         /// <param name="title">The title for the container</param>
         /// <param name="content">The element to host in the container</param>
         /// <param name="margin">The optional margins to set to the content of the popup to show</param>
-        public void SetupUI([NotNull] String title, FrameworkElement content, Thickness? margin)
+        public void SetupUI([NotNull] string title, FrameworkElement content, Thickness? margin)
         {
             _Content = content;
             _DisplayMode = FlyoutDisplayMode.ScrollableContent;
@@ -118,7 +118,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         /// <param name="title">The title for the container</param>
         /// <param name="content">The element to host in the container</param>
         /// <param name="width">The planned width for the rendered container</param>
-        public void SetupFixedUI([NotNull] String title, FrameworkElement content, double width)
+        public void SetupFixedUI([NotNull] string title, FrameworkElement content, double width)
         {
             _Content = content;
             _DisplayMode = FlyoutDisplayMode.ActualHeight;

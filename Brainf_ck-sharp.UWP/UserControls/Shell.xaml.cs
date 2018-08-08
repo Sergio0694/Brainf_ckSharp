@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml;
@@ -10,7 +9,6 @@ using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
@@ -27,7 +25,6 @@ using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations;
 using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
-using UICompositionAnimations.Helpers;
 using UICompositionAnimations.Helpers.PointerEvents;
 using MemoryViewerFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState.MemoryViewerFlyout;
 using SettingsPanelFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings.SettingsPanelFlyout;
@@ -52,7 +49,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             this.InitializeComponent();
             DataContext = new ShellViewModel(() =>
             {
-                String stdin = StdinHeader.StdinBuffer;
+                string stdin = StdinHeader.StdinBuffer;
                 if (AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.ClearStdinBufferOnExecution), out bool reset) && reset)
                 {
                     StdinHeader.ResetStdin();
@@ -62,16 +59,9 @@ namespace Brainf_ck_sharp_UWP.UserControls
             Console.ViewModel.IsEnabled = true;
 
             // Apply the in-app blur on mobile devices
-            if (ApiInformationHelper.IsMobileDevice)
-            {
-                HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>("HeaderInAppAcrylicBrush");
-            }
-            else
-            {
-                // Apply the desired blur effect
-                AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.InAppBlurMode), out int blurMode);
-                HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(blurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
-            }
+            // Apply the desired blur effect
+            AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.InAppBlurMode), out int blurMode);
+            HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(blurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
 
             // Flyout management
             Messenger.Default.Register<FlyoutOpenedMessage>(this, m => ManageFlyoutUI(true));
@@ -79,29 +69,13 @@ namespace Brainf_ck_sharp_UWP.UserControls
             Messenger.Default.Register<AppLoadingStatusChangedMessage>(this, m => ManageLoadingUI(m.Loading));
             Messenger.Default.Register<BlurModeChangedMessage>(this, m =>
             {
-                if (!ApiInformationHelper.IsMobileDevice)
-                {
-                    HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(m.BlurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
-                }
+                HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(m.BlurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
             });
         }
 
         public ShellViewModel ViewModel => DataContext.To<ShellViewModel>();
 
         #region UI
-
-        /// <summary>
-        /// Sets whether or not the status bar placeholder for Windows 10 Mobile devices should be displayed
-        /// </summary>
-        /// <param name="show">The new value for the placeholder visibility</param>
-        public void ShowStatusBarPlaceholder(bool show)
-        {
-            StatusBarPlaceholder.Visibility = show.ToVisibility();
-            HeaderGrid.Measure(new Size(ActualWidth, double.PositiveInfinity));
-            double height = HeaderGrid.DesiredSize.Height;
-            Console.AdjustTopMargin(height + 8);
-            IDE.RefreshTopMargin(height);
-        }
 
         // The current loading popup
         private Popup _LoadingPopup;
@@ -155,7 +129,6 @@ namespace Brainf_ck_sharp_UWP.UserControls
             // UI setup
             FadeCanvas.SetVisualOpacity(0);
             Messenger.Default.Send(new ConsoleStatusUpdateMessage(IDEStatus.Console, LocalizationManager.GetResource("Ready"), 0, 0));
-            StatusBarPlaceholder.Visibility = (StatusBarHelper.OccludedHeight > 0).ToVisibility();
             HeaderGrid.Measure(new Size(ActualWidth, double.PositiveInfinity));
             double height = HeaderGrid.DesiredSize.Height;
             Console.AdjustTopMargin(height + 8);
@@ -294,14 +267,14 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 theme = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)),
                 tabs = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength));
             bool whitespaces = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
-            String font = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+            string font = AppSettingsManager.Instance.GetValue<string>(nameof(AppSettingsKeys.SelectedFontName));
             SettingsPanelFlyout settings = new SettingsPanelFlyout();
             Task.Delay(100).ContinueWith(t => settings.ViewModel.LoadGroups(), TaskScheduler.FromCurrentSynchronizationContext()).Forget();
             await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("Settings"), settings, null, new Thickness());
             bool
                 themeChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)) != theme,
                 tabsChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength)) != tabs,
-                fontChanged = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName))?.Equals(font) != true,
+                fontChanged = AppSettingsManager.Instance.GetValue<string>(nameof(AppSettingsKeys.SelectedFontName))?.Equals(font) != true,
                 whitespacesChanged = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces)) != whitespaces;
             if (themeChanged || tabsChanged || fontChanged || whitespacesChanged)
             {

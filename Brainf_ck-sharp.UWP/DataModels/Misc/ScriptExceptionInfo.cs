@@ -19,14 +19,14 @@ namespace Brainf_ck_sharp_UWP.DataModels.Misc
         /// Gets the message for the current exception
         /// </summary>
         [NotNull]
-        public String Message { get; }
+        public string Message { get; }
 
         /// <summary>
         /// Initializes a new instance for an exception that was generated
         /// </summary>
         /// <param name="type">The exception type</param>
         /// <param name="message">The info message for the exception</param>
-        private ScriptExceptionInfo(ScriptExceptionType type, [NotNull] String message)
+        private ScriptExceptionInfo(ScriptExceptionType type, [NotNull] string message)
         {
             ExceptionType = type;
             Message = message;
@@ -60,7 +60,7 @@ namespace Brainf_ck_sharp_UWP.DataModels.Misc
             if (result.ExitCode.HasFlag(InterpreterExitCode.ExceptionThrown))
             {
                 
-                String message;
+                string message;
                 if (result.ExitCode.HasFlag(InterpreterExitCode.LowerBoundExceeded)) message = LocalizationManager.GetResource("ExLowerBound");
                 else if (result.ExitCode.HasFlag(InterpreterExitCode.UpperBoundExceeded)) message = LocalizationManager.GetResource("ExUpperBound");
                 else if (result.ExitCode.HasFlag(InterpreterExitCode.NegativeValue)) message = LocalizationManager.GetResource("ExNegativeValue");

@@ -18,7 +18,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             Messenger.Default.Register<IDEStatusUpdateMessageBase>(this, true, m =>
             {
                 // Visual state update
-                String state;
+                string state;
                 switch (m.Status)
                 {
                     case IDEStatus.Console:
@@ -51,7 +51,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                         RowRun.Text = ide.Row.ToString();
                         ColumnRun.Text = ide.Column.ToString();
                         FileGrid.Visibility = ide.FilenameVisibile.ToVisibility();
-                        FileBlock.Text = ide.Filename ?? String.Empty;
+                        FileBlock.Text = ide.Filename ?? string.Empty;
                         if (ide.Status == IDEStatus.FaultedIDE) IDEErrorRun.Text = $"[{ide.ErrorRow}, {ide.ErrorColumn}]";
                         break;
                     default: throw new ArgumentOutOfRangeException();

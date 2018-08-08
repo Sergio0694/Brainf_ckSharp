@@ -114,7 +114,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         /// <param name="code">The code to share</param>
         public async Task<AsyncOperationResult<bool>> ShareItemAsync(SourceCodeShareType mode, [NotNull] SourceCode code)
         {
-            String @fixed = code.Code.Replace("\r", "\r\n"); // Adjust the new line character
+            string @fixed = code.Code.Replace("\r", "\r\n"); // Adjust the new line character
             switch (mode)
             {
                 case SourceCodeShareType.Clipboard:
@@ -139,7 +139,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                     StorageFile file = await StorageHelper.CreateTemporaryFileAsync(code.Title, ".txt");
                     if (file == null) return AsyncOperationStatus.Canceled;
                     await FileIO.WriteTextAsync(file, @fixed);
-                    return await EmailHelper.SendEmail(String.Empty, LocalizationManager.GetResource("SharedCode"), null, file);
+                    return await EmailHelper.SendEmail(string.Empty, LocalizationManager.GetResource("SharedCode"), null, file);
                 case SourceCodeShareType.LocalFile:
                     StorageFile local = await StorageHelper.PickSaveFileAsync(code.Title, LocalizationManager.GetResource("PlainText"), ".txt");
                     if (local == null) return AsyncOperationStatus.Canceled;
@@ -163,7 +163,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
                 return AsyncOperationStatus.Canceled;
             }
-            String translation = await Task.Run(() => Brainf_ckInterpreter.TranslateToC(code.Code));
+            string translation = await Task.Run(() => Brainf_ckInterpreter.TranslateToC(code.Code));
             await FileIO.WriteTextAsync(local, translation);
             Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
             return true;
@@ -174,7 +174,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         /// </summary>
         /// <param name="code">The code to edit</param>
         /// <param name="title">The new title to assign to the code</param>
-        public async Task RenameItemAsync([NotNull] SourceCode code, [NotNull] String title)
+        public async Task RenameItemAsync([NotNull] SourceCode code, [NotNull] string title)
         {
             // Update the item in the database
             await SQLiteManager.Instance.RenameCodeAsync(code, title);

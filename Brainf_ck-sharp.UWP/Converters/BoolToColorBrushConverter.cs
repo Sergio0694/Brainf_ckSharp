@@ -12,9 +12,8 @@ namespace Brainf_ck_sharp_UWP.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            String[] colors = parameter.To<String>()?.Split('_');
-            if (colors?.Length != 2) return null;
-            return colors[value.To<bool>() ? 0 : 1].ToColor().ToBrush();
+            string[] colors = parameter.To<string>()?.Split('_');
+            return colors?.Length != 2 ? null : colors[value.To<bool>() ? 0 : 1].ToColor().ToBrush();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
