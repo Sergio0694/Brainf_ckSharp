@@ -7,7 +7,6 @@ using Brainf_ck_sharp_UWP.Messages.Actions;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
-using UICompositionAnimations.Helpers;
 
 namespace Brainf_ck_sharp_UWP.ViewModels
 {
@@ -15,9 +14,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels
     {
         // A function that retrieves the current stdin buffer to use
         [NotNull]
-        private readonly Func<String> StdinBufferExtractor;
+        private readonly Func<string> StdinBufferExtractor;
 
-        public ShellViewModel([NotNull] Func<String> stdinExtractor)
+        public ShellViewModel([NotNull] Func<string> stdinExtractor)
         {
             // General messages
             StdinBufferExtractor = stdinExtractor;
@@ -88,11 +87,6 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         }
 
         #region Parameters
-
-        /// <summary>
-        /// Gets whether or not the current device is a desktop
-        /// </summary>
-        public bool DesktopMode => ApiInformationHelper.IsDesktop;
 
         // The current overflow mode to use
         private OverflowMode _OverflowMode;
@@ -236,7 +230,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         // Retrieves the current stdin buffer and then forwards the appropriate message
         private void SendPlayRequestMessage(ScriptPlayType type)
         {
-            String stdin = StdinBufferExtractor();
+            string stdin = StdinBufferExtractor();
             Messenger.Default.Send(new PlayScriptMessage(type, stdin, _OverflowMode));
         }
 

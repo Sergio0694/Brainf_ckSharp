@@ -1,5 +1,4 @@
-﻿using System;
-using Brainf_ck_sharp.ReturnTypes;
+﻿using Brainf_ck_sharp.ReturnTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Brainf_ck_sharp.Unit
@@ -11,31 +10,31 @@ namespace Brainf_ck_sharp.Unit
         [TestMethod]
         public void Loop1()
         {
-            const String script = "[]";
-            InterpreterResult result = Brainf_ckInterpreter.Run(script, String.Empty);
+            const string script = "[]";
+            InterpreterResult result = Brainf_ckInterpreter.Run(script, string.Empty);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
                           result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
-            Assert.AreEqual(result.Output, String.Empty);
+            Assert.AreEqual(result.Output, string.Empty);
             Assert.IsTrue(result.MachineState.Current.Value == 0);
         }
 
         [TestMethod]
         public void Loop2()
         {
-            const String script = ",[-]";
+            const string script = ",[-]";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, "0");
             Assert.IsNotNull(result);
             Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
                           result.ExitCode.HasFlag(InterpreterExitCode.NoOutput));
-            Assert.AreEqual(result.Output, String.Empty);
+            Assert.AreEqual(result.Output, string.Empty);
             Assert.IsTrue(result.MachineState.Current.Value == 0);
         }
 
         [TestMethod]
         public void Loop3()
         {
-            const String script = ",[>+<-]>.";
+            const string script = ",[>+<-]>.";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, "0");
             Assert.IsNotNull(result);
             Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
@@ -47,7 +46,7 @@ namespace Brainf_ck_sharp.Unit
         [TestMethod]
         public void Loop4()
         {
-            const String script = "++[>++[>+<-]<-]>,[>+<-]>.";
+            const string script = "++[>++[>+<-]<-]>,[>+<-]>.";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, "0");
             Assert.IsNotNull(result);
             Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&
@@ -59,7 +58,7 @@ namespace Brainf_ck_sharp.Unit
         [TestMethod]
         public void Loop5()
         {
-            const String script = ",>,+[<.+>-]";
+            const string script = ",>,+[<.+>-]";
             InterpreterResult result = Brainf_ckInterpreter.Run(script, "A9");
             Assert.IsNotNull(result);
             Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Success) &&

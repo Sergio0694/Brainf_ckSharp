@@ -20,7 +20,7 @@ namespace Brainf_ck_sharp_UWP.Converters.ConsoleMemoryViewer
         /// Converts a given result to its display value
         /// </summary>
         /// <param name="section">The input result to convert</param>
-        public static String Convert(ConsoleMemoryViewerSection section)
+        public static string Convert(ConsoleMemoryViewerSection section)
         {
             switch (section)
             {

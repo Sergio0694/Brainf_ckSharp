@@ -11,7 +11,7 @@ namespace Brainf_ck_sharp_UWP.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return value.To<uint>() < 10 ? value.ToString() : (parameter.To<String>() ?? String.Empty);
+            return value.To<uint>() < 10 ? value.ToString() : (parameter.To<string>() ?? string.Empty);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

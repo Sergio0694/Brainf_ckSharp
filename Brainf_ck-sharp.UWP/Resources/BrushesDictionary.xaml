@@ -29,6 +29,16 @@
     <SolidColorBrush x:Key="ElementsWideLightBrush"/>
     <SolidColorBrush x:Key="WideLightBrushDarkShadeBackground"/>
     
+    <!--Virtual keyboard brush-->
+    <brushes:CustomAcrylicBrush
+        x:Key="KeyboardBrush"
+        Mode="HostBackdrop"
+        FallbackColor="#FF121212"
+        UnsupportedEffectFallbackColor="#FF121212"
+        Tint="#FF101010"
+        TintMix="0.9"
+        NoiseTextureUri="/Assets/Misc/noise.png"/>
+    
     <!--CommandBar/ContextMenu brush-->
     <brushes:CustomAcrylicBrush
         x:Key="InAppGrayAcrylicBrush"
@@ -36,6 +46,14 @@
         BlurAmount="8"
         Tint="#FF222222"
         TintMix="0.6"
+        NoiseTextureUri="/Assets/Misc/noise.png"/>
+
+    <!--CommandBar content brush-->
+    <brushes:CustomAcrylicBrush
+        x:Key="HostBackdropGrayAcrylicBrush"
+        Mode="HostBackdrop"
+        Tint="#FF181818"
+        TintMix="0.9"
         NoiseTextureUri="/Assets/Misc/noise.png"/>
 
     <!--ComboBox brush-->

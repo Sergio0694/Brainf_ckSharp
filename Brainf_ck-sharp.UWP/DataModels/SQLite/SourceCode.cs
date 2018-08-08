@@ -11,22 +11,22 @@ namespace Brainf_ck_sharp_UWP.DataModels.SQLite
     public class SourceCode
     {
         /// <summary>
-        /// The String representation of the Guid for the current instance
+        /// The string representation of the Guid for the current instance
         /// </summary>
         [Column(nameof(Uid)), PrimaryKey]
-        public String Uid { get; set; }
+        public string Uid { get; set; }
 
         /// <summary>
         /// Gets or sets the title of the saved code
         /// </summary>
         [Column(nameof(Title)), NotNull, Unique]
-        public virtual String Title { get; set; }
+        public virtual string Title { get; set; }
 
         /// <summary>
         /// Gets or sets the actual code stored as plain text
         /// </summary>
         [Column(nameof(Code)), NotNull]
-        public String Code { get; set; }
+        public string Code { get; set; }
 
         /// <summary>
         /// Gets or sets the creation time for the current code

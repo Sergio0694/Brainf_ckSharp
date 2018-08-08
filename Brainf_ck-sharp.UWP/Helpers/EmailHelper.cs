@@ -14,7 +14,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// <summary>
         /// Developer feedback email
         /// </summary>
-        public const String FeedbackEmail = "apps.sergiopedri@outlook.com";
+        public const string FeedbackEmail = "apps.sergiopedri@outlook.com";
 
         /// <summary>
         /// Sends a feedback email to the developer
@@ -34,11 +34,11 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// <param name="subject"></param>
         /// <param name="body">The optional body of the message</param>
         /// <param name="attachment">The optional attachment of the email message</param>
-        public static async Task<bool> SendEmail(String address, String subject = null, String body = null, StorageFile attachment = null)
+        public static async Task<bool> SendEmail(string address, string subject = null, string body = null, StorageFile attachment = null)
         {
             // Create the email message and prepare its info
             EmailMessage email = new EmailMessage();
-            if (!String.IsNullOrEmpty(address)) email.To.Add(new EmailRecipient(address));
+            if (!string.IsNullOrEmpty(address)) email.To.Add(new EmailRecipient(address));
             if (subject != null) email.Subject = subject;
             if (body != null) email.Body = body;
             if (attachment != null)

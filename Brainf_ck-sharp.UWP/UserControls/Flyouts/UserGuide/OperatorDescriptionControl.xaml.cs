@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.UI.Xaml.Controls;
+﻿using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide
@@ -14,7 +13,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide
         /// <summary>
         /// Gets or sets the operator to display on the current control
         /// </summary>
-        public String Operator
+        public string Operator
         {
             get => OperatorBlock.Text;
             set => OperatorBlock.Text = value;
@@ -32,7 +31,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide
         /// <summary>
         /// Gets or sets the description for the current operator
         /// </summary>
-        public String Description
+        public string Description
         {
             get => DescriptionBlock.Text;
             set => DescriptionBlock.Text = value;

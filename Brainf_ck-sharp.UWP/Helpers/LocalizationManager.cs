@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Windows.ApplicationModel.Resources;
 using JetBrains.Annotations;
 
@@ -20,7 +19,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// </summary>
         /// <param name="resource">The key of the resource to retrieve</param>
         [NotNull]
-        public static String GetResource([NotNull] String resource)
+        public static string GetResource([NotNull] string resource)
         {
             try
             {
@@ -32,7 +31,7 @@ namespace Brainf_ck_sharp_UWP.Helpers
 #if DEBUG
                 Debug.WriteLine($"[RESOURCE MISSING] Key: {resource}");
 #endif
-                return String.Empty;
+                return string.Empty;
             }
         }
     }

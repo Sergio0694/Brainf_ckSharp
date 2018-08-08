@@ -93,7 +93,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
         /// </summary>
         public bool PrimaryContentEnabled
         {
-            get { return _PrimaryContentEnabled; }
+            get => _PrimaryContentEnabled;
             private set
             {
                 if (_PrimaryContentEnabled != value)
@@ -216,7 +216,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] String propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

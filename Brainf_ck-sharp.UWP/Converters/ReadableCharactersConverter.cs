@@ -8,7 +8,7 @@ namespace Brainf_ck_sharp_UWP.Converters
     public class ReadableCharactersConverter : IValueConverter
     {
         // A dictionary with some substitutions for special characters to display
-        private static readonly IReadOnlyDictionary<int, String> SpecialCharactersDisplayMap = new Dictionary<int, String>
+        private static readonly IReadOnlyDictionary<int, string> SpecialCharactersDisplayMap = new Dictionary<int, string>
         {
             { 32, "SP" },
             { 127, "DEL" },
@@ -19,7 +19,7 @@ namespace Brainf_ck_sharp_UWP.Converters
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             int i = value.To<int>();
-            return SpecialCharactersDisplayMap.TryGetValue(i, out String s) 
+            return SpecialCharactersDisplayMap.TryGetValue(i, out string s) 
                 ? s 
                 : System.Convert.ToChar(i).ToString();
         }

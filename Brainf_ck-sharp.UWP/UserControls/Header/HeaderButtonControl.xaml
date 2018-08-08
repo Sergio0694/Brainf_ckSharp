@@ -18,9 +18,6 @@
             <VisualStateGroup>
                 <VisualState x:Name="Default">
                     <VisualState.Setters>
-                        <Setter 
-                            Target="SelectedRectangle.Opacity"
-                            Value="0"/>
                         <Setter
                             Target="IconBlock.Foreground"
                             Value="White"/>
@@ -34,9 +31,6 @@
                 </VisualState>
                 <VisualState x:Name="Selected">
                     <VisualState.Setters>
-                        <Setter 
-                            Target="SelectedRectangle.Opacity"
-                            Value="1"/>
                         <Setter
                             Target="IconBlock.Foreground"
                             Value="{ThemeResource SystemControlHighlightAccentBrush}"/>
@@ -60,30 +54,22 @@
         
         <!--Root-->
         <Grid x:Name="RootGrid">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="2"/>
-            </Grid.RowDefinitions>
 
             <!--Wide light border-->
             <Border
                 x:Name="BackgroundBorder"
                 Background="{StaticResource ElementsWideLightBrush}"
-                Grid.RowSpan="2"
                 Opacity="0"/>
 
             <!--Light-->
             <Border
                 Opacity="0.4"
                 x:Name="LightBorder"
-                Grid.Row="0"
-                Grid.RowSpan="2"
                 BorderThickness="1"
                 BorderBrush="{StaticResource BorderLightBrush}"/>
 
             <!--Icon and title-->
             <RelativePanel
-                Grid.Row="0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
                 <TextBlock
@@ -107,11 +93,6 @@
                     Margin="0,4,0,0"
                     Foreground="#E0FFFFFF"/>
             </RelativePanel>
-
-            <!--Selected canvas-->
-            <Canvas x:Name="SelectedRectangle"
-                    Grid.Row="1"
-                    Background="{ThemeResource SystemControlHighlightAccentBrush}"/>
         </Grid>
     </Button>
 </UserControl>

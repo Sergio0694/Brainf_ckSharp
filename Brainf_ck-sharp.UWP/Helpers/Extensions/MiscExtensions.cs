@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Windows.Foundation;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.Helpers.Extensions
@@ -31,30 +30,10 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
         }
 
         /// <summary>
-        /// Checks whether or not the area of two rectangles is the same
-        /// </summary>
-        /// <param name="this">The first rectangle to compare</param>
-        /// <param name="that">The second rectangle to compare</param>
-        public static bool ApproximateEquals(this Rect @this, Rect that)
-        {
-            return (@this.Left - that.Left).Abs() < 0.1 &&
-                   (@this.Top - that.Top).Abs() < 0.1 &&
-                   (@this.Right - that.Right).Abs() < 0.1 &&
-                   (@this.Bottom - that.Bottom).Abs() < 0.1;
-        }
-
-        /// <summary>
         /// Suppresses the warnings when calling an async method without awaiting it
         /// </summary>
         /// <param name="task">The Task returned by the async call</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Forget(this Task task) { }
-
-        /// <summary>
-        /// Suppresses the warnings when calling an async method without awaiting it
-        /// </summary>
-        /// <param name="action">The IAsyncAction returned by the async call</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Forget(this IAsyncAction action) { }
     }
 }

@@ -28,36 +28,36 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList
         /// <summary>
         /// Gets or sets the title to display in the control
         /// </summary>
-        public String Title
+        public string Title
         {
-            get => (String)GetValue(TitleProperty);
+            get => (string)GetValue(TitleProperty);
             set => SetValue(TitleProperty, value);
         }
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
-            nameof(Title), typeof(String), typeof(JumpListZoomedOutHeaderTemplate), new PropertyMetadata(default(String), OnTitlePropertyChanged));
+            nameof(Title), typeof(string), typeof(JumpListZoomedOutHeaderTemplate), new PropertyMetadata(default(string), OnTitlePropertyChanged));
 
         private static void OnTitlePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            d.To<JumpListZoomedOutHeaderTemplate>().TitleBlock.Text = e.NewValue.To<String>() ?? String.Empty;
+            d.To<JumpListZoomedOutHeaderTemplate>().TitleBlock.Text = e.NewValue.To<string>() ?? string.Empty;
         }
 
         /// <summary>
         /// Gets or sets the description of the control
         /// </summary>
-        public String Description
+        public string Description
         {
-            get => (String)GetValue(DescriptionProperty);
+            get => (string)GetValue(DescriptionProperty);
             set => SetValue(DescriptionProperty, value);
         }
 
         public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
-            nameof(Description), typeof(String), typeof(JumpListZoomedOutHeaderTemplate), 
-            new PropertyMetadata(default(String), OnDescriptionPropertyChanged));
+            nameof(Description), typeof(string), typeof(JumpListZoomedOutHeaderTemplate), 
+            new PropertyMetadata(default(string), OnDescriptionPropertyChanged));
 
         private static void OnDescriptionPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            d.To<JumpListZoomedOutHeaderTemplate>().InfoBlock.Text = e.NewValue.To<String>() ?? String.Empty;
+            d.To<JumpListZoomedOutHeaderTemplate>().InfoBlock.Text = e.NewValue.To<string>() ?? string.Empty;
         }
     }
 }

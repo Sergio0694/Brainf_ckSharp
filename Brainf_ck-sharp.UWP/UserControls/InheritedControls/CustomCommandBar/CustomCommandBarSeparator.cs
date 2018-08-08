@@ -22,8 +22,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
         /// </summary>
         public bool ExtraCondition
         {
-            get { return GetValue(ExtraConditionProperty).To<bool>(); }
-            set { SetValue(ExtraConditionProperty, value); }
+            get => GetValue(ExtraConditionProperty).To<bool>();
+            set => SetValue(ExtraConditionProperty, value);
         }
 
         public static readonly DependencyProperty ExtraConditionProperty = DependencyProperty.Register(

@@ -19,7 +19,7 @@ namespace Brainf_ck_sharp_UWP.Converters.ConsoleMemoryViewer
                 case MemoryViewerFunctionsSectionData state:
                     return $"{state.Functions.Count} {LocalizationManager.GetResource(state.Functions.Count > 1 ? "DefinedFunctions" : "DefinedFunction")}";
             }
-            return String.Empty;
+            return string.Empty;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

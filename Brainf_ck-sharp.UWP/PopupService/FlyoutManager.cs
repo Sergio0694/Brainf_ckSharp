@@ -23,7 +23,6 @@ using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
-using UICompositionAnimations.Helpers;
 using UICompositionAnimations.Lights;
 using UICompositionAnimations.XAMLTransform;
 
@@ -171,10 +170,10 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 screenHeight = ResolutionHelper.CurrentHeight,
                 maxWidth = stacked ? MaxStackedPopupWidth : MaxPopupWidth,
                 maxHeight = stacked ? MaxStackedPopupHeight : MaxPopupHeight,
-                margin = ApiInformationHelper.IsMobileDevice ? 12 : 24; // The minimum margin to the edges of the screen
+                margin = 24; // The minimum margin to the edges of the screen
 
             // Update the width first
-            if (screenWidth - margin <= maxWidth) info.Container.Width = screenWidth - (ApiInformationHelper.IsMobileDevice ? 0 : margin);
+            if (screenWidth - margin <= maxWidth) info.Container.Width = screenWidth - margin;
             else info.Container.Width = maxWidth - margin;
             info.Popup.HorizontalOffset = screenWidth / 2 - info.Container.Width / 2;
 
@@ -182,19 +181,14 @@ namespace Brainf_ck_sharp_UWP.PopupService
             if (info.DisplayMode == FlyoutDisplayMode.ScrollableContent)
             {
                 // Edge case for tiny screens not on mobile phones
-                if (!ApiInformationHelper.IsMobileDevice && screenHeight < 400)
-                {
-                    info.Container.Height = screenHeight;
-                    info.Popup.VerticalOffset = StatusBarHelper.OccludedHeight;
-                }
+                if (screenHeight < 400) info.Container.Height = screenHeight;
                 else
                 {
                     // Calculate and adjust the right popup height
-                    info.Container.Height = screenHeight - margin <= maxHeight ||                       // The expanded popup will cover the whole screen
-                                            ApiInformationHelper.IsMobileDevice && screenHeight < 860   // High-DPI phone, show a fullscreen popup anyways
-                        ? screenHeight - (ApiInformationHelper.IsMobileDevice ? 0 : margin)
+                    info.Container.Height = screenHeight - margin <= maxHeight // The expanded popup will cover the whole screen
+                        ? screenHeight - margin
                         : maxHeight;
-                    info.Popup.VerticalOffset = screenHeight / 2 - info.Container.Height / 2 + StatusBarHelper.OccludedHeight;
+                    info.Popup.VerticalOffset = screenHeight / 2 - info.Container.Height / 2;
                 }
             }
             else
@@ -203,14 +197,14 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 Size desired = info.Container.CalculateDesiredSize();
                 double height = desired.Height <= screenHeight + margin
                     ? desired.Height
-                    : screenHeight - (ApiInformationHelper.IsMobileDevice ? 0 : margin);
+                    : screenHeight - margin;
                 if (animateHeight)
                 {
                     XAMLTransformToolkit.CreateDoubleAnimation(info.Container, "Height", null, height,
                         100, EasingFunctionNames.CircleEaseOut, true).ToStoryboard().Begin();
                 }
                 else info.Container.Height = height;
-                info.Popup.VerticalOffset = (screenHeight / 2 - info.Container.Height / 2) / 2 + StatusBarHelper.OccludedHeight;
+                info.Popup.VerticalOffset = (screenHeight / 2 - info.Container.Height / 2) / 2;
             }
         }
 
@@ -225,9 +219,6 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
-
-            // Platform check
-            if (ApiInformationHelper.IsMobileDevice) return Tuple.Create<FlyoutContainer, Action>(container, null);
 
             // Lights setup
             LightsSourceHelper.SetIsLightsContainer(container, true);
@@ -249,7 +240,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// </summary>
         /// <param name="title">The title of the message</param>
         /// <param name="message">The message to show to the user</param>
-        public void Show([NotNull] String title, [NotNull] String message)
+        public void Show([NotNull] string title, [NotNull] string message)
         {
             // Prepare the message and show it inside a popup
             TextBlock block = new TextBlock
@@ -269,7 +260,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="confirm">The text to display in the confirm button</param>
         /// <param name="color">The optional override color for the confirm button</param>
         /// <param name="stack">Indicates whether or not the popup can be stacked on top of another open popup</param>
-        public async Task<FlyoutResult> ShowAsync([NotNull] String title, [NotNull] String message, [NotNull] String confirm, 
+        public async Task<FlyoutResult> ShowAsync([NotNull] string title, [NotNull] string message, [NotNull] string confirm, 
             [CanBeNull] Color? color = null, bool stack = false)
         {
             // Lock and close the existing popup, if needed
@@ -338,7 +329,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="stack">Indicates whether or not the popup can be stacked on top of another open popup</param>
         /// <param name="openCallback">An optional callback to invoke when the popup is displayed</param>
         public async Task<FlyoutResult> ShowAsync(
-            [NotNull] string title, [NotNull] FrameworkElement content, [CanBeNull] String confirm = null, 
+            [NotNull] string title, [NotNull] FrameworkElement content, [CanBeNull] string confirm = null, 
             [CanBeNull] Thickness? margin = null, FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent, 
             bool stack = false, [CanBeNull] Action openCallback = null)
         {
@@ -413,7 +404,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="stack">Indicates whether or not the popup can be stacked on top of another open popup</param>
         /// <param name="openCallback">An optional callback to invoke when the popup is displayed</param>
         public async Task<FlyoutClosedResult<TEvent>> ShowAsync<TContent, TEvent>(
-            [NotNull] String title, [NotNull] TContent content, [CanBeNull] Thickness? margin = null, 
+            [NotNull] string title, [NotNull] TContent content, [CanBeNull] Thickness? margin = null, 
             FlyoutDisplayMode mode = FlyoutDisplayMode.ScrollableContent, bool stack = false, [CanBeNull] Action openCallback = null)
             where TContent : FrameworkElement, IEventConfirmedContent<TEvent>
         {

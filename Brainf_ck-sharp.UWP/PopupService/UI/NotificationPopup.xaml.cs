@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.UI.Xaml.Controls;
+﻿using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -21,7 +20,7 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         /// <param name="icon">The icon to show next to the title</param>
         /// <param name="content">The text to show inside the notification</param>
         /// <param name="type">Indicates the kind of notification to show</param>
-        public NotificationPopup([NotNull] String title, [NotNull] String icon, [NotNull] String content, NotificationType type)
+        public NotificationPopup([NotNull] string title, [NotNull] string icon, [NotNull] string content, NotificationType type)
         {
             this.InitializeComponent();
             Root.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(

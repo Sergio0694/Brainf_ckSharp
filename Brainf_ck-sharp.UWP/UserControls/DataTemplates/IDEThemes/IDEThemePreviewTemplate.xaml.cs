@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.ApplicationModel;
+﻿using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -22,7 +21,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes
         {
             this.InitializeComponent();
             if (DesignMode.DesignModeEnabled) return;
-            String name = AppSettingsManager.Instance.GetValue<String>(nameof(AppSettingsKeys.SelectedFontName));
+            string name = AppSettingsManager.Instance.GetValue<string>(nameof(AppSettingsKeys.SelectedFontName));
             if (InstalledFont.TryGetFont(name, out InstalledFont font))
             {
                 UpdateUIOnFontFamilyChanged(font.Family);

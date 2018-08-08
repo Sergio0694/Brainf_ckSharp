@@ -16,7 +16,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         /// </summary>
         /// <param name="code">The code that's being saved or edited</param>
         /// <param name="name">The current name for the code, if it's already saved in the database</param>
-        public SaveCodePromptFlyout([NotNull] String code, [CanBeNull] String name)
+        public SaveCodePromptFlyout([NotNull] string code, [CanBeNull] string name)
         {
             Loaded += (s, e) => TitleBox.Focus(FocusState.Programmatic);
             this.InitializeComponent();
@@ -42,7 +42,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         /// <summary>
         /// Gets the current title chosen from the <see cref="TextBox"/> inside the control
         /// </summary>
-        public String Title => TitleBox.Text;
+        public string Title => TitleBox.Text;
 
         private void NameBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {

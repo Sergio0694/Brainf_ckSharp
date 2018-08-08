@@ -8,7 +8,7 @@
         /// <summary>
         /// Gets an instance that represents the result of a flyout closed without confirm
         /// </summary>
-        public static FlyoutClosedResult<T> Closed { get; } = new FlyoutClosedResult<T>(FlyoutResult.Canceled, default(T));
+        public static FlyoutClosedResult<T> Closed { get; } = new FlyoutClosedResult<T>(FlyoutResult.Canceled, default);
 
         /// <summary>
         /// Gets the inner enum value of the instance

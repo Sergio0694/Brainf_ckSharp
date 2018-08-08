@@ -15,23 +15,19 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         /// </summary>
         public Orientation Orientation
         {
-            get { return (Orientation)GetValue(OrientationProperty); }
-            set { SetValue(OrientationProperty, value); }
+            get => (Orientation)GetValue(OrientationProperty);
+            set => SetValue(OrientationProperty, value);
         }
 
         /// <summary>
         /// Identifies the <see cref="Orientation"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty OrientationProperty =
-            DependencyProperty.Register(
-                "Orientation",
-                typeof(Orientation),
-                typeof(WrapPanel),
-                new PropertyMetadata(Orientation.Horizontal, OrientationPropertyChanged));
+        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
+            nameof(Orientation), typeof(Orientation), typeof(WrapPanel), new PropertyMetadata(Orientation.Horizontal, OrientationPropertyChanged));
 
         private static void OrientationPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var wrapPanel = d as WrapPanel;
+            WrapPanel wrapPanel = d as WrapPanel;
             wrapPanel?.InvalidateMeasure();
             wrapPanel?.InvalidateArrange();
         }
@@ -39,14 +35,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         /// <inheritdoc />
         protected override Size MeasureOverride(Size availableSize)
         {
-            var totalMeasure = UvMeasure.Zero;
-            var parentMeasure = new UvMeasure(Orientation, availableSize.Width, availableSize.Height);
-            var lineMeasure = UvMeasure.Zero;
-            foreach (var child in Children)
+            UvMeasure totalMeasure = UvMeasure.Zero;
+            UvMeasure parentMeasure = new UvMeasure(Orientation, availableSize.Width, availableSize.Height);
+            UvMeasure lineMeasure = UvMeasure.Zero;
+            foreach (UIElement child in Children)
             {
                 child.Measure(availableSize);
-
-                var currentMeasure = new UvMeasure(Orientation, child.DesiredSize.Width, child.DesiredSize.Height);
+                UvMeasure currentMeasure = new UvMeasure(Orientation, child.DesiredSize.Width, child.DesiredSize.Height);
 
                 if (parentMeasure.U > currentMeasure.U + lineMeasure.U)
                 {
@@ -87,7 +82,6 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
             // this way is faster than an if condition in every loop for checking the last item
             totalMeasure.U = Math.Max(lineMeasure.U, totalMeasure.U);
             totalMeasure.V += lineMeasure.V;
-
             totalMeasure.U = Math.Ceiling(totalMeasure.U);
 
             return Orientation == Orientation.Horizontal ? new Size(totalMeasure.U, totalMeasure.V) : new Size(totalMeasure.V, totalMeasure.U);
@@ -96,13 +90,13 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         /// <inheritdoc />
         protected override Size ArrangeOverride(Size finalSize)
         {
-            var parentMeasure = new UvMeasure(Orientation, finalSize.Width, finalSize.Height);
-            var position = UvMeasure.Zero;
+            UvMeasure parentMeasure = new UvMeasure(Orientation, finalSize.Width, finalSize.Height);
+            UvMeasure position = UvMeasure.Zero;
 
             double currentV = 0;
-            foreach (var child in Children)
+            foreach (UIElement child in Children)
             {
-                var desiredMeasure = new UvMeasure(Orientation, child.DesiredSize.Width, child.DesiredSize.Height);
+                UvMeasure desiredMeasure = new UvMeasure(Orientation, child.DesiredSize.Width, child.DesiredSize.Height);
                 if ((desiredMeasure.U + position.U) > parentMeasure.U)
                 {
                     // next row!
@@ -112,14 +106,9 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
                 }
 
                 // Place the item
-                if (Orientation == Orientation.Horizontal)
-                {
-                    child.Arrange(new Rect(position.U, position.V, child.DesiredSize.Width, child.DesiredSize.Height));
-                }
-                else
-                {
-                    child.Arrange(new Rect(position.V, position.U, child.DesiredSize.Width, child.DesiredSize.Height));
-                }
+                child.Arrange(Orientation == Orientation.Horizontal
+                    ? new Rect(position.U, position.V, child.DesiredSize.Width, child.DesiredSize.Height)
+                    : new Rect(position.V, position.U, child.DesiredSize.Width, child.DesiredSize.Height));
 
                 // adjust the location for the next items
                 position.U += desiredMeasure.U;
@@ -132,7 +121,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         [System.Diagnostics.DebuggerDisplay("U = {U} V = {V}")]
         private struct UvMeasure
         {
-            internal static readonly UvMeasure Zero = default(UvMeasure);
+            internal static readonly UvMeasure Zero = default;
 
             internal double U { get; set; }
 

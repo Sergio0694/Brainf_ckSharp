@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.UI.Xaml.Controls;
+﻿using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
@@ -31,7 +30,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo.Donations
         /// <summary>
         /// Gets or sets the title of the control
         /// </summary>
-        public String PickerTitle
+        public string PickerTitle
         {
             get => this.TitleBlock.Text;
             set => this.TitleBlock.Text = value;
@@ -40,7 +39,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo.Donations
         /// <summary>
         /// Gets or sets the description of the control
         /// </summary>
-        public String PickerDescription
+        public string PickerDescription
         {
             get => this.DescriptionBlock.Text;
             set => this.DescriptionBlock.Text = value;

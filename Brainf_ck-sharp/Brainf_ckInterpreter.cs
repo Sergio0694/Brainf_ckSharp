@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -57,7 +58,7 @@ namespace Brainf_ck_sharp
         [PublicAPI]
         [Pure, NotNull]
         public static InterpreterResult Run(
-            [NotNull] String source, [NotNull] String arguments, 
+            [NotNull] string source, [NotNull] string arguments, 
             OverflowMode mode = OverflowMode.ShortNoOverflow, int size = DefaultMemorySize, int? threshold = null)
         {
             return TryRun(source, arguments, new TouringMachineState(size), new FunctionDefinition[0],  mode, threshold);
@@ -74,7 +75,7 @@ namespace Brainf_ck_sharp
         [PublicAPI]
         [Pure, NotNull]
         public static InterpreterResult Run(
-            [NotNull] String source, [NotNull] String arguments,
+            [NotNull] string source, [NotNull] string arguments,
             [NotNull] IReadonlyTouringMachineState state, OverflowMode mode = OverflowMode.ShortNoOverflow, int? threshold = null)
         {
             return Run(source, arguments, state, new FunctionDefinition[0], mode, threshold);
@@ -92,7 +93,7 @@ namespace Brainf_ck_sharp
         [PublicAPI]
         [Pure, NotNull]
         public static InterpreterResult Run(
-            [NotNull] String source, [NotNull] String arguments,
+            [NotNull] string source, [NotNull] string arguments,
             [NotNull] IReadonlyTouringMachineState state, [NotNull] IReadOnlyList<FunctionDefinition> functions, 
             OverflowMode mode = OverflowMode.ShortNoOverflow, int? threshold = null)
         {
@@ -113,21 +114,21 @@ namespace Brainf_ck_sharp
         /// <param name="threshold">An optional time threshold for the execution of the whole session</param>
         [PublicAPI]
         [Pure, NotNull]
-        public static InterpreterExecutionSession InitializeSession([NotNull] IReadOnlyList<String> source, [NotNull] String arguments,
+        public static InterpreterExecutionSession InitializeSession([NotNull] IReadOnlyList<string> source, [NotNull] string arguments,
             OverflowMode mode = OverflowMode.ShortNoOverflow, int size = DefaultMemorySize, int? threshold = null)
         {
             // Failure function
             TouringMachineState state = new TouringMachineState(size);
-            IEnumerator<InterpreterResult> GenerateFailure(InterpreterExitCode reason, String code)
+            IEnumerator<InterpreterResult> GenerateFailure(InterpreterExitCode reason, string code)
             {
                 yield return new InterpreterResult(InterpreterExitCode.Failure | reason, state, code);
             }
 
             // Find the executable code
-            IReadOnlyList<IReadOnlyList<char>> chunks = source.Select(chunk => FindExecutableCode(chunk).ToArray()).ToArray();
+            IReadOnlyList<IReadOnlyList<Brainf_ckBinaryItem>> chunks = source.Select(FindExecutableCode).ToArray();
             if (chunks.Count == 0 || chunks.Any(group => group.Count == 0))
             {
-                return new InterpreterExecutionSession(GenerateFailure(InterpreterExitCode.NoCodeInterpreted, String.Empty), null);
+                return new InterpreterExecutionSession(GenerateFailure(InterpreterExitCode.NoCodeInterpreted, string.Empty), null);
             }
 
             // Reconstruct the binary to run
@@ -137,7 +138,7 @@ namespace Brainf_ck_sharp
             for (int i = 0; i < chunks.Count; i++)
             {
                 if (i > 0) breakpoints.Add(offset);
-                executable.AddRange(chunks[i].Select(c => new Brainf_ckBinaryItem(offset++, c)));
+                executable.AddRange(chunks[i].Select(c => new Brainf_ckBinaryItem(offset++, c.Operator)));
             }
 
             // Check the code syntax
@@ -166,7 +167,7 @@ namespace Brainf_ck_sharp
         /// <returns>A wrapper class that indicates whether or not the source code is valid, and the position of the first syntax error, if there is at least one</returns>
         [PublicAPI]
         [Pure]
-        public static SyntaxValidationResult CheckSourceSyntax([NotNull] String source)
+        public static SyntaxValidationResult CheckSourceSyntax([NotNull] string source)
         {
             // Check function brackets parity
             bool open = false;
@@ -189,7 +190,7 @@ namespace Brainf_ck_sharp
             if (open) return new SyntaxValidationResult(false, position);
 
             // Prepare the inner check function
-            SyntaxValidationResult CheckSyntaxCore(String code)
+            SyntaxValidationResult CheckSyntaxCore(string code)
             {
                 // Iterate over all the characters in the source
                 int height = 0, error = 0;
@@ -234,7 +235,7 @@ namespace Brainf_ck_sharp
         /// <param name="source">The source code to analyze</param>
         [PublicAPI]
         [Pure]
-        public static bool FindOperators([NotNull] String source) => FindExecutableCode(source).Any();
+        public static bool FindOperators([NotNull] string source) => FindExecutableCode(source).Any();
 
         #endregion
 
@@ -250,14 +251,14 @@ namespace Brainf_ck_sharp
         /// <param name="mode">Indicates the desired overflow mode for the script to run</param>
         /// <param name="threshold">The optional time threshold to run the script</param>
         [Pure, NotNull]
-        private static InterpreterResult TryRun([NotNull] String source, [NotNull] String arguments,
-            [NotNull] TouringMachineState state, [NotNull] IReadOnlyList<FunctionDefinition> functions, OverflowMode mode, int? threshold)
+        private static InterpreterResult TryRun([NotNull] string source, [NotNull] string arguments,
+            [NotNull] TouringMachineState state, [NotNull] IEnumerable<FunctionDefinition> functions, OverflowMode mode, int? threshold)
         {
             // Get the operators to execute and check if the source is empty
-            IReadOnlyList<Brainf_ckBinaryItem> executable = FindExecutableCode(source).Select((c, i) => new Brainf_ckBinaryItem((uint)i, c)).ToArray();
+            IReadOnlyList<Brainf_ckBinaryItem> executable = FindExecutableCode(source);
             if (executable.Count == 0)
             {
-                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.NoCodeInterpreted, state, String.Empty);
+                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.NoCodeInterpreted, state, string.Empty);
             }
 
             // Check the code syntax
@@ -292,21 +293,22 @@ namespace Brainf_ck_sharp
         /// <param name="breakpoints">The list of breakpoints in the input source code</param>
         /// <param name="token">A <see cref="CancellationToken"/> used to signal when to bypass new breakpoints reached by the script</param>
         [Pure, NotNull]
+        [SuppressMessage("ReSharper", "AccessToModifiedClosure")] // Operations counter in nested function
         private static IEnumerator<InterpreterResult> TryRun(
-            [NotNull] IReadOnlyList<Brainf_ckBinaryItem> executable, [NotNull] String arguments,
-            [NotNull] TouringMachineState state, [NotNull] IReadOnlyList<FunctionDefinition> oldFunctions,
+            [NotNull] IReadOnlyList<Brainf_ckBinaryItem> executable, [NotNull] string arguments,
+            [NotNull] TouringMachineState state, [NotNull] IEnumerable<FunctionDefinition> oldFunctions,
             OverflowMode mode, int? threshold, [NotNull] IReadOnlyList<uint> breakpoints, CancellationToken token)
         {
             // Preliminary tests
             if (executable.Count == 0) throw new ArgumentException("The source code can't be empty");
-            if (threshold <= 0) throw new ArgumentOutOfRangeException("The threshold must be a positive value");
+            if (threshold <= 0) throw new ArgumentOutOfRangeException(nameof(threshold), "The threshold must be a positive value");
 
-            // ReSharper disable once RedundantAssignment - Local parameters
+            // Local variables
             uint operations = 0; // This actually needs to be initialized before calling the function
             Stopwatch timer = new Stopwatch();
             Queue<char> input = arguments.Length > 0 ? new Queue<char>(arguments) : new Queue<char>();
             StringBuilder output = new StringBuilder();
-            String code = executable.Select(op => op.Operator).AggregateToString(); // Original source code
+            string code = executable.Select(op => op.Operator).AggregateToString(); // Original source code
             Dictionary<uint, IReadOnlyList<Brainf_ckBinaryItem>> functions = oldFunctions.ToDictionary<FunctionDefinition, uint, IReadOnlyList<Brainf_ckBinaryItem>>(
                 f => f.Value, f => f.Body.Select(c => new Brainf_ckBinaryItem(0, c)).ToArray());
 
@@ -581,7 +583,7 @@ namespace Brainf_ck_sharp
                                 }
                                 break;
                             default:
-                                throw new ArgumentOutOfRangeException("Invalid operator");
+                                throw new ArgumentOutOfRangeException(nameof(executable), "Invalid operator");
                         }
                     }
                 } while (repeat);
@@ -610,7 +612,7 @@ namespace Brainf_ck_sharp
                     InterpreterExceptionInfo info;
                     if (data.StackFrames != null)
                     {
-                        IReadOnlyList<String> trace = data.StackFrames.Select(frame => new String(frame.Select(b => b.Operator).ToArray())).ToArray();
+                        IReadOnlyList<string> trace = data.StackFrames.Select(frame => new string(frame.Select(b => b.Operator).ToArray())).ToArray();
                         info = trace.Count > 0
                             ? new InterpreterExceptionInfo(trace, (int)data.StackFrames.First(frame => frame.Any()).Last().Offset, code)
                             : null;
@@ -621,11 +623,11 @@ namespace Brainf_ck_sharp
                     IReadOnlyList<FunctionDefinition> definitions = functions.Keys.OrderBy(key => key).Select(key =>
                     {
                         IReadOnlyList<Brainf_ckBinaryItem> blocks = functions[key];
-                        return new FunctionDefinition(key, blocks[0].Offset, new String(blocks.Select(b => b.Operator).ToArray()));
+                        return new FunctionDefinition(key, blocks[0].Offset, new string(blocks.Select(b => b.Operator).ToArray()));
                     }).ToArray();
 
                     // Return the interpreter result with all the necessary info
-                    String text = output.ToString();
+                    string text = output.ToString();
                     yield return new InterpreterResult(
                         data.ExitCode | (output.Length > 0 ? InterpreterExitCode.TextOutput : InterpreterExitCode.NoOutput), 
                         state, timer.Elapsed, text, code, data.TotalOperations,
@@ -644,7 +646,7 @@ namespace Brainf_ck_sharp
         {
             // Initial checks
             if (source.Count == 0) throw new ArgumentException("The source code is empty");
-            if (index < 0 || index > source.Count - 2) throw new ArgumentOutOfRangeException("The target index is invalid");
+            if (index < 0 || index > source.Count - 2) throw new ArgumentOutOfRangeException(nameof(index), "The target index is invalid");
             if (source[index].Operator != '[') throw new ArgumentException("The target index doesn't point to the beginning of a loop");
 
             // Iterate from the first character of the loop to the final ] operator
@@ -671,7 +673,7 @@ namespace Brainf_ck_sharp
         {
             // Initial checks
             if (source.Count == 0) throw new ArgumentException("The source code is empty");
-            if (index < 0 || index > source.Count - 2) throw new ArgumentOutOfRangeException("The target index is invalid");
+            if (index < 0 || index > source.Count - 2) throw new ArgumentOutOfRangeException(nameof(index), "The target index is invalid");
             if (source[index].Operator != '(') throw new ArgumentException("The target index doesn't point to the beginning of a function");
 
             // Iterate from the first character of the function to the final operator
@@ -690,10 +692,11 @@ namespace Brainf_ck_sharp
         /// Extracts the valid operators from a raw source code
         /// </summary>
         /// <param name="source">The input source code</param>
-        [NotNull, LinqTunnel]
-        private static IEnumerable<char> FindExecutableCode([NotNull] String source) => from c in source
-                                                                                        where Operators.Contains(c)
-                                                                                        select c;
+        [Pure, NotNull]
+        private static IReadOnlyList<Brainf_ckBinaryItem> FindExecutableCode([NotNull] string source) => (
+            from c in source
+            where Operators.Contains(c)
+            select c).Select((c, i) => new Brainf_ckBinaryItem((uint) i, c)).ToArray();
 
         /// <summary>
         /// Checks whether or not the syntax in the input operators is valid
@@ -728,28 +731,72 @@ namespace Brainf_ck_sharp
         /// <param name="size">The size of the memory to use in the resulting code</param>
         [PublicAPI]
         [Pure, NotNull]
-        public static String TranslateToC([NotNull] String source, int size = DefaultMemorySize)
+        public static string TranslateToC([NotNull] string source, int size = DefaultMemorySize)
         {
             // Arguments check
-            if (size <= 0) throw new ArgumentOutOfRangeException("The input size is not valid");
-            if (source.Any(c => c == '(' || c == ')' || c == ':'))
-            {
-                throw new ArgumentException("The C translation function isn't supported when using PBrain operators");
-            }
-            SyntaxValidationResult validationResult = CheckSourceSyntax(source);
-            if (!validationResult.Valid) throw new ArgumentException("The input source code isn't valid");
+            if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size), "The input size is not valid");
+            if (!CheckSourceSyntax(source).Valid) throw new ArgumentException("The input source code isn't valid");
 
             // Get the operators sequence and initialize the builder
-            source = Regex.Replace(source, ",{2,}", "."); // Optimize repeated , operators with a single operator
-            IReadOnlyList<char> executable = FindExecutableCode(source).ToArray();
+            bool pbrains = source.Any(c => c == '(' || c == ')' || c == ':');
+            IReadOnlyList<Brainf_ckBinaryItem> executable = FindExecutableCode(source);
             StringBuilder builder = new StringBuilder();
 
             // Prepare the header
-            builder.Append($"#include <stdio.h>\n\nint main() {{\n\tchar array[{size}] = {{ 0 }};\n\tchar* ptr = array;\n");
+            builder.Append("#include <stdio.h>\n\n" +
+                           $"char array[{size}] = {{ 0 }};\n" +
+                           "char* ptr = array;\n");
 
+            // Functions setup
+            if (pbrains)
+            {
+                builder.Append("void (*functions[255])();\n");
+                foreach (IReadOnlyList<Brainf_ckBinaryItem> function in executable.Where(op => op.Operator == '(').Select(op => ExtractFunction(executable, (int)op.Offset).ToArray()))
+                {
+                    builder.Append($"\nvoid f_{function[0].Offset - 1}() {{\n"); // Each function has the format f_{position of ( operator}
+                    AppendCode(builder, function);
+                    builder.Append("}\n");
+                }
+            }
+
+            // Write the main body
+            builder.Append("\nint main() {\n");
+            AppendCode(builder, pbrains ? MainParser(executable) : executable);
+
+            // Add the final statement and return the translated source
+            builder.Append("\treturn 0;\n}");
+            return builder.ToString();
+        }
+
+        /// <summary>
+        /// Extracts the body of the main function for the input script, including the ( operators for each declared function
+        /// </summary>
+        /// <param name="executable">The source script code to analyze</param>
+        private static IEnumerable<Brainf_ckBinaryItem> MainParser([NotNull] IEnumerable<Brainf_ckBinaryItem> executable)
+        {
+            bool function = false;
+            foreach (Brainf_ckBinaryItem item in executable)
+            {
+                if (item.Operator == '(')
+                {
+                    yield return item;
+                    function = true;
+                }
+                else if (item.Operator == ')') function = false;
+                else if (!function) yield return item;
+            }
+        }
+
+        /// <summary>
+        /// Appends the C translation of the input code snippet to the target <see cref="StringBuilder"/> instance
+        /// </summary>
+        /// <param name="builder">The <see cref="StringBuilder"/> to use to write the new C code</param>
+        /// <param name="executable">The source code snippet to translate</param>
+        private static void AppendCode([NotNull] StringBuilder builder, [NotNull] IEnumerable<Brainf_ckBinaryItem> executable)
+        {
             // Local function to get the right tabs for each indented line
             int depth = 1;
-            String GetTabs(int count)
+            string GetTabs(int count)
             {
                 StringBuilder tabBuilder = new StringBuilder();
                 while (count-- > 0) tabBuilder.Append('\t');
@@ -757,9 +804,9 @@ namespace Brainf_ck_sharp
             }
 
             // Convert the source
-            foreach (char c in executable)
+            foreach (Brainf_ckBinaryItem c in executable)
             {
-                switch (c)
+                switch (c.Operator)
                 {
                     case '>':
                         builder.Append($"{GetTabs(depth)}++ptr;\n");
@@ -785,12 +832,14 @@ namespace Brainf_ck_sharp
                     case ']':
                         builder.Append($"{GetTabs(--depth)}}}\n");
                         break;
+                    case '(':
+                        builder.Append($"{GetTabs(depth)}functions[*ptr] = &f_{c.Offset};\n");
+                        break;
+                    case ':':
+                        builder.Append($"{GetTabs(depth)}functions[*ptr]();\n");
+                        break;
                 }
             }
-
-            // Add the final statement and return the translated source
-            builder.Append("\treturn 0;\n}");
-            return builder.ToString();
         }
 
         #endregion

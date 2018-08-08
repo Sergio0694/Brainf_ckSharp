@@ -20,7 +20,7 @@ namespace Brainf_ck_sharp_UWP.Converters.IDEResults
         /// Converts a given result to its display value
         /// </summary>
         /// <param name="section">The input result to convert</param>
-        public static String Convert(IDEResultSection section)
+        public static string Convert(IDEResultSection section)
         {
             switch (section)
             {

@@ -24,7 +24,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
         /// <summary>
         /// Gets or sets the icon to show on the button
         /// </summary>
-        public String Icon
+        public string Icon
         {
             get => IconBlock.Text;
             set => IconBlock.Text = value;

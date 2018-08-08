@@ -3,9 +3,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using UICompositionAnimations;
-using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
-using UICompositionAnimations.Helpers;
 using UICompositionAnimations.Helpers.PointerEvents;
 
 namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
@@ -23,9 +21,6 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
 
         public LightBorderAndBackgroundOverlay()
         {
-            // Platform test
-            if (ApiInformationHelper.IsMobileDevice) return;
-
             // UI initialization
             _LightBackground = new Border { Opacity = 0 };
             _LightBorder = new Border { BorderThickness = new Thickness(1), Opacity = 0.4 };
@@ -58,7 +53,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="LightingBrush"/> to use as the reveal highlight border effect
+        /// Gets or sets the <see cref="UICompositionAnimations.Brushes.LightingBrush"/> to use as the reveal highlight border effect
         /// </summary>
         public Brush LightBorderBrush
         {
@@ -70,7 +65,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="LightingBrush"/> to use as the reveal highlight hover background effect
+        /// Gets or sets the <see cref="UICompositionAnimations.Brushes.LightingBrush"/> to use as the reveal highlight hover background effect
         /// </summary>
         public Brush LightBackgroundBrush
         {
@@ -91,8 +86,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
         /// </summary>
         public bool LightsEnabled
         {
-            get { return GetValue(LightsEnabledProperty).To<bool>(); }
-            set { SetValue(LightsEnabledProperty, value); }
+            get => GetValue(LightsEnabledProperty).To<bool>();
+            set => SetValue(LightsEnabledProperty, value);
         }
 
         public static readonly DependencyProperty LightsEnabledProperty = DependencyProperty.Register(

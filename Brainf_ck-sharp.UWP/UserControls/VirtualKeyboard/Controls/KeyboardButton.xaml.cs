@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
@@ -25,7 +24,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
         /// <summary>
         /// Gets or sets the operator to show on the button
         /// </summary>
-        public String Text
+        public string Text
         {
             get => OperatorBlock.Text;
             set => OperatorBlock.Text = value;
@@ -34,7 +33,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
         /// <summary>
         /// Gets or sets the description of the button
         /// </summary>
-        public String Description
+        public string Description
         {
             get => InfoBlock.Text;
             set => InfoBlock.Text = value;
