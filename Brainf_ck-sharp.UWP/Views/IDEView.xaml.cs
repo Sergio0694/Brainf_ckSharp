@@ -787,8 +787,8 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Single character entered
             bool textChanged = false;
-            if (text.Length == _PreviousText.Length + 1 ||                                  // Single character added
-                _PreviousSelectionLength > 0 && EditBox.Document.Selection.Length == 0)     // Long text selected replaced with a single char
+            if (text.Length == _PreviousText.Length + 1 ||                                                              // Single character added
+                _PreviousSelectionLength > 0 && EditBox.Document.Selection.Length == 0 && !_PreviousText.Equals(text))  // Long text selected replaced with a single char
             {
                 // Unsubscribe from the text events and batch the updates
                 EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
