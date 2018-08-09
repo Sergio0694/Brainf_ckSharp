@@ -219,6 +219,7 @@
     <Compile Include="Messages\IDEStatus\BreakpointErrorStatusChangedMessage.cs" />
     <Compile Include="Messages\OverflowModeChangedMessage.cs" />
     <Compile Include="Messages\UI\BlurModeChangedMessage.cs" />
+    <Compile Include="Messages\UI\IDEDisplayRequestMessage.cs" />
     <Compile Include="Messages\UI\IDESettingsChangedMessage.cs" />
     <Compile Include="Messages\UI\IDEThemePreviewFontChangedMessage.cs" />
     <Compile Include="Messages\UI\PBrainButtonsVisibilityChangedMessage.cs" />

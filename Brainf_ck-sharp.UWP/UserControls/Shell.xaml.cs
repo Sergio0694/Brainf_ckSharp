@@ -71,6 +71,9 @@ namespace Brainf_ck_sharp_UWP.UserControls
             {
                 HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(m.BlurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
             });
+
+            // Other messages
+            Messenger.Default.Register<IDEDisplayRequestMessage>(this, _ => PivotControl.SelectedIndex = 1);
         }
 
         public ShellViewModel ViewModel => DataContext.To<ShellViewModel>();

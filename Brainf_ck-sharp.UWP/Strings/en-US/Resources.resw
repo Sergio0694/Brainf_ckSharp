@@ -819,4 +819,10 @@ This way he'll be able to help you!</value>
   <data name="PurchaseErrorBody" xml:space="preserve">
     <value>Something went wrong while trying to complete the purchase, try again later</value>
   </data>
+  <data name="CodeNotFoundBody" xml:space="preserve">
+    <value>The requested code is not present in the roaming database, try again later</value>
+  </data>
+  <data name="CodeNotFoundTitle" xml:space="preserve">
+    <value>Code not found</value>
+  </data>
 </root>

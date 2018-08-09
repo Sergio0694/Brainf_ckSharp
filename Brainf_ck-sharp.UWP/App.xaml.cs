@@ -1,12 +1,18 @@
-﻿using Microsoft.HockeyApp;
+﻿using System.Text.RegularExpressions;
+using Microsoft.HockeyApp;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Brainf_ck_sharp_UWP.DataModels.SQLite;
+using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
+using Brainf_ck_sharp_UWP.Messages.UI;
+using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.Resources;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.UserControls;
@@ -54,44 +60,77 @@ namespace Brainf_ck_sharp_UWP
             Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "en-US";
 #endif
 
-            // Initialize the window content
-            if (!(Window.Current.Content is Shell))
-            {
-                // Settings
-                AppSettingsManager.Instance.InitializeSettings();
-                AppSettingsManager.Instance.IncrementStartupsCount();
-
-                // Initialize the UI
-                BrushResourcesManager.InitializeOrRefreshInstance();
-                LightsSourceHelper.Initialize(
-                    () => new PointerPositionSpotLight { Shade = 0x60 },
-                    () => new PointerPositionSpotLight
-                    {
-                        IdAppendage = "[Wide]",
-                        Z = 30,
-                        Shade = 0x10
-                    });
-                Shell shell = new Shell();
-                LightsSourceHelper.SetIsLightsContainer(shell, true);
-
-                // Handle the UI
-                TitleBarHelper.StyleAppTitleBar();
-
-                // Setup the view mode
-                ApplicationView view = ApplicationView.GetForCurrentView();
-                view.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseVisible);
-
-                // Enable the key listener
-                KeyEventsListener.IsEnabled = true;
-                Window.Current.Content = shell;
-
-                // Sync the roaming source codes
-                Task.Run(() => SQLiteManager.Instance.TrySyncSharedCodesAsync());
-
-                // Additional setup steps
-                TimelineManager.IsEnabled = true;
-            }
+            InitializeUI();
             Window.Current.Activate();
+        }
+
+        /// <inheritdoc cref="Application"/>
+        protected override async void OnActivated(IActivatedEventArgs e)
+        {
+            // UI setup
+            InitializeUI();
+            Window.Current.Activate();
+
+            // Handle the requested code
+            if (e.Kind == ActivationKind.Protocol && e is ProtocolActivatedEventArgs args && args.Uri.Host.Equals("ide"))
+            {
+                Match match = Regex.Match(args.Uri.Query, "id=([0-9a-f-]{36})");
+                if (match.Success)
+                {
+                    Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
+                    Messenger.Default.Send(new IDEDisplayRequestMessage());
+                    await SQLiteManager.Instance.TrySyncSharedCodesAsync();
+                    CategorizedSourceCode code = await SQLiteManager.Instance.TryLoadSavedCodeAsync(match.Groups[1].Value);
+                    if (code != null) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(code));
+                    else
+                    {
+                        Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
+                        NotificationsManager.Instance.ShowDefaultErrorNotification(LocalizationManager.GetResource("CodeNotFoundTitle"), LocalizationManager.GetResource("CodeNotFoundBody"));
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Initializes the window content, if necessary
+        /// </summary>
+        private void InitializeUI()
+        {
+            if (Window.Current.Content is Shell) return;
+            
+            // Settings
+            AppSettingsManager.Instance.InitializeSettings();
+            AppSettingsManager.Instance.IncrementStartupsCount();
+
+            // Initialize the UI
+            BrushResourcesManager.InitializeOrRefreshInstance();
+            LightsSourceHelper.Initialize(
+                () => new PointerPositionSpotLight { Shade = 0x60 },
+                () => new PointerPositionSpotLight
+                {
+                    IdAppendage = "[Wide]",
+                    Z = 30,
+                    Shade = 0x10
+                });
+            Shell shell = new Shell();
+            LightsSourceHelper.SetIsLightsContainer(shell, true);
+
+            // Handle the UI
+            TitleBarHelper.StyleAppTitleBar();
+
+            // Setup the view mode
+            ApplicationView view = ApplicationView.GetForCurrentView();
+            view.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseVisible);
+
+            // Enable the key listener
+            KeyEventsListener.IsEnabled = true;
+            Window.Current.Content = shell;
+
+            // Sync the roaming source codes
+            Task.Run(() => SQLiteManager.Instance.TrySyncSharedCodesAsync());
+
+            // Additional setup steps
+            TimelineManager.IsEnabled = true;
         }
 
         /// <summary>
