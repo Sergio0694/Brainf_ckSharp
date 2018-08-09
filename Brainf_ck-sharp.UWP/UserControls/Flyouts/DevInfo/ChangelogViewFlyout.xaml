@@ -15,10 +15,9 @@
         
         <!--Changelog entry style-->
         <Style TargetType="TextBlock" x:Key="ChangelogStyle">
-            <Setter Property="FontWeight" Value="SemiLight"/>
             <Setter Property="Foreground" Value="#FFF0F0F0"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="12,4,16,0"/>
+            <Setter Property="Margin" Value="12,0,16,0"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
 

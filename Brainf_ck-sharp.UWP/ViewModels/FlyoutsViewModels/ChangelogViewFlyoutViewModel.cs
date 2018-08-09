@@ -33,8 +33,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 CreateChangelogEntry("3.0.0.0", 2018, 8, 16, new List<string>
                 {
                     "App rebuilt for Windows 10 April Update",
-                    "Added support for TAB/SHIFT + TAB to indent the current selection",
-                    "Added ability to export C code for scripts using the PBrain operators",
+                    "Added support for TAB and SHIFT + TAB to indent the current selection in the IDE",
+                    "Enabled export C code for scripts with PBrain operators",
                     "Added a debugging section to the user guide",
                     "UI improvements, more fluent design effects",
                     "Code tweaks and bug fixes"
@@ -73,7 +73,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                     "It is now possible to use the TAB key in the IDE",
                     "Added a small icon in the bottom bar to indicate if the current document has unsaved changes",
                     "Added a Ctrl + S keyboard shortcut to quickly save the code in the IDE",
-                    "UI improvements when running the app on a high-DPI screen",
+                    "UI improvements when running on a high-DPI screen",
                     "Memory and performance improvements",
                     "Minor bug fixes and UI adjustments"
                 }),
@@ -88,7 +88,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 }),
                 CreateChangelogEntry("1.1.1.0", 2017, 7, 8, new List<string>
                 {
-                    "Added a button to delete the previous character in the IDE",
+                    "Added a button to delete a character in the IDE",
                     "It is no longer possible to try to run code with a syntax error from the IDE",
                     "Fixed an issue that was causing the save button to be disabled when navigating away and then back into the IDE",
                     "Minor UI tweaks and performance improvements"
