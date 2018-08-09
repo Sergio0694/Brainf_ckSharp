@@ -946,6 +946,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Code not found</source>
           <target state="translated">Codice non trovato</target>
         </trans-unit>
+        <trans-unit id="TimelineSupportTitle.Text" translate="yes" xml:space="preserve">
+          <source>Log activities in the Timeline</source>
+          <target state="new">Log activities in the Timeline</target>
+        </trans-unit>
       </group>
     </body>
   </file>

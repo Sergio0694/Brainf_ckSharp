@@ -62,6 +62,9 @@ namespace Brainf_ck_sharp_UWP
 
             InitializeUI();
             Window.Current.Activate();
+
+            // Additional setup steps
+            if (AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.EnableTimeline))) TimelineManager.IsEnabled = true;
         }
 
         /// <inheritdoc cref="Application"/>
@@ -128,9 +131,6 @@ namespace Brainf_ck_sharp_UWP
 
             // Sync the roaming source codes
             Task.Run(() => SQLiteManager.Instance.TrySyncSharedCodesAsync());
-
-            // Additional setup steps
-            TimelineManager.IsEnabled = true;
         }
 
         /// <summary>

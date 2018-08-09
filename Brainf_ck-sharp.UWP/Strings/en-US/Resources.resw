@@ -825,4 +825,7 @@ This way he'll be able to help you!</value>
   <data name="CodeNotFoundTitle" xml:space="preserve">
     <value>Code not found</value>
   </data>
+  <data name="TimelineSupportTitle.Text" xml:space="preserve">
+    <value>Log activities in the Timeline</value>
+  </data>
 </root>
