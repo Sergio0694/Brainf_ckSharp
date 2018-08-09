@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.UserActivities;
@@ -37,6 +41,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
                 if (_IsEnabled != value)
                 {
                     if (_Instance != null) Messenger.Default.Unregister(_Instance);
+                    if (!value) UserActivityChannel.GetDefault().DeleteAllActivitiesAsync().AsTask().Forget();
                     _Instance = value ? new TimelineManager() : null;
                     _IsEnabled = value;
                 }
@@ -62,7 +67,25 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
                 else if (m.Code.Type != SavedSourceCodeType.Sample) LogUserSessionAsync(m.Code.Code).Forget();
             });
         }
-        
+
+        /// <summary>
+        /// Gets the collection of background images to use for the adaptive cards
+        /// </summary>
+        [NotNull, ItemNotNull]
+        private static readonly IReadOnlyList<string> BackgroundImages = new[]
+        {
+            "https://i.imgur.com/PBramWx.png",
+            "https://i.imgur.com/Ibcyqz2.png",
+            "https://i.imgur.com/s2ATSPZ.png",
+            "https://i.imgur.com/6FaipLq.png",
+            "https://i.imgur.com/886BaOq.png",
+            "https://i.imgur.com/M01vWBf.png",
+            "https://i.imgur.com/LEtGjHa.png",
+            "https://i.imgur.com/V5sw76e.png",
+            "https://i.imgur.com/ElimxNR.png",
+            "https://i.imgur.com/RB0bOD5.png"
+        };
+
         /// <summary>
         /// Logs a new activity, or updates the existing one, for the input saved code
         /// </summary>
@@ -80,10 +103,19 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
             activity.ActivationUri = new Uri($"brainf-ck://ide?id={code.Uid}");
             activity.VisualElements.DisplayText = "title";
 
+            // Get the image URL
+            string url;
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] hash = md5.ComputeHash(Encoding.UTF8.GetBytes(code.Uid));
+                int ones = hash.Sum(b => Convert.ToString(b, 2).ToCharArray().Count(c => c == '1'));
+                url = BackgroundImages[ones % BackgroundImages.Count];
+            }
+
             // Create the adaptive card
             StorageFile cardFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri($"ms-appx:///Assets/AdaptiveCards/SavedCodeCard.json"));
             string cardText = (await FileIO.ReadTextAsync(cardFile))
-                .Replace("{BACKGROUND}", "https://i.imgur.com/yA7x4Ml.jpg")
+                .Replace("{BACKGROUND}", url)
                 .Replace("{TITLE}", code.Title);
             activity.VisualElements.Content = AdaptiveCardBuilder.CreateAdaptiveCardFromJson(cardText);
 
@@ -91,7 +123,6 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
             await activity.SaveAsync();
             _Session = activity.CreateSession();
             ActivitySemaphore.Release();
-
         }
     }
 }
