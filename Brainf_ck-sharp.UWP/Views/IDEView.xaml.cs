@@ -1285,7 +1285,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     RenderTransform = new TranslateTransform
                     {
                         X = 3,
-                        Y = _Top + 12 + offset
+                        Y = _Top + 10 + offset
                     }
                 };
                 BreakpointsCanvas.Children.Add(ellipse);
@@ -1293,7 +1293,7 @@ namespace Brainf_ck_sharp_UWP.Views
 
                 // Line highlight
                 (double x, _, double width) = CalculateBreakpointCoordinates(text, start);
-                Rect rect = new Rect(x, _Top + 12 + offset + _BreakpointsLineOffset, width, _ApproximateLineHeight);
+                Rect rect = new Rect(x, _Top + 10 + offset + _BreakpointsLineOffset, width, _ApproximateLineHeight);
                 Guid guid = Guid.NewGuid();
                 BreakpointLinesCoordinates.Add(guid, rect);
                 BracketGuidesCanvas.Invalidate();
