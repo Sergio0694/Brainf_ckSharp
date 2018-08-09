@@ -1,0 +1,97 @@
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.UserActivities;
+using Windows.Storage;
+using Windows.UI.Shell;
+using Brainf_ck_sharp_UWP.DataModels.SQLite;
+using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
+using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using GalaSoft.MvvmLight.Messaging;
+using JetBrains.Annotations;
+
+namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
+{
+    /// <summary>
+    /// A <see langword="class"/> that saves and manages user activities for the app
+    /// </summary>
+    public sealed class TimelineManager
+    {
+        #region Public APIs
+
+        // The active instance, if present
+        [CanBeNull]
+        private static TimelineManager _Instance;
+
+        private static bool _IsEnabled;
+
+        /// <summary>
+        /// Gets or sets whether or not the <see cref="TimelineManager"/> instance is currently logging user activities
+        /// </summary>
+        public static bool IsEnabled
+        {
+            get => _IsEnabled;
+            set
+            {
+                if (_IsEnabled != value)
+                {
+                    if (_Instance != null) Messenger.Default.Unregister(_Instance);
+                    _Instance = value ? new TimelineManager() : null;
+                    _IsEnabled = value;
+                }
+            }
+        }
+
+        #endregion
+
+        // The synchronization semaphore to create and manage user activities
+        [NotNull]
+        private readonly SemaphoreSlim ActivitySemaphore = new SemaphoreSlim(1);
+
+        // The current activity in use
+        [CanBeNull]
+        private UserActivitySession _Session;
+
+        // Builds a new instance and subscribes to the required messages
+        private TimelineManager()
+        {
+            Messenger.Default.Register<WorkingSourceCodeChangedMessage>(this, m =>
+            {
+                if (m.Code == null) _Session?.Dispose();
+                else if (m.Code.Type != SavedSourceCodeType.Sample) LogUserSessionAsync(m.Code.Code).Forget();
+            });
+        }
+        
+        /// <summary>
+        /// Logs a new activity, or updates the existing one, for the input saved code
+        /// </summary>
+        /// <param name="code">The <see cref="SourceCode"/> instance the user is currently working on</param>
+        private async Task LogUserSessionAsync([NotNull] SourceCode code)
+        {
+            // Lock
+            await ActivitySemaphore.WaitAsync();
+
+            // Get the default channel and create the activity
+            UserActivityChannel channel = UserActivityChannel.GetDefault();
+            UserActivity activity = await channel.GetOrCreateUserActivityAsync(code.Uid);
+
+            // Set the deep-link and the title
+            activity.ActivationUri = new Uri($"brainf-ck://ide?id={code.Uid}");
+            activity.VisualElements.DisplayText = "title";
+
+            // Create the adaptive card
+            StorageFile cardFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri($"ms-appx:///Assets/AdaptiveCards/SavedCodeCard.json"));
+            string cardText = (await FileIO.ReadTextAsync(cardFile))
+                .Replace("{BACKGROUND}", "https://i.imgur.com/yA7x4Ml.jpg")
+                .Replace("{TITLE}", code.Title);
+            activity.VisualElements.Content = AdaptiveCardBuilder.CreateAdaptiveCardFromJson(cardText);
+
+            // Save to activity feed.
+            await activity.SaveAsync();
+            _Session = activity.CreateSession();
+            ActivitySemaphore.Release();
+
+        }
+    }
+}

@@ -1,0 +1,22 @@
+﻿{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "backgroundImage": "{BACKGROUND}",
+  "body": [
+    {
+      "type": "Container",
+      "seperation": "None",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "{TITLE}",
+          "weight": "bolder",
+          "size": "large",
+          "wrap": true,
+          "maxLines": 3
+        }
+      ]
+    }
+  ]
+}

@@ -204,6 +204,7 @@
     <Compile Include="Helpers\Settings\SettingSaveMode.cs" />
     <Compile Include="Helpers\StorageHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\ShareCharmsHelper.cs" />
+    <Compile Include="Helpers\WindowsAPIs\TimelineManager.cs" />
     <Compile Include="Messages\Actions\DebugStatusChangedMessage.cs" />
     <Compile Include="Messages\Actions\IDEAutosaveTriggeredMessage.cs" />
     <Compile Include="Messages\Actions\IDEDeleteCharacterRequestMessage.cs" />
@@ -212,6 +213,7 @@
     <Compile Include="Messages\Actions\SaveButtonsEnabledStatusChangedMessage.cs" />
     <Compile Include="Messages\Actions\VirtualArrowKeyPressedMessage.cs" />
     <Compile Include="Messages\IDEStatus\IDEPendingChangesStatusChangedMessage.cs" />
+    <Compile Include="Messages\IDEStatus\WorkingSourceCodeChangedMessage.cs" />
     <Compile Include="Messages\UI\AppLoadingStatusChangedMessage.cs" />
     <Compile Include="Messages\Flyouts\NotificationCloseRequestmessage.cs" />
     <Compile Include="Messages\IDEStatus\BreakpointErrorStatusChangedMessage.cs" />
@@ -528,6 +530,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Misc\SourceCodesTemplateDatabase.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\AdaptiveCards\SavedCodeCard.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Connected Services\HockeyApp\ConnectedService.json" />

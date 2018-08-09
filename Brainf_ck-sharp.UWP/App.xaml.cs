@@ -87,6 +87,9 @@ namespace Brainf_ck_sharp_UWP
 
                 // Sync the roaming source codes
                 Task.Run(() => SQLiteManager.Instance.TrySyncSharedCodesAsync());
+
+                // Additional setup steps
+                TimelineManager.IsEnabled = true;
             }
             Window.Current.Activate();
         }
