@@ -200,6 +200,14 @@ namespace Brainf_ck_sharp_UWP.UserControls
             SharedCommandBar.SwitchContent(index == 0);
             Console.ViewModel.IsEnabled = index == 0;
             IDE.ViewModel.IsEnabled = index == 1;
+
+            // UI adjustments on page change
+            if (index == 1)
+            {
+                StdinHeader.SetMemoryViewButtonIsEnabledProperty(false);
+                if (CommandsPivot.SelectedIndex == 1) CommandsPivot.SelectedIndex = 0;
+            }
+            else StdinHeader.SetMemoryViewButtonIsEnabledProperty(true);
         }
 
         /// <summary>
