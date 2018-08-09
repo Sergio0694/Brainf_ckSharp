@@ -27,6 +27,7 @@ namespace Brainf_ck_sharp_UWP.Converters.UserGuide
                 case UserGuideSection.Introduction: return LocalizationManager.GetResource("UserGuideIntroduction");
                 case UserGuideSection.Samples: return LocalizationManager.GetResource("UserGuideCodeSamples");
                 case UserGuideSection.PBrain: return LocalizationManager.GetResource("UserGuidePBrainExtensions");
+                case UserGuideSection.Debugging: return "Debugging";
                 default: return string.Empty;
             }
         }

@@ -30,16 +30,13 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             // Create the output collection
             return new List<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<string>>>
             {
-                CreateChangelogEntry("3.0.1.0", 2018, 9, 1, new List<string>
-                {
-                    "UI improvements and bug fixes"
-                }),
-                CreateChangelogEntry("3.0.0.0", 2018, 8, 10, new List<string>
+                CreateChangelogEntry("3.0.0.0", 2018, 8, 16, new List<string>
                 {
                     "App rebuilt for Windows 10 April Update",
                     "Added support for TAB/SHIFT + TAB to indent the current selection",
                     "Added ability to export C code for scripts using the PBrain operators",
-                    "UI improvements with more fluent design effects",
+                    "Added a debugging section to the user guide",
+                    "UI improvements, more fluent design effects",
                     "Code tweaks and bug fixes"
                 }),
                 CreateChangelogEntry("2.0.1.0", 2017, 11, 10, new List<string>

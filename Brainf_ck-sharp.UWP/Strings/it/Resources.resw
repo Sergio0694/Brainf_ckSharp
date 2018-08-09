@@ -616,19 +616,16 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
     <value>In molte situazioni è utile salvare una copia della cella attuale, per poter effettuare operazioni con il suo valore senza perdere il riferimento dello stato originario della cella di memoria.</value>
   </data>
   <data name="GuideSamples5.Text" xml:space="preserve">
-    <value>A questo fine, è possibile creare due copie separate del valore attuale, resettando la cella attuale, e successivamente spostare la seconda copia indietro nella posizione della cella iniziale, per ottenere il valore originario e una copia nella cella successiva.</value>
+    <value>A questo fine, è possibile creare due copie separate del valore attuale, resettando la cella attuale, e successivamente spostare la seconda copia indietro nella posizione della cella iniziale, per ottenere il valore originario e una copia nella cella successiva:</value>
   </data>
   <data name="GuideSamples6.Text" xml:space="preserve">
-    <value>Tutte queste tecniche possono essere combinate per scrivere programmi più complessi.</value>
+    <value>Tutte queste tecniche possono essere combinate per scrivere programmi più complessi. È una buona idea cercare di ottimizzare gli script al fine di effettuare meno operazioni possibile — questo generalmente significa anche che il codice finale sarà più corto e più facile da comprendere.</value>
   </data>
   <data name="GuideSamples7.Text" xml:space="preserve">
-    <value>È una buona idea cercare di ottimizzare gli script al fine di effettuare meno operazioni possibile — questo generalmente significa anche che il codice finale sarà più corto e più facile da comprendere.</value>
+    <value>In questo esempio, per stampare la parola "Hello" saranno utilizzati due cicli per settare due celle di memoria a valori prossimi a quelli dei caratteri da stampare. È decisamente meglio un approccio simile rispetto a ripetere l'operatore + 72 volte solo per stampare il carattere "H":</value>
   </data>
   <data name="GuideSamples8.Text" xml:space="preserve">
-    <value>In questo esempio, per stampare la parola "Hello" saranno utilizzati due cicli per settare due celle di memoria a valori prossimi a quelli dei caratteri da stampare. È decisamente meglio un approccio simile rispetto a ripetere l'operatore + 72 volte solo per stampare il carattere "H".</value>
-  </data>
-  <data name="GuideSamples9.Text" xml:space="preserve">
-    <value>Questo script setta le celle #2 e #3 ai valori più vicini a quelli dei caratteri che saranno stampati dal programma, in modo che siano necessarie meno operazioni possibile per raggiungere i valori che saranno effettivamente mostrati all'utente.</value>
+    <value>Questo script setta le celle #2 e #3 ai valori più vicini a quelli dei caratteri che saranno stampati dal programma, in modo che siano necessarie meno operazioni per raggiungere i valori che verranno effettivamente mostrati all'utente.</value>
   </data>
   <data name="GuideSampleSimpleLoopComment1.Text" xml:space="preserve">
     <value>Copia nelle celle #1 e #2</value>
@@ -710,5 +707,35 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   </data>
   <data name="63156CB7-1BD1-46EA-A705-AC2ADD4A5F11" xml:space="preserve">
     <value>Header commentato</value>
+  </data>
+  <data name="DebuggingDescription" xml:space="preserve">
+    <value>Trova errori più facilmente</value>
+  </data>
+  <data name="GuideDebuggingComment1" xml:space="preserve">
+    <value>Stop al primo operatore nel loop</value>
+  </data>
+  <data name="GuideBreakpointTitle.Text" xml:space="preserve">
+    <value>Break all'interno di un loop</value>
+  </data>
+  <data name="GuideDebugging1.Text" xml:space="preserve">
+    <value>Ti sei chiesto a cosa serva quella barra grigia a sinistra? Puoi farci click sopra per aggiungere un breakpoint alla linea di codice corrispondente. Questo rende più facile lavorare su script di grandi dimensioni, perché un breakpoint fermerà l'esecuzione del codice e ti permetterà di controllare lo stato della memoria in quella posizione.</value>
+  </data>
+  <data name="GuideDebugging2.Text" xml:space="preserve">
+    <value>Ecco un semplice esempio:</value>
+  </data>
+  <data name="GuideDebugging3.Text" xml:space="preserve">
+    <value>Quando esegui uno script in modalità debug e viene raggiunto un breakpoint, l'app mostrerà due opzioni per controllare come eseguire il resto dello script:</value>
+  </data>
+  <data name="GuideDebugging4.Text" xml:space="preserve">
+    <value>Ricorda che l'esecuzione di uno script viene interrotta solo se il flusso di controllo raggiunge un breakpoint, quindi è possibile che codice con anche più di un breakpoint venga eseguito direttamente fino alla fine. Questo può indicare che una o più condizioni di loop non sono verificate, e che parte dello script è stata saltata.</value>
+  </data>
+  <data name="GuideDebuggingContinueDescription.Text" xml:space="preserve">
+    <value>Riprende l'esecuzione in modalità debug</value>
+  </data>
+  <data name="GuideDebuggingSkipDescription.Text" xml:space="preserve">
+    <value>Esegue il resto dello script senza breakpoint</value>
+  </data>
+  <data name="GuideDebugging5.Text" xml:space="preserve">
+    <value> In altre parole, usare breakpoint può aiutare a trovare bug anche quando questi non vengono neanche raggiunti.</value>
   </data>
 </root>

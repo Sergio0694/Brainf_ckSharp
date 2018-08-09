@@ -748,18 +748,15 @@ This way he'll be able to help you!</value>
     <value>In many situations it is useful to make a copy of the current cell, to be able to perform some operations with its value, without losing track of the initial state of the memory cell.</value>
   </data>
   <data name="GuideSamples5.Text" xml:space="preserve">
-    <value>To achieve this, it is possible to create two copies of the current value, resetting the current cell, and then move the second copy back to the first cell, to end up with the original value plus a copy in the following cell.</value>
+    <value>To achieve this, it is possible to create two copies of the current value, resetting the current cell, and then move the second copy back to the first cell, to end up with the original value plus a copy in the following cell:</value>
   </data>
   <data name="GuideSamples6.Text" xml:space="preserve">
-    <value>All these techniques can be combined to write more complex programs.</value>
+    <value>All these techniques can be combined to write more complex programs. A good idea is to try to optimize the script in order to perform as few operations as possible — generally this also means that the final code will be shorter and easier to read.</value>
   </data>
   <data name="GuideSamples7.Text" xml:space="preserve">
-    <value>A good idea is to try to optimize the script in order to perform as few operations as possible — generally this also means that the final code will be shorter and easier to read.</value>
+    <value>In this example, to print the word "Hello" two loops will be used to set two cells to values closer to the letters that will be printed. It's definitely better to use a similar approach than to repeating the + operator 72 times to print the "H" character:</value>
   </data>
   <data name="GuideSamples8.Text" xml:space="preserve">
-    <value>In this example, to print the word "Hello" two loops will be used to set two cells to values closer to the letters that will be printed. It's definitely better to use a similar approach than to repeating the + operator 72 times to print the "H" character.</value>
-  </data>
-  <data name="GuideSamples9.Text" xml:space="preserve">
     <value>This script will set the cells #2 and #3 to values closer to the characters that will be printed by the program, so that less operations will be needed to get to the actual values the code wants to display to the user.</value>
   </data>
   <data name="GuideSampleSimpleLoopComment1.Text" xml:space="preserve">
@@ -815,5 +812,35 @@ This way he'll be able to help you!</value>
   </data>
   <data name="WelcomeTitle" xml:space="preserve">
     <value>Welcome to Brainf*ck#!</value>
+  </data>
+  <data name="DebuggingDescription" xml:space="preserve">
+    <value>Find bugs in your code more easily</value>
+  </data>
+  <data name="GuideDebuggingComment1" xml:space="preserve">
+    <value>Stop before the first loop operator</value>
+  </data>
+  <data name="GuideBreakpointTitle.Text" xml:space="preserve">
+    <value>Break inside a loop</value>
+  </data>
+  <data name="GuideDebugging1.Text" xml:space="preserve">
+    <value>Do you wonder what's the point of that additional gray bar on the left? You can tap it to add a breakpoint at the corresponding line in your code. This makes it easier to work on larger scripts, as a breakpoint will cause the execution to halt and will let you inspect the current memory state at that location.</value>
+  </data>
+  <data name="GuideDebugging2.Text" xml:space="preserve">
+    <value>Here's a simple example:</value>
+  </data>
+  <data name="GuideDebugging3.Text" xml:space="preserve">
+    <value>When you execute a script in debugging mode and hit a breakpoint, the app will show two options to control how to execute the rest of the script:</value>
+  </data>
+  <data name="GuideDebugging4.Text" xml:space="preserve">
+    <value>Keep in mind that the script execution is only halted when the control flow manages to reach a breakpoint, so it's possible to see code with even multiple breakpoints being run straight to the end. This can indicate that one or more loop conditions are not met, so part of the script is effectively being skipped.</value>
+  </data>
+  <data name="GuideDebuggingContinueDescription.Text" xml:space="preserve">
+    <value>Continue the execution in debugging mode</value>
+  </data>
+  <data name="GuideDebuggingSkipDescription.Text" xml:space="preserve">
+    <value>Run the rest of the script without breakpoints</value>
+  </data>
+  <data name="GuideDebugging5.Text" xml:space="preserve">
+    <value>As it turns out, breakpoints can help identify bugs even when they're not reached at all.</value>
   </data>
 </root>
