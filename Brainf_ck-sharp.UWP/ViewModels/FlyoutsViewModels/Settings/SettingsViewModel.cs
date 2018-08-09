@@ -307,7 +307,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
                     break;
                 default:
                     // Error
-                    NotificationsManager.Instance.ShowDefaultErrorNotification($"{LocalizationManager.GetResource("SomethingBadHappened")} :'(", LocalizationManager.GetResource("DonationErrorBody"));
+                    NotificationsManager.Instance.ShowDefaultErrorNotification($"{LocalizationManager.GetResource("SomethingBadHappened")} :'(", LocalizationManager.GetResource("PurchaseErrorBody"));
                     break;
             }
         }

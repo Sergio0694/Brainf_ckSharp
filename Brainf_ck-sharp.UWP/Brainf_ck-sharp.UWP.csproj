@@ -319,12 +319,6 @@
     <Compile Include="UserControls\Flyouts\DevInfo\DevInfoFlyout.xaml.cs">
       <DependentUpon>DevInfoFlyout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\DevInfo\Donations\DevSupportOptionEntryControl.xaml.cs">
-      <DependentUpon>DevSupportOptionEntryControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Flyouts\DevInfo\Donations\DevSupportPickerFlyout.xaml.cs">
-      <DependentUpon>DevSupportPickerFlyout.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\Flyouts\DevInfo\ReviewPromptFlyout.xaml.cs">
       <DependentUpon>ReviewPromptFlyout.xaml</DependentUpon>
     </Compile>
@@ -709,14 +703,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Flyouts\DevInfo\DevInfoFlyout.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\Flyouts\DevInfo\Donations\DevSupportOptionEntryControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\Flyouts\DevInfo\Donations\DevSupportPickerFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

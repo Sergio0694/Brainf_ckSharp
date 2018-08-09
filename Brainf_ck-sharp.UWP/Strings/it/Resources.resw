@@ -290,30 +290,6 @@
   <data name="DevelopedByRun.Text" xml:space="preserve">
     <value>Sviluppata da</value>
   </data>
-  <data name="DevSupportTitle.Text" xml:space="preserve">
-    <value>Scegli un'opzione di supporto per lo sviluppatore dell'app</value>
-  </data>
-  <data name="Donate" xml:space="preserve">
-    <value>Fai una donazione</value>
-  </data>
-  <data name="DonateCoffee.PickerDescription" xml:space="preserve">
-    <value>Offri un caffè allo sviluppatore</value>
-  </data>
-  <data name="DonateLove.PickerDescription" xml:space="preserve">
-    <value>Ti senti generoso? Scegli questa opzione per mostrare allo sviluppatore quanto ti piace questa app!</value>
-  </data>
-  <data name="DonatePresent.PickerDescription" xml:space="preserve">
-    <value>Fai un piccolo regalo per supportare lo sviluppatore dell'app</value>
-  </data>
-  <data name="DonateSupport.PickerDescription" xml:space="preserve">
-    <value>Supporta attivamente lo sviluppatore con questa donazione più grande</value>
-  </data>
-  <data name="DonationCompleted" xml:space="preserve">
-    <value>Donazione completata</value>
-  </data>
-  <data name="DonationErrorBody" xml:space="preserve">
-    <value>C'è stato un errore durante la donazione, prova di nuovo</value>
-  </data>
   <data name="SomethingBadHappened" xml:space="preserve">
     <value>È successo qualcosa</value>
   </data>
@@ -639,9 +615,6 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="GuideSampleSimpleLoopTitle.Text" xml:space="preserve">
     <value>Copia valore attuale</value>
   </data>
-  <data name="DonateButton.Title" xml:space="preserve">
-    <value>Fai una donazione</value>
-  </data>
   <data name="ChangelogButton.Title" xml:space="preserve">
     <value>Note di versione</value>
   </data>
@@ -737,5 +710,8 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   </data>
   <data name="GuideDebugging5.Text" xml:space="preserve">
     <value> In altre parole, usare breakpoint può aiutare a trovare bug anche quando questi non vengono neanche raggiunti.</value>
+  </data>
+  <data name="PurchaseErrorBody" xml:space="preserve">
+    <value>C'è stato un problema che ha impedito di completare l'acquisto, riprova più tardi</value>
   </data>
 </root>

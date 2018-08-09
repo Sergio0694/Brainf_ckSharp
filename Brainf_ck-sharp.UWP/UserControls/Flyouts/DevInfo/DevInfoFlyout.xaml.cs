@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
-using Windows.Services.Store;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide;
-using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.Uwp.Helpers;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
@@ -46,80 +43,6 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
         private void TwitterButton_Click(object sender, RoutedEventArgs e)
         {
             Launcher.LaunchUriAsync(new Uri("https://twitter.com/sergiopedri")).AsTask().Forget();
-        }
-
-        // Show the donation options
-        private async void DonateButton_Click(object sender, RoutedEventArgs e)
-        {
-            Donations.DevSupportPickerFlyout flyout = new Donations.DevSupportPickerFlyout();
-            FlyoutClosedResult<int> result = await FlyoutManager.Instance.ShowAsync<Donations.DevSupportPickerFlyout, int>(
-                LocalizationManager.GetResource("Donate"), flyout, new Thickness(), FlyoutDisplayMode.ActualHeight, true);
-            if (result) ProcessDonationAsync(result.Value).Forget();
-        }
-
-        // In-app products
-        private const string CoffeeInAppStoreId = "9mtm2n891932";
-        private const string PresentInAppStoreId = "9ntlgb7lh7kq";
-        private const string DonateInAppStoreId = "9mvdsn65qdgh";
-        private const string VIPSupportInAppStoreId = "9p4ws1x7h5s8";
-
-        /// <summary>
-        /// Processes a donation in the Store
-        /// </summary>
-        /// <param name="option">The index of the target IAP to buy</param>
-        public static async Task ProcessDonationAsync(int option)
-        {
-            // Get the id of the product to purchase
-            string id;
-            switch (option)
-            {
-                case 0: id = CoffeeInAppStoreId; break;
-                case 1: id = PresentInAppStoreId; break;
-                case 2: id = DonateInAppStoreId; break;
-                case 3: id = VIPSupportInAppStoreId; break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            // Try to purchase the item
-            Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
-            StorePurchaseResult result;
-            StoreContext store = StoreContext.GetDefault();
-            try
-            {
-                result = await store.RequestPurchaseAsync(id);
-            }
-            catch
-            {
-                NotificationsManager.Instance.ShowDefaultErrorNotification(
-                    LocalizationManager.GetResource("StoreConnectionError"), LocalizationManager.GetResource("StoreConnectionErrorBody"));
-                return;
-            }
-            finally
-            {
-                Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
-            }
-
-            // Display the result
-            switch (result.Status)
-            {
-                case StorePurchaseStatus.Succeeded:
-                    NotificationsManager.Instance.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("DonationCompleted"), 
-                        LocalizationManager.GetResource("DonationCompletedBody"), NotificationType.Default);
-                    store.ReportConsumableFulfillmentAsync(id, 1, Guid.NewGuid()).AsTask().Forget();
-                    break;
-                case StorePurchaseStatus.NotPurchased:
-                    NotificationsManager.Instance.ShowDefaultErrorNotification(LocalizationManager.GetResource("PurchaseCanceled"), LocalizationManager.GetResource("PurchaseCanceledBody"));
-                    break;
-                case StorePurchaseStatus.AlreadyPurchased:
-                    store.ReportConsumableFulfillmentAsync(id, 1, Guid.NewGuid()).AsTask().Forget();
-                    NotificationsManager.Instance.ShowDefaultErrorNotification($"{LocalizationManager.GetResource("SomethingBadHappened")} :'(", LocalizationManager.GetResource("DonationErrorBody"));
-                    break;
-                default:
-                    // Error
-                    NotificationsManager.Instance.ShowDefaultErrorNotification($"{LocalizationManager.GetResource("SomethingBadHappened")} :'(", LocalizationManager.GetResource("DonationErrorBody"));
-                    break;
-            }
         }
 
         // Shows the changelog flyout

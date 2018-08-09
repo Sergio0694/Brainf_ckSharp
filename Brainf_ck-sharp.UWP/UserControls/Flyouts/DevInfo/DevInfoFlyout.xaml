@@ -55,28 +55,21 @@
                 x:Uid="DevelopedByPart2Run"/>
         </TextBlock>
 
-        <!--Main buttons-->
-        <Grid 
+        <!--Rate in the Store button-->
+        <Button
             Margin="12,16,16,0"
-            Height="40">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <!--Rate in the Store button-->
-            <Button
-                Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
-                Background="{ThemeResource SystemControlHighlightAccentBrush}"
-                MaxWidth="220"
-                HorizontalAlignment="Left"
-                Click="RateStoreButton_Click">
-                <inheritedControls:LightBorderAndBackgroundOverlay
-                    Margin="-2"
-                    LightBorderThickness="2"
-                    LightBorderBrush="{StaticResource BorderLightBrush}"
-                    LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
-                    <Grid Margin="12,0,12,0">
+            Height="40"
+            Style="{StaticResource WideButtonWithNoBackgroundAndPointerBrushStyle}"
+            Background="{ThemeResource SystemControlHighlightAccentBrush}"
+            MaxWidth="220"
+            HorizontalAlignment="Left"
+            Click="RateStoreButton_Click">
+            <inheritedControls:LightBorderAndBackgroundOverlay
+                Margin="-2"
+                LightBorderThickness="2"
+                LightBorderBrush="{StaticResource BorderLightBrush}"
+                LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
+                <Grid Margin="12,0,12,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -96,21 +89,9 @@
                         FontSize="15"
                         FontWeight="Normal"/>
                 </Grid>
-                </inheritedControls:LightBorderAndBackgroundOverlay>
-            </Button>
-            
-            <!--Donate button-->
-            <customControls:IconButtonWithTextContent
-                Grid.Column="1"
-                Margin="16,0,0,0"
-                BackgroundBrush="{ThemeResource SystemControlHighlightListAccentLowBrush}"
-                MaxWidth="220"
-                Icon="&#xE0A5;"
-                Title="Donate"
-                x:Uid="DonateButton"
-                Click="DonateButton_Click"/>
-        </Grid>
-        
+            </inheritedControls:LightBorderAndBackgroundOverlay>
+        </Button>
+
         <!--Contacts-->
         <Grid 
             Background="#20000000"

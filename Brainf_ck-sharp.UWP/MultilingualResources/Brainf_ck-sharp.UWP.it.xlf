@@ -374,38 +374,6 @@
           <source>Developed by</source>
           <target state="translated">Sviluppata da</target>
         </trans-unit>
-        <trans-unit id="DevSupportTitle.Text" translate="yes" xml:space="preserve">
-          <source>Pick the support option for the developer of the app</source>
-          <target state="translated">Scegli un'opzione di supporto per lo sviluppatore dell'app</target>
-        </trans-unit>
-        <trans-unit id="Donate" translate="yes" xml:space="preserve">
-          <source>Donate</source>
-          <target state="translated">Fai una donazione</target>
-        </trans-unit>
-        <trans-unit id="DonateCoffee.PickerDescription" translate="yes" xml:space="preserve">
-          <source>Buy the developer a coffee</source>
-          <target state="translated">Offri un caffè allo sviluppatore</target>
-        </trans-unit>
-        <trans-unit id="DonateLove.PickerDescription" translate="yes" xml:space="preserve">
-          <source>Feeling generous? Choose this option to show the developer how much you love this app!</source>
-          <target state="translated">Ti senti generoso? Scegli questa opzione per mostrare allo sviluppatore quanto ti piace questa app!</target>
-        </trans-unit>
-        <trans-unit id="DonatePresent.PickerDescription" translate="yes" xml:space="preserve">
-          <source>Make a small present to the developer to support the app</source>
-          <target state="translated">Fai un piccolo regalo per supportare lo sviluppatore dell'app</target>
-        </trans-unit>
-        <trans-unit id="DonateSupport.PickerDescription" translate="yes" xml:space="preserve">
-          <source>Actively support the app development with this bigger donation</source>
-          <target state="translated">Supporta attivamente lo sviluppatore con questa donazione più grande</target>
-        </trans-unit>
-        <trans-unit id="DonationCompleted" translate="yes" xml:space="preserve">
-          <source>Donation completed</source>
-          <target state="translated">Donazione completata</target>
-        </trans-unit>
-        <trans-unit id="DonationErrorBody" translate="yes" xml:space="preserve">
-          <source>Something went wrong while trying to make the donation, try again later</source>
-          <target state="translated">C'è stato un errore durante la donazione, prova di nuovo</target>
-        </trans-unit>
         <trans-unit id="SomethingBadHappened" translate="yes" xml:space="preserve">
           <source>Something bad happened</source>
           <target state="translated">È successo qualcosa</target>
@@ -838,10 +806,6 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Copy the current value</source>
           <target state="translated">Copia valore attuale</target>
         </trans-unit>
-        <trans-unit id="DonateButton.Title" translate="yes" xml:space="preserve">
-          <source>Donate</source>
-          <target state="translated">Fai una donazione</target>
-        </trans-unit>
         <trans-unit id="ChangelogButton.Title" translate="yes" xml:space="preserve">
           <source>Changelog</source>
           <target state="translated">Note di versione</target>
@@ -969,6 +933,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         <trans-unit id="GuideDebugging5.Text" translate="yes" xml:space="preserve">
           <source>As it turns out, breakpoints can help identify bugs even when they're not reached at all.</source>
           <target state="translated"> In altre parole, usare breakpoint può aiutare a trovare bug anche quando questi non vengono neanche raggiunti.</target>
+        </trans-unit>
+        <trans-unit id="PurchaseErrorBody" translate="yes" xml:space="preserve">
+          <source>Something went wrong while trying to complete the purchase, try again later</source>
+          <target state="translated">C'è stato un problema che ha impedito di completare l'acquisto, riprova più tardi</target>
         </trans-unit>
       </group>
     </body>
