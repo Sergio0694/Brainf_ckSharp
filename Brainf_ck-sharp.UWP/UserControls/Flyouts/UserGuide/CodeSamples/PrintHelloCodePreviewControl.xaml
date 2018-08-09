@@ -175,7 +175,7 @@
                         Foreground="#FFFFFFFF"/><Run 
                         Text=">"
                         Foreground="#FFDDDDDD"/><Run 
-                        Text="++"
+                        Text="+++"
                         Foreground="#FFFFFFFF"/>
                     <Run 
                         Text="35 * 2 in cell #2 and 35 * 3 in #3"

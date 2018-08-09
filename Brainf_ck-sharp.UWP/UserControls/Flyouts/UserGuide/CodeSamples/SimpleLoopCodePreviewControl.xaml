@@ -147,7 +147,7 @@
                         Foreground="#FF52AF3D"
                         x:Uid="GuideSampleSimpleLoopComment1"/><LineBreak/>
                     <Run 
-                        Text="      &lt;"
+                        Text="      &lt;&lt;"
                         Foreground="#FFDDDDDD"/><Run 
                         Text="-"
                         Foreground="White"/>
