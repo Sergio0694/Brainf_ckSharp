@@ -30,7 +30,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             // Create the output collection
             return new List<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<string>>>
             {
-                CreateChangelogEntry("3.0.0.0", 2018, 9, 10, new List<string>
+                CreateChangelogEntry("3.0.1.0", 2018, 9, 1, new List<string>
+                {
+                    "UI improvements and bug fixes"
+                }),
+                CreateChangelogEntry("3.0.0.0", 2018, 8, 10, new List<string>
                 {
                     "App rebuilt for Windows 10 April Update",
                     "Added support for TAB/SHIFT + TAB to indent the current selection",
