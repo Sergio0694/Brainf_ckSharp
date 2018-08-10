@@ -6,6 +6,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
+using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
@@ -90,7 +91,7 @@ namespace Brainf_ck_sharp_UWP
                     Window.Current.Activate(); // Hide the splash screen
                     await SQLiteManager.Instance.TrySyncSharedCodesAsync();
                     CategorizedSourceCode code = await SQLiteManager.Instance.TryLoadSavedCodeAsync(match.Groups[1].Value);
-                    if (code != null) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(code));
+                    if (code != null) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(code, ShourceCodeLoadingSource.Timeline));
                     else
                     {
                         Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));

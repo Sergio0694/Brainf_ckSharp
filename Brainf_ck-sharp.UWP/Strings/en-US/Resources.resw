@@ -828,4 +828,10 @@ This way he'll be able to help you!</value>
   <data name="TimelineSupportTitle.Text" xml:space="preserve">
     <value>Log activities in the Timeline</value>
   </data>
+  <data name="AlreadyLoadedBody" xml:space="preserve">
+    <value>The requested code is already loaded in the IDE</value>
+  </data>
+  <data name="AlreadyLoadedTitle" xml:space="preserve">
+    <value>Already loaded</value>
+  </data>
 </root>

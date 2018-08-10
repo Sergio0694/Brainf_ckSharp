@@ -15,11 +15,13 @@ using Brainf_ck_sharp_UWP.DataModels.Misc.CharactersInfo;
 using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
+using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
@@ -89,6 +91,15 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         Messenger.Default.Register<VirtualArrowKeyPressedMessage>(this, m => ManageVirtualArrowKeyPressed(m.Direction));
                         Messenger.Default.Register<SourceCodeLoadingRequestedMessage>(this, m =>
                         {
+                            // Skip reloading the current code
+                            if (m.Source == ShourceCodeLoadingSource.Timeline && CategorizedCode?.Code.Uid.Equals(m.RequestedCode.Code.Uid) == true)
+                            {
+                                Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
+                                NotificationsManager.Instance.ShowNotification(0xE148.ToSegoeMDL2Icon(), LocalizationManager.GetResource("AlreadyLoadedTitle"), LocalizationManager.GetResource("AlreadyLoadedBody"), NotificationType.Default);
+                                return;
+                            }
+
+                            // Load the requested code
                             CategorizedCode = m.RequestedCode;
                             LoadedCodeChanged?.Invoke(this, m.RequestedCode.Code);
                             Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(m.RequestedCode.Type != SavedSourceCodeType.Sample, true));

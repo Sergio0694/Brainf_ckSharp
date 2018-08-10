@@ -188,6 +188,7 @@
     <Compile Include="DataModels\SQLite\SampleSourceCode.cs" />
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
     <Compile Include="DataModels\SQLite\Enums\SourceCodeTitleScore.cs" />
+    <Compile Include="Enums\ShourceCodeLoadingSource.cs" />
     <Compile Include="Enums\SourceCodeShareType.cs" />
     <Compile Include="Enums\UserGuideSection.cs" />
     <Compile Include="Helpers\CodeFormatting\CodeThemes.cs" />

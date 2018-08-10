@@ -6,6 +6,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
+using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
@@ -272,7 +273,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             LocalSourceCodesBrowserFlyout flyout = new LocalSourceCodesBrowserFlyout();
             FlyoutClosedResult<CategorizedSourceCode> result = await FlyoutManager.Instance.ShowAsync<LocalSourceCodesBrowserFlyout, CategorizedSourceCode>(
                 LocalizationManager.GetResource("CodeLibrary"), flyout, new Thickness(), openCallback: () => flyout.ViewModel.LoadGroupsAsync().Forget());
-            if (result) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(result.Value));
+            if (result) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(result.Value, ShourceCodeLoadingSource.CodeLibrary));
         }
 
         // Shows the small navigation keyboard popup

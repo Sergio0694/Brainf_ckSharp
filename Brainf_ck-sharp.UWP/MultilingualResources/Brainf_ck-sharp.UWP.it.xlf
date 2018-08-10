@@ -950,6 +950,14 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Log activities in the Timeline</source>
           <target state="translated">Registra attività nella Timeline</target>
         </trans-unit>
+        <trans-unit id="AlreadyLoadedBody" translate="yes" xml:space="preserve">
+          <source>The requested code is already loaded in the IDE</source>
+          <target state="translated">Il codice richiesto è lo stesso già presente nell'IDE</target>
+        </trans-unit>
+        <trans-unit id="AlreadyLoadedTitle" translate="yes" xml:space="preserve">
+          <source>Already loaded</source>
+          <target state="translated">Codice già caricato</target>
+        </trans-unit>
       </group>
     </body>
   </file>

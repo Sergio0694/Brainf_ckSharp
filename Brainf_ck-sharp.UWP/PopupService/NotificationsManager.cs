@@ -63,8 +63,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="content">The content of the notification</param>
         /// <param name="type">The type of notification to show</param>
         /// <param name="duration">The time interval before the nofitication disappears</param>
-        public void ShowNotification(
-            [NotNull] string icon, [NotNull] string title, [NotNull] string content, NotificationType type, TimeSpan? duration = null)
+        public void ShowNotification([NotNull] string icon, [NotNull] string title, [NotNull] string content, NotificationType type, TimeSpan? duration = null)
         {
             DispatcherHelper.RunOnUIThreadAsync(async () =>
             {
