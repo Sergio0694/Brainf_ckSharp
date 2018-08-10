@@ -51,6 +51,8 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
 
         #endregion
 
+        #region Implementation
+
         // The synchronization semaphore to create and manage user activities
         [NotNull]
         private readonly SemaphoreSlim ActivitySemaphore = new SemaphoreSlim(1);
@@ -126,5 +128,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
             _Session = activity.CreateSession();
             ActivitySemaphore.Release();
         }
+
+        #endregion
     }
 }
