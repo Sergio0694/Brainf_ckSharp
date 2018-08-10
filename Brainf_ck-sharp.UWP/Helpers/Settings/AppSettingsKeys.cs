@@ -12,16 +12,18 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         ReviewPromptShown,
         AppStartups,
 
-        // Settings panel
-        ShowStatusBar,
+        // IDE settings
         AutosaveDocuments,
-        InAppBlurMode,
         AutoIndentBrackets,
         BracketsStyle,
         TabLength,
         SelectedIDETheme,
         RenderWhitespaces,
         SelectedFontName,
+        EnableTimeline,
+
+        // Other settings
+        InAppBlurMode,
         ClearStdinBufferOnExecution,
         ShowPBrainButtons
     }

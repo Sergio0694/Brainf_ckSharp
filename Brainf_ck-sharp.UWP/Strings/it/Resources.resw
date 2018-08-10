@@ -714,4 +714,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="PurchaseErrorBody" xml:space="preserve">
     <value>C'è stato un problema che ha impedito di completare l'acquisto, riprova più tardi</value>
   </data>
+  <data name="CodeNotFoundBody" xml:space="preserve">
+    <value>Il codice richiesto non è presente nel database condiviso, riprova più tardi</value>
+  </data>
+  <data name="CodeNotFoundTitle" xml:space="preserve">
+    <value>Codice non trovato</value>
+  </data>
 </root>

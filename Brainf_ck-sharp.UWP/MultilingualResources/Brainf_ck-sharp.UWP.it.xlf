@@ -938,6 +938,18 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Something went wrong while trying to complete the purchase, try again later</source>
           <target state="translated">C'è stato un problema che ha impedito di completare l'acquisto, riprova più tardi</target>
         </trans-unit>
+        <trans-unit id="CodeNotFoundBody" translate="yes" xml:space="preserve">
+          <source>The requested code is not present in the roaming database, try again later</source>
+          <target state="translated">Il codice richiesto non è presente nel database condiviso, riprova più tardi</target>
+        </trans-unit>
+        <trans-unit id="CodeNotFoundTitle" translate="yes" xml:space="preserve">
+          <source>Code not found</source>
+          <target state="translated">Codice non trovato</target>
+        </trans-unit>
+        <trans-unit id="TimelineSupportTitle.Text" translate="yes" xml:space="preserve">
+          <source>Log activities in the Timeline</source>
+          <target state="new">Log activities in the Timeline</target>
+        </trans-unit>
       </group>
     </body>
   </file>

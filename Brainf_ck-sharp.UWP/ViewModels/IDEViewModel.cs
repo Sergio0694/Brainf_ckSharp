@@ -89,7 +89,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         Messenger.Default.Register<VirtualArrowKeyPressedMessage>(this, m => ManageVirtualArrowKeyPressed(m.Direction));
                         Messenger.Default.Register<SourceCodeLoadingRequestedMessage>(this, m =>
                         {
-                            _CategorizedCode = m.RequestedCode;
+                            CategorizedCode = m.RequestedCode;
                             LoadedCodeChanged?.Invoke(this, m.RequestedCode.Code);
                             Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(m.RequestedCode.Type != SavedSourceCodeType.Sample, true));
                             Messenger.Default.Send(new IDEPendingChangesStatusChangedMessage(false));
@@ -114,9 +114,26 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         private CategorizedSourceCode _CategorizedCode;
 
         /// <summary>
+        /// Gets or sets the code the user is currently working on
+        /// </summary>
+        [CanBeNull]
+        private CategorizedSourceCode CategorizedCode
+        {
+            get => _CategorizedCode;
+            set
+            {
+                if (_CategorizedCode != value)
+                {
+                    if (value != null) Messenger.Default.Send(new WorkingSourceCodeChangedMessage(value));
+                    _CategorizedCode = value;
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the source code currently loaded, if present
         /// </summary>
-        public SourceCode LoadedCode => _CategorizedCode?.Code;
+        public SourceCode LoadedCode => CategorizedCode?.Code;
 
         #region Events
 
@@ -222,7 +239,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         if (result)
                         {
                             // Update the local code reference, the git diff indicators and notify the UI with the new save buttons state
-                            _CategorizedCode = result.Result;
+                            CategorizedCode = result.Result;
                             NotificationsManager.Instance.ShowNotification(0xEC24.ToSegoeMDL2Icon(), LocalizationManager.GetResource("CodeSaved"),
                                 LocalizationManager.GetResource("CodeSavedBody"), NotificationType.Default);
                             UpdateGitDiffStatusOnSave();
@@ -263,13 +280,13 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             // Syntax status
             if (result.Valid)
             {
-                Messenger.Default.Send(new IDEStatusUpdateMessage(LocalizationManager.GetResource("Ready"), previous.Y, previous.X, _CategorizedCode?.Code.Title));
+                Messenger.Default.Send(new IDEStatusUpdateMessage(LocalizationManager.GetResource("Ready"), previous.Y, previous.X, CategorizedCode?.Code.Title));
             }
             else
             {
                 Coordinate coordinate = code.FindCoordinates(result.ErrorPosition);
                 Messenger.Default.Send(new IDEStatusUpdateMessage(LocalizationManager.GetResource("Warning"),
-                    previous.Y, previous.X, coordinate.Y, coordinate.X, _CategorizedCode?.Code.Title));
+                    previous.Y, previous.X, coordinate.Y, coordinate.X, CategorizedCode?.Code.Title));
             }
         }
 
@@ -284,7 +301,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         private void TryClearScreen()
         {
             Document.SetText(TextSetOptions.None, string.Empty);
-            _CategorizedCode = null;
+            CategorizedCode = null;
             Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(false, true));
             SendMessages();
             TextCleared?.Invoke(this, EventArgs.Empty);

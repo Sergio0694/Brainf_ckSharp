@@ -437,6 +437,18 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
             await DatabaseConnection.UpdateAsync(code);
         }
 
+        /// <summary>
+        /// Tries to load the saved code with the specified id, if it exists
+        /// </summary>
+        /// <param name="uid">The id of the saved code to look for</param>
+        [ItemCanBeNull]
+        public async Task<CategorizedSourceCode> TryLoadSavedCodeAsync([NotNull] string uid)
+        {
+            await EnsureDatabaseConnectionAsync();
+            SourceCode target = await DatabaseConnection.Table<SourceCode>().Where(code => code.Uid == uid).FirstOrDefaultAsync();
+            return target == null ? null : new CategorizedSourceCode(target.Favorited ? SavedSourceCodeType.Favorite : SavedSourceCodeType.Original, target);
+        }
+
         #endregion
     }
 }

@@ -11,6 +11,7 @@ namespace Brainf_ck_sharp_UWP.Messages
         /// <summary>
         /// The selected code to load
         /// </summary>
+        [NotNull]
         public CategorizedSourceCode RequestedCode { get; }
 
         /// <summary>

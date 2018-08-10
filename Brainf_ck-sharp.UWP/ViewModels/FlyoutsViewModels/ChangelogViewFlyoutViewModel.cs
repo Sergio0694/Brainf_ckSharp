@@ -33,6 +33,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 CreateChangelogEntry("3.0.0.0", 2018, 8, 16, new List<string>
                 {
                     "App rebuilt for Windows 10 April Update",
+                    "Added timeline support for the IDE",
                     "Added support for TAB and SHIFT + TAB to indent the current selection in the IDE",
                     "Enabled export C code for scripts with PBrain operators",
                     "Added a debugging section to the user guide",
