@@ -7,6 +7,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages;
@@ -60,13 +61,14 @@ namespace Brainf_ck_sharp_UWP
             Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "en-US";
 #endif
 
-            InitializeUI();
+            bool startup = InitializeUI();
 
             // Additional setup steps
+            Task.Run(() => SQLiteManager.Instance.TrySyncSharedCodesAsync()).Forget();
             if (AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.EnableTimeline))) TimelineManager.IsEnabled = true;
 
             // Hide the splash screen
-            if (AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.StartingPage)) == 1) await Task.Delay(1000); // Delay to hide the animations
+            if (startup) if (AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.StartingPage)) == 1) await Task.Delay(250); // Delay to hide the animations
             Window.Current.Activate();
         }
 
@@ -74,7 +76,7 @@ namespace Brainf_ck_sharp_UWP
         protected override async void OnActivated(IActivatedEventArgs e)
         {
             // UI setup
-            InitializeUI();
+            bool startup = InitializeUI();
 
             // Handle the requested code
             if (e.Kind == ActivationKind.Protocol && e is ProtocolActivatedEventArgs args && args.Uri.Host.Equals("ide"))
@@ -82,9 +84,9 @@ namespace Brainf_ck_sharp_UWP
                 Match match = Regex.Match(args.Uri.Query, "id=([0-9a-f-]{36})");
                 if (match.Success)
                 {
-                    Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
-                    if (AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.StartingPage)) == 0) Messenger.Default.Send(new IDEDisplayRequestMessage());
-                    await Task.Delay(1000);
+                    Messenger.Default.Send(new AppLoadingStatusChangedMessage(true, startup));
+                    if (AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.StartingPage)) == 0 || !startup) Messenger.Default.Send(new IDEDisplayRequestMessage());
+                    if (startup) await Task.Delay(500); // Increased delay to wait for the loading UI to be shown
                     Window.Current.Activate(); // Hide the splash screen
                     await SQLiteManager.Instance.TrySyncSharedCodesAsync();
                     CategorizedSourceCode code = await SQLiteManager.Instance.TryLoadSavedCodeAsync(match.Groups[1].Value);
@@ -101,9 +103,9 @@ namespace Brainf_ck_sharp_UWP
         /// <summary>
         /// Initializes the window content, if necessary
         /// </summary>
-        private void InitializeUI()
+        private bool InitializeUI()
         {
-            if (Window.Current.Content is Shell) return;
+            if (Window.Current.Content is Shell) return false;
             
             // Settings
             AppSettingsManager.Instance.InitializeSettings();
@@ -132,9 +134,7 @@ namespace Brainf_ck_sharp_UWP
             // Enable the key listener
             KeyEventsListener.IsEnabled = true;
             Window.Current.Content = shell;
-
-            // Sync the roaming source codes
-            Task.Run(() => SQLiteManager.Instance.TrySyncSharedCodesAsync());
+            return true;
         }
 
         /// <summary>

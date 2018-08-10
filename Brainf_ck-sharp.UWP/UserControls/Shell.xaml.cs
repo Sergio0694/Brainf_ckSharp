@@ -66,7 +66,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             // Flyout management
             Messenger.Default.Register<FlyoutOpenedMessage>(this, m => ManageFlyoutUI(true));
             Messenger.Default.Register<FlyoutClosedNotificationMessage>(this, m => ManageFlyoutUI(false));
-            Messenger.Default.Register<AppLoadingStatusChangedMessage>(this, m => ManageLoadingUI(m.Loading));
+            Messenger.Default.Register<AppLoadingStatusChangedMessage>(this, m => ManageLoadingUI(m.Loading, !m.ImmediateDisplayRequested));
             Messenger.Default.Register<BlurModeChangedMessage>(this, m =>
             {
                 HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(m.BlurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
@@ -87,7 +87,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
         private readonly SemaphoreSlim LoadingSemaphore = new SemaphoreSlim(1);
 
         // Manages the loading UI
-        private async void ManageLoadingUI(bool loading)
+        private async void ManageLoadingUI(bool loading, bool animate)
         {
             // Prepare and open a popup to cover the UI while the app is loading
             await LoadingSemaphore.WaitAsync();
@@ -98,9 +98,13 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 Popup popup = new Popup { Child = control };
                 control.Height = ActualHeight;
                 control.Width = ActualWidth;
-                control.SetVisualOpacity(0);
-                popup.IsOpen = true;
-                control.StartCompositionFadeAnimation(null, 1, 200, null, EasingFunctionNames.Linear);
+                if (animate)
+                {
+                    control.SetVisualOpacity(0);
+                    popup.IsOpen = true;
+                    control.StartCompositionFadeAnimation(null, 1, 200, null, EasingFunctionNames.Linear);
+                }
+                else popup.IsOpen = true;
                 _LoadingPopup = popup;
             }
             else
@@ -152,8 +156,15 @@ namespace Brainf_ck_sharp_UWP.UserControls
             }
 
             // Starting page
-            if (AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.StartingPage)) == 1) PivotControl.SelectedIndex = 1;
+            if (AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.StartingPage)) == 1)
+            {
+                _SkipInitialAnimation = true;
+                PivotControl.SelectedIndex = 1;
+            }
         }
+
+        // Indicates whether or not to skip the first page switch animation
+        private bool _SkipInitialAnimation;
 
         // Local field to keep track of the calls to the method below
         private bool _StartupMessagesProcessed;
@@ -203,7 +214,12 @@ namespace Brainf_ck_sharp_UWP.UserControls
         private void PivotControl_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = sender.To<Pivot>().SelectedIndex;
-            SharedCommandBar.SwitchContent(index == 0);
+            if (index == 1 && _SkipInitialAnimation)
+            {
+                SharedCommandBar.SwitchContent(index == 0);
+                _SkipInitialAnimation = false;
+            }
+            else SharedCommandBar.SwitchContentAsync(index == 0);
             Console.ViewModel.IsEnabled = index == 0;
             IDE.ViewModel.IsEnabled = index == 1;
 

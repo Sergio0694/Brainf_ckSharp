@@ -11,9 +11,19 @@
         public bool Loading { get; }
 
         /// <summary>
+        /// Gets whether or not to show the loading UI without playing animations
+        /// </summary>
+        public bool ImmediateDisplayRequested { get; }
+
+        /// <summary>
         /// Creates a new instance for a given state
         /// </summary>
         /// <param name="status">The updated loading status</param>
-        public AppLoadingStatusChangedMessage(bool status) => Loading = status;
+        /// <param name="immediate">Indicates whether or not to skip the animations</param>
+        public AppLoadingStatusChangedMessage(bool status, bool immediate = false)
+        {
+            Loading = status;
+            ImmediateDisplayRequested = immediate;
+        }
     }
 }
