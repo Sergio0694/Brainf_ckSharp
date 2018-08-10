@@ -53,7 +53,7 @@ namespace Brainf_ck_sharp_UWP
         /// verranno usati altri punti di ingresso per aprire un file specifico.
         /// </summary>
         /// <param name="e">Dettagli sulla richiesta e sul processo di avvio.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             // Language test
 #if DEBUG
@@ -61,10 +61,13 @@ namespace Brainf_ck_sharp_UWP
 #endif
 
             InitializeUI();
-            Window.Current.Activate();
 
             // Additional setup steps
             if (AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.EnableTimeline))) TimelineManager.IsEnabled = true;
+
+            // Hide the splash screen
+            if (AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.StartingPage)) == 1) await Task.Delay(1000); // Delay to hide the animations
+            Window.Current.Activate();
         }
 
         /// <inheritdoc cref="Application"/>
@@ -72,7 +75,6 @@ namespace Brainf_ck_sharp_UWP
         {
             // UI setup
             InitializeUI();
-            Window.Current.Activate();
 
             // Handle the requested code
             if (e.Kind == ActivationKind.Protocol && e is ProtocolActivatedEventArgs args && args.Uri.Host.Equals("ide"))
@@ -81,7 +83,9 @@ namespace Brainf_ck_sharp_UWP
                 if (match.Success)
                 {
                     Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
-                    Messenger.Default.Send(new IDEDisplayRequestMessage());
+                    if (AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.StartingPage)) == 0) Messenger.Default.Send(new IDEDisplayRequestMessage());
+                    await Task.Delay(1000);
+                    Window.Current.Activate(); // Hide the splash screen
                     await SQLiteManager.Instance.TrySyncSharedCodesAsync();
                     CategorizedSourceCode code = await SQLiteManager.Instance.TryLoadSavedCodeAsync(match.Groups[1].Value);
                     if (code != null) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(code));

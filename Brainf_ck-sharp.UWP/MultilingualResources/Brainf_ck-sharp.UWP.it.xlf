@@ -950,14 +950,6 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Log activities in the Timeline</source>
           <target state="translated">Registra attività nella Timeline</target>
         </trans-unit>
-        <trans-unit id="RestartFailedBody" translate="yes" xml:space="preserve">
-          <source>Windows didn't allow the app to restart, try closing it manually</source>
-          <target state="translated">Windows non ha permesso il riavvio, prova a chiudere l'app manualmente</target>
-        </trans-unit>
-        <trans-unit id="RestartFailedTitle" translate="yes" xml:space="preserve">
-          <source>Restart failed</source>
-          <target state="translated">Riavvio fallito</target>
-        </trans-unit>
       </group>
     </body>
   </file>

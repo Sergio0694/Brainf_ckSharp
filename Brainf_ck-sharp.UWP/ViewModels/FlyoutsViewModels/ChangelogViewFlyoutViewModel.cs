@@ -36,6 +36,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                     "Added timeline support for the IDE",
                     "Added support for TAB and SHIFT + TAB to indent the current selection in the IDE",
                     "Enabled export C code for scripts with PBrain operators",
+                    "Added an option to choose the app starting page",
                     "Added a debugging section to the user guide",
                     "UI improvements, more fluent design effects",
                     "Code tweaks and bug fixes"
