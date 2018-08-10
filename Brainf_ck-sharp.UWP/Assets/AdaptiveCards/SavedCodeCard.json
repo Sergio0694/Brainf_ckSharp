@@ -15,6 +15,13 @@
           "size": "large",
           "wrap": true,
           "maxLines": 3
+        },
+        {
+          "type": "TextBlock",
+          "text": "{PREVIEW}",
+          "size": "default",
+          "wrap": true,
+          "maxLines": 3
         }
       ]
     }

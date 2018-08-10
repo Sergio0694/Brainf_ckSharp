@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.UserActivities;
 using Windows.Storage;
 using Windows.UI.Shell;
+using Brainf_ck_sharp;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
@@ -116,7 +117,8 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
             StorageFile cardFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri($"ms-appx:///Assets/AdaptiveCards/SavedCodeCard.json"));
             string cardText = (await FileIO.ReadTextAsync(cardFile))
                 .Replace("{BACKGROUND}", url)
-                .Replace("{TITLE}", code.Title);
+                .Replace("{TITLE}", code.Title)
+                .Replace("{PREVIEW}", new string(code.Code.Where(c => Brainf_ckInterpreter.Operators.Contains(c)).ToArray()));
             activity.VisualElements.Content = AdaptiveCardBuilder.CreateAdaptiveCardFromJson(cardText);
 
             // Save to activity feed.
