@@ -720,4 +720,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="CodeNotFoundTitle" xml:space="preserve">
     <value>Codice non trovato</value>
   </data>
+  <data name="TimelineSupportTitle.Text" xml:space="preserve">
+    <value>Registra attività nella Timeline</value>
+  </data>
 </root>

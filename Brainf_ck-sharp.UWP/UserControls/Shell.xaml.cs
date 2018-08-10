@@ -150,6 +150,9 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 _StartupMessagesProcessed = true;
                 ShowStartupPopups();
             }
+
+            // Starting page
+            if (AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.StartingPage)) == 1) PivotControl.SelectedIndex = 1;
         }
 
         // Local field to keep track of the calls to the method below

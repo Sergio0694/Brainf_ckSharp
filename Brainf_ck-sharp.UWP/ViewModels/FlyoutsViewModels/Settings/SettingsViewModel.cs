@@ -387,5 +387,33 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the two options for the initial page
+        /// </summary>
+        [UsedImplicitly, NotNull]
+        public IReadOnlyCollection<string> StartingPageOptions { get; } = new[]
+        {
+            "Console",
+            "IDE"
+        };
+
+        private int _StartingPageSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.StartingPage));
+
+        /// <summary>
+        /// Gets or sets the selected index for the app starting page
+        /// </summary>
+        [UsedImplicitly]
+        public int StartingPageSelectedIndex
+        {
+            get => _StartingPageSelectedIndex;
+            set
+            {
+                if (Set(ref _StartingPageSelectedIndex, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.StartingPage), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
     }
 }
