@@ -1,15 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Storage.Streams;
+using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using JetBrains.Annotations;
+using Windows.UI.Xaml.Input;
 
 namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
 {
@@ -176,6 +180,20 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
             format.Name = name;
             Document.SetDefaultCharacterFormat(format);
             Document.GetRange(0, int.MaxValue).CharacterFormat.Name = name;
+        }
+
+        // The list of shortcut keys to ignore
+        [NotNull]
+        private readonly HashSet<VirtualKey> SkippedShortcuts = new HashSet<VirtualKey>(new[] { VirtualKey.A, VirtualKey.E, VirtualKey.R, VirtualKey.J, VirtualKey.L });
+
+        /// <inheritdoc cref="RichEditBox"/>
+        protected override void OnKeyDown(KeyRoutedEventArgs e)
+        {
+            if ((Window.Current.CoreWindow.GetKeyState(VirtualKey.Control) & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down && SkippedShortcuts.Contains(e.Key))
+            {
+                return;
+            }
+            base.OnKeyDown(e);
         }
     }
 }
