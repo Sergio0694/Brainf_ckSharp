@@ -10,9 +10,43 @@
     d:DesignWidth="400">
 
     <StackPanel>
-        
+
         <!--Blur mode-->
         <TextBlock
+            x:Uid="StartingPageTitle"
+            Text="Starting page"/>
+        <Grid Margin="0,8,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <inheritedControls:AnimatedComboBox
+                ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
+                ItemsSource="{Binding ViewModel.StartingPageOptions}"
+                SelectedIndex="{Binding ViewModel.StartingPageSelectedIndex, Mode=TwoWay}"
+                MinWidth="180"/>
+
+            <!--Restart link-->
+            <HyperlinkButton 
+                Margin="0,0,20,0"
+                HorizontalAlignment="Right"
+                Grid.Column="1"
+                Click="RestartLink_Click"
+                IsEnabled="{Binding ViewModel.RestartRequired}">
+                <TextBlock>
+                    <Run
+                        FontFamily="Segoe MDL2 Assets"
+                        Text="&#xF259;"/>
+                    <Run 
+                        Text="Restart"
+                        x:Uid="RestartLink"/>
+                </TextBlock>
+            </HyperlinkButton>
+        </Grid>
+
+        <!--Blur mode-->
+        <TextBlock
+            Margin="0,16,0,0"
             x:Uid="BlurModeTitle"
             Text="Preferred blur mode"/>
         <inheritedControls:AnimatedComboBox

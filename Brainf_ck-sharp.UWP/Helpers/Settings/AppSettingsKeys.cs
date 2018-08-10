@@ -23,6 +23,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         EnableTimeline,
 
         // Other settings
+        StartingPage,
         InAppBlurMode,
         ClearStdinBufferOnExecution,
         ShowPBrainButtons

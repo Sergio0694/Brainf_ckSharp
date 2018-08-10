@@ -828,4 +828,10 @@ This way he'll be able to help you!</value>
   <data name="TimelineSupportTitle.Text" xml:space="preserve">
     <value>Log activities in the Timeline</value>
   </data>
+  <data name="RestartFailedBody" xml:space="preserve">
+    <value>Windows didn't allow the app to restart, try closing it manually</value>
+  </data>
+  <data name="RestartFailedTitle" xml:space="preserve">
+    <value>Restart failed</value>
+  </data>
 </root>

@@ -720,4 +720,13 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="CodeNotFoundTitle" xml:space="preserve">
     <value>Codice non trovato</value>
   </data>
+  <data name="TimelineSupportTitle.Text" xml:space="preserve">
+    <value>Registra attività nella Timeline</value>
+  </data>
+  <data name="RestartFailedBody" xml:space="preserve">
+    <value>Windows non ha permesso il riavvio, prova a chiudere l'app manualmente</value>
+  </data>
+  <data name="RestartFailedTitle" xml:space="preserve">
+    <value>Riavvio fallito</value>
+  </data>
 </root>

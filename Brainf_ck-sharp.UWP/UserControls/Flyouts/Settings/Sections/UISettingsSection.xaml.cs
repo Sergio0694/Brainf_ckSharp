@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Helpers;
@@ -22,6 +24,25 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings.Sections
             FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UserGuide"), guide, null, new Thickness()).Forget();
             await Task.Delay(600);
             guide.TryScrollToPBrainSection();
+        }
+
+        // Tries to restart the app
+        private async void RestartLink_Click(object sender, RoutedEventArgs e)
+        {
+            AppRestartFailureReason reason;
+            try
+            {
+                reason = await CoreApplication.RequestRestartAsync("Settings");
+            }
+            catch
+            {
+                // Really?
+                reason = AppRestartFailureReason.Other;
+            }
+            if (reason == AppRestartFailureReason.NotInForeground || reason == AppRestartFailureReason.Other)
+            {
+                NotificationsManager.Instance.ShowDefaultErrorNotification(LocalizationManager.GetResource("RestartFailedTitle"), LocalizationManager.GetResource("RestartFailedBody"));
+            }
         }
     }
 }
