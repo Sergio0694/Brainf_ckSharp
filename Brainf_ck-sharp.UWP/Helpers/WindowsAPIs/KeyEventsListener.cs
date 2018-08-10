@@ -1,13 +1,14 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
+using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
 {
     /// <summary>
-    /// A static class that listens to the global KeyDown event
+    /// A static class that listens to the global <see cref="CoreDispatcher.AcceleratorKeyActivated"/> event for the current app window
     /// </summary>
     public static class KeyEventsListener
     {
@@ -23,55 +24,34 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
             {
                 if (IsEnabled != value)
                 {
-                    if (value)
-                    {
-                        Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
-
-                    }
-                    else
-                    {
-                        Window.Current.CoreWindow.KeyDown -= CoreWindow_KeyDown;
-                    }
+                    if (value) Window.Current.Dispatcher.AcceleratorKeyActivated += Dispatcher_AcceleratorKeyActivated;
+                    else Window.Current.Dispatcher.AcceleratorKeyActivated -= Dispatcher_AcceleratorKeyActivated;
                     _IsEnabled = value;
                 }
             }
         }
 
-        private static void CoreWindow_KeyDown(CoreWindow sender, KeyEventArgs args)
+        // Raises the proper keyboard events
+        private static void Dispatcher_AcceleratorKeyActivated(CoreDispatcher sender, AcceleratorKeyEventArgs args)
         {
-            // Propagate the event if needed
-            VirtualKey modifier = new[] { VirtualKey.LeftShift, VirtualKey.Control, VirtualKey.LeftMenu }.FirstOrDefault(key =>
-                (sender.GetKeyState(key) & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down);
+            // Only handle key down events
+            if (args.EventType != CoreAcceleratorKeyEventType.KeyDown && args.EventType != CoreAcceleratorKeyEventType.SystemKeyDown) return;
 
             // Raise the Esc event if needed
             if (args.VirtualKey == VirtualKey.Escape)
             {
-                if ((sender.GetKeyState(VirtualKey.LeftShift) & CoreVirtualKeyStates.Down) != CoreVirtualKeyStates.Down)
-                {
-                    Esc?.Invoke(null, EventArgs.Empty);
-                }
+                Messenger.Default.Send(new EscKeyPressedMessage());
                 return;
             }
 
-            // Check if the events can be raised
-            if (modifier == VirtualKey.Control && args.VirtualKey == VirtualKey.S)
+            // Propagate the event if needed
+            VirtualKeyModifiers modifiers = new (VirtualKey Key, VirtualKeyModifiers Modifier)[]
             {
-                CtrlS?.Invoke(null, EventArgs.Empty);
-            }
+                (VirtualKey.Shift, VirtualKeyModifiers.Shift),
+                (VirtualKey.Control, VirtualKeyModifiers.Control),
+                (VirtualKey.Menu, VirtualKeyModifiers.Menu)
+            }.Where(pair => (Window.Current.CoreWindow.GetKeyState(pair.Key) & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down).Aggregate(VirtualKeyModifiers.None, (m, k) => m | k.Modifier);
+            if (modifiers.HasFlag(VirtualKeyModifiers.Control)) Messenger.Default.Send(new CtrlShortcutPressedMessage(args.VirtualKey, modifiers));
         }
-
-        #region Public events
-
-        /// <summary>
-        /// Raised whenever the user presses the Esc key
-        /// </summary>
-        public static event EventHandler Esc;
-
-        /// <summary>
-        /// Raised whenever the user presses Ctrl + S
-        /// </summary>
-        public static event EventHandler CtrlS;
-
-        #endregion
     }
 }
