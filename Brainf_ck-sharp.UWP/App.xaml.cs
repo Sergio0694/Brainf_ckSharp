@@ -69,7 +69,7 @@ namespace Brainf_ck_sharp_UWP
             if (AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.EnableTimeline))) TimelineManager.IsEnabled = true;
 
             // Hide the splash screen
-            if (startup) if (AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.StartingPage)) == 1) await Task.Delay(250); // Delay to hide the animations
+            if (startup) await Task.Delay(AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.StartingPage)) == 1 ? 250 : 100); // Delay to hide the animations
             Window.Current.Activate();
         }
 
