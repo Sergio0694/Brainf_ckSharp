@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -13,6 +14,7 @@ using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -59,7 +61,6 @@ namespace Brainf_ck_sharp_UWP.UserControls
             });
             Console.ViewModel.IsEnabled = true;
 
-            // Apply the in-app blur on mobile devices
             // Apply the desired blur effect
             AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.InAppBlurMode), out int blurMode);
             HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(blurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
@@ -75,6 +76,11 @@ namespace Brainf_ck_sharp_UWP.UserControls
 
             // Other messages
             Messenger.Default.Register<IDEDisplayRequestMessage>(this, _ => PivotControl.SelectedIndex = 1);
+            Messenger.Default.Register<CtrlShortcutPressedMessage>(this, m =>
+            {
+                if (m.Key == VirtualKey.R && m.Modifiers == VirtualKeyModifiers.Control && ViewModel.IDECodeAvailable) ViewModel.RequestPlay();
+                else if (m.Key == VirtualKey.R && m.Modifiers == (VirtualKeyModifiers.Control | VirtualKeyModifiers.Menu) && ViewModel.DebugAvailable) ViewModel.RequestDebug();
+            });
         }
 
         public ShellViewModel ViewModel => DataContext.To<ShellViewModel>();
