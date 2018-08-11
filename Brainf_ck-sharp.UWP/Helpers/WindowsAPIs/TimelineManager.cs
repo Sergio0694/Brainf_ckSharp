@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.UserActivities;
 using Windows.Storage;
@@ -53,9 +52,9 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
 
         #region Implementation
 
-        // The synchronization semaphore to create and manage user activities
+        // The synchronization mutex to create and manage user activities
         [NotNull]
-        private readonly SemaphoreSlim ActivitySemaphore = new SemaphoreSlim(1);
+        private readonly AsyncMutex TimelineMutex = new AsyncMutex();
 
         // The current activity in use
         [CanBeNull]
@@ -96,37 +95,37 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
         private async Task LogUserSessionAsync([NotNull] SourceCode code)
         {
             // Lock
-            await ActivitySemaphore.WaitAsync();
-
-            // Get the default channel and create the activity
-            UserActivityChannel channel = UserActivityChannel.GetDefault();
-            UserActivity activity = await channel.GetOrCreateUserActivityAsync(code.Uid);
-
-            // Set the deep-link and the title
-            activity.ActivationUri = new Uri($"brainf-ck://ide?id={code.Uid}");
-            activity.VisualElements.DisplayText = "title";
-
-            // Get the image URL
-            string url;
-            using (MD5 md5 = MD5.Create())
+            using (await TimelineMutex.LockAsync())
             {
-                byte[] hash = md5.ComputeHash(Encoding.UTF8.GetBytes(code.Uid));
-                int ones = hash.Sum(b => Convert.ToString(b, 2).ToCharArray().Count(c => c == '1'));
-                url = BackgroundImages[ones % BackgroundImages.Count];
+                // Get the default channel and create the activity
+                UserActivityChannel channel = UserActivityChannel.GetDefault();
+                UserActivity activity = await channel.GetOrCreateUserActivityAsync(code.Uid);
+
+                // Set the deep-link and the title
+                activity.ActivationUri = new Uri($"brainf-ck://ide?id={code.Uid}");
+                activity.VisualElements.DisplayText = "title";
+
+                // Get the image URL
+                string url;
+                using (MD5 md5 = MD5.Create())
+                {
+                    byte[] hash = md5.ComputeHash(Encoding.UTF8.GetBytes(code.Uid));
+                    int ones = hash.Sum(b => Convert.ToString(b, 2).ToCharArray().Count(c => c == '1'));
+                    url = BackgroundImages[ones % BackgroundImages.Count];
+                }
+
+                // Create the adaptive card
+                StorageFile cardFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/AdaptiveCards/SavedCodeCard.json"));
+                string cardText = (await FileIO.ReadTextAsync(cardFile))
+                    .Replace("{BACKGROUND}", url)
+                    .Replace("{TITLE}", code.Title)
+                    .Replace("{PREVIEW}", new string(code.Code.Where(c => Brainf_ckInterpreter.Operators.Contains(c)).ToArray()));
+                activity.VisualElements.Content = AdaptiveCardBuilder.CreateAdaptiveCardFromJson(cardText);
+
+                // Save to activity feed.
+                await activity.SaveAsync();
+                _Session = activity.CreateSession();
             }
-
-            // Create the adaptive card
-            StorageFile cardFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri($"ms-appx:///Assets/AdaptiveCards/SavedCodeCard.json"));
-            string cardText = (await FileIO.ReadTextAsync(cardFile))
-                .Replace("{BACKGROUND}", url)
-                .Replace("{TITLE}", code.Title)
-                .Replace("{PREVIEW}", new string(code.Code.Where(c => Brainf_ckInterpreter.Operators.Contains(c)).ToArray()));
-            activity.VisualElements.Content = AdaptiveCardBuilder.CreateAdaptiveCardFromJson(cardText);
-
-            // Save to activity feed.
-            await activity.SaveAsync();
-            _Session = activity.CreateSession();
-            ActivitySemaphore.Release();
         }
 
         #endregion

@@ -191,6 +191,7 @@
     <Compile Include="Enums\ShourceCodeLoadingSource.cs" />
     <Compile Include="Enums\SourceCodeShareType.cs" />
     <Compile Include="Enums\UserGuideSection.cs" />
+    <Compile Include="Helpers\AsyncMutex.cs" />
     <Compile Include="Helpers\CodeFormatting\CodeThemes.cs" />
     <Compile Include="DataModels\Misc\Themes\LineHighlightStyle.cs" />
     <Compile Include="Helpers\CodeFormatting\InstalledFont.cs" />
