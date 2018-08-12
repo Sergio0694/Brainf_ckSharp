@@ -52,7 +52,9 @@
             <!--Title placeholder-->
             <Grid 
                 Grid.Row="0"
-                Height="32">
+                Height="32"
+                x:Name="TitlePlaceholder"
+                Visibility="Collapsed">
                 
                 <!--App title-->
                 <TextBlock
@@ -205,8 +207,7 @@
             RelativePanel.AlignRightWithPanel="True"
             RelativePanel.Above="InfoBar"
             Style="{StaticResource ScrollableCommandBarStyle}"
-            CommandBarOverflowPresenterStyle="{StaticResource AcrylicCommandBarOverflowPresenter}"
-            Background="{StaticResource HostBackdropGrayAcrylicBrush}">
+            CommandBarOverflowPresenterStyle="{StaticResource AcrylicCommandBarOverflowPresenter}">
             <customCommandBar:CommandBarWithButtonsAnimations.PrimaryCommands>
                 
                 <!--Console buttons-->

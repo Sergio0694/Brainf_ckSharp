@@ -28,6 +28,7 @@ using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations;
 using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
+using UICompositionAnimations.Helpers;
 using UICompositionAnimations.Helpers.PointerEvents;
 using MemoryViewerFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState.MemoryViewerFlyout;
 using SettingsPanelFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings.SettingsPanelFlyout;
@@ -60,6 +61,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 return stdin;
             });
             Console.ViewModel.IsEnabled = true;
+            TitlePlaceholder.Visibility = (!ApiInformationHelper.IsMobileDevice).ToVisibility();
 
             // Apply the desired blur effect
             HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>("HeaderInAppAcrylicBrush");
