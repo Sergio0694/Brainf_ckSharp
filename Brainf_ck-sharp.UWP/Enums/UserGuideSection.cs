@@ -6,7 +6,8 @@
     public enum UserGuideSection
     {
         Introduction,
+        Samples,
         PBrain,
-        Samples
+        Debugging
     }
 }

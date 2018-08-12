@@ -14,7 +14,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             {
                 new JumpListGroup<UserGuideSection, UserGuideSection>(UserGuideSection.Introduction, new[] { UserGuideSection.Introduction }),
                 new JumpListGroup<UserGuideSection, UserGuideSection>(UserGuideSection.Samples, new[] { UserGuideSection.Samples }),
-                new JumpListGroup<UserGuideSection, UserGuideSection>(UserGuideSection.PBrain, new[] { UserGuideSection.PBrain })
+                new JumpListGroup<UserGuideSection, UserGuideSection>(UserGuideSection.PBrain, new[] { UserGuideSection.PBrain }),
+                new JumpListGroup<UserGuideSection, UserGuideSection>(UserGuideSection.Debugging, new[] { UserGuideSection.Debugging })
             };
         }
     }

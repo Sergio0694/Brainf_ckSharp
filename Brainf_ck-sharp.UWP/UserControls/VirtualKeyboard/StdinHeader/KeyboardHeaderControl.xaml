@@ -42,6 +42,17 @@
             x:Uid="QuickMemoryViewerButton"
             ToolTipService.ToolTip="Quick memory view"/>
         
+        <!--Sliding indicator-->
+        <Canvas x:Name="SelectedRectangle"
+                Height="1"
+                Width="48"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Background="{ThemeResource SystemControlHighlightAccentBrush}"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                IsHitTestVisible="False"/>
+        
         <!--Stdin-->
         <TextBox 
             Grid.Column="2"

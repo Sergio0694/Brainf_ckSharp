@@ -1,17 +1,20 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
+using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -58,7 +61,6 @@ namespace Brainf_ck_sharp_UWP.UserControls
             });
             Console.ViewModel.IsEnabled = true;
 
-            // Apply the in-app blur on mobile devices
             // Apply the desired blur effect
             AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.InAppBlurMode), out int blurMode);
             HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(blurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
@@ -66,10 +68,18 @@ namespace Brainf_ck_sharp_UWP.UserControls
             // Flyout management
             Messenger.Default.Register<FlyoutOpenedMessage>(this, m => ManageFlyoutUI(true));
             Messenger.Default.Register<FlyoutClosedNotificationMessage>(this, m => ManageFlyoutUI(false));
-            Messenger.Default.Register<AppLoadingStatusChangedMessage>(this, m => ManageLoadingUI(m.Loading));
+            Messenger.Default.Register<AppLoadingStatusChangedMessage>(this, m => ManageLoadingUI(m.Loading, !m.ImmediateDisplayRequested));
             Messenger.Default.Register<BlurModeChangedMessage>(this, m =>
             {
                 HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(m.BlurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
+            });
+
+            // Other messages
+            Messenger.Default.Register<IDEDisplayRequestMessage>(this, _ => PivotControl.SelectedIndex = 1);
+            Messenger.Default.Register<CtrlShortcutPressedMessage>(this, m =>
+            {
+                if (m.Key == VirtualKey.R && m.Modifiers == VirtualKeyModifiers.Control && ViewModel.IDECodeAvailable) ViewModel.RequestPlay();
+                else if (m.Key == VirtualKey.R && m.Modifiers == (VirtualKeyModifiers.Control | VirtualKeyModifiers.Menu) && ViewModel.DebugAvailable) ViewModel.RequestDebug();
             });
         }
 
@@ -84,7 +94,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
         private readonly SemaphoreSlim LoadingSemaphore = new SemaphoreSlim(1);
 
         // Manages the loading UI
-        private async void ManageLoadingUI(bool loading)
+        private async void ManageLoadingUI(bool loading, bool animate)
         {
             // Prepare and open a popup to cover the UI while the app is loading
             await LoadingSemaphore.WaitAsync();
@@ -95,9 +105,13 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 Popup popup = new Popup { Child = control };
                 control.Height = ActualHeight;
                 control.Width = ActualWidth;
-                control.SetVisualOpacity(0);
-                popup.IsOpen = true;
-                control.StartCompositionFadeAnimation(null, 1, 200, null, EasingFunctionNames.Linear);
+                if (animate)
+                {
+                    control.SetVisualOpacity(0);
+                    popup.IsOpen = true;
+                    control.StartCompositionFadeAnimation(null, 1, 200, null, EasingFunctionNames.Linear);
+                }
+                else popup.IsOpen = true;
                 _LoadingPopup = popup;
             }
             else
@@ -147,7 +161,17 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 _StartupMessagesProcessed = true;
                 ShowStartupPopups();
             }
+
+            // Starting page
+            if (AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.StartingPage)) == 1)
+            {
+                _SkipInitialAnimation = true;
+                PivotControl.SelectedIndex = 1;
+            }
         }
+
+        // Indicates whether or not to skip the first page switch animation
+        private bool _SkipInitialAnimation;
 
         // Local field to keep track of the calls to the method below
         private bool _StartupMessagesProcessed;
@@ -197,9 +221,22 @@ namespace Brainf_ck_sharp_UWP.UserControls
         private void PivotControl_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = sender.To<Pivot>().SelectedIndex;
-            SharedCommandBar.SwitchContent(index == 0);
+            if (index == 1 && _SkipInitialAnimation)
+            {
+                SharedCommandBar.SwitchContent(index == 0);
+                _SkipInitialAnimation = false;
+            }
+            else SharedCommandBar.SwitchContentAsync(index == 0);
             Console.ViewModel.IsEnabled = index == 0;
             IDE.ViewModel.IsEnabled = index == 1;
+
+            // UI adjustments on page change
+            if (index == 1)
+            {
+                StdinHeader.SetMemoryViewButtonIsEnabledProperty(false);
+                if (CommandsPivot.SelectedIndex == 1) CommandsPivot.SelectedIndex = 0;
+            }
+            else StdinHeader.SetMemoryViewButtonIsEnabledProperty(true);
         }
 
         /// <summary>
@@ -242,7 +279,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             LocalSourceCodesBrowserFlyout flyout = new LocalSourceCodesBrowserFlyout();
             FlyoutClosedResult<CategorizedSourceCode> result = await FlyoutManager.Instance.ShowAsync<LocalSourceCodesBrowserFlyout, CategorizedSourceCode>(
                 LocalizationManager.GetResource("CodeLibrary"), flyout, new Thickness(), openCallback: () => flyout.ViewModel.LoadGroupsAsync().Forget());
-            if (result) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(result.Value));
+            if (result) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(result.Value, ShourceCodeLoadingSource.CodeLibrary));
         }
 
         // Shows the small navigation keyboard popup

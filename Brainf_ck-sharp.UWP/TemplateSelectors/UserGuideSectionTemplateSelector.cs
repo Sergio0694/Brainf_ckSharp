@@ -9,7 +9,7 @@ namespace Brainf_ck_sharp_UWP.TemplateSelectors
     /// <summary>
     /// A template selector for the user guide sections
     /// </summary>
-    class UserGuideSectionTemplateSelector : DataTemplateSelector
+    public class UserGuideSectionTemplateSelector : DataTemplateSelector
     {
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
@@ -20,7 +20,8 @@ namespace Brainf_ck_sharp_UWP.TemplateSelectors
                     case UserGuideSection.Introduction: return parent.FindResource<DataTemplate>("IntroductionSectionTemplate");
                     case UserGuideSection.Samples: return parent.FindResource<DataTemplate>("CodeSamplesectionTemplate");
                     case UserGuideSection.PBrain: return parent.FindResource<DataTemplate>("PBrainSectionTemplate");
-                    default: throw new ArgumentOutOfRangeException("Invalid user guide section");
+                    case UserGuideSection.Debugging: return parent.FindResource<DataTemplate>("DebuggingSectionTemplate");
+                    default: throw new ArgumentOutOfRangeException(nameof(item), "Invalid user guide section");
                 }
             }
             return null;

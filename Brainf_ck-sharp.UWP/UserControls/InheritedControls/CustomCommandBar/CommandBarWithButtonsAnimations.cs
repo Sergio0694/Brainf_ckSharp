@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using JetBrains.Annotations;
@@ -110,15 +111,50 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
         private readonly SemaphoreSlim ButtonsSemaphore = new SemaphoreSlim(1);
 
         /// <summary>
-        /// Gets whether or not the control is actually performing an animation on its content
-        /// </summary>
-        public bool TransitionPending => ButtonsSemaphore.CurrentCount == 0;
-
-        /// <summary>
         /// Shows or hides a group of buttons in the CommandBar depending on the given value
         /// </summary>
         /// <param name="primaryContentEnabled">Indicates which group (default buttons or secondary buttons) to show</param>
         public async void SwitchContent(bool primaryContentEnabled)
+        {
+            // Lock the semaphore
+            if (_Disposed) return;
+            await ButtonsSemaphore.WaitAsync();
+            this.IsHitTestVisible = false;
+
+            // Fade out the buttons that are actually visible
+            foreach (ICustomCommandBarPrimaryItem button in 
+                from control in PrimaryCommands
+                let button = control.To<ICustomCommandBarPrimaryItem>()
+                where button.Control.Visibility == Visibility.Visible
+                select button)
+            {
+                button.Control.Opacity = 0;
+                button.Control.Visibility = Visibility.Collapsed;
+            }
+
+            // Fade in the necessary buttons
+            foreach (ICustomCommandBarPrimaryItem button in
+                from control in PrimaryCommands
+                let button = control.To<ICustomCommandBarPrimaryItem>()
+                where button.DefaultButton == primaryContentEnabled && button.ExtraCondition
+                select button)
+            {
+                if (button.Control.RenderTransform is TranslateTransform transform) transform.X = 0;
+                button.Control.Opacity = 1;
+                button.Control.Visibility = Visibility.Visible;
+            }
+
+            // Wrap up
+            PrimaryContentEnabled = primaryContentEnabled;
+            ButtonsSemaphore.Release();
+            this.IsHitTestVisible = true;
+        }
+
+        /// <summary>
+        /// Shows or hides a group of buttons in the CommandBar depending on the given value, with animations
+        /// </summary>
+        /// <param name="primaryContentEnabled">Indicates which group (default buttons or secondary buttons) to show</param>
+        public async void SwitchContentAsync(bool primaryContentEnabled)
         {
             // Lock the semaphore
             if (_Disposed) return;

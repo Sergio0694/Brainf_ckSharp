@@ -18,14 +18,19 @@
             <sections:LanguageIntroductionControl Margin="12,4,16,8"/>
         </DataTemplate>
 
-        <!--Introduction-->
+        <!--Code samples-->
         <DataTemplate x:Key="CodeSamplesectionTemplate">
             <sections:CodeSamplesGuideControl Margin="12,4,16,8"/>
         </DataTemplate>
 
-        <!--Introduction-->
+        <!--PBrain-->
         <DataTemplate x:Key="PBrainSectionTemplate">
-            <sections:PBrainGuideControl Margin="12,4,16,12"/>
+            <sections:PBrainGuideControl Margin="12,4,16,8"/>
+        </DataTemplate>
+
+        <!--Code samples-->
+        <DataTemplate x:Key="DebuggingSectionTemplate">
+            <sections:DebuggingGuideControl Margin="12,4,16,12"/>
         </DataTemplate>
 
         <!--Template selector-->

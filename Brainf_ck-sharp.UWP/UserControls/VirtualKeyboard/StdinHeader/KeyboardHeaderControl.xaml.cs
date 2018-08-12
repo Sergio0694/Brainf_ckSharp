@@ -35,6 +35,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
         public void SelectMemoryView() => SelectedHeaderIndex = 1;
 
         /// <summary>
+        /// Sets the <see cref="UserControl.IsEnabled"/> property for the memory viewer header button
+        /// </summary>
+        /// <param name="value">The new state for the button</param>
+        public void SetMemoryViewButtonIsEnabledProperty(bool value) => MemoryMapButton.IsEnabled = value;
+
+        /// <summary>
         /// Gets or sets the currently selected index for the header control
         /// </summary>
         public int SelectedHeaderIndex
@@ -52,6 +58,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
             int index = e.NewValue.To<int>();
             @this.KeyboardButton.IsSelected = index == 0;
             @this.MemoryMapButton.IsSelected = index == 1;
+            @this.SelectedRectangle.StartCompositionTranslationAnimation(index * 48, 0, 250, null, EasingFunctionNames.CircleEaseOut);
         }
 
         /// <summary>

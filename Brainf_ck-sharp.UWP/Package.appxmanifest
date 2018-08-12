@@ -25,6 +25,11 @@
         </uap:DefaultTile>
         <uap:SplashScreen Image="assets\SplashScreen\SplashScreen.png" settings:Optional="true" xmlns:settings="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" />
       </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="brainf-ck" />
+        </uap:Extension>
+      </Extensions>
     </Application>
   </Applications>
   <Capabilities>

@@ -7,6 +7,7 @@ using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -307,7 +308,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
                     break;
                 default:
                     // Error
-                    NotificationsManager.Instance.ShowDefaultErrorNotification($"{LocalizationManager.GetResource("SomethingBadHappened")} :'(", LocalizationManager.GetResource("DonationErrorBody"));
+                    NotificationsManager.Instance.ShowDefaultErrorNotification($"{LocalizationManager.GetResource("SomethingBadHappened")} :'(", LocalizationManager.GetResource("PurchaseErrorBody"));
                     break;
             }
         }
@@ -327,6 +328,25 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
                     for (int i = 0; i < AvailableIDEThemes.Count; i++)
                         AvailableIDEThemes[i].IsSelected = i == value;
                     AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.SelectedIDETheme), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
+
+        private bool _TimelineLoggingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.EnableTimeline));
+
+        /// <summary>
+        /// Gets or sets whether or not the IDE should render the control characters too
+        /// </summary>
+        [UsedImplicitly]
+        public bool TimelineLoggingEnabled
+        {
+            get => _TimelineLoggingEnabled;
+            set
+            {
+                if (Set(ref _TimelineLoggingEnabled, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.EnableTimeline), value, SettingSaveMode.OverwriteIfExisting);
+                    TimelineManager.IsEnabled = value;
                 }
             }
         }
@@ -364,6 +384,34 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
                 if (Set(ref _ClearStdinBufferOnExecution, value))
                 {
                     AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.ClearStdinBufferOnExecution), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the two options for the initial page
+        /// </summary>
+        [UsedImplicitly, NotNull]
+        public IReadOnlyCollection<string> StartingPageOptions { get; } = new[]
+        {
+            "Console",
+            "IDE"
+        };
+
+        private int _StartingPageSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.StartingPage));
+
+        /// <summary>
+        /// Gets or sets the selected index for the app starting page
+        /// </summary>
+        [UsedImplicitly]
+        public int StartingPageSelectedIndex
+        {
+            get => _StartingPageSelectedIndex;
+            set
+            {
+                if (Set(ref _StartingPageSelectedIndex, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.StartingPage), value, SettingSaveMode.OverwriteIfExisting);
                 }
             }
         }

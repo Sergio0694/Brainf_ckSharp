@@ -243,9 +243,14 @@ namespace Brainf_ck_sharp_UWP.Views
         // The maximum execution time for a script
         private const int TimeThreshold = 2000;
 
-        private void ViewModel_PlayRequested(object sender, PlayRequestedEventArgs e)
+        // Indicates whether or not there is a script already executed (thread-safe on the UI dispatcher)
+        private bool _ExecutionInProgress;
+
+        private async void ViewModel_PlayRequested(object sender, PlayRequestedEventArgs e)
         {
             // Get the text and initialize the session
+            if (_ExecutionInProgress) return;
+            _ExecutionInProgress = true;
             EditBox.Document.GetText(TextGetOptions.None, out string text);
             Func<InterpreterExecutionSession> factory;
             if (e.Debug)
@@ -267,8 +272,9 @@ namespace Brainf_ck_sharp_UWP.Views
 
             // Display the execution popup
             IDERunResultFlyout flyout = new IDERunResultFlyout();
-            FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource(e.Debug ? "Debug" : "RunTitle"), flyout, null, new Thickness()).Forget();
-            Task.Delay(100).ContinueWith(t => flyout.ViewModel.InitializeAsync(factory), TaskScheduler.FromCurrentSynchronizationContext());
+            await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource(e.Debug ? "Debug" : "RunTitle"), flyout, null, new Thickness(),
+                openCallback: () => Task.Delay(100).ContinueWith(t => flyout.ViewModel.InitializeAsync(factory), TaskScheduler.FromCurrentSynchronizationContext()));
+            _ExecutionInProgress = false;
         }
 
         #endregion
@@ -1285,7 +1291,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     RenderTransform = new TranslateTransform
                     {
                         X = 3,
-                        Y = _Top + 12 + offset
+                        Y = _Top + 10 + offset
                     }
                 };
                 BreakpointsCanvas.Children.Add(ellipse);
@@ -1293,7 +1299,7 @@ namespace Brainf_ck_sharp_UWP.Views
 
                 // Line highlight
                 (double x, _, double width) = CalculateBreakpointCoordinates(text, start);
-                Rect rect = new Rect(x, _Top + 12 + offset + _BreakpointsLineOffset, width, _ApproximateLineHeight);
+                Rect rect = new Rect(x, _Top + 10 + offset + _BreakpointsLineOffset, width, _ApproximateLineHeight);
                 Guid guid = Guid.NewGuid();
                 BreakpointLinesCoordinates.Add(guid, rect);
                 BracketGuidesCanvas.Invalidate();

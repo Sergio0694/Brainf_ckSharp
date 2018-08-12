@@ -10,9 +10,21 @@
     d:DesignWidth="400">
 
     <StackPanel>
-        
+
         <!--Blur mode-->
         <TextBlock
+            x:Uid="StartingPageTitle"
+            Text="Starting page"/>
+        <inheritedControls:AnimatedComboBox
+            Margin="0,8,0,0"
+            ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
+            ItemsSource="{Binding ViewModel.StartingPageOptions}"
+            SelectedIndex="{Binding ViewModel.StartingPageSelectedIndex, Mode=TwoWay}"
+            MinWidth="180"/>
+
+        <!--Blur mode-->
+        <TextBlock
+            Margin="0,16,0,0"
             x:Uid="BlurModeTitle"
             Text="Preferred blur mode"/>
         <inheritedControls:AnimatedComboBox

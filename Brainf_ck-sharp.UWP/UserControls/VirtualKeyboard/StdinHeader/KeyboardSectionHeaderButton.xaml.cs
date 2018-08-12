@@ -21,6 +21,21 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
             });
         }
 
+        /// <inheritdoc cref="UserControl"/>
+        public new bool IsEnabled
+        {
+            get => base.IsEnabled;
+            set
+            {
+                if (IsEnabled != value)
+                {
+                    VisualStateManager.GoToState(this, value ? "Default" : "Disabled", false);
+                    base.IsEnabled = value;
+                    LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0.8 : 0, 200, null, EasingFunctionNames.Linear);
+                }
+            }
+        }
+
         /// <summary>
         /// Gets or sets the icon to display in the control (must have the format &#x[0-F]{4];)
         /// </summary>
@@ -56,7 +71,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
                 @this.HeaderSelected?.Invoke(d, EventArgs.Empty);
                 VisualStateManager.GoToState(@this, "Selected", false);
             }
-            else VisualStateManager.GoToState(@this, "Default", false);
+            else if (@this.IsEnabled) VisualStateManager.GoToState(@this, "Default", false);
         }
 
         /// <summary>

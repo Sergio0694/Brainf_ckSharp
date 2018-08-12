@@ -265,8 +265,14 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
                     // Get the source code file and look for an existing copy in the local database
                     StorageFile file = await folder.GetFileAsync(record.Filename);
                     string code = await FileIO.ReadTextAsync(file);
-                    string sUid = record.Uid.ToString();
-                    SourceCode row = await DatabaseConnection.Table<SourceCode>().Where(entry => entry.Uid == sUid).FirstOrDefaultAsync();
+                    string uid = record.Uid.ToString();
+
+                    // Edge case: the user saved a file with the same title as the sample (shouldn't happen, but still)
+                    SourceCode row = await DatabaseConnection.Table<SourceCode>().Where(entry => entry.Title == record.FriendlyName).FirstOrDefaultAsync();
+                    if (row != null && Guid.TryParse(row.Uid, out Guid guid) && !SamplesMap.Any(sample => sample.Uid.Equals(guid))) continue;
+
+                    // Add or update the sample
+                    row = await DatabaseConnection.Table<SourceCode>().Where(entry => entry.Uid == uid).FirstOrDefaultAsync();
                     if (row == null)
                     {
                         // The code was missing, create a local copy in the database
@@ -435,6 +441,18 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
             await EnsureDatabaseConnectionAsync();
             code.Favorited = !code.Favorited;
             await DatabaseConnection.UpdateAsync(code);
+        }
+
+        /// <summary>
+        /// Tries to load the saved code with the specified id, if it exists
+        /// </summary>
+        /// <param name="uid">The id of the saved code to look for</param>
+        [ItemCanBeNull]
+        public async Task<CategorizedSourceCode> TryLoadSavedCodeAsync([NotNull] string uid)
+        {
+            await EnsureDatabaseConnectionAsync();
+            SourceCode target = await DatabaseConnection.Table<SourceCode>().Where(code => code.Uid == uid).FirstOrDefaultAsync();
+            return target == null ? null : new CategorizedSourceCode(target.Favorited ? SavedSourceCodeType.Favorite : SavedSourceCodeType.Original, target);
         }
 
         #endregion

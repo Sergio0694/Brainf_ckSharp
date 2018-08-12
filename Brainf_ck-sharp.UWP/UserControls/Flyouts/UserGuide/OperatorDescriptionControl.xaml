@@ -14,7 +14,8 @@
         BorderThickness="2"
         BorderBrush="#20FFFFFF">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"
+                              MinWidth="40"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 

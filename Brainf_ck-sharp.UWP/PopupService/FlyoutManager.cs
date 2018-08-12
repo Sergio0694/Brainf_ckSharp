@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
+using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
 using Brainf_ck_sharp_UWP.PopupService.Interfaces;
 using Brainf_ck_sharp_UWP.PopupService.InternalTypes;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -71,11 +72,11 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 }
                 else TryCloseAsync().Forget();
             };
-            KeyEventsListener.Esc += (s, _) =>
+            Messenger.Default.Register<EscKeyPressedMessage>(this, _ =>
             {
                 if (_CloseContextMenu != null) _CloseContextMenu?.Invoke();
                 else TryCloseAsync().Forget();
-            };
+            });
         }
 
         // Adjusts the size of the current popup when the window is resized

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide.Sections;
 using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide
@@ -31,9 +31,9 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide
         {
             ScrollViewer scroller = SectionsList.FindChild<ScrollViewer>();
             if (scroller == null) throw new NullReferenceException("This can't really happen");
-            int index = ViewModel.Source.Count - 1;
-            if (index != 2) throw new InvalidOperationException("Invalid data source");
-            DependencyObject container = SectionsList.ContainerFromIndex(index);
+
+            // Wait for the scroller to load the content
+            DependencyObject container = SectionsList.ContainerFromIndex(1); // Wait for the 2nd item
             if (container == null)
             {
                 TaskCompletionSource<Unit> tcs = new TaskCompletionSource<Unit>();
@@ -41,7 +41,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide
                 timer.Start();
                 void LayoutHandler(object sender, object e)
                 {
-                    container = SectionsList.ContainerFromIndex(index);
+                    container = SectionsList.ContainerFromIndex(ViewModel.Source.Count - 1);
                     if (container != null || timer.ElapsedMilliseconds > 1000)
                     {
                         tcs.TrySetResult(Unit.Instance);
@@ -52,9 +52,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide
                 await tcs.Task;
                 timer.Stop();
             }
-            if (container is ListViewItem item && item.ContentTemplateRoot is PBrainGuideControl pbrain)
+
+            // Scroll to offset
+            DependencyObject[] trailing = Enumerable.Range(0, 2).Select(SectionsList.ContainerFromIndex).ToArray();
+            if (trailing.All(section => section is ListViewItem item && item.ContentTemplateRoot is FrameworkElement))
             {
-                double offset = scroller.ExtentHeight - pbrain.ActualHeight;
+                double offset = trailing.Sum(section => ((section as ListViewItem)?.ContentTemplateRoot as FrameworkElement)?.ActualHeight ?? 0) + 88;
                 scroller.ChangeView(null, offset, null);
             }
             else scroller.ChangeView(null, scroller.ScrollableHeight, null);

@@ -63,40 +63,11 @@
             Description="Loops and executes the current operators sequence if the value of the current cell is greater than 0"
             x:Uid="GuideOperator6"
             OperatorForegroundBrush="#FF569CD6"/>
-        
-        <!--Dot operator-->
-        <Grid
+        <local:OperatorDescriptionControl
             Margin="0,12,0,0"
-            HorizontalAlignment="Left"
-            BorderThickness="2"
-            BorderBrush="#20FFFFFF">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <!--Operator-->
-            <Canvas Background="#20000000"/>
-            <TextBlock 
-                Grid.Column="0"
-                Margin="12,10,12,10"
-                Text="."
-                FontSize="20"
-                Foreground="IndianRed"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"/>
-
-            <!--Right character-->
-            <Canvas 
-                Background="#06FFFFFF"
-                Grid.Column="1"/>
-            <TextBlock
-                FontSize="14"
-                Margin="12,8,12,8"
-                TextWrapping="WrapWholeWords"
-                Grid.Column="1"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Left">
+            Operator="."
+            OperatorForegroundBrush="IndianRed">
+            <local:OperatorDescriptionControl.DescriptionInlines>
                 <Run 
                     Text="Prints the Unicode character corresponding to the value of the current memory cell. The Unicode table is available in the app, under the"
                     x:Uid="GuideOperators7Part1"/>
@@ -105,8 +76,8 @@
                 <Run 
                     Text="menu"
                     x:Uid="GuideOperators7Part2"/>
-            </TextBlock>
-        </Grid>
+            </local:OperatorDescriptionControl.DescriptionInlines>
+        </local:OperatorDescriptionControl>
         <local:OperatorDescriptionControl
             Margin="0,12,0,0"
             Operator=","

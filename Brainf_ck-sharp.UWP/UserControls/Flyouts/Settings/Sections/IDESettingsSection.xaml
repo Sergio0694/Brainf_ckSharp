@@ -9,7 +9,7 @@
     xmlns:ideThemes="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes"
     xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
     mc:Ignorable="d"
-    d:DesignHeight="640"
+    d:DesignHeight="680"
     d:DesignWidth="400">
     <UserControl.Resources>
 
@@ -191,5 +191,14 @@
                 Margin="24,0,0,0"
                 HorizontalAlignment="Left"/>
         </Grid>
+
+        <!--Timeline support-->
+        <TextBlock
+            Margin="0,16,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"
+            x:Uid="TimelineSupportTitle"
+            Text="Log activities in the Timeline"/>
+        <ToggleSwitch IsOn="{Binding ViewModel.TimelineLoggingEnabled, Mode=TwoWay}"/>
     </StackPanel>
 </UserControl>

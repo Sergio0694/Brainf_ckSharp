@@ -1,5 +1,7 @@
 ﻿using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide
 {
@@ -35,6 +37,23 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide
         {
             get => DescriptionBlock.Text;
             set => DescriptionBlock.Text = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the collection of <see cref="Inline"/> elements to display in the current control
+        /// </summary>
+        [NotNull]
+        public InlineCollection DescriptionInlines
+        {
+            get => DescriptionBlock.Inlines;
+            set
+            {
+                if (DescriptionInlines != value)
+                {
+                    DescriptionBlock.Inlines.Clear();
+                    foreach (Inline inline in value) DescriptionBlock.Inlines.Add(inline);
+                }
+            }
         }
     }
 }
