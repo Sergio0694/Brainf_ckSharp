@@ -1333,7 +1333,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     int characters = 0, removed = 0;
                     foreach (string line in lines)
                     {
-                        if (line.StartsWith('\t'))
+                        if (line.StartsWith("\t"))
                         {
                             EditBox.Document.Selection.EndPosition = start + characters + 1;
                             EditBox.Document.Selection.StartPosition = EditBox.Document.Selection.EndPosition - 1;

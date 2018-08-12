@@ -44,10 +44,10 @@ namespace Brainf_ck_sharp_UWP.DataModels.Settings
                 {
                     case SettingsSectionType.IDE:
                         return ViewModel.ThemesSelectorEnabled
-                            ? $"8 {LocalizationManager.GetResource("LowercaseAvailableSettings")}"
-                            : $"7 {LocalizationManager.GetResource("LowercaseAvailableSettings")}, {LocalizationManager.GetResource("ThemesPackLocked")}";
+                            ? $"7 {LocalizationManager.GetResource("LowercaseAvailableSettings")}"
+                            : $"6 {LocalizationManager.GetResource("LowercaseAvailableSettings")}, {LocalizationManager.GetResource("ThemesPackLocked")}";
                     case SettingsSectionType.UI:
-                        return $"3 {LocalizationManager.GetResource("LowercaseAvailableSettings")}";
+                        return $"2 {LocalizationManager.GetResource("LowercaseAvailableSettings")}";
                     case SettingsSectionType.Interpreter:
                         return $"1 {LocalizationManager.GetResource("LowercaseSingleAvailableSettings")}";
                     default:

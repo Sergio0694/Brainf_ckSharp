@@ -20,11 +20,9 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         SelectedIDETheme,
         RenderWhitespaces,
         SelectedFontName,
-        EnableTimeline,
 
         // Other settings
         StartingPage,
-        InAppBlurMode,
         ClearStdinBufferOnExecution,
         ShowPBrainButtons
     }

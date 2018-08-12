@@ -62,17 +62,12 @@ namespace Brainf_ck_sharp_UWP.UserControls
             Console.ViewModel.IsEnabled = true;
 
             // Apply the desired blur effect
-            AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.InAppBlurMode), out int blurMode);
-            HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(blurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
+            HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>("HeaderInAppAcrylicBrush");
 
             // Flyout management
             Messenger.Default.Register<FlyoutOpenedMessage>(this, m => ManageFlyoutUI(true));
             Messenger.Default.Register<FlyoutClosedNotificationMessage>(this, m => ManageFlyoutUI(false));
             Messenger.Default.Register<AppLoadingStatusChangedMessage>(this, m => ManageLoadingUI(m.Loading, !m.ImmediateDisplayRequested));
-            Messenger.Default.Register<BlurModeChangedMessage>(this, m =>
-            {
-                HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(m.BlurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
-            });
 
             // Other messages
             Messenger.Default.Register<IDEDisplayRequestMessage>(this, _ => PivotControl.SelectedIndex = 1);

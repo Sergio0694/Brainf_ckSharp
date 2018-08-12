@@ -7,7 +7,6 @@ using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -50,35 +49,6 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
                 if (Set(ref _AutosaveDocuments, value))
                 {
                     AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.AutosaveDocuments), value, SettingSaveMode.OverwriteIfExisting);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the collection of the available blur modes
-        /// </summary>
-        [UsedImplicitly, NotNull]
-        public IReadOnlyCollection<string> BlurModeOptions { get; } = new[]
-        {
-            LocalizationManager.GetResource("BackgroundBlur"),
-            LocalizationManager.GetResource("InAppBlur")
-        };
-
-        private int _BlurModeSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.InAppBlurMode));
-
-        /// <summary>
-        /// Gets or sets the selected index for the custom blur mode
-        /// </summary>
-        [UsedImplicitly]
-        public int BlurModeSelectedIndex
-        {
-            get => _BlurModeSelectedIndex;
-            set
-            {
-                if (Set(ref _BlurModeSelectedIndex, value))
-                {
-                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.InAppBlurMode), value, SettingSaveMode.OverwriteIfExisting);
-                    Messenger.Default.Send(new BlurModeChangedMessage(value));
                 }
             }
         }
@@ -328,25 +298,6 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
                     for (int i = 0; i < AvailableIDEThemes.Count; i++)
                         AvailableIDEThemes[i].IsSelected = i == value;
                     AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.SelectedIDETheme), value, SettingSaveMode.OverwriteIfExisting);
-                }
-            }
-        }
-
-        private bool _TimelineLoggingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.EnableTimeline));
-
-        /// <summary>
-        /// Gets or sets whether or not the IDE should render the control characters too
-        /// </summary>
-        [UsedImplicitly]
-        public bool TimelineLoggingEnabled
-        {
-            get => _TimelineLoggingEnabled;
-            set
-            {
-                if (Set(ref _TimelineLoggingEnabled, value))
-                {
-                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.EnableTimeline), value, SettingSaveMode.OverwriteIfExisting);
-                    TimelineManager.IsEnabled = value;
                 }
             }
         }

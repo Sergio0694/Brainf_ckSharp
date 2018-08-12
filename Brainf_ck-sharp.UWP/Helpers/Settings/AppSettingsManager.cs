@@ -110,7 +110,6 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
             SetValue(nameof(AppSettingsKeys.OverflowToggleMessageShown), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.ReviewPromptShown), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.AppStartups), 0u, SettingSaveMode.SkipIfExisting);
-            SetValue(nameof(AppSettingsKeys.InAppBlurMode), 0, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.AutoIndentBrackets), true, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.BracketsStyle), 0, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.TabLength), 4, SettingSaveMode.SkipIfExisting);
@@ -118,7 +117,6 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
             SetValue(nameof(AppSettingsKeys.AutosaveDocuments), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.RenderWhitespaces), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.SelectedFontName), string.Empty, SettingSaveMode.SkipIfExisting);
-            SetValue(nameof(AppSettingsKeys.EnableTimeline), true, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.ClearStdinBufferOnExecution), true, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.ShowPBrainButtons), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.StartingPage), 0, SettingSaveMode.SkipIfExisting);

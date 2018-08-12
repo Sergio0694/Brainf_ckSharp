@@ -30,10 +30,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             // Create the output collection
             return new List<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<string>>>
             {
-                CreateChangelogEntry("3.0.0.0", 2018, 8, 16, new List<string>
+                CreateChangelogEntry("1.5.0.0", 2018, 8, 16, new List<string>
                 {
-                    "App rebuilt for Windows 10 April Update",
-                    "Added timeline support for the IDE",
                     "Added support for TAB and SHIFT + TAB to indent the current selection in the IDE",
                     "Added CTRL + R and CTRL + ALT + R shortcuts to run or debug code in the IDE",
                     "Enabled export C code for scripts with PBrain operators",
@@ -41,16 +39,6 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                     "Added a debugging section to the user guide",
                     "UI improvements, more fluent design effects",
                     "Code tweaks and bug fixes"
-                }),
-                CreateChangelogEntry("2.0.1.0", 2017, 11, 10, new List<string>
-                {
-                    "The app splash screen is now optional",
-                    "Minor UI tweaks to the light effects"
-                }),
-                CreateChangelogEntry("2.0.0.0", 2017, 10, 20, new List<string>
-                {
-                    "App rebuilt for Windows 10 Fall Creators Update",
-                    "Minor UI adjustments and bug fixes"
                 }),
                 CreateChangelogEntry("1.4.1.0", 2017, 10, 4, new List<string>
                 {

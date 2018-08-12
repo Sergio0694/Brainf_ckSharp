@@ -17,7 +17,7 @@
         <converters:BoolToInvertedVisibilityConverter x:Key="InvertedConverter"/>
     </UserControl.Resources>
 
-    <StackPanel>
+    <StackPanel Margin="0,0,0,8">
         
         <!--Autosave-->
         <TextBlock
@@ -191,14 +191,5 @@
                 Margin="24,0,0,0"
                 HorizontalAlignment="Left"/>
         </Grid>
-
-        <!--Timeline support-->
-        <TextBlock
-            Margin="0,16,0,0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Center"
-            x:Uid="TimelineSupportTitle"
-            Text="Log activities in the Timeline"/>
-        <ToggleSwitch IsOn="{Binding ViewModel.TimelineLoggingEnabled, Mode=TwoWay}"/>
     </StackPanel>
 </UserControl>

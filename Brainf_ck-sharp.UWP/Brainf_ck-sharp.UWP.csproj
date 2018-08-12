@@ -11,8 +11,8 @@
     <AssemblyName>Brainf_ck-sharp.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17134.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.15063.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -206,7 +206,6 @@
     <Compile Include="Helpers\Settings\SettingSaveMode.cs" />
     <Compile Include="Helpers\StorageHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\ShareCharmsHelper.cs" />
-    <Compile Include="Helpers\WindowsAPIs\TimelineManager.cs" />
     <Compile Include="Messages\Actions\DebugStatusChangedMessage.cs" />
     <Compile Include="Messages\Actions\IDEAutosaveTriggeredMessage.cs" />
     <Compile Include="Messages\Actions\IDEDeleteCharacterRequestMessage.cs" />
@@ -222,7 +221,6 @@
     <Compile Include="Messages\Flyouts\NotificationCloseRequestmessage.cs" />
     <Compile Include="Messages\IDEStatus\BreakpointErrorStatusChangedMessage.cs" />
     <Compile Include="Messages\OverflowModeChangedMessage.cs" />
-    <Compile Include="Messages\UI\BlurModeChangedMessage.cs" />
     <Compile Include="Messages\UI\IDEDisplayRequestMessage.cs" />
     <Compile Include="Messages\UI\IDESettingsChangedMessage.cs" />
     <Compile Include="Messages\UI\IDEThemePreviewFontChangedMessage.cs" />
@@ -879,10 +877,10 @@
       <Version>6.1.7</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp">
-      <Version>4.0.0</Version>
+      <Version>2.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
-      <Version>4.0.0</Version>
+      <Version>2.1.1</Version>
     </PackageReference>
     <PackageReference Include="MvvmLightLibs">
       <Version>5.4.1</Version>
@@ -909,7 +907,7 @@
       <Version>1.0.1</Version>
     </PackageReference>
     <PackageReference Include="UICompositionAnimations">
-      <Version>3.0.0-beta6</Version>
+      <Version>2.16.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

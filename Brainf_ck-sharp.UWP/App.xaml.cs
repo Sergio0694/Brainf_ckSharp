@@ -1,20 +1,13 @@
-﻿using System.Text.RegularExpressions;
-using Microsoft.HockeyApp;
+﻿using Microsoft.HockeyApp;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using Brainf_ck_sharp_UWP.DataModels.SQLite;
-using Brainf_ck_sharp_UWP.Enums;
-using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
-using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
-using Brainf_ck_sharp_UWP.Messages.UI;
-using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.Resources;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.UserControls;
@@ -66,39 +59,10 @@ namespace Brainf_ck_sharp_UWP
 
             // Additional setup steps
             Task.Run(() => SQLiteManager.Instance.TrySyncSharedCodesAsync()).Forget();
-            if (AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.EnableTimeline))) TimelineManager.IsEnabled = true;
 
             // Hide the splash screen
             if (startup) await Task.Delay(AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.StartingPage)) == 1 ? 250 : 100); // Delay to hide the animations
             Window.Current.Activate();
-        }
-
-        /// <inheritdoc cref="Application"/>
-        protected override async void OnActivated(IActivatedEventArgs e)
-        {
-            // UI setup
-            bool startup = InitializeUI();
-
-            // Handle the requested code
-            if (e.Kind == ActivationKind.Protocol && e is ProtocolActivatedEventArgs args && args.Uri.Host.Equals("ide"))
-            {
-                Match match = Regex.Match(args.Uri.Query, "id=([0-9a-f-]{36})");
-                if (match.Success)
-                {
-                    Messenger.Default.Send(new AppLoadingStatusChangedMessage(true, startup));
-                    if (AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.StartingPage)) == 0 || !startup) Messenger.Default.Send(new IDEDisplayRequestMessage());
-                    if (startup) await Task.Delay(500); // Increased delay to wait for the loading UI to be shown
-                    Window.Current.Activate(); // Hide the splash screen
-                    await SQLiteManager.Instance.TrySyncSharedCodesAsync();
-                    CategorizedSourceCode code = await SQLiteManager.Instance.TryLoadSavedCodeAsync(match.Groups[1].Value);
-                    if (code != null) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(code, ShourceCodeLoadingSource.Timeline));
-                    else
-                    {
-                        Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
-                        NotificationsManager.Instance.ShowDefaultErrorNotification(LocalizationManager.GetResource("CodeNotFoundTitle"), LocalizationManager.GetResource("CodeNotFoundBody"));
-                    }
-                }
-            }
         }
 
         /// <summary>
