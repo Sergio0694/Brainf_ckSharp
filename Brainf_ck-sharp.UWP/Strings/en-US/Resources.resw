@@ -834,4 +834,7 @@ This way he'll be able to help you!</value>
   <data name="AlreadyLoadedTitle" xml:space="preserve">
     <value>Already loaded</value>
   </data>
+  <data name="ErrorRun.Text" xml:space="preserve">
+    <value>Error</value>
+  </data>
 </root>

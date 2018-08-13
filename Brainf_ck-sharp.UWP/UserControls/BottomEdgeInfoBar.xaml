@@ -201,7 +201,8 @@
             IsTextScaleFactorEnabled="False"
             FontWeight="SemiLight"
             Grid.Column="2">
-            <Run Text="Error"/>
+            <Run Text="Error"
+                 x:Uid="ErrorRun"/>
             <Run 
                 Text="12"
                 x:Name="IDEErrorRun"/>

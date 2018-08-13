@@ -623,7 +623,7 @@ namespace Brainf_ck_sharp_UWP.Views
         private DateTime _ControlCharactersRenderingTimestamp = DateTime.MinValue;
 
         // The minimum delay between each redraw of the control characters
-        private const int MinimumControlCharactersRenderingInterval = 600;
+        private const int MinimumControlCharactersRenderingInterval = 400;
 
         // The queue of arguments to render the control characters after a delay
         private int _PendingUpdates;

@@ -958,6 +958,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Already loaded</source>
           <target state="translated">Codice già caricato</target>
         </trans-unit>
+        <trans-unit id="ErrorRun.Text" translate="yes" xml:space="preserve">
+          <source>Error</source>
+          <target state="translated">Errore</target>
+        </trans-unit>
       </group>
     </body>
   </file>
