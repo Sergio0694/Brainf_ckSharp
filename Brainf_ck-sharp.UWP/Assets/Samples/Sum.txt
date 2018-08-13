@@ -89,7 +89,7 @@
 [
 	- restore the cell
 ]
->>>>>>>>>>.>.<. print " * "
+>>>>>>>>>>.>.<. print " + "
 <<<<<<<< move back to y1
 [
 	>. print y1 if not 0

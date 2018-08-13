@@ -729,4 +729,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="AlreadyLoadedTitle" xml:space="preserve">
     <value>Codice già caricato</value>
   </data>
+  <data name="ErrorRun" xml:space="preserve">
+    <value>Errore</value>
+  </data>
 </root>
