@@ -1,5 +1,5 @@
 ﻿using System;
-using Windows.Foundation;
+using System.Threading.Tasks;
 using Windows.Foundation.Metadata;
 using Windows.UI.ViewManagement;
 
@@ -21,7 +21,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
         /// <summary>
         /// Tries to hide the status bar, if present
         /// </summary>
-        public static IAsyncAction HideAsync() => GetCurrentStatusBar()?.HideAsync();
+        public static Task HideAsync() => GetCurrentStatusBar()?.HideAsync().AsTask() ?? Task.CompletedTask;
 
         /// <summary>
         /// Gets the occluded height of the status bar, if displayed

@@ -94,7 +94,7 @@ namespace Brainf_ck_sharp_UWP
 
             // Handle the UI
             TitleBarHelper.StyleAppTitleBar();
-            StatusBarHelper.HideAsync().AsTask().Forget();
+            StatusBarHelper.HideAsync().Forget();
 
             // Setup the view mode
             ApplicationView view = ApplicationView.GetForCurrentView();
