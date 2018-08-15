@@ -237,6 +237,22 @@ namespace Brainf_ck_sharp_UWP.PopupService
         #region Flyout APIs
 
         /// <summary>
+        /// Checks whether or not there's at least one visible dialog
+        /// </summary>
+        public async Task<bool> IsFlyoutOpenAsync()
+        {
+            await Semaphore.WaitAsync();
+            try
+            {
+                return PopupStack.TryPeek(out _);
+            }
+            finally
+            {
+                Semaphore.Release(); // Wouldn't want to forget this!
+            }
+        }
+
+        /// <summary>
         /// Shows a simple message dialog with a title and a content
         /// </summary>
         /// <param name="title">The title of the message</param>

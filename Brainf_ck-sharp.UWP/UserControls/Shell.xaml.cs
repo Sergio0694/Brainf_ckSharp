@@ -76,10 +76,20 @@ namespace Brainf_ck_sharp_UWP.UserControls
 
             // Other messages
             Messenger.Default.Register<IDEDisplayRequestMessage>(this, _ => PivotControl.SelectedIndex = 1);
-            Messenger.Default.Register<CtrlShortcutPressedMessage>(this, m =>
+            Messenger.Default.Register<CtrlShortcutPressedMessage>(this, async m =>
             {
-                if (m.Key == VirtualKey.R && m.Modifiers == VirtualKeyModifiers.Control && ViewModel.IDECodeAvailable) ViewModel.RequestPlay();
-                else if (m.Key == VirtualKey.R && m.Modifiers == (VirtualKeyModifiers.Control | VirtualKeyModifiers.Menu) && ViewModel.DebugAvailable) ViewModel.RequestDebug();
+                if (m.Key == VirtualKey.R && m.Modifiers == VirtualKeyModifiers.Control &&
+                    (PivotControl.SelectedIndex == 0 && ViewModel.PlayAvailable ||
+                     PivotControl.SelectedIndex == 1 && ViewModel.IDECodeAvailable) && !await FlyoutManager.Instance.IsFlyoutOpenAsync())
+                {
+                    ViewModel.RequestPlay(); // Request to play a console script or to execute the code in the IDE
+                }
+                else if (m.Key == VirtualKey.R &&
+                         m.Modifiers == (VirtualKeyModifiers.Control | VirtualKeyModifiers.Menu) &&
+                         ViewModel.DebugAvailable && !await FlyoutManager.Instance.IsFlyoutOpenAsync())
+                {
+                    ViewModel.RequestDebug();
+                }
             });
         }
 
