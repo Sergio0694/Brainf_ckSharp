@@ -26,6 +26,9 @@ using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.ViewModels.Abstract;
+using DiffPlex;
+using DiffPlex.DiffBuilder;
+using DiffPlex.DiffBuilder.Model;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
@@ -647,27 +650,24 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             {
                 DiffStatusSource.Clear();
                 Messenger.Default.Send(new IDEPendingChangesStatusChangedMessage(false));
-                return;
             }
 
             // Prepare the updated source
-            List<GitDiffLineStatus> source = await Task.Run(() =>
+            GitDiffLineStatus[] source = await Task.Run(() =>
             {
-                string[]
-                    currentLines = current.Split('\r'),
-                    previousLines = previous.Replace("\n", "").Split('\r').Take(currentLines.Length).ToArray();
-                List<GitDiffLineStatus> temp = new List<GitDiffLineStatus>();
-                for (int i = 0; i < currentLines.Length - 1; i++)
-                {
-                    if (i > previousLines.Length - 1) temp.Add(GitDiffLineStatus.Edited);
-                    else temp.Add(currentLines[i].Equals(previousLines[i]) ? GitDiffLineStatus.Undefined : GitDiffLineStatus.Edited);
-                    // TODO: actually implement this
-                }
-                return temp;
+                IInlineDiffBuilder builder = new InlineDiffBuilder(new Differ());
+                string trimmed = current.Replace("\n", "");
+                trimmed = trimmed.Substring(0, trimmed.Length - 1);
+                return (
+                        from line in builder.BuildDiffModel(previous, trimmed).Lines
+                        where line.Type != ChangeType.Deleted
+                        select line.Type == ChangeType.Unchanged
+                            ? GitDiffLineStatus.Undefined
+                            : GitDiffLineStatus.Edited).ToArray();
             });
 
             // Update the source collection
-            for (int i = 0; i < source.Count; i++)
+            for (int i = 0; i < source.Length; i++)
             {
                 // The source doesn't contain enough items
                 if (DiffStatusSource.Count - 1 < i)
@@ -684,7 +684,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             }
 
             // Remove the exceeding items
-            int diff = DiffStatusSource.Count - source.Count;
+            int diff = DiffStatusSource.Count - source.Length;
             while (diff > 0)
             {
                 DiffStatusSource.RemoveAt(DiffStatusSource.Count - 1);

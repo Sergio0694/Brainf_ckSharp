@@ -30,6 +30,10 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             // Create the output collection
             return new List<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<string>>>
             {
+                CreateChangelogEntry("3.1.0.0", 2018, 9, 10, new List<string>
+                {
+                    "Improved the git diff indicators in the IDE"
+                }),
                 CreateChangelogEntry("3.0.0.0", 2018, 8, 16, new List<string>
                 {
                     "App rebuilt for Windows 10 April Update",
