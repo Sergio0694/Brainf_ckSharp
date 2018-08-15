@@ -12,6 +12,7 @@ using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages;
+using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
 using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
@@ -78,17 +79,33 @@ namespace Brainf_ck_sharp_UWP.UserControls
             Messenger.Default.Register<IDEDisplayRequestMessage>(this, _ => PivotControl.SelectedIndex = 1);
             Messenger.Default.Register<CtrlShortcutPressedMessage>(this, async m =>
             {
+                // Skip if there's an open flyout
+                if (await FlyoutManager.Instance.IsFlyoutOpenAsync()) return;
+
+                // Play
                 if (m.Key == VirtualKey.R && m.Modifiers == VirtualKeyModifiers.Control &&
                     (PivotControl.SelectedIndex == 0 && ViewModel.PlayAvailable ||
-                     PivotControl.SelectedIndex == 1 && ViewModel.IDECodeAvailable) && !await FlyoutManager.Instance.IsFlyoutOpenAsync())
+                     PivotControl.SelectedIndex == 1 && ViewModel.IDECodeAvailable))
                 {
                     ViewModel.RequestPlay(); // Request to play a console script or to execute the code in the IDE
                 }
                 else if (m.Key == VirtualKey.R &&
                          m.Modifiers == (VirtualKeyModifiers.Control | VirtualKeyModifiers.Menu) &&
-                         ViewModel.DebugAvailable && !await FlyoutManager.Instance.IsFlyoutOpenAsync())
+                         ViewModel.DebugAvailable)
                 {
                     ViewModel.RequestDebug();
+                }
+
+                // Save
+                else if (m.Key == VirtualKey.S && m.Modifiers == VirtualKeyModifiers.Control && ViewModel.SaveAvailable)
+                {
+                    Messenger.Default.Send(new SaveSourceCodeRequestMessage(CodeSaveType.Save));
+                }
+                else if (m.Key == VirtualKey.S &&
+                         m.Modifiers == (VirtualKeyModifiers.Control | VirtualKeyModifiers.Menu) &&
+                         ViewModel.SaveAsAvailable)
+                {
+                    Messenger.Default.Send(new SaveSourceCodeRequestMessage(CodeSaveType.SaveAs));
                 }
             });
         }
