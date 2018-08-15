@@ -46,7 +46,7 @@
             ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
             ItemsSource="{Binding ViewModel.BracketsStyleOptions}"
             SelectedIndex="{Binding ViewModel.BracketsStyleSelectedIndex, Mode=TwoWay}"
-            IsEnabled="{Binding ViewModel.AutoindentBrackets, Mode=OneWay}"
+            IsEnabled="{Binding ViewModel.AutoindentBrackets, Mode=OneWay, FallbackValue=False}"
             MinWidth="180"/>
 
         <!--Tab length-->
