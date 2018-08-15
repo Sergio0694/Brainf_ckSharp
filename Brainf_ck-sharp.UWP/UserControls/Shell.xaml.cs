@@ -107,6 +107,12 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 {
                     Messenger.Default.Send(new SaveSourceCodeRequestMessage(CodeSaveType.SaveAs));
                 }
+
+                // Misc
+                else if (m.Key == VirtualKey.U && m.Modifiers == VirtualKeyModifiers.Control) RequestShowUnicodeCharacters();
+                else if (m.Key == VirtualKey.M && m.Modifiers == VirtualKeyModifiers.Control && PivotControl.SelectedIndex == 0) RequestShowMemoryState();
+                else if (m.Key == VirtualKey.L && m.Modifiers == VirtualKeyModifiers.Control && PivotControl.SelectedIndex == 1) RequestShowCodeLibrary();
+                else if (m.Key == VirtualKey.I && m.Modifiers == VirtualKeyModifiers.Control) RequestShowSettingsPanel();
             });
         }
 
@@ -323,8 +329,13 @@ namespace Brainf_ck_sharp_UWP.UserControls
             FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("About"), flyout, null, new Thickness(0), FlyoutDisplayMode.ActualHeight).Forget();
         }
 
-        // Changes the current header blur mode
-        private async void SettingsButton_Click(object sender, RoutedEventArgs e)
+        // Displays the settings when the user taps the button
+        private void SettingsButton_Click(object sender, RoutedEventArgs e) => RequestShowSettingsPanel();
+
+        /// <summary>
+        /// Shows the settings window to the user
+        /// </summary>
+        private async void RequestShowSettingsPanel()
         {
             // Show the settings panel
             int

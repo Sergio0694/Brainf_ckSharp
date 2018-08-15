@@ -32,7 +32,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             {
                 CreateChangelogEntry("3.1.0.0", 2018, 9, 10, new List<string>
                 {
-                    "Improved the git diff indicators in the IDE"
+                    "Improved the git diff indicators in the IDE",
+                    "More keyboard shortcuts added",
+                    "Minor bug fixes and UI tweaks"
                 }),
                 CreateChangelogEntry("3.0.0.0", 2018, 8, 16, new List<string>
                 {
