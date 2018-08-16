@@ -309,8 +309,9 @@ namespace Brainf_ck_sharp
             Queue<char> input = arguments.Length > 0 ? new Queue<char>(arguments) : new Queue<char>();
             StringBuilder output = new StringBuilder();
             string code = executable.Select(op => op.Operator).AggregateToString(); // Original source code
-            Dictionary<uint, IReadOnlyList<Brainf_ckBinaryItem>> functions = oldFunctions.ToDictionary<FunctionDefinition, uint, IReadOnlyList<Brainf_ckBinaryItem>>(
-                f => f.Value, f => f.Body.Select(c => new Brainf_ckBinaryItem(0, c)).ToArray());
+            List<FunctionDefinition> definitions = oldFunctions.ToList();
+            Dictionary<uint, IReadOnlyList<Brainf_ckBinaryItem>> functions = definitions.ToDictionary<FunctionDefinition, uint, IReadOnlyList<Brainf_ckBinaryItem>>(
+                f => f.Value, f => f.Body.Select(c => new Brainf_ckBinaryItem(0, c)).ToArray()); // Dictionary for quick lookup
 
             // Internal recursive function that interpretes the code
             IEnumerable<InterpreterWorkingData> TryRunCore(IReadOnlyList<Brainf_ckBinaryItem> operators, uint position, ushort depth)
@@ -543,6 +544,7 @@ namespace Brainf_ck_sharp
 
                                 // Store the function for later use
                                 functions.Add(state.Current.Value, function);
+                                definitions.Add(new FunctionDefinition(state.Current.Value, function[0].Offset, new string(function.Select(b => b.Operator).ToArray())));
                                 operations++;
                                 break;
 
@@ -618,13 +620,6 @@ namespace Brainf_ck_sharp
                             : null;
                     }
                     else info = null;
-
-                    // Reconstruct the functions list
-                    IReadOnlyList<FunctionDefinition> definitions = functions.Keys.OrderBy(key => key).Select(key =>
-                    {
-                        IReadOnlyList<Brainf_ckBinaryItem> blocks = functions[key];
-                        return new FunctionDefinition(key, blocks[0].Offset, new string(blocks.Select(b => b.Operator).ToArray()));
-                    }).ToArray();
 
                     // Return the interpreter result with all the necessary info
                     string text = output.ToString();
