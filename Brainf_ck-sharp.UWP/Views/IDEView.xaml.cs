@@ -24,6 +24,7 @@ using Brainf_ck_sharp_UWP.DataModels.EventArgs;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.CharactersInfo;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
+using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
@@ -170,7 +171,6 @@ namespace Brainf_ck_sharp_UWP.Views
             if (message.FontChanged || message.TabsLengthChanged)
             {
                 int[] breakpoints = BreakpointsInfo.Keys.Select(i => i - 1).ToArray();
-                ClearBreakpoints();
                 RestoreBreakpoints(breakpoints);
                 BracketGuidesCanvas.Invalidate();
             }
@@ -194,7 +194,7 @@ namespace Brainf_ck_sharp_UWP.Views
         #region ViewModel main events
 
         // Loads the requested code, when the user selects a saved file from his library
-        private void ViewModel_LoadedCodeChanged(object sender, DataModels.SQLite.SourceCode e)
+        private void ViewModel_LoadedCodeChanged(object sender, SourceCode e)
         {
             // Load the code
             LoadCode(e.Code, true);
@@ -1141,6 +1141,9 @@ namespace Brainf_ck_sharp_UWP.Views
         // Shows the breakpoints from an input list of lines
         private void RestoreBreakpoints(IReadOnlyCollection<int> lines)
         {
+            // Remove the previous breakpoints
+            ClearBreakpoints();
+
             // Get the text
             EditBox.Document.GetText(TextGetOptions.None, out string code);
 
