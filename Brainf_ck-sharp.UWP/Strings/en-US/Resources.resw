@@ -833,4 +833,7 @@ This way he'll be able to help you!</value>
   <data name="OneStackFrame" xml:space="preserve">
     <value>1 stack frame</value>
   </data>
+  <data name="SharedFromBrainf_ck" xml:space="preserve">
+    <value>Shared from Brainf*ck#</value>
+  </data>
 </root>

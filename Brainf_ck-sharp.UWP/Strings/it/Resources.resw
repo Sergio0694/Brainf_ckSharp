@@ -728,4 +728,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="OneStackFrame" xml:space="preserve">
     <value>1 stack frame</value>
   </data>
+  <data name="SharedFromBrainf_ck" xml:space="preserve">
+    <value>Condiviso da Brainf*ck#</value>
+  </data>
 </root>

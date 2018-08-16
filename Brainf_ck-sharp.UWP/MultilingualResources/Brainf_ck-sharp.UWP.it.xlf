@@ -957,6 +957,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>1 stack frame</source>
           <target state="translated">1 stack frame</target>
         </trans-unit>
+        <trans-unit id="SharedFromBrainf_ck" translate="yes" xml:space="preserve">
+          <source>Shared from Brainf*ck#</source>
+          <target state="translated">Condiviso da Brainf*ck#</target>
+        </trans-unit>
       </group>
     </body>
   </file>
