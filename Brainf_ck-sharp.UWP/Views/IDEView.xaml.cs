@@ -761,7 +761,7 @@ namespace Brainf_ck_sharp_UWP.Views
         // Adjusts the size of the whitespace overlays canvas
         private void EditBox_OnTextSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            WhitespacesCanvas.Height = BracketGuidesCanvas.Height = e.NewSize.Height + _Top;
+            WhitespacesCanvas.Height = BracketGuidesCanvas.Height = e.NewSize.Height + _Top + 20;
             WhitespacesCanvas.Width = BracketGuidesCanvas.Width = e.NewSize.Width;
         }
 
