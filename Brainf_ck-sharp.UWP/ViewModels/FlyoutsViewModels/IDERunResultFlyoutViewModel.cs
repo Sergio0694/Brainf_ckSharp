@@ -149,14 +149,14 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         private async void ManageDebugSessionAsync(bool runToCompletion)
         {
             LoadingStateChanged?.Invoke(this, true);
-            await Task.Delay(500);
+            await Task.Delay(250);
             await Task.Run(() =>
             {
                 if (runToCompletion) Session.RunToCompletion();
                 else Session.Continue();
             });
             await LoadGroupsAsync();
-            await Task.Delay(500);
+            await Task.Delay(250);
             LoadingStateChanged?.Invoke(this, false);
             RaiseBreakpointOptionsActiveStatusChanged(Session.CanContinue);
         }
