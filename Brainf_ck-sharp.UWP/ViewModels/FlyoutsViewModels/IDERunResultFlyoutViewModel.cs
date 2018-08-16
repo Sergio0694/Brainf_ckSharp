@@ -157,28 +157,29 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             }
         }
 
-        // Mutex to synchronize concurrent requests to edit the debug session
-        [NotNull]
-        private readonly AsyncMutex DebugMutex = new AsyncMutex();
+        // Indicates whether or not a debug operation is already being processed
+        private bool _DebugInProgress;
 
         // Continues a script from its current state
         private async void ManageDebugSessionAsync(bool runToCompletion)
         {
-            using (await DebugMutex.LockAsync())
+            // Lock using the current dispatcher as context
+            if (_DebugInProgress || !Session.CanContinue) return;
+            _DebugInProgress = true;
+
+            // Process the debug step
+            LoadingStateChanged?.Invoke(this, true);
+            await Task.Delay(250);
+            await Task.Run(() =>
             {
-                if (!Session.CanContinue) return;
-                LoadingStateChanged?.Invoke(this, true);
-                await Task.Delay(250);
-                await Task.Run(() =>
-                {
-                    if (runToCompletion) Session.RunToCompletion();
-                    else Session.Continue();
-                });
-                await LoadGroupsAsync();
-                await Task.Delay(250);
-                LoadingStateChanged?.Invoke(this, false);
-                RaiseBreakpointOptionsActiveStatusChanged(Session.CanContinue);
-            }
+                if (runToCompletion) Session.RunToCompletion();
+                else Session.Continue();
+            });
+            await LoadGroupsAsync();
+            await Task.Delay(250);
+            LoadingStateChanged?.Invoke(this, false);
+            RaiseBreakpointOptionsActiveStatusChanged(Session.CanContinue);
+            _DebugInProgress = false;
         }
 
         /// <summary>

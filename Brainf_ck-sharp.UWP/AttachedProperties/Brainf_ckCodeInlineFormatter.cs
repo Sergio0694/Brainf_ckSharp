@@ -46,6 +46,11 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
             // Unpack the arguments
             Span @this = d.To<Span>();
             string raw = e.NewValue.To<string>();
+            if (string.IsNullOrEmpty(raw))
+            {
+                @this.Inlines.Clear();
+                return; // It's a trap!
+            }
 
             // Parse the input code
             StringBuilder builder = new StringBuilder();
@@ -107,6 +112,11 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
         {
             Span @this = d.To<Span>();
             IReadOnlyList<string> stack = e.NewValue.To<IReadOnlyList<string>>();
+            if (stack == null)
+            {
+                @this.Inlines.Clear();
+                return; // Fall back!
+            }
             List<Inline> inlines = new List<Inline>();
             int depth = 0;
             bool skipped = false;
