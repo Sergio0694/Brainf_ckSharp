@@ -333,6 +333,17 @@ namespace Brainf_ck_sharp_UWP.Views
             WhitespacesCanvas.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.X);
         }
 
+        /// <summary>
+        /// Refreshes the visual elements that rely on the current window size
+        /// </summary>
+        public void RefreshUI()
+        {
+            SetupExpressionAnimations();
+            DrawBracketGuides(null, true).Forget();
+            int[] breakpoints = BreakpointsInfo.Keys.Select(i => i - 1).ToArray();
+            RestoreBreakpoints(breakpoints);
+        }
+
         public IDEViewModel ViewModel => DataContext.To<IDEViewModel>();
 
         // The current top height of the page header

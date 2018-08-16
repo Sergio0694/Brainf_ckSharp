@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.System;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -175,13 +176,20 @@ namespace Brainf_ck_sharp_UWP.UserControls
         // Initialize the effects
         private void Shell_Loaded(object sender, RoutedEventArgs e)
         {
+            // Realtime UI adjustment
+            ApplicationView.GetForCurrentView().VisibleBoundsChanged += (view, _) =>
+            {
+                Visibility visibility = (!ApplicationViewHelper.IsFullScreenOrTabletMode).ToVisibility();
+                if (PlaceholderGrid.Visibility == visibility) return;
+                PlaceholderGrid.Visibility = visibility;
+                UpdateUIElementsSizeBindings();
+                IDE.RefreshUI();
+            };
+
             // UI setup
             FadeCanvas.SetVisualOpacity(0);
             Messenger.Default.Send(new ConsoleStatusUpdateMessage(IDEStatus.Console, LocalizationManager.GetResource("Ready"), 0, 0));
-            HeaderGrid.Measure(new Size(ActualWidth, double.PositiveInfinity));
-            double height = HeaderGrid.DesiredSize.Height;
-            Console.AdjustTopMargin(height + 8);
-            IDE.AdjustTopMargin(height);
+            UpdateUIElementsSizeBindings();
 
             // Light border UI
             ExpanderControl.FindChild<Button>("ExpanderStateButton").ManageLightsPointerStates(value =>
@@ -203,6 +211,15 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 _SkipInitialAnimation = true;
                 PivotControl.SelectedIndex = 1;
             }
+        }
+
+        // Updates the size of the UI elements that rely on the actual window size
+        private void UpdateUIElementsSizeBindings()
+        {
+            HeaderGrid.Measure(new Size(ActualWidth, double.PositiveInfinity));
+            double height = HeaderGrid.DesiredSize.Height;
+            Console.AdjustTopMargin(height + 8);
+            IDE.AdjustTopMargin(height);
         }
 
         // Indicates whether or not to skip the first page switch animation
