@@ -246,7 +246,7 @@
     <Compile Include="Helpers\MenuFlyoutHelper.cs" />
     <Compile Include="Helpers\XAMLResourcesHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\KeyEventsListener.cs" />
-    <Compile Include="Helpers\WindowsAPIs\ResolutionHelper.cs" />
+    <Compile Include="Helpers\WindowsAPIs\ApplicationViewHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\TitleBarHelper.cs" />
     <Compile Include="Messages\Actions\ClearConsoleLineMessage.cs" />
     <Compile Include="Messages\Actions\ClearScreenMessage.cs" />

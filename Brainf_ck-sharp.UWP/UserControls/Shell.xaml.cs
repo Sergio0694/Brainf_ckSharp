@@ -11,6 +11,7 @@ using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
@@ -51,6 +52,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 }
             };
             this.InitializeComponent();
+            PlaceholderGrid.Visibility = (!ApplicationViewHelper.IsFullScreenOrTabletMode).ToVisibility();
             DataContext = new ShellViewModel(() =>
             {
                 string stdin = StdinHeader.StdinBuffer;

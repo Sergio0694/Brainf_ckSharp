@@ -153,7 +153,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// </summary>
         private static double CalculateExpectedWidth()
         {
-            double width = ResolutionHelper.CurrentWidth;
+            double width = ApplicationViewHelper.CurrentWidth;
             return width <= MaxPopupWidth ? width : MaxPopupWidth;
         }
 
@@ -167,8 +167,8 @@ namespace Brainf_ck_sharp_UWP.PopupService
         {
             // Calculate the current parameters
             double
-                screenWidth = ResolutionHelper.CurrentWidth,
-                screenHeight = ResolutionHelper.CurrentHeight,
+                screenWidth = ApplicationViewHelper.CurrentWidth,
+                screenHeight = ApplicationViewHelper.CurrentHeight,
                 maxWidth = stacked ? MaxStackedPopupWidth : MaxPopupWidth,
                 maxHeight = stacked ? MaxStackedPopupHeight : MaxPopupHeight,
                 margin = 24; // The minimum margin to the edges of the screen
@@ -521,15 +521,15 @@ namespace Brainf_ck_sharp_UWP.PopupService
 
             // Calculate the target size
             content.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            if (content.DesiredSize.Width > ResolutionHelper.CurrentWidth - 24)
+            if (content.DesiredSize.Width > ApplicationViewHelper.CurrentWidth - 24)
             {
-                content.Width = ResolutionHelper.CurrentWidth;
+                content.Width = ApplicationViewHelper.CurrentWidth;
                 content.Measure(new Size(content.Width, double.PositiveInfinity));
                 content.Height = content.DesiredSize.Height;
             }
-            else if (content.DesiredSize.Height > ResolutionHelper.CurrentHeight - 24)
+            else if (content.DesiredSize.Height > ApplicationViewHelper.CurrentHeight - 24)
             {
-                content.Height = ResolutionHelper.CurrentHeight;
+                content.Height = ApplicationViewHelper.CurrentHeight;
                 content.Measure(new Size(double.PositiveInfinity, content.Height));
                 content.Width = content.DesiredSize.Width;
             }
@@ -546,8 +546,8 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 double
                     x = 0,
                     y = 0,
-                    width = ResolutionHelper.CurrentWidth,
-                    height = ResolutionHelper.CurrentHeight;
+                    width = ApplicationViewHelper.CurrentWidth,
+                    height = ApplicationViewHelper.CurrentHeight;
                 if (content.Height <= area.Top - 8)
                 {
                     y = area.Top - content.Height - 8;
@@ -620,8 +620,8 @@ namespace Brainf_ck_sharp_UWP.PopupService
             Grid hitGrid = new Grid
             {
                 Background = new SolidColorBrush(Colors.Transparent),
-                Height = ResolutionHelper.CurrentHeight,
-                Width = ResolutionHelper.CurrentWidth
+                Height = ApplicationViewHelper.CurrentHeight,
+                Width = ApplicationViewHelper.CurrentWidth
             };
             Popup hit = new Popup
             {

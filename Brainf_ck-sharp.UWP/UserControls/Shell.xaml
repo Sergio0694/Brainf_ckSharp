@@ -52,7 +52,8 @@
             <!--Title placeholder-->
             <Grid 
                 Grid.Row="0"
-                Height="32">
+                Height="32"
+                x:Name="PlaceholderGrid">
                 
                 <!--App title-->
                 <TextBlock
