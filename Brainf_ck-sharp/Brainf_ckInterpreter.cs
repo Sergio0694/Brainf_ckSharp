@@ -745,7 +745,7 @@ namespace Brainf_ck_sharp
             // Functions setup
             if (pbrains)
             {
-                builder.Append("void (*functions[255])();\n");
+                builder.Append($"void (*functions[{FunctionDefinitionsLimit}])() = {{ 0 }};\n");
                 foreach (IReadOnlyList<Brainf_ckBinaryItem> function in executable.Where(op => op.Operator == '(').Select(op => ExtractFunction(executable, (int)op.Offset).ToArray()))
                 {
                     builder.Append($"\nvoid f_{function[0].Offset - 1}() {{\n"); // Each function has the format f_{position of ( operator}
