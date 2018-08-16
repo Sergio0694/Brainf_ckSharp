@@ -36,6 +36,7 @@
                         <DataTemplate>
                             <dataTemplates:SavedSourceCodeTemplate 
                                 CodeInfo="{Binding}"
+                                IsSelected="{Binding IsSelected, FallbackValue=False}"
                                 FavoriteToggleRequested="SavedSourceCodeTemplate_OnFavoriteToggleRequested"
                                 RenameRequested="SavedSourceCodeTemplate_OnRenameRequested"
                                 ShareRequested="SavedSourceCodeTemplate_OnShareRequested"

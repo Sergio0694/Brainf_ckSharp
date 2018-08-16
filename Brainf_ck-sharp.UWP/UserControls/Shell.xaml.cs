@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
+using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
 using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
@@ -328,7 +329,8 @@ namespace Brainf_ck_sharp_UWP.UserControls
         /// </summary>
         public async void RequestShowCodeLibrary()
         {
-            LocalSourceCodesBrowserFlyout flyout = new LocalSourceCodesBrowserFlyout();
+            SourceCode loaded = IDE.ViewModel.CategorizedCode?.Type == SavedSourceCodeType.Sample ? null : IDE.ViewModel.LoadedCode;
+            LocalSourceCodesBrowserFlyout flyout = new LocalSourceCodesBrowserFlyout(loaded);
             FlyoutClosedResult<CategorizedSourceCode> result = await FlyoutManager.Instance.ShowAsync<LocalSourceCodesBrowserFlyout, CategorizedSourceCode>(
                 LocalizationManager.GetResource("CodeLibrary"), flyout, new Thickness(), openCallback: () => flyout.ViewModel.LoadGroupsAsync().Forget());
             if (result) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(result.Value, ShourceCodeLoadingSource.CodeLibrary));

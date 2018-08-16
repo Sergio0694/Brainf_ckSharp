@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Windows.Devices.Input;
 using Windows.Foundation;
@@ -66,6 +65,29 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
             @this.CodeBlock.Inlines.Clear();
             @this.CodeBlock.Inlines.Add(host);
         }
+
+        /// <summary>
+        /// Gets or sets whether or not this saved code is currently selected
+        /// </summary>
+        public bool IsSelected
+        {
+            get => (bool)GetValue(IsSelectedProperty);
+            set => SetValue(IsSelectedProperty, value);
+        }
+
+        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
+            nameof(IsSelected), typeof(bool), typeof(SavedSourceCodeTemplate), new PropertyMetadata(false, OnIsSelectedPropertyChanged));
+
+        private static void OnIsSelectedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            SavedSourceCodeTemplate @this = d.To<SavedSourceCodeTemplate>();
+            bool selected = e.NewValue.To<bool>();
+            @this.IsHitTestVisible = !selected;
+            @this.Opacity = selected ? 0.6 : 1;
+            @this.LightBorder.StartXAMLTransformFadeAnimation(null, selected ? 0 : 1, 200, null, EasingFunctionNames.Linear);
+            @this.FadeCanvas.StartXAMLTransformFadeAnimation(null, selected ? 1 : 0, 200, null, EasingFunctionNames.Linear);
+        }
+
 
         #region Events
 

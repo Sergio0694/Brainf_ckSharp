@@ -14,15 +14,16 @@ using Brainf_ck_sharp_UWP.PopupService.Interfaces;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels;
 using GalaSoft.MvvmLight.Messaging;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
 {
     public sealed partial class LocalSourceCodesBrowserFlyout : UserControl, IAsyncLoadedContent, IEventConfirmedContent<CategorizedSourceCode>
     {
-        public LocalSourceCodesBrowserFlyout()
+        public LocalSourceCodesBrowserFlyout([CanBeNull] SourceCode code)
         {
             this.InitializeComponent();
-            DataContext = new LocalSourceCodesBrowserFlyoutViewModel();
+            DataContext = new LocalSourceCodesBrowserFlyoutViewModel(code);
             ViewModel.LoadingCompleted += (s, e) =>
             {
                 LoadingPending = false;

@@ -22,6 +22,12 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
 {
     public class LocalSourceCodesBrowserFlyoutViewModel : DeferredJumpListViewModelBase<SavedSourceCodeType, CategorizedSourceCodeWithSyntaxInfo>
     {
+        // The currently opened code in the IDE
+        [CanBeNull]
+        private readonly SourceCode LoadedCode;
+
+        public LocalSourceCodesBrowserFlyoutViewModel([CanBeNull] SourceCode code) => LoadedCode = code;
+
         protected override async Task<IList<JumpListGroup<SavedSourceCodeType, CategorizedSourceCodeWithSyntaxInfo>>> OnLoadGroupsAsync()
         {
             IList<GroupedSourceCodesCategory> categories = await SQLiteManager.Instance.LoadSavedCodesAsync();
@@ -30,7 +36,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                  where category.Items.Count > 0
                  let items =
                  from code in category.Items
-                 select new CategorizedSourceCodeWithSyntaxInfo(category.Type, code)
+                 select new CategorizedSourceCodeWithSyntaxInfo(category.Type, code, LoadedCode?.Uid.Equals(code.Uid) == true)
                  select new JumpListGroup<SavedSourceCodeType, CategorizedSourceCodeWithSyntaxInfo>(category.Type, items)).ToArray());
         }
 

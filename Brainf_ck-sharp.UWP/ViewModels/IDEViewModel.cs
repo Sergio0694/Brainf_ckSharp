@@ -131,7 +131,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// Gets or sets the code the user is currently working on
         /// </summary>
         [CanBeNull]
-        private CategorizedSourceCode CategorizedCode
+        public CategorizedSourceCode CategorizedCode
         {
             get => _CategorizedCode;
             set
