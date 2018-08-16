@@ -85,9 +85,9 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult
                         break;
                     case IDEResultSectionSessionData section when section.Section == IDEResultSection.StackTrace:
                         int depth = section.Session.CurrentResult.ExceptionInfo?.StackTrace.Count ?? 0;
-                        if (depth == 0) @this.InfoBlock.Text = LocalizationManager.GetResource("NoLoops");
-                        else if (depth == 1) @this.InfoBlock.Text = LocalizationManager.GetResource("SingleLoop");
-                        else @this.InfoBlock.Text = $"{depth} {LocalizationManager.GetResource("Loops")}";
+                        @this.InfoBlock.Text = depth > 1
+                            ? $"{depth} {LocalizationManager.GetResource("MoreStackFrames")}"
+                            : LocalizationManager.GetResource("OneStackFrame");
                         @this.InfoBlock.Foreground = new SolidColorBrush(Colors.LightGray);
                         @this.InfoBlock.FontWeight = FontWeights.Normal;
                         break;
@@ -135,7 +135,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult
                         @this.InfoBlock.FontWeight = FontWeights.Normal;
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException("Invalid section type");
+                        throw new ArgumentOutOfRangeException(nameof(data), "Invalid section type");
                 }
             }
         }

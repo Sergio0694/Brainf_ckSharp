@@ -155,22 +155,9 @@
           <source>Statistics</source>
           <target state="translated">Statistiche</target>
         </trans-unit>
-        <trans-unit id="Loops" translate="yes" xml:space="preserve">
-          <source>nested loops</source>
-          <target state="translated">cicli annidati</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">This will be "n nested loops"</note>
-        </trans-unit>
         <trans-unit id="MemoryCells" translate="yes" xml:space="preserve">
           <source>memory cells</source>
           <target state="translated">celle di memoria</target>
-        </trans-unit>
-        <trans-unit id="NoLoops" translate="yes" xml:space="preserve">
-          <source>No nested loops</source>
-          <target state="translated">Nessun ciclo annidato</target>
-        </trans-unit>
-        <trans-unit id="SingleLoop" translate="yes" xml:space="preserve">
-          <source>1 nested loop</source>
-          <target state="translated">1 ciclo annidato</target>
         </trans-unit>
         <trans-unit id="LowercaseAtPosition" translate="yes" xml:space="preserve">
           <source>at position</source>
@@ -961,6 +948,14 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         <trans-unit id="ErrorRun.Text" translate="yes" xml:space="preserve">
           <source>Error</source>
           <target state="translated">Errore</target>
+        </trans-unit>
+        <trans-unit id="MoreStackFrames" translate="yes" xml:space="preserve">
+          <source>stack frames</source>
+          <target state="translated">stack frame</target>
+        </trans-unit>
+        <trans-unit id="OneStackFrame" translate="yes" xml:space="preserve">
+          <source>1 stack frame</source>
+          <target state="translated">1 stack frame</target>
         </trans-unit>
       </group>
     </body>

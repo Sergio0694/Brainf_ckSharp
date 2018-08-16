@@ -125,18 +125,8 @@
   <data name="Stats" xml:space="preserve">
     <value>Statistiche</value>
   </data>
-  <data name="Loops" xml:space="preserve">
-    <value>cicli annidati</value>
-    <comment>This will be "n nested loops"</comment>
-  </data>
   <data name="MemoryCells" xml:space="preserve">
     <value>celle di memoria</value>
-  </data>
-  <data name="NoLoops" xml:space="preserve">
-    <value>Nessun ciclo annidato</value>
-  </data>
-  <data name="SingleLoop" xml:space="preserve">
-    <value>1 ciclo annidato</value>
   </data>
   <data name="LowercaseAtPosition" xml:space="preserve">
     <value>in posizione</value>
@@ -731,5 +721,11 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   </data>
   <data name="ErrorRun.Text" xml:space="preserve">
     <value>Errore</value>
+  </data>
+  <data name="MoreStackFrames" xml:space="preserve">
+    <value>stack frame</value>
+  </data>
+  <data name="OneStackFrame" xml:space="preserve">
+    <value>1 stack frame</value>
   </data>
 </root>
