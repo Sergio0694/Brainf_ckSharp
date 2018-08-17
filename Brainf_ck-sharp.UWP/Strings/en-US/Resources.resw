@@ -836,4 +836,16 @@ This way he'll be able to help you!</value>
   <data name="SharedFromBrainf_ck" xml:space="preserve">
     <value>Shared from Brainf*ck#</value>
   </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="UnsavedChangesClear" xml:space="preserve">
+    <value>There are unsaved changes in the IDE, and clearing the screen now will cause those changes to be lost. Are you sure you want to continue? If you want to cancel, just close this popup.</value>
+  </data>
+  <data name="UnsavedChangesLoading" xml:space="preserve">
+    <value>There are unsaved changes in the IDE, and loading a saved code now will cause those changes to be lost. Are you sure you want to continue? If you want to cancel, just close this popup.</value>
+  </data>
+  <data name="UnsavedChangesTitle" xml:space="preserve">
+    <value>Unsaved changes</value>
+  </data>
 </root>

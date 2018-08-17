@@ -18,9 +18,11 @@ using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
 using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.Requests;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -64,7 +66,13 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             Messenger.Default.Register<IDEAutosaveTriggeredMessage>(this, async m =>
             {
                 await TryAutosaveAsync();
-                m.ReportAutosaveCompleted();
+                m.ReportResult(Unit.Instance);
+            });
+            Messenger.Default.Register<IDEUnsavedChangesRequestMessage>(this, m =>
+            {
+                Document.GetText(TextGetOptions.None, out string code);
+                if (CategorizedCode == null) m.ReportResult(!string.IsNullOrEmpty(code));
+                else m.ReportResult(!CategorizedCode.Code.Code.Equals(code));
             });
         }
 
@@ -312,8 +320,18 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Clears the current content in the document
         /// </summary>
-        private void TryClearScreen()
+        private async void TryClearScreen()
         {
+            // Ask for confirmation
+            if (AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ProtectUnsavedChanges)) &&
+                await Messenger.Default.RequestAsync<bool, IDEUnsavedChangesRequestMessage>() &&
+                await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UnsavedChanges"),
+                    LocalizationManager.GetResource("UnsavedChangesClear"), LocalizationManager.GetResource("Ok")) == FlyoutResult.Canceled)
+            {
+                return;
+            }
+
+            // Clear the screen
             Document.SetText(TextSetOptions.None, string.Empty);
             CategorizedCode = null;
             Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(false, true));

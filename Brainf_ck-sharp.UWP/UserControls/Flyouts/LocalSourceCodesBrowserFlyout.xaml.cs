@@ -8,6 +8,8 @@ using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Messages.Requests;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Interfaces;
@@ -49,10 +51,22 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         {
             if (e.ClickedItem is CategorizedSourceCode item)
             {
-                Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
-                await Task.Delay(500); // Give some time to the UI to avoid hangs
-                Result = item;
-                ContentConfirmed?.Invoke(this, item);
+                // Ask for confirmation, if needed
+                FlyoutResult result = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ProtectUnsavedChanges)) && 
+                                      await Messenger.Default.RequestAsync<bool, IDEUnsavedChangesRequestMessage>()
+                    ? await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UnsavedChanges"),
+                        LocalizationManager.GetResource("UnsavedChangesLoading"), LocalizationManager.GetResource("Ok"), stack: true)
+                    : FlyoutResult.Confirmed;
+
+                // Load the selected code or cancel
+                if (result == FlyoutResult.Canceled) FlyoutManager.Instance.CloseAllAsync().Forget();
+                else
+                {
+                    Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
+                    await Task.Delay(500); // Give some time to the UI to avoid hangs
+                    Result = item;
+                    ContentConfirmed?.Invoke(this, item);
+                }
             }
         }
 

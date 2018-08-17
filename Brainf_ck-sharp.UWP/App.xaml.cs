@@ -12,7 +12,7 @@ using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages;
-using Brainf_ck_sharp_UWP.Messages.Actions;
+using Brainf_ck_sharp_UWP.Messages.Requests;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.Resources;
@@ -151,9 +151,7 @@ namespace Brainf_ck_sharp_UWP
             if (AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutosaveDocuments)))
             {
                 // Waits for the autosave to be completed
-                IDEAutosaveTriggeredMessage message = new IDEAutosaveTriggeredMessage();
-                Messenger.Default.Send(message);
-                await message.Autosave;
+                await Messenger.Default.RequestAsync<IDEAutosaveTriggeredMessage>();
             }
             deferral.Complete();
         }

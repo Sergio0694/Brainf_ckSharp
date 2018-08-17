@@ -961,6 +961,22 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Shared from Brainf*ck#</source>
           <target state="translated">Condiviso da Brainf*ck#</target>
         </trans-unit>
+        <trans-unit id="Ok" translate="yes" xml:space="preserve">
+          <source>Ok</source>
+          <target state="translated">Ok</target>
+        </trans-unit>
+        <trans-unit id="UnsavedChangesClear" translate="yes" xml:space="preserve">
+          <source>There are unsaved changes in the IDE, and clearing the screen now will cause those changes to be lost. Are you sure you want to continue? If you want to cancel, just close this popup.</source>
+          <target state="translated">Ci sono modifiche non salvate nell'IDE, che verranno perse pulendo lo schermo ora. Sei sicuro di voler continuare? Se vuoi annullare, chiudi semplicemente questo popup.</target>
+        </trans-unit>
+        <trans-unit id="UnsavedChangesLoading" translate="yes" xml:space="preserve">
+          <source>There are unsaved changes in the IDE, and loading a saved code now will cause those changes to be lost. Are you sure you want to continue? If you want to cancel, just close this popup.</source>
+          <target state="translated">Ci sono modifiche non salvate nell'IDE, che verranno perse caricando un nuovo codice sorgente ora. Sei sicuro di voler continuare? Se vuoi annullare, chiudi semplicemente questo popup.</target>
+        </trans-unit>
+        <trans-unit id="UnsavedChangesTitle" translate="yes" xml:space="preserve">
+          <source>Unsaved changes</source>
+          <target state="translated">Modifiche non salvate</target>
+        </trans-unit>
       </group>
     </body>
   </file>

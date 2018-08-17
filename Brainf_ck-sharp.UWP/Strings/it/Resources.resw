@@ -731,4 +731,16 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="SharedFromBrainf_ck" xml:space="preserve">
     <value>Condiviso da Brainf*ck#</value>
   </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="UnsavedChangesClear" xml:space="preserve">
+    <value>Ci sono modifiche non salvate nell'IDE, che verranno perse pulendo lo schermo ora. Sei sicuro di voler continuare? Se vuoi annullare, chiudi semplicemente questo popup.</value>
+  </data>
+  <data name="UnsavedChangesLoading" xml:space="preserve">
+    <value>Ci sono modifiche non salvate nell'IDE, che verranno perse caricando un nuovo codice sorgente ora. Sei sicuro di voler continuare? Se vuoi annullare, chiudi semplicemente questo popup.</value>
+  </data>
+  <data name="UnsavedChangesTitle" xml:space="preserve">
+    <value>Modifiche non salvate</value>
+  </data>
 </root>
