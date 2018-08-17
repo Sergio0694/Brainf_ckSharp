@@ -3,7 +3,7 @@
     /// <summary>
     /// Indicates what caused the app to request a code to load
     /// </summary>
-    public enum ShourceCodeLoadingSource
+    public enum SavedCodeLoadingSource
     {
         CodeLibrary,
         Timeline

@@ -31,7 +31,7 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// <summary>
         /// The input source code didn't contain any valid Branf_ck operators to interpret
         /// </summary>
-        NoCodeInterpreted = 1 <<4,
+        NoCodeInterpreted = 1 << 4,
 
         /// <summary>
         /// The source code produced a runtime exception

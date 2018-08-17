@@ -46,7 +46,7 @@ using UICompositionAnimations.Enums;
 
 namespace Brainf_ck_sharp_UWP.Views
 {
-    public sealed partial class IDEView : UserControl
+    public sealed partial class IDEView : UserControl, ICodeWorkspacePage
     {
         public IDEView()
         {
@@ -65,6 +65,16 @@ namespace Brainf_ck_sharp_UWP.Views
             _PreviousText = text;
             _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
             Messenger.Default.Register<IDESettingsChangedMessage>(this, ApplyIDESettings);
+        }
+
+        /// <inheritdoc cref="ICodeWorkspacePage"/>
+        public string SourceCode
+        {
+            get
+            {
+                EditBox.Document.GetText(TextGetOptions.None, out string code);
+                return code;
+            }
         }
 
         #region IDE theme

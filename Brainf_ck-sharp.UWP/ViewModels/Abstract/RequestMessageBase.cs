@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Messages.Requests
+namespace Brainf_ck_sharp_UWP.ViewModels.Abstract
 {
     /// <summary>
     /// A base class for request messages

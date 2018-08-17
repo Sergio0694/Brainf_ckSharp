@@ -18,14 +18,14 @@ namespace Brainf_ck_sharp_UWP.Messages
         /// <summary>
         /// Gets the source for the requested source code
         /// </summary>
-        public ShourceCodeLoadingSource Source { get; }
+        public SavedCodeLoadingSource Source { get; }
 
         /// <summary>
         /// Initializes a new message for the given code
         /// </summary>
         /// <param name="code">The code selected by the user</param>
         /// <param name="source">The source of the requested code</param>
-        public SourceCodeLoadingRequestedMessage([NotNull] CategorizedSourceCode code, ShourceCodeLoadingSource source)
+        public SourceCodeLoadingRequestedMessage([NotNull] CategorizedSourceCode code, SavedCodeLoadingSource source)
         {
             RequestedCode = code;
             Source = source;

@@ -176,7 +176,7 @@
                             Value="&#xEB90;"/>
                         <Setter
                             Target="AutorunResultIcon.Foreground"
-                            Value="DarkRed"/>
+                            Value="#FF911500"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

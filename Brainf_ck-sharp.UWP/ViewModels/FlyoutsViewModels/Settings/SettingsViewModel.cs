@@ -448,6 +448,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
                 if (Set(ref _AutorunCodeInBackground, value))
                 {
                     AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.AutorunCodeInBackground), value, SettingSaveMode.OverwriteIfExisting);
+                    Brainf_ckBackgroundExecutor.Instance.IsEnabled = value;
+                    if (!value) Messenger.Default.Send(new BackgroundExecutionDisabledMessage());
                 }
             }
         }

@@ -188,10 +188,11 @@
     <Compile Include="DataModels\SQLite\SampleSourceCode.cs" />
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
     <Compile Include="DataModels\SQLite\Enums\SourceCodeTitleScore.cs" />
-    <Compile Include="Enums\ShourceCodeLoadingSource.cs" />
+    <Compile Include="Enums\SavedCodeLoadingSource.cs" />
     <Compile Include="Enums\SourceCodeShareType.cs" />
     <Compile Include="Enums\UserGuideSection.cs" />
     <Compile Include="Helpers\AsyncMutex.cs" />
+    <Compile Include="Helpers\Brainf_ckBackgroundExecutor.cs" />
     <Compile Include="Helpers\CodeFormatting\CodeThemes.cs" />
     <Compile Include="DataModels\Misc\Themes\LineHighlightStyle.cs" />
     <Compile Include="Helpers\CodeFormatting\InstalledFont.cs" />
@@ -220,7 +221,11 @@
     <Compile Include="Messages\KeyboardShortcuts\CtrlShortcutPressedMessage.cs" />
     <Compile Include="Messages\KeyboardShortcuts\EscKeyPressedMessage.cs" />
     <Compile Include="Messages\Requests\MessengerRequestExtensions.cs" />
-    <Compile Include="Messages\Requests\RequestMessageBase.cs" />
+    <Compile Include="Messages\Requests\StdinBufferRequestMessage.cs" />
+    <Compile Include="Messages\UI\BackgroundExecutionDisabledMessage.cs" />
+    <Compile Include="Messages\UI\BackgroundExecutionStatusChangedMessage.cs" />
+    <Compile Include="ViewModels\Abstract\RequestMessageBase.cs" />
+    <Compile Include="Messages\Requests\SourceCodeRequestMessage.cs" />
     <Compile Include="Messages\UI\AppLoadingStatusChangedMessage.cs" />
     <Compile Include="Messages\Flyouts\NotificationCloseRequestmessage.cs" />
     <Compile Include="Messages\IDEStatus\BreakpointErrorStatusChangedMessage.cs" />
@@ -487,6 +492,7 @@
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ICodeWorkspacePage.cs" />
     <Compile Include="Views\IDEView.xaml.cs">
       <DependentUpon>IDEView.xaml</DependentUpon>
     </Compile>
@@ -935,7 +941,9 @@
       <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Messages\Requests\Abstract\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

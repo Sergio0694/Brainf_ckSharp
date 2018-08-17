@@ -104,7 +104,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         Messenger.Default.Register<SourceCodeLoadingRequestedMessage>(this, m =>
                         {
                             // Skip reloading the current code
-                            if (m.Source == ShourceCodeLoadingSource.Timeline && CategorizedCode?.Code.Uid.Equals(m.RequestedCode.Code.Uid) == true)
+                            if (m.Source == SavedCodeLoadingSource.Timeline && CategorizedCode?.Code.Uid.Equals(m.RequestedCode.Code.Uid) == true)
                             {
                                 Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
                                 NotificationsManager.Instance.ShowNotification(0xE148.ToSegoeMDL2Icon(), LocalizationManager.GetResource("AlreadyLoadedTitle"), LocalizationManager.GetResource("AlreadyLoadedBody"), NotificationType.Default);

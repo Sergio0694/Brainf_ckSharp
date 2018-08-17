@@ -1,8 +1,13 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Brainf_ck_sharp.ReturnTypes;
+using Brainf_ck_sharp_UWP.DataModels.IDEResults;
+using Brainf_ck_sharp_UWP.DataModels.Misc;
+using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.UI;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ck_sharp_UWP.UserControls
@@ -65,6 +70,17 @@ namespace Brainf_ck_sharp_UWP.UserControls
             {
                 VisualStateManager.GoToState(this, m.PendingChangesPresent ? "IDEPendingChangesState" : "IDENoPendingChangesState", false);
             });
+            Messenger.Default.Register<BackgroundExecutionStatusChangedMessage>(this, m =>
+            {
+                VisualStateManager.GoToState(this, m.Result.ExitCode.HasFlag(InterpreterExitCode.Success) ? "AutorunEnabledOkState" : "AutorunEnabledFailState", false);
+                string output;
+                if (m.Result.ExitCode.HasFlag(InterpreterExitCode.Success)) output = m.Result.Output;
+                else if (m.Result.ExitCode.HasFlag(InterpreterExitCode.NoCodeInterpreted)) output = LocalizationManager.GetResource("NoCodeInterpreted");
+                else output = ScriptExceptionInfo.FromResult(m.Result).Message;
+                if (output.Length > 50) output = $"{output.Substring(0, 50)}...";
+                ToolTipService.SetToolTip(AutorunGrid, string.IsNullOrEmpty(output) ? null : output);
+            });
+            Messenger.Default.Register<BackgroundExecutionDisabledMessage>(this, m => VisualStateManager.GoToState(this, "AutorunDisabledState", false));
         }
     }
 }

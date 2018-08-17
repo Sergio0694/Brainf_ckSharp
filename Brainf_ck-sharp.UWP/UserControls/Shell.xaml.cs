@@ -19,6 +19,7 @@ using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
 using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
+using Brainf_ck_sharp_UWP.Messages.Requests;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -118,6 +119,11 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 else if (m.Key == VirtualKey.L && m.Modifiers == VirtualKeyModifiers.Control && PivotControl.SelectedIndex == 1) RequestShowCodeLibrary();
                 else if (m.Key == VirtualKey.I && m.Modifiers == VirtualKeyModifiers.Control) RequestShowSettingsPanel();
             });
+            Messenger.Default.Register<SourceCodeRequestMessage>(this, m =>
+            {
+                m.ReportResult(PivotControl.SelectedIndex == 0 ? Console.SourceCode : IDE.SourceCode);
+            });
+            Messenger.Default.Register<StdinBufferRequestMessage>(this, m => m.ReportResult(StdinHeader.StdinBuffer));
         }
 
         public ShellViewModel ViewModel => DataContext.To<ShellViewModel>();
@@ -333,7 +339,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             LocalSourceCodesBrowserFlyout flyout = new LocalSourceCodesBrowserFlyout(loaded);
             FlyoutClosedResult<CategorizedSourceCode> result = await FlyoutManager.Instance.ShowAsync<LocalSourceCodesBrowserFlyout, CategorizedSourceCode>(
                 LocalizationManager.GetResource("CodeLibrary"), flyout, new Thickness(), openCallback: () => flyout.ViewModel.LoadGroupsAsync().Forget());
-            if (result) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(result.Value, ShourceCodeLoadingSource.CodeLibrary));
+            if (result) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(result.Value, SavedCodeLoadingSource.CodeLibrary));
         }
 
         // Shows the small navigation keyboard popup

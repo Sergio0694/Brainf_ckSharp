@@ -981,6 +981,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Autorun code in the background</source>
           <target state="translated">Controlla il codice in background</target>
         </trans-unit>
+        <trans-unit id="NoCodeInterpreted" translate="yes" xml:space="preserve">
+          <source>No code interpreted</source>
+          <target state="new">No code interpreted</target>
+        </trans-unit>
       </group>
     </body>
   </file>

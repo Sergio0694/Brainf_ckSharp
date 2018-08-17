@@ -851,4 +851,7 @@ This way he'll be able to help you!</value>
   <data name="AutorunCodeInBackground.Text" xml:space="preserve">
     <value>Autorun code in the background</value>
   </data>
+  <data name="NoCodeInterpreted" xml:space="preserve">
+    <value>No code interpreted</value>
+  </data>
 </root>

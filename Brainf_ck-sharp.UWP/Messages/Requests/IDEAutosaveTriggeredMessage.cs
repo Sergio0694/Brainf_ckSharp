@@ -1,4 +1,5 @@
 ﻿using Brainf_ck_sharp_UWP.DataModels.Misc;
+using Brainf_ck_sharp_UWP.ViewModels.Abstract;
 
 namespace Brainf_ck_sharp_UWP.Messages.Requests
 {

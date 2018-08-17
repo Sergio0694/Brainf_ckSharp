@@ -24,6 +24,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         /// <summary>
         /// Gets the singleton instance of the manager to use in the app
         /// </summary>
+        [NotNull]
         public static AppSettingsManager Instance { get; } = new AppSettingsManager();
 
         #region Shared settings
