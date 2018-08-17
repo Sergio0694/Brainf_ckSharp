@@ -21,9 +21,9 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// <param name="value">The value to edit</param>
         /// <param name="bit">The value of the bit to edit</param>
         /// <param name="n">The position of the target bit</param>
-        public static uint SetTo(uint value, bool bit, int n)
+        public static uint Set(this uint value, bool bit, int n)
         {
-            if (n < 0 || n > 31) throw new ArgumentOutOfRangeException("The position must be between 0 and 31");
+            if (n < 0 || n > 31) throw new ArgumentOutOfRangeException(nameof(n), "The position must be between 0 and 31");
             return bit 
                 ? value | UnsignedOne << n 
                 : value & ~(UnsignedOne << n);
@@ -34,9 +34,9 @@ namespace Brainf_ck_sharp_UWP.Helpers
         /// </summary>
         /// <param name="value">The number to check</param>
         /// <param name="n">The index of the bit to check</param>
-        public static bool Test(uint value, int n)
+        public static bool Test(this uint value, int n)
         {
-            if (n < 0 || n > 31) throw new ArgumentOutOfRangeException("The position must be between 0 and 31");
+            if (n < 0 || n > 31) throw new ArgumentOutOfRangeException(nameof(n), "The position must be between 0 and 31");
             uint bit = (value >> n) & 1;
             return bit == 1;
         }

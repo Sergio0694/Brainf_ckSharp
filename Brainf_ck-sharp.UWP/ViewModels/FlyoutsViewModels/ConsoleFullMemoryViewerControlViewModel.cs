@@ -6,7 +6,6 @@ using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.ConsoleMemoryViewer;
-using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.ViewModels.Abstract.JumpList;
 using JetBrains.Annotations;
 

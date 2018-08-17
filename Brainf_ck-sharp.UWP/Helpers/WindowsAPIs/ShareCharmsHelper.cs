@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Windows.ApplicationModel.DataTransfer;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs

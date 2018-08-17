@@ -1,6 +1,6 @@
 ﻿using Windows.UI;
 using Windows.UI.Xaml.Media;
-using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Lights;
 

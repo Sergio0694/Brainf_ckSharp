@@ -1,5 +1,5 @@
 ﻿using System;
-using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings;
 using JetBrains.Annotations;
 
