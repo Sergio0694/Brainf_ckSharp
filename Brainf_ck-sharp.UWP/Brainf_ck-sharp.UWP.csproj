@@ -116,7 +116,6 @@
     <Compile Include="AttachedProperties\BulletListHelper.cs" />
     <Compile Include="AttachedProperties\CharacterToRotationHelper.cs" />
     <Compile Include="AttachedProperties\CustomPolygonBorderAngleHelper.cs" />
-    <Compile Include="AttachedProperties\RunInlineHelper.cs" />
     <Compile Include="Converters\BoolToAccentBrushOrFallbackConverter.cs" />
     <Compile Include="Converters\BoolToColorBrushConverter.cs" />
     <Compile Include="Converters\BoolToInvertedVisibilityConverter.cs" />

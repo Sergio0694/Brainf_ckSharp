@@ -11,7 +11,6 @@ using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
-using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.IDE;
 using Brainf_ck_sharp_UWP.Messages.Requests;
 using Brainf_ck_sharp_UWP.Messages.UI;

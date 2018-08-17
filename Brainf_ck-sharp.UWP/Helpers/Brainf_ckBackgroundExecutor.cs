@@ -4,7 +4,6 @@ using Windows.UI.Xaml;
 using Brainf_ck_sharp;
 using Brainf_ck_sharp.Enums;
 using Brainf_ck_sharp.ReturnTypes;
-using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages.Requests;
 using Brainf_ck_sharp_UWP.Messages.UI;

@@ -1,7 +1,6 @@
 ﻿using System;
 using Brainf_ck_sharp.Enums;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.Settings;
 using GalaSoft.MvvmLight;

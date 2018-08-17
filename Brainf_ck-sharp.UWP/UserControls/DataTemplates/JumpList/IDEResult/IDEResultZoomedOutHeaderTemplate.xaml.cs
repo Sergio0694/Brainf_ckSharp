@@ -12,6 +12,7 @@ using Brainf_ck_sharp_UWP.DataModels.IDEResults;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Microsoft.Toolkit.Uwp.Helpers;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers.PointerEvents;
@@ -119,10 +120,10 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult
                         @this.InfoBlock.FontWeight = FontWeights.Normal;
                         break;
                     case IDEResultExceptionInfoData exception:
-                        string message = ExceptionTypeConverter.Convert(exception.Info.ExceptionType);
-                        @this.InfoBlock.Text = $"{message[0].ToString().ToUpperInvariant()}{message.Substring(1)}";
-                        @this.InfoBlock.Foreground = new SolidColorBrush(Colors.DarkRed);
-                        @this.InfoBlock.FontWeight = FontWeights.SemiBold;
+                        @this.InfoBlock.Inlines.Clear();
+                        string type = ExceptionTypeConverter.Convert(exception.Info.ExceptionType);
+                        @this.InfoBlock.Inlines.Add(new Run { Text = $"{type} > ", FontWeight = FontWeights.Bold, Foreground = "#FFA00000".ToColor().ToBrush() });
+                        @this.InfoBlock.Inlines.Add(new Run { Text = exception.Info.Message, FontWeight = FontWeights.Bold, Foreground = "#FF900000".ToColor().ToBrush() });
                         break;
                     case IDEResultSectionStateData state:
                         @this.InfoBlock.Text = $"{state.IndexedState.Count} {LocalizationManager.GetResource("MemoryCells")}";

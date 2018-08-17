@@ -3,7 +3,6 @@ using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Settings;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using GalaSoft.MvvmLight.Messaging;

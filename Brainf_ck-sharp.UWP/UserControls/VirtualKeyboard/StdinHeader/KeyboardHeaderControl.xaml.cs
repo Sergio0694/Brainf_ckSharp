@@ -4,7 +4,6 @@ using Brainf_ck_sharp.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Settings;
 using Brainf_ck_sharp_UWP.PopupService;
 using GalaSoft.MvvmLight.Messaging;
