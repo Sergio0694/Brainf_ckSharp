@@ -125,7 +125,11 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// </summary>
         private void DisableOpenFlyouts()
         {
-            foreach (FlyoutDisplayInfo info in PopupStack) info.Popup.IsHitTestVisible = false;
+            foreach (FlyoutDisplayInfo info in PopupStack)
+            {
+                info.Popup.IsHitTestVisible = false;
+                info.Container.FadeContent(true);
+            }
         }
 
         /// <summary>
@@ -134,7 +138,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         private async Task TryCloseAsync()
         {
             await Semaphore.WaitAsync();
-            if (PopupStack.Count > 0 && PopupStack.Peek().Popup.IsOpen)
+            if (PopupStack.TryPeek(out FlyoutDisplayInfo info) && info.Popup.IsOpen)
             {
                 // Close the current popup
                 Popup popup = PopupStack.Pop().Popup;
@@ -143,7 +147,11 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 popup.IsOpen = false;
 
                 // Resto the previous popup, if present
-                if (PopupStack.Count > 0) PopupStack.Peek().Popup.IsHitTestVisible = true;
+                if (PopupStack.TryPeek(out info))
+                {
+                    info.Popup.IsHitTestVisible = true;
+                    info.Container.FadeContent(false);
+                }
             }
             Semaphore.Release();
         }

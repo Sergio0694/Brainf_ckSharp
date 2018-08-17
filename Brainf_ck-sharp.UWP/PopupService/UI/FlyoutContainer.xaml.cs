@@ -224,5 +224,15 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
 
         // Closes the popup without confirm
         private void CloseButton_Click(object sender, RoutedEventArgs e) => RequestClose();
+
+        // Indicates whether the control is currently faded
+        private bool _FadeActive;
+
+        public void FadeContent(bool fade)
+        {
+            if (_FadeActive == fade) return;
+            _FadeActive = fade;
+            FadeCanvas.StartXAMLTransformFadeAnimation(null, fade ? 1 : 0, 250, null, EasingFunctionNames.Linear);
+        }
     }
 }

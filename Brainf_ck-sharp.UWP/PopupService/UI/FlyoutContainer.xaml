@@ -189,5 +189,14 @@
                 Height="24"
                 Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
         </Grid>
+        
+        <!--Fade canvas-->
+        <Canvas
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Background="#60000000"
+            x:Name="FadeCanvas"
+            Opacity="0"
+            IsHitTestVisible="False"/>
     </Grid>
 </UserControl>
