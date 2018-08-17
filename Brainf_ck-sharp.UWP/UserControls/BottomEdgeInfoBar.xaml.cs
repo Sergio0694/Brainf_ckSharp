@@ -8,6 +8,7 @@ using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Messages.IDE;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using GalaSoft.MvvmLight.Messaging;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.UserControls
 {
@@ -77,9 +78,18 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 else if (m.Value.ExitCode.HasFlag(InterpreterExitCode.NoCodeInterpreted)) output = LocalizationManager.GetResource("NoCodeInterpreted");
                 else output = ScriptExceptionInfo.FromResult(m.Value).Message;
                 if (output.Length > 50) output = $"{output.Substring(0, 50)}...";
-                ToolTipService.SetToolTip(AutorunGrid, string.IsNullOrEmpty(output) ? null : output);
+                string tooltip = string.IsNullOrEmpty(output) ? null : output;
+                if (tooltip?.Equals(_AutorunTooltip) != true)
+                {
+                    _AutorunTooltip = tooltip;
+                    ToolTipService.SetToolTip(AutorunHitCanvas, tooltip);
+                }
             });
             Messenger.Default.Register<BackgroundExecutionDisabledMessage>(this, m => VisualStateManager.GoToState(this, "AutorunDisabledState", false));
         }
+
+        // The last tooltip for the autorun icon
+        [CanBeNull]
+        private string _AutorunTooltip;
     }
 }

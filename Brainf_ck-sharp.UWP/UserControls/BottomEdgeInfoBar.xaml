@@ -338,24 +338,26 @@
         </Grid>
         
         <!--Autorun result-->
-        <Grid HorizontalAlignment="Center"
-              VerticalAlignment="Center"
+        <Grid HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch"
               Grid.Column="6"
-              x:Name="AutorunGrid"
-              Visibility="Collapsed"
-              Margin="8,0,8,0">
-            <Ellipse Height="18"
-                     Width="18"
-                     Fill="Black"/>
-            <Ellipse Height="14"
-                     Width="14"
-                     Fill="White"/>
-            <TextBlock Style="{StaticResource FontIconTextBlockStyle}"
-                       Text="&#xEC61;"
-                       Foreground="Green"
-                       x:Name="AutorunResultIcon"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"/>
+              x:Name="AutorunGrid">
+            <Grid Margin="8,0,8,0">
+                <Ellipse Height="18"
+                         Width="18"
+                         Fill="Black"/>
+                <Ellipse Height="14"
+                         Width="14"
+                         Fill="White"/>
+                <TextBlock Style="{StaticResource FontIconTextBlockStyle}"
+                           Text="&#xEC61;"
+                           Foreground="Green"
+                           x:Name="AutorunResultIcon"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
+            </Grid>
+            <Grid x:Name="AutorunHitCanvas"
+                    Background="Transparent"/>
         </Grid>
     </Grid>
 </UserControl>
