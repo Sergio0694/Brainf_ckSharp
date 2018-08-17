@@ -1,7 +1,6 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Messages.IDEStatus
+namespace Brainf_ck_sharp_UWP.Messages.IDE
 {
     /// <summary>
     /// A message that indicates a new status update for the IDE status bar

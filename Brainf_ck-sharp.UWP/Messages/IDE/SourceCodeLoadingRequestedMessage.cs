@@ -2,7 +2,7 @@
 using Brainf_ck_sharp_UWP.Enums;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Messages
+namespace Brainf_ck_sharp_UWP.Messages.IDE
 {
     /// <summary>
     /// A message that signals when the user requests to load a source code

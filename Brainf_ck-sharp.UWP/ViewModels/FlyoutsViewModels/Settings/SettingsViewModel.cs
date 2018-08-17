@@ -8,6 +8,7 @@ using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp_UWP.Messages.Settings;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;

@@ -11,7 +11,7 @@ using Brainf_ck_sharp;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.IDE;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
@@ -65,8 +65,8 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
         {
             Messenger.Default.Register<WorkingSourceCodeChangedMessage>(this, m =>
             {
-                if (m.Code == null) _Session?.Dispose();
-                else if (m.Code.Type != SavedSourceCodeType.Sample) LogUserSessionAsync(m.Code.Code).Forget();
+                if (m.Value == null) _Session?.Dispose();
+                else if (m.Value.Type != SavedSourceCodeType.Sample) LogUserSessionAsync(m.Value.Code).Forget();
             });
         }
 

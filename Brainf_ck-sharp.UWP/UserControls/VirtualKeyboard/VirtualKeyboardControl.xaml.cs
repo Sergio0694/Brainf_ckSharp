@@ -4,6 +4,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages;
+using Brainf_ck_sharp_UWP.Messages.Settings;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations.Enums;
@@ -25,7 +26,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
                 // Show the PBrain buttons on startup, if needed
                 PBrainColumn.Width = new GridLength(1, GridUnitType.Star);
             }
-            Messenger.Default.Register<PBrainButtonsVisibilityChangedMessage>(this, m => AnimateUI(m.Visible));
+            Messenger.Default.Register<PBrainButtonsVisibilityChangedMessage>(this, m => AnimateUI(m.Value));
         }
 
         /// <summary>

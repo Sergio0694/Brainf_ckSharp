@@ -28,7 +28,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes
             }
             Messenger.Default.Register<IDEThemePreviewFontChangedMessage>(this, m =>
             {
-                UpdateUIOnFontFamilyChanged(m.Font.Family);
+                UpdateUIOnFontFamilyChanged(m.Value.Family);
             });
         }
 

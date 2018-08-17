@@ -21,7 +21,7 @@ using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
-using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.IDE;
 using Brainf_ck_sharp_UWP.Messages.Requests;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
@@ -94,13 +94,13 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 {
                     if (value)
                     {
-                        Messenger.Default.Register<OperatorAddedMessage>(this, op => CharInsertionRequested?.Invoke(this, op.Operator));
+                        Messenger.Default.Register<OperatorAddedMessage>(this, op => CharInsertionRequested?.Invoke(this, op.Value));
                         Messenger.Default.Register<ClearScreenMessage>(this, m => TryClearScreen());
                         Messenger.Default.Register<PlayScriptMessage>(this, m => PlayRequested?.Invoke(this, new PlayRequestedEventArgs(m.StdinBuffer, m.Mode, m.Type == ScriptPlayType.Debug)));
-                        Messenger.Default.Register<SaveSourceCodeRequestMessage>(this, m => ManageSaveCodeRequest(m.RequestType).Forget());
-                        Messenger.Default.Register<IDEUndoRedoRequestMessage>(this, m => ManageUndoRedoRequest(m.Operation));
+                        Messenger.Default.Register<SaveSourceCodeRequestMessage>(this, m => ManageSaveCodeRequest(m.Value).Forget());
+                        Messenger.Default.Register<IDEUndoRedoRequestMessage>(this, m => ManageUndoRedoRequest(m.Value));
                         Messenger.Default.Register<IDENewLineRequestedMessage>(this, m => NewLineInsertionRequested?.Invoke(this, EventArgs.Empty));
-                        Messenger.Default.Register<VirtualArrowKeyPressedMessage>(this, m => ManageVirtualArrowKeyPressed(m.Direction));
+                        Messenger.Default.Register<VirtualArrowKeyPressedMessage>(this, m => ManageVirtualArrowKeyPressed(m.Value));
                         Messenger.Default.Register<SourceCodeLoadingRequestedMessage>(this, m =>
                         {
                             // Skip reloading the current code

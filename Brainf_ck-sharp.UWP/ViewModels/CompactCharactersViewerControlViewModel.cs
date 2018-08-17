@@ -15,7 +15,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
     {
         public CompactCharactersViewerControlViewModel()
         {
-            Messenger.Default.Register<ConsoleMemoryStateChangedMessage>(this, m => RefreshSourceAsync(m.State).Forget());
+            Messenger.Default.Register<ConsoleMemoryStateChangedMessage>(this, m => RefreshSourceAsync(m.Value).Forget());
             RefreshSourceAsync(TouringMachineStateProvider.Initialize(64)).Forget();
         }
 

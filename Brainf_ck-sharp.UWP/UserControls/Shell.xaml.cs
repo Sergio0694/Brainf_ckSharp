@@ -17,9 +17,10 @@ using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
-using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.IDE;
 using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
 using Brainf_ck_sharp_UWP.Messages.Requests;
+using Brainf_ck_sharp_UWP.Messages.Settings;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -77,7 +78,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
             Messenger.Default.Register<AppLoadingStatusChangedMessage>(this, m => ManageLoadingUI(m.Loading, !m.ImmediateDisplayRequested));
             Messenger.Default.Register<BlurModeChangedMessage>(this, m =>
             {
-                HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(m.BlurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
+                HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(m.Value == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
             });
 
             // Other messages

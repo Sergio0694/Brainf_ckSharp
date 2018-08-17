@@ -1,20 +1,14 @@
-﻿namespace Brainf_ck_sharp_UWP.Messages.Actions
+﻿using Brainf_ck_sharp_UWP.Messages.Abstract;
+
+namespace Brainf_ck_sharp_UWP.Messages.Actions
 {
     /// <summary>
     /// A message that signals whenever the user presses a key in the virtual arrows keyboard
     /// </summary>
-    public class VirtualArrowKeyPressedMessage
+    public class VirtualArrowKeyPressedMessage : ValueChangedMessageBase<VirtualArrow>
     {
-        /// <summary>
-        /// Gets the pressed direction key
-        /// </summary>
-        public VirtualArrow Direction { get; }
-
-        /// <summary>
-        /// Creates a new instance for the given direction
-        /// </summary>
-        /// <param name="direction">The desired direction</param>
-        public VirtualArrowKeyPressedMessage(VirtualArrow direction) => Direction = direction;
+        /// <inheritdoc cref="ValueChangedMessageBase{T}"/>
+        public VirtualArrowKeyPressedMessage(VirtualArrow direction) : base(direction) { }
     }
 
     /// <summary>

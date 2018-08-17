@@ -2,11 +2,10 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp.ReturnTypes;
-using Brainf_ck_sharp_UWP.DataModels.IDEResults;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.IDE;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using GalaSoft.MvvmLight.Messaging;
 
@@ -64,19 +63,19 @@ namespace Brainf_ck_sharp_UWP.UserControls
             });
             Messenger.Default.Register<BreakpointErrorStatusChangedMessage>(this, m =>
             {
-                VisualStateManager.GoToState(this, m.IsValid ? "BreakpointsDefaultStatus" : "BreakpointsErrorStatus", false);
+                VisualStateManager.GoToState(this, m.Value ? "BreakpointsDefaultStatus" : "BreakpointsErrorStatus", false);
             });
             Messenger.Default.Register<IDEPendingChangesStatusChangedMessage>(this, m =>
             {
-                VisualStateManager.GoToState(this, m.PendingChangesPresent ? "IDEPendingChangesState" : "IDENoPendingChangesState", false);
+                VisualStateManager.GoToState(this, m.Value ? "IDEPendingChangesState" : "IDENoPendingChangesState", false);
             });
             Messenger.Default.Register<BackgroundExecutionStatusChangedMessage>(this, m =>
             {
-                VisualStateManager.GoToState(this, m.Result.ExitCode.HasFlag(InterpreterExitCode.Success) ? "AutorunEnabledOkState" : "AutorunEnabledFailState", false);
+                VisualStateManager.GoToState(this, m.Value.ExitCode.HasFlag(InterpreterExitCode.Success) ? "AutorunEnabledOkState" : "AutorunEnabledFailState", false);
                 string output;
-                if (m.Result.ExitCode.HasFlag(InterpreterExitCode.Success)) output = m.Result.Output;
-                else if (m.Result.ExitCode.HasFlag(InterpreterExitCode.NoCodeInterpreted)) output = LocalizationManager.GetResource("NoCodeInterpreted");
-                else output = ScriptExceptionInfo.FromResult(m.Result).Message;
+                if (m.Value.ExitCode.HasFlag(InterpreterExitCode.Success)) output = m.Value.Output;
+                else if (m.Value.ExitCode.HasFlag(InterpreterExitCode.NoCodeInterpreted)) output = LocalizationManager.GetResource("NoCodeInterpreted");
+                else output = ScriptExceptionInfo.FromResult(m.Value).Message;
                 if (output.Length > 50) output = $"{output.Substring(0, 50)}...";
                 ToolTipService.SetToolTip(AutorunGrid, string.IsNullOrEmpty(output) ? null : output);
             });
