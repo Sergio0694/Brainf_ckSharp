@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Brainf_ck_sharp;
 using Brainf_ck_sharp.Enums;
+using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages.Requests;
@@ -68,15 +69,13 @@ namespace Brainf_ck_sharp_UWP.Helpers
         private async void Timer_Tick(object sender, object e)
         {
             // Setup
-            string
-                stdin = await Messenger.Default.RequestAsync<string, StdinBufferRequestMessage>(),
-                code = await Messenger.Default.RequestAsync<string, SourceCodeRequestMessage>();
+            (string code, string stdin, IReadonlyTouringMachineState state) = await Messenger.Default.RequestAsync<(string, string, IReadonlyTouringMachineState), BackgroundExecutionInputRequestMessage>();
             OverflowMode mode = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ByteOverflowModeEnabled))
                     ? OverflowMode.ByteOverflow
                     : OverflowMode.ShortNoOverflow;
 
             // Execute and notify the UI
-            InterpreterResult result = await Task.Run(() => Brainf_ckInterpreter.Run(code, stdin, mode, threshold: ExecutionTimeThreshold));
+            InterpreterResult result = await Task.Run(() => Brainf_ckInterpreter.Run(code, stdin, state, mode, ExecutionTimeThreshold));
             Messenger.Default.Send(new BackgroundExecutionStatusChangedMessage(result));
         }
     }

@@ -119,11 +119,13 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 else if (m.Key == VirtualKey.L && m.Modifiers == VirtualKeyModifiers.Control && PivotControl.SelectedIndex == 1) RequestShowCodeLibrary();
                 else if (m.Key == VirtualKey.I && m.Modifiers == VirtualKeyModifiers.Control) RequestShowSettingsPanel();
             });
-            Messenger.Default.Register<SourceCodeRequestMessage>(this, m =>
+            Messenger.Default.Register<BackgroundExecutionInputRequestMessage>(this, m =>
             {
-                m.ReportResult(PivotControl.SelectedIndex == 0 ? Console.SourceCode : IDE.SourceCode);
+                m.ReportResult((
+                    PivotControl.SelectedIndex == 0 ? Console.SourceCode : IDE.SourceCode,
+                    StdinHeader.StdinBuffer,
+                    PivotControl.SelectedIndex == 0 ? Console.ViewModel.State : TouringMachineStateProvider.Initialize(64)));
             });
-            Messenger.Default.Register<StdinBufferRequestMessage>(this, m => m.ReportResult(StdinHeader.StdinBuffer));
         }
 
         public ShellViewModel ViewModel => DataContext.To<ShellViewModel>();

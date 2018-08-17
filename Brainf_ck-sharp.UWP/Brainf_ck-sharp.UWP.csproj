@@ -208,6 +208,7 @@
     <Compile Include="Helpers\WindowsAPIs\TimelineManager.cs" />
     <Compile Include="Messages\Abstract\ValueChangedMessageBase.cs" />
     <Compile Include="Messages\Actions\DebugStatusChangedMessage.cs" />
+    <Compile Include="Messages\Requests\BackgroundExecutionInputRequestMessage.cs" />
     <Compile Include="Messages\Requests\IDEAutosaveTriggeredMessage.cs" />
     <Compile Include="Messages\Actions\IDEDeleteCharacterRequestMessage.cs" />
     <Compile Include="Messages\Actions\IDENewLineRequestedMessage.cs" />
@@ -220,11 +221,9 @@
     <Compile Include="Messages\KeyboardShortcuts\CtrlShortcutPressedMessage.cs" />
     <Compile Include="Messages\KeyboardShortcuts\EscKeyPressedMessage.cs" />
     <Compile Include="Messages\Requests\MessengerRequestExtensions.cs" />
-    <Compile Include="Messages\Requests\StdinBufferRequestMessage.cs" />
     <Compile Include="Messages\UI\BackgroundExecutionDisabledMessage.cs" />
     <Compile Include="Messages\UI\BackgroundExecutionStatusChangedMessage.cs" />
     <Compile Include="Messages\Requests\Abstract\RequestMessageBase.cs" />
-    <Compile Include="Messages\Requests\SourceCodeRequestMessage.cs" />
     <Compile Include="Messages\UI\AppLoadingStatusChangedMessage.cs" />
     <Compile Include="Messages\Flyouts\NotificationCloseRequestmessage.cs" />
     <Compile Include="Messages\IDE\BreakpointErrorStatusChangedMessage.cs" />
