@@ -194,6 +194,7 @@
 
         <!--Autosave-->
         <TextBlock
+            Margin="0,8,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Center"
             x:Uid="AutosaveTitle"
@@ -202,6 +203,7 @@
 
         <!--Autosave-->
         <TextBlock
+            Margin="0,8,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Center"
             x:Uid="ProtectUnsavedChanges"

@@ -16,5 +16,12 @@
             Text="Clear Stdin buffer on execution"/>
         <ToggleSwitch
             IsOn="{Binding ViewModel.ClearStdinBufferOnExecution, Mode=TwoWay}"/>
+
+        <TextBlock
+            Margin="0,8,0,0"
+            x:Uid="AutorunCodeInBackground"
+            Text="Autorun code in the background"/>
+        <ToggleSwitch
+            IsOn="{Binding ViewModel.AutorunCodeInBackground, Mode=TwoWay}"/>
     </StackPanel>
 </UserControl>
