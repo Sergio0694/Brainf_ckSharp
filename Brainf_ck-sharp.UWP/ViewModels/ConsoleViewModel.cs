@@ -8,11 +8,12 @@ using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels.ConsoleModels;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Messages;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 using Brainf_ck_sharp_UWP.Messages.Actions;
-using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.IDE;
+using Brainf_ck_sharp_UWP.Messages.Settings;
+using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.ViewModels.Abstract;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
@@ -27,7 +28,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             Messenger.Default.Register<OverflowModeChangedMessage>(this, m =>
             {
                 // Check if the mode was enabled and a visual refresh is needed
-                if (m.Mode == OverflowMode.ByteOverflow && State.Any(cell => cell.Value > byte.MaxValue))
+                if (m.Value == OverflowMode.ByteOverflow && State.Any(cell => cell.Value > byte.MaxValue))
                 {
                     State = State.ApplyByteOverflow();
                     Messenger.Default.Send(new ConsoleMemoryStateChangedMessage(State));
@@ -54,7 +55,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 {
                     if (value)
                     {
-                        Messenger.Default.Register<OperatorAddedMessage>(this, op => TryAddCommandCharacter(op.Operator));
+                        Messenger.Default.Register<OperatorAddedMessage>(this, op => TryAddCommandCharacter(op.Value));
                         Messenger.Default.Register<PlayScriptMessage>(this, m =>
                         {
                             if (m.Type == ScriptPlayType.Default) ExecuteCommand(m.StdinBuffer, m.Mode).Forget();

@@ -1,4 +1,4 @@
-namespace Brainf_ck_sharp_UWP.Messages.UI
+namespace Brainf_ck_sharp_UWP.Messages.Settings
 {
     /// <summary>
     /// An empty message that signals that the IDE theme has been changed and the UI needs a refresh

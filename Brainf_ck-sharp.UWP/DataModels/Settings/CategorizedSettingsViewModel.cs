@@ -1,5 +1,5 @@
 ﻿using System;
-using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings;
 using JetBrains.Annotations;
 
@@ -49,7 +49,7 @@ namespace Brainf_ck_sharp_UWP.DataModels.Settings
                     case SettingsSectionType.UI:
                         return $"3 {LocalizationManager.GetResource("LowercaseAvailableSettings")}";
                     case SettingsSectionType.Interpreter:
-                        return $"1 {LocalizationManager.GetResource("LowercaseSingleAvailableSettings")}";
+                        return $"2 {LocalizationManager.GetResource("LowercaseAvailableSettings")}";
                     default:
                         throw new ArgumentOutOfRangeException(nameof(SectionDescription), "Invalid section type");
                 }

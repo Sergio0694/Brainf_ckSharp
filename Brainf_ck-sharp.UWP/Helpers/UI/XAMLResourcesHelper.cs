@@ -3,7 +3,7 @@ using Windows.UI.Xaml;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers
+namespace Brainf_ck_sharp_UWP.Helpers.UI
 {
     /// <summary>
     /// A simple class that gets/sets values to and from XAML resources in the app

@@ -450,9 +450,6 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="LowercaseAvailableSettings" xml:space="preserve">
     <value>impostazioni disponibili</value>
   </data>
-  <data name="LowercaseSingleAvailableSettings" xml:space="preserve">
-    <value>impostazione disponibile</value>
-  </data>
   <data name="ThemesPackLocked" xml:space="preserve">
     <value>pacchetto temi bloccato</value>
   </data>
@@ -745,5 +742,8 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   </data>
   <data name="ProtectUnsavedChanges.Text" xml:space="preserve">
     <value>Proteggi modifiche non salvate</value>
+  </data>
+  <data name="AutorunCodeInBackground.Text" xml:space="preserve">
+    <value>Controlla il codice in background</value>
   </data>
 </root>

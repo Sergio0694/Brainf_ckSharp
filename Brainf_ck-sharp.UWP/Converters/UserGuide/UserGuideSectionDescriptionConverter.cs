@@ -1,8 +1,8 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
 using Brainf_ck_sharp_UWP.Enums;
-using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 
 namespace Brainf_ck_sharp_UWP.Converters.UserGuide
 {

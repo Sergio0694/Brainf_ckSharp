@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Brainf_ck_sharp.MemoryState;
-using Brainf_ck_sharp_UWP.Helpers;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.DataModels.ConsoleMemoryViewer

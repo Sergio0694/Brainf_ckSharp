@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.Devices.Input;
+﻿using Windows.Devices.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;

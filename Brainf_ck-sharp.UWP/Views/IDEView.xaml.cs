@@ -29,8 +29,10 @@ using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 using Brainf_ck_sharp_UWP.Messages.Actions;
-using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.IDE;
+using Brainf_ck_sharp_UWP.Messages.Settings;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -46,7 +48,7 @@ using UICompositionAnimations.Enums;
 
 namespace Brainf_ck_sharp_UWP.Views
 {
-    public sealed partial class IDEView : UserControl
+    public sealed partial class IDEView : UserControl, ICodeWorkspacePage
     {
         public IDEView()
         {
@@ -65,6 +67,16 @@ namespace Brainf_ck_sharp_UWP.Views
             _PreviousText = text;
             _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
             Messenger.Default.Register<IDESettingsChangedMessage>(this, ApplyIDESettings);
+        }
+
+        /// <inheritdoc cref="ICodeWorkspacePage"/>
+        public string SourceCode
+        {
+            get
+            {
+                EditBox.Document.GetText(TextGetOptions.None, out string code);
+                return code;
+            }
         }
 
         #region IDE theme

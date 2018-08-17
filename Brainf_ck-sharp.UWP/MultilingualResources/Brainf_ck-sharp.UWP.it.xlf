@@ -587,10 +587,6 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>available settings</source>
           <target state="translated">impostazioni disponibili</target>
         </trans-unit>
-        <trans-unit id="LowercaseSingleAvailableSettings" translate="yes" xml:space="preserve">
-          <source>available setting</source>
-          <target state="translated">impostazione disponibile</target>
-        </trans-unit>
         <trans-unit id="ThemesPackLocked" translate="yes" xml:space="preserve">
           <source>themes pack locked</source>
           <target state="translated">pacchetto temi bloccato</target>
@@ -980,6 +976,14 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         <trans-unit id="ProtectUnsavedChanges.Text" translate="yes" xml:space="preserve">
           <source>Protect unsaved changes</source>
           <target state="translated">Proteggi modifiche non salvate</target>
+        </trans-unit>
+        <trans-unit id="AutorunCodeInBackground.Text" translate="yes" xml:space="preserve">
+          <source>Autorun code in the background</source>
+          <target state="translated">Controlla il codice in background</target>
+        </trans-unit>
+        <trans-unit id="NoCodeInterpreted" translate="yes" xml:space="preserve">
+          <source>No code interpreted</source>
+          <target state="new">No code interpreted</target>
         </trans-unit>
       </group>
     </body>

@@ -10,8 +10,9 @@ using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
-using Brainf_ck_sharp_UWP.Messages;
+using Brainf_ck_sharp_UWP.Messages.IDE;
 using Brainf_ck_sharp_UWP.Messages.Requests;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
@@ -91,7 +92,7 @@ namespace Brainf_ck_sharp_UWP
                     Window.Current.Activate(); // Hide the splash screen
                     await SQLiteManager.Instance.TrySyncSharedCodesAsync();
                     CategorizedSourceCode code = await SQLiteManager.Instance.TryLoadSavedCodeAsync(match.Groups[1].Value);
-                    if (code != null) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(code, ShourceCodeLoadingSource.Timeline));
+                    if (code != null) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(code, SavedCodeLoadingSource.Timeline));
                     else
                     {
                         Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
@@ -135,6 +136,10 @@ namespace Brainf_ck_sharp_UWP
             // Enable the key listener
             KeyEventsListener.IsEnabled = true;
             Window.Current.Content = shell;
+
+            // Additional setup
+            if (AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutorunCodeInBackground)))
+                Brainf_ckBackgroundExecutor.Instance.IsEnabled = true;
             return true;
         }
 

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
+using Brainf_ck_sharp_UWP.Messages.Requests.Abstract;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 

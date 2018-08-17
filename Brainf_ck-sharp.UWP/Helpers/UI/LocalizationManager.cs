@@ -2,7 +2,7 @@
 using Windows.ApplicationModel.Resources;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers
+namespace Brainf_ck_sharp_UWP.Helpers.UI
 {
     /// <summary>
     /// A static class that retrieves localized resources at runtime

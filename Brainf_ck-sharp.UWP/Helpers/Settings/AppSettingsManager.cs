@@ -24,6 +24,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         /// <summary>
         /// Gets the singleton instance of the manager to use in the app
         /// </summary>
+        [NotNull]
         public static AppSettingsManager Instance { get; } = new AppSettingsManager();
 
         #region Shared settings
@@ -123,6 +124,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
             SetValue(nameof(AppSettingsKeys.ShowPBrainButtons), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.StartingPage), 0, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.ProtectUnsavedChanges), false, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.AutorunCodeInBackground), false, SettingSaveMode.SkipIfExisting);
         }
 
         /// <summary>

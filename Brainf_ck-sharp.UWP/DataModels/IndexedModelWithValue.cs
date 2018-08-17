@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using GalaSoft.MvvmLight;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers
+namespace Brainf_ck_sharp_UWP.DataModels
 {
     /// <summary>
     /// A thin wrapper for items in a bindable collection that keep a reference to their position

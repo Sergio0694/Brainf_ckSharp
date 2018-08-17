@@ -27,6 +27,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         InAppBlurMode,
         ClearStdinBufferOnExecution,
         ShowPBrainButtons,
-        ProtectUnsavedChanges
+        ProtectUnsavedChanges,
+        AutorunCodeInBackground
     }
 }

@@ -7,7 +7,7 @@ using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers
+namespace Brainf_ck_sharp_UWP.Helpers.UI
 {
     /// <summary>
     /// A static class that prepares <see cref="MenuFlyout"/> objects to display

@@ -1,8 +1,8 @@
-﻿using System;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.UI;
+using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Microsoft.Toolkit.Uwp.Helpers;
@@ -34,10 +34,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
         {
             FlyoutResult result = await FlyoutManager.Instance.ShowAsync($"🐱‍💻 {LocalizationManager.GetResource("ARealNinjacat")}",
                 LocalizationManager.GetResource("ARealNinjacatBody"), LocalizationManager.GetResource("Sure"), null, true);
-            if (result == FlyoutResult.Confirmed)
-            {
-                await LauncherHelper.OpenStoreAppReviewPageAsync();
-            }
+            if (result == FlyoutResult.Confirmed) SystemInformation.LaunchStoreForReviewAsync().Forget();
             FlyoutManager.Instance.CloseAllAsync().Forget();
         }
     }
