@@ -54,7 +54,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
                 // Ask for confirmation, if needed
                 FlyoutResult result = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ProtectUnsavedChanges)) && 
                                       await Messenger.Default.RequestAsync<bool, IDEUnsavedChangesRequestMessage>()
-                    ? await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UnsavedChanges"),
+                    ? await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UnsavedChangesTitle"),
                         LocalizationManager.GetResource("UnsavedChangesLoading"), LocalizationManager.GetResource("Ok"), stack: true)
                     : FlyoutResult.Confirmed;
 

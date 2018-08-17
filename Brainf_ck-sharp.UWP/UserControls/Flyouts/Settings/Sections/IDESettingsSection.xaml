@@ -9,7 +9,7 @@
     xmlns:ideThemes="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes"
     xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
     mc:Ignorable="d"
-    d:DesignHeight="680"
+    d:DesignHeight="800"
     d:DesignWidth="400">
     <UserControl.Resources>
 
@@ -18,18 +18,9 @@
     </UserControl.Resources>
 
     <StackPanel>
-        
-        <!--Autosave-->
-        <TextBlock
-            TextWrapping="Wrap"
-            VerticalAlignment="Center"
-            x:Uid="AutosaveTitle"
-            Text="Autosave loaded documents"/>
-        <ToggleSwitch IsOn="{Binding ViewModel.AutosaveDocuments, Mode=TwoWay}"/>
 
         <!--Auto indent-->
         <TextBlock
-            Margin="0,8,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Center"
             x:Uid="AutoIndentTitle"
@@ -200,5 +191,21 @@
             x:Uid="TimelineSupportTitle"
             Text="Log activities in the Timeline"/>
         <ToggleSwitch IsOn="{Binding ViewModel.TimelineLoggingEnabled, Mode=TwoWay}"/>
+
+        <!--Autosave-->
+        <TextBlock
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"
+            x:Uid="AutosaveTitle"
+            Text="Autosave loaded documents"/>
+        <ToggleSwitch IsOn="{Binding ViewModel.AutosaveDocuments, Mode=TwoWay}"/>
+
+        <!--Autosave-->
+        <TextBlock
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"
+            x:Uid="ProtectUnsavedChanges"
+            Text="Protect unsaved changes"/>
+        <ToggleSwitch IsOn="{Binding ViewModel.ProtectUnsavedChanges, Mode=TwoWay}"/>
     </StackPanel>
 </UserControl>

@@ -71,6 +71,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             Messenger.Default.Register<IDEUnsavedChangesRequestMessage>(this, m =>
             {
                 Document.GetText(TextGetOptions.None, out string code);
+                code = code.Substring(0, code.Length - 1); // Remove trailing \r
                 if (CategorizedCode == null) m.ReportResult(!string.IsNullOrEmpty(code));
                 else m.ReportResult(!CategorizedCode.Code.Code.Equals(code));
             });
@@ -325,7 +326,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             // Ask for confirmation
             if (AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ProtectUnsavedChanges)) &&
                 await Messenger.Default.RequestAsync<bool, IDEUnsavedChangesRequestMessage>() &&
-                await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UnsavedChanges"),
+                await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UnsavedChangesTitle"),
                     LocalizationManager.GetResource("UnsavedChangesClear"), LocalizationManager.GetResource("Ok")) == FlyoutResult.Canceled)
             {
                 return;

@@ -743,4 +743,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="UnsavedChangesTitle" xml:space="preserve">
     <value>Modifiche non salvate</value>
   </data>
+  <data name="ProtectUnsavedChanges.Text" xml:space="preserve">
+    <value>Proteggi modifiche non salvate</value>
+  </data>
 </root>

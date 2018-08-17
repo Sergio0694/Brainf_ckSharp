@@ -848,4 +848,7 @@ This way he'll be able to help you!</value>
   <data name="UnsavedChangesTitle" xml:space="preserve">
     <value>Unsaved changes</value>
   </data>
+  <data name="ProtectUnsavedChanges.Text" xml:space="preserve">
+    <value>Protect unsaved changes</value>
+  </data>
 </root>

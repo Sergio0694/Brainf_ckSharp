@@ -977,6 +977,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Unsaved changes</source>
           <target state="translated">Modifiche non salvate</target>
         </trans-unit>
+        <trans-unit id="ProtectUnsavedChanges.Text" translate="yes" xml:space="preserve">
+          <source>Protect unsaved changes</source>
+          <target state="translated">Proteggi modifiche non salvate</target>
+        </trans-unit>
       </group>
     </body>
   </file>

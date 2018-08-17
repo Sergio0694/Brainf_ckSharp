@@ -36,24 +36,6 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
             }
         }
 
-        private bool _AutosaveDocuments = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutosaveDocuments));
-
-        /// <summary>
-        /// Gets or sets whether or not the IDE should automatically save the current document when leaving the app
-        /// </summary>
-        [UsedImplicitly]
-        public bool AutosaveDocuments
-        {
-            get => _AutosaveDocuments;
-            set
-            {
-                if (Set(ref _AutosaveDocuments, value))
-                {
-                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.AutosaveDocuments), value, SettingSaveMode.OverwriteIfExisting);
-                }
-            }
-        }
-
         /// <summary>
         /// Gets the collection of the available blur modes
         /// </summary>
@@ -347,6 +329,42 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
                 {
                     AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.EnableTimeline), value, SettingSaveMode.OverwriteIfExisting);
                     TimelineManager.IsEnabled = value;
+                }
+            }
+        }
+
+        private bool _AutosaveDocuments = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutosaveDocuments));
+
+        /// <summary>
+        /// Gets or sets whether or not the IDE should automatically save the current document when leaving the app
+        /// </summary>
+        [UsedImplicitly]
+        public bool AutosaveDocuments
+        {
+            get => _AutosaveDocuments;
+            set
+            {
+                if (Set(ref _AutosaveDocuments, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.AutosaveDocuments), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
+
+        private bool _ProtectUnsavedChanges = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ProtectUnsavedChanges));
+
+        /// <summary>
+        /// Gets or sets whether or not to ask for confirmation when deleting unsaved changes in the IDE
+        /// </summary>
+        [UsedImplicitly]
+        public bool ProtectUnsavedChanges
+        {
+            get => _ProtectUnsavedChanges;
+            set
+            {
+                if (Set(ref _ProtectUnsavedChanges, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.ProtectUnsavedChanges), value, SettingSaveMode.OverwriteIfExisting);
                 }
             }
         }
