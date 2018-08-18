@@ -112,7 +112,8 @@
                     <DataTemplate>
                         <Button 
                             Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
-                            Width="48"
+                            Height="80"
+                            Width="80"
                             x:Name="ExpanderStateButton">
                             <TextBlock 
                                 Text="{Binding}"
