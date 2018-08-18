@@ -33,6 +33,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 CreateChangelogEntry("3.1.0.0", 2018, 9, 10, new List<string>
                 {
                     "Added the ability to execute code in the background and show the results in real time",
+                    "Added a new context menu to insert code snippets",
                     "Added an option to ask for confirmation before losing unsaved changes in the IDE",
                     "Improved the git diff indicators algorithm in the IDE",
                     "More keyboard shortcuts added",

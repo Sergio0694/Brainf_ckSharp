@@ -23,6 +23,7 @@
     
     <!--Misc-->
     <SolidColorBrush x:Key="ShellSeparatorLineFillBrush" Color="#FF6E6E6E"/>
+    <SolidColorBrush x:Key="CustomContextMenuBorderBrush" Color="#FF404040"/>
     
     <!--Lights-->
     <SolidColorBrush x:Key="BorderLightBrush"/>

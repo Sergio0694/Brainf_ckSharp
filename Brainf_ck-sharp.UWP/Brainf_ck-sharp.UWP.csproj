@@ -163,6 +163,7 @@
     <Compile Include="DataModels\IDEResults\IDEResultSectionStateData.cs" />
     <Compile Include="DataModels\JumpListGroup.cs" />
     <Compile Include="DataModels\Misc\CharactersInfo\CharacterWithArea.cs" />
+    <Compile Include="DataModels\Misc\CodeSnippet.cs" />
     <Compile Include="DataModels\Misc\Coordinate.cs" />
     <Compile Include="DataModels\Misc\GitDiffLineStatus.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationInfoOpenLoopBracketType.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="DataModels\SQLite\SampleSourceCode.cs" />
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
     <Compile Include="DataModels\SQLite\Enums\SourceCodeTitleScore.cs" />
+    <Compile Include="Enums\ClipboardOperation.cs" />
     <Compile Include="Enums\SavedCodeLoadingSource.cs" />
     <Compile Include="Enums\SourceCodeShareType.cs" />
     <Compile Include="Enums\UserGuideSection.cs" />
@@ -199,6 +201,7 @@
     <Compile Include="Helpers\Extensions\TextExtensions.cs" />
     <Compile Include="Helpers\Settings\AppSettingsKeys.cs" />
     <Compile Include="Helpers\Settings\AppSettingsManager.cs" />
+    <Compile Include="Helpers\WindowsAPIs\ClipboardHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\EmailHelper.cs" />
     <Compile Include="Helpers\Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\Extensions\_IEnumerableExtensions.cs" />
@@ -208,6 +211,8 @@
     <Compile Include="Helpers\WindowsAPIs\TimelineManager.cs" />
     <Compile Include="Messages\Abstract\ValueChangedMessageBase.cs" />
     <Compile Include="Messages\Actions\DebugStatusChangedMessage.cs" />
+    <Compile Include="Messages\IDE\ClipboardOperationRequestMessage.cs" />
+    <Compile Include="Messages\IDE\CodeSnippetSelectedMessage.cs" />
     <Compile Include="Messages\Requests\BackgroundExecutionInputRequestMessage.cs" />
     <Compile Include="Messages\Requests\IDEAutosaveTriggeredMessage.cs" />
     <Compile Include="Messages\Actions\IDEDeleteCharacterRequestMessage.cs" />
@@ -325,6 +330,12 @@
     <Compile Include="UserControls\DataTemplates\JumpList\JumpListZoomedOutHeaderTemplate.xaml.cs">
       <DependentUpon>JumpListZoomedOutHeaderTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\DataTemplates\SnippetsMenu\CodeSnippetTemplate.xaml.cs">
+      <DependentUpon>CodeSnippetTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\SnippetsMenu\ContextMenuIconButtonTemplate.xaml.cs">
+      <DependentUpon>ContextMenuIconButtonTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Flyouts\DevInfo\ChangelogViewFlyout.xaml.cs">
       <DependentUpon>ChangelogViewFlyout.xaml</DependentUpon>
     </Compile>
@@ -367,6 +378,12 @@
     <Compile Include="UserControls\Flyouts\Settings\Sections\UISettingsSection.xaml.cs">
       <DependentUpon>UISettingsSection.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Flyouts\SnippetsMenu\FullCodeSnippetsBrowserFlyout.xaml.cs">
+      <DependentUpon>FullCodeSnippetsBrowserFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\SnippetsMenu\TouchCodeSnippetsBrowserFlyout.xaml.cs">
+      <DependentUpon>TouchCodeSnippetsBrowserFlyout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Flyouts\UserGuide\CodeSamples\BreakpointCodePreviewControl.xaml.cs">
       <DependentUpon>BreakpointCodePreviewControl.xaml</DependentUpon>
     </Compile>
@@ -401,6 +418,7 @@
       <DependentUpon>UserGuideViewerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\InheritedControls\AnimatedComboBox.cs" />
+    <Compile Include="UserControls\InheritedControls\ButtonWithFlyoutVisualStates.cs" />
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CommandBarWithButtonsAnimations.cs" />
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CustomCommandBarButton.cs" />
     <Compile Include="UserControls\DataTemplates\CompactCharactersChunkViewerTemplate.xaml.cs">
@@ -477,7 +495,9 @@
     <Compile Include="ViewModels\FlyoutsViewModels\ChangelogViewFlyoutViewModel.cs" />
     <Compile Include="ViewModels\CompactCharactersViewerControlViewModel.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\CodeSnippetsBrowserViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\ConsoleFullMemoryViewerControlViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\CustomRichEditBoxContextMenuViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\IDERunResultFlyoutViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\Settings\SettingsJumpListViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\Settings\SettingsViewModel.cs" />
@@ -705,6 +725,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserControls\DataTemplates\SnippetsMenu\CodeSnippetTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\DataTemplates\SnippetsMenu\ContextMenuIconButtonTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\DataTemplates\UnicodeCharacterTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -778,6 +806,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Flyouts\Settings\Sections\UISettingsSection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\SnippetsMenu\FullCodeSnippetsBrowserFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\SnippetsMenu\TouchCodeSnippetsBrowserFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
