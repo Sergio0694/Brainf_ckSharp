@@ -2,12 +2,14 @@
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Messages.IDE;
 using Brainf_ck_sharp_UWP.PopupService.Interfaces;
 using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.SnippetsMenu
 {
-    public sealed partial class TouchCodeSnippetsBrowserFlyout : UserControl, IEventConfirmedContent<CodeSnippet>
+    public sealed partial class TouchCodeSnippetsBrowserFlyout : UserControl, IEventConfirmedContent
     {
         public TouchCodeSnippetsBrowserFlyout()
         {
@@ -28,15 +30,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.SnippetsMenu
         {
             if (e.ClickedItem is CodeSnippet code)
             {
-                Result = code;
-                ContentConfirmed?.Invoke(this, code);
+                Messenger.Default.Send(new CodeSnippetSelectedMessage(code));
+                ContentConfirmed?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        /// <inheritdoc cref="IEventConfirmedContent{T}"/>
-        public event EventHandler<CodeSnippet> ContentConfirmed;
-
-        /// <inheritdoc cref="IEventConfirmedContent{T}"/>
-        public CodeSnippet Result { get; private set; }
+        /// <inheritdoc cref="IEventConfirmedContent"/>
+        public event EventHandler ContentConfirmed;
     }
 }

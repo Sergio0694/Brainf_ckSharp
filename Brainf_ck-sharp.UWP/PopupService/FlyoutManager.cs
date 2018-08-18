@@ -680,6 +680,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             _CloseContextMenu = ClosePopups;
             popup.IsOpen = true; // Open the context menu popup on top of the hit target
             hitGrid.Tapped += (_, e) => ClosePopups();
+            if (content is IEventConfirmedContent confirmed) confirmed.ContentConfirmed += (s, e) => ClosePopups();
             Window.Current.SizeChanged += WindowSizeHandler;
             grid.StartCompositionFadeSlideAnimation(0, 1, TranslationAxis.Y, 20, 0, 200, null, null, EasingFunctionNames.CircleEaseOut);
             Semaphore.Release();

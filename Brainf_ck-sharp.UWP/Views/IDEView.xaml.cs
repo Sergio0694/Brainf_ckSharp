@@ -67,6 +67,8 @@ namespace Brainf_ck_sharp_UWP.Views
             _PreviousText = text;
             _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
             Messenger.Default.Register<IDESettingsChangedMessage>(this, ApplyIDESettings);
+            Messenger.Default.Register<CodeSnippetSelectedMessage>(this, m => LoadCode(m.Value.Code, false, m.Value.CursorOffset));
+
         }
 
         /// <inheritdoc cref="ICodeWorkspacePage"/>
@@ -1014,7 +1016,8 @@ namespace Brainf_ck_sharp_UWP.Views
         /// </summary>
         /// <param name="code">The code to load</param>
         /// <param name="overwrite">If true, the whole document will be replaced with the new code</param>
-        private async void LoadCode(string code, bool overwrite)
+        /// <param name="offset">The optional cursor offset to apply after loading the code</param>
+        private async void LoadCode(string code, bool overwrite, int? offset = null)
         {
             // Disable the handlers
             EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
@@ -1069,7 +1072,8 @@ namespace Brainf_ck_sharp_UWP.Views
 
                 // Set the right selection position
                 if (overwrite) EditBox.Document.Selection.SetRange(0, 0);
-                else EditBox.Document.Selection.StartPosition = end;
+                else if (offset == null) EditBox.Document.Selection.StartPosition = end;
+                else EditBox.Document.Selection.StartPosition = EditBox.Document.Selection.EndPosition = start + offset.Value;
 
                 // Refresh the UI
                 if (overwrite) ViewModel.DiffStatusSource.Clear();
