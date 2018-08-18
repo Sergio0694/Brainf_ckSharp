@@ -70,7 +70,7 @@ namespace Brainf_ck_sharp_UWP.Views
             _PreviousText = text;
             _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
             Messenger.Default.Register<IDESettingsChangedMessage>(this, ApplyIDESettings);
-            Messenger.Default.Register<CodeSnippetSelectedMessage>(this, m => LoadCode(m.Value.Code, false, m.Value.CursorOffset));
+            Messenger.Default.Register<CodeSnippetSelectedMessage>(this, m => LoadCode(m.Value.Code, false, m.Value.CursorOffset, true));
             Messenger.Default.Register<ClipboardOperationRequestMessage>(this, m => HandleClipboardOperationRequest(m.Value));
         }
 
@@ -845,11 +845,7 @@ namespace Brainf_ck_sharp_UWP.Views
                         // Calculate the current indentation depth
                         string trailer = text.Substring(0, range.StartPosition);
                         int indents = trailer.Count(c => c == '[') - trailer.Count(c => c == ']');
-                        string tabs = Enumerable.Range(0, indents).Aggregate(new StringBuilder(), (b, c) =>
-                        {
-                            b.Append('\t');
-                            return b;
-                        }).ToString();
+                        string tabs = '\t'.Repeat(indents);
 
                         // Open [ bracket
                         if (character == '[')
@@ -1033,7 +1029,8 @@ namespace Brainf_ck_sharp_UWP.Views
         /// <param name="code">The code to load</param>
         /// <param name="overwrite">If true, the whole document will be replaced with the new code</param>
         /// <param name="offset">The optional cursor offset to apply after loading the code</param>
-        private async void LoadCode(string code, bool overwrite, int? offset = null)
+        /// <param name="autoindent">Indicates whether or not to automatically add new tabs for the loaded code</param>
+        private async void LoadCode(string code, bool overwrite, int? offset = null, bool autoindent = false)
         {
             // Disable the handlers
             EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
@@ -1067,11 +1064,43 @@ namespace Brainf_ck_sharp_UWP.Views
                 }
                 else
                 {
+                    // Autoindent if needed
+                    start = EditBox.Document.Selection.StartPosition;
+                    if (autoindent)
+                    {
+                        EditBox.Document.GetText(TextGetOptions.None, out string text);
+                        string trailer = text.Substring(0, start);
+                        int indents = trailer.Count(c => c == '[') - trailer.Count(c => c == ']');
+                        string tabs = '\t'.Repeat(indents);
+                        StringBuilder builder = new StringBuilder();
+                        foreach ((char c, int i) in code.Select((c, i) => (c, i)))
+                        {
+                            if (c == '\r')
+                            {
+                                if (i <= code.Length - 2 && code[i + 1] == ']' && indents >= 1)
+                                    tabs = '\t'.Repeat(--indents);
+                                builder.Append($"{c}{tabs}");
+                            }
+                            else if (c == '[')
+                            {
+                                builder.Append(c);
+                                indents++;
+                                tabs += "\t";
+                            }
+                            else if (c == ']')
+                            {
+                                if (indents >= 1 && !(i > 0 && code[i - 1] == '\r')) tabs = '\t'.Repeat(--indents);
+                                builder.Append(c);
+                            }
+                            else builder.Append(c);
+                        }
+                        code = builder.ToString();
+                    }
+
                     // Paste the text in the current selection
                     EditBox.Document.Selection.SetText(TextSetOptions.None, code);
                     selectionBackup = EditBox.SelectionHighlightColor;
                     EditBox.SelectionHighlightColor = new SolidColorBrush(Colors.Transparent);
-                    start = EditBox.Document.Selection.StartPosition;
                     end = EditBox.Document.Selection.EndPosition;
                 }
 
@@ -1514,7 +1543,7 @@ namespace Brainf_ck_sharp_UWP.Views
             e.Handled = true;
             FullCodeSnippetsBrowserFlyout browser = new FullCodeSnippetsBrowserFlyout(EditBox.Document)
             {
-                Height = 48 * 3 + 42, // Ugly hack (height of a snippet template by number of available templates)
+                Height = 48 * 4 + 42, // Ugly hack (height of a snippet template by number of available templates)
                 Width = 220
             };
             FlyoutManager.Instance.ShowCustomContextFlyout(browser, EditBox, 
