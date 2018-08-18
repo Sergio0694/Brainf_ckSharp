@@ -72,12 +72,13 @@ namespace Brainf_ck_sharp_UWP.UserControls
             });
             Messenger.Default.Register<BackgroundExecutionStatusChangedMessage>(this, m =>
             {
-                VisualStateManager.GoToState(this, m.Value.ExitCode.HasFlag(InterpreterExitCode.Success) ? "AutorunEnabledOkState" : "AutorunEnabledFailState", false);
+                VisualStateManager.GoToState(this, m.Value.ExitCode.HasFlag(InterpreterExitCode.Success) || m.Value.ExitCode.HasFlag(InterpreterExitCode.NoCodeInterpreted) 
+                    ? "AutorunEnabledOkState" : "AutorunEnabledFailState", false);
                 string output;
                 if (m.Value.ExitCode.HasFlag(InterpreterExitCode.Success)) output = m.Value.Output;
                 else if (m.Value.ExitCode.HasFlag(InterpreterExitCode.NoCodeInterpreted)) output = LocalizationManager.GetResource("NoCodeInterpreted");
                 else output = ScriptExceptionInfo.FromResult(m.Value).Message;
-                if (output.Length > 50) output = $"{output.Substring(0, 50)}...";
+                if (output.Length > 40) output = $"{output.Substring(0, 40)}..."; // 40 is roughly the number of characters that stay in a single line
                 string tooltip = string.IsNullOrEmpty(output) ? null : output;
                 if (tooltip?.Equals(_AutorunTooltip) != true)
                 {
