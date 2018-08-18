@@ -251,7 +251,7 @@
                 <customCommandBar:CustomCommandBarButton
                     Label="Debug"
                     Icon="&#xEBE8;"
-                    Foreground="{StaticResource RedDangerBrush}"
+                    Foreground="{StaticResource DebugButtonBrush}"
                     x:Uid="DebugButton"
                     IsEnabled="{x:Bind ViewModel.DebugAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestDebug}"/>

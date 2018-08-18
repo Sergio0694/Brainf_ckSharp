@@ -15,6 +15,7 @@
     
     <!--Red danger brush-->
     <SolidColorBrush x:Key="PlayButtonBrush" Color="#FF008000"/>
+    <SolidColorBrush x:Key="DebugButtonBrush" Color="#FFD1212A"/>
     <SolidColorBrush x:Key="RedDangerBrush" Color="#FFDC232B"/>
     
     <!--Breakpoints-->
