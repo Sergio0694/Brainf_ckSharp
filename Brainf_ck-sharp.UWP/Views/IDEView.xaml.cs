@@ -1070,7 +1070,11 @@ namespace Brainf_ck_sharp_UWP.Views
                     {
                         // Adjust the formatting style, if needed
                         if (AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.BracketsStyle)) == 1)
+                        {
+                            int newlines = code.Split("\r[\r").Length - 1;
+                            if (newlines > 0) offset = offset.Value - newlines;
                             code = code.Replace("\r[\r", "[\r");
+                        }
 
                         // Format
                         EditBox.Document.GetText(TextGetOptions.None, out string text);
@@ -1078,6 +1082,7 @@ namespace Brainf_ck_sharp_UWP.Views
                         int indents = trailer.Count(c => c == '[') - trailer.Count(c => c == ']');
                         string tabs = '\t'.Repeat(indents);
                         StringBuilder builder = new StringBuilder();
+                        int cursor = offset.Value;
                         foreach ((char c, int i) in code.Select((c, i) => (c, i)))
                         {
                             if (c == '\r')
@@ -1085,6 +1090,7 @@ namespace Brainf_ck_sharp_UWP.Views
                                 if (i <= code.Length - 2 && code[i + 1] == ']' && indents >= 1)
                                     tabs = '\t'.Repeat(--indents);
                                 builder.Append($"{c}{tabs}");
+                                if (offset > i) cursor += indents;
                             }
                             else if (c == '[')
                             {
@@ -1100,6 +1106,7 @@ namespace Brainf_ck_sharp_UWP.Views
                             else builder.Append(c);
                         }
                         code = builder.ToString();
+                        offset = cursor; // Updated target offset (considering the added tabs)
                     }
 
                     // Paste the text in the current selection

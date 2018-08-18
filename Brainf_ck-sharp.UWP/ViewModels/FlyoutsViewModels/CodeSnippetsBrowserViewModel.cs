@@ -14,8 +14,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         {
             new CodeSnippet("Inline loop", "[]", 1), 
             new CodeSnippet("Reset loop", "[-]", 3),
-            new CodeSnippet("Duplicate value", "[>+>+<<-]>>[<<+>>-]<<", null),
-            new CodeSnippet("if (x == 0) then { }", ">+<[-]>\r[\r->\r// TODO\r[-]\r]<<", 10) 
+            new CodeSnippet("Duplicate value", "[>+>+<<-]>>[<<+>>-]<<", 21),
+            new CodeSnippet("if (x == 0) then { }", ">+<[>-]>\r[\r->\r// TODO\r[-]\r]<<", 21) 
         };
     }
 }
