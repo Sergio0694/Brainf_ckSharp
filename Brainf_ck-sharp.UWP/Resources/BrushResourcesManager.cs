@@ -24,14 +24,11 @@ namespace Brainf_ck_sharp_UWP.Resources
         // Initializes the brushes
         private BrushResourcesManager()
         {
-            AccentBrush = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("SystemControlHighlightAccentBrush");
-            AccentBrushLowFadeBrush = new SolidColorBrush(Color.FromArgb(0x90, AccentBrush.Color.R, AccentBrush.Color.G, AccentBrush.Color.B));
-            XAMLResourcesHelper.SetResourceValue("AccentBrushLowFade", AccentBrushLowFadeBrush);
-            AccentBrushMediumFadeBrush = new SolidColorBrush(Color.FromArgb(0xB0, AccentBrush.Color.R, AccentBrush.Color.G, AccentBrush.Color.B));
-            XAMLResourcesHelper.SetResourceValue("AccentBrushMediumFade", AccentBrushMediumFadeBrush);
-            RedDangerBrush = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("RedDangerBrush");
-            XAMLResourcesHelper.SetResourceValue("SubMenuFlyoutPointerOverBrush", new SolidColorBrush(Color.FromArgb(0x70, AccentBrush.Color.R, AccentBrush.Color.G, AccentBrush.Color.B)));
-            XAMLResourcesHelper.SetResourceValue("SubMenuFlyoutOpenedBrush", new SolidColorBrush(Color.FromArgb(0x50, AccentBrush.Color.R, AccentBrush.Color.G, AccentBrush.Color.B)));
+            SolidColorBrush accent = XAMLResourcesHelper.GetResourceValue<SolidColorBrush>("SystemControlHighlightAccentBrush");
+            XAMLResourcesHelper.SetResourceValue("AccentBrushLowFade", new SolidColorBrush(Color.FromArgb(0x90, accent.Color.R, accent.Color.G, accent.Color.B)));
+            XAMLResourcesHelper.SetResourceValue("AccentBrushMediumFade", new SolidColorBrush(Color.FromArgb(0xB0, accent.Color.R, accent.Color.G, accent.Color.B)));
+            XAMLResourcesHelper.SetResourceValue("SubMenuFlyoutPointerOverBrush", new SolidColorBrush(Color.FromArgb(0x70, accent.Color.R, accent.Color.G, accent.Color.B)));
+            XAMLResourcesHelper.SetResourceValue("SubMenuFlyoutOpenedBrush", new SolidColorBrush(Color.FromArgb(0x50, accent.Color.R, accent.Color.G, accent.Color.B)));
 
             // Lights
             LightingBrush
@@ -43,36 +40,6 @@ namespace Brainf_ck_sharp_UWP.Resources
             XAMLResourcesHelper.SetResourceValue("ElementsWideLightBrush", bwb, true);
             SolidColorBrush sb = new SolidColorBrush { Color = Color.FromArgb(0x10, 0, 0, 0), Opacity = 0 };
             XAMLResourcesHelper.SetResourceValue("WideLightBrushDarkShadeBackground", sb);
-            WideLightBrushDarkShadeBackground = sb;
         }
-
-        #region Brushes
-
-        /// <summary>
-        /// Gets the default accent brush (SystemControlHighlightAccentBrush)
-        /// </summary>
-        public SolidColorBrush AccentBrush { get; }
-
-        /// <summary>
-        /// Gets the accent brush with 0x90 as the alpha channel
-        /// </summary>
-        public SolidColorBrush AccentBrushLowFadeBrush { get; }
-
-        /// <summary>
-        /// Gets the accent brush with 0xB0 as the alpha channel
-        /// </summary>
-        public SolidColorBrush AccentBrushMediumFadeBrush { get; }
-
-        /// <summary>
-        /// Gets the RedDangerBrush brush (#FFDC232B)
-        /// </summary>
-        public SolidColorBrush RedDangerBrush { get; }
-
-        /// <summary>
-        /// Gets the dark brush that acts as a shade background behind the elements wide light brush
-        /// </summary>
-        public SolidColorBrush WideLightBrushDarkShadeBackground { get; }
-
-        #endregion
     }
 }
