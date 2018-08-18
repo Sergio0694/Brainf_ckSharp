@@ -737,6 +737,9 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="AutorunCodeInBackground.Text" xml:space="preserve">
     <value>Controlla il codice in background</value>
   </data>
+  <data name="NoCodeInterpreted" xml:space="preserve">
+    <value>Nessun operatore presente</value>
+  </data>
   <data name="KeyboardShortcutsDescription" xml:space="preserve">
     <value>Diventa più produttivo e risparmia tempo</value>
   </data>
@@ -778,5 +781,23 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   </data>
   <data name="GuideShortcutsItem8.Description" xml:space="preserve">
     <value>Mostra le impostazioni dell'app</value>
+  </data>
+  <data name="CopyButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Copia</value>
+  </data>
+  <data name="CutButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Taglia</value>
+  </data>
+  <data name="PasteButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Incolla</value>
+  </data>
+  <data name="SnippetDuplicateValue" xml:space="preserve">
+    <value>Duplica valore</value>
+  </data>
+  <data name="SnippetInlineLoop" xml:space="preserve">
+    <value>Loop inline</value>
+  </data>
+  <data name="SnippetResetCell" xml:space="preserve">
+    <value>Resetta cella</value>
   </data>
 </root>

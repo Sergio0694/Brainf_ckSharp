@@ -30,7 +30,9 @@
         <snippetsMenu:ContextMenuIconButtonTemplate 
             Icon="&#xE924;"
             IsEnabled="{x:Bind ViewModel.CanCopy}"
-            Tapped="CutButton_Tapped"/>
+            Tapped="CutButton_Tapped"
+            x:Uid="CutButton"
+            ToolTipService.ToolTip="Cut"/>
         <Rectangle Grid.Row="0"
                    Grid.Column="1"
                    Fill="#90000000"/>
@@ -39,7 +41,9 @@
             Grid.Row="0"
             Grid.Column="2"
             IsEnabled="{x:Bind ViewModel.CanCopy}"
-            Tapped="CopyButton_Tapped"/>
+            Tapped="CopyButton_Tapped"
+            x:Uid="CopyButton"
+            ToolTipService.ToolTip="Copy"/>
         <Rectangle Grid.Row="0"
                    Grid.Column="3"
                    Fill="#90000000"/>
@@ -48,7 +52,9 @@
             Grid.Row="0"
             Grid.Column="4"
             IsEnabled="{x:Bind ViewModel.CanPaste}"
-            Tapped="PasteButton_Tapped"/>
+            Tapped="PasteButton_Tapped"
+            x:Uid="PasteButton"
+            ToolTipService.ToolTip="Paste"/>
         <Rectangle Grid.Row="1"
                    Grid.Column="0"
                    Grid.ColumnSpan="5"

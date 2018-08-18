@@ -971,7 +971,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         </trans-unit>
         <trans-unit id="NoCodeInterpreted" translate="yes" xml:space="preserve">
           <source>No code interpreted</source>
-          <target state="new">No code interpreted</target>
+          <target state="translated">Nessun operatore presente</target>
         </trans-unit>
         <trans-unit id="KeyboardShortcutsDescription" translate="yes" xml:space="preserve">
           <source>Be more productive and save time</source>
@@ -1028,6 +1028,30 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         <trans-unit id="GuideShortcutsItem8.Description" translate="yes" xml:space="preserve">
           <source>Shows the app settings</source>
           <target state="translated">Mostra le impostazioni dell'app</target>
+        </trans-unit>
+        <trans-unit id="CopyButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Copy</source>
+          <target state="translated">Copia</target>
+        </trans-unit>
+        <trans-unit id="CutButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Cut</source>
+          <target state="translated">Taglia</target>
+        </trans-unit>
+        <trans-unit id="PasteButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Paste</source>
+          <target state="translated">Incolla</target>
+        </trans-unit>
+        <trans-unit id="SnippetDuplicateValue" translate="yes" xml:space="preserve">
+          <source>Duplicate value</source>
+          <target state="translated">Duplica valore</target>
+        </trans-unit>
+        <trans-unit id="SnippetInlineLoop" translate="yes" xml:space="preserve">
+          <source>Inline loop</source>
+          <target state="translated">Loop inline</target>
+        </trans-unit>
+        <trans-unit id="SnippetResetCell" translate="yes" xml:space="preserve">
+          <source>Reset cell</source>
+          <target state="translated">Resetta cella</target>
         </trans-unit>
       </group>
     </body>

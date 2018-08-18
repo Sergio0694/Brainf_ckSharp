@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
@@ -13,9 +14,9 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         [NotNull, ItemNotNull]
         public IEnumerable<IndexedModelWithValue<CodeSnippet>> CodeSnippets { get; } = IndexedModelWithValue<CodeSnippet>.New(new[]
         {
-            new CodeSnippet("Inline loop", "[]", 1),
-            new CodeSnippet("Reset loop", "[-]", 3),
-            new CodeSnippet("Duplicate value", "[>+>+<<-]>>[<<+>>-]<<", 21),
+            new CodeSnippet(LocalizationManager.GetResource("SnippetInlineLoop"), "[]", 1),
+            new CodeSnippet(LocalizationManager.GetResource("SnippetResetCell"), "[-]", 3),
+            new CodeSnippet(LocalizationManager.GetResource("SnippetDuplicateValue"), "[>+>+<<-]>>[<<+>>-]<<", 21),
             new CodeSnippet("if (x == 0) then { }", ">+<[>-]>\r[\r->\r// TODO\r[-]\r]<<", 21)
         });
 
