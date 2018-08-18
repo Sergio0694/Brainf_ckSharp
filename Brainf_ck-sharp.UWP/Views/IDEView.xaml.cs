@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
@@ -70,7 +71,7 @@ namespace Brainf_ck_sharp_UWP.Views
             _PreviousText = text;
             _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
             Messenger.Default.Register<IDESettingsChangedMessage>(this, ApplyIDESettings);
-            Messenger.Default.Register<CodeSnippetSelectedMessage>(this, m => LoadCode(m.Value.Code, false, m.Value.CursorOffset, true));
+            Messenger.Default.Register<CodeSnippetSelectedMessage>(this, m => LoadCode(m.Value.Code, false, m.Value.CursorOffset));
             Messenger.Default.Register<ClipboardOperationRequestMessage>(this, m => HandleClipboardOperationRequest(m.Value));
         }
 
@@ -1028,9 +1029,8 @@ namespace Brainf_ck_sharp_UWP.Views
         /// </summary>
         /// <param name="code">The code to load</param>
         /// <param name="overwrite">If true, the whole document will be replaced with the new code</param>
-        /// <param name="offset">The optional cursor offset to apply after loading the code</param>
-        /// <param name="autoindent">Indicates whether or not to automatically add new tabs for the loaded code</param>
-        private async void LoadCode(string code, bool overwrite, int? offset = null, bool autoindent = false)
+        /// <param name="offset">The optional cursor offset to apply after loading the code (in case it's a code snippet)</param>
+        private async void LoadCode(string code, bool overwrite, int? offset = null)
         {
             // Disable the handlers
             EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
@@ -1066,8 +1066,13 @@ namespace Brainf_ck_sharp_UWP.Views
                 {
                     // Autoindent if needed
                     start = EditBox.Document.Selection.StartPosition;
-                    if (autoindent)
+                    if (offset != null)
                     {
+                        // Adjust the formatting style, if needed
+                        if (AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.BracketsStyle)) == 1)
+                            code = code.Replace("\r[\r", "[\r");
+
+                        // Format
                         EditBox.Document.GetText(TextGetOptions.None, out string text);
                         string trailer = text.Substring(0, start);
                         int indents = trailer.Count(c => c == '[') - trailer.Count(c => c == ']');
