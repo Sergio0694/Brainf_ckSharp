@@ -9,14 +9,19 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid Background="{StaticResource ComboBoxAcrylicBrush}">
+    <Grid Background="{StaticResource ComboBoxAcrylicBrush}"
+          BorderThickness="1"
+          BorderBrush="{StaticResource CustomContextMenuBorderBrush}">
         <ListView
             ItemsSource="{x:Bind ViewModel.CodeSnippets, Mode=OneWay}"
             ItemContainerStyle="{StaticResource ListViewItemWithoutBackgroundVisualStates}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             IsItemClickEnabled="True"
-            ItemClick="ListViewBase_OnItemClick">
+            ItemClick="ListViewBase_OnItemClick"
+            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollMode="Disabled"
+            ScrollViewer.IsVerticalRailEnabled="False">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <snippetsMenu:CodeSnippetTemplate Code="{Binding}"/>

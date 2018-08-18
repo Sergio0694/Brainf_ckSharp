@@ -514,13 +514,10 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="target">The target element to try not to cover</param>
         /// <param name="tryCenter">Indicates whether or not to try to center the popup to the source control</param>
         /// <param name="margin">An optional additional margin for the final control position</param>
-        public async Task ShowCustomContextFlyout([NotNull] FrameworkElement content, [NotNull] FrameworkElement target, bool tryCenter = false, Point? margin = null)
+        /// <param name="invertAnimation">When <see langword="true"/>, the flyout will open towards the bottom</param>
+        public async Task ShowCustomContextFlyout([NotNull] FrameworkElement content, [NotNull] FrameworkElement target, 
+            bool tryCenter = false, Point? margin = null, bool invertAnimation = false)
         {
-            // Calculate the target area for the context menu
-            Point point = target.GetVisualCoordinates();
-            if (margin != null) point = new Point(point.X + margin.Value.X, point.Y + margin.Value.Y);
-            Rect rect = new Rect(point, new Size(target.ActualWidth, target.ActualHeight));
-
             // Close existing popups if needed
             await Semaphore.WaitAsync();
             if (PopupStack.Count > 0)
@@ -530,8 +527,14 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
             foreach (Popup pending in VisualTreeHelper.GetOpenPopups(Window.Current)) pending.IsOpen = false;
 
-            // Calculate the target size
+            // Calculate the target area for the context menu
             content.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            Point point = target.GetVisualCoordinates();
+            if (margin != null) point = new Point(point.X + margin.Value.X, point.Y + margin.Value.Y);
+            if (invertAnimation) point = new Point(point.X, point.Y + content.DesiredSize.Height);
+            Rect rect = new Rect(point, new Size(target.ActualWidth, target.ActualHeight));
+
+            // Calculate the target size
             if (content.DesiredSize.Width > ApplicationViewHelper.CurrentWidth - 24)
             {
                 content.Width = ApplicationViewHelper.CurrentWidth;
@@ -651,7 +654,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 _CloseContextMenu = null;
                 hit.IsOpen = false;
                 grid.IsHitTestVisible = false;
-                grid.StartCompositionFadeSlideAnimation(1, 0, TranslationAxis.Y, 0, 8, 200, null, null, EasingFunctionNames.CircleEaseOut,
+                grid.StartCompositionFadeSlideAnimation(1, 0, TranslationAxis.Y, null, 8, 200, null, null, EasingFunctionNames.CircleEaseOut,
                     () => popup.IsOpen = false);
             }
             bool sizeHandled = true;
@@ -691,6 +694,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 // Check the updated target position
                 point = target.GetVisualCoordinates();
                 if (margin != null) point = new Point(point.X + margin.Value.X, point.Y + margin.Value.Y);
+                if (invertAnimation) point = new Point(point.X, point.Y + content.DesiredSize.Height);
                 Rect delayedRect = new Rect(point, new Size(target.ActualWidth, target.ActualHeight));
                 if (delayedRect.Left.EqualsWithDelta(rect.Left) &&
                     delayedRect.Top.EqualsWithDelta(rect.Top) ||

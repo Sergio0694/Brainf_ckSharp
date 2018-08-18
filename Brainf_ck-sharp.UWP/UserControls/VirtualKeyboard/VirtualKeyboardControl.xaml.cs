@@ -108,8 +108,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
                 button.ExternalFlyoutOpen = true;
                 TouchCodeSnippetsBrowserFlyout browser = new TouchCodeSnippetsBrowserFlyout
                 {
-                    Height = 52 * 3, // Ugly hack (height of a snippet template by number of available templates)
-                    Width = 200
+                    Height = 48 * 3 - 1, // Ugly hack (height of a snippet template by number of available templates)
+                    Width = 220
                 };
                 await FlyoutManager.Instance.ShowCustomContextFlyout(browser, button, margin: new Point(60, 0));
                 button.ExternalFlyoutOpen = false;

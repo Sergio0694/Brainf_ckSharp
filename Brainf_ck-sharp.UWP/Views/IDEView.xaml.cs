@@ -37,6 +37,7 @@ using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
+using Brainf_ck_sharp_UWP.UserControls.Flyouts.SnippetsMenu;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
@@ -1491,5 +1492,18 @@ namespace Brainf_ck_sharp_UWP.Views
         }
 
         #endregion
+
+        // Overrides the default context menu on right click
+        private void EditBox_OnContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            TouchCodeSnippetsBrowserFlyout browser = new TouchCodeSnippetsBrowserFlyout
+            {
+                Height = 48 * 3 - 1, // Ugly hack (height of a snippet template by number of available templates)
+                Width = 220
+            };
+            FlyoutManager.Instance.ShowCustomContextFlyout(browser, EditBox, 
+                margin: new Point(e.CursorLeft - 70, e.CursorTop), invertAnimation: true).Forget();
+            e.Handled = true;
+        }
     }
 }
