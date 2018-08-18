@@ -102,7 +102,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
 
         private async void OpenSquareBracket_Holding(object sender, HoldingRoutedEventArgs e)
         {
-            if (sender is KeyboardButton button && e.PointerDeviceType == PointerDeviceType.Touch && e.HoldingState == HoldingState.Started)
+            if (sender is KeyboardButton button && e.HoldingState == HoldingState.Started &&
+                (e.PointerDeviceType == PointerDeviceType.Touch || e.PointerDeviceType == PointerDeviceType.Pen))
             {
                 button.ExternalFlyoutOpen = true;
                 TouchCodeSnippetsBrowserFlyout browser = new TouchCodeSnippetsBrowserFlyout
