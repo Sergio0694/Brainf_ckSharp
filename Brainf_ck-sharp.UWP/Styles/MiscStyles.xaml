@@ -3,7 +3,245 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
     xmlns:customCommandBar="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar"
-    xmlns:lights="using:UICompositionAnimations.Lights">
+    xmlns:lights="using:UICompositionAnimations.Lights"
+    xmlns:primitives="using:Telerik.UI.Xaml.Controls.Primitives">
+
+    <!--ExpanderControl start-->
+    <Style TargetType="primitives:RadExpanderControl" x:Key="EnhancedExpanderControlStyle">
+        <Setter Property="MinHeight" Value="48" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="AnimatedIndicatorContent" Value="&#xE015;" />
+        <Setter Property="UseSystemFocusVisuals" Value="True"/>
+        <Setter Property="AnimatedIndicatorContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock FontFamily="Segoe UI Symbol"
+                               Foreground="{ThemeResource TelerikAnimatedIndicatorForegroundBrush}" FontSize="30" Margin="10,0,10,0"
+                               Text="{Binding}" AutomationProperties.AccessibilityView="Raw"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="primitives:RadExpanderControl">
+                    <Border
+                        HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                        x:Name="PART_LayoutRoot"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        Background="{TemplateBinding Background}"
+                        Margin="{TemplateBinding Padding}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="ExpandedStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition From="Collapsed" To="Expanded">
+                                        <Storyboard>
+                                            <DoubleAnimation 
+                                                EnableDependentAnimation="True"
+                                                Duration="0:0:0.250"
+                                                Storyboard.TargetName="AnimatedIndicatorRotate"
+                                                Storyboard.TargetProperty="Angle"
+                                                To="180">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation 
+                                                EnableDependentAnimation="True"
+                                                x:Name="PART_ExpandAnimation"
+                                                Duration="0:0:0.250"
+                                                Storyboard.TargetName="PART_ExpandableContentHolder"
+                                                Storyboard.TargetProperty="Height">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation 
+                                                EnableDependentAnimation="True"
+                                                Duration="0:0:0.250"
+                                                Storyboard.TargetName="PART_ExpandableContentHolder"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="1">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation 
+                                                EnableDependentAnimation="True"
+                                                Duration="0:0:0.250"
+                                                Storyboard.TargetName="PART_ExpandableContentTranslate"
+                                                Storyboard.TargetProperty="Y"
+                                                To="0">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <VisualTransition From="Expanded" To="Collapsed">
+                                        <Storyboard>
+                                            <DoubleAnimation 
+                                                EnableDependentAnimation="True"
+                                                Duration="0:0:0.250"
+                                                Storyboard.TargetName="AnimatedIndicatorRotate"
+                                                Storyboard.TargetProperty="Angle"
+                                                To="0">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation 
+                                                EnableDependentAnimation="True"
+                                                Duration="0:0:0.250"
+                                                Storyboard.TargetName="PART_ExpandableContentHolder"
+                                                Storyboard.TargetProperty="Height"
+                                                To="0">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation 
+                                                EnableDependentAnimation="True"
+                                                Duration="0:0:0.250"
+                                                Storyboard.TargetName="PART_ExpandableContentHolder"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="0">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation 
+                                                EnableDependentAnimation="True"
+                                                Duration="0:0:0.250"
+                                                Storyboard.TargetName="PART_ExpandableContentTranslate"
+                                                Storyboard.TargetProperty="Y"
+                                                To="-100">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Collapsed">
+                                    <Storyboard>
+                                        <DoubleAnimation 
+                                            EnableDependentAnimation="True"
+                                            Duration="0:0:0.250"
+                                            Storyboard.TargetName="AnimatedIndicatorRotate"
+                                            Storyboard.TargetProperty="Angle"
+                                            To="0">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation
+                                            EnableDependentAnimation="True"
+                                            Duration="0"
+                                            Storyboard.TargetName="PART_ExpandableContentHolder"
+                                            Storyboard.TargetProperty="Height"
+                                            To="0"/>
+                                        <DoubleAnimation      
+                                            EnableDependentAnimation="True"
+                                            Duration="0"
+                                            Storyboard.TargetName="PART_ExpandableContentHolder"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0"/>
+                                        <DoubleAnimation 
+                                            EnableDependentAnimation="True"
+                                            Duration="0"
+                                            Storyboard.TargetName="PART_ExpandableContentTranslate"
+                                            Storyboard.TargetProperty="Y"
+                                            To="-100"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Expanded">
+                                    <Storyboard>
+                                        <DoubleAnimation 
+                                            EnableDependentAnimation="True"
+                                            Duration="0:0:0.250"
+                                            Storyboard.TargetName="AnimatedIndicatorRotate"
+                                            Storyboard.TargetProperty="Angle"
+                                            To="180">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation 
+                                            EnableDependentAnimation="True"
+                                            Duration="0"
+                                            Storyboard.TargetName="PART_ExpandableContentHolder"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1"/>
+                                        <DoubleAnimation 
+                                            EnableDependentAnimation="True"
+                                            Duration="0"
+                                            Storyboard.TargetName="PART_ExpandableContentTranslate"
+                                            Storyboard.TargetProperty="Y"
+                                            To="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" x:Name="PART_ExpanderHeaderLayoutRoot" Background="{TemplateBinding HeaderBackground}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <ContentPresenter 
+                                    Grid.Column="0"
+                                    x:Name="PART_MainContentPresenter"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    AutomationProperties.AccessibilityView="Raw"/>
+                                <Grid Grid.Column="1">
+                                    <Grid.Clip>
+                                        <RectangleGeometry Rect="0,0,48,48"/>
+                                    </Grid.Clip>
+                                    <ContentPresenter
+                                        Content="{TemplateBinding AnimatedIndicatorContent}"
+                                        ContentTemplate="{TemplateBinding AnimatedIndicatorContentTemplate}"
+                                        Style="{TemplateBinding AnimatedIndicatorStyle}"
+                                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                        x:Name="PART_AnimatedIndicator"
+                                        RenderTransformOrigin="0.5, 0.5">
+                                        <ContentPresenter.RenderTransform>
+                                            <RotateTransform x:Name="AnimatedIndicatorRotate"/>
+                                        </ContentPresenter.RenderTransform>
+                                    </ContentPresenter>
+                                </Grid>
+                            </Grid>
+                            <Canvas
+                                Grid.ColumnSpan="2"
+                                Grid.Row="1"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                x:Name="PART_ExpandableContentHolder"
+                                Height="0"
+                                Width="0">
+                                <ContentPresenter 
+                                    Visibility="Collapsed"
+                                    x:Name="PART_ExpandableContentPresenter"
+                                    Content="{TemplateBinding ExpandableContent}"
+                                    ContentTemplate="{TemplateBinding ExpandableContentTemplate}">
+                                    <ContentPresenter.RenderTransform>
+                                        <TranslateTransform x:Name="PART_ExpandableContentTranslate"/>
+                                    </ContentPresenter.RenderTransform>
+                                </ContentPresenter>
+                            </Canvas>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <!--Custom Pivot without margins and headers-->
     <Style TargetType="Pivot" x:Key="PivotCustomStyle">

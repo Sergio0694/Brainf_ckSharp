@@ -101,6 +101,7 @@
 
             <!--Expandable keyboard pivot-->
             <inheritedControls:FixedRadExpanderControl
+                Style="{StaticResource EnhancedExpanderControlStyle}"
                 Margin="0"
                 IsExpandable="True"
                 IsExpanded="True"
@@ -113,9 +114,6 @@
                             Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
                             Width="48"
                             x:Name="ExpanderStateButton">
-                            <Button.Clip>
-                                <RectangleGeometry Rect="0,0,48,48"/>
-                            </Button.Clip>
                             <TextBlock 
                                 Text="{Binding}"
                                 Style="{StaticResource FontIconTextBlockStyle}"

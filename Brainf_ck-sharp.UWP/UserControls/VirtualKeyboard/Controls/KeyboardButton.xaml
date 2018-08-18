@@ -51,7 +51,6 @@
                     FontSize="12"
                     Foreground="#80FFFFFF"
                     Margin="0,4,0,0"
-                    FontWeight="SemiLight"
                     MaxLines="1"
                     TextWrapping="NoWrap"
                     TextTrimming="CharacterEllipsis"
