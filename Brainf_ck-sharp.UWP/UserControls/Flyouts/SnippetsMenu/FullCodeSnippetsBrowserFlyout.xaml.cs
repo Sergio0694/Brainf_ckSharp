@@ -2,6 +2,7 @@
 using Windows.UI.Text;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
@@ -32,9 +33,9 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.SnippetsMenu
         // Raises the ContentConfirmed event when the user clicks on a code snippet
         private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            if (e.ClickedItem is CodeSnippet code)
+            if (e.ClickedItem is IndexedModelWithValue<CodeSnippet> code)
             {
-                Messenger.Default.Send(new CodeSnippetSelectedMessage(code));
+                Messenger.Default.Send(new CodeSnippetSelectedMessage(code.Value));
                 ContentConfirmed?.Invoke(this, EventArgs.Empty);
             }
         }
