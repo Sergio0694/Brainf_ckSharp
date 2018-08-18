@@ -371,8 +371,8 @@
     <Compile Include="UserControls\Flyouts\Settings\Sections\UISettingsSection.xaml.cs">
       <DependentUpon>UISettingsSection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\SnippetsMenu\TouchCodeSnippetsBrowserList.xaml.cs">
-      <DependentUpon>TouchCodeSnippetsBrowserList.xaml</DependentUpon>
+    <Compile Include="UserControls\Flyouts\SnippetsMenu\TouchCodeSnippetsBrowserFlyout.xaml.cs">
+      <DependentUpon>TouchCodeSnippetsBrowserFlyout.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Flyouts\UserGuide\CodeSamples\BreakpointCodePreviewControl.xaml.cs">
       <DependentUpon>BreakpointCodePreviewControl.xaml</DependentUpon>
@@ -408,6 +408,7 @@
       <DependentUpon>UserGuideViewerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\InheritedControls\AnimatedComboBox.cs" />
+    <Compile Include="UserControls\InheritedControls\ButtonWithFlyoutVisualStates.cs" />
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CommandBarWithButtonsAnimations.cs" />
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CustomCommandBarButton.cs" />
     <Compile Include="UserControls\DataTemplates\CompactCharactersChunkViewerTemplate.xaml.cs">
@@ -793,7 +794,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Flyouts\SnippetsMenu\TouchCodeSnippetsBrowserList.xaml">
+    <Page Include="UserControls\Flyouts\SnippetsMenu\TouchCodeSnippetsBrowserFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

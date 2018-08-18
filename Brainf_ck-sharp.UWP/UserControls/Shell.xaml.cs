@@ -339,7 +339,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
         private void MoveButton_Click(object sender, RoutedEventArgs e)
         {
             VirtualArrowsKeyboardControl keyboard = new VirtualArrowsKeyboardControl();
-            FlyoutManager.Instance.ShowCustomContextFlyout(keyboard, sender.To<FrameworkElement>(), true);
+            FlyoutManager.Instance.ShowCustomContextFlyout(keyboard, sender.To<FrameworkElement>(), true).Forget();
         }
 
         // Shows the developer info

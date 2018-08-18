@@ -6,7 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="52"
-    d:DesignWidth="400">
+    d:DesignWidth="400"
+    Height="52">
 
     <!--Root-->
     <Grid x:Name="RootGrid"

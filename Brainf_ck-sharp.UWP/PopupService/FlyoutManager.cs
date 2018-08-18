@@ -12,6 +12,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
+using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
@@ -512,10 +513,12 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="content">The control to show</param>
         /// <param name="target">The target element to try not to cover</param>
         /// <param name="tryCenter">Indicates whether or not to try to center the popup to the source control</param>
-        public async void ShowCustomContextFlyout([NotNull] FrameworkElement content, [NotNull] FrameworkElement target, bool tryCenter = false)
+        /// <param name="margin">An optional additional margin for the final control position</param>
+        public async Task ShowCustomContextFlyout([NotNull] FrameworkElement content, [NotNull] FrameworkElement target, bool tryCenter = false, Point? margin = null)
         {
             // Calculate the target area for the context menu
             Point point = target.GetVisualCoordinates();
+            if (margin != null) point = new Point(point.X + margin.Value.X, point.Y + margin.Value.Y);
             Rect rect = new Rect(point, new Size(target.ActualWidth, target.ActualHeight));
 
             // Close existing popups if needed
@@ -663,6 +666,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
 
             // Setup the event handlers and display the popup
+            TaskCompletionSource<Unit> tcs = new TaskCompletionSource<Unit>();
             popup.Closed += (s, e) =>
             {
                 if (sizeHandled)
@@ -671,6 +675,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                     Window.Current.SizeChanged -= WindowSizeHandler;
                 }
                 LightsSourceHelper.SetIsLightsContainer(parent, false);
+                tcs.SetResult(Unit.Instance);
             };
             _CloseContextMenu = ClosePopups;
             popup.IsOpen = true; // Open the context menu popup on top of the hit target
@@ -684,6 +689,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             {
                 // Check the updated target position
                 point = target.GetVisualCoordinates();
+                if (margin != null) point = new Point(point.X + margin.Value.X, point.Y + margin.Value.Y);
                 Rect delayedRect = new Rect(point, new Size(target.ActualWidth, target.ActualHeight));
                 if (delayedRect.Left.EqualsWithDelta(rect.Left) &&
                     delayedRect.Top.EqualsWithDelta(rect.Top) ||
@@ -696,6 +702,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                     XAMLTransformToolkit.CreateDoubleAnimation(popup, "VerticalOffset", null, offset.Y, 250, EasingFunctionNames.CircleEaseOut, true)).Begin();
 
             }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
+            await tcs.Task;
         }
 
         #endregion

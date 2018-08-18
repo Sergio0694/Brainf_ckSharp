@@ -7,9 +7,9 @@ using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.SnippetsMenu
 {
-    public sealed partial class TouchCodeSnippetsBrowserList : UserControl, IEventConfirmedContent<CodeSnippet>
+    public sealed partial class TouchCodeSnippetsBrowserFlyout : UserControl, IEventConfirmedContent<CodeSnippet>
     {
-        public TouchCodeSnippetsBrowserList()
+        public TouchCodeSnippetsBrowserFlyout()
         {
             this.InitializeComponent();
             this.DataContext = new CodeSnippetsBrowserViewModel();

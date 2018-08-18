@@ -55,7 +55,9 @@
             Description="while (*ptr) {"
             Grid.Row="1"
             Grid.Column="0"
-            Click="OpenBracketButton_Tapped"/>
+            Click="OpenBracketButton_Tapped"
+            RightTapped="UIElement_OnRightTapped"
+            Holding="OpenSquareBracket_Holding"/>
         <controls:KeyboardButton
             Text="]"
             Description="}"

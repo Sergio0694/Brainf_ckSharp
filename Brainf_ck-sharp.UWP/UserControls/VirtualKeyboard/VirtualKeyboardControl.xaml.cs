@@ -1,10 +1,17 @@
 ﻿using System;
 using Windows.ApplicationModel;
+using Windows.Devices.Input;
+using Windows.Foundation;
+using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages.Settings;
 using Brainf_ck_sharp_UWP.Messages.UI;
+using Brainf_ck_sharp_UWP.PopupService;
+using Brainf_ck_sharp_UWP.UserControls.Flyouts.SnippetsMenu;
+using Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls;
 using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.XAMLTransform;
@@ -90,6 +97,36 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
                     PBrainBorder, "Width", null, 0, ExpansionAnimationDuration,
                     EasingFunctionNames.CircleEaseOut, true).ToStoryboard().WaitAsync();
                 PBrainColumn.Width = new GridLength(0);
+            }
+        }
+
+        private async void OpenSquareBracket_Holding(object sender, HoldingRoutedEventArgs e)
+        {
+            if (sender is KeyboardButton button && e.PointerDeviceType == PointerDeviceType.Touch && e.HoldingState == HoldingState.Started)
+            {
+                button.ExternalFlyoutOpen = true;
+                TouchCodeSnippetsBrowserFlyout browser = new TouchCodeSnippetsBrowserFlyout
+                {
+                    Height = 52 * 3, // Ugly hack (height of a snippet template by number of available templates)
+                    Width = 200
+                };
+                await FlyoutManager.Instance.ShowCustomContextFlyout(browser, button, margin: new Point(60, 0));
+                button.ExternalFlyoutOpen = false;
+            }
+        }
+
+        private async void UIElement_OnRightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            if (sender is KeyboardButton button)
+            {
+                button.ExternalFlyoutOpen = true;
+                TouchCodeSnippetsBrowserFlyout browser = new TouchCodeSnippetsBrowserFlyout
+                {
+                    Height = 52 * 3, // Ugly hack (height of a snippet template by number of available templates)
+                    Width = 200
+                };
+                await FlyoutManager.Instance.ShowCustomContextFlyout(browser, button, margin: new Point(60, 0));
+                button.ExternalFlyoutOpen = false;
             }
         }
     }
