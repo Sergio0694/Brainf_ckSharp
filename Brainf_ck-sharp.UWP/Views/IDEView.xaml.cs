@@ -70,7 +70,11 @@ namespace Brainf_ck_sharp_UWP.Views
             _PreviousText = text;
             _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
             Messenger.Default.Register<IDESettingsChangedMessage>(this, ApplyIDESettings);
-            Messenger.Default.Register<CodeSnippetSelectedMessage>(this, m => LoadCode(m.Value.Code, false, m.Value.CursorOffset));
+            Messenger.Default.Register<CodeSnippetSelectedMessage>(this, m =>
+            {
+                LoadCode(m.Value.Code, false, m.Value.CursorOffset);
+                EditBox.Focus(FocusState.Programmatic);
+            });
             Messenger.Default.Register<ClipboardOperationRequestMessage>(this, m => HandleClipboardOperationRequest(m.Value));
         }
 
@@ -1006,6 +1010,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 selection.TryCopyToClipboard();
                 if (operation == ClipboardOperation.Cut) EditBox.Document.Selection.SetText(TextSetOptions.None, string.Empty);
             }
+            EditBox.Focus(FocusState.Programmatic);
         }
 
         // Tries to get some text to paste from the clipboard
