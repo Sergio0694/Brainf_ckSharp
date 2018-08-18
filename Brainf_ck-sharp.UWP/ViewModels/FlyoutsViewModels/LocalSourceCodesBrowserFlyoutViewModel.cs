@@ -124,21 +124,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             string @fixed = code.Code.Replace("\r", "\r\n"); // Adjust the new line character
             switch (mode)
             {
-                case SourceCodeShareType.Clipboard:
-                    
-                    // Try to perform the copy operation
-                    try
-                    {
-                        DataPackage package = new DataPackage { RequestedOperation = DataPackageOperation.Copy };
-                        package.SetText(@fixed);
-                        Clipboard.SetContent(package);
-                        return true;
-                    }
-                    catch
-                    {
-                        // Whops!
-                        return false;
-                    }
+                case SourceCodeShareType.Clipboard: return @fixed.TryCopyToClipboard();
                 case SourceCodeShareType.OSShare:
                     ShareCharmsHelper.ShareText(code.Title, @fixed);
                     return true;

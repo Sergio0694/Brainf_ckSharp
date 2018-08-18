@@ -43,7 +43,7 @@
         <Border
             x:Name="LightBorder"
             Opacity="0.6"
-            BorderThickness="2"
+            BorderThickness="1"
             BorderBrush="{StaticResource BorderLightBrush}"/>
 
         <!--Content-->

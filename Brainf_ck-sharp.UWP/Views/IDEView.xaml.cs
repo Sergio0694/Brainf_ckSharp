@@ -25,11 +25,13 @@ using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.CharactersInfo;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
+using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.UI;
+using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.IDE;
 using Brainf_ck_sharp_UWP.Messages.Settings;
@@ -69,7 +71,7 @@ namespace Brainf_ck_sharp_UWP.Views
             _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
             Messenger.Default.Register<IDESettingsChangedMessage>(this, ApplyIDESettings);
             Messenger.Default.Register<CodeSnippetSelectedMessage>(this, m => LoadCode(m.Value.Code, false, m.Value.CursorOffset));
-
+            Messenger.Default.Register<ClipboardOperationRequestMessage>(this, m => HandleClipboardOperationRequest(m.Value));
         }
 
         /// <inheritdoc cref="ICodeWorkspacePage"/>
@@ -992,22 +994,35 @@ namespace Brainf_ck_sharp_UWP.Views
         }
 
         // Manually handles a paste operations within the IDE
-        private async void EditBox_OnPaste(object sender, TextControlPasteEventArgs e)
+        private void EditBox_OnPaste(object sender, TextControlPasteEventArgs e)
+        {
+            e.Handled = true;
+            TryPasteFromClipboard();
+        }
+
+        // Handles a request by the user to perform a clipboard operation
+        private void HandleClipboardOperationRequest(ClipboardOperation operation)
+        {
+            if (operation == ClipboardOperation.Paste) TryPasteFromClipboard();
+            else
+            {
+                EditBox.Document.Selection.GetText(TextGetOptions.None, out string selection);
+                selection.TryCopyToClipboard();
+                if (operation == ClipboardOperation.Cut) EditBox.Document.Selection.SetText(TextSetOptions.None, string.Empty);
+            }
+        }
+
+        // Tries to get some text to paste from the clipboard
+        private async void TryPasteFromClipboard()
         {
             // Retrieve the contents as plain text
-            e.Handled = true;
-            DataPackageView view = Clipboard.GetContent();
-            string text;
-            if (view.Contains(StandardDataFormats.Text)) text = await view.GetTextAsync();
-            else if (view.Contains(StandardDataFormats.Rtf))
+            var (text, format) = await ClipboardHelper.TryGetTextAsync();
+            if (format?.Equals(StandardDataFormats.Rtf) == true)
             {
-                string rtf = await view.GetRtfAsync();
                 RichEditBox provider = new RichEditBox();
-                provider.Document.SetText(TextSetOptions.FormatRtf, rtf);
+                provider.Document.SetText(TextSetOptions.FormatRtf, text);
                 provider.Document.GetText(TextGetOptions.None, out text);
             }
-            else text = null;
-            view.ReportOperationCompleted(DataPackageOperation.Copy);
             if (text == null) return;
             LoadCode(text, false);
         }
@@ -1496,14 +1511,14 @@ namespace Brainf_ck_sharp_UWP.Views
         // Overrides the default context menu on right click
         private void EditBox_OnContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
-            TouchCodeSnippetsBrowserFlyout browser = new TouchCodeSnippetsBrowserFlyout
+            e.Handled = true;
+            FullCodeSnippetsBrowserFlyout browser = new FullCodeSnippetsBrowserFlyout(EditBox.Document)
             {
-                Height = 48 * 3 - 1, // Ugly hack (height of a snippet template by number of available templates)
+                Height = 48 * 3 + 42, // Ugly hack (height of a snippet template by number of available templates)
                 Width = 220
             };
             FlyoutManager.Instance.ShowCustomContextFlyout(browser, EditBox, 
                 margin: new Point(e.CursorLeft - 70, e.CursorTop), invertAnimation: true).Forget();
-            e.Handled = true;
         }
     }
 }

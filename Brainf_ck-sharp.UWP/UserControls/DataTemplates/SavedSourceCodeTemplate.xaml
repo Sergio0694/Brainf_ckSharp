@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="60"
+    d:DesignHeight="68"
     d:DesignWidth="400"
     RightTapped="SavedSourceCodeTemplate_OnRightTapped"
     Holding="SavedSourceCodeTemplate_OnHolding">
@@ -49,7 +49,7 @@
 
         <!--Content-->
         <StackPanel VerticalAlignment="Center"
-                    Margin="12,0,16,0">
+                    Margin="12,12,16,12">
 
             <!--Title name-->
             <TextBlock x:Name="TitleBlock"

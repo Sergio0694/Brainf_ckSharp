@@ -13,7 +13,7 @@
           BorderThickness="1"
           BorderBrush="{StaticResource CustomContextMenuBorderBrush}">
         <ListView
-            ItemsSource="{x:Bind ViewModel.CodeSnippets, Mode=OneWay}"
+            ItemsSource="{x:Bind ViewModel.CodeSnippets}"
             ItemContainerStyle="{StaticResource ListViewItemWithoutBackgroundVisualStates}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
