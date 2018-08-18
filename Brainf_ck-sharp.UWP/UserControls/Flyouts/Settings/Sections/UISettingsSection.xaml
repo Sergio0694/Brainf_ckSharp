@@ -21,18 +21,6 @@
             ItemsSource="{Binding ViewModel.StartingPageOptions}"
             SelectedIndex="{Binding ViewModel.StartingPageSelectedIndex, Mode=TwoWay}"
             MinWidth="180"/>
-
-        <!--Blur mode-->
-        <TextBlock
-            Margin="0,16,0,0"
-            x:Uid="BlurModeTitle"
-            Text="Preferred blur mode"/>
-        <inheritedControls:AnimatedComboBox
-            Margin="0,8,0,0"
-            ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
-            ItemsSource="{Binding ViewModel.BlurModeOptions}"
-            SelectedIndex="{Binding ViewModel.BlurModeSelectedIndex, Mode=TwoWay}"
-            MinWidth="180"/>
         
         <!--Show PBrain keyboard-->
         <TextBlock

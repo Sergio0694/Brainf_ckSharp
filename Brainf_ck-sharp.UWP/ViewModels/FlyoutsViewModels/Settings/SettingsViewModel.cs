@@ -38,35 +38,6 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
             }
         }
 
-        /// <summary>
-        /// Gets the collection of the available blur modes
-        /// </summary>
-        [UsedImplicitly, NotNull]
-        public IReadOnlyCollection<string> BlurModeOptions { get; } = new[]
-        {
-            LocalizationManager.GetResource("BackgroundBlur"),
-            LocalizationManager.GetResource("InAppBlur")
-        };
-
-        private int _BlurModeSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.InAppBlurMode));
-
-        /// <summary>
-        /// Gets or sets the selected index for the custom blur mode
-        /// </summary>
-        [UsedImplicitly]
-        public int BlurModeSelectedIndex
-        {
-            get => _BlurModeSelectedIndex;
-            set
-            {
-                if (Set(ref _BlurModeSelectedIndex, value))
-                {
-                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.InAppBlurMode), value, SettingSaveMode.OverwriteIfExisting);
-                    Messenger.Default.Send(new BlurModeChangedMessage(value));
-                }
-            }
-        }
-
         private bool _AutoindentBrackets = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutoIndentBrackets));
 
         /// <summary>

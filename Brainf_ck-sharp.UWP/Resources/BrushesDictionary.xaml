@@ -65,14 +65,6 @@
         TintMix="0.6"
         NoiseTextureUri="/Assets/Misc/noise.png"/>
 
-    <!--Header host backdrop blur brush-->
-    <brushes:CustomAcrylicBrush
-        x:Key="HeaderHostBackdropBlurBrush"
-        Mode="HostBackdrop"
-        Tint="#FF1E1E1E"
-        TintMix="0.8"
-        NoiseTextureUri="/Assets/Misc/noise.png"/>
-
     <!--Header in-app acrylic brush-->
     <brushes:CustomAcrylicBrush
         x:Key="HeaderInAppAcrylicBrush"

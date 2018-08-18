@@ -518,17 +518,8 @@ This way he'll be able to help you!</value>
   <data name="AutoIndentTitle.Text" xml:space="preserve">
     <value>Auto indent brackets</value>
   </data>
-  <data name="BackgroundBlur" xml:space="preserve">
-    <value>Background blur</value>
-  </data>
-  <data name="BlurModeTitle.Text" xml:space="preserve">
-    <value>Preferred blur mode</value>
-  </data>
   <data name="BracketsStyleTitle.Text" xml:space="preserve">
     <value>Brackets style</value>
-  </data>
-  <data name="InAppBlur" xml:space="preserve">
-    <value>In-app blur</value>
   </data>
   <data name="NewLine" xml:space="preserve">
     <value>New line</value>

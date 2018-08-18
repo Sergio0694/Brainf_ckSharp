@@ -47,7 +47,7 @@ namespace Brainf_ck_sharp_UWP.DataModels.Settings
                             ? $"8 {LocalizationManager.GetResource("LowercaseAvailableSettings")}"
                             : $"7 {LocalizationManager.GetResource("LowercaseAvailableSettings")}, {LocalizationManager.GetResource("ThemesPackLocked")}";
                     case SettingsSectionType.UI:
-                        return $"3 {LocalizationManager.GetResource("LowercaseAvailableSettings")}";
+                        return $"2 {LocalizationManager.GetResource("LowercaseAvailableSettings")}";
                     case SettingsSectionType.Interpreter:
                         return $"2 {LocalizationManager.GetResource("LowercaseAvailableSettings")}";
                     default:

@@ -518,21 +518,9 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Auto indent brackets</source>
           <target state="translated">Indenta automaticamente parentesi</target>
         </trans-unit>
-        <trans-unit id="BackgroundBlur" translate="yes" xml:space="preserve">
-          <source>Background blur</source>
-          <target state="translated">Sfocatura sfondo</target>
-        </trans-unit>
-        <trans-unit id="BlurModeTitle.Text" translate="yes" xml:space="preserve">
-          <source>Preferred blur mode</source>
-          <target state="translated">Modalità blur preferita</target>
-        </trans-unit>
         <trans-unit id="BracketsStyleTitle.Text" translate="yes" xml:space="preserve">
           <source>Brackets style</source>
           <target state="translated">Formattazione parentesi</target>
-        </trans-unit>
-        <trans-unit id="InAppBlur" translate="yes" xml:space="preserve">
-          <source>In-app blur</source>
-          <target state="translated">Sfocatura in-app</target>
         </trans-unit>
         <trans-unit id="NewLine" translate="yes" xml:space="preserve">
           <source>New line</source>

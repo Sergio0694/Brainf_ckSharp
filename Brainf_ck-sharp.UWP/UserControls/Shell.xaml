@@ -41,6 +41,7 @@
         <Grid
             Canvas.ZIndex="1"
             x:Name="HeaderGrid"
+            Background="{StaticResource HeaderInAppAcrylicBrush}"
             RelativePanel.AlignTopWithPanel="True"
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True">

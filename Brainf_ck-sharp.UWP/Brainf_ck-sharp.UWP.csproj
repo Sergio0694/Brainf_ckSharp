@@ -228,7 +228,6 @@
     <Compile Include="Messages\Flyouts\NotificationCloseRequestmessage.cs" />
     <Compile Include="Messages\IDE\BreakpointErrorStatusChangedMessage.cs" />
     <Compile Include="Messages\Settings\OverflowModeChangedMessage.cs" />
-    <Compile Include="Messages\Settings\BlurModeChangedMessage.cs" />
     <Compile Include="Messages\UI\IDEDisplayRequestMessage.cs" />
     <Compile Include="Messages\Settings\IDESettingsChangedMessage.cs" />
     <Compile Include="Messages\UI\IDEThemePreviewFontChangedMessage.cs" />

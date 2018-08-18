@@ -24,7 +24,6 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
 
         // Other settings
         StartingPage,
-        InAppBlurMode,
         ClearStdinBufferOnExecution,
         ShowPBrainButtons,
         ProtectUnsavedChanges,
