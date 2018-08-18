@@ -1,4 +1,5 @@
-﻿using Windows.Devices.Input;
+﻿using System.Text.RegularExpressions;
+using Windows.Devices.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
@@ -50,8 +51,10 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.SnippetsMenu
             CodeSnippetTemplate @this = d.To<CodeSnippetTemplate>();
             @this.TitleBlock.Text = code.Value.Title;
             Span host = new Span();
-            string text = code.Value.Code.Length <= 60 ? code.Value.Code : code.Value.Code.Substring(0, 60); // The preview is only 1 line long
-            Brainf_ckCodeInlineFormatter.SetSource(host, text);
+            string
+                operators = Regex.Replace(code.Value.Code, @"[^-+\[\]\.,><():]", ""),
+                trimmed = operators.Length <= 60 ? operators : operators.Substring(0, 60); // The preview is only 1 line long
+            Brainf_ckCodeInlineFormatter.SetSource(host, trimmed);
             @this.CodeBlock.Inlines.Clear();
             @this.CodeBlock.Inlines.Add(host);
             
