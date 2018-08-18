@@ -43,8 +43,10 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
 
         public LocalSourceCodesBrowserFlyoutViewModel ViewModel => DataContext.To<LocalSourceCodesBrowserFlyoutViewModel>();
 
+        /// <inheritdoc cref="IEventConfirmedContent{T}"/>
         public event EventHandler<CategorizedSourceCode> ContentConfirmed;
 
+        /// <inheritdoc cref="IEventConfirmedContent{T}"/>
         public CategorizedSourceCode Result { get; private set; }
 
         private async void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)

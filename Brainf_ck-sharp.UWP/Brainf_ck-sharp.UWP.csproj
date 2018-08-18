@@ -163,6 +163,7 @@
     <Compile Include="DataModels\IDEResults\IDEResultSectionStateData.cs" />
     <Compile Include="DataModels\JumpListGroup.cs" />
     <Compile Include="DataModels\Misc\CharactersInfo\CharacterWithArea.cs" />
+    <Compile Include="DataModels\Misc\CodeSnippet.cs" />
     <Compile Include="DataModels\Misc\Coordinate.cs" />
     <Compile Include="DataModels\Misc\GitDiffLineStatus.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationInfoOpenLoopBracketType.cs" />
@@ -325,6 +326,9 @@
     <Compile Include="UserControls\DataTemplates\JumpList\JumpListZoomedOutHeaderTemplate.xaml.cs">
       <DependentUpon>JumpListZoomedOutHeaderTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\DataTemplates\SnippetsMenu\CodeSnippetTemplate.xaml.cs">
+      <DependentUpon>CodeSnippetTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Flyouts\DevInfo\ChangelogViewFlyout.xaml.cs">
       <DependentUpon>ChangelogViewFlyout.xaml</DependentUpon>
     </Compile>
@@ -366,6 +370,9 @@
     </Compile>
     <Compile Include="UserControls\Flyouts\Settings\Sections\UISettingsSection.xaml.cs">
       <DependentUpon>UISettingsSection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\SnippetsMenu\TouchCodeSnippetsBrowserList.xaml.cs">
+      <DependentUpon>TouchCodeSnippetsBrowserList.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Flyouts\UserGuide\CodeSamples\BreakpointCodePreviewControl.xaml.cs">
       <DependentUpon>BreakpointCodePreviewControl.xaml</DependentUpon>
@@ -477,6 +484,7 @@
     <Compile Include="ViewModels\FlyoutsViewModels\ChangelogViewFlyoutViewModel.cs" />
     <Compile Include="ViewModels\CompactCharactersViewerControlViewModel.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\CodeSnippetsBrowserViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\ConsoleFullMemoryViewerControlViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\IDERunResultFlyoutViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\Settings\SettingsJumpListViewModel.cs" />
@@ -705,6 +713,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserControls\DataTemplates\SnippetsMenu\CodeSnippetTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\DataTemplates\UnicodeCharacterTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -778,6 +790,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Flyouts\Settings\Sections\UISettingsSection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\SnippetsMenu\TouchCodeSnippetsBrowserList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,14 +1,12 @@
 ﻿<UserControl
-    x:Class="Brainf_ck_sharp_UWP.UserControls.DataTemplates.SavedSourceCodeTemplate"
+    x:Class="Brainf_ck_sharp_UWP.UserControls.DataTemplates.SnippetsMenu.CodeSnippetTemplate"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="60"
-    d:DesignWidth="400"
-    RightTapped="SavedSourceCodeTemplate_OnRightTapped"
-    Holding="SavedSourceCodeTemplate_OnHolding">
+    d:DesignHeight="52"
+    d:DesignWidth="400">
 
     <!--Root-->
     <Grid x:Name="RootGrid"
@@ -53,9 +51,8 @@
 
             <!--Title name-->
             <TextBlock x:Name="TitleBlock"
-                       Text="SAMPLE_TITLE"
-                       Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
-                       FontSize="18"
+                       Text="Sample_title"
+                       Foreground="DarkGray"
                        FontWeight="Normal"
                        TextLineBounds="Tight"
                        IsTextScaleFactorEnabled="False"
@@ -66,12 +63,12 @@
             <!--Code-->
             <TextBlock Text="..."
                        x:Name="CodeBlock"
-                       MaxLines="2"
+                       MaxLines="1"
                        TextWrapping="Wrap"
                        TextTrimming="CharacterEllipsis"
                        IsTextScaleFactorEnabled="False"
                        Foreground="LightGray"
-                       Margin="0,4,0,0"/>
+                       FontSize="14"/>
         </StackPanel>
 
         <!--Bottom separator-->
@@ -79,10 +76,5 @@
                    VerticalAlignment="Bottom"
                    Height="1"
                    Fill="#90000000"/>
-        
-        <!--Fade canvas-->
-        <Canvas x:Name="FadeCanvas"
-                Background="#40000000"
-                Opacity="0"/>
     </Grid>
 </UserControl>
