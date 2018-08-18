@@ -1,10 +1,10 @@
 ﻿<UserControl
-    x:Class="Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide.Sections.LanguageIntroductionControl"
+    x:Class="Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide.Sections.LanguageIntroductionGuideControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:templates="using:Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide.Templates"
     mc:Ignorable="d"
     d:DesignHeight="1000"
     d:DesignWidth="400">
@@ -27,47 +27,47 @@
                 x:Uid="GuideIntroduction3"/>
         </TextBlock>
 
-        <local:OperatorDescriptionControl
+        <templates:GuideItemDescriptionControl
             Margin="0,16,0,0"
-            Operator=">"
+            ItemName=">"
             Description="Moves the memory pointer to the next cell"
             x:Uid="GuideOperator1"
-            OperatorForegroundBrush="#FFDDDDDD"/>
-        <local:OperatorDescriptionControl
+            ItemNameForegroundBrush="#FFDDDDDD"/>
+        <templates:GuideItemDescriptionControl
             Margin="0,12,0,0"
-            Operator="&lt;"
+            ItemName="&lt;"
             Description="Moves the memory pointer back"
             x:Uid="GuideOperator2"
-            OperatorForegroundBrush="#FFDDDDDD"/>
-        <local:OperatorDescriptionControl
+            ItemNameForegroundBrush="#FFDDDDDD"/>
+        <templates:GuideItemDescriptionControl
             Margin="0,12,0,0"
-            Operator="+"
+            ItemName="+"
             Description="Increments the value of the current cell"
             x:Uid="GuideOperator3"
-            OperatorForegroundBrush="White"/>
-        <local:OperatorDescriptionControl
+            ItemNameForegroundBrush="White"/>
+        <templates:GuideItemDescriptionControl
             Margin="0,12,0,0"
-            Operator="-"
+            ItemName="-"
             Description="Decrements the value of the current cell"
             x:Uid="GuideOperator4"
-            OperatorForegroundBrush="White"/>
-        <local:OperatorDescriptionControl
+            ItemNameForegroundBrush="White"/>
+        <templates:GuideItemDescriptionControl
             Margin="0,12,0,0"
-            Operator="["
+            ItemName="["
             Description="Starts a loop on the current cell, only if its value is greater than 0"
             x:Uid="GuideOperator5"
-            OperatorForegroundBrush="#FF569CD6"/>
-        <local:OperatorDescriptionControl
+            ItemNameForegroundBrush="#FF569CD6"/>
+        <templates:GuideItemDescriptionControl
             Margin="0,12,0,0"
-            Operator="]"
+            ItemName="]"
             Description="Loops and executes the current operators sequence if the value of the current cell is greater than 0"
             x:Uid="GuideOperator6"
-            OperatorForegroundBrush="#FF569CD6"/>
-        <local:OperatorDescriptionControl
+            ItemNameForegroundBrush="#FF569CD6"/>
+        <templates:GuideItemDescriptionControl
             Margin="0,12,0,0"
-            Operator="."
-            OperatorForegroundBrush="IndianRed">
-            <local:OperatorDescriptionControl.DescriptionInlines>
+            ItemName="."
+            ItemNameForegroundBrush="IndianRed">
+            <templates:GuideItemDescriptionControl.DescriptionInlines>
                 <Run 
                     Text="Prints the Unicode character corresponding to the value of the current memory cell. The Unicode table is available in the app, under the"
                     x:Uid="GuideOperators7Part1"/>
@@ -76,13 +76,13 @@
                 <Run 
                     Text="menu"
                     x:Uid="GuideOperators7Part2"/>
-            </local:OperatorDescriptionControl.DescriptionInlines>
-        </local:OperatorDescriptionControl>
-        <local:OperatorDescriptionControl
+            </templates:GuideItemDescriptionControl.DescriptionInlines>
+        </templates:GuideItemDescriptionControl>
+        <templates:GuideItemDescriptionControl
             Margin="0,12,0,0"
-            Operator=","
+            ItemName=","
             Description="Reads a Unicode character from the Stdin buffer and stores its value in the current memory cell"
             x:Uid="GuideOperator8"
-            OperatorForegroundBrush="DarkKhaki"/>
+            ItemNameForegroundBrush="DarkKhaki"/>
     </StackPanel>
 </UserControl>

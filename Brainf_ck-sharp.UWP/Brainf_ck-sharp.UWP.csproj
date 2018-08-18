@@ -386,14 +386,17 @@
     <Compile Include="UserControls\Flyouts\UserGuide\Sections\DebuggingGuideControl.xaml.cs">
       <DependentUpon>DebuggingGuideControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Flyouts\UserGuide\Sections\KeyboardShortcutsGuideControl.xaml.cs">
+      <DependentUpon>KeyboardShortcutsGuideControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Flyouts\UserGuide\Sections\PBrainGuideControl.xaml.cs">
       <DependentUpon>PBrainGuideControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\UserGuide\Sections\LanguageIntroductionControl.xaml.cs">
-      <DependentUpon>LanguageIntroductionControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Flyouts\UserGuide\Sections\LanguageIntroductionGuideControl.xaml.cs">
+      <DependentUpon>LanguageIntroductionGuideControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\UserGuide\OperatorDescriptionControl.xaml.cs">
-      <DependentUpon>OperatorDescriptionControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Flyouts\UserGuide\Templates\GuideItemDescriptionControl.xaml.cs">
+      <DependentUpon>GuideItemDescriptionControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Flyouts\UserGuide\UserGuideViewerControl.xaml.cs">
       <DependentUpon>UserGuideViewerControl.xaml</DependentUpon>
@@ -807,15 +810,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\Flyouts\UserGuide\Sections\KeyboardShortcutsGuideControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\Flyouts\UserGuide\Sections\PBrainGuideControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Flyouts\UserGuide\Sections\LanguageIntroductionControl.xaml">
+    <Page Include="UserControls\Flyouts\UserGuide\Sections\LanguageIntroductionGuideControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Flyouts\UserGuide\OperatorDescriptionControl.xaml">
+    <Page Include="UserControls\Flyouts\UserGuide\Templates\GuideItemDescriptionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

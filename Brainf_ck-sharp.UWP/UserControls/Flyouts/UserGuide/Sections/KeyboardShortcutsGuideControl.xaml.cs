@@ -2,9 +2,9 @@
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide.Sections
 {
-    public sealed partial class LanguageIntroductionControl : UserControl
+    public sealed partial class KeyboardShortcutsGuideControl : UserControl
     {
-        public LanguageIntroductionControl()
+        public KeyboardShortcutsGuideControl()
         {
             this.InitializeComponent();
         }

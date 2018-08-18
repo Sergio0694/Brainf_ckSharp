@@ -21,6 +21,7 @@ namespace Brainf_ck_sharp_UWP.TemplateSelectors
                     case UserGuideSection.Samples: return parent.FindResource<DataTemplate>("CodeSamplesectionTemplate");
                     case UserGuideSection.PBrain: return parent.FindResource<DataTemplate>("PBrainSectionTemplate");
                     case UserGuideSection.Debugging: return parent.FindResource<DataTemplate>("DebuggingSectionTemplate");
+                    case UserGuideSection.KeyboardShortcuts: return parent.FindResource<DataTemplate>("KeyboardShortcutsSectionTemplate");
                     default: throw new ArgumentOutOfRangeException(nameof(item), "Invalid user guide section");
                 }
             }

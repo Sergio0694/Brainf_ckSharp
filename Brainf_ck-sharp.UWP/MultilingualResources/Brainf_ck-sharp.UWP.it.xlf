@@ -985,6 +985,62 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>No code interpreted</source>
           <target state="new">No code interpreted</target>
         </trans-unit>
+        <trans-unit id="KeyboardShortcutsDescription" translate="yes" xml:space="preserve">
+          <source>Be more productive and save time</source>
+          <target state="translated">Diventa più produttivo e risparmia tempo</target>
+        </trans-unit>
+        <trans-unit id="UserGuideKeyboardShortcuts" translate="yes" xml:space="preserve">
+          <source>Keyboard shortcuts</source>
+          <target state="translated">Scorciatoie da tastiera</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsDebug1.Description" translate="yes" xml:space="preserve">
+          <source>Continues the execution in debug mode</source>
+          <target state="translated">Continua l'esecuzione in modalità debug</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsDebug2.Description" translate="yes" xml:space="preserve">
+          <source>Continues and ingores following breakpoints</source>
+          <target state="translated">Continua ed ignora breakpoint successivi</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsDebugIntroduction.Text" translate="yes" xml:space="preserve">
+          <source>The debug mode offers some additional shortcuts:</source>
+          <target state="translated">La modalità debug offre alcune scorciatoie aggiuntive:</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsIntroduction.Text" translate="yes" xml:space="preserve">
+          <source>Some of the most common operations in the app also have a keyboard shortcut that can be used to access them more quickly. Here is the complete list:</source>
+          <target state="translated">Alcune delle operazioni più comuni nell'app dispongono anche di una scorciatoia da tastiera che può essere usata per velocizzarne l'utilizzo. Ecco la lista completa:</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsItem1.Description" translate="yes" xml:space="preserve">
+          <source>Executes the current script</source>
+          <target state="translated">Esegue lo script visualizzato</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsItem2.Description" translate="yes" xml:space="preserve">
+          <source>When in the IDE, executes the code in debug mode, if possible</source>
+          <target state="translated">Nell'IDE, esegue il codice in modalità debug, se possibile</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsItem3.Description" translate="yes" xml:space="preserve">
+          <source>Saves the current script in the IDE</source>
+          <target state="translated">Salva lo script presente nell'IDE</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsItem4.Description" translate="yes" xml:space="preserve">
+          <source>Saves the script with a (different) name</source>
+          <target state="translated">Salva lo script con un nome (diverso)</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsItem5.Description" translate="yes" xml:space="preserve">
+          <source>Shows the Unicode characters map</source>
+          <target state="translated">Mostra la mappa dei caratteri Unicode</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsItem6.Description" translate="yes" xml:space="preserve">
+          <source>When in the console, shows the memory state</source>
+          <target state="translated">Nella console, mostra lo stato della memoria</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsItem7.Description" translate="yes" xml:space="preserve">
+          <source>When in the IDE, opens the saved codes library</source>
+          <target state="translated">Nell'IDE, apre la libreria dei codici salvati</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsItem8.Description" translate="yes" xml:space="preserve">
+          <source>Shows the app settings</source>
+          <target state="translated">Mostra le impostazioni dell'app</target>
+        </trans-unit>
       </group>
     </body>
   </file>

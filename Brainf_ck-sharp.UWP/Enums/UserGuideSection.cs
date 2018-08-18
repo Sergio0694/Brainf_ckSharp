@@ -8,6 +8,7 @@
         Introduction,
         Samples,
         PBrain,
-        Debugging
+        Debugging,
+        KeyboardShortcuts
     }
 }

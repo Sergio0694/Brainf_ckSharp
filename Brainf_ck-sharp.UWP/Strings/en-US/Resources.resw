@@ -854,4 +854,46 @@ This way he'll be able to help you!</value>
   <data name="NoCodeInterpreted" xml:space="preserve">
     <value>No code interpreted</value>
   </data>
+  <data name="KeyboardShortcutsDescription" xml:space="preserve">
+    <value>Be more productive and save time</value>
+  </data>
+  <data name="UserGuideKeyboardShortcuts" xml:space="preserve">
+    <value>Keyboard shortcuts</value>
+  </data>
+  <data name="GuideShortcutsDebug1.Description" xml:space="preserve">
+    <value>Continues the execution in debug mode</value>
+  </data>
+  <data name="GuideShortcutsDebugIntroduction.Text" xml:space="preserve">
+    <value>The debug mode offers some additional shortcuts:</value>
+  </data>
+  <data name="GuideShortcutsIntroduction.Text" xml:space="preserve">
+    <value>Some of the most common operations in the app also have a keyboard shortcut that can be used to access them more quickly. Here is the complete list:</value>
+  </data>
+  <data name="GuideShortcutsItem1.Description" xml:space="preserve">
+    <value>Executes the current script</value>
+  </data>
+  <data name="GuideShortcutsItem2.Description" xml:space="preserve">
+    <value>When in the IDE, executes the code in debug mode, if possible</value>
+  </data>
+  <data name="GuideShortcutsItem3.Description" xml:space="preserve">
+    <value>Saves the current script in the IDE</value>
+  </data>
+  <data name="GuideShortcutsItem4.Description" xml:space="preserve">
+    <value>Saves the script with a (different) name</value>
+  </data>
+  <data name="GuideShortcutsItem5.Description" xml:space="preserve">
+    <value>Shows the Unicode characters map</value>
+  </data>
+  <data name="GuideShortcutsItem6.Description" xml:space="preserve">
+    <value>When in the console, shows the memory state</value>
+  </data>
+  <data name="GuideShortcutsItem7.Description" xml:space="preserve">
+    <value>When in the IDE, opens the saved codes library</value>
+  </data>
+  <data name="GuideShortcutsItem8.Description" xml:space="preserve">
+    <value>Shows the app settings</value>
+  </data>
+  <data name="GuideShortcutsDebug2.Description" xml:space="preserve">
+    <value>Continues and ingores following breakpoints</value>
+  </data>
 </root>

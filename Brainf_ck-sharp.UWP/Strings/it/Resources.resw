@@ -746,4 +746,46 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="AutorunCodeInBackground.Text" xml:space="preserve">
     <value>Controlla il codice in background</value>
   </data>
+  <data name="KeyboardShortcutsDescription" xml:space="preserve">
+    <value>Diventa più produttivo e risparmia tempo</value>
+  </data>
+  <data name="UserGuideKeyboardShortcuts" xml:space="preserve">
+    <value>Scorciatoie da tastiera</value>
+  </data>
+  <data name="GuideShortcutsDebug1.Description" xml:space="preserve">
+    <value>Continua l'esecuzione in modalità debug</value>
+  </data>
+  <data name="GuideShortcutsDebug2.Description" xml:space="preserve">
+    <value>Continua ed ignora breakpoint successivi</value>
+  </data>
+  <data name="GuideShortcutsDebugIntroduction.Text" xml:space="preserve">
+    <value>La modalità debug offre alcune scorciatoie aggiuntive:</value>
+  </data>
+  <data name="GuideShortcutsIntroduction.Text" xml:space="preserve">
+    <value>Alcune delle operazioni più comuni nell'app dispongono anche di una scorciatoia da tastiera che può essere usata per velocizzarne l'utilizzo. Ecco la lista completa:</value>
+  </data>
+  <data name="GuideShortcutsItem1.Description" xml:space="preserve">
+    <value>Esegue lo script visualizzato</value>
+  </data>
+  <data name="GuideShortcutsItem2.Description" xml:space="preserve">
+    <value>Nell'IDE, esegue il codice in modalità debug, se possibile</value>
+  </data>
+  <data name="GuideShortcutsItem3.Description" xml:space="preserve">
+    <value>Salva lo script presente nell'IDE</value>
+  </data>
+  <data name="GuideShortcutsItem4.Description" xml:space="preserve">
+    <value>Salva lo script con un nome (diverso)</value>
+  </data>
+  <data name="GuideShortcutsItem5.Description" xml:space="preserve">
+    <value>Mostra la mappa dei caratteri Unicode</value>
+  </data>
+  <data name="GuideShortcutsItem6.Description" xml:space="preserve">
+    <value>Nella console, mostra lo stato della memoria</value>
+  </data>
+  <data name="GuideShortcutsItem7.Description" xml:space="preserve">
+    <value>Nell'IDE, apre la libreria dei codici salvati</value>
+  </data>
+  <data name="GuideShortcutsItem8.Description" xml:space="preserve">
+    <value>Mostra le impostazioni dell'app</value>
+  </data>
 </root>

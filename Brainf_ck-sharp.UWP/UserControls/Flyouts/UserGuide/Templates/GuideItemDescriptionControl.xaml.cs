@@ -3,35 +3,44 @@ using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide
+namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide.Templates
 {
-    public sealed partial class OperatorDescriptionControl : UserControl
+    public sealed partial class GuideItemDescriptionControl : UserControl
     {
-        public OperatorDescriptionControl()
+        public GuideItemDescriptionControl()
         {
             this.InitializeComponent();
         }
 
         /// <summary>
-        /// Gets or sets the operator to display on the current control
+        /// Gets or sets the font size for the item name
         /// </summary>
-        public string Operator
+        public double ItemNameFontSize
         {
-            get => OperatorBlock.Text;
-            set => OperatorBlock.Text = value;
+            get => ItemNameBlock.FontSize;
+            set => ItemNameBlock.FontSize = value;
         }
 
         /// <summary>
-        /// Gets or sets the foreground brush for the current operator character
+        /// Gets or sets the name of the current item to describe
         /// </summary>
-        public Brush OperatorForegroundBrush
+        public string ItemName
         {
-            get => OperatorBlock.Foreground;
-            set => OperatorBlock.Foreground = value;
+            get => ItemNameBlock.Text;
+            set => ItemNameBlock.Text = value;
         }
 
         /// <summary>
-        /// Gets or sets the description for the current operator
+        /// Gets or sets the foreground brush for the current item name
+        /// </summary>
+        public Brush ItemNameForegroundBrush
+        {
+            get => ItemNameBlock.Foreground;
+            set => ItemNameBlock.Foreground = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the description for the current item
         /// </summary>
         public string Description
         {
