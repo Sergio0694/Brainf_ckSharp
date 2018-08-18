@@ -72,8 +72,8 @@ namespace Brainf_ck_sharp_UWP.Views
             Messenger.Default.Register<IDESettingsChangedMessage>(this, ApplyIDESettings);
             Messenger.Default.Register<CodeSnippetSelectedMessage>(this, m =>
             {
-                LoadCode(m.Value.Code, false, m.Value.CursorOffset);
-                EditBox.Focus(FocusState.Programmatic);
+                LoadCode(m.Snippet.Code, false, m.Snippet.CursorOffset);
+                if (m.Source == PointerDeviceType.Mouse) EditBox.Focus(FocusState.Programmatic);
             });
             Messenger.Default.Register<ClipboardOperationRequestMessage>(this, m => HandleClipboardOperationRequest(m.Value));
         }

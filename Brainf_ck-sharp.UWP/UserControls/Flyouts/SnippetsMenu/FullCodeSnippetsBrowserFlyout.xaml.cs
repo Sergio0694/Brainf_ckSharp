@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.Devices.Input;
 using Windows.UI.Text;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -35,7 +36,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.SnippetsMenu
         {
             if (e.ClickedItem is IndexedModelWithValue<CodeSnippet> code)
             {
-                Messenger.Default.Send(new CodeSnippetSelectedMessage(code.Value));
+                Messenger.Default.Send(new CodeSnippetSelectedMessage(code.Value, PointerDeviceType.Mouse));
                 ContentConfirmed?.Invoke(this, EventArgs.Empty);
             }
         }
