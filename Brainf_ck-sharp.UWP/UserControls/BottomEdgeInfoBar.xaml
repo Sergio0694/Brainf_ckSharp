@@ -330,6 +330,7 @@
         <Grid HorizontalAlignment="Stretch"
               VerticalAlignment="Stretch"
               Grid.Column="6"
+              Visibility="Collapsed"
               x:Name="AutorunGrid">
             <Grid Margin="8,0,8,0">
                 <Ellipse Height="18"

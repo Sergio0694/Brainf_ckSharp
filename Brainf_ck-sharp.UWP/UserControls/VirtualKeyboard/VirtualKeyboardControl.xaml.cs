@@ -59,7 +59,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
 
         private void MinusButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed('-');
 
-        private void OpenBracketButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed('[');
+        private void OpenBracketButton_Tapped(object sender, RoutedEventArgs e)
+        {
+            if (_SnippetsMenuOpen) _SnippetsMenuOpen = false;
+            else OnKeyPressed('[');
+        }
 
         private void CloseBracketButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed(']');
 
@@ -102,20 +106,23 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
             }
         }
 
+        // Indicates whether or not the touch snippets menu is currently open
+        private bool _SnippetsMenuOpen;
+
         private async void OpenSquareBracket_Holding(object sender, HoldingRoutedEventArgs e)
         {
             if (sender is KeyboardButton button && e.HoldingState == HoldingState.Started &&
                 (e.PointerDeviceType == PointerDeviceType.Touch || e.PointerDeviceType == PointerDeviceType.Pen) &&
                 await Messenger.Default.RequestAsync<AppSection, CurrentAppSectionInfoRequestMessage>() == AppSection.IDE)
             {
-                button.ExternalFlyoutOpen = true;
+                _SnippetsMenuOpen = button.ExternalFlyoutOpen = true;
                 TouchCodeSnippetsBrowserFlyout browser = new TouchCodeSnippetsBrowserFlyout
                 {
                     Height = 48 * 5 + 1, // Ugly hack (height of a snippet template by number of available templates)
                     Width = 220
                 };
                 await FlyoutManager.Instance.ShowCustomContextFlyout(browser, button, margin: new Point(60, 0));
-                button.ExternalFlyoutOpen = false;
+                _SnippetsMenuOpen = button.ExternalFlyoutOpen = false;
             }
         }
     }
