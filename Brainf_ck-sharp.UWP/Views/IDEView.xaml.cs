@@ -1206,10 +1206,11 @@ namespace Brainf_ck_sharp_UWP.Views
         private async Task RemoveUnvalidatedBreakpointsAsync([NotNull] string text)
         {
             // Find the invalid breakpoints
-            IReadOnlyList<int> pending = await Task.Run(() =>
-            {
-                return BreakpointsInfo.Keys.Where(line => line < 2 || line > text.Length || !text.GetLine(line).Any(Brainf_ckInterpreter.Operators.Contains)).ToArray();
-            });
+            IReadOnlyList<int> pending = await Task.Run(() => BreakpointsInfo.Keys.Where(line =>
+                line < 2 ||                                                         // Breakpoints not allowed in the first two lines
+                line > text.Length ||                                               // Breakpoints fallen out of range (eg. when deleting code lines)
+                !text.GetLine(line).Any(Brainf_ckInterpreter.Operators.Contains)    // Breakpoints on lines with no longer at least one operator
+                ).ToArray());
 
             // Remove the target breakpoints
             foreach (int target in pending)
