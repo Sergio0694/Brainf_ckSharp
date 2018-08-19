@@ -17,7 +17,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             new CodeSnippet(LocalizationManager.GetResource("SnippetInlineLoop"), "[]", 1),
             new CodeSnippet(LocalizationManager.GetResource("SnippetResetCell"), "[-]", 3),
             new CodeSnippet(LocalizationManager.GetResource("SnippetDuplicateValue"), "[>+>+<<-]>>[<<+>>-]<<", 21),
-            new CodeSnippet("if (x == 0) then { }", ">+<[>-]>\r[\r->\r// TODO\r[-]\r]<<", 21)
+            new CodeSnippet(LocalizationManager.GetResource("SnippetNestedLoop"), ">+\r[\r\r]<-", 5), 
+            new CodeSnippet("if (x == 0) then { }", ">+<[>-]>\r[\r->\r\r[-]\r]<<", 14)
         });
 
         /* ============================================

@@ -1053,6 +1053,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Syntax error</source>
           <target state="translated">Errore di sintassi</target>
         </trans-unit>
+        <trans-unit id="SnippetNestedLoop" translate="yes" xml:space="preserve">
+          <source>Nested loop</source>
+          <target state="translated">Ciclo annidato</target>
+        </trans-unit>
       </group>
     </body>
   </file>

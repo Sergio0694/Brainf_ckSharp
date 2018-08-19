@@ -905,4 +905,7 @@ This way he'll be able to help you!</value>
   <data name="SyntaxError" xml:space="preserve">
     <value>Syntax error</value>
   </data>
+  <data name="SnippetNestedLoop" xml:space="preserve">
+    <value>Nested loop</value>
+  </data>
 </root>

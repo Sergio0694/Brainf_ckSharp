@@ -800,4 +800,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="SyntaxError" xml:space="preserve">
     <value>Errore di sintassi</value>
   </data>
+  <data name="SnippetNestedLoop" xml:space="preserve">
+    <value>Ciclo annidato</value>
+  </data>
 </root>

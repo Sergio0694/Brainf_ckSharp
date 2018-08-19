@@ -59,7 +59,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.SnippetsMenu
             @this.CodeBlock.Inlines.Add(host);
             
             // Adjust the UI (warning: ugly hacks ahead)
-            @this.BottomSeparator.Visibility = (code.Index != 3).ToVisibility();
+            @this.BottomSeparator.Visibility = (code.Index != 4).ToVisibility();
             @this.LightBorder.Margin = new Thickness(0, 0, 0, (code.Index != 3) ? 1 : 0);
         }
     }
