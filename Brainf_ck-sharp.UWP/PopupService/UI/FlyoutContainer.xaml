@@ -68,7 +68,7 @@
                        FontSize="20"/>
 
             <!--Close button-->
-            <Button Style="{ThemeResource WideButtonWithNoBackgroundStyle}"
+            <Button Style="{ThemeResource WideButtonWithNoBackgroundAndInlineBorder}"
                     Grid.Column="1"
                     HorizontalAlignment="Right"
                     Width="52"
@@ -86,10 +86,8 @@
                     <!--Light border-->
                     <Border
                         Opacity="0.4"
-                        x:Name="LightBorder"
                         BorderThickness="2"
-                        BorderBrush="{StaticResource BorderLightBrush}"
-                        Margin="-2"/>
+                        BorderBrush="{StaticResource BorderLightBrush}"/>
                     
                     <!--Close icon-->
                     <TextBlock Text="&#xE10A;"
@@ -109,7 +107,7 @@
         
         <!--Confirm button-->
         <Button 
-            Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
+            Style="{StaticResource WideButtonWithNoBackgroundAndInlineBorder}"
             Grid.Row="2"
             Height="60"
             Click="ConfirmButton_Click"

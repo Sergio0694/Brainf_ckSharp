@@ -5,11 +5,13 @@
     <!-- Default style for Windows.UI.Xaml.Controls.Button -->
     <SolidColorBrush x:Key="ButtonPointerOverLightBrush" Color="#14FFFFFF"/>
     <SolidColorBrush x:Key="ButtonPressedLightBrush" Color="#20FFFFFF"/>
-    <Style TargetType="Button" x:Key="WideButtonWithNoBackgroundStyle">
+
+    <!--Button with no border and background-->
+    <Style TargetType="Button" x:Key="WideButtonWithNoBackgroundAndBorderStyle">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}" />
         <Setter Property="BorderBrush" Value="{ThemeResource ButtonBorderBrush}" />
-        <Setter Property="BorderThickness" Value="{ThemeResource ButtonBorderThemeThickness}" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
@@ -82,14 +84,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
-
-    <!--Button with no border and background-->
-    <Style
-        TargetType="Button"
-        BasedOn="{StaticResource WideButtonWithNoBackgroundStyle}"
-        x:Key="WideButtonWithNoBackgroundAndBorderStyle">
-        <Setter Property="BorderThickness" Value="0"/>
     </Style>
     
     <!--Button with border that overlays the content-->

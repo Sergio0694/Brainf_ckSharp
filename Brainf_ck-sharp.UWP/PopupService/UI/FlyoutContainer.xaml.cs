@@ -43,7 +43,6 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
             CloseButton.ManageLightsPointerStates(value =>
             {
                 BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.8 : 0, 200, null, EasingFunctionNames.Linear);
-                LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 0.4, 200, null, EasingFunctionNames.Linear);
             });
         }
 
