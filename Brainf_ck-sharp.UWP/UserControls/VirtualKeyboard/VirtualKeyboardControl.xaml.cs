@@ -6,7 +6,9 @@ using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Messages.Requests;
 using Brainf_ck_sharp_UWP.Messages.Settings;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
@@ -103,7 +105,8 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
         private async void OpenSquareBracket_Holding(object sender, HoldingRoutedEventArgs e)
         {
             if (sender is KeyboardButton button && e.HoldingState == HoldingState.Started &&
-                (e.PointerDeviceType == PointerDeviceType.Touch || e.PointerDeviceType == PointerDeviceType.Pen))
+                (e.PointerDeviceType == PointerDeviceType.Touch || e.PointerDeviceType == PointerDeviceType.Pen) &&
+                await Messenger.Default.RequestAsync<AppSection, CurrentAppSectionInfoRequestMessage>() == AppSection.IDE)
             {
                 button.ExternalFlyoutOpen = true;
                 TouchCodeSnippetsBrowserFlyout browser = new TouchCodeSnippetsBrowserFlyout

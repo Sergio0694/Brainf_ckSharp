@@ -188,6 +188,7 @@
     <Compile Include="DataModels\SQLite\SampleSourceCode.cs" />
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
     <Compile Include="DataModels\SQLite\Enums\SourceCodeTitleScore.cs" />
+    <Compile Include="Enums\AppSection.cs" />
     <Compile Include="Enums\ClipboardOperation.cs" />
     <Compile Include="Enums\SavedCodeLoadingSource.cs" />
     <Compile Include="Enums\SourceCodeShareType.cs" />
@@ -214,6 +215,7 @@
     <Compile Include="Messages\IDE\ClipboardOperationRequestMessage.cs" />
     <Compile Include="Messages\IDE\CodeSnippetSelectedMessage.cs" />
     <Compile Include="Messages\Requests\BackgroundExecutionInputRequestMessage.cs" />
+    <Compile Include="Messages\Requests\CurrentAppSectionInfoRequestMessage.cs" />
     <Compile Include="Messages\Requests\IDEAutosaveTriggeredMessage.cs" />
     <Compile Include="Messages\Actions\IDEDeleteCharacterRequestMessage.cs" />
     <Compile Include="Messages\Actions\IDENewLineRequestedMessage.cs" />

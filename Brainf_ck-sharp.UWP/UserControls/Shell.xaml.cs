@@ -117,6 +117,10 @@ namespace Brainf_ck_sharp_UWP.UserControls
                     StdinHeader.StdinBuffer,
                     PivotControl.SelectedIndex == 0 ? Console.ViewModel.State : TouringMachineStateProvider.Initialize(64)));
             });
+            Messenger.Default.Register<CurrentAppSectionInfoRequestMessage>(this, m =>
+            {
+                m.ReportResult(PivotControl.SelectedIndex == 0 ? AppSection.Console : AppSection.IDE);
+            });
         }
 
         public ShellViewModel ViewModel => DataContext.To<ShellViewModel>();
