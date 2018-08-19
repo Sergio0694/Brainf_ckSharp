@@ -24,8 +24,6 @@ namespace Brainf_ck_sharp_UWP.Converters
         {
             switch (type)
             {
-                case ScriptExceptionType.SyntaxError:
-                    return LocalizationManager.GetResource("SyntaxError");
                 case ScriptExceptionType.RuntimeError:
                     return LocalizationManager.GetResource("Exception");
                 case ScriptExceptionType.ThresholdExceeded:

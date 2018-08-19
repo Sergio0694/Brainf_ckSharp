@@ -156,9 +156,6 @@
   <data name="ThresholdExceeded" xml:space="preserve">
     <value>Time threshold exceeded</value>
   </data>
-  <data name="WrongBrackets" xml:space="preserve">
-    <value>Mismatched parentheses</value>
-  </data>
   <data name="RestartRun.Text" xml:space="preserve">
     <value>RESTART</value>
     <comment>Keep this uppercase</comment>
@@ -168,9 +165,6 @@
   </data>
   <data name="InternalError" xml:space="preserve">
     <value>error</value>
-  </data>
-  <data name="SyntaxError" xml:space="preserve">
-    <value>syntax error</value>
   </data>
   <data name="Threshold" xml:space="preserve">
     <value>runtime error</value>
@@ -907,5 +901,8 @@ This way he'll be able to help you!</value>
   </data>
   <data name="ED2D332A-1735-4DD9-A909-59F1587AA17F" xml:space="preserve">
     <value>Integer division</value>
+  </data>
+  <data name="SyntaxError" xml:space="preserve">
+    <value>Syntax error</value>
   </data>
 </root>

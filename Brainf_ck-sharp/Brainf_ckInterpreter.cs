@@ -142,10 +142,10 @@ namespace Brainf_ck_sharp
             }
 
             // Check the code syntax
-            if (!CheckSourceSyntax(executable))
+            string script = new string(executable.Select(op => op.Operator).ToArray());
+            if (!CheckSourceSyntax(script).Valid)
             {
-                return new InterpreterExecutionSession(
-                    GenerateFailure(InterpreterExitCode.MismatchedParentheses, executable.Select(op => op.Operator).AggregateToString()), null);
+                return new InterpreterExecutionSession(GenerateFailure(InterpreterExitCode.SyntaxError, script), null);
             }
 
             // Execute the code
@@ -154,8 +154,7 @@ namespace Brainf_ck_sharp
             if (!enumerator.MoveNext())
             {
                 // Initialization failed
-                return new InterpreterExecutionSession(
-                    GenerateFailure(InterpreterExitCode.InternalException, executable.Select(op => op.Operator).AggregateToString()), null);
+                return new InterpreterExecutionSession(GenerateFailure(InterpreterExitCode.InternalException, script), null);
             }
             return new InterpreterExecutionSession(enumerator, cts);
         }
@@ -262,10 +261,10 @@ namespace Brainf_ck_sharp
             }
 
             // Check the code syntax
-            if (!CheckSourceSyntax(executable))
+            string script = new string(executable.Select(op => op.Operator).ToArray());
+            if (!CheckSourceSyntax(script).Valid)
             {
-                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.MismatchedParentheses, state,
-                    executable.Select(op => op.Operator).AggregateToString());
+                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.SyntaxError, state, script);
             }
 
             // Execute the code
@@ -274,8 +273,7 @@ namespace Brainf_ck_sharp
                 if (!enumerator.MoveNext())
                 {
                     // Abort if the enumerator failed
-                    return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.InternalException,
-                                                 state, executable.Select(op => op.Operator).AggregateToString());
+                    return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.InternalException, state, script);
                 }
                 return enumerator.Current;
             }
@@ -308,7 +306,7 @@ namespace Brainf_ck_sharp
             Stopwatch timer = new Stopwatch();
             Queue<char> input = arguments.Length > 0 ? new Queue<char>(arguments) : new Queue<char>();
             StringBuilder output = new StringBuilder();
-            string code = executable.Select(op => op.Operator).AggregateToString(); // Original source code
+            string code = new string(executable.Select(op => op.Operator).ToArray()); // Original source code
             List<FunctionDefinition> definitions = oldFunctions.ToList();
             Dictionary<uint, IReadOnlyList<Brainf_ckBinaryItem>> functions = definitions.ToDictionary<FunctionDefinition, uint, IReadOnlyList<Brainf_ckBinaryItem>>(
                 f => f.Value, f => f.Body.Select(c => new Brainf_ckBinaryItem(0, c)).ToArray()); // Dictionary for quick lookup
@@ -692,28 +690,6 @@ namespace Brainf_ck_sharp
             from c in source
             where Operators.Contains(c)
             select c).Select((c, i) => new Brainf_ckBinaryItem((uint) i, c)).ToArray();
-
-        /// <summary>
-        /// Checks whether or not the syntax in the input operators is valid
-        /// </summary>
-        /// <param name="operators">The operators sequence</param>
-        [Pure]
-        private static bool CheckSourceSyntax([NotNull] IEnumerable<Brainf_ckBinaryItem> operators)
-        {
-            // Iterate over all the characters in the source
-            int height = 0;
-            foreach (char c in operators.Select(op => op.Operator))
-            {
-                // Check the parentheses
-                if (c == '[') height++;
-                else if (c == ']')
-                {
-                    if (height == 0) return false;
-                    height--;
-                }
-            }
-            return height == 0;
-        }
 
         #endregion
 

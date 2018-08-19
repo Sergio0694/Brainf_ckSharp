@@ -39,9 +39,9 @@ namespace Brainf_ck_sharp_UWP.DataModels.Misc
         public static ScriptExceptionInfo FromResult([NotNull] InterpreterResult result)
         {
             // Syntax error
-            if (result.ExitCode.HasFlag(InterpreterExitCode.MismatchedParentheses))
+            if (result.ExitCode.HasFlag(InterpreterExitCode.SyntaxError))
             {
-                return new ScriptExceptionInfo(ScriptExceptionType.SyntaxError, LocalizationManager.GetResource("WrongBrackets"));
+                return new ScriptExceptionInfo(ScriptExceptionType.SyntaxError, LocalizationManager.GetResource("SyntaxError"));
             }
 
             // Interpreter error

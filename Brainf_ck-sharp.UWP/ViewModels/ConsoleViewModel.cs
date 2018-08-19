@@ -144,7 +144,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         // Broadcasts the messages to reflect the current console status
         private void SendCommandAvailableMessages(bool? forcedStatus = null)
         {
-            Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.Play, forcedStatus ?? CommandAvailable));
+            bool play = forcedStatus ?? CommandAvailable && Brainf_ckInterpreter.CheckSourceSyntax(Source.Last().To<ConsoleUserCommand>().Command).Valid;
+            Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.Play, play));
             Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.DeleteLastCharacter, forcedStatus ?? CommandAvailable));
             Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.Clear, forcedStatus ?? CommandAvailable));
             bool script = Source.Skip(forcedStatus == false ? 0 : 1).Where(model => model is ConsoleUserCommand).Cast<ConsoleUserCommand>().Any(model => model.Command.Length > 0);

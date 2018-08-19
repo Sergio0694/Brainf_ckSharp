@@ -48,9 +48,6 @@
   <data name="ThresholdExceeded" xml:space="preserve">
     <value>Limite di tempo superato</value>
   </data>
-  <data name="WrongBrackets" xml:space="preserve">
-    <value>Parentesi non corrispondenti</value>
-  </data>
   <data name="run" xml:space="preserve">
     <value>esegui</value>
   </data>
@@ -63,9 +60,6 @@
   </data>
   <data name="InternalError" xml:space="preserve">
     <value>errore</value>
-  </data>
-  <data name="SyntaxError" xml:space="preserve">
-    <value>errore sintassi</value>
   </data>
   <data name="Threshold" xml:space="preserve">
     <value>errore runtime</value>
@@ -802,5 +796,8 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   </data>
   <data name="ED2D332A-1735-4DD9-A909-59F1587AA17F" xml:space="preserve">
     <value>Divisione intera</value>
+  </data>
+  <data name="SyntaxError" xml:space="preserve">
+    <value>Errore di sintassi</value>
   </data>
 </root>
