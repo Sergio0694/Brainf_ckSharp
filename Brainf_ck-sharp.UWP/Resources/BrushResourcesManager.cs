@@ -38,8 +38,6 @@ namespace Brainf_ck_sharp_UWP.Resources
             XamlLight.AddTargetBrush($"{PointerPositionSpotLight.GetIdStatic()}[Wide]", bwb);
             XAMLResourcesHelper.SetResourceValue("BorderLightBrush", bb, true);
             XAMLResourcesHelper.SetResourceValue("ElementsWideLightBrush", bwb, true);
-            SolidColorBrush sb = new SolidColorBrush { Color = Color.FromArgb(0x10, 0, 0, 0), Opacity = 0 };
-            XAMLResourcesHelper.SetResourceValue("WideLightBrushDarkShadeBackground", sb);
         }
     }
 }

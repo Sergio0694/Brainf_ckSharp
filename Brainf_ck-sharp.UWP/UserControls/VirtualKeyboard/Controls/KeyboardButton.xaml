@@ -11,15 +11,10 @@
 
     <inheritedControls:ButtonWithFlyoutVisualStates
         x:Name="RootButton"
-        Style="{StaticResource WideButtonWithNoBackgroundStyle}"
+        Style="{StaticResource WideButtonWithNoBackgroundAndInlineBorder}"
+        BorderThickness="2"
         Click="Button_Clicked">
         <Grid>
-            
-            <!--Light background-->
-            <Border
-                Opacity="0"
-                x:Name="LightDarkBackground"
-                Background="{StaticResource WideLightBrushDarkShadeBackground}"/>
 
             <!--Wide light border-->
             <Border
@@ -29,7 +24,7 @@
             
             <!--Light-->
             <Border
-                Margin="-2"
+                x:Name="LightBorder"
                 BorderThickness="1"
                 Opacity="0.8"
                 BorderBrush="{StaticResource BorderLightBrush}"/>

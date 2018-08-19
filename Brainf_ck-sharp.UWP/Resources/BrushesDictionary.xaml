@@ -30,7 +30,6 @@
     <!--Lights-->
     <SolidColorBrush x:Key="BorderLightBrush"/>
     <SolidColorBrush x:Key="ElementsWideLightBrush"/>
-    <SolidColorBrush x:Key="WideLightBrushDarkShadeBackground"/>
     
     <!--Virtual keyboard brush-->
     <brushes:CustomAcrylicBrush
