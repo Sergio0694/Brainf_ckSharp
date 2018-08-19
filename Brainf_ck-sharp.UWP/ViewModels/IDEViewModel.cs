@@ -80,6 +80,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         // Indicates whether or not the view model instance hasn't already been enabled before
         private bool _Startup = true;
 
+        #region Public parameters
+
         private bool _IsEnabled;
 
         /// <summary>
@@ -170,7 +172,10 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Gets the source code currently loaded, if present
         /// </summary>
+        [CanBeNull]
         public SourceCode LoadedCode => CategorizedCode?.Code;
+
+        #endregion
 
         #region Events
 

@@ -97,7 +97,7 @@ namespace Brainf_ck_sharp_UWP.DataModels.SQLite
         public bool Favorited
         {
             get => Flags.Test(0);
-            set => Flags.Set(value, 0);
+            set => Flags = Flags.Set(value, 0);
         }
     }
 }
