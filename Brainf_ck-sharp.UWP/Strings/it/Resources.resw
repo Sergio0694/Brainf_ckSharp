@@ -732,4 +732,16 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="NoCodeInterpreted" xml:space="preserve">
     <value>Nessun operatore presente</value>
   </data>
+  <data name="SnippetDuplicateValue" xml:space="preserve">
+    <value>Duplica valore</value>
+  </data>
+  <data name="SnippetInlineLoop" xml:space="preserve">
+    <value>Ciclo inline</value>
+  </data>
+  <data name="SnippetNestedLoop" xml:space="preserve">
+    <value>Ciclo annidato</value>
+  </data>
+  <data name="SnippetResetCell" xml:space="preserve">
+    <value>Resetta cella</value>
+  </data>
 </root>

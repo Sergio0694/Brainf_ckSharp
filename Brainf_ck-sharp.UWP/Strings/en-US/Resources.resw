@@ -837,4 +837,16 @@ This way he'll be able to help you!</value>
   <data name="NoCodeInterpreted" xml:space="preserve">
     <value>No code interpreted</value>
   </data>
+  <data name="SnippetDuplicateValue" xml:space="preserve">
+    <value>Duplicate value</value>
+  </data>
+  <data name="SnippetInlineLoop" xml:space="preserve">
+    <value>Inline loop</value>
+  </data>
+  <data name="SnippetNestedLoop" xml:space="preserve">
+    <value>Nested loop</value>
+  </data>
+  <data name="SnippetResetCell" xml:space="preserve">
+    <value>Reset cell</value>
+  </data>
 </root>

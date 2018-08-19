@@ -1,10 +1,19 @@
 ﻿using System;
 using Windows.ApplicationModel;
+using Windows.Devices.Input;
+using Windows.Foundation;
+using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
+using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages;
+using Brainf_ck_sharp_UWP.Messages.Requests;
 using Brainf_ck_sharp_UWP.Messages.UI;
+using Brainf_ck_sharp_UWP.PopupService;
+using Brainf_ck_sharp_UWP.UserControls.Flyouts;
+using Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls;
 using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.XAMLTransform;
@@ -50,7 +59,11 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
 
         private void MinusButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed('-');
 
-        private void OpenBracketButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed('[');
+        private void OpenBracketButton_Tapped(object sender, RoutedEventArgs e)
+        {
+            if (_OpenBracketButtonHandled) _OpenBracketButtonHandled = false;
+            else OnKeyPressed('[');
+        }
 
         private void CloseBracketButton_Tapped(object sender, RoutedEventArgs e) => OnKeyPressed(']');
 
@@ -90,6 +103,27 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
                     PBrainBorder, "Width", null, 0, ExpansionAnimationDuration,
                     EasingFunctionNames.CircleEaseOut, true).ToStoryboard().WaitAsync();
                 PBrainColumn.Width = new GridLength(0);
+            }
+        }
+
+        // Indicates whether or not to skip the clicked event for the [ button
+        private bool _OpenBracketButtonHandled;
+
+        private async void OpenSquareBracket_Holding(object sender, HoldingRoutedEventArgs e)
+        {
+            if (sender is KeyboardButton button && e.HoldingState == HoldingState.Started &&
+                (e.PointerDeviceType == PointerDeviceType.Touch || e.PointerDeviceType == PointerDeviceType.Pen) &&
+                await Messenger.Default.RequestAsync<AppSection, CurrentAppSectionInfoRequestMessage>() == AppSection.IDE)
+            {
+                _OpenBracketButtonHandled = true;
+                button.ExternalFlyoutOpen = true;
+                TouchCodeSnippetsBrowserFlyout browser = new TouchCodeSnippetsBrowserFlyout
+                {
+                    Height = 48 * 5 + 1, // Ugly hack (height of a snippet template by number of available templates)
+                    Width = 220
+                };
+                await FlyoutManager.Instance.ShowCustomContextFlyout(browser, button, margin: new Point(60, 0));
+                button.ExternalFlyoutOpen = false;
             }
         }
     }

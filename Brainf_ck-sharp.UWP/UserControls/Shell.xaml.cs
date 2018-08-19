@@ -13,7 +13,7 @@ using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
-using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.IDE;
 using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
 using Brainf_ck_sharp_UWP.Messages.Requests;
 using Brainf_ck_sharp_UWP.Messages.UI;
@@ -85,6 +85,10 @@ namespace Brainf_ck_sharp_UWP.UserControls
                     PivotControl.SelectedIndex == 0 ? Console.SourceCode : IDE.SourceCode,
                     StdinHeader.StdinBuffer,
                     PivotControl.SelectedIndex == 0 ? Console.ViewModel.State : TouringMachineStateProvider.Initialize(64)));
+            });
+            Messenger.Default.Register<CurrentAppSectionInfoRequestMessage>(this, m =>
+            {
+                m.ReportResult(PivotControl.SelectedIndex == 0 ? AppSection.Console : AppSection.IDE);
             });
         }
 
@@ -291,7 +295,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
         private void MoveButton_Click(object sender, RoutedEventArgs e)
         {
             VirtualArrowsKeyboardControl keyboard = new VirtualArrowsKeyboardControl();
-            FlyoutManager.Instance.ShowCustomContextFlyout(keyboard, sender.To<FrameworkElement>(), true);
+            FlyoutManager.Instance.ShowCustomContextFlyout(keyboard, sender.To<FrameworkElement>(), true).Forget();
         }
 
         // Shows the developer info

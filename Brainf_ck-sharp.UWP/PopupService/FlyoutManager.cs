@@ -12,6 +12,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
+using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
@@ -495,12 +496,11 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="content">The control to show</param>
         /// <param name="target">The target element to try not to cover</param>
         /// <param name="tryCenter">Indicates whether or not to try to center the popup to the source control</param>
-        public async void ShowCustomContextFlyout([NotNull] FrameworkElement content, [NotNull] FrameworkElement target, bool tryCenter = false)
+        /// <param name="margin">An optional additional margin for the final control position</param>
+        /// <param name="invertAnimation">When <see langword="true"/>, the flyout will open towards the bottom</param>
+        public async Task ShowCustomContextFlyout([NotNull] FrameworkElement content, [NotNull] FrameworkElement target,
+            bool tryCenter = false, Point? margin = null, bool invertAnimation = false)
         {
-            // Calculate the target area for the context menu
-            Point point = target.GetVisualCoordinates();
-            Rect rect = new Rect(point, new Size(target.ActualWidth, target.ActualHeight));
-
             // Close existing popups if needed
             await Semaphore.WaitAsync();
             if (PopupStack.Count > 0)
@@ -510,8 +510,14 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
             foreach (Popup pending in VisualTreeHelper.GetOpenPopups(Window.Current)) pending.IsOpen = false;
 
-            // Calculate the target size
+            // Calculate the target area for the context menu
             content.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            Point point = target.GetVisualCoordinates();
+            if (margin != null) point = new Point(point.X + margin.Value.X, point.Y + margin.Value.Y);
+            if (invertAnimation) point = new Point(point.X, point.Y + content.DesiredSize.Height);
+            Rect rect = new Rect(point, new Size(target.ActualWidth, target.ActualHeight));
+
+            // Calculate the target size
             if (content.DesiredSize.Width > ResolutionHelper.CurrentWidth - 24)
             {
                 content.Width = ResolutionHelper.CurrentWidth;
@@ -594,10 +600,10 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 // Setup the shadow
                 Border border = new Border();
                 grid.Children.Add(border);
-                content.AttachVisualShadow(border, true, 
+                content.AttachVisualShadow(border, true,
                     (float)content.Width + 1, (float)content.Height + 1,
-                    Colors.Black, 1, -0.5f, -0.5f, 
-                    (v.X >= 0 ? v.X : -v.X) < 0.1 
+                    Colors.Black, 1, -0.5f, -0.5f,
+                    (v.X >= 0 ? v.X : -v.X) < 0.1
                     ? new Thickness(-4, 0, -4, 0) // Horizontal overstretch to fix UI glitch at the corners
                     : new Thickness(0, -4, 0, -4), v.X, v.Y);
             }
@@ -631,7 +637,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 _CloseContextMenu = null;
                 hit.IsOpen = false;
                 grid.IsHitTestVisible = false;
-                grid.StartCompositionFadeSlideAnimation(1, 0, TranslationAxis.Y, 0, 8, 200, null, null, EasingFunctionNames.CircleEaseOut,
+                grid.StartCompositionFadeSlideAnimation(1, 0, TranslationAxis.Y, null, 8, 200, null, null, EasingFunctionNames.CircleEaseOut,
                     () => popup.IsOpen = false);
             }
             bool sizeHandled = true;
@@ -646,6 +652,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
 
             // Setup the event handlers and display the popup
+            TaskCompletionSource<Unit> tcs = new TaskCompletionSource<Unit>();
             popup.Closed += (s, e) =>
             {
                 if (sizeHandled)
@@ -654,10 +661,13 @@ namespace Brainf_ck_sharp_UWP.PopupService
                     Window.Current.SizeChanged -= WindowSizeHandler;
                 }
                 LightsSourceHelper.SetIsLightsContainer(parent, false);
+                tcs.SetResult(Unit.Instance);
             };
             _CloseContextMenu = ClosePopups;
             popup.IsOpen = true; // Open the context menu popup on top of the hit target
             hitGrid.Tapped += (_, e) => ClosePopups();
+            hitGrid.RightTapped += (_, e) => ClosePopups();
+            if (content is IEventConfirmedContent confirmed) confirmed.ContentConfirmed += (s, e) => ClosePopups();
             Window.Current.SizeChanged += WindowSizeHandler;
             grid.StartCompositionFadeSlideAnimation(0, 1, TranslationAxis.Y, 20, 0, 200, null, null, EasingFunctionNames.CircleEaseOut);
             Semaphore.Release();
@@ -667,6 +677,8 @@ namespace Brainf_ck_sharp_UWP.PopupService
             {
                 // Check the updated target position
                 point = target.GetVisualCoordinates();
+                if (margin != null) point = new Point(point.X + margin.Value.X, point.Y + margin.Value.Y);
+                if (invertAnimation) point = new Point(point.X, point.Y + content.DesiredSize.Height);
                 Rect delayedRect = new Rect(point, new Size(target.ActualWidth, target.ActualHeight));
                 if (delayedRect.Left.EqualsWithDelta(rect.Left) &&
                     delayedRect.Top.EqualsWithDelta(rect.Top) ||
@@ -679,6 +691,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                     XAMLTransformToolkit.CreateDoubleAnimation(popup, "VerticalOffset", null, offset.Y, 250, EasingFunctionNames.CircleEaseOut, true)).Begin();
 
             }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
+            await tcs.Task;
         }
 
         #endregion

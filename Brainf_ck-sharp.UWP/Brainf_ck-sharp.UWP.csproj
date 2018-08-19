@@ -164,6 +164,7 @@
     <Compile Include="DataModels\IDEResults\IDEResultSectionStateData.cs" />
     <Compile Include="DataModels\JumpListGroup.cs" />
     <Compile Include="DataModels\Misc\CharactersInfo\CharacterWithArea.cs" />
+    <Compile Include="DataModels\Misc\CodeSnippet.cs" />
     <Compile Include="DataModels\Misc\Coordinate.cs" />
     <Compile Include="DataModels\Misc\GitDiffLineStatus.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationInfoOpenLoopBracketType.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="DataModels\SQLite\SampleSourceCode.cs" />
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
     <Compile Include="DataModels\SQLite\Enums\SourceCodeTitleScore.cs" />
+    <Compile Include="Enums\AppSection.cs" />
     <Compile Include="Enums\ShourceCodeLoadingSource.cs" />
     <Compile Include="Enums\SourceCodeShareType.cs" />
     <Compile Include="Enums\UserGuideSection.cs" />
@@ -216,16 +218,18 @@
     <Compile Include="Messages\Actions\IDEUndoRedoRequestMessage.cs" />
     <Compile Include="Messages\Actions\SaveButtonsEnabledStatusChangedMessage.cs" />
     <Compile Include="Messages\Actions\VirtualArrowKeyPressedMessage.cs" />
-    <Compile Include="Messages\IDEStatus\IDEPendingChangesStatusChangedMessage.cs" />
-    <Compile Include="Messages\IDEStatus\WorkingSourceCodeChangedMessage.cs" />
+    <Compile Include="Messages\IDE\CodeSnippetSelectedMessage.cs" />
+    <Compile Include="Messages\IDE\IDEPendingChangesStatusChangedMessage.cs" />
+    <Compile Include="Messages\IDE\WorkingSourceCodeChangedMessage.cs" />
     <Compile Include="Messages\KeyboardShortcuts\CtrlShortcutPressedMessage.cs" />
     <Compile Include="Messages\KeyboardShortcuts\EscKeyPressedMessage.cs" />
     <Compile Include="Messages\Requests\Abstract\RequestMessageBase.cs" />
     <Compile Include="Messages\Requests\BackgroundExecutionInputRequestMessage.cs" />
+    <Compile Include="Messages\Requests\CurrentAppSectionInfoRequestMessage.cs" />
     <Compile Include="Messages\Requests\MessengerRequestExtensions.cs" />
     <Compile Include="Messages\UI\AppLoadingStatusChangedMessage.cs" />
     <Compile Include="Messages\Flyouts\NotificationCloseRequestmessage.cs" />
-    <Compile Include="Messages\IDEStatus\BreakpointErrorStatusChangedMessage.cs" />
+    <Compile Include="Messages\IDE\BreakpointErrorStatusChangedMessage.cs" />
     <Compile Include="Messages\OverflowModeChangedMessage.cs" />
     <Compile Include="Messages\UI\BackgroundExecutionDisabledMessage.cs" />
     <Compile Include="Messages\UI\BackgroundExecutionStatusChangedMessage.cs" />
@@ -266,9 +270,9 @@
     <Compile Include="Messages\Flyouts\FlyoutClosedNotificationMessage.cs" />
     <Compile Include="Messages\Flyouts\FlyoutCloseRequestMessage.cs" />
     <Compile Include="Messages\Flyouts\FlyoutOpenedMessage.cs" />
-    <Compile Include="Messages\IDEStatus\ConsoleStatusUpdateMessage.cs" />
-    <Compile Include="Messages\IDEStatus\IDEStatusUpdateMessage.cs" />
-    <Compile Include="Messages\IDEStatus\IDEStatusUpdateMessageBase.cs" />
+    <Compile Include="Messages\IDE\ConsoleStatusUpdateMessage.cs" />
+    <Compile Include="Messages\IDE\IDEStatusUpdateMessage.cs" />
+    <Compile Include="Messages\IDE\IDEStatusUpdateMessageBase.cs" />
     <Compile Include="Messages\OperatorAddedMessage.cs" />
     <Compile Include="Messages\SourceCodeLoadingRequestedMessage.cs" />
     <Compile Include="PopupService\Misc\NotificationType.cs" />
@@ -304,6 +308,9 @@
     </Compile>
     <Compile Include="UserControls\CustomControls\UnicodeNonVisibleCharactersGroupDisplayControl.xaml.cs">
       <DependentUpon>UnicodeNonVisibleCharactersGroupDisplayControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\CodeSnippetTemplate.xaml.cs">
+      <DependentUpon>CodeSnippetTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DataTemplates\IDEThemes\IDEThemeDropDownPreviewTemplate.xaml.cs">
       <DependentUpon>IDEThemeDropDownPreviewTemplate.xaml</DependentUpon>
@@ -368,6 +375,9 @@
     <Compile Include="UserControls\Flyouts\Settings\Sections\UISettingsSection.xaml.cs">
       <DependentUpon>UISettingsSection.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Flyouts\TouchCodeSnippetsBrowserFlyout.xaml.cs">
+      <DependentUpon>TouchCodeSnippetsBrowserFlyout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Flyouts\UserGuide\CodeSamples\BreakpointCodePreviewControl.xaml.cs">
       <DependentUpon>BreakpointCodePreviewControl.xaml</DependentUpon>
     </Compile>
@@ -399,6 +409,7 @@
       <DependentUpon>UserGuideViewerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\InheritedControls\AnimatedComboBox.cs" />
+    <Compile Include="UserControls\InheritedControls\ButtonWithFlyoutVisualStates.cs" />
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CommandBarWithButtonsAnimations.cs" />
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CustomCommandBarButton.cs" />
     <Compile Include="UserControls\DataTemplates\CompactCharactersChunkViewerTemplate.xaml.cs">
@@ -475,6 +486,7 @@
     <Compile Include="ViewModels\FlyoutsViewModels\ChangelogViewFlyoutViewModel.cs" />
     <Compile Include="ViewModels\CompactCharactersViewerControlViewModel.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\CodeSnippetsBrowserViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\ConsoleFullMemoryViewerControlViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\IDERunResultFlyoutViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\Settings\SettingsJumpListViewModel.cs" />
@@ -659,6 +671,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\DataTemplates\CodeSnippetTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\DataTemplates\CompactCharactersChunkViewerTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -776,6 +792,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Flyouts\Settings\Sections\UISettingsSection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\TouchCodeSnippetsBrowserFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

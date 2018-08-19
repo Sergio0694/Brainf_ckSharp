@@ -20,7 +20,7 @@ using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
-using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.IDE;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -140,9 +140,16 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 {
                     if (value != null) Messenger.Default.Send(new WorkingSourceCodeChangedMessage(value));
                     _CategorizedCode = value;
+                    InitialWorkSessionCode = value?.Code.Code ?? string.Empty;
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the source code that was loaded at the beginning of the current editing session
+        /// </summary>
+        [NotNull]
+        public string InitialWorkSessionCode { get; private set; } = string.Empty;
 
         /// <summary>
         /// Gets the source code currently loaded, if present
@@ -641,12 +648,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Updates the diff indicators for the current source code being edited
         /// </summary>
-        /// <param name="previous">The previous code</param>
         /// <param name="current">The current code</param>
-        public async Task UpdateGitDiffStatus([NotNull] string previous, [NotNull] string current)
+        public async Task UpdateGitDiffStatus([NotNull] string current)
         {
             // Clear the current indicators if the two strings are the same
-            if (previous.Equals(current))
+            if (InitialWorkSessionCode.Equals(current))
             {
                 DiffStatusSource.Clear();
                 Messenger.Default.Send(new IDEPendingChangesStatusChangedMessage(false));
@@ -660,7 +666,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 string trimmed = current.Replace("\n", "");
                 trimmed = trimmed.Substring(0, trimmed.Length - 1);
                 return (
-                    from line in builder.BuildDiffModel(CategorizedCode?.Code.Code ?? string.Empty, trimmed).Lines
+                    from line in builder.BuildDiffModel(InitialWorkSessionCode, trimmed).Lines
                     where line.Type != ChangeType.Deleted
                     select line.Type == ChangeType.Unchanged
                         ? GitDiffLineStatus.Undefined

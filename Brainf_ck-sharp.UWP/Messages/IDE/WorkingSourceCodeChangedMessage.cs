@@ -1,7 +1,7 @@
 ﻿using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Messages.IDEStatus
+namespace Brainf_ck_sharp_UWP.Messages.IDE
 {
     /// <summary>
     /// A message that signals whenever the code the user is working on changes

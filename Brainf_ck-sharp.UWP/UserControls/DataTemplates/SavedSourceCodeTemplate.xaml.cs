@@ -60,7 +60,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
             SavedSourceCodeTemplate @this = d.To<SavedSourceCodeTemplate>();
             @this.TitleBlock.Text = code.Code.Title;
             Span host = new Span();
-            string text = Regex.Replace(code.Code.Code, @"[^-+\[\]\.,><()]", "");
+            string text = Regex.Replace(code.Code.Code, @"[^-+\[\]\.,><():]", "");
             if (text.Length > 150) text = text.Substring(0, 150); // Only parse the first 150 characters to increase performance
             Brainf_ckCodeInlineFormatter.SetSource(host, text);
             @this.CodeBlock.Inlines.Clear();

@@ -4,22 +4,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:brushes="using:UICompositionAnimations.Brushes"
     mc:Ignorable="d"
     d:DesignHeight="24"
     d:DesignWidth="400"
     Height="24">
 
     <!--Visual tree-->
-    <Grid>
-        <Grid.Background>
-            <brushes:CustomAcrylicBrush
-                x:Name="RootGridBackgroundBrush"
-                Mode="HostBackdrop"
-                Tint="{StaticResource SystemAccentColor}"
-                TintMix="0.9"
-                NoiseTextureUri="/Assets/Misc/noise.png"/>
-        </Grid.Background>
+    <Grid 
+        x:Name="RootGrid"
+        Background="{ThemeResource SystemControlHighlightAltListAccentMediumBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <!--State-->
@@ -46,8 +39,8 @@
                 <VisualState x:Name="ConsoleState">
                     <VisualState.Setters>
                         <Setter 
-                            Target="RootGridBackgroundBrush.Tint"
-                            Value="{StaticResource SystemAccentColor}"/>
+                            Target="RootGrid.Background"
+                            Value="{ThemeResource SystemControlHighlightAltListAccentMediumBrush}"/>
                         <Setter
                             Target="RowBlock.Visibility"
                             Value="Collapsed"/>
@@ -62,7 +55,7 @@
                 <VisualState x:Name="ConsoleErrorState">
                     <VisualState.Setters>
                         <Setter 
-                            Target="RootGridBackgroundBrush.Tint"
+                            Target="RootGrid.Background"
                             Value="#FFCA5100"/>
                         <Setter
                             Target="RowBlock.Visibility"
@@ -81,8 +74,8 @@
                 <VisualState x:Name="IDEState">
                     <VisualState.Setters>
                         <Setter 
-                            Target="RootGridBackgroundBrush.Tint"
-                            Value="{StaticResource SystemAccentColor}"/>
+                            Target="RootGrid.Background"
+                            Value="{ThemeResource SystemControlHighlightAltListAccentMediumBrush}"/>
                         <Setter
                             Target="RowBlock.Visibility"
                             Value="Visible"/>
@@ -97,7 +90,7 @@
                 <VisualState x:Name="IDEErrorState">
                     <VisualState.Setters>
                         <Setter 
-                            Target="RootGridBackgroundBrush.Tint"
+                            Target="RootGrid.Background"
                             Value="#FFA04A09"/>
                         <Setter
                             Target="RowBlock.Visibility"
@@ -337,6 +330,7 @@
         <Grid HorizontalAlignment="Stretch"
               VerticalAlignment="Stretch"
               Grid.Column="6"
+              Visibility="Collapsed"
               x:Name="AutorunGrid">
             <Grid Margin="8,0,8,0">
                 <Ellipse Height="18"

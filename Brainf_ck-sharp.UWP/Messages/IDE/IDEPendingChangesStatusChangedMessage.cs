@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.Messages.IDEStatus
+﻿namespace Brainf_ck_sharp_UWP.Messages.IDE
 {
     /// <summary>
     /// A message that indicates that the IDE pending changes status has been modified by the user

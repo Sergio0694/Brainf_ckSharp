@@ -32,6 +32,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             {
                 CreateChangelogEntry("1.6.0.0", 2018, 9, 10, new List<string>
                 {
+                    "Added code snippets menu when holding the [ button",
+                    "Added setting to autorun code in the background",
                     "Code tweaks and bug fixes"
                 }),
                 CreateChangelogEntry("1.5.0.0", 2018, 8, 16, new List<string>

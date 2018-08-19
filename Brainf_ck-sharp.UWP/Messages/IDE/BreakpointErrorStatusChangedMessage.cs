@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.Messages.IDEStatus
+﻿namespace Brainf_ck_sharp_UWP.Messages.IDE
 {
     /// <summary>
     /// A message that indicates whether the latest requested breakpoint could be created successfully

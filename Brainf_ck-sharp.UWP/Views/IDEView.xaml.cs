@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
@@ -29,7 +30,7 @@ using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages.Actions;
-using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.IDE;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -64,6 +65,11 @@ namespace Brainf_ck_sharp_UWP.Views
             _PreviousText = text;
             _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
             Messenger.Default.Register<IDESettingsChangedMessage>(this, ApplyIDESettings);
+            Messenger.Default.Register<CodeSnippetSelectedMessage>(this, m =>
+            {
+                LoadCode(m.Snippet.Code, false, m.Snippet.CursorOffset);
+                if (m.Source == PointerDeviceType.Mouse) EditBox.Focus(FocusState.Programmatic);
+            });
         }
 
         /// <inheritdoc cref="ICodeWorkspacePage"/>
@@ -375,7 +381,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
             }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
             EditBox.Document.GetText(TextGetOptions.None, out string code);
-            ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? string.Empty, code).Forget();
+            ViewModel.UpdateGitDiffStatus(code).Forget();
             ViewModel.UpdateCanUndoRedoStatus();
             await RemoveUnvalidatedBreakpointsAsync(code);
             RefreshBreakpointsUI(code);
@@ -1001,7 +1007,8 @@ namespace Brainf_ck_sharp_UWP.Views
         /// </summary>
         /// <param name="code">The code to load</param>
         /// <param name="overwrite">If true, the whole document will be replaced with the new code</param>
-        private async void LoadCode(string code, bool overwrite)
+        /// <param name="offset">The optional cursor offset to apply after loading the code (in case it's a code snippet)</param>
+        private async void LoadCode(string code, bool overwrite, int? offset = null)
         {
             // Disable the handlers
             EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
@@ -1035,11 +1042,55 @@ namespace Brainf_ck_sharp_UWP.Views
                 }
                 else
                 {
+                    // Autoindent if needed
+                    start = EditBox.Document.Selection.StartPosition;
+                    if (offset != null)
+                    {
+                        // Adjust the formatting style, if needed
+                        if (AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.BracketsStyle)) == 1)
+                        {
+                            int newlines = Regex.Match(code, @"\r\[\r").Captures.Count;
+                            if (newlines > 0) offset = offset.Value - newlines;
+                            code = code.Replace("\r[\r", "[\r");
+                        }
+
+                        // Format
+                        EditBox.Document.GetText(TextGetOptions.None, out string text);
+                        string trailer = text.Substring(0, start);
+                        int indents = trailer.Count(c => c == '[') - trailer.Count(c => c == ']');
+                        string tabs = '\t'.Repeat(indents);
+                        StringBuilder builder = new StringBuilder();
+                        int cursor = offset.Value;
+                        foreach ((char c, int i) in code.Select((c, i) => (c, i)))
+                        {
+                            if (c == '\r')
+                            {
+                                if (i <= code.Length - 2 && code[i + 1] == ']' && indents >= 1)
+                                    tabs = '\t'.Repeat(--indents);
+                                builder.Append($"{c}{tabs}");
+                                if (offset > i) cursor += indents;
+                            }
+                            else if (c == '[')
+                            {
+                                builder.Append(c);
+                                indents++;
+                                tabs += "\t";
+                            }
+                            else if (c == ']')
+                            {
+                                if (indents >= 1 && !(i > 0 && code[i - 1] == '\r')) tabs = '\t'.Repeat(--indents);
+                                builder.Append(c);
+                            }
+                            else builder.Append(c);
+                        }
+                        code = builder.ToString();
+                        offset = cursor; // Updated target offset (considering the added tabs)
+                    }
+
                     // Paste the text in the current selection
                     EditBox.Document.Selection.SetText(TextSetOptions.None, code);
                     selectionBackup = EditBox.SelectionHighlightColor;
                     EditBox.SelectionHighlightColor = new SolidColorBrush(Colors.Transparent);
-                    start = EditBox.Document.Selection.StartPosition;
                     end = EditBox.Document.Selection.EndPosition;
                 }
 
@@ -1056,7 +1107,8 @@ namespace Brainf_ck_sharp_UWP.Views
 
                 // Set the right selection position
                 if (overwrite) EditBox.Document.Selection.SetRange(0, 0);
-                else EditBox.Document.Selection.StartPosition = end;
+                else if (offset == null) EditBox.Document.Selection.StartPosition = end;
+                else EditBox.Document.Selection.StartPosition = EditBox.Document.Selection.EndPosition = start + offset.Value;
 
                 // Refresh the UI
                 if (overwrite) ViewModel.DiffStatusSource.Clear();
@@ -1075,7 +1127,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
                 if (_WhitespacesRenderingEnabled) RenderControlCharacters();
-                ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? string.Empty, code).Forget();
+                ViewModel.UpdateGitDiffStatus(code).Forget();
                 ViewModel.SendMessages(code);
                 ViewModel.UpdateCanUndoRedoStatus();
                 UpdateCursorRectangleAndIndicatorUI();
@@ -1387,7 +1439,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 _PreviousText = code;
                 _PreviousSelectionLength = EditBox.Document.Selection.Length;
                 DrawBracketGuides(code, false).Forget();
-                ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? string.Empty, code).Forget();
+                ViewModel.UpdateGitDiffStatus(code).Forget();
                 ViewModel.UpdateCanUndoRedoStatus();
                 RefreshBreakpointsUI(code);
                 RenderControlCharacters();

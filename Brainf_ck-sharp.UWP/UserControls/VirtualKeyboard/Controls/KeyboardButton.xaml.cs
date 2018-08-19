@@ -17,7 +17,6 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
             this.ManageLightsPointerStates(value =>
             {
                 BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.8 : 0, 200, null, EasingFunctionNames.Linear);
-                LightDarkBackground.StartXAMLTransformFadeAnimation(null, value ? 1 : 0, 200, null, EasingFunctionNames.Linear);
             });
         }
 
@@ -54,5 +53,14 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
         public event RoutedEventHandler Click;
 
         private void Button_Clicked(object sender, RoutedEventArgs e) => Click?.Invoke(this, e);
+
+        /// <summary>
+        /// Gets or sets whether a linked flyout is open
+        /// </summary>
+        public bool ExternalFlyoutOpen
+        {
+            get => RootButton.ExternalFlyoutOpen;
+            set => RootButton.ExternalFlyoutOpen = value;
+        }
     }
 }

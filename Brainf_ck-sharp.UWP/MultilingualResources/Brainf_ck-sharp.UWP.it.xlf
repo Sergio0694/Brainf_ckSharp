@@ -962,6 +962,22 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>No code interpreted</source>
           <target state="translated">Nessun operatore presente</target>
         </trans-unit>
+        <trans-unit id="SnippetDuplicateValue" translate="yes" xml:space="preserve">
+          <source>Duplicate value</source>
+          <target state="translated">Duplica valore</target>
+        </trans-unit>
+        <trans-unit id="SnippetInlineLoop" translate="yes" xml:space="preserve">
+          <source>Inline loop</source>
+          <target state="translated">Ciclo inline</target>
+        </trans-unit>
+        <trans-unit id="SnippetNestedLoop" translate="yes" xml:space="preserve">
+          <source>Nested loop</source>
+          <target state="translated">Ciclo annidato</target>
+        </trans-unit>
+        <trans-unit id="SnippetResetCell" translate="yes" xml:space="preserve">
+          <source>Reset cell</source>
+          <target state="translated">Resetta cella</target>
+        </trans-unit>
       </group>
     </body>
   </file>
