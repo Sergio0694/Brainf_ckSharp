@@ -66,6 +66,16 @@ namespace Brainf_ck_sharp_UWP.Views
             Messenger.Default.Register<IDESettingsChangedMessage>(this, ApplyIDESettings);
         }
 
+        /// <inheritdoc cref="ICodeWorkspacePage"/>
+        public string SourceCode
+        {
+            get
+            {
+                EditBox.Document.GetText(TextGetOptions.None, out string code);
+                return code;
+            }
+        }
+
         #region IDE theme
 
         // Updates the general UI settings

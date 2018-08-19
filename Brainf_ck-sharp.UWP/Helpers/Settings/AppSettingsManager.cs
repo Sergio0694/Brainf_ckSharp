@@ -120,6 +120,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
             SetValue(nameof(AppSettingsKeys.ClearStdinBufferOnExecution), true, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.ShowPBrainButtons), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.StartingPage), 0, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.AutorunCodeInBackground), false, SettingSaveMode.SkipIfExisting);
         }
 
         /// <summary>

@@ -1,11 +1,11 @@
-﻿using System;
-using Microsoft.HockeyApp;
+﻿using Microsoft.HockeyApp;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
@@ -105,6 +105,9 @@ namespace Brainf_ck_sharp_UWP
                 Task.Delay(1000).ContinueWith(t => UpdateVisibleBounds(ApplicationView.GetForCurrentView()), TaskScheduler.FromCurrentSynchronizationContext());
             }
 
+            // Additional setup
+            if (AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutorunCodeInBackground)))
+                Brainf_ckBackgroundExecutor.Instance.IsEnabled = true;
 
             // Enable the key listener
             KeyEventsListener.IsEnabled = true;

@@ -4,34 +4,50 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:brushes="using:UICompositionAnimations.Brushes"
     mc:Ignorable="d"
-    d:DesignHeight="300"
+    d:DesignHeight="24"
     d:DesignWidth="400"
     Height="24">
 
     <!--Visual tree-->
-    <Grid Background="{ThemeResource SystemControlHighlightAltListAccentMediumBrush}"
-          x:Name="RootGrid">
+    <Grid>
+        <Grid.Background>
+            <brushes:CustomAcrylicBrush
+                x:Name="RootGridBackgroundBrush"
+                Mode="HostBackdrop"
+                Tint="{StaticResource SystemAccentColor}"
+                TintMix="0.9"
+                NoiseTextureUri="/Assets/Misc/noise.png"/>
+        </Grid.Background>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
+            <!--State-->
             <ColumnDefinition Width="Auto"/>
+            <!--Error position-->
             <ColumnDefinition Width="Auto"/>
+            <!--IDE error position-->
             <ColumnDefinition Width="Auto"/>
+            <!--Row-->
             <ColumnDefinition Width="Auto"/>
+            <!--Column-->
             <ColumnDefinition Width="Auto"
                               MaxWidth="140"/>
+            <!--File indicator-->
+            <ColumnDefinition Width="Auto"/>
+            <!--Autorun result-->
         </Grid.ColumnDefinitions>
 
         <!--Visual states-->
         <VisualStateManager.VisualStateGroups>
-            
+
             <!--General UI states-->
             <VisualStateGroup>
                 <VisualState x:Name="ConsoleState">
                     <VisualState.Setters>
                         <Setter 
-                            Target="RootGrid.Background"
-                            Value="{ThemeResource SystemControlHighlightAltListAccentMediumBrush}"/>
+                            Target="RootGridBackgroundBrush.Tint"
+                            Value="{StaticResource SystemAccentColor}"/>
                         <Setter
                             Target="RowBlock.Visibility"
                             Value="Collapsed"/>
@@ -46,7 +62,7 @@
                 <VisualState x:Name="ConsoleErrorState">
                     <VisualState.Setters>
                         <Setter 
-                            Target="RootGrid.Background"
+                            Target="RootGridBackgroundBrush.Tint"
                             Value="#FFCA5100"/>
                         <Setter
                             Target="RowBlock.Visibility"
@@ -65,8 +81,8 @@
                 <VisualState x:Name="IDEState">
                     <VisualState.Setters>
                         <Setter 
-                            Target="RootGrid.Background"
-                            Value="{ThemeResource SystemControlHighlightAltListAccentMediumBrush}"/>
+                            Target="RootGridBackgroundBrush.Tint"
+                            Value="{StaticResource SystemAccentColor}"/>
                         <Setter
                             Target="RowBlock.Visibility"
                             Value="Visible"/>
@@ -81,7 +97,7 @@
                 <VisualState x:Name="IDEErrorState">
                     <VisualState.Setters>
                         <Setter 
-                            Target="RootGrid.Background"
+                            Target="RootGridBackgroundBrush.Tint"
                             Value="#FFA04A09"/>
                         <Setter
                             Target="RowBlock.Visibility"
@@ -98,7 +114,7 @@
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
-            
+
             <!--Breakpoint states-->
             <VisualStateGroup>
                 <VisualState x:Name="BreakpointsDefaultStatus">
@@ -122,15 +138,52 @@
                 <VisualState x:Name="IDENoPendingChangesState">
                     <VisualState.Setters>
                         <Setter 
-                            Target="IDEChangesPendingIcon.Visibility"
-                            Value="Collapsed"/>
+                            Target="FileBlock.FontWeight"
+                            Value="Normal"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="IDEPendingChangesState">
                     <VisualState.Setters>
                         <Setter 
-                            Target="IDEChangesPendingIcon.Visibility"
+                            Target="FileBlock.FontWeight"
+                            Value="Bold"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+
+            <!--Autorun result states-->
+            <VisualStateGroup>
+                <VisualState x:Name="AutorunDisabledState">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="AutorunGrid.Visibility"
+                            Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="AutorunEnabledOkState">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="AutorunGrid.Visibility"
                             Value="Visible"/>
+                        <Setter
+                            Target="AutorunResultIcon.Text"
+                            Value="&#xEC61;"/>
+                        <Setter
+                            Target="AutorunResultIcon.Foreground"
+                            Value="Green"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="AutorunEnabledFailState">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="AutorunGrid.Visibility"
+                            Value="Visible"/>
+                        <Setter
+                            Target="AutorunResultIcon.Text"
+                            Value="&#xEB90;"/>
+                        <Setter
+                            Target="AutorunResultIcon.Foreground"
+                            Value="#FF911500"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -146,7 +199,7 @@
             FontWeight="Normal"
             VerticalAlignment="Center"
             Style="{StaticResource TrimmedTextStyle}"/>
-        
+
         <!--Breakpoint error-->
         <Grid
             Visibility="Collapsed"
@@ -176,8 +229,7 @@
             IsTextScaleFactorEnabled="False"
             FontWeight="Normal"
             Grid.Column="1">
-            <Run Text="Error"
-                 x:Uid="ErrorRun"/>
+            <Run Text="Error"/>
             <Run 
                 Text="12"
                 x:Name="ErrorRun"/>
@@ -194,7 +246,8 @@
             IsTextScaleFactorEnabled="False"
             FontWeight="Normal"
             Grid.Column="2">
-            <Run Text="Error"/>
+            <Run Text="Error"
+                 x:Uid="ErrorRun"/>
             <Run 
                 Text="12"
                 x:Name="IDEErrorRun"/>
@@ -258,13 +311,11 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <TextBlock 
                 Text="&#xE70B;"
-                FontFamily="Segoe MDL2 Assets"
+                Style="{StaticResource FontIconTextBlockStyle}"
                 VerticalAlignment="Center"
-                Foreground="White"
                 FontSize="16"
                 Margin="0,2,0,0"/>
             <TextBlock 
@@ -280,16 +331,29 @@
                 TextTrimming="CharacterEllipsis"
                 FontWeight="Normal"
                 MaxLines="1"/>
-            <TextBlock
-                Visibility="Collapsed"
-                x:Name="IDEChangesPendingIcon"
-                Grid.Column="2"
-                Text="&#xE1F5;"
-                FontFamily="Segoe MDL2 Assets"
-                VerticalAlignment="Center"
-                Foreground="#E0FFFFFF"
-                FontSize="14"
-                Margin="8,2,0,0"/>
+        </Grid>
+
+        <!--Autorun result-->
+        <Grid HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch"
+              Grid.Column="6"
+              x:Name="AutorunGrid">
+            <Grid Margin="8,0,8,0">
+                <Ellipse Height="18"
+                         Width="18"
+                         Fill="Black"/>
+                <Ellipse Height="14"
+                         Width="14"
+                         Fill="White"/>
+                <TextBlock Style="{StaticResource FontIconTextBlockStyle}"
+                           Text="&#xEC61;"
+                           Foreground="Green"
+                           x:Name="AutorunResultIcon"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
+            </Grid>
+            <Grid x:Name="AutorunHitCanvas"
+                    Background="Transparent"/>
         </Grid>
     </Grid>
 </UserControl>

@@ -192,6 +192,7 @@
     <Compile Include="Enums\SourceCodeShareType.cs" />
     <Compile Include="Enums\UserGuideSection.cs" />
     <Compile Include="Helpers\AsyncMutex.cs" />
+    <Compile Include="Helpers\Brainf_ckBackgroundExecutor.cs" />
     <Compile Include="Helpers\CodeFormatting\CodeThemes.cs" />
     <Compile Include="DataModels\Misc\Themes\LineHighlightStyle.cs" />
     <Compile Include="Helpers\CodeFormatting\InstalledFont.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="Helpers\StorageHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\ShareCharmsHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\StatusBarHelper.cs" />
+    <Compile Include="Messages\Abstract\ValueChangedMessageBase.cs" />
     <Compile Include="Messages\Actions\DebugStatusChangedMessage.cs" />
     <Compile Include="Messages\Actions\IDEAutosaveTriggeredMessage.cs" />
     <Compile Include="Messages\Actions\IDEDeleteCharacterRequestMessage.cs" />
@@ -218,10 +220,15 @@
     <Compile Include="Messages\IDEStatus\WorkingSourceCodeChangedMessage.cs" />
     <Compile Include="Messages\KeyboardShortcuts\CtrlShortcutPressedMessage.cs" />
     <Compile Include="Messages\KeyboardShortcuts\EscKeyPressedMessage.cs" />
+    <Compile Include="Messages\Requests\Abstract\RequestMessageBase.cs" />
+    <Compile Include="Messages\Requests\BackgroundExecutionInputRequestMessage.cs" />
+    <Compile Include="Messages\Requests\MessengerRequestExtensions.cs" />
     <Compile Include="Messages\UI\AppLoadingStatusChangedMessage.cs" />
     <Compile Include="Messages\Flyouts\NotificationCloseRequestmessage.cs" />
     <Compile Include="Messages\IDEStatus\BreakpointErrorStatusChangedMessage.cs" />
     <Compile Include="Messages\OverflowModeChangedMessage.cs" />
+    <Compile Include="Messages\UI\BackgroundExecutionDisabledMessage.cs" />
+    <Compile Include="Messages\UI\BackgroundExecutionStatusChangedMessage.cs" />
     <Compile Include="Messages\UI\IDEDisplayRequestMessage.cs" />
     <Compile Include="Messages\UI\IDESettingsChangedMessage.cs" />
     <Compile Include="Messages\UI\IDEThemePreviewFontChangedMessage.cs" />
@@ -483,6 +490,7 @@
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ICodeWorkspacePage.cs" />
     <Compile Include="Views\IDEView.xaml.cs">
       <DependentUpon>IDEView.xaml</DependentUpon>
     </Compile>

@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
+using Brainf_ck_sharp_UWP.DataModels.ConsoleModels;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.ViewModels;
 
@@ -17,6 +19,16 @@ namespace Brainf_ck_sharp_UWP.Views
                 ScrollViewer scroller = ConsoleListView.FindChild<ScrollViewer>();
                 scroller?.ChangeView(null, scroller.ScrollableHeight, null, false);
             };
+        }
+
+        /// <inheritdoc cref="ICodeWorkspacePage"/>
+        public string SourceCode
+        {
+            get
+            {
+                if (ViewModel.Source.LastOrDefault() is ConsoleUserCommand command) return command.Command;
+                return string.Empty;
+            }
         }
 
         public ConsoleViewModel ViewModel => DataContext.To<ConsoleViewModel>();

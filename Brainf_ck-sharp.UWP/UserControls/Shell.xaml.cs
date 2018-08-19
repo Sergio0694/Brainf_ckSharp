@@ -15,6 +15,7 @@ using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
 using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
+using Brainf_ck_sharp_UWP.Messages.Requests;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -77,6 +78,13 @@ namespace Brainf_ck_sharp_UWP.UserControls
             {
                 if (m.Key == VirtualKey.R && m.Modifiers == VirtualKeyModifiers.Control && ViewModel.IDECodeAvailable) ViewModel.RequestPlay();
                 else if (m.Key == VirtualKey.R && m.Modifiers == (VirtualKeyModifiers.Control | VirtualKeyModifiers.Menu) && ViewModel.DebugAvailable) ViewModel.RequestDebug();
+            });
+            Messenger.Default.Register<BackgroundExecutionInputRequestMessage>(this, m =>
+            {
+                m.ReportResult((
+                    PivotControl.SelectedIndex == 0 ? Console.SourceCode : IDE.SourceCode,
+                    StdinHeader.StdinBuffer,
+                    PivotControl.SelectedIndex == 0 ? Console.ViewModel.State : TouringMachineStateProvider.Initialize(64)));
             });
         }
 

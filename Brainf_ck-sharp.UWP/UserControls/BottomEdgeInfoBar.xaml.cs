@@ -1,9 +1,14 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Brainf_ck_sharp.ReturnTypes;
+using Brainf_ck_sharp_UWP.DataModels.Misc;
+using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.UI;
 using GalaSoft.MvvmLight.Messaging;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.UserControls
 {
@@ -65,6 +70,27 @@ namespace Brainf_ck_sharp_UWP.UserControls
             {
                 VisualStateManager.GoToState(this, m.PendingChangesPresent ? "IDEPendingChangesState" : "IDENoPendingChangesState", false);
             });
+            Messenger.Default.Register<BackgroundExecutionStatusChangedMessage>(this, m =>
+            {
+                VisualStateManager.GoToState(this, m.Value.ExitCode.HasFlag(InterpreterExitCode.Success) || m.Value.ExitCode.HasFlag(InterpreterExitCode.NoCodeInterpreted)
+                    ? "AutorunEnabledOkState" : "AutorunEnabledFailState", false);
+                string output;
+                if (m.Value.ExitCode.HasFlag(InterpreterExitCode.Success)) output = m.Value.Output;
+                else if (m.Value.ExitCode.HasFlag(InterpreterExitCode.NoCodeInterpreted)) output = LocalizationManager.GetResource("NoCodeInterpreted");
+                else output = ScriptExceptionInfo.FromResult(m.Value).Message;
+                if (output.Length > 40) output = $"{output.Substring(0, 40)}..."; // 40 is roughly the number of characters that stay in a single line
+                string tooltip = string.IsNullOrEmpty(output) ? null : output;
+                if (tooltip?.Equals(_AutorunTooltip) != true)
+                {
+                    _AutorunTooltip = tooltip;
+                    ToolTipService.SetToolTip(AutorunHitCanvas, tooltip);
+                }
+            });
+            Messenger.Default.Register<BackgroundExecutionDisabledMessage>(this, m => VisualStateManager.GoToState(this, "AutorunDisabledState", false));
         }
+
+        // The last tooltip for the autorun icon
+        [CanBeNull]
+        private string _AutorunTooltip;
     }
 }

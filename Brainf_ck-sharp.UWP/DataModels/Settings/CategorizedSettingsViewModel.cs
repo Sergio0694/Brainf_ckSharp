@@ -49,7 +49,7 @@ namespace Brainf_ck_sharp_UWP.DataModels.Settings
                     case SettingsSectionType.UI:
                         return $"2 {LocalizationManager.GetResource("LowercaseAvailableSettings")}";
                     case SettingsSectionType.Interpreter:
-                        return $"1 {LocalizationManager.GetResource("LowercaseSingleAvailableSettings")}";
+                        return $"2 {LocalizationManager.GetResource("LowercaseAvailableSettings")}";
                     default:
                         throw new ArgumentOutOfRangeException(nameof(SectionDescription), "Invalid section type");
                 }

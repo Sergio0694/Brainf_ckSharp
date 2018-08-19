@@ -366,5 +366,25 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
                 }
             }
         }
+
+        private bool _AutorunCodeInBackground = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutorunCodeInBackground));
+
+        /// <summary>
+        /// Gets or sets whether or not the app should periodically execute the code in the background
+        /// </summary>
+        [UsedImplicitly]
+        public bool AutorunCodeInBackground
+        {
+            get => _AutorunCodeInBackground;
+            set
+            {
+                if (Set(ref _AutorunCodeInBackground, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.AutorunCodeInBackground), value, SettingSaveMode.OverwriteIfExisting);
+                    Brainf_ckBackgroundExecutor.Instance.IsEnabled = value;
+                    if (!value) Messenger.Default.Send(new BackgroundExecutionDisabledMessage());
+                }
+            }
+        }
     }
 }

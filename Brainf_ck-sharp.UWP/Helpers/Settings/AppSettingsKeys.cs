@@ -24,6 +24,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         // Other settings
         StartingPage,
         ClearStdinBufferOnExecution,
-        ShowPBrainButtons
+        ShowPBrainButtons,
+        AutorunCodeInBackground
     }
 }

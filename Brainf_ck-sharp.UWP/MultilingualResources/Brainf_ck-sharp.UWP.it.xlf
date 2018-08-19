@@ -600,10 +600,6 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>available settings</source>
           <target state="translated">impostazioni disponibili</target>
         </trans-unit>
-        <trans-unit id="LowercaseSingleAvailableSettings" translate="yes" xml:space="preserve">
-          <source>available setting</source>
-          <target state="translated">impostazione disponibile</target>
-        </trans-unit>
         <trans-unit id="ThemesPackLocked" translate="yes" xml:space="preserve">
           <source>themes pack locked</source>
           <target state="translated">pacchetto temi bloccato</target>
@@ -961,6 +957,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         <trans-unit id="ErrorRun" translate="yes" xml:space="preserve">
           <source>Error</source>
           <target state="translated">Errore</target>
+        </trans-unit>
+        <trans-unit id="NoCodeInterpreted" translate="yes" xml:space="preserve">
+          <source>No code interpreted</source>
+          <target state="translated">Nessun operatore presente</target>
         </trans-unit>
       </group>
     </body>
