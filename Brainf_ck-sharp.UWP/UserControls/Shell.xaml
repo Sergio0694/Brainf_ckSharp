@@ -61,7 +61,7 @@
                     Foreground="White"
                     Text="Brainf*ck#"
                     FontSize="12"
-                    FontWeight="SemiLight"
+                    FontWeight="Normal"
                     Margin="12,0,0,0"
                     VerticalAlignment="Center"/>
             </Grid>

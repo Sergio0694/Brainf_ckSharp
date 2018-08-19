@@ -61,7 +61,7 @@
                    MaxLines="1"
                    TextTrimming="CharacterEllipsis"
                    VerticalAlignment="Center"
-                   FontWeight="SemiLight"
+                   FontWeight="Normal"
                    FontSize="14"
                    x:Name="ValidatedTextBlock"/>
     </Grid>

@@ -48,7 +48,7 @@
                     FontSize="12"
                     Foreground="#80FFFFFF"
                     Margin="0,4,0,0"
-                    FontWeight="SemiLight"
+                    FontWeight="Normal"
                     MaxLines="1"
                     TextWrapping="NoWrap"
                     TextTrimming="CharacterEllipsis"

@@ -143,7 +143,7 @@
             Foreground="White"
             Margin="8,0,0,0"
             FontSize="12"
-            FontWeight="SemiLight"
+            FontWeight="Normal"
             VerticalAlignment="Center"
             Style="{StaticResource TrimmedTextStyle}"/>
         
@@ -160,7 +160,7 @@
                 Foreground="White"
                 Margin="8,0,8,0"
                 FontSize="12"
-                FontWeight="SemiLight"
+                FontWeight="Normal"
                 VerticalAlignment="Center"
                 Style="{StaticResource TrimmedTextStyle}"/>
         </Grid>
@@ -174,7 +174,7 @@
             FontSize="12"
             VerticalAlignment="Center"
             IsTextScaleFactorEnabled="False"
-            FontWeight="SemiLight"
+            FontWeight="Normal"
             Grid.Column="1">
             <Run Text="Error"
                  x:Uid="ErrorRun"/>
@@ -192,7 +192,7 @@
             FontSize="12"
             VerticalAlignment="Center"
             IsTextScaleFactorEnabled="False"
-            FontWeight="SemiLight"
+            FontWeight="Normal"
             Grid.Column="2">
             <Run Text="Error"/>
             <Run 
@@ -207,7 +207,7 @@
                    VerticalAlignment="Center"
                    IsTextScaleFactorEnabled="False"
                    Grid.Column="3"
-                   FontWeight="SemiLight"
+                   FontWeight="Normal"
                    x:Name="RowBlock"
                    Visibility="Collapsed">
             <Run Text="Row"
@@ -224,7 +224,7 @@
             FontSize="12"
             VerticalAlignment="Center"
             IsTextScaleFactorEnabled="False"
-            FontWeight="SemiLight"
+            FontWeight="Normal"
             Grid.Column="4"
             Visibility="Collapsed">
             <Run Text="Col"/>
@@ -241,7 +241,7 @@
             FontSize="12"
             VerticalAlignment="Center"
             IsTextScaleFactorEnabled="False"
-            FontWeight="SemiLight"
+            FontWeight="Normal"
             Grid.Column="4">
             <Run Text="Char"/>
             <Run 
@@ -278,7 +278,7 @@
                 Grid.Column="1"
                 TextWrapping="NoWrap"
                 TextTrimming="CharacterEllipsis"
-                FontWeight="SemiLight"
+                FontWeight="Normal"
                 MaxLines="1"/>
             <TextBlock
                 Visibility="Collapsed"

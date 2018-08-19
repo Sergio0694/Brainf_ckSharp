@@ -56,7 +56,7 @@
         <!--Date-->
         <TextBlock Margin="16,0,0,0"
                    FontSize="16"
-                   FontWeight="SemiLight"
+                   FontWeight="Normal"
                    VerticalAlignment="Center"
                    Grid.Column="1"
                    Text="{x:Bind ViewModel.Key.ReleaseDate, Converter={StaticResource ShortDateConverter}, FallbackValue=6/10/2016}"/>

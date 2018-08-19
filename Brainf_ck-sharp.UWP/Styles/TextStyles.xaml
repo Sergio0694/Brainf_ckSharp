@@ -21,7 +21,7 @@
 
     <!--A 1 line, trimmed TextBlock-->
     <Style x:Key="TextBlockMainTemplateStyle" TargetType="TextBlock" BasedOn="{StaticResource TrimmedTextStyle}">
-        <Setter Property="FontWeight" Value="SemiLight"/>
+        <Setter Property="FontWeight" Value="Normal"/>
         <Setter Property="Foreground" Value="GhostWhite"/>
         <Setter Property="FontSize" Value="16"/>
     </Style>

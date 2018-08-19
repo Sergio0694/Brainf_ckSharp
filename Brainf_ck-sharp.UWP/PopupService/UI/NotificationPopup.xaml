@@ -83,7 +83,7 @@
         <TextBlock Text="This is a random text. It's not so important, it's just for testing purposes, don't think about it"
                    Margin="12,4,12,12"
                    Foreground="White"
-                   FontWeight="SemiLight"
+                   FontWeight="Normal"
                    FontSize="14"
                    TextWrapping="Wrap"
                    x:Name="ContentBlock"

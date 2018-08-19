@@ -64,7 +64,7 @@
                        IsColorFontEnabled="True"
                        Style="{StaticResource TrimmedTextStyle}"
                        Margin="12,0,8,0"
-                       FontWeight="SemiLight"
+                       FontWeight="Normal"
                        FontSize="20"/>
 
             <!--Close button-->
