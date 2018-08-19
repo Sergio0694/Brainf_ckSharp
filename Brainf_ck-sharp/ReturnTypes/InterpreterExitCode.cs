@@ -41,7 +41,7 @@ namespace Brainf_ck_sharp.ReturnTypes
         /// <summary>
         /// The source code contained a syntax error and couldn't be interpreted
         /// </summary>
-        MismatchedParentheses = 1 << 6,
+        SyntaxError = 1 << 6,
 
         /// <summary>
         /// The code run into an infinite loop (according to the desired time threshold)

@@ -30,6 +30,10 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             // Create the output collection
             return new List<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<string>>>
             {
+                CreateChangelogEntry("1.6.0.0", 2018, 9, 10, new List<string>
+                {
+                    "Code tweaks and bug fixes"
+                }),
                 CreateChangelogEntry("1.5.0.0", 2018, 8, 16, new List<string>
                 {
                     "Added support for TAB and SHIFT + TAB to indent the current selection in the IDE",
