@@ -1,0 +1,81 @@
+[
+	This program executes the integer division between
+	two 2-digits integer values and prints the result.
+]
+>++++++
+[
+	>+++++ space
+	>>++++++++ '0'
+	<<<-
+]>
+++[<<+>>-]
+>>[<+<+<+>>>-] 48 in #0 and #1
+,>,>,>, read inputs
+>+(-<<<<
+[
+	>>>>+>+<<<<<- duplicate value
+]>>>>>[<<<<<+>>>>>-] move original back
+<<<<<<<<
+[
+	>>>-<<<- subtract '0'
+]
+>>>[[-]>>>>.<<<<] print if needed
+>>>>[<<<<+>>>>-] move back display value
+)
+:<<<.<<<<<.>>-.+<<.>>>>>>>>>>+:<<<. print 'x1 / x2'
+<<<<<<<. space
+>>[<+>>+<-] duplicate '0' again
+<+++++++++++++.[-]<. print '= '
+[-]>>>[<<+<+>>>-] shift the '0' cells back to #0 and #1
+>[[<+>-]>] shift numbers back
+<<<<<<<[>>->->->-<<<<<-] subtract 48 to the inputs
+(>>
+[
+	>++++++++++<- function for base 10 numbers
+]):: convert the inputs
+>[<<<<+>>>>-]
+<<[<<<+>>>-]<< move the inputs back
+[
+	[>+>+<<-] make a copy of y
+	>>[<<+>>-]< shift the copies back
+	[
+		<<- subtract from x
+		>>>>+<<<<[>>>>-]>>>>
+		[
+			->[<<<<<+>>>>>-] move result to #0
+			<<<[ check if mod is 1
+				->+<[>-]>
+				[
+					-<<<+>>>> increment
+				]<<[-]
+			]
+			<[-] cleanup
+			>+>>>>>> adjust loop end
+		]<<<<<
+		<- decrement y as well
+	]
+	>>>+<<<< count the result
+]
+>>>>-<<<<< remove old loop sentinel value
+[>+>+<<-] duplicate the result
+>>>++++++++++ 10
+< move to result
+[
+	->->+<
+	[>>]>
+	[
+		[-]<++++++++++ restore counters
+		>>>>+< count the 10th digit
+	]<<<<
+]
+<[-]>>[-] reset original and temp values
+>>>>[<<<<+>>>>-] move first digit back
+<<<<<<<<[>+>+<<-] duplicate '0'
+>>>>
+[
+	[<<<<+>>>>-]
+	<<<[<+>-]
+	<.[-]>>>> print first digit
+]
+>[<<<+>>>-]<<<. print second digit
+[-]<< final cleanup
