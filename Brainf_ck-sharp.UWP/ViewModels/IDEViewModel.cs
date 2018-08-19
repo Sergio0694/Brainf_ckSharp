@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Text;
@@ -18,6 +19,7 @@ using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
 using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.IDE;
@@ -104,7 +106,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 
                             // Load the requested code
                             CategorizedCode = m.RequestedCode;
-                            LoadedCodeChanged?.Invoke(this, m.RequestedCode.Code);
+                            LoadedCodeChanged?.Invoke(this, (InitialWorkSessionCode, m.RequestedCode.Code.Breakpoints));
                             Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(m.RequestedCode.Type != SavedSourceCodeType.Sample, true));
                             Messenger.Default.Send(new IDEPendingChangesStatusChangedMessage(false));
                         });
@@ -125,13 +127,15 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             }
         }
 
+        #region Public parameters
+
         private CategorizedSourceCode _CategorizedCode;
 
         /// <summary>
         /// Gets or sets the code the user is currently working on
         /// </summary>
         [CanBeNull]
-        private CategorizedSourceCode CategorizedCode
+        public CategorizedSourceCode CategorizedCode
         {
             get => _CategorizedCode;
             set
@@ -140,7 +144,14 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 {
                     if (value != null) Messenger.Default.Send(new WorkingSourceCodeChangedMessage(value));
                     _CategorizedCode = value;
-                    InitialWorkSessionCode = value?.Code.Code ?? string.Empty;
+                    if (value == null) InitialWorkSessionCode = string.Empty;
+                    else if (value.Type == SavedSourceCodeType.Sample)
+                    {
+                        InitialWorkSessionCode = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.BracketsStyle)) == 1
+                            ? Regex.Replace(value.Code.Code, @"(?<=[\+-><\[\]\(\):\.,])\r\n\t*?\[\r\n", "[\r\n")
+                            : value.Code.Code;
+                    }
+                    else InitialWorkSessionCode = value.Code.Code;
                 }
             }
         }
@@ -154,14 +165,17 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Gets the source code currently loaded, if present
         /// </summary>
+        [CanBeNull]
         public SourceCode LoadedCode => CategorizedCode?.Code;
+
+        #endregion
 
         #region Events
 
         /// <summary>
         /// Raised whenever the current loaded source code changes
         /// </summary>
-        public event EventHandler<SourceCode> LoadedCodeChanged;
+        public event EventHandler<(string Code, byte[] Breakpoints)> LoadedCodeChanged;
 
         /// <summary>
         /// Raised whenever the user requests to play the current script

@@ -210,16 +210,16 @@ namespace Brainf_ck_sharp_UWP.Views
         #region ViewModel main events
 
         // Loads the requested code, when the user selects a saved file from his library
-        private void ViewModel_LoadedCodeChanged(object sender, DataModels.SQLite.SourceCode e)
+        private void ViewModel_LoadedCodeChanged(object sender, (string Code, byte[] Breakpoints) args)
         {
             // Load the code
-            LoadCode(e.Code, true);
-            if (e.Breakpoints == null)
+            LoadCode(args.Code, true);
+            if (args.Breakpoints == null)
             {
                 ClearBreakpoints();
                 BracketGuidesCanvas.Invalidate();
             }
-            else RestoreBreakpoints(BitHelper.Expand(e.Breakpoints));
+            else RestoreBreakpoints(BitHelper.Expand(args.Breakpoints));
             Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
 
             // Restore the UI
