@@ -905,4 +905,7 @@ This way he'll be able to help you!</value>
   <data name="SnippetResetCell" xml:space="preserve">
     <value>Reset cell</value>
   </data>
+  <data name="ED2D332A-1735-4DD9-A909-59F1587AA17F" xml:space="preserve">
+    <value>Integer division</value>
+  </data>
 </root>

@@ -1053,6 +1053,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Reset cell</source>
           <target state="translated">Resetta cella</target>
         </trans-unit>
+        <trans-unit id="ED2D332A-1735-4DD9-A909-59F1587AA17F" translate="yes" xml:space="preserve">
+          <source>Integer division</source>
+          <target state="translated">Divisione intera</target>
+        </trans-unit>
       </group>
     </body>
   </file>
