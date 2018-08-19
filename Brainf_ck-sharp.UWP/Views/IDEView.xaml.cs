@@ -24,7 +24,6 @@ using Brainf_ck_sharp_UWP.DataModels.EventArgs;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.CharactersInfo;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
-using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
@@ -215,16 +214,16 @@ namespace Brainf_ck_sharp_UWP.Views
         #region ViewModel main events
 
         // Loads the requested code, when the user selects a saved file from his library
-        private void ViewModel_LoadedCodeChanged(object sender, SourceCode e)
+        private void ViewModel_LoadedCodeChanged(object sender, (string Code, byte[] Breakpoints) args)
         {
             // Load the code
-            LoadCode(e.Code, true);
-            if (e.Breakpoints == null)
+            LoadCode(args.Code, true);
+            if (args.Breakpoints == null)
             {
                 ClearBreakpoints();
                 BracketGuidesCanvas.Invalidate();
             }
-            else RestoreBreakpoints(BitHelper.Expand(e.Breakpoints));
+            else RestoreBreakpoints(BitHelper.Expand(args.Breakpoints));
             Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
 
             // Restore the UI
@@ -397,7 +396,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
             }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
             EditBox.Document.GetText(TextGetOptions.None, out string code);
-            ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? string.Empty, code).Forget();
+            ViewModel.UpdateGitDiffStatus(code).Forget();
             ViewModel.UpdateCanUndoRedoStatus();
             await RemoveUnvalidatedBreakpointsAsync(code);
             RefreshBreakpointsUI(code);
@@ -1153,7 +1152,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
                 if (_WhitespacesRenderingEnabled) RenderControlCharacters();
-                ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? string.Empty, code).Forget();
+                ViewModel.UpdateGitDiffStatus(code).Forget();
                 ViewModel.SendMessages(code);
                 ViewModel.UpdateCanUndoRedoStatus();
                 UpdateCursorRectangleAndIndicatorUI();
@@ -1468,7 +1467,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 _PreviousText = code;
                 _PreviousSelectionLength = EditBox.Document.Selection.Length;
                 DrawBracketGuides(code, false).Forget();
-                ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? string.Empty, code).Forget();
+                ViewModel.UpdateGitDiffStatus(code).Forget();
                 ViewModel.UpdateCanUndoRedoStatus();
                 RefreshBreakpointsUI(code);
                 RenderControlCharacters();

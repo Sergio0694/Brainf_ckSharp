@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Text;
@@ -112,7 +113,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 
                             // Load the requested code
                             CategorizedCode = m.RequestedCode;
-                            LoadedCodeChanged?.Invoke(this, m.RequestedCode.Code);
+                            LoadedCodeChanged?.Invoke(this, (InitialWorkSessionCode, m.RequestedCode.Code.Breakpoints));
                             Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(m.RequestedCode.Type != SavedSourceCodeType.Sample, true));
                             Messenger.Default.Send(new IDEPendingChangesStatusChangedMessage(false));
                         });
@@ -148,9 +149,23 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 {
                     if (value != null) Messenger.Default.Send(new WorkingSourceCodeChangedMessage(value));
                     _CategorizedCode = value;
+                    if (value == null) InitialWorkSessionCode = string.Empty;
+                    else if (value.Type == SavedSourceCodeType.Sample)
+                    {
+                        InitialWorkSessionCode = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.BracketsStyle)) == 1
+                            ? Regex.Replace(value.Code.Code, @"(?<=[\+-><\[\]\(\):\.,])\r\n\t*?\[\r\n", "[\r\n")
+                            : value.Code.Code;
+                    }
+                    else InitialWorkSessionCode = value.Code.Code;
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the source code that was loaded at the beginning of the current editing session
+        /// </summary>
+        [NotNull]
+        public string InitialWorkSessionCode { get; private set; } = string.Empty;
 
         /// <summary>
         /// Gets the source code currently loaded, if present
@@ -162,7 +177,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Raised whenever the current loaded source code changes
         /// </summary>
-        public event EventHandler<SourceCode> LoadedCodeChanged;
+        public event EventHandler<(string Code, byte[] Breakpoints)> LoadedCodeChanged;
 
         /// <summary>
         /// Raised whenever the user requests to play the current script
@@ -659,12 +674,11 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Updates the diff indicators for the current source code being edited
         /// </summary>
-        /// <param name="previous">The previous code</param>
         /// <param name="current">The current code</param>
-        public async Task UpdateGitDiffStatus([NotNull] string previous, [NotNull] string current)
+        public async Task UpdateGitDiffStatus([NotNull] string current)
         {
             // Clear the current indicators if the two strings are the same
-            if (previous.Equals(current))
+            if (InitialWorkSessionCode.Equals(current))
             {
                 DiffStatusSource.Clear();
                 Messenger.Default.Send(new IDEPendingChangesStatusChangedMessage(false));
@@ -677,7 +691,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 string trimmed = current.Replace("\n", "");
                 trimmed = trimmed.Substring(0, trimmed.Length - 1);
                 return (
-                        from line in builder.BuildDiffModel(previous, trimmed).Lines
+                        from line in builder.BuildDiffModel(InitialWorkSessionCode, trimmed).Lines
                         where line.Type != ChangeType.Deleted
                         select line.Type == ChangeType.Unchanged
                             ? GitDiffLineStatus.Undefined
