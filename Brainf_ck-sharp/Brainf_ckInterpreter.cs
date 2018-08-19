@@ -145,7 +145,7 @@ namespace Brainf_ck_sharp
             if (!CheckSourceSyntax(executable))
             {
                 return new InterpreterExecutionSession(
-                    GenerateFailure(InterpreterExitCode.MismatchedParentheses, executable.Select(op => op.Operator).AggregateToString()), null);
+                    GenerateFailure(InterpreterExitCode.SyntaxError, executable.Select(op => op.Operator).AggregateToString()), null);
             }
 
             // Execute the code
@@ -264,7 +264,7 @@ namespace Brainf_ck_sharp
             // Check the code syntax
             if (!CheckSourceSyntax(executable))
             {
-                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.MismatchedParentheses, state,
+                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.SyntaxError, state,
                     executable.Select(op => op.Operator).AggregateToString());
             }
 

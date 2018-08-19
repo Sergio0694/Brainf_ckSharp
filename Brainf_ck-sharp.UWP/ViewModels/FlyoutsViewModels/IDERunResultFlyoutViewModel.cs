@@ -91,7 +91,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 source.Add(GroupFromSection(IDEResultSection.SourceCode));
 
                 // Add the memory state and the statistics only if the code was executed
-                if (!Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.MismatchedParentheses))
+                if (!Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.SyntaxError))
                 {
                     // Functions, if present
                     if (Session.CurrentResult.Functions.Count > 0)

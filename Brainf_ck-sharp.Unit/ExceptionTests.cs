@@ -87,7 +87,7 @@ namespace Brainf_ck_sharp.Unit
             InterpreterResult result = Brainf_ckInterpreter.Run(script, string.Empty);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.ExitCode.HasFlag(InterpreterExitCode.Failure) &&
-                          result.ExitCode.HasFlag(InterpreterExitCode.MismatchedParentheses));
+                          result.ExitCode.HasFlag(InterpreterExitCode.SyntaxError));
             Assert.AreEqual(result.Output, string.Empty);
         }
 
