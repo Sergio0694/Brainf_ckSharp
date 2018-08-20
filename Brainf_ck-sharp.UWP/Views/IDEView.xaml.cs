@@ -286,9 +286,9 @@ namespace Brainf_ck_sharp_UWP.Views
                     chuncks.Add(text.Substring(previous, breakpoint - previous));
                     previous = breakpoint;
                 }
-                factory = () => Brainf_ckInterpreter.InitializeSession(chuncks, e.Stdin, e.Mode, threshold: TimeThreshold);
+                factory = () => Brainf_ckInterpreter.InitializeSession(chuncks, e.Stdin, e.Mode, AppSettingsParser.InterpreterMemorySize, TimeThreshold);
             }
-            else factory = () => Brainf_ckInterpreter.InitializeSession(new[] { text }, e.Stdin, e.Mode, threshold: TimeThreshold);
+            else factory = () => Brainf_ckInterpreter.InitializeSession(new[] { text }, e.Stdin, e.Mode, AppSettingsParser.InterpreterMemorySize, TimeThreshold);
 
             // Display the execution popup
             IDERunResultFlyout flyout = new IDERunResultFlyout();

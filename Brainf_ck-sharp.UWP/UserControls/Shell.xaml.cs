@@ -115,7 +115,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 m.ReportResult((
                     PivotControl.SelectedIndex == 0 ? Console.SourceCode : IDE.SourceCode,
                     StdinHeader.StdinBuffer,
-                    PivotControl.SelectedIndex == 0 ? Console.ViewModel.State : TouringMachineStateProvider.Initialize(64)));
+                    PivotControl.SelectedIndex == 0 ? Console.ViewModel.State : TouringMachineStateProvider.Initialize(AppSettingsParser.InterpreterMemorySize)));
             });
             Messenger.Default.Register<CurrentAppSectionInfoRequestMessage>(this, m =>
             {
@@ -364,7 +364,8 @@ namespace Brainf_ck_sharp_UWP.UserControls
             // Show the settings panel
             int
                 theme = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)),
-                tabs = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength));
+                tabs = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength)),
+                memory = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.InterpreterMemorySize));
             bool whitespaces = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
             string font = AppSettingsManager.Instance.GetValue<string>(nameof(AppSettingsKeys.SelectedFontName));
             SettingsPanelFlyout settings = new SettingsPanelFlyout();
@@ -374,10 +375,12 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 themeChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)) != theme,
                 tabsChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength)) != tabs,
                 fontChanged = AppSettingsManager.Instance.GetValue<string>(nameof(AppSettingsKeys.SelectedFontName))?.Equals(font) != true,
-                whitespacesChanged = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces)) != whitespaces;
+                whitespacesChanged = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces)) != whitespaces,
+                memoryChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.InterpreterMemorySize)) != memory;
+
+            // IDE UI refresh needed
             if (themeChanged || tabsChanged || fontChanged || whitespacesChanged)
             {
-                // UI refresh needed
                 if (themeChanged)
                 {
                     Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
@@ -385,6 +388,9 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 }
                 Messenger.Default.Send(new IDESettingsChangedMessage(themeChanged, tabsChanged, fontChanged, whitespacesChanged));
             }
+
+            // Console UI refresh
+            if (memoryChanged && ViewModel.RestartAvailable) ViewModel.RequestRestartConsole();
         }
     }
 }
