@@ -134,8 +134,8 @@ namespace Brainf_ck_sharp_UWP
             view.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseVisible);
 
             // Enable the key listener
-            KeyEventsListener.IsEnabled = true;
             Window.Current.Content = shell;
+            KeyEventsListener.Instance.IsEnabled = true; // Needs to be after assigning the content
 
             // Additional setup
             if (AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutorunCodeInBackground)))

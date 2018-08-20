@@ -66,6 +66,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         Messenger.Default.Register<UndoConsoleCharacterMessage>(this, m => TryUndoLastCommandCharacter());
                         Messenger.Default.Register<RestartConsoleMessage>(this, m => Restart());
                         Messenger.Default.Register<ClearScreenMessage>(this, m => TryClearScreen());
+                        Messenger.Default.Register<CharacterReceivedMessage>(this, m => TryAddCommandCharacter(m.Value));
                         SendCommandAvailableMessages();
                     }
                     else Messenger.Default.Unregister(this);
@@ -240,7 +241,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <param name="c">The new operator to add</param>
         public void TryAddCommandCharacter(char c)
         {
-            if (!Brainf_ckInterpreter.Operators.Contains(c)) throw new ArgumentException("The input character is invalid");
+            if (!Brainf_ckInterpreter.Operators.Contains(c)) return;
             if (Source.LastOrDefault() is ConsoleUserCommand command)
             {
                 command.UpdateCommand($"{command.Command}{c}");

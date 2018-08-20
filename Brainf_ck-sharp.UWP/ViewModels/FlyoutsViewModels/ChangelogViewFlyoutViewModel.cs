@@ -37,6 +37,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                     "Added an option to change the interpreter memory size",
                     "Added an option to ask for confirmation before losing unsaved changes in the IDE",
                     "Improved the git diff indicators algorithm in the IDE",
+                    "Added ability to use a physical to write to the console",
                     "More keyboard shortcuts added",
                     "Added a guide section for the keyboard shortcuts",
                     "Added a new UI mode when the app is in full screen",

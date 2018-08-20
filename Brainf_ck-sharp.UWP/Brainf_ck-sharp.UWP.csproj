@@ -212,6 +212,7 @@
     <Compile Include="Helpers\WindowsAPIs\ShareCharmsHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\TimelineManager.cs" />
     <Compile Include="Messages\Abstract\ValueChangedMessageBase.cs" />
+    <Compile Include="Messages\Actions\CharacterReceivedMessage.cs" />
     <Compile Include="Messages\Actions\DebugStatusChangedMessage.cs" />
     <Compile Include="Messages\IDE\ClipboardOperationRequestMessage.cs" />
     <Compile Include="Messages\IDE\CodeSnippetSelectedMessage.cs" />
