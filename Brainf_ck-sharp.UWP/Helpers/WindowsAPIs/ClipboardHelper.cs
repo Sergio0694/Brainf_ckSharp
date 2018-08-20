@@ -14,13 +14,15 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
         /// Tries to copy the input text into the clipboard
         /// </summary>
         /// <param name="text">The text to copy</param>
-        public static bool TryCopyToClipboard([NotNull] this string text)
+        /// <param name="flush">Indicates whether or not to let the test remain in clipboard after the app is closed</param>
+        public static bool TryCopyToClipboard([NotNull] this string text, bool flush = false)
         {
             try
             {
                 DataPackage package = new DataPackage { RequestedOperation = DataPackageOperation.Copy };
                 package.SetText(text);
                 Clipboard.SetContent(package);
+                if (flush) Clipboard.Flush();
                 return true;
             }
             catch

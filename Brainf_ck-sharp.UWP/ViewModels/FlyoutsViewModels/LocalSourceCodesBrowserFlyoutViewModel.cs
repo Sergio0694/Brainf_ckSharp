@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Brainf_ck_sharp;
 using Brainf_ck_sharp_UWP.DataModels;
@@ -124,7 +123,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             string @fixed = code.Code.Replace("\r", "\r\n"); // Adjust the new line character
             switch (mode)
             {
-                case SourceCodeShareType.Clipboard: return @fixed.TryCopyToClipboard();
+                case SourceCodeShareType.Clipboard: return @fixed.TryCopyToClipboard(true);
                 case SourceCodeShareType.OSShare:
                     ShareCharmsHelper.ShareText(code.Title, @fixed);
                     return true;

@@ -1,7 +1,5 @@
 ﻿using Windows.Devices.Input;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.Enums;
-using Brainf_ck_sharp_UWP.Messages.Abstract;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.Messages.IDE
