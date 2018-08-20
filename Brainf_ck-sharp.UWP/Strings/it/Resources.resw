@@ -803,4 +803,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="SnippetNestedLoop" xml:space="preserve">
     <value>Ciclo annidato</value>
   </data>
+  <data name="MemorySize.Text" xml:space="preserve">
+    <value>Dimensione memoria</value>
+  </data>
 </root>

@@ -1057,6 +1057,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Nested loop</source>
           <target state="translated">Ciclo annidato</target>
         </trans-unit>
+        <trans-unit id="MemorySize.Text" translate="yes" xml:space="preserve">
+          <source>Memory size</source>
+          <target state="translated">Dimensione memoria</target>
+        </trans-unit>
       </group>
     </body>
   </file>

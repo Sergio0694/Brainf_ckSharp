@@ -124,6 +124,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
             SetValue(nameof(AppSettingsKeys.StartingPage), 0, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.ProtectUnsavedChanges), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.AutorunCodeInBackground), true, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.InterpreterMemorySize), 1, SettingSaveMode.SkipIfExisting);
         }
 
         /// <summary>

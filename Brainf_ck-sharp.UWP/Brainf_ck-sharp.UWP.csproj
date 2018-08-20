@@ -198,6 +198,7 @@
     <Compile Include="Helpers\CodeFormatting\CodeThemes.cs" />
     <Compile Include="DataModels\Misc\Themes\LineHighlightStyle.cs" />
     <Compile Include="Helpers\CodeFormatting\InstalledFont.cs" />
+    <Compile Include="Helpers\Settings\AppSettingsParser.cs" />
     <Compile Include="Helpers\UI\ComboBoxDataTemplateSelector.cs" />
     <Compile Include="Helpers\Extensions\TextExtensions.cs" />
     <Compile Include="Helpers\Settings\AppSettingsKeys.cs" />

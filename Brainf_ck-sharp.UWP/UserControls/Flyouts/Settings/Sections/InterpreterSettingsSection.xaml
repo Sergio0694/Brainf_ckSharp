@@ -4,19 +4,33 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
     <StackPanel>
         
-        <!--Blur mode-->
+        <!--Memory size-->
         <TextBlock
+            Text="Memory size"
+            x:Uid="MemorySize"/>
+        <inheritedControls:AnimatedComboBox
+            Margin="0,8,0,0"
+            ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
+            ItemsSource="{Binding ViewModel.MemorySizeOptions}"
+            SelectedIndex="{Binding ViewModel.MemorySizeSelectedIndex, Mode=TwoWay}"
+            MinWidth="180"/>
+        
+        <!--Stdin buffer cleanup-->
+        <TextBlock
+            Margin="0,16,0,0"
             x:Uid="ClearStdinBuffer"
             Text="Clear Stdin buffer on execution"/>
         <ToggleSwitch
             IsOn="{Binding ViewModel.ClearStdinBufferOnExecution, Mode=TwoWay}"/>
 
+        <!--Background code execution-->
         <TextBlock
             Margin="0,8,0,0"
             x:Uid="AutorunCodeInBackground"

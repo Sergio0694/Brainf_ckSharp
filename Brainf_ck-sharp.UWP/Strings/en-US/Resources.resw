@@ -908,4 +908,7 @@ This way he'll be able to help you!</value>
   <data name="SnippetNestedLoop" xml:space="preserve">
     <value>Nested loop</value>
   </data>
+  <data name="MemorySize.Text" xml:space="preserve">
+    <value>Memory size</value>
+  </data>
 </root>
