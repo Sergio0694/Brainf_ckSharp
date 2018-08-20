@@ -214,7 +214,7 @@
                 <customCommandBar:CustomCommandBarButton
                     Label="Play"
                     Icon="&#xE102;"
-                    Foreground="DarkGreen"
+                    Foreground="#FF008000"
                     x:Uid="PlayButton"
                     DefaultButton="True"
                     Style="{StaticResource ForegroundCustomCommandBarButton}"
@@ -245,7 +245,7 @@
                 <customCommandBar:CustomCommandBarButton
                     Label="Play"
                     Icon="&#xE102;"
-                    Foreground="DarkGreen"
+                    Foreground="#FF008000"
                     Style="{StaticResource ForegroundCustomCommandBarButton}"
                     x:Uid="PlayButton"
                     IsEnabled="{x:Bind ViewModel.IDECodeAvailable, Mode=OneWay, FallbackValue=False}"
@@ -254,7 +254,7 @@
                     Label="Debug"
                     Icon="&#xEBE8;"
                     Style="{StaticResource ForegroundCustomCommandBarButton}"
-                    Foreground="{StaticResource RedDangerBrush}"
+                    Foreground="#FFD1212A"
                     x:Uid="DebugButton"
                     IsEnabled="{x:Bind ViewModel.DebugAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestDebug}"/>
