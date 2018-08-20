@@ -211,7 +211,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
             await Task.Delay(500);
             iapAvailable = true;
 #else
-            if (_StoreContext == null) _StoreContext = StoreContext.GetDefault();
+            if (_StoreContext == null) _StoreContext = await Task.Run(() => StoreContext.GetDefault()); // Avoid UI hangs
             StoreAppLicense license = await _StoreContext.GetAppLicenseAsync();
             iapAvailable = license?.AddOnLicenses.FirstOrDefault(pair => pair.Key.Equals(ThemesPackID)).Value?.IsActive == true;
 #endif
