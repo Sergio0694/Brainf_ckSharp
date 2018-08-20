@@ -1049,7 +1049,7 @@ namespace Brainf_ck_sharp_UWP.Views
                         // Adjust the formatting style, if needed
                         if (AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.BracketsStyle)) == 1)
                         {
-                            int newlines = Regex.Match(code, @"\r\[\r").Captures.Count;
+                            int newlines = Regex.Match(code.Substring(0, offset.Value), @"\r\[\r").Captures.Count;
                             if (newlines > 0) offset = offset.Value - newlines;
                             code = code.Replace("\r[\r", "[\r");
                         }
