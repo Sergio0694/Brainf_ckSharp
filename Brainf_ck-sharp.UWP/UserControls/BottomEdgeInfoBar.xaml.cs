@@ -56,7 +56,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                         RowRun.Text = ide.Row.ToString();
                         ColumnRun.Text = ide.Column.ToString();
                         FileGrid.Visibility = ide.FilenameVisibile.ToVisibility();
-                        FileBlock.Text = ide.Filename ?? string.Empty;
+                        FileBlock.Text = ide.Filename?.Trim(28) ?? string.Empty;
                         if (ide.Status == IDEStatus.FaultedIDE) IDEErrorRun.Text = $"[{ide.ErrorRow}, {ide.ErrorColumn}]";
                         break;
                     default: throw new ArgumentOutOfRangeException();
@@ -78,7 +78,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 if (m.Value.ExitCode.HasFlag(InterpreterExitCode.Success)) output = m.Value.Output;
                 else if (m.Value.ExitCode.HasFlag(InterpreterExitCode.NoCodeInterpreted)) output = LocalizationManager.GetResource("NoCodeInterpreted");
                 else output = ScriptExceptionInfo.FromResult(m.Value).Message;
-                if (output.Length > 40) output = $"{output.Substring(0, 40)}..."; // 40 is roughly the number of characters that stay in a single line
+                output = output.Trim(40); // 40 is roughly the number of characters that stay in a single line
                 string tooltip = string.IsNullOrEmpty(output) ? null : output;
                 if (tooltip?.Equals(_AutorunTooltip) != true)
                 {

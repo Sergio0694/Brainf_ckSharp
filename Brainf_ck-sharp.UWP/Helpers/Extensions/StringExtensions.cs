@@ -122,5 +122,17 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
             while (times-- > 0) builder.Append(c);
             return builder.ToString();
         }
+
+        /// <summary>
+        /// Trimes the input <see langword="string"/> and adds the trailing ... if necessary
+        /// </summary>
+        /// <param name="text">The text to trim</param>
+        /// <param name="length">The maximum length of the returned string (considering the ... too)</param>
+        [Pure, NotNull]
+        public static string Trim([NotNull] this string text, int length)
+        {
+            if (length < 4) throw new ArgumentOutOfRangeException(nameof(length), "The length must be at least 4");
+            return text.Length <= length ? text : $"{text.Substring(0, length)}...";
+        }
     }
 }
