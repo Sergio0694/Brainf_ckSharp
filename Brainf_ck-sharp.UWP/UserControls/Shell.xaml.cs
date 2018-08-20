@@ -115,7 +115,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 m.ReportResult((
                     PivotControl.SelectedIndex == 0 ? Console.SourceCode : IDE.SourceCode,
                     StdinHeader.StdinBuffer,
-                    PivotControl.SelectedIndex == 0 ? Console.ViewModel.State : TouringMachineStateProvider.Initialize(64)));
+                    PivotControl.SelectedIndex == 0 ? Console.ViewModel.State : TouringMachineStateProvider.Initialize(AppSettingsParser.InterpreterMemorySize)));
             });
             Messenger.Default.Register<CurrentAppSectionInfoRequestMessage>(this, m =>
             {

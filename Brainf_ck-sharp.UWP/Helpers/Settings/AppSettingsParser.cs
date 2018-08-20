@@ -18,8 +18,8 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
                 switch (selection)
                 {
                     case 0: return 32;
-                    case 1: return 64;
-                    case 2: return 96;
+                    case 1: return 48;
+                    case 2: return 64;
                     default: throw new ArgumentOutOfRangeException(nameof(AppSettingsKeys.InterpreterMemorySize), "Invalid memory size setting");
                 }
             }

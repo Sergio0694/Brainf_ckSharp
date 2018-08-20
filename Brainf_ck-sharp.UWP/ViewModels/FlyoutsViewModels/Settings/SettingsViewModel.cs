@@ -411,7 +411,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
         /// Gets the collection of the available memory sizes
         /// </summary>
         [UsedImplicitly, NotNull]
-        public IReadOnlyCollection<int> MemorySizeOptions { get; } = new[] { 32, 64, 96 };
+        public IReadOnlyCollection<int> MemorySizeOptions { get; } = new[] { 32, 48, 64 };
 
         private int _MemorySizeSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.InterpreterMemorySize));
 
