@@ -15,18 +15,9 @@
 	<-
 ]
 >>----. print a space
->---... print three lines
-[
-	- reset cell
-]
->++. major symbol
-[
-	- reset cell
-]
-<<. space
-[
-	- reset cell
-]
+>---...[-] print three lines and reset
+>++. [-] major symbol
+<<.[-] space
 <<< return to the char value
 [
 	>+++
@@ -58,10 +49,7 @@
 		]
 		<<<<<
 	]
-	>
-	[
-		- reset temp cell
-	]
+	>[-] reset temp cell
 	>
 	[
 		<<+ move first value
@@ -73,10 +61,7 @@
 		>>>>>-
 	]
 	<<<<<<<
-	[
-		- reset previous temp cell
-	]
-	+ set that cell to 1
+	[-]+ set previous temp cell to 1
 	>>
 ]
 << start from the last number
@@ -86,8 +71,6 @@
 		>++++++++<-
 	]
 	>. sum 48 and print it
-	[
-		- restore value
-	]
+	[-] restore value
 	<<< go to previous number
 ]

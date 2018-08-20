@@ -9,46 +9,31 @@
 	>++++++++<- 48 in cell 1
 ]
 >>,>>>, read first number as x1; x2
-<<<
-[
-	>+>+<<- clone x1
-]
+<<<[>+>+<<-] clone x1
 <
-[
-	>+>-<<- sub 48 to copied x1
-]
+[>+>-<<-] sub 48 to copied x1
 >
-[
-	<+>- restore 48
-]
+[<+>-] restore 48
 >>> move to x2
-[
-	>+>+<<- clone x2
-]
+[>+>+<<-] clone x2
 <<<< move to 48
 [
 	>+>>>>- sub 48 to x2
 	<<<<<-
 ]
 >
-[
-	<+>- restore copy of 48
-]
+[<+>-] restore copy of 48
 >>>>>> move after x2
 ,>>>, read second one as y1; y2
 <<<
-[
-	>+>+<<- clone y1
-]
+[>+>+<<-] clone y1
 <<<<<<<
 [
 	>+>>>>>>>- sub 48 to y1
 	<<<<<<<<-
 ]
 >>>>>>>>>> move to y2
-[
-	>+>+<<- clone it
-]
+[>+>+<<-] clone it
 <<<<<<<<<
 [
 	>>>>>>>>>>- sub 48 to y2
@@ -68,58 +53,30 @@
 >>---- space
 >----- plus symbol
 >+ = symbol
+<<<<<<<<<<<<<<<< go back to cell #0
 [
-	<
-]
-<<<<<<<<<<<<< go back
-[
-	>. prints x1 if not 0
-	[
-		- restore the cell
-	]
+	>. print x1 if not 0
+	[-]
 ]
 > move to x2 in Unicode
-[
-	[
-		- restore the cell
-	]
-	>
-]
+[[-]>] resets cells if needed
 >>. print x2
-[
-	- restore the cell
-]
->>>>>>>>>>.>.<. print " + "
+[-]
+>>>>>>>>>>.>.<. print the sum operator
 <<<<<<<< move back to y1
 [
 	>. print y1 if not 0
-	[
-		- restore the cell
-	]
+	[-]
 ]
 > move to y1 in Unicode
-[
-	[
-		- restore the cell
-	]
-	>
-]
+[[-]>] reset loop
 >>. print y2
-[
-	-
-]
+[-]
 >>>>.>>.
-[
-	- restore = symbol
-]
-<
-[
-	- restore + symbol
-]
+[-] restore = symbol
+<[-] restore sum symbol
 <. print " = "
-[
-	- restore space
-]
+[-] restore space character
 <<<<<<<<<<<<<< back to x1
 [
 	>>>++++++++++ 10*x1
@@ -146,9 +103,7 @@
 	<-
 ]
 <
-[
-	- reset Unicode x value
-]
+[-] reset Unicode x value
 >> go to result
 [
 	>+++
@@ -179,10 +134,7 @@
 		]
 		<<<<<
 	]
-	>
-	[
-		- reset temp cell
-	]
+	>[-] reset temp cell
 	>
 	[
 		<<+ move first value
@@ -194,9 +146,7 @@
 		>>>>>-
 	]
 	<<<<<<<
-	[
-		- reset previous temp cell
-	]
+	[-] reset previous temp cell
 	+ set that cell to 1
 	>>
 ]
@@ -207,9 +157,7 @@
 		>++++++++<-
 	]
 	>. sum 48 and print it
-	[
-		- reset cell
-	]
+	[-] reset cell
 	<<< go to previous number
 ]
 < return to cell 0 at the end

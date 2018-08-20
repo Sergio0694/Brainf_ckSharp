@@ -42,6 +42,7 @@
             Style="{StaticResource FontIconTextBlockStyle}"
             Text="&#xE011;"
             FontSize="10"
+            FontWeight="ExtraBold"
             Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
             VerticalAlignment="Bottom"
             Visibility="{Binding ChunkSelected}"
