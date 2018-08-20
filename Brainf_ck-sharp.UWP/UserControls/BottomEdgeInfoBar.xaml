@@ -222,7 +222,8 @@
             IsTextScaleFactorEnabled="False"
             FontWeight="Normal"
             Grid.Column="1">
-            <Run Text="Error"/>
+            <Run Text="Error"
+                 x:Uid="ErrorRun"/>
             <Run 
                 Text="12"
                 x:Name="ErrorRun"/>

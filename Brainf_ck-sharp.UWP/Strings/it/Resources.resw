@@ -636,7 +636,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
     <value>Puoi mandarmi un messaggio email in qualsiasi momento se hai suggerimenti o feedback, o se hai trovato un bug, e sarò felice di aiutare.</value>
   </data>
   <data name="WelcomePart4.Text" xml:space="preserve">
-    <value>Prima di passare subito all'azione, è una buona idea leggere la guida dell'app per essere sicuri di ricordarsi tutto ciò che c'è da sapere sul linguaggio!</value>
+    <value>Prima di passare subito all'azione, dai un'occhiata alla guida dell'app per essere sicuro di conoscere tutto ciò che c'è da sapere sul linguaggio!</value>
   </data>
   <data name="MoveButton.Label" xml:space="preserve">
     <value>Sposta cursore</value>
