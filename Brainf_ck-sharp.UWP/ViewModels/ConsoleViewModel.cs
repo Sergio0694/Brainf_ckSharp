@@ -10,6 +10,7 @@ using Brainf_ck_sharp_UWP.DataModels.ConsoleModels;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.IDE;
@@ -75,7 +76,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// Gets the current machine state to use to process the scripts
         /// </summary>
         [NotNull]
-        public IReadonlyTouringMachineState State { get; private set; } = TouringMachineStateProvider.Initialize(64);
+        public IReadonlyTouringMachineState State { get; private set; } = TouringMachineStateProvider.Initialize(AppSettingsParser.InterpreterMemorySize);
 
         /// <summary>
         /// Gets the currently defined functions
@@ -106,7 +107,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             if (!CanRestart) return;
             CanRestart = false;
             Source.Add(new ConsoleRestartCommand());
-            State = TouringMachineStateProvider.Initialize(64);
+            State = TouringMachineStateProvider.Initialize(AppSettingsParser.InterpreterMemorySize);
             Functions = new FunctionDefinition[0];
             Source.Add(new ConsoleUserCommand());
             Messenger.Default.Send(new ConsoleMemoryStateChangedMessage(State));

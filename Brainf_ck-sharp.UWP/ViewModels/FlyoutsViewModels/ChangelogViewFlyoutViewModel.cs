@@ -34,6 +34,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 {
                     "Added code snippets menu when holding the [ button",
                     "Added setting to autorun code in the background",
+                    "Added an option to change the interpreter memory size",
                     "Code tweaks and bug fixes"
                 }),
                 CreateChangelogEntry("1.5.0.0", 2018, 8, 16, new List<string>

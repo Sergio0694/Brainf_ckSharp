@@ -367,6 +367,30 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
             }
         }
 
+        /// <summary>
+        /// Gets the collection of the available memory sizes
+        /// </summary>
+        [UsedImplicitly, NotNull]
+        public IReadOnlyCollection<int> MemorySizeOptions { get; } = new[] { 32, 48, 64 };
+
+        private int _MemorySizeSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.InterpreterMemorySize));
+
+        /// <summary>
+        /// Gets or sets the selected index for the interpreter memory size
+        /// </summary>
+        [UsedImplicitly]
+        public int MemorySizeSelectedIndex
+        {
+            get => _MemorySizeSelectedIndex;
+            set
+            {
+                if (Set(ref _MemorySizeSelectedIndex, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.InterpreterMemorySize), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
+
         private bool _AutorunCodeInBackground = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutorunCodeInBackground));
 
         /// <summary>

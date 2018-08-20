@@ -25,6 +25,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         StartingPage,
         ClearStdinBufferOnExecution,
         ShowPBrainButtons,
-        AutorunCodeInBackground
+        AutorunCodeInBackground,
+        InterpreterMemorySize
     }
 }
