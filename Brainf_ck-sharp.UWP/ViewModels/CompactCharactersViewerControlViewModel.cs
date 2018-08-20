@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.ViewModels.Abstract;
 using GalaSoft.MvvmLight.Messaging;
@@ -16,13 +17,13 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         public CompactCharactersViewerControlViewModel()
         {
             Messenger.Default.Register<ConsoleMemoryStateChangedMessage>(this, m => RefreshSourceAsync(m.Value).Forget());
-            RefreshSourceAsync(TouringMachineStateProvider.Initialize(64)).Forget();
+            RefreshSourceAsync(TouringMachineStateProvider.Initialize(AppSettingsParser.InterpreterMemorySize)).Forget();
         }
 
         // Refreshes the compact memory view
         private async Task RefreshSourceAsync([NotNull] IReadonlyTouringMachineState state)
         {
-            List<CharactersChunkModel> data = await Task.Run(() =>
+            IReadOnlyList<CharactersChunkModel> data = await Task.Run(() =>
             {
                 List<CharactersChunkModel> temp = new List<CharactersChunkModel>();
                 for (int i = 0; i < state.Count; i += 4)
