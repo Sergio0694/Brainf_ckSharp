@@ -14,14 +14,12 @@
 	]
 	<-
 ]
->>---- 32 in 3rd cell, space char
+>>---- 32 in 3rd cell and space char
 >+++++++ 43 in 4th
 >+ 61 in 5th
 <<<<
 ,. read first char
 >>.>.<.<
 ,.>.>>.<<.< second char
-[
-	<+>- move result to first cell
-]
+[<+>-] move result to first cell
 <. print result
