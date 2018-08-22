@@ -269,6 +269,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 case CodeSaveType.Save:
                     if (LoadedCode == null) throw new InvalidOperationException("There isn't a loaded source code to save");
                     await SQLiteManager.Instance.SaveCodeAsync(LoadedCode, text, breakpoints);
+                    InitialWorkSessionCode = text;
                     UpdateGitDiffStatusOnSave();
                     break;
 
