@@ -131,7 +131,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
                         inlines.Add(new LineBreak());
                         inlines.Add(new Run
                         {
-                            Text = $"at {(count > 1 ? $"[{count} {LocalizationManager.GetResource("StackFrames")}]" : string.Empty)}",
+                            Text = $"at{(count > 1 ? $" [{count} {LocalizationManager.GetResource("StackFrames")}]" : string.Empty)}",
                             Foreground = new SolidColorBrush(Colors.DimGray),
                             FontSize = @this.FontSize - 1
                         });

@@ -417,6 +417,16 @@ namespace Brainf_ck_sharp
                             // while (*ptr) {
                             case '[':
 
+                                // Check for stack depth on loops as well (could be inside a recursive function)
+                                if (depth == MaximumStackSize)
+                                {
+                                    yield return new InterpreterWorkingData(InterpreterExitCode.Failure |
+                                                                            InterpreterExitCode.ExceptionThrown |
+                                                                            InterpreterExitCode.StackLimitExceeded,
+                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations + 1);
+                                    yield break;
+                                }
+
                                 // Edge case - memory reset loop [-]
                                 if (state.Current.Value > 0 &&                                              // Loop enabled
                                     i + 2 < operators.Count &&                                              // The loop is contained in the current executable

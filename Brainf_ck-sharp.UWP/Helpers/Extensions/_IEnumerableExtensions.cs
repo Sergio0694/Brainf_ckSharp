@@ -24,7 +24,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
             [NotNull] params Func<TValue, IComparable>[] selectors) where TValue : class
         {
             // Input check
-            if (selectors.Length == 0) throw new ArgumentOutOfRangeException("The function needs at least a selector");
+            if (selectors.Length == 0) throw new ArgumentOutOfRangeException(nameof(selectors), "The function needs at least a selector");
 
             // Clone the source list and insert the new item
             List<TValue> temp = new List<TValue> { newItem };
@@ -54,7 +54,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
             [NotNull] params Func<TValue, IComparable>[] selectors) where TValue : class
         {
             // Input check
-            if (selectors.Length == 0) throw new ArgumentOutOfRangeException("The function needs at least a selector");
+            if (selectors.Length == 0) throw new ArgumentOutOfRangeException(nameof(selectors), "The function needs at least a selector");
             if (!list.Contains(editedItem)) throw new InvalidOperationException("The source list doesn't contain the given item");
 
             // Sort the temporary list
