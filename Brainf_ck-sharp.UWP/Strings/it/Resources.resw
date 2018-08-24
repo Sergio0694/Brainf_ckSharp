@@ -806,4 +806,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="MemorySize.Text" xml:space="preserve">
     <value>Dimensione memoria</value>
   </data>
+  <data name="StackFramesShort" xml:space="preserve">
+    <value>frame</value>
+  </data>
 </root>

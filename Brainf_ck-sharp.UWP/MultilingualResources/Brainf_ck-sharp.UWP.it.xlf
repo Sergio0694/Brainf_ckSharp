@@ -1061,6 +1061,10 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Memory size</source>
           <target state="translated">Dimensione memoria</target>
         </trans-unit>
+        <trans-unit id="StackFramesShort" translate="yes" xml:space="preserve">
+          <source>frames</source>
+          <target state="translated">frame</target>
+        </trans-unit>
       </group>
     </body>
   </file>

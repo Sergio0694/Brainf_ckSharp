@@ -112,7 +112,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
         /// </summary>
         /// <param name="frames">The input list of stack frames</param>
         [Pure, NotNull]
-        public static IEnumerable<(string Item, int Occurrences)> CompressStackTrace([NotNull, ItemNotNull] IReadOnlyList<string> frames)
+        public static IEnumerable<(string Item, int Occurrences, int Length)> CompressStackTrace([NotNull, ItemNotNull] IReadOnlyList<string> frames)
         {
             frames = frames.Reverse().ToArray(); // Needed to process the items from the bottom up
             int i = 0;
@@ -152,7 +152,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
                 // Return the current compressed chunk
                 if (info.Count == 0)
                 {
-                    yield return (frames[i], 1);
+                    yield return (frames[i], 1, 1);
                     i += 1;
                 }
                 else
@@ -165,13 +165,13 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
                     if (call.Contains(':'))
                     {
                         // Only aggregate recursive calls
-                        yield return (call, best.Occurrences);
+                        yield return (call, best.Occurrences, best.Length);
                         i += best.Length * best.Occurrences;
                     }
                     else
                     {
                         // The repeated loops are just user code
-                        yield return (frames[i], 1);
+                        yield return (frames[i], 1, 1);
                         i += 1;
                     }
                 }
@@ -199,7 +199,7 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
                     inlines.Add(new LineBreak());
                     inlines.Add(new Run
                     {
-                        Text = $"at{(entry.Occurrences > 1 ? $" [{entry.Occurrences} {LocalizationManager.GetResource("StackFrames")}]" : string.Empty)}",
+                        Text = $"at{(entry.Occurrences > 1 ? $" [{entry.Occurrences * entry.Length} {LocalizationManager.GetResource("StackFramesShort")}]" : string.Empty)}",
                         Foreground = new SolidColorBrush(Colors.DimGray),
                         FontSize = @this.FontSize - 1
                     });

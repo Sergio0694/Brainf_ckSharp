@@ -911,4 +911,7 @@ This way he'll be able to help you!</value>
   <data name="MemorySize.Text" xml:space="preserve">
     <value>Memory size</value>
   </data>
+  <data name="StackFramesShort" xml:space="preserve">
+    <value>frames</value>
+  </data>
 </root>
