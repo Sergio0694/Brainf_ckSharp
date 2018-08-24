@@ -193,6 +193,7 @@
     <Compile Include="Enums\SavedCodeLoadingSource.cs" />
     <Compile Include="Enums\SourceCodeShareType.cs" />
     <Compile Include="Enums\UserGuideSection.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\AsyncMutex.cs" />
     <Compile Include="Helpers\Brainf_ckBackgroundExecutor.cs" />
     <Compile Include="Helpers\CodeFormatting\CodeThemes.cs" />
