@@ -1559,7 +1559,7 @@ namespace Brainf_ck_sharp_UWP.Views
             e.Handled = true;
             FullCodeSnippetsBrowserFlyout browser = new FullCodeSnippetsBrowserFlyout(EditBox.Document)
             {
-                Height = 48 * 6 + 42, // Ugly hack (height of a snippet template by number of available templates)
+                Height = 48 * 6 + 43, // Ugly hack (height of a snippet template by number of available templates)
                 Width = 220
             };
             FlyoutManager.Instance.ShowCustomContextFlyout(browser, EditBox, 
