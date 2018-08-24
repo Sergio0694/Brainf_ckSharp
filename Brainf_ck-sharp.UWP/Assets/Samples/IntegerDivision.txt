@@ -1,6 +1,6 @@
 [
 	This program executes the integer division between
-	two 2-digits integer values and prints the result.
+	a pair of two-digits integer values and prints the result.
 ]
 >++++++
 [

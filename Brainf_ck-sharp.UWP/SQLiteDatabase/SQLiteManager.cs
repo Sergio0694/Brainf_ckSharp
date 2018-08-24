@@ -241,6 +241,7 @@ namespace Brainf_ck_sharp_UWP.SQLiteDatabase
             new SampleCodeRecord("UnicodeSum.txt", LocalizationManager.GetResource("78BAA70A-0DAF-4BB6-B09A-CDA9537D2FFF"), Guid.Parse("78BAA70A-0DAF-4BB6-B09A-CDA9537D2FFF")),
             new SampleCodeRecord("Sum.txt", LocalizationManager.GetResource("0441153F-E40A-4AEC-8373-8A552697778B"),  Guid.Parse("0441153F-E40A-4AEC-8373-8A552697778B")),
             new SampleCodeRecord("IntegerDivision.txt", LocalizationManager.GetResource("ED2D332A-1735-4DD9-A909-59F1587AA17F"), Guid.Parse("ED2D332A-1735-4DD9-A909-59F1587AA17F")),
+            new SampleCodeRecord("Fibonacci.txt", "Fibonacci", Guid.Parse("2A889174-D987-4D08-9E2D-7E5CBE845B44")),
             new SampleCodeRecord("HeaderComments.txt", LocalizationManager.GetResource("63156CB7-1BD1-46EA-A705-AC2ADD4A5F11"),  Guid.Parse("63156CB7-1BD1-46EA-A705-AC2ADD4A5F11"))
         };
 
