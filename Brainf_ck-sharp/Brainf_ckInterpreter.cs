@@ -43,7 +43,7 @@ namespace Brainf_ck_sharp
         /// <summary>
         /// Gets the maximum number of recursive calls that can be performed by a script
         /// </summary>
-        public const int MaximumStackSize = 512;
+        public const int MaximumStackSize = 256;
 
         #region Public APIs
 
@@ -423,7 +423,7 @@ namespace Brainf_ck_sharp
                                     yield return new InterpreterWorkingData(InterpreterExitCode.Failure |
                                                                             InterpreterExitCode.ExceptionThrown |
                                                                             InterpreterExitCode.StackLimitExceeded,
-                                        new[] { operators.Take(i + 1) }, position + (uint)i, operations + 1);
+                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations + 1);
                                     yield break;
                                 }
 
