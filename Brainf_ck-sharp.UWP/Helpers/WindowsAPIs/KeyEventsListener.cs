@@ -52,10 +52,17 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
             // Only handle key down events
             if (args.EventType != CoreAcceleratorKeyEventType.KeyDown && args.EventType != CoreAcceleratorKeyEventType.SystemKeyDown) return;
 
-            // Raise the Esc event if needed
+            // Esc key
             if (args.VirtualKey == VirtualKey.Escape)
             {
                 Messenger.Default.Send(new EscKeyPressedMessage());
+                return;
+            }
+
+            // Delete key
+            if (args.VirtualKey == VirtualKey.Back)
+            {
+                Messenger.Default.Send(new DeleteKeyPressedMessage());
                 return;
             }
 

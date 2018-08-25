@@ -217,6 +217,7 @@
     <Compile Include="Messages\Actions\DebugStatusChangedMessage.cs" />
     <Compile Include="Messages\IDE\ClipboardOperationRequestMessage.cs" />
     <Compile Include="Messages\IDE\CodeSnippetSelectedMessage.cs" />
+    <Compile Include="Messages\KeyboardShortcuts\DeleteKeyPressedMessage.cs" />
     <Compile Include="Messages\Requests\BackgroundExecutionInputRequestMessage.cs" />
     <Compile Include="Messages\Requests\CurrentAppSectionInfoRequestMessage.cs" />
     <Compile Include="Messages\Requests\IDEAutosaveTriggeredMessage.cs" />

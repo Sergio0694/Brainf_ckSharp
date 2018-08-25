@@ -13,6 +13,7 @@ using Brainf_ck_sharp_UWP.Helpers.Settings;
 using Brainf_ck_sharp_UWP.Helpers.UI;
 using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.IDE;
+using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
 using Brainf_ck_sharp_UWP.Messages.Settings;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.ViewModels.Abstract;
@@ -67,6 +68,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         Messenger.Default.Register<RestartConsoleMessage>(this, m => Restart());
                         Messenger.Default.Register<ClearScreenMessage>(this, m => TryClearScreen());
                         Messenger.Default.Register<CharacterReceivedMessage>(this, m => TryAddCommandCharacter(m.Value));
+                        Messenger.Default.Register<DeleteKeyPressedMessage>(this, _ => TryUndoLastCommandCharacter());
                         SendCommandAvailableMessages();
                     }
                     else Messenger.Default.Unregister(this);
