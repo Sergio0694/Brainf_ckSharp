@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Text;
@@ -16,16 +17,20 @@ using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
 using Brainf_ck_sharp_UWP.Enums;
-using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Messages;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 using Brainf_ck_sharp_UWP.Messages.Actions;
-using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.IDE;
+using Brainf_ck_sharp_UWP.Messages.Requests;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
 using Brainf_ck_sharp_UWP.ViewModels.Abstract;
+using DiffPlex;
+using DiffPlex.DiffBuilder;
+using DiffPlex.DiffBuilder.Model;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
@@ -61,12 +66,21 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             Messenger.Default.Register<IDEAutosaveTriggeredMessage>(this, async m =>
             {
                 await TryAutosaveAsync();
-                m.ReportAutosaveCompleted();
+                m.ReportResult(Unit.Instance);
+            });
+            Messenger.Default.Register<IDEUnsavedChangesRequestMessage>(this, m =>
+            {
+                Document.GetText(TextGetOptions.None, out string code);
+                code = code.Substring(0, code.Length - 1); // Remove trailing \r
+                if (CategorizedCode == null) m.ReportResult(!string.IsNullOrEmpty(code));
+                else m.ReportResult(!CategorizedCode.Code.Code.Equals(code));
             });
         }
 
         // Indicates whether or not the view model instance hasn't already been enabled before
         private bool _Startup = true;
+
+        #region Public parameters
 
         private bool _IsEnabled;
 
@@ -82,17 +96,17 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 {
                     if (value)
                     {
-                        Messenger.Default.Register<OperatorAddedMessage>(this, op => CharInsertionRequested?.Invoke(this, op.Operator));
+                        Messenger.Default.Register<OperatorAddedMessage>(this, op => CharInsertionRequested?.Invoke(this, op.Value));
                         Messenger.Default.Register<ClearScreenMessage>(this, m => TryClearScreen());
                         Messenger.Default.Register<PlayScriptMessage>(this, m => PlayRequested?.Invoke(this, new PlayRequestedEventArgs(m.StdinBuffer, m.Mode, m.Type == ScriptPlayType.Debug)));
-                        Messenger.Default.Register<SaveSourceCodeRequestMessage>(this, m => ManageSaveCodeRequest(m.RequestType).Forget());
-                        Messenger.Default.Register<IDEUndoRedoRequestMessage>(this, m => ManageUndoRedoRequest(m.Operation));
+                        Messenger.Default.Register<SaveSourceCodeRequestMessage>(this, m => ManageSaveCodeRequest(m.Value).Forget());
+                        Messenger.Default.Register<IDEUndoRedoRequestMessage>(this, m => ManageUndoRedoRequest(m.Value));
                         Messenger.Default.Register<IDENewLineRequestedMessage>(this, m => NewLineInsertionRequested?.Invoke(this, EventArgs.Empty));
-                        Messenger.Default.Register<VirtualArrowKeyPressedMessage>(this, m => ManageVirtualArrowKeyPressed(m.Direction));
+                        Messenger.Default.Register<VirtualArrowKeyPressedMessage>(this, m => ManageVirtualArrowKeyPressed(m.Value));
                         Messenger.Default.Register<SourceCodeLoadingRequestedMessage>(this, m =>
                         {
                             // Skip reloading the current code
-                            if (m.Source == ShourceCodeLoadingSource.Timeline && CategorizedCode?.Code.Uid.Equals(m.RequestedCode.Code.Uid) == true)
+                            if (m.Source == SavedCodeLoadingSource.Timeline && CategorizedCode?.Code.Uid.Equals(m.RequestedCode.Code.Uid) == true)
                             {
                                 Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
                                 NotificationsManager.Instance.ShowNotification(0xE148.ToSegoeMDL2Icon(), LocalizationManager.GetResource("AlreadyLoadedTitle"), LocalizationManager.GetResource("AlreadyLoadedBody"), NotificationType.Default);
@@ -101,7 +115,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
 
                             // Load the requested code
                             CategorizedCode = m.RequestedCode;
-                            LoadedCodeChanged?.Invoke(this, m.RequestedCode.Code);
+                            LoadedCodeChanged?.Invoke(this, (InitialWorkSessionCode, m.RequestedCode.Code.Breakpoints));
                             Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(m.RequestedCode.Type != SavedSourceCodeType.Sample, true));
                             Messenger.Default.Send(new IDEPendingChangesStatusChangedMessage(false));
                         });
@@ -128,7 +142,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// Gets or sets the code the user is currently working on
         /// </summary>
         [CanBeNull]
-        private CategorizedSourceCode CategorizedCode
+        public CategorizedSourceCode CategorizedCode
         {
             get => _CategorizedCode;
             set
@@ -137,21 +151,38 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 {
                     if (value != null) Messenger.Default.Send(new WorkingSourceCodeChangedMessage(value));
                     _CategorizedCode = value;
+                    if (value == null) InitialWorkSessionCode = string.Empty;
+                    else if (value.Type == SavedSourceCodeType.Sample)
+                    {
+                        InitialWorkSessionCode = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.BracketsStyle)) == 1
+                            ? Regex.Replace(value.Code.Code, @"(?<=[\+-><\[\]\(\):\.,])\r\n\t*?\[\r\n", "[\r\n")
+                            : value.Code.Code;
+                    }
+                    else InitialWorkSessionCode = value.Code.Code;
                 }
             }
         }
 
         /// <summary>
+        /// Gets the source code that was loaded at the beginning of the current editing session
+        /// </summary>
+        [NotNull]
+        public string InitialWorkSessionCode { get; private set; } = string.Empty;
+
+        /// <summary>
         /// Gets the source code currently loaded, if present
         /// </summary>
+        [CanBeNull]
         public SourceCode LoadedCode => CategorizedCode?.Code;
+
+        #endregion
 
         #region Events
 
         /// <summary>
         /// Raised whenever the current loaded source code changes
         /// </summary>
-        public event EventHandler<SourceCode> LoadedCodeChanged;
+        public event EventHandler<(string Code, byte[] Breakpoints)> LoadedCodeChanged;
 
         /// <summary>
         /// Raised whenever the user requests to play the current script
@@ -238,6 +269,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 case CodeSaveType.Save:
                     if (LoadedCode == null) throw new InvalidOperationException("There isn't a loaded source code to save");
                     await SQLiteManager.Instance.SaveCodeAsync(LoadedCode, text, breakpoints);
+                    InitialWorkSessionCode = text;
                     UpdateGitDiffStatusOnSave();
                     break;
 
@@ -309,8 +341,18 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Clears the current content in the document
         /// </summary>
-        private void TryClearScreen()
+        private async void TryClearScreen()
         {
+            // Ask for confirmation
+            if (AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ProtectUnsavedChanges)) &&
+                await Messenger.Default.RequestAsync<bool, IDEUnsavedChangesRequestMessage>() &&
+                await FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("UnsavedChangesTitle"),
+                    LocalizationManager.GetResource("UnsavedChangesClear"), LocalizationManager.GetResource("Ok")) == FlyoutResult.Canceled)
+            {
+                return;
+            }
+
+            // Clear the screen
             Document.SetText(TextSetOptions.None, string.Empty);
             CategorizedCode = null;
             Messenger.Default.Send(new SaveButtonsEnabledStatusChangedMessage(false, true));
@@ -638,36 +680,32 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <summary>
         /// Updates the diff indicators for the current source code being edited
         /// </summary>
-        /// <param name="previous">The previous code</param>
         /// <param name="current">The current code</param>
-        public async Task UpdateGitDiffStatus([NotNull] string previous, [NotNull] string current)
+        public async Task UpdateGitDiffStatus([NotNull] string current)
         {
             // Clear the current indicators if the two strings are the same
-            if (previous.Equals(current))
+            if (InitialWorkSessionCode.Equals(current))
             {
                 DiffStatusSource.Clear();
                 Messenger.Default.Send(new IDEPendingChangesStatusChangedMessage(false));
-                return;
             }
 
             // Prepare the updated source
-            List<GitDiffLineStatus> source = await Task.Run(() =>
+            GitDiffLineStatus[] source = await Task.Run(() =>
             {
-                string[]
-                    currentLines = current.Split('\r'),
-                    previousLines = previous.Replace("\n", "").Split('\r').Take(currentLines.Length).ToArray();
-                List<GitDiffLineStatus> temp = new List<GitDiffLineStatus>();
-                for (int i = 0; i < currentLines.Length - 1; i++)
-                {
-                    if (i > previousLines.Length - 1) temp.Add(GitDiffLineStatus.Edited);
-                    else temp.Add(currentLines[i].Equals(previousLines[i]) ? GitDiffLineStatus.Undefined : GitDiffLineStatus.Edited);
-                    // TODO: actually implement this
-                }
-                return temp;
+                IInlineDiffBuilder builder = new InlineDiffBuilder(new Differ());
+                string trimmed = current.Replace("\n", "");
+                trimmed = trimmed.Substring(0, trimmed.Length - 1);
+                return (
+                        from line in builder.BuildDiffModel(InitialWorkSessionCode, trimmed).Lines
+                        where line.Type != ChangeType.Deleted
+                        select line.Type == ChangeType.Unchanged
+                            ? GitDiffLineStatus.Undefined
+                            : GitDiffLineStatus.Edited).ToArray();
             });
 
             // Update the source collection
-            for (int i = 0; i < source.Count; i++)
+            for (int i = 0; i < source.Length; i++)
             {
                 // The source doesn't contain enough items
                 if (DiffStatusSource.Count - 1 < i)
@@ -684,7 +722,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             }
 
             // Remove the exceeding items
-            int diff = DiffStatusSource.Count - source.Count;
+            int diff = DiffStatusSource.Count - source.Length;
             while (diff > 0)
             {
                 DiffStatusSource.RemoveAt(DiffStatusSource.Count - 1);

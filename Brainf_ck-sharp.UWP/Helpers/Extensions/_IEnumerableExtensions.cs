@@ -24,7 +24,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
             [NotNull] params Func<TValue, IComparable>[] selectors) where TValue : class
         {
             // Input check
-            if (selectors.Length == 0) throw new ArgumentOutOfRangeException("The function needs at least a selector");
+            if (selectors.Length == 0) throw new ArgumentOutOfRangeException(nameof(selectors), "The function needs at least a selector");
 
             // Clone the source list and insert the new item
             List<TValue> temp = new List<TValue> { newItem };
@@ -54,7 +54,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
             [NotNull] params Func<TValue, IComparable>[] selectors) where TValue : class
         {
             // Input check
-            if (selectors.Length == 0) throw new ArgumentOutOfRangeException("The function needs at least a selector");
+            if (selectors.Length == 0) throw new ArgumentOutOfRangeException(nameof(selectors), "The function needs at least a selector");
             if (!list.Contains(editedItem)) throw new InvalidOperationException("The source list doesn't contain the given item");
 
             // Sort the temporary list
@@ -99,30 +99,6 @@ namespace Brainf_ck_sharp_UWP.Helpers.Extensions
                 index++;
             }
             return -1;
-        }
-
-        /// <summary>
-        /// Compresses the input sequence into a series of values without consecutive duplicates, indicating how many occurrences each item had in the original list
-        /// </summary>
-        /// <typeparam name="T">The type of the items in the list</typeparam>
-        /// <param name="items">The input list</param>
-        /// <param name="equalityComparer">A function to check if two items are equal</param>
-        public static IEnumerable<(T Item, int Occurrences)> CompressEqual<T>([NotNull] this IReadOnlyList<T> items, [NotNull] Func<T, T, bool> equalityComparer)
-        {
-            for (int i = 0; i < items.Count;)
-            {
-                // Count the number of consecutive occurrences
-                int n = 1;
-                for (int j = i + 1; j < items.Count; j++)
-                {
-                    if (equalityComparer(items[i], items[j])) n++;
-                    else break;
-                }
-
-                // Yield the new item, move ahead in the list
-                yield return (items[i], n);
-                i += n;
-            }
         }
     }
 }

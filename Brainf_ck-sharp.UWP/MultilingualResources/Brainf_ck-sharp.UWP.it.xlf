@@ -53,10 +53,6 @@
           <source>Time threshold exceeded</source>
           <target state="translated">Limite di tempo superato</target>
         </trans-unit>
-        <trans-unit id="WrongBrackets" translate="yes" xml:space="preserve">
-          <source>Mismatched parentheses</source>
-          <target state="translated">Parentesi non corrispondenti</target>
-        </trans-unit>
         <trans-unit id="run" translate="yes" xml:space="preserve">
           <source>run</source>
           <target state="translated">esegui</target>
@@ -73,10 +69,6 @@
         <trans-unit id="InternalError" translate="yes" xml:space="preserve">
           <source>error</source>
           <target state="translated">errore</target>
-        </trans-unit>
-        <trans-unit id="SyntaxError" translate="yes" xml:space="preserve">
-          <source>syntax error</source>
-          <target state="translated">errore sintassi</target>
         </trans-unit>
         <trans-unit id="Threshold" translate="yes" xml:space="preserve">
           <source>runtime error</source>
@@ -155,22 +147,9 @@
           <source>Statistics</source>
           <target state="translated">Statistiche</target>
         </trans-unit>
-        <trans-unit id="Loops" translate="yes" xml:space="preserve">
-          <source>nested loops</source>
-          <target state="translated">cicli annidati</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">This will be "n nested loops"</note>
-        </trans-unit>
         <trans-unit id="MemoryCells" translate="yes" xml:space="preserve">
           <source>memory cells</source>
           <target state="translated">celle di memoria</target>
-        </trans-unit>
-        <trans-unit id="NoLoops" translate="yes" xml:space="preserve">
-          <source>No nested loops</source>
-          <target state="translated">Nessun ciclo annidato</target>
-        </trans-unit>
-        <trans-unit id="SingleLoop" translate="yes" xml:space="preserve">
-          <source>1 nested loop</source>
-          <target state="translated">1 ciclo annidato</target>
         </trans-unit>
         <trans-unit id="LowercaseAtPosition" translate="yes" xml:space="preserve">
           <source>at position</source>
@@ -531,21 +510,9 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Auto indent brackets</source>
           <target state="translated">Indenta automaticamente parentesi</target>
         </trans-unit>
-        <trans-unit id="BackgroundBlur" translate="yes" xml:space="preserve">
-          <source>Background blur</source>
-          <target state="translated">Sfocatura sfondo</target>
-        </trans-unit>
-        <trans-unit id="BlurModeTitle.Text" translate="yes" xml:space="preserve">
-          <source>Preferred blur mode</source>
-          <target state="translated">Modalità blur preferita</target>
-        </trans-unit>
         <trans-unit id="BracketsStyleTitle.Text" translate="yes" xml:space="preserve">
           <source>Brackets style</source>
           <target state="translated">Formattazione parentesi</target>
-        </trans-unit>
-        <trans-unit id="InAppBlur" translate="yes" xml:space="preserve">
-          <source>In-app blur</source>
-          <target state="translated">Sfocatura in-app</target>
         </trans-unit>
         <trans-unit id="NewLine" translate="yes" xml:space="preserve">
           <source>New line</source>
@@ -599,10 +566,6 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         <trans-unit id="LowercaseAvailableSettings" translate="yes" xml:space="preserve">
           <source>available settings</source>
           <target state="translated">impostazioni disponibili</target>
-        </trans-unit>
-        <trans-unit id="LowercaseSingleAvailableSettings" translate="yes" xml:space="preserve">
-          <source>available setting</source>
-          <target state="translated">impostazione disponibile</target>
         </trans-unit>
         <trans-unit id="ThemesPackLocked" translate="yes" xml:space="preserve">
           <source>themes pack locked</source>
@@ -872,7 +835,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         </trans-unit>
         <trans-unit id="WelcomePart4.Text" translate="yes" xml:space="preserve">
           <source>Before jumping straight into the app, it might be a good idea to read the user guide to make sure you remember all there is to know about the language!</source>
-          <target state="translated">Prima di passare subito all'azione, è una buona idea leggere la guida dell'app per essere sicuri di ricordarsi tutto ciò che c'è da sapere sul linguaggio!</target>
+          <target state="translated">Prima di passare subito all'azione, dai un'occhiata alla guida dell'app per essere sicuro di conoscere tutto ciò che c'è da sapere sul linguaggio!</target>
         </trans-unit>
         <trans-unit id="MoveButton.Label" translate="yes" xml:space="preserve">
           <source>Move</source>
@@ -961,6 +924,146 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
         <trans-unit id="ErrorRun.Text" translate="yes" xml:space="preserve">
           <source>Error</source>
           <target state="translated">Errore</target>
+        </trans-unit>
+        <trans-unit id="MoreStackFrames" translate="yes" xml:space="preserve">
+          <source>stack frames</source>
+          <target state="translated">stack frame</target>
+        </trans-unit>
+        <trans-unit id="OneStackFrame" translate="yes" xml:space="preserve">
+          <source>1 stack frame</source>
+          <target state="translated">1 stack frame</target>
+        </trans-unit>
+        <trans-unit id="SharedFromBrainf_ck" translate="yes" xml:space="preserve">
+          <source>Shared from Brainf*ck#</source>
+          <target state="translated">Condiviso da Brainf*ck#</target>
+        </trans-unit>
+        <trans-unit id="Ok" translate="yes" xml:space="preserve">
+          <source>Ok</source>
+          <target state="translated">Ok</target>
+        </trans-unit>
+        <trans-unit id="UnsavedChangesClear" translate="yes" xml:space="preserve">
+          <source>There are unsaved changes in the IDE, and clearing the screen now will cause those changes to be lost. Are you sure you want to continue? If you want to cancel, just close this popup.</source>
+          <target state="translated">Ci sono modifiche non salvate nell'IDE, che verranno perse pulendo lo schermo ora. Sei sicuro di voler continuare? Se vuoi annullare, chiudi semplicemente questo popup.</target>
+        </trans-unit>
+        <trans-unit id="UnsavedChangesLoading" translate="yes" xml:space="preserve">
+          <source>There are unsaved changes in the IDE, and loading a saved code now will cause those changes to be lost. Are you sure you want to continue? If you want to cancel, just close this popup.</source>
+          <target state="translated">Ci sono modifiche non salvate nell'IDE, che verranno perse caricando un nuovo codice sorgente ora. Sei sicuro di voler continuare? Se vuoi annullare, chiudi semplicemente questo popup.</target>
+        </trans-unit>
+        <trans-unit id="UnsavedChangesTitle" translate="yes" xml:space="preserve">
+          <source>Unsaved changes</source>
+          <target state="translated">Modifiche non salvate</target>
+        </trans-unit>
+        <trans-unit id="ProtectUnsavedChanges.Text" translate="yes" xml:space="preserve">
+          <source>Protect unsaved changes</source>
+          <target state="translated">Proteggi modifiche non salvate</target>
+        </trans-unit>
+        <trans-unit id="AutorunCodeInBackground.Text" translate="yes" xml:space="preserve">
+          <source>Autorun code in the background</source>
+          <target state="translated">Controlla il codice in background</target>
+        </trans-unit>
+        <trans-unit id="NoCodeInterpreted" translate="yes" xml:space="preserve">
+          <source>No code interpreted</source>
+          <target state="translated">Nessun operatore presente</target>
+        </trans-unit>
+        <trans-unit id="KeyboardShortcutsDescription" translate="yes" xml:space="preserve">
+          <source>Be more productive and save time</source>
+          <target state="translated">Diventa più produttivo e risparmia tempo</target>
+        </trans-unit>
+        <trans-unit id="UserGuideKeyboardShortcuts" translate="yes" xml:space="preserve">
+          <source>Keyboard shortcuts</source>
+          <target state="translated">Scorciatoie da tastiera</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsDebug1.Description" translate="yes" xml:space="preserve">
+          <source>Continues the execution in debug mode</source>
+          <target state="translated">Continua l'esecuzione in modalità debug</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsDebug2.Description" translate="yes" xml:space="preserve">
+          <source>Continues and ingores following breakpoints</source>
+          <target state="translated">Continua ed ignora breakpoint successivi</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsDebugIntroduction.Text" translate="yes" xml:space="preserve">
+          <source>The debug mode offers some additional shortcuts:</source>
+          <target state="translated">La modalità debug offre alcune scorciatoie aggiuntive:</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsIntroduction.Text" translate="yes" xml:space="preserve">
+          <source>Some of the most common operations in the app also have a keyboard shortcut that can be used to access them more quickly. Here is the complete list:</source>
+          <target state="translated">Alcune delle operazioni più comuni nell'app dispongono anche di una scorciatoia da tastiera che può essere usata per velocizzarne l'utilizzo. Ecco la lista completa:</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsItem1.Description" translate="yes" xml:space="preserve">
+          <source>Executes the current script</source>
+          <target state="translated">Esegue lo script visualizzato</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsItem2.Description" translate="yes" xml:space="preserve">
+          <source>When in the IDE, executes the code in debug mode, if possible</source>
+          <target state="translated">Nell'IDE, esegue il codice in modalità debug, se possibile</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsItem3.Description" translate="yes" xml:space="preserve">
+          <source>Saves the current script in the IDE</source>
+          <target state="translated">Salva lo script presente nell'IDE</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsItem4.Description" translate="yes" xml:space="preserve">
+          <source>Saves the script with a (different) name</source>
+          <target state="translated">Salva lo script con un nome (diverso)</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsItem5.Description" translate="yes" xml:space="preserve">
+          <source>Shows the Unicode characters map</source>
+          <target state="translated">Mostra la mappa dei caratteri Unicode</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsItem6.Description" translate="yes" xml:space="preserve">
+          <source>When in the console, shows the memory state</source>
+          <target state="translated">Nella console, mostra lo stato della memoria</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsItem7.Description" translate="yes" xml:space="preserve">
+          <source>When in the IDE, opens the saved codes library</source>
+          <target state="translated">Nell'IDE, apre la libreria dei codici salvati</target>
+        </trans-unit>
+        <trans-unit id="GuideShortcutsItem8.Description" translate="yes" xml:space="preserve">
+          <source>Shows the app settings</source>
+          <target state="translated">Mostra le impostazioni dell'app</target>
+        </trans-unit>
+        <trans-unit id="CopyButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Copy</source>
+          <target state="translated">Copia</target>
+        </trans-unit>
+        <trans-unit id="CutButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Cut</source>
+          <target state="translated">Taglia</target>
+        </trans-unit>
+        <trans-unit id="PasteButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Paste</source>
+          <target state="translated">Incolla</target>
+        </trans-unit>
+        <trans-unit id="SnippetDuplicateValue" translate="yes" xml:space="preserve">
+          <source>Duplicate value</source>
+          <target state="translated">Duplica valore</target>
+        </trans-unit>
+        <trans-unit id="SnippetInlineLoop" translate="yes" xml:space="preserve">
+          <source>Inline loop</source>
+          <target state="translated">Loop inline</target>
+        </trans-unit>
+        <trans-unit id="SnippetResetCell" translate="yes" xml:space="preserve">
+          <source>Reset cell</source>
+          <target state="translated">Resetta cella</target>
+        </trans-unit>
+        <trans-unit id="ED2D332A-1735-4DD9-A909-59F1587AA17F" translate="yes" xml:space="preserve">
+          <source>Integer division</source>
+          <target state="translated">Divisione intera</target>
+        </trans-unit>
+        <trans-unit id="SyntaxError" translate="yes" xml:space="preserve">
+          <source>Syntax error</source>
+          <target state="translated">Errore di sintassi</target>
+        </trans-unit>
+        <trans-unit id="SnippetNestedLoop" translate="yes" xml:space="preserve">
+          <source>Nested loop</source>
+          <target state="translated">Ciclo annidato</target>
+        </trans-unit>
+        <trans-unit id="MemorySize.Text" translate="yes" xml:space="preserve">
+          <source>Memory size</source>
+          <target state="translated">Dimensione memoria</target>
+        </trans-unit>
+        <trans-unit id="StackFramesShort" translate="yes" xml:space="preserve">
+          <source>frames</source>
+          <target state="translated">frame</target>
         </trans-unit>
       </group>
     </body>

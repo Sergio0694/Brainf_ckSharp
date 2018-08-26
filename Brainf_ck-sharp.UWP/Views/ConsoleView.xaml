@@ -61,7 +61,7 @@
                     FontWeight="ExtraBold"
                     Foreground="#FFA00000"/>
                 <Run 
-                    attachedProperties:RunInlineHelper.BindableText="{Binding Info.Message}"
+                    Text="{Binding Info.Message}"
                     FontWeight="Bold"
                     Foreground="#FF900000"/>
             </TextBlock>

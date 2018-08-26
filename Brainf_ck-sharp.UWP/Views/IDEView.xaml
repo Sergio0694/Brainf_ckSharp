@@ -577,6 +577,7 @@
             LostFocus="EditBox_OnLostFocus"
             Paste="EditBox_OnPaste"
             TextSizeChanged="EditBox_OnTextSizeChanged"
+            ContextMenuOpening="EditBox_OnContextMenuOpening"
             Margin="0"/>
     </Grid>
 </UserControl>

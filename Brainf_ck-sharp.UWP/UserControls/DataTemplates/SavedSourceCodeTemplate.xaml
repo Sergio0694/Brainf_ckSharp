@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="60"
+    d:DesignHeight="68"
     d:DesignWidth="400"
     RightTapped="SavedSourceCodeTemplate_OnRightTapped"
     Holding="SavedSourceCodeTemplate_OnHolding">
@@ -42,8 +42,10 @@
 
         <!--Light border-->
         <Border
+            x:Name="LightBorder"
             Opacity="0.6"
             BorderThickness="2"
+            Margin="0,0,0,1"
             BorderBrush="{StaticResource BorderLightBrush}"/>
 
         <!--Content-->
@@ -78,5 +80,10 @@
                    VerticalAlignment="Bottom"
                    Height="1"
                    Fill="#90000000"/>
+        
+        <!--Fade canvas-->
+        <Canvas x:Name="FadeCanvas"
+                Background="#40000000"
+                Opacity="0"/>
     </Grid>
 </UserControl>

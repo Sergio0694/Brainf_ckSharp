@@ -1,9 +1,14 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Brainf_ck_sharp.ReturnTypes;
+using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Helpers.UI;
+using Brainf_ck_sharp_UWP.Messages.IDE;
+using Brainf_ck_sharp_UWP.Messages.UI;
 using GalaSoft.MvvmLight.Messaging;
+using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.UserControls
 {
@@ -51,7 +56,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                         RowRun.Text = ide.Row.ToString();
                         ColumnRun.Text = ide.Column.ToString();
                         FileGrid.Visibility = ide.FilenameVisibile.ToVisibility();
-                        FileBlock.Text = ide.Filename ?? string.Empty;
+                        FileBlock.Text = ide.Filename?.Trim(28) ?? string.Empty;
                         if (ide.Status == IDEStatus.FaultedIDE) IDEErrorRun.Text = $"[{ide.ErrorRow}, {ide.ErrorColumn}]";
                         break;
                     default: throw new ArgumentOutOfRangeException();
@@ -59,12 +64,33 @@ namespace Brainf_ck_sharp_UWP.UserControls
             });
             Messenger.Default.Register<BreakpointErrorStatusChangedMessage>(this, m =>
             {
-                VisualStateManager.GoToState(this, m.IsValid ? "BreakpointsDefaultStatus" : "BreakpointsErrorStatus", false);
+                VisualStateManager.GoToState(this, m.Value ? "BreakpointsDefaultStatus" : "BreakpointsErrorStatus", false);
             });
             Messenger.Default.Register<IDEPendingChangesStatusChangedMessage>(this, m =>
             {
-                VisualStateManager.GoToState(this, m.PendingChangesPresent ? "IDEPendingChangesState" : "IDENoPendingChangesState", false);
+                VisualStateManager.GoToState(this, m.Value ? "IDEPendingChangesState" : "IDENoPendingChangesState", false);
             });
+            Messenger.Default.Register<BackgroundExecutionStatusChangedMessage>(this, m =>
+            {
+                VisualStateManager.GoToState(this, m.Value.ExitCode.HasFlag(InterpreterExitCode.Success) || m.Value.ExitCode.HasFlag(InterpreterExitCode.NoCodeInterpreted) 
+                    ? "AutorunEnabledOkState" : "AutorunEnabledFailState", false);
+                string output;
+                if (m.Value.ExitCode.HasFlag(InterpreterExitCode.Success)) output = m.Value.Output;
+                else if (m.Value.ExitCode.HasFlag(InterpreterExitCode.NoCodeInterpreted)) output = LocalizationManager.GetResource("NoCodeInterpreted");
+                else output = ScriptExceptionInfo.FromResult(m.Value).Message;
+                output = output.Trim(40); // 40 is roughly the number of characters that stay in a single line
+                string tooltip = string.IsNullOrEmpty(output) ? null : output;
+                if (tooltip?.Equals(_AutorunTooltip) != true)
+                {
+                    _AutorunTooltip = tooltip;
+                    ToolTipService.SetToolTip(AutorunHitCanvas, tooltip);
+                }
+            });
+            Messenger.Default.Register<BackgroundExecutionDisabledMessage>(this, m => VisualStateManager.GoToState(this, "AutorunDisabledState", false));
         }
+
+        // The last tooltip for the autorun icon
+        [CanBeNull]
+        private string _AutorunTooltip;
     }
 }

@@ -2,19 +2,24 @@
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.System;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
+using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
 using Brainf_ck_sharp_UWP.Enums;
-using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Messages;
+using Brainf_ck_sharp_UWP.Helpers.UI;
+using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp_UWP.Messages.Actions;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
-using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.IDE;
 using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
+using Brainf_ck_sharp_UWP.Messages.Requests;
+using Brainf_ck_sharp_UWP.Messages.Settings;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -26,7 +31,6 @@ using Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations;
-using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers.PointerEvents;
 using MemoryViewerFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState.MemoryViewerFlyout;
@@ -50,6 +54,7 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 }
             };
             this.InitializeComponent();
+            PlaceholderGrid.Visibility = (!ApplicationViewHelper.IsFullScreenOrTabletMode).ToVisibility();
             DataContext = new ShellViewModel(() =>
             {
                 string stdin = StdinHeader.StdinBuffer;
@@ -61,25 +66,60 @@ namespace Brainf_ck_sharp_UWP.UserControls
             });
             Console.ViewModel.IsEnabled = true;
 
-            // Apply the desired blur effect
-            AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.InAppBlurMode), out int blurMode);
-            HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(blurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
-
             // Flyout management
             Messenger.Default.Register<FlyoutOpenedMessage>(this, m => ManageFlyoutUI(true));
             Messenger.Default.Register<FlyoutClosedNotificationMessage>(this, m => ManageFlyoutUI(false));
             Messenger.Default.Register<AppLoadingStatusChangedMessage>(this, m => ManageLoadingUI(m.Loading, !m.ImmediateDisplayRequested));
-            Messenger.Default.Register<BlurModeChangedMessage>(this, m =>
-            {
-                HeaderGrid.Background = XAMLResourcesHelper.GetResourceValue<CustomAcrylicBrush>(m.BlurMode == 0 ? "HeaderHostBackdropBlurBrush" : "HeaderInAppAcrylicBrush");
-            });
 
             // Other messages
             Messenger.Default.Register<IDEDisplayRequestMessage>(this, _ => PivotControl.SelectedIndex = 1);
-            Messenger.Default.Register<CtrlShortcutPressedMessage>(this, m =>
+            Messenger.Default.Register<CtrlShortcutPressedMessage>(this, async m =>
             {
-                if (m.Key == VirtualKey.R && m.Modifiers == VirtualKeyModifiers.Control && ViewModel.IDECodeAvailable) ViewModel.RequestPlay();
-                else if (m.Key == VirtualKey.R && m.Modifiers == (VirtualKeyModifiers.Control | VirtualKeyModifiers.Menu) && ViewModel.DebugAvailable) ViewModel.RequestDebug();
+                // Skip if there's an open flyout
+                if (await FlyoutManager.Instance.IsFlyoutOpenAsync()) return;
+
+                // Play
+                if (m.Key == VirtualKey.R && m.Modifiers == VirtualKeyModifiers.Control &&
+                    (PivotControl.SelectedIndex == 0 && ViewModel.PlayAvailable ||
+                     PivotControl.SelectedIndex == 1 && ViewModel.IDECodeAvailable))
+                {
+                    ViewModel.RequestPlay(); // Request to play a console script or to execute the code in the IDE
+                }
+                else if (m.Key == VirtualKey.R &&
+                         m.Modifiers == (VirtualKeyModifiers.Control | VirtualKeyModifiers.Menu) &&
+                         ViewModel.DebugAvailable)
+                {
+                    ViewModel.RequestDebug();
+                }
+
+                // Save
+                else if (m.Key == VirtualKey.S && m.Modifiers == VirtualKeyModifiers.Control && ViewModel.SaveAvailable)
+                {
+                    Messenger.Default.Send(new SaveSourceCodeRequestMessage(CodeSaveType.Save));
+                }
+                else if (m.Key == VirtualKey.S &&
+                         m.Modifiers == (VirtualKeyModifiers.Control | VirtualKeyModifiers.Menu) &&
+                         ViewModel.SaveAsAvailable)
+                {
+                    Messenger.Default.Send(new SaveSourceCodeRequestMessage(CodeSaveType.SaveAs));
+                }
+
+                // Misc
+                else if (m.Key == VirtualKey.U && m.Modifiers == VirtualKeyModifiers.Control) RequestShowUnicodeCharacters();
+                else if (m.Key == VirtualKey.M && m.Modifiers == VirtualKeyModifiers.Control && PivotControl.SelectedIndex == 0) RequestShowMemoryState();
+                else if (m.Key == VirtualKey.L && m.Modifiers == VirtualKeyModifiers.Control && PivotControl.SelectedIndex == 1) RequestShowCodeLibrary();
+                else if (m.Key == VirtualKey.I && m.Modifiers == VirtualKeyModifiers.Control) RequestShowSettingsPanel();
+            });
+            Messenger.Default.Register<BackgroundExecutionInputRequestMessage>(this, m =>
+            {
+                m.ReportResult((
+                    PivotControl.SelectedIndex == 0 ? Console.SourceCode : IDE.SourceCode,
+                    StdinHeader.StdinBuffer,
+                    PivotControl.SelectedIndex == 0 ? Console.ViewModel.State : TouringMachineStateProvider.Initialize(AppSettingsParser.InterpreterMemorySize)));
+            });
+            Messenger.Default.Register<CurrentAppSectionInfoRequestMessage>(this, m =>
+            {
+                m.ReportResult(PivotControl.SelectedIndex == 0 ? AppSection.Console : AppSection.IDE);
             });
         }
 
@@ -140,13 +180,20 @@ namespace Brainf_ck_sharp_UWP.UserControls
         // Initialize the effects
         private void Shell_Loaded(object sender, RoutedEventArgs e)
         {
+            // Realtime UI adjustment
+            ApplicationView.GetForCurrentView().VisibleBoundsChanged += (view, _) =>
+            {
+                Visibility visibility = (!ApplicationViewHelper.IsFullScreenOrTabletMode).ToVisibility();
+                if (PlaceholderGrid.Visibility == visibility) return;
+                PlaceholderGrid.Visibility = visibility;
+                UpdateUIElementsSizeBindings();
+                IDE.RefreshUI();
+            };
+
             // UI setup
             FadeCanvas.SetVisualOpacity(0);
             Messenger.Default.Send(new ConsoleStatusUpdateMessage(IDEStatus.Console, LocalizationManager.GetResource("Ready"), 0, 0));
-            HeaderGrid.Measure(new Size(ActualWidth, double.PositiveInfinity));
-            double height = HeaderGrid.DesiredSize.Height;
-            Console.AdjustTopMargin(height + 8);
-            IDE.AdjustTopMargin(height);
+            UpdateUIElementsSizeBindings();
 
             // Light border UI
             ExpanderControl.FindChild<Button>("ExpanderStateButton").ManageLightsPointerStates(value =>
@@ -168,6 +215,15 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 _SkipInitialAnimation = true;
                 PivotControl.SelectedIndex = 1;
             }
+        }
+
+        // Updates the size of the UI elements that rely on the actual window size
+        private void UpdateUIElementsSizeBindings()
+        {
+            HeaderGrid.Measure(new Size(ActualWidth, double.PositiveInfinity));
+            double height = HeaderGrid.DesiredSize.Height;
+            Console.AdjustTopMargin(height + 8);
+            IDE.AdjustTopMargin(height);
         }
 
         // Indicates whether or not to skip the first page switch animation
@@ -276,17 +332,18 @@ namespace Brainf_ck_sharp_UWP.UserControls
         /// </summary>
         public async void RequestShowCodeLibrary()
         {
-            LocalSourceCodesBrowserFlyout flyout = new LocalSourceCodesBrowserFlyout();
+            SourceCode loaded = IDE.ViewModel.CategorizedCode?.Type == SavedSourceCodeType.Sample ? null : IDE.ViewModel.LoadedCode;
+            LocalSourceCodesBrowserFlyout flyout = new LocalSourceCodesBrowserFlyout(loaded);
             FlyoutClosedResult<CategorizedSourceCode> result = await FlyoutManager.Instance.ShowAsync<LocalSourceCodesBrowserFlyout, CategorizedSourceCode>(
                 LocalizationManager.GetResource("CodeLibrary"), flyout, new Thickness(), openCallback: () => flyout.ViewModel.LoadGroupsAsync().Forget());
-            if (result) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(result.Value, ShourceCodeLoadingSource.CodeLibrary));
+            if (result) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(result.Value, SavedCodeLoadingSource.CodeLibrary));
         }
 
         // Shows the small navigation keyboard popup
         private void MoveButton_Click(object sender, RoutedEventArgs e)
         {
             VirtualArrowsKeyboardControl keyboard = new VirtualArrowsKeyboardControl();
-            FlyoutManager.Instance.ShowCustomContextFlyout(keyboard, sender.To<FrameworkElement>(), true);
+            FlyoutManager.Instance.ShowCustomContextFlyout(keyboard, sender.To<FrameworkElement>(), true).Forget();
         }
 
         // Shows the developer info
@@ -296,13 +353,19 @@ namespace Brainf_ck_sharp_UWP.UserControls
             FlyoutManager.Instance.ShowAsync(LocalizationManager.GetResource("About"), flyout, null, new Thickness(0), FlyoutDisplayMode.ActualHeight).Forget();
         }
 
-        // Changes the current header blur mode
-        private async void SettingsButton_Click(object sender, RoutedEventArgs e)
+        // Displays the settings when the user taps the button
+        private void SettingsButton_Click(object sender, RoutedEventArgs e) => RequestShowSettingsPanel();
+
+        /// <summary>
+        /// Shows the settings window to the user
+        /// </summary>
+        private async void RequestShowSettingsPanel()
         {
             // Show the settings panel
             int
                 theme = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)),
-                tabs = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength));
+                tabs = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength)),
+                memory = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.InterpreterMemorySize));
             bool whitespaces = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
             string font = AppSettingsManager.Instance.GetValue<string>(nameof(AppSettingsKeys.SelectedFontName));
             SettingsPanelFlyout settings = new SettingsPanelFlyout();
@@ -312,10 +375,12 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 themeChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.SelectedIDETheme)) != theme,
                 tabsChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.TabLength)) != tabs,
                 fontChanged = AppSettingsManager.Instance.GetValue<string>(nameof(AppSettingsKeys.SelectedFontName))?.Equals(font) != true,
-                whitespacesChanged = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces)) != whitespaces;
+                whitespacesChanged = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces)) != whitespaces,
+                memoryChanged = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.InterpreterMemorySize)) != memory;
+
+            // IDE UI refresh needed
             if (themeChanged || tabsChanged || fontChanged || whitespacesChanged)
             {
-                // UI refresh needed
                 if (themeChanged)
                 {
                     Messenger.Default.Send(new AppLoadingStatusChangedMessage(true));
@@ -323,6 +388,9 @@ namespace Brainf_ck_sharp_UWP.UserControls
                 }
                 Messenger.Default.Send(new IDESettingsChangedMessage(themeChanged, tabsChanged, fontChanged, whitespacesChanged));
             }
+
+            // Console UI refresh
+            if (memoryChanged && ViewModel.RestartAvailable) ViewModel.RequestRestartConsole();
         }
     }
 }

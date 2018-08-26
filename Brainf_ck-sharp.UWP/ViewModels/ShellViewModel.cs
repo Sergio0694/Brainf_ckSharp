@@ -1,10 +1,8 @@
 ﻿using System;
-using Windows.System;
 using Brainf_ck_sharp.Enums;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Messages;
 using Brainf_ck_sharp_UWP.Messages.Actions;
-using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
+using Brainf_ck_sharp_UWP.Messages.Settings;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
@@ -22,12 +20,12 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             // General messages
             StdinBufferExtractor = stdinExtractor;
             Messenger.Default.Register<AvailableActionStatusChangedMessage>(this, ProcessAvailableActionsStatusChangedMessage);
-            Messenger.Default.Register<IDEExecutableStatusChangedMessage>(this, m => IDECodeAvailable = m.Executable);
+            Messenger.Default.Register<IDEExecutableStatusChangedMessage>(this, m => IDECodeAvailable = m.Value);
             Messenger.Default.Register<DebugStatusChangedMessage>(this, m =>
             {
-                if (_DebugAvailable != m.DebugAvailable)
+                if (_DebugAvailable != m.Value)
                 {
-                    _DebugAvailable = m.DebugAvailable;
+                    _DebugAvailable = m.Value;
                     RaisePropertyChanged(() => DebugAvailable);
                 }
             });
@@ -37,15 +35,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 SaveAsAvailable = m.SaveAsEnabled;
             });
 
-            // IDE save shortcut
-            Messenger.Default.Register<CtrlShortcutPressedMessage>(this, m =>
-            {
-                if (m.Key != VirtualKey.S || m.Modifiers != VirtualKeyModifiers.Control || !SaveAvailable) return;
-                Messenger.Default.Send(new SaveSourceCodeRequestMessage(CodeSaveType.Save));
-            });
-
             // Overflow mode
-            Messenger.Default.Register<OverflowModeChangedMessage>(this, m => _OverflowMode = m.Mode);
+            Messenger.Default.Register<OverflowModeChangedMessage>(this, m => _OverflowMode = m.Value);
             AppSettingsManager.Instance.TryGetValue(nameof(AppSettingsKeys.ByteOverflowModeEnabled), out bool overflow);
             _OverflowMode = overflow ? OverflowMode.ByteOverflow : OverflowMode.ShortNoOverflow;
         }

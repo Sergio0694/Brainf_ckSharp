@@ -7,7 +7,9 @@ using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp_UWP.Messages.Settings;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -33,53 +35,6 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
             {
                 // Update the add-on license when needed
                 UpdateLicenseInfoAsync().Forget();
-            }
-        }
-
-        private bool _AutosaveDocuments = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutosaveDocuments));
-
-        /// <summary>
-        /// Gets or sets whether or not the IDE should automatically save the current document when leaving the app
-        /// </summary>
-        [UsedImplicitly]
-        public bool AutosaveDocuments
-        {
-            get => _AutosaveDocuments;
-            set
-            {
-                if (Set(ref _AutosaveDocuments, value))
-                {
-                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.AutosaveDocuments), value, SettingSaveMode.OverwriteIfExisting);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the collection of the available blur modes
-        /// </summary>
-        [UsedImplicitly, NotNull]
-        public IReadOnlyCollection<string> BlurModeOptions { get; } = new[]
-        {
-            LocalizationManager.GetResource("BackgroundBlur"),
-            LocalizationManager.GetResource("InAppBlur")
-        };
-
-        private int _BlurModeSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.InAppBlurMode));
-
-        /// <summary>
-        /// Gets or sets the selected index for the custom blur mode
-        /// </summary>
-        [UsedImplicitly]
-        public int BlurModeSelectedIndex
-        {
-            get => _BlurModeSelectedIndex;
-            set
-            {
-                if (Set(ref _BlurModeSelectedIndex, value))
-                {
-                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.InAppBlurMode), value, SettingSaveMode.OverwriteIfExisting);
-                    Messenger.Default.Send(new BlurModeChangedMessage(value));
-                }
             }
         }
 
@@ -256,7 +211,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
             await Task.Delay(500);
             iapAvailable = true;
 #else
-            if (_StoreContext == null) _StoreContext = StoreContext.GetDefault();
+            if (_StoreContext == null) _StoreContext = await Task.Run(() => StoreContext.GetDefault()); // Avoid UI hangs
             StoreAppLicense license = await _StoreContext.GetAppLicenseAsync();
             iapAvailable = license?.AddOnLicenses.FirstOrDefault(pair => pair.Key.Equals(ThemesPackID)).Value?.IsActive == true;
 #endif
@@ -351,6 +306,42 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
             }
         }
 
+        private bool _AutosaveDocuments = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutosaveDocuments));
+
+        /// <summary>
+        /// Gets or sets whether or not the IDE should automatically save the current document when leaving the app
+        /// </summary>
+        [UsedImplicitly]
+        public bool AutosaveDocuments
+        {
+            get => _AutosaveDocuments;
+            set
+            {
+                if (Set(ref _AutosaveDocuments, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.AutosaveDocuments), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
+
+        private bool _ProtectUnsavedChanges = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ProtectUnsavedChanges));
+
+        /// <summary>
+        /// Gets or sets whether or not to ask for confirmation when deleting unsaved changes in the IDE
+        /// </summary>
+        [UsedImplicitly]
+        public bool ProtectUnsavedChanges
+        {
+            get => _ProtectUnsavedChanges;
+            set
+            {
+                if (Set(ref _ProtectUnsavedChanges, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.ProtectUnsavedChanges), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
+
         private bool _ShowPBrainButtons = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.ShowPBrainButtons));
 
         /// <summary>
@@ -412,6 +403,50 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
                 if (Set(ref _StartingPageSelectedIndex, value))
                 {
                     AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.StartingPage), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the collection of the available memory sizes
+        /// </summary>
+        [UsedImplicitly, NotNull]
+        public IReadOnlyCollection<int> MemorySizeOptions { get; } = new[] { 32, 48, 64 };
+
+        private int _MemorySizeSelectedIndex = AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.InterpreterMemorySize));
+
+        /// <summary>
+        /// Gets or sets the selected index for the interpreter memory size
+        /// </summary>
+        [UsedImplicitly]
+        public int MemorySizeSelectedIndex
+        {
+            get => _MemorySizeSelectedIndex;
+            set
+            {
+                if (Set(ref _MemorySizeSelectedIndex, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.InterpreterMemorySize), value, SettingSaveMode.OverwriteIfExisting);
+                }
+            }
+        }
+
+        private bool _AutorunCodeInBackground = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutorunCodeInBackground));
+
+        /// <summary>
+        /// Gets or sets whether or not the app should periodically execute the code in the background
+        /// </summary>
+        [UsedImplicitly]
+        public bool AutorunCodeInBackground
+        {
+            get => _AutorunCodeInBackground;
+            set
+            {
+                if (Set(ref _AutorunCodeInBackground, value))
+                {
+                    AppSettingsManager.Instance.SetValue(nameof(AppSettingsKeys.AutorunCodeInBackground), value, SettingSaveMode.OverwriteIfExisting);
+                    Brainf_ckBackgroundExecutor.Instance.IsEnabled = value;
+                    if (!value) Messenger.Default.Send(new BackgroundExecutionDisabledMessage());
                 }
             }
         }

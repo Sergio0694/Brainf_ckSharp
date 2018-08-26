@@ -10,9 +10,10 @@ using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
-using Brainf_ck_sharp_UWP.Messages;
-using Brainf_ck_sharp_UWP.Messages.Actions;
+using Brainf_ck_sharp_UWP.Messages.IDE;
+using Brainf_ck_sharp_UWP.Messages.Requests;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.Resources;
@@ -91,7 +92,7 @@ namespace Brainf_ck_sharp_UWP
                     Window.Current.Activate(); // Hide the splash screen
                     await SQLiteManager.Instance.TrySyncSharedCodesAsync();
                     CategorizedSourceCode code = await SQLiteManager.Instance.TryLoadSavedCodeAsync(match.Groups[1].Value);
-                    if (code != null) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(code, ShourceCodeLoadingSource.Timeline));
+                    if (code != null) Messenger.Default.Send(new SourceCodeLoadingRequestedMessage(code, SavedCodeLoadingSource.Timeline));
                     else
                     {
                         Messenger.Default.Send(new AppLoadingStatusChangedMessage(false));
@@ -133,8 +134,12 @@ namespace Brainf_ck_sharp_UWP
             view.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseVisible);
 
             // Enable the key listener
-            KeyEventsListener.IsEnabled = true;
             Window.Current.Content = shell;
+            KeyEventsListener.Instance.IsEnabled = true; // Needs to be after assigning the content
+
+            // Additional setup
+            if (AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutorunCodeInBackground)))
+                Brainf_ckBackgroundExecutor.Instance.IsEnabled = true;
             return true;
         }
 
@@ -151,9 +156,7 @@ namespace Brainf_ck_sharp_UWP
             if (AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.AutosaveDocuments)))
             {
                 // Waits for the autosave to be completed
-                IDEAutosaveTriggeredMessage message = new IDEAutosaveTriggeredMessage();
-                Messenger.Default.Send(message);
-                await message.Autosave;
+                await Messenger.Default.RequestAsync<IDEAutosaveTriggeredMessage>();
             }
             deferral.Complete();
         }

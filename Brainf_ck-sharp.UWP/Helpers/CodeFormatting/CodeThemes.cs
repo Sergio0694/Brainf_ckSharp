@@ -1,5 +1,6 @@
 ﻿using Windows.UI;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 using JetBrains.Annotations;
 using Microsoft.Toolkit.Uwp.Helpers;
 

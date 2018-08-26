@@ -24,6 +24,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
         /// <summary>
         /// Gets the singleton instance of the manager to use in the app
         /// </summary>
+        [NotNull]
         public static AppSettingsManager Instance { get; } = new AppSettingsManager();
 
         #region Shared settings
@@ -110,7 +111,6 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
             SetValue(nameof(AppSettingsKeys.OverflowToggleMessageShown), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.ReviewPromptShown), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.AppStartups), 0u, SettingSaveMode.SkipIfExisting);
-            SetValue(nameof(AppSettingsKeys.InAppBlurMode), 0, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.AutoIndentBrackets), true, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.BracketsStyle), 0, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.TabLength), 4, SettingSaveMode.SkipIfExisting);
@@ -122,6 +122,9 @@ namespace Brainf_ck_sharp_UWP.Helpers.Settings
             SetValue(nameof(AppSettingsKeys.ClearStdinBufferOnExecution), true, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.ShowPBrainButtons), false, SettingSaveMode.SkipIfExisting);
             SetValue(nameof(AppSettingsKeys.StartingPage), 0, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.ProtectUnsavedChanges), false, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.AutorunCodeInBackground), true, SettingSaveMode.SkipIfExisting);
+            SetValue(nameof(AppSettingsKeys.InterpreterMemorySize), 2, SettingSaveMode.SkipIfExisting);
         }
 
         /// <summary>

@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.System;
 using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.IDEResults;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
 using Brainf_ck_sharp_UWP.ViewModels.Abstract.JumpList;
+using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
@@ -30,6 +32,14 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             RaiseBreakpointOptionsActiveStatusChanged(Session.CanContinue);
             await LoadGroupsAsync();
             InitializationCompleted?.Invoke(this, EventArgs.Empty);
+
+            // Shortcuts
+            if (!Session.CanContinue) return;
+            Messenger.Default.Register<CtrlShortcutPressedMessage>(this, m =>
+            {
+                if (m.Key == VirtualKey.F10 && m.Modifiers == VirtualKeyModifiers.Control) ManageDebugSessionAsync(false);
+                else if (m.Key == VirtualKey.F11 && m.Modifiers == VirtualKeyModifiers.Control) ManageDebugSessionAsync(true);
+            });
         }
 
         /* ===================
@@ -81,7 +91,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 source.Add(GroupFromSection(IDEResultSection.SourceCode));
 
                 // Add the memory state and the statistics only if the code was executed
-                if (!Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.MismatchedParentheses))
+                if (!Session.CurrentResult.ExitCode.HasFlag(InterpreterExitCode.SyntaxError))
                 {
                     // Functions, if present
                     if (Session.CurrentResult.Functions.Count > 0)
@@ -106,6 +116,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         /// <inheritdoc/>
         public override void Cleanup()
         {
+            Messenger.Default.Unregister(this);
             Session.Dispose();
             Session = null;
             base.Cleanup();
@@ -145,20 +156,29 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             }
         }
 
+        // Indicates whether or not a debug operation is already being processed
+        private bool _DebugInProgress;
+
         // Continues a script from its current state
         private async void ManageDebugSessionAsync(bool runToCompletion)
         {
+            // Lock using the current dispatcher as context
+            if (_DebugInProgress || !Session.CanContinue) return;
+            _DebugInProgress = true;
+
+            // Process the debug step
             LoadingStateChanged?.Invoke(this, true);
-            await Task.Delay(500);
+            await Task.Delay(250);
             await Task.Run(() =>
             {
                 if (runToCompletion) Session.RunToCompletion();
                 else Session.Continue();
             });
             await LoadGroupsAsync();
-            await Task.Delay(500);
+            await Task.Delay(250);
             LoadingStateChanged?.Invoke(this, false);
             RaiseBreakpointOptionsActiveStatusChanged(Session.CanContinue);
+            _DebugInProgress = false;
         }
 
         /// <summary>

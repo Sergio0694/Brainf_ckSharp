@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Brainf_ck_sharp;
 using Brainf_ck_sharp_UWP.DataModels;
@@ -11,6 +10,7 @@ using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
 using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.SQLiteDatabase;
@@ -22,6 +22,12 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
 {
     public class LocalSourceCodesBrowserFlyoutViewModel : DeferredJumpListViewModelBase<SavedSourceCodeType, CategorizedSourceCodeWithSyntaxInfo>
     {
+        // The currently opened code in the IDE
+        [CanBeNull]
+        private readonly SourceCode LoadedCode;
+
+        public LocalSourceCodesBrowserFlyoutViewModel([CanBeNull] SourceCode code) => LoadedCode = code;
+
         protected override async Task<IList<JumpListGroup<SavedSourceCodeType, CategorizedSourceCodeWithSyntaxInfo>>> OnLoadGroupsAsync()
         {
             IList<GroupedSourceCodesCategory> categories = await SQLiteManager.Instance.LoadSavedCodesAsync();
@@ -30,7 +36,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                  where category.Items.Count > 0
                  let items =
                  from code in category.Items
-                 select new CategorizedSourceCodeWithSyntaxInfo(category.Type, code)
+                 select new CategorizedSourceCodeWithSyntaxInfo(category.Type, code, LoadedCode?.Uid.Equals(code.Uid) == true)
                  select new JumpListGroup<SavedSourceCodeType, CategorizedSourceCodeWithSyntaxInfo>(category.Type, items)).ToArray());
         }
 
@@ -117,21 +123,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             string @fixed = code.Code.Replace("\r", "\r\n"); // Adjust the new line character
             switch (mode)
             {
-                case SourceCodeShareType.Clipboard:
-                    
-                    // Try to perform the copy operation
-                    try
-                    {
-                        DataPackage package = new DataPackage { RequestedOperation = DataPackageOperation.Copy };
-                        package.SetText(@fixed);
-                        Clipboard.SetContent(package);
-                        return true;
-                    }
-                    catch
-                    {
-                        // Whops!
-                        return false;
-                    }
+                case SourceCodeShareType.Clipboard: return @fixed.TryCopyToClipboard(true);
                 case SourceCodeShareType.OSShare:
                     ShareCharmsHelper.ShareText(code.Title, @fixed);
                     return true;

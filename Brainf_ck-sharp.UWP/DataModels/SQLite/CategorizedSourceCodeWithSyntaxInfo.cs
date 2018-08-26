@@ -16,14 +16,21 @@ namespace Brainf_ck_sharp_UWP.DataModels.SQLite
         public bool IsSyntaxValid { get; }
 
         /// <summary>
+        /// Gets whether or not the IDE is currently opened on this saved code
+        /// </summary>
+        public bool IsSelected { get; }
+
+        /// <summary>
         /// Creates a new instance that wraps a saved source code and its syntax info
         /// </summary>
         /// <param name="type">The category for the source code to wrap</param>
         /// <param name="code">The current source code</param>
-        public CategorizedSourceCodeWithSyntaxInfo(SavedSourceCodeType type, [NotNull] SourceCode code) : base(type, code)
+        /// <param name="selected">Indicates whether or not this code is currently opened in the IDE</param>
+        public CategorizedSourceCodeWithSyntaxInfo(SavedSourceCodeType type, [NotNull] SourceCode code, bool selected = false) : base(type, code)
         {
             SyntaxValidationResult result = Brainf_ckInterpreter.CheckSourceSyntax(code.Code);
             IsSyntaxValid = result.Valid;
+            IsSelected = selected;
         }
     }
 }

@@ -48,9 +48,6 @@
   <data name="ThresholdExceeded" xml:space="preserve">
     <value>Limite di tempo superato</value>
   </data>
-  <data name="WrongBrackets" xml:space="preserve">
-    <value>Parentesi non corrispondenti</value>
-  </data>
   <data name="run" xml:space="preserve">
     <value>esegui</value>
   </data>
@@ -63,9 +60,6 @@
   </data>
   <data name="InternalError" xml:space="preserve">
     <value>errore</value>
-  </data>
-  <data name="SyntaxError" xml:space="preserve">
-    <value>errore sintassi</value>
   </data>
   <data name="Threshold" xml:space="preserve">
     <value>errore runtime</value>
@@ -125,18 +119,8 @@
   <data name="Stats" xml:space="preserve">
     <value>Statistiche</value>
   </data>
-  <data name="Loops" xml:space="preserve">
-    <value>cicli annidati</value>
-    <comment>This will be "n nested loops"</comment>
-  </data>
   <data name="MemoryCells" xml:space="preserve">
     <value>celle di memoria</value>
-  </data>
-  <data name="NoLoops" xml:space="preserve">
-    <value>Nessun ciclo annidato</value>
-  </data>
-  <data name="SingleLoop" xml:space="preserve">
-    <value>1 ciclo annidato</value>
   </data>
   <data name="LowercaseAtPosition" xml:space="preserve">
     <value>in posizione</value>
@@ -408,17 +392,8 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="AutoIndentTitle.Text" xml:space="preserve">
     <value>Indenta automaticamente parentesi</value>
   </data>
-  <data name="BackgroundBlur" xml:space="preserve">
-    <value>Sfocatura sfondo</value>
-  </data>
-  <data name="BlurModeTitle.Text" xml:space="preserve">
-    <value>Modalità blur preferita</value>
-  </data>
   <data name="BracketsStyleTitle.Text" xml:space="preserve">
     <value>Formattazione parentesi</value>
-  </data>
-  <data name="InAppBlur" xml:space="preserve">
-    <value>Sfocatura in-app</value>
   </data>
   <data name="NewLine" xml:space="preserve">
     <value>A capo</value>
@@ -459,9 +434,6 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   </data>
   <data name="LowercaseAvailableSettings" xml:space="preserve">
     <value>impostazioni disponibili</value>
-  </data>
-  <data name="LowercaseSingleAvailableSettings" xml:space="preserve">
-    <value>impostazione disponibile</value>
   </data>
   <data name="ThemesPackLocked" xml:space="preserve">
     <value>pacchetto temi bloccato</value>
@@ -664,7 +636,7 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
     <value>Puoi mandarmi un messaggio email in qualsiasi momento se hai suggerimenti o feedback, o se hai trovato un bug, e sarò felice di aiutare.</value>
   </data>
   <data name="WelcomePart4.Text" xml:space="preserve">
-    <value>Prima di passare subito all'azione, è una buona idea leggere la guida dell'app per essere sicuri di ricordarsi tutto ciò che c'è da sapere sul linguaggio!</value>
+    <value>Prima di passare subito all'azione, dai un'occhiata alla guida dell'app per essere sicuro di conoscere tutto ciò che c'è da sapere sul linguaggio!</value>
   </data>
   <data name="MoveButton.Label" xml:space="preserve">
     <value>Sposta cursore</value>
@@ -731,5 +703,110 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   </data>
   <data name="ErrorRun.Text" xml:space="preserve">
     <value>Errore</value>
+  </data>
+  <data name="MoreStackFrames" xml:space="preserve">
+    <value>stack frame</value>
+  </data>
+  <data name="OneStackFrame" xml:space="preserve">
+    <value>1 stack frame</value>
+  </data>
+  <data name="SharedFromBrainf_ck" xml:space="preserve">
+    <value>Condiviso da Brainf*ck#</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="UnsavedChangesClear" xml:space="preserve">
+    <value>Ci sono modifiche non salvate nell'IDE, che verranno perse pulendo lo schermo ora. Sei sicuro di voler continuare? Se vuoi annullare, chiudi semplicemente questo popup.</value>
+  </data>
+  <data name="UnsavedChangesLoading" xml:space="preserve">
+    <value>Ci sono modifiche non salvate nell'IDE, che verranno perse caricando un nuovo codice sorgente ora. Sei sicuro di voler continuare? Se vuoi annullare, chiudi semplicemente questo popup.</value>
+  </data>
+  <data name="UnsavedChangesTitle" xml:space="preserve">
+    <value>Modifiche non salvate</value>
+  </data>
+  <data name="ProtectUnsavedChanges.Text" xml:space="preserve">
+    <value>Proteggi modifiche non salvate</value>
+  </data>
+  <data name="AutorunCodeInBackground.Text" xml:space="preserve">
+    <value>Controlla il codice in background</value>
+  </data>
+  <data name="NoCodeInterpreted" xml:space="preserve">
+    <value>Nessun operatore presente</value>
+  </data>
+  <data name="KeyboardShortcutsDescription" xml:space="preserve">
+    <value>Diventa più produttivo e risparmia tempo</value>
+  </data>
+  <data name="UserGuideKeyboardShortcuts" xml:space="preserve">
+    <value>Scorciatoie da tastiera</value>
+  </data>
+  <data name="GuideShortcutsDebug1.Description" xml:space="preserve">
+    <value>Continua l'esecuzione in modalità debug</value>
+  </data>
+  <data name="GuideShortcutsDebug2.Description" xml:space="preserve">
+    <value>Continua ed ignora breakpoint successivi</value>
+  </data>
+  <data name="GuideShortcutsDebugIntroduction.Text" xml:space="preserve">
+    <value>La modalità debug offre alcune scorciatoie aggiuntive:</value>
+  </data>
+  <data name="GuideShortcutsIntroduction.Text" xml:space="preserve">
+    <value>Alcune delle operazioni più comuni nell'app dispongono anche di una scorciatoia da tastiera che può essere usata per velocizzarne l'utilizzo. Ecco la lista completa:</value>
+  </data>
+  <data name="GuideShortcutsItem1.Description" xml:space="preserve">
+    <value>Esegue lo script visualizzato</value>
+  </data>
+  <data name="GuideShortcutsItem2.Description" xml:space="preserve">
+    <value>Nell'IDE, esegue il codice in modalità debug, se possibile</value>
+  </data>
+  <data name="GuideShortcutsItem3.Description" xml:space="preserve">
+    <value>Salva lo script presente nell'IDE</value>
+  </data>
+  <data name="GuideShortcutsItem4.Description" xml:space="preserve">
+    <value>Salva lo script con un nome (diverso)</value>
+  </data>
+  <data name="GuideShortcutsItem5.Description" xml:space="preserve">
+    <value>Mostra la mappa dei caratteri Unicode</value>
+  </data>
+  <data name="GuideShortcutsItem6.Description" xml:space="preserve">
+    <value>Nella console, mostra lo stato della memoria</value>
+  </data>
+  <data name="GuideShortcutsItem7.Description" xml:space="preserve">
+    <value>Nell'IDE, apre la libreria dei codici salvati</value>
+  </data>
+  <data name="GuideShortcutsItem8.Description" xml:space="preserve">
+    <value>Mostra le impostazioni dell'app</value>
+  </data>
+  <data name="CopyButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Copia</value>
+  </data>
+  <data name="CutButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Taglia</value>
+  </data>
+  <data name="PasteButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Incolla</value>
+  </data>
+  <data name="SnippetDuplicateValue" xml:space="preserve">
+    <value>Duplica valore</value>
+  </data>
+  <data name="SnippetInlineLoop" xml:space="preserve">
+    <value>Loop inline</value>
+  </data>
+  <data name="SnippetResetCell" xml:space="preserve">
+    <value>Resetta cella</value>
+  </data>
+  <data name="ED2D332A-1735-4DD9-A909-59F1587AA17F" xml:space="preserve">
+    <value>Divisione intera</value>
+  </data>
+  <data name="SyntaxError" xml:space="preserve">
+    <value>Errore di sintassi</value>
+  </data>
+  <data name="SnippetNestedLoop" xml:space="preserve">
+    <value>Ciclo annidato</value>
+  </data>
+  <data name="MemorySize.Text" xml:space="preserve">
+    <value>Dimensione memoria</value>
+  </data>
+  <data name="StackFramesShort" xml:space="preserve">
+    <value>frame</value>
   </data>
 </root>

@@ -184,7 +184,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
 
         // The list of shortcut keys to ignore
         [NotNull]
-        private readonly HashSet<VirtualKey> SkippedShortcuts = new HashSet<VirtualKey>(new[] { VirtualKey.A, VirtualKey.E, VirtualKey.R, VirtualKey.J, VirtualKey.L });
+        private readonly HashSet<VirtualKey> SkippedShortcuts = new HashSet<VirtualKey>(new[] { VirtualKey.E, VirtualKey.R, VirtualKey.J, VirtualKey.L });
 
         /// <inheritdoc cref="RichEditBox"/>
         protected override void OnKeyDown(KeyRoutedEventArgs e)

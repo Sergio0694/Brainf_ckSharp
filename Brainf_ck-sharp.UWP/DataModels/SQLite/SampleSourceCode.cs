@@ -1,4 +1,4 @@
-﻿using Brainf_ck_sharp_UWP.Helpers;
+﻿using Brainf_ck_sharp_UWP.Helpers.UI;
 using SQLite.Net.Attributes;
 
 namespace Brainf_ck_sharp_UWP.DataModels.SQLite

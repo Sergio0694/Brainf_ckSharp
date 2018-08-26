@@ -1,20 +1,14 @@
-﻿namespace Brainf_ck_sharp_UWP.Messages.Actions
+﻿using Brainf_ck_sharp_UWP.Messages.Abstract;
+
+namespace Brainf_ck_sharp_UWP.Messages.Actions
 {
     /// <summary>
     /// A message that signals whenever the user requests to save a source code he's working on
     /// </summary>
-    public sealed class SaveSourceCodeRequestMessage
+    public sealed class SaveSourceCodeRequestMessage : ValueChangedMessageBase<CodeSaveType>
     {
-        /// <summary>
-        /// Gets the type of request made by the user
-        /// </summary>
-        public CodeSaveType RequestType { get; }
-
-        /// <summary>
-        /// Creates a new instance of the given type
-        /// </summary>
-        /// <param name="request">The request type to wrap</param>
-        public SaveSourceCodeRequestMessage(CodeSaveType request) => RequestType = request;
+        /// <inheritdoc cref="ValueChangedMessageBase{T}"/>
+        public SaveSourceCodeRequestMessage(CodeSaveType request) : base(request) { }
     }
 
     /// <summary>

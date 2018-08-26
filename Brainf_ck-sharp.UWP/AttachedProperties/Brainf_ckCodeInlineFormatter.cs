@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -8,9 +7,9 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp;
-using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.AttachedProperties
@@ -46,6 +45,11 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
             // Unpack the arguments
             Span @this = d.To<Span>();
             string raw = e.NewValue.To<string>();
+            if (string.IsNullOrEmpty(raw))
+            {
+                @this.Inlines.Clear();
+                return; // It's a trap!
+            }
 
             // Parse the input code
             StringBuilder builder = new StringBuilder();
@@ -103,44 +107,109 @@ namespace Brainf_ck_sharp_UWP.AttachedProperties
             DependencyProperty.RegisterAttached("StackTrace", typeof(IReadOnlyList<string>), typeof(Brainf_ckCodeInlineFormatter), 
                 new PropertyMetadata(DependencyProperty.UnsetValue, OnStackTracePropertyPropertyChanged));
 
+        /// <summary>
+        /// Compresses a stack trace by aggregating recursive calls
+        /// </summary>
+        /// <param name="frames">The input list of stack frames</param>
+        [Pure, NotNull]
+        public static IEnumerable<(string Item, int Occurrences, int Length)> CompressStackTrace([NotNull, ItemNotNull] IReadOnlyList<string> frames)
+        {
+            frames = frames.Reverse().ToArray(); // Needed to process the items from the bottom up
+            int i = 0;
+            List<(int Length, int Occurrences)> info = new List<(int, int)>();
+            while (i < frames.Count)
+            {
+                for (int step = 1; step < 5 && i + step * 2 - 1 < frames.Count; step++)
+                {
+                    // Find a valid sub-pattern of a given length
+                    bool valid = true;
+                    for (int j = 0; j < step; j++)
+                        if (!frames[i + j].Equals(frames[i + step + j]))
+                        {
+                            valid = false;
+                            break;
+                        }
+                    if (!valid) continue;
+
+                    // Check of many times the pattern repeats
+                    int occurrences = 2;
+                    for (int j = i + step * 2; j + step - 1 < frames.Count; j += step)
+                    {
+                        valid = true;
+                        for (int k = 0; k < step; k++)
+                            if (!frames[i + k].Equals(frames[j + k]))
+                            {
+                                valid = false;
+                                break;
+                            }
+                        if (valid) occurrences++;
+                    }
+
+                    // Store the current sub-sequence info
+                    info.Add((step, occurrences));
+                }
+
+                // Return the current compressed chunk
+                if (info.Count == 0)
+                {
+                    yield return (frames[i], 1, 1);
+                    i += 1;
+                }
+                else
+                {
+                    var best = info.OrderByDescending(item => item.Length * item.Occurrences).ThenBy(item => item.Length).First();
+                    StringBuilder builder = new StringBuilder();
+                    for (int j = 0; j < best.Length; j++)
+                        builder.Append(frames[i + j]);
+                    string call = builder.ToString();
+                    if (call.Contains(':'))
+                    {
+                        // Only aggregate recursive calls
+                        yield return (call, best.Occurrences, best.Length);
+                        i += best.Length * best.Occurrences;
+                    }
+                    else
+                    {
+                        // The repeated loops are just user code
+                        yield return (frames[i], 1, 1);
+                        i += 1;
+                    }
+                }
+                info.Clear();
+            }
+        }
+
         private static void OnStackTracePropertyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Span @this = d.To<Span>();
             IReadOnlyList<string> stack = e.NewValue.To<IReadOnlyList<string>>();
+            if (stack == null)
+            {
+                @this.Inlines.Clear();
+                return; // Fall back!
+            }
             List<Inline> inlines = new List<Inline>();
-            int depth = 0;
-            bool skipped = false;
-            int count = -1;
-            foreach ((string call, int occurrences) in stack.CompressEqual((s1, s2) => s1.Equals(s2)))
+            bool first = true;
+            foreach (var entry in CompressStackTrace(stack).Reverse())
             {
                 // Insert the "at" separator if needed
-                if (depth > 0)
-                {
-                    if (skipped) skipped = false;
-                    else
-                    {
-                        inlines.Add(new LineBreak());
-                        inlines.Add(new Run
-                        {
-                            Text = $"at {(count > 1 ? $"[{count} {LocalizationManager.GetResource("StackFrames")}]" : string.Empty)}",
-                            Foreground = new SolidColorBrush(Colors.DimGray),
-                            FontSize = @this.FontSize - 1
-                        });
-                        inlines.Add(new LineBreak());
-                    }
-                }
-
-                // Skip the first line if it's empty
-                if (call.Length == 0 && !skipped) skipped = true;
+                if (first) first = false;
                 else
                 {
-                    // Add the formatted call line
-                    Span line = new Span();
-                    SetSource(line, call);
-                    inlines.Add(line);
+                    inlines.Add(new LineBreak());
+                    inlines.Add(new Run
+                    {
+                        Text = $"at{(entry.Occurrences > 1 ? $" [{entry.Occurrences * entry.Length} {LocalizationManager.GetResource("StackFramesShort")}]" : string.Empty)}",
+                        Foreground = new SolidColorBrush(Colors.DimGray),
+                        FontSize = @this.FontSize - 1
+                    });
+                    inlines.Add(new LineBreak());
                 }
-                count = occurrences;
-                depth++;
+
+                // Add the formatted call line
+                Span line = new Span();
+                SetSource(line, entry.Item);
+                inlines.Add(line);
             }
             @this.Inlines.Clear();
             foreach (Inline inline in inlines) @this.Inlines.Add(inline);

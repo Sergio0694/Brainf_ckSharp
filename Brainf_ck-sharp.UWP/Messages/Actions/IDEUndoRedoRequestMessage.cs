@@ -1,20 +1,14 @@
-﻿namespace Brainf_ck_sharp_UWP.Messages.Actions
+﻿using Brainf_ck_sharp_UWP.Messages.Abstract;
+
+namespace Brainf_ck_sharp_UWP.Messages.Actions
 {
     /// <summary>
     /// A message that indicates a user request to either undo or redo the latest IDE changes
     /// </summary>
-    public sealed class IDEUndoRedoRequestMessage
+    public sealed class IDEUndoRedoRequestMessage : ValueChangedMessageBase<UndoRedoOperation>
     {
-        /// <summary>
-        /// Gets the requested operation to perform
-        /// </summary>
-        public UndoRedoOperation Operation { get; }
-
-        /// <summary>
-        /// Creates a new request for the given operation
-        /// </summary>
-        /// <param name="operation">Indicates which operation was requested by the user</param>
-        public IDEUndoRedoRequestMessage(UndoRedoOperation operation) => Operation = operation;
+        /// <inheritdoc cref="ValueChangedMessageBase{T}"/>
+        public IDEUndoRedoRequestMessage(UndoRedoOperation operation) : base(operation) { }
     }
 
     /// <summary>

@@ -15,7 +15,7 @@
 
         <!--Introduction-->
         <DataTemplate x:Key="IntroductionSectionTemplate">
-            <sections:LanguageIntroductionControl Margin="12,4,16,8"/>
+            <sections:LanguageIntroductionGuideControl Margin="12,4,16,8"/>
         </DataTemplate>
 
         <!--Code samples-->
@@ -28,9 +28,13 @@
             <sections:PBrainGuideControl Margin="12,4,16,8"/>
         </DataTemplate>
 
-        <!--Code samples-->
+        <!--Debugging-->
         <DataTemplate x:Key="DebuggingSectionTemplate">
-            <sections:DebuggingGuideControl Margin="12,4,16,12"/>
+            <sections:DebuggingGuideControl Margin="12,4,16,8"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="KeyboardShortcutsSectionTemplate">
+            <sections:KeyboardShortcutsGuideControl Margin="12,4,16,12"/>
         </DataTemplate>
 
         <!--Template selector-->

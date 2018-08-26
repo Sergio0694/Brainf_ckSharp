@@ -116,7 +116,6 @@
     <Compile Include="AttachedProperties\BulletListHelper.cs" />
     <Compile Include="AttachedProperties\CharacterToRotationHelper.cs" />
     <Compile Include="AttachedProperties\CustomPolygonBorderAngleHelper.cs" />
-    <Compile Include="AttachedProperties\RunInlineHelper.cs" />
     <Compile Include="Converters\BoolToAccentBrushOrFallbackConverter.cs" />
     <Compile Include="Converters\BoolToColorBrushConverter.cs" />
     <Compile Include="Converters\BoolToInvertedVisibilityConverter.cs" />
@@ -164,6 +163,7 @@
     <Compile Include="DataModels\IDEResults\IDEResultSectionStateData.cs" />
     <Compile Include="DataModels\JumpListGroup.cs" />
     <Compile Include="DataModels\Misc\CharactersInfo\CharacterWithArea.cs" />
+    <Compile Include="DataModels\Misc\CodeSnippet.cs" />
     <Compile Include="DataModels\Misc\Coordinate.cs" />
     <Compile Include="DataModels\Misc\GitDiffLineStatus.cs" />
     <Compile Include="DataModels\Misc\IDEIndentationGuides\IDEIndentationInfoOpenLoopBracketType.cs" />
@@ -188,45 +188,61 @@
     <Compile Include="DataModels\SQLite\SampleSourceCode.cs" />
     <Compile Include="DataModels\SQLite\SourceCode.cs" />
     <Compile Include="DataModels\SQLite\Enums\SourceCodeTitleScore.cs" />
-    <Compile Include="Enums\ShourceCodeLoadingSource.cs" />
+    <Compile Include="Enums\AppSection.cs" />
+    <Compile Include="Enums\ClipboardOperation.cs" />
+    <Compile Include="Enums\SavedCodeLoadingSource.cs" />
     <Compile Include="Enums\SourceCodeShareType.cs" />
     <Compile Include="Enums\UserGuideSection.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\AsyncMutex.cs" />
+    <Compile Include="Helpers\Brainf_ckBackgroundExecutor.cs" />
     <Compile Include="Helpers\CodeFormatting\CodeThemes.cs" />
     <Compile Include="DataModels\Misc\Themes\LineHighlightStyle.cs" />
     <Compile Include="Helpers\CodeFormatting\InstalledFont.cs" />
-    <Compile Include="Helpers\ComboBoxDataTemplateSelector.cs" />
+    <Compile Include="Helpers\Settings\AppSettingsParser.cs" />
+    <Compile Include="Helpers\UI\ComboBoxDataTemplateSelector.cs" />
     <Compile Include="Helpers\Extensions\TextExtensions.cs" />
-    <Compile Include="Helpers\LauncherHelper.cs" />
     <Compile Include="Helpers\Settings\AppSettingsKeys.cs" />
     <Compile Include="Helpers\Settings\AppSettingsManager.cs" />
-    <Compile Include="Helpers\EmailHelper.cs" />
+    <Compile Include="Helpers\WindowsAPIs\ClipboardHelper.cs" />
+    <Compile Include="Helpers\WindowsAPIs\EmailHelper.cs" />
     <Compile Include="Helpers\Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\Extensions\_IEnumerableExtensions.cs" />
     <Compile Include="Helpers\Settings\SettingSaveMode.cs" />
     <Compile Include="Helpers\StorageHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\ShareCharmsHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\TimelineManager.cs" />
+    <Compile Include="Messages\Abstract\ValueChangedMessageBase.cs" />
+    <Compile Include="Messages\Actions\CharacterReceivedMessage.cs" />
     <Compile Include="Messages\Actions\DebugStatusChangedMessage.cs" />
-    <Compile Include="Messages\Actions\IDEAutosaveTriggeredMessage.cs" />
+    <Compile Include="Messages\IDE\ClipboardOperationRequestMessage.cs" />
+    <Compile Include="Messages\IDE\CodeSnippetSelectedMessage.cs" />
+    <Compile Include="Messages\KeyboardShortcuts\DeleteKeyPressedMessage.cs" />
+    <Compile Include="Messages\Requests\BackgroundExecutionInputRequestMessage.cs" />
+    <Compile Include="Messages\Requests\CurrentAppSectionInfoRequestMessage.cs" />
+    <Compile Include="Messages\Requests\IDEAutosaveTriggeredMessage.cs" />
     <Compile Include="Messages\Actions\IDEDeleteCharacterRequestMessage.cs" />
     <Compile Include="Messages\Actions\IDENewLineRequestedMessage.cs" />
     <Compile Include="Messages\Actions\IDEUndoRedoRequestMessage.cs" />
     <Compile Include="Messages\Actions\SaveButtonsEnabledStatusChangedMessage.cs" />
     <Compile Include="Messages\Actions\VirtualArrowKeyPressedMessage.cs" />
-    <Compile Include="Messages\IDEStatus\IDEPendingChangesStatusChangedMessage.cs" />
-    <Compile Include="Messages\IDEStatus\WorkingSourceCodeChangedMessage.cs" />
+    <Compile Include="Messages\IDE\IDEPendingChangesStatusChangedMessage.cs" />
+    <Compile Include="Messages\Requests\IDEUnsavedChangesRequestMessage.cs" />
+    <Compile Include="Messages\IDE\WorkingSourceCodeChangedMessage.cs" />
     <Compile Include="Messages\KeyboardShortcuts\CtrlShortcutPressedMessage.cs" />
     <Compile Include="Messages\KeyboardShortcuts\EscKeyPressedMessage.cs" />
+    <Compile Include="Messages\Requests\MessengerRequestExtensions.cs" />
+    <Compile Include="Messages\UI\BackgroundExecutionDisabledMessage.cs" />
+    <Compile Include="Messages\UI\BackgroundExecutionStatusChangedMessage.cs" />
+    <Compile Include="Messages\Requests\Abstract\RequestMessageBase.cs" />
     <Compile Include="Messages\UI\AppLoadingStatusChangedMessage.cs" />
     <Compile Include="Messages\Flyouts\NotificationCloseRequestmessage.cs" />
-    <Compile Include="Messages\IDEStatus\BreakpointErrorStatusChangedMessage.cs" />
-    <Compile Include="Messages\OverflowModeChangedMessage.cs" />
-    <Compile Include="Messages\UI\BlurModeChangedMessage.cs" />
+    <Compile Include="Messages\IDE\BreakpointErrorStatusChangedMessage.cs" />
+    <Compile Include="Messages\Settings\OverflowModeChangedMessage.cs" />
     <Compile Include="Messages\UI\IDEDisplayRequestMessage.cs" />
-    <Compile Include="Messages\UI\IDESettingsChangedMessage.cs" />
+    <Compile Include="Messages\Settings\IDESettingsChangedMessage.cs" />
     <Compile Include="Messages\UI\IDEThemePreviewFontChangedMessage.cs" />
-    <Compile Include="Messages\UI\PBrainButtonsVisibilityChangedMessage.cs" />
+    <Compile Include="Messages\Settings\PBrainButtonsVisibilityChangedMessage.cs" />
     <Compile Include="PopupService\Interfaces\IAsyncLoadedContent.cs" />
     <Compile Include="PopupService\Interfaces\IBusyWorkingContent.cs" />
     <Compile Include="PopupService\InternalTypes\Offset.cs" />
@@ -241,12 +257,12 @@
     <Compile Include="Helpers\Extensions\MiscExtensions.cs" />
     <Compile Include="Helpers\Extensions\NumericExtensions.cs" />
     <Compile Include="Helpers\Extensions\UIExtensions.cs" />
-    <Compile Include="Helpers\IndexedModelWithValue.cs" />
-    <Compile Include="Helpers\LocalizationManager.cs" />
-    <Compile Include="Helpers\MenuFlyoutHelper.cs" />
-    <Compile Include="Helpers\XAMLResourcesHelper.cs" />
+    <Compile Include="DataModels\IndexedModelWithValue.cs" />
+    <Compile Include="Helpers\UI\LocalizationManager.cs" />
+    <Compile Include="Helpers\UI\MenuFlyoutHelper.cs" />
+    <Compile Include="Helpers\UI\XAMLResourcesHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\KeyEventsListener.cs" />
-    <Compile Include="Helpers\WindowsAPIs\ResolutionHelper.cs" />
+    <Compile Include="Helpers\WindowsAPIs\ApplicationViewHelper.cs" />
     <Compile Include="Helpers\WindowsAPIs\TitleBarHelper.cs" />
     <Compile Include="Messages\Actions\ClearConsoleLineMessage.cs" />
     <Compile Include="Messages\Actions\ClearScreenMessage.cs" />
@@ -260,11 +276,11 @@
     <Compile Include="Messages\Flyouts\FlyoutClosedNotificationMessage.cs" />
     <Compile Include="Messages\Flyouts\FlyoutCloseRequestMessage.cs" />
     <Compile Include="Messages\Flyouts\FlyoutOpenedMessage.cs" />
-    <Compile Include="Messages\IDEStatus\ConsoleStatusUpdateMessage.cs" />
-    <Compile Include="Messages\IDEStatus\IDEStatusUpdateMessage.cs" />
-    <Compile Include="Messages\IDEStatus\IDEStatusUpdateMessageBase.cs" />
-    <Compile Include="Messages\OperatorAddedMessage.cs" />
-    <Compile Include="Messages\SourceCodeLoadingRequestedMessage.cs" />
+    <Compile Include="Messages\IDE\ConsoleStatusUpdateMessage.cs" />
+    <Compile Include="Messages\IDE\IDEStatusUpdateMessage.cs" />
+    <Compile Include="Messages\IDE\IDEStatusUpdateMessageBase.cs" />
+    <Compile Include="Messages\UI\OperatorAddedMessage.cs" />
+    <Compile Include="Messages\IDE\SourceCodeLoadingRequestedMessage.cs" />
     <Compile Include="PopupService\Misc\NotificationType.cs" />
     <Compile Include="PopupService\NotificationsManager.cs" />
     <Compile Include="PopupService\UI\NotificationPopup.xaml.cs">
@@ -320,6 +336,12 @@
     <Compile Include="UserControls\DataTemplates\JumpList\JumpListZoomedOutHeaderTemplate.xaml.cs">
       <DependentUpon>JumpListZoomedOutHeaderTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\DataTemplates\SnippetsMenu\CodeSnippetTemplate.xaml.cs">
+      <DependentUpon>CodeSnippetTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DataTemplates\SnippetsMenu\ContextMenuIconButtonTemplate.xaml.cs">
+      <DependentUpon>ContextMenuIconButtonTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Flyouts\DevInfo\ChangelogViewFlyout.xaml.cs">
       <DependentUpon>ChangelogViewFlyout.xaml</DependentUpon>
     </Compile>
@@ -362,6 +384,12 @@
     <Compile Include="UserControls\Flyouts\Settings\Sections\UISettingsSection.xaml.cs">
       <DependentUpon>UISettingsSection.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Flyouts\SnippetsMenu\FullCodeSnippetsBrowserFlyout.xaml.cs">
+      <DependentUpon>FullCodeSnippetsBrowserFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Flyouts\SnippetsMenu\TouchCodeSnippetsBrowserFlyout.xaml.cs">
+      <DependentUpon>TouchCodeSnippetsBrowserFlyout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Flyouts\UserGuide\CodeSamples\BreakpointCodePreviewControl.xaml.cs">
       <DependentUpon>BreakpointCodePreviewControl.xaml</DependentUpon>
     </Compile>
@@ -380,19 +408,23 @@
     <Compile Include="UserControls\Flyouts\UserGuide\Sections\DebuggingGuideControl.xaml.cs">
       <DependentUpon>DebuggingGuideControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Flyouts\UserGuide\Sections\KeyboardShortcutsGuideControl.xaml.cs">
+      <DependentUpon>KeyboardShortcutsGuideControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Flyouts\UserGuide\Sections\PBrainGuideControl.xaml.cs">
       <DependentUpon>PBrainGuideControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\UserGuide\Sections\LanguageIntroductionControl.xaml.cs">
-      <DependentUpon>LanguageIntroductionControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Flyouts\UserGuide\Sections\LanguageIntroductionGuideControl.xaml.cs">
+      <DependentUpon>LanguageIntroductionGuideControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Flyouts\UserGuide\OperatorDescriptionControl.xaml.cs">
-      <DependentUpon>OperatorDescriptionControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Flyouts\UserGuide\Templates\GuideItemDescriptionControl.xaml.cs">
+      <DependentUpon>GuideItemDescriptionControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Flyouts\UserGuide\UserGuideViewerControl.xaml.cs">
       <DependentUpon>UserGuideViewerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\InheritedControls\AnimatedComboBox.cs" />
+    <Compile Include="UserControls\InheritedControls\ButtonWithFlyoutVisualStates.cs" />
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CommandBarWithButtonsAnimations.cs" />
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CustomCommandBarButton.cs" />
     <Compile Include="UserControls\DataTemplates\CompactCharactersChunkViewerTemplate.xaml.cs">
@@ -469,7 +501,9 @@
     <Compile Include="ViewModels\FlyoutsViewModels\ChangelogViewFlyoutViewModel.cs" />
     <Compile Include="ViewModels\CompactCharactersViewerControlViewModel.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\CodeSnippetsBrowserViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\ConsoleFullMemoryViewerControlViewModel.cs" />
+    <Compile Include="ViewModels\FlyoutsViewModels\CustomRichEditBoxContextMenuViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\IDERunResultFlyoutViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\Settings\SettingsJumpListViewModel.cs" />
     <Compile Include="ViewModels\FlyoutsViewModels\Settings\SettingsViewModel.cs" />
@@ -484,6 +518,7 @@
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ICodeWorkspacePage.cs" />
     <Compile Include="Views\IDEView.xaml.cs">
       <DependentUpon>IDEView.xaml</DependentUpon>
     </Compile>
@@ -554,13 +589,16 @@
     <Content Include="Assets\Misc\Twitter.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Samples\ExecuteIfZero.txt">
+    <Content Include="Assets\Samples\Fibonacci.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Samples\HeaderComments.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Samples\HelloWorld.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\IntegerDivision.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Samples\Sum.txt">
@@ -696,6 +734,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserControls\DataTemplates\SnippetsMenu\CodeSnippetTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\DataTemplates\SnippetsMenu\ContextMenuIconButtonTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\DataTemplates\UnicodeCharacterTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -772,6 +818,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\Flyouts\SnippetsMenu\FullCodeSnippetsBrowserFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Flyouts\SnippetsMenu\TouchCodeSnippetsBrowserFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\Flyouts\UnicodeCharactersGuideFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -800,15 +854,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\Flyouts\UserGuide\Sections\KeyboardShortcutsGuideControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\Flyouts\UserGuide\Sections\PBrainGuideControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Flyouts\UserGuide\Sections\LanguageIntroductionControl.xaml">
+    <Page Include="UserControls\Flyouts\UserGuide\Sections\LanguageIntroductionGuideControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Flyouts\UserGuide\OperatorDescriptionControl.xaml">
+    <Page Include="UserControls\Flyouts\UserGuide\Templates\GuideItemDescriptionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -866,6 +924,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="DiffPlex">
+      <Version>1.4.1</Version>
+    </PackageReference>
     <PackageReference Include="HockeySDK.UWP">
       <Version>4.1.6</Version>
     </PackageReference>

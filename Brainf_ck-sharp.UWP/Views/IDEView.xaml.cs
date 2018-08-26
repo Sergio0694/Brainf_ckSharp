@@ -24,16 +24,21 @@ using Brainf_ck_sharp_UWP.DataModels.EventArgs;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.DataModels.Misc.CharactersInfo;
 using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
+using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Helpers.UI;
+using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Actions;
-using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.IDE;
+using Brainf_ck_sharp_UWP.Messages.Settings;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.PopupService;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
 using Brainf_ck_sharp_UWP.UserControls.Flyouts;
+using Brainf_ck_sharp_UWP.UserControls.Flyouts.SnippetsMenu;
 using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
@@ -45,7 +50,7 @@ using UICompositionAnimations.Enums;
 
 namespace Brainf_ck_sharp_UWP.Views
 {
-    public sealed partial class IDEView : UserControl
+    public sealed partial class IDEView : UserControl, ICodeWorkspacePage
     {
         public IDEView()
         {
@@ -64,6 +69,22 @@ namespace Brainf_ck_sharp_UWP.Views
             _PreviousText = text;
             _WhitespacesRenderingEnabled = AppSettingsManager.Instance.GetValue<bool>(nameof(AppSettingsKeys.RenderWhitespaces));
             Messenger.Default.Register<IDESettingsChangedMessage>(this, ApplyIDESettings);
+            Messenger.Default.Register<CodeSnippetSelectedMessage>(this, m =>
+            {
+                LoadCode(m.Snippet.Code, false, m.Snippet.CursorOffset);
+                if (m.Source == PointerDeviceType.Mouse) EditBox.Focus(FocusState.Programmatic);
+            });
+            Messenger.Default.Register<ClipboardOperationRequestMessage>(this, m => HandleClipboardOperationRequest(m.Value));
+        }
+
+        /// <inheritdoc cref="ICodeWorkspacePage"/>
+        public string SourceCode
+        {
+            get
+            {
+                EditBox.Document.GetText(TextGetOptions.None, out string code);
+                return code;
+            }
         }
 
         #region IDE theme
@@ -170,7 +191,6 @@ namespace Brainf_ck_sharp_UWP.Views
             if (message.FontChanged || message.TabsLengthChanged)
             {
                 int[] breakpoints = BreakpointsInfo.Keys.Select(i => i - 1).ToArray();
-                ClearBreakpoints();
                 RestoreBreakpoints(breakpoints);
                 BracketGuidesCanvas.Invalidate();
             }
@@ -194,16 +214,16 @@ namespace Brainf_ck_sharp_UWP.Views
         #region ViewModel main events
 
         // Loads the requested code, when the user selects a saved file from his library
-        private void ViewModel_LoadedCodeChanged(object sender, DataModels.SQLite.SourceCode e)
+        private void ViewModel_LoadedCodeChanged(object sender, (string Code, byte[] Breakpoints) args)
         {
             // Load the code
-            LoadCode(e.Code, true);
-            if (e.Breakpoints == null)
+            LoadCode(args.Code, true);
+            if (args.Breakpoints == null)
             {
                 ClearBreakpoints();
                 BracketGuidesCanvas.Invalidate();
             }
-            else RestoreBreakpoints(BitHelper.Expand(e.Breakpoints));
+            else RestoreBreakpoints(BitHelper.Expand(args.Breakpoints));
             Messenger.Default.Send(new DebugStatusChangedMessage(BreakpointsInfo.Keys.Count > 0));
 
             // Restore the UI
@@ -266,9 +286,9 @@ namespace Brainf_ck_sharp_UWP.Views
                     chuncks.Add(text.Substring(previous, breakpoint - previous));
                     previous = breakpoint;
                 }
-                factory = () => Brainf_ckInterpreter.InitializeSession(chuncks, e.Stdin, e.Mode, threshold: TimeThreshold);
+                factory = () => Brainf_ckInterpreter.InitializeSession(chuncks, e.Stdin, e.Mode, AppSettingsParser.InterpreterMemorySize, TimeThreshold);
             }
-            else factory = () => Brainf_ckInterpreter.InitializeSession(new[] { text }, e.Stdin, e.Mode, threshold: TimeThreshold);
+            else factory = () => Brainf_ckInterpreter.InitializeSession(new[] { text }, e.Stdin, e.Mode, AppSettingsParser.InterpreterMemorySize, TimeThreshold);
 
             // Display the execution popup
             IDERunResultFlyout flyout = new IDERunResultFlyout();
@@ -333,6 +353,17 @@ namespace Brainf_ck_sharp_UWP.Views
             WhitespacesCanvas.StartExpressionAnimation(EditBox.InnerScrollViewer, TranslationAxis.X);
         }
 
+        /// <summary>
+        /// Refreshes the visual elements that rely on the current window size
+        /// </summary>
+        public void RefreshUI()
+        {
+            SetupExpressionAnimations();
+            DrawBracketGuides(null, true).Forget();
+            int[] breakpoints = BreakpointsInfo.Keys.Select(i => i - 1).ToArray();
+            RestoreBreakpoints(breakpoints);
+        }
+
         public IDEViewModel ViewModel => DataContext.To<IDEViewModel>();
 
         // The current top height of the page header
@@ -365,7 +396,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
             }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
             EditBox.Document.GetText(TextGetOptions.None, out string code);
-            ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? string.Empty, code).Forget();
+            ViewModel.UpdateGitDiffStatus(code).Forget();
             ViewModel.UpdateCanUndoRedoStatus();
             await RemoveUnvalidatedBreakpointsAsync(code);
             RefreshBreakpointsUI(code);
@@ -761,7 +792,7 @@ namespace Brainf_ck_sharp_UWP.Views
         // Adjusts the size of the whitespace overlays canvas
         private void EditBox_OnTextSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            WhitespacesCanvas.Height = BracketGuidesCanvas.Height = e.NewSize.Height + _Top;
+            WhitespacesCanvas.Height = BracketGuidesCanvas.Height = e.NewSize.Height + _Top + 20;
             WhitespacesCanvas.Width = BracketGuidesCanvas.Width = e.NewSize.Width;
         }
 
@@ -817,11 +848,7 @@ namespace Brainf_ck_sharp_UWP.Views
                         // Calculate the current indentation depth
                         string trailer = text.Substring(0, range.StartPosition);
                         int indents = trailer.Count(c => c == '[') - trailer.Count(c => c == ']');
-                        string tabs = Enumerable.Range(0, indents).Aggregate(new StringBuilder(), (b, c) =>
-                        {
-                            b.Append('\t');
-                            return b;
-                        }).ToString();
+                        string tabs = '\t'.Repeat(indents);
 
                         // Open [ bracket
                         if (character == '[')
@@ -966,22 +993,36 @@ namespace Brainf_ck_sharp_UWP.Views
         }
 
         // Manually handles a paste operations within the IDE
-        private async void EditBox_OnPaste(object sender, TextControlPasteEventArgs e)
+        private void EditBox_OnPaste(object sender, TextControlPasteEventArgs e)
+        {
+            e.Handled = true;
+            TryPasteFromClipboard();
+        }
+
+        // Handles a request by the user to perform a clipboard operation
+        private void HandleClipboardOperationRequest(ClipboardOperation operation)
+        {
+            if (operation == ClipboardOperation.Paste) TryPasteFromClipboard();
+            else
+            {
+                EditBox.Document.Selection.GetText(TextGetOptions.None, out string selection);
+                selection.TryCopyToClipboard();
+                if (operation == ClipboardOperation.Cut) EditBox.Document.Selection.SetText(TextSetOptions.None, string.Empty);
+            }
+            EditBox.Focus(FocusState.Programmatic);
+        }
+
+        // Tries to get some text to paste from the clipboard
+        private async void TryPasteFromClipboard()
         {
             // Retrieve the contents as plain text
-            e.Handled = true;
-            DataPackageView view = Clipboard.GetContent();
-            string text;
-            if (view.Contains(StandardDataFormats.Text)) text = await view.GetTextAsync();
-            else if (view.Contains(StandardDataFormats.Rtf))
+            var (text, format) = await ClipboardHelper.TryGetTextAsync();
+            if (format?.Equals(StandardDataFormats.Rtf) == true)
             {
-                string rtf = await view.GetRtfAsync();
                 RichEditBox provider = new RichEditBox();
-                provider.Document.SetText(TextSetOptions.FormatRtf, rtf);
+                provider.Document.SetText(TextSetOptions.FormatRtf, text);
                 provider.Document.GetText(TextGetOptions.None, out text);
             }
-            else text = null;
-            view.ReportOperationCompleted(DataPackageOperation.Copy);
             if (text == null) return;
             LoadCode(text, false);
         }
@@ -991,7 +1032,8 @@ namespace Brainf_ck_sharp_UWP.Views
         /// </summary>
         /// <param name="code">The code to load</param>
         /// <param name="overwrite">If true, the whole document will be replaced with the new code</param>
-        private async void LoadCode(string code, bool overwrite)
+        /// <param name="offset">The optional cursor offset to apply after loading the code (in case it's a code snippet)</param>
+        private async void LoadCode(string code, bool overwrite, int? offset = null)
         {
             // Disable the handlers
             EditBox.SelectionChanged -= EditBox_OnSelectionChanged;
@@ -1025,11 +1067,55 @@ namespace Brainf_ck_sharp_UWP.Views
                 }
                 else
                 {
+                    // Autoindent if needed
+                    start = EditBox.Document.Selection.StartPosition;
+                    if (offset != null)
+                    {
+                        // Adjust the formatting style, if needed
+                        if (AppSettingsManager.Instance.GetValue<int>(nameof(AppSettingsKeys.BracketsStyle)) == 1)
+                        {
+                            int newlines = code.Substring(0, offset.Value).Split("\r[\r").Length - 1;
+                            if (newlines > 0) offset = offset.Value - newlines;
+                            code = code.Replace("\r[\r", "[\r");
+                        }
+
+                        // Format
+                        EditBox.Document.GetText(TextGetOptions.None, out string text);
+                        string trailer = text.Substring(0, start);
+                        int indents = trailer.Count(c => c == '[') - trailer.Count(c => c == ']');
+                        string tabs = '\t'.Repeat(indents);
+                        StringBuilder builder = new StringBuilder();
+                        int cursor = offset.Value;
+                        foreach ((char c, int i) in code.Select((c, i) => (c, i)))
+                        {
+                            if (c == '\r')
+                            {
+                                if (i <= code.Length - 2 && code[i + 1] == ']' && indents >= 1)
+                                    tabs = '\t'.Repeat(--indents);
+                                builder.Append($"{c}{tabs}");
+                                if (offset > i) cursor += indents;
+                            }
+                            else if (c == '[')
+                            {
+                                builder.Append(c);
+                                indents++;
+                                tabs += "\t";
+                            }
+                            else if (c == ']')
+                            {
+                                if (indents >= 1 && !(i > 0 && code[i - 1] == '\r')) tabs = '\t'.Repeat(--indents);
+                                builder.Append(c);
+                            }
+                            else builder.Append(c);
+                        }
+                        code = builder.ToString();
+                        offset = cursor; // Updated target offset (considering the added tabs)
+                    }
+
                     // Paste the text in the current selection
                     EditBox.Document.Selection.SetText(TextSetOptions.None, code);
                     selectionBackup = EditBox.SelectionHighlightColor;
                     EditBox.SelectionHighlightColor = new SolidColorBrush(Colors.Transparent);
-                    start = EditBox.Document.Selection.StartPosition;
                     end = EditBox.Document.Selection.EndPosition;
                 }
 
@@ -1046,7 +1132,8 @@ namespace Brainf_ck_sharp_UWP.Views
 
                 // Set the right selection position
                 if (overwrite) EditBox.Document.Selection.SetRange(0, 0);
-                else EditBox.Document.Selection.StartPosition = end;
+                else if (offset == null) EditBox.Document.Selection.StartPosition = end;
+                else EditBox.Document.Selection.StartPosition = EditBox.Document.Selection.EndPosition = start + offset.Value;
 
                 // Refresh the UI
                 if (overwrite) ViewModel.DiffStatusSource.Clear();
@@ -1065,7 +1152,7 @@ namespace Brainf_ck_sharp_UWP.Views
                     ViewModel.UpdateIndentationInfo(t.Result.Result).Forget();
                 }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
                 if (_WhitespacesRenderingEnabled) RenderControlCharacters();
-                ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? string.Empty, code).Forget();
+                ViewModel.UpdateGitDiffStatus(code).Forget();
                 ViewModel.SendMessages(code);
                 ViewModel.UpdateCanUndoRedoStatus();
                 UpdateCursorRectangleAndIndicatorUI();
@@ -1119,10 +1206,11 @@ namespace Brainf_ck_sharp_UWP.Views
         private async Task RemoveUnvalidatedBreakpointsAsync([NotNull] string text)
         {
             // Find the invalid breakpoints
-            IReadOnlyList<int> pending = await Task.Run(() =>
-            {
-                return BreakpointsInfo.Keys.Where(line => line < 2 || line > text.Length || !text.GetLine(line).Any(Brainf_ckInterpreter.Operators.Contains)).ToArray();
-            });
+            IReadOnlyList<int> pending = await Task.Run(() => BreakpointsInfo.Keys.Where(line =>
+                line < 2 ||                                                         // Breakpoints not allowed in the first two lines
+                line > text.Length ||                                               // Breakpoints fallen out of range (eg. when deleting code lines)
+                !text.GetLine(line).Any(Brainf_ckInterpreter.Operators.Contains)    // Breakpoints on lines with no longer at least one operator
+                ).ToArray());
 
             // Remove the target breakpoints
             foreach (int target in pending)
@@ -1141,6 +1229,9 @@ namespace Brainf_ck_sharp_UWP.Views
         // Shows the breakpoints from an input list of lines
         private void RestoreBreakpoints(IReadOnlyCollection<int> lines)
         {
+            // Remove the previous breakpoints
+            ClearBreakpoints();
+
             // Get the text
             EditBox.Document.GetText(TextGetOptions.None, out string code);
 
@@ -1377,7 +1468,7 @@ namespace Brainf_ck_sharp_UWP.Views
                 _PreviousText = code;
                 _PreviousSelectionLength = EditBox.Document.Selection.Length;
                 DrawBracketGuides(code, false).Forget();
-                ViewModel.UpdateGitDiffStatus(ViewModel.LoadedCode?.Code ?? string.Empty, code).Forget();
+                ViewModel.UpdateGitDiffStatus(code).Forget();
                 ViewModel.UpdateCanUndoRedoStatus();
                 RefreshBreakpointsUI(code);
                 RenderControlCharacters();
@@ -1461,5 +1552,18 @@ namespace Brainf_ck_sharp_UWP.Views
         }
 
         #endregion
+
+        // Overrides the default context menu on right click
+        private void EditBox_OnContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            e.Handled = true;
+            FullCodeSnippetsBrowserFlyout browser = new FullCodeSnippetsBrowserFlyout(EditBox.Document)
+            {
+                Height = 48 * 6 + 43, // Ugly hack (height of a snippet template by number of available templates)
+                Width = 220
+            };
+            FlyoutManager.Instance.ShowCustomContextFlyout(browser, EditBox, 
+                margin: new Point(e.CursorLeft - 70, e.CursorTop), invertAnimation: true).Forget();
+        }
     }
 }

@@ -12,6 +12,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
+using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
@@ -125,7 +126,11 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// </summary>
         private void DisableOpenFlyouts()
         {
-            foreach (FlyoutDisplayInfo info in PopupStack) info.Popup.IsHitTestVisible = false;
+            foreach (FlyoutDisplayInfo info in PopupStack)
+            {
+                info.Popup.IsHitTestVisible = false;
+                info.Container.FadeContent(true);
+            }
         }
 
         /// <summary>
@@ -134,7 +139,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         private async Task TryCloseAsync()
         {
             await Semaphore.WaitAsync();
-            if (PopupStack.Count > 0 && PopupStack.Peek().Popup.IsOpen)
+            if (PopupStack.TryPeek(out FlyoutDisplayInfo info) && info.Popup.IsOpen)
             {
                 // Close the current popup
                 Popup popup = PopupStack.Pop().Popup;
@@ -143,7 +148,11 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 popup.IsOpen = false;
 
                 // Resto the previous popup, if present
-                if (PopupStack.Count > 0) PopupStack.Peek().Popup.IsHitTestVisible = true;
+                if (PopupStack.TryPeek(out info))
+                {
+                    info.Popup.IsHitTestVisible = true;
+                    info.Container.FadeContent(false);
+                }
             }
             Semaphore.Release();
         }
@@ -153,7 +162,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// </summary>
         private static double CalculateExpectedWidth()
         {
-            double width = ResolutionHelper.CurrentWidth;
+            double width = ApplicationViewHelper.CurrentWidth;
             return width <= MaxPopupWidth ? width : MaxPopupWidth;
         }
 
@@ -167,8 +176,8 @@ namespace Brainf_ck_sharp_UWP.PopupService
         {
             // Calculate the current parameters
             double
-                screenWidth = ResolutionHelper.CurrentWidth,
-                screenHeight = ResolutionHelper.CurrentHeight,
+                screenWidth = ApplicationViewHelper.CurrentWidth,
+                screenHeight = ApplicationViewHelper.CurrentHeight,
                 maxWidth = stacked ? MaxStackedPopupWidth : MaxPopupWidth,
                 maxHeight = stacked ? MaxStackedPopupHeight : MaxPopupHeight,
                 margin = 24; // The minimum margin to the edges of the screen
@@ -235,6 +244,22 @@ namespace Brainf_ck_sharp_UWP.PopupService
         #endregion
 
         #region Flyout APIs
+
+        /// <summary>
+        /// Checks whether or not there's at least one visible dialog
+        /// </summary>
+        public async Task<bool> IsFlyoutOpenAsync()
+        {
+            await Semaphore.WaitAsync();
+            try
+            {
+                return PopupStack.TryPeek(out _);
+            }
+            finally
+            {
+                Semaphore.Release(); // Wouldn't want to forget this!
+            }
+        }
 
         /// <summary>
         /// Shows a simple message dialog with a title and a content
@@ -488,12 +513,11 @@ namespace Brainf_ck_sharp_UWP.PopupService
         /// <param name="content">The control to show</param>
         /// <param name="target">The target element to try not to cover</param>
         /// <param name="tryCenter">Indicates whether or not to try to center the popup to the source control</param>
-        public async void ShowCustomContextFlyout([NotNull] FrameworkElement content, [NotNull] FrameworkElement target, bool tryCenter = false)
+        /// <param name="margin">An optional additional margin for the final control position</param>
+        /// <param name="invertAnimation">When <see langword="true"/>, the flyout will open towards the bottom</param>
+        public async Task ShowCustomContextFlyout([NotNull] FrameworkElement content, [NotNull] FrameworkElement target, 
+            bool tryCenter = false, Point? margin = null, bool invertAnimation = false)
         {
-            // Calculate the target area for the context menu
-            Point point = target.GetVisualCoordinates();
-            Rect rect = new Rect(point, new Size(target.ActualWidth, target.ActualHeight));
-
             // Close existing popups if needed
             await Semaphore.WaitAsync();
             if (PopupStack.Count > 0)
@@ -503,17 +527,23 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
             foreach (Popup pending in VisualTreeHelper.GetOpenPopups(Window.Current)) pending.IsOpen = false;
 
-            // Calculate the target size
+            // Calculate the target area for the context menu
             content.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            if (content.DesiredSize.Width > ResolutionHelper.CurrentWidth - 24)
+            Point point = target.GetVisualCoordinates();
+            if (margin != null) point = new Point(point.X + margin.Value.X, point.Y + margin.Value.Y);
+            if (invertAnimation) point = new Point(point.X, point.Y + content.DesiredSize.Height);
+            Rect rect = new Rect(point, new Size(target.ActualWidth, target.ActualHeight));
+
+            // Calculate the target size
+            if (content.DesiredSize.Width > ApplicationViewHelper.CurrentWidth - 24)
             {
-                content.Width = ResolutionHelper.CurrentWidth;
+                content.Width = ApplicationViewHelper.CurrentWidth;
                 content.Measure(new Size(content.Width, double.PositiveInfinity));
                 content.Height = content.DesiredSize.Height;
             }
-            else if (content.DesiredSize.Height > ResolutionHelper.CurrentHeight - 24)
+            else if (content.DesiredSize.Height > ApplicationViewHelper.CurrentHeight - 24)
             {
-                content.Height = ResolutionHelper.CurrentHeight;
+                content.Height = ApplicationViewHelper.CurrentHeight;
                 content.Measure(new Size(double.PositiveInfinity, content.Height));
                 content.Width = content.DesiredSize.Width;
             }
@@ -530,8 +560,8 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 double
                     x = 0,
                     y = 0,
-                    width = ResolutionHelper.CurrentWidth,
-                    height = ResolutionHelper.CurrentHeight;
+                    width = ApplicationViewHelper.CurrentWidth,
+                    height = ApplicationViewHelper.CurrentHeight;
                 if (content.Height <= area.Top - 8)
                 {
                     y = area.Top - content.Height - 8;
@@ -604,8 +634,8 @@ namespace Brainf_ck_sharp_UWP.PopupService
             Grid hitGrid = new Grid
             {
                 Background = new SolidColorBrush(Colors.Transparent),
-                Height = ResolutionHelper.CurrentHeight,
-                Width = ResolutionHelper.CurrentWidth
+                Height = ApplicationViewHelper.CurrentHeight,
+                Width = ApplicationViewHelper.CurrentWidth
             };
             Popup hit = new Popup
             {
@@ -624,7 +654,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                 _CloseContextMenu = null;
                 hit.IsOpen = false;
                 grid.IsHitTestVisible = false;
-                grid.StartCompositionFadeSlideAnimation(1, 0, TranslationAxis.Y, 0, 8, 200, null, null, EasingFunctionNames.CircleEaseOut,
+                grid.StartCompositionFadeSlideAnimation(1, 0, TranslationAxis.Y, null, 8, 200, null, null, EasingFunctionNames.CircleEaseOut,
                     () => popup.IsOpen = false);
             }
             bool sizeHandled = true;
@@ -639,6 +669,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
             }
 
             // Setup the event handlers and display the popup
+            TaskCompletionSource<Unit> tcs = new TaskCompletionSource<Unit>();
             popup.Closed += (s, e) =>
             {
                 if (sizeHandled)
@@ -647,10 +678,13 @@ namespace Brainf_ck_sharp_UWP.PopupService
                     Window.Current.SizeChanged -= WindowSizeHandler;
                 }
                 LightsSourceHelper.SetIsLightsContainer(parent, false);
+                tcs.SetResult(Unit.Instance);
             };
             _CloseContextMenu = ClosePopups;
             popup.IsOpen = true; // Open the context menu popup on top of the hit target
             hitGrid.Tapped += (_, e) => ClosePopups();
+            hitGrid.RightTapped += (_, e) => ClosePopups();
+            if (content is IEventConfirmedContent confirmed) confirmed.ContentConfirmed += (s, e) => ClosePopups();
             Window.Current.SizeChanged += WindowSizeHandler;
             grid.StartCompositionFadeSlideAnimation(0, 1, TranslationAxis.Y, 20, 0, 200, null, null, EasingFunctionNames.CircleEaseOut);
             Semaphore.Release();
@@ -660,6 +694,8 @@ namespace Brainf_ck_sharp_UWP.PopupService
             {
                 // Check the updated target position
                 point = target.GetVisualCoordinates();
+                if (margin != null) point = new Point(point.X + margin.Value.X, point.Y + margin.Value.Y);
+                if (invertAnimation) point = new Point(point.X, point.Y + content.DesiredSize.Height);
                 Rect delayedRect = new Rect(point, new Size(target.ActualWidth, target.ActualHeight));
                 if (delayedRect.Left.EqualsWithDelta(rect.Left) &&
                     delayedRect.Top.EqualsWithDelta(rect.Top) ||
@@ -672,6 +708,7 @@ namespace Brainf_ck_sharp_UWP.PopupService
                     XAMLTransformToolkit.CreateDoubleAnimation(popup, "VerticalOffset", null, offset.Y, 250, EasingFunctionNames.CircleEaseOut, true)).Begin();
 
             }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
+            await tcs.Task;
         }
 
         #endregion

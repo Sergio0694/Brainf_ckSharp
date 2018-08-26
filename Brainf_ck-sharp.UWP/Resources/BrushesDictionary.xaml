@@ -14,6 +14,8 @@
     <SolidColorBrush x:Key="SubMenuFlyoutOpenedBrush"/>
     
     <!--Red danger brush-->
+    <SolidColorBrush x:Key="PlayButtonBrush" Color="#FF008000"/>
+    <SolidColorBrush x:Key="DebugButtonBrush" Color="#FFD1212A"/>
     <SolidColorBrush x:Key="RedDangerBrush" Color="#FFDC232B"/>
     
     <!--Breakpoints-->
@@ -23,11 +25,11 @@
     
     <!--Misc-->
     <SolidColorBrush x:Key="ShellSeparatorLineFillBrush" Color="#FF6E6E6E"/>
+    <SolidColorBrush x:Key="CustomContextMenuBorderBrush" Color="#FF404040"/>
     
     <!--Lights-->
     <SolidColorBrush x:Key="BorderLightBrush"/>
     <SolidColorBrush x:Key="ElementsWideLightBrush"/>
-    <SolidColorBrush x:Key="WideLightBrushDarkShadeBackground"/>
     
     <!--Virtual keyboard brush-->
     <brushes:CustomAcrylicBrush
@@ -63,14 +65,6 @@
         BlurAmount="8"
         Tint="#FF161616"
         TintMix="0.6"
-        NoiseTextureUri="/Assets/Misc/noise.png"/>
-
-    <!--Header host backdrop blur brush-->
-    <brushes:CustomAcrylicBrush
-        x:Key="HeaderHostBackdropBlurBrush"
-        Mode="HostBackdrop"
-        Tint="#FF1E1E1E"
-        TintMix="0.8"
         NoiseTextureUri="/Assets/Misc/noise.png"/>
 
     <!--Header in-app acrylic brush-->

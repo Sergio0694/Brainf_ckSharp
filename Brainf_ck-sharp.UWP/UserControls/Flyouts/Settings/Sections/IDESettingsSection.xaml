@@ -8,8 +8,9 @@
     xmlns:helpers="using:Brainf_ck_sharp_UWP.Helpers"
     xmlns:ideThemes="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes"
     xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
+    xmlns:ui="using:Brainf_ck_sharp_UWP.Helpers.UI"
     mc:Ignorable="d"
-    d:DesignHeight="680"
+    d:DesignHeight="800"
     d:DesignWidth="400">
     <UserControl.Resources>
 
@@ -18,18 +19,9 @@
     </UserControl.Resources>
 
     <StackPanel>
-        
-        <!--Autosave-->
-        <TextBlock
-            TextWrapping="Wrap"
-            VerticalAlignment="Center"
-            x:Uid="AutosaveTitle"
-            Text="Autosave loaded documents"/>
-        <ToggleSwitch IsOn="{Binding ViewModel.AutosaveDocuments, Mode=TwoWay}"/>
 
         <!--Auto indent-->
         <TextBlock
-            Margin="0,8,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Center"
             x:Uid="AutoIndentTitle"
@@ -46,7 +38,7 @@
             ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
             ItemsSource="{Binding ViewModel.BracketsStyleOptions}"
             SelectedIndex="{Binding ViewModel.BracketsStyleSelectedIndex, Mode=TwoWay}"
-            IsEnabled="{Binding ViewModel.AutoindentBrackets, Mode=OneWay}"
+            IsEnabled="{Binding ViewModel.AutoindentBrackets, Mode=OneWay, FallbackValue=False}"
             MinWidth="180"/>
 
         <!--Tab length-->
@@ -121,24 +113,24 @@
                 Padding="1,1,0,1"
                 IsHitTestVisible="{Binding ViewModel.ThemesSelectorEnabled, Mode=OneWay, FallbackValue=False}">
                 <inheritedControls:AnimatedComboBox.ItemTemplateSelector>
-                    <helpers:ComboBoxDataTemplateSelector>
-                        <helpers:ComboBoxDataTemplateSelector.SelectedTemplate>
+                    <ui:ComboBoxDataTemplateSelector>
+                        <ui:ComboBoxDataTemplateSelector.SelectedTemplate>
                             <DataTemplate>
                                 <ideThemes:IDEThemePreviewTemplate 
                                     MinWidth="180"
                                     MinHeight="108"
                                     Theme="{Binding}"/>
                             </DataTemplate>
-                        </helpers:ComboBoxDataTemplateSelector.SelectedTemplate>
-                        <helpers:ComboBoxDataTemplateSelector.DropDownTemplate>
+                        </ui:ComboBoxDataTemplateSelector.SelectedTemplate>
+                        <ui:ComboBoxDataTemplateSelector.DropDownTemplate>
                             <DataTemplate>
                                 <ideThemes:IDEThemeDropDownPreviewTemplate 
                                     MinWidth="180"
                                     MinHeight="108"
                                     Theme="{Binding}"/>
                             </DataTemplate>
-                        </helpers:ComboBoxDataTemplateSelector.DropDownTemplate>
-                    </helpers:ComboBoxDataTemplateSelector>
+                        </ui:ComboBoxDataTemplateSelector.DropDownTemplate>
+                    </ui:ComboBoxDataTemplateSelector>
                 </inheritedControls:AnimatedComboBox.ItemTemplateSelector>
             </inheritedControls:AnimatedComboBox>
 
@@ -200,5 +192,23 @@
             x:Uid="TimelineSupportTitle"
             Text="Log activities in the Timeline"/>
         <ToggleSwitch IsOn="{Binding ViewModel.TimelineLoggingEnabled, Mode=TwoWay}"/>
+
+        <!--Autosave-->
+        <TextBlock
+            Margin="0,8,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"
+            x:Uid="AutosaveTitle"
+            Text="Autosave loaded documents"/>
+        <ToggleSwitch IsOn="{Binding ViewModel.AutosaveDocuments, Mode=TwoWay}"/>
+
+        <!--Autosave-->
+        <TextBlock
+            Margin="0,8,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"
+            x:Uid="ProtectUnsavedChanges"
+            Text="Protect unsaved changes"/>
+        <ToggleSwitch IsOn="{Binding ViewModel.ProtectUnsavedChanges, Mode=TwoWay}"/>
     </StackPanel>
 </UserControl>

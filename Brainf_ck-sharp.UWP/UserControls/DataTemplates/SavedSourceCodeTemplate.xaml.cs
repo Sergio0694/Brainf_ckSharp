@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Windows.Devices.Input;
 using Windows.Foundation;
@@ -12,8 +11,8 @@ using Brainf_ck_sharp_UWP.AttachedProperties;
 using Brainf_ck_sharp_UWP.DataModels.EventArgs;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
-using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers.PointerEvents;
@@ -60,12 +59,35 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates
             SavedSourceCodeTemplate @this = d.To<SavedSourceCodeTemplate>();
             @this.TitleBlock.Text = code.Code.Title;
             Span host = new Span();
-            string text = Regex.Replace(code.Code.Code, @"[^-+\[\]\.,><()]", "");
+            string text = Regex.Replace(code.Code.Code, @"[^-+\[\]\.,><():]", "");
             if (text.Length > 150) text = text.Substring(0, 150); // Only parse the first 150 characters to increase performance
             Brainf_ckCodeInlineFormatter.SetSource(host, text);
             @this.CodeBlock.Inlines.Clear();
             @this.CodeBlock.Inlines.Add(host);
         }
+
+        /// <summary>
+        /// Gets or sets whether or not this saved code is currently selected
+        /// </summary>
+        public bool IsSelected
+        {
+            get => (bool)GetValue(IsSelectedProperty);
+            set => SetValue(IsSelectedProperty, value);
+        }
+
+        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
+            nameof(IsSelected), typeof(bool), typeof(SavedSourceCodeTemplate), new PropertyMetadata(false, OnIsSelectedPropertyChanged));
+
+        private static void OnIsSelectedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            SavedSourceCodeTemplate @this = d.To<SavedSourceCodeTemplate>();
+            bool selected = e.NewValue.To<bool>();
+            @this.IsHitTestVisible = !selected;
+            @this.Opacity = selected ? 0.6 : 1;
+            @this.LightBorder.StartXAMLTransformFadeAnimation(null, selected ? 0 : 1, 200, null, EasingFunctionNames.Linear);
+            @this.FadeCanvas.StartXAMLTransformFadeAnimation(null, selected ? 1 : 0, 200, null, EasingFunctionNames.Linear);
+        }
+
 
         #region Events
 

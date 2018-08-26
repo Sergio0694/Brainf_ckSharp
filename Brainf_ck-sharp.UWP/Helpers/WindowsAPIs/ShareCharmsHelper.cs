@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Windows.ApplicationModel.DataTransfer;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
@@ -33,7 +34,7 @@ namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
 
             // Set the data to share
             request.Data.Properties.Title = info.Title;
-            request.Data.Properties.Description = LocalizationManager.GetResource("SharedFromOneLocker");
+            request.Data.Properties.Description = LocalizationManager.GetResource("SharedFromBrainf_ck");
             request.Data.SetText(info.SharedText);
         }
 

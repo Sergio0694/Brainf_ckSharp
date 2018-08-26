@@ -8,11 +8,14 @@ using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels.ConsoleModels;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Messages;
+using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 using Brainf_ck_sharp_UWP.Messages.Actions;
-using Brainf_ck_sharp_UWP.Messages.IDEStatus;
+using Brainf_ck_sharp_UWP.Messages.IDE;
+using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
+using Brainf_ck_sharp_UWP.Messages.Settings;
+using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.ViewModels.Abstract;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
@@ -27,7 +30,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             Messenger.Default.Register<OverflowModeChangedMessage>(this, m =>
             {
                 // Check if the mode was enabled and a visual refresh is needed
-                if (m.Mode == OverflowMode.ByteOverflow && State.Any(cell => cell.Value > byte.MaxValue))
+                if (m.Value == OverflowMode.ByteOverflow && State.Any(cell => cell.Value > byte.MaxValue))
                 {
                     State = State.ApplyByteOverflow();
                     Messenger.Default.Send(new ConsoleMemoryStateChangedMessage(State));
@@ -54,7 +57,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                 {
                     if (value)
                     {
-                        Messenger.Default.Register<OperatorAddedMessage>(this, op => TryAddCommandCharacter(op.Operator));
+                        Messenger.Default.Register<OperatorAddedMessage>(this, op => TryAddCommandCharacter(op.Value));
                         Messenger.Default.Register<PlayScriptMessage>(this, m =>
                         {
                             if (m.Type == ScriptPlayType.Default) ExecuteCommand(m.StdinBuffer, m.Mode).Forget();
@@ -64,6 +67,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
                         Messenger.Default.Register<UndoConsoleCharacterMessage>(this, m => TryUndoLastCommandCharacter());
                         Messenger.Default.Register<RestartConsoleMessage>(this, m => Restart());
                         Messenger.Default.Register<ClearScreenMessage>(this, m => TryClearScreen());
+                        Messenger.Default.Register<CharacterReceivedMessage>(this, m => TryAddCommandCharacter(m.Value));
+                        Messenger.Default.Register<DeleteKeyPressedMessage>(this, _ => TryUndoLastCommandCharacter());
                         SendCommandAvailableMessages();
                     }
                     else Messenger.Default.Unregister(this);
@@ -75,7 +80,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// Gets the current machine state to use to process the scripts
         /// </summary>
         [NotNull]
-        public IReadonlyTouringMachineState State { get; private set; } = TouringMachineStateProvider.Initialize(64);
+        public IReadonlyTouringMachineState State { get; private set; } = TouringMachineStateProvider.Initialize(AppSettingsParser.InterpreterMemorySize);
 
         /// <summary>
         /// Gets the currently defined functions
@@ -106,7 +111,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
             if (!CanRestart) return;
             CanRestart = false;
             Source.Add(new ConsoleRestartCommand());
-            State = TouringMachineStateProvider.Initialize(64);
+            State = TouringMachineStateProvider.Initialize(AppSettingsParser.InterpreterMemorySize);
             Functions = new FunctionDefinition[0];
             Source.Add(new ConsoleUserCommand());
             Messenger.Default.Send(new ConsoleMemoryStateChangedMessage(State));
@@ -143,7 +148,8 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         // Broadcasts the messages to reflect the current console status
         private void SendCommandAvailableMessages(bool? forcedStatus = null)
         {
-            Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.Play, forcedStatus ?? CommandAvailable));
+            bool play = forcedStatus ?? CommandAvailable && Brainf_ckInterpreter.CheckSourceSyntax(Source.Last().To<ConsoleUserCommand>().Command).Valid;
+            Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.Play, play));
             Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.DeleteLastCharacter, forcedStatus ?? CommandAvailable));
             Messenger.Default.Send(new AvailableActionStatusChangedMessage(SharedAction.Clear, forcedStatus ?? CommandAvailable));
             bool script = Source.Skip(forcedStatus == false ? 0 : 1).Where(model => model is ConsoleUserCommand).Cast<ConsoleUserCommand>().Any(model => model.Command.Length > 0);
@@ -237,7 +243,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels
         /// <param name="c">The new operator to add</param>
         public void TryAddCommandCharacter(char c)
         {
-            if (!Brainf_ckInterpreter.Operators.Contains(c)) throw new ArgumentException("The input character is invalid");
+            if (!Brainf_ckInterpreter.Operators.Contains(c)) return;
             if (Source.LastOrDefault() is ConsoleUserCommand command)
             {
                 command.UpdateCommand($"{command.Command}{c}");

@@ -142,10 +142,10 @@ namespace Brainf_ck_sharp
             }
 
             // Check the code syntax
-            if (!CheckSourceSyntax(executable))
+            string script = new string(executable.Select(op => op.Operator).ToArray());
+            if (!CheckSourceSyntax(script).Valid)
             {
-                return new InterpreterExecutionSession(
-                    GenerateFailure(InterpreterExitCode.MismatchedParentheses, executable.Select(op => op.Operator).AggregateToString()), null);
+                return new InterpreterExecutionSession(GenerateFailure(InterpreterExitCode.SyntaxError, script), null);
             }
 
             // Execute the code
@@ -154,8 +154,7 @@ namespace Brainf_ck_sharp
             if (!enumerator.MoveNext())
             {
                 // Initialization failed
-                return new InterpreterExecutionSession(
-                    GenerateFailure(InterpreterExitCode.InternalException, executable.Select(op => op.Operator).AggregateToString()), null);
+                return new InterpreterExecutionSession(GenerateFailure(InterpreterExitCode.InternalException, script), null);
             }
             return new InterpreterExecutionSession(enumerator, cts);
         }
@@ -262,10 +261,10 @@ namespace Brainf_ck_sharp
             }
 
             // Check the code syntax
-            if (!CheckSourceSyntax(executable))
+            string script = new string(executable.Select(op => op.Operator).ToArray());
+            if (!CheckSourceSyntax(script).Valid)
             {
-                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.MismatchedParentheses, state,
-                    executable.Select(op => op.Operator).AggregateToString());
+                return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.SyntaxError, state, script);
             }
 
             // Execute the code
@@ -274,8 +273,7 @@ namespace Brainf_ck_sharp
                 if (!enumerator.MoveNext())
                 {
                     // Abort if the enumerator failed
-                    return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.InternalException,
-                                                 state, executable.Select(op => op.Operator).AggregateToString());
+                    return new InterpreterResult(InterpreterExitCode.Failure | InterpreterExitCode.InternalException, state, script);
                 }
                 return enumerator.Current;
             }
@@ -308,9 +306,10 @@ namespace Brainf_ck_sharp
             Stopwatch timer = new Stopwatch();
             Queue<char> input = arguments.Length > 0 ? new Queue<char>(arguments) : new Queue<char>();
             StringBuilder output = new StringBuilder();
-            string code = executable.Select(op => op.Operator).AggregateToString(); // Original source code
-            Dictionary<uint, IReadOnlyList<Brainf_ckBinaryItem>> functions = oldFunctions.ToDictionary<FunctionDefinition, uint, IReadOnlyList<Brainf_ckBinaryItem>>(
-                f => f.Value, f => f.Body.Select(c => new Brainf_ckBinaryItem(0, c)).ToArray());
+            string code = new string(executable.Select(op => op.Operator).ToArray()); // Original source code
+            List<FunctionDefinition> definitions = oldFunctions.ToList();
+            Dictionary<uint, IReadOnlyList<Brainf_ckBinaryItem>> functions = definitions.ToDictionary<FunctionDefinition, uint, IReadOnlyList<Brainf_ckBinaryItem>>(
+                f => f.Value, f => f.Body.Select(c => new Brainf_ckBinaryItem(0, c)).ToArray()); // Dictionary for quick lookup
 
             // Internal recursive function that interpretes the code
             IEnumerable<InterpreterWorkingData> TryRunCore(IReadOnlyList<Brainf_ckBinaryItem> operators, uint position, ushort depth)
@@ -417,6 +416,16 @@ namespace Brainf_ck_sharp
 
                             // while (*ptr) {
                             case '[':
+
+                                // Check for stack depth on loops as well (could be inside a recursive function)
+                                if (depth == MaximumStackSize)
+                                {
+                                    yield return new InterpreterWorkingData(InterpreterExitCode.Failure |
+                                                                            InterpreterExitCode.ExceptionThrown |
+                                                                            InterpreterExitCode.StackLimitExceeded,
+                                                                            new[] { operators.Take(i + 1) }, position + (uint)i, operations + 1);
+                                    yield break;
+                                }
 
                                 // Edge case - memory reset loop [-]
                                 if (state.Current.Value > 0 &&                                              // Loop enabled
@@ -543,6 +552,7 @@ namespace Brainf_ck_sharp
 
                                 // Store the function for later use
                                 functions.Add(state.Current.Value, function);
+                                definitions.Add(new FunctionDefinition(state.Current.Value, function[0].Offset, new string(function.Select(b => b.Operator).ToArray())));
                                 operations++;
                                 break;
 
@@ -619,13 +629,6 @@ namespace Brainf_ck_sharp
                     }
                     else info = null;
 
-                    // Reconstruct the functions list
-                    IReadOnlyList<FunctionDefinition> definitions = functions.Keys.OrderBy(key => key).Select(key =>
-                    {
-                        IReadOnlyList<Brainf_ckBinaryItem> blocks = functions[key];
-                        return new FunctionDefinition(key, blocks[0].Offset, new string(blocks.Select(b => b.Operator).ToArray()));
-                    }).ToArray();
-
                     // Return the interpreter result with all the necessary info
                     string text = output.ToString();
                     yield return new InterpreterResult(
@@ -698,28 +701,6 @@ namespace Brainf_ck_sharp
             where Operators.Contains(c)
             select c).Select((c, i) => new Brainf_ckBinaryItem((uint) i, c)).ToArray();
 
-        /// <summary>
-        /// Checks whether or not the syntax in the input operators is valid
-        /// </summary>
-        /// <param name="operators">The operators sequence</param>
-        [Pure]
-        private static bool CheckSourceSyntax([NotNull] IEnumerable<Brainf_ckBinaryItem> operators)
-        {
-            // Iterate over all the characters in the source
-            int height = 0;
-            foreach (char c in operators.Select(op => op.Operator))
-            {
-                // Check the parentheses
-                if (c == '[') height++;
-                else if (c == ']')
-                {
-                    if (height == 0) return false;
-                    height--;
-                }
-            }
-            return height == 0;
-        }
-
         #endregion
 
         #region C translator
@@ -750,7 +731,7 @@ namespace Brainf_ck_sharp
             // Functions setup
             if (pbrains)
             {
-                builder.Append("void (*functions[255])();\n");
+                builder.Append($"void (*functions[{FunctionDefinitionsLimit}])() = {{ 0 }};\n");
                 foreach (IReadOnlyList<Brainf_ckBinaryItem> function in executable.Where(op => op.Operator == '(').Select(op => ExtractFunction(executable, (int)op.Offset).ToArray()))
                 {
                     builder.Append($"\nvoid f_{function[0].Offset - 1}() {{\n"); // Each function has the format f_{position of ( operator}

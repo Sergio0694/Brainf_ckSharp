@@ -30,6 +30,19 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             // Create the output collection
             return new List<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<string>>>
             {
+                CreateChangelogEntry("3.1.0.0", 2018, 9, 10, new List<string>
+                {
+                    "Added the ability to execute code in the background and show the results in real time",
+                    "Added a new menu to insert code snippets, by right\u2011clicking the IDE or holding the [ button",
+                    "Added an option to change the interpreter memory size",
+                    "Added an option to ask for confirmation before losing unsaved changes in the IDE",
+                    "Improved the git diff indicators algorithm in the IDE",
+                    "Added ability to use a physical to write to the console",
+                    "More keyboard shortcuts added",
+                    "Added a guide section for the keyboard shortcuts",
+                    "Added a new UI mode when the app is in full screen",
+                    "Lots of bug fixes and UI tweaks"
+                }),
                 CreateChangelogEntry("3.0.0.0", 2018, 8, 16, new List<string>
                 {
                     "App rebuilt for Windows 10 April Update",
@@ -82,7 +95,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 }),
                 CreateChangelogEntry("1.2.0.0", 2017, 7, 18, new List<string>
                 {
-                    "Added the byte overflow optional mode to both the console and the IDE",
+                    "Added the byte overflow optional mode",
                     "Added a one-time popup to ask for feedback on the app",
                     "Fixed a crash when using the IDE virtual arrows keyboard",
                     "The in-app notifications are now dismissed correctly when tapping the button in the top right corner",
@@ -92,7 +105,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
                 CreateChangelogEntry("1.1.1.0", 2017, 7, 8, new List<string>
                 {
                     "Added a button to delete a character in the IDE",
-                    "It is no longer possible to try to run code with a syntax error from the IDE",
+                    "It is no longer possible to execute a script that contains a syntax error from the IDE",
                     "Fixed an issue that was causing the save button to be disabled when navigating away and then back into the IDE",
                     "Minor UI tweaks and performance improvements"
                 }),

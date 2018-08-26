@@ -1,8 +1,8 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.UI;
 
 namespace Brainf_ck_sharp_UWP.Converters
 {
@@ -24,8 +24,6 @@ namespace Brainf_ck_sharp_UWP.Converters
         {
             switch (type)
             {
-                case ScriptExceptionType.SyntaxError:
-                    return LocalizationManager.GetResource("SyntaxError");
                 case ScriptExceptionType.RuntimeError:
                     return LocalizationManager.GetResource("Exception");
                 case ScriptExceptionType.ThresholdExceeded:

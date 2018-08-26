@@ -9,9 +9,10 @@ using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Converters;
 using Brainf_ck_sharp_UWP.DataModels.IDEResults;
-using Brainf_ck_sharp_UWP.Helpers;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp_UWP.Helpers.UI;
+using Microsoft.Toolkit.Uwp.Helpers;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers.PointerEvents;
@@ -85,9 +86,9 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult
                         break;
                     case IDEResultSectionSessionData section when section.Section == IDEResultSection.StackTrace:
                         int depth = section.Session.CurrentResult.ExceptionInfo?.StackTrace.Count ?? 0;
-                        if (depth == 0) @this.InfoBlock.Text = LocalizationManager.GetResource("NoLoops");
-                        else if (depth == 1) @this.InfoBlock.Text = LocalizationManager.GetResource("SingleLoop");
-                        else @this.InfoBlock.Text = $"{depth} {LocalizationManager.GetResource("Loops")}";
+                        @this.InfoBlock.Text = depth > 1
+                            ? $"{depth} {LocalizationManager.GetResource("MoreStackFrames")}"
+                            : LocalizationManager.GetResource("OneStackFrame");
                         @this.InfoBlock.Foreground = new SolidColorBrush(Colors.LightGray);
                         @this.InfoBlock.FontWeight = FontWeights.Normal;
                         break;
@@ -119,10 +120,10 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult
                         @this.InfoBlock.FontWeight = FontWeights.Normal;
                         break;
                     case IDEResultExceptionInfoData exception:
-                        string message = ExceptionTypeConverter.Convert(exception.Info.ExceptionType);
-                        @this.InfoBlock.Text = $"{message[0].ToString().ToUpperInvariant()}{message.Substring(1)}";
-                        @this.InfoBlock.Foreground = new SolidColorBrush(Colors.DarkRed);
-                        @this.InfoBlock.FontWeight = FontWeights.SemiBold;
+                        @this.InfoBlock.Inlines.Clear();
+                        string type = ExceptionTypeConverter.Convert(exception.Info.ExceptionType);
+                        @this.InfoBlock.Inlines.Add(new Run { Text = $"{type} > ", FontWeight = FontWeights.Bold, Foreground = "#FFA00000".ToColor().ToBrush() });
+                        @this.InfoBlock.Inlines.Add(new Run { Text = exception.Info.Message, FontWeight = FontWeights.Bold, Foreground = "#FF900000".ToColor().ToBrush() });
                         break;
                     case IDEResultSectionStateData state:
                         @this.InfoBlock.Text = $"{state.IndexedState.Count} {LocalizationManager.GetResource("MemoryCells")}";
@@ -135,7 +136,7 @@ namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult
                         @this.InfoBlock.FontWeight = FontWeights.Normal;
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException("Invalid section type");
+                        throw new ArgumentOutOfRangeException(nameof(data), "Invalid section type");
                 }
             }
         }

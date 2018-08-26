@@ -41,6 +41,7 @@
         <Grid
             Canvas.ZIndex="1"
             x:Name="HeaderGrid"
+            Background="{StaticResource HeaderInAppAcrylicBrush}"
             RelativePanel.AlignTopWithPanel="True"
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True">
@@ -52,7 +53,8 @@
             <!--Title placeholder-->
             <Grid 
                 Grid.Row="0"
-                Height="32">
+                Height="32"
+                x:Name="PlaceholderGrid">
                 
                 <!--App title-->
                 <TextBlock
@@ -99,6 +101,7 @@
 
             <!--Expandable keyboard pivot-->
             <inheritedControls:FixedRadExpanderControl
+                Style="{StaticResource EnhancedExpanderControlStyle}"
                 Margin="0"
                 IsExpandable="True"
                 IsExpanded="True"
@@ -109,11 +112,9 @@
                     <DataTemplate>
                         <Button 
                             Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
-                            Width="48"
+                            Height="80"
+                            Width="80"
                             x:Name="ExpanderStateButton">
-                            <Button.Clip>
-                                <RectangleGeometry Rect="0,0,48,48"/>
-                            </Button.Clip>
                             <TextBlock 
                                 Text="{Binding}"
                                 Style="{StaticResource FontIconTextBlockStyle}"
@@ -213,7 +214,7 @@
                 <customCommandBar:CustomCommandBarButton
                     Label="Play"
                     Icon="&#xE102;"
-                    Foreground="DarkGreen"
+                    Foreground="{StaticResource PlayButtonBrush}"
                     x:Uid="PlayButton"
                     DefaultButton="True"
                     IsEnabled="{x:Bind ViewModel.PlayAvailable, Mode=OneWay, FallbackValue=False}"
@@ -243,14 +244,14 @@
                 <customCommandBar:CustomCommandBarButton
                     Label="Play"
                     Icon="&#xE102;"
-                    Foreground="DarkGreen"
+                    Foreground="{StaticResource PlayButtonBrush}"
                     x:Uid="PlayButton"
                     IsEnabled="{x:Bind ViewModel.IDECodeAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestPlay}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Debug"
                     Icon="&#xEBE8;"
-                    Foreground="{StaticResource RedDangerBrush}"
+                    Foreground="{StaticResource DebugButtonBrush}"
                     x:Uid="DebugButton"
                     IsEnabled="{x:Bind ViewModel.DebugAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestDebug}"/>
