@@ -19,7 +19,7 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
         protected override async Task<IList<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<string>>>> OnLoadGroupsAsync()
         {
             await ChangelogSemaphore.WaitAsync();
-            if (_Changelog == null) _Changelog = await Task.Run(() => GetChangelogData());
+            if (_Changelog == null) _Changelog = await Task.Run(GetChangelogData);
             ChangelogSemaphore.Release();
             return _Changelog;
         }
@@ -30,6 +30,10 @@ namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
             // Create the output collection
             return new List<JumpListGroup<ChangelogReleaseInfo, IReadOnlyList<string>>>
             {
+                CreateChangelogEntry("3.1.1.0", 2018, 12, 20, new List<string>
+                {
+                    "Minor code tweaks"
+                }),
                 CreateChangelogEntry("3.1.0.0", 2018, 9, 10, new List<string>
                 {
                     "Added the ability to execute code in the background and show the results in real time",

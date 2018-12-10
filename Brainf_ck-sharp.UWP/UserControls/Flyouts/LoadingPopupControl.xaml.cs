@@ -12,18 +12,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
         {
             Loaded += LoadingPopupControl_Loaded;
             this.InitializeComponent();
-            Unloaded += (s, e) =>
-            {
-                Win2DCanvas.RemoveFromVisualTree();
-                Win2DCanvas = null;
-            };
         }
 
         // Setup the effect
-        private async void LoadingPopupControl_Loaded(object sender, RoutedEventArgs e)
+        private void LoadingPopupControl_Loaded(object sender, RoutedEventArgs e)
         {
-            await EffectBorder.AttachCompositionInAppCustomAcrylicEffectAsync(EffectBorder,
-                6, 400, Colors.Black, 0.5f, 0.2f, Win2DCanvas, new Uri("ms-appx:///Assets/Misc/lightnoise.png"), disposeOnUnload: true);
+            RootGrid.Background = CompositionBrushBuilder.FromBackdropAcrylic(Colors.Black, 0.5f, 6, new Uri("ms-appx:///Assets/Misc/lightnoise.png")).AsBrush();
         }
     }
 }

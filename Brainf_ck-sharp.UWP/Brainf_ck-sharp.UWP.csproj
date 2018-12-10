@@ -925,7 +925,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DiffPlex">
-      <Version>1.4.1</Version>
+      <Version>1.4.2</Version>
     </PackageReference>
     <PackageReference Include="HockeySDK.UWP">
       <Version>4.1.6</Version>
@@ -937,22 +937,22 @@
       <Version>1.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.1.7</Version>
+      <Version>6.1.9</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp">
-      <Version>4.0.0</Version>
+      <Version>5.0.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
-      <Version>4.0.0</Version>
+      <Version>5.0.0</Version>
     </PackageReference>
     <PackageReference Include="MvvmLightLibs">
-      <Version>5.4.1</Version>
+      <Version>5.4.1.1</Version>
     </PackageReference>
     <PackageReference Include="RafaelWare.UWP.Toolkit.UI.Controls.IconBox">
       <Version>2016.8.28.1527</Version>
     </PackageReference>
     <PackageReference Include="SharpDX.Direct2D1">
-      <Version>4.1.0</Version>
+      <Version>4.2.0</Version>
     </PackageReference>
     <PackageReference Include="SQLite.Net-PCL">
       <Version>3.1.1</Version>
@@ -964,13 +964,13 @@
       <Version>3.1.1</Version>
     </PackageReference>
     <PackageReference Include="SQLite.uwp">
-      <Version>3.24.0</Version>
+      <Version>3.26.0</Version>
     </PackageReference>
     <PackageReference Include="Telerik.UI.for.UniversalWindowsPlatform">
-      <Version>1.0.1</Version>
+      <Version>1.0.1.2</Version>
     </PackageReference>
     <PackageReference Include="UICompositionAnimations">
-      <Version>3.0.0-beta6</Version>
+      <Version>3.0.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

@@ -2,9 +2,11 @@
 using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI;
+using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Messages.Flyouts;
 using Brainf_ck_sharp_UWP.PopupService.Interfaces;
 using Brainf_ck_sharp_UWP.PopupService.Misc;
@@ -14,8 +16,6 @@ using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Uwp.Helpers;
 using UICompositionAnimations;
 using UICompositionAnimations.Behaviours;
-using UICompositionAnimations.Behaviours.Effects;
-using UICompositionAnimations.Behaviours.Misc;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers.PointerEvents;
 using ColorHelper = Microsoft.Toolkit.Uwp.Helpers.ColorHelper;
@@ -49,8 +49,6 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         // Resources cleanup
         private void FlyoutContainer_Unloaded(object sender, RoutedEventArgs e)
         {
-            LoadingCanvas.RemoveFromVisualTree();
-            LoadingCanvas = null;
             _DetachContent?.Invoke();
             _DetachContent = null;
             _Content = null;
@@ -129,7 +127,10 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
         }
 
         // The in-app acrylic brush for the background of the popup
-        private AttachedAnimatableCompositionEffect<Border> _LoadingAcrylic;
+        private CompositionBrush _LoadingAcrylic;
+
+        // The opacity animation for the acrylic brush
+        private EffectAnimation _AcrylicAnimation;
 
         /// <summary>
         /// Adjusts the UI according to the interfaces implemented by the current content
@@ -151,32 +152,33 @@ namespace Brainf_ck_sharp_UWP.PopupService.UI
                     // Load the effect if needed
                     if (_LoadingAcrylic == null)
                     {
-                        _LoadingAcrylic = await LoadingBorder.AttachCompositionAnimatableInAppCustomAcrylicEffectAsync(LoadingBorder,
-                            8, 0, false, Colors.Black, 0.2f,
-                            LoadingCanvas, new Uri("ms-appx:///Assets/Misc/noise.png"), disposeOnUnload: true);
+                        _LoadingAcrylic = await CompositionBrushBuilder
+                            .FromBackdropAcrylic(Colors.Black, 0.2f, 8, new Uri("ms-appx:///Assets/Misc/noise.png"))
+                            .Opacity(0, out _AcrylicAnimation)
+                            .BuildAsync();
+                        _LoadingAcrylic.AttachToElement(LoadingBorder);
                     }
 
                     // Fade in
                     if (e)
                     {
                         // Blur effect
-                        LoadingBorder.SetVisualOpacity(0);
+                        LoadingGrid.SetVisualOpacity(0);
                         LoadingGrid.Visibility = Visibility.Visible;
-                        LoadingBorder.StartCompositionFadeAnimation(null, 1, 200, null, EasingFunctionNames.Linear);
+                        LoadingGrid.StartCompositionFadeAnimation(null, 1, 200, null, EasingFunctionNames.Linear);
 
                         // Loading ring
                         LoadingRing.SetVisualOpacity(0);
                         LoadingRing.IsActive = true;
                         LoadingRing.StartCompositionFadeAnimation(null, 1, 400, null, EasingFunctionNames.Linear);
                     }
-                    _LoadingAcrylic?.AnimateAsync(e ? FixedAnimationType.In : FixedAnimationType.Out, TimeSpan.FromMilliseconds(500));
+                    _AcrylicAnimation(_LoadingAcrylic, e ? 1 : 0, 500).Forget();
 
                     // Fade out
                     if (!e)
                     {
                         LoadingRing.StartCompositionFadeAnimation(null, 0, 400, null, EasingFunctionNames.Linear, () => LoadingRing.IsActive = false);
-                        LoadingBorder.StartCompositionFadeAnimation(null, 0, 200, 300, EasingFunctionNames.Linear,
-                            () => LoadingGrid.Visibility = Visibility.Collapsed);
+                        LoadingGrid.StartCompositionFadeAnimation(null, 0, 200, 300, EasingFunctionNames.Linear, () => LoadingGrid.Visibility = Visibility.Collapsed);
                     }
                 };
             }
