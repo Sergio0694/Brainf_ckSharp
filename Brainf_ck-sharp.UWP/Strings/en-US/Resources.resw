@@ -457,16 +457,16 @@
   <data name="Changelog" xml:space="preserve">
     <value>Changelog</value>
   </data>
-  <data name="QuickMemoryViewerButton.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="QuickMemoryViewerButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Quick memory view</value>
   </data>
-  <data name="VirtualKeyboardButton.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="VirtualKeyboardButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Brainf*ck# operators keyboard</value>
   </data>
   <data name="DeleteButton.Label" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="OverflowSwitchButton.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="OverflowSwitchButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Toggle overflow mode</value>
   </data>
   <data name="OverflowMode" xml:space="preserve">
@@ -881,13 +881,13 @@ This way he'll be able to help you!</value>
   <data name="GuideShortcutsDebug2.Description" xml:space="preserve">
     <value>Continues and ingores following breakpoints</value>
   </data>
-  <data name="CopyButton.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="CopyButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Copy</value>
   </data>
-  <data name="CutButton.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="CutButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Cut</value>
   </data>
-  <data name="PasteButton.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="PasteButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Paste</value>
   </data>
   <data name="SnippetDuplicateValue" xml:space="preserve">

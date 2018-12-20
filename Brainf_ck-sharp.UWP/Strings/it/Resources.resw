@@ -331,16 +331,16 @@
   <data name="Changelog" xml:space="preserve">
     <value>Novità</value>
   </data>
-  <data name="QuickMemoryViewerButton.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="QuickMemoryViewerButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Vista rapida memoria</value>
   </data>
-  <data name="VirtualKeyboardButton.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="VirtualKeyboardButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Tastiera operatori Brainf*ck#</value>
   </data>
   <data name="DeleteButton.Label" xml:space="preserve">
     <value>Cancella</value>
   </data>
-  <data name="OverflowSwitchButton.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="OverflowSwitchButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Cambia modalità overflow</value>
   </data>
   <data name="OverflowMode" xml:space="preserve">
@@ -776,13 +776,13 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
   <data name="GuideShortcutsItem8.Description" xml:space="preserve">
     <value>Mostra le impostazioni dell'app</value>
   </data>
-  <data name="CopyButton.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="CopyButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Copia</value>
   </data>
-  <data name="CutButton.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="CutButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Taglia</value>
   </data>
-  <data name="PasteButton.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="PasteButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Incolla</value>
   </data>
   <data name="SnippetDuplicateValue" xml:space="preserve">

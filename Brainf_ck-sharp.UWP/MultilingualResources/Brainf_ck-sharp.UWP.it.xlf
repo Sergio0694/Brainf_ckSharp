@@ -428,11 +428,11 @@
           <source>Changelog</source>
           <target state="translated">Novità</target>
         </trans-unit>
-        <trans-unit id="QuickMemoryViewerButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+        <trans-unit id="QuickMemoryViewerButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Quick memory view</source>
           <target state="translated">Vista rapida memoria</target>
         </trans-unit>
-        <trans-unit id="VirtualKeyboardButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+        <trans-unit id="VirtualKeyboardButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Brainf*ck# operators keyboard</source>
           <target state="translated">Tastiera operatori Brainf*ck#</target>
         </trans-unit>
@@ -440,7 +440,7 @@
           <source>Delete</source>
           <target state="translated">Cancella</target>
         </trans-unit>
-        <trans-unit id="OverflowSwitchButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+        <trans-unit id="OverflowSwitchButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Toggle overflow mode</source>
           <target state="translated">Cambia modalità overflow</target>
         </trans-unit>
@@ -1021,15 +1021,15 @@ In questo modo sarà più facile aiutarti e potrai contribuire a rendere l'app a
           <source>Shows the app settings</source>
           <target state="translated">Mostra le impostazioni dell'app</target>
         </trans-unit>
-        <trans-unit id="CopyButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+        <trans-unit id="CopyButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Copy</source>
           <target state="translated">Copia</target>
         </trans-unit>
-        <trans-unit id="CutButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+        <trans-unit id="CutButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Cut</source>
           <target state="translated">Taglia</target>
         </trans-unit>
-        <trans-unit id="PasteButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+        <trans-unit id="PasteButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Paste</source>
           <target state="translated">Incolla</target>
         </trans-unit>
