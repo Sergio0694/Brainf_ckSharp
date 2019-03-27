@@ -577,6 +577,7 @@
             LostFocus="EditBox_OnLostFocus"
             Paste="EditBox_OnPaste"
             TextSizeChanged="EditBox_OnTextSizeChanged"
+            ContextFlyout="{x:Null}"
             ContextMenuOpening="EditBox_OnContextMenuOpening"
             Margin="0"/>
     </Grid>
