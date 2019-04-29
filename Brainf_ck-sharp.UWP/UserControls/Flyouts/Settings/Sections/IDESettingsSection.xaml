@@ -110,6 +110,16 @@
                 Padding="1,1,0,1"
                 BorderThickness="1"
                 IsHitTestVisible="{Binding ViewModel.ThemesSelectorEnabled, Mode=OneWay, FallbackValue=False}">
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        <Setter Property="VerticalAlignment" Value="Stretch"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
                 <ComboBox.ItemTemplateSelector>
                     <ui:ComboBoxDataTemplateSelector>
                         <ui:ComboBoxDataTemplateSelector.SelectedTemplate>
