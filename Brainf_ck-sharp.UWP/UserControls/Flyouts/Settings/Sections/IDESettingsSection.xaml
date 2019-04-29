@@ -4,8 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:inheritedControls="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls"
-    xmlns:helpers="using:Brainf_ck_sharp_UWP.Helpers"
     xmlns:ideThemes="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes"
     xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
     xmlns:ui="using:Brainf_ck_sharp_UWP.Helpers.UI"
@@ -33,9 +31,9 @@
             Margin="0,8,0,0"
             Text="Brackets style"
             x:Uid="BracketsStyleTitle"/>
-        <inheritedControls:AnimatedComboBox
+        <ComboBox
             Margin="0,8,0,0"
-            ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
+            BorderThickness="1"
             ItemsSource="{Binding ViewModel.BracketsStyleOptions}"
             SelectedIndex="{Binding ViewModel.BracketsStyleSelectedIndex, Mode=TwoWay}"
             IsEnabled="{Binding ViewModel.AutoindentBrackets, Mode=OneWay, FallbackValue=False}"
@@ -46,9 +44,9 @@
             Margin="0,16,0,0"
             Text="Tab length"
             x:Uid="TabLength"/>
-        <inheritedControls:AnimatedComboBox
+        <ComboBox
             Margin="0,8,0,0"
-            ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
+            BorderThickness="1"
             ItemsSource="{Binding ViewModel.TabLengthOptions}"
             SelectedIndex="{Binding ViewModel.TabLengthSelectedIndex, Mode=TwoWay}"
             MinWidth="180"/>
@@ -67,14 +65,14 @@
             Margin="0,8,0,0"
             Text="Font type"
             x:Uid="FontTypeTitle"/>
-        <inheritedControls:AnimatedComboBox
+        <ComboBox
             Margin="0,8,0,0"
-            ItemContainerStyle="{StaticResource FluentComboBoxItemContainerStyle}"
+            BorderThickness="1"
             ItemsSource="{Binding ViewModel.AvailableFonts}"
             SelectedIndex="{Binding ViewModel.FontFamilySelectedIndex, Mode=TwoWay}"
             MinWidth="180"
             Height="40">
-            <inheritedControls:AnimatedComboBox.ItemTemplate>
+            <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <Viewbox 
                         Margin="0,4,0,4"
@@ -89,8 +87,8 @@
                             IsTextScaleFactorEnabled="False"/>
                     </Viewbox>
                 </DataTemplate>
-            </inheritedControls:AnimatedComboBox.ItemTemplate>
-        </inheritedControls:AnimatedComboBox>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
 
         <!--IDE theme-->
         <TextBlock
@@ -104,15 +102,15 @@
             </Grid.ColumnDefinitions>
 
             <!--Theme selector-->
-            <inheritedControls:AnimatedComboBox
+            <ComboBox
                 ItemsSource="{Binding ViewModel.AvailableIDEThemes}"
                 SelectedIndex="{Binding ViewModel.IDEThemeSelectedIndex, Mode=TwoWay}"
-                ItemContainerStyle="{StaticResource ComboBoxWithoutSelectedVisualStatesStyle}"
                 MinWidth="180"
                 MinHeight="108"
                 Padding="1,1,0,1"
+                BorderThickness="1"
                 IsHitTestVisible="{Binding ViewModel.ThemesSelectorEnabled, Mode=OneWay, FallbackValue=False}">
-                <inheritedControls:AnimatedComboBox.ItemTemplateSelector>
+                <ComboBox.ItemTemplateSelector>
                     <ui:ComboBoxDataTemplateSelector>
                         <ui:ComboBoxDataTemplateSelector.SelectedTemplate>
                             <DataTemplate>
@@ -131,8 +129,8 @@
                             </DataTemplate>
                         </ui:ComboBoxDataTemplateSelector.DropDownTemplate>
                     </ui:ComboBoxDataTemplateSelector>
-                </inheritedControls:AnimatedComboBox.ItemTemplateSelector>
-            </inheritedControls:AnimatedComboBox>
+                </ComboBox.ItemTemplateSelector>
+            </ComboBox>
 
             <!--Unlock button-->
             <Grid

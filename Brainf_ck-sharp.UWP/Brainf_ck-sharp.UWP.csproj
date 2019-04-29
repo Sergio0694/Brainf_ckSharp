@@ -424,7 +424,6 @@
     <Compile Include="UserControls\Flyouts\UserGuide\UserGuideViewerControl.xaml.cs">
       <DependentUpon>UserGuideViewerControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\InheritedControls\AnimatedComboBox.cs" />
     <Compile Include="UserControls\InheritedControls\ButtonWithFlyoutVisualStates.cs" />
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CommandBarWithButtonsAnimations.cs" />
     <Compile Include="UserControls\InheritedControls\CustomCommandBar\CustomCommandBarButton.cs" />
