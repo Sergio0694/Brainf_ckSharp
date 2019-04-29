@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Windows.Foundation;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Enums;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using JetBrains.Annotations;
@@ -16,9 +16,6 @@ namespace Brainf_ck_sharp_UWP.Helpers.UI
     {
         #region Tools
 
-        // The minimum menu item width
-        private static readonly double FlyoutMinWidth = XAMLResourcesHelper.GetResourceValue<double>("MenuFlyoutMinWidth");
-
         // Adds a new item to the target menu flyout
         private static void AddItem([NotNull] this ICollection<MenuFlyoutItemBase> items, [NotNull] string text, [NotNull] string tag, [NotNull] Action click)
         {
@@ -26,21 +23,26 @@ namespace Brainf_ck_sharp_UWP.Helpers.UI
             MenuFlyoutItem menuItem = new MenuFlyoutItem
             {
                 Text = text,
-                Tag = tag,
-                Style = XAMLResourcesHelper.GetResourceValue<Style>("MenuFlyoutItemIconTemplate")
+                Icon = new FontIcon
+                {
+                    Glyph = tag,
+                    FontFamily = new FontFamily("Segoe MDL2 Assets")
+                }
             };
             AddItem(items, menuItem, click);
         }
+
+        /// <summary>
+        /// The minimum width of each context menu
+        /// </summary>
+        private const double MinMenuWidth = 200;
 
         // Adds an existing item to the target menu flyout
         private static void AddItem([NotNull] this ICollection<MenuFlyoutItemBase> items, [NotNull] MenuFlyoutItem menuItem, [NotNull] Action click)
         {
             // Adjust the width of the target element
             menuItem.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            if (menuItem.DesiredSize.Width + 12 > FlyoutMinWidth)
-            {
-                menuItem.MinWidth = menuItem.DesiredSize.Width + 12;
-            }
+            menuItem.MinWidth = Math.Max(menuItem.DesiredSize.Width + 12, MinMenuWidth);
 
             // Add the click handler if needed and add the item to the target collection
             menuItem.Click += (s, e) => click();
@@ -73,7 +75,14 @@ namespace Brainf_ck_sharp_UWP.Helpers.UI
             menu.Items?.AddItem(LocalizationManager.GetResource(favorited ? "Unfavorite" : "Favorite"),
                 (favorited ? 0xE195 : 0xE249).ToSegoeMDL2Icon(), favorite);
             menu.Items?.AddItem(LocalizationManager.GetResource("Rename"), 0xE104.ToSegoeMDL2Icon(), rename);
-            MenuFlyoutSubItem sub = new MenuFlyoutSubItem { Text = LocalizationManager.GetResource("Share") };
+            MenuFlyoutSubItem sub = new MenuFlyoutSubItem
+            {
+                Text = LocalizationManager.GetResource("Share"), Icon = new FontIcon
+                {
+                    Glyph = 0xE72D.ToSegoeMDL2Icon(),
+                    FontFamily = new FontFamily("Segoe MDL2 Assets")
+                }
+            };
             sub.Items?.AddItem(LocalizationManager.GetResource("Clipboard"), 0xEF20.ToSegoeMDL2Icon(), () => share(SourceCodeShareType.Clipboard));
             sub.Items?.AddItem(LocalizationManager.GetResource("OSShare"), 0xED4D.ToSegoeMDL2Icon(), () => share(SourceCodeShareType.OSShare));
             sub.Items?.AddItem(LocalizationManager.GetResource("Email"), 0xE715.ToSegoeMDL2Icon(), () => share(SourceCodeShareType.Email));
