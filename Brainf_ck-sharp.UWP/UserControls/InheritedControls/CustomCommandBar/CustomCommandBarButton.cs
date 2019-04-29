@@ -1,7 +1,6 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 
 namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
@@ -11,28 +10,6 @@ namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
     /// </summary>
     public class CustomCommandBarButton : AppBarButton, ICustomCommandBarPrimaryItem
     {
-        private string _Icon;
-
-        /// <summary>
-        /// The string that represents the target SymbolIcon to display
-        /// </summary>
-        public new string Icon
-        {
-            get => _Icon;
-            set
-            {
-                if (_Icon != value)
-                {
-                    base.Icon = new FontIcon
-                    {
-                        FontFamily = new FontFamily("Segoe MDL2 Assets"),
-                        Glyph = value
-                    };
-                    _Icon = value;
-                }
-            }
-        }
-
         /// <summary>
         /// Indicates whether the button should be visible by default or when the AutoHideCommandBar changes display mode
         /// </summary>

@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="Styles/MiscStyles.xaml"/>
                 <ResourceDictionary Source="Styles/MenuFlyoutStyles.xaml"/>
                 <ResourceDictionary Source="Resources/BrushesDictionary.xaml"/>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

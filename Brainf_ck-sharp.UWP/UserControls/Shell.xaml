@@ -14,6 +14,7 @@
     xmlns:controls="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls"
     xmlns:customCommandBar="using:Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar"
     xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
+    xmlns:markupExtensions="using:Brainf_ck_sharp_UWP.MarkupExtensions"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -213,7 +214,7 @@
                 <!--Console buttons-->
                 <customCommandBar:CustomCommandBarButton
                     Label="Play"
-                    Icon="&#xE102;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xE102;}"
                     Foreground="{StaticResource PlayButtonBrush}"
                     x:Uid="PlayButton"
                     DefaultButton="True"
@@ -221,20 +222,20 @@
                     Click="{x:Bind ViewModel.RequestPlay}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Memory state"
-                    Icon="&#xE74C;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xE74C;}"
                     DefaultButton="True"
                     x:Uid="MemoryState"
                     Click="{x:Bind RequestShowMemoryState}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Clear"
-                    Icon="&#xE10A;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xE10A;}"
                     x:Uid="Clear"
                     IsEnabled="{x:Bind ViewModel.ClearAvailable, Mode=OneWay, FallbackValue=False}"
                     DefaultButton="True"
                     Click="{x:Bind ViewModel.RequestClearConsoleLine}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Undo"
-                    Icon="&#xE750;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xE750;}"
                     x:Uid="DeleteButton"
                     IsEnabled="{x:Bind ViewModel.UndoAvailable, Mode=OneWay, FallbackValue=False}"
                     DefaultButton="True"
@@ -243,14 +244,14 @@
                 <!--IDE buttons-->
                 <customCommandBar:CustomCommandBarButton
                     Label="Play"
-                    Icon="&#xE102;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xE102;}"
                     Foreground="{StaticResource PlayButtonBrush}"
                     x:Uid="PlayButton"
                     IsEnabled="{x:Bind ViewModel.IDECodeAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestPlay}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Debug"
-                    Icon="&#xEBE8;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xEBE8;}"
                     Foreground="{StaticResource DebugButtonBrush}"
                     x:Uid="DebugButton"
                     IsEnabled="{x:Bind ViewModel.DebugAvailable, Mode=OneWay, FallbackValue=False}"
@@ -258,29 +259,29 @@
                 <customCommandBar:CustomCommandBarSeparator/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Move"
-                    Icon="&#xE759;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xE759;}"
                     x:Uid="MoveButton"
                     Click="MoveButton_Click"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="New line"
-                    Icon="&#xE751;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xE751;}"
                     x:Uid="NewLineButton"
                     Click="{x:Bind ViewModel.RequestAddIDENewLine}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Delete"
-                    Icon="&#xE750;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xE750;}"
                     x:Uid="DeleteButton"
                     IsEnabled="{x:Bind ViewModel.DeleteAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestIDEDeleteAction}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Undo"
-                    Icon="&#xE10E;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xE10E;}"
                     IsEnabled="{x:Bind ViewModel.UndoAvailable, Mode=OneWay, FallbackValue=False}"
                     x:Uid="Undo"
                     Click="{x:Bind ViewModel.RequestIDEUndo}"/>
                 <customCommandBar:CustomCommandBarButton
                     Label="Redo"
-                    Icon="&#xE10D;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xE10D;}"
                     x:Uid="RedoButton"
                     IsEnabled="{x:Bind ViewModel.RedoAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestIDERedo}"/>
@@ -290,7 +291,7 @@
                     Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Repeat last script"
                     x:Uid="RepeatScript"
-                    Icon="&#xE117;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xE117;}"
                     IsEnabled="{x:Bind ViewModel.RepeatLastScriptAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestRepeatLastConsoleScript}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=0, Mode=OneWay, FallbackValue=Collapsed}"/>
@@ -298,7 +299,7 @@
                     Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Restart"
                     x:Uid="Restart"
-                    Icon="&#xE9F3;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xE9F3;}"
                     IsEnabled="{x:Bind ViewModel.RestartAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestRestartConsole}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=0, Mode=OneWay, FallbackValue=Collapsed}"/>
@@ -306,28 +307,28 @@
                     Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Clear screen"
                     x:Uid="Clrscr"
-                    Icon="&#xEA99;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xEA99;}"
                     IsEnabled="{x:Bind ViewModel.ClearScreenAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestClearScreen}"/>
                 <customCommandBar:CustomCommandBarButton
                     Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Show Unicode characters"
                     x:Uid="Unicode"
-                    Icon="&#xEBDB;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xEBDB;}"
                     Click="{x:Bind RequestShowUnicodeCharacters}"/>
                 <AppBarSeparator Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
                     Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Browse code library"
                     x:Uid="CodeLibraryButton"
-                    Icon="&#xED25;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xED25;}"
                     Click="{x:Bind RequestShowCodeLibrary}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
                     Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Save"
                     x:Uid="SaveButton"
-                    Icon="&#xE105;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xE105;}"
                     Click="{x:Bind ViewModel.RequestSaveSourceCode}"
                     IsEnabled="{x:Bind ViewModel.SaveAvailable, Mode=OneWay, FallbackValue=False}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
@@ -335,7 +336,7 @@
                     Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Save as"
                     x:Uid="SaveAsButton"
-                    Icon="&#xEA35;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xEA35;}"
                     Click="{x:Bind ViewModel.RequestSaveSourceCodeAs}"
                     IsEnabled="{x:Bind ViewModel.SaveAsAvailable, Mode=OneWay, FallbackValue=True}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
@@ -344,13 +345,13 @@
                     Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Settings"
                     x:Uid="SettingsButton"
-                    Icon="&#xE115;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xE115;}"
                     Click="SettingsButton_Click"/>
                 <customCommandBar:CustomCommandBarButton
                     Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="About"
                     x:Uid="AboutButton"
-                    Icon="&#xED15;"
+                    Icon="{markupExtensions:FontIcon Glyph=&#xED15;}"
                     Click="AboutButton_Click"/>
             </customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
         </customCommandBar:CommandBarWithButtonsAnimations>
