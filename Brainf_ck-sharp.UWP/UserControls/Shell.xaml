@@ -288,7 +288,6 @@
             </customCommandBar:CommandBarWithButtonsAnimations.PrimaryCommands>
             <customCommandBar:CommandBarWithButtonsAnimations.SecondaryCommands>
                 <customCommandBar:CustomCommandBarButton
-                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Repeat last script"
                     x:Uid="RepeatScript"
                     Icon="{markupExtensions:FontIcon Glyph=&#xE117;}"
@@ -296,7 +295,6 @@
                     Click="{x:Bind ViewModel.RequestRepeatLastConsoleScript}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=0, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
-                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Restart"
                     x:Uid="Restart"
                     Icon="{markupExtensions:FontIcon Glyph=&#xE9F3;}"
@@ -304,28 +302,24 @@
                     Click="{x:Bind ViewModel.RequestRestartConsole}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=0, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
-                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Clear screen"
                     x:Uid="Clrscr"
                     Icon="{markupExtensions:FontIcon Glyph=&#xEA99;}"
                     IsEnabled="{x:Bind ViewModel.ClearScreenAvailable, Mode=OneWay, FallbackValue=False}"
                     Click="{x:Bind ViewModel.RequestClearScreen}"/>
                 <customCommandBar:CustomCommandBarButton
-                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Show Unicode characters"
                     x:Uid="Unicode"
                     Icon="{markupExtensions:FontIcon Glyph=&#xEBDB;}"
                     Click="{x:Bind RequestShowUnicodeCharacters}"/>
                 <AppBarSeparator Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
-                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Browse code library"
                     x:Uid="CodeLibraryButton"
                     Icon="{markupExtensions:FontIcon Glyph=&#xED25;}"
                     Click="{x:Bind RequestShowCodeLibrary}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
-                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Save"
                     x:Uid="SaveButton"
                     Icon="{markupExtensions:FontIcon Glyph=&#xE105;}"
@@ -333,7 +327,6 @@
                     IsEnabled="{x:Bind ViewModel.SaveAvailable, Mode=OneWay, FallbackValue=False}"
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <customCommandBar:CustomCommandBarButton
-                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Save as"
                     x:Uid="SaveAsButton"
                     Icon="{markupExtensions:FontIcon Glyph=&#xEA35;}"
@@ -342,13 +335,11 @@
                     Visibility="{x:Bind PivotControl.SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1, Mode=OneWay, FallbackValue=Collapsed}"/>
                 <AppBarSeparator/>
                 <customCommandBar:CustomCommandBarButton
-                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="Settings"
                     x:Uid="SettingsButton"
                     Icon="{markupExtensions:FontIcon Glyph=&#xE115;}"
                     Click="SettingsButton_Click"/>
                 <customCommandBar:CustomCommandBarButton
-                    Style="{StaticResource SecondaryAppBarButtonWithLightEffect}"
                     Label="About"
                     x:Uid="AboutButton"
                     Icon="{markupExtensions:FontIcon Glyph=&#xED15;}"
