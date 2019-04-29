@@ -470,7 +470,6 @@
     <Compile Include="UserControls\InheritedControls\LockedPivot.cs" />
     <Compile Include="UserControls\InheritedControls\PopupDropShadowGrid.cs" />
     <Compile Include="UserControls\InheritedControls\RichEditBoxWithVerticalOffsetInfo.cs" />
-    <Compile Include="UserControls\InheritedControls\WrapPanel.cs" />
     <Compile Include="UserControls\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
