@@ -107,16 +107,15 @@
                 IsExpandable="True"
                 IsExpanded="True"
                 ExpanderHitTargetAreaWidth="48"
-                AnimatedIndicatorContent="&#xE010;"
-                x:Name="ExpanderControl">
+                AnimatedIndicatorContent="&#xE010;">
                 <telerik:RadExpanderControl.AnimatedIndicatorContentTemplate>
                     <DataTemplate>
                         <Button 
-                            Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
+                            Style="{StaticResource ButtonFullSizeRevealStyle}"
                             Height="80"
                             Width="80"
                             x:Name="ExpanderStateButton">
-                            <TextBlock 
+                            <TextBlock
                                 Text="{Binding}"
                                 Style="{StaticResource FontIconTextBlockStyle}"
                                 VerticalAlignment="Center"
@@ -131,23 +130,10 @@
 
                         <!--Wide light border-->
                         <Border
-                            Width="48"
+                            Width="48" Height="48"
                             HorizontalAlignment="Right"
-                            x:Name="BackgroundBorder"
-                            Background="{StaticResource ElementsWideLightBrush}"
-                            Opacity="0">
-                            <Border.RenderTransform>
-                                <TranslateTransform X="48"/>
-                            </Border.RenderTransform>
-                        </Border>
-
-                        <!--Expander light-->
-                        <Border
-                            x:Name="ExpanderLightBorder"
-                            Width="48"
-                            HorizontalAlignment="Right"
-                            BorderThickness="1"
-                            BorderBrush="{StaticResource BorderLightBrush}">
+                            BorderBrush="{StaticResource ButtonRevealBorderBrush}"
+                            BorderThickness="1">
                             <Border.RenderTransform>
                                 <TranslateTransform X="48"/>
                             </Border.RenderTransform>

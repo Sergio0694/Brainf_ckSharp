@@ -11,9 +11,10 @@
     x:Name="This">
 
     <!--Memory cells list-->
-    <ListView ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
-              ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
-              CanDrag="False">
+    <ListView
+        ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
+        ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+        CanDrag="False">
         <ListView.Header>
             <Grid Height="12"/>
         </ListView.Header>
@@ -29,10 +30,11 @@
         </ListView.ItemTemplate>
         <ListView.ItemsPanel>
             <ItemsPanelTemplate>
-                <ItemsWrapGrid Orientation="Horizontal"
-                               ItemHeight="{Binding ElementName=This, Path=ItemsHeight, FallbackValue=60}"
-                               ItemWidth="{Binding ElementName=This, Path=ItemsWidth, FallbackValue=100}"
-                               MaximumRowsOrColumns="5"/>
+                <ItemsWrapGrid 
+                    Orientation="Horizontal"
+                    ItemHeight="{Binding ElementName=This, Path=ItemsHeight, FallbackValue=60}"
+                    ItemWidth="{Binding ElementName=This, Path=ItemsWidth, FallbackValue=100}"
+                    MaximumRowsOrColumns="5"/>
             </ItemsPanelTemplate>
         </ListView.ItemsPanel>
     </ListView>

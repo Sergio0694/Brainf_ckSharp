@@ -32,7 +32,6 @@ using Brainf_ck_sharp_UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
-using UICompositionAnimations.Helpers.PointerEvents;
 using MemoryViewerFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState.MemoryViewerFlyout;
 using SettingsPanelFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings.SettingsPanelFlyout;
 
@@ -194,13 +193,6 @@ namespace Brainf_ck_sharp_UWP.UserControls
             FadeCanvas.SetVisualOpacity(0);
             Messenger.Default.Send(new ConsoleStatusUpdateMessage(IDEStatus.Console, LocalizationManager.GetResource("Ready"), 0, 0));
             UpdateUIElementsSizeBindings();
-
-            // Light border UI
-            ExpanderControl.FindChild<Button>("ExpanderStateButton").ManageLightsPointerStates(value =>
-            {
-                ExpanderLightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 1, 200, null, EasingFunctionNames.Linear);
-                BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.4 : 0, 200, null, EasingFunctionNames.Linear);
-            });
 
             // Popups
             if (!_StartupMessagesProcessed)
