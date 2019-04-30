@@ -10,26 +10,9 @@
     d:DesignWidth="400">
 
     <inheritedControls:ButtonWithFlyoutVisualStates
-        x:Name="RootButton"
-        Style="{StaticResource WideButtonWithNoBackgroundAndInlineBorder}"
-        BorderThickness="2"
+        Style="{StaticResource ButtonFullSizeRevealStyle}"
         Click="Button_Clicked">
         <Grid>
-
-            <!--Wide light border-->
-            <Border
-                x:Name="BackgroundBorder"
-                Background="{StaticResource ElementsWideLightBrush}"
-                Opacity="0"/>
-            
-            <!--Light-->
-            <Border
-                x:Name="LightBorder"
-                BorderThickness="1"
-                Opacity="0.8"
-                BorderBrush="{StaticResource BorderLightBrush}"/>
-
-            <!--Content-->
             <StackPanel
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"

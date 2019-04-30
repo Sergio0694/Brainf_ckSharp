@@ -22,17 +22,9 @@
 
     <!--Content-->
     <Button
-        Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
+        Style="{StaticResource ButtonFullSizeRevealStyle}"
         Click="Button_Click">
         <Grid>
-
-            <!--Wide light border-->
-            <Border
-                x:Name="BackgroundBorder"
-                Background="{StaticResource ElementsWideLightBrush}"
-                Opacity="0"/>
-            
-            <!--Icon-->
             <TextBlock 
                 Text="&#xE010;"
                 x:Name="IconBlock"

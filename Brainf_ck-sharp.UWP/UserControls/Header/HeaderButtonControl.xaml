@@ -10,7 +10,8 @@
 
     <!--Visual tree-->
     <Button
-        Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
+        x:Name="RootButton"
+        Style="{StaticResource ButtonFullSizeRevealStyle}"
         Tapped="Header_Tapped">
 
         <!--Visual states-->
@@ -25,7 +26,7 @@
                             Target="TitleBlock.Foreground"
                             Value="White"/>
                         <Setter
-                            Target="RootGrid.Background"
+                            Target="RootButton.Background"
                             Value="Transparent"/>
                     </VisualState.Setters>
                 </VisualState>
@@ -38,61 +39,37 @@
                             Target="TitleBlock.Foreground"
                             Value="{ThemeResource SystemControlHighlightAccentBrush}"/>
                         <Setter
-                            Target="RootGrid.Background"
+                            Target="RootButton.Background"
                             Value="#40000000"/>
                     </VisualState.Setters>
-                    <Storyboard>
-                        <DoubleAnimation
-                            Storyboard.TargetName="LightBorder"
-                            Storyboard.TargetProperty="Opacity"
-                            To="0"
-                            Duration="0:0:0.2"/>
-                    </Storyboard>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        
-        <!--Root-->
-        <Grid x:Name="RootGrid">
 
-            <!--Wide light border-->
-            <Border
-                x:Name="BackgroundBorder"
-                Background="{StaticResource ElementsWideLightBrush}"
-                Opacity="0"/>
-
-            <!--Light-->
-            <Border
-                Opacity="0.4"
-                x:Name="LightBorder"
-                BorderThickness="1"
-                BorderBrush="{StaticResource BorderLightBrush}"/>
-
-            <!--Icon and title-->
-            <RelativePanel
+        <!--Icon and title-->
+        <RelativePanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <TextBlock
+                Style="{StaticResource FontIconTextBlockStyle}"
+                Text="&#xEC4E;"
+                x:Name="IconBlock"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center">
-                <TextBlock
-                    Style="{StaticResource FontIconTextBlockStyle}"
-                    Text="&#xEC4E;"
-                    x:Name="IconBlock"
-                    HorizontalAlignment="Center"
-                    RelativePanel.AlignLeftWithPanel="True"
-                    RelativePanel.AlignRightWithPanel="True"/>
-                <TextBlock
-                    Text="Title"
-                    x:Name="TitleBlock"
-                    RelativePanel.Below="IconBlock"
-                    HorizontalAlignment="Center"
-                    RelativePanel.AlignLeftWithPanel="True"
-                    RelativePanel.AlignRightWithPanel="True"
-                    MaxLines="1"
-                    TextWrapping="NoWrap"
-                    TextTrimming="CharacterEllipsis"
-                    FontSize="12"
-                    Margin="0,4,0,0"
-                    Foreground="#E0FFFFFF"/>
-            </RelativePanel>
-        </Grid>
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"/>
+            <TextBlock
+                Text="Title"
+                x:Name="TitleBlock"
+                RelativePanel.Below="IconBlock"
+                HorizontalAlignment="Center"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"
+                MaxLines="1"
+                TextWrapping="NoWrap"
+                TextTrimming="CharacterEllipsis"
+                FontSize="12"
+                Margin="0,4,0,0"
+                Foreground="#E0FFFFFF"/>
+        </RelativePanel>
     </Button>
 </UserControl>

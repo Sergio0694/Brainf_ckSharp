@@ -2,9 +2,6 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using UICompositionAnimations;
-using UICompositionAnimations.Enums;
-using UICompositionAnimations.Helpers.PointerEvents;
 
 namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
 {
@@ -14,11 +11,6 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
         {
             this.InitializeComponent();
             VisualStateManager.GoToState(this, "Default", false);
-            this.ManageLightsPointerStates(value =>
-            {
-                LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 0.8, 200, null, EasingFunctionNames.Linear);
-                BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.4 : 0, 200, null, EasingFunctionNames.Linear);
-            });
         }
 
         /// <inheritdoc cref="UserControl"/>
@@ -31,7 +23,6 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
                 {
                     VisualStateManager.GoToState(this, value ? "Default" : "Disabled", false);
                     base.IsEnabled = value;
-                    LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0.8 : 0, 200, null, EasingFunctionNames.Linear);
                 }
             }
         }

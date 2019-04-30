@@ -1,8 +1,5 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using UICompositionAnimations;
-using UICompositionAnimations.Enums;
-using UICompositionAnimations.Helpers.PointerEvents;
 
 namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
 {
@@ -14,11 +11,6 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
         public KeyboardButton()
         {
             this.InitializeComponent();
-            this.ManageLightsPointerStates(value =>
-            {
-                BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.8 : 0, 200, null, EasingFunctionNames.Linear);
-                LightBorder.StartXAMLTransformFadeAnimation(null, value ? 0 : 0.8, 200, null, EasingFunctionNames.Linear);
-            });
         }
 
         /// <summary>
@@ -54,14 +46,5 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
         public event RoutedEventHandler Click;
 
         private void Button_Clicked(object sender, RoutedEventArgs e) => Click?.Invoke(this, e);
-
-        /// <summary>
-        /// Gets or sets whether a linked flyout is open
-        /// </summary>
-        public bool ExternalFlyoutOpen
-        {
-            get => RootButton.ExternalFlyoutOpen;
-            set => RootButton.ExternalFlyoutOpen = value;
-        }
     }
 }

@@ -115,14 +115,12 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
                 (e.PointerDeviceType == PointerDeviceType.Touch || e.PointerDeviceType == PointerDeviceType.Pen) &&
                 await Messenger.Default.RequestAsync<AppSection, CurrentAppSectionInfoRequestMessage>() == AppSection.IDE)
             {
-                _SnippetsMenuOpen = button.ExternalFlyoutOpen = true;
                 TouchCodeSnippetsBrowserFlyout browser = new TouchCodeSnippetsBrowserFlyout
                 {
                     Height = 48 * 6 + 2, // Ugly hack (height of a snippet template by number of available templates)
                     Width = 220
                 };
                 await FlyoutManager.Instance.ShowCustomContextFlyout(browser, button, margin: new Point(60, 0));
-                _SnippetsMenuOpen = button.ExternalFlyoutOpen = false;
             }
         }
     }

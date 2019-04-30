@@ -10,7 +10,8 @@
 
     <!--Visual tree-->
     <Button
-        Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
+        x:Name="RootButton"
+        Style="{StaticResource ButtonFullSizeRevealStyle}"
         Tapped="{x:Bind TrySelect}">
 
         <!--Visual states-->
@@ -22,7 +23,7 @@
                             Target="IconBlock.Foreground"
                             Value="White"/>
                         <Setter
-                            Target="RootGrid.Background"
+                            Target="RootButton.Background"
                             Value="Transparent"/>
                     </VisualState.Setters>
                 </VisualState>
@@ -32,8 +33,8 @@
                             Target="IconBlock.Foreground"
                             Value="{ThemeResource SystemControlHighlightAccentBrush}"/>
                         <Setter
-                            Target="RootGrid.Background"
-                            Value="Black"/>
+                            Target="RootButton.Background"
+                            Value="#A0000000"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Disabled">
@@ -42,35 +43,19 @@
                             Target="IconBlock.Foreground"
                             Value="{StaticResource ButtonDisabledForegroundThemeBrush}"/>
                         <Setter
-                            Target="RootGrid.Background"
+                            Target="RootButton.Background"
                             Value="Transparent"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <!--Root-->
-        <Grid x:Name="RootGrid">
-
-            <!--Wide light border-->
-            <Border
-                x:Name="BackgroundBorder"
-                Background="{StaticResource ElementsWideLightBrush}"
-                Opacity="0"/>
-
-            <!--Light-->
-            <Border
-                x:Name="LightBorder"
-                BorderThickness="1"
-                BorderBrush="{StaticResource BorderLightBrush}"/>
-
-            <!--Icon-->
-            <TextBlock
-                Style="{StaticResource FontIconTextBlockStyle}"
-                Text="&#xEC4E;"
-                x:Name="IconBlock"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"/>
-        </Grid>
+        <!--Icon-->
+        <TextBlock
+            Style="{StaticResource FontIconTextBlockStyle}"
+            Text="&#xEC4E;"
+            x:Name="IconBlock"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"/>
     </Button>
 </UserControl>

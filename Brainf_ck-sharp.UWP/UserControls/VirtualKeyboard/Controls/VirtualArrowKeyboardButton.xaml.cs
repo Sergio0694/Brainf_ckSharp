@@ -1,9 +1,6 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using UICompositionAnimations;
-using UICompositionAnimations.Enums;
-using UICompositionAnimations.Helpers.PointerEvents;
 
 namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
 {
@@ -12,13 +9,6 @@ namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
         public VirtualArrowKeyboardButton()
         {
             this.InitializeComponent();
-#if DEBUG
-            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled) return;
-#endif
-            this.ManageLightsPointerStates(value =>
-            {
-                BackgroundBorder.StartXAMLTransformFadeAnimation(null, value ? 0.6 : 0, 200, null, EasingFunctionNames.Linear);
-            });
         }
 
         /// <summary>
