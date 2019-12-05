@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ck-sharp", "Brainf_ck-sharp\Brainf_ck-sharp.csproj", "{29C20CF8-6019-427B-9987-E6059BA657E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ck-sharp.UWP", "Brainf_ck-sharp.UWP\Brainf_ck-sharp.UWP.csproj", "{F80A99AB-BB3F-4833-9725-B6010B718687}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ck-sharp.Unit", "Brainf_ck-sharp.Unit\Brainf_ck-sharp.Unit.csproj", "{3447C213-2FCA-4B36-9B70-623B62FEFA43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ck-sharp.Unit", "Brainf_ck-sharp.Unit\Brainf_ck-sharp.Unit.csproj", "{3447C213-2FCA-4B36-9B70-623B62FEFA43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ck-sharp.Profiler", "Brainf_ck-sharp.Profiler\Brainf_ck-sharp.Profiler.csproj", "{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,22 @@ Global
 		{3447C213-2FCA-4B36-9B70-623B62FEFA43}.Release|x64.Build.0 = Release|Any CPU
 		{3447C213-2FCA-4B36-9B70-623B62FEFA43}.Release|x86.ActiveCfg = Release|Any CPU
 		{3447C213-2FCA-4B36-9B70-623B62FEFA43}.Release|x86.Build.0 = Release|Any CPU
+		{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}.Debug|ARM.Build.0 = Debug|Any CPU
+		{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}.Debug|x64.Build.0 = Debug|Any CPU
+		{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}.Debug|x86.Build.0 = Debug|Any CPU
+		{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}.Release|ARM.ActiveCfg = Release|Any CPU
+		{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}.Release|ARM.Build.0 = Release|Any CPU
+		{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}.Release|x64.ActiveCfg = Release|Any CPU
+		{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}.Release|x64.Build.0 = Release|Any CPU
+		{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}.Release|x86.ActiveCfg = Release|Any CPU
+		{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
