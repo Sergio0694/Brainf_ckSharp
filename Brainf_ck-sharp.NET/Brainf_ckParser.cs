@@ -1,4 +1,7 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Brainf_ck_sharp.NET
 {
@@ -7,6 +10,40 @@ namespace Brainf_ck_sharp.NET
     /// </summary>
     public static class Brainf_ckParser
     {
+        /// <summary>
+        /// The maximum valid index in <see cref="OperatorsLookupTable"/>
+        /// </summary>
+        public static readonly int OperatorsLookupTableMaxIndex = 94;
+
+        /// <summary>
+        /// A lookup table to quickly check characters
+        /// </summary>
+        public static ReadOnlySpan<byte> OperatorsLookupTable => new byte[]
+        {
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // ()+,-.
+            0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // :<>
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0  // []
+        };
+
+        /// <summary>
+        /// Checks whether or not an input character is a Brainf*ck/PBrain operator
+        /// </summary>
+        /// <param name="c">The input character to check</param>
+        /// <returns><see langword="true"/> if the input character is a Brainf*ck/PBrain operator, <see langword="false"/> otherwise</returns>
+        [Pure]
+        public static bool IsOperator(char c)
+        {
+            int
+                sign = ((OperatorsLookupTableMaxIndex - c) >> 31) & 1,
+                offset = OperatorsLookupTableMaxIndex * sign + c * (sign ^ 1);
+            ref byte r0 = ref MemoryMarshal.GetReference(OperatorsLookupTable);
+            byte r1 = Unsafe.Add(ref r0, offset);
+
+            return r1 != 0;
+        }
+
         /// <summary>
         /// Checks whether or not the syntax of the input script is valid
         /// </summary>
