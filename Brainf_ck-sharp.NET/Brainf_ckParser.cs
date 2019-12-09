@@ -13,7 +13,7 @@ namespace Brainf_ck_sharp.NET
         /// <summary>
         /// The maximum valid index in <see cref="OperatorsLookupTable"/>
         /// </summary>
-        public static readonly int OperatorsLookupTableMaxIndex = 94;
+        public const int OperatorsLookupTableMaxIndex = 94;
 
         /// <summary>
         /// A lookup table to quickly check characters
@@ -36,8 +36,10 @@ namespace Brainf_ck_sharp.NET
         public static bool IsOperator(char c)
         {
             int
-                sign = ((OperatorsLookupTableMaxIndex - c) >> 31) & 1,
-                offset = OperatorsLookupTableMaxIndex * sign + c * (sign ^ 1);
+                diff = OperatorsLookupTableMaxIndex - c,
+                sign = diff & (1 << 31),
+                mask = ~(sign >> 31),
+                offset = c & mask;
             ref byte r0 = ref MemoryMarshal.GetReference(OperatorsLookupTable);
             byte r1 = Unsafe.Add(ref r0, offset);
 
