@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Brainf_ck_sharp.NET.Constants;
 using Brainf_ck_sharp.NET.Enum;
 using Brainf_ck_sharp.NET.Models;
 
@@ -69,13 +70,13 @@ namespace Brainf_ck_sharp.NET
             {
                 switch (code[i])
                 {
-                    case '+':
-                    case '-':
-                    case '>':
-                    case '<':
-                    case '.':
-                    case ',':
-                    case ':':
+                    case Operators.Plus:
+                    case Operators.Minus:
+                    case Operators.ForwardPtr:
+                    case Operators.BackwardPtr:
+                    case Operators.PrintChar:
+                    case Operators.ReadChar:
+                    case Operators.FunctionCall:
 
                         /* For action operators, simply increase the counter if the current
                          * parser is inside a function definition. The counter is used to
@@ -83,7 +84,7 @@ namespace Brainf_ck_sharp.NET
                          * over the span of characters contained in the definition */
                         if (functionStart != -1) functionOps++;
                         break;
-                    case '[':
+                    case Operators.LoopStart:
 
                         // Increase the appropriate depth level
                         if (functionStart == -1)
@@ -98,7 +99,7 @@ namespace Brainf_ck_sharp.NET
                             functionOps++;
                         }
                         break;
-                    case ']':
+                    case Operators.LoopEnd:
 
                         /* Decrease the current depth level, either in the standard
                          * code flow or inside a function definition. If the current
@@ -115,7 +116,7 @@ namespace Brainf_ck_sharp.NET
                             functionOps++;
                         }
                         break;
-                    case '(':
+                    case Operators.FunctionStart:
 
                         // Start a function definition, track the index and reset the counter
                         if (functionStart != -1) return new SyntaxValidationResult(SyntaxError.NestedFunctionDeclaration, i);
@@ -124,7 +125,7 @@ namespace Brainf_ck_sharp.NET
                         functionLoopStart = -1;
                         functionOps = 0;
                         break;
-                    case ')':
+                    case Operators.FunctionEnd:
 
                         // Validate the function definition and reset the index
                         if (functionStart == -1) return new SyntaxValidationResult(SyntaxError.MismatchedParenthesis, i);
