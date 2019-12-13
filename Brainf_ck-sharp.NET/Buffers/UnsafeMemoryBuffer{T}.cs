@@ -24,7 +24,7 @@ namespace Brainf_ck_sharp.NET.Buffers
         /// <summary>
         /// A pointer to the first element in <see cref="Buffer"/>
         /// </summary>
-        private readonly T* Ptr;
+        protected readonly T* Ptr;
 
         /// <summary>
         /// The <see cref="GCHandle"/> instance used to pin <see cref="Buffer"/>

@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using Brainf_ck_sharp.NET.Buffers;
 using Brainf_ck_sharp.NET.MemoryState;
 
 #pragma warning disable IDE0032
@@ -14,31 +13,10 @@ namespace Brainf_ck_sharp.NET.Models
     /// <summary>
     /// A class that represents the state of a Touring machine (data + position)
     /// </summary>
-    public sealed unsafe class TuringMachineState : IEquatable<TuringMachineState>, IReadOnlyList<Brainf_ckMemoryCell>, IDisposable
+    internal sealed unsafe class TuringMachineState : UnsafeMemoryBuffer<ushort>, IEquatable<TuringMachineState>, IReadOnlyList<Brainf_ckMemoryCell>
     {
         /// <summary>
-        /// The size of the usable buffer within <see cref="Memory"/>
-        /// </summary>
-        private readonly int Size;
-
-        /// <summary>
-        /// The unsigned int array that represents the memory of the Touring machine
-        /// </summary>
-        private readonly ushort[] Memory;
-
-        /// <summary>
-        /// A pointer to the first element in <see cref="Memory"/>
-        /// </summary>
-        private readonly ushort* Ptr;
-
-        /// <summary>
-        /// The <see cref="GCHandle"/> instance used to pin <see cref="Memory"/>
-        /// </summary>
-        /// <remarks>This field is not <see langword="readonly"/> to prevent the safe copy when calling <see cref="GCHandle.Free"/> from <see cref="Dispose"/></remarks>
-        private GCHandle _Handle;
-
-        /// <summary>
-        /// The current position within <see cref="Memory"/>
+        /// The current position within the underlying buffer
         /// </summary>
         private int _Position;
 
@@ -46,16 +24,7 @@ namespace Brainf_ck_sharp.NET.Models
         /// Creates a new blank machine state with the given parameters
         /// </summary>
         /// <param name="size">The size of the new memory buffer to use</param>
-        public TuringMachineState(int size)
-        {
-            if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size), "The size must be a positive number");
-            if (size > 4096) throw new ArgumentOutOfRangeException(nameof(size), "The size can't be greater than 4096");
-
-            Size = size;
-            Memory = ArrayPool<ushort>.Shared.Rent(size);
-            _Handle = GCHandle.Alloc(Memory, GCHandleType.Pinned);
-            Ptr = (ushort*)Unsafe.AsPointer(ref Memory[0]);
-        }
+        public TuringMachineState(int size) : base(size) { }
 
         /// <summary>
         /// Gets the current position on the memory buffer
@@ -211,22 +180,6 @@ namespace Brainf_ck_sharp.NET.Models
             // Iterators don't allow unsafe code, so bounds checks can't be removed here
             for (int i = 0; i < Size; i++)
                 yield return new Brainf_ckMemoryCell(Memory[i], _Position == i);
-        }
-
-        /// <summary>
-        /// Invokes <see cref="Dispose"/> to free the aallocated resources when this instance is destroyed
-        /// </summary>
-        ~TuringMachineState() => Dispose();
-
-        /// <inheritdoc/>
-        public void Dispose()
-        {
-            if (!_Handle.IsAllocated) return;
-
-            _Handle.Free();
-            ArrayPool<ushort>.Shared.Return(Memory);
-
-            GC.SuppressFinalize(this);
         }
     }
 }
