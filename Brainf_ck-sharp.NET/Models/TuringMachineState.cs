@@ -11,7 +11,7 @@ namespace Brainf_ck_sharp.NET.Models
     /// <summary>
     /// A class that represents the state of a Touring machine (data + position)
     /// </summary>
-    internal sealed unsafe class TouringMachineState : IDisposable
+    internal sealed unsafe class TuringMachineState : IDisposable
     {
         /// <summary>
         /// The size of the usable buffer within <see cref="Memory"/>
@@ -43,7 +43,7 @@ namespace Brainf_ck_sharp.NET.Models
         /// Creates a new blank machine state with the given parameters
         /// </summary>
         /// <param name="size">The size of the new memory buffer to use</param>
-        public TouringMachineState(int size)
+        public TuringMachineState(int size)
         {
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size), "The size must be a positive number");
             if (size > 4096) throw new ArgumentOutOfRangeException(nameof(size), "The size can't be greater than 4096");
@@ -164,7 +164,7 @@ namespace Brainf_ck_sharp.NET.Models
         /// <summary>
         /// Invokes <see cref="Dispose"/> to free the aallocated resources when this instance is destroyed
         /// </summary>
-        ~TouringMachineState() => Dispose();
+        ~TuringMachineState() => Dispose();
 
         /// <inheritdoc/>
         public void Dispose()
