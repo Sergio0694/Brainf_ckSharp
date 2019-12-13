@@ -2,6 +2,7 @@
 using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Brainf_ck_sharp.NET.Helpers;
 
 namespace Brainf_ck_sharp.NET.Buffers
 {
@@ -38,6 +39,8 @@ namespace Brainf_ck_sharp.NET.Buffers
         /// <param name="size">The size of the new memory buffer to use</param>
         protected UnsafeMemoryBuffer(int size)
         {
+            DebugGuard.MustBeGreaterThanOrEqualTo(size, 0, nameof(size));
+
             Size = size;
             Buffer = ArrayPool<T>.Shared.Rent(size);
             _Handle = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
@@ -68,10 +71,22 @@ namespace Brainf_ck_sharp.NET.Buffers
         public T this[int index]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => Ptr[index];
+            get
+            {
+                DebugGuard.MustBeGreaterThanOrEqualTo(index, 0, nameof(index));
+                DebugGuard.MustBeLessThan(index, Size, nameof(index));
+
+                return Ptr[index];
+            }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            set => Ptr[index] = value;
+            set
+            {
+                DebugGuard.MustBeGreaterThanOrEqualTo(index, 0, nameof(index));
+                DebugGuard.MustBeLessThan(index, Size, nameof(index));
+
+                Ptr[index] = value;
+            }
         }
 
         /// <summary>

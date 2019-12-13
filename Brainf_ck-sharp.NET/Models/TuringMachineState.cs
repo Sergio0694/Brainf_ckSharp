@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Brainf_ck_sharp.NET.Buffers;
+using Brainf_ck_sharp.NET.Helpers;
 using Brainf_ck_sharp.NET.Interfaces;
 using Brainf_ck_sharp.NET.MemoryState;
 
@@ -46,7 +47,8 @@ namespace Brainf_ck_sharp.NET.Models
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
-                if (index < 0 || index >= Size) throw new ArgumentOutOfRangeException(nameof(index), "The input index was invalid");
+                Guard.MustBeGreaterThanOrEqualTo(index, 0, nameof(index));
+                Guard.MustBeLessThan(index, Size, nameof(index));
 
                 return new Brainf_ckMemoryCell(Ptr[index], _Position == index);
             }
@@ -72,7 +74,12 @@ namespace Brainf_ck_sharp.NET.Models
         /// Moves the memory pointer forward
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void MoveNext() => _Position++;
+        internal void MoveNext()
+        {
+            DebugGuard.MustBeTrue(CanMoveNext, nameof(CanMoveNext));
+
+            _Position++;
+        }
 
         /// <summary>
         /// Checks whether or not it is possible to move the pointer back
@@ -87,13 +94,12 @@ namespace Brainf_ck_sharp.NET.Models
         /// Moves the memory pointer back
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void MoveBack() => _Position--;
+        internal void MoveBack()
+        {
+            DebugGuard.MustBeTrue(CanMoveBack, nameof(CanMoveBack));
 
-        /// <summary>
-        /// Increments the current memory location
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void Plus() => Ptr[_Position]++;
+            _Position--;
+        }
 
         /// <summary>
         /// Checks whether or not it is possible to increment the current memory location
@@ -105,10 +111,15 @@ namespace Brainf_ck_sharp.NET.Models
         }
 
         /// <summary>
-        /// Decrements the current memory location
+        /// Increments the current memory location
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void Minus() => Ptr[_Position]--;
+        internal void Plus()
+        {
+            DebugGuard.MustBeTrue(CanIncrement, nameof(CanIncrement));
+
+            Ptr[_Position]++;
+        }
 
         /// <summary>
         /// Checks whether or not the current memory location is a positive number and can be decremented
@@ -117,6 +128,17 @@ namespace Brainf_ck_sharp.NET.Models
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => Ptr[_Position] > 0;
+        }
+
+        /// <summary>
+        /// Decrements the current memory location
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal void Minus()
+        {
+            DebugGuard.MustBeTrue(CanDecrement, nameof(CanDecrement));
+
+            Ptr[_Position]--;
         }
 
         /// <summary>

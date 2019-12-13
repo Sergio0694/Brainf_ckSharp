@@ -1,5 +1,5 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
+using Brainf_ck_sharp.NET.Helpers;
 
 namespace Brainf_ck_sharp.NET.Buffers
 {
@@ -26,7 +26,7 @@ namespace Brainf_ck_sharp.NET.Buffers
         /// <param name="ptr"></param>
         public UnsafeMemory(int size, T* ptr)
         {
-            if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size), "The size must be a positive number");
+            DebugGuard.MustBeGreaterThanOrEqualTo(size, 0, nameof(size));
 
             Size = size;
             Ptr = ptr;
@@ -39,10 +39,22 @@ namespace Brainf_ck_sharp.NET.Buffers
         public T this[int index]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => Ptr[index];
+            get
+            {
+                DebugGuard.MustBeGreaterThanOrEqualTo(index, 0, nameof(index));
+                DebugGuard.MustBeLessThan(index, Size, nameof(index));
+
+                return Ptr[index];
+            }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            set => Ptr[index] = value;
+            set
+            {
+                DebugGuard.MustBeGreaterThanOrEqualTo(index, 0, nameof(index));
+                DebugGuard.MustBeLessThan(index, Size, nameof(index));
+
+                Ptr[index] = value;
+            }
         }
 
         /// <summary>
@@ -52,6 +64,15 @@ namespace Brainf_ck_sharp.NET.Buffers
         /// <param name="end">The exclusive ending index for the new <see cref="UnsafeMemory{T}"/> instance</param>
         /// <returns>A new <see cref="UnsafeMemory{T}"/> instance mapping values in the [start, end) range on the current buffer</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public UnsafeMemory<T> Slice(int start, int end) => new UnsafeMemory<T>(end - start, Ptr + start);
+        public UnsafeMemory<T> Slice(int start, int end)
+        {
+            DebugGuard.MustBeGreaterThanOrEqualTo(start, 0, nameof(start));
+            DebugGuard.MustBeGreaterThanOrEqualTo(end, 0, nameof(end));
+            DebugGuard.MustBeLessThan(start, Size, nameof(start));
+            DebugGuard.MustBeLessThan(end, Size, nameof(end));
+            DebugGuard.MustBeLessThanOrEqualTo(start, end, nameof(start));
+
+            return new UnsafeMemory<T>(end - start, Ptr + start);
+        }
     }
 }

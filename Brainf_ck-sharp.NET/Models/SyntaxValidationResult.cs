@@ -1,4 +1,5 @@
 ﻿using Brainf_ck_sharp.NET.Enum;
+using Brainf_ck_sharp.NET.Helpers;
 
 namespace Brainf_ck_sharp.NET.Models
 {
@@ -36,6 +37,11 @@ namespace Brainf_ck_sharp.NET.Models
         /// <param name="operatorsCount">The total number of Brainf*ck/PBrain operators in the original source file</param>
         internal SyntaxValidationResult(SyntaxError error, int offset, int operatorsCount = -1)
         {
+            DebugGuard.MustBeGreaterThanOrEqualTo(offset, -1, nameof(offset));
+            DebugGuard.MustBeTrue(offset >= 0 || error == SyntaxError.None, nameof(offset));
+            DebugGuard.MustBeGreaterThanOrEqualTo(operatorsCount, -1, nameof(operatorsCount));
+            DebugGuard.MustBeTrue(operatorsCount >= 0 || error != SyntaxError.None, nameof(operatorsCount));
+
             ErrorType = error;
             ErrorOffset = offset;
             OperatorsCount = operatorsCount;

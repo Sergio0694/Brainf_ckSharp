@@ -1,4 +1,6 @@
-﻿namespace Brainf_ck_sharp.NET.Models
+﻿using Brainf_ck_sharp.NET.Helpers;
+
+namespace Brainf_ck_sharp.NET.Models
 {
     /// <summary>
     /// Wraps the operators in the source code of a given script
@@ -22,6 +24,8 @@
         /// <param name="op">The operator to wrap</param>
         public Brainf_ckBinaryItem(int offset, char op)
         {
+            DebugGuard.MustBeGreaterThanOrEqualTo(offset, 0, nameof(offset));
+
             Offset = offset;
             Operator = op;
         }
