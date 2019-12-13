@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Buffers;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Brainf_ck_sharp.NET.MemoryState;
@@ -11,7 +14,7 @@ namespace Brainf_ck_sharp.NET.Models
     /// <summary>
     /// A class that represents the state of a Touring machine (data + position)
     /// </summary>
-    internal sealed unsafe class TuringMachineState : IDisposable
+    public sealed unsafe class TuringMachineState : IEquatable<TuringMachineState>, IReadOnlyList<Brainf_ckMemoryCell>, IDisposable
     {
         /// <summary>
         /// The size of the usable buffer within <see cref="Memory"/>
@@ -59,9 +62,7 @@ namespace Brainf_ck_sharp.NET.Models
         /// </summary>
         public int Position => _Position;
 
-        /// <summary>
-        /// Gets the total number of cells in the current memory buffer
-        /// </summary>
+        /// <inheritdoc/>
         public int Count => Size;
 
         /// <summary>
@@ -73,10 +74,7 @@ namespace Brainf_ck_sharp.NET.Models
             get => new Brainf_ckMemoryCell(Ptr[_Position], true);
         }
 
-        /// <summary>
-        /// Gets the cell at the specified location from the current memory buffer
-        /// </summary>
-        /// <param name="index">The target index to read the valaue from</param>
+        /// <inheritdoc/>
         public Brainf_ckMemoryCell this[int index]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -93,12 +91,12 @@ namespace Brainf_ck_sharp.NET.Models
         /// </summary>
         /// <param name="c">The input charachter to assign to the current memory location</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Input(char c) => Ptr[_Position] = c;
+        internal void Input(char c) => Ptr[_Position] = c;
 
         /// <summary>
         /// Checks whether or not it is possible to move the pointer forward
         /// </summary>
-        public bool CanMoveNext
+        internal bool CanMoveNext
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => _Position < Size - 1;
@@ -108,12 +106,12 @@ namespace Brainf_ck_sharp.NET.Models
         /// Moves the memory pointer forward
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void MoveNext() => _Position++;
+        internal void MoveNext() => _Position++;
 
         /// <summary>
         /// Checks whether or not it is possible to move the pointer back
         /// </summary>
-        public bool CanMoveBack
+        internal bool CanMoveBack
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => _Position > 0;
@@ -123,18 +121,18 @@ namespace Brainf_ck_sharp.NET.Models
         /// Moves the memory pointer back
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void MoveBack() => _Position--;
+        internal void MoveBack() => _Position--;
 
         /// <summary>
         /// Increments the current memory location
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Plus() => Ptr[_Position]++;
+        internal void Plus() => Ptr[_Position]++;
 
         /// <summary>
         /// Checks whether or not it is possible to increment the current memory location
         /// </summary>
-        public bool CanIncrement
+        internal bool CanIncrement
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => Ptr[_Position] < ushort.MaxValue;
@@ -144,12 +142,12 @@ namespace Brainf_ck_sharp.NET.Models
         /// Decrements the current memory location
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Minus() => Ptr[_Position]--;
+        internal void Minus() => Ptr[_Position]--;
 
         /// <summary>
         /// Checks whether or not the current memory location is a positive number and can be decremented
         /// </summary>
-        public bool CanDecrement
+        internal bool CanDecrement
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => Ptr[_Position] > 0;
@@ -159,7 +157,61 @@ namespace Brainf_ck_sharp.NET.Models
         /// Resets the value in the current memory cell
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ResetCell() => Ptr[_Position] = 0;
+        internal void ResetCell() => Ptr[_Position] = 0;
+
+        /// <summary>
+        /// Gets whether or not the current cell is at 255
+        /// </summary>
+        internal bool IsAtByteMax
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Ptr[_Position] == 255;
+        }
+
+        /// <inheritdoc/>
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) ||
+                   obj is TuringMachineState other && Equals(other);
+        }
+
+        /// <inheritdoc/>
+        public bool Equals(TuringMachineState other)
+        {
+            if (other is null) return false;
+            if (ReferenceEquals(this, other)) return true;
+
+            return Size == other.Size &&
+                   _Position == other._Position &&
+                   new ReadOnlySpan<ushort>(Ptr, Size).SequenceEqual(new ReadOnlySpan<ushort>(other.Ptr, Size));
+        }
+
+        /// <inheritdoc/>
+        [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")] // Non immutable instance, hash code is allowed to change
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = Size;
+                hashCode = (hashCode * 397) ^ _Position;
+
+                for (int i = 0; i < Size; i++)
+                    hashCode = (hashCode * 397) ^ Ptr[i];
+
+                return hashCode;
+            }
+        }
+
+        /// <inheritdoc/>
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        /// <inheritdoc/>
+        public IEnumerator<Brainf_ckMemoryCell> GetEnumerator()
+        {
+            // Iterators don't allow unsafe code, so bounds checks can't be removed here
+            for (int i = 0; i < Size; i++)
+                yield return new Brainf_ckMemoryCell(Memory[i], _Position == i);
+        }
 
         /// <summary>
         /// Invokes <see cref="Dispose"/> to free the aallocated resources when this instance is destroyed
