@@ -15,7 +15,7 @@ namespace Brainf_ck_sharp.NET.Buffers
         /// <summary>
         /// The size of the usable buffer within <see cref="Buffer"/>
         /// </summary>
-        protected readonly int Size;
+        public readonly int Size;
 
         /// <summary>
         /// The <typeparamref name="T"/> array that constitutes the memory buffer for the current instance
