@@ -40,6 +40,9 @@ namespace Brainf_ck_sharp.NET.Buffers
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => Ptr[index];
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            set => Ptr[index] = value;
         }
 
         /// <summary>

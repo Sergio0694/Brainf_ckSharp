@@ -36,7 +36,7 @@ namespace Brainf_ck_sharp.NET.Buffers
         /// Creates a new <see cref="UnsafeMemoryBuffer{T}"/> instance with the specified parameters
         /// </summary>
         /// <param name="size">The size of the new memory buffer to use</param>
-        public UnsafeMemoryBuffer(int size)
+        protected UnsafeMemoryBuffer(int size)
         {
             Size = size;
             Buffer = ArrayPool<T>.Shared.Rent(size);
@@ -45,12 +45,33 @@ namespace Brainf_ck_sharp.NET.Buffers
         }
 
         /// <summary>
+        /// Creates a new <see cref="UnsafeMemoryBuffer{T}"/> instance with the specified parameters
+        /// </summary>
+        /// <param name="size">The size of the new memory buffer to use</param>
+        /// <remarks>This method is just a proxy for the <see langword="protected"/> constructor, for clarity</remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UnsafeMemoryBuffer<T> Allocate(int size) => new UnsafeMemoryBuffer<T>(size);
+
+        /// <summary>
         /// Gets an <see cref="UnsafeMemory{T}"/> instance mapping the values on the current buffer
         /// </summary>
         public UnsafeMemory<T> Memory
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => new UnsafeMemory<T>(Size, Ptr);
+        }
+
+        /// <summary>
+        /// Gets the <typeparamref name="T"/> value at the specified index in the current buffer
+        /// </summary>
+        /// <param name="index">The target index to read the value from</param>
+        public T this[int index]
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Ptr[index];
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            set => Ptr[index] = value;
         }
 
         /// <summary>
