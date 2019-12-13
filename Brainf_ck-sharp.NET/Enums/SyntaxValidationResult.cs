@@ -33,6 +33,11 @@
         /// <summary>
         /// A function definition had not been completed with a closed parenthesis
         /// </summary>
-        IncompleteFunctionDeclaration
+        IncompleteFunctionDeclaration,
+
+        /// <summary>
+        /// No valid operators have been found in the input source file
+        /// </summary>
+        MissingOperators,
     }
 }

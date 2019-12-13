@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Brainf_ck_sharp.NET.Buffers;
 using Brainf_ck_sharp.NET.Constants;
 using Brainf_ck_sharp.NET.Enum;
 using Brainf_ck_sharp.NET.Models;
@@ -53,7 +54,7 @@ namespace Brainf_ck_sharp.NET
         /// Checks whether or not the syntax of the input script is valid
         /// </summary>
         /// <param name="code">The input script to validate</param>
-        /// <returns><see langword="true"/> if the input script has a valid syntax, <see langword="false"/> otherwise</returns>
+        /// <returns>A <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</returns>
         [Pure]
         public static SyntaxValidationResult IsSyntaxValid(string code)
         {
@@ -64,7 +65,8 @@ namespace Brainf_ck_sharp.NET
                 functionStart = -1,
                 functionDepth = 0,
                 functionLoopStart = -1,
-                functionOps = 0;
+                functionOps = 0,
+                totalOps = 0;
 
             for (int i = 0; i < code.Length; i++)
             {
@@ -82,11 +84,13 @@ namespace Brainf_ck_sharp.NET
                          * parser is inside a function definition. The counter is used to
                          * validate function definition without having to iterate again
                          * over the span of characters contained in the definition */
+                        totalOps++;
                         if (functionStart != -1) functionOps++;
                         break;
                     case Operators.LoopStart:
 
                         // Increase the appropriate depth level
+                        totalOps++;
                         if (functionStart == -1)
                         {
                             if (functionLoopStart == -1) functionLoopStart = i;
@@ -107,11 +111,13 @@ namespace Brainf_ck_sharp.NET
                         if (functionStart == -1)
                         {
                             if (rootDepth == 0) return new SyntaxValidationResult(SyntaxError.MismatchedSquareBracket, i);
+                            totalOps++;
                             rootDepth--;
                         }
                         else
                         {
                             if (functionDepth == 0) return new SyntaxValidationResult(SyntaxError.MismatchedSquareBracket, i);
+                            totalOps++;
                             functionDepth--;
                             functionOps++;
                         }
@@ -120,6 +126,7 @@ namespace Brainf_ck_sharp.NET
 
                         // Start a function definition, track the index and reset the counter
                         if (functionStart != -1) return new SyntaxValidationResult(SyntaxError.NestedFunctionDeclaration, i);
+                        totalOps++;
                         functionStart = i;
                         functionDepth = 0;
                         functionLoopStart = -1;
@@ -131,6 +138,7 @@ namespace Brainf_ck_sharp.NET
                         if (functionStart == -1) return new SyntaxValidationResult(SyntaxError.MismatchedParenthesis, i);
                         if (functionDepth != 0) return new SyntaxValidationResult(SyntaxError.MismatchedSquareBracket, functionLoopStart);
                         if (functionOps == 0) return new SyntaxValidationResult(SyntaxError.EmptyFunctionDeclaration, i);
+                        totalOps++;
                         functionStart = -1;
                         break;
                 }
@@ -138,11 +146,44 @@ namespace Brainf_ck_sharp.NET
 
             /* Handle the remaining failure cases:
              *   - An incomplete function declaration, when the user missed the closing parenthesis
-             *   - A missing square bracket for one of the loops in the main script */
+             *   - A missing square bracket for one of the loops in the main script
+             *   - No operators present in the source file */
             if (functionStart != -1) return new SyntaxValidationResult(SyntaxError.IncompleteFunctionDeclaration, functionStart);
             if (rootDepth != 0) return new SyntaxValidationResult(SyntaxError.MismatchedSquareBracket, outerLoopStart);
+            if (totalOps == 0) return new SyntaxValidationResult(SyntaxError.MissingOperators, -1, 0);
 
-            return new SyntaxValidationResult(SyntaxError.None, -1);
+            return new SyntaxValidationResult(SyntaxError.None, -1, totalOps);
+        }
+
+        /// <summary>
+        /// Tries to parse the input source script, if possible
+        /// </summary>
+        /// <param name="code">The input script to validate</param>
+        /// <param name="operators">The resulting buffer of <see cref="Brainf_ckBinaryItem"/> instances for the parsed script</param>
+        /// <returns>A <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</returns>
+        internal static SyntaxValidationResult TryParse(string code, out UnsafeMemoryBuffer<Brainf_ckBinaryItem>? operators)
+        {
+            // Check the syntax of the input source code
+            SyntaxValidationResult validationResult = IsSyntaxValid(code);
+
+            if (validationResult.IsSuccess)
+            {
+                // Allocate the buffer of binary items with the input operators
+                operators = UnsafeMemoryBuffer<Brainf_ckBinaryItem>.Allocate(validationResult.OperatorsCount);
+
+                // Extract all the operators from the input source code
+                for (int i = 0, j = 0; j < code.Length; j++)
+                {
+                    char c = code[j];
+                    if (IsOperator(c))
+                    {
+                        operators[i] = new Brainf_ckBinaryItem(i++, c);
+                    }
+                }
+            }
+            else operators = null;
+
+            return validationResult;
         }
     }
 }

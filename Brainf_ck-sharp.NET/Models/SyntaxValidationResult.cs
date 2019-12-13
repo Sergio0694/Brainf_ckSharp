@@ -18,19 +18,27 @@ namespace Brainf_ck_sharp.NET.Models
         public SyntaxError ErrorType { get; }
         
         /// <summary>
-        /// Gets the position of the parsing error, if present
+        /// Gets the position of the parsing error if present, otherwise -1
         /// </summary>
         public int ErrorOffset { get; }
+
+        /// <summary>
+        /// Gets the total number of Brainf*ck/PBrain operators in the original source file
+        /// </summary>
+        /// <remarks>This property is set to -1 when the syntax parsing does not complete successfully</remarks>
+        public int OperatorsCount { get; }
 
         /// <summary>
         /// Creates a new <see cref="SyntaxValidationResult"/> instaance with the specified parameters
         /// </summary>
         /// <param name="error">The syntax error for the current source file, if any</param>
         /// <param name="offset">The index of the parsing error, if present</param>
-        internal SyntaxValidationResult(SyntaxError error, int offset)
+        /// <param name="operatorsCount">The total number of Brainf*ck/PBrain operators in the original source file</param>
+        internal SyntaxValidationResult(SyntaxError error, int offset, int operatorsCount = -1)
         {
             ErrorType = error;
             ErrorOffset = offset;
+            OperatorsCount = operatorsCount;
         }
     }
 }
