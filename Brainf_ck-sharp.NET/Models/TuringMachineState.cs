@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Brainf_ck_sharp.NET.Buffers;
+using Brainf_ck_sharp.NET.Interfaces;
 using Brainf_ck_sharp.NET.MemoryState;
 
 #pragma warning disable IDE0032
@@ -11,9 +12,9 @@ using Brainf_ck_sharp.NET.MemoryState;
 namespace Brainf_ck_sharp.NET.Models
 {
     /// <summary>
-    /// A class that represents the state of a Touring machine (data + position)
+    /// A <see langword="class"/> that represents the state of a Turing machine
     /// </summary>
-    internal sealed unsafe class TuringMachineState : UnsafeMemoryBuffer<ushort>, IEquatable<TuringMachineState>, IReadOnlyList<Brainf_ckMemoryCell>
+    internal sealed unsafe class TuringMachineState : UnsafeMemoryBuffer<ushort>, IReadOnlyTuringMachineState
     {
         /// <summary>
         /// The current position within the underlying buffer
@@ -26,17 +27,13 @@ namespace Brainf_ck_sharp.NET.Models
         /// <param name="size">The size of the new memory buffer to use</param>
         public TuringMachineState(int size) : base(size) { }
 
-        /// <summary>
-        /// Gets the current position on the memory buffer
-        /// </summary>
+        /// <inheritdoc/>
         public int Position => _Position;
 
         /// <inheritdoc/>
         public int Count => Size;
 
-        /// <summary>
-        /// Gets the cell at the current memory position
-        /// </summary>
+        /// <inheritdoc/>
         public Brainf_ckMemoryCell Current
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -44,7 +41,7 @@ namespace Brainf_ck_sharp.NET.Models
         }
 
         /// <inheritdoc/>
-        public Brainf_ckMemoryCell this[int index]
+        Brainf_ckMemoryCell IReadOnlyList<Brainf_ckMemoryCell>.this[int index]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
@@ -145,14 +142,15 @@ namespace Brainf_ck_sharp.NET.Models
         }
 
         /// <inheritdoc/>
-        public bool Equals(TuringMachineState other)
+        public bool Equals(IReadOnlyTuringMachineState other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return Size == other.Size &&
-                   _Position == other._Position &&
-                   new ReadOnlySpan<ushort>(Ptr, Size).SequenceEqual(new ReadOnlySpan<ushort>(other.Ptr, Size));
+            return other is TuringMachineState state &&
+                   Size == state.Size &&
+                   _Position == state._Position &&
+                   new ReadOnlySpan<ushort>(Ptr, Size).SequenceEqual(new ReadOnlySpan<ushort>(state.Ptr, Size));
         }
 
         /// <inheritdoc/>
