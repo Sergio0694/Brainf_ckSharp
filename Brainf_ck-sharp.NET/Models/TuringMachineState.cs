@@ -181,7 +181,7 @@ namespace Brainf_ck_sharp.NET.Models
         {
             unchecked
             {
-                var hashCode = Size;
+                int hashCode = Size;
                 hashCode = (hashCode * 397) ^ _Position;
 
                 for (int i = 0; i < Size; i++)

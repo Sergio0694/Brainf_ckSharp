@@ -177,7 +177,7 @@ namespace Brainf_ck_sharp.NET
                     char c = code[j];
                     if (IsOperator(c))
                     {
-                        operators[i] = new Brainf_ckBinaryItem(i++, c);
+                        operators[i] = new Brainf_ckBinaryItem(i++, c, false); // TODO
                     }
                 }
             }

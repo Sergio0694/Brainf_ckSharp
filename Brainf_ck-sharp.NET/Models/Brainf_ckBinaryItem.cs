@@ -18,16 +18,24 @@ namespace Brainf_ck_sharp.NET.Models
         public readonly char Operator;
 
         /// <summary>
+        /// Gets whether or not the current operator represents a breakpoint
+        /// </summary>
+        /// <remarks>Adding this field still lets the <see langword="struct"/> be 8 bytes in size</remarks>
+        public readonly bool IsBreakpoint;
+
+        /// <summary>
         /// Creates a new instance for a given operator
         /// </summary>
         /// <param name="offset">The position in the source code</param>
         /// <param name="op">The operator to wrap</param>
-        public Brainf_ckBinaryItem(int offset, char op)
+        /// <param name="isBreakpoint">Indicates whether or not the current item is a breakpoint</param>
+        public Brainf_ckBinaryItem(int offset, char op, bool isBreakpoint)
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(offset, 0, nameof(offset));
 
             Offset = offset;
             Operator = op;
+            IsBreakpoint = isBreakpoint;
         }
     }
 }
