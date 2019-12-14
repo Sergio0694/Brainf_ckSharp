@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Brainf_ck_sharp.NET.Enums
 {
@@ -23,12 +21,12 @@ namespace Brainf_ck_sharp.NET.Enums
         /// <summary>
         /// The code didn't produce any output
         /// </summary>
-        NoOutput = 1 << 2,
+        NoOutput = 1 << 2 | Success,
 
         /// <summary>
         /// The code produced at least an output character
         /// </summary>
-        TextOutput = 1 << 3,
+        TextOutput = 1 << 3 | Success,
 
         /// <summary>
         /// The input source code didn't contain any valid Branf_ck operators to interpret

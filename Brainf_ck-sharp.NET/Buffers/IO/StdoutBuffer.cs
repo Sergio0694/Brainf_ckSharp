@@ -1,5 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 
+#pragma warning disable IDE0032
+
 namespace Brainf_ck_sharp.NET.Buffers.IO
 {
     /// <summary>
@@ -18,6 +20,11 @@ namespace Brainf_ck_sharp.NET.Buffers.IO
         private int _Position;
 
         public StdoutBuffer() : base(StdoutBufferSizeLimit) { }
+
+        /// <summary>
+        /// Gets the current length of the text in the output buffer
+        /// </summary>
+        public int Length => _Position;
 
         /// <summary>
         /// Tries to write a new character into the current buffer
