@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using Brainf_ck_sharp.NET.Buffers;
 using Brainf_ck_sharp.NET.Constants;
 using Brainf_ck_sharp.NET.Enum;
+using Brainf_ck_sharp.NET.Enums;
 using Brainf_ck_sharp.NET.Models;
 
 namespace Brainf_ck_sharp.NET
@@ -17,7 +18,7 @@ namespace Brainf_ck_sharp.NET
         /// <summary>
         /// The maximum valid index in <see cref="OperatorsLookupTable"/>
         /// </summary>
-        public const int OperatorsLookupTableMaxIndex = 94;
+        public const int OperatorsLookupTableMaxIndex = 93;
 
         /// <summary>
         /// A lookup table to quickly check characters
@@ -26,9 +27,25 @@ namespace Brainf_ck_sharp.NET
         {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // ()+,-.
-            0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // :<>
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0  // []
+            0, 0,
+            (byte)Operator.FunctionStart, 
+            (byte)Operator.FunctionEnd,
+            0,
+            (byte)Operator.Plus,
+            (byte)Operator.ReadChar,
+            (byte)Operator.Minus,
+            (byte)Operator.PrintChar,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0,
+            (byte)Operator.FunctionCall,
+            0,
+            (byte)Operator.BackwardPtr,
+            0,
+            (byte)Operator.ForwardPtr,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            (byte)Operator.LoopStart, 0,
+            (byte)Operator.LoopEnd
         };
 
         /// <summary>
@@ -159,9 +176,9 @@ namespace Brainf_ck_sharp.NET
         /// Tries to parse the input source script, if possible
         /// </summary>
         /// <param name="code">The input script to validate</param>
-        /// <param name="operators">The resulting buffer of <see cref="Brainf_ckBinaryItem"/> instances for the parsed script</param>
+        /// <param name="operators">The resulting buffer of <see cref="Operator"/> instances for the parsed script</param>
         /// <returns>A <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</returns>
-        internal static SyntaxValidationResult TryParse(string code, out UnsafeMemoryBuffer<Brainf_ckBinaryItem>? operators)
+        internal static SyntaxValidationResult TryParse(string code, out UnsafeMemoryBuffer<Operator>? operators)
         {
             // Check the syntax of the input source code
             SyntaxValidationResult validationResult = IsSyntaxValid(code);
@@ -169,16 +186,23 @@ namespace Brainf_ck_sharp.NET
             if (validationResult.IsSuccess)
             {
                 // Allocate the buffer of binary items with the input operators
-                operators = UnsafeMemoryBuffer<Brainf_ckBinaryItem>.Allocate(validationResult.OperatorsCount);
+                operators = UnsafeMemoryBuffer<Operator>.Allocate(validationResult.OperatorsCount);
 
                 // Extract all the operators from the input source code
+                ref byte r0 = ref MemoryMarshal.GetReference(OperatorsLookupTable);
                 for (int i = 0, j = 0; j < code.Length; j++)
                 {
+                    // Explicitly get the lookup value to avoid a repeated memory access
                     char c = code[j];
-                    if (IsOperator(c))
-                    {
-                        operators[i] = new Brainf_ckBinaryItem(i++, c, false); // TODO
-                    }
+                    int
+                        diff = OperatorsLookupTableMaxIndex - c,
+                        sign = diff & (1 << 31),
+                        mask = ~(sign >> 31),
+                        offset = c & mask;
+                    byte r1 = Unsafe.Add(ref r0, offset);
+
+                    // If the current character is an operator, convert and store it
+                    if (r1 != 0) operators[i++] = (Operator)r1;
                 }
             }
             else operators = null;

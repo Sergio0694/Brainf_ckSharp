@@ -1,7 +1,7 @@
 ﻿namespace Brainf_ck_sharp.NET.Constants
 {
     /// <summary>
-    /// A <see langword="class"/> thaat exposes the collection of available Brainf*ck/PBrain operators
+    /// A <see langword="class"/> that exposes the collection of available Brainf*ck/PBrain operators
     /// </summary>
     public static class Operators
     {
