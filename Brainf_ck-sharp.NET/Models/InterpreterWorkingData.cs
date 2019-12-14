@@ -24,12 +24,12 @@ namespace Brainf_ck_sharp.NET.Models
         /// <summary>
         /// Gets the code position relative to the current working data
         /// </summary>
-        public uint Position { get; }
+        public int Position { get; }
 
         /// <summary>
         /// Gets the number of total evaluated operators in the current working data
         /// </summary>
-        public uint TotalOperations { get; }
+        public int TotalOperations { get; }
 
         /// <summary>
         /// Creates a new <see cref="InterpreterWorkingData"/> instance with the specified parameters
@@ -38,7 +38,7 @@ namespace Brainf_ck_sharp.NET.Models
         /// <param name="frame">The stack frame that was being used when creating the partial execution result</param>
         /// <param name="position">The offset into the executable that was reached when creating the partial result</param>
         /// <param name="operations">The total number of executed operators up to this point</param>
-        public InterpreterWorkingData(InterpreterExitCode code, UnsafeMemory<Brainf_ckBinaryItem> frame, uint position, uint operations)
+        public InterpreterWorkingData(InterpreterExitCode code, UnsafeMemory<Brainf_ckBinaryItem> frame, int position, int operations)
             : this(code, new[] { frame }, position, operations)
         { }
 
@@ -49,7 +49,7 @@ namespace Brainf_ck_sharp.NET.Models
         /// <param name="frames">The stack frames that were being used when creating the partial execution result</param>
         /// <param name="position">The offset into the executable that was reached when creating the partial result</param>
         /// <param name="operations">The total number of executed operators up to this point</param>
-        private InterpreterWorkingData(InterpreterExitCode code, ReadOnlyMemory<UnsafeMemory<Brainf_ckBinaryItem>> frames, uint position, uint operations)
+        private InterpreterWorkingData(InterpreterExitCode code, ReadOnlyMemory<UnsafeMemory<Brainf_ckBinaryItem>> frames, int position, int operations)
         {
             ExitCode = code;
             StackFrames = frames;

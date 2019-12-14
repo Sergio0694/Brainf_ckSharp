@@ -27,9 +27,19 @@ namespace Brainf_ck_sharp.NET.Buffers
         public UnsafeMemory(int size, T* ptr)
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(size, 0, nameof(size));
+            DebugGuard.MustBeFalse(ptr == null && size > 0, nameof(ptr));
 
             Size = size;
             Ptr = ptr;
+        }
+
+        /// <summary>
+        /// Gets an empty <see cref="UnsafeMemory{T}"/> instance
+        /// </summary>
+        public static UnsafeMemory<T> Empty
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => new UnsafeMemory<T>(0, null);
         }
 
         /// <summary>
