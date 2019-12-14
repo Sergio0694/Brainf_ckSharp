@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Brainf_ck_sharp.NET.Buffers;
+using Brainf_ck_sharp.NET.Enums;
 using Brainf_ck_sharp.NET.Helpers;
 using Brainf_ck_sharp.NET.Interfaces;
 using Brainf_ck_sharp.NET.MemoryState;
@@ -23,10 +24,19 @@ namespace Brainf_ck_sharp.NET.Models
         private int _Position;
 
         /// <summary>
+        /// The overflow mode being used by the current instance
+        /// </summary>
+        private readonly OverflowMode Mode;
+
+        /// <summary>
         /// Creates a new blank machine state with the given parameters
         /// </summary>
         /// <param name="size">The size of the new memory buffer to use</param>
-        public TuringMachineState(int size) : base(size) { }
+        /// <param name="mode">The overflow mode to use in the new instance</param>
+        public TuringMachineState(int size, OverflowMode mode) : base(size)
+        {
+            Mode = mode;
+        }
 
         /// <inheritdoc/>
         public int Position => _Position;
@@ -55,90 +65,110 @@ namespace Brainf_ck_sharp.NET.Models
         }
 
         /// <summary>
-        /// Sets the current memory location to the value of a given character
+        /// Tries to move the memory pointer forward
         /// </summary>
-        /// <param name="c">The input charachter to assign to the current memory location</param>
+        /// <returns><see langword="true"/> if the pointer was moved successfully, <see langword="false"/> otherwise</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void Input(char c) => Ptr[_Position] = c;
-
-        /// <summary>
-        /// Checks whether or not it is possible to move the pointer forward
-        /// </summary>
-        internal bool CanMoveNext
+        internal bool TryMoveNext()
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => _Position < Size - 1;
-        }
-
-        /// <summary>
-        /// Moves the memory pointer forward
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void MoveNext()
-        {
-            DebugGuard.MustBeTrue(CanMoveNext, nameof(CanMoveNext));
+            if (_Position >= Size - 1) return false;
 
             _Position++;
+            return true;
         }
 
         /// <summary>
-        /// Checks whether or not it is possible to move the pointer back
+        /// Tries to move the memory pointer back
         /// </summary>
-        internal bool CanMoveBack
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => _Position > 0;
-        }
-
-        /// <summary>
-        /// Moves the memory pointer back
-        /// </summary>
+        /// <returns><see langword="true"/> if the pointer was moved successfully, <see langword="false"/> otherwise</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void MoveBack()
+        internal bool TryMoveBack()
         {
-            DebugGuard.MustBeTrue(CanMoveBack, nameof(CanMoveBack));
+            if (_Position == 0) return false;
 
             _Position--;
+            return true;
         }
 
         /// <summary>
-        /// Checks whether or not it is possible to increment the current memory location
+        /// Tries to increment the current memory location
         /// </summary>
-        internal bool CanIncrement
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => Ptr[_Position] < ushort.MaxValue;
-        }
-
-        /// <summary>
-        /// Increments the current memory location
-        /// </summary>
+        /// <returns><see langword="true"/> if the memory location was incremented successfully, <see langword="false"/> otherwise</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void Plus()
+        internal bool TryIncrement()
         {
-            DebugGuard.MustBeTrue(CanIncrement, nameof(CanIncrement));
+            switch (Mode)
+            {
+                case OverflowMode.UshortWithNoOverflow:
+                    if (Ptr[_Position] == ushort.MaxValue) return false;
+                    Ptr[_Position]++;
+                    break;
+                case OverflowMode.UshortWithOverflow:
+                    Ptr[_Position] = (ushort)(Ptr[_Position] % ushort.MaxValue);
+                    break;
+                case OverflowMode.ByteWithNoOverflow:
+                    if (Ptr[_Position] == byte.MaxValue) return false;
+                    Ptr[_Position]++;
+                    break;
+                case OverflowMode.ByteWithOverflow:
+                    Ptr[_Position] = (ushort)(Ptr[_Position] % byte.MaxValue);
+                    break;
+            }
 
-            Ptr[_Position]++;
+            return true;
         }
 
         /// <summary>
-        /// Checks whether or not the current memory location is a positive number and can be decremented
+        /// Tries to decrement the current memory location
         /// </summary>
-        internal bool CanDecrement
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => Ptr[_Position] > 0;
-        }
-
-        /// <summary>
-        /// Decrements the current memory location
-        /// </summary>
+        /// <returns><see langword="true"/> if the memory location was decremented successfully, <see langword="false"/> otherwise</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void Minus()
+        internal bool TryDecrement()
         {
-            DebugGuard.MustBeTrue(CanDecrement, nameof(CanDecrement));
+            switch (Mode)
+            {
+                case OverflowMode.UshortWithOverflow:
+                    if (Ptr[_Position] == 0) Ptr[_Position] = ushort.MaxValue;
+                    else Ptr[_Position]--;
+                    break;
+                case OverflowMode.ByteWithOverflow:
+                    if (Ptr[_Position] == 0) Ptr[_Position] = byte.MaxValue;
+                    else Ptr[_Position]--;
+                    break;
+                case OverflowMode.ByteWithNoOverflow:
+                case OverflowMode.UshortWithNoOverflow:
+                    if (Ptr[_Position] == 0) return false;
+                    Ptr[_Position]--;
+                    break;
+            }
 
-            Ptr[_Position]--;
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to set the current memory location to the value of a given character
+        /// </summary>
+        /// <param name="c">The input charachter to assign to the current memory location</param>
+        /// <returns><see langword="true"/> if the input value was read correctly, <see langword="false"/> otherwise</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal bool TryInput(char c)
+        {
+            switch (Mode)
+            {
+                case OverflowMode.UshortWithNoOverflow:
+                case OverflowMode.UshortWithOverflow:
+                    Ptr[_Position] = c;
+                    break;
+                case OverflowMode.ByteWithNoOverflow:
+                    if (c > byte.MaxValue) return false;
+                    Ptr[_Position] = c;
+                    break;
+                case OverflowMode.ByteWithOverflow:
+                    Ptr[_Position] = (ushort)(c % byte.MaxValue);
+                    break;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -146,15 +176,6 @@ namespace Brainf_ck_sharp.NET.Models
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal void ResetCell() => Ptr[_Position] = 0;
-
-        /// <summary>
-        /// Gets whether or not the current cell is at 255
-        /// </summary>
-        internal bool IsAtByteMax
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => Ptr[_Position] == 255;
-        }
 
         /// <inheritdoc/>
         public override bool Equals(object obj)
@@ -171,6 +192,7 @@ namespace Brainf_ck_sharp.NET.Models
 
             return other is TuringMachineState state &&
                    Size == state.Size &&
+                   Mode == state.Mode &&
                    _Position == state._Position &&
                    new ReadOnlySpan<ushort>(Ptr, Size).SequenceEqual(new ReadOnlySpan<ushort>(state.Ptr, Size));
         }
@@ -183,6 +205,7 @@ namespace Brainf_ck_sharp.NET.Models
             {
                 int hashCode = Size;
                 hashCode = (hashCode * 397) ^ _Position;
+                hashCode = (hashCode * 397) ^ (int)Mode;
 
                 for (int i = 0; i < Size; i++)
                     hashCode = (hashCode * 397) ^ Ptr[i];
