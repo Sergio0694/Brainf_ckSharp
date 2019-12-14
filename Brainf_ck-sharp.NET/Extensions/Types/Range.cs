@@ -1,4 +1,5 @@
-﻿using Brainf_ck_sharp.NET.Helpers;
+﻿using System.Runtime.CompilerServices;
+using Brainf_ck_sharp.NET.Helpers;
 
 namespace Brainf_ck_sharp.NET.Extensions.Types
 {
@@ -30,6 +31,15 @@ namespace Brainf_ck_sharp.NET.Extensions.Types
 
             Start = start;
             End = end;
+        }
+
+        /// <summary>
+        /// Gets the length of the current instance
+        /// </summary>
+        public int Length
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => End - Start;
         }
     }
 }
