@@ -36,6 +36,20 @@ namespace Brainf_ck_sharp.NET.Helpers
         }
 
         /// <summary>
+        /// Asserts that the input value must be equal to a specified value
+        /// </summary>
+        /// <typeparam name="T">The type of input values to compare</typeparam>
+        /// <param name="value">The input <typeparamref name="T"/> value to test</param>
+        /// <param name="target">The <typeparamref name="T"/> value that is accepted</param>
+        /// <param name="name">The name of the input parameter being tested</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="value"/> is != <paramref name="target"/></exception>
+        [Conditional(DEBUG)]
+        public static void MustBeEqualTo<T>(T value, T target, string name) where T : IComparable<T>
+        {
+            if (value.CompareTo(target) != 0) throw new ArgumentOutOfRangeException(name, $"Parameter {name} must be == {target}, was {value}");
+        }
+
+        /// <summary>
         /// Asserts that the input value must be less than a specified value
         /// </summary>
         /// <typeparam name="T">The type of input values to compare</typeparam>

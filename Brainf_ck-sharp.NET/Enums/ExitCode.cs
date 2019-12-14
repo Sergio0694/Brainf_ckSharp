@@ -33,81 +33,81 @@ namespace Brainf_ck_sharp.NET.Enums
         /// <summary>
         /// The input source code didn't contain any valid Branf_ck operators to interpret
         /// </summary>
-        NoCodeInterpreted = 1 << 4,
+        NoCodeInterpreted = 1 << 4 | Failure,
 
         /// <summary>
         /// The source code produced a runtime exception
         /// </summary>
-        ExceptionThrown = 1 << 5,
+        ExceptionThrown = 1 << 5 | Failure,
 
         /// <summary>
         /// The source code contained a syntax error and couldn't be interpreted
         /// </summary>
-        SyntaxError = 1 << 6,
+        SyntaxError = 1 << 6 | Failure,
 
         /// <summary>
         /// The code run into an infinite loop (according to the desired time threshold)
         /// </summary>
-        ThresholdExceeded = 1 << 7,
+        ThresholdExceeded = 1 << 7 | Failure,
 
         /// <summary>
         /// An internal interpreter exception has been thrown and automatically handled
         /// </summary>
-        InternalException = 1 << 8,
+        InternalException = 1 << 8 | Failure,
 
         /// <summary>
         /// The script execution was halted after reaching a breakpoint
         /// </summary>
-        BreakpointReached = 1 << 9,
+        BreakpointReached = 1 << 9 | Success,
 
         /// <summary>
         /// The script tried to move back from the first memory location
         /// </summary>
-        LowerBoundExceeded = 1 << 10,
+        LowerBoundExceeded = 1 << 10 | ExceptionThrown,
 
         /// <summary>
         /// The script tried to move over the last memory location
         /// </summary>
-        UpperBoundExceeded = 1 << 11,
+        UpperBoundExceeded = 1 << 11 | ExceptionThrown,
 
         /// <summary>
         /// The script tried to lower the value of a memory cell set to 0
         /// </summary>
-        NegativeValue = 1 << 12,
+        NegativeValue = 1 << 12 | ExceptionThrown,
 
         /// <summary>
         /// The script tried to increase the value of a memory cell that had the maximum allowed value
         /// </summary>
-        MaxValueExceeded = 1 << 13,
+        MaxValueExceeded = 1 << 13 | ExceptionThrown,
 
         /// <summary>
         /// The script requested another input character when the available buffer was empty
         /// </summary>
-        StdinBufferExhausted = 1 << 14,
+        StdinBufferExhausted = 1 << 14 | ExceptionThrown,
 
         /// <summary>
         /// The script tried to print too many characters in the output buffer
         /// </summary>
-        StdoutBufferLimitExceeded = 1 << 15,
+        StdoutBufferLimitExceeded = 1 << 15 | ExceptionThrown,
 
         /// <summary>
         /// The script tried to reference an undefined function
         /// </summary>
-        UndefinedFunctionCalled = 1 << 16,
+        UndefinedFunctionCalled = 1 << 16 | ExceptionThrown,
 
         /// <summary>
         /// The script tried to define a function with a value that was already mapped to another function
         /// </summary>
-        DuplicateFunctionDefinition = 1 << 17,
+        DuplicateFunctionDefinition = 1 << 17 | ExceptionThrown,
 
         /// <summary>
         /// The script tried to define too many different functions
         /// </summary>
-        FunctionsLimitExceeded = 1 << 18,
+        FunctionsLimitExceeded = 1 << 18 | ExceptionThrown,
 
         /// <summary>
         /// The script executed one or more recursive functions too many times
         /// </summary>
-        StackLimitExceeded = 1 << 19
+        StackLimitExceeded = 1 << 19 | ExceptionThrown
     }
 }

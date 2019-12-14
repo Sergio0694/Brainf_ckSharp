@@ -46,7 +46,7 @@
         public const char LoopEnd = ']';
 
         /// <summary>
-        /// The <see langword="("/> operator, that starts a function definition (<see langword="funcs[*ptr] = []() {"/>)
+        /// The <see langword="("/> operator, that starts a function definition (<see langword="f[*ptr] = []() {"/>)
         /// </summary>
         public const char FunctionStart = '(';
 
@@ -56,7 +56,7 @@
         public const char FunctionEnd = ')';
 
         /// <summary>
-        /// The <see langword=":"/> operator, that invokes a specified function (<see langword="funcs[*ptr]()"/>)
+        /// The <see langword=":"/> operator, that invokes a specified function (<see langword="f[*ptr]()"/>)
         /// </summary>
         public const char FunctionCall = ':';
     }

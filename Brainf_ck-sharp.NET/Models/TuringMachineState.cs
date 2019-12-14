@@ -44,8 +44,17 @@ namespace Brainf_ck_sharp.NET.Models
         /// <inheritdoc/>
         public int Count => Size;
 
+        /// <summary>
+        /// Gets the value at the current memory position
+        /// </summary>
+        public ushort Current
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Ptr[_Position];
+        }
+
         /// <inheritdoc/>
-        public Brainf_ckMemoryCell Current
+        Brainf_ckMemoryCell IReadOnlyTuringMachineState.Current
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => new Brainf_ckMemoryCell(Ptr[_Position], true);
