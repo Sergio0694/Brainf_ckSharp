@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace Brainf_ck_sharp.NET.Buffers.IO
 {
@@ -25,20 +24,21 @@ namespace Brainf_ck_sharp.NET.Buffers.IO
         public StdinBuffer(string data) => Data = data;
 
         /// <summary>
-        /// Gets whether or not there are characters left in the current instance
+        /// Tries to read a character from the current buffer
         /// </summary>
-        public bool CanRead
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => Data.Length > _Position;
-        }
-
-        /// <summary>
-        /// Reads a new character from the current instance
-        /// </summary>
-        /// <returns>The next <see cref="char"/> present in the underlying buffer</returns>
-        /// <exception cref="IndexOutOfRangeException">Thrown when the current buffer is exhausted</exception>
+        /// <param name="c">The resulting character to read from the underlying buffer</param>
+        /// <returns><see langword="true"/> if the character was read successfully, <see langword="false"/> otherwise</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public char Read() => Data[_Position++];
+        public bool TryRead(out char c)
+        {
+            if (_Position < Data.Length)
+            {
+                c = Data[_Position++];
+                return true;
+            }
+
+            c = default;
+            return false;
+        }
     }
 }

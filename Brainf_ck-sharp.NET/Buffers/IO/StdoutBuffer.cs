@@ -20,19 +20,18 @@ namespace Brainf_ck_sharp.NET.Buffers.IO
         public StdoutBuffer() : base(StdoutBufferSizeLimit) { }
 
         /// <summary>
-        /// Gets whether or not new characters can be written to the current instance
+        /// Tries to write a new character into the current buffer
         /// </summary>
-        public bool CanWrite
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => _Position < StdoutBufferSizeLimit - 1;
-        }
-
-        /// <summary>
-        /// Writes a new character to the current instance
-        /// </summary>
+        /// <param name="c">The input character to write to the underlying buffer</param>
+        /// <returns><see langword="true"/> if the character was written successfully, <see langword="false"/> otherwise</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe void Write(char c) => Ptr[_Position++] = c;
+        public unsafe bool TryWrite(char c)
+        {
+            if (_Position == StdoutBufferSizeLimit) return false;
+
+            Ptr[_Position++] = c;
+            return true;
+        }
 
         /// <inheritdoc/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
