@@ -24,7 +24,8 @@ namespace Brainf_ck_sharp.NET
         /// <summary>
         /// Gets the maximum number of recursive calls that can be performed by a script
         /// </summary>
-        public const int MaximumStackSize = 512;
+        /// <remarks>The frame index is 0-based, so there are effectively 512 frames in total</remarks>
+        public const int MaximumStackSize = 511;
 
         /// <summary>
         /// Loads the jump table for loops and functions from a given executable
@@ -106,13 +107,13 @@ namespace Brainf_ck_sharp.NET
         /// <param name="state">The target <see cref="TuringMachineState"/> instance to execute the code on</param>
         /// <param name="stdin">The input buffer to read characters from</param>
         /// <param name="stdout">The output buffer to write characters to</param>
-        /// <param name="range">The target range to run in the input executable</param>
+        /// <param name="stackFrames">The sequence of stack frames for the current execution</param>
         /// <param name="depth">The current stack depth</param>
         /// <param name="operations">The total number of executed operators</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
         /// <returns>An <see cref="IEnumerator{T}"/> that produces <see cref="InterpreterWorkingData"/> instances for the execution results</returns>
-        private static IEnumerator<InterpreterWorkingData> TryRun(
+        private static InterpreterWorkingData TryRun(
             UnsafeMemory<Operator> operators,
             UnsafeMemory<bool> breakpoints,
             UnsafeMemory<int> jumpTable,
@@ -120,8 +121,8 @@ namespace Brainf_ck_sharp.NET
             TuringMachineState state,
             StdinBuffer stdin,
             StdoutBuffer stdout,
-            Range range,
-            int depth,
+            UnsafeMemory<StackFrame> stackFrames,
+            Int depth,
             Int operations,
             CancellationToken executionToken,
             CancellationToken debugToken)
@@ -129,206 +130,175 @@ namespace Brainf_ck_sharp.NET
             DebugGuard.MustBeTrue(operators.Size > 0, nameof(operators));
             DebugGuard.MustBeEqualTo(breakpoints.Size, operators.Size, nameof(breakpoints));
             DebugGuard.MustBeEqualTo(jumpTable.Size, operators.Size, nameof(jumpTable));
-            DebugGuard.MustBeGreaterThan(range.End, range.Start, nameof(range));
-            DebugGuard.MustBeGreaterThanOrEqualTo(depth, 0, nameof(depth));
+            DebugGuard.MustBeEqualTo(stackFrames.Size, MaximumStackSize, nameof(stackFrames));
+            DebugGuard.MustBeGreaterThanOrEqualTo((int)depth, 0, nameof(depth));
             DebugGuard.MustBeGreaterThanOrEqualTo((int)operations, 0, nameof(operations));
 
-            // Iterate over the current operators
-            for (int i = range.Start; i < range.End; i++)
+            // Outer loop to go through the existing stack frames
+            for (StackFrame frame = stackFrames[depth]; depth >= 0; depth--)
             {
-                // Check if a breakpoint has been reached
-                if (breakpoints[i] && !debugToken.IsCancellationRequested)
+                /* This label is used when a function call is performed: a new stack frame
+                 * is pushed in the frames collection and then a goto is used to jump out
+                 * of both the switch case and the inner loop. This is faster than using
+                 * another variable to manually handle the two consecutive breaks to
+                 * reach the start of the inner loop from a switch case. */
+                StackFrameLoop:
+
+                // Iterate over the current operators
+                for (int i = frame.Offset; i < frame.Range.End; i++)
                 {
-                    yield return new InterpreterWorkingData(InterpreterExitCode.BreakpointReached, operators.Slice(range.Start, i + 1), i, operations);
-                }
-
-                // Execute the current operator
-                switch (operators[i])
-                {
-                    // ptr++
-                    case Operator.ForwardPtr:
-                        if (state.TryMoveNext()) operations++;
-                        else
-                        {
-                            yield return new InterpreterWorkingData(InterpreterExitCode.UpperBoundExceeded, operators.Slice(range.Start, i + 1), i, operations + 1);
-                            yield break;
-                        }
-                        break;
-
-                    // ptr--
-                    case Operator.BackwardPtr:
-                        if (state.TryMoveBack()) operations++;
-                        else
-                        {
-                            yield return new InterpreterWorkingData(InterpreterExitCode.LowerBoundExceeded, operators.Slice(range.Start, i + 1), i, operations + 1);
-                            yield break;
-                        }
-                        break;
-
-                    // (*ptr)++
-                    case Operator.Plus:
-                        if (state.TryIncrement()) operations++;
-                        else
-                        {
-                            yield return new InterpreterWorkingData(InterpreterExitCode.MaxValueExceeded, operators.Slice(range.Start, i + 1), i, operations + 1);
-                            yield break;
-                        }
-                        break;
-
-                    // (*ptr)--
-                    case Operator.Minus:
-                        if (state.TryDecrement()) operations++;
-                        else
-                        {
-                            yield return new InterpreterWorkingData(InterpreterExitCode.NegativeValue, operators.Slice(range.Start, i + 1), i, operations + 1);
-                            yield break;
-                        }
-                        break;
-
-                    // putch(*ptr)
-                    case Operator.PrintChar:
-                        if (stdout.TryWrite((char)state.Current)) operations++;
-                        else
-                        {
-                            yield return new InterpreterWorkingData(InterpreterExitCode.StdoutBufferLimitExceeded, operators.Slice(range.Start, i + 1), i, operations + 1);
-                            yield break;
-                        }
-                        break;
-
-                    // *ptr = getch()
-                    case Operator.ReadChar:
-                        if (stdin.TryRead(out char c))
-                        {
-                            // Check if the input character can be stored in the current cell
-                            if (state.TryInput(c)) operations++;
-                            else
-                            {
-                                yield return new InterpreterWorkingData(InterpreterExitCode.MaxValueExceeded, operators.Slice(range.Start, i + 1), i, operations + 1);
-                                yield break;
-                            }
-                        }
-                        else
-                        {
-                            yield return new InterpreterWorkingData(InterpreterExitCode.StdinBufferExhausted, operators.Slice(range.Start, i + 1), i, operations + 1);
-                            yield break;
-                        }
-                        break;
-
-                    // while (*ptr) {
-                    case Operator.LoopStart:
-
-                        // Check whether the loop is active
-                        if (state.Current == 0)
-                        {
-                            i = jumpTable[i];
-                            operations++;
-                        }
-                        else if (jumpTable[i] == i + 2 &&
-                                 operators[i + 1] == Operator.Minus &&
-                                 (!breakpoints[i + 1] &&
-                                  !breakpoints[i + 2] ||
-                                  debugToken.IsCancellationRequested))
-                        {
-                            // Fast path for [-] loops
-                            state.ResetCell();
-                            operations += state.Current * 2 + 1;
-                            i += 2;
-                        }
-                        else if (executionToken.IsCancellationRequested)
-                        {
-                            // Check whether the code can still be executed before starting an active loop
-                            yield return new InterpreterWorkingData(InterpreterExitCode.ThresholdExceeded, operators.Slice(range.Start, i + 1), i, operations);
-                            yield break;
-                        }
-                        break;
-
-                    // {
-                    case Operator.LoopEnd:
-                        if (state.Current > 0) i = jumpTable[i] - 1;
-                        operations++;
-                        break;
-
-                    // f[*ptr] = []() {
-                    case Operator.FunctionStart:
+                    // Check if a breakpoint has been reached
+                    if (breakpoints[i] && !debugToken.IsCancellationRequested)
                     {
-                        // Check for duplicate function definitions
-                        if (functions.ContainsKey(state.Current))
-                        {
-                            yield return new InterpreterWorkingData(InterpreterExitCode.DuplicateFunctionDefinition, operators.Slice(range.Start, i + 1), i, operations + 1);
-                            yield break;
-                        }
-
-                        // Ensure that new functions can stil be defined
-                        if (functions.Count == FunctionDefinitionsLimit)
-                        {
-                            yield return new InterpreterWorkingData(InterpreterExitCode.FunctionsLimitExceeded, operators.Slice(range.Start, i + 1), i, operations + 1);
-                            yield break;
-                        }
-
-                        // Save the new function definition
-                        Range function = new Range(i + 1, jumpTable[i]);
-                        functions.Add(state.Current, function);
-                        operations++;
-                        i += function.Length;
-                        break;
+                        return new InterpreterWorkingData(InterpreterExitCode.BreakpointReached, operators.Slice(frame.Range.Start, i + 1), i, operations);
                     }
 
-                    // }
-                    case Operator.FunctionEnd:
-                        operations++;
-                        break;
-
-                    // f[*ptr]()
-                    case Operator.FunctionCall:
+                    // Execute the current operator
+                    switch (operators[i])
                     {
-                        // Try to retrieve the function to invoke
-                        if (!functions.TryGetValue(state.Current, out Range function))
-                        {
-                            yield return new InterpreterWorkingData(InterpreterExitCode.UndefinedFunctionCalled, operators.Slice(range.Start, i + 1), i, operations + 1);
-                            yield break;
-                        }
-
-                        // Ensure the stack has space for the new function invocation
-                        if (depth == MaximumStackSize)
-                        {
-                            yield return new InterpreterWorkingData(InterpreterExitCode.StackLimitExceeded, operators.Slice(range.Start, i + 1), i, operations + 1);
-                            yield break;
-                        }
-
-                        operations++;
-
-                        // Get the enumerator for the new stack frame
-                        using IEnumerator<InterpreterWorkingData> enumerator = TryRun(
-                            operators,
-                            breakpoints,
-                            jumpTable,
-                            functions,
-                            state,
-                            stdin,
-                            stdout,
-                            function,
-                            depth + 1,
-                            operations,
-                            executionToken,
-                            debugToken);
-
-                        // Enumerate the partial results produced by the function call
-                        while (enumerator.MoveNext())
-                        {
-                            InterpreterWorkingData result = enumerator.Current;
-
-                            // Handle breakpoints or failures in a function call
-                            if (result.ExitCode == InterpreterExitCode.BreakpointReached)
+                        // ptr++
+                        case Operator.ForwardPtr:
+                            if (state.TryMoveNext()) operations++;
+                            else
                             {
-                                yield return result.WithParentStackFrame(operators.Slice(0, i + 1));
+                                return new InterpreterWorkingData(InterpreterExitCode.UpperBoundExceeded, operators.Slice(frame.Range.Start, i + 1), i, operations + 1);
                             }
-                            else if ((result.ExitCode & InterpreterExitCode.Success) == 0)
+                            break;
+
+                        // ptr--
+                        case Operator.BackwardPtr:
+                            if (state.TryMoveBack()) operations++;
+                            else
                             {
-                                yield return result.WithParentStackFrame(operators.Slice(0, i + 1));
-                                yield break;
+                                return new InterpreterWorkingData(InterpreterExitCode.LowerBoundExceeded, operators.Slice(frame.Range.Start, i + 1), i, operations + 1);
                             }
+                            break;
+
+                        // (*ptr)++
+                        case Operator.Plus:
+                            if (state.TryIncrement()) operations++;
+                            else
+                            {
+                                return new InterpreterWorkingData(InterpreterExitCode.MaxValueExceeded, operators.Slice(frame.Range.Start, i + 1), i, operations + 1);
+                            }
+                            break;
+
+                        // (*ptr)--
+                        case Operator.Minus:
+                            if (state.TryDecrement()) operations++;
+                            else
+                            {
+                                return new InterpreterWorkingData(InterpreterExitCode.NegativeValue, operators.Slice(frame.Range.Start, i + 1), i, operations + 1);
+                            }
+                            break;
+
+                        // putch(*ptr)
+                        case Operator.PrintChar:
+                            if (stdout.TryWrite((char)state.Current)) operations++;
+                            else
+                            {
+                                return new InterpreterWorkingData(InterpreterExitCode.StdoutBufferLimitExceeded, operators.Slice(frame.Range.Start, i + 1), i, operations + 1);
+                            }
+                            break;
+
+                        // *ptr = getch()
+                        case Operator.ReadChar:
+                            if (stdin.TryRead(out char c))
+                            {
+                                // Check if the input character can be stored in the current cell
+                                if (state.TryInput(c)) operations++;
+                                else
+                                {
+                                    return new InterpreterWorkingData(InterpreterExitCode.MaxValueExceeded, operators.Slice(frame.Range.Start, i + 1), i, operations + 1);
+                                }
+                            }
+                            else
+                            {
+                                return new InterpreterWorkingData(InterpreterExitCode.StdinBufferExhausted, operators.Slice(frame.Range.Start, i + 1), i, operations + 1);
+                            }
+                            break;
+
+                        // while (*ptr) {
+                        case Operator.LoopStart:
+
+                            // Check whether the loop is active
+                            if (state.Current == 0)
+                            {
+                                i = jumpTable[i];
+                                operations++;
+                            }
+                            else if (jumpTable[i] == i + 2 &&
+                                     operators[i + 1] == Operator.Minus &&
+                                     (!breakpoints[i + 1] &&
+                                      !breakpoints[i + 2] ||
+                                      debugToken.IsCancellationRequested))
+                            {
+                                // Fast path for [-] loops
+                                state.ResetCell();
+                                operations += state.Current * 2 + 1;
+                                i += 2;
+                            }
+                            else if (executionToken.IsCancellationRequested)
+                            {
+                                // Check whether the code can still be executed before starting an active loop
+                                return new InterpreterWorkingData(InterpreterExitCode.ThresholdExceeded, operators.Slice(frame.Range.Start, i + 1), i, operations);
+                            }
+                            break;
+
+                        // {
+                        case Operator.LoopEnd:
+                            if (state.Current > 0) i = jumpTable[i] - 1;
+                            operations++;
+                            break;
+
+                        // f[*ptr] = []() {
+                        case Operator.FunctionStart:
+                        {
+                            // Check for duplicate function definitions
+                            if (functions.ContainsKey(state.Current))
+                            {
+                                return new InterpreterWorkingData(InterpreterExitCode.DuplicateFunctionDefinition, operators.Slice(frame.Range.Start, i + 1), i, operations + 1);
+                            }
+
+                            // Ensure that new functions can stil be defined
+                            if (functions.Count == FunctionDefinitionsLimit)
+                            {
+                                return new InterpreterWorkingData(InterpreterExitCode.FunctionsLimitExceeded, operators.Slice(frame.Range.Start, i + 1), i, operations + 1);
+                            }
+
+                            // Save the new function definition
+                            Range function = new Range(i + 1, jumpTable[i]);
+                            functions.Add(state.Current, function);
+                            operations++;
+                            i += function.Length;
+                            break;
                         }
-                        break;
+
+                        // }
+                        case Operator.FunctionEnd:
+                            operations++;
+                            break;
+
+                        // f[*ptr]()
+                        case Operator.FunctionCall:
+                        {
+                            // Try to retrieve the function to invoke
+                            if (!functions.TryGetValue(state.Current, out Range function))
+                            {
+                                return new InterpreterWorkingData(InterpreterExitCode.UndefinedFunctionCalled, operators.Slice(frame.Range.Start, i + 1), i, operations + 1);
+                            }
+
+                            // Ensure the stack has space for the new function invocation
+                            if (depth == MaximumStackSize)
+                            {
+                                return new InterpreterWorkingData(InterpreterExitCode.StackLimitExceeded, operators.Slice(frame.Range.Start, i + 1), i, operations + 1);
+                            }
+
+                            // Add the new stack fraame for the function call
+                            stackFrames[++depth] = new StackFrame(function, i);
+                            operations++;
+                            goto StackFrameLoop;
+                        }
                     }
                 }
             }
@@ -336,7 +306,7 @@ namespace Brainf_ck_sharp.NET
             // Return a new state for a successful execution
             bool hasOutput = stdout.Length > 0;
             InterpreterExitCode code = hasOutput ? InterpreterExitCode.TextOutput : InterpreterExitCode.NoOutput;
-            yield return new InterpreterWorkingData(code, UnsafeMemory<Operator>.Empty, range.End, operations);
+            return new InterpreterWorkingData(code, operators, operators.Size - 1, operations);
         }
     }
 }
