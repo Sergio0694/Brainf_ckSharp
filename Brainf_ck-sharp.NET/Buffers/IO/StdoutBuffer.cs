@@ -19,7 +19,7 @@ namespace Brainf_ck_sharp.NET.Buffers.IO
         /// </summary>
         private int _Position;
 
-        public StdoutBuffer() : base(StdoutBufferSizeLimit) { }
+        public StdoutBuffer() : base(StdoutBufferSizeLimit, false) { }
 
         /// <summary>
         /// Gets the current length of the text in the output buffer

@@ -11,12 +11,17 @@
         None,
 
         /// <summary>
-        /// A closed square bracket was either missing or exceeding the current depth level
+        /// A closed square bracket was exceeding the current depth level
         /// </summary>
         MismatchedSquareBracket,
 
         /// <summary>
-        /// An open or closed parenthesis was placed incorrectly
+        /// A closed square bracket was missing at the end of the source file
+        /// </summary>
+        IncompleteLoop,
+
+        /// <summary>
+        /// An closed parenthesis was placed incorrectly
         /// </summary>
         MismatchedParenthesis,
 

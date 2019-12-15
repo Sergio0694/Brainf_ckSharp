@@ -112,12 +112,12 @@ namespace Brainf_ck_sharp.NET
                         totalOps++;
                         if (functionStart == -1)
                         {
-                            if (functionLoopStart == -1) functionLoopStart = i;
+                            if (rootDepth == 0) outerLoopStart = i;
                             rootDepth++;
                         }
                         else
                         {
-                            if (rootDepth == 0) outerLoopStart = i;
+                            if (functionLoopStart == -1) functionLoopStart = i;
                             functionDepth++;
                             functionOps++;
                         }
@@ -168,7 +168,7 @@ namespace Brainf_ck_sharp.NET
              *   - A missing square bracket for one of the loops in the main script
              *   - No operators present in the source file */
             if (functionStart != -1) return new SyntaxValidationResult(SyntaxError.IncompleteFunctionDeclaration, functionStart);
-            if (rootDepth != 0) return new SyntaxValidationResult(SyntaxError.MismatchedSquareBracket, outerLoopStart);
+            if (rootDepth != 0) return new SyntaxValidationResult(SyntaxError.IncompleteLoop, outerLoopStart);
             if (totalOps == 0) return new SyntaxValidationResult(SyntaxError.MissingOperators, -1, 0);
 
             return new SyntaxValidationResult(SyntaxError.None, -1, totalOps);

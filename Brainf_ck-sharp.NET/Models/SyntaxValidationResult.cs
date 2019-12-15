@@ -38,7 +38,6 @@ namespace Brainf_ck_sharp.NET.Models
         internal SyntaxValidationResult(SyntaxError error, int offset, int operatorsCount = -1)
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(offset, -1, nameof(offset));
-            DebugGuard.MustBeTrue(offset >= 0 || error == SyntaxError.None, nameof(offset));
             DebugGuard.MustBeGreaterThanOrEqualTo(operatorsCount, -1, nameof(operatorsCount));
             DebugGuard.MustBeTrue(operatorsCount >= 0 || error != SyntaxError.None, nameof(operatorsCount));
 
