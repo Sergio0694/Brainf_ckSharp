@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -18,12 +19,12 @@ namespace Brainf_ck_sharp.NET
         /// <summary>
         /// The maximum valid index in <see cref="OperatorsLookupTable"/>
         /// </summary>
-        public const int OperatorsLookupTableMaxIndex = 93;
+        private const int OperatorsLookupTableMaxIndex = 93;
 
         /// <summary>
         /// A lookup table to quickly check characters
         /// </summary>
-        public static ReadOnlySpan<byte> OperatorsLookupTable => new byte[]
+        private static ReadOnlySpan<byte> OperatorsLookupTable => new byte[]
         {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -208,6 +209,53 @@ namespace Brainf_ck_sharp.NET
             else operators = null;
 
             return validationResult;
+        }
+
+        /// <summary>
+        /// A lookup table to quickly check characters
+        /// </summary>
+        private static ReadOnlySpan<byte> OperatorsInverseLookupTable => new[]
+        {
+            (byte)Operators.Plus,
+            (byte)Operators.Minus,
+            (byte)Operators.ForwardPtr,
+            (byte)Operators.BackwardPtr,
+            (byte)Operators.PrintChar,
+            (byte)Operators.ReadChar,
+            (byte)Operators.LoopStart,
+            (byte)Operators.LoopEnd,
+            (byte)Operators.FunctionStart,
+            (byte)Operators.FunctionEnd,
+            (byte)Operators.FunctionCall
+        };
+
+        /// <summary>
+        /// Extracts the compacted source code from a given sequence of operators
+        /// </summary>
+        /// <param name="operators">The input sequence of parsed operators to read</param>
+        /// <returns>A <see cref="string"/> representing the input sequence of operators</returns>
+        [Pure]
+        internal static string ExtractSource(UnsafeMemoryBuffer<Operator> operators)
+        {
+            // Rent a buffer to use to build the final string
+            char[] characters = ArrayPool<char>.Shared.Rent(operators.Size);
+
+            ref char targetRef = ref characters[0];
+            ref byte lookupRef = ref MemoryMarshal.GetReference(OperatorsInverseLookupTable);
+
+            // Build the source string with the inverse operators lookup table
+            for (int i = 0; i < operators.Size; i++)
+            {
+                byte code = Unsafe.Add(ref lookupRef, (int)operators[i]);
+                Unsafe.Add(ref targetRef, i) = (char)code;
+            }
+
+            // Allocate the new string from the rented buffer
+            string source = new string(characters, 0, operators.Size);
+
+            ArrayPool<char>.Shared.Return(characters);
+
+            return source;
         }
     }
 }
