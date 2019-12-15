@@ -78,11 +78,11 @@ namespace Brainf_ck_sharp.NET
         /// Runs a given Brainf*ck/PBrain executable with the given parameters
         /// </summary>
         /// <param name="source">The source code to parse and execute</param>
-        /// <param name="machineState">The source state machine to use to start running the script from</param>
+        /// <param name="initialState">The initial state machine to use to start running the script from</param>
         /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-        public static InterpreterResult Run(string source, IReadOnlyTuringMachineState machineState)
+        public static InterpreterResult Run(string source, IReadOnlyTuringMachineState initialState)
         {
-            return Run(source, string.Empty, machineState);
+            return Run(source, string.Empty, initialState);
         }
 
         /// <summary>
@@ -90,17 +90,19 @@ namespace Brainf_ck_sharp.NET
         /// </summary>
         /// <param name="source">The source code to parse and execute</param>
         /// <param name="stdin">The input buffer to read data from</param>
-        /// <param name="machineState">The source state machine to use to start running the script from</param>
+        /// <param name="initialState">The initial state machine to use to start running the script from</param>
         /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-        public static InterpreterResult Run(string source, string stdin, IReadOnlyTuringMachineState machineState)
+        public static InterpreterResult Run(string source, string stdin, IReadOnlyTuringMachineState initialState)
         {
-            DebugGuard.MustBeTrue(machineState is TuringMachineState, nameof(machineState));
+            DebugGuard.MustBeTrue(initialState is TuringMachineState, nameof(initialState));
 
             using UnsafeMemoryBuffer<byte>? operators = Brainf_ckParser.TryParse(source, out SyntaxValidationResult validationResult);
 
             if (!validationResult.IsSuccess) return null;
 
-            return Run(operators!, stdin, (TuringMachineState)machineState);
+            TuringMachineState machineState = (TuringMachineState)((TuringMachineState)initialState).Clone();
+
+            return Run(operators!, stdin, machineState);
         }
 
         /// <summary>

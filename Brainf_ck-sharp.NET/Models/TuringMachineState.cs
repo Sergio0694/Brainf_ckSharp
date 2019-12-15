@@ -233,5 +233,15 @@ namespace Brainf_ck_sharp.NET.Models
             for (int i = 0; i < Size; i++)
                 yield return new Brainf_ckMemoryCell(Memory[i], _Position == i);
         }
+
+        /// <inheritdoc/>
+        public object Clone()
+        {
+            TuringMachineState clone = new TuringMachineState(Size, Mode) { _Position = _Position };
+
+            new ReadOnlySpan<ushort>(Ptr, Size).CopyTo(new Span<ushort>(clone.Ptr, Size));
+
+            return clone;
+        }
     }
 }
