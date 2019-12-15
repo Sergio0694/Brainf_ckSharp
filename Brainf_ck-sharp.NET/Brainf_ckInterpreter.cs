@@ -1,4 +1,5 @@
-﻿using System.Buffers;
+﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -8,7 +9,9 @@ using Brainf_ck_sharp.NET.Constants;
 using Brainf_ck_sharp.NET.Enums;
 using Brainf_ck_sharp.NET.Extensions.Types;
 using Brainf_ck_sharp.NET.Helpers;
+using Brainf_ck_sharp.NET.Interfaces;
 using Brainf_ck_sharp.NET.Models;
+using Stopwatch = System.Diagnostics.Stopwatch;
 
 namespace Brainf_ck_sharp.NET
 {
@@ -18,7 +21,152 @@ namespace Brainf_ck_sharp.NET
     public static class Brainf_ckInterpreter
     {
         /// <summary>
-        /// Gets the maximum number of recursive calls that can be performed by a script
+        /// The default memory size for machine states used to run scripts
+        /// </summary>
+        public const int DefaultMemorySize = 128;
+
+        /// <summary>
+        /// The default overflow mode for running scripts
+        /// </summary>
+        public const OverflowMode DefaultOverflowMode = OverflowMode.ByteWithNoOverflow;
+
+        /// <summary>
+        /// Runs a given Brainf*ck/PBrain executable with the given parameters
+        /// </summary>
+        /// <param name="source">The source code to parse and execute</param>
+        /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
+        public static InterpreterResult Run(string source)
+        {
+            return Run(source, string.Empty, DefaultMemorySize, DefaultOverflowMode);
+        }
+
+        /// <summary>
+        /// Runs a given Brainf*ck/PBrain executable with the given parameters
+        /// </summary>
+        /// <param name="source">The source code to parse and execute</param>
+        /// <param name="stdin">The input buffer to read data from</param>
+        /// <param name="memorySize">The size of the state machine to create to run the script</param>
+        /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
+        public static InterpreterResult Run(string source, string stdin, int memorySize)
+        {
+            return Run(source, stdin, memorySize, DefaultOverflowMode);
+        }
+
+        /// <summary>
+        /// Runs a given Brainf*ck/PBrain executable with the given parameters
+        /// </summary>
+        /// <param name="source">The source code to parse and execute</param>
+        /// <param name="stdin">The input buffer to read data from</param>
+        /// <param name="memorySize">The size of the state machine to create to run the script</param>
+        /// <param name="overflowMode">The overflow mode to use in the state machine used to run the script</param>
+        /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
+        public static InterpreterResult Run(string source, string stdin, int memorySize, OverflowMode overflowMode)
+        {
+            Guard.MustBeGreaterThanOrEqualTo(memorySize, 32, nameof(memorySize));
+            Guard.MustBeLessThanOrEqualTo(memorySize, 1024, nameof(memorySize));
+
+            using UnsafeMemoryBuffer<byte>? operators = Brainf_ckParser.TryParse(source, out SyntaxValidationResult validationResult);
+
+            if (!validationResult.IsSuccess) return null;
+
+            TuringMachineState machineState = new TuringMachineState(memorySize, overflowMode);
+
+            return Run(operators!, stdin, machineState);
+        }
+
+        /// <summary>
+        /// Runs a given Brainf*ck/PBrain executable with the given parameters
+        /// </summary>
+        /// <param name="source">The source code to parse and execute</param>
+        /// <param name="machineState">The source state machine to use to start running the script from</param>
+        /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
+        public static InterpreterResult Run(string source, IReadOnlyTuringMachineState machineState)
+        {
+            return Run(source, string.Empty, machineState);
+        }
+
+        /// <summary>
+        /// Runs a given Brainf*ck/PBrain executable with the given parameters
+        /// </summary>
+        /// <param name="source">The source code to parse and execute</param>
+        /// <param name="stdin">The input buffer to read data from</param>
+        /// <param name="machineState">The source state machine to use to start running the script from</param>
+        /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
+        public static InterpreterResult Run(string source, string stdin, IReadOnlyTuringMachineState machineState)
+        {
+            DebugGuard.MustBeTrue(machineState is TuringMachineState, nameof(machineState));
+
+            using UnsafeMemoryBuffer<byte>? operators = Brainf_ckParser.TryParse(source, out SyntaxValidationResult validationResult);
+
+            if (!validationResult.IsSuccess) return null;
+
+            return Run(operators!, stdin, (TuringMachineState)machineState);
+        }
+
+        /// <summary>
+        /// Runs a given Brainf*ck/PBrain executable with the given parameters
+        /// </summary>
+        /// <param name="operators">The executable to run</param>
+        /// <param name="stdin">The input buffer to read data from</param>
+        /// <param name="machineState">The target machine state to use to run the script</param>
+        /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
+        private static InterpreterResult Run(
+            UnsafeMemoryBuffer<byte> operators,
+            string stdin,
+            TuringMachineState machineState)
+        {
+            // Initialize the temporary buffers
+            using UnsafeMemoryBuffer<bool> breakpoints = UnsafeMemoryBuffer<bool>.Allocate(operators.Size);
+            using UnsafeMemoryBuffer<int> jumpTable = LoadJumpTable(operators);
+            using UnsafeMemoryBuffer<Range> functions = UnsafeMemoryBuffer<Range>.Allocate(ushort.MaxValue);
+            using UnsafeMemoryBuffer<bool> definitions = UnsafeMemoryBuffer<bool>.Allocate(operators.Size);
+            using UnsafeMemoryBuffer<StackFrame> stackFrames = UnsafeMemoryBuffer<StackFrame>.Allocate(MaximumStackSize);
+            using StdoutBuffer stdout = new StdoutBuffer();
+
+            // Shared counters
+            Int depth = 0;
+            Int totalOperations = 0;
+            Int totalFunctions = 0;
+
+            // Manually set the initial stack frame to the entire script
+            stackFrames[0] = new StackFrame(new Range(0, operators.Size), 0);
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            // Start the interpreter
+            InterpreterWorkingData data = TryRun(
+                operators.Memory,
+                breakpoints.Memory,
+                jumpTable.Memory,
+                functions.Memory,
+                definitions.Memory,
+                machineState,
+                new StdinBuffer(stdin),
+                stdout, stackFrames.Memory,
+                depth,
+                totalOperations,
+                totalFunctions,
+                CancellationToken.None,
+                CancellationToken.None);
+
+            stopwatch.Stop();
+
+            // Rebuild the compacted source code
+            string code = Brainf_ckParser.ExtractSource(operators);
+
+            return new InterpreterResult(
+                code,
+                data.ExitCode,
+                machineState,
+                Array.Empty<FunctionDefinition>(),
+                stdin,
+                stdout.ToString(),
+                stopwatch.Elapsed,
+                totalOperations);
+        }
+
+        /// <summary>
+        /// The maximum number of recursive calls that can be performed by a script
         /// </summary>
         public const int MaximumStackSize = 512;
 
