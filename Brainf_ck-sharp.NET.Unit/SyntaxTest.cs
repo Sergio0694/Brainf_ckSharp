@@ -10,6 +10,23 @@ namespace Brainf_ck_sharp.NET.Unit
     [TestClass]
     public class SyntaxTest
     {
+        // Tests a sequence of characters
+        private static void AssertIsOperator(string characters, bool result)
+        {
+            foreach (char c in characters)
+            {
+                bool isOperator = Brainf_ckParser.IsOperator(c);
+
+                Assert.AreEqual(isOperator, result);
+            }
+        }
+
+        [TestMethod]
+        public void AreOperators() => AssertIsOperator("+-><[].,():", true);
+
+        [TestMethod]
+        public void AreNotOperators() => AssertIsOperator("abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*{}_=ABCDEFGHIJKLMNOPQRSTUVWXYZ", false);
+
         // Tests a valid script
         private static void AssertIsValid(string script)
         {
