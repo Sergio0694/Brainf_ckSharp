@@ -99,9 +99,9 @@ namespace Brainf_ck_sharp.NET.Enums
         DuplicateFunctionDefinition = 1 << 17 | ExceptionThrown,
 
         /// <summary>
-        /// The script tried to define too many different functions
+        /// The script tried to define the same function more than once
         /// </summary>
-        FunctionsLimitExceeded = 1 << 18 | ExceptionThrown,
+        FunctionAlreadyDefined = 1 << 18 | ExceptionThrown,
 
         /// <summary>
         /// The script executed one or more recursive functions too many times
