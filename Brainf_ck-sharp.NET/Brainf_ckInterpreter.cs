@@ -126,9 +126,9 @@ namespace Brainf_ck_sharp.NET
             using StdoutBuffer stdout = new StdoutBuffer();
 
             // Shared counters
-            Int depth = 0;
-            Int totalOperations = 0;
-            Int totalFunctions = 0;
+            int depth = 0;
+            int totalOperations = 0;
+            int totalFunctions = 0;
 
             // Manually set the initial stack frame to the entire script
             stackFrames[0] = new StackFrame(new Range(0, operators.Size), 0);
@@ -145,9 +145,9 @@ namespace Brainf_ck_sharp.NET
                 machineState,
                 new StdinBuffer(stdin),
                 stdout, stackFrames.Memory,
-                depth,
-                totalOperations,
-                totalFunctions,
+                ref depth,
+                ref totalOperations,
+                ref totalFunctions,
                 CancellationToken.None,
                 CancellationToken.None);
 
@@ -272,9 +272,9 @@ namespace Brainf_ck_sharp.NET
             StdinBuffer stdin,
             StdoutBuffer stdout,
             UnsafeMemory<StackFrame> stackFrames,
-            Int depth,
-            Int totalOperations,
-            Int totalFunctions,
+            ref int depth,
+            ref int totalOperations,
+            ref int totalFunctions,
             CancellationToken executionToken,
             CancellationToken debugToken)
         {
@@ -284,9 +284,9 @@ namespace Brainf_ck_sharp.NET
             DebugGuard.MustBeEqualTo(functions.Size, ushort.MaxValue, nameof(functions));
             DebugGuard.MustBeEqualTo(definitions.Size, operators.Size, nameof(definitions));
             DebugGuard.MustBeEqualTo(stackFrames.Size, MaximumStackSize, nameof(stackFrames));
-            DebugGuard.MustBeGreaterThanOrEqualTo((int)depth, 0, nameof(depth));
-            DebugGuard.MustBeGreaterThanOrEqualTo((int)totalOperations, 0, nameof(totalOperations));
-            DebugGuard.MustBeGreaterThanOrEqualTo((int)totalFunctions, 0, nameof(totalFunctions));
+            DebugGuard.MustBeGreaterThanOrEqualTo(depth, 0, nameof(depth));
+            DebugGuard.MustBeGreaterThanOrEqualTo(totalOperations, 0, nameof(totalOperations));
+            DebugGuard.MustBeGreaterThanOrEqualTo(totalFunctions, 0, nameof(totalFunctions));
 
             // Outer loop to go through the existing stack frames
             for (StackFrame frame = stackFrames[depth]; depth >= 0; depth--)
