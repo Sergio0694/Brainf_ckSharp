@@ -33,7 +33,15 @@ namespace Brainf_ck_sharp.NET.Models
         /// </summary>
         /// <param name="size">The size of the new memory buffer to use</param>
         /// <param name="mode">The overflow mode to use in the new instance</param>
-        public TuringMachineState(int size, OverflowMode mode) : base(size)
+        public TuringMachineState(int size, OverflowMode mode) : this(size, mode, false) { }
+
+        /// <summary>
+        /// Creates a new blank machine state with the given parameters
+        /// </summary>
+        /// <param name="size">The size of the new memory buffer to use</param>
+        /// <param name="mode">The overflow mode to use in the new instance</param>
+        /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
+        private TuringMachineState(int size, OverflowMode mode, bool clear) : base(size, clear)
         {
             Mode = mode;
         }
@@ -237,7 +245,7 @@ namespace Brainf_ck_sharp.NET.Models
         /// <inheritdoc/>
         public object Clone()
         {
-            TuringMachineState clone = new TuringMachineState(Size, Mode) { _Position = _Position };
+            TuringMachineState clone = new TuringMachineState(Size, Mode, false) { _Position = _Position };
 
             new ReadOnlySpan<ushort>(Ptr, Size).CopyTo(new Span<ushort>(clone.Ptr, Size));
 

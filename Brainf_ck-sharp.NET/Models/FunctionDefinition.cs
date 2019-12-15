@@ -11,6 +11,11 @@
         public ushort Value { get; }
 
         /// <summary>
+        /// Gets the numerical index for the current function definition
+        /// </summary>
+        public int Index { get; }
+
+        /// <summary>
         /// Gets the offset of the function in the original source code
         /// </summary>
         public int Offset { get; }
@@ -24,11 +29,13 @@
         /// Creates a new instance with the given parameters
         /// </summary>
         /// <param name="value">The function value</param>
+        /// <param name="index">The numerical index for the current function definition</param>
         /// <param name="offset">The function script offset</param>
         /// <param name="body">The function code</param>
-        public FunctionDefinition(ushort value, int offset, string body)
+        public FunctionDefinition(ushort value, int index, int offset, string body)
         {
             Value = value;
+            Index = index;
             Offset = offset;
             Body = body;
         }

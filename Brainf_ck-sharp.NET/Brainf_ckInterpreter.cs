@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ck_sharp.NET.Buffers;
@@ -117,12 +118,15 @@ namespace Brainf_ck_sharp.NET
             string stdin,
             TuringMachineState machineState)
         {
+            DebugGuard.MustBeGreaterThanOrEqualTo(operators.Size, 0, nameof(operators));
+            DebugGuard.MustBeGreaterThanOrEqualTo(machineState.Size, 0, nameof(machineState));
+
             // Initialize the temporary buffers
-            using UnsafeMemoryBuffer<bool> breakpoints = UnsafeMemoryBuffer<bool>.Allocate(operators.Size);
+            using UnsafeMemoryBuffer<bool> breakpoints = UnsafeMemoryBuffer<bool>.Allocate(operators.Size, true);
             using UnsafeMemoryBuffer<int> jumpTable = LoadJumpTable(operators);
-            using UnsafeMemoryBuffer<Range> functions = UnsafeMemoryBuffer<Range>.Allocate(ushort.MaxValue);
-            using UnsafeMemoryBuffer<bool> definitions = UnsafeMemoryBuffer<bool>.Allocate(operators.Size);
-            using UnsafeMemoryBuffer<StackFrame> stackFrames = UnsafeMemoryBuffer<StackFrame>.Allocate(MaximumStackSize);
+            using UnsafeMemoryBuffer<Range> functions = UnsafeMemoryBuffer<Range>.Allocate(ushort.MaxValue, true);
+            using UnsafeMemoryBuffer<ushort> definitions = UnsafeMemoryBuffer<ushort>.Allocate(operators.Size, true);
+            using UnsafeMemoryBuffer<StackFrame> stackFrames = UnsafeMemoryBuffer<StackFrame>.Allocate(MaximumStackSize, false);
             using StdoutBuffer stdout = new StdoutBuffer();
 
             // Shared counters
@@ -154,17 +158,68 @@ namespace Brainf_ck_sharp.NET
             stopwatch.Stop();
 
             // Rebuild the compacted source code
-            string code = Brainf_ckParser.ExtractSource(operators);
+            string sourceCode = Brainf_ckParser.ExtractSource(operators.Memory);
+
+            // Build the collection of defined functions
+            FunctionDefinition[] functionDefinitions = LoadFunctionDefinitions(
+                operators.Memory,
+                functions.Memory,
+                definitions.Memory,
+                totalFunctions);
 
             return new InterpreterResult(
-                code,
+                sourceCode,
                 data.ExitCode,
                 machineState,
-                Array.Empty<FunctionDefinition>(),
+                functionDefinitions,
                 stdin,
                 stdout.ToString(),
                 stopwatch.Elapsed,
                 totalOperations);
+        }
+
+        /// <summary>
+        /// Loads the function definitions with the given executable and parameters
+        /// </summary>
+        /// <param name="operators">The sequence of parsed operators to execute</param>
+        /// <param name="functions">The mapping of functions for the current execution</param>
+        /// <param name="definitions">The lookup table to check which functions are defined</param>
+        /// <param name="totalFunctions">The total number of defined functions</param>
+        /// <returns>An array of <see cref="FunctionDefinition"/> instance with the defined functions</returns>
+        [Pure]
+        private static FunctionDefinition[] LoadFunctionDefinitions(
+            UnsafeMemory<byte> operators,
+            UnsafeMemory<Range> functions,
+            UnsafeMemory<ushort> definitions,
+            int totalFunctions)
+        {
+            DebugGuard.MustBeGreaterThanOrEqualTo(operators.Size, 0, nameof(operators));
+            DebugGuard.MustBeEqualTo(functions.Size, ushort.MaxValue, nameof(functions));
+            DebugGuard.MustBeEqualTo(definitions.Size, operators.Size, nameof(definitions));
+            DebugGuard.MustBeGreaterThanOrEqualTo(totalFunctions, 0, nameof(totalFunctions));
+
+            // No declared functions
+            if (totalFunctions == 0) return Array.Empty<FunctionDefinition>();
+
+            FunctionDefinition[] result = new FunctionDefinition[totalFunctions];
+            ref FunctionDefinition r0 = ref result[0];
+
+            // Process all the declared functions
+            for (int i = 0, j = 0; j < totalFunctions; j++)
+            {
+                ushort key = definitions[j];
+
+                if (key == 0) continue;
+
+                // Extract the source for the current function
+                Range range = functions[key];
+                UnsafeMemory<byte> memory = operators.Slice(range.Start, range.End);
+                string body = Brainf_ckParser.ExtractSource(memory);
+
+                Unsafe.Add(ref r0, i) = new FunctionDefinition(key, i, j, body);
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -177,9 +232,12 @@ namespace Brainf_ck_sharp.NET
         /// </summary>
         /// <param name="operators">The sequence of parsed operators to inspect</param>
         /// <returns>The resulting precomputed jump table for the input executable</returns>
+        [Pure]
         private static UnsafeMemoryBuffer<int> LoadJumpTable(UnsafeMemoryBuffer<byte> operators)
         {
-            UnsafeMemoryBuffer<int> jumpTable = UnsafeMemoryBuffer<int>.Allocate(operators.Size);
+            DebugGuard.MustBeGreaterThanOrEqualTo(operators.Size, 0, nameof(operators));
+
+            UnsafeMemoryBuffer<int> jumpTable = UnsafeMemoryBuffer<int>.Allocate(operators.Size, false);
 
             /* Temporarily allocate two buffers to store the indirect indices to build the jump table.
              * The two temporary buffers are initialized with a size of half the length of the input
@@ -267,7 +325,7 @@ namespace Brainf_ck_sharp.NET
             UnsafeMemory<bool> breakpoints,
             UnsafeMemory<int> jumpTable,
             UnsafeMemory<Range> functions,
-            UnsafeMemory<bool> definitions,
+            UnsafeMemory<ushort> definitions,
             TuringMachineState state,
             StdinBuffer stdin,
             StdoutBuffer stdout,
@@ -415,7 +473,7 @@ namespace Brainf_ck_sharp.NET
                             }
 
                             // Check that the current function has not been defined before
-                            if (definitions[i])
+                            if (definitions[i] != 0)
                             {
                                 return new InterpreterWorkingData(ExitCode.FunctionAlreadyDefined, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
                             }
@@ -423,7 +481,7 @@ namespace Brainf_ck_sharp.NET
                             // Save the new function definition
                             Range function = new Range(i + 1, jumpTable[i]);
                             functions[state.Current] = function;
-                            definitions[i] = true;
+                            definitions[i] = state.Current;
                             totalFunctions++;
                             totalOperations++;
                             i += function.Length;

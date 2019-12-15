@@ -188,7 +188,7 @@ namespace Brainf_ck_sharp.NET
             if (!validationResult.IsSuccess) return null;
 
             // Allocate the buffer of binary items with the input operators
-            UnsafeMemoryBuffer<byte> operators = UnsafeMemoryBuffer<byte>.Allocate(validationResult.OperatorsCount);
+            UnsafeMemoryBuffer<byte> operators = UnsafeMemoryBuffer<byte>.Allocate(validationResult.OperatorsCount, false);
 
             // Extract all the operators from the input source code
             ref byte r0 = ref MemoryMarshal.GetReference(OperatorsLookupTable);
@@ -234,7 +234,7 @@ namespace Brainf_ck_sharp.NET
         /// <param name="operators">The input sequence of parsed operators to read</param>
         /// <returns>A <see cref="string"/> representing the input sequence of operators</returns>
         [Pure]
-        internal static string ExtractSource(UnsafeMemoryBuffer<byte> operators)
+        internal static string ExtractSource(UnsafeMemory<byte> operators)
         {
             // Rent a buffer to use to build the final string
             char[] characters = ArrayPool<char>.Shared.Rent(operators.Size);

@@ -37,7 +37,8 @@ namespace Brainf_ck_sharp.NET.Buffers
         /// Creates a new <see cref="UnsafeMemoryBuffer{T}"/> instance with the specified parameters
         /// </summary>
         /// <param name="size">The size of the new memory buffer to use</param>
-        protected UnsafeMemoryBuffer(int size)
+        /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
+        protected UnsafeMemoryBuffer(int size, bool clear)
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(size, 0, nameof(size));
 
@@ -45,15 +46,18 @@ namespace Brainf_ck_sharp.NET.Buffers
             Buffer = ArrayPool<T>.Shared.Rent(size);
             _Handle = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
             Ptr = (T*)Unsafe.AsPointer(ref Buffer[0]);
+
+            if (clear && Size > 0) new Span<T>(Ptr, Size).Clear();
         }
 
         /// <summary>
         /// Creates a new <see cref="UnsafeMemoryBuffer{T}"/> instance with the specified parameters
         /// </summary>
         /// <param name="size">The size of the new memory buffer to use</param>
+        /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
         /// <remarks>This method is just a proxy for the <see langword="protected"/> constructor, for clarity</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UnsafeMemoryBuffer<T> Allocate(int size) => new UnsafeMemoryBuffer<T>(size);
+        public static UnsafeMemoryBuffer<T> Allocate(int size, bool clear) => new UnsafeMemoryBuffer<T>(size, clear);
 
         /// <summary>
         /// Gets an <see cref="UnsafeMemory{T}"/> instance mapping the values on the current buffer
