@@ -1,4 +1,4 @@
-﻿using Brainf_ck_sharp.NET.Enum;
+﻿using Brainf_ck_sharp.NET.Enums;
 using Brainf_ck_sharp.NET.Helpers;
 
 namespace Brainf_ck_sharp.NET.Models

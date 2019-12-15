@@ -1,13 +1,16 @@
-﻿using System.Buffers;
+﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ck_sharp.NET.Buffers;
 using Brainf_ck_sharp.NET.Buffers.IO;
+using Brainf_ck_sharp.NET.Constants;
 using Brainf_ck_sharp.NET.Enums;
 using Brainf_ck_sharp.NET.Extensions.Types;
 using Brainf_ck_sharp.NET.Helpers;
 using Brainf_ck_sharp.NET.Models;
+using Stopwatch = System.Diagnostics.Stopwatch;
 
 namespace Brainf_ck_sharp.NET
 {
@@ -19,17 +22,16 @@ namespace Brainf_ck_sharp.NET
         /// <summary>
         /// Gets the maximum number of recursive calls that can be performed by a script
         /// </summary>
-        /// <remarks>The frame index is 0-based, so there are effectively 512 frames in total</remarks>
-        public const int MaximumStackSize = 511;
+        public const int MaximumStackSize = 512;
 
         /// <summary>
         /// Loads the jump table for loops and functions from a given executable
         /// </summary>
         /// <param name="operators">The sequence of parsed operators to inspect</param>
-        /// <param name="jumpTable">The resulting precomputed jump table for the input executable</param>
-        private static void LoadJumpTable(UnsafeMemoryBuffer<Operator> operators, out UnsafeMemoryBuffer<int> jumpTable)
+        /// <returns>The resulting precomputed jump table for the input executable</returns>
+        private static UnsafeMemoryBuffer<int> LoadJumpTable(UnsafeMemoryBuffer<byte> operators)
         {
-            jumpTable = UnsafeMemoryBuffer<int>.Allocate(operators.Size);
+            UnsafeMemoryBuffer<int> jumpTable = UnsafeMemoryBuffer<int>.Allocate(operators.Size);
 
             /* Temporarily allocate two buffers to store the indirect indices to build the jump table.
              * The two temporary buffers are initialized with a size of half the length of the input
@@ -50,7 +52,7 @@ namespace Brainf_ck_sharp.NET
                     /* When a loop start, the current index is stored in the right
                      * temporary buffer, depending on whether or not the current
                      * part of the executable is within a function definition */
-                    case Operator.LoopStart:
+                    case Operators.LoopStart:
                         if (f == -1) Unsafe.Add(ref rootTempIndicesRef, r++) = i;
                         else Unsafe.Add(ref functionTempIndicesRef, f++) = i;
                         break;
@@ -61,7 +63,7 @@ namespace Brainf_ck_sharp.NET
                      * in the final jump table being built. The inverse mapping is
                      * stored too, so that each closing square bracket can reference the
                      * corresponding open bracket at the start of the loop. */
-                    case Operator.LoopEnd:
+                    case Operators.LoopEnd:
                         int start = f == -1
                             ? Unsafe.Add(ref rootTempIndicesRef, r--)
                             : Unsafe.Add(ref functionTempIndicesRef, f--);
@@ -74,11 +76,11 @@ namespace Brainf_ck_sharp.NET
                      * This is because in this case a 1-based indexing is used:
                      *the first location in the temporary buffer is used to store
                      * the index of the open parenthesis for the function definition */
-                    case Operator.FunctionStart:
+                    case Operators.FunctionStart:
                         f = 1;
                         functionTempIndicesRef = i;
                         break;
-                    case Operator.FunctionEnd:
+                    case Operators.FunctionEnd:
                         f = -1;
                         jumpTable[functionTempIndicesRef] = i;
                         break;
@@ -90,6 +92,8 @@ namespace Brainf_ck_sharp.NET
              * both buffers are only used in the scope of this method, and then disposed */
             ArrayPool<int>.Shared.Return(rootTempIndices);
             ArrayPool<int>.Shared.Return(functionTempIndices);
+
+            return jumpTable;
         }
 
         /// <summary>
@@ -111,7 +115,7 @@ namespace Brainf_ck_sharp.NET
         /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
         /// <returns>An <see cref="IEnumerator{T}"/> that produces <see cref="InterpreterWorkingData"/> instances for the execution results</returns>
         private static InterpreterWorkingData TryRun(
-            UnsafeMemory<Operator> operators,
+            UnsafeMemory<byte> operators,
             UnsafeMemory<bool> breakpoints,
             UnsafeMemory<int> jumpTable,
             UnsafeMemory<Range> functions,
@@ -159,7 +163,7 @@ namespace Brainf_ck_sharp.NET
                     switch (operators[i])
                     {
                         // ptr++
-                        case Operator.ForwardPtr:
+                        case Operators.ForwardPtr:
                             if (state.TryMoveNext()) totalOperations++;
                             else
                             {
@@ -168,7 +172,7 @@ namespace Brainf_ck_sharp.NET
                             break;
 
                         // ptr--
-                        case Operator.BackwardPtr:
+                        case Operators.BackwardPtr:
                             if (state.TryMoveBack()) totalOperations++;
                             else
                             {
@@ -177,7 +181,7 @@ namespace Brainf_ck_sharp.NET
                             break;
 
                         // (*ptr)++
-                        case Operator.Plus:
+                        case Operators.Plus:
                             if (state.TryIncrement()) totalOperations++;
                             else
                             {
@@ -186,7 +190,7 @@ namespace Brainf_ck_sharp.NET
                             break;
 
                         // (*ptr)--
-                        case Operator.Minus:
+                        case Operators.Minus:
                             if (state.TryDecrement()) totalOperations++;
                             else
                             {
@@ -195,7 +199,7 @@ namespace Brainf_ck_sharp.NET
                             break;
 
                         // putch(*ptr)
-                        case Operator.PrintChar:
+                        case Operators.PrintChar:
                             if (stdout.TryWrite((char)state.Current)) totalOperations++;
                             else
                             {
@@ -204,7 +208,7 @@ namespace Brainf_ck_sharp.NET
                             break;
 
                         // *ptr = getch()
-                        case Operator.ReadChar:
+                        case Operators.ReadChar:
                             if (stdin.TryRead(out char c))
                             {
                                 // Check if the input character can be stored in the current cell
@@ -221,7 +225,7 @@ namespace Brainf_ck_sharp.NET
                             break;
 
                         // while (*ptr) {
-                        case Operator.LoopStart:
+                        case Operators.LoopStart:
 
                             // Check whether the loop is active
                             if (state.Current == 0)
@@ -230,7 +234,7 @@ namespace Brainf_ck_sharp.NET
                                 totalOperations++;
                             }
                             else if (jumpTable[i] == i + 2 &&
-                                     operators[i + 1] == Operator.Minus &&
+                                     operators[i + 1] == Operators.Minus &&
                                      (!breakpoints[i + 1] &&
                                       !breakpoints[i + 2] ||
                                       debugToken.IsCancellationRequested))
@@ -248,13 +252,13 @@ namespace Brainf_ck_sharp.NET
                             break;
 
                         // {
-                        case Operator.LoopEnd:
+                        case Operators.LoopEnd:
                             if (state.Current > 0) i = jumpTable[i] - 1;
                             totalOperations++;
                             break;
 
                         // f[*ptr] = []() {
-                        case Operator.FunctionStart:
+                        case Operators.FunctionStart:
                         {
                             // Check for duplicate function definitions
                             if (functions[state.Current].Length != 0)
@@ -279,12 +283,12 @@ namespace Brainf_ck_sharp.NET
                         }
 
                         // }
-                        case Operator.FunctionEnd:
+                        case Operators.FunctionEnd:
                             totalOperations++;
                             break;
 
                         // f[*ptr]()
-                        case Operator.FunctionCall:
+                        case Operators.FunctionCall:
                         {
                             // Try to retrieve the function to invoke
                             Range function = functions[state.Current];
@@ -294,7 +298,7 @@ namespace Brainf_ck_sharp.NET
                             }
 
                             // Ensure the stack has space for the new function invocation
-                            if (depth == MaximumStackSize)
+                            if (depth == MaximumStackSize - 1)
                             {
                                 return new InterpreterWorkingData(InterpreterExitCode.StackLimitExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
                             }

@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp.NET.Enum
+﻿namespace Brainf_ck_sharp.NET.Enums
 {
     /// <summary>
     /// An <see langword="enum"/> that indicates the type of syntax error encountered while parsing a source file

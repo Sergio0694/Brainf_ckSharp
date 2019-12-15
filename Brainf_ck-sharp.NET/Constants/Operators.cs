@@ -1,63 +1,64 @@
 ﻿namespace Brainf_ck_sharp.NET.Constants
 {
     /// <summary>
-    /// A <see langword="class"/> that exposes the collection of available Brainf*ck/PBrain operators
+    /// A <see langword="class"/> that exposes the available operators for quick lookup
     /// </summary>
-    public static class Operators
+    internal static class Operators
     {
         /// <summary>
-        /// The <see langword="+"/> operator, that increments the current memory cell (<see langword="(*ptr)++"/>)
+        /// The <see langword="["/> operator, maps <see cref="Characters.LoopStart"/>
         /// </summary>
-        public const char Plus = '+';
+        /// <remarks>Loop operators come first for quicker lookup when building the jump table</remarks>
+        public const byte LoopStart = 0;
 
         /// <summary>
-        /// The <see langword="-"/> operator, that decrements the current memory cell (<see langword="(*ptr)--"/>)
+        /// The <see langword="]"/> operator, maps <see cref="Characters.LoopEnd"/>
         /// </summary>
-        public const char Minus = '-';
+        public const byte LoopEnd = 1;
 
         /// <summary>
-        /// The <see langword=">"/> operator, that moves the memory pointer forwards (<see langword="++ptr"/>)
+        /// The <see langword="("/> operator, maps <see cref="Characters.FunctionStart"/>
         /// </summary>
-        public const char ForwardPtr = '>';
+        public const byte FunctionStart = 2;
 
         /// <summary>
-        /// The <see langword="&lt;"/> operator, that moves the memory pointer backwards (<see langword="--ptr"/>)
+        /// The <see langword=")"/> operator, maps <see cref="Characters.FunctionEnd"/>
         /// </summary>
-        public const char BackwardPtr = '<';
+        public const byte FunctionEnd = 3;
 
         /// <summary>
-        /// The <see langword="."/> operator, prints the current memory cell (<see langword="putchar(*ptr)"/>)
+        /// The <see langword="+"/> operator, maps <see cref="Characters.Plus"/>
         /// </summary>
-        public const char PrintChar = '.';
+        public const byte Plus = 4;
 
         /// <summary>
-        /// The <see langword=","/> operator, that reads a value for the current memory cell (<see langword="*ptr = getchar()"/>)
+        /// The <see langword="-"/> operator, maps <see cref="Characters.Minus"/>
         /// </summary>
-        public const char ReadChar = ',';
+        public const byte Minus = 5;
 
         /// <summary>
-        /// The <see langword="["/> operator, that starts a loop if the current cell is not 0 (<see langword="while (*ptr) {"/>)
+        /// The <see langword=">"/> operator, maps <see cref="Characters.ForwardPtr"/>
         /// </summary>
-        public const char LoopStart = '[';
+        public const byte ForwardPtr = 6;
 
         /// <summary>
-        /// The <see langword="]"/> operator, that ands the current loop (<see langword="}"/>)
+        /// The <see langword="&lt;"/> operator, maps <see cref="Characters.BackwardPtr"/>
         /// </summary>
-        public const char LoopEnd = ']';
+        public const byte BackwardPtr = 7;
 
         /// <summary>
-        /// The <see langword="("/> operator, that starts a function definition (<see langword="f[*ptr] = []() {"/>)
+        /// The <see langword="."/> operator, maps <see cref="Characters.PrintChar"/>
         /// </summary>
-        public const char FunctionStart = '(';
+        public const byte PrintChar = 8;
 
         /// <summary>
-        /// The <see langword=")"/> operator, that completes the current function definition (<see langword="}"/>)
+        /// The <see langword=","/> operator, maps <see cref="Characters.ReadChar"/>
         /// </summary>
-        public const char FunctionEnd = ')';
+        public const byte ReadChar = 9;
 
         /// <summary>
-        /// The <see langword=":"/> operator, that invokes a specified function (<see langword="f[*ptr]()"/>)
+        /// The <see langword=":"/> operator, maps <see cref="Characters.FunctionCall"/>
         /// </summary>
-        public const char FunctionCall = ':';
+        public const byte FunctionCall = 10;
     }
 }

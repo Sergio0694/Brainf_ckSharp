@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Brainf_ck_sharp.NET.Buffers;
 using Brainf_ck_sharp.NET.Constants;
-using Brainf_ck_sharp.NET.Enum;
 using Brainf_ck_sharp.NET.Enums;
 using Brainf_ck_sharp.NET.Models;
 
@@ -26,27 +25,29 @@ namespace Brainf_ck_sharp.NET
         /// </summary>
         private static ReadOnlySpan<byte> OperatorsLookupTable => new byte[]
         {
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0,
-            (byte)Operator.FunctionStart, 
-            (byte)Operator.FunctionEnd,
-            0,
-            (byte)Operator.Plus,
-            (byte)Operator.ReadChar,
-            (byte)Operator.Minus,
-            (byte)Operator.PrintChar,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0,
-            (byte)Operator.FunctionCall,
-            0,
-            (byte)Operator.BackwardPtr,
-            0,
-            (byte)Operator.ForwardPtr,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            (byte)Operator.LoopStart, 0,
-            (byte)Operator.LoopEnd
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+            Operators.FunctionStart, 
+            Operators.FunctionEnd,
+            0xFF,
+            Operators.Plus,
+            Operators.ReadChar,
+            Operators.Minus,
+            Operators.PrintChar,
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+            0xFF,
+            Operators.FunctionCall,
+            0xFF,
+            Operators.BackwardPtr,
+            0xFF,
+            Operators.ForwardPtr,
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+            Operators.LoopStart, 0xFF,
+            Operators.LoopEnd
         };
 
         /// <summary>
@@ -65,7 +66,7 @@ namespace Brainf_ck_sharp.NET
             ref byte r0 = ref MemoryMarshal.GetReference(OperatorsLookupTable);
             byte r1 = Unsafe.Add(ref r0, offset);
 
-            return r1 != 0;
+            return r1 != 0xFF;
         }
 
         /// <summary>
@@ -90,13 +91,13 @@ namespace Brainf_ck_sharp.NET
             {
                 switch (code[i])
                 {
-                    case Operators.Plus:
-                    case Operators.Minus:
-                    case Operators.ForwardPtr:
-                    case Operators.BackwardPtr:
-                    case Operators.PrintChar:
-                    case Operators.ReadChar:
-                    case Operators.FunctionCall:
+                    case Characters.Plus:
+                    case Characters.Minus:
+                    case Characters.ForwardPtr:
+                    case Characters.BackwardPtr:
+                    case Characters.PrintChar:
+                    case Characters.ReadChar:
+                    case Characters.FunctionCall:
 
                         /* For action operators, simply increase the counter if the current
                          * parser is inside a function definition. The counter is used to
@@ -105,7 +106,7 @@ namespace Brainf_ck_sharp.NET
                         totalOps++;
                         if (functionStart != -1) functionOps++;
                         break;
-                    case Operators.LoopStart:
+                    case Characters.LoopStart:
 
                         // Increase the appropriate depth level
                         totalOps++;
@@ -121,7 +122,7 @@ namespace Brainf_ck_sharp.NET
                             functionOps++;
                         }
                         break;
-                    case Operators.LoopEnd:
+                    case Characters.LoopEnd:
 
                         /* Decrease the current depth level, either in the standard
                          * code flow or inside a function definition. If the current
@@ -140,7 +141,7 @@ namespace Brainf_ck_sharp.NET
                             functionOps++;
                         }
                         break;
-                    case Operators.FunctionStart:
+                    case Characters.FunctionStart:
 
                         // Start a function definition, track the index and reset the counter
                         if (functionStart != -1) return new SyntaxValidationResult(SyntaxError.NestedFunctionDeclaration, i);
@@ -150,7 +151,7 @@ namespace Brainf_ck_sharp.NET
                         functionLoopStart = -1;
                         functionOps = 0;
                         break;
-                    case Operators.FunctionEnd:
+                    case Characters.FunctionEnd:
 
                         // Validate the function definition and reset the index
                         if (functionStart == -1) return new SyntaxValidationResult(SyntaxError.MismatchedParenthesis, i);
@@ -177,9 +178,9 @@ namespace Brainf_ck_sharp.NET
         /// Tries to parse the input source script, if possible
         /// </summary>
         /// <param name="code">The input script to validate</param>
-        /// <param name="operators">The resulting buffer of <see cref="Operator"/> instances for the parsed script</param>
+        /// <param name="operators">The resulting buffer of operators for the parsed script</param>
         /// <returns>A <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</returns>
-        internal static SyntaxValidationResult TryParse(string code, out UnsafeMemoryBuffer<Operator>? operators)
+        internal static SyntaxValidationResult TryParse(string code, out UnsafeMemoryBuffer<byte>? operators)
         {
             // Check the syntax of the input source code
             SyntaxValidationResult validationResult = IsSyntaxValid(code);
@@ -187,7 +188,7 @@ namespace Brainf_ck_sharp.NET
             if (validationResult.IsSuccess)
             {
                 // Allocate the buffer of binary items with the input operators
-                operators = UnsafeMemoryBuffer<Operator>.Allocate(validationResult.OperatorsCount);
+                operators = UnsafeMemoryBuffer<byte>.Allocate(validationResult.OperatorsCount);
 
                 // Extract all the operators from the input source code
                 ref byte r0 = ref MemoryMarshal.GetReference(OperatorsLookupTable);
@@ -203,7 +204,7 @@ namespace Brainf_ck_sharp.NET
                     byte r1 = Unsafe.Add(ref r0, offset);
 
                     // If the current character is an operator, convert and store it
-                    if (r1 != 0) operators[i++] = (Operator)r1;
+                    if (r1 != 0xFF) operators[i++] = r1;
                 }
             }
             else operators = null;
@@ -216,17 +217,17 @@ namespace Brainf_ck_sharp.NET
         /// </summary>
         private static ReadOnlySpan<byte> OperatorsInverseLookupTable => new[]
         {
-            (byte)Operators.Plus,
-            (byte)Operators.Minus,
-            (byte)Operators.ForwardPtr,
-            (byte)Operators.BackwardPtr,
-            (byte)Operators.PrintChar,
-            (byte)Operators.ReadChar,
-            (byte)Operators.LoopStart,
-            (byte)Operators.LoopEnd,
-            (byte)Operators.FunctionStart,
-            (byte)Operators.FunctionEnd,
-            (byte)Operators.FunctionCall
+            (byte)Characters.LoopStart,
+            (byte)Characters.LoopEnd,
+            (byte)Characters.FunctionStart,
+            (byte)Characters.FunctionEnd,
+            (byte)Characters.Plus,
+            (byte)Characters.Minus,
+            (byte)Characters.ForwardPtr,
+            (byte)Characters.BackwardPtr,
+            (byte)Characters.PrintChar,
+            (byte)Characters.ReadChar,
+            (byte)Characters.FunctionCall
         };
 
         /// <summary>
@@ -235,7 +236,7 @@ namespace Brainf_ck_sharp.NET
         /// <param name="operators">The input sequence of parsed operators to read</param>
         /// <returns>A <see cref="string"/> representing the input sequence of operators</returns>
         [Pure]
-        internal static string ExtractSource(UnsafeMemoryBuffer<Operator> operators)
+        internal static string ExtractSource(UnsafeMemoryBuffer<byte> operators)
         {
             // Rent a buffer to use to build the final string
             char[] characters = ArrayPool<char>.Shared.Rent(operators.Size);
@@ -246,7 +247,7 @@ namespace Brainf_ck_sharp.NET
             // Build the source string with the inverse operators lookup table
             for (int i = 0; i < operators.Size; i++)
             {
-                byte code = Unsafe.Add(ref lookupRef, (int)operators[i]);
+                byte code = Unsafe.Add(ref lookupRef, operators[i]);
                 Unsafe.Add(ref targetRef, i) = (char)code;
             }
 

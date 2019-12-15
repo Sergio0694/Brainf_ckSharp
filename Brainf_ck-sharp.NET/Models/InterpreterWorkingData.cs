@@ -19,7 +19,7 @@ namespace Brainf_ck_sharp.NET.Models
         /// <summary>
         /// Gets the stack frames for the working data
         /// </summary>
-        public ReadOnlyMemory<UnsafeMemory<Operator>> StackFrames { get; }
+        public ReadOnlyMemory<UnsafeMemory<byte>> StackFrames { get; }
 
         /// <summary>
         /// Gets the code position relative to the current working data
@@ -38,7 +38,7 @@ namespace Brainf_ck_sharp.NET.Models
         /// <param name="frame">The stack frame that was being used when creating the partial execution result</param>
         /// <param name="position">The offset into the executable that was reached when creating the partial result</param>
         /// <param name="operations">The total number of executed operators up to this point</param>
-        public InterpreterWorkingData(InterpreterExitCode code, UnsafeMemory<Operator> frame, int position, int operations)
+        public InterpreterWorkingData(InterpreterExitCode code, UnsafeMemory<byte> frame, int position, int operations)
             : this(code, new[] { frame }, position, operations)
         { }
 
@@ -49,7 +49,7 @@ namespace Brainf_ck_sharp.NET.Models
         /// <param name="frames">The stack frames that were being used when creating the partial execution result</param>
         /// <param name="position">The offset into the executable that was reached when creating the partial result</param>
         /// <param name="operations">The total number of executed operators up to this point</param>
-        private InterpreterWorkingData(InterpreterExitCode code, ReadOnlyMemory<UnsafeMemory<Operator>> frames, int position, int operations)
+        private InterpreterWorkingData(InterpreterExitCode code, ReadOnlyMemory<UnsafeMemory<byte>> frames, int position, int operations)
         {
             ExitCode = code;
             StackFrames = frames;
@@ -63,9 +63,9 @@ namespace Brainf_ck_sharp.NET.Models
         /// <param name="stackFrame">The parent stack frame to add to the current instance</param>
         /// <returns>A new <see cref="InterpreterWorkingData"/> instance with a new parent stack frame</returns>
         [Pure]
-        public InterpreterWorkingData WithParentStackFrame(UnsafeMemory<Operator> stackFrame)
+        public InterpreterWorkingData WithParentStackFrame(UnsafeMemory<byte> stackFrame)
         {
-            ReadOnlyMemory<UnsafeMemory<Operator>> frames = StackFrames.Concat(stackFrame);
+            ReadOnlyMemory<UnsafeMemory<byte>> frames = StackFrames.Concat(stackFrame);
 
             return new InterpreterWorkingData(ExitCode, frames, Position, TotalOperations);
         }
