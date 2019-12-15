@@ -46,6 +46,17 @@ namespace Brainf_ck_sharp.NET
         /// </summary>
         /// <param name="source">The source code to parse and execute</param>
         /// <param name="stdin">The input buffer to read data from</param>
+        /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
+        public static InterpreterResult Run(string source, string stdin)
+        {
+            return Run(source, stdin, DefaultMemorySize, DefaultOverflowMode);
+        }
+
+        /// <summary>
+        /// Runs a given Brainf*ck/PBrain executable with the given parameters
+        /// </summary>
+        /// <param name="source">The source code to parse and execute</param>
+        /// <param name="stdin">The input buffer to read data from</param>
         /// <param name="memorySize">The size of the state machine to create to run the script</param>
         /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
         public static InterpreterResult Run(string source, string stdin, int memorySize)
