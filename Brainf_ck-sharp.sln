@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ck-sharp.Unit", "Bra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ck-sharp.Profiler", "Brainf_ck-sharp.Profiler\Brainf_ck-sharp.Profiler.csproj", "{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ck-sharp.NET", "Brainf_ck-sharp.NET\Brainf_ck-sharp.NET.csproj", "{ACEEA540-7A2C-4705-AC68-5A8C3A5C2A38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ck-sharp.NET", "Brainf_ck-sharp.NET\Brainf_ck-sharp.NET.csproj", "{ACEEA540-7A2C-4705-AC68-5A8C3A5C2A38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ck-sharp.NET.Unit", "Brainf_ck-sharp.NET.Unit\Brainf_ck-sharp.NET.Unit.csproj", "{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +111,22 @@ Global
 		{ACEEA540-7A2C-4705-AC68-5A8C3A5C2A38}.Release|x64.Build.0 = Release|Any CPU
 		{ACEEA540-7A2C-4705-AC68-5A8C3A5C2A38}.Release|x86.ActiveCfg = Release|Any CPU
 		{ACEEA540-7A2C-4705-AC68-5A8C3A5C2A38}.Release|x86.Build.0 = Release|Any CPU
+		{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}.Debug|ARM.Build.0 = Debug|Any CPU
+		{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}.Debug|x64.Build.0 = Debug|Any CPU
+		{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}.Debug|x86.Build.0 = Debug|Any CPU
+		{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}.Release|ARM.ActiveCfg = Release|Any CPU
+		{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}.Release|ARM.Build.0 = Release|Any CPU
+		{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}.Release|x64.ActiveCfg = Release|Any CPU
+		{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}.Release|x64.Build.0 = Release|Any CPU
+		{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}.Release|x86.ActiveCfg = Release|Any CPU
+		{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
