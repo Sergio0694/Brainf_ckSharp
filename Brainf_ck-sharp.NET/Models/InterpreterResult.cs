@@ -18,7 +18,7 @@ namespace Brainf_ck_sharp.NET.Models
         /// <summary>
         /// Gets the exit code of the interpreter result
         /// </summary>
-        public InterpreterExitCode ExitCode { get; }
+        public ExitCode ExitCode { get; }
 
         /// <summary>
         /// Gets the resulting memory state after running the script
@@ -63,7 +63,7 @@ namespace Brainf_ck_sharp.NET.Models
         /// <param name="totalOperations">The total numer of evaluated operators for the current result</param>
         internal InterpreterResult(
             string sourceCode,
-            InterpreterExitCode exitCode,
+            ExitCode exitCode,
             IReadOnlyTuringMachineState machineState,
             IReadOnlyList<FunctionDefinition> functions,
             string stdin,

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Buffers;
+﻿using System.Buffers;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -10,7 +9,6 @@ using Brainf_ck_sharp.NET.Enums;
 using Brainf_ck_sharp.NET.Extensions.Types;
 using Brainf_ck_sharp.NET.Helpers;
 using Brainf_ck_sharp.NET.Models;
-using Stopwatch = System.Diagnostics.Stopwatch;
 
 namespace Brainf_ck_sharp.NET
 {
@@ -156,7 +154,7 @@ namespace Brainf_ck_sharp.NET
                     // Check if a breakpoint has been reached
                     if (breakpoints[i] && !debugToken.IsCancellationRequested)
                     {
-                        return new InterpreterWorkingData(InterpreterExitCode.BreakpointReached, operators.Slice(frame.Range.Start, i + 1), i, totalOperations);
+                        return new InterpreterWorkingData(ExitCode.BreakpointReached, operators.Slice(frame.Range.Start, i + 1), i, totalOperations);
                     }
 
                     // Execute the current operator
@@ -167,7 +165,7 @@ namespace Brainf_ck_sharp.NET
                             if (state.TryMoveNext()) totalOperations++;
                             else
                             {
-                                return new InterpreterWorkingData(InterpreterExitCode.UpperBoundExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
+                                return new InterpreterWorkingData(ExitCode.UpperBoundExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
                             }
                             break;
 
@@ -176,7 +174,7 @@ namespace Brainf_ck_sharp.NET
                             if (state.TryMoveBack()) totalOperations++;
                             else
                             {
-                                return new InterpreterWorkingData(InterpreterExitCode.LowerBoundExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
+                                return new InterpreterWorkingData(ExitCode.LowerBoundExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
                             }
                             break;
 
@@ -185,7 +183,7 @@ namespace Brainf_ck_sharp.NET
                             if (state.TryIncrement()) totalOperations++;
                             else
                             {
-                                return new InterpreterWorkingData(InterpreterExitCode.MaxValueExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
+                                return new InterpreterWorkingData(ExitCode.MaxValueExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
                             }
                             break;
 
@@ -194,7 +192,7 @@ namespace Brainf_ck_sharp.NET
                             if (state.TryDecrement()) totalOperations++;
                             else
                             {
-                                return new InterpreterWorkingData(InterpreterExitCode.NegativeValue, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
+                                return new InterpreterWorkingData(ExitCode.NegativeValue, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
                             }
                             break;
 
@@ -203,7 +201,7 @@ namespace Brainf_ck_sharp.NET
                             if (stdout.TryWrite((char)state.Current)) totalOperations++;
                             else
                             {
-                                return new InterpreterWorkingData(InterpreterExitCode.StdoutBufferLimitExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
+                                return new InterpreterWorkingData(ExitCode.StdoutBufferLimitExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
                             }
                             break;
 
@@ -215,12 +213,12 @@ namespace Brainf_ck_sharp.NET
                                 if (state.TryInput(c)) totalOperations++;
                                 else
                                 {
-                                    return new InterpreterWorkingData(InterpreterExitCode.MaxValueExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
+                                    return new InterpreterWorkingData(ExitCode.MaxValueExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
                                 }
                             }
                             else
                             {
-                                return new InterpreterWorkingData(InterpreterExitCode.StdinBufferExhausted, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
+                                return new InterpreterWorkingData(ExitCode.StdinBufferExhausted, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
                             }
                             break;
 
@@ -247,7 +245,7 @@ namespace Brainf_ck_sharp.NET
                             else if (executionToken.IsCancellationRequested)
                             {
                                 // Check whether the code can still be executed before starting an active loop
-                                return new InterpreterWorkingData(InterpreterExitCode.ThresholdExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations);
+                                return new InterpreterWorkingData(ExitCode.ThresholdExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations);
                             }
                             break;
 
@@ -263,13 +261,13 @@ namespace Brainf_ck_sharp.NET
                             // Check for duplicate function definitions
                             if (functions[state.Current].Length != 0)
                             {
-                                return new InterpreterWorkingData(InterpreterExitCode.DuplicateFunctionDefinition, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
+                                return new InterpreterWorkingData(ExitCode.DuplicateFunctionDefinition, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
                             }
 
                             // Check that the current function has not been defined before
                             if (definitions[i])
                             {
-                                return new InterpreterWorkingData(InterpreterExitCode.FunctionAlreadyDefined, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
+                                return new InterpreterWorkingData(ExitCode.FunctionAlreadyDefined, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
                             }
 
                             // Save the new function definition
@@ -294,13 +292,13 @@ namespace Brainf_ck_sharp.NET
                             Range function = functions[state.Current];
                             if (function.Length == 0)
                             {
-                                return new InterpreterWorkingData(InterpreterExitCode.UndefinedFunctionCalled, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
+                                return new InterpreterWorkingData(ExitCode.UndefinedFunctionCalled, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
                             }
 
                             // Ensure the stack has space for the new function invocation
                             if (depth == MaximumStackSize - 1)
                             {
-                                return new InterpreterWorkingData(InterpreterExitCode.StackLimitExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
+                                return new InterpreterWorkingData(ExitCode.StackLimitExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
                             }
 
                             // Add the new stack fraame for the function call
@@ -314,7 +312,7 @@ namespace Brainf_ck_sharp.NET
 
             // Return a new state for a successful execution
             bool hasOutput = stdout.Length > 0;
-            InterpreterExitCode code = hasOutput ? InterpreterExitCode.TextOutput : InterpreterExitCode.NoOutput;
+            ExitCode code = hasOutput ? ExitCode.TextOutput : ExitCode.NoOutput;
             return new InterpreterWorkingData(code, operators, operators.Size - 1, totalOperations);
         }
     }

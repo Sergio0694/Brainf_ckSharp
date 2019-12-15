@@ -6,7 +6,7 @@ namespace Brainf_ck_sharp.NET.Enums
     /// An <see langword="enum"/> that indicates the exit code for an interpreted Brainf*ck/PBrain script
     /// </summary>
     [Flags]
-    public enum InterpreterExitCode : uint
+    public enum ExitCode : uint
     {
         /// <summary>
         /// The code was interpreted successfully
