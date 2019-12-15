@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 namespace Brainf_ck_sharp.NET.MemoryState
 {
     /// <summary>
-    /// A model that represents the information on a given memory cell in a <see cref="IReadonlyTouringMachineState"/> object
+    /// A model that represents the information on a given memory cell in a <see cref="Interfaces.IReadOnlyTuringMachineState"/> object
     /// </summary>
     public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>, IComparable<Brainf_ckMemoryCell>
     {

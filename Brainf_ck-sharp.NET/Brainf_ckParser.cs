@@ -178,38 +178,36 @@ namespace Brainf_ck_sharp.NET
         /// Tries to parse the input source script, if possible
         /// </summary>
         /// <param name="code">The input script to validate</param>
-        /// <param name="operators">The resulting buffer of operators for the parsed script</param>
-        /// <returns>A <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</returns>
-        internal static SyntaxValidationResult TryParse(string code, out UnsafeMemoryBuffer<byte>? operators)
+        /// <param name="validationResult">The <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</param>
+        /// <returns>The resulting buffer of operators for the parsed script</returns>
+        internal static UnsafeMemoryBuffer<byte>? TryParse(string code, out SyntaxValidationResult validationResult)
         {
             // Check the syntax of the input source code
-            SyntaxValidationResult validationResult = IsSyntaxValid(code);
+            validationResult = IsSyntaxValid(code);
 
-            if (validationResult.IsSuccess)
+            if (!validationResult.IsSuccess) return null;
+
+            // Allocate the buffer of binary items with the input operators
+            UnsafeMemoryBuffer<byte> operators = UnsafeMemoryBuffer<byte>.Allocate(validationResult.OperatorsCount);
+
+            // Extract all the operators from the input source code
+            ref byte r0 = ref MemoryMarshal.GetReference(OperatorsLookupTable);
+            for (int i = 0, j = 0; j < code.Length; j++)
             {
-                // Allocate the buffer of binary items with the input operators
-                operators = UnsafeMemoryBuffer<byte>.Allocate(validationResult.OperatorsCount);
+                // Explicitly get the lookup value to avoid a repeated memory access
+                char c = code[j];
+                int
+                    diff = OperatorsLookupTableMaxIndex - c,
+                    sign = diff & (1 << 31),
+                    mask = ~(sign >> 31),
+                    offset = c & mask;
+                byte r1 = Unsafe.Add(ref r0, offset);
 
-                // Extract all the operators from the input source code
-                ref byte r0 = ref MemoryMarshal.GetReference(OperatorsLookupTable);
-                for (int i = 0, j = 0; j < code.Length; j++)
-                {
-                    // Explicitly get the lookup value to avoid a repeated memory access
-                    char c = code[j];
-                    int
-                        diff = OperatorsLookupTableMaxIndex - c,
-                        sign = diff & (1 << 31),
-                        mask = ~(sign >> 31),
-                        offset = c & mask;
-                    byte r1 = Unsafe.Add(ref r0, offset);
-
-                    // If the current character is an operator, convert and store it
-                    if (r1 != 0xFF) operators[i++] = r1;
-                }
+                // If the current character is an operator, convert and store it
+                if (r1 != 0xFF) operators[i++] = r1;
             }
-            else operators = null;
 
-            return validationResult;
+            return operators;
         }
 
         /// <summary>
