@@ -315,6 +315,47 @@ namespace Brainf_ck_sharp.NET
         }
 
         /// <summary>
+        /// Loads the breakpoints table for a given source code and collection of breakpoints
+        /// </summary>
+        /// <param name="source">The source code to parse and execute</param>
+        /// <param name="operatorsCount">The precomputed number of operators in the input source code</param>
+        /// <param name="breakpoints">The sequence of indices for the breakpoints to apply to the script</param>
+        /// <returns>The resulting precomputed breakpoints table for the input executable</returns>
+        [Pure]
+        private static UnsafeMemoryBuffer<bool> LoadBreakpointsTable(string source, int operatorsCount, ReadOnlySpan<int> breakpoints)
+        {
+            /* This temporary buffer is used to build a quick lookup table for the
+             * valid indices from the input breakpoints collection. This table is
+             * built in O(M), and then provides constant time checking for each
+             * character from the input script. The result is an algorithm that
+             * builds the final breakpoints table in O(M + N) instead of O(M * N). */
+            using UnsafeMemoryBuffer<bool> temporaryBuffer = UnsafeMemoryBuffer<bool>.Allocate(source.Length, true);
+
+            // Build the temporary table to store the indirect offsets of the breakpoints
+            for (int i = 0; i < breakpoints.Length; i++)
+            {
+                int index = breakpoints[i];
+
+                Guard.MustBeGreaterThan(index, 0, nameof(breakpoints));
+                Guard.MustBeLessThan(index, source.Length, nameof(breakpoints));
+
+                temporaryBuffer[index] = true;
+            }
+
+            UnsafeMemoryBuffer<bool> breakpointsBuffer = UnsafeMemoryBuffer<bool>.Allocate(operatorsCount, false);
+
+            // Build the breakpoints table by going through the temporary table with the markers
+            for (int i = 0, j = 0; j < source.Length; j++)
+            {
+                if (!Brainf_ckParser.IsOperator(source[i])) continue;
+
+                breakpointsBuffer[i++] = temporaryBuffer[j];
+            }
+
+            return breakpointsBuffer;
+        }
+
+        /// <summary>
         /// Tries to run a given input Brainf*ck/PBrain executable
         /// </summary>
         /// <param name="operators">The sequence of parsed operators to execute</param>
@@ -376,6 +417,12 @@ namespace Brainf_ck_sharp.NET
                     // Check if a breakpoint has been reached
                     if (breakpoints[i] && !debugToken.IsCancellationRequested)
                     {
+                        /* Update the current stack frame with the current index,
+                         * and disable the current breakpoint so that it's
+                         * skipped when the execution resumes from this point */
+                        stackFrames[depth] = frame.WithOffset(i);
+                        breakpoints[i] = false;
+
                         return new InterpreterWorkingData(ExitCode.BreakpointReached, operators.Slice(frame.Range.Start, i + 1), i, totalOperations);
                     }
 

@@ -72,10 +72,10 @@ namespace Brainf_ck_sharp.NET
         /// <summary>
         /// Checks whether or not the syntax of the input script is valid
         /// </summary>
-        /// <param name="code">The input script to validate</param>
+        /// <param name="source">The input script to validate</param>
         /// <returns>A <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</returns>
         [Pure]
-        public static SyntaxValidationResult IsSyntaxValid(string code)
+        public static SyntaxValidationResult IsSyntaxValid(string source)
         {
             // Local variables to track the depth and the function definitions
             int
@@ -87,9 +87,9 @@ namespace Brainf_ck_sharp.NET
                 functionOps = 0,
                 totalOps = 0;
 
-            for (int i = 0; i < code.Length; i++)
+            for (int i = 0; i < source.Length; i++)
             {
-                switch (code[i])
+                switch (source[i])
                 {
                     case Characters.Plus:
                     case Characters.Minus:
@@ -177,13 +177,14 @@ namespace Brainf_ck_sharp.NET
         /// <summary>
         /// Tries to parse the input source script, if possible
         /// </summary>
-        /// <param name="code">The input script to validate</param>
+        /// <param name="source">The input script to validate</param>
         /// <param name="validationResult">The <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</param>
         /// <returns>The resulting buffer of operators for the parsed script</returns>
-        internal static UnsafeMemoryBuffer<byte>? TryParse(string code, out SyntaxValidationResult validationResult)
+        [Pure]
+        internal static UnsafeMemoryBuffer<byte>? TryParse(string source, out SyntaxValidationResult validationResult)
         {
             // Check the syntax of the input source code
-            validationResult = IsSyntaxValid(code);
+            validationResult = IsSyntaxValid(source);
 
             if (!validationResult.IsSuccess) return null;
 
@@ -192,10 +193,10 @@ namespace Brainf_ck_sharp.NET
 
             // Extract all the operators from the input source code
             ref byte r0 = ref MemoryMarshal.GetReference(OperatorsLookupTable);
-            for (int i = 0, j = 0; j < code.Length; j++)
+            for (int i = 0, j = 0; j < source.Length; j++)
             {
                 // Explicitly get the lookup value to avoid a repeated memory access
-                char c = code[j];
+                char c = source[j];
                 int
                     diff = OperatorsLookupTableMaxIndex - c,
                     sign = diff & (1 << 31),
