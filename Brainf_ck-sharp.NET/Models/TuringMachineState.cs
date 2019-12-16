@@ -33,7 +33,7 @@ namespace Brainf_ck_sharp.NET.Models
         /// </summary>
         /// <param name="size">The size of the new memory buffer to use</param>
         /// <param name="mode">The overflow mode to use in the new instance</param>
-        public TuringMachineState(int size, OverflowMode mode) : this(size, mode, false) { }
+        public TuringMachineState(int size, OverflowMode mode) : this(size, mode, true) { }
 
         /// <summary>
         /// Creates a new blank machine state with the given parameters

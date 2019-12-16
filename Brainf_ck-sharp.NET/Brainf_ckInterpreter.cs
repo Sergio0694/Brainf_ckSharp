@@ -117,7 +117,7 @@ namespace Brainf_ck_sharp.NET
 
             if (!validationResult.IsSuccess) return null;
 
-            TuringMachineState machineState = (TuringMachineState)((TuringMachineState)initialState).Clone();
+            TuringMachineState machineState = (TuringMachineState)initialState.Clone();
 
             return Run(operators!, stdin, machineState);
         }

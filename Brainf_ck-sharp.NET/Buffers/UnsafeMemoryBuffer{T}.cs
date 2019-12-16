@@ -18,9 +18,9 @@ namespace Brainf_ck_sharp.NET.Buffers
         public readonly int Size;
 
         /// <summary>
-        /// The <typeparamref name="T"/> array that constitutes the memory buffer for the current instance
+        /// The <see cref="byte"/> array that constitutes the memory buffer for the current instance
         /// </summary>
-        private readonly T[] Buffer;
+        private readonly byte[] Buffer;
 
         /// <summary>
         /// A pointer to the first element in <see cref="Buffer"/>
@@ -43,7 +43,7 @@ namespace Brainf_ck_sharp.NET.Buffers
             DebugGuard.MustBeGreaterThanOrEqualTo(size, 0, nameof(size));
 
             Size = size;
-            Buffer = ArrayPool<T>.Shared.Rent(size);
+            Buffer = ArrayPool<byte>.Shared.Rent(size * sizeof(T));
             _Handle = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
             Ptr = (T*)Unsafe.AsPointer(ref Buffer[0]);
 
@@ -94,7 +94,7 @@ namespace Brainf_ck_sharp.NET.Buffers
         }
 
         /// <summary>
-        /// Invokes <see cref="Dispose"/> to free the aallocated resources when this instance is destroyed
+        /// Invokes <see cref="Dispose"/> to free the allocated resources when this instance is destroyed
         /// </summary>
         ~UnsafeMemoryBuffer() => Dispose();
 
@@ -104,7 +104,7 @@ namespace Brainf_ck_sharp.NET.Buffers
             if (!_Handle.IsAllocated) return;
 
             _Handle.Free();
-            ArrayPool<T>.Shared.Return(Buffer);
+            ArrayPool<byte>.Shared.Return(Buffer);
 
             GC.SuppressFinalize(this);
         }
