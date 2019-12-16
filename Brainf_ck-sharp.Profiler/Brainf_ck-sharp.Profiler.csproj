@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Brainf_ck-sharp.NET\Brainf_ck-sharp.NET.csproj" />
     <ProjectReference Include="..\Brainf_ck-sharp\Brainf_ck-sharp.csproj" />
   </ItemGroup>
 
