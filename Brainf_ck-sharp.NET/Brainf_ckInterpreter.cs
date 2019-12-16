@@ -11,6 +11,7 @@ using Brainf_ck_sharp.NET.Extensions.Types;
 using Brainf_ck_sharp.NET.Helpers;
 using Brainf_ck_sharp.NET.Interfaces;
 using Brainf_ck_sharp.NET.Models;
+using Brainf_ck_sharp.NET.Models.Internal;
 using Stopwatch = System.Diagnostics.Stopwatch;
 
 namespace Brainf_ck_sharp.NET

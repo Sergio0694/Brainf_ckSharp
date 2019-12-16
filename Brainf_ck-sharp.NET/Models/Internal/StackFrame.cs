@@ -2,7 +2,7 @@
 using Brainf_ck_sharp.NET.Extensions.Types;
 using Brainf_ck_sharp.NET.Helpers;
 
-namespace Brainf_ck_sharp.NET.Models
+namespace Brainf_ck_sharp.NET.Models.Internal
 {
     /// <summary>
     /// A <see langword="struct"/> that represents a stack frame for the interpreter

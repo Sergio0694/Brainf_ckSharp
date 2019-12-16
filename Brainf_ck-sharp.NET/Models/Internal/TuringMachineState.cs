@@ -11,7 +11,7 @@ using Brainf_ck_sharp.NET.MemoryState;
 
 #pragma warning disable IDE0032
 
-namespace Brainf_ck_sharp.NET.Models
+namespace Brainf_ck_sharp.NET.Models.Internal
 {
     /// <summary>
     /// A <see langword="class"/> that represents the state of a Turing machine

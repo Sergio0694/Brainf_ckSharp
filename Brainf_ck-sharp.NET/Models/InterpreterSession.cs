@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using Brainf_ck_sharp.NET.Buffers;
 using Brainf_ck_sharp.NET.Buffers.IO;
 using Brainf_ck_sharp.NET.Enums;
 using Brainf_ck_sharp.NET.Extensions.Types;
+using Brainf_ck_sharp.NET.Models.Internal;
+using Stopwatch = System.Diagnostics.Stopwatch;
 
 namespace Brainf_ck_sharp.NET.Models
 {
