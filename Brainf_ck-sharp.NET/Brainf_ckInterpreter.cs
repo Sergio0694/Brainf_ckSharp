@@ -206,6 +206,84 @@ namespace Brainf_ck_sharp.NET
         }
 
         /// <summary>
+        /// Runs a given Brainf*ck/PBrain executable with the given parameters
+        /// </summary>
+        /// <param name="source">The source code to parse and execute</param>
+        /// <param name="breakpoints">The sequence of indices for the breakpoints to apply to the script</param>
+        /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterSession"/> instance with the results of the execution</returns>
+        public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints)
+        {
+            return TryCreateSession(source, breakpoints, string.Empty, DefaultMemorySize, DefaultOverflowMode);
+        }
+
+        /// <summary>
+        /// Runs a given Brainf*ck/PBrain executable with the given parameters
+        /// </summary>
+        /// <param name="source">The source code to parse and execute</param>
+        /// <param name="breakpoints">The sequence of indices for the breakpoints to apply to the script</param>
+        /// <param name="stdin">The input buffer to read data from</param>
+        /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterSession"/> instance with the results of the execution</returns>
+        public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints, string stdin)
+        {
+            return TryCreateSession(source, breakpoints, stdin, DefaultMemorySize, DefaultOverflowMode);
+        }
+
+        /// <summary>
+        /// Runs a given Brainf*ck/PBrain executable with the given parameters
+        /// </summary>
+        /// <param name="source">The source code to parse and execute</param>
+        /// <param name="breakpoints">The sequence of indices for the breakpoints to apply to the script</param>
+        /// <param name="stdin">The input buffer to read data from</param>
+        /// <param name="memorySize">The size of the state machine to create to run the script</param>
+        /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterSession"/> instance with the results of the execution</returns>
+        public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints, string stdin, int memorySize)
+        {
+            return TryCreateSession(source, breakpoints, stdin, memorySize, DefaultOverflowMode);
+        }
+
+        /// <summary>
+        /// Runs a given Brainf*ck/PBrain executable with the given parameters
+        /// </summary>
+        /// <param name="source">The source code to parse and execute</param>
+        /// <param name="breakpoints">The sequence of indices for the breakpoints to apply to the script</param>
+        /// <param name="stdin">The input buffer to read data from</param>
+        /// <param name="memorySize">The size of the state machine to create to run the script</param>
+        /// <param name="overflowMode">The overflow mode to use in the state machine used to run the script</param>
+        /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterSession"/> instance with the results of the execution</returns>
+        public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints, string stdin, int memorySize, OverflowMode overflowMode)
+        {
+            Guard.MustBeGreaterThanOrEqualTo(memorySize, 32, nameof(memorySize));
+            Guard.MustBeLessThanOrEqualTo(memorySize, 1024, nameof(memorySize));
+
+            UnsafeMemoryBuffer<byte>? operators = Brainf_ckParser.TryParse(source, out SyntaxValidationResult validationResult);
+
+            if (!validationResult.IsSuccess) return Option<InterpreterSession>.From(validationResult);
+
+            // Initialize the temporary buffers
+            UnsafeMemoryBuffer<bool> breakpointsTable = LoadBreakpointsTable(source, validationResult.OperatorsCount, breakpoints);
+            using UnsafeMemoryBuffer<int> jumpTable = LoadJumpTable(operators!);
+            using UnsafeMemoryBuffer<Range> functions = UnsafeMemoryBuffer<Range>.Allocate(ushort.MaxValue, true);
+            using UnsafeMemoryBuffer<ushort> definitions = UnsafeMemoryBuffer<ushort>.Allocate(operators!.Size, true);
+            using UnsafeMemoryBuffer<StackFrame> stackFrames = UnsafeMemoryBuffer<StackFrame>.Allocate(MaximumStackSize, false);
+
+            // Create the interpreter session
+            InterpreterSession session = new InterpreterSession(
+                operators,
+                breakpointsTable,
+                jumpTable,
+                functions,
+                definitions,
+                stackFrames,
+                stdin,
+                memorySize,
+                overflowMode,
+                CancellationToken.None,
+                CancellationToken.None);
+
+            return Option<InterpreterSession>.From(validationResult, session);
+        }
+
+        /// <summary>
         /// Loads the current stack trace for a halted execution of a script
         /// </summary>
         /// <param name="operators">The sequence of parsed operators to execute</param>
