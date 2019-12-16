@@ -178,12 +178,19 @@ namespace Brainf_ck_sharp.NET.Models
 
             Stopwatch.Stop();
 
+            // Build the collection of defined functions
+            FunctionDefinition[] functionDefinitions = Brainf_ckInterpreter.LoadFunctionDefinitions(
+                Operators.Memory,
+                Functions.Memory,
+                Definitions.Memory,
+                _TotalFunctions);
+
             // Update the current interpreter result
             _Current = new InterpreterResult(
                 SourceCode,
                 exitCode,
                 (TuringMachineState)MachineState.Clone(),
-                null,
+                functionDefinitions,
                 StdinBuffer.ToString(),
                 StdoutBuffer.ToString(),
                 Stopwatch.Elapsed,

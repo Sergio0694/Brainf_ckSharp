@@ -204,7 +204,7 @@ namespace Brainf_ck_sharp.NET
         /// <param name="totalFunctions">The total number of defined functions</param>
         /// <returns>An array of <see cref="FunctionDefinition"/> instance with the defined functions</returns>
         [Pure]
-        private static FunctionDefinition[] LoadFunctionDefinitions(
+        internal static FunctionDefinition[] LoadFunctionDefinitions(
             UnsafeMemory<byte> operators,
             UnsafeMemory<Range> functions,
             UnsafeMemory<ushort> definitions,
