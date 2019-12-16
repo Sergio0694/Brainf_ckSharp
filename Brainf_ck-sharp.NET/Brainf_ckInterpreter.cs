@@ -11,6 +11,7 @@ using Brainf_ck_sharp.NET.Extensions.Types;
 using Brainf_ck_sharp.NET.Helpers;
 using Brainf_ck_sharp.NET.Interfaces;
 using Brainf_ck_sharp.NET.Models;
+using Brainf_ck_sharp.NET.Models.Base;
 using Brainf_ck_sharp.NET.Models.Internal;
 using Stopwatch = System.Diagnostics.Stopwatch;
 
@@ -40,10 +41,10 @@ namespace Brainf_ck_sharp.NET
         /// Runs a given Brainf*ck/PBrain executable with the given parameters
         /// </summary>
         /// <param name="source">The source code to parse and execute</param>
-        /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-        public static InterpreterResult Run(string source)
+        /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
+        public static Option<InterpreterResult> TryRun(string source)
         {
-            return Run(source, string.Empty, DefaultMemorySize, DefaultOverflowMode);
+            return TryRun(source, string.Empty, DefaultMemorySize, DefaultOverflowMode);
         }
 
         /// <summary>
@@ -51,10 +52,10 @@ namespace Brainf_ck_sharp.NET
         /// </summary>
         /// <param name="source">The source code to parse and execute</param>
         /// <param name="stdin">The input buffer to read data from</param>
-        /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-        public static InterpreterResult Run(string source, string stdin)
+        /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
+        public static Option<InterpreterResult> TryRun(string source, string stdin)
         {
-            return Run(source, stdin, DefaultMemorySize, DefaultOverflowMode);
+            return TryRun(source, stdin, DefaultMemorySize, DefaultOverflowMode);
         }
 
         /// <summary>
@@ -63,10 +64,10 @@ namespace Brainf_ck_sharp.NET
         /// <param name="source">The source code to parse and execute</param>
         /// <param name="stdin">The input buffer to read data from</param>
         /// <param name="memorySize">The size of the state machine to create to run the script</param>
-        /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-        public static InterpreterResult Run(string source, string stdin, int memorySize)
+        /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
+        public static Option<InterpreterResult> TryRun(string source, string stdin, int memorySize)
         {
-            return Run(source, stdin, memorySize, DefaultOverflowMode);
+            return TryRun(source, stdin, memorySize, DefaultOverflowMode);
         }
 
         /// <summary>
@@ -76,19 +77,20 @@ namespace Brainf_ck_sharp.NET
         /// <param name="stdin">The input buffer to read data from</param>
         /// <param name="memorySize">The size of the state machine to create to run the script</param>
         /// <param name="overflowMode">The overflow mode to use in the state machine used to run the script</param>
-        /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-        public static InterpreterResult Run(string source, string stdin, int memorySize, OverflowMode overflowMode)
+        /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
+        public static Option<InterpreterResult> TryRun(string source, string stdin, int memorySize, OverflowMode overflowMode)
         {
             Guard.MustBeGreaterThanOrEqualTo(memorySize, 32, nameof(memorySize));
             Guard.MustBeLessThanOrEqualTo(memorySize, 1024, nameof(memorySize));
 
             using UnsafeMemoryBuffer<byte>? operators = Brainf_ckParser.TryParse(source, out SyntaxValidationResult validationResult);
 
-            if (!validationResult.IsSuccess) return null;
+            if (!validationResult.IsSuccess) return Option<InterpreterResult>.From(validationResult);
 
             TuringMachineState machineState = new TuringMachineState(memorySize, overflowMode);
+            InterpreterResult result = Run(operators!, stdin, machineState);
 
-            return Run(operators!, stdin, machineState);
+            return Option<InterpreterResult>.From(validationResult, result);
         }
 
         /// <summary>
@@ -96,10 +98,10 @@ namespace Brainf_ck_sharp.NET
         /// </summary>
         /// <param name="source">The source code to parse and execute</param>
         /// <param name="initialState">The initial state machine to use to start running the script from</param>
-        /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-        public static InterpreterResult Run(string source, IReadOnlyTuringMachineState initialState)
+        /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
+        public static Option<InterpreterResult> TryRun(string source, IReadOnlyTuringMachineState initialState)
         {
-            return Run(source, string.Empty, initialState);
+            return TryRun(source, string.Empty, initialState);
         }
 
         /// <summary>
@@ -108,18 +110,19 @@ namespace Brainf_ck_sharp.NET
         /// <param name="source">The source code to parse and execute</param>
         /// <param name="stdin">The input buffer to read data from</param>
         /// <param name="initialState">The initial state machine to use to start running the script from</param>
-        /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-        public static InterpreterResult Run(string source, string stdin, IReadOnlyTuringMachineState initialState)
+        /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
+        public static Option<InterpreterResult> TryRun(string source, string stdin, IReadOnlyTuringMachineState initialState)
         {
             DebugGuard.MustBeTrue(initialState is TuringMachineState, nameof(initialState));
 
             using UnsafeMemoryBuffer<byte>? operators = Brainf_ckParser.TryParse(source, out SyntaxValidationResult validationResult);
 
-            if (!validationResult.IsSuccess) return null;
+            if (!validationResult.IsSuccess) return Option<InterpreterResult>.From(validationResult);
 
             TuringMachineState machineState = (TuringMachineState)initialState.Clone();
+            InterpreterResult result = Run(operators!, stdin, machineState);
 
-            return Run(operators!, stdin, machineState);
+            return Option<InterpreterResult>.From(validationResult, result);
         }
 
         /// <summary>
@@ -156,7 +159,7 @@ namespace Brainf_ck_sharp.NET
             Stopwatch stopwatch = Stopwatch.StartNew();
 
             // Start the interpreter
-            ExitCode exitCode = TryRun(
+            ExitCode exitCode = Run(
                 operators.Memory,
                 breakpoints.Memory,
                 jumpTable.Memory,
@@ -418,7 +421,7 @@ namespace Brainf_ck_sharp.NET
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
         /// <returns>The resulting <see cref="ExitCode"/> value for the current execution of the input script</returns>
-        internal static ExitCode TryRun(
+        internal static ExitCode Run(
             UnsafeMemory<byte> operators,
             UnsafeMemory<bool> breakpoints,
             UnsafeMemory<int> jumpTable,

@@ -1,5 +1,6 @@
 ﻿using Brainf_ck_sharp.NET.Enums;
 using Brainf_ck_sharp.NET.Models;
+using Brainf_ck_sharp.NET.Models.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Brainf_ck_sharp.NET.Unit
@@ -12,12 +13,13 @@ namespace Brainf_ck_sharp.NET.Unit
         {
             const string script = "+(,[>+<-]>.)>+:";
 
-            InterpreterResult result = Brainf_ckInterpreter.Run(script, "a");
+            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script, "a");
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(result.ExitCode, ExitCode.TextOutput);
-            Assert.AreEqual(result.MachineState.Current.Character, 'a');
-            Assert.AreEqual(result.Stdout, "a");
+            Assert.IsNotNull(result.Value);
+            Assert.AreEqual(result.Value!.ExitCode, ExitCode.TextOutput);
+            Assert.AreEqual(result.Value.MachineState.Current.Character, 'a');
+            Assert.AreEqual(result.Value.Stdout, "a");
         }
 
         [TestMethod]
@@ -25,12 +27,13 @@ namespace Brainf_ck_sharp.NET.Unit
         {
             const string script = "(+++):>:";
 
-            InterpreterResult result = Brainf_ckInterpreter.Run(script);
+            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(result.ExitCode, ExitCode.NoOutput);
-            Assert.AreEqual(result.MachineState[0].Value, 3);
-            Assert.AreEqual(result.MachineState[1].Value, 3);
+            Assert.IsNotNull(result.Value);
+            Assert.AreEqual(result.Value!.ExitCode, ExitCode.NoOutput);
+            Assert.AreEqual(result.Value.MachineState[0].Value, 3);
+            Assert.AreEqual(result.Value.MachineState[1].Value, 3);
         }
 
         [TestMethod]
@@ -38,12 +41,13 @@ namespace Brainf_ck_sharp.NET.Unit
         {
             const string script = ">,<(>[>+<-<:]):>[<<+>>-]<<.[-]";
 
-            InterpreterResult result = Brainf_ckInterpreter.Run(script, "%");
+            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script, "%");
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(result.ExitCode, ExitCode.TextOutput);
-            Assert.AreEqual(result.MachineState.Current.Value, 0);
-            Assert.AreEqual(result.Stdout, "%");
+            Assert.IsNotNull(result.Value);
+            Assert.AreEqual(result.Value!.ExitCode, ExitCode.TextOutput);
+            Assert.AreEqual(result.Value.MachineState.Current.Value, 0);
+            Assert.AreEqual(result.Value.Stdout, "%");
         }
     }
 }

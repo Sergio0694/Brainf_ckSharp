@@ -160,7 +160,7 @@ namespace Brainf_ck_sharp.NET.Models
             Stopwatch.Start();
 
             // Execute the new interpreter debug step
-            ExitCode exitCode = Brainf_ckInterpreter.TryRun(
+            ExitCode exitCode = Brainf_ckInterpreter.Run(
                 Operators.Memory,
                 Breakpoints.Memory,
                 JumpTable.Memory,
