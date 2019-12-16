@@ -1,4 +1,6 @@
-﻿using Brainf_ck_sharp.NET.Extensions.Types;
+﻿using System.Runtime.CompilerServices;
+using Brainf_ck_sharp.NET.Extensions.Types;
+using Brainf_ck_sharp.NET.Helpers;
 
 namespace Brainf_ck_sharp.NET.Models
 {
@@ -21,11 +23,28 @@ namespace Brainf_ck_sharp.NET.Models
         /// Creates a new <see cref="StackFrame"/> instance with the specified parameters
         /// </summary>
         /// <param name="range">The range of operators to execute</param>
+        public StackFrame(Range range) : this(range, range.Start) { }
+
+        /// <summary>
+        /// Creates a new <see cref="StackFrame"/> instance with the specified parameters
+        /// </summary>
+        /// <param name="range">The range of operators to execute</param>
         /// <param name="offset">The current offset during execution</param>
         public StackFrame(Range range, int offset)
         {
+            DebugGuard.MustBeGreaterThanOrEqualTo(offset, range.Start, nameof(offset));
+            DebugGuard.MustBeLessThanOrEqualTo(offset, range.End, nameof(offset));
+
             Range = range;
             Offset = offset;
         }
+
+        /// <summary>
+        /// Creates a new <see cref="StackFrame"/> instance with the specified offset
+        /// </summary>
+        /// <param name="offset">The current offset during execution</param>
+        /// <returns>A <see cref="StackFrame"/> instance like the current one, but with a different offset</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public StackFrame WithOffset(int offset) => new StackFrame(Range, offset);
     }
 }

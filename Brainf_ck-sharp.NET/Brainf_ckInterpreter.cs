@@ -359,8 +359,10 @@ namespace Brainf_ck_sharp.NET
             DebugGuard.MustBeGreaterThanOrEqualTo(totalFunctions, 0, nameof(totalFunctions));
 
             // Outer loop to go through the existing stack frames
-            for (StackFrame frame = stackFrames[depth]; depth >= 0; depth--)
+            do
             {
+                StackFrame frame = stackFrames[depth];
+
                 /* This label is used when a function call is performed: a new stack frame
                  * is pushed in the frames collection and then a goto is used to jump out
                  * of both the switch case and the inner loop. This is faster than using
@@ -521,14 +523,15 @@ namespace Brainf_ck_sharp.NET
                                 return new InterpreterWorkingData(ExitCode.StackLimitExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
                             }
 
-                            // Add the new stack fraame for the function call
-                            stackFrames[++depth] = new StackFrame(function, i);
+                            // Updaate the current stack frame and exit the inner loop
+                            stackFrames[depth++] = frame.WithOffset(i + 1);
+                            frame = new StackFrame(function);
                             totalOperations++;
                             goto StackFrameLoop;
                         }
                     }
                 }
-            }
+            } while (--depth >= 0);
 
             // Return a new state for a successful execution
             bool hasOutput = stdout.Length > 0;
