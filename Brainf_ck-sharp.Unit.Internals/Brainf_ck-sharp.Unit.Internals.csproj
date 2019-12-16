@@ -14,4 +14,8 @@
     <PackageReference Include="coverlet.collector" Version="1.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Brainf_ck-sharp.NET\Brainf_ck-sharp.NET.csproj" />
+  </ItemGroup>
+
 </Project>
