@@ -22,9 +22,13 @@ namespace Brainf_ck_sharp.NET.Buffers.IO
         public StdoutBuffer() : base(StdoutBufferSizeLimit, false) { }
 
         /// <summary>
-        /// Gets the current length of the text in the output buffer
+        /// Gets whether or not the current buffer is empty
         /// </summary>
-        public int Length => _Position;
+        public bool IsEmpty
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _Position == 0;
+        }
 
         /// <summary>
         /// Tries to write a new character into the current buffer

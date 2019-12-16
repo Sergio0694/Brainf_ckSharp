@@ -156,7 +156,7 @@ namespace Brainf_ck_sharp.NET
             Stopwatch stopwatch = Stopwatch.StartNew();
 
             // Start the interpreter
-            InterpreterWorkingData data = TryRun(
+            ExitCode exitCode = TryRun(
                 operators.Memory,
                 breakpoints.Memory,
                 jumpTable.Memory,
@@ -164,7 +164,8 @@ namespace Brainf_ck_sharp.NET
                 definitions.Memory,
                 machineState,
                 new StdinBuffer(stdin),
-                stdout, stackFrames.Memory,
+                stdout,
+                stackFrames.Memory,
                 ref depth,
                 ref totalOperations,
                 ref totalFunctions,
@@ -185,7 +186,7 @@ namespace Brainf_ck_sharp.NET
 
             return new InterpreterResult(
                 sourceCode,
-                data.ExitCode,
+                exitCode,
                 machineState,
                 functionDefinitions,
                 stdin,
@@ -373,7 +374,7 @@ namespace Brainf_ck_sharp.NET
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
         /// <returns>An <see cref="IEnumerator{T}"/> that produces <see cref="InterpreterWorkingData"/> instances for the execution results</returns>
-        private static InterpreterWorkingData TryRun(
+        internal static ExitCode TryRun(
             UnsafeMemory<byte> operators,
             UnsafeMemory<bool> breakpoints,
             UnsafeMemory<int> jumpTable,
@@ -423,7 +424,7 @@ namespace Brainf_ck_sharp.NET
                         stackFrames[depth] = frame.WithOffset(i);
                         breakpoints[i] = false;
 
-                        return new InterpreterWorkingData(ExitCode.BreakpointReached, operators.Slice(frame.Range.Start, i + 1), i, totalOperations);
+                        return ExitCode.BreakpointReached;
                     }
 
                     // Execute the current operator
@@ -432,46 +433,31 @@ namespace Brainf_ck_sharp.NET
                         // ptr++
                         case Operators.ForwardPtr:
                             if (state.TryMoveNext()) totalOperations++;
-                            else
-                            {
-                                return new InterpreterWorkingData(ExitCode.UpperBoundExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
-                            }
+                            else return ExitCode.UpperBoundExceeded;
                             break;
 
                         // ptr--
                         case Operators.BackwardPtr:
                             if (state.TryMoveBack()) totalOperations++;
-                            else
-                            {
-                                return new InterpreterWorkingData(ExitCode.LowerBoundExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
-                            }
+                            else return ExitCode.LowerBoundExceeded;
                             break;
 
                         // (*ptr)++
                         case Operators.Plus:
                             if (state.TryIncrement()) totalOperations++;
-                            else
-                            {
-                                return new InterpreterWorkingData(ExitCode.MaxValueExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
-                            }
+                            else return ExitCode.MaxValueExceeded;
                             break;
 
                         // (*ptr)--
                         case Operators.Minus:
                             if (state.TryDecrement()) totalOperations++;
-                            else
-                            {
-                                return new InterpreterWorkingData(ExitCode.NegativeValue, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
-                            }
+                            else return ExitCode.NegativeValue;
                             break;
 
                         // putch(*ptr)
                         case Operators.PrintChar:
                             if (stdout.TryWrite((char)state.Current)) totalOperations++;
-                            else
-                            {
-                                return new InterpreterWorkingData(ExitCode.StdoutBufferLimitExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
-                            }
+                            else return ExitCode.StdoutBufferLimitExceeded;
                             break;
 
                         // *ptr = getch()
@@ -480,15 +466,9 @@ namespace Brainf_ck_sharp.NET
                             {
                                 // Check if the input character can be stored in the current cell
                                 if (state.TryInput(c)) totalOperations++;
-                                else
-                                {
-                                    return new InterpreterWorkingData(ExitCode.MaxValueExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
-                                }
+                                else return ExitCode.MaxValueExceeded;
                             }
-                            else
-                            {
-                                return new InterpreterWorkingData(ExitCode.StdinBufferExhausted, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
-                            }
+                            else return ExitCode.StdinBufferExhausted;
                             break;
 
                         // while (*ptr) {
@@ -514,7 +494,7 @@ namespace Brainf_ck_sharp.NET
                             else if (executionToken.IsCancellationRequested)
                             {
                                 // Check whether the code can still be executed before starting an active loop
-                                return new InterpreterWorkingData(ExitCode.ThresholdExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations);
+                                return ExitCode.ThresholdExceeded;
                             }
                             break;
 
@@ -528,16 +508,10 @@ namespace Brainf_ck_sharp.NET
                         case Operators.FunctionStart:
                         {
                             // Check for duplicate function definitions
-                            if (functions[state.Current].Length != 0)
-                            {
-                                return new InterpreterWorkingData(ExitCode.DuplicateFunctionDefinition, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
-                            }
+                            if (functions[state.Current].Length != 0) return ExitCode.DuplicateFunctionDefinition;
 
                             // Check that the current function has not been defined before
-                            if (definitions[i] != 0)
-                            {
-                                return new InterpreterWorkingData(ExitCode.FunctionAlreadyDefined, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
-                            }
+                            if (definitions[i] != 0) return ExitCode.FunctionAlreadyDefined;
 
                             // Save the new function definition
                             Range function = new Range(i + 1, jumpTable[i]);
@@ -559,16 +533,10 @@ namespace Brainf_ck_sharp.NET
                         {
                             // Try to retrieve the function to invoke
                             Range function = functions[state.Current];
-                            if (function.Length == 0)
-                            {
-                                return new InterpreterWorkingData(ExitCode.UndefinedFunctionCalled, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
-                            }
+                            if (function.Length == 0) return ExitCode.UndefinedFunctionCalled;
 
                             // Ensure the stack has space for the new function invocation
-                            if (depth == MaximumStackSize - 1)
-                            {
-                                return new InterpreterWorkingData(ExitCode.StackLimitExceeded, operators.Slice(frame.Range.Start, i + 1), i, totalOperations + 1);
-                            }
+                            if (depth == MaximumStackSize - 1) return ExitCode.StackLimitExceeded;
 
                             // Updaate the current stack frame and exit the inner loop
                             stackFrames[depth++] = frame.WithOffset(i + 1);
@@ -580,10 +548,7 @@ namespace Brainf_ck_sharp.NET
                 }
             } while (--depth >= 0);
 
-            // Return a new state for a successful execution
-            bool hasOutput = stdout.Length > 0;
-            ExitCode code = hasOutput ? ExitCode.TextOutput : ExitCode.NoOutput;
-            return new InterpreterWorkingData(code, operators, operators.Size - 1, totalOperations);
+            return stdout.IsEmpty ? ExitCode.NoOutput : ExitCode.TextOutput;
         }
     }
 }
