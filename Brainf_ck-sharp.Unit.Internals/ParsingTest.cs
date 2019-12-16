@@ -1,6 +1,8 @@
 ﻿using Brainf_ck_sharp.NET;
 using Brainf_ck_sharp.NET.Buffers;
 using Brainf_ck_sharp.NET.Constants;
+using Brainf_ck_sharp.NET.Enums;
+using Brainf_ck_sharp.NET.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Brainf_ck_sharp.Unit.Internals
@@ -35,11 +37,16 @@ namespace Brainf_ck_sharp.Unit.Internals
         }
 
         [TestMethod]
-        public void TryParse1()
+        public void TryParse()
         {
             const string script = "[\n\tTest script\n]\n+++++[\n\t>++ 5 x 2 = 10\n\t<- Loop decrement\n]\n> Move to cell 1";
 
-            using UnsafeMemoryBuffer<byte> operators = Brainf_ckParser.TryParse(script, out _);
+            using UnsafeMemoryBuffer<byte> operators = Brainf_ckParser.TryParse(script, out SyntaxValidationResult result);
+
+            Assert.IsTrue(result.IsSuccess);
+            Assert.AreEqual(result.ErrorType, SyntaxError.None);
+            Assert.AreEqual(result.ErrorOffset, -1);
+            Assert.AreEqual(result.OperatorsCount, 15);
 
             Assert.IsNotNull(operators);
             Assert.AreEqual(operators.Size, 15);

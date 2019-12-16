@@ -24,12 +24,17 @@ namespace Brainf_ck_sharp.NET
         /// <summary>
         /// The default memory size for machine states used to run scripts
         /// </summary>
-        public const int DefaultMemorySize = 128;
+        private const int DefaultMemorySize = 128;
 
         /// <summary>
         /// The default overflow mode for running scripts
         /// </summary>
-        public const OverflowMode DefaultOverflowMode = OverflowMode.ByteWithNoOverflow;
+        private const OverflowMode DefaultOverflowMode = OverflowMode.ByteWithNoOverflow;
+
+        /// <summary>
+        /// The maximum number of recursive calls that can be performed by a script
+        /// </summary>
+        private const int MaximumStackSize = 512;
 
         /// <summary>
         /// Runs a given Brainf*ck/PBrain executable with the given parameters
@@ -234,11 +239,6 @@ namespace Brainf_ck_sharp.NET
         }
 
         /// <summary>
-        /// The maximum number of recursive calls that can be performed by a script
-        /// </summary>
-        public const int MaximumStackSize = 512;
-
-        /// <summary>
         /// Loads the jump table for loops and functions from a given executable
         /// </summary>
         /// <param name="operators">The sequence of parsed operators to inspect</param>
@@ -282,8 +282,8 @@ namespace Brainf_ck_sharp.NET
                      * corresponding open bracket at the start of the loop. */
                     case Operators.LoopEnd:
                         int start = f == -1
-                            ? Unsafe.Add(ref rootTempIndicesRef, r--)
-                            : Unsafe.Add(ref functionTempIndicesRef, f--);
+                            ? Unsafe.Add(ref rootTempIndicesRef, --r)
+                            : Unsafe.Add(ref functionTempIndicesRef, --f);
                         jumpTable[start] = i;
                         jumpTable[i] = start;
                         break;
@@ -291,8 +291,8 @@ namespace Brainf_ck_sharp.NET
                     /* When a function definition starts, the offset into the
                      * temporary buffer for the function indices is set to 1.
                      * This is because in this case a 1-based indexing is used:
-                     *the first location in the temporary buffer is used to store
-                     * the index of the open parenthesis for the function definition */
+                     * the first location in the temporary buffer is used to store
+                     * the index of the open parenthesis for the function definition. */
                     case Operators.FunctionStart:
                         f = 1;
                         functionTempIndicesRef = i;
@@ -300,6 +300,7 @@ namespace Brainf_ck_sharp.NET
                     case Operators.FunctionEnd:
                         f = -1;
                         jumpTable[functionTempIndicesRef] = i;
+                        jumpTable[i] = functionTempIndicesRef;
                         break;
                 }
             }
