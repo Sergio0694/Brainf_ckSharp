@@ -14,6 +14,8 @@ using Brainf_ck_sharp.NET.Models;
 using Brainf_ck_sharp.NET.Models.Internal;
 using Stopwatch = System.Diagnostics.Stopwatch;
 
+#pragma warning disable CS0162
+
 namespace Brainf_ck_sharp.NET
 {
     /// <summary>
@@ -401,9 +403,11 @@ namespace Brainf_ck_sharp.NET
             DebugGuard.MustBeGreaterThanOrEqualTo(totalFunctions, 0, nameof(totalFunctions));
 
             // Outer loop to go through the existing stack frames
+            StackFrame frame;
+            int i;
             do
             {
-                StackFrame frame = stackFrames[depth];
+                frame = stackFrames[depth];
 
                 /* This label is used when a function call is performed: a new stack frame
                  * is pushed in the frames collection and then a goto is used to jump out
@@ -413,18 +417,15 @@ namespace Brainf_ck_sharp.NET
                 StackFrameLoop:
 
                 // Iterate over the current operators
-                for (int i = frame.Offset; i < frame.Range.End; i++)
+                for (i = frame.Offset; i < frame.Range.End; i++)
                 {
                     // Check if a breakpoint has been reached
                     if (breakpoints[i] && !debugToken.IsCancellationRequested)
                     {
-                        /* Update the current stack frame with the current index,
-                         * and disable the current breakpoint so that it's
-                         * skipped when the execution resumes from this point */
-                        stackFrames[depth] = frame.WithOffset(i);
+                        /* Disable the current breakpoint so that it won't be
+                         * triggered again when the execution resumes from this point */
                         breakpoints[i] = false;
-
-                        return ExitCode.BreakpointReached;
+                        goto BreakpointReached;
                     }
 
                     // Execute the current operator
@@ -433,31 +434,31 @@ namespace Brainf_ck_sharp.NET
                         // ptr++
                         case Operators.ForwardPtr:
                             if (state.TryMoveNext()) totalOperations++;
-                            else return ExitCode.UpperBoundExceeded;
+                            else goto UpperBoundExceeded;
                             break;
 
                         // ptr--
                         case Operators.BackwardPtr:
                             if (state.TryMoveBack()) totalOperations++;
-                            else return ExitCode.LowerBoundExceeded;
+                            else goto LowerBoundExceeded;
                             break;
 
                         // (*ptr)++
                         case Operators.Plus:
                             if (state.TryIncrement()) totalOperations++;
-                            else return ExitCode.MaxValueExceeded;
+                            else goto MaxValueExceeded;
                             break;
 
                         // (*ptr)--
                         case Operators.Minus:
                             if (state.TryDecrement()) totalOperations++;
-                            else return ExitCode.NegativeValue;
+                            else goto NegativeValue;
                             break;
 
                         // putch(*ptr)
                         case Operators.PrintChar:
                             if (stdout.TryWrite((char)state.Current)) totalOperations++;
-                            else return ExitCode.StdoutBufferLimitExceeded;
+                            else goto StdoutBufferLimitExceeded;
                             break;
 
                         // *ptr = getch()
@@ -466,9 +467,9 @@ namespace Brainf_ck_sharp.NET
                             {
                                 // Check if the input character can be stored in the current cell
                                 if (state.TryInput(c)) totalOperations++;
-                                else return ExitCode.MaxValueExceeded;
+                                else goto MaxValueExceeded;
                             }
-                            else return ExitCode.StdinBufferExhausted;
+                            else goto StdinBufferExhausted;
                             break;
 
                         // while (*ptr) {
@@ -494,7 +495,7 @@ namespace Brainf_ck_sharp.NET
                             else if (executionToken.IsCancellationRequested)
                             {
                                 // Check whether the code can still be executed before starting an active loop
-                                return ExitCode.ThresholdExceeded;
+                                goto ThresholdExceeded;
                             }
                             break;
 
@@ -508,10 +509,10 @@ namespace Brainf_ck_sharp.NET
                         case Operators.FunctionStart:
                         {
                             // Check for duplicate function definitions
-                            if (functions[state.Current].Length != 0) return ExitCode.DuplicateFunctionDefinition;
+                            if (functions[state.Current].Length != 0) goto DuplicateFunctionDefinition;
 
                             // Check that the current function has not been defined before
-                            if (definitions[i] != 0) return ExitCode.FunctionAlreadyDefined;
+                            if (definitions[i] != 0) goto FunctionAlreadyDefined;
 
                             // Save the new function definition
                             Range function = new Range(i + 1, jumpTable[i]);
@@ -533,10 +534,10 @@ namespace Brainf_ck_sharp.NET
                         {
                             // Try to retrieve the function to invoke
                             Range function = functions[state.Current];
-                            if (function.Length == 0) return ExitCode.UndefinedFunctionCalled;
+                            if (function.Length == 0) goto UndefinedFunctionCalled;
 
                             // Ensure the stack has space for the new function invocation
-                            if (depth == MaximumStackSize - 1) return ExitCode.StackLimitExceeded;
+                            if (depth == MaximumStackSize - 1) goto StackLimitExceeded;
 
                             // Updaate the current stack frame and exit the inner loop
                             stackFrames[depth++] = frame.WithOffset(i + 1);
@@ -549,6 +550,67 @@ namespace Brainf_ck_sharp.NET
             } while (--depth >= 0);
 
             return stdout.IsEmpty ? ExitCode.NoOutput : ExitCode.TextOutput;
+
+            /* Exit paths for all failures or partial executions in the interpreter.
+             * Whenever an executable completes its execution and the current stack
+             * frame needs to be updated with the current position, it is done from
+             * one of these labels: each of them sets the right exit flag and then
+             * jumps to the exit label, which updates the current stack frame and
+             * returns. Having all these exit paths here makes the code more compact
+             * into the inner loop, and the two jumps don't produce overhead since
+             * one of them would only be triggered when the inner loop has terminated. */
+            ExitCode exitCode;
+
+            BreakpointReached:
+            exitCode = ExitCode.BreakpointReached;
+            goto UpdateStackFrameAndExit;
+
+            UpperBoundExceeded:
+            exitCode = ExitCode.UpperBoundExceeded;
+            goto UpdateStackFrameAndExit;
+
+            LowerBoundExceeded:
+            exitCode = ExitCode.LowerBoundExceeded;
+            goto UpdateStackFrameAndExit;
+
+            MaxValueExceeded:
+            exitCode = ExitCode.MaxValueExceeded;
+            goto UpdateStackFrameAndExit;
+
+            NegativeValue:
+            exitCode = ExitCode.NegativeValue;
+            goto UpdateStackFrameAndExit;
+
+            StdoutBufferLimitExceeded:
+            exitCode = ExitCode.StdoutBufferLimitExceeded;
+            goto UpdateStackFrameAndExit;
+
+            StdinBufferExhausted:
+            exitCode = ExitCode.StdinBufferExhausted;
+            goto UpdateStackFrameAndExit;
+
+            ThresholdExceeded:
+            exitCode = ExitCode.ThresholdExceeded;
+            goto UpdateStackFrameAndExit;
+
+            DuplicateFunctionDefinition:
+            exitCode = ExitCode.DuplicateFunctionDefinition;
+            goto UpdateStackFrameAndExit;
+
+            FunctionAlreadyDefined:
+            exitCode = ExitCode.FunctionAlreadyDefined;
+            goto UpdateStackFrameAndExit;
+
+            UndefinedFunctionCalled:
+            exitCode = ExitCode.UndefinedFunctionCalled;
+            goto UpdateStackFrameAndExit;
+
+            StackLimitExceeded:
+            exitCode = ExitCode.StackLimitExceeded;
+
+            UpdateStackFrameAndExit:
+            stackFrames[depth] = frame.WithOffset(i);
+            return exitCode;
         }
     }
 }
