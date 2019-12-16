@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Buffers;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -373,7 +372,7 @@ namespace Brainf_ck_sharp.NET
         /// <param name="totalFunctions">The total number of defined functions</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
-        /// <returns>An <see cref="IEnumerator{T}"/> that produces <see cref="InterpreterWorkingData"/> instances for the execution results</returns>
+        /// <returns>The resulting <see cref="ExitCode"/> value for the current execution of the input script</returns>
         internal static ExitCode TryRun(
             UnsafeMemory<byte> operators,
             UnsafeMemory<bool> breakpoints,

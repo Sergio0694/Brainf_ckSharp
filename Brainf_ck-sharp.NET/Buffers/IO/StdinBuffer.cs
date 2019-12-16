@@ -40,5 +40,8 @@ namespace Brainf_ck_sharp.NET.Buffers.IO
             c = default;
             return false;
         }
+
+        /// <inheritdoc/>
+        public override string ToString() => Data;
     }
 }

@@ -40,8 +40,20 @@ namespace Brainf_ck_sharp.NET.MemoryState
             IsSelected = isSelected;
         }
 
-        // Operators and equality operators
+        /// <summary>
+        /// Checks whether or not two <see cref="Brainf_ckMemoryCell"/> instances are equal
+        /// </summary>
+        /// <param name="a">The first <see cref="Brainf_ckMemoryCell"/> instance to compare</param>
+        /// <param name="b">The second <see cref="Brainf_ckMemoryCell"/> instance to compare</param>
+        /// <returns><see langword="true"/> if the two input <see cref="Brainf_ckMemoryCell"/> are equal, <see langword="false"/> otherwise</returns>
         public static bool operator ==(Brainf_ckMemoryCell a, Brainf_ckMemoryCell b) => a.IsSelected == b.IsSelected && a.Value == b.Value;
+
+        /// <summary>
+        /// Checks whether or not two <see cref="Brainf_ckMemoryCell"/> instances are not equal
+        /// </summary>
+        /// <param name="a">The first <see cref="Brainf_ckMemoryCell"/> instance to compare</param>
+        /// <param name="b">The second <see cref="Brainf_ckMemoryCell"/> instance to compare</param>
+        /// <returns><see langword="true"/> if the two input <see cref="Brainf_ckMemoryCell"/> are not equal, <see langword="false"/> otherwise</returns>
         public static bool operator !=(Brainf_ckMemoryCell a, Brainf_ckMemoryCell b) => !(a == b);
 
         /// <inheritdoc/>
