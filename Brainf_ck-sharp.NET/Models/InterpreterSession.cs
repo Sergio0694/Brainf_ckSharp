@@ -178,6 +178,12 @@ namespace Brainf_ck_sharp.NET.Models
 
             Stopwatch.Stop();
 
+            // Prepare the stack frames
+            string[] stackTrace = Brainf_ckInterpreter.LoadStackTrace(
+                Operators.Memory,
+                StackFrames.Memory,
+                _Depth);
+
             // Build the collection of defined functions
             FunctionDefinition[] functionDefinitions = Brainf_ckInterpreter.LoadFunctionDefinitions(
                 Operators.Memory,
@@ -189,6 +195,7 @@ namespace Brainf_ck_sharp.NET.Models
             _Current = new InterpreterResult(
                 SourceCode,
                 exitCode,
+                stackTrace,
                 (TuringMachineState)MachineState.Clone(),
                 functionDefinitions,
                 StdinBuffer.ToString(),

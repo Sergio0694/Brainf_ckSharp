@@ -14,8 +14,6 @@ using Brainf_ck_sharp.NET.Models;
 using Brainf_ck_sharp.NET.Models.Internal;
 using Stopwatch = System.Diagnostics.Stopwatch;
 
-#pragma warning disable CS0162
-
 namespace Brainf_ck_sharp.NET
 {
     /// <summary>
@@ -179,6 +177,12 @@ namespace Brainf_ck_sharp.NET
             // Rebuild the compacted source code
             string sourceCode = Brainf_ckParser.ExtractSource(operators.Memory);
 
+            // Prepare the stack frames
+            string[] stackTrace = LoadStackTrace(
+                operators.Memory,
+                stackFrames.Memory,
+                depth);
+
             // Build the collection of defined functions
             FunctionDefinition[] functionDefinitions = LoadFunctionDefinitions(
                 operators.Memory,
@@ -189,12 +193,50 @@ namespace Brainf_ck_sharp.NET
             return new InterpreterResult(
                 sourceCode,
                 exitCode,
+                stackTrace,
                 machineState,
                 functionDefinitions,
                 stdin,
                 stdout.ToString(),
                 stopwatch.Elapsed,
                 totalOperations);
+        }
+
+        /// <summary>
+        /// Loads the current stack trace for a halted execution of a script
+        /// </summary>
+        /// <param name="operators">The sequence of parsed operators to execute</param>
+        /// <param name="stackFrames">The sequence of stack frames for the current execution</param>
+        /// <param name="depth">The current stack depth</param>
+        /// <returns>An array of <see cref="string"/> instances representing each stack frame, in reverse order</returns>
+        [Pure]
+        internal static string[] LoadStackTrace(
+            UnsafeMemory<byte> operators,
+            UnsafeMemory<StackFrame> stackFrames,
+            int depth)
+        {
+            DebugGuard.MustBeTrue(operators.Size > 0, nameof(operators));
+            DebugGuard.MustBeEqualTo(stackFrames.Size, MaximumStackSize, nameof(stackFrames));
+            DebugGuard.MustBeGreaterThanOrEqualTo(depth, -1, nameof(depth));
+
+            // No stack trace for scripts completed successfully
+            if (depth == -1) return Array.Empty<string>();
+
+            int count = depth + 1;
+            string[] result = new string[count];
+            ref string r0 = ref result[0];
+
+            // Process all the declared functions
+            for (int i = 0, j = count - 1; j >= 0; i++, j--)
+            {
+                StackFrame frame = stackFrames[j];
+                UnsafeMemory<byte> memory = operators.Slice(frame.Range.Start, frame.Offset);
+                string body = Brainf_ckParser.ExtractSource(memory);
+
+                Unsafe.Add(ref r0, i) = body;
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -559,10 +601,8 @@ namespace Brainf_ck_sharp.NET
              * returns. Having all these exit paths here makes the code more compact
              * into the inner loop, and the two jumps don't produce overhead since
              * one of them would only be triggered when the inner loop has terminated. */
-            ExitCode exitCode;
-
             BreakpointReached:
-            exitCode = ExitCode.BreakpointReached;
+            ExitCode exitCode = ExitCode.BreakpointReached;
             goto UpdateStackFrameAndExit;
 
             UpperBoundExceeded:
