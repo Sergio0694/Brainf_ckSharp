@@ -114,21 +114,29 @@ namespace Brainf_ck_sharp.NET.Models.Internal
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal bool TryIncrement()
         {
+            /* Using a local variable here helps the JITter avoid multiple accesses
+             * to the current memory cell when checking values and incrementing them.
+             * Additionally, the overflow mode is using a bitwise and to perform the
+             * mod operation - this works when the divisor is a power of 2 minus 1,
+             * like in the two cases below (255 and 65535). This is faster than
+             * using the mod operator, and saves a few more asm instructions. */
+            ushort current = Ptr[_Position];
+
             switch (Mode)
             {
                 case OverflowMode.UshortWithNoOverflow:
-                    if (Ptr[_Position] == ushort.MaxValue) return false;
-                    Ptr[_Position]++;
+                    if (current == ushort.MaxValue) return false;
+                    Ptr[_Position] = (ushort)(current + 1);
                     break;
                 case OverflowMode.UshortWithOverflow:
-                    Ptr[_Position] = (ushort)(Ptr[_Position] % ushort.MaxValue);
+                    Ptr[_Position] = (ushort)((current + 1) & ushort.MaxValue);
                     break;
                 case OverflowMode.ByteWithNoOverflow:
-                    if (Ptr[_Position] == byte.MaxValue) return false;
-                    Ptr[_Position]++;
+                    if (current == byte.MaxValue) return false;
+                    Ptr[_Position] = (ushort)(current + 1);
                     break;
                 case OverflowMode.ByteWithOverflow:
-                    Ptr[_Position] = (ushort)(Ptr[_Position] % byte.MaxValue);
+                    Ptr[_Position] = (ushort)((current + 1) & byte.MaxValue);
                     break;
             }
 
@@ -142,20 +150,20 @@ namespace Brainf_ck_sharp.NET.Models.Internal
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal bool TryDecrement()
         {
+            ushort current = Ptr[_Position];
+
             switch (Mode)
             {
                 case OverflowMode.UshortWithOverflow:
-                    if (Ptr[_Position] == 0) Ptr[_Position] = ushort.MaxValue;
-                    else Ptr[_Position]--;
+                    Ptr[_Position] = (ushort)(current - 1);
                     break;
                 case OverflowMode.ByteWithOverflow:
-                    if (Ptr[_Position] == 0) Ptr[_Position] = byte.MaxValue;
-                    else Ptr[_Position]--;
+                    Ptr[_Position] = (ushort)((current - 1) & byte.MaxValue);
                     break;
                 case OverflowMode.ByteWithNoOverflow:
                 case OverflowMode.UshortWithNoOverflow:
-                    if (Ptr[_Position] == 0) return false;
-                    Ptr[_Position]--;
+                    if (current == 0) return false;
+                    Ptr[_Position] = (ushort)(current - 1);
                     break;
             }
 
