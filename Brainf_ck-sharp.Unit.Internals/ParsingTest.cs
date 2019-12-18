@@ -41,7 +41,7 @@ namespace Brainf_ck_sharp.Unit.Internals
         {
             const string script = "[\n\tTest script\n]\n+++++[\n\t>++ 5 x 2 = 10\n\t<- Loop decrement\n]\n> Move to cell 1";
 
-            using UnsafeMemoryBuffer<byte> operators = Brainf_ckParser.TryParse(script, out SyntaxValidationResult result);
+            using UnsafeMemoryBuffer<byte>? operators = Brainf_ckParser.TryParse(script, out SyntaxValidationResult result);
 
             Assert.IsTrue(result.IsSuccess);
             Assert.AreEqual(result.ErrorType, SyntaxError.None);
@@ -49,7 +49,7 @@ namespace Brainf_ck_sharp.Unit.Internals
             Assert.AreEqual(result.OperatorsCount, 15);
 
             Assert.IsNotNull(operators);
-            Assert.AreEqual(operators.Size, 15);
+            Assert.AreEqual(operators!.Size, 15);
 
             string source = Brainf_ckParser.ExtractSource(operators.Memory);
 

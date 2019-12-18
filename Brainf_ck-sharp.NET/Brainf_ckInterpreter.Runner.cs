@@ -24,11 +24,13 @@ namespace Brainf_ck_sharp.NET
         /// <param name="operators">The executable to run</param>
         /// <param name="stdin">The input buffer to read data from</param>
         /// <param name="machineState">The target machine state to use to run the script</param>
+        /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
         private static InterpreterResult RunCore(
             UnsafeMemoryBuffer<byte> operators,
             string stdin,
-            TuringMachineState machineState)
+            TuringMachineState machineState,
+            CancellationToken executionToken)
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(operators.Size, 0, nameof(operators));
             DebugGuard.MustBeGreaterThanOrEqualTo(machineState.Size, 0, nameof(machineState));
@@ -65,7 +67,7 @@ namespace Brainf_ck_sharp.NET
                 machineState,
                 new StdinBuffer(stdin),
                 stdout,
-                CancellationToken.None,
+                executionToken,
                 CancellationToken.None);
 
             stopwatch.Stop();
@@ -106,13 +108,17 @@ namespace Brainf_ck_sharp.NET
         /// <param name="stdin">The input buffer to read data from</param>
         /// <param name="memorySize">The size of the state machine to create to run the script</param>
         /// <param name="overflowMode">The overflow mode to use in the state machine used to run the script</param>
+        /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
+        /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterSession"/> instance with the results of the execution</returns>
         private static Option<InterpreterSession> TryCreateSessionCore(
             string source,
             ReadOnlySpan<int> breakpoints,
             string stdin,
             int memorySize,
-            OverflowMode overflowMode)
+            OverflowMode overflowMode,
+            CancellationToken executionToken,
+            CancellationToken debugToken)
         {
             Guard.MustBeGreaterThanOrEqualTo(memorySize, 32, nameof(memorySize));
             Guard.MustBeLessThanOrEqualTo(memorySize, 1024, nameof(memorySize));
@@ -142,8 +148,8 @@ namespace Brainf_ck_sharp.NET
                 stdin,
                 memorySize,
                 overflowMode,
-                CancellationToken.None,
-                CancellationToken.None);
+                executionToken,
+                debugToken);
 
             return Option<InterpreterSession>.From(validationResult, session);
         }
