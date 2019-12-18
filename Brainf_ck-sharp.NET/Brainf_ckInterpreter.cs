@@ -23,28 +23,13 @@ namespace Brainf_ck_sharp.NET
     public static class Brainf_ckInterpreter
     {
         /// <summary>
-        /// The default memory size for machine states used to run scripts
-        /// </summary>
-        private const int DefaultMemorySize = 128;
-
-        /// <summary>
-        /// The default overflow mode for running scripts
-        /// </summary>
-        private const OverflowMode DefaultOverflowMode = OverflowMode.ByteWithNoOverflow;
-
-        /// <summary>
-        /// The maximum number of recursive calls that can be performed by a script
-        /// </summary>
-        private const int MaximumStackSize = 512;
-
-        /// <summary>
         /// Runs a given Brainf*ck/PBrain executable with the given parameters
         /// </summary>
         /// <param name="source">The source code to parse and execute</param>
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
         public static Option<InterpreterResult> TryRun(string source)
         {
-            return TryRun(source, string.Empty, DefaultMemorySize, DefaultOverflowMode);
+            return TryRun(source, string.Empty, Specs.DefaultMemorySize, Specs.DefaultOverflowMode);
         }
 
         /// <summary>
@@ -55,7 +40,7 @@ namespace Brainf_ck_sharp.NET
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
         public static Option<InterpreterResult> TryRun(string source, string stdin)
         {
-            return TryRun(source, stdin, DefaultMemorySize, DefaultOverflowMode);
+            return TryRun(source, stdin, Specs.DefaultMemorySize, Specs.DefaultOverflowMode);
         }
 
         /// <summary>
@@ -67,7 +52,7 @@ namespace Brainf_ck_sharp.NET
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
         public static Option<InterpreterResult> TryRun(string source, string stdin, int memorySize)
         {
-            return TryRun(source, stdin, memorySize, DefaultOverflowMode);
+            return TryRun(source, stdin, memorySize, Specs.DefaultOverflowMode);
         }
 
         /// <summary>
@@ -145,7 +130,7 @@ namespace Brainf_ck_sharp.NET
             using UnsafeMemoryBuffer<int> jumpTable = LoadJumpTable(operators);
             using UnsafeMemoryBuffer<Range> functions = UnsafeMemoryBuffer<Range>.Allocate(ushort.MaxValue, true);
             using UnsafeMemoryBuffer<ushort> definitions = UnsafeMemoryBuffer<ushort>.Allocate(operators.Size, true);
-            using UnsafeMemoryBuffer<StackFrame> stackFrames = UnsafeMemoryBuffer<StackFrame>.Allocate(MaximumStackSize, false);
+            using UnsafeMemoryBuffer<StackFrame> stackFrames = UnsafeMemoryBuffer<StackFrame>.Allocate(Specs.MaximumStackSize, false);
             using StdoutBuffer stdout = new StdoutBuffer();
 
             // Shared counters
@@ -213,7 +198,7 @@ namespace Brainf_ck_sharp.NET
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterSession"/> instance with the results of the execution</returns>
         public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints)
         {
-            return TryCreateSession(source, breakpoints, string.Empty, DefaultMemorySize, DefaultOverflowMode);
+            return TryCreateSession(source, breakpoints, string.Empty, Specs.DefaultMemorySize, Specs.DefaultOverflowMode);
         }
 
         /// <summary>
@@ -225,7 +210,7 @@ namespace Brainf_ck_sharp.NET
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterSession"/> instance with the results of the execution</returns>
         public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints, string stdin)
         {
-            return TryCreateSession(source, breakpoints, stdin, DefaultMemorySize, DefaultOverflowMode);
+            return TryCreateSession(source, breakpoints, stdin, Specs.DefaultMemorySize, Specs.DefaultOverflowMode);
         }
 
         /// <summary>
@@ -238,7 +223,7 @@ namespace Brainf_ck_sharp.NET
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterSession"/> instance with the results of the execution</returns>
         public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints, string stdin, int memorySize)
         {
-            return TryCreateSession(source, breakpoints, stdin, memorySize, DefaultOverflowMode);
+            return TryCreateSession(source, breakpoints, stdin, memorySize, Specs.DefaultOverflowMode);
         }
 
         /// <summary>
@@ -264,7 +249,7 @@ namespace Brainf_ck_sharp.NET
             UnsafeMemoryBuffer<int> jumpTable = LoadJumpTable(operators!);
             UnsafeMemoryBuffer<Range> functions = UnsafeMemoryBuffer<Range>.Allocate(ushort.MaxValue, true);
             UnsafeMemoryBuffer<ushort> definitions = UnsafeMemoryBuffer<ushort>.Allocate(operators!.Size, true);
-            UnsafeMemoryBuffer<StackFrame> stackFrames = UnsafeMemoryBuffer<StackFrame>.Allocate(MaximumStackSize, false);
+            UnsafeMemoryBuffer<StackFrame> stackFrames = UnsafeMemoryBuffer<StackFrame>.Allocate(Specs.MaximumStackSize, false);
 
             // Initialize the root stack frame
             stackFrames[0] = new StackFrame(new Range(0, operators.Size), 0);
@@ -300,7 +285,7 @@ namespace Brainf_ck_sharp.NET
             int depth)
         {
             DebugGuard.MustBeTrue(operators.Size > 0, nameof(operators));
-            DebugGuard.MustBeEqualTo(stackFrames.Size, MaximumStackSize, nameof(stackFrames));
+            DebugGuard.MustBeEqualTo(stackFrames.Size, Specs.MaximumStackSize, nameof(stackFrames));
             DebugGuard.MustBeGreaterThanOrEqualTo(depth, -1, nameof(depth));
 
             // No stack trace for scripts completed successfully
@@ -535,7 +520,7 @@ namespace Brainf_ck_sharp.NET
             DebugGuard.MustBeEqualTo(jumpTable.Size, operators.Size, nameof(jumpTable));
             DebugGuard.MustBeEqualTo(functions.Size, ushort.MaxValue, nameof(functions));
             DebugGuard.MustBeEqualTo(definitions.Size, operators.Size, nameof(definitions));
-            DebugGuard.MustBeEqualTo(stackFrames.Size, MaximumStackSize, nameof(stackFrames));
+            DebugGuard.MustBeEqualTo(stackFrames.Size, Specs.MaximumStackSize, nameof(stackFrames));
             DebugGuard.MustBeGreaterThanOrEqualTo(depth, 0, nameof(depth));
             DebugGuard.MustBeGreaterThanOrEqualTo(totalOperations, 0, nameof(totalOperations));
             DebugGuard.MustBeGreaterThanOrEqualTo(totalFunctions, 0, nameof(totalFunctions));
@@ -670,7 +655,7 @@ namespace Brainf_ck_sharp.NET
                             if (function.Length == 0) goto UndefinedFunctionCalled;
 
                             // Ensure the stack has space for the new function invocation
-                            if (depth == MaximumStackSize - 1) goto StackLimitExceeded;
+                            if (depth == Specs.MaximumStackSize - 1) goto StackLimitExceeded;
 
                             // Update the current stack frame and exit the inner loop
                             stackFrames[depth++] = frame.WithOffset(i + 1);
