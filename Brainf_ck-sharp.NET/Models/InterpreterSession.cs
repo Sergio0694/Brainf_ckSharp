@@ -166,13 +166,13 @@ namespace Brainf_ck_sharp.NET.Models
                 JumpTable.Memory,
                 Functions.Memory,
                 Definitions.Memory,
-                MachineState,
-                StdinBuffer,
-                StdoutBuffer,
                 StackFrames.Memory,
                 ref _Depth,
                 ref _TotalOperations,
                 ref _TotalFunctions,
+                MachineState,
+                StdinBuffer,
+                StdoutBuffer,
                 ExecutionToken,
                 DebugToken);
 

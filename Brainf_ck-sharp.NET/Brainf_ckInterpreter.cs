@@ -165,13 +165,13 @@ namespace Brainf_ck_sharp.NET
                 jumpTable.Memory,
                 functions.Memory,
                 definitions.Memory,
-                machineState,
-                new StdinBuffer(stdin),
-                stdout,
                 stackFrames.Memory,
                 ref depth,
                 ref totalOperations,
                 ref totalFunctions,
+                machineState,
+                new StdinBuffer(stdin),
+                stdout,
                 CancellationToken.None,
                 CancellationToken.None);
 
@@ -311,7 +311,19 @@ namespace Brainf_ck_sharp.NET
             for (int i = 0, j = count - 1; j >= 0; i++, j--)
             {
                 StackFrame frame = stackFrames[j];
-                UnsafeMemory<byte> memory = operators.Slice(frame.Range.Start, frame.Offset);
+
+                /* Adjust the offset and process the current range.
+                 * This is needed because in case of a partial execution, no matter
+                 * if it's a breakpoint or a crash, the stored offset in the top stack
+                 * frame will be the operator currently being executed, which needs to
+                 * be included in the processed string. For stack frames below that
+                 * instead, the offset already refers to the operator immediately after
+                 * the function call operator, so the offset doesn't need to be shifted
+                 * ahead before extracting the processed string. Doing this with a
+                 * reinterpret cast saves a conditional jump in the asm code. */
+                bool zero = i == 0;
+                int offset = frame.Offset + Unsafe.As<bool, byte>(ref zero);
+                UnsafeMemory<byte> memory = operators.Slice(frame.Range.Start, offset);
                 string body = Brainf_ckParser.ExtractSource(memory);
 
                 Unsafe.Add(ref r0, i) = body;
@@ -489,13 +501,13 @@ namespace Brainf_ck_sharp.NET
         /// <param name="jumpTable">The jump table for loops and function declarations</param>
         /// <param name="functions">The mapping of functions for the current execution</param>
         /// <param name="definitions">The lookup table to check which functions are defined</param>
-        /// <param name="state">The target <see cref="TuringMachineState"/> instance to execute the code on</param>
-        /// <param name="stdin">The input buffer to read characters from</param>
-        /// <param name="stdout">The output buffer to write characters to</param>
         /// <param name="stackFrames">The sequence of stack frames for the current execution</param>
         /// <param name="depth">The current stack depth</param>
         /// <param name="totalOperations">The total number of executed operators</param>
         /// <param name="totalFunctions">The total number of defined functions</param>
+        /// <param name="state">The target <see cref="TuringMachineState"/> instance to execute the code on</param>
+        /// <param name="stdin">The input buffer to read characters from</param>
+        /// <param name="stdout">The output buffer to write characters to</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
         /// <returns>The resulting <see cref="ExitCode"/> value for the current execution of the input script</returns>
@@ -505,13 +517,13 @@ namespace Brainf_ck_sharp.NET
             UnsafeMemory<int> jumpTable,
             UnsafeMemory<Range> functions,
             UnsafeMemory<ushort> definitions,
-            TuringMachineState state,
-            StdinBuffer stdin,
-            StdoutBuffer stdout,
             UnsafeMemory<StackFrame> stackFrames,
             ref int depth,
             ref int totalOperations,
             ref int totalFunctions,
+            TuringMachineState state,
+            StdinBuffer stdin,
+            StdoutBuffer stdout,
             CancellationToken executionToken,
             CancellationToken debugToken)
         {
