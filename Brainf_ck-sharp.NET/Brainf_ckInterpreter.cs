@@ -647,11 +647,6 @@ namespace Brainf_ck_sharp.NET
                             break;
                         }
 
-                        // }
-                        case Operators.FunctionEnd:
-                            totalOperations++;
-                            break;
-
                         // f[*ptr]()
                         case Operators.FunctionCall:
                         {
