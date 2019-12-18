@@ -662,7 +662,7 @@ namespace Brainf_ck_sharp.NET
                             // Ensure the stack has space for the new function invocation
                             if (depth == MaximumStackSize - 1) goto StackLimitExceeded;
 
-                            // Updaate the current stack frame and exit the inner loop
+                            // Update the current stack frame and exit the inner loop
                             stackFrames[depth++] = frame.WithOffset(i + 1);
                             frame = new StackFrame(function);
                             totalOperations++;

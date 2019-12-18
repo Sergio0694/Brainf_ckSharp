@@ -72,7 +72,7 @@ namespace Brainf_ck_sharp.NET.Buffers
         /// Gets the <typeparamref name="T"/> value at the specified index in the current buffer
         /// </summary>
         /// <param name="index">The target index to read the value from</param>
-        public T this[int index]
+        public ref T this[int index]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
@@ -80,16 +80,7 @@ namespace Brainf_ck_sharp.NET.Buffers
                 DebugGuard.MustBeGreaterThanOrEqualTo(index, 0, nameof(index));
                 DebugGuard.MustBeLessThan(index, Size, nameof(index));
 
-                return Ptr[index];
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            set
-            {
-                DebugGuard.MustBeGreaterThanOrEqualTo(index, 0, nameof(index));
-                DebugGuard.MustBeLessThan(index, Size, nameof(index));
-
-                Ptr[index] = value;
+                return ref Ptr[index];
             }
         }
 
