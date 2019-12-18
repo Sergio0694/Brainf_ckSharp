@@ -266,6 +266,9 @@ namespace Brainf_ck_sharp.NET
             UnsafeMemoryBuffer<ushort> definitions = UnsafeMemoryBuffer<ushort>.Allocate(operators!.Size, true);
             UnsafeMemoryBuffer<StackFrame> stackFrames = UnsafeMemoryBuffer<StackFrame>.Allocate(MaximumStackSize, false);
 
+            // Initialize the root stack frame
+            stackFrames[0] = new StackFrame(new Range(0, operators.Size), 0);
+
             // Create the interpreter session
             InterpreterSession session = new InterpreterSession(
                 operators,

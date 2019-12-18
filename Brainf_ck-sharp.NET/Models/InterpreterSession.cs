@@ -150,9 +150,9 @@ namespace Brainf_ck_sharp.NET.Models
         public bool MoveNext()
         {
             // Check whether the current session can go ahead by one step
-            if (Current != null &&
-                (Current.ExitCode.HasFlag(ExitCode.Failure) ||
-                 !Current.ExitCode.HasFlag(ExitCode.BreakpointReached)))
+            if (_Current != null &&
+                (_Current.ExitCode.HasFlag(ExitCode.Failure) ||
+                 !_Current.ExitCode.HasFlag(ExitCode.BreakpointReached)))
             {
                 return false;
             }
