@@ -23,7 +23,7 @@ namespace Brainf_ck_sharp.NET.Models
         /// <summary>
         /// Gets the debug info for the current script, if an exception was thrown while executing it
         /// </summary>
-        public InterpreterExceptionInfo? ExceptionInfo { get; }
+        public HaltedExecutionInfo? ExceptionInfo { get; }
 
         /// <summary>
         /// Gets the resulting memory state after running the script
@@ -70,7 +70,7 @@ namespace Brainf_ck_sharp.NET.Models
         internal InterpreterResult(
             string sourceCode,
             ExitCode exitCode,
-            InterpreterExceptionInfo? exceptionInfo,
+            HaltedExecutionInfo? exceptionInfo,
             IReadOnlyTuringMachineState machineState,
             IReadOnlyList<FunctionDefinition> functions,
             string stdin,

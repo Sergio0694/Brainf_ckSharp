@@ -14,14 +14,14 @@ namespace Brainf_ck_sharp.NET
     public static partial class Brainf_ckInterpreter
     {
         /// <summary>
-        /// Loads the <see cref="InterpreterExceptionInfo"/> instance for a halted execution of a script, if available
+        /// Loads the <see cref="HaltedExecutionInfo"/> instance for a halted execution of a script, if available
         /// </summary>
         /// <param name="operators">The sequence of parsed operators to execute</param>
         /// <param name="stackFrames">The sequence of stack frames for the current execution</param>
         /// <param name="depth">The current stack depth</param>
-        /// <returns>An <see cref="InterpreterExceptionInfo"/> instance, if the input script was terminated unsuccessfully</returns>
+        /// <returns>An <see cref="HaltedExecutionInfo"/> instance, if the input script was halted during its execution</returns>
         [Pure]
-        internal static InterpreterExceptionInfo? LoadExceptionInfo(
+        internal static HaltedExecutionInfo? LoadDebugInfo(
             UnsafeMemory<byte> operators,
             UnsafeMemory<StackFrame> stackFrames,
             int depth)
@@ -62,7 +62,7 @@ namespace Brainf_ck_sharp.NET
             int errorOffset = stackFrames[depth].Offset;
             char opcode = Brainf_ckParser.GetCharacterFromOperator(operators[errorOffset]);
 
-            return new InterpreterExceptionInfo(
+            return new HaltedExecutionInfo(
                 stackTrace,
                 opcode,
                 errorOffset);

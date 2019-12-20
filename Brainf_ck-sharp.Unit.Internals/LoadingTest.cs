@@ -24,7 +24,7 @@ namespace Brainf_ck_sharp.Unit.Internals
 
             stackFrames[0] = new StackFrame(new Range(0, operators!.Size), 10);
 
-            InterpreterExceptionInfo? exceptionInfo = Brainf_ckInterpreter.LoadExceptionInfo(operators.Memory, stackFrames.Memory, -1);
+            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo(operators.Memory, stackFrames.Memory, -1);
 
             Assert.IsNull(exceptionInfo);
         }
@@ -40,13 +40,13 @@ namespace Brainf_ck_sharp.Unit.Internals
 
             stackFrames[0] = new StackFrame(new Range(0, operators!.Size), 7);
 
-            InterpreterExceptionInfo? exceptionInfo = Brainf_ckInterpreter.LoadExceptionInfo(operators.Memory, stackFrames.Memory, 0);
+            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo(operators.Memory, stackFrames.Memory, 0);
 
             Assert.IsNotNull(exceptionInfo);
             Assert.AreEqual(exceptionInfo!.StackTrace.Count, 1);
             Assert.AreEqual(exceptionInfo.StackTrace[0], "++[>++>-");
-            Assert.AreEqual(exceptionInfo.FaultedOperator, '-');
-            Assert.AreEqual(exceptionInfo.ErrorOffset, 7);
+            Assert.AreEqual(exceptionInfo.HaltingOperator, '-');
+            Assert.AreEqual(exceptionInfo.HaltingOffset, 7);
         }
 
         [TestMethod]
@@ -61,14 +61,14 @@ namespace Brainf_ck_sharp.Unit.Internals
             stackFrames[0] = new StackFrame(new Range(0, operators!.Size), 5);
             stackFrames[1] = new StackFrame(new Range(1, 3), 2);
 
-            InterpreterExceptionInfo? exceptionInfo = Brainf_ckInterpreter.LoadExceptionInfo(operators.Memory, stackFrames.Memory, 1);
+            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo(operators.Memory, stackFrames.Memory, 1);
 
             Assert.IsNotNull(exceptionInfo);
             Assert.AreEqual(exceptionInfo!.StackTrace.Count, 2);
             Assert.AreEqual(exceptionInfo.StackTrace[0], "+>");
             Assert.AreEqual(exceptionInfo.StackTrace[1], "(+>):");
-            Assert.AreEqual(exceptionInfo.FaultedOperator, '>');
-            Assert.AreEqual(exceptionInfo.ErrorOffset, 2);
+            Assert.AreEqual(exceptionInfo.HaltingOperator, '>');
+            Assert.AreEqual(exceptionInfo.HaltingOffset, 2);
         }
     }
 }
