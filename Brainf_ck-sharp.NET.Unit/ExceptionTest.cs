@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Brainf_ck_sharp.NET.Unit
 {
     [TestClass]
-    public class SessionTest
+    public class ExceptionTest
     {
         [TestMethod]
         public void NegativeValue()
@@ -55,6 +55,36 @@ namespace Brainf_ck_sharp.NET.Unit
             Assert.AreEqual(result.Value.StackTrace.Count, 512);
             Assert.AreEqual(result.Value.StackTrace[0], ":");
             Assert.AreEqual(result.Value.StackTrace[^1], "(:):");
+        }
+
+        [TestMethod]
+        public void StdinBufferExhausted()
+        {
+            const string script = ",";
+
+            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script);
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Value);
+            Assert.AreEqual(result.Value!.ExitCode, ExitCode.StdinBufferExhausted);
+            Assert.AreEqual(result.Value.Stdout, string.Empty);
+            Assert.AreEqual(result.Value.StackTrace.Count, 1);
+            Assert.AreEqual(result.Value.StackTrace[0], ",");
+        }
+
+        [TestMethod]
+        public void StdoutBufferLimitExceeded()
+        {
+            const string script = ",[.]";
+
+            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script, "a");
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Value);
+            Assert.AreEqual(result.Value!.ExitCode, ExitCode.StdoutBufferLimitExceeded);
+            Assert.AreEqual(result.Value.Stdout, new string('a', 1024));
+            Assert.AreEqual(result.Value.StackTrace.Count, 1);
+            Assert.AreEqual(result.Value.StackTrace[0], ",[.");
         }
     }
 }

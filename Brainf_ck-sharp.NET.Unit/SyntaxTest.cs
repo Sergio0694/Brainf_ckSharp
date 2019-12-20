@@ -93,6 +93,9 @@ namespace Brainf_ck_sharp.NET.Unit
         public void EmptyFunction2() => AssertIsInvalid("++(hello!)", 9, SyntaxError.EmptyFunctionDeclaration);
 
         [TestMethod]
+        public void InvalidFunctionDeclaration() => AssertIsInvalid("+[>>+(++>)]++:", 5, SyntaxError.InvalidFunctionDeclaration);
+
+        [TestMethod]
         public void IncompleteFunctionDeclaration() => AssertIsInvalid("++(+++>", 2, SyntaxError.IncompleteFunctionDeclaration);
 
         [TestMethod]
