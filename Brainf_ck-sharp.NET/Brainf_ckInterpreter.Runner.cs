@@ -304,35 +304,35 @@ namespace Brainf_ck_sharp.NET
 
                         // f[*ptr] = []() {
                         case Operators.FunctionStart:
-                            {
-                                // Check for duplicate function definitions
-                                if (functions[state.Current].Length != 0) goto DuplicateFunctionDefinition;
+                        {
+                            // Check for duplicate function definitions
+                            if (functions[state.Current].Length != 0) goto DuplicateFunctionDefinition;
 
-                                // Save the new function definition
-                                Range function = new Range(i + 1, jumpTable[i]);
-                                functions[state.Current] = function;
-                                definitions[totalFunctions++] = state.Current;
-                                totalOperations++;
-                                i += function.Length;
-                                break;
-                            }
+                            // Save the new function definition
+                            Range function = new Range(i + 1, jumpTable[i]);
+                            functions[state.Current] = function;
+                            definitions[totalFunctions++] = state.Current;
+                            totalOperations++;
+                            i += function.Length;
+                            break;
+                        }
 
                         // f[*ptr]()
                         case Operators.FunctionCall:
-                            {
-                                // Try to retrieve the function to invoke
-                                Range function = functions[state.Current];
-                                if (function.Length == 0) goto UndefinedFunctionCalled;
+                        {
+                            // Try to retrieve the function to invoke
+                            Range function = functions[state.Current];
+                            if (function.Length == 0) goto UndefinedFunctionCalled;
 
-                                // Ensure the stack has space for the new function invocation
-                                if (depth == Specs.MaximumStackSize - 1) goto StackLimitExceeded;
+                            // Ensure the stack has space for the new function invocation
+                            if (depth == Specs.MaximumStackSize - 1) goto StackLimitExceeded;
 
-                                // Update the current stack frame and exit the inner loop
-                                stackFrames[depth++] = frame.WithOffset(i + 1);
-                                frame = new StackFrame(function);
-                                totalOperations++;
-                                goto StackFrameLoop;
-                            }
+                            // Update the current stack frame and exit the inner loop
+                            stackFrames[depth++] = frame.WithOffset(i + 1);
+                            frame = new StackFrame(function);
+                            totalOperations++;
+                            goto StackFrameLoop;
+                        }
                     }
                 }
             } while (--depth >= 0);
