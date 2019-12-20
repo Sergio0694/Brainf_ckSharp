@@ -144,6 +144,7 @@ namespace Brainf_ck_sharp.NET
                     case Characters.FunctionStart:
 
                         // Start a function definition, track the index and reset the counter
+                        if (rootDepth != 0) return new SyntaxValidationResult(SyntaxError.InvalidFunctionDeclaration, i);
                         if (functionStart != -1) return new SyntaxValidationResult(SyntaxError.NestedFunctionDeclaration, i);
                         totalOps++;
                         functionStart = i;

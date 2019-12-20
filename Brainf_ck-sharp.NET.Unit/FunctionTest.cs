@@ -20,6 +20,11 @@ namespace Brainf_ck_sharp.NET.Unit
             Assert.AreEqual(result.Value!.ExitCode, ExitCode.Success);
             Assert.AreEqual(result.Value.MachineState.Current.Character, 'a');
             Assert.AreEqual(result.Value.Stdout, "a");
+            Assert.AreEqual(result.Value.Functions.Count, 1);
+            Assert.AreEqual(result.Value.Functions[0].Index, 0);
+            Assert.AreEqual(result.Value.Functions[0].Offset, 1);
+            Assert.AreEqual(result.Value.Functions[0].Value, 1);
+            Assert.AreEqual(result.Value.Functions[0].Body, ",[>+<-]>.");
         }
 
         [TestMethod]
@@ -34,6 +39,11 @@ namespace Brainf_ck_sharp.NET.Unit
             Assert.AreEqual(result.Value!.ExitCode, ExitCode.Success);
             Assert.AreEqual(result.Value.MachineState[0].Value, 3);
             Assert.AreEqual(result.Value.MachineState[1].Value, 3);
+            Assert.AreEqual(result.Value.Functions.Count, 1);
+            Assert.AreEqual(result.Value.Functions[0].Index, 0);
+            Assert.AreEqual(result.Value.Functions[0].Offset, 0);
+            Assert.AreEqual(result.Value.Functions[0].Value, 0);
+            Assert.AreEqual(result.Value.Functions[0].Body, "+++");
         }
 
         [TestMethod]

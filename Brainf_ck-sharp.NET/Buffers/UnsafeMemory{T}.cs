@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
+using Brainf_ck_sharp.NET.Extensions.Types;
 using Brainf_ck_sharp.NET.Helpers;
 
 namespace Brainf_ck_sharp.NET.Buffers
@@ -64,6 +66,7 @@ namespace Brainf_ck_sharp.NET.Buffers
         /// <param name="start">The inclusive starting index for the new <see cref="UnsafeMemory{T}"/> instance</param>
         /// <param name="end">The exclusive ending index for the new <see cref="UnsafeMemory{T}"/> instance</param>
         /// <returns>A new <see cref="UnsafeMemory{T}"/> instance mapping values in the [start, end) range on the current buffer</returns>
+        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public UnsafeMemory<T> Slice(int start, int end)
         {
@@ -74,6 +77,21 @@ namespace Brainf_ck_sharp.NET.Buffers
             DebugGuard.MustBeLessThanOrEqualTo(start, end, nameof(start));
 
             return new UnsafeMemory<T>(end - start, Ptr + start);
+        }
+
+        /// <summary>
+        /// Gets a new <see cref="UnsafeMemory{T}"/> instance representing a view over the current buffer
+        /// </summary>
+        /// <param name="range">The <see cref="Range"/> instance indicating how to slice the current buffer</param>
+        /// <returns>A new <see cref="UnsafeMemory{T}"/> instance mapping values in the [start, end) range on the current buffer</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public UnsafeMemory<T> Slice(in Range range)
+        {
+            DebugGuard.MustBeLessThan(range.Start, Size, nameof(range));
+            DebugGuard.MustBeLessThanOrEqualTo(range.End, Size, nameof(range));
+
+            return new UnsafeMemory<T>(range.Length, Ptr + range.Start);
         }
     }
 }

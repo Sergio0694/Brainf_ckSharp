@@ -26,6 +26,11 @@
         MismatchedParenthesis,
 
         /// <summary>
+        /// A function was being defined within a loop and not at the root lebel of the source file
+        /// </summary>
+        InvalidFunctionDeclaration,
+
+        /// <summary>
         /// A function was being defined within another function
         /// </summary>
         NestedFunctionDeclaration,

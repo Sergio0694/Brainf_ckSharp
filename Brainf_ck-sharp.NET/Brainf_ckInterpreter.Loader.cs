@@ -7,7 +7,7 @@ using Brainf_ck_sharp.NET.Constants;
 using Brainf_ck_sharp.NET.Extensions.Types;
 using Brainf_ck_sharp.NET.Helpers;
 using Brainf_ck_sharp.NET.Models;
-using Brainf_ck_sharp.NET.Models.Internal;
+using StackFrame = Brainf_ck_sharp.NET.Models.Internal.StackFrame;
 
 namespace Brainf_ck_sharp.NET
 {
@@ -79,7 +79,8 @@ namespace Brainf_ck_sharp.NET
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(operators.Size, 0, nameof(operators));
             DebugGuard.MustBeEqualTo(functions.Size, ushort.MaxValue, nameof(functions));
-            DebugGuard.MustBeEqualTo(definitions.Size, operators.Size, nameof(definitions));
+            DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Size, 0, nameof(definitions));
+            DebugGuard.MustBeLessThanOrEqualTo(definitions.Size, operators.Size / 3, nameof(definitions));
             DebugGuard.MustBeGreaterThanOrEqualTo(totalFunctions, 0, nameof(totalFunctions));
 
             // No declared functions
@@ -89,18 +90,15 @@ namespace Brainf_ck_sharp.NET
             ref FunctionDefinition r0 = ref result[0];
 
             // Process all the declared functions
-            for (int i = 0, j = 0; j < totalFunctions; j++)
+            for (int i = 0; i < totalFunctions; i++)
             {
-                ushort key = definitions[j];
-
-                if (key == 0) continue;
-
-                // Extract the source for the current function
+                ushort key = definitions[i];
                 Range range = functions[key];
-                UnsafeMemory<byte> memory = operators.Slice(range.Start, range.End);
+                int offset = range.Start - 1; // The range starts at the first function operator
+                UnsafeMemory<byte> memory = operators.Slice(in range);
                 string body = Brainf_ckParser.ExtractSource(memory);
 
-                Unsafe.Add(ref r0, i) = new FunctionDefinition(key, i, j, body);
+                Unsafe.Add(ref r0, i) = new FunctionDefinition(key, i, offset, body);
             }
 
             return result;
@@ -110,9 +108,10 @@ namespace Brainf_ck_sharp.NET
         /// Loads the jump table for loops and functions from a given executable
         /// </summary>
         /// <param name="operators">The sequence of parsed operators to inspect</param>
+        /// <param name="functionsCount">The total number of declared functions in the input sequence of operators</param>
         /// <returns>The resulting precomputed jump table for the input executable</returns>
         [Pure]
-        private static UnsafeMemoryBuffer<int> LoadJumpTable(UnsafeMemoryBuffer<byte> operators)
+        private static UnsafeMemoryBuffer<int> LoadJumpTable(UnsafeMemoryBuffer<byte> operators, out int functionsCount)
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(operators.Size, 0, nameof(operators));
 
@@ -128,6 +127,7 @@ namespace Brainf_ck_sharp.NET
             int[] functionTempIndices = ArrayPool<int>.Shared.Rent(tempBuffersLength);
             ref int rootTempIndicesRef = ref rootTempIndices[0];
             ref int functionTempIndicesRef = ref functionTempIndices[0];
+            functionsCount = 0;
 
             // Go through the executable to build the jump table for each open parenthesis or square bracket
             for (int r = 0, f = -1, i = 0; i < operators.Size; i++)
@@ -164,6 +164,7 @@ namespace Brainf_ck_sharp.NET
                     case Operators.FunctionStart:
                         f = 1;
                         functionTempIndicesRef = i;
+                        functionsCount++;
                         break;
                     case Operators.FunctionEnd:
                         f = -1;
@@ -180,6 +181,24 @@ namespace Brainf_ck_sharp.NET
             ArrayPool<int>.Shared.Return(functionTempIndices);
 
             return jumpTable;
+        }
+
+        /// <summary>
+        /// Loads the function definitions table for a script to execute
+        /// </summary>
+        /// <param name="functionsCount">The total number of declared functions in the script to execute</param>
+        /// <returns>The resulting buffer to store keys for the declared functions</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static UnsafeMemoryBuffer<ushort> LoadDefinitionsTable(int functionsCount)
+        {
+            DebugGuard.MustBeGreaterThanOrEqualTo(functionsCount, 0, nameof(functionsCount));
+
+            return functionsCount switch
+            {
+                0 => UnsafeMemoryBuffer<ushort>.Empty,
+                _ => UnsafeMemoryBuffer<ushort>.Allocate(functionsCount, false)
+            };
         }
 
         /// <summary>

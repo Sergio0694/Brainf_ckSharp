@@ -74,13 +74,8 @@ namespace Brainf_ck_sharp.NET.Enums
         DuplicateFunctionDefinition = 1 << 12 | ExceptionThrown,
 
         /// <summary>
-        /// The script tried to define the same function more than once
-        /// </summary>
-        FunctionAlreadyDefined = 1 << 13 | ExceptionThrown,
-
-        /// <summary>
         /// The script executed one or more recursive functions too many times
         /// </summary>
-        StackLimitExceeded = 1 << 14 | ExceptionThrown
+        StackLimitExceeded = 1 << 13 | ExceptionThrown
     }
 }

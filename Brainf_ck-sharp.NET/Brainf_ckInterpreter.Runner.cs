@@ -37,9 +37,9 @@ namespace Brainf_ck_sharp.NET
 
             // Initialize the temporary buffers
             using UnsafeMemoryBuffer<bool> breakpoints = UnsafeMemoryBuffer<bool>.Allocate(operators.Size, true);
-            using UnsafeMemoryBuffer<int> jumpTable = LoadJumpTable(operators);
+            using UnsafeMemoryBuffer<int> jumpTable = LoadJumpTable(operators, out int functionsCount);
             using UnsafeMemoryBuffer<Range> functions = UnsafeMemoryBuffer<Range>.Allocate(ushort.MaxValue, true);
-            using UnsafeMemoryBuffer<ushort> definitions = UnsafeMemoryBuffer<ushort>.Allocate(operators.Size, true);
+            using UnsafeMemoryBuffer<ushort> definitions = LoadDefinitionsTable(functionsCount);
             using UnsafeMemoryBuffer<StackFrame> stackFrames = UnsafeMemoryBuffer<StackFrame>.Allocate(Specs.MaximumStackSize, false);
             using StdoutBuffer stdout = new StdoutBuffer();
 
@@ -123,15 +123,15 @@ namespace Brainf_ck_sharp.NET
             Guard.MustBeGreaterThanOrEqualTo(memorySize, 32, nameof(memorySize));
             Guard.MustBeLessThanOrEqualTo(memorySize, 1024, nameof(memorySize));
 
-            UnsafeMemoryBuffer<byte>? operators = Brainf_ckParser.TryParse(source, out SyntaxValidationResult validationResult);
+            UnsafeMemoryBuffer<byte> operators = Brainf_ckParser.TryParse(source, out SyntaxValidationResult validationResult)!;
 
             if (!validationResult.IsSuccess) return Option<InterpreterSession>.From(validationResult);
 
             // Initialize the temporary buffers
             UnsafeMemoryBuffer<bool> breakpointsTable = LoadBreakpointsTable(source, validationResult.OperatorsCount, breakpoints);
-            UnsafeMemoryBuffer<int> jumpTable = LoadJumpTable(operators!);
+            UnsafeMemoryBuffer<int> jumpTable = LoadJumpTable(operators, out int functionsCount);
             UnsafeMemoryBuffer<Range> functions = UnsafeMemoryBuffer<Range>.Allocate(ushort.MaxValue, true);
-            UnsafeMemoryBuffer<ushort> definitions = UnsafeMemoryBuffer<ushort>.Allocate(operators!.Size, true);
+            UnsafeMemoryBuffer<ushort> definitions = LoadDefinitionsTable(functionsCount);
             UnsafeMemoryBuffer<StackFrame> stackFrames = UnsafeMemoryBuffer<StackFrame>.Allocate(Specs.MaximumStackSize, false);
 
             // Initialize the root stack frame
@@ -192,7 +192,8 @@ namespace Brainf_ck_sharp.NET
             DebugGuard.MustBeEqualTo(breakpoints.Size, operators.Size, nameof(breakpoints));
             DebugGuard.MustBeEqualTo(jumpTable.Size, operators.Size, nameof(jumpTable));
             DebugGuard.MustBeEqualTo(functions.Size, ushort.MaxValue, nameof(functions));
-            DebugGuard.MustBeEqualTo(definitions.Size, operators.Size, nameof(definitions));
+            DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Size, 0, nameof(definitions));
+            DebugGuard.MustBeLessThanOrEqualTo(definitions.Size, operators.Size / 3, nameof(definitions));
             DebugGuard.MustBeEqualTo(stackFrames.Size, Specs.MaximumStackSize, nameof(stackFrames));
             DebugGuard.MustBeGreaterThanOrEqualTo(depth, 0, nameof(depth));
             DebugGuard.MustBeGreaterThanOrEqualTo(totalOperations, 0, nameof(totalOperations));
@@ -307,14 +308,10 @@ namespace Brainf_ck_sharp.NET
                                 // Check for duplicate function definitions
                                 if (functions[state.Current].Length != 0) goto DuplicateFunctionDefinition;
 
-                                // Check that the current function has not been defined before
-                                if (definitions[i] != 0) goto FunctionAlreadyDefined;
-
                                 // Save the new function definition
                                 Range function = new Range(i + 1, jumpTable[i]);
                                 functions[state.Current] = function;
-                                definitions[i] = state.Current;
-                                totalFunctions++;
+                                definitions[totalFunctions++] = state.Current;
                                 totalOperations++;
                                 i += function.Length;
                                 break;
@@ -384,10 +381,6 @@ namespace Brainf_ck_sharp.NET
 
             DuplicateFunctionDefinition:
             exitCode = ExitCode.DuplicateFunctionDefinition;
-            goto UpdateStackFrameAndExit;
-
-            FunctionAlreadyDefined:
-            exitCode = ExitCode.FunctionAlreadyDefined;
             goto UpdateStackFrameAndExit;
 
             UndefinedFunctionCalled:

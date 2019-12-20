@@ -20,7 +20,7 @@ namespace Brainf_ck_sharp.NET.Buffers
         /// <summary>
         /// The <see cref="byte"/> array that constitutes the memory buffer for the current instance
         /// </summary>
-        private readonly byte[] Buffer;
+        private readonly byte[]? Buffer;
 
         /// <summary>
         /// A pointer to the first element in <see cref="Buffer"/>
@@ -32,6 +32,11 @@ namespace Brainf_ck_sharp.NET.Buffers
         /// </summary>
         /// <remarks>This field is not <see langword="readonly"/> to prevent the safe copy when calling <see cref="GCHandle.Free"/> from <see cref="Dispose"/></remarks>
         private GCHandle _Handle;
+
+        /// <summary>
+        /// Creates an empty <see cref="UnsafeMemoryBuffer{T}"/> instance
+        /// </summary>
+        protected UnsafeMemoryBuffer() { }
 
         /// <summary>
         /// Creates a new <see cref="UnsafeMemoryBuffer{T}"/> instance with the specified parameters
@@ -58,6 +63,11 @@ namespace Brainf_ck_sharp.NET.Buffers
         /// <remarks>This method is just a proxy for the <see langword="protected"/> constructor, for clarity</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UnsafeMemoryBuffer<T> Allocate(int size, bool clear) => new UnsafeMemoryBuffer<T>(size, clear);
+
+        /// <summary>
+        /// Gets an empty <see cref="UnsafeMemoryBuffer{T}"/> instance
+        /// </summary>
+        public static UnsafeMemoryBuffer<T> Empty { get; } = new UnsafeMemoryBuffer<T>();
 
         /// <summary>
         /// Gets an <see cref="UnsafeMemory{T}"/> instance mapping the values on the current buffer
