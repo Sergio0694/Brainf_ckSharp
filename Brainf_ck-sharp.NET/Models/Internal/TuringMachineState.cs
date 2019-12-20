@@ -7,7 +7,6 @@ using Brainf_ck_sharp.NET.Buffers;
 using Brainf_ck_sharp.NET.Enums;
 using Brainf_ck_sharp.NET.Helpers;
 using Brainf_ck_sharp.NET.Interfaces;
-using Brainf_ck_sharp.NET.MemoryState;
 
 #pragma warning disable IDE0032
 
@@ -65,7 +64,7 @@ namespace Brainf_ck_sharp.NET.Models.Internal
         Brainf_ckMemoryCell IReadOnlyTuringMachineState.Current
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new Brainf_ckMemoryCell(Ptr[_Position], true);
+            get => new Brainf_ckMemoryCell(_Position, Ptr[_Position], true);
         }
 
         /// <inheritdoc/>
@@ -77,7 +76,7 @@ namespace Brainf_ck_sharp.NET.Models.Internal
                 Guard.MustBeGreaterThanOrEqualTo(index, 0, nameof(index));
                 Guard.MustBeLessThan(index, Size, nameof(index));
 
-                return new Brainf_ckMemoryCell(Ptr[index], _Position == index);
+                return new Brainf_ckMemoryCell(index, Ptr[index], _Position == index);
             }
         }
 
@@ -247,7 +246,7 @@ namespace Brainf_ck_sharp.NET.Models.Internal
         {
             // Iterators don't allow unsafe code, so bounds checks can't be removed here
             for (int i = 0; i < Size; i++)
-                yield return new Brainf_ckMemoryCell(Memory[i], _Position == i);
+                yield return new Brainf_ckMemoryCell(i, Memory[i], _Position == i);
         }
 
         /// <inheritdoc/>

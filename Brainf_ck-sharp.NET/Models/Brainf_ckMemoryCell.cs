@@ -2,17 +2,17 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
-namespace Brainf_ck_sharp.NET.MemoryState
+namespace Brainf_ck_sharp.NET.Models
 {
     /// <summary>
     /// A model that represents the information on a given memory cell in a <see cref="Interfaces.IReadOnlyTuringMachineState"/> object
     /// </summary>
-    public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>, IComparable<Brainf_ckMemoryCell>
+    public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     {
         /// <summary>
-        /// Gets whether or not the cell is currently selected
+        /// Gets the numerical index for the current memory cell
         /// </summary>
-        public bool IsSelected { get; }
+        public int Index { get; }
 
         /// <summary>
         /// Gets the value of the current cell
@@ -29,15 +29,24 @@ namespace Brainf_ck_sharp.NET.MemoryState
             get => (char)Value;
         }
 
+        private readonly bool _IsSelected;
+
+        /// <summary>
+        /// Gets whether or not the cell is currently selected
+        /// </summary>
+        public bool IsSelected => _IsSelected;
+
         /// <summary>
         /// Creates a new instance with the given value
         /// </summary>
+        /// <param name="index">The index for the memory cell</param>
         /// <param name="value">The value for the memory cell</param>
         /// <param name="isSelected">Gets whether the cell is selected</param>
-        internal Brainf_ckMemoryCell(ushort value, bool isSelected)
+        internal Brainf_ckMemoryCell(int index, ushort value, bool isSelected)
         {
+            Index = index;
             Value = value;
-            IsSelected = isSelected;
+            _IsSelected = isSelected;
         }
 
         /// <summary>
@@ -46,7 +55,7 @@ namespace Brainf_ck_sharp.NET.MemoryState
         /// <param name="a">The first <see cref="Brainf_ckMemoryCell"/> instance to compare</param>
         /// <param name="b">The second <see cref="Brainf_ckMemoryCell"/> instance to compare</param>
         /// <returns><see langword="true"/> if the two input <see cref="Brainf_ckMemoryCell"/> are equal, <see langword="false"/> otherwise</returns>
-        public static bool operator ==(Brainf_ckMemoryCell a, Brainf_ckMemoryCell b) => a.IsSelected == b.IsSelected && a.Value == b.Value;
+        public static bool operator ==(Brainf_ckMemoryCell a, Brainf_ckMemoryCell b) => a.Equals(b);
 
         /// <summary>
         /// Checks whether or not two <see cref="Brainf_ckMemoryCell"/> instances are not equal
@@ -54,24 +63,30 @@ namespace Brainf_ck_sharp.NET.MemoryState
         /// <param name="a">The first <see cref="Brainf_ckMemoryCell"/> instance to compare</param>
         /// <param name="b">The second <see cref="Brainf_ckMemoryCell"/> instance to compare</param>
         /// <returns><see langword="true"/> if the two input <see cref="Brainf_ckMemoryCell"/> are not equal, <see langword="false"/> otherwise</returns>
-        public static bool operator !=(Brainf_ckMemoryCell a, Brainf_ckMemoryCell b) => !(a == b);
+        public static bool operator !=(Brainf_ckMemoryCell a, Brainf_ckMemoryCell b) => !a.Equals(b);
 
         /// <inheritdoc/>
-        public bool Equals(Brainf_ckMemoryCell other) => this == other;
+        public bool Equals(Brainf_ckMemoryCell other)
+        {
+            return Index == other.Index &&
+                   Value == other.Value &&
+                   IsSelected == other.IsSelected;
+        }
 
         /// <inheritdoc/>
-        public override bool Equals(object obj) => obj is Brainf_ckMemoryCell cell && this == cell;
-
-        /// <inheritdoc/>
-        public int CompareTo(Brainf_ckMemoryCell other) => Value - other.Value;
+        public override bool Equals(object obj) => obj is Brainf_ckMemoryCell cell && Equals(cell);
 
         /// <inheritdoc/>
         public override int GetHashCode()
         {
-            ref bool r0 = ref Unsafe.AsRef(IsSelected);
-            ref byte r1 = ref Unsafe.As<bool, byte>(ref r0);
+            unchecked
+            {
+                int hashCode = Index;
+                hashCode = (hashCode * 397) ^ Value;
+                hashCode = (hashCode * 397) ^ Unsafe.As<bool, byte>(ref Unsafe.AsRef(in _IsSelected));
 
-            return r1 << 16 | Value;
+                return hashCode;
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Brainf_ck_sharp.NET.MemoryState;
+using Brainf_ck_sharp.NET.Models;
 
 namespace Brainf_ck_sharp.NET.Interfaces
 {
