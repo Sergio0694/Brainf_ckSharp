@@ -340,7 +340,7 @@ namespace Brainf_ck_sharp.NET
                 }
             } while (--depth >= 0);
 
-            return stdout.IsEmpty ? ExitCode.NoOutput : ExitCode.TextOutput;
+            return ExitCode.Success;
 
             /* Exit paths for all failures or partial executions in the interpreter.
              * Whenever an executable completes its execution and the current stack

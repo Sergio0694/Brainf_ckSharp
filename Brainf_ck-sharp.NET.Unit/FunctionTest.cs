@@ -17,7 +17,7 @@ namespace Brainf_ck_sharp.NET.Unit
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
-            Assert.AreEqual(result.Value!.ExitCode, ExitCode.TextOutput);
+            Assert.AreEqual(result.Value!.ExitCode, ExitCode.Success);
             Assert.AreEqual(result.Value.MachineState.Current.Character, 'a');
             Assert.AreEqual(result.Value.Stdout, "a");
         }
@@ -31,7 +31,7 @@ namespace Brainf_ck_sharp.NET.Unit
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
-            Assert.AreEqual(result.Value!.ExitCode, ExitCode.NoOutput);
+            Assert.AreEqual(result.Value!.ExitCode, ExitCode.Success);
             Assert.AreEqual(result.Value.MachineState[0].Value, 3);
             Assert.AreEqual(result.Value.MachineState[1].Value, 3);
         }
@@ -45,7 +45,7 @@ namespace Brainf_ck_sharp.NET.Unit
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
-            Assert.AreEqual(result.Value!.ExitCode, ExitCode.TextOutput);
+            Assert.AreEqual(result.Value!.ExitCode, ExitCode.Success);
             Assert.AreEqual(result.Value.MachineState.Current.Value, 0);
             Assert.AreEqual(result.Value.Stdout, "%");
         }
