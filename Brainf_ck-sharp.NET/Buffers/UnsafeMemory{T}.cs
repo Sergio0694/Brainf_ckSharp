@@ -70,7 +70,7 @@ namespace Brainf_ck_sharp.NET.Buffers
             DebugGuard.MustBeGreaterThanOrEqualTo(start, 0, nameof(start));
             DebugGuard.MustBeGreaterThanOrEqualTo(end, 0, nameof(end));
             DebugGuard.MustBeLessThan(start, Size, nameof(start));
-            DebugGuard.MustBeLessThan(end, Size, nameof(end));
+            DebugGuard.MustBeLessThanOrEqualTo(end, Size, nameof(end));
             DebugGuard.MustBeLessThanOrEqualTo(start, end, nameof(start));
 
             return new UnsafeMemory<T>(end - start, Ptr + start);

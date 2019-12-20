@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Threading;
 using Brainf_ck_sharp.NET.Enums;
 using Brainf_ck_sharp.NET.Models;
 using Brainf_ck_sharp.NET.Models.Base;
@@ -10,19 +10,51 @@ namespace Brainf_ck_sharp.NET.Unit
     public class SessionTest
     {
         [TestMethod]
-        public void BaseOperators1()
+        public void NegativeValue()
         {
-            const string script = "+++++";
+            const string script = "+++>>-++";
 
-            Option<InterpreterSession> result = Brainf_ckInterpreter.TryCreateSession(script, Array.Empty<int>());
+            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script);
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
-            Assert.IsTrue(result.Value!.MoveNext());
-            Assert.IsNotNull(result.Value.Current);
-            Assert.AreEqual(result.Value.Current.ExitCode, ExitCode.NoOutput);
-            Assert.AreEqual(result.Value.Current.Stdout, string.Empty);
-            Assert.AreEqual(result.Value.Current.MachineState.Current.Value, 5);
+            Assert.AreEqual(result.Value!.ExitCode, ExitCode.NegativeValue);
+            Assert.AreEqual(result.Value.Stdout, string.Empty);
+            Assert.AreEqual(result.Value.MachineState.Current.Value, 0);
+            Assert.AreEqual(result.Value.StackTrace.Count, 1);
+            Assert.AreEqual(result.Value.StackTrace[0], "+++>>-");
+        }
+
+        [TestMethod]
+        public void ThresholdExceeded()
+        {
+            CancellationTokenSource cts = new CancellationTokenSource(500);
+
+            const string script = "+[+-]";
+
+            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script, cts.Token);
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Value);
+            Assert.AreEqual(result.Value!.ExitCode, ExitCode.ThresholdExceeded);
+            Assert.AreEqual(result.Value.Stdout, string.Empty);
+            Assert.AreEqual(result.Value.StackTrace.Count, 1);
+        }
+
+        [TestMethod]
+        public void StackOverflow()
+        {
+            const string script = "(:):";
+
+            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script);
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Value);
+            Assert.AreEqual(result.Value!.ExitCode, ExitCode.StackLimitExceeded);
+            Assert.AreEqual(result.Value.Stdout, string.Empty);
+            Assert.AreEqual(result.Value.StackTrace.Count, 512);
+            Assert.AreEqual(result.Value.StackTrace[0], ":");
+            Assert.AreEqual(result.Value.StackTrace[^1], "(:):");
         }
     }
 }
