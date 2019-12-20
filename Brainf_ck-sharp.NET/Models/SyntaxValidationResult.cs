@@ -30,7 +30,7 @@ namespace Brainf_ck_sharp.NET.Models
         public int OperatorsCount { get; }
 
         /// <summary>
-        /// Creates a new <see cref="SyntaxValidationResult"/> instaance with the specified parameters
+        /// Creates a new <see cref="SyntaxValidationResult"/> instance with the specified parameters
         /// </summary>
         /// <param name="error">The syntax error for the current source file, if any</param>
         /// <param name="offset">The index of the parsing error, if present</param>

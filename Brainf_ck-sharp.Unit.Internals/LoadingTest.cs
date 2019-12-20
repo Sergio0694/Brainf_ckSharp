@@ -1,6 +1,7 @@
 ﻿using Brainf_ck_sharp.NET;
 using Brainf_ck_sharp.NET.Buffers;
 using Brainf_ck_sharp.NET.Extensions.Types;
+using Brainf_ck_sharp.NET.Models;
 using Brainf_ck_sharp.NET.Models.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,9 +24,9 @@ namespace Brainf_ck_sharp.Unit.Internals
 
             stackFrames[0] = new StackFrame(new Range(0, operators!.Size), 10);
 
-            string[] stackTrace = Brainf_ckInterpreter.LoadStackTrace(operators.Memory, stackFrames.Memory, -1);
+            InterpreterExceptionInfo? exceptionInfo = Brainf_ckInterpreter.LoadExceptionInfo(operators.Memory, stackFrames.Memory, -1);
 
-            Assert.AreEqual(stackTrace.Length, 0);
+            Assert.IsNull(exceptionInfo);
         }
 
         [TestMethod]
@@ -39,10 +40,13 @@ namespace Brainf_ck_sharp.Unit.Internals
 
             stackFrames[0] = new StackFrame(new Range(0, operators!.Size), 7);
 
-            string[] stackTrace = Brainf_ckInterpreter.LoadStackTrace(operators.Memory, stackFrames.Memory, 0);
+            InterpreterExceptionInfo? exceptionInfo = Brainf_ckInterpreter.LoadExceptionInfo(operators.Memory, stackFrames.Memory, 0);
 
-            Assert.AreEqual(stackTrace.Length, 1);
-            Assert.AreEqual(stackTrace[0], "++[>++>-");
+            Assert.IsNotNull(exceptionInfo);
+            Assert.AreEqual(exceptionInfo!.StackTrace.Count, 1);
+            Assert.AreEqual(exceptionInfo.StackTrace[0], "++[>++>-");
+            Assert.AreEqual(exceptionInfo.FaultedOperator, '-');
+            Assert.AreEqual(exceptionInfo.ErrorOffset, 7);
         }
 
         [TestMethod]
@@ -57,11 +61,14 @@ namespace Brainf_ck_sharp.Unit.Internals
             stackFrames[0] = new StackFrame(new Range(0, operators!.Size), 5);
             stackFrames[1] = new StackFrame(new Range(1, 3), 2);
 
-            string[] stackTrace = Brainf_ckInterpreter.LoadStackTrace(operators.Memory, stackFrames.Memory, 1);
+            InterpreterExceptionInfo? exceptionInfo = Brainf_ckInterpreter.LoadExceptionInfo(operators.Memory, stackFrames.Memory, 1);
 
-            Assert.AreEqual(stackTrace.Length, 2);
-            Assert.AreEqual(stackTrace[0], "+>");
-            Assert.AreEqual(stackTrace[1], "(+>):");
+            Assert.IsNotNull(exceptionInfo);
+            Assert.AreEqual(exceptionInfo!.StackTrace.Count, 2);
+            Assert.AreEqual(exceptionInfo.StackTrace[0], "+>");
+            Assert.AreEqual(exceptionInfo.StackTrace[1], "(+>):");
+            Assert.AreEqual(exceptionInfo.FaultedOperator, '>');
+            Assert.AreEqual(exceptionInfo.ErrorOffset, 2);
         }
     }
 }

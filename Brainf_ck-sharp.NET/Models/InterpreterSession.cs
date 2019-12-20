@@ -178,8 +178,8 @@ namespace Brainf_ck_sharp.NET.Models
 
             Stopwatch.Stop();
 
-            // Prepare the stack frames
-            string[] stackTrace = Brainf_ckInterpreter.LoadStackTrace(
+            // Prepare the exception info
+            InterpreterExceptionInfo? exceptionInfo = Brainf_ckInterpreter.LoadExceptionInfo(
                 Operators.Memory,
                 StackFrames.Memory,
                 _Depth);
@@ -195,7 +195,7 @@ namespace Brainf_ck_sharp.NET.Models
             _Current = new InterpreterResult(
                 SourceCode,
                 exitCode,
-                stackTrace,
+                exceptionInfo,
                 (TuringMachineState)MachineState.Clone(),
                 functionDefinitions,
                 StdinBuffer.ToString(),

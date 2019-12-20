@@ -231,6 +231,15 @@ namespace Brainf_ck_sharp.NET
         };
 
         /// <summary>
+        /// Gets the corresponding <see cref="char"/> value for a given processed Brainf*ck/PBrain operator
+        /// </summary>
+        /// <param name="opcode">The input processed operator to convert</param>
+        /// <returns>The character representing the input operator</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static char GetCharacterFromOperator(byte opcode) => (char)OperatorsInverseLookupTable[opcode];
+
+        /// <summary>
         /// Extracts the compacted source code from a given sequence of operators
         /// </summary>
         /// <param name="operators">The input sequence of parsed operators to read</param>

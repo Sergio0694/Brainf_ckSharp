@@ -75,8 +75,8 @@ namespace Brainf_ck_sharp.NET
             // Rebuild the compacted source code
             string sourceCode = Brainf_ckParser.ExtractSource(operators.Memory);
 
-            // Prepare the stack frames
-            string[] stackTrace = LoadStackTrace(
+            // Prepare the exception info
+            InterpreterExceptionInfo? exceptionInfo = LoadExceptionInfo(
                 operators.Memory,
                 stackFrames.Memory,
                 depth);
@@ -91,7 +91,7 @@ namespace Brainf_ck_sharp.NET
             return new InterpreterResult(
                 sourceCode,
                 exitCode,
-                stackTrace,
+                exceptionInfo,
                 machineState,
                 functionDefinitions,
                 stdin,

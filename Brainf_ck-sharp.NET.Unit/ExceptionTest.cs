@@ -21,8 +21,9 @@ namespace Brainf_ck_sharp.NET.Unit
             Assert.AreEqual(result.Value!.ExitCode, ExitCode.NegativeValue);
             Assert.AreEqual(result.Value.Stdout, string.Empty);
             Assert.AreEqual(result.Value.MachineState.Current.Value, 0);
-            Assert.AreEqual(result.Value.StackTrace.Count, 1);
-            Assert.AreEqual(result.Value.StackTrace[0], "+++>>-");
+            Assert.IsNotNull(result.Value.ExceptionInfo);
+            Assert.AreEqual(result.Value.ExceptionInfo!.StackTrace.Count, 1);
+            Assert.AreEqual(result.Value.ExceptionInfo.StackTrace[0], "+++>>-");
         }
 
         [TestMethod]
@@ -38,7 +39,8 @@ namespace Brainf_ck_sharp.NET.Unit
             Assert.IsNotNull(result.Value);
             Assert.AreEqual(result.Value!.ExitCode, ExitCode.ThresholdExceeded);
             Assert.AreEqual(result.Value.Stdout, string.Empty);
-            Assert.AreEqual(result.Value.StackTrace.Count, 1);
+            Assert.IsNotNull(result.Value.ExceptionInfo);
+            Assert.AreEqual(result.Value.ExceptionInfo!.StackTrace.Count, 1);
         }
 
         [TestMethod]
@@ -52,9 +54,10 @@ namespace Brainf_ck_sharp.NET.Unit
             Assert.IsNotNull(result.Value);
             Assert.AreEqual(result.Value!.ExitCode, ExitCode.StackLimitExceeded);
             Assert.AreEqual(result.Value.Stdout, string.Empty);
-            Assert.AreEqual(result.Value.StackTrace.Count, 512);
-            Assert.AreEqual(result.Value.StackTrace[0], ":");
-            Assert.AreEqual(result.Value.StackTrace[^1], "(:):");
+            Assert.IsNotNull(result.Value.ExceptionInfo);
+            Assert.AreEqual(result.Value.ExceptionInfo!.StackTrace.Count, 512);
+            Assert.AreEqual(result.Value.ExceptionInfo.StackTrace[0], ":");
+            Assert.AreEqual(result.Value.ExceptionInfo.StackTrace[^1], "(:):");
         }
 
         [TestMethod]
@@ -68,8 +71,9 @@ namespace Brainf_ck_sharp.NET.Unit
             Assert.IsNotNull(result.Value);
             Assert.AreEqual(result.Value!.ExitCode, ExitCode.StdinBufferExhausted);
             Assert.AreEqual(result.Value.Stdout, string.Empty);
-            Assert.AreEqual(result.Value.StackTrace.Count, 1);
-            Assert.AreEqual(result.Value.StackTrace[0], ",");
+            Assert.IsNotNull(result.Value.ExceptionInfo);
+            Assert.AreEqual(result.Value.ExceptionInfo!.StackTrace.Count, 1);
+            Assert.AreEqual(result.Value.ExceptionInfo.StackTrace[0], ",");
         }
 
         [TestMethod]
@@ -83,8 +87,9 @@ namespace Brainf_ck_sharp.NET.Unit
             Assert.IsNotNull(result.Value);
             Assert.AreEqual(result.Value!.ExitCode, ExitCode.StdoutBufferLimitExceeded);
             Assert.AreEqual(result.Value.Stdout, new string('a', 1024));
-            Assert.AreEqual(result.Value.StackTrace.Count, 1);
-            Assert.AreEqual(result.Value.StackTrace[0], ",[.");
+            Assert.IsNotNull(result.Value.ExceptionInfo);
+            Assert.AreEqual(result.Value.ExceptionInfo!.StackTrace.Count, 1);
+            Assert.AreEqual(result.Value.ExceptionInfo.StackTrace[0], ",[.");
         }
     }
 }

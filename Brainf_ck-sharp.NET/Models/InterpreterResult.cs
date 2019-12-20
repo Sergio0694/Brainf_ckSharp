@@ -21,9 +21,9 @@ namespace Brainf_ck_sharp.NET.Models
         public ExitCode ExitCode { get; }
 
         /// <summary>
-        /// Gets the stack trace for the current instance
+        /// Gets the debug info for the current script, if an exception was thrown while executing it
         /// </summary>
-        public IReadOnlyList<string> StackTrace { get; }
+        public InterpreterExceptionInfo? ExceptionInfo { get; }
 
         /// <summary>
         /// Gets the resulting memory state after running the script
@@ -60,7 +60,7 @@ namespace Brainf_ck_sharp.NET.Models
         /// </summary>
         /// <param name="sourceCode">The original source code for the interpreted script</param>
         /// <param name="exitCode">The exit code of the interpreter result</param>
-        /// <param name="stackTrace">The stack trace for the current instance</param>
+        /// <param name="exceptionInfo">The debug info for the current script, if available</param>
         /// <param name="machineState">The resulting memory state after running the script</param>
         /// <param name="functions">The sequence of functions that were defined when running the script</param>
         /// <param name="stdin">The stdin buffer used to run the script</param>
@@ -70,7 +70,7 @@ namespace Brainf_ck_sharp.NET.Models
         internal InterpreterResult(
             string sourceCode,
             ExitCode exitCode,
-            IReadOnlyList<string> stackTrace,
+            InterpreterExceptionInfo? exceptionInfo,
             IReadOnlyTuringMachineState machineState,
             IReadOnlyList<FunctionDefinition> functions,
             string stdin,
@@ -80,7 +80,7 @@ namespace Brainf_ck_sharp.NET.Models
         {
             SourceCode = sourceCode;
             ExitCode = exitCode;
-            StackTrace = stackTrace;
+            ExceptionInfo = exceptionInfo;
             MachineState = machineState;
             Functions = functions;
             Stdin = stdin;

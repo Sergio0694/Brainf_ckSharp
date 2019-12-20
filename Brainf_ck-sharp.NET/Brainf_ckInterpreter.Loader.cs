@@ -14,14 +14,14 @@ namespace Brainf_ck_sharp.NET
     public static partial class Brainf_ckInterpreter
     {
         /// <summary>
-        /// Loads the current stack trace for a halted execution of a script
+        /// Loads the <see cref="InterpreterExceptionInfo"/> instance for a halted execution of a script, if available
         /// </summary>
         /// <param name="operators">The sequence of parsed operators to execute</param>
         /// <param name="stackFrames">The sequence of stack frames for the current execution</param>
         /// <param name="depth">The current stack depth</param>
-        /// <returns>An array of <see cref="string"/> instances representing each stack frame, in reverse order</returns>
+        /// <returns>An <see cref="InterpreterExceptionInfo"/> instance, if the input script was terminated unsuccessfully</returns>
         [Pure]
-        internal static string[] LoadStackTrace(
+        internal static InterpreterExceptionInfo? LoadExceptionInfo(
             UnsafeMemory<byte> operators,
             UnsafeMemory<StackFrame> stackFrames,
             int depth)
@@ -30,15 +30,14 @@ namespace Brainf_ck_sharp.NET
             DebugGuard.MustBeEqualTo(stackFrames.Size, Specs.MaximumStackSize, nameof(stackFrames));
             DebugGuard.MustBeGreaterThanOrEqualTo(depth, -1, nameof(depth));
 
-            // No stack trace for scripts completed successfully
-            if (depth == -1) return Array.Empty<string>();
+            // No exception info for scripts completed successfully
+            if (depth == -1) return null;
 
-            int count = depth + 1;
-            string[] result = new string[count];
-            ref string r0 = ref result[0];
+            string[] stackTrace = new string[depth + 1];
+            ref string r0 = ref stackTrace[0];
 
             // Process all the declared functions
-            for (int i = 0, j = count - 1; j >= 0; i++, j--)
+            for (int i = 0, j = depth; j >= 0; i++, j--)
             {
                 StackFrame frame = stackFrames[j];
 
@@ -59,7 +58,14 @@ namespace Brainf_ck_sharp.NET
                 Unsafe.Add(ref r0, i) = body;
             }
 
-            return result;
+            // Extract the additional info
+            int errorOffset = stackFrames[depth].Offset;
+            char opcode = Brainf_ckParser.GetCharacterFromOperator(operators[errorOffset]);
+
+            return new InterpreterExceptionInfo(
+                stackTrace,
+                opcode,
+                errorOffset);
         }
 
         /// <summary>
