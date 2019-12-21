@@ -13,11 +13,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ck-sharp.Profiler", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ck-sharp.NET", "Brainf_ck-sharp.NET\Brainf_ck-sharp.NET.csproj", "{ACEEA540-7A2C-4705-AC68-5A8C3A5C2A38}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ck-sharp.NET.Unit", "Brainf_ck-sharp.NET.Unit\Brainf_ck-sharp.NET.Unit.csproj", "{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ck-sharp.NET.Unit", "unit\Brainf_ck-sharp.NET.Unit\Brainf_ck-sharp.NET.Unit.csproj", "{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ck-sharp.Unit.Internals", "Brainf_ck-sharp.Unit.Internals\Brainf_ck-sharp.Unit.Internals.csproj", "{5482BCBE-6A23-4A3D-A0BE-851698B2E73F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ck-sharp.Unit.Internals", "unit\Brainf_ck-sharp.Unit.Internals\Brainf_ck-sharp.Unit.Internals.csproj", "{5482BCBE-6A23-4A3D-A0BE-851698B2E73F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{33D9956A-7535-49AE-811D-B3A4E41E4452}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Legacy", "_Legacy", "{B16A8398-D555-46C8-972A-3F044BEBF8F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{E063B8CE-478C-43E7-B741-B45EEABA52DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -152,8 +156,12 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{29C20CF8-6019-427B-9987-E6059BA657E4} = {B16A8398-D555-46C8-972A-3F044BEBF8F3}
+		{F80A99AB-BB3F-4833-9725-B6010B718687} = {B16A8398-D555-46C8-972A-3F044BEBF8F3}
+		{3447C213-2FCA-4B36-9B70-623B62FEFA43} = {E063B8CE-478C-43E7-B741-B45EEABA52DB}
 		{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4} = {33D9956A-7535-49AE-811D-B3A4E41E4452}
 		{5482BCBE-6A23-4A3D-A0BE-851698B2E73F} = {33D9956A-7535-49AE-811D-B3A4E41E4452}
+		{E063B8CE-478C-43E7-B741-B45EEABA52DB} = {B16A8398-D555-46C8-972A-3F044BEBF8F3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1CF4C98B-AA02-437F-835B-5180310D2C16}
