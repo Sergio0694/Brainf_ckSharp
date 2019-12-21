@@ -24,7 +24,7 @@ namespace Brainf_ck_sharp.NET.Buffers
         private readonly byte[] Buffer;
 
         /// <summary>
-        /// Creates a new <see cref="UnsafeSpan{T}"/> instaance with the specified parameters
+        /// Creates a new <see cref="UnsafeSpan{T}"/> instance with the specified parameters
         /// </summary>
         /// <param name="size">The size of the new memory buffer to use</param>
         private unsafe UnsafeSpan(int size)
