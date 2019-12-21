@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Buffers;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ck_sharp.NET.Buffers;
@@ -127,12 +126,15 @@ namespace Brainf_ck_sharp.NET
              * The two temporary buffers are initialized with a size of half the length of the input
              * executable, because that is the maximum number of open square brackets in a valid source file.
              * The two temporary buffers are used to implement an indirect indexing system while building
-             * the table, which allows to reduce the complexity of the operation from O(N^2) to O(N) */
+             * the table, which allows to reduce the complexity of the operation from O(N^2) to O(N).
+             * UnsafeSpan<T> is used directly here instead of UnsafeMemoryBuffer<T> to save the cost of
+             * allocating a GCHandle and pinning each temporary buffer, which is not necessary since
+             * both buffers are only used in the scope of this method. */
             int tempBuffersLength = operators.Size / 2 + 1;
-            int[] rootTempIndices = ArrayPool<int>.Shared.Rent(tempBuffersLength);
-            int[] functionTempIndices = ArrayPool<int>.Shared.Rent(tempBuffersLength);
-            ref int rootTempIndicesRef = ref rootTempIndices[0];
-            ref int functionTempIndicesRef = ref functionTempIndices[0];
+            using UnsafeSpan<int> rootTempIndices = UnsafeSpan<int>.Allocate(tempBuffersLength);
+            using UnsafeSpan<int> functionTempIndices = UnsafeSpan<int>.Allocate(tempBuffersLength);
+            ref int rootTempIndicesRef = ref rootTempIndices.GetReference();
+            ref int functionTempIndicesRef = ref functionTempIndices.GetReference();
             functionsCount = 0;
 
             // Go through the executable to build the jump table for each open parenthesis or square bracket
@@ -179,12 +181,6 @@ namespace Brainf_ck_sharp.NET
                         break;
                 }
             }
-
-            /* ArrayPool<T> is used directly here instead of UnsafeMemoryBuffer<T> to save the cost of
-             * allocating a GCHandle and pinning each temporary buffer, which is not necessary since
-             * both buffers are only used in the scope of this method, and then disposed */
-            ArrayPool<int>.Shared.Return(rootTempIndices);
-            ArrayPool<int>.Shared.Return(functionTempIndices);
 
             return jumpTable;
         }

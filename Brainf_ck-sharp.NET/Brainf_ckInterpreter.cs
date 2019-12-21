@@ -47,7 +47,7 @@ namespace Brainf_ck_sharp.NET
         /// <remarks>Consider using an overload with a <see cref="CancellationToken"/> to prevent issues with non-halting scripts</remarks>
         public static Option<InterpreterResult> TryRun(string source, string stdin)
         {
-            return TryRun(source, stdin, Specs.DefaultMemorySize, Specs.DefaultOverflowMode);
+            return TryRun(source, stdin, Specs.DefaultMemorySize, Specs.DefaultOverflowMode, CancellationToken.None);
         }
 
         /// <summary>
