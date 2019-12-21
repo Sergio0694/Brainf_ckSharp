@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Legacy", "_legacy\Brainf_ck-sharp\Brainf_ckSharp.Legacy.csproj", "{29C20CF8-6019-427B-9987-E6059BA657E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Legacy", "_legacy\Brainf_ckSharp\Brainf_ckSharp.Legacy.csproj", "{29C20CF8-6019-427B-9987-E6059BA657E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.Legacy.UWP", "_legacy\Brainf_ck-sharp.UWP\Brainf_ckSharp.Legacy.UWP.csproj", "{F80A99AB-BB3F-4833-9725-B6010B718687}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.Legacy.UWP", "_legacy\Brainf_ckSharp.UWP\Brainf_ckSharp.Legacy.UWP.csproj", "{F80A99AB-BB3F-4833-9725-B6010B718687}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ck-sharp.Unit", "_legacy\unit\Brainf_ck-sharp.Unit\Brainf_ck-sharp.Unit.csproj", "{3447C213-2FCA-4B36-9B70-623B62FEFA43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Legacy.Unit", "_legacy\unit\Brainf_ckSharp.Unit\Brainf_ckSharp.Legacy.Unit.csproj", "{3447C213-2FCA-4B36-9B70-623B62FEFA43}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ck-sharp.Profiler", "_legacy\unit\Brainf_ck-sharp.Profiler\Brainf_ck-sharp.Profiler.csproj", "{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Profiler", "_legacy\unit\Brainf_ckSharp.Profiler\Brainf_ckSharp.Profiler.csproj", "{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ck-sharp.NET", "Brainf_ck-sharp.NET\Brainf_ck-sharp.NET.csproj", "{ACEEA540-7A2C-4705-AC68-5A8C3A5C2A38}"
 EndProject

@@ -971,7 +971,7 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Brainf_ck-sharp\Brainf_ckSharp.Legacy.csproj">
+    <ProjectReference Include="..\Brainf_ckSharp\Brainf_ckSharp.Legacy.csproj">
       <Project>{29c20cf8-6019-427b-9987-e6059ba657e4}</Project>
       <Name>Brainf_ckSharp.Legacy</Name>
     </ProjectReference>

@@ -1,8 +1,7 @@
-﻿using Brainf_ckSharp.Legacy;
-using Brainf_ckSharp.Legacy.ReturnTypes;
+﻿using Brainf_ckSharp.Legacy.ReturnTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Brainf_ck_sharp.Unit
+namespace Brainf_ckSharp.Legacy.Unit
 {
     [TestClass]
     [TestCategory(nameof(ScriptTests))]
