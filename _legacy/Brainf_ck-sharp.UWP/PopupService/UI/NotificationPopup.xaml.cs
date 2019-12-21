@@ -1,7 +1,7 @@
 ﻿using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.Helpers.UI;
-using Brainf_ck_sharp_UWP.Messages.Flyouts;
-using Brainf_ck_sharp_UWP.PopupService.Misc;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Flyouts;
+using Brainf_ck_sharp.Legacy.UWP.PopupService.Misc;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
@@ -9,7 +9,7 @@ using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers.PointerEvents;
 
-namespace Brainf_ck_sharp_UWP.PopupService.UI
+namespace Brainf_ck_sharp.Legacy.UWP.PopupService.UI
 {
     public sealed partial class NotificationPopup : UserControl
     {

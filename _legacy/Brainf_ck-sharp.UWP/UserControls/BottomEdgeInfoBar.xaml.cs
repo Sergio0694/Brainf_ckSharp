@@ -1,16 +1,16 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Helpers.UI;
-using Brainf_ck_sharp_UWP.Messages.IDE;
-using Brainf_ck_sharp_UWP.Messages.UI;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.Messages.IDE;
+using Brainf_ck_sharp.Legacy.UWP.Messages.UI;
 using Brainf_ckSharp.Legacy.ReturnTypes;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.UserControls
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls
 {
     /// <summary>
     /// A thin status bar that indicates the IDE status

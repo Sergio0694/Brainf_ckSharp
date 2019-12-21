@@ -1,11 +1,11 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.PopupService.Interfaces;
-using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.PopupService.Interfaces;
+using Brainf_ck_sharp.Legacy.UWP.ViewModels.FlyoutsViewModels;
 
-namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.MemoryState
 {
     public sealed partial class MemoryViewerFlyout : UserControl, IAsyncLoadedContent
     {

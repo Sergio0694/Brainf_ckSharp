@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.DataModels.Misc
+﻿namespace Brainf_ck_sharp.Legacy.UWP.DataModels.Misc
 {
     /// <summary>
     /// A simple struct representing the coordinates and the size info on a 2D line

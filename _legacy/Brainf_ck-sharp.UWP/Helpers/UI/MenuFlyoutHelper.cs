@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using Brainf_ck_sharp_UWP.Enums;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Enums;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers.UI
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers.UI
 {
     /// <summary>
     /// A static class that prepares <see cref="MenuFlyout"/> objects to display

@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.DataModels.ConsoleModels;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.ViewModels;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.ConsoleModels;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.ViewModels;
 
-namespace Brainf_ck_sharp_UWP.Views
+namespace Brainf_ck_sharp.Legacy.UWP.Views
 {
     public sealed partial class ConsoleView : UserControl
     {

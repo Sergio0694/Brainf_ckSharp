@@ -3,17 +3,17 @@ using Windows.Devices.Input;
 using Windows.UI.Text;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Brainf_ck_sharp_UWP.DataModels;
-using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.Enums;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Messages.IDE;
-using Brainf_ck_sharp_UWP.PopupService.Interfaces;
-using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels;
+using Brainf_ck_sharp.Legacy.UWP.DataModels;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc;
+using Brainf_ck_sharp.Legacy.UWP.Enums;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Messages.IDE;
+using Brainf_ck_sharp.Legacy.UWP.PopupService.Interfaces;
+using Brainf_ck_sharp.Legacy.UWP.ViewModels.FlyoutsViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.SnippetsMenu
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.SnippetsMenu
 {
     public sealed partial class FullCodeSnippetsBrowserFlyout : UserControl, IEventConfirmedContent
     {

@@ -4,7 +4,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using UICompositionAnimations.Behaviours;
 
-namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts
 {
     public sealed partial class LoadingPopupControl : UserControl
     {

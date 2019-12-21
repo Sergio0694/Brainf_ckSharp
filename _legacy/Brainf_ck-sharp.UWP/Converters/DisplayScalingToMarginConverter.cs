@@ -3,7 +3,7 @@ using Windows.Graphics.Display;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
-namespace Brainf_ck_sharp_UWP.Converters
+namespace Brainf_ck_sharp.Legacy.UWP.Converters
 {
     /// <summary>
     /// A simple converter that returns two margin values depending on the screen DPI setting

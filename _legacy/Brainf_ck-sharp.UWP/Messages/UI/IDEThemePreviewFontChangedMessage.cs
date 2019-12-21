@@ -1,8 +1,8 @@
-﻿using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
-using Brainf_ck_sharp_UWP.Messages.Abstract;
+﻿using Brainf_ck_sharp.Legacy.UWP.Helpers.CodeFormatting;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Abstract;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Messages.UI
+namespace Brainf_ck_sharp.Legacy.UWP.Messages.UI
 {
     /// <summary>
     /// A message that signals whenever the user changes the current font selection

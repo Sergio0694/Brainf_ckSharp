@@ -1,7 +1,7 @@
-﻿using Brainf_ck_sharp_UWP.DataModels.Misc;
+﻿using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels.ConsoleModels
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.ConsoleModels
 {
     /// <summary>
     /// Represents the exception info for a faulted script run in the console

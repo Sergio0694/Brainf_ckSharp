@@ -1,7 +1,7 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.VirtualKeyboard.Controls
 {
     /// <summary>
     /// A keyboard button with a Brainf_ck operator and its info

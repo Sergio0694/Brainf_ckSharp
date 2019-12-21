@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Brainf_ck_sharp_UWP.PopupService.Interfaces
+namespace Brainf_ck_sharp.Legacy.UWP.PopupService.Interfaces
 {
     /// <summary>
     /// An interface for a control that has to load some data before being displayed

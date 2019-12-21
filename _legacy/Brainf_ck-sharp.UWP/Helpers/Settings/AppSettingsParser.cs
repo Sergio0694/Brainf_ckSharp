@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Brainf_ck_sharp_UWP.Helpers.Settings
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers.Settings
 {
     /// <summary>
     /// A simple <see langword="class"/> that reads and converts some common app settings

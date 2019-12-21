@@ -2,10 +2,10 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 using UICompositionAnimations;
 
-namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.InheritedControls
 {
     /// <summary>
     /// A custom <see cref="Grid"/> thaat hosts a <see cref="Popup"/> with a shadow behind it

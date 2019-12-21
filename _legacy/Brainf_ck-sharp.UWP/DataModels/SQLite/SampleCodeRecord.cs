@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels.SQLite
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite
 {
     /// <summary>
     /// A class that contains the information on a sample source code

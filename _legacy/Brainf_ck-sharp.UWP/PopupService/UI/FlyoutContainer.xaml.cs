@@ -6,10 +6,10 @@ using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Messages.Flyouts;
-using Brainf_ck_sharp_UWP.PopupService.Interfaces;
-using Brainf_ck_sharp_UWP.PopupService.Misc;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Flyouts;
+using Brainf_ck_sharp.Legacy.UWP.PopupService.Interfaces;
+using Brainf_ck_sharp.Legacy.UWP.PopupService.Misc;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using Microsoft.Toolkit.Uwp;
@@ -20,7 +20,7 @@ using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers.PointerEvents;
 using ColorHelper = Microsoft.Toolkit.Uwp.Helpers.ColorHelper;
 
-namespace Brainf_ck_sharp_UWP.PopupService.UI
+namespace Brainf_ck_sharp.Legacy.UWP.PopupService.UI
 {
     /// <summary>
     /// A container to display different popups across the app

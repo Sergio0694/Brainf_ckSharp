@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Brainf_ck_sharp_UWP.DataModels;
-using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.DataModels;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
+namespace Brainf_ck_sharp.Legacy.UWP.ViewModels.FlyoutsViewModels
 {
     public class CodeSnippetsBrowserViewModel
     {

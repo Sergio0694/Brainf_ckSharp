@@ -2,7 +2,7 @@
 using Brainf_ckSharp.Legacy.ReturnTypes;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels.ConsoleMemoryViewer
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.ConsoleMemoryViewer
 {
     /// <summary>
     /// A class with the info on the current console functions table

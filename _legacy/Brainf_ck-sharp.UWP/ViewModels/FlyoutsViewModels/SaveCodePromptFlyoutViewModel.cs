@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
-using Brainf_ck_sharp_UWP.SQLiteDatabase;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite.Enums;
+using Brainf_ck_sharp.Legacy.UWP.SQLiteDatabase;
 using GalaSoft.MvvmLight;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
+namespace Brainf_ck_sharp.Legacy.UWP.ViewModels.FlyoutsViewModels
 {
     public class SaveCodePromptFlyoutViewModel : ViewModelBase
     {

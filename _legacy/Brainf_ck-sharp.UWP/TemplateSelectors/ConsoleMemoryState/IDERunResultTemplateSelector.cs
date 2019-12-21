@@ -1,10 +1,10 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.DataModels.ConsoleMemoryViewer;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.ConsoleMemoryViewer;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 
-namespace Brainf_ck_sharp_UWP.TemplateSelectors.ConsoleMemoryState
+namespace Brainf_ck_sharp.Legacy.UWP.TemplateSelectors.ConsoleMemoryState
 {
     /// <summary>
     /// A template selector for the flyout that shows the complete console memory state info

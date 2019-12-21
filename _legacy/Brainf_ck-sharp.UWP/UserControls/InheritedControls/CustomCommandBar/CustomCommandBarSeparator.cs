@@ -1,9 +1,9 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 
-namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.InheritedControls.CustomCommandBar
 {
     public sealed class CustomCommandBarSeparator : AppBarSeparator, ICustomCommandBarPrimaryItem
     {

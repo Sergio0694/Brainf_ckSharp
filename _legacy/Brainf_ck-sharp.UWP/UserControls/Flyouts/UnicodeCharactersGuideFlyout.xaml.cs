@@ -1,13 +1,13 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.PopupService.Interfaces;
-using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.PopupService.Interfaces;
+using Brainf_ck_sharp.Legacy.UWP.ViewModels.FlyoutsViewModels;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 
-namespace Brainf_ck_sharp_UWP.UserControls.Flyouts
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts
 {
     public sealed partial class UnicodeCharactersGuideFlyout : UserControl, IAsyncLoadedContent
     {

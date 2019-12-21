@@ -1,8 +1,8 @@
 ﻿using System;
-using Brainf_ck_sharp_UWP.Helpers;
+using Brainf_ck_sharp.Legacy.UWP.Helpers;
 using SQLite.Net.Attributes;
 
-namespace Brainf_ck_sharp_UWP.DataModels.SQLite
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite
 {
     /// <summary>
     /// A table that contains saved source codes along with their general info

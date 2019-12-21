@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Views
+namespace Brainf_ck_sharp.Legacy.UWP.Views
 {
     /// <summary>
     /// An <see langword="interface"/> for a page that lets the user work on some source code

@@ -1,10 +1,10 @@
 ﻿using Windows.UI;
 using Windows.UI.Xaml.Media;
-using Brainf_ck_sharp_UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
 using UICompositionAnimations.Brushes;
 using UICompositionAnimations.Lights;
 
-namespace Brainf_ck_sharp_UWP.Resources
+namespace Brainf_ck_sharp.Legacy.UWP.Resources
 {
     /// <summary>
     /// A simple class to manage the app custom brushes

@@ -1,9 +1,9 @@
 ﻿using System;
 using Windows.UI.Xaml;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers.UI
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers.UI
 {
     /// <summary>
     /// A simple class that gets/sets values to and from XAML resources in the app

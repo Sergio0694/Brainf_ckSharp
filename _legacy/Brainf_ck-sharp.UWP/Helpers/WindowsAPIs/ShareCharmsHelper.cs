@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Windows.ApplicationModel.DataTransfer;
-using Brainf_ck_sharp_UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers.WindowsAPIs
 {
     /// <summary>
     /// A static class that manages the DataTransferManager instance for the current application

@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels.Misc
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.Misc
 {
     /// <summary>
     /// A simple class that wraps the info on a given release version of the app

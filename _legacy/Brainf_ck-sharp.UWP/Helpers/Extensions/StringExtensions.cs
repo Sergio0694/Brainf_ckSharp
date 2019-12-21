@@ -6,10 +6,10 @@ using System.Text;
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using Brainf_ck_sharp_UWP.DataModels.Misc;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers.Extensions
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions
 {
     /// <summary>
     /// An extension class with some helper methods to work with strings

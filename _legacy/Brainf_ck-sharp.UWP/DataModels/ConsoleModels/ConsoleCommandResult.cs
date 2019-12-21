@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels.ConsoleModels
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.ConsoleModels
 {
     /// <summary>
     /// Represents the text output for an interpreter script that was run correctly

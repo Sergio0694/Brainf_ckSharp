@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Brainf_ck_sharp_UWP.DataModels;
-using Brainf_ck_sharp_UWP.DataModels.Settings;
-using Brainf_ck_sharp_UWP.ViewModels.Abstract.JumpList;
+using Brainf_ck_sharp.Legacy.UWP.DataModels;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Settings;
+using Brainf_ck_sharp.Legacy.UWP.ViewModels.Abstract.JumpList;
 
-namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
+namespace Brainf_ck_sharp.Legacy.UWP.ViewModels.FlyoutsViewModels.Settings
 {
     public class SettingsJumpListViewModel : SyncJumpListViewModelBase<CategorizedSettingsViewModel, CategorizedSettingsViewModel>
     {

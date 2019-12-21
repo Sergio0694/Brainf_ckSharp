@@ -1,8 +1,8 @@
 ﻿using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.Messages.Actions;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Actions;
 using GalaSoft.MvvmLight.Messaging;
 
-namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.VirtualKeyboard
 {
     public sealed partial class VirtualArrowsKeyboardControl : UserControl
     {

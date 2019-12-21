@@ -2,10 +2,10 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.AttachedProperties
+namespace Brainf_ck_sharp.Legacy.UWP.AttachedProperties
 {
     /// <summary>
     /// A class with an attached XAML property to parse bullet lists to display in a target <see cref="TextBlock"/> control

@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers.Extensions
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions
 {
     /// <summary>
     /// A simple static class with some useful extension methods

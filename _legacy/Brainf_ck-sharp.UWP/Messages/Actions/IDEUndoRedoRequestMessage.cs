@@ -1,6 +1,6 @@
-﻿using Brainf_ck_sharp_UWP.Messages.Abstract;
+﻿using Brainf_ck_sharp.Legacy.UWP.Messages.Abstract;
 
-namespace Brainf_ck_sharp_UWP.Messages.Actions
+namespace Brainf_ck_sharp.Legacy.UWP.Messages.Actions
 {
     /// <summary>
     /// A message that indicates a user request to either undo or redo the latest IDE changes

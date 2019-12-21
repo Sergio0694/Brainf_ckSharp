@@ -1,6 +1,6 @@
 ﻿using Windows.UI.ViewManagement;
 
-namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers.WindowsAPIs
 {
     /// <summary>
     /// A simple helper class that exposes methods that use the <see cref="ApplicationView"/> APIs

@@ -1,7 +1,7 @@
 ﻿using Brainf_ckSharp.Legacy.Enums;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Messages.Actions
+namespace Brainf_ck_sharp.Legacy.UWP.Messages.Actions
 {
     /// <summary>
     /// Indicates that the user requested to run the current script being edited

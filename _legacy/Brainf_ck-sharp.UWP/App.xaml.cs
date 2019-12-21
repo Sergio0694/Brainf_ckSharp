@@ -1,31 +1,32 @@
-﻿using System.Text.RegularExpressions;
-using Microsoft.HockeyApp;
+﻿using System.Diagnostics;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using Brainf_ck_sharp_UWP.DataModels.SQLite;
-using Brainf_ck_sharp_UWP.Enums;
-using Brainf_ck_sharp_UWP.Helpers;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Helpers.UI;
-using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
-using Brainf_ck_sharp_UWP.Messages.IDE;
-using Brainf_ck_sharp_UWP.Messages.Requests;
-using Brainf_ck_sharp_UWP.Messages.UI;
-using Brainf_ck_sharp_UWP.PopupService;
-using Brainf_ck_sharp_UWP.Resources;
-using Brainf_ck_sharp_UWP.SQLiteDatabase;
-using Brainf_ck_sharp_UWP.UserControls;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite;
+using Brainf_ck_sharp.Legacy.UWP.Enums;
+using Brainf_ck_sharp.Legacy.UWP.Helpers;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Settings;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp.Legacy.UWP.Messages.IDE;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Requests;
+using Brainf_ck_sharp.Legacy.UWP.Messages.UI;
+using Brainf_ck_sharp.Legacy.UWP.PopupService;
+using Brainf_ck_sharp.Legacy.UWP.Resources;
+using Brainf_ck_sharp.Legacy.UWP.SQLiteDatabase;
+using Brainf_ck_sharp.Legacy.UWP.UserControls;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.HockeyApp;
 using UICompositionAnimations.Lights;
 #if DEBUG
-using System.Diagnostics;
+
 #endif
 
-namespace Brainf_ck_sharp_UWP
+namespace Brainf_ck_sharp.Legacy.UWP
 {
     /// <summary>
     /// Fornisci un comportamento specifico dell'applicazione in supplemento alla classe Application predefinita.

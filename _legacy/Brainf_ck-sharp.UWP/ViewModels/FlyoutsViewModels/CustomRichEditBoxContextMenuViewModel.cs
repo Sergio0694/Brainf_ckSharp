@@ -1,9 +1,9 @@
 ﻿using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Text;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
+namespace Brainf_ck_sharp.Legacy.UWP.ViewModels.FlyoutsViewModels
 {
     public class CustomRichEditBoxContextMenuViewModel : CodeSnippetsBrowserViewModel
     {

@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.DataModels.IDEResults
+﻿namespace Brainf_ck_sharp.Legacy.UWP.DataModels.IDEResults
 {
     /// <summary>
     /// The base class for models that indicate a specific result type when running code in the IDE

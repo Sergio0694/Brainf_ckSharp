@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.DataModels.IDEResults
+﻿namespace Brainf_ck_sharp.Legacy.UWP.DataModels.IDEResults
 {
     /// <summary>
     /// Indicates the kind of info to show about an interpreter session

@@ -1,8 +1,8 @@
-﻿using Brainf_ck_sharp_UWP.DataModels.SQLite;
-using Brainf_ck_sharp_UWP.Enums;
+﻿using Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite;
+using Brainf_ck_sharp.Legacy.UWP.Enums;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels.EventArgs
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.EventArgs
 {
     /// <summary>
     /// The arguments for an event that signals a request to share a saved source code

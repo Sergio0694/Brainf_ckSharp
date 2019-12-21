@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.Helpers.Settings
+﻿namespace Brainf_ck_sharp.Legacy.UWP.Helpers.Settings
 {
     /// <summary>
     /// Indicates a mode to save or update an app setting

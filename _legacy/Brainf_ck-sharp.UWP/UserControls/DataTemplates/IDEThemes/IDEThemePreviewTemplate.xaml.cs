@@ -5,15 +5,15 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
-using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
-using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Messages.UI;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc.Themes;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.CodeFormatting;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Settings;
+using Brainf_ck_sharp.Legacy.UWP.Messages.UI;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.IDEThemes
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.DataTemplates.IDEThemes
 {
     public sealed partial class IDEThemePreviewTemplate : UserControl
     {

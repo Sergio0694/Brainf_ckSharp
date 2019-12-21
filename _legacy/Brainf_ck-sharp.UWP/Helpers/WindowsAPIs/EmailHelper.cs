@@ -4,7 +4,7 @@ using Windows.ApplicationModel.Email;
 using Windows.Storage;
 using Windows.Storage.Streams;
 
-namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers.WindowsAPIs
 {
     /// <summary>
     /// Static class with the helper methods to send emails from the app

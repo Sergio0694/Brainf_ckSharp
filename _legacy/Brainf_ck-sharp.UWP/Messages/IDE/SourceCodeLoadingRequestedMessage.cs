@@ -1,8 +1,8 @@
-﻿using Brainf_ck_sharp_UWP.DataModels.SQLite;
-using Brainf_ck_sharp_UWP.Enums;
+﻿using Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite;
+using Brainf_ck_sharp.Legacy.UWP.Enums;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Messages.IDE
+namespace Brainf_ck_sharp.Legacy.UWP.Messages.IDE
 {
     /// <summary>
     /// A message that signals when the user requests to load a source code

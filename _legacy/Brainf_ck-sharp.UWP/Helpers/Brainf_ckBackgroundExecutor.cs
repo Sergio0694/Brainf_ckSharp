@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
-using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Messages.Requests;
-using Brainf_ck_sharp_UWP.Messages.UI;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Settings;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Requests;
+using Brainf_ck_sharp.Legacy.UWP.Messages.UI;
 using Brainf_ckSharp.Legacy;
 using Brainf_ckSharp.Legacy.Enums;
 using Brainf_ckSharp.Legacy.MemoryState;
@@ -11,7 +11,7 @@ using Brainf_ckSharp.Legacy.ReturnTypes;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers
 {
     /// <summary>
     /// A service that executes the current code the user is working on periodically in the background, notifying the UI

@@ -2,9 +2,9 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 
-namespace Brainf_ck_sharp_UWP.UserControls.Header
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.Header
 {
     public sealed partial class HeaderButtonControl : UserControl
     {

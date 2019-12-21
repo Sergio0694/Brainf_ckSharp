@@ -1,8 +1,8 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 
-namespace Brainf_ck_sharp_UWP.Converters
+namespace Brainf_ck_sharp.Legacy.UWP.Converters
 {
     /// <summary>
     /// A converter that returns a printable character or the string representation of its value

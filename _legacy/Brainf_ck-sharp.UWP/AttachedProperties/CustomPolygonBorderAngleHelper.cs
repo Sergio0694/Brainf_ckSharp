@@ -2,10 +2,10 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.AttachedProperties
+namespace Brainf_ck_sharp.Legacy.UWP.AttachedProperties
 {
     /// <summary>
     /// An attached property that creates an angle in the top left corner of the input polygon

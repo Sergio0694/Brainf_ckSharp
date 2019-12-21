@@ -2,7 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.VirtualKeyboard.Controls
 {
     public sealed partial class VirtualArrowKeyboardButton : UserControl
     {

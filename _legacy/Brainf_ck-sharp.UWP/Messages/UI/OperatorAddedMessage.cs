@@ -1,6 +1,6 @@
-﻿using Brainf_ck_sharp_UWP.Messages.Abstract;
+﻿using Brainf_ck_sharp.Legacy.UWP.Messages.Abstract;
 
-namespace Brainf_ck_sharp_UWP.Messages.UI
+namespace Brainf_ck_sharp.Legacy.UWP.Messages.UI
 {
     /// <summary>
     /// A simple message that signals when a new operator is being added by the user

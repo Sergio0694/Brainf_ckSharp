@@ -3,7 +3,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.InheritedControls
 {
     /// <summary>
     /// A custom <see cref="Button"/> that keeps being highlighted whenever a linked flyout is open

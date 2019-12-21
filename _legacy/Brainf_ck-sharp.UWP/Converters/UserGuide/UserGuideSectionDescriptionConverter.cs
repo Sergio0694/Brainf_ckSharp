@@ -1,10 +1,10 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
-using Brainf_ck_sharp_UWP.Enums;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.Enums;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
 
-namespace Brainf_ck_sharp_UWP.Converters.UserGuide
+namespace Brainf_ck_sharp.Legacy.UWP.Converters.UserGuide
 {
     /// <summary>
     /// A simple converter for the description of the user guide sections

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Brainf_ck_sharp_UWP.PopupService.Interfaces
+namespace Brainf_ck_sharp.Legacy.UWP.PopupService.Interfaces
 {
     /// <summary>
     /// An interface for a control that can change its status to signal when it can be confirmed

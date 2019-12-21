@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.ViewModels.FlyoutsViewModels;
 
-namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.UserGuide
 {
     public sealed partial class UserGuideViewerControl : UserControl
     {

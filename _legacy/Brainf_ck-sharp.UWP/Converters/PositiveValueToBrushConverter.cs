@@ -1,11 +1,11 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
 using Microsoft.Toolkit.Uwp.Helpers;
 
-namespace Brainf_ck_sharp_UWP.Converters
+namespace Brainf_ck_sharp.Legacy.UWP.Converters
 {
     /// <summary>
     /// A converter that binds to an int value returns the accent color or a fallback color depending on the input value

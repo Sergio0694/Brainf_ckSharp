@@ -3,15 +3,15 @@ using Windows.Devices.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
-using Brainf_ck_sharp_UWP.AttachedProperties;
-using Brainf_ck_sharp_UWP.DataModels;
-using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.AttachedProperties;
+using Brainf_ck_sharp.Legacy.UWP.DataModels;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers.PointerEvents;
 
-namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.SnippetsMenu
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.DataTemplates.SnippetsMenu
 {
     public sealed partial class CodeSnippetTemplate : UserControl
     {

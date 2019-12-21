@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
-using Brainf_ck_sharp_UWP.DataModels;
-using Brainf_ck_sharp_UWP.DataModels.SQLite;
-using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
-using Brainf_ck_sharp_UWP.Enums;
-using Brainf_ck_sharp_UWP.Helpers;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Helpers.UI;
-using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
-using Brainf_ck_sharp_UWP.Messages.UI;
-using Brainf_ck_sharp_UWP.SQLiteDatabase;
-using Brainf_ck_sharp_UWP.ViewModels.Abstract.JumpList;
+using Brainf_ck_sharp.Legacy.UWP.DataModels;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite.Enums;
+using Brainf_ck_sharp.Legacy.UWP.Enums;
+using Brainf_ck_sharp.Legacy.UWP.Helpers;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp.Legacy.UWP.Messages.UI;
+using Brainf_ck_sharp.Legacy.UWP.SQLiteDatabase;
+using Brainf_ck_sharp.Legacy.UWP.ViewModels.Abstract.JumpList;
 using Brainf_ckSharp.Legacy;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
+namespace Brainf_ck_sharp.Legacy.UWP.ViewModels.FlyoutsViewModels
 {
     public class LocalSourceCodesBrowserFlyoutViewModel : DeferredJumpListViewModelBase<SavedSourceCodeType, CategorizedSourceCodeWithSyntaxInfo>
     {

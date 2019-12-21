@@ -1,10 +1,10 @@
 ﻿<UserControl
-    x:Class="Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.VirtualArrowsKeyboardControl"
+    x:Class="Brainf_ck_sharp.Legacy.UWP.UserControls.VirtualKeyboard.VirtualArrowsKeyboardControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls"
+    xmlns:controls="using:Brainf_ck_sharp.Legacy.UWP.UserControls.VirtualKeyboard.Controls"
     mc:Ignorable="d"
     d:DesignHeight="96"
     d:DesignWidth="144">

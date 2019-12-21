@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Brainf_ck_sharp_UWP.PopupService.Interfaces
+namespace Brainf_ck_sharp.Legacy.UWP.PopupService.Interfaces
 {
     /// <summary>
     /// An <see langword="interface"/> to apply to a content to be shown inside a flyout

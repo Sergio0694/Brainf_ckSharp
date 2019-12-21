@@ -1,6 +1,6 @@
 ﻿using Windows.Foundation;
 
-namespace Brainf_ck_sharp_UWP.DataModels.Misc.CharactersInfo
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.Misc.CharactersInfo
 {
     /// <summary>
     /// A simple struct that indicates a character and its 2D area inside a plain text

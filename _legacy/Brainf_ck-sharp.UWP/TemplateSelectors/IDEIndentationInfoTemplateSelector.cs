@@ -1,9 +1,9 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc.IDEIndentationGuides;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 
-namespace Brainf_ck_sharp_UWP.TemplateSelectors
+namespace Brainf_ck_sharp.Legacy.UWP.TemplateSelectors
 {
     public class IDEIndentationInfoTemplateSelector : DataTemplateSelector
     {

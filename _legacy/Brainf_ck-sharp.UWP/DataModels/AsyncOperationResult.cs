@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels
 {
     /// <summary>
     /// A struct that wraps the result of a safe async operation

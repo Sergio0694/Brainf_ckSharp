@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers.WindowsAPIs
 {
     /// <summary>
     /// A simple <see langword="class"/> with some methods to perform clipboard operations

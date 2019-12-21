@@ -1,10 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml.Data;
-using Brainf_ck_sharp_UWP.DataModels;
+using Brainf_ck_sharp.Legacy.UWP.DataModels;
 using GalaSoft.MvvmLight;
 
-namespace Brainf_ck_sharp_UWP.ViewModels.Abstract.JumpList
+namespace Brainf_ck_sharp.Legacy.UWP.ViewModels.Abstract.JumpList
 {
     /// <summary>
     /// An abstract class to be used inside a ViewModel for a page with a JumpList

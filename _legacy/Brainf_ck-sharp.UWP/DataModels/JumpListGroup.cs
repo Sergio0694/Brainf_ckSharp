@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels
 {
     /// <summary>
     /// A class that represents a single group to be displayed in a semantic zoom control

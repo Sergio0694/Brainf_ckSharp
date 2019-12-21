@@ -1,6 +1,6 @@
-﻿using Brainf_ck_sharp_UWP.Messages.Abstract;
+﻿using Brainf_ck_sharp.Legacy.UWP.Messages.Abstract;
 
-namespace Brainf_ck_sharp_UWP.Messages.IDE
+namespace Brainf_ck_sharp.Legacy.UWP.Messages.IDE
 {
     /// <summary>
     /// A message that indicates whether the latest requested breakpoint could be created successfully

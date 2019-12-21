@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Brainf_ck_sharp_UWP.ViewModels.Abstract;
+using Brainf_ck_sharp.Legacy.UWP.ViewModels.Abstract;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
+namespace Brainf_ck_sharp.Legacy.UWP.ViewModels.FlyoutsViewModels
 {
     public class UnicodeCharactersGuideFlyoutViewModel : ItemsCollectionViewModelBase<int>
     {

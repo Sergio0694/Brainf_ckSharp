@@ -1,6 +1,6 @@
-﻿using Brainf_ck_sharp_UWP.Messages.Abstract;
+﻿using Brainf_ck_sharp.Legacy.UWP.Messages.Abstract;
 
-namespace Brainf_ck_sharp_UWP.Messages.Actions
+namespace Brainf_ck_sharp.Legacy.UWP.Messages.Actions
 {
     /// <summary>
     /// A messaged that signals whenever the user inputs a character into the app, regardless of current focus

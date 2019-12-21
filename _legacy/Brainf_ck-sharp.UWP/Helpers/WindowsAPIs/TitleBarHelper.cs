@@ -2,7 +2,7 @@
 using Windows.UI;
 using Windows.UI.ViewManagement;
 
-namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers.WindowsAPIs
 {
     /// <summary>
     /// A simple class that manages the UI of the title bar for the app

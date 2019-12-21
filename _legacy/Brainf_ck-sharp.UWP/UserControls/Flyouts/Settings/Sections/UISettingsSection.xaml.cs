@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Helpers.UI;
-using Brainf_ck_sharp_UWP.PopupService;
-using Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.PopupService;
+using Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.UserGuide;
 
-namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings.Sections
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.Settings.Sections
 {
     public sealed partial class UISettingsSection : UserControl
     {

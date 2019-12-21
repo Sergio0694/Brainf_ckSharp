@@ -6,36 +6,36 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Brainf_ck_sharp_UWP.DataModels.SQLite;
-using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
-using Brainf_ck_sharp_UWP.Enums;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Helpers.UI;
-using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
-using Brainf_ck_sharp_UWP.Messages.Actions;
-using Brainf_ck_sharp_UWP.Messages.Flyouts;
-using Brainf_ck_sharp_UWP.Messages.IDE;
-using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
-using Brainf_ck_sharp_UWP.Messages.Requests;
-using Brainf_ck_sharp_UWP.Messages.Settings;
-using Brainf_ck_sharp_UWP.Messages.UI;
-using Brainf_ck_sharp_UWP.PopupService;
-using Brainf_ck_sharp_UWP.PopupService.Misc;
-using Brainf_ck_sharp_UWP.UserControls.Flyouts;
-using Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo;
-using Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState;
-using Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide;
-using Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard;
-using Brainf_ck_sharp_UWP.ViewModels;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite.Enums;
+using Brainf_ck_sharp.Legacy.UWP.Enums;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Settings;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Actions;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Flyouts;
+using Brainf_ck_sharp.Legacy.UWP.Messages.IDE;
+using Brainf_ck_sharp.Legacy.UWP.Messages.KeyboardShortcuts;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Requests;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Settings;
+using Brainf_ck_sharp.Legacy.UWP.Messages.UI;
+using Brainf_ck_sharp.Legacy.UWP.PopupService;
+using Brainf_ck_sharp.Legacy.UWP.PopupService.Misc;
+using Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts;
+using Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.DevInfo;
+using Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.MemoryState;
+using Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.UserGuide;
+using Brainf_ck_sharp.Legacy.UWP.UserControls.VirtualKeyboard;
+using Brainf_ck_sharp.Legacy.UWP.ViewModels;
 using Brainf_ckSharp.Legacy.MemoryState;
 using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
-using MemoryViewerFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState.MemoryViewerFlyout;
-using SettingsPanelFlyout = Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings.SettingsPanelFlyout;
+using MemoryViewerFlyout = Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.MemoryState.MemoryViewerFlyout;
+using SettingsPanelFlyout = Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.Settings.SettingsPanelFlyout;
 
-namespace Brainf_ck_sharp_UWP.UserControls
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls
 {
     public sealed partial class Shell : UserControl
     {

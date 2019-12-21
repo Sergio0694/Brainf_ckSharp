@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.Messages.Requests.Abstract;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Requests.Abstract;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Messages.Requests
+namespace Brainf_ck_sharp.Legacy.UWP.Messages.Requests
 {
     /// <summary>
     /// An class with some extension methods for the <see cref="IMessenger"/> type

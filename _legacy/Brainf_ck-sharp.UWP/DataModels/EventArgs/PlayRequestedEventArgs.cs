@@ -1,7 +1,7 @@
 ﻿using Brainf_ckSharp.Legacy.Enums;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels.EventArgs
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.EventArgs
 {
     /// <summary>
     /// The arguments for an event that signals a request to execute a source code

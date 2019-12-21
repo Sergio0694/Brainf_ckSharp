@@ -1,9 +1,9 @@
-﻿using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
+﻿using Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite.Enums;
 using Brainf_ckSharp.Legacy;
 using Brainf_ckSharp.Legacy.ReturnTypes;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels.SQLite
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite
 {
     /// <summary>
     /// A class that wraps a categorized source code with additional info on its syntax state

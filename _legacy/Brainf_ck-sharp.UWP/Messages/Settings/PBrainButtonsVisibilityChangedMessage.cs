@@ -1,6 +1,6 @@
-﻿using Brainf_ck_sharp_UWP.Messages.Abstract;
+﻿using Brainf_ck_sharp.Legacy.UWP.Messages.Abstract;
 
-namespace Brainf_ck_sharp_UWP.Messages.Settings
+namespace Brainf_ck_sharp.Legacy.UWP.Messages.Settings
 {
     /// <summary>
     /// A message that notifies whenever the user changes the visibility setting for the PBrain buttons

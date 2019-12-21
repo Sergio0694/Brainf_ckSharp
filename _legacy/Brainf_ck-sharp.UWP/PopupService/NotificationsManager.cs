@@ -2,12 +2,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls.Primitives;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
-using Brainf_ck_sharp_UWP.Messages.Flyouts;
-using Brainf_ck_sharp_UWP.PopupService.Misc;
-using Brainf_ck_sharp_UWP.PopupService.UI;
-using Brainf_ck_sharp_UWP.UserControls.InheritedControls;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Flyouts;
+using Brainf_ck_sharp.Legacy.UWP.PopupService.Misc;
+using Brainf_ck_sharp.Legacy.UWP.PopupService.UI;
+using Brainf_ck_sharp.Legacy.UWP.UserControls.InheritedControls;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
@@ -15,7 +15,7 @@ using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers;
 using UICompositionAnimations.Lights;
 
-namespace Brainf_ck_sharp_UWP.PopupService
+namespace Brainf_ck_sharp.Legacy.UWP.PopupService
 {
     /// <summary>
     /// A static class that manages the in-app notifications

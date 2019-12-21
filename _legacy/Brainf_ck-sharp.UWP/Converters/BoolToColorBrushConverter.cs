@@ -1,9 +1,9 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 using Microsoft.Toolkit.Uwp.Helpers;
 
-namespace Brainf_ck_sharp_UWP.Converters
+namespace Brainf_ck_sharp.Legacy.UWP.Converters
 {
     /// <summary>
     /// A converter that picks between two input colors depending on the target value

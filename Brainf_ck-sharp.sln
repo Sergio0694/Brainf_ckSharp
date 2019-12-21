@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Legacy", "_legacy\Brainf_ck-sharp\Brainf_ckSharp.Legacy.csproj", "{29C20CF8-6019-427B-9987-E6059BA657E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ck-sharp.UWP", "_legacy\Brainf_ck-sharp.UWP\Brainf_ck-sharp.UWP.csproj", "{F80A99AB-BB3F-4833-9725-B6010B718687}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.Legacy.UWP", "_legacy\Brainf_ck-sharp.UWP\Brainf_ckSharp.Legacy.UWP.csproj", "{F80A99AB-BB3F-4833-9725-B6010B718687}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ck-sharp.Unit", "_legacy\unit\Brainf_ck-sharp.Unit\Brainf_ck-sharp.Unit.csproj", "{3447C213-2FCA-4B36-9B70-623B62FEFA43}"
 EndProject

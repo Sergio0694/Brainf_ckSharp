@@ -1,9 +1,9 @@
 ﻿using System;
-using Brainf_ck_sharp_UWP.Helpers.UI;
-using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.ViewModels.FlyoutsViewModels.Settings;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels.Settings
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.Settings
 {
     /// <summary>
     /// Represents a settings section with a reference to the main <see cref="SettingsViewModel"/> instance

@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 
-namespace Brainf_ck_sharp_UWP.ViewModels.Abstract
+namespace Brainf_ck_sharp.Legacy.UWP.ViewModels.Abstract
 {
     /// <summary>
     /// A VM for a view that exposes a collection of items of the same type

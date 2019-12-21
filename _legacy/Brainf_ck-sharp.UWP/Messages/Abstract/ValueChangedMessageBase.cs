@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.Messages.Abstract
+﻿namespace Brainf_ck_sharp.Legacy.UWP.Messages.Abstract
 {
     /// <summary>
     /// A base message that signals whenever a specific value has changed

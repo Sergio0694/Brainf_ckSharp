@@ -8,12 +8,12 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 using JetBrains.Annotations;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 
-namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.InheritedControls.CustomCommandBar
 {
     /// <summary>
     /// A custom CommandBar that uses an animation to show/hide groups of primary buttons inside it

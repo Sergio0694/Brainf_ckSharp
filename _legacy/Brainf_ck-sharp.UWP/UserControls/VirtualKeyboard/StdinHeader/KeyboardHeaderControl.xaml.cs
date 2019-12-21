@@ -1,17 +1,17 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Helpers.UI;
-using Brainf_ck_sharp_UWP.Messages.Settings;
-using Brainf_ck_sharp_UWP.PopupService;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Settings;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Settings;
+using Brainf_ck_sharp.Legacy.UWP.PopupService;
 using Brainf_ckSharp.Legacy.Enums;
 using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers.PointerEvents;
 
-namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.StdinHeader
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.VirtualKeyboard.StdinHeader
 {
     public sealed partial class KeyboardHeaderControl : UserControl
     {

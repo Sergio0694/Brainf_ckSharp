@@ -1,12 +1,12 @@
 ﻿using Windows.Devices.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers.PointerEvents;
 
-namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.CustomControls
 {
     public sealed partial class IDESessionBreakpointOptionControl : UserControl
     {

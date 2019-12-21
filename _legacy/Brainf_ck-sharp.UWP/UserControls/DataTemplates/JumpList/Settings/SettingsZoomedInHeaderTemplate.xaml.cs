@@ -1,9 +1,9 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 using UICompositionAnimations.Helpers.PointerEvents;
 
-namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.Settings
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.DataTemplates.JumpList.Settings
 {
     public sealed partial class SettingsZoomedInHeaderTemplate : UserControl
     {

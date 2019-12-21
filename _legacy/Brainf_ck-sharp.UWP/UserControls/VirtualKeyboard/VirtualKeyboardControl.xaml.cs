@@ -6,19 +6,19 @@ using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Brainf_ck_sharp_UWP.Enums;
-using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Messages.Requests;
-using Brainf_ck_sharp_UWP.Messages.Settings;
-using Brainf_ck_sharp_UWP.Messages.UI;
-using Brainf_ck_sharp_UWP.PopupService;
-using Brainf_ck_sharp_UWP.UserControls.Flyouts.SnippetsMenu;
-using Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls;
+using Brainf_ck_sharp.Legacy.UWP.Enums;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Settings;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Requests;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Settings;
+using Brainf_ck_sharp.Legacy.UWP.Messages.UI;
+using Brainf_ck_sharp.Legacy.UWP.PopupService;
+using Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.SnippetsMenu;
+using Brainf_ck_sharp.Legacy.UWP.UserControls.VirtualKeyboard.Controls;
 using GalaSoft.MvvmLight.Messaging;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.XAMLTransform;
 
-namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.VirtualKeyboard
 {
     /// <summary>
     /// A <see cref="UserControl"/> with a 2-rows grid that hosts virtual buttons for the 8 Brainf_ck operators

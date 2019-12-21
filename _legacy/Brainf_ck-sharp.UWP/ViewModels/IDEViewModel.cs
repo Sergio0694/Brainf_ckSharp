@@ -7,25 +7,25 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Text;
-using Brainf_ck_sharp_UWP.DataModels;
-using Brainf_ck_sharp_UWP.DataModels.EventArgs;
-using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.DataModels.Misc.CharactersInfo;
-using Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides;
-using Brainf_ck_sharp_UWP.DataModels.SQLite;
-using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
-using Brainf_ck_sharp_UWP.Enums;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Helpers.UI;
-using Brainf_ck_sharp_UWP.Messages.Actions;
-using Brainf_ck_sharp_UWP.Messages.IDE;
-using Brainf_ck_sharp_UWP.Messages.Requests;
-using Brainf_ck_sharp_UWP.Messages.UI;
-using Brainf_ck_sharp_UWP.PopupService;
-using Brainf_ck_sharp_UWP.PopupService.Misc;
-using Brainf_ck_sharp_UWP.SQLiteDatabase;
-using Brainf_ck_sharp_UWP.ViewModels.Abstract;
+using Brainf_ck_sharp.Legacy.UWP.DataModels;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.EventArgs;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc.CharactersInfo;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc.IDEIndentationGuides;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite.Enums;
+using Brainf_ck_sharp.Legacy.UWP.Enums;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Settings;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Actions;
+using Brainf_ck_sharp.Legacy.UWP.Messages.IDE;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Requests;
+using Brainf_ck_sharp.Legacy.UWP.Messages.UI;
+using Brainf_ck_sharp.Legacy.UWP.PopupService;
+using Brainf_ck_sharp.Legacy.UWP.PopupService.Misc;
+using Brainf_ck_sharp.Legacy.UWP.SQLiteDatabase;
+using Brainf_ck_sharp.Legacy.UWP.ViewModels.Abstract;
 using Brainf_ckSharp.Legacy;
 using Brainf_ckSharp.Legacy.ReturnTypes;
 using DiffPlex;
@@ -34,7 +34,7 @@ using DiffPlex.DiffBuilder.Model;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.ViewModels
+namespace Brainf_ck_sharp.Legacy.UWP.ViewModels
 {
     public class IDEViewModel : ItemsCollectionViewModelBase<IDEIndentationLineInfo>
     {

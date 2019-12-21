@@ -1,8 +1,8 @@
 ﻿using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.ViewModels.FlyoutsViewModels;
 
-namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.DevInfo
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.DevInfo
 {
     public sealed partial class ChangelogViewFlyout : UserControl
     {

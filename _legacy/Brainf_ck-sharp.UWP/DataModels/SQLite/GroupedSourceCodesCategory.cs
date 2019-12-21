@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite.Enums;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels.SQLite
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite
 {
     /// <summary>
     /// A simple class that contains the info on a category of source codes and the contained items

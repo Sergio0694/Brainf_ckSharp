@@ -2,7 +2,7 @@
 using Windows.UI.Xaml;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls.CustomCommandBar
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.InheritedControls.CustomCommandBar
 {
     /// <summary>
     /// An interface for a custom button/separator/item placed in an animated command bar

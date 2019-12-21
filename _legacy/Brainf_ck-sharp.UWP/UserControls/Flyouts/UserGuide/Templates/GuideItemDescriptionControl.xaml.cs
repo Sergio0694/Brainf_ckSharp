@@ -3,7 +3,7 @@ using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.UserGuide.Templates
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.UserGuide.Templates
 {
     public sealed partial class GuideItemDescriptionControl : UserControl
     {

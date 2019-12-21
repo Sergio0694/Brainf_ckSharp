@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.PopupService.Misc
+﻿namespace Brainf_ck_sharp.Legacy.UWP.PopupService.Misc
 {
     /// <summary>
     /// Indicates the type of notification being shown to the user

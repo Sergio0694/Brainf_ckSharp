@@ -1,7 +1,7 @@
 ﻿using Brainf_ckSharp.Legacy.ReturnTypes;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels.IDEResults
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.IDEResults
 {
     /// <summary>
     /// A model that exposes general info for a script run in the IDE

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Windows.UI.Xaml.Data;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 
-namespace Brainf_ck_sharp_UWP.Converters
+namespace Brainf_ck_sharp.Legacy.UWP.Converters
 {
     public class ReadableCharactersConverter : IValueConverter
     {

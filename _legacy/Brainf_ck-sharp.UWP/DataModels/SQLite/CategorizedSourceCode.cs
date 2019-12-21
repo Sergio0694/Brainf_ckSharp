@@ -1,7 +1,7 @@
-﻿using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
+﻿using Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite.Enums;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels.SQLite
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite
 {
     /// <summary>
     /// A small wrapper class for a <see cref="SourceCode"/> object and its <see cref="SavedSourceCodeType"/> category

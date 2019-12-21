@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using Windows.UI;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels.Misc.Themes
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.Misc.Themes
 {
     /// <summary>
     /// A class that holds all the relevant color info on an IDE theme

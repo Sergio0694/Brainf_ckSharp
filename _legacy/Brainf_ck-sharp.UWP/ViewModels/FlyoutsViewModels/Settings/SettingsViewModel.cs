@@ -2,25 +2,26 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.Services.Store;
-using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
-using Brainf_ck_sharp_UWP.Helpers;
-using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Helpers.UI;
-using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
-using Brainf_ck_sharp_UWP.Messages.Settings;
-using Brainf_ck_sharp_UWP.Messages.UI;
-using Brainf_ck_sharp_UWP.PopupService;
-using Brainf_ck_sharp_UWP.PopupService.Misc;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc.Themes;
+using Brainf_ck_sharp.Legacy.UWP.Helpers;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.CodeFormatting;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Settings;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Settings;
+using Brainf_ck_sharp.Legacy.UWP.Messages.UI;
+using Brainf_ck_sharp.Legacy.UWP.PopupService;
+using Brainf_ck_sharp.Legacy.UWP.PopupService.Misc;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
+
 #if !DEBUG
 using System.Linq; //Used to check the license
 #endif
 
-namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels.Settings
+namespace Brainf_ck_sharp.Legacy.UWP.ViewModels.FlyoutsViewModels.Settings
 {
     public class SettingsViewModel : ViewModelBase
     {

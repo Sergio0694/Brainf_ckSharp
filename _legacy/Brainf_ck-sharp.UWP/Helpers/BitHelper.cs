@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers
 {
     /// <summary>
     /// Class that contains some static methods to check/edit single bits in an unsigned int number

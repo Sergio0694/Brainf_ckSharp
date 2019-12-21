@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.DataModels.ConsoleMemoryViewer
+﻿namespace Brainf_ck_sharp.Legacy.UWP.DataModels.ConsoleMemoryViewer
 {
     public abstract class MemoryViewerSectionBase
     {

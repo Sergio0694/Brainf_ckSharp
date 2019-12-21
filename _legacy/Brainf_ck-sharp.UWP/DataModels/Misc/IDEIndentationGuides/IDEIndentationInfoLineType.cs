@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides
+﻿namespace Brainf_ck_sharp.Legacy.UWP.DataModels.Misc.IDEIndentationGuides
 {
     /// <summary>
     /// Indicates the kind of info shown next to a line in the IDE

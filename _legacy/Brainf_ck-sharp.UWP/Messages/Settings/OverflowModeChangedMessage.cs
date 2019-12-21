@@ -1,7 +1,7 @@
-﻿using Brainf_ck_sharp_UWP.Messages.Abstract;
+﻿using Brainf_ck_sharp.Legacy.UWP.Messages.Abstract;
 using Brainf_ckSharp.Legacy.Enums;
 
-namespace Brainf_ck_sharp_UWP.Messages.Settings
+namespace Brainf_ck_sharp.Legacy.UWP.Messages.Settings
 {
     /// <summary>
     /// A message that signals whenever the current overflow mode is changed

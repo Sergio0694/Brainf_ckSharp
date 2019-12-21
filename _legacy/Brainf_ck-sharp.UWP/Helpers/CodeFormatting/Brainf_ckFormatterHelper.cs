@@ -1,9 +1,9 @@
 ﻿using Windows.UI;
-using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
-using Brainf_ck_sharp_UWP.Helpers.Settings;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc.Themes;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Settings;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers.CodeFormatting
 {
     /// <summary>
     /// A small class with some UI-related methods for the Brainf_ck language

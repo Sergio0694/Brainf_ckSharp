@@ -7,8 +7,8 @@
     <ProjectGuid>{F80A99AB-BB3F-4833-9725-B6010B718687}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Brainf_ck_sharp_UWP</RootNamespace>
-    <AssemblyName>Brainf_ck-sharp.UWP</AssemblyName>
+    <RootNamespace>Brainf_ck_sharp.Legacy.UWP</RootNamespace>
+    <AssemblyName>Brainf_ck-sharp.Legacy.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>

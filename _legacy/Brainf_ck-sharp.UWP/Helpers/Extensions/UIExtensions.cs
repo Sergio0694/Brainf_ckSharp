@@ -5,7 +5,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers.Extensions
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions
 {
     /// <summary>
     /// A simple class with UI-related extension methods

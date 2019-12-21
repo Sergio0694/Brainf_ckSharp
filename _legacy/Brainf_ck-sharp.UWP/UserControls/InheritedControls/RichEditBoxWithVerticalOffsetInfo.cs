@@ -11,11 +11,11 @@ using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using JetBrains.Annotations;
 using Windows.UI.Xaml.Input;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.InheritedControls
 {
     /// <summary>
     /// A RichEditBox that provides info on its inner ScrollViewer control

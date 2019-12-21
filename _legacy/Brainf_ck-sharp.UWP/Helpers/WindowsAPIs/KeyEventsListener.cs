@@ -3,12 +3,12 @@ using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
-using Brainf_ck_sharp_UWP.Messages.Actions;
-using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Actions;
+using Brainf_ck_sharp.Legacy.UWP.Messages.KeyboardShortcuts;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers.WindowsAPIs
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers.WindowsAPIs
 {
     /// <summary>
     /// A static class that listens to the global <see cref="CoreDispatcher.AcceleratorKeyActivated"/> event for the current app window

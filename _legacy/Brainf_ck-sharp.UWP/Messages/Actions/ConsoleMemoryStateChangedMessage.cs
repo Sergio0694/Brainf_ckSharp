@@ -1,8 +1,8 @@
-﻿using Brainf_ck_sharp_UWP.Messages.Abstract;
+﻿using Brainf_ck_sharp.Legacy.UWP.Messages.Abstract;
 using Brainf_ckSharp.Legacy.MemoryState;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Messages.Actions
+namespace Brainf_ck_sharp.Legacy.UWP.Messages.Actions
 {
     /// <summary>
     /// A message that signals whenever the console memory state is changed by a script

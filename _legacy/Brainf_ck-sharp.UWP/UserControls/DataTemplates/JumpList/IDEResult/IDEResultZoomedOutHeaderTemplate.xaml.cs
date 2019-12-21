@@ -7,17 +7,17 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
-using Brainf_ck_sharp_UWP.Converters;
-using Brainf_ck_sharp_UWP.DataModels.IDEResults;
-using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.Converters;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.IDEResults;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.CodeFormatting;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
 using Microsoft.Toolkit.Uwp.Helpers;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 using UICompositionAnimations.Helpers.PointerEvents;
 
-namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.DataTemplates.JumpList.IDEResult
 {
     public sealed partial class IDEResultZoomedOutHeaderTemplate : UserControl
     {

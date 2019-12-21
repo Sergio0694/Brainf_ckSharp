@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.System;
-using Brainf_ck_sharp_UWP.DataModels;
-using Brainf_ck_sharp_UWP.DataModels.IDEResults;
-using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
-using Brainf_ck_sharp_UWP.ViewModels.Abstract.JumpList;
+using Brainf_ck_sharp.Legacy.UWP.DataModels;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.IDEResults;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc;
+using Brainf_ck_sharp.Legacy.UWP.Messages.KeyboardShortcuts;
+using Brainf_ck_sharp.Legacy.UWP.ViewModels.Abstract.JumpList;
 using Brainf_ckSharp.Legacy.MemoryState;
 using Brainf_ckSharp.Legacy.ReturnTypes;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels
+namespace Brainf_ck_sharp.Legacy.UWP.ViewModels.FlyoutsViewModels
 {
     public class IDERunResultFlyoutViewModel : DeferredJumpListViewModelBase<IDEResultSection, IDEResultSectionDataBase>
     {

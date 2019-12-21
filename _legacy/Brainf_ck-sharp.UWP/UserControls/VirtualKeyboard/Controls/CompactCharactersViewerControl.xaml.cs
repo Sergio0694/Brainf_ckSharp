@@ -1,9 +1,9 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.ViewModels;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.ViewModels;
 
-namespace Brainf_ck_sharp_UWP.UserControls.VirtualKeyboard.Controls
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.VirtualKeyboard.Controls
 {
     public sealed partial class CompactCharactersViewerControl : UserControl
     {

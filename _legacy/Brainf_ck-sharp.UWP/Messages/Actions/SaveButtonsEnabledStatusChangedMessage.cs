@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.Messages.Actions
+﻿namespace Brainf_ck_sharp.Legacy.UWP.Messages.Actions
 {
     /// <summary>
     /// Indicates a change in the enabled status for the save buttons

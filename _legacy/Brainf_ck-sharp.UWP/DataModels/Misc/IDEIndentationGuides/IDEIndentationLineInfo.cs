@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Brainf_ck_sharp_UWP.DataModels.Misc.IDEIndentationGuides
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.Misc.IDEIndentationGuides
 {
     /// <summary>
     /// A class that indicates the indentation info on a given line in the IDE

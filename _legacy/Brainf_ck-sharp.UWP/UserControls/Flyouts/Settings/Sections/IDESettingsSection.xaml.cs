@@ -1,9 +1,9 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.DataModels.Settings;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Settings;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 
-namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings.Sections
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.Settings.Sections
 {
     public sealed partial class IDESettingsSection : UserControl
     {

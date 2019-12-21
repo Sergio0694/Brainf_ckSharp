@@ -1,14 +1,14 @@
 <UserControl
-    x:Class="Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings.SettingsPanelFlyout"
+    x:Class="Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.Settings.SettingsPanelFlyout"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:jumpList="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList"
-    xmlns:templateSelectors="using:Brainf_ck_sharp_UWP.TemplateSelectors"
-    xmlns:jumpListSettings="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.Settings"
-    xmlns:sections="using:Brainf_ck_sharp_UWP.UserControls.Flyouts.Settings.Sections"
-    xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
+    xmlns:templateSelectors="using:Brainf_ck_sharp.Legacy.UWP.TemplateSelectors"
+    xmlns:sections="using:Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.Settings.Sections"
+    xmlns:converters="using:Brainf_ck_sharp.Legacy.UWP.Converters"
+    xmlns:settings="using:Brainf_ck_sharp.Legacy.UWP.UserControls.DataTemplates.JumpList.Settings"
+    xmlns:jumpList="using:Brainf_ck_sharp.Legacy.UWP.UserControls.DataTemplates.JumpList"
     mc:Ignorable="d"
     d:DesignHeight="800"
     d:DesignWidth="400">
@@ -62,7 +62,7 @@
                         <GroupStyle HeaderContainerStyle="{StaticResource GroupsViewListHeaderStyle}">
                             <GroupStyle.HeaderTemplate>
                                 <DataTemplate>
-                                    <jumpListSettings:SettingsZoomedInHeaderTemplate
+                                    <settings:SettingsZoomedInHeaderTemplate
                                         Margin="12,12,16,12"
                                         Title="{Binding Key.SectionType, Converter={StaticResource SectionTitleConverter}}"/>
                                 </DataTemplate>

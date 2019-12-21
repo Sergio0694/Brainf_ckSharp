@@ -2,10 +2,10 @@
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
-using Brainf_ck_sharp_UWP.DataModels.ConsoleMemoryViewer;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.ConsoleMemoryViewer;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 
-namespace Brainf_ck_sharp_UWP.Converters.ConsoleMemoryViewer
+namespace Brainf_ck_sharp.Legacy.UWP.Converters.ConsoleMemoryViewer
 {
     public class ConsoleMemoryViewerSectionMarginConverter : IValueConverter
     {

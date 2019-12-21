@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.Enums
+﻿namespace Brainf_ck_sharp.Legacy.UWP.Enums
 {
     /// <summary>
     /// Indicates what caused the app to request a code to load

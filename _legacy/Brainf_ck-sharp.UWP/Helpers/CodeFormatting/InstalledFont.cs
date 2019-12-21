@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using SharpDX;
 using SharpDX.DirectWrite;
 
-namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers.CodeFormatting
 {
     /// <summary>
     /// A class that represents an installed font on the current device

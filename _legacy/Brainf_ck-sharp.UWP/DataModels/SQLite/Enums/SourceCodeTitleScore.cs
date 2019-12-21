@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.DataModels.SQLite.Enums
+﻿namespace Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite.Enums
 {
     /// <summary>
     /// Indicates the result when checking if a title can be used to save a source code

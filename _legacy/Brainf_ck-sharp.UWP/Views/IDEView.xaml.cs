@@ -17,27 +17,27 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
-using Brainf_ck_sharp_UWP.DataModels;
-using Brainf_ck_sharp_UWP.DataModels.EventArgs;
-using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.DataModels.Misc.CharactersInfo;
-using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
-using Brainf_ck_sharp_UWP.Enums;
-using Brainf_ck_sharp_UWP.Helpers;
-using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Helpers.Settings;
-using Brainf_ck_sharp_UWP.Helpers.UI;
-using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
-using Brainf_ck_sharp_UWP.Messages.Actions;
-using Brainf_ck_sharp_UWP.Messages.IDE;
-using Brainf_ck_sharp_UWP.Messages.Settings;
-using Brainf_ck_sharp_UWP.Messages.UI;
-using Brainf_ck_sharp_UWP.PopupService;
-using Brainf_ck_sharp_UWP.PopupService.Misc;
-using Brainf_ck_sharp_UWP.UserControls.Flyouts;
-using Brainf_ck_sharp_UWP.UserControls.Flyouts.SnippetsMenu;
-using Brainf_ck_sharp_UWP.ViewModels;
+using Brainf_ck_sharp.Legacy.UWP.DataModels;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.EventArgs;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc.CharactersInfo;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc.Themes;
+using Brainf_ck_sharp.Legacy.UWP.Enums;
+using Brainf_ck_sharp.Legacy.UWP.Helpers;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.CodeFormatting;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Settings;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Actions;
+using Brainf_ck_sharp.Legacy.UWP.Messages.IDE;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Settings;
+using Brainf_ck_sharp.Legacy.UWP.Messages.UI;
+using Brainf_ck_sharp.Legacy.UWP.PopupService;
+using Brainf_ck_sharp.Legacy.UWP.PopupService.Misc;
+using Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts;
+using Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.SnippetsMenu;
+using Brainf_ck_sharp.Legacy.UWP.ViewModels;
 using Brainf_ckSharp.Legacy;
 using Brainf_ckSharp.Legacy.ReturnTypes;
 using GalaSoft.MvvmLight.Messaging;
@@ -48,7 +48,7 @@ using Microsoft.Toolkit.Uwp.Helpers;
 using UICompositionAnimations;
 using UICompositionAnimations.Enums;
 
-namespace Brainf_ck_sharp_UWP.Views
+namespace Brainf_ck_sharp.Legacy.UWP.Views
 {
     public sealed partial class IDEView : UserControl, ICodeWorkspacePage
     {

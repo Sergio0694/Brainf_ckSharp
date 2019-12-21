@@ -2,7 +2,7 @@
 using Windows.UI.Xaml.Input;
 using Telerik.UI.Xaml.Controls.Primitives;
 
-namespace Brainf_ck_sharp_UWP.UserControls.InheritedControls
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.InheritedControls
 {
     /// <summary>
     /// A custom <see cref="RadExpanderControl"/> that can only be expanded when tapping on the right indicator

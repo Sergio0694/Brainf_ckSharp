@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels.Misc.Themes
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.Misc.Themes
 {
     /// <summary>
     /// A class that contains a <see cref="IDEThemeInfo"/> instance and indicates whether or not it is selected

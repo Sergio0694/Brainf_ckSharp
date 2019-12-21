@@ -1,8 +1,8 @@
-﻿using Brainf_ck_sharp_UWP.Messages.Abstract;
+﻿using Brainf_ck_sharp.Legacy.UWP.Messages.Abstract;
 using Brainf_ckSharp.Legacy.ReturnTypes;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Messages.UI
+namespace Brainf_ck_sharp.Legacy.UWP.Messages.UI
 {
     /// <summary>
     /// A message that signals the result of a script run in the background

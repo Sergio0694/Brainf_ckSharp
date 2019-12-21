@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers.Extensions
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions
 {
     /// <summary>
     /// An extension class with helper methods for enumerable types

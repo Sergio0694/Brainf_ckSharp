@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.Enums
+﻿namespace Brainf_ck_sharp.Legacy.UWP.Enums
 {
     /// <summary>
     /// An <see langword="enum"/> that indicates a clipboard operation to perform

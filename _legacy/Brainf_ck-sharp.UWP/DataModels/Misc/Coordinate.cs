@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.DataModels.Misc
+﻿namespace Brainf_ck_sharp.Legacy.UWP.DataModels.Misc
 {
     /// <summary>
     /// A struct that indicates the position of a given object or item in a 2D spacee

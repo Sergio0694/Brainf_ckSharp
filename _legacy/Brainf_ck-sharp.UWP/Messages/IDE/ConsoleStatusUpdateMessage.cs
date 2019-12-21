@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Messages.IDE
+namespace Brainf_ck_sharp.Legacy.UWP.Messages.IDE
 {
     /// <summary>
     /// A message that indicates a new status update for the console

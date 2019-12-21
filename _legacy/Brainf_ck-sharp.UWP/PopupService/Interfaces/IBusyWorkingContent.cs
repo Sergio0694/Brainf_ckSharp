@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Brainf_ck_sharp_UWP.PopupService.Interfaces
+namespace Brainf_ck_sharp.Legacy.UWP.PopupService.Interfaces
 {
     /// <summary>
     /// An interface for a content that can execute some work that requires time and notifies the UI

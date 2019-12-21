@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 
-namespace Brainf_ck_sharp_UWP.AttachedProperties
+namespace Brainf_ck_sharp.Legacy.UWP.AttachedProperties
 {
     /// <summary>
     /// An attached property that sets a <see cref="RotateTransform"/> object to a <see cref="TextBlock"/> control if needed

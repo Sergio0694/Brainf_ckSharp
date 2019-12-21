@@ -3,7 +3,7 @@ using Windows.Foundation.Collections;
 using Windows.Storage;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers.Settings
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers.Settings
 {
     /// <summary>
     /// A simple class to manage the user application settings

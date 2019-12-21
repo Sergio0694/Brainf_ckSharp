@@ -2,7 +2,7 @@
 using Brainf_ckSharp.Legacy.MemoryState;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels.IDEResults
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.IDEResults
 {
     /// <summary>
     /// A model that stores info on the memory state for a script run in the IDE

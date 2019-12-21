@@ -1,7 +1,7 @@
 ﻿using Windows.UI.Text;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers.Extensions
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions
 {
     /// <summary>
     /// A class with some extensions to deal with text documents

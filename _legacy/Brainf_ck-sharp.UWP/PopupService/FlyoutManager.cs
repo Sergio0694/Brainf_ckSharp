@@ -12,15 +12,15 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
-using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.Helpers.WindowsAPIs;
-using Brainf_ck_sharp_UWP.Messages.Flyouts;
-using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
-using Brainf_ck_sharp_UWP.PopupService.Interfaces;
-using Brainf_ck_sharp_UWP.PopupService.InternalTypes;
-using Brainf_ck_sharp_UWP.PopupService.Misc;
-using Brainf_ck_sharp_UWP.PopupService.UI;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.WindowsAPIs;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Flyouts;
+using Brainf_ck_sharp.Legacy.UWP.Messages.KeyboardShortcuts;
+using Brainf_ck_sharp.Legacy.UWP.PopupService.Interfaces;
+using Brainf_ck_sharp.Legacy.UWP.PopupService.InternalTypes;
+using Brainf_ck_sharp.Legacy.UWP.PopupService.Misc;
+using Brainf_ck_sharp.Legacy.UWP.PopupService.UI;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 using UICompositionAnimations;
@@ -28,7 +28,7 @@ using UICompositionAnimations.Enums;
 using UICompositionAnimations.Lights;
 using UICompositionAnimations.XAMLTransform;
 
-namespace Brainf_ck_sharp_UWP.PopupService
+namespace Brainf_ck_sharp.Legacy.UWP.PopupService
 {
     /// <summary>
     /// A class that exposes methods to manage flyouts to display across the app

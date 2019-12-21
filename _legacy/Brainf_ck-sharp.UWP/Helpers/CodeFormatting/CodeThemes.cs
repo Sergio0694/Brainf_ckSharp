@@ -1,10 +1,10 @@
 ﻿using Windows.UI;
-using Brainf_ck_sharp_UWP.DataModels.Misc.Themes;
-using Brainf_ck_sharp_UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc.Themes;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
 using JetBrains.Annotations;
 using Microsoft.Toolkit.Uwp.Helpers;
 
-namespace Brainf_ck_sharp_UWP.Helpers.CodeFormatting
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers.CodeFormatting
 {
     /// <summary>
     /// A simpla class that initializes and holds the list of available IDE themes

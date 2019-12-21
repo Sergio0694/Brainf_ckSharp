@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 using Brainf_ckSharp.Legacy.MemoryState;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels.Misc
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.Misc
 {
     /// <summary>
     /// A class that represents a group of 4 contiguous memory cells

@@ -1,9 +1,9 @@
 ﻿using Windows.UI.Xaml.Controls.Primitives;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
-using Brainf_ck_sharp_UWP.PopupService.UI;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.PopupService.UI;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.PopupService.Misc
+namespace Brainf_ck_sharp.Legacy.UWP.PopupService.Misc
 {
     /// <summary>
     /// Contains all the necessary info on a <see cref="Popup"/> control to display and its content

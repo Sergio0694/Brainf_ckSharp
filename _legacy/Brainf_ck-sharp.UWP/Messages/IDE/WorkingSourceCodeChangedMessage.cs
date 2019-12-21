@@ -1,8 +1,8 @@
-﻿using Brainf_ck_sharp_UWP.DataModels.SQLite;
-using Brainf_ck_sharp_UWP.Messages.Abstract;
+﻿using Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite;
+using Brainf_ck_sharp.Legacy.UWP.Messages.Abstract;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Messages.IDE
+namespace Brainf_ck_sharp.Legacy.UWP.Messages.IDE
 {
     /// <summary>
     /// A message that signals whenever the code the user is working on changes

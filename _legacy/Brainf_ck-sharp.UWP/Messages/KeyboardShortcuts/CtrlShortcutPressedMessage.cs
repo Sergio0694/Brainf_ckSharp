@@ -1,6 +1,6 @@
 ﻿using Windows.System;
 
-namespace Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts
+namespace Brainf_ck_sharp.Legacy.UWP.Messages.KeyboardShortcuts
 {
     /// <summary>
     /// A message that signals whenever the user uses a keyboard shortcut that involves the <see cref="VirtualKeyModifiers.Control"/> modifier

@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.PopupService.InternalTypes
+﻿namespace Brainf_ck_sharp.Legacy.UWP.PopupService.InternalTypes
 {
     /// <summary>
     /// A struct that represents the 2D offset of a control

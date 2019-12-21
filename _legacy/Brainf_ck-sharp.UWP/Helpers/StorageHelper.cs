@@ -7,7 +7,7 @@ using Windows.Storage;
 using Windows.Storage.Pickers;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.Helpers
+namespace Brainf_ck_sharp.Legacy.UWP.Helpers
 {
     /// <summary>
     /// A static class with some helper methods to work with local files

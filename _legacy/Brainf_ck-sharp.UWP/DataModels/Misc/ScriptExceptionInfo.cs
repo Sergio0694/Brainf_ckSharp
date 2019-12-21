@@ -1,9 +1,9 @@
 ﻿using System;
-using Brainf_ck_sharp_UWP.Helpers.UI;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
 using Brainf_ckSharp.Legacy.ReturnTypes;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.DataModels.Misc
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.Misc
 {
     /// <summary>
     /// Represents the exception info for a faulted script run in the app

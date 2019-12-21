@@ -1,6 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 
-namespace Brainf_ck_sharp_UWP.DataModels.Misc
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.Misc
 {
     /// <summary>
     /// A base class for a selectable model that contains an item of a given type

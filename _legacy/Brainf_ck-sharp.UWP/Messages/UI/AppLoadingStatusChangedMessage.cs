@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp_UWP.Messages.UI
+﻿namespace Brainf_ck_sharp.Legacy.UWP.Messages.UI
 {
     /// <summary>
     /// A message that indicates whether or not the app is loading and its content should be blocked

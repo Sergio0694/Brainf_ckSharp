@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp_UWP.DataModels;
-using Brainf_ck_sharp_UWP.DataModels.Misc;
-using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.DataModels;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
 using UICompositionAnimations.Helpers.PointerEvents;
 
-namespace Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.Changelog
+namespace Brainf_ck_sharp.Legacy.UWP.UserControls.DataTemplates.JumpList.Changelog
 {
     public sealed partial class ChangelogZoomedInHeaderTemplate : UserControl
     {

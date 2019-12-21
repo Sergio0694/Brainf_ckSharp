@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Brainf_ck_sharp_UWP.DataModels;
+using Brainf_ck_sharp.Legacy.UWP.DataModels;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp_UWP.ViewModels.Abstract.JumpList
+namespace Brainf_ck_sharp.Legacy.UWP.ViewModels.Abstract.JumpList
 {
     /// <summary>
     /// An abstract class to be used inside a ViewModel for a page with a JumpList, loading the data asynchronously

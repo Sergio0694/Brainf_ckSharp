@@ -1,17 +1,17 @@
 ﻿<UserControl
-    x:Class="Brainf_ck_sharp_UWP.UserControls.Flyouts.IDERunResultFlyout"
+    x:Class="Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.IDERunResultFlyout"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:attached="using:Brainf_ck_sharp_UWP.AttachedProperties"
-    xmlns:converters="using:Brainf_ck_sharp_UWP.Converters"
-    xmlns:customControls="using:Brainf_ck_sharp_UWP.UserControls.CustomControls"
-    xmlns:jumpList="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList"
-    xmlns:ideResult="using:Brainf_ck_sharp_UWP.UserControls.DataTemplates.JumpList.IDEResult"
-    xmlns:memoryState="using:Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState"
-    xmlns:ideResults="using:Brainf_ck_sharp_UWP.TemplateSelectors.IDEResults"
-    xmlns:IDEConverters="using:Brainf_ck_sharp_UWP.Converters.IDEResults"
+    xmlns:converters="using:Brainf_ck_sharp.Legacy.UWP.Converters"
+    xmlns:attachedProperties="using:Brainf_ck_sharp.Legacy.UWP.AttachedProperties"
+    xmlns:customControls="using:Brainf_ck_sharp.Legacy.UWP.UserControls.CustomControls"
+    xmlns:memoryState="using:Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.MemoryState"
+    xmlns:ideResults="using:Brainf_ck_sharp.Legacy.UWP.TemplateSelectors.IDEResults"
+    xmlns:ideResults1="using:Brainf_ck_sharp.Legacy.UWP.Converters.IDEResults"
+    xmlns:jumpList="using:Brainf_ck_sharp.Legacy.UWP.UserControls.DataTemplates.JumpList"
+    xmlns:ideResult="using:Brainf_ck_sharp.Legacy.UWP.UserControls.DataTemplates.JumpList.IDEResult"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -107,7 +107,7 @@
                 FontSize="16"
                 Margin="12,0,16,4"
                 TextWrapping="Wrap">
-                <Span attached:Brainf_ckCodeInlineFormatter.Source="{Binding Session.CurrentResult.SourceCode}"/>
+                <Span attachedProperties:Brainf_ckCodeInlineFormatter.Source="{Binding Session.CurrentResult.SourceCode}"/>
             </TextBlock>
         </DataTemplate>
 
@@ -127,7 +127,7 @@
                 FontSize="16"
                 Margin="12,0,16,4"
                 TextWrapping="Wrap">
-                <Span attached:Brainf_ckCodeInlineFormatter.StackTrace="{Binding Session.CurrentResult.ExceptionInfo.StackTrace}"/>
+                <Span attachedProperties:Brainf_ckCodeInlineFormatter.StackTrace="{Binding Session.CurrentResult.ExceptionInfo.StackTrace}"/>
             </TextBlock>
         </DataTemplate>
 
@@ -160,9 +160,9 @@
         <ideResults:IDERunResultHeaderTemplateSelector x:Key="HeaderTemplateSelector"/>
 
         <!--Headers converter-->
-        <IDEConverters:IDESectionToDisplayNameConverter x:Key="HeadersConverter"/>
-        <IDEConverters:IDESectionToUppercaseDisplayNameConverter x:Key="UppercaseConverter"/>
-        <IDEConverters:IDESectionHeaderMarginConverter x:Key="MarginsConverter"/>
+        <ideResults1:IDESectionToDisplayNameConverter x:Key="HeadersConverter"/>
+        <ideResults1:IDESectionToUppercaseDisplayNameConverter x:Key="UppercaseConverter"/>
+        <ideResults1:IDESectionHeaderMarginConverter x:Key="MarginsConverter"/>
         
         <!--Header-->
         <DataTemplate x:Key="HeaderTemplate">

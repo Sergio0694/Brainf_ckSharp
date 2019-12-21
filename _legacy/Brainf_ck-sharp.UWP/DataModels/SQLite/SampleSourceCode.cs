@@ -1,7 +1,7 @@
-﻿using Brainf_ck_sharp_UWP.Helpers.UI;
+﻿using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
 using SQLite.Net.Attributes;
 
-namespace Brainf_ck_sharp_UWP.DataModels.SQLite
+namespace Brainf_ck_sharp.Legacy.UWP.DataModels.SQLite
 {
     /// <summary>
     /// A model for a sample source code that supports the automatic localization of its display name
