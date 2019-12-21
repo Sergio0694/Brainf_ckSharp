@@ -10,17 +10,6 @@ namespace Brainf_ckSharp.Helpers
     internal static class Guard
     {
         /// <summary>
-        /// Asserts that the input expression is <see langword="true"/>
-        /// </summary>
-        /// <param name="expression">The input expression to test</param>
-        /// <param name="name">The name of the input parameter being tested</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="expression"/> is <see langword="false"/></exception>
-        public static void MustBeTrue(bool expression, string name)
-        {
-            if (!expression) throw new ArgumentException($"Parameter {name} must be true, was false", name);
-        }
-
-        /// <summary>
         /// Asserts that the input value must be less than a specified value
         /// </summary>
         /// <typeparam name="T">The type of input values to compare</typeparam>
