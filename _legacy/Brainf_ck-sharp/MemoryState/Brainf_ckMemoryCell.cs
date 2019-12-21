@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp.MemoryState
+namespace Brainf_ckSharp.Legacy.MemoryState
 {
     /// <summary>
     /// Contains the information on a given memory cell in a <see cref="IReadonlyTouringMachineState"/> object

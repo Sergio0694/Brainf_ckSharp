@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Brainf_ck_sharp.MemoryState;
+using Brainf_ckSharp.Legacy.MemoryState;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp.ReturnTypes
+namespace Brainf_ckSharp.Legacy.ReturnTypes
 {
     /// <summary>
     /// A class that contains all the info on an interpreted Brainf_ck script

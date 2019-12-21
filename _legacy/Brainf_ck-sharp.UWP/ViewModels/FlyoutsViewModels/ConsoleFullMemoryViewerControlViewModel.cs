@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Brainf_ck_sharp.MemoryState;
-using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.DataModels.ConsoleMemoryViewer;
 using Brainf_ck_sharp_UWP.ViewModels.Abstract.JumpList;
+using Brainf_ckSharp.Legacy.MemoryState;
+using Brainf_ckSharp.Legacy.ReturnTypes;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels

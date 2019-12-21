@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp.ReturnTypes
+namespace Brainf_ckSharp.Legacy.ReturnTypes
 {
     /// <summary>
     /// A class that represents an execution session for a script

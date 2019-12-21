@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ckSharp.Legacy.MemoryState;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.DataModels.Misc

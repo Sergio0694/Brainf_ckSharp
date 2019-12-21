@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Brainf_ck_sharp;
-using Brainf_ck_sharp.Enums;
-using Brainf_ck_sharp.MemoryState;
-using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.DataModels.ConsoleModels;
 using Brainf_ck_sharp_UWP.DataModels.Misc;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
@@ -17,6 +13,10 @@ using Brainf_ck_sharp_UWP.Messages.KeyboardShortcuts;
 using Brainf_ck_sharp_UWP.Messages.Settings;
 using Brainf_ck_sharp_UWP.Messages.UI;
 using Brainf_ck_sharp_UWP.ViewModels.Abstract;
+using Brainf_ckSharp.Legacy;
+using Brainf_ckSharp.Legacy.Enums;
+using Brainf_ckSharp.Legacy.MemoryState;
+using Brainf_ckSharp.Legacy.ReturnTypes;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 

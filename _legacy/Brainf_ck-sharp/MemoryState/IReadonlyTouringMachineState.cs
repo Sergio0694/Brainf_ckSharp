@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp.MemoryState
+namespace Brainf_ckSharp.Legacy.MemoryState
 {
     /// <summary>
     /// An interface that exposes a readonly memory state for a Touring machine

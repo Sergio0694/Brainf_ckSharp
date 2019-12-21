@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
+using Brainf_ckSharp.Legacy.MemoryState;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState
 {

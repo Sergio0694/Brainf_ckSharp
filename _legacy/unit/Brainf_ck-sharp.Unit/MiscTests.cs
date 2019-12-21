@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Brainf_ck_sharp.ReturnTypes;
+using Brainf_ckSharp.Legacy;
+using Brainf_ckSharp.Legacy.ReturnTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Brainf_ck_sharp.Unit

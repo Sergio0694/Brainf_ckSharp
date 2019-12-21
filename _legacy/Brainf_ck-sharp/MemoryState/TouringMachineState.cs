@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp.MemoryState
+namespace Brainf_ckSharp.Legacy.MemoryState
 {
     /// <summary>
     /// A class that represents the state of a Touring machine (data + position)

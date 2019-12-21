@@ -1,5 +1,5 @@
-﻿using Brainf_ck_sharp.Enums;
-using Brainf_ck_sharp_UWP.Messages.Abstract;
+﻿using Brainf_ck_sharp_UWP.Messages.Abstract;
+using Brainf_ckSharp.Legacy.Enums;
 
 namespace Brainf_ck_sharp_UWP.Messages.Settings
 {

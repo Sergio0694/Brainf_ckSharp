@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp.Helpers
+﻿namespace Brainf_ckSharp.Legacy.Helpers
 {
     /// <summary>
     /// Wraps the operators in the source code of a given script

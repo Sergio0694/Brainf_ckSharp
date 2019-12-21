@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp.ReturnTypes
+namespace Brainf_ckSharp.Legacy.ReturnTypes
 {
     /// <summary>
     /// Contains additional info to debug a faulted Brainf_ck script

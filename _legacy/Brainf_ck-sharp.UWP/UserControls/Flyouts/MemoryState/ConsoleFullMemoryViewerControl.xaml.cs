@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Windows.UI.Xaml.Controls;
-using Brainf_ck_sharp.MemoryState;
-using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.PopupService.Interfaces;
 using Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels;
+using Brainf_ckSharp.Legacy.MemoryState;
+using Brainf_ckSharp.Legacy.ReturnTypes;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.UserControls.Flyouts.MemoryState

@@ -1,10 +1,10 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using Brainf_ck_sharp.ReturnTypes;
 using Brainf_ck_sharp_UWP.Helpers.CodeFormatting;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Helpers.UI;
+using Brainf_ckSharp.Legacy.ReturnTypes;
 
 namespace Brainf_ck_sharp_UWP.UserControls.CustomControls
 {

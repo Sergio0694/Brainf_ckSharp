@@ -4,7 +4,7 @@ using BenchmarkDotNet.Configs;
 using Brainf_ck_sharp.NET.Enums;
 using Brainf_ck_sharp.NET.Models;
 using Brainf_ck_sharp.NET.Models.Base;
-using Brainf_ckInterpreterOld = Brainf_ck_sharp.Brainf_ckInterpreter;
+using Brainf_ckInterpreterOld = Brainf_ckSharp.Legacy.Brainf_ckInterpreter;
 using Brainf_ckInterpreterNew = Brainf_ck_sharp.NET.Brainf_ckInterpreter;
 
 namespace Brainf_ck_sharp.Profiler

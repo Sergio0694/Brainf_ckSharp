@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Brainf_ck_sharp.ReturnTypes
+namespace Brainf_ckSharp.Legacy.ReturnTypes
 {
     /// <summary>
     /// Tipo enumerato che indica il risultato dell'interpretazione del codice

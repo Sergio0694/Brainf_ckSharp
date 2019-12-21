@@ -2,9 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Brainf_ck_sharp.MemoryState;
 using Brainf_ck_sharp_UWP.DataModels;
 using Brainf_ck_sharp_UWP.ViewModels.Abstract;
+using Brainf_ckSharp.Legacy.MemoryState;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.ViewModels.FlyoutsViewModels

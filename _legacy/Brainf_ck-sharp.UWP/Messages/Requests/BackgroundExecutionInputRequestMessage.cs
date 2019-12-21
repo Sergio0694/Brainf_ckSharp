@@ -1,5 +1,5 @@
-﻿using Brainf_ck_sharp.MemoryState;
-using Brainf_ck_sharp_UWP.Messages.Requests.Abstract;
+﻿using Brainf_ck_sharp_UWP.Messages.Requests.Abstract;
+using Brainf_ckSharp.Legacy.MemoryState;
 
 namespace Brainf_ck_sharp_UWP.Messages.Requests
 {

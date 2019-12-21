@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Brainf_ck_sharp.Enums;
-using Brainf_ck_sharp.Helpers;
-using Brainf_ck_sharp.MemoryState;
-using Brainf_ck_sharp.ReturnTypes;
+using Brainf_ckSharp.Legacy.Enums;
+using Brainf_ckSharp.Legacy.Helpers;
+using Brainf_ckSharp.Legacy.MemoryState;
+using Brainf_ckSharp.Legacy.ReturnTypes;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp
+namespace Brainf_ckSharp.Legacy
 {
     /// <summary>
     /// A simple class that handles all the Brainf_ck code and interprets it

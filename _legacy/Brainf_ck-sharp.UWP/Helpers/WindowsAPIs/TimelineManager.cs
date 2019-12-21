@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.UserActivities;
 using Windows.Storage;
 using Windows.UI.Shell;
-using Brainf_ck_sharp;
 using Brainf_ck_sharp_UWP.DataModels.SQLite;
 using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
 using Brainf_ck_sharp_UWP.Helpers.Extensions;
 using Brainf_ck_sharp_UWP.Messages.IDE;
+using Brainf_ckSharp.Legacy;
 using GalaSoft.MvvmLight.Messaging;
 using JetBrains.Annotations;
 

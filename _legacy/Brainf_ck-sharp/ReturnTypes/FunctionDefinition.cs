@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp.ReturnTypes
+namespace Brainf_ckSharp.Legacy.ReturnTypes
 {
     /// <summary>
     /// A class that contains the info on a function definition in a script

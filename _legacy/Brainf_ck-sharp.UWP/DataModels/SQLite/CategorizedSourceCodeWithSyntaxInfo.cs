@@ -1,6 +1,6 @@
-﻿using Brainf_ck_sharp;
-using Brainf_ck_sharp.ReturnTypes;
-using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
+﻿using Brainf_ck_sharp_UWP.DataModels.SQLite.Enums;
+using Brainf_ckSharp.Legacy;
+using Brainf_ckSharp.Legacy.ReturnTypes;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.DataModels.SQLite

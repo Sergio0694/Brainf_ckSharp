@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Brainf_ck_sharp.ReturnTypes;
+using Brainf_ckSharp.Legacy.ReturnTypes;
 using JetBrains.Annotations;
 
-namespace Brainf_ck_sharp.Helpers
+namespace Brainf_ckSharp.Legacy.Helpers
 {
     /// <summary>
     /// A lass that holds the working data for the internal interpreter function

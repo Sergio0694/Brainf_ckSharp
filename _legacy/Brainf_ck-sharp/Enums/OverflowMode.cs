@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp.Enums
+﻿namespace Brainf_ckSharp.Legacy.Enums
 {
     /// <summary>
     /// Indicates an overflow mode for the interpreter

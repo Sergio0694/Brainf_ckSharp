@@ -1,4 +1,4 @@
-﻿namespace Brainf_ck_sharp.ReturnTypes
+﻿namespace Brainf_ckSharp.Legacy.ReturnTypes
 {
     /// <summary>
     /// Indicates the result of a syntax validation check

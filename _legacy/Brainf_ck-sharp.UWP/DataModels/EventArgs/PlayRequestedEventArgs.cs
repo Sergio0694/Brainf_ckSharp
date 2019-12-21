@@ -1,4 +1,4 @@
-﻿using Brainf_ck_sharp.Enums;
+﻿using Brainf_ckSharp.Legacy.Enums;
 using JetBrains.Annotations;
 
 namespace Brainf_ck_sharp_UWP.DataModels.EventArgs
