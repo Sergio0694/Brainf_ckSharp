@@ -21,5 +21,10 @@ namespace Brainf_ckSharp.Constants
         /// The maximum number of recursive calls that can be performed by a script
         /// </summary>
         public const int MaximumStackSize = 512;
+
+        /// <summary>
+        /// The maximum allowed size for the output buffer
+        /// </summary>
+        public const int StdoutBufferSizeLimit = 1024;
     }
 }

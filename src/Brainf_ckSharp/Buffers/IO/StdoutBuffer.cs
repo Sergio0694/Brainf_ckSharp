@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using Brainf_ckSharp.Constants;
 
 #pragma warning disable IDE0032
 
@@ -10,16 +11,11 @@ namespace Brainf_ckSharp.Buffers.IO
     internal sealed class StdoutBuffer : UnsafeMemoryBuffer<char>
     {
         /// <summary>
-        /// The maximum allowed size for the output buffer
-        /// </summary>
-        public const int StdoutBufferSizeLimit = 1024;
-
-        /// <summary>
         /// The current position in the underlying buffer to write to
         /// </summary>
         private int _Position;
 
-        public StdoutBuffer() : base(StdoutBufferSizeLimit, false) { }
+        public StdoutBuffer() : base(Specs.StdoutBufferSizeLimit, false) { }
 
         /// <summary>
         /// Gets whether or not the current buffer is empty
@@ -38,7 +34,7 @@ namespace Brainf_ckSharp.Buffers.IO
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe bool TryWrite(char c)
         {
-            if (_Position == StdoutBufferSizeLimit) return false;
+            if (_Position == Specs.StdoutBufferSizeLimit) return false;
 
             Ptr[_Position++] = c;
             return true;
