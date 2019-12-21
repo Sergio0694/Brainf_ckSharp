@@ -35,12 +35,14 @@ namespace Brainf_ck_sharp.NET
             DebugGuard.MustBeGreaterThanOrEqualTo(operators.Size, 0, nameof(operators));
             DebugGuard.MustBeGreaterThanOrEqualTo(machineState.Size, 0, nameof(machineState));
 
-            // Initialize the temporary buffers
-            using UnsafeMemoryBuffer<bool> breakpoints = UnsafeMemoryBuffer<bool>.Allocate(operators.Size, true);
+            /* Initialize the temporary buffers, using the UnsafeSpanBuffer<T> type when possible
+             * to save the extra allocations here. This is possible because all these buffers are
+             * only used within the scope of this method, and disposed as soon as the method completes. */
+            using UnsafeSpanBuffer<bool> breakpoints = new UnsafeSpanBuffer<bool>(operators.Size, true);
             using UnsafeMemoryBuffer<int> jumpTable = LoadJumpTable(operators, out int functionsCount);
-            using UnsafeMemoryBuffer<Range> functions = UnsafeMemoryBuffer<Range>.Allocate(ushort.MaxValue, true);
+            using UnsafeSpanBuffer<Range> functions = new UnsafeSpanBuffer<Range>(ushort.MaxValue, true);
             using UnsafeMemoryBuffer<ushort> definitions = LoadDefinitionsTable(functionsCount);
-            using UnsafeMemoryBuffer<StackFrame> stackFrames = UnsafeMemoryBuffer<StackFrame>.Allocate(Specs.MaximumStackSize, false);
+            using UnsafeSpanBuffer<StackFrame> stackFrames = new UnsafeSpanBuffer<StackFrame>(Specs.MaximumStackSize, false);
             using StdoutBuffer stdout = new StdoutBuffer();
 
             // Shared counters
