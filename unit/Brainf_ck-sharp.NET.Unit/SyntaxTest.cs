@@ -1,8 +1,8 @@
-﻿using Brainf_ck_sharp.NET.Enums;
-using Brainf_ck_sharp.NET.Models;
+﻿using Brainf_ckSharp.Enums;
+using Brainf_ckSharp.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Brainf_ck_sharp.NET.Unit
+namespace Brainf_ckSharp.Unit
 {
     /// <summary>
     /// A test <see langword="class"/> for syntax validation of Brainf*ck/PBrain scripts

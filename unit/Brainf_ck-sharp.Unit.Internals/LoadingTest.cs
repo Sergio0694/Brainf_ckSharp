@@ -1,11 +1,10 @@
-﻿using Brainf_ck_sharp.NET;
-using Brainf_ck_sharp.NET.Buffers;
-using Brainf_ck_sharp.NET.Extensions.Types;
-using Brainf_ck_sharp.NET.Models;
-using Brainf_ck_sharp.NET.Models.Internal;
+﻿using Brainf_ckSharp.Buffers;
+using Brainf_ckSharp.Extensions.Types;
+using Brainf_ckSharp.Models;
+using Brainf_ckSharp.Models.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Brainf_ck_sharp.Unit.Internals
+namespace Brainf_ckSharp.Unit.Internals
 {
     /// <summary>
     /// A test <see langword="class"/> to test internal loading APIs from the <see cref="Brainf_ckInterpreter"/> <see langword="class"/>

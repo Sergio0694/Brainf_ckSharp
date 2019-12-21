@@ -1,10 +1,10 @@
 ﻿using System.Threading;
-using Brainf_ck_sharp.NET.Enums;
-using Brainf_ck_sharp.NET.Models;
-using Brainf_ck_sharp.NET.Models.Base;
+using Brainf_ckSharp.Enums;
+using Brainf_ckSharp.Models;
+using Brainf_ckSharp.Models.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Brainf_ck_sharp.NET.Unit
+namespace Brainf_ckSharp.Unit
 {
     [TestClass]
     public class ExceptionTest

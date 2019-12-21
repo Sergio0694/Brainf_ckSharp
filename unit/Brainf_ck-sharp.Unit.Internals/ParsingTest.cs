@@ -1,11 +1,10 @@
-﻿using Brainf_ck_sharp.NET;
-using Brainf_ck_sharp.NET.Buffers;
-using Brainf_ck_sharp.NET.Constants;
-using Brainf_ck_sharp.NET.Enums;
-using Brainf_ck_sharp.NET.Models;
+﻿using Brainf_ckSharp.Buffers;
+using Brainf_ckSharp.Constants;
+using Brainf_ckSharp.Enums;
+using Brainf_ckSharp.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Brainf_ck_sharp.Unit.Internals
+namespace Brainf_ckSharp.Unit.Internals
 {
     /// <summary>
     /// A test <see langword="class"/> to test internal APIs from the <see cref="Brainf_ckParser"/> <see langword="class"/>

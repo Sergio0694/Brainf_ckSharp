@@ -11,11 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Legacy.Unit"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Profiler", "_legacy\unit\Brainf_ckSharp.Profiler\Brainf_ckSharp.Profiler.csproj", "{E8A6DE4F-8B0B-4BB4-89F2-FEDD0D15695D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ck-sharp.NET", "Brainf_ck-sharp.NET\Brainf_ck-sharp.NET.csproj", "{ACEEA540-7A2C-4705-AC68-5A8C3A5C2A38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp", "src\Brainf_ckSharp\Brainf_ckSharp.csproj", "{ACEEA540-7A2C-4705-AC68-5A8C3A5C2A38}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ck-sharp.NET.Unit", "unit\Brainf_ck-sharp.NET.Unit\Brainf_ck-sharp.NET.Unit.csproj", "{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Unit", "unit\Brainf_ck-sharp.NET.Unit\Brainf_ckSharp.Unit.csproj", "{2F386A53-B0E4-4AEC-8E3B-3963D3618AF4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ck-sharp.Unit.Internals", "unit\Brainf_ck-sharp.Unit.Internals\Brainf_ck-sharp.Unit.Internals.csproj", "{5482BCBE-6A23-4A3D-A0BE-851698B2E73F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Unit.Internals", "unit\Brainf_ck-sharp.Unit.Internals\Brainf_ckSharp.Unit.Internals.csproj", "{5482BCBE-6A23-4A3D-A0BE-851698B2E73F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{33D9956A-7535-49AE-811D-B3A4E41E4452}"
 EndProject
