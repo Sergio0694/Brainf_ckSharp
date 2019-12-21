@@ -18,15 +18,6 @@ namespace Brainf_ckSharp.Buffers.IO
         public StdoutBuffer() : base(Specs.StdoutBufferSizeLimit, false) { }
 
         /// <summary>
-        /// Gets whether or not the current buffer is empty
-        /// </summary>
-        public bool IsEmpty
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => _Position == 0;
-        }
-
-        /// <summary>
         /// Tries to write a new character into the current buffer
         /// </summary>
         /// <param name="c">The input character to write to the underlying buffer</param>
