@@ -41,7 +41,7 @@ namespace Brainf_ckSharp.UWP.Controls.Header
         }
 
         /// <summary>
-        /// The dependency property for <see cref="Icon"/>.
+        /// The dependency property for <see cref="Icon"/>
         /// </summary>
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
             nameof(Icon),
@@ -59,7 +59,7 @@ namespace Brainf_ckSharp.UWP.Controls.Header
         }
 
         /// <summary>
-        /// The dependency property for <see cref="Text"/>.
+        /// The dependency property for <see cref="Text"/>
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
             nameof(Text),
@@ -77,7 +77,7 @@ namespace Brainf_ckSharp.UWP.Controls.Header
         }
 
         /// <summary>
-        /// The dependency property for <see cref="IsSelected"/>.
+        /// The dependency property for <see cref="IsSelected"/>
         /// </summary>
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
             nameof(IsSelected),

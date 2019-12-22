@@ -5,6 +5,7 @@
     <!--Shell-->
     <x:String x:Key="ConsoleIcon">&#xF157;</x:String>
     <x:String x:Key="IDEIcon">&#xF158;</x:String>
+    <x:String x:Key="ExpanderDownArrowIcon">&#xE011;</x:String>
 
     <!--Command bar-->
     <x:String x:Key="RunIcon">&#xE102;</x:String>
