@@ -4,10 +4,17 @@
 
     <!--Shell header background brush-->
     <AcrylicBrush
-        x:Name="ShellHeaderBaackgroundBrush"
+        x:Name="ShellHeaderBackgroundBrush"
         BackgroundSource="Backdrop"
         TintColor="#FF1E1E1E"
         TintOpacity="0.6"/>
+
+    <!--Virtual keyboard background-->
+    <AcrylicBrush
+        x:Name="VirtualKeyboardBackgroundBrush"
+        BackgroundSource="HostBackdrop"
+        TintColor="#FF101010"
+        TintOpacity="0.9"/>
 
     <!--Backgorund info bar brush-->
     <SolidColorBrush x:Key="BackgroundInfoBrush" Color="#FF007ACC"/>

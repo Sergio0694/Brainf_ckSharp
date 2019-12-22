@@ -1,0 +1,18 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--Brainf*ck/PBrain operators-->
+    <x:String x:Key="Plus">+</x:String>
+    <x:String x:Key="Minus">-</x:String>
+    <x:String x:Key="ForwardPtr">&gt;</x:String>
+    <x:String x:Key="BackwardPtr">&lt;</x:String>
+    <x:String x:Key="PrintChar">.</x:String>
+    <x:String x:Key="ReadChar">,</x:String>
+    <x:String x:Key="LoopStart">[</x:String>
+    <x:String x:Key="LoopEnd">]</x:String>
+    <x:String x:Key="FunctionStart">(</x:String>
+    <x:String x:Key="FunctionEnd">)</x:String>
+    <x:String x:Key="FunctionCall">:</x:String>
+    
+</ResourceDictionary>

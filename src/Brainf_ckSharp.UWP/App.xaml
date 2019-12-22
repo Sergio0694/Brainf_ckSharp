@@ -11,6 +11,7 @@
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls"/>
                 <ResourceDictionary Source="Resources/Dictionaries/Brushes.xaml"/>
                 <ResourceDictionary Source="Resources/Dictionaries/MDL2Icons.xaml"/>
+                <ResourceDictionary Source="Resources/Dictionaries/Operators.xaml"/>
                 <ResourceDictionary Source="Styles/TemplatedControlsStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

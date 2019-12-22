@@ -2,6 +2,8 @@
 using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
 
+#nullable enable
+
 namespace Brainf_ckSharp.UWP.MarkupExtensions
 {
     /// <summary>
@@ -13,14 +15,14 @@ namespace Brainf_ckSharp.UWP.MarkupExtensions
         /// <summary>
         /// Gets or sets the <see cref="string"/> representing the icon to display
         /// </summary>
-        public string Glyph { get; set; }
+        public string? Glyph { get; set; }
 
         /// <inheritdoc/>
         protected override object ProvideValue()
         {
             return new FontIcon
             {
-                Glyph = Glyph,
+                Glyph = Glyph!,
                 FontFamily = new FontFamily("Segoe MDL2 Assets")
             };
         }
