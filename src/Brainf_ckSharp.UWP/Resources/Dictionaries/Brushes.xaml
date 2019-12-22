@@ -21,6 +21,12 @@
         TintMix="0.9"
         TextureUri="/Assets/Misc/noise_low.png"/>
 
+    <!--Commands-->
+    <Color x:Key="RunColor">#FF008000</Color>
+    <SolidColorBrush x:Key="RunBrush" Color="{StaticResource RunColor}"/>
+    <Color x:Key="DebugColor">#FFD1212A</Color>
+    <SolidColorBrush x:Key="DebugBrush" Color="{StaticResource DebugColor}"/>
+
     <!--Backgorund info bar brush-->
     <SolidColorBrush x:Key="BackgroundInfoBrush" Color="#FF007ACC"/>
 

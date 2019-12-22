@@ -73,7 +73,13 @@
                 <AppBarButton
                     Label="Run"
                     Icon="{markupExtensions:FontIconExtension Glyph={StaticResource RunIcon}}"
-                    Tag="{markupExtensions:Boolean Value=True}"/>
+                    Tag="{markupExtensions:Boolean Value=True}"
+                    Foreground="{StaticResource RunBrush}">
+                    <AppBarButton.Resources>
+                        <SolidColorBrush x:Key="AppBarButtonForegroundPointerOver" Color="{StaticResource RunColor}"/>
+                        <SolidColorBrush x:Key="AppBarButtonForegroundPressed" Color="{StaticResource RunColor}"/>
+                    </AppBarButton.Resources>
+                </AppBarButton>
                 <AppBarButton
                     Label="Delete"
                     Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DeleteIcon}}"
@@ -87,11 +93,23 @@
                 <AppBarButton
                     Label="Run"
                     Icon="{markupExtensions:FontIconExtension Glyph={StaticResource RunIcon}}"
-                    Tag="{markupExtensions:Boolean Value=False}"/>
+                    Tag="{markupExtensions:Boolean Value=False}"
+                    Foreground="{StaticResource RunBrush}">
+                    <AppBarButton.Resources>
+                        <SolidColorBrush x:Key="AppBarButtonForegroundPointerOver" Color="{StaticResource RunColor}"/>
+                        <SolidColorBrush x:Key="AppBarButtonForegroundPressed" Color="{StaticResource RunColor}"/>
+                    </AppBarButton.Resources>
+                </AppBarButton>
                 <AppBarButton
                     Label="Debug"
                     Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DebugIcon}}"
-                    Tag="{markupExtensions:Boolean Value=False}"/>
+                    Tag="{markupExtensions:Boolean Value=False}"
+                    Foreground="{StaticResource DebugBrush}">
+                    <AppBarButton.Resources>
+                        <SolidColorBrush x:Key="AppBarButtonForegroundPointerOver" Color="{StaticResource DebugColor}"/>
+                        <SolidColorBrush x:Key="AppBarButtonForegroundPressed" Color="{StaticResource DebugColor}"/>
+                    </AppBarButton.Resources>
+                </AppBarButton>
                 <AppBarSeparator Tag="{markupExtensions:Boolean Value=False}"/>
                 <AppBarButton
                     Label="Move"
