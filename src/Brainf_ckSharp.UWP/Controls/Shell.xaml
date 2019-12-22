@@ -8,7 +8,33 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
+    <!--Main app UI-->
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="68"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="24"/>
+        </Grid.RowDefinitions>
 
+        <!--App title-->
+        <TextBlock
+            Foreground="White"
+            Text="Brainf*ck#"
+            FontSize="12"
+            FontWeight="SemiLight"
+            Margin="12,0,0,0"
+            VerticalAlignment="Center"/>
+
+        <!--Command bar-->
+        <CommandBar
+            Grid.Row="4"/>
+
+        <!--Background code status-->
+        <Canvas
+            Grid.Row="5"
+            Background="{StaticResource BackgroundInfoBrush}"/>
     </Grid>
 </UserControl>

@@ -1,0 +1,15 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--Shell header background brush-->
+    <AcrylicBrush
+        x:Name="ShellHeaderBaackgroundBrush"
+        BackgroundSource="Backdrop"
+        TintColor="#FF1E1E1E"
+        TintOpacity="0.6"/>
+
+    <!--Backgorund info bar brush-->
+    <SolidColorBrush x:Key="BackgroundInfoBrush" Color="#FF007ACC"/>
+
+</ResourceDictionary>
