@@ -2,6 +2,8 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
+#nullable enable
+
 namespace Brainf_ckSharp.UWP.Controls.Header
 {
     /// <summary>

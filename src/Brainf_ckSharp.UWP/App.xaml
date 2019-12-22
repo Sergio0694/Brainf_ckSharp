@@ -9,6 +9,8 @@
             <!--Resource dictionaries-->
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Dictionaries/Brushes.xaml"/>
+                <ResourceDictionary Source="Resources/Dictionaries/MDL2Icons.xaml"/>
+                <ResourceDictionary Source="Styles/TemplatedControlsStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

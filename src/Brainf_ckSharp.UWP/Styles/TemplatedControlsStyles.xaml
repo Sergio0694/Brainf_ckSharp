@@ -5,10 +5,24 @@
 
     <!--Header button-->
     <Style TargetType="header:HeaderButton">
+        <Setter Property="Height" Value="68"/>
+        <Setter Property="Width" Value="68"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="header:HeaderButton">
                     <Button x:Name="RootButton">
+
+                        <!--Tweaks to the default style-->
+                        <Button.Resources>
+                            <Style TargetType="Button">
+                                <Setter Property="Margin" Value="0"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="VerticalAlignment" Value="Stretch"/>
+                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </Button.Resources>
 
                         <!--Visual states-->
                         <VisualStateManager.VisualStateGroups>
@@ -48,7 +62,6 @@
                             VerticalAlignment="Center"
                             Spacing="4">
                             <TextBlock
-                                Style="{StaticResource FontIconTextBlockStyle}"
                                 Text="{TemplateBinding Icon}"
                                 FontFamily="Segoe MDL2 Assets"
                                 FontSize="16"

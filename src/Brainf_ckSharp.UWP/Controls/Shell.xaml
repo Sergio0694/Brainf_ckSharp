@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:header="using:Brainf_ckSharp.UWP.Controls.Header"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -27,6 +28,9 @@
             FontWeight="SemiLight"
             Margin="12,0,0,0"
             VerticalAlignment="Center"/>
+
+        <!--Header panel-->
+        <header:HeaderPanel Grid.Row="1"/>
 
         <!--Command bar-->
         <CommandBar
