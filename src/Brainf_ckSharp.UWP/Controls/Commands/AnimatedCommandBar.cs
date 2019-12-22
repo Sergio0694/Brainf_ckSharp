@@ -11,7 +11,7 @@ namespace Brainf_ckSharp.UWP.Controls.Commands
     /// <summary>
     /// A custom <see cref="AnimatedCommandBar"/> that uses animations to switch between different visible buttons
     /// </summary>
-    /// <remarks>The items in <see cref="CommandBar.PrimaryCommands"/> need to be <see cref="PriorityCommandBarButton"/> instances</remarks>
+    /// <remarks>The items in <see cref="CommandBar.PrimaryCommands"/> need to use the <see cref="FrameworkElement.Tag"/> with a <see cref="bool"/> value</remarks>
     public sealed class AnimatedCommandBar : CommandBar
     {
         /// <summary>
@@ -67,13 +67,13 @@ namespace Brainf_ckSharp.UWP.Controls.Commands
                 @this.IsHitTestVisible = false;
 
                 // Get the outgoing buttons
-                IReadOnlyList<PriorityCommandBarButton> pendingButtons = (
-                    from button in @this.PrimaryCommands.Cast<PriorityCommandBarButton>()
-                    where button.IsPrimary == !primary
+                IReadOnlyList<FrameworkElement> pendingElements = (
+                    from button in @this.PrimaryCommands.Cast<FrameworkElement>()
+                    where button.Tag is bool flag && flag != primary
                     select button).ToArray();
 
                 // Fade the visible buttons out
-                foreach (var item in pendingButtons.Enumerate())
+                foreach (var item in pendingElements.Enumerate())
                 {
                     item.Value
                         .Animation()
@@ -85,20 +85,20 @@ namespace Brainf_ckSharp.UWP.Controls.Commands
                 }
 
                 // Wait for the initial animations to finish
-                await Task.Delay((pendingButtons.Count - 1) * ButtonsFadeDelayBetweenAnimations + ContentAnimationDuration);
+                await Task.Delay((pendingElements.Count - 1) * ButtonsFadeDelayBetweenAnimations + ContentAnimationDuration);
 
                 // Set the animated buttons to invisible
-                foreach (var item in pendingButtons)
+                foreach (var item in pendingElements)
                     item.Visibility = Visibility.Collapsed;
 
                 // Get the target buttons
-                IReadOnlyList<PriorityCommandBarButton> targetButtons = (
-                    from button in @this.PrimaryCommands.Cast<PriorityCommandBarButton>()
-                    where button.IsPrimary == primary
+                IReadOnlyList<FrameworkElement> targetElements = (
+                    from button in @this.PrimaryCommands.Cast<FrameworkElement>()
+                    where button.Tag is bool flag && flag == primary
                     select button).ToArray();
 
                 // Fade the target buttons in
-                foreach (var item in targetButtons.Enumerate())
+                foreach (var item in targetElements.Enumerate())
                 {
                     item.Value.Opacity = 0;
                     item.Value.Visibility = Visibility.Visible;
@@ -112,7 +112,7 @@ namespace Brainf_ckSharp.UWP.Controls.Commands
                 }
 
                 // Wait for the second animations to finish
-                await Task.Delay((targetButtons.Count - 1) * ButtonsFadeDelayBetweenAnimations + ContentAnimationDuration);
+                await Task.Delay((targetElements.Count - 1) * ButtonsFadeDelayBetweenAnimations + ContentAnimationDuration);
 
                 @this.IsHitTestVisible = true;
             }
