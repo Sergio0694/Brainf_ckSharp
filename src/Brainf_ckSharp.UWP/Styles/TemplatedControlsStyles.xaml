@@ -6,7 +6,7 @@
     <!--Header button-->
     <Style TargetType="header:HeaderButton">
         <Setter Property="Height" Value="68"/>
-        <Setter Property="Width" Value="68"/>
+        <Setter Property="Width" Value="80"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="header:HeaderButton">
@@ -14,9 +14,11 @@
 
                         <!--Tweaks to the default style-->
                         <Button.Resources>
-                            <Style TargetType="Button">
+                            <Style TargetType="Button" BasedOn="{StaticResource ButtonRevealStyle}">
+                                <Setter Property="CornerRadius" Value="0"/>
                                 <Setter Property="Margin" Value="0"/>
                                 <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Background" Value="Transparent"/>
                                 <Setter Property="VerticalAlignment" Value="Stretch"/>
                                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
                                 <Setter Property="VerticalContentAlignment" Value="Center"/>

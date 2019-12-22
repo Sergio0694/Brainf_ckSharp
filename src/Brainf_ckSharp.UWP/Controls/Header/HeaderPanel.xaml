@@ -20,7 +20,7 @@
         <local:HeaderButton
             Icon="{StaticResource IDEIcon}"
             Text="IDE"
-            Canvas.Left="70"/>
+            Canvas.Left="82"/>
 
     </Canvas>
 </UserControl>
