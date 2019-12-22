@@ -23,44 +23,74 @@
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup>
                                 <VisualState x:Name="Collapsed">
-                                    <Storyboard AllowDependentAnimations="True">
+                                    <Storyboard>
                                         <DoubleAnimation
                                             Storyboard.TargetName="ExpandablePresenter"
                                             Storyboard.TargetProperty="Height"
                                             To="0"
-                                            Duration="0:0:0.6"/>
+                                            Duration="0:0:0.25"
+                                            EnableDependentAnimation="True">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
                                         <DoubleAnimation
                                             Storyboard.TargetName="IconTransform"
                                             Storyboard.TargetProperty="Angle"
                                             To="0"
-                                            Duration="0:0:0.6"/>
+                                            Duration="0:0:0.25"/>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Expanded">
-                                    <Storyboard AllowDependentAnimations="True">
+                                    <Storyboard>
                                         <DoubleAnimation
                                             Storyboard.TargetName="ExpandablePresenter"
                                             Storyboard.TargetProperty="Height"
                                             To="{TemplateBinding ExpandableContentHeight}"
-                                            Duration="0:0:0.6"/>
+                                            Duration="0:0:0.25"
+                                            EnableDependentAnimation="True">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
                                         <DoubleAnimation
                                             Storyboard.TargetName="IconTransform"
                                             Storyboard.TargetProperty="Angle"
-                                            To="180"
-                                            Duration="0:0:0.6"/>
+                                            To="-180"
+                                            Duration="0:0:0.25"/>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
 
                         <!-- Header content-->
-                        <ContentPresenter Content="{TemplateBinding Header}"/>
+                        <ContentPresenter
+                            Content="{TemplateBinding Header}"
+                            Height="{TemplateBinding HeaderHeight}"/>
 
                         <!--Expander button-->
                         <Button
                             x:Name="ExpanderButton"
                             Grid.Row="0"
-                            Grid.Column="1">
+                            Grid.Column="1"
+                            Height="{TemplateBinding HeaderHeight}"
+                            Width="48">
+
+                            <!--Tweaks to the default style-->
+                            <Button.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource ButtonRevealStyle}">
+                                    <Setter Property="CornerRadius" Value="0"/>
+                                    <Setter Property="Margin" Value="0"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                </Style>
+                            </Button.Resources>
+
+                            <!--Expander icon-->
                             <TextBlock
                                 Text="{StaticResource ExpanderDownArrowIcon}"
                                 FontFamily="Segoe MDL2 Assets"
@@ -79,7 +109,8 @@
                             Grid.Row="1"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
-                            Content="{TemplateBinding ExpandableContent}"/>
+                            Content="{TemplateBinding ExpandableContent}"
+                            Height="{TemplateBinding ExpandableContentHeight}"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

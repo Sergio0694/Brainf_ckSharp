@@ -7,6 +7,7 @@
     xmlns:header="using:Brainf_ckSharp.UWP.Controls.Header"
     xmlns:markupExtensions="using:Brainf_ckSharp.UWP.MarkupExtensions"
     xmlns:controls="using:Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls"
+    xmlns:telerik="using:Brainf_ckSharp.UWP.Controls.Telerik.UI.Controls"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -33,6 +34,19 @@
 
         <!--Header panel-->
         <header:HeaderPanel Grid.Row="1"/>
+
+        <!--Expandable keyboard area-->
+        <telerik:ExpanderControl
+            Grid.Row="3"
+            HeaderHeight="48"
+            ExpandableContentHeight="240">
+            <telerik:ExpanderControl.Header>
+                <Grid Background="DodgerBlue"></Grid>
+            </telerik:ExpanderControl.Header>
+            <telerik:ExpanderControl.ExpandableContent>
+                <Grid Background="Pink"/>
+            </telerik:ExpanderControl.ExpandableContent>
+        </telerik:ExpanderControl>
 
         <!--Command bar-->
         <controls:AnimatedCommandBar

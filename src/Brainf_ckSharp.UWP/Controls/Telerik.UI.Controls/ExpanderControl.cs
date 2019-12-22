@@ -119,7 +119,7 @@ namespace Brainf_ckSharp.UWP.Controls.Telerik.UI.Controls
             nameof(IsExpanded),
             typeof(bool),
             typeof(ExpanderControl),
-            new PropertyMetadata(default(bool), OnIsExpandedPropertyChanged));
+            new PropertyMetadata(true, OnIsExpandedPropertyChanged));
 
         /// <summary>
         /// Updates the UI when <see cref="IsExpanded"/> changes
