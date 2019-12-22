@@ -122,6 +122,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Bindings\Functions\PivotSelectionFunctions.cs" />
+    <Compile Include="Controls\Commands\AnimatedCommandBar.cs" />
+    <Compile Include="Controls\Commands\PriorityCommandBarButton.cs" />
     <Compile Include="Controls\Header\HeaderButton.cs" />
     <Compile Include="Controls\Header\HeaderPanel.xaml.cs">
       <DependentUpon>HeaderPanel.xaml</DependentUpon>
@@ -129,6 +131,7 @@
     <Compile Include="Controls\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\System.Collections.Generic\IEnumerableExtensions.cs" />
     <Compile Include="Helpers\UI\TitleBarHelper.cs" />
     <Compile Include="MarkupExtensions\FontIconExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -163,6 +166,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.3.191211002</Version>
+    </PackageReference>
+    <PackageReference Include="UICompositionAnimations">
+      <Version>4.1.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />
