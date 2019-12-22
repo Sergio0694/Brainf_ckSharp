@@ -28,6 +28,7 @@ namespace Brainf_ckSharp.UWP
             if (!(Window.Current.Content is Shell))
             {
                 TitleBarHelper.ExpandViewIntoTitleBar();
+                TitleBarHelper.StyleTitleBar();
 
                 Window.Current.Content = new Shell();
             }
