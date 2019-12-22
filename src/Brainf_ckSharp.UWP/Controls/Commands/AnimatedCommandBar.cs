@@ -14,6 +14,17 @@ namespace Brainf_ckSharp.UWP.Controls.Commands
     /// <remarks>The items in <see cref="CommandBar.PrimaryCommands"/> need to use the <see cref="FrameworkElement.Tag"/> with a <see cref="bool"/> value</remarks>
     public sealed class AnimatedCommandBar : CommandBar
     {
+        /// <inheritdoc/>
+        protected override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            // Hide the non default buttons
+            foreach (FrameworkElement element in PrimaryCommands.Cast<FrameworkElement>())
+                if (element.Tag is bool flag && !flag)
+                    element.Visibility = Visibility.Collapsed;
+        }
+
         /// <summary>
         /// The duration of each button animation
         /// </summary>

@@ -47,12 +47,12 @@
                     Icon="{markupExtensions:FontIconExtension Glyph={StaticResource RunIcon}}"
                     Tag="{markupExtensions:Boolean Value=True}"/>
                 <AppBarButton
-                    Label="Clear"
-                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource ClearIcon}}"
-                    Tag="{markupExtensions:Boolean Value=True}"/>
-                <AppBarButton
                     Label="Delete"
                     Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DeleteIcon}}"
+                    Tag="{markupExtensions:Boolean Value=True}"/>
+                <AppBarButton
+                    Label="Clear"
+                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource ClearIcon}}"
                     Tag="{markupExtensions:Boolean Value=True}"/>
 
                 <!--IDE buttons-->
