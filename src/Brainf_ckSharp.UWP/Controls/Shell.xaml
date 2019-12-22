@@ -5,8 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:header="using:Brainf_ckSharp.UWP.Controls.Header"
-    xmlns:commands="using:Brainf_ckSharp.UWP.Controls.Commands"
     xmlns:markupExtensions="using:Brainf_ckSharp.UWP.MarkupExtensions"
+    xmlns:controls="using:Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -35,11 +35,11 @@
         <header:HeaderPanel Grid.Row="1"/>
 
         <!--Command bar-->
-        <commands:AnimatedCommandBar
+        <controls:AnimatedCommandBar
             Grid.Row="4"
             IsDynamicOverflowEnabled="False"
             Style="{StaticResource CommandBarRevealStyle}">
-            <commands:AnimatedCommandBar.PrimaryCommands>
+            <controls:AnimatedCommandBar.PrimaryCommands>
 
                 <!--Console buttons-->
                 <AppBarButton
@@ -85,8 +85,8 @@
                     Label="Redo"
                     Icon="{markupExtensions:FontIconExtension Glyph={StaticResource RedoIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}"/>
-            </commands:AnimatedCommandBar.PrimaryCommands>
-            <commands:AnimatedCommandBar.SecondaryCommands>
+            </controls:AnimatedCommandBar.PrimaryCommands>
+            <controls:AnimatedCommandBar.SecondaryCommands>
                 <AppBarButton
                     Label="Repeat last script"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource RepeatScriptIcon}}"/>
@@ -115,8 +115,8 @@
                 <AppBarButton
                     Label="About"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource AboutIcon}}"/>
-            </commands:AnimatedCommandBar.SecondaryCommands>
-        </commands:AnimatedCommandBar>
+            </controls:AnimatedCommandBar.SecondaryCommands>
+        </controls:AnimatedCommandBar>
 
         <!--Background code status-->
         <Canvas

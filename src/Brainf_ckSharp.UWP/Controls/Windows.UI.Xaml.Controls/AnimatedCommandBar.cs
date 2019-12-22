@@ -6,7 +6,7 @@ using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.UWP.Extensions.System.Collections.Generic;
 using UICompositionAnimations.Enums;
 
-namespace Brainf_ckSharp.UWP.Controls.Commands
+namespace Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls
 {
     /// <summary>
     /// A custom <see cref="AnimatedCommandBar"/> that uses animations to switch between different visible buttons
