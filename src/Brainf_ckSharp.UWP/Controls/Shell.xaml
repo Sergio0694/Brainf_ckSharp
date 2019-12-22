@@ -5,6 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:header="using:Brainf_ckSharp.UWP.Controls.Header"
+    xmlns:commands="using:Brainf_ckSharp.UWP.Controls.Commands"
+    xmlns:markupExtensions="using:Brainf_ckSharp.UWP.MarkupExtensions"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -33,8 +35,88 @@
         <header:HeaderPanel Grid.Row="1"/>
 
         <!--Command bar-->
-        <CommandBar
-            Grid.Row="4"/>
+        <commands:AnimatedCommandBar
+            Grid.Row="4"
+            IsDynamicOverflowEnabled="False"
+            Style="{StaticResource CommandBarRevealStyle}">
+            <commands:AnimatedCommandBar.PrimaryCommands>
+
+                <!--Console buttons-->
+                <AppBarButton
+                    Label="Run"
+                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource RunIcon}}"
+                    Tag="{markupExtensions:Boolean Value=True}"/>
+                <AppBarButton
+                    Label="Clear"
+                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource ClearIcon}}"
+                    Tag="{markupExtensions:Boolean Value=True}"/>
+                <AppBarButton
+                    Label="Delete"
+                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DeleteIcon}}"
+                    Tag="{markupExtensions:Boolean Value=True}"/>
+
+                <!--IDE buttons-->
+                <AppBarButton
+                    Label="Run"
+                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource RunIcon}}"
+                    Tag="{markupExtensions:Boolean Value=False}"/>
+                <AppBarButton
+                    Label="Debug"
+                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DebugIcon}}"
+                    Tag="{markupExtensions:Boolean Value=False}"/>
+                <AppBarSeparator Tag="{markupExtensions:Boolean Value=False}"/>
+                <AppBarButton
+                    Label="Move"
+                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource MoveIcon}}"
+                    Tag="{markupExtensions:Boolean Value=False}"/>
+                <AppBarButton
+                    Label="New line"
+                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource NewLineIcon}}"
+                    Tag="{markupExtensions:Boolean Value=False}"/>
+                <AppBarButton
+                    Label="Delete"
+                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DeleteIcon}}"
+                    Tag="{markupExtensions:Boolean Value=False}"/>
+                <AppBarButton
+                    Label="Undo"
+                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource UndoIcon}}"
+                    Tag="{markupExtensions:Boolean Value=False}"/>
+                <AppBarButton
+                    Label="Redo"
+                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource RedoIcon}}"
+                    Tag="{markupExtensions:Boolean Value=False}"/>
+            </commands:AnimatedCommandBar.PrimaryCommands>
+            <commands:AnimatedCommandBar.SecondaryCommands>
+                <AppBarButton
+                    Label="Repeat last script"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource RepeatScriptIcon}}"/>
+                <AppBarButton
+                    Label="Restart"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource RestartIcon}}"/>
+                <AppBarButton
+                    Label="Clear screen"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource ClearScreen}}"/>
+                <AppBarButton
+                    Label="Show Unicode characters"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource ShowUnicodeMapIcon}}"/>
+                <AppBarButton
+                    Label="Show code library"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource CodeLibraryIcon}}"/>
+                <AppBarButton
+                    Label="Save"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource SaveIcon}}"/>
+                <AppBarButton
+                    Label="Save as"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource SaveAsIcon}}"/>
+                <AppBarSeparator/>
+                <AppBarButton
+                    Label="Settings"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource SettingsIcon}}"/>
+                <AppBarButton
+                    Label="About"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource AboutIcon}}"/>
+            </commands:AnimatedCommandBar.SecondaryCommands>
+        </commands:AnimatedCommandBar>
 
         <!--Background code status-->
         <Canvas
