@@ -4,11 +4,13 @@
     xmlns:brushes="using:UICompositionAnimations.Brushes">
 
     <!--Shell header background brush-->
-    <AcrylicBrush
-        x:Name="ShellHeaderBackgroundBrush"
-        BackgroundSource="Backdrop"
-        TintColor="#FF1E1E1E"
-        TintOpacity="0.6"/>
+    <brushes:AcrylicBrush
+        x:Key="ShellHeaderBackgroundBrush"
+        Source="Backdrop"
+        BlurAmount="8"
+        Tint="#FF1E1E1E"
+        TintMix="0.6"
+        TextureUri="/Assets/Misc/noise_low.png"/>
 
     <!--Virtual keyboard brush-->
     <brushes:AcrylicBrush

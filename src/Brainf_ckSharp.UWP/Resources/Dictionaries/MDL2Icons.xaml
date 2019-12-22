@@ -5,7 +5,11 @@
     <!--Shell-->
     <x:String x:Key="ConsoleIcon">&#xF157;</x:String>
     <x:String x:Key="IDEIcon">&#xF158;</x:String>
-    <x:String x:Key="ExpandeUpArrowIcon">&#xE010;</x:String>
+
+    <!--Stdin header-->
+    <x:String x:Key="OperatorsKeyboardIcon">&#xE92E;</x:String>
+    <x:String x:Key="QuickMemoryViewerIcon">&#xE96A;</x:String>
+    <x:String x:Key="ExpandeArrowIcon">&#xE011;</x:String>
 
     <!--Command bar-->
     <x:String x:Key="RunIcon">&#xE102;</x:String>

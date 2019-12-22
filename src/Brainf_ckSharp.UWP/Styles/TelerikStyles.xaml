@@ -47,7 +47,7 @@
                                             Storyboard.TargetName="IconTransform"
                                             Storyboard.TargetProperty="Angle"
                                             From="0"
-                                            To="180"
+                                            To="-180"
                                             Duration="0:0:0.25"/>
                                     </Storyboard>
                                 </VisualState>
@@ -76,7 +76,7 @@
                                         <DoubleAnimation
                                             Storyboard.TargetName="IconTransform"
                                             Storyboard.TargetProperty="Angle"
-                                            From="180"
+                                            From="-180"
                                             To="0"
                                             Duration="0:0:0.25"/>
                                     </Storyboard>
@@ -113,7 +113,7 @@
 
                             <!--Expander icon-->
                             <TextBlock
-                                Text="{StaticResource ExpandeUpArrowIcon}"
+                                Text="{StaticResource ExpandeArrowIcon}"
                                 FontFamily="Segoe MDL2 Assets"
                                 FontSize="16"
                                 HorizontalAlignment="Center"

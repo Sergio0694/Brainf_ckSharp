@@ -24,8 +24,15 @@
             <RowDefinition Height="24"/>
         </Grid.RowDefinitions>
 
+        <!--Background-->
+        <Border
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Background="{StaticResource ShellHeaderBackgroundBrush}"/>
+
         <!--App title-->
         <TextBlock
+            Grid.Row="0"
             Foreground="White"
             Text="Brainf*ck#"
             FontSize="12"
@@ -40,7 +47,7 @@
         <telerik:ExpanderControl
             Grid.Row="3"
             HeaderHeight="48"
-            ExpandableContentHeight="240">
+            ExpandableContentHeight="180">
             <telerik:ExpanderControl.Header>
                 <Grid Background="DodgerBlue"></Grid>
             </telerik:ExpanderControl.Header>
