@@ -5,6 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:header="using:Brainf_ckSharp.UWP.Controls.InputPanel.Header"
+    xmlns:functions="using:Brainf_ckSharp.UWP.Bindings.Functions"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     mc:Ignorable="d"
     d:DesignHeight="48"
     d:DesignWidth="400">
@@ -21,18 +23,18 @@
         <!--Visual states for the rectangle indicator-->
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
-                <VisualState x:Name="ConsoleSelected">
+                <VisualState x:Name="KeyboardSelected">
                     <VisualState.Setters>
                         <Setter
-                            Target="SelectionRectangle.(Canvas.Left)"
+                            Target="SelectionRectangle.Margin"
                             Value="0"/>
                     </VisualState.Setters>
                 </VisualState>
-                <VisualState x:Name="IDESelected">
+                <VisualState x:Name="MemoryViewerSelected">
                     <VisualState.Setters>
                         <Setter
-                            Target="SelectionRectangle.(Canvas.Left)"
-                            Value="82"/>
+                            Target="SelectionRectangle.Margin"
+                            Value="50,0,0,0"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -42,35 +44,43 @@
         <header:MinimalHeaderButton
             Grid.Column="0"
             Icon="{StaticResource OperatorsKeyboardIcon}"
-            IsSelected="True"/>
+            IsSelected="{x:Bind functions:PivotSelectionFunctions.IndexToBool(SelectedIndex, 0), Mode=OneWay}"
+            Selected="VirtualKeyboardHeaderSelected"/>
         <header:MinimalHeaderButton
             Icon="{StaticResource QuickMemoryViewerIcon}"
-            Grid.Column="1"/>
+            Grid.Column="1"
+            IsSelected="{x:Bind functions:PivotSelectionFunctions.IndexToBool(SelectedIndex, 1), Mode=OneWay}"
+            Selected="MemoryViewerHeaderSelected"/>
 
         <!--Sliding indicator-->
-        <Canvas 
-            x:Name="SelectedRectangle"
-            Height="1"
-            Width="48"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Bottom"
-            Background="{ThemeResource SystemControlHighlightAccentBrush}"
+        <Rectangle 
+            x:Name="SelectionRectangle"
             Grid.Column="0"
             Grid.ColumnSpan="2"
-            IsHitTestVisible="False"/>
+            Height="1"
+            Width="48"
+            VerticalAlignment="Bottom"
+            HorizontalAlignment="Left"
+            Fill="{ThemeResource SystemControlHighlightAccentBrush}">
+            <animations:Implicit.Animations>
+                <animations:Vector3Animation Target="Offset" Duration="0:0:0.4"/>
+            </animations:Implicit.Animations>
+        </Rectangle>
 
         <!--Stdin-->
         <TextBox 
             Grid.Column="2"
             CornerRadius="0"
             BorderThickness="1,0,1,1"
-            BorderBrush="#FF222222"
+            BorderBrush="#FF323232"
             PlaceholderForeground="Gray"
             PlaceholderText="Stdin buffer"
             FontSize="15"
             VerticalAlignment="Stretch"
             VerticalContentAlignment="Center"
             x:Name="StdinBox">
+
+            <!--Default brushes overrides-->
             <TextBox.Resources>
                 <Thickness x:Key="TextControlThemePadding">10,12,6,5</Thickness>
                 <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#FF404040"/>

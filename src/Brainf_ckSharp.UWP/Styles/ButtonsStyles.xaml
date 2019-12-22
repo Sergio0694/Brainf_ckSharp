@@ -115,9 +115,6 @@
                                             Target="IconBlock.Foreground"
                                             Value="White"/>
                                         <Setter
-                                            Target="TitleBlock.Foreground"
-                                            Value="White"/>
-                                        <Setter
                                             Target="RootButton.Background"
                                             Value="Transparent"/>
                                     </VisualState.Setters>
@@ -126,9 +123,6 @@
                                     <VisualState.Setters>
                                         <Setter
                                             Target="IconBlock.Foreground"
-                                            Value="{ThemeResource SystemControlHighlightAccentBrush}"/>
-                                        <Setter
-                                            Target="TitleBlock.Foreground"
                                             Value="{ThemeResource SystemControlHighlightAccentBrush}"/>
                                         <Setter
                                             Target="RootButton.Background"

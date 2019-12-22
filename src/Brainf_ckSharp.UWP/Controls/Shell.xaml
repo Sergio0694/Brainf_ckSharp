@@ -48,7 +48,7 @@
         <Border
             Grid.Row="3"
             BorderThickness="0,1,0,0"
-            BorderBrush="#FF222222"
+            BorderBrush="#FF323232"
             Background="{StaticResource VirtualKeyboardBackgroundBrush}">
             <telerik:ExpanderControl
                 HeaderHeight="48"
