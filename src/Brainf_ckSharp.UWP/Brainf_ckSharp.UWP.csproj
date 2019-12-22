@@ -122,6 +122,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Bindings\Functions\PivotSelectionFunctions.cs" />
+    <Compile Include="Controls\InputPanel\Header\MinimalHeaderButton.cs" />
     <Compile Include="Controls\InputPanel\VirtualKeyboard\OperatorButton.cs" />
     <Compile Include="Controls\InputPanel\VirtualKeyboard\OperatorsKeyboard.xaml.cs">
       <DependentUpon>OperatorsKeyboard.xaml</DependentUpon>

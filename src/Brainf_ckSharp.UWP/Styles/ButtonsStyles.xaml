@@ -2,7 +2,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:header="using:Brainf_ckSharp.UWP.Controls.Header"
-    xmlns:virtualKeyboard="using:Brainf_ckSharp.UWP.Controls.InputPanel.VirtualKeyboard">
+    xmlns:virtualKeyboard="using:Brainf_ckSharp.UWP.Controls.InputPanel.VirtualKeyboard"
+    xmlns:stdinHeader="using:Brainf_ckSharp.UWP.Controls.InputPanel.Header">
 
     <!--Header button-->
     <Style TargetType="header:HeaderButton">
@@ -78,6 +79,72 @@
                                 FontSize="12"
                                 Foreground="#E0FFFFFF"/>
                         </StackPanel>
+                    </Button>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--Minimal header button-->
+    <Style TargetType="stdinHeader:MinimalHeaderButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="stdinHeader:MinimalHeaderButton">
+                    <Button x:Name="RootButton">
+
+                        <!--Tweaks to the default style-->
+                        <Button.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource ButtonRevealStyle}">
+                                <Setter Property="CornerRadius" Value="0"/>
+                                <Setter Property="Margin" Value="0"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="VerticalAlignment" Value="Stretch"/>
+                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </Button.Resources>
+
+                        <!--Visual states-->
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup>
+                                <VisualState x:Name="Default">
+                                    <VisualState.Setters>
+                                        <Setter
+                                            Target="IconBlock.Foreground"
+                                            Value="White"/>
+                                        <Setter
+                                            Target="TitleBlock.Foreground"
+                                            Value="White"/>
+                                        <Setter
+                                            Target="RootButton.Background"
+                                            Value="Transparent"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Selected">
+                                    <VisualState.Setters>
+                                        <Setter
+                                            Target="IconBlock.Foreground"
+                                            Value="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                                        <Setter
+                                            Target="TitleBlock.Foreground"
+                                            Value="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                                        <Setter
+                                            Target="RootButton.Background"
+                                            Value="#40000000"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <!--Icon-->
+                        <TextBlock
+                            x:Name="IconBlock"
+                            Text="{TemplateBinding Icon}"
+                            FontFamily="Segoe MDL2 Assets"
+                            FontSize="16"
+                            HorizontalAlignment="Center"/>
                     </Button>
                 </ControlTemplate>
             </Setter.Value>
