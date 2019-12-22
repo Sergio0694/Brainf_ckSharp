@@ -130,6 +130,7 @@
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\UI\TitleBarHelper.cs" />
+    <Compile Include="MarkupExtensions\FontIconExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
