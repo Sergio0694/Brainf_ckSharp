@@ -8,6 +8,7 @@
     xmlns:markupExtensions="using:Brainf_ckSharp.UWP.MarkupExtensions"
     xmlns:controls="using:Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls"
     xmlns:telerik="using:Brainf_ckSharp.UWP.Controls.Telerik.UI.Controls"
+    xmlns:virtualKeyboard="using:Brainf_ckSharp.UWP.Controls.InputPanel.VirtualKeyboard"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -44,7 +45,9 @@
                 <Grid Background="DodgerBlue"></Grid>
             </telerik:ExpanderControl.Header>
             <telerik:ExpanderControl.ExpandableContent>
-                <Grid Background="Pink"/>
+                <Border Background="{StaticResource VirtualKeyboardBackgroundBrush}">
+                    <virtualKeyboard:OperatorsKeyboard/>
+                </Border>
             </telerik:ExpanderControl.ExpandableContent>
         </telerik:ExpanderControl>
 

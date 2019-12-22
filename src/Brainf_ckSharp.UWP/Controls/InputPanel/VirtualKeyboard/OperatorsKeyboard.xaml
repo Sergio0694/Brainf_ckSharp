@@ -11,9 +11,9 @@
 
     <!--Operators pad-->
     <Grid
-        Padding="2"
-        RowSpacing="2"
-        ColumnSpacing="2">
+        Padding="4"
+        RowSpacing="4"
+        ColumnSpacing="4">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -77,50 +77,37 @@
             Click="OperatorButton_OnClick"/>
 
         <!--Border with the PBrain operators-->
-        <Border
-            Grid.Column="4"
+        <Grid
             Grid.Row="0"
             Grid.RowSpan="2"
-            BorderThickness="4,0,0,0"
-            BorderBrush="#24000000">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="4"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="4"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <virtualKeyboard:OperatorButton
-                    Operator="{StaticResource FunctionStart}"
-                    Description="f ("
-                    Click="OperatorButton_OnClick"/>
-                <Canvas 
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Background="#24000000"/>
-                <virtualKeyboard:OperatorButton
-                    Operator="{StaticResource FunctionEnd}"
-                    Description=")"
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    Click="OperatorButton_OnClick"/>
-                <Canvas 
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="3"
-                    Background="#24000000"/>
-                <virtualKeyboard:OperatorButton
-                    Operator="{StaticResource FunctionCall}"
-                    Description="call"
-                    Grid.Row="2"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="3"
-                    Click="OperatorButton_OnClick"/>
-            </Grid>
-        </Border>
+            Grid.Column="4"
+            RowSpacing="4"
+            ColumnSpacing="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <virtualKeyboard:OperatorButton
+                Operator="{StaticResource FunctionStart}"
+                Description="f ("
+                Click="OperatorButton_OnClick"/>
+            <virtualKeyboard:OperatorButton
+                Operator="{StaticResource FunctionEnd}"
+                Description=")"
+                Grid.Row="0"
+                Grid.Column="1"
+                Click="OperatorButton_OnClick"/>
+            <virtualKeyboard:OperatorButton
+                Operator="{StaticResource FunctionCall}"
+                Description="call"
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Click="OperatorButton_OnClick"/>
+        </Grid>
     </Grid>
 </UserControl>

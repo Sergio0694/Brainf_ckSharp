@@ -211,7 +211,7 @@
                                 <Setter Property="CornerRadius" Value="0"/>
                                 <Setter Property="Margin" Value="0"/>
                                 <Setter Property="Padding" Value="0"/>
-                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Background" Value="#32000000"/>
                                 <Setter Property="VerticalAlignment" Value="Stretch"/>
                                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
                                 <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -223,11 +223,13 @@
                         <StackPanel
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Spacing="4">
+                            Spacing="8">
                             <TextBlock
                                 x:Name="OperatorBlock"
                                 Text="{TemplateBinding Operator}"
-                                HorizontalAlignment="Center"/>
+                                HorizontalAlignment="Center"
+                                FontSize="24"
+                                FontWeight="SemiBold"/>
                             <TextBlock
                                 x:Name="DescriptionBlock"
                                 Text="{TemplateBinding Description}"
@@ -236,7 +238,7 @@
                                 TextWrapping="NoWrap"
                                 TextTrimming="CharacterEllipsis"
                                 FontSize="12"
-                                Foreground="#E0FFFFFF"/>
+                                Foreground="#80FFFFFF"/>
                         </StackPanel>
                     </Button>
                 </ControlTemplate>
