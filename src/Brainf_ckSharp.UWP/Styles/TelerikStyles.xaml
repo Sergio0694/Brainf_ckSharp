@@ -1,0 +1,119 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Brainf_ckSharp.UWP.Controls.Telerik.UI.Controls">
+
+    <!--Expander control-->
+    <Style TargetType="controls:ExpanderControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:ExpanderControl">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--Visual states-->
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup>
+                                <VisualState x:Name="Collapsed">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ExpandablePresenter"
+                                            Storyboard.TargetProperty="Height"
+                                            To="0"
+                                            Duration="0:0:0.25"
+                                            EnableDependentAnimation="True">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="IconTransform"
+                                            Storyboard.TargetProperty="Angle"
+                                            To="0"
+                                            Duration="0:0:0.25"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Expanded">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ExpandablePresenter"
+                                            Storyboard.TargetProperty="Height"
+                                            To="{TemplateBinding ExpandableContentHeight}"
+                                            Duration="0:0:0.25"
+                                            EnableDependentAnimation="True">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="IconTransform"
+                                            Storyboard.TargetProperty="Angle"
+                                            To="-180"
+                                            Duration="0:0:0.25"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <!-- Header content-->
+                        <ContentPresenter
+                            Content="{TemplateBinding Header}"
+                            Height="{TemplateBinding HeaderHeight}"/>
+
+                        <!--Expander button-->
+                        <Button
+                            x:Name="ExpanderButton"
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Height="{TemplateBinding HeaderHeight}"
+                            Width="48">
+
+                            <!--Tweaks to the default style-->
+                            <Button.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource ButtonRevealStyle}">
+                                    <Setter Property="CornerRadius" Value="0"/>
+                                    <Setter Property="Margin" Value="0"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                </Style>
+                            </Button.Resources>
+
+                            <!--Expander icon-->
+                            <TextBlock
+                                Text="{StaticResource ExpanderDownArrowIcon}"
+                                FontFamily="Segoe MDL2 Assets"
+                                FontSize="16"
+                                HorizontalAlignment="Center"
+                                RenderTransformOrigin="0.5, 0.5">
+                                <TextBlock.RenderTransform>
+                                    <RotateTransform x:Name="IconTransform"/>
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+                        </Button>
+
+                        <!--Expandable content-->
+                        <ContentPresenter
+                            x:Name="ExpandablePresenter"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Content="{TemplateBinding ExpandableContent}"
+                            Height="{TemplateBinding ExpandableContentHeight}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+</ResourceDictionary>
