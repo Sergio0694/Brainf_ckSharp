@@ -9,6 +9,7 @@
     xmlns:controls="using:Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls"
     xmlns:telerik="using:Brainf_ckSharp.UWP.Controls.Telerik.UI.Controls"
     xmlns:virtualKeyboard="using:Brainf_ckSharp.UWP.Controls.InputPanel.VirtualKeyboard"
+    xmlns:inputPanel="using:Brainf_ckSharp.UWP.Controls.InputPanel.Header"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -44,19 +45,22 @@
         <header:HeaderPanel Grid.Row="1"/>
 
         <!--Expandable keyboard area-->
-        <telerik:ExpanderControl
+        <Border
             Grid.Row="3"
-            HeaderHeight="48"
-            ExpandableContentHeight="180">
-            <telerik:ExpanderControl.Header>
-                <Grid Background="DodgerBlue"></Grid>
-            </telerik:ExpanderControl.Header>
-            <telerik:ExpanderControl.ExpandableContent>
-                <Border Background="{StaticResource VirtualKeyboardBackgroundBrush}">
+            BorderThickness="0,1,0,0"
+            BorderBrush="#FF222222"
+            Background="{StaticResource VirtualKeyboardBackgroundBrush}">
+            <telerik:ExpanderControl
+                HeaderHeight="48"
+                ExpandableContentHeight="180">
+                <telerik:ExpanderControl.Header>
+                    <inputPanel:StdinHeader/>
+                </telerik:ExpanderControl.Header>
+                <telerik:ExpanderControl.ExpandableContent>
                     <virtualKeyboard:OperatorsKeyboard/>
-                </Border>
-            </telerik:ExpanderControl.ExpandableContent>
-        </telerik:ExpanderControl>
+                </telerik:ExpanderControl.ExpandableContent>
+            </telerik:ExpanderControl>
+        </Border>
 
         <!--Command bar-->
         <controls:AnimatedCommandBar

@@ -95,6 +95,7 @@
                             Grid.Row="0"
                             Grid.Column="1"
                             Height="{TemplateBinding HeaderHeight}"
+                            Background="#32000000"
                             Width="48">
 
                             <!--Tweaks to the default style-->

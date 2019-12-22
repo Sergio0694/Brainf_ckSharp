@@ -123,6 +123,9 @@
     </Compile>
     <Compile Include="Bindings\Functions\PivotSelectionFunctions.cs" />
     <Compile Include="Controls\InputPanel\Header\MinimalHeaderButton.cs" />
+    <Compile Include="Controls\InputPanel\Header\StdinHeader.xaml.cs">
+      <DependentUpon>StdinHeader.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\InputPanel\VirtualKeyboard\OperatorButton.cs" />
     <Compile Include="Controls\InputPanel\VirtualKeyboard\OperatorsKeyboard.xaml.cs">
       <DependentUpon>OperatorsKeyboard.xaml</DependentUpon>
@@ -183,6 +186,10 @@
   <ItemGroup />
   <ItemGroup>
     <Page Include="Controls\Header\HeaderPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\InputPanel\Header\StdinHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

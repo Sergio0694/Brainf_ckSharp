@@ -1,0 +1,82 @@
+﻿<UserControl
+    x:Class="Brainf_ckSharp.UWP.Controls.InputPanel.Header.StdinHeader"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:header="using:Brainf_ckSharp.UWP.Controls.InputPanel.Header"
+    mc:Ignorable="d"
+    d:DesignHeight="48"
+    d:DesignWidth="400">
+
+    <Grid
+        Background="#44000000"
+        ColumnSpacing="2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="48"/>
+            <ColumnDefinition Width="48"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Visual states for the rectangle indicator-->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="ConsoleSelected">
+                    <VisualState.Setters>
+                        <Setter
+                            Target="SelectionRectangle.(Canvas.Left)"
+                            Value="0"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="IDESelected">
+                    <VisualState.Setters>
+                        <Setter
+                            Target="SelectionRectangle.(Canvas.Left)"
+                            Value="82"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <!--Sections-->
+        <header:MinimalHeaderButton
+            Grid.Column="0"
+            Icon="{StaticResource OperatorsKeyboardIcon}"
+            IsSelected="True"/>
+        <header:MinimalHeaderButton
+            Icon="{StaticResource QuickMemoryViewerIcon}"
+            Grid.Column="1"/>
+
+        <!--Sliding indicator-->
+        <Canvas 
+            x:Name="SelectedRectangle"
+            Height="1"
+            Width="48"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Background="{ThemeResource SystemControlHighlightAccentBrush}"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            IsHitTestVisible="False"/>
+
+        <!--Stdin-->
+        <TextBox 
+            Grid.Column="2"
+            CornerRadius="0"
+            BorderThickness="1,0,1,1"
+            BorderBrush="#FF222222"
+            PlaceholderForeground="Gray"
+            PlaceholderText="Stdin buffer"
+            FontSize="15"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            x:Name="StdinBox">
+            <TextBox.Resources>
+                <Thickness x:Key="TextControlThemePadding">10,12,6,5</Thickness>
+                <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#FF404040"/>
+                <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="#FF080808"/>
+                <SolidColorBrush x:Key="TextControlForegroundFocused" Color="White"/>
+            </TextBox.Resources>
+        </TextBox>
+    </Grid>
+</UserControl>
