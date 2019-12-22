@@ -2,6 +2,7 @@
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Brainf_ckSharp.UWP.Controls;
+using Brainf_ckSharp.UWP.Helpers.UI;
 
 namespace Brainf_ckSharp.UWP
 {
@@ -26,6 +27,8 @@ namespace Brainf_ckSharp.UWP
             // Initialize the UI if needed
             if (!(Window.Current.Content is Shell))
             {
+                TitleBarHelper.ExpandViewIntoTitleBar();
+
                 Window.Current.Content = new Shell();
             }
 
