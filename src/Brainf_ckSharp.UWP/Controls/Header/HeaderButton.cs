@@ -12,7 +12,10 @@ namespace Brainf_ckSharp.UWP.Controls.Header
     [TemplatePart(Name = RootButtonName, Type = typeof(Button))]
     public sealed class HeaderButton : Control
     {
+        // Constants for the template
         private const string RootButtonName = "RootButton";
+        private const string DefaultVisualStateName = "Default";
+        private const string SelectedVisualStateName = "Selected";
 
         /// <summary>
         /// The root <see cref="Button"/> control
@@ -25,6 +28,7 @@ namespace Brainf_ckSharp.UWP.Controls.Header
             base.OnApplyTemplate();
 
             _RootButton = (Button)GetTemplateChild(RootButtonName) ?? throw new InvalidOperationException($"Can't find {RootButtonName}");
+            _RootButton.Click += RootButton_Click;
         }
 
         /// <summary>
@@ -62,5 +66,47 @@ namespace Brainf_ckSharp.UWP.Controls.Header
             typeof(string),
             typeof(HeaderButton),
             new PropertyMetadata(string.Empty));
+
+        /// <summary>
+        /// Gets or sets whether or not the control is currently selected
+        /// </summary>
+        public bool IsSelected
+        {
+            get => (bool)GetValue(IsSelectedProperty);
+            set => SetValue(IsSelectedProperty, value);
+        }
+
+        /// <summary>
+        /// The dependency property for <see cref="IsSelected"/>.
+        /// </summary>
+        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
+            nameof(IsSelected),
+            typeof(bool),
+            typeof(HeaderButton),
+            new PropertyMetadata(default(bool), OnIsSelectedPropertyChanged));
+
+        /// <summary>
+        /// Raised whenever the <see cref="IsSelected"/> property is set to <see langword="true"/>
+        /// </summary>
+        public event EventHandler? Selected;
+
+        /// <summary>
+        /// Updates the UI when <see cref="IsSelected"/> changes
+        /// </summary>
+        /// <param name="d">The source <see cref="DependencyObject"/> instance</param>
+        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> info for the current update</param>
+        private static void OnIsSelectedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            HeaderButton @this = (HeaderButton)d;
+            if (e.NewValue is bool value && value)
+            {
+                VisualStateManager.GoToState(@this, SelectedVisualStateName, false);
+                @this.Selected?.Invoke(@this, EventArgs.Empty);
+            }
+            else VisualStateManager.GoToState(@this, DefaultVisualStateName, false);
+        }
+
+        // Updates the UI when the control is selected
+        private void RootButton_Click(object sender, RoutedEventArgs e) => IsSelected = true;
     }
 }

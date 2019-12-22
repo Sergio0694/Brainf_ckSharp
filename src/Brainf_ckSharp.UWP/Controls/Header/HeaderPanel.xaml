@@ -5,22 +5,60 @@
     xmlns:local="using:Brainf_ckSharp.UWP.Controls.Header"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:functions="using:Brainf_ckSharp.UWP.Bindings.Functions"
     mc:Ignorable="d"
     d:DesignHeight="68"
     d:DesignWidth="320">
 
     <Canvas>
+        
+        <!--Visual states for the rectangle indicator-->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="ConsoleSelected">
+                    <VisualState.Setters>
+                        <Setter
+                            Target="SelectionRectangle.(Canvas.Left)"
+                            Value="0"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="IDESelected">
+                    <VisualState.Setters>
+                        <Setter
+                            Target="SelectionRectangle.(Canvas.Left)"
+                            Value="82"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
         <!--Console button-->
         <local:HeaderButton
             Icon="{StaticResource ConsoleIcon}"
-            Text="Console"/>
+            Text="Console"
+            Height="68" Width="80"
+            IsSelected="{x:Bind functions:PivotSelectionFunctions.IndexToBool(SelectedIndex, 0), Mode=OneWay}"
+            Selected="ConsoleHeaderSelected"/>
 
         <!--IDE button-->
         <local:HeaderButton
             Icon="{StaticResource IDEIcon}"
             Text="IDE"
-            Canvas.Left="82"/>
+            Height="68" Width="80"
+            Canvas.Left="82"
+            IsSelected="{x:Bind functions:PivotSelectionFunctions.IndexToBool(SelectedIndex, 1), Mode=OneWay}"
+            Selected="IDEHeaderSelected"/>
 
+        <!--Selection rectangle-->
+        <Rectangle
+            x:Name="SelectionRectangle"
+            Height="2" Width="80"
+            Canvas.Top="66"
+            Fill="{ThemeResource SystemControlHighlightAccentBrush}">
+            <animations:Implicit.Animations>
+                <animations:Vector3Animation Target="Offset" Duration="0:0:0.4"/>
+            </animations:Implicit.Animations>
+        </Rectangle>
     </Canvas>
 </UserControl>

@@ -5,8 +5,6 @@
 
     <!--Header button-->
     <Style TargetType="header:HeaderButton">
-        <Setter Property="Height" Value="68"/>
-        <Setter Property="Width" Value="80"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="header:HeaderButton">
@@ -64,11 +62,13 @@
                             VerticalAlignment="Center"
                             Spacing="4">
                             <TextBlock
+                                x:Name="IconBlock"
                                 Text="{TemplateBinding Icon}"
                                 FontFamily="Segoe MDL2 Assets"
                                 FontSize="16"
                                 HorizontalAlignment="Center"/>
                             <TextBlock
+                                x:Name="TitleBlock"
                                 Text="{TemplateBinding Text}"
                                 RelativePanel.Below="IconBlock"
                                 HorizontalAlignment="Center"
