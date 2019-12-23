@@ -83,15 +83,26 @@
                         <SolidColorBrush x:Key="AppBarButtonForegroundPointerOver" Color="{StaticResource RunColor}"/>
                         <SolidColorBrush x:Key="AppBarButtonForegroundPressed" Color="{StaticResource RunColor}"/>
                     </AppBarButton.Resources>
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="Enter"/>
+                    </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
                     Label="Delete"
                     Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DeleteIcon}}"
-                    Tag="{markupExtensions:Boolean Value=True}"/>
+                    Tag="{markupExtensions:Boolean Value=True}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="Delete"/>
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
                 <AppBarButton
                     Label="Clear"
                     Icon="{markupExtensions:FontIconExtension Glyph={StaticResource ClearIcon}}"
-                    Tag="{markupExtensions:Boolean Value=True}"/>
+                    Tag="{markupExtensions:Boolean Value=True}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="Delete" Modifiers="Control"/>
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
 
                 <!--IDE buttons-->
                 <AppBarButton
@@ -139,32 +150,64 @@
             <controls:AnimatedCommandBar.SecondaryCommands>
                 <AppBarButton
                     Label="Repeat last script"
-                    Icon="{markupExtensions:FontIcon Glyph={StaticResource RepeatScriptIcon}}"/>
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource RepeatScriptIcon}}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="F2" Modifiers="Control"/>
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
                 <AppBarButton
                     Label="Restart"
-                    Icon="{markupExtensions:FontIcon Glyph={StaticResource RestartIcon}}"/>
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource RestartIcon}}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="F6" Modifiers="Control"/>
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
                 <AppBarButton
                     Label="Clear screen"
-                    Icon="{markupExtensions:FontIcon Glyph={StaticResource ClearScreen}}"/>
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource ClearScreen}}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="F4" Modifiers="Control"/>
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
                 <AppBarButton
                     Label="Show Unicode characters"
-                    Icon="{markupExtensions:FontIcon Glyph={StaticResource ShowUnicodeMapIcon}}"/>
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource ShowUnicodeMapIcon}}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="U" Modifiers="Control"/>
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
                 <AppBarButton
                     Label="Show code library"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource CodeLibraryIcon}}"/>
                 <AppBarButton
                     Label="Save"
-                    Icon="{markupExtensions:FontIcon Glyph={StaticResource SaveIcon}}"/>
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource SaveIcon}}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="S" Modifiers="Control"/>
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
                 <AppBarButton
                     Label="Save as"
-                    Icon="{markupExtensions:FontIcon Glyph={StaticResource SaveAsIcon}}"/>
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource SaveAsIcon}}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="S" Modifiers="Menu"/>
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
                 <AppBarSeparator/>
                 <AppBarButton
                     Label="Settings"
-                    Icon="{markupExtensions:FontIcon Glyph={StaticResource SettingsIcon}}"/>
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource SettingsIcon}}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="I" Modifiers="Control"/>
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
                 <AppBarButton
                     Label="About"
-                    Icon="{markupExtensions:FontIcon Glyph={StaticResource AboutIcon}}"/>
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource AboutIcon}}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="A" Modifiers="Control"/>
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
             </controls:AnimatedCommandBar.SecondaryCommands>
         </controls:AnimatedCommandBar>
 

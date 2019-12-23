@@ -58,7 +58,7 @@
                     FontWeight="ExtraBold"
                     Foreground="#FFA00000"/>
                 <Run 
-                    Text="{x:Bind ExitCode}"
+                    Text=""
                     FontWeight="Bold"
                     Foreground="#FF900000"/>
             </TextBlock>
@@ -104,7 +104,8 @@
             <templateSelectors:ConsoleEntryTemplateSelector
                 CommandTemplate="{StaticResource CommandTemplate}"
                 ResultTemplate="{StaticResource ResultTemplate}"
-                ExceptionTemplate="{StaticResource ExceptionResult}"
+                SyntaxErrorTemplate="{StaticResource SyntaxErrorTemplate}"
+                ExceptionTemplate="{StaticResource ExceptionResultTemplate}"
                 RestartTemplate="{StaticResource RestartTemplate}"/>
         </ListView.ItemTemplateSelector>
     </ListView>

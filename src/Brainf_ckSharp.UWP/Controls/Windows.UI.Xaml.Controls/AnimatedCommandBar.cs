@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.UWP.Extensions.System.Collections.Generic;
 using UICompositionAnimations.Enums;
 
 namespace Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls
