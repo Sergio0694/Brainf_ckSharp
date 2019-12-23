@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Diagnostics.Contracts;
 using System.Linq;
-using JetBrains.Annotations;
 
-namespace Brainf_ckSharp.UWP.Extensions.System.Collections.Generic
+namespace System.Collections.Generic
 {
     /// <summary>
     /// An extension <see langword="class"/> for <see cref="IEnumerable{T}"/> types

@@ -140,6 +140,7 @@
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions\System.Collections.Generic\IEnumerableExtensions.cs" />
+    <Compile Include="Extensions\System.Collections.Generic\IReadOnlyListExtensions.cs" />
     <Compile Include="Helpers\UI\TitleBarHelper.cs" />
     <Compile Include="MarkupExtensions\BooleanExtension.cs" />
     <Compile Include="MarkupExtensions\FontIconExtension.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Models\Console\ConsoleCommand.cs" />
     <Compile Include="Models\Console\ConsoleException.cs" />
     <Compile Include="Models\Console\ConsoleResult.cs" />
+    <Compile Include="Models\Console\ConsoleSyntaxError.cs" />
     <Compile Include="Models\Console\Interfaces\IConsoleEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TemplateSelectors\ConsoleEntryTemplateSelector.cs" />

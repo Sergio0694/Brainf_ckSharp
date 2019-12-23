@@ -46,21 +46,34 @@
                 TextWrapping="Wrap"/>
         </DataTemplate>
 
-        <!--Exception template-->
+        <!--Syntax error template-->
         <DataTemplate
-            x:Key="ExceptionResult"
-            x:DataType="console:ConsoleException">
+            x:Key="SyntaxErrorTemplate"
+            x:DataType="console:ConsoleSyntaxError">
             <TextBlock
                 FontSize="16"
                 TextWrapping="Wrap">
+                <Run
+                    Text="syntax error:"
+                    FontWeight="ExtraBold"
+                    Foreground="#FFA00000"/>
                 <Run 
                     Text="{x:Bind ExitCode}"
-                    FontWeight="ExtraBold"
-                    Foreground="#FFA00000"/>
-                <Run 
-                    Text="&gt;"
-                    FontWeight="ExtraBold"
-                    Foreground="#FFA00000"/>
+                    FontWeight="Bold"
+                    Foreground="#FF900000"/>
+            </TextBlock>
+        </DataTemplate>
+
+        <!--Exception template-->
+        <DataTemplate
+            x:Key="ExceptionResultTemplate"
+            x:DataType="console:ConsoleException">
+            <TextBlock
+                FontSize="16"
+                TextWrapping="Wrap"
+                FontWeight="ExtraBold"
+                Foreground="#FFA00000">
+                <Run Text="{x:Bind ExitCode}"/><Run Text=":"/>
                 <Run 
                     Text="{x:Bind ExitCode}"
                     FontWeight="Bold"

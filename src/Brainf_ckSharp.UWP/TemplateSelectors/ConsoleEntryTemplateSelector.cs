@@ -21,6 +21,11 @@ namespace Brainf_ckSharp.UWP.TemplateSelectors
         public DataTemplate ResultTemplate { get; set; }
 
         /// <summary>
+        /// Gets or sets the <see cref="DataTemplate"/> for console syntax errors
+        /// </summary>
+        public DataTemplate SyntaxErrorTemplate { get; set; }
+
+        /// <summary>
         /// Gets or sets the <see cref="DataTemplate"/> for console exceptions
         /// </summary>
         public DataTemplate ExceptionTemplate { get; set; }
@@ -37,6 +42,7 @@ namespace Brainf_ckSharp.UWP.TemplateSelectors
             {
                 ConsoleCommand _ => CommandTemplate,
                 ConsoleResult _ => ResultTemplate,
+                ConsoleSyntaxError _ => SyntaxErrorTemplate,
                 ConsoleException _ => ExceptionTemplate,
                 ConsoleRestart _ => RestartTemplate,
                 _ => throw new ArgumentException($"Unsupported item of type {item.GetType()}")

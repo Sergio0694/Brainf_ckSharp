@@ -38,7 +38,7 @@ namespace Brainf_ckSharp.UWP.ViewModels.Abstract
         /// Clears the collection of items, if possible
         /// </summary>
         /// <returns><see langword="true"/> if the collection was cleared, <see langword="false"/> if it was already empty</returns>
-        protected bool Clear()
+        protected bool TryClearSource()
         {
             if (IsEmpty) return false;
 
