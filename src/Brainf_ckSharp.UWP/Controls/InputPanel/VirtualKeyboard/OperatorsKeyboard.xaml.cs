@@ -1,8 +1,13 @@
 ﻿using System;
 using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.UWP.Messages.InputPanel;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ckSharp.UWP.Controls.InputPanel.VirtualKeyboard
 {
+    /// <summary>
+    /// A virtual keyboard with the Brainf*ck/PBrain operators
+    /// </summary>
     public sealed partial class OperatorsKeyboard : UserControl
     {
         public OperatorsKeyboard()
@@ -10,10 +15,21 @@ namespace Brainf_ckSharp.UWP.Controls.InputPanel.VirtualKeyboard
             this.InitializeComponent();
         }
 
-        // Handles a given operator button being clicked
+        /// <summary>
+        /// Handles a given operator button being clicked
+        /// </summary>
+        /// <param name="sender">An <see cref="OperatorButton"/> instance with the input operator</param>
+        /// <param name="e">Unused event args, the input operator is in the <see cref="OperatorButton.Operator"/> property</param>
         private void OperatorButton_OnClick(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (sender is OperatorButton button &&
+                button.Operator.Length == 1 &&
+                button.Operator[0] is { } op &&
+                Brainf_ckParser.IsOperator(op))
+            {
+                Messenger.Default.Send(new OperatorKeyPressedNotificationMessage(op));
+            }
+            else throw new InvalidOperationException("Invalid operator button pressed");
         }
     }
 }

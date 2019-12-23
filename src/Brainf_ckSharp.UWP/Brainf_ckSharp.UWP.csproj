@@ -143,6 +143,8 @@
     <Compile Include="Helpers\UI\TitleBarHelper.cs" />
     <Compile Include="MarkupExtensions\BooleanExtension.cs" />
     <Compile Include="MarkupExtensions\FontIconExtension.cs" />
+    <Compile Include="Messages\Abstract\ValueChangedMessageBase{T}.cs" />
+    <Compile Include="Messages\InputPanel\OperatorKeyPressedNotificationMessage.cs" />
     <Compile Include="Models\Console\ConsoleRestart.cs" />
     <Compile Include="Models\Console\ConsoleCommand.cs" />
     <Compile Include="Models\Console\ConsoleException.cs" />
