@@ -143,8 +143,14 @@
     <Compile Include="Helpers\UI\TitleBarHelper.cs" />
     <Compile Include="MarkupExtensions\BooleanExtension.cs" />
     <Compile Include="MarkupExtensions\FontIconExtension.cs" />
+    <Compile Include="Models\Console\ConsoleRestart.cs" />
+    <Compile Include="Models\Console\ConsoleCommand.cs" />
+    <Compile Include="Models\Console\ConsoleException.cs" />
+    <Compile Include="Models\Console\ConsoleResult.cs" />
+    <Compile Include="Models\Console\Interfaces\IConsoleEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase{T}.cs" />
+    <Compile Include="ViewModels\ConsoleViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>
@@ -190,7 +196,12 @@
       <Version>4.1.1</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Brainf_ckSharp\Brainf_ckSharp.csproj">
+      <Project>{aceea540-7a2c-4705-ac68-5a8c3a5c2a38}</Project>
+      <Name>Brainf_ckSharp</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\Header\HeaderPanel.xaml">
       <SubType>Designer</SubType>
