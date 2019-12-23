@@ -10,6 +10,7 @@
     xmlns:telerik="using:Brainf_ckSharp.UWP.Controls.Telerik.UI.Controls"
     xmlns:virtualKeyboard="using:Brainf_ckSharp.UWP.Controls.InputPanel.VirtualKeyboard"
     xmlns:inputPanel="using:Brainf_ckSharp.UWP.Controls.InputPanel.Header"
+    xmlns:views="using:Brainf_ckSharp.UWP.Views"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -43,6 +44,9 @@
 
         <!--Header panel-->
         <header:HeaderPanel Grid.Row="1"/>
+
+        <!--Console-->
+        <views:ConsoleView Grid.Row="2"/>
 
         <!--Expandable keyboard area-->
         <Border
