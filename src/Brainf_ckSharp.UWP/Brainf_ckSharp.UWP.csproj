@@ -139,12 +139,19 @@
     <Compile Include="Controls\Host\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\GalaSoft.MvvmLight.Messaging\MessengerExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IReadOnlyListExtensions.cs" />
     <Compile Include="Helpers\UI\TitleBarHelper.cs" />
     <Compile Include="MarkupExtensions\BooleanExtension.cs" />
     <Compile Include="MarkupExtensions\FontIconExtension.cs" />
     <Compile Include="Messages\Abstract\ValueChangedMessageBase{T}.cs" />
+    <Compile Include="Messages\Console\ClearCommandRequestMessage.cs" />
+    <Compile Include="Messages\Console\ClearConsoleScreenRequestMessage.cs" />
+    <Compile Include="Messages\Console\DeleteOperatorRequestMessage.cs" />
+    <Compile Include="Messages\Console\RepeatCommandRequestMessage.cs" />
+    <Compile Include="Messages\Console\RestartConsoleRequestMessage.cs" />
+    <Compile Include="Messages\Console\RunCommandRequestMessage.cs" />
     <Compile Include="Messages\InputPanel\OperatorKeyPressedNotificationMessage.cs" />
     <Compile Include="Models\Console\ConsoleRestart.cs" />
     <Compile Include="Models\Console\ConsoleCommand.cs" />
@@ -156,6 +163,7 @@
     <Compile Include="TemplateSelectors\ConsoleEntryTemplateSelector.cs" />
     <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase{T}.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
+    <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>

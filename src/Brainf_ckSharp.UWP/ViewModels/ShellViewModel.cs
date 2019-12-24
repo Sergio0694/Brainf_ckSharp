@@ -23,5 +23,20 @@ namespace Brainf_ckSharp.UWP.ViewModels
         /// Clears the current console command
         /// </summary>
         public void ClearConsoleCommand() => Messenger.Default.Send<ClearCommandRequestMessage>();
+
+        /// <summary>
+        /// Clears the current console screen
+        /// </summary>
+        public void ClearConsoleScreen() => Messenger.Default.Send<ClearConsoleScreenRequestMessage>();
+
+        /// <summary>
+        /// Repeats the last console script
+        /// </summary>
+        public void RepeatLastConsoleScript() => Messenger.Default.Send<RepeatCommandRequestMessage>();
+
+        /// <summary>
+        /// Restarts the console and resets its state
+        /// </summary>
+        public void RestartConsole() => Messenger.Default.Send<RestartConsoleRequestMessage>();
     }
 }

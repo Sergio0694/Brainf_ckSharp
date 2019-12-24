@@ -91,17 +91,19 @@
                 <AppBarButton
                     Label="Delete"
                     Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DeleteIcon}}"
-                    Tag="{markupExtensions:Boolean Value=True}">
+                    Tag="{markupExtensions:Boolean Value=True}"
+                    Click="{x:Bind ViewModel.DeleteConsoleOperator}">
                     <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="Delete"/>
+                        <KeyboardAccelerator Key="Delete" Invoked="{x:Bind ViewModel.DeleteConsoleOperator}"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
                     Label="Clear"
                     Icon="{markupExtensions:FontIconExtension Glyph={StaticResource ClearIcon}}"
-                    Tag="{markupExtensions:Boolean Value=True}">
+                    Tag="{markupExtensions:Boolean Value=True}"
+                    Click="{x:Bind ViewModel.ClearConsoleCommand}">
                     <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="Delete" Modifiers="Control"/>
+                        <KeyboardAccelerator Key="Delete" Modifiers="Control" Invoked="{x:Bind ViewModel.ClearConsoleCommand}"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
 
@@ -151,23 +153,26 @@
             <controls:AnimatedCommandBar.SecondaryCommands>
                 <AppBarButton
                     Label="Repeat last script"
-                    Icon="{markupExtensions:FontIcon Glyph={StaticResource RepeatScriptIcon}}">
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource RepeatScriptIcon}}"
+                    Click="{x:Bind ViewModel.RepeatLastConsoleScript}">
                     <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="F2" Modifiers="Control"/>
+                        <KeyboardAccelerator Key="F2" Modifiers="Control" Invoked="{x:Bind ViewModel.RepeatLastConsoleScript}"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
                     Label="Restart"
-                    Icon="{markupExtensions:FontIcon Glyph={StaticResource RestartIcon}}">
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource RestartIcon}}"
+                    Click="{x:Bind ViewModel.RestartConsole}">
                     <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="F6" Modifiers="Control"/>
+                        <KeyboardAccelerator Key="F6" Modifiers="Control" Invoked="{x:Bind ViewModel.RestartConsole}"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
                     Label="Clear screen"
-                    Icon="{markupExtensions:FontIcon Glyph={StaticResource ClearScreen}}">
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource ClearScreen}}"
+                    Click="{x:Bind ViewModel.ClearConsoleScreen}">
                     <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="F4" Modifiers="Control"/>
+                        <KeyboardAccelerator Key="F4" Modifiers="Control" Invoked="{x:Bind ViewModel.ClearConsoleScreen}"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton

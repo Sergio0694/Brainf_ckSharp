@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Tools;
+using Brainf_ckSharp.UWP.Messages.Console;
 using Brainf_ckSharp.UWP.Models.Console;
 using Brainf_ckSharp.UWP.Models.Console.Interfaces;
 using Brainf_ckSharp.UWP.ViewModels.Abstract;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ckSharp.UWP.ViewModels
 {
@@ -28,6 +31,13 @@ namespace Brainf_ckSharp.UWP.ViewModels
         public ConsoleViewModel()
         {
             Source.Add(new ConsoleCommand());
+
+            Messenger.Default.Register<RunCommandRequestMessage>(this, ExecuteCommandAsync);
+            Messenger.Default.Register<DeleteOperatorRequestMessage>(this, DeleteLastOperatorAsync);
+            Messenger.Default.Register<ClearCommandRequestMessage>(this, ResetCommandAsync);
+            Messenger.Default.Register<RestartConsoleRequestMessage>(this, RestartAsync);
+            Messenger.Default.Register<ClearConsoleScreenRequestMessage>(this, ClearScreenAsync);
+            Messenger.Default.Register<RepeatCommandRequestMessage>(this, RepeatLastScriptAsync);
         }
 
         /// <summary>
@@ -119,26 +129,48 @@ namespace Brainf_ckSharp.UWP.ViewModels
 
                 command.IsActive = false;
 
-                /* Handle the various possible commands:
-                 *   Empty command: skip the execution and add a new line
-                 *   Syntax errors and exceptions: each has its own template
-                 *   Runs with no output: just add a new line
-                 *   Runs with output: add the output line, then a new command line */
-                if (!string.IsNullOrEmpty(command.Command))
+                await ExecuteCommandAsync(command.Command);
+            }
+        }
+
+        /// <summary>
+        /// Executes a given console command
+        /// </summary>
+        /// <param name="command">The source code of the command to execute</param>
+        private async Task ExecuteCommandAsync(string command)
+        {
+            /* Handle the various possible commands:
+             *   Empty command: skip the execution and add a new line
+             *   Syntax errors and exceptions: each has its own template
+             *   Runs with no output: just add a new line
+             *   Runs with output: add the output line, then a new command line */
+            if (!string.IsNullOrEmpty(command))
+            {
+                Option<InterpreterResult> result = await Task.Run(() => Brainf_ckInterpreter.TryRun(command));
+
+                if (!result.ValidationResult.IsSuccess) Source.Add(new ConsoleSyntaxError(result.ValidationResult));
+                else
                 {
-                    Option<InterpreterResult> result = await Task.Run(() => Brainf_ckInterpreter.TryRun(command.Command));
-
-                    if (!result.ValidationResult.IsSuccess) Source.Add(new ConsoleSyntaxError(result.ValidationResult));
-                    else
-                    {
-                        // In all cases, update the current memory state
-                        MachineState = result.Value.MachineState;
-                        if (!string.IsNullOrEmpty(result.Value.Stdout)) Source.Add(new ConsoleResult(result.Value.Stdout));
-                        if (!result.Value.ExitCode.HasFlag(ExitCode.Success)) Source.Add(new ConsoleException(result.Value.ExitCode));
-                    }
+                    // In all cases, update the current memory state
+                    MachineState = result.Value.MachineState;
+                    if (!string.IsNullOrEmpty(result.Value.Stdout)) Source.Add(new ConsoleResult(result.Value.Stdout));
+                    if (!result.Value.ExitCode.HasFlag(ExitCode.Success)) Source.Add(new ConsoleException(result.Value.ExitCode));
                 }
+            }
 
-                Source.Add(new ConsoleCommand());
+            Source.Add(new ConsoleCommand());
+        }
+
+        /// <summary>
+        /// Repeats the last executed script
+        /// </summary>
+        public async Task RepeatLastScriptAsync()
+        {
+            using (await ExecutionMutex.LockAsync())
+            {
+                ConsoleCommand last = Source.Reverse().OfType<ConsoleCommand>().FirstOrDefault();
+
+                if (last != null) await ExecuteCommandAsync(last.Command);
             }
         }
     }
