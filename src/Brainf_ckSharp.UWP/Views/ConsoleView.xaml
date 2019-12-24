@@ -118,5 +118,11 @@
                 <Setter Property="MinHeight" Value="0"/>
             </Style>
         </ListView.Resources>
+        <ListView.Header>
+            <Border Height="100"/>
+        </ListView.Header>
+        <ListView.Footer>
+            <Border Height="12"/>
+        </ListView.Footer>
     </ListView>
 </UserControl>

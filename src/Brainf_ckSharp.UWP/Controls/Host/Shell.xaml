@@ -26,6 +26,11 @@
             <RowDefinition Height="24"/>
         </Grid.RowDefinitions>
 
+        <!--Console-->
+        <views:ConsoleView
+            Grid.Row="0"
+            Grid.RowSpan="3"/>
+
         <!--Background-->
         <Border
             Grid.Row="0"
@@ -44,9 +49,6 @@
 
         <!--Header panel-->
         <header:HeaderPanel Grid.Row="1"/>
-
-        <!--Console-->
-        <views:ConsoleView Grid.Row="2"/>
 
         <!--Expandable keyboard area-->
         <Border
