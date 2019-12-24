@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Animation;
 
@@ -57,14 +58,25 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
             if (value)
             {
                 // Create the new blinking animation
-                DoubleAnimation animation = new DoubleAnimation
+                DoubleAnimationUsingKeyFrames animation = new DoubleAnimationUsingKeyFrames
                 {
                     AutoReverse = true,
                     RepeatBehavior = RepeatBehavior.Forever,
-                    BeginTime = TimeSpan.FromMilliseconds(500),
-                    Duration = new Duration(TimeSpan.FromMilliseconds(500)),
-                    From = 0,
-                    To = 1
+                    BeginTime = TimeSpan.FromMilliseconds(250),
+                    Duration = TimeSpan.FromMilliseconds(750),
+                    KeyFrames =
+                    {
+                        new DiscreteDoubleKeyFrame
+                        {
+                            KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(250)),
+                            Value = 1
+                        },
+                        new DiscreteDoubleKeyFrame
+                        {
+                            KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(500)),
+                            Value = 0
+                        }
+                    }
                 };
                 Storyboard.SetTarget(animation, @this);
                 Storyboard.SetTargetProperty(animation, nameof(UIElement.Opacity));
