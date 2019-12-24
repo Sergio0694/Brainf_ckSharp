@@ -85,7 +85,7 @@
                         <SolidColorBrush x:Key="AppBarButtonForegroundPressed" Color="{StaticResource RunColor}"/>
                     </AppBarButton.Resources>
                     <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="Enter" Invoked="{x:Bind ViewModel.RunConsoleScript}"/>
+                        <KeyboardAccelerator Key="Enter"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
@@ -94,7 +94,7 @@
                     Tag="{markupExtensions:Boolean Value=True}"
                     Click="{x:Bind ViewModel.DeleteConsoleOperator}">
                     <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="Delete" Invoked="{x:Bind ViewModel.DeleteConsoleOperator}"/>
+                        <KeyboardAccelerator Key="Back"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
@@ -103,7 +103,7 @@
                     Tag="{markupExtensions:Boolean Value=True}"
                     Click="{x:Bind ViewModel.ClearConsoleCommand}">
                     <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="Delete" Modifiers="Control" Invoked="{x:Bind ViewModel.ClearConsoleCommand}"/>
+                        <KeyboardAccelerator Key="Delete" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
 
@@ -156,7 +156,7 @@
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource RepeatScriptIcon}}"
                     Click="{x:Bind ViewModel.RepeatLastConsoleScript}">
                     <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="F2" Modifiers="Control" Invoked="{x:Bind ViewModel.RepeatLastConsoleScript}"/>
+                        <KeyboardAccelerator Key="F2" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
@@ -164,7 +164,7 @@
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource RestartIcon}}"
                     Click="{x:Bind ViewModel.RestartConsole}">
                     <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="F6" Modifiers="Control" Invoked="{x:Bind ViewModel.RestartConsole}"/>
+                        <KeyboardAccelerator Key="F6" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
@@ -172,7 +172,7 @@
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource ClearScreen}}"
                     Click="{x:Bind ViewModel.ClearConsoleScreen}">
                     <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="F4" Modifiers="Control" Invoked="{x:Bind ViewModel.ClearConsoleScreen}"/>
+                        <KeyboardAccelerator Key="F4" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton

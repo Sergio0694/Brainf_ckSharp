@@ -157,6 +157,7 @@
     <Compile Include="Messages\Console\RepeatCommandRequestMessage.cs" />
     <Compile Include="Messages\Console\RestartConsoleRequestMessage.cs" />
     <Compile Include="Messages\Console\RunCommandRequestMessage.cs" />
+    <Compile Include="Messages\InputPanel\CharacterReceivedNotificationMessage.cs" />
     <Compile Include="Messages\InputPanel\OperatorKeyPressedNotificationMessage.cs" />
     <Compile Include="Messages\Services\SettingChangedNotificationMessage.cs" />
     <Compile Include="Models\Console\ConsoleRestart.cs" />
@@ -169,6 +170,8 @@
     <Compile Include="Models\Themes\ThemeInfo.cs" />
     <Compile Include="Models\Themes\Themes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Keyboard\IKeyboardListenerService.cs" />
+    <Compile Include="Services\Keyboard\KeyboardListenerService.cs" />
     <Compile Include="Services\ServicesManager.cs" />
     <Compile Include="Services\Settings\ISettingsService.cs" />
     <Compile Include="Services\Settings\SettingsService.cs" />
