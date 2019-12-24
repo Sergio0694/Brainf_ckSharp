@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:templateSelectors="using:Brainf_ckSharp.UWP.TemplateSelectors"
     xmlns:console="using:Brainf_ckSharp.UWP.Models.Console"
+    xmlns:attachedProperties="using:Brainf_ckSharp.UWP.AttachedProperties"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -24,12 +25,14 @@
                         Text="run:"
                         FontWeight="SemiBold"
                         Foreground="#FFA8101D"/>
-                    <Span/>
+                    <Run Text="{x:Bind Command, Mode=OneWay}"/>
                     <InlineUIContainer>
                         <Rectangle
                             Height="2"
                             Width="8"
-                            Margin="0,12,0,0"/>
+                            Margin="0,12,0,0"
+                            Fill="White"
+                            attachedProperties:BlinkingAnimationHelper.IsBlinking="{x:Bind IsActive, Mode=OneWay}"/>
                     </InlineUIContainer>
                 </Paragraph>
             </RichTextBlock>
@@ -108,5 +111,10 @@
                 ExceptionTemplate="{StaticResource ExceptionResultTemplate}"
                 RestartTemplate="{StaticResource RestartTemplate}"/>
         </ListView.ItemTemplateSelector>
+        <ListView.Resources>
+            <Style TargetType="ListViewItemPresenter">
+                <Setter Property="MinHeight" Value="0"/>
+            </Style>
+        </ListView.Resources>
     </ListView>
 </UserControl>

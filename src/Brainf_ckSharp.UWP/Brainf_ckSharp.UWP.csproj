@@ -121,6 +121,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />
     <Compile Include="Bindings\Functions\PivotSelectionFunctions.cs" />
     <Compile Include="Controls\Host\InputPanel\Header\MinimalHeaderButton.cs" />
     <Compile Include="Controls\Host\InputPanel\Header\StdinHeader.xaml.cs">

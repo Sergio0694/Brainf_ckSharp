@@ -8,6 +8,7 @@ using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Tools;
 using Brainf_ckSharp.UWP.Messages.Console;
+using Brainf_ckSharp.UWP.Messages.InputPanel;
 using Brainf_ckSharp.UWP.Models.Console;
 using Brainf_ckSharp.UWP.Models.Console.Interfaces;
 using Brainf_ckSharp.UWP.ViewModels.Abstract;
@@ -32,6 +33,7 @@ namespace Brainf_ckSharp.UWP.ViewModels
         {
             Source.Add(new ConsoleCommand());
 
+            Messenger.Default.Register<OperatorKeyPressedNotificationMessage>(this, m => _ = AddOperatorAsync(m.Value));
             Messenger.Default.Register<RunCommandRequestMessage>(this, ExecuteCommandAsync);
             Messenger.Default.Register<DeleteOperatorRequestMessage>(this, DeleteLastOperatorAsync);
             Messenger.Default.Register<ClearCommandRequestMessage>(this, ResetCommandAsync);
