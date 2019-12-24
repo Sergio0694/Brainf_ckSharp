@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Animation;
 
@@ -28,7 +27,7 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
         /// <param name="value">The valaue to set for the <see cref="IsBlinkingProperty"/> property</param>
         public static void SetIsBlinking(UIElement element, bool value)
         {
-            element?.SetValue(IsBlinkingProperty, value);
+            element.SetValue(IsBlinkingProperty, value);
         }
 
         /// <summary>
