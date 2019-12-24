@@ -11,9 +11,7 @@ using Brainf_ckSharp.UWP.Messages.Console;
 using Brainf_ckSharp.UWP.Messages.InputPanel;
 using Brainf_ckSharp.UWP.Models.Console;
 using Brainf_ckSharp.UWP.Models.Console.Interfaces;
-using Brainf_ckSharp.UWP.Services.Keyboard;
 using Brainf_ckSharp.UWP.ViewModels.Abstract;
-using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ckSharp.UWP.ViewModels
@@ -37,12 +35,12 @@ namespace Brainf_ckSharp.UWP.ViewModels
 
             Messenger.Default.Register<CharacterReceivedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m));
             Messenger.Default.Register<OperatorKeyPressedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m));
-            Messenger.Default.Register<RunCommandRequestMessage>(this, ExecuteCommandAsync);
-            Messenger.Default.Register<DeleteOperatorRequestMessage>(this, DeleteLastOperatorAsync);
-            Messenger.Default.Register<ClearCommandRequestMessage>(this, ResetCommandAsync);
-            Messenger.Default.Register<RestartConsoleRequestMessage>(this, RestartAsync);
-            Messenger.Default.Register<ClearConsoleScreenRequestMessage>(this, ClearScreenAsync);
-            Messenger.Default.Register<RepeatCommandRequestMessage>(this, RepeatLastScriptAsync);
+            Messenger.Default.Register<RunCommandRequestMessage>(this, m => _ = ExecuteCommandAsync());
+            Messenger.Default.Register<DeleteOperatorRequestMessage>(this, m => _ = DeleteLastOperatorAsync());
+            Messenger.Default.Register<ClearCommandRequestMessage>(this, m => _ = ResetCommandAsync());
+            Messenger.Default.Register<RestartConsoleRequestMessage>(this, m => _ = RestartAsync());
+            Messenger.Default.Register<ClearConsoleScreenRequestMessage>(this, m => _ = ClearScreenAsync());
+            Messenger.Default.Register<RepeatCommandRequestMessage>(this, m => _ = RepeatLastScriptAsync());
         }
 
         /// <summary>

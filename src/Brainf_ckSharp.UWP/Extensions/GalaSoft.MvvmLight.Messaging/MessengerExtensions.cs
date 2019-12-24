@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
+﻿using System.Runtime.CompilerServices;
 
 namespace GalaSoft.MvvmLight.Messaging
 {
@@ -18,19 +16,6 @@ namespace GalaSoft.MvvmLight.Messaging
         public static void Send<TMessage>(this IMessenger messenger) where TMessage : new()
         {
             messenger.Send(new TMessage());
-        }
-
-        /// <summary>
-        /// Registers a recipient for given type of messages
-        /// </summary>
-        /// <typeparam name="TMessage">The type of message to receive</typeparam>
-        /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
-        /// <param name="recipient">The recipient that will receive the messages</param>
-        /// <param name="handler">The handler to invoke when a message is received</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Register<TMessage>(this IMessenger messenger, object recipient, Func<Task> handler)
-        {
-            messenger.Register<TMessage>(recipient, _ => handler());
         }
     }
 }
