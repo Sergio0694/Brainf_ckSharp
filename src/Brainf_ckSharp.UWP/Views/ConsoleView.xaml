@@ -105,7 +105,8 @@
         ItemsSource="{x:Bind ViewModel.Source}"
         attachedProperties:AutoScrollingListViewHelper.IsAutoScrollEnabled="{x:Bind ViewModel.Source}"
         SelectionMode="None"
-        Padding="0,4,0,0">
+        Padding="0,4,0,0"
+        IsHitTestVisible="False">
         <ListView.ItemTemplateSelector>
             <templateSelectors:ConsoleEntryTemplateSelector
                 CommandTemplate="{StaticResource CommandTemplate}"

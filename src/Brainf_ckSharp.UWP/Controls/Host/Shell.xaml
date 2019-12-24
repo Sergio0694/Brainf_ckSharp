@@ -87,7 +87,7 @@
                         <SolidColorBrush x:Key="AppBarButtonForegroundPressed" Color="{StaticResource RunColor}"/>
                     </AppBarButton.Resources>
                     <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="Enter"/>
+                        <KeyboardAccelerator Key="F5"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
