@@ -75,7 +75,7 @@ namespace Brainf_ckSharp.UWP.Models.Themes
             HighlightMap = new Dictionary<char, Color>
             {
                 [Characters.BackwardPtr] = arrows,
-                [Characters.BackwardPtr] = arrows,
+                [Characters.ForwardPtr] = arrows,
                 [Characters.Plus] = arithmetic,
                 [Characters.Minus] = arithmetic,
                 [Characters.PrintChar] = dot,

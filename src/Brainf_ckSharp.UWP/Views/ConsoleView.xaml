@@ -26,7 +26,7 @@
                         Text="run:"
                         FontWeight="SemiBold"
                         Foreground="DarkRed"/>
-                    <Run Text="{x:Bind Command, Mode=OneWay}"/>
+                    <Span attachedProperties:Brainf_ckInlineFormatterHelper.Source="{x:Bind Command, Mode=OneWay}"/>
                     <InlineUIContainer>
                         <Rectangle
                             Height="2"
