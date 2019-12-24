@@ -4,13 +4,13 @@ using Windows.UI.Xaml.Controls;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.Controls.InputPanel.Header
+namespace Brainf_ckSharp.UWP.Controls.Host.Header
 {
     /// <summary>
-    /// A templated <see cref="Control"/> that acts as a minimal header button in the stdin header
+    /// A templated <see cref="Control"/> that acts as a header button in the shell
     /// </summary>
     [TemplatePart(Name = RootButtonName, Type = typeof(Button))]
-    public sealed class MinimalHeaderButton : Control
+    public sealed class HeaderButton : Control
     {
         // Constants for the template
         private const string RootButtonName = "RootButton";
@@ -46,7 +46,25 @@ namespace Brainf_ckSharp.UWP.Controls.InputPanel.Header
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
             nameof(Icon),
             typeof(string),
-            typeof(MinimalHeaderButton),
+            typeof(HeaderButton),
+            new PropertyMetadata(string.Empty));
+
+        /// <summary>
+        /// Gets or sets the text for the current control
+        /// </summary>
+        public string Text
+        {
+            get => (string)GetValue(TextProperty);
+            set => SetValue(TextProperty, value);
+        }
+
+        /// <summary>
+        /// The dependency property for <see cref="Text"/>
+        /// </summary>
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
+            nameof(Text),
+            typeof(string),
+            typeof(HeaderButton),
             new PropertyMetadata(string.Empty));
 
         /// <summary>
@@ -64,7 +82,7 @@ namespace Brainf_ckSharp.UWP.Controls.InputPanel.Header
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
             nameof(IsSelected),
             typeof(bool),
-            typeof(MinimalHeaderButton),
+            typeof(HeaderButton),
             new PropertyMetadata(default(bool), OnIsSelectedPropertyChanged));
 
         /// <summary>
@@ -79,7 +97,7 @@ namespace Brainf_ckSharp.UWP.Controls.InputPanel.Header
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> info for the current update</param>
         private static void OnIsSelectedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            MinimalHeaderButton @this = (MinimalHeaderButton)d;
+            HeaderButton @this = (HeaderButton)d;
             if (e.NewValue is bool value && value)
             {
                 VisualStateManager.GoToState(@this, SelectedVisualStateName, false);

@@ -1,12 +1,12 @@
 ﻿<UserControl
-    x:Class="Brainf_ckSharp.UWP.Controls.Header.HeaderPanel"
+    x:Class="Brainf_ckSharp.UWP.Controls.Host.Header.HeaderPanel"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Brainf_ckSharp.UWP.Controls.Header"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:functions="using:Brainf_ckSharp.UWP.Bindings.Functions"
+    xmlns:header="using:Brainf_ckSharp.UWP.Controls.Host.Header"
     mc:Ignorable="d"
     d:DesignHeight="68"
     d:DesignWidth="320">
@@ -34,7 +34,7 @@
         </VisualStateManager.VisualStateGroups>
 
         <!--Console button-->
-        <local:HeaderButton
+        <header:HeaderButton
             Icon="{StaticResource ConsoleIcon}"
             Text="Console"
             Height="68" Width="80"
@@ -42,7 +42,7 @@
             Selected="ConsoleHeaderSelected"/>
 
         <!--IDE button-->
-        <local:HeaderButton
+        <header:HeaderButton
             Icon="{StaticResource IDEIcon}"
             Text="IDE"
             Height="68" Width="80"

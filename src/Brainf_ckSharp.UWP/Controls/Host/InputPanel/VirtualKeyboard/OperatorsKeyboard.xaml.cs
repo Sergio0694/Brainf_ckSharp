@@ -3,7 +3,7 @@ using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.UWP.Messages.InputPanel;
 using GalaSoft.MvvmLight.Messaging;
 
-namespace Brainf_ckSharp.UWP.Controls.InputPanel.VirtualKeyboard
+namespace Brainf_ckSharp.UWP.Controls.Host.InputPanel.VirtualKeyboard
 {
     /// <summary>
     /// A virtual keyboard with the Brainf*ck/PBrain operators

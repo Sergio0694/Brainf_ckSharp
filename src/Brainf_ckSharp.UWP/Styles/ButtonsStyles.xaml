@@ -1,15 +1,15 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:header="using:Brainf_ckSharp.UWP.Controls.Header"
-    xmlns:virtualKeyboard="using:Brainf_ckSharp.UWP.Controls.InputPanel.VirtualKeyboard"
-    xmlns:stdinHeader="using:Brainf_ckSharp.UWP.Controls.InputPanel.Header">
+    xmlns:header1="using:Brainf_ckSharp.UWP.Controls.Host.Header"
+    xmlns:header="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header"
+    xmlns:virtualKeyboard1="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.VirtualKeyboard">
 
     <!--Header button-->
-    <Style TargetType="header:HeaderButton">
+    <Style TargetType="header1:HeaderButton">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="header:HeaderButton">
+                <ControlTemplate TargetType="header1:HeaderButton">
                     <Button x:Name="RootButton">
 
                         <!--Tweaks to the default style-->
@@ -86,10 +86,10 @@
     </Style>
 
     <!--Minimal header button-->
-    <Style TargetType="stdinHeader:MinimalHeaderButton">
+    <Style TargetType="header:MinimalHeaderButton">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="stdinHeader:MinimalHeaderButton">
+                <ControlTemplate TargetType="header:MinimalHeaderButton">
                     <Button x:Name="RootButton">
 
                         <!--Tweaks to the default style-->
@@ -146,10 +146,10 @@
     </Style>
 
     <!--Operator button-->
-    <Style TargetType="virtualKeyboard:OperatorButton">
+    <Style TargetType="virtualKeyboard1:OperatorButton">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="virtualKeyboard:OperatorButton">
+                <ControlTemplate TargetType="virtualKeyboard1:OperatorButton">
                     <Button x:Name="RootButton">
 
                         <!--Tweaks to the default style-->

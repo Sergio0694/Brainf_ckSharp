@@ -2,6 +2,7 @@
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Brainf_ckSharp.UWP.Controls;
+using Brainf_ckSharp.UWP.Controls.Host;
 using Brainf_ckSharp.UWP.Helpers.UI;
 
 namespace Brainf_ckSharp.UWP

@@ -2,7 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace Brainf_ckSharp.UWP.Controls.InputPanel.Header
+namespace Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header
 {
     public sealed partial class StdinHeader : UserControl
     {

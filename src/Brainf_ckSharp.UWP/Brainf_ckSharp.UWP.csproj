@@ -122,21 +122,21 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Bindings\Functions\PivotSelectionFunctions.cs" />
-    <Compile Include="Controls\InputPanel\Header\MinimalHeaderButton.cs" />
-    <Compile Include="Controls\InputPanel\Header\StdinHeader.xaml.cs">
+    <Compile Include="Controls\Host\InputPanel\Header\MinimalHeaderButton.cs" />
+    <Compile Include="Controls\Host\InputPanel\Header\StdinHeader.xaml.cs">
       <DependentUpon>StdinHeader.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\InputPanel\VirtualKeyboard\OperatorButton.cs" />
-    <Compile Include="Controls\InputPanel\VirtualKeyboard\OperatorsKeyboard.xaml.cs">
+    <Compile Include="Controls\Host\InputPanel\VirtualKeyboard\OperatorButton.cs" />
+    <Compile Include="Controls\Host\InputPanel\VirtualKeyboard\OperatorsKeyboard.xaml.cs">
       <DependentUpon>OperatorsKeyboard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Telerik.UI.Controls\ExpanderControl.cs" />
     <Compile Include="Controls\Windows.UI.Xaml.Controls\AnimatedCommandBar.cs" />
-    <Compile Include="Controls\Header\HeaderButton.cs" />
-    <Compile Include="Controls\Header\HeaderPanel.xaml.cs">
+    <Compile Include="Controls\Host\Header\HeaderButton.cs" />
+    <Compile Include="Controls\Host\Header\HeaderPanel.xaml.cs">
       <DependentUpon>HeaderPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shell.xaml.cs">
+    <Compile Include="Controls\Host\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions\System.Collections.Generic\IEnumerableExtensions.cs" />
@@ -208,19 +208,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\Header\HeaderPanel.xaml">
+    <Page Include="Controls\Host\Header\HeaderPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\InputPanel\Header\StdinHeader.xaml">
+    <Page Include="Controls\Host\InputPanel\Header\StdinHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\InputPanel\VirtualKeyboard\OperatorsKeyboard.xaml">
+    <Page Include="Controls\Host\InputPanel\VirtualKeyboard\OperatorsKeyboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Shell.xaml">
+    <Page Include="Controls\Host\Shell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
