@@ -155,7 +155,8 @@ namespace Brainf_ckSharp.UWP.ViewModels
              *   Runs with output: add the output line, then a new command line */
             if (!string.IsNullOrEmpty(command))
             {
-                Option<InterpreterResult> result = await Task.Run(() => Brainf_ckInterpreter.TryRun(command));
+                string stdin = Messenger.Default.Request<StdinRequestMessage, string>();
+                Option<InterpreterResult> result = await Task.Run(() => Brainf_ckInterpreter.TryRun(command, stdin));
 
                 if (!result.ValidationResult.IsSuccess) Source.Add(new ConsoleSyntaxError(result.ValidationResult));
                 else

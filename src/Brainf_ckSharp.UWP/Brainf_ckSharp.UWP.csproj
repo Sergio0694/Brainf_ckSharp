@@ -150,6 +150,7 @@
     <Compile Include="Helpers\UI\TitleBarHelper.cs" />
     <Compile Include="MarkupExtensions\BooleanExtension.cs" />
     <Compile Include="MarkupExtensions\FontIconExtension.cs" />
+    <Compile Include="Messages\Abstract\RequestMessageBase{T}.cs" />
     <Compile Include="Messages\Abstract\ValueChangedMessageBase{T}.cs" />
     <Compile Include="Messages\Console\ClearCommandRequestMessage.cs" />
     <Compile Include="Messages\Console\ClearConsoleScreenRequestMessage.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="Messages\Console\RunCommandRequestMessage.cs" />
     <Compile Include="Messages\InputPanel\CharacterReceivedNotificationMessage.cs" />
     <Compile Include="Messages\InputPanel\OperatorKeyPressedNotificationMessage.cs" />
+    <Compile Include="Messages\InputPanel\StdinRequestMessage.cs" />
     <Compile Include="Messages\Services\SettingChangedNotificationMessage.cs" />
     <Compile Include="Models\Console\ConsoleRestart.cs" />
     <Compile Include="Models\Console\ConsoleCommand.cs" />

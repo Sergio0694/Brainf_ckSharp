@@ -20,6 +20,7 @@ namespace Brainf_ckSharp.UWP.Services.Settings
         public void EnsureDefaults()
         {
             SetValue(SettingsKeys.Theme, 0, false);
+            SetValue(SettingsKeys.ClearStdinBufferOnRequest, true, false);
         }
 
         /// <summary>
