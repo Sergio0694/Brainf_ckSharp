@@ -11,7 +11,9 @@ using Brainf_ckSharp.UWP.Messages.Console;
 using Brainf_ckSharp.UWP.Messages.InputPanel;
 using Brainf_ckSharp.UWP.Models.Console;
 using Brainf_ckSharp.UWP.Models.Console.Interfaces;
+using Brainf_ckSharp.UWP.Services.Keyboard;
 using Brainf_ckSharp.UWP.ViewModels.Abstract;
+using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ckSharp.UWP.ViewModels
@@ -33,7 +35,8 @@ namespace Brainf_ckSharp.UWP.ViewModels
         {
             Source.Add(new ConsoleCommand());
 
-            Messenger.Default.Register<OperatorKeyPressedNotificationMessage>(this, m => _ = AddOperatorAsync(m.Value));
+            Messenger.Default.Register<CharacterReceivedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m));
+            Messenger.Default.Register<OperatorKeyPressedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m));
             Messenger.Default.Register<RunCommandRequestMessage>(this, ExecuteCommandAsync);
             Messenger.Default.Register<DeleteOperatorRequestMessage>(this, DeleteLastOperatorAsync);
             Messenger.Default.Register<ClearCommandRequestMessage>(this, ResetCommandAsync);
@@ -51,12 +54,12 @@ namespace Brainf_ckSharp.UWP.ViewModels
         /// Adds a new operator to the last command in the console
         /// </summary>
         /// <param name="c">The current operator to add</param>
-        public async Task AddOperatorAsync(char c)
+        public async Task TryAddOperatorAsync(char c)
         {
             using (await ExecutionMutex.LockAsync())
             {
-                if (Brainf_ckParser.IsOperator(c) &&
-                    Source.LastOrDefault() is ConsoleCommand command)
+                if (!Brainf_ckParser.IsOperator(c)) return; 
+                if (Source.LastOrDefault() is ConsoleCommand command)
                 {
                     command.Command += c;
                 }
