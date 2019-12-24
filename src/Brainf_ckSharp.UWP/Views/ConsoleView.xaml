@@ -7,6 +7,7 @@
     xmlns:templateSelectors="using:Brainf_ckSharp.UWP.TemplateSelectors"
     xmlns:console="using:Brainf_ckSharp.UWP.Models.Console"
     xmlns:attachedProperties="using:Brainf_ckSharp.UWP.AttachedProperties"
+    xmlns:functions="using:Brainf_ckSharp.UWP.Bindings.Functions.Console"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -24,7 +25,7 @@
                     <Run
                         Text="run:"
                         FontWeight="SemiBold"
-                        Foreground="#FFA8101D"/>
+                        Foreground="DarkRed"/>
                     <Run Text="{x:Bind Command, Mode=OneWay}"/>
                     <InlineUIContainer>
                         <Rectangle
@@ -58,12 +59,12 @@
                 TextWrapping="Wrap">
                 <Run
                     Text="syntax error:"
-                    FontWeight="ExtraBold"
-                    Foreground="#FFA00000"/>
-                <Run 
-                    Text=""
                     FontWeight="Bold"
-                    Foreground="#FF900000"/>
+                    Foreground="#FFC40030"/>
+                <Run 
+                    Text="{x:Bind functions:SyntaxErrorFormatterFunctions.Format(Result)}"
+                    FontWeight="Normal"
+                    Foreground="#FFC40030"/>
             </TextBlock>
         </DataTemplate>
 
@@ -74,13 +75,13 @@
             <TextBlock
                 FontSize="16"
                 TextWrapping="Wrap"
-                FontWeight="ExtraBold"
+                FontWeight="Bold"
                 Foreground="#FFA00000">
                 <Run Text="{x:Bind ExitCode}"/><Run Text=":"/>
                 <Run 
                     Text="{x:Bind ExitCode}"
                     FontWeight="Bold"
-                    Foreground="#FF900000"/>
+                    Foreground="#FFA00000"/>
             </TextBlock>
         </DataTemplate>
 
