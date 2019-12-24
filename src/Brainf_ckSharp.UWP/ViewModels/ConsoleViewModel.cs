@@ -103,6 +103,12 @@ namespace Brainf_ckSharp.UWP.ViewModels
         {
             using (await ExecutionMutex.LockAsync())
             {
+                if (Source.LastOrDefault() is ConsoleCommand command)
+                {
+                    command.IsActive = false;
+                }
+                else throw new InvalidOperationException("Missing console command to modify");
+
                 Source.Add(new ConsoleRestart());
                 MachineState = TuringMachineStateProvider.Default;
                 Source.Add(new ConsoleCommand());
