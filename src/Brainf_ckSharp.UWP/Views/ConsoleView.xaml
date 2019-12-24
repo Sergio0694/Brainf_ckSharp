@@ -102,7 +102,8 @@
     <!--Console view-->
     <ListView
         ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
-        SelectionMode="None">
+        SelectionMode="None"
+        Padding="0,4,0,0">
         <ListView.ItemTemplateSelector>
             <templateSelectors:ConsoleEntryTemplateSelector
                 CommandTemplate="{StaticResource CommandTemplate}"
@@ -112,7 +113,7 @@
                 RestartTemplate="{StaticResource RestartTemplate}"/>
         </ListView.ItemTemplateSelector>
         <ListView.Resources>
-            <Style TargetType="ListViewItemPresenter">
+            <Style TargetType="ListViewItem">
                 <Setter Property="MinHeight" Value="0"/>
             </Style>
         </ListView.Resources>

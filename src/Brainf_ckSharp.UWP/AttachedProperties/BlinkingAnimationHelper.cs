@@ -97,6 +97,9 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
 
                 // Stop the running animation
                 storyboard.Stop();
+
+                // Hide the target element forever
+                @this.Opacity = 0;
             }
         }
     }
