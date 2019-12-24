@@ -1,4 +1,5 @@
-﻿using Brainf_ckSharp.UWP.Services.Settings;
+﻿using Brainf_ckSharp.UWP.Services.Keyboard;
+using Brainf_ckSharp.UWP.Services.Settings;
 using GalaSoft.MvvmLight.Ioc;
 
 namespace Brainf_ckSharp.UWP.Services
@@ -14,6 +15,7 @@ namespace Brainf_ckSharp.UWP.Services
         public static void InitializeServices()
         {
             SimpleIoc.Default.Register<ISettingsService, SettingsService>();
+            SimpleIoc.Default.Register<IKeyboardListenerService, KeyboardListenerService>();
         }
     }
 }
