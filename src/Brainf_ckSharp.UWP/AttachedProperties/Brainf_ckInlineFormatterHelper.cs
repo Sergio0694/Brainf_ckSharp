@@ -32,7 +32,7 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
         /// Sets the value of <see cref="SourceProperty"/> for a given <see cref="Span"/>
         /// </summary>
         /// <param name="element">The input <see cref="Span"/> for which to set the property value</param>
-        /// <param name="value">The valaue to set for the <see cref="SourceProperty"/> property</param>
+        /// <param name="value">The value to set for the <see cref="SourceProperty"/> property</param>
         public static void SetSource(Span element, string value)
         {
             element.SetValue(SourceProperty, value);

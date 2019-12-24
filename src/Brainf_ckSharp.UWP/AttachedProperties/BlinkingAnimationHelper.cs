@@ -24,7 +24,7 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
         /// Sets the value of <see cref="IsBlinkingProperty"/> for a given <see cref="UIElement"/>
         /// </summary>
         /// <param name="element">The input <see cref="UIElement"/> for which to set the property value</param>
-        /// <param name="value">The valaue to set for the <see cref="IsBlinkingProperty"/> property</param>
+        /// <param name="value">The value to set for the <see cref="IsBlinkingProperty"/> property</param>
         public static void SetIsBlinking(UIElement element, bool value)
         {
             element.SetValue(IsBlinkingProperty, value);
