@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:header1="using:Brainf_ckSharp.UWP.Controls.Host.Header"
     xmlns:header="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header"
-    xmlns:virtualKeyboard1="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.VirtualKeyboard">
+    xmlns:virtualKeyboard="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.VirtualKeyboard">
 
     <!--Header button-->
     <Style TargetType="header1:HeaderButton">
@@ -146,10 +146,10 @@
     </Style>
 
     <!--Operator button-->
-    <Style TargetType="virtualKeyboard1:OperatorButton">
+    <Style TargetType="virtualKeyboard:OperatorButton">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="virtualKeyboard1:OperatorButton">
+                <ControlTemplate TargetType="virtualKeyboard:OperatorButton">
                     <Button x:Name="RootButton">
 
                         <!--Tweaks to the default style-->

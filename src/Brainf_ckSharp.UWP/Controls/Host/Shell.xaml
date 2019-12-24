@@ -78,13 +78,14 @@
                     Label="Run"
                     Icon="{markupExtensions:FontIconExtension Glyph={StaticResource RunIcon}}"
                     Tag="{markupExtensions:Boolean Value=True}"
-                    Foreground="{StaticResource RunBrush}">
+                    Foreground="{StaticResource RunBrush}"
+                    Click="{x:Bind ViewModel.RunConsoleScript}">
                     <AppBarButton.Resources>
                         <SolidColorBrush x:Key="AppBarButtonForegroundPointerOver" Color="{StaticResource RunColor}"/>
                         <SolidColorBrush x:Key="AppBarButtonForegroundPressed" Color="{StaticResource RunColor}"/>
                     </AppBarButton.Resources>
                     <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="Enter"/>
+                        <KeyboardAccelerator Key="Enter" Invoked="{x:Bind ViewModel.RunConsoleScript}"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
