@@ -27,9 +27,14 @@
         </Grid.RowDefinitions>
 
         <!--Console-->
-        <views:ConsoleView
+        <Pivot
             Grid.Row="0"
-            Grid.RowSpan="3"/>
+            Grid.RowSpan="3"
+            Style="{StaticResource ExpandedPivotWithNoHeaderStyle}">
+            <PivotItem>
+                <views:ConsoleView/>
+            </PivotItem>
+        </Pivot>
 
         <!--Background-->
         <Border
