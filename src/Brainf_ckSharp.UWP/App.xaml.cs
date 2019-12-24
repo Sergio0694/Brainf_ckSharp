@@ -1,9 +1,11 @@
 ﻿using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
-using Brainf_ckSharp.UWP.Controls;
 using Brainf_ckSharp.UWP.Controls.Host;
 using Brainf_ckSharp.UWP.Helpers.UI;
+using Brainf_ckSharp.UWP.Services;
+using Brainf_ckSharp.UWP.Services.Settings;
+using GalaSoft.MvvmLight.Ioc;
 
 namespace Brainf_ckSharp.UWP
 {
@@ -13,7 +15,7 @@ namespace Brainf_ckSharp.UWP
     sealed partial class App : Application
     {
         /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
+        /// Initializes the singleton application object. This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
         public App()
@@ -28,6 +30,11 @@ namespace Brainf_ckSharp.UWP
             // Initialize the UI if needed
             if (!(Window.Current.Content is Shell))
             {
+                // Initialize the necessary services
+                ServicesManager.InitializeServices();
+                SimpleIoc.Default.GetInstance<ISettingsService>().EnsureDefaults();
+
+                // Initial UI styling
                 TitleBarHelper.ExpandViewIntoTitleBar();
                 TitleBarHelper.StyleTitleBar();
 
@@ -42,7 +49,7 @@ namespace Brainf_ckSharp.UWP
         }
 
         /// <summary>
-        /// Invoked when application execution is being suspended.  Application state is saved
+        /// Invoked when application execution is being suspended. Application state is saved
         /// without knowing whether the application will be terminated or resumed with the contents
         /// of memory still intact.
         /// </summary>
