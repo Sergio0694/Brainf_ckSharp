@@ -161,6 +161,8 @@
     <Compile Include="Models\Console\ConsoleResult.cs" />
     <Compile Include="Models\Console\ConsoleSyntaxError.cs" />
     <Compile Include="Models\Console\Interfaces\IConsoleEntry.cs" />
+    <Compile Include="Models\Themes\Enums\LineHighlightStyle.cs" />
+    <Compile Include="Models\Themes\ThemeInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TemplateSelectors\ConsoleEntryTemplateSelector.cs" />
     <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase{T}.cs" />
