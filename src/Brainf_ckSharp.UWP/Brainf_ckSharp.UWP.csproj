@@ -148,6 +148,7 @@
     <Compile Include="Controls\Host\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Windows.UI.Xaml.Controls\FixedGridView.cs" />
     <Compile Include="Extensions\GalaSoft.MvvmLight.Messaging\MessengerExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IListExtensions.cs" />
