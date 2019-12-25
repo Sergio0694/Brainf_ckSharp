@@ -147,6 +147,7 @@
     </Compile>
     <Compile Include="Extensions\GalaSoft.MvvmLight.Messaging\MessengerExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IEnumerableExtensions.cs" />
+    <Compile Include="Extensions\System.Collections.Generic\IListExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IReadOnlyListExtensions.cs" />
     <Compile Include="Helpers\UI\TitleBarHelper.cs" />
     <Compile Include="MarkupExtensions\BooleanExtension.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
@@ -48,6 +49,11 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
             new PropertyMetadata(string.Empty, OnSourcePropertyChanged));
 
         /// <summary>
+        /// A table that maps targeted <see cref="Span"/> items to the reusable <see cref="StringBuilder"/> instances
+        /// </summary>
+        private static ConditionalWeakTable<Span, StringBuilder> BuildersTable = new ConditionalWeakTable<Span, StringBuilder>();
+
+        /// <summary>
         /// Updates the UI when <see cref="SourceProperty"/> changes
         /// </summary>
         /// <param name="d">The source <see cref="DependencyObject"/> instance</param>
@@ -69,14 +75,53 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
             }
 
             // Reuse the existing inlines when the new code is an extension of the previous code
-            if (newValue.StartsWith(oldValue))
+            if (newValue.Length > oldValue.Length &&
+                newValue.StartsWith(oldValue))
             {
                 pendingText = newValue.Substring(oldValue.Length);
             }
-            else @this.Inlines.Clear();
+            else if (oldValue.Length > newValue.Length &&
+                     oldValue.StartsWith(newValue))
+            {
+                /* When the new value is a prefix of the previous value,
+                 * it means that the user has deleted one or more characters
+                 * from the previous string. In this case we just need to traverse
+                 * the current inlines collection backwards and remove as many
+                 * runs or characters as needed. This will avoid having to recompute
+                 * the entire syntax highlight from scratch for the new text.
+                 * The diffference is doubled because each character has an additional
+                 * zero width space character next to it, for better line wrapping. */
+                int difference = (oldValue.Length - newValue.Length) * 2;
+
+                do
+                {
+                    // Get the last inline, remove it entirely if needed
+                    Run run = (Run)@this.Inlines.LastOrDefault();
+                    if (run.Text.Length <= difference)
+                    {
+                        @this.Inlines.RemoveLast();
+                        difference -= run.Text.Length;
+                    }
+                    else
+                    {
+                        // Inline too long, only remove the exceeding characters
+                        run.Text = run.Text.Substring(0, run.Text.Length - difference);
+                        break;
+                    }
+                } while (difference > 0);
+
+                return; // TODO
+            }
+            else
+            {
+                @this.Inlines.Clear();
+            }
+
+            // Get the builder to use and clear it
+            StringBuilder builder = BuildersTable.GetOrCreateValue(@this);
+            builder.Clear();
 
             // Parse the input code
-            StringBuilder builder = new StringBuilder();
             char last = pendingText[0];
             List<Run> inlines = new List<Run>();
             foreach (char c in pendingText)
