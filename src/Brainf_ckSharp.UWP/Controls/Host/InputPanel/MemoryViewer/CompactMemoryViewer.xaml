@@ -11,20 +11,20 @@
     d:DesignWidth="400">
 
     <!--Memory cells grid-->
-    <controls:FixedGridView
+    <controls:FluentGridView
         ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
         SelectionMode="None"
         IsHitTestVisible="False">
-        <controls:FixedGridView.Header>
+        <controls:FluentGridView.Header>
             <Grid Height="12"/>
-        </controls:FixedGridView.Header>
-        <controls:FixedGridView.Footer>
+        </controls:FluentGridView.Header>
+        <controls:FluentGridView.Footer>
             <Grid Height="12"/>
-        </controls:FixedGridView.Footer>
-        <controls:FixedGridView.ItemTemplate>
+        </controls:FluentGridView.Footer>
+        <controls:FluentGridView.ItemTemplate>
             <DataTemplate>
-                <dataTemplates:Brainf_ckMemoryCellChunkTemplate/>
+                <dataTemplates:Brainf_ckMemoryCellChunkTemplate Width="240" Height="60"/>
             </DataTemplate>
-        </controls:FixedGridView.ItemTemplate>
-    </controls:FixedGridView>
+        </controls:FluentGridView.ItemTemplate>
+    </controls:FluentGridView>
 </UserControl>

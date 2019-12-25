@@ -4,13 +4,11 @@
     xmlns:controls="using:Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls">
 
     <!--Custom FixedFridView style-->
-    <Style TargetType="controls:FixedGridView">
+    <Style TargetType="controls:FluentGridView">
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <ItemsPanelTemplate>
-                        <ItemsWrapGrid Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
+                    <ItemsWrapGrid Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>

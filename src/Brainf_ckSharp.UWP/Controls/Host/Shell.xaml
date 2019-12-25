@@ -12,6 +12,7 @@
     xmlns:inputPanelHeader="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header"
     xmlns:virtualKeyboard="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.VirtualKeyboard"
     xmlns:functions="using:Brainf_ckSharp.UWP.Bindings.Functions"
+    xmlns:memoryViewer="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.MemoryViewer"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -82,7 +83,7 @@
                             <virtualKeyboard:OperatorsKeyboard/>
                         </PivotItem>
                         <PivotItem>
-                            <Grid Background="Gray"/>
+                            <memoryViewer:CompactMemoryViewer/>
                         </PivotItem>
                     </controls:LockedPivot>
                 </telerik:ExpanderControl.ExpandableContent>
