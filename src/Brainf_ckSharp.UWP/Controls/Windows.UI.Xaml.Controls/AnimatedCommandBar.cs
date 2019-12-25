@@ -55,7 +55,7 @@ namespace Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls
             nameof(IsPrimaryContentDisplayed),
             typeof(bool),
             typeof(AnimatedCommandBar),
-            new PropertyMetadata(default(bool), OnIsPrimaryContentDisplayedChanged));
+            new PropertyMetadata(true, OnIsPrimaryContentDisplayedChanged));
 
         /// <summary>
         /// The <see cref="AsyncMutex"/> instance used to avoid race conditions when switching buttons
@@ -86,9 +86,9 @@ namespace Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls
                 foreach (var item in pendingElements.Enumerate())
                 {
                     item.Value
-                        .Animation()
+                        .Animation(FrameworkLayer.Xaml)
                         .Delay(ButtonsFadeDelayBetweenAnimations * item.Index)
-                        .Offset(Axis.X, 0, -ButtonsAnimationOffset, Easing.CircleEaseInOut)
+                        .Translation(Axis.X, 0, -ButtonsAnimationOffset, Easing.CircleEaseInOut)
                         .Opacity(1, 0, Easing.CircleEaseInOut)
                         .Duration(ContentAnimationDuration)
                         .Start();
@@ -107,15 +107,20 @@ namespace Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls
                     where button.Tag is bool flag && flag == primary
                     select button).ToArray();
 
-                // Fade the target buttons in
-                foreach (var item in targetElements.Enumerate())
+                // Display the target buttons with transparent opacity
+                foreach (var item in targetElements)
                 {
-                    item.Value.Opacity = 0;
-                    item.Value.Visibility = Visibility.Visible;
+                    item.Opacity = 0;
+                    item.Visibility = Visibility.Visible;
+                }
+
+                // Fade the target buttons in
+                foreach (var item in targetElements.Reverse().Enumerate())
+                {
                     item.Value
-                        .Animation()
+                        .Animation(FrameworkLayer.Xaml)
                         .Delay(ButtonsFadeDelayBetweenAnimations * item.Index)
-                        .Offset(Axis.X, -ButtonsAnimationOffset, 0, Easing.CircleEaseInOut)
+                        .Translation(Axis.X, -ButtonsAnimationOffset, 0, Easing.CircleEaseInOut)
                         .Opacity(0, 1, Easing.CircleEaseInOut)
                         .Duration(ContentAnimationDuration)
                         .Start();
