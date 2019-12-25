@@ -178,9 +178,14 @@ namespace Brainf_ckSharp.UWP.ViewModels
         {
             using (await ExecutionMutex.LockAsync())
             {
-                ConsoleCommand last = Source.Reverse().OfType<ConsoleCommand>().FirstOrDefault();
+                if (Source.Reverse().OfType<ConsoleCommand>().Skip(1).FirstOrDefault() is { } previous)
+                {
+                    if (!(Source.LastOrDefault() is ConsoleCommand current)) throw new InvalidOperationException("Missing console command to run");
 
-                if (last != null) await ExecuteCommandAsync(last.Command);
+                    current.IsActive = false;
+                    current.Command = previous.Command;
+                    await ExecuteCommandAsync(previous.Command);
+                }
             }
         }
     }
