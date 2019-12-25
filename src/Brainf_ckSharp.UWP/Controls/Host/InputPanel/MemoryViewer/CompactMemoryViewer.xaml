@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls"
     xmlns:dataTemplates="using:Brainf_ckSharp.UWP.Controls.DataTemplates"
+    xmlns:attachedProperties="using:Brainf_ckSharp.UWP.AttachedProperties"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -14,7 +15,8 @@
     <controls:FluentGridView
         ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
         SelectionMode="None"
-        IsHitTestVisible="False">
+        IsHitTestVisible="False"
+        attachedProperties:ListViewBaseHelper.IsFluentRearrangingEnabled="True">
         <controls:FluentGridView.Header>
             <Grid Height="12"/>
         </controls:FluentGridView.Header>

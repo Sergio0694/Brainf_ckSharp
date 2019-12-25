@@ -1,7 +1,6 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Microsoft.Toolkit.Uwp.UI.Animations;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 
 #nullable enable
@@ -19,17 +18,11 @@ namespace Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls
         private ItemsWrapGrid? _WrapGrid;
 
         /// <summary>
-        /// The offset animation for each item thumbnails
-        /// </summary>
-        private AnimationCollection? _ThumbnailAnimationCollection;
-
-        /// <summary>
         /// Creates a new <see cref="FluentGridView"/> instance
         /// </summary>
         public FluentGridView()
         {
             this.SizeChanged += FluentGridView_SizeChanged;
-            this.ContainerContentChanging += FluentGridView_ContainerContentChanging;
         }
 
         /// <summary>
@@ -60,17 +53,6 @@ namespace Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls
                 round = Math.Ceiling(e.NewSize.Width / PreferredItemsWidth),
                 size = (e.NewSize.Width - 4) / round;
             _WrapGrid.ItemHeight = _WrapGrid.ItemWidth = size;
-        }
-
-        // Set the implicit offset animation when resizing the grid
-        private void FluentGridView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
-        {
-            if (_ThumbnailAnimationCollection == null)
-            {
-                Vector3Animation animation = new Vector3Animation { Target = "Offset", Duration = TimeSpan.FromSeconds(0.6) };
-                _ThumbnailAnimationCollection = new AnimationCollection { animation };
-            }
-            Implicit.SetAnimations(args.ItemContainer, _ThumbnailAnimationCollection);
         }
     }
 }

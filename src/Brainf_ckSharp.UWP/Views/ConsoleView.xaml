@@ -103,7 +103,7 @@
     <!--Console view-->
     <ListView
         ItemsSource="{x:Bind ViewModel.Source}"
-        attachedProperties:AutoScrollingListViewHelper.IsAutoScrollEnabled="{x:Bind ViewModel.Source}"
+        attachedProperties:ListViewBaseHelper.IsAutoScrollEnabled="{x:Bind ViewModel.Source}"
         SelectionMode="None"
         Padding="0,4,0,0"
         IsHitTestVisible="False">
