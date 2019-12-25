@@ -30,9 +30,13 @@
         <Pivot
             Grid.Row="0"
             Grid.RowSpan="3"
-            Style="{StaticResource ExpandedPivotWithNoHeaderStyle}">
+            Style="{StaticResource ExpandedPivotWithNoHeaderStyle}"
+            SelectedIndex="{x:Bind Header.SelectedIndex, Mode=OneWay}">
             <PivotItem>
                 <views:ConsoleView/>
+            </PivotItem>
+            <PivotItem>
+                <Grid Background="Gray"/>
             </PivotItem>
         </Pivot>
 
@@ -53,7 +57,7 @@
             VerticalAlignment="Center"/>
 
         <!--Header panel-->
-        <header:HeaderPanel Grid.Row="1"/>
+        <header:HeaderPanel x:Name="Header" Grid.Row="1"/>
 
         <!--Expandable keyboard area-->
         <Border

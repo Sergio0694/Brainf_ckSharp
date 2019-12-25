@@ -1,15 +1,15 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:header1="using:Brainf_ckSharp.UWP.Controls.Host.Header"
-    xmlns:header="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header"
+    xmlns:hostHeader="using:Brainf_ckSharp.UWP.Controls.Host.Header"
+    xmlns:inputPanelHeader="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header"
     xmlns:virtualKeyboard="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.VirtualKeyboard">
 
     <!--Header button-->
-    <Style TargetType="header1:HeaderButton">
+    <Style TargetType="hostHeader:HeaderButton">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="header1:HeaderButton">
+                <ControlTemplate TargetType="hostHeader:HeaderButton">
                     <Button x:Name="RootButton">
 
                         <!--Tweaks to the default style-->
@@ -86,10 +86,10 @@
     </Style>
 
     <!--Minimal header button-->
-    <Style TargetType="header:MinimalHeaderButton">
+    <Style TargetType="inputPanelHeader:MinimalHeaderButton">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="header:MinimalHeaderButton">
+                <ControlTemplate TargetType="inputPanelHeader:MinimalHeaderButton">
                     <Button x:Name="RootButton">
 
                         <!--Tweaks to the default style-->
