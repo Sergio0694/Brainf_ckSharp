@@ -128,6 +128,9 @@
     <Compile Include="Bindings\Functions\PivotSelectionFunctions.cs" />
     <Compile Include="Constants\Settings.cs" />
     <Compile Include="Constants\SettingsKeys.cs" />
+    <Compile Include="Controls\DataTemplates\Brainf_ckMemoryCellChunkTemplate.xaml.cs">
+      <DependentUpon>Brainf_ckMemoryCellChunkTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Host\InputPanel\Header\MinimalHeaderButton.cs" />
     <Compile Include="Controls\Host\InputPanel\Header\StdinHeader.xaml.cs">
       <DependentUpon>StdinHeader.xaml</DependentUpon>
@@ -242,6 +245,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\DataTemplates\Brainf_ckMemoryCellChunkTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Host\Header\HeaderPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -283,6 +290,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\TelerikStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\TextStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

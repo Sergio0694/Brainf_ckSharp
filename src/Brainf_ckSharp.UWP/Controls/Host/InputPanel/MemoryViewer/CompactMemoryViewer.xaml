@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls"
+    xmlns:dataTemplates="using:Brainf_ckSharp.UWP.Controls.DataTemplates"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -22,8 +23,7 @@
         </controls:FixedGridView.Footer>
         <controls:FixedGridView.ItemTemplate>
             <DataTemplate>
-                <!--TODO-->
-                <Grid/>
+                <dataTemplates:Brainf_ckMemoryCellChunkTemplate/>
             </DataTemplate>
         </controls:FixedGridView.ItemTemplate>
     </controls:FixedGridView>

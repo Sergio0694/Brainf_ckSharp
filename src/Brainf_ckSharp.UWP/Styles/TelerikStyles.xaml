@@ -114,7 +114,7 @@
 
                             <!--Expander icon-->
                             <TextBlock
-                                Text="{StaticResource ExpandeArrowIcon}"
+                                Text="{StaticResource ExpanderArrowIcon}"
                                 FontFamily="Segoe MDL2 Assets"
                                 FontSize="16"
                                 HorizontalAlignment="Center"
