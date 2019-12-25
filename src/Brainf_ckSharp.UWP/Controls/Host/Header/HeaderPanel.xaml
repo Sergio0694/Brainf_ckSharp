@@ -38,7 +38,7 @@
             Icon="{StaticResource ConsoleIcon}"
             Text="Console"
             Height="68" Width="80"
-            IsSelected="{x:Bind functions:PivotSelectionFunctions.IndexToBool(SelectedIndex, 0), Mode=OneWay}"
+            IsSelected="{x:Bind functions:PivotSelectionFunctions.IndexToBool(SelectedIndex, 0), Mode=OneWay, FallbackValue=True}"
             Selected="ConsoleHeaderSelected"/>
 
         <!--IDE button-->

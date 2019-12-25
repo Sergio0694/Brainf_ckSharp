@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using Windows.UI.Xaml;
 
 namespace Brainf_ckSharp.UWP.Bindings.Functions
 {
@@ -17,5 +18,15 @@ namespace Brainf_ckSharp.UWP.Bindings.Functions
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IndexToBool(int index, int target) => index == target;
+
+        /// <summary>
+        /// Checks whether the input index matches a target value
+        /// </summary>
+        /// <param name="index">The input index to match</param>
+        /// <param name="target">The target value to match</param>
+        /// <returns><see cref="Visibility.Visible"/> if the input values match, <see cref="Visibility.Collapsed"/> otherwise</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Visibility IndexToVisibility(int index, int target) => index == target ? Visibility.Visible : Visibility.Collapsed;
     }
 }
