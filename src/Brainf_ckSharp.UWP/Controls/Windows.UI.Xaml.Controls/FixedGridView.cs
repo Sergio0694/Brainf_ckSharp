@@ -3,6 +3,8 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 
+#nullable enable
+
 namespace Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls
 {
     /// <summary>
@@ -10,6 +12,11 @@ namespace Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls
     /// </summary>
     public sealed class FixedGridView : GridView
     {
+        /// <summary>
+        /// The <see cref="ItemsWrapGrid"/> used to display items
+        /// </summary>
+        private ItemsWrapGrid? _WrapGrid;
+
         /// <summary>
         /// Creates a new <see cref="FixedGridView"/> instance
         /// </summary>
@@ -23,11 +30,6 @@ namespace Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls
         /// </summary>
         public int NumberOfColumns { get; set; }
 
-        /// <summary>
-        /// The <see cref="ItemsWrapGrid"/> used to display items
-        /// </summary>
-        private ItemsWrapGrid? _WrapGrid;
-
         /// <inheritdoc/>
         protected override void OnApplyTemplate()
         {
@@ -37,7 +39,7 @@ namespace Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls
         // Adjusts the size of each item template
         private void FluentGridView_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            _WrapGrid.ItemWidth = e.NewSize.Width / NumberOfColumns;
+            _WrapGrid!.ItemWidth = e.NewSize.Width / NumberOfColumns;
         }
     }
 }
