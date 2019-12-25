@@ -132,6 +132,9 @@
     <Compile Include="Controls\Host\InputPanel\Header\StdinHeader.xaml.cs">
       <DependentUpon>StdinHeader.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Host\InputPanel\MemoryViewer\CompactMemoryViewer.xaml.cs">
+      <DependentUpon>CompactMemoryViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Host\InputPanel\VirtualKeyboard\OperatorButton.cs" />
     <Compile Include="Controls\Host\InputPanel\VirtualKeyboard\OperatorsKeyboard.xaml.cs">
       <DependentUpon>OperatorsKeyboard.xaml</DependentUpon>
@@ -170,6 +173,7 @@
     <Compile Include="Models\Console\ConsoleException.cs" />
     <Compile Include="Models\Console\ConsoleResult.cs" />
     <Compile Include="Models\Console\ConsoleSyntaxError.cs" />
+    <Compile Include="Models\Console\Controls\Brainf_ckMemoryCellChunk.cs" />
     <Compile Include="Models\Console\Interfaces\IConsoleEntry.cs" />
     <Compile Include="Models\Themes\Enums\LineHighlightStyle.cs" />
     <Compile Include="Models\Themes\ThemeInfo.cs" />
@@ -183,6 +187,7 @@
     <Compile Include="TemplateSelectors\ConsoleEntryTemplateSelector.cs" />
     <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase{T}.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
+    <Compile Include="ViewModels\Controls\CompactMemoryViewerViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
@@ -241,6 +246,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Host\InputPanel\Header\StdinHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Host\InputPanel\MemoryViewer\CompactMemoryViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

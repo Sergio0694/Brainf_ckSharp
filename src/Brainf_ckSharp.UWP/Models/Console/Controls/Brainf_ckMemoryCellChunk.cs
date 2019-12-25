@@ -13,8 +13,17 @@ namespace Brainf_ckSharp.UWP.Models.Console.Controls
         /// <summary>
         /// Creates a new <see cref="Brainf_ckMemoryCellChunk"/> instance with the specified parameters
         /// </summary>
+        /// <param name="state">The input <see cref="IReadOnlyTuringMachineState"/> instance to read data from</param>
         /// <param name="offset">The offset of the first memory cell in the chunk with respect to the source memory state</param>
-        public Brainf_ckMemoryCellChunk(int offset) => BaseOffset = offset;
+        public Brainf_ckMemoryCellChunk(IReadOnlyTuringMachineState state, int offset)
+        {
+            BaseOffset = offset;
+
+            _Zero = state[BaseOffset];
+            _One = state[BaseOffset + 1];
+            _Two = state[BaseOffset + 2];
+            _Three = state[BaseOffset + 3];
+        }
 
         private Brainf_ckMemoryCell _Zero;
 

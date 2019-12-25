@@ -1,0 +1,36 @@
+﻿<UserControl
+    x:Class="Brainf_ckSharp.UWP.Controls.Host.InputPanel.MemoryViewer.CompactMemoryViewer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <!--Memory cells list-->
+    <ListView
+        ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+        SelectionMode="None"
+        IsHitTestVisible="False">
+        <ListView.Header>
+            <Grid Height="12"/>
+        </ListView.Header>
+        <ListView.Footer>
+            <Grid Height="12"/>
+        </ListView.Footer>
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <!--TODO-->
+                <Grid/>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+        <ListView.ItemsPanel>
+            <ItemsPanelTemplate>
+                <ItemsWrapGrid 
+                    Orientation="Horizontal"
+                    MaximumRowsOrColumns="5"/>
+            </ItemsPanelTemplate>
+        </ListView.ItemsPanel>
+    </ListView>
+</UserControl>
