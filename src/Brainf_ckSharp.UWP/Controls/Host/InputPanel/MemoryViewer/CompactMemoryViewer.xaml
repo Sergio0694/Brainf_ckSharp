@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls"
     xmlns:dataTemplates="using:Brainf_ckSharp.UWP.Controls.DataTemplates"
     xmlns:attachedProperties="using:Brainf_ckSharp.UWP.AttachedProperties"
     mc:Ignorable="d"
@@ -12,21 +11,39 @@
     d:DesignWidth="400">
 
     <!--Memory cells grid-->
-    <controls:FluentGridView
+    <GridView
         ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
         SelectionMode="None"
         IsHitTestVisible="False"
         attachedProperties:ListViewBaseHelper.IsFluentRearrangingEnabled="True">
-        <controls:FluentGridView.Header>
+        <GridView.Resources>
+
+            <!--Expand the items to cover all the available space-->
+            <Style TargetType="GridViewItem">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            </Style>
+        </GridView.Resources>
+        <GridView.ItemsPanel>
+            <ItemsPanelTemplate>
+                <ItemsWrapGrid
+                    ItemHeight="60"
+                    ItemWidth="240"
+                    VerticalAlignment="Stretch"
+                    HorizontalAlignment="Stretch"
+                    Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+        </GridView.ItemsPanel>
+        <GridView.Header>
             <Grid Height="12"/>
-        </controls:FluentGridView.Header>
-        <controls:FluentGridView.Footer>
+        </GridView.Header>
+        <GridView.Footer>
             <Grid Height="12"/>
-        </controls:FluentGridView.Footer>
-        <controls:FluentGridView.ItemTemplate>
+        </GridView.Footer>
+        <GridView.ItemTemplate>
             <DataTemplate>
-                <dataTemplates:Brainf_ckMemoryCellChunkTemplate Width="240" Height="60"/>
+                <dataTemplates:Brainf_ckMemoryCellChunkTemplate/>
             </DataTemplate>
-        </controls:FluentGridView.ItemTemplate>
-    </controls:FluentGridView>
+        </GridView.ItemTemplate>
+    </GridView>
 </UserControl>
