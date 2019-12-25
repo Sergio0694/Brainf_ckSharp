@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Brainf_ckSharp.UWP.Constants;
+using Brainf_ckSharp.UWP.Extensions.System;
 using Brainf_ckSharp.UWP.Models.Themes;
 
 namespace Brainf_ckSharp.UWP.AttachedProperties
@@ -49,11 +48,6 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
             new PropertyMetadata(string.Empty, OnSourcePropertyChanged));
 
         /// <summary>
-        /// A table that maps targeted <see cref="Span"/> items to the reusable <see cref="StringBuilder"/> instances
-        /// </summary>
-        private static ConditionalWeakTable<Span, StringBuilder> BuildersTable = new ConditionalWeakTable<Span, StringBuilder>();
-
-        /// <summary>
         /// Updates the UI when <see cref="SourceProperty"/> changes
         /// </summary>
         /// <param name="d">The source <see cref="DependencyObject"/> instance</param>
@@ -64,8 +58,7 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
             Span @this = (Span)d;
             string
                 oldValue = (string)e.OldValue,
-                newValue = (string)e.NewValue,
-                pendingText = newValue;
+                newValue = (string)e.NewValue;
 
             // Skip if the input code is empty
             if (string.IsNullOrEmpty(newValue))
@@ -74,23 +67,16 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
                 return;
             }
 
-            // Reuse the existing inlines when the new code is an extension of the previous code
-            if (newValue.Length > oldValue.Length &&
-                newValue.StartsWith(oldValue))
+            /* When the new value is a prefix of the previous value,
+             * it means that the user has deleted one or more characters
+             * from the previous string. In this case we just need to traverse
+             * the current inlines collection backwards and remove as many
+             * runs or characters as needed. This will avoid having to recompute
+             * the entire syntax highlight from scratch for the new text. */
+            if (oldValue.Length > newValue.Length && oldValue.StartsWith(newValue))
             {
-                pendingText = newValue.Substring(oldValue.Length);
-            }
-            else if (oldValue.Length > newValue.Length &&
-                     oldValue.StartsWith(newValue))
-            {
-                /* When the new value is a prefix of the previous value,
-                 * it means that the user has deleted one or more characters
-                 * from the previous string. In this case we just need to traverse
-                 * the current inlines collection backwards and remove as many
-                 * runs or characters as needed. This will avoid having to recompute
-                 * the entire syntax highlight from scratch for the new text.
-                 * The diffference is doubled because each character has an additional
-                 * zero width space character next to it, for better line wrapping. */
+                /* The difference is doubled because each character has an additional
+                 * zero width space character next to it, for better line wrapping */
                 int difference = (oldValue.Length - newValue.Length) * 2;
 
                 do
@@ -110,53 +96,62 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
                     }
                 } while (difference > 0);
 
-                return; // TODO
-            }
-            else
-            {
-                @this.Inlines.Clear();
+                return;
             }
 
-            // Get the builder to use and clear it
-            StringBuilder builder = BuildersTable.GetOrCreateValue(@this);
-            builder.Clear();
-
-            // Parse the input code
-            char last = pendingText[0];
-            List<Run> inlines = new List<Run>();
-            foreach (char c in pendingText)
+            // Reuse the existing inlines when the new code is an extension of the previous code
+            int start = 0, end = newValue.Length;
+            if (newValue.Length > oldValue.Length && newValue.StartsWith(oldValue))
             {
-                // Only display the language operators
-                if (!Brainf_ckParser.IsOperator(c)) continue;
-                if (!ThemeInfo.HaveSameColor(last, c))
+                /* Move the initial offset ahead to skip the prefix characters.
+                 * Using a moving starting index saves an entire substring creation. */
+                start = oldValue.Length;
+
+                if (@this.Inlines.LastOrDefault() is Run run)
                 {
-                    // Optimize the result by aggregating characters with the same color into the same inline
-                    inlines.Add(new Run
+                    // Check how many characters can be inserted into the last existing run
+                    int i = start;
+                    while (i < end && ThemeInfo.HaveSameColor(run.Text[0], newValue[i]))
                     {
-                        Text = builder.ToString(),
-                        Foreground = Settings.Theme.GetBrush(last)
-                    });
-                    builder.Clear();
-                    last = c;
+                        i++;
+                    }
+
+                    // If the entire prefix fit in the last run, just concat the string
+                    if (i == end)
+                    {
+                        run.Text += newValue.AsSpan(start, end - start).InterleaveWithCharacter(ZeroWidthSpace);
+                        return;
+                    }
+
+                    // If at least one character has been moved, insert those
+                    if (i > start)
+                    {
+                        run.Text += newValue.AsSpan(start, i).InterleaveWithCharacter(ZeroWidthSpace);
+                    }
+                }
+            }
+            else @this.Inlines.Clear();
+
+            // Parse and render the remaining text with new runs
+            while (start < end)
+            {
+                char c = newValue[start];
+                int i = start + 1;
+
+                // Aggregate as many characters as possible into a single run
+                while (i < end && ThemeInfo.HaveSameColor(c, newValue[i]))
+                {
+                    i++;
                 }
 
-                builder.Append($"{c}{ZeroWidthSpace}");
-            }
-
-            // Include the latest chunk of operators if present
-            if (builder.Length > 0)
-            {
-                inlines.Add(new Run
+                // Create and display the new run
+                @this.Inlines.Add(new Run
                 {
-                    Text = builder.ToString(),
-                    Foreground = Settings.Theme.GetBrush(last)
+                    Text = newValue.AsSpan(start, end - i + 1).InterleaveWithCharacter(ZeroWidthSpace),
+                    Foreground = Settings.Theme.GetBrush(c)
                 });
-            }
 
-            // Append the formatted text
-            foreach (Run run in inlines)
-            {
-                @this.Inlines.Add(run);
+                start = i;
             }
         }
     }
