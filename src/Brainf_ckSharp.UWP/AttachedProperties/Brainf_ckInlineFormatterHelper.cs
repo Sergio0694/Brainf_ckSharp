@@ -147,7 +147,7 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
                 // Create and display the new run
                 @this.Inlines.Add(new Run
                 {
-                    Text = newValue.AsSpan(start, end - i + 1).InterleaveWithCharacter(ZeroWidthSpace),
+                    Text = newValue.AsSpan(start, i - start).InterleaveWithCharacter(ZeroWidthSpace),
                     Foreground = Settings.Theme.GetBrush(c)
                 });
 
