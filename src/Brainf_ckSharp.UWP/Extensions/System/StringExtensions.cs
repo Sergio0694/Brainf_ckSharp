@@ -14,11 +14,11 @@ namespace Brainf_ckSharp.UWP.Extensions.System
         /// <summary>
         /// Creates a <see cref="string"/> by alternating a given character between ones in an input instance
         /// </summary>
-        /// <param name="text">The input <see cref="string"/> value</param>
+        /// <param name="text">The input <see cref="ReadOnlySpan{T}"/> value, mapping the input text</param>
         /// <param name="c">The separator character to interleave</param>
         /// <returns>A new <see cref="string"/> instance with alternating source and separator characters</returns>
         [Pure]
-        public static string InterleaveWithCharacter(this string text, char c)
+        public static string InterleaveWithCharacter(this ReadOnlySpan<char> text, char c)
         {
             // Fallback for empty strings
             int sourceLength = text.Length;
@@ -30,7 +30,7 @@ namespace Brainf_ckSharp.UWP.Extensions.System
 
             try
             {
-                ref char textRef = ref MemoryMarshal.GetReference(text.AsSpan());
+                ref char textRef = ref MemoryMarshal.GetReference(text);
                 ref char bufferRef = ref buffer[0];
 
                 // Alternate source characters with the separator
