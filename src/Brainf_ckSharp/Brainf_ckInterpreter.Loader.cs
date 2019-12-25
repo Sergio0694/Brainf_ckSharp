@@ -150,12 +150,12 @@ namespace Brainf_ckSharp
                         else Unsafe.Add(ref functionTempIndicesRef, f++) = i;
                         break;
 
-                    /* When a loop ends, the index of the corresponding open
-                     * square bracket is retrieved from the right temporary
-                     * buffer, and the current index is stored at that location
-                     * in the final jump table being built. The inverse mapping is
-                     * stored too, so that each closing square bracket can reference the
-                     * corresponding open bracket at the start of the loop. */
+                    /* When a loop ends, the index of the corresponding open square
+                     * bracket is retrieved from the right temporary buffer, and the
+                     * current index is stored at that location in the final jump table
+                     * being built. The inverse mapping is stored too, so that each
+                     * closing square bracket can reference the corresponding open
+                     * bracket at the start of the loop. */
                     case Operators.LoopEnd:
                         int start = f == -1
                             ? Unsafe.Add(ref rootTempIndicesRef, --r)

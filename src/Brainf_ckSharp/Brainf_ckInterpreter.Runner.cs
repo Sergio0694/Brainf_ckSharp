@@ -291,16 +291,19 @@ namespace Brainf_ckSharp
                                 totalOperations += state.Current * 2 + 1;
                                 i += 2;
                             }
-                            else if (executionToken.IsCancellationRequested)
-                            {
-                                // Check whether the code can still be executed before starting an active loop
-                                goto ThresholdExceeded;
-                            }
                             break;
 
                         // {
                         case Operators.LoopEnd:
-                            if (state.Current > 0) i = jumpTable[i] - 1;
+
+                            // Check whether the loop is still active and can be repeated
+                            if (state.Current > 0)
+                            {
+                                i = jumpTable[i];
+
+                                // Check whether the code can still be executed before starting an active loop
+                                if (executionToken.IsCancellationRequested) goto ThresholdExceeded;
+                            }
                             totalOperations++;
                             break;
 
@@ -328,6 +331,9 @@ namespace Brainf_ckSharp
 
                             // Ensure the stack has space for the new function invocation
                             if (depth == Specs.MaximumStackSize - 1) goto StackLimitExceeded;
+
+                            // Check for remaining time
+                            if (executionToken.IsCancellationRequested) goto ThresholdExceeded;
 
                             // Update the current stack frame and exit the inner loop
                             stackFrames[depth++] = frame.WithOffset(i + 1);
