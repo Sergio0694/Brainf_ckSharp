@@ -12,9 +12,9 @@
 
     <!--Memory cells grid-->
     <GridView
+        Padding="4,0,0,0"
         ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
         SelectionMode="None"
-        IsHitTestVisible="False"
         attachedProperties:ListViewBaseHelper.IsFluentRearrangingEnabled="True">
         <GridView.Resources>
 
@@ -28,17 +28,17 @@
             <ItemsPanelTemplate>
                 <ItemsWrapGrid
                     ItemHeight="60"
-                    ItemWidth="240"
-                    VerticalAlignment="Stretch"
+                    attachedProperties:ItemsWrapGridHelper.DesiredItemWidth="240"
                     HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
                     Orientation="Horizontal"/>
             </ItemsPanelTemplate>
         </GridView.ItemsPanel>
         <GridView.Header>
-            <Grid Height="12"/>
+            <Grid Height="4"/>
         </GridView.Header>
         <GridView.Footer>
-            <Grid Height="12"/>
+            <Grid Height="4"/>
         </GridView.Footer>
         <GridView.ItemTemplate>
             <DataTemplate>

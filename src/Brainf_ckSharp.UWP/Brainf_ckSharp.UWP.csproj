@@ -121,6 +121,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AttachedProperties\ItemsWrapGridHelper.cs" />
     <Compile Include="AttachedProperties\ListViewBaseHelper.cs" />
     <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.cs" />

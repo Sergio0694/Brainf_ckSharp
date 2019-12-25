@@ -153,7 +153,7 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
             // Initialize the animation, if needed
             if (_FluentAnimationCollection == null)
             {
-                Vector3Animation animation = new Vector3Animation { Target = "Offset", Duration = TimeSpan.FromSeconds(0.6) };
+                Vector3Animation animation = new Vector3Animation { Target = "Offset", Duration = TimeSpan.FromMilliseconds(500) };
                 _FluentAnimationCollection = new AnimationCollection { animation };
             }
 

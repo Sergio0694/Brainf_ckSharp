@@ -20,7 +20,7 @@
     </UserControl.Resources>
 
     <!--Root-->
-    <Grid>
+    <Grid Background="#32000000">
         <Grid.RowDefinitions>
             <RowDefinition Height="12"/>
             <RowDefinition Height="Auto"/>
