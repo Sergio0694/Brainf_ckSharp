@@ -1,6 +1,8 @@
 ﻿using Brainf_ckSharp.Interfaces;
+using Brainf_ckSharp.UWP.Messages.Console.MemoryState;
 using Brainf_ckSharp.UWP.Models.Console.Controls;
 using Brainf_ckSharp.UWP.ViewModels.Abstract;
+using GalaSoft.MvvmLight.Messaging;
 
 #nullable enable
 
@@ -11,6 +13,14 @@ namespace Brainf_ckSharp.UWP.ViewModels.Controls
     /// </summary>
     public sealed class CompactMemoryViewerViewModel : ItemsCollectionViewModelBase<Brainf_ckMemoryCellChunk>
     {
+        /// <summary>
+        /// Creates a new <see cref="CompactMemoryViewerViewModel"/> instance
+        /// </summary>
+        public CompactMemoryViewerViewModel()
+        {
+            Messenger.Default.Register<MemoryStateChangedNotificationMessage>(this, m => MachineState = m.Value);
+        }
+
         private IReadOnlyTuringMachineState? _MachineState;
 
         /// <summary>

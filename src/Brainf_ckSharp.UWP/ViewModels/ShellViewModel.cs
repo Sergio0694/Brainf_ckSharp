@@ -1,4 +1,4 @@
-﻿using Brainf_ckSharp.UWP.Messages.Console;
+﻿using Brainf_ckSharp.UWP.Messages.Console.Commands;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 

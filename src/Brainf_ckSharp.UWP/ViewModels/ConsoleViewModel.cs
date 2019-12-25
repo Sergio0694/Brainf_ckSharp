@@ -7,7 +7,8 @@ using Brainf_ckSharp.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Tools;
-using Brainf_ckSharp.UWP.Messages.Console;
+using Brainf_ckSharp.UWP.Messages.Console.Commands;
+using Brainf_ckSharp.UWP.Messages.Console.MemoryState;
 using Brainf_ckSharp.UWP.Messages.InputPanel;
 using Brainf_ckSharp.UWP.Models.Console;
 using Brainf_ckSharp.UWP.Models.Console.Interfaces;
@@ -163,6 +164,9 @@ namespace Brainf_ckSharp.UWP.ViewModels
                 {
                     // In all cases, update the current memory state
                     MachineState = result.Value.MachineState;
+                    Messenger.Default.Send(new MemoryStateChangedNotificationMessage(result.Value.MachineState));
+
+                    // Display textual results and exit codes
                     if (!string.IsNullOrEmpty(result.Value.Stdout)) Source.Add(new ConsoleResult(result.Value.Stdout));
                     if (!result.Value.ExitCode.HasFlag(ExitCode.Success)) Source.Add(new ConsoleException(result.Value.ExitCode));
                 }
