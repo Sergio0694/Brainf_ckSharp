@@ -51,7 +51,7 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
         /// <summary>
         /// A table that maps targeted <see cref="Span"/> items to the reusable <see cref="StringBuilder"/> instances
         /// </summary>
-        private static ConditionalWeakTable<Span, StringBuilder> BuildersTable = new ConditionalWeakTable<Span, StringBuilder>();
+        private static readonly ConditionalWeakTable<Span, StringBuilder> BuildersTable = new ConditionalWeakTable<Span, StringBuilder>();
 
         /// <summary>
         /// Updates the UI when <see cref="SourceProperty"/> changes
@@ -78,7 +78,32 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
             if (newValue.Length > oldValue.Length &&
                 newValue.StartsWith(oldValue))
             {
+                /* If the old value is a prefix of the current one, it means that
+                 * additional text has been added to it. In this case, we can do an
+                 * incremental update to save time and memory. Additionally, if there's
+                 * at least a run already existing, we can check whether it is of the same
+                 * type as the first one to add: if it is we can merge the two operations.
+                 * This avoids creating new runs entirely when adding new characters one
+                 * at a time, when they're all of the same type (eg. when typing
+                 * the same Brainf*ck/PBrain operator multiple times). */
                 pendingText = newValue.Substring(oldValue.Length);
+
+                int i = 0;
+                if (@this.Inlines.LastOrDefault() is Run run &&
+                    ThemeInfo.HaveSameColor(run.Text[0], pendingText[0]))
+                {
+                    // Check the initial characters for matching color
+                    for (i = 1; i < pendingText.Length; i++)
+                        if (!ThemeInfo.HaveSameColor(run.Text[0], pendingText[i]))
+                            break;
+
+                    // Append as many initial characters as possible
+                    run.Text += pendingText.Substring(0, i);
+                }
+
+                // Update the pending string or stop
+                if (i < pendingText.Length) pendingText = pendingText.Substring(0, i);
+                else return;
             }
             else if (oldValue.Length > newValue.Length &&
                      oldValue.StartsWith(newValue))
@@ -110,10 +135,12 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
                     }
                 } while (difference > 0);
 
-                return; // TODO
+                return;
             }
             else
             {
+                /* In case the new value is completely different, just delete all
+                 * the existing inlines and start the syntax highlight from scratch */ 
                 @this.Inlines.Clear();
             }
 
@@ -126,8 +153,6 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
             List<Run> inlines = new List<Run>();
             foreach (char c in pendingText)
             {
-                // Only display the language operators
-                if (!Brainf_ckParser.IsOperator(c)) continue;
                 if (!ThemeInfo.HaveSameColor(last, c))
                 {
                     // Optimize the result by aggregating characters with the same color into the same inline
