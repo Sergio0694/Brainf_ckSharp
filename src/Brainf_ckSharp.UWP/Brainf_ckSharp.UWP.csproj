@@ -160,6 +160,12 @@
     <Compile Include="Controls\SubPages\Shell\AboutSubPage.xaml.cs">
       <DependentUpon>AboutSubPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\BreakpointCodePreview.xaml.cs">
+      <DependentUpon>BreakpointCodePreview.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\BreakpointGuidePanel.xaml.cs">
+      <DependentUpon>BreakpointGuidePanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\LanguageIntroductionGuidePanel.xaml.cs">
       <DependentUpon>LanguageIntroductionGuidePanel.xaml</DependentUpon>
     </Compile>
@@ -336,6 +342,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\BreakpointCodePreview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\Sections\BreakpointGuidePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\SubPages\Shell\UserGuide\Sections\LanguageIntroductionGuidePanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -369,6 +383,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\ClassicStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\MiscStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

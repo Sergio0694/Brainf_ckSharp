@@ -42,6 +42,11 @@
     <!--Background info bar brush-->
     <SolidColorBrush x:Key="BackgroundInfoBrush" Color="#FF007ACC"/>
 
+    <!--Breakpoints-->
+    <SolidColorBrush x:Key="BreakpointFillBrush" Color="#FFE51400"/>
+    <SolidColorBrush x:Key="BreakpointBorderBrush" Color="#FFF4DFDD"/>
+    <SolidColorBrush x:Key="BreakpointLineBrush" Color="#FF762C2C"/>
+
     <!--Misc-->
     <SolidColorBrush x:Key="ZeroValueInMemoryViewerBrush" Color="#D0FFFFFF"/>
     <SolidColorBrush x:Key="GitHubContributorBackgroundBrush" Color="#FF191B1E"/>
