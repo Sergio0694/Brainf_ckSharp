@@ -1,13 +1,13 @@
 ﻿<UserControl
-    x:Class="Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.UserGuide.CodeSamples.PrintHelloCodePreviewControl"
+    x:Class="Brainf_ckSharp.UWP.Controls.SubPages.Shell.UserGuide.CodeSamples.PrintHelloCodeSample"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="212"
+   d:DesignHeight="212"
     d:DesignWidth="460">
-    
+
     <!--Root-->
     <Grid Background="#FF1E1E1E">
         <Grid.RowDefinitions>

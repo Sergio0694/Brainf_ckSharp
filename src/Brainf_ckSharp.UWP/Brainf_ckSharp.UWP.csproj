@@ -163,8 +163,20 @@
     <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\BreakpointCodePreview.xaml.cs">
       <DependentUpon>BreakpointCodePreview.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\PrintHelloCodeSample.xaml.cs">
+      <DependentUpon>PrintHelloCodeSample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\ResetLoopCodePreview.xaml.cs">
+      <DependentUpon>ResetLoopCodePreview.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\SimpleLoopCodePreview.xaml.cs">
+      <DependentUpon>SimpleLoopCodePreview.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\BreakpointGuidePanel.xaml.cs">
       <DependentUpon>BreakpointGuidePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\CodeSamplesGuidePanel.xaml.cs">
+      <DependentUpon>CodeSamplesGuidePanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\LanguageIntroductionGuidePanel.xaml.cs">
       <DependentUpon>LanguageIntroductionGuidePanel.xaml</DependentUpon>
@@ -346,7 +358,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\PrintHelloCodeSample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\ResetLoopCodePreview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\SimpleLoopCodePreview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\SubPages\Shell\UserGuide\Sections\BreakpointGuidePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\Sections\CodeSamplesGuidePanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

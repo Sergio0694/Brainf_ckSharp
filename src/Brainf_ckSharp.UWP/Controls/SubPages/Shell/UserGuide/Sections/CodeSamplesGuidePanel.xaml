@@ -1,0 +1,98 @@
+﻿<UserControl
+    x:Class="Brainf_ckSharp.UWP.Controls.SubPages.Shell.UserGuide.Sections.CodeSamplesGuidePanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:codeSamples="using:Brainf_ckSharp.UWP.Controls.SubPages.Shell.UserGuide.CodeSamples"
+    mc:Ignorable="d"
+    d:DesignHeight="1200"
+    d:DesignWidth="480">
+    <UserControl.Resources>
+
+        <!--Drop shadow style-->
+        <Style TargetType="toolkit:DropShadowPanel" x:Key="DropShadowContainerStyle">
+            <Setter Property="BlurRadius" Value="8"/>
+            <Setter Property="ShadowOpacity" Value="0.5"/>
+            <Setter Property="OffsetX" Value="2"/>
+            <Setter Property="OffsetY" Value="2"/>
+        </Style>
+    </UserControl.Resources>
+
+    <!--Root-->
+    <StackPanel>
+
+        <!--Introduction-->
+        <TextBlock 
+            TextWrapping="WrapWholeWords"
+            FontSize="14">
+            <Run 
+                Text="A good strategy to learn how to code in Brainf*ck, as with everything else, is to start from simpler and smaller programs and to make them more complex along the way."
+                x:Uid="GuideSamples1"/>
+            <LineBreak/><Run 
+                Text="For example, a common operation is to reset the value of the current cell, whatever it may be."
+                x:Uid="GuideSamples2"/>
+            <LineBreak/><Run 
+                Text="A simple loop can be used in this case:"
+                x:Uid="GuideSamples3"/>
+        </TextBlock>
+
+        <!--Reset loop-->
+        <toolkit:DropShadowPanel 
+            Style="{StaticResource DropShadowContainerStyle}"
+            Margin="0,16,0,0">
+            <codeSamples:ResetLoopCodePreview HorizontalAlignment="Left"/>
+        </toolkit:DropShadowPanel>
+
+        <!--Second description-->
+        <TextBlock 
+            Margin="0,16,0,0"
+            TextWrapping="WrapWholeWords"
+            FontSize="14">
+            <Run 
+                Text="In many situations it is useful to make a copy of the current cell, to be able to perform some operations with its value, without losing track of the initial state of the memory cell."
+                x:Uid="GuideSamples4"/>
+            <LineBreak/><Run 
+                Text="To achieve this, it is possible to create two copies of the current value, resetting the current cell, and then move the second copy back to the first cell, to end up with the original value plus a copy in the following cell:"
+                x:Uid="GuideSamples5"/>
+        </TextBlock>
+
+        <!--Copy value loop-->
+        <toolkit:DropShadowPanel 
+            Style="{StaticResource DropShadowContainerStyle}"
+            Margin="0,16,0,0">
+            <codeSamples:SimpleLoopCodePreview HorizontalAlignment="Left"/>
+        </toolkit:DropShadowPanel>
+
+        <!--Advanced sample description-->
+        <TextBlock 
+            Margin="0,16,0,0"
+            TextWrapping="WrapWholeWords"
+            FontSize="14">
+            <Run 
+                Text="All these techniques can be combined to write more complex programs. A good idea is to try to optimize the script in order to perform as few operations as possible — generally this also means that the final code will be shorter and easier to read."
+                x:Uid="GuideSamples6"/>
+            <LineBreak/><Run 
+                Text="In this example, to print the word &quot;Hello&quot; two loops will be used to set two cells to values closer to the letters that will be printed. It's definitely better to use a similar approach than to repeating the + operator 72 times to print the &quot;H&quot; character:"
+                x:Uid="GuideSamples7"/>
+        </TextBlock>
+
+        <!--Advanced loop sample-->
+        <toolkit:DropShadowPanel 
+            Style="{StaticResource DropShadowContainerStyle}"
+            Margin="0,16,0,0">
+            <codeSamples:PrintHelloCodeSample HorizontalAlignment="Left"/>
+        </toolkit:DropShadowPanel>
+
+        <!--Advanced loop description-->
+        <TextBlock
+            Margin="0,16,0,0"
+            TextWrapping="WrapWholeWords"
+            FontSize="14">
+            <Run 
+                Text="This script will set the cells #2 and #3 to values closer to the characters that will be printed by the program, so that less operations will be needed to get to the actual values the code wants to display to the user."
+                x:Uid="GuideSamples8"/>
+        </TextBlock>
+    </StackPanel>
+</UserControl>
