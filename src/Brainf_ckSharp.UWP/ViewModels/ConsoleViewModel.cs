@@ -45,10 +45,21 @@ namespace Brainf_ckSharp.UWP.ViewModels
             Messenger.Default.Register<MemoryStateRequestMessage>(this, m => m.ReportResult(MachineState));
         }
 
+        private IReadOnlyTuringMachineState _MachineState = TuringMachineStateProvider.Default;
+
         /// <summary>
         /// Gets the <see cref="IReadOnlyTuringMachineState"/> instance currently in use
         /// </summary>
-        public IReadOnlyTuringMachineState MachineState { get; private set; } = TuringMachineStateProvider.Default;
+        public IReadOnlyTuringMachineState MachineState
+        {
+            get => _MachineState;
+            set
+            {
+                _MachineState = value;
+
+                Messenger.Default.Send(new MemoryStateChangedNotificationMessage(value));
+            }
+        }
 
         /// <summary>
         /// Adds a new operator to the last command in the console
@@ -165,7 +176,6 @@ namespace Brainf_ckSharp.UWP.ViewModels
                 {
                     // In all cases, update the current memory state
                     MachineState = result.Value.MachineState;
-                    Messenger.Default.Send(new MemoryStateChangedNotificationMessage(result.Value.MachineState));
 
                     // Display textual results and exit codes
                     if (!string.IsNullOrEmpty(result.Value.Stdout)) Source.Add(new ConsoleResult(result.Value.Stdout));
