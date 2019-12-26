@@ -18,6 +18,8 @@ namespace Brainf_ckSharp.UWP.ViewModels.Controls
         /// </summary>
         public CompactMemoryViewerViewModel()
         {
+            MachineState = Messenger.Default.Request<MemoryStateRequestMessage, IReadOnlyTuringMachineState>();
+
             Messenger.Default.Register<MemoryStateChangedNotificationMessage>(this, m => MachineState = m.Value);
         }
 

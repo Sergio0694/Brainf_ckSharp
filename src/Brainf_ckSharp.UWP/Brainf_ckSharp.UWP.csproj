@@ -171,6 +171,7 @@
     <Compile Include="Messages\Console\Commands\RestartConsoleRequestMessage.cs" />
     <Compile Include="Messages\Console\Commands\RunCommandRequestMessage.cs" />
     <Compile Include="Messages\Console\MemoryState\MemoryStateChangedNotificationMessage.cs" />
+    <Compile Include="Messages\Console\MemoryState\MemoryStateRequestMessage.cs" />
     <Compile Include="Messages\InputPanel\CharacterReceivedNotificationMessage.cs" />
     <Compile Include="Messages\InputPanel\OperatorKeyPressedNotificationMessage.cs" />
     <Compile Include="Messages\InputPanel\StdinRequestMessage.cs" />

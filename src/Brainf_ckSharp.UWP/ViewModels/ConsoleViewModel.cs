@@ -42,6 +42,7 @@ namespace Brainf_ckSharp.UWP.ViewModels
             Messenger.Default.Register<RestartConsoleRequestMessage>(this, m => _ = RestartAsync());
             Messenger.Default.Register<ClearConsoleScreenRequestMessage>(this, m => _ = ClearScreenAsync());
             Messenger.Default.Register<RepeatCommandRequestMessage>(this, m => _ = RepeatLastScriptAsync());
+            Messenger.Default.Register<MemoryStateRequestMessage>(this, m => m.ReportResult(MachineState));
         }
 
         /// <summary>
