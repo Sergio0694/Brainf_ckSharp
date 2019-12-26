@@ -1,6 +1,8 @@
 ﻿using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.UWP.Models.Console.Controls;
 
+#nullable enable
+
 namespace Brainf_ckSharp.UWP.Controls.DataTemplates
 {
     /// <summary>
@@ -17,6 +19,6 @@ namespace Brainf_ckSharp.UWP.Controls.DataTemplates
         /// <summary>
         /// Gets the <see cref="Brainf_ckMemoryCellChunk"/> instance for the current view
         /// </summary>
-        public Brainf_ckMemoryCellChunk ViewModel => this.DataContext as Brainf_ckMemoryCellChunk;
+        public Brainf_ckMemoryCellChunk? ViewModel => this.DataContext as Brainf_ckMemoryCellChunk;
     }
 }

@@ -1,0 +1,48 @@
+﻿using System;
+using Windows.Devices.Input;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using GitHub.Models;
+using Microsoft.Toolkit.Uwp.UI.Controls;
+using UICompositionAnimations.Helpers.PointerEvents;
+using Launcher = Windows.System.Launcher;
+
+#nullable enable
+
+namespace Brainf_ckSharp.UWP.Controls.DataTemplates.GitHub
+{
+    /// <summary>
+    /// A template for a GitHub user
+    /// </summary>
+    public sealed partial class DeveloperTemplate : UserControl
+    {
+        public DeveloperTemplate()
+        {
+            this.InitializeComponent();
+            this.DataContextChanged += (s, e) => this.Bindings.Update();
+            this.ManageControlPointerStates(TogglePointerVisualStates);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="User"/> instance for the current view
+        /// </summary>
+        public User? ViewModel => DataContext as User;
+
+        // Executes the necessary animations when the pointer goes over/out of the control
+        private void TogglePointerVisualStates(PointerDeviceType pointer, bool on)
+        {
+            // Scale animation for the thumbnail image
+            if (pointer == PointerDeviceType.Mouse) (on ? StoryboardZoomIn : StoryboardZoomOut).Begin();
+        }
+
+        // Hides the progress ring
+        private void ImageExBase_OnImageExOpened(object sender, ImageExOpenedEventArgs e) => LoadingRing.Visibility = Visibility.Collapsed;
+
+        // Opens the profile page of the current contributor
+        private void Contributor_Clicked(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(ViewModel?.ProfilePageUrl))
+                _ = Launcher.LaunchUriAsync(new Uri(ViewModel!.ProfilePageUrl, UriKind.Absolute));
+        }
+    }
+}
