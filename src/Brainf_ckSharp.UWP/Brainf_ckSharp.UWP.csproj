@@ -137,6 +137,9 @@
     <Compile Include="Controls\DataTemplates\GitHub\DeveloperTemplate.xaml.cs">
       <DependentUpon>DeveloperTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DataTemplates\Misc\FeaturedLinkTemplate.xaml.cs">
+      <DependentUpon>FeaturedLinkTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Host\InputPanel\Header\MinimalHeaderButton.cs" />
     <Compile Include="Controls\Host\InputPanel\Header\StdinHeader.xaml.cs">
       <DependentUpon>StdinHeader.xaml</DependentUpon>
@@ -276,6 +279,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\DataTemplates\GitHub\DeveloperTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DataTemplates\Misc\FeaturedLinkTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
