@@ -15,6 +15,7 @@
                 <ResourceDictionary Source="Resources/Dictionaries/Operators.xaml"/>
                 <ResourceDictionary Source="Styles/ButtonsStyles.xaml"/>
                 <ResourceDictionary Source="Styles/ClassicStyles.xaml"/>
+                <ResourceDictionary Source="Styles/SubPageStyles.xaml"/>
                 <ResourceDictionary Source="Styles/TelerikStyles.xaml"/>
                 <ResourceDictionary Source="Styles/TextStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>

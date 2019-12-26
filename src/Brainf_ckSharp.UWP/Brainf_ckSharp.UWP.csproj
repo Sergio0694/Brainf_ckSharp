@@ -151,6 +151,7 @@
     <Compile Include="Controls\Host\InputPanel\VirtualKeyboard\OperatorsKeyboard.xaml.cs">
       <DependentUpon>OperatorsKeyboard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SubPages\Host\SubPageFrame.cs" />
     <Compile Include="Controls\SubPages\Host\SubPageHost.xaml.cs">
       <DependentUpon>SubPageHost.xaml</DependentUpon>
     </Compile>
@@ -347,6 +348,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\ClassicStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\SubPageStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
