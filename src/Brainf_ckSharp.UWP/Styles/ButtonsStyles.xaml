@@ -5,26 +5,27 @@
     xmlns:inputPanelHeader="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header"
     xmlns:virtualKeyboard="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.VirtualKeyboard">
 
+    <!--Custom base style for buttons, expanding the style from WinUI-->
+    <Style
+        x:Key="ExpandedSquareButtonRevealStyle"
+        TargetType="Button"
+        BasedOn="{StaticResource ButtonRevealStyle}">
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    </Style>
+
     <!--Header button-->
     <Style TargetType="hostHeader:HeaderButton">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="hostHeader:HeaderButton">
-                    <Button x:Name="RootButton">
-
-                        <!--Tweaks to the default style-->
-                        <Button.Resources>
-                            <Style TargetType="Button" BasedOn="{StaticResource ButtonRevealStyle}">
-                                <Setter Property="CornerRadius" Value="0"/>
-                                <Setter Property="Margin" Value="0"/>
-                                <Setter Property="Padding" Value="0"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="VerticalAlignment" Value="Stretch"/>
-                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                            </Style>
-                        </Button.Resources>
+                    <Button x:Name="RootButton" Style="{StaticResource ExpandedSquareButtonRevealStyle}">
 
                         <!--Visual states-->
                         <VisualStateManager.VisualStateGroups>
@@ -90,21 +91,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="inputPanelHeader:MinimalHeaderButton">
-                    <Button x:Name="RootButton">
-
-                        <!--Tweaks to the default style-->
-                        <Button.Resources>
-                            <Style TargetType="Button" BasedOn="{StaticResource ButtonRevealStyle}">
-                                <Setter Property="CornerRadius" Value="0"/>
-                                <Setter Property="Margin" Value="0"/>
-                                <Setter Property="Padding" Value="0"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="VerticalAlignment" Value="Stretch"/>
-                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                            </Style>
-                        </Button.Resources>
+                    <Button x:Name="RootButton" Style="{StaticResource ExpandedSquareButtonRevealStyle}">
 
                         <!--Visual states-->
                         <VisualStateManager.VisualStateGroups>
@@ -150,21 +137,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="virtualKeyboard:OperatorButton">
-                    <Button x:Name="RootButton">
-
-                        <!--Tweaks to the default style-->
-                        <Button.Resources>
-                            <Style TargetType="Button" BasedOn="{StaticResource ButtonRevealStyle}">
-                                <Setter Property="CornerRadius" Value="0"/>
-                                <Setter Property="Margin" Value="0"/>
-                                <Setter Property="Padding" Value="0"/>
-                                <Setter Property="Background" Value="#32000000"/>
-                                <Setter Property="VerticalAlignment" Value="Stretch"/>
-                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                            </Style>
-                        </Button.Resources>
+                    <Button
+                        x:Name="RootButton"
+                        Style="{StaticResource ExpandedSquareButtonRevealStyle}"
+                        Background="#32000000">
 
                         <!--Icon and title-->
                         <StackPanel

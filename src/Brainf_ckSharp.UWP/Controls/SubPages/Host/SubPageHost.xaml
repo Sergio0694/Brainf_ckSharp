@@ -108,6 +108,7 @@
                     x:Name="CloseButton"
                     VerticalAlignment="Top"
                     Height="48" Width="48"
+                    Style="{StaticResource ExpandedSquareButtonRevealStyle}"
                     Click="CloseButton_OnClick">
                     <SymbolIcon Symbol="Back" Foreground="White"/>
                 </Button>
@@ -120,8 +121,10 @@
                     Background="{ThemeResource SubFrameBackgroundBrush}" 
                     BorderThickness="1" CornerRadius="1">
                     <ContentControl 
-                        x:Name="HostControl" IsTabStop="False"
-                        HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+                        x:Name="HostControl"
+                        IsTabStop="False"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"/>
                 </Border>
             </Grid>
         </Grid>
