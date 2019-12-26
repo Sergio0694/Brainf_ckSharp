@@ -6,6 +6,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:media="using:Microsoft.UI.Xaml.Media"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -119,21 +122,50 @@
         </Storyboard>
     </UserControl.Resources>
 
-    <!--Root-->
+    <!--Drop shadow container-->
     <controls:DropShadowPanel
         Height="80"
         x:Name="ShadowPanel"
         Color="Black"
         ShadowOpacity="0"
-        BlurRadius="8" OffsetY="4"
+        BlurRadius="8"
+        OffsetY="4"
         HorizontalContentAlignment="Stretch"
         RenderTransformOrigin="0.5, 0.5">
         <controls:DropShadowPanel.RenderTransform>
             <ScaleTransform x:Name="RootTransform"/>
         </controls:DropShadowPanel.RenderTransform>
+
+        <!--Animation triggers-->
+        <interactivity:Interaction.Behaviors>
+            <core:EventTriggerBehavior EventName="PointerEntered">
+                <core:CallMethodAction TargetObject="{x:Bind StoryboardZoomIn}" MethodName="Begin"/>
+            </core:EventTriggerBehavior>
+            <core:EventTriggerBehavior EventName="PointerExited">
+                <core:CallMethodAction TargetObject="{x:Bind StoryboardZoomOut}" MethodName="Begin"/>
+            </core:EventTriggerBehavior>
+        </interactivity:Interaction.Behaviors>
+
+        <!--Root-->
         <Button
+            Style="{StaticResource ExpandedSquareButtonRevealStyle}"
             Background="{ThemeResource GitHubContributorBackgroundBrush}"
+            CornerRadius="8"
             Click="Contributor_Clicked">
+            <Button.Resources>
+
+                <!--Replacement for the reveal brushes-->
+                <media:RevealBackgroundBrush
+                    x:Key="ButtonRevealBackgroundPointerOver"
+                    TargetTheme="Dark"
+                    Color="#FF202226"
+                    FallbackColor="#FF202226"/>
+                <media:RevealBackgroundBrush
+                    x:Key="ButtonRevealBackgroundPressed"
+                    TargetTheme="Dark"
+                    Color="#FF27292D"
+                    FallbackColor="#FF27292D"/>
+            </Button.Resources>
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -141,7 +173,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!--Image grid-->
-                <Grid Margin="12,0,12,0" Padding="8">
+                <Grid Margin="0,0,12,0" Padding="8">
 
                     <!--Progress ring-->
                     <ProgressRing

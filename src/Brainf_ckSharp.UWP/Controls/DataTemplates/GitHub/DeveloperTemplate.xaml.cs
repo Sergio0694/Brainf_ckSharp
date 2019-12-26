@@ -1,10 +1,8 @@
 ﻿using System;
-using Windows.Devices.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using GitHub.Models;
 using Microsoft.Toolkit.Uwp.UI.Controls;
-using UICompositionAnimations.Helpers.PointerEvents;
 using Launcher = Windows.System.Launcher;
 
 #nullable enable
@@ -20,20 +18,12 @@ namespace Brainf_ckSharp.UWP.Controls.DataTemplates.GitHub
         {
             this.InitializeComponent();
             this.DataContextChanged += (s, e) => this.Bindings.Update();
-            this.ManageControlPointerStates(TogglePointerVisualStates);
         }
 
         /// <summary>
         /// Gets the <see cref="User"/> instance for the current view
         /// </summary>
         public User? ViewModel => DataContext as User;
-
-        // Executes the necessary animations when the pointer goes over/out of the control
-        private void TogglePointerVisualStates(PointerDeviceType pointer, bool on)
-        {
-            // Scale animation for the thumbnail image
-            if (pointer == PointerDeviceType.Mouse) (on ? StoryboardZoomIn : StoryboardZoomOut).Begin();
-        }
 
         // Hides the progress ring
         private void ImageExBase_OnImageExOpened(object sender, ImageExOpenedEventArgs e) => LoadingRing.Visibility = Visibility.Collapsed;
