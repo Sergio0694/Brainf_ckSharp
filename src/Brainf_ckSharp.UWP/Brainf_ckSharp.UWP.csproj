@@ -160,6 +160,15 @@
     <Compile Include="Controls\SubPages\Shell\AboutSubPage.xaml.cs">
       <DependentUpon>AboutSubPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\LanguageIntroductionGuidePanel.xaml.cs">
+      <DependentUpon>LanguageIntroductionGuidePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\PBrainExtensionGuidePanel.xaml.cs">
+      <DependentUpon>PBrainExtensionGuidePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\Templates\OperatorInfoTemplate.xaml.cs">
+      <DependentUpon>OperatorInfoTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Telerik.UI.Controls\ExpanderControl.cs" />
     <Compile Include="Controls\Windows.UI.Xaml.Controls\AnimatedCommandBar.cs" />
     <Compile Include="Controls\Host\Header\HeaderButton.cs" />
@@ -324,6 +333,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\SubPages\Shell\AboutSubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\Sections\LanguageIntroductionGuidePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\Sections\PBrainExtensionGuidePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\Templates\OperatorInfoTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
