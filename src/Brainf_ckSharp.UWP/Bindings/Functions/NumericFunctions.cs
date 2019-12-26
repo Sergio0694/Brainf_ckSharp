@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using Windows.UI.Xaml.Media;
 
 namespace Brainf_ckSharp.UWP.Bindings.Functions
 {
@@ -17,5 +18,30 @@ namespace Brainf_ckSharp.UWP.Bindings.Functions
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int IntToPositiveValueOrFallback(int value, int fallback) => value >= 0 ? value : fallback;
+
+        /// <summary>
+        /// Converts a given character into a visible <see cref="string"/> representing its value in a visible way
+        /// </summary>
+        /// <param name="c">The input character to convert</param>
+        /// <returns>A <see cref="string"/> with the original character, if visible, or an equivalent value</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string ConvertToVisibleText(ushort c)
+        {
+            return c switch
+            {
+                32 => "SP",
+                127 => "DEL",
+                160 => "NBSP",
+                173 => "SHY",
+                _ when char.IsControl((char)c) => c.ToString(),
+                _ => ((char)c).ToString()
+            };
+        }
+
+        public static SolidColorBrush PositiveValueToAccentBrushOrFallback(ushort c)
+        {
+            return default;
+        }
     }
 }

@@ -20,9 +20,11 @@
     </UserControl.Resources>
 
     <!--Root-->
-    <Grid Background="#32000000">
+    <Grid
+        Padding="4"
+        Background="#32000000">
         <Grid.RowDefinitions>
-            <RowDefinition Height="12"/>
+            <RowDefinition Height="2"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -34,12 +36,11 @@
         </Grid.ColumnDefinitions>
 
         <!--Selection indicator-->
-        <TextBlock
-            Style="{StaticResource FontIconTextBlockStyle}"
-            Text="{StaticResource ExpanderArrowIcon}"
-            FontWeight="ExtraBold"
-            FontSize="10"
-            Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+        <Rectangle
+            Height="2"
+            Width="12"
+            Fill="{ThemeResource SystemControlHighlightAccentBrush}"
+            HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             Visibility="{x:Bind ViewModel.IsChunkSelected, Mode=OneWay}"
             Grid.Column="{x:Bind functions:NumericFunctions.IntToPositiveValueOrFallback(ViewModel.SelectedIndex, 0), Mode=OneWay}">
@@ -54,7 +55,7 @@
                 <animations:OpacityAnimation Duration="0:0:0.4" To="0"/>
                 <animations:ScalarAnimation Target="Translation.Y" Duration="0:0:0.4" From="0" To="-4"/>
             </animations:Implicit.HideAnimations>
-        </TextBlock>
+        </Rectangle>
 
         <!--Memory chunk-->
         <Viewbox 
@@ -63,7 +64,7 @@
             Grid.Column="0"
             HorizontalAlignment="Left">
             <TextBlock
-                Text="{x:Bind ViewModel.Zero.Character, Mode=OneWay, FallbackValue=0}"
+                Text="{x:Bind functions:NumericFunctions.ConvertToVisibleText(ViewModel.Zero.Value), Mode=OneWay, FallbackValue=0}"
                 Style="{StaticResource ValueBlockStyle}"/>
         </Viewbox>
         <Viewbox 
@@ -72,7 +73,7 @@
             Grid.Column="1"
             HorizontalAlignment="Left">
             <TextBlock
-                Text="{x:Bind ViewModel.One.Character, Mode=OneWay, FallbackValue=0}"
+                Text="{x:Bind functions:NumericFunctions.ConvertToVisibleText(ViewModel.One.Value), Mode=OneWay, FallbackValue=0}"
                 Style="{StaticResource ValueBlockStyle}"/>
         </Viewbox>
         <Viewbox 
@@ -81,7 +82,7 @@
             Grid.Column="2"
             HorizontalAlignment="Left">
             <TextBlock
-                Text="{x:Bind ViewModel.Two.Character, Mode=OneWay, FallbackValue=0}"
+                Text="{x:Bind functions:NumericFunctions.ConvertToVisibleText(ViewModel.Two.Value), Mode=OneWay, FallbackValue=0}"
                 Style="{StaticResource ValueBlockStyle}"/>
         </Viewbox>
         <Viewbox 
@@ -90,7 +91,7 @@
             Grid.Column="3"
             HorizontalAlignment="Left">
             <TextBlock
-                Text="{x:Bind ViewModel.Three.Character, Mode=OneWay, FallbackValue=0}"
+                Text="{x:Bind functions:NumericFunctions.ConvertToVisibleText(ViewModel.Three.Value), Mode=OneWay, FallbackValue=0}"
                 Style="{StaticResource ValueBlockStyle}"/>
         </Viewbox>
 
@@ -100,7 +101,8 @@
             Grid.Row="2"
             Grid.Column="0"
             Grid.ColumnSpan="4"
-            FontSize="12"
+            FontSize="13"
+            FontWeight="SemiBold"
             Margin="1,0,0,0"
             Foreground="#FFA9A9A9"/>
     </Grid>

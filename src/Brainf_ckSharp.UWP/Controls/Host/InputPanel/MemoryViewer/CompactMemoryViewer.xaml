@@ -28,7 +28,7 @@
             <ItemsPanelTemplate>
                 <ItemsWrapGrid
                     ItemHeight="60"
-                    attachedProperties:ItemsWrapGridHelper.DesiredItemWidth="240"
+                    attachedProperties:ItemsWrapGridHelper.DesiredItemWidth="160"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     Orientation="Horizontal"/>

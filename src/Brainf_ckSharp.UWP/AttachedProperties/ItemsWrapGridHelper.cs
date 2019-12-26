@@ -76,7 +76,7 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
             double
                 desiredWidth = GetDesiredItemWidth(@this),
                 round = Math.Ceiling(e.NewSize.Width / desiredWidth),
-                size = (e.NewSize.Width - 4) / round;
+                size = e.NewSize.Width / round;
             @this.ItemWidth = size;
         }
     }
