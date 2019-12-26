@@ -145,6 +145,11 @@
     <Compile Include="Controls\Host\InputPanel\VirtualKeyboard\OperatorsKeyboard.xaml.cs">
       <DependentUpon>OperatorsKeyboard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SubPages\Host\SubPageHost.xaml.cs">
+      <DependentUpon>SubPageHost.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Interfaces\IAdaptiveSubPage.cs" />
+    <Compile Include="Controls\SubPages\Interfaces\IConstrainedSubPage.cs" />
     <Compile Include="Controls\Telerik.UI.Controls\ExpanderControl.cs" />
     <Compile Include="Controls\Windows.UI.Xaml.Controls\AnimatedCommandBar.cs" />
     <Compile Include="Controls\Host\Header\HeaderButton.cs" />
@@ -159,7 +164,9 @@
     <Compile Include="Extensions\System.Collections.Generic\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IListExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IReadOnlyListExtensions.cs" />
+    <Compile Include="Extensions\System\BoolExtensions.cs" />
     <Compile Include="Extensions\System\StringExtensions.cs" />
+    <Compile Include="Extensions\Windows.UI.Xaml\FrameworkElementExtensions.cs" />
     <Compile Include="Helpers\UI\TitleBarHelper.cs" />
     <Compile Include="MarkupExtensions\BooleanExtension.cs" />
     <Compile Include="MarkupExtensions\FontIconExtension.cs" />
@@ -176,6 +183,9 @@
     <Compile Include="Messages\InputPanel\CharacterReceivedNotificationMessage.cs" />
     <Compile Include="Messages\InputPanel\OperatorKeyPressedNotificationMessage.cs" />
     <Compile Include="Messages\InputPanel\StdinRequestMessage.cs" />
+    <Compile Include="Messages\Navigation\LoadingStateUpdateNotificationMessage.cs" />
+    <Compile Include="Messages\Navigation\SubPageCloseRequestMessage.cs" />
+    <Compile Include="Messages\Navigation\SubPageNavigationRequestMessage.cs" />
     <Compile Include="Messages\Services\SettingChangedNotificationMessage.cs" />
     <Compile Include="Models\Console\ConsoleRestart.cs" />
     <Compile Include="Models\Console\ConsoleCommand.cs" />
@@ -272,6 +282,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Host\Shell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Host\SubPageHost.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
