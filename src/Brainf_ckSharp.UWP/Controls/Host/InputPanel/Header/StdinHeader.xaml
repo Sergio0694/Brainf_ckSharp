@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:functions="using:Brainf_ckSharp.UWP.Bindings.Functions"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
-    xmlns:header1="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header"
+    xmlns:header="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header"
     mc:Ignorable="d"
     d:DesignHeight="48"
     d:DesignWidth="400">
@@ -41,12 +41,12 @@
         </VisualStateManager.VisualStateGroups>
 
         <!--Sections-->
-        <header1:MinimalHeaderButton
+        <header:MinimalHeaderButton
             Grid.Column="0"
             Icon="{StaticResource OperatorsKeyboardIcon}"
             IsSelected="{x:Bind functions:PivotSelectionFunctions.IndexToBool(SelectedIndex, 0), Mode=OneWay}"
             Selected="VirtualKeyboardHeaderSelected"/>
-        <header1:MinimalHeaderButton
+        <header:MinimalHeaderButton
             Icon="{StaticResource QuickMemoryViewerIcon}"
             Grid.Column="1"
             IsSelected="{x:Bind functions:PivotSelectionFunctions.IndexToBool(SelectedIndex, 1), Mode=OneWay}"
@@ -78,7 +78,9 @@
             FontSize="15"
             VerticalAlignment="Stretch"
             VerticalContentAlignment="Center"
-            x:Name="StdinBox">
+            x:Name="StdinBox"
+            GotFocus="StdinBox_OnGotFocus"
+            LostFocus="StdinBox_OnLostFocus">
 
             <!--Default brushes overrides-->
             <TextBox.Resources>

@@ -3,6 +3,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.UWP.Constants;
 using Brainf_ckSharp.UWP.Messages.InputPanel;
+using Brainf_ckSharp.UWP.Services.Keyboard;
 using Brainf_ckSharp.UWP.Services.Settings;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
@@ -77,5 +78,11 @@ namespace Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header
                 StdinBox.Text = string.Empty;
             }
         }
+
+        // Disables the keyboard listener service while the stdin buffer box is focused
+        private void StdinBox_OnGotFocus(object sender, RoutedEventArgs e) => SimpleIoc.Default.GetInstance<IKeyboardListenerService>().IsEnabled = false;
+
+        // Ensures the keyboard listener service is enabled when the stdin buffer box loses focus
+        private void StdinBox_OnLostFocus(object sender, RoutedEventArgs e) => SimpleIoc.Default.GetInstance<IKeyboardListenerService>().IsEnabled = true;
     }
 }
