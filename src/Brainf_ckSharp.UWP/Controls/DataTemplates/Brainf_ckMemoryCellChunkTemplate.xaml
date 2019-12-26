@@ -24,7 +24,7 @@
         Padding="4"
         Background="#32000000">
         <Grid.RowDefinitions>
-            <RowDefinition Height="2"/>
+            <RowDefinition Height="6"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -36,12 +36,13 @@
         </Grid.ColumnDefinitions>
 
         <!--Selection indicator-->
-        <Rectangle
-            Height="2"
-            Width="12"
-            Fill="{ThemeResource SystemControlHighlightAccentBrush}"
+        <TextBlock
+            Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
             HorizontalAlignment="Left"
-            VerticalAlignment="Bottom"
+            VerticalAlignment="Center"
+            FontSize="10"
+            Style="{StaticResource FontIconTextBlockStyle}"
+            Text="{StaticResource MemoryViewerPositionIndicator}"
             Visibility="{x:Bind ViewModel.IsChunkSelected, Mode=OneWay}"
             Grid.Column="{x:Bind functions:NumericFunctions.IntToPositiveValueOrFallback(ViewModel.SelectedIndex, 0), Mode=OneWay}">
             <animations:Implicit.Animations>
@@ -55,7 +56,7 @@
                 <animations:OpacityAnimation Duration="0:0:0.4" To="0"/>
                 <animations:ScalarAnimation Target="Translation.Y" Duration="0:0:0.4" From="0" To="-4"/>
             </animations:Implicit.HideAnimations>
-        </Rectangle>
+        </TextBlock>
 
         <!--Memory chunk-->
         <Viewbox 
@@ -105,6 +106,7 @@
             Grid.Row="2"
             Grid.Column="0"
             Grid.ColumnSpan="4"
+            VerticalAlignment="Bottom"
             FontSize="13"
             FontWeight="SemiBold"
             Margin="1,0,0,0"

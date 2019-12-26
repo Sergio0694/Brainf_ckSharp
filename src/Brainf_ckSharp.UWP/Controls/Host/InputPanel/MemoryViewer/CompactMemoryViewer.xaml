@@ -27,7 +27,7 @@
         <GridView.ItemsPanel>
             <ItemsPanelTemplate>
                 <ItemsWrapGrid
-                    ItemHeight="60"
+                    ItemHeight="64"
                     attachedProperties:ItemsWrapGridHelper.DesiredItemWidth="160"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
