@@ -1,8 +1,7 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:brushes="using:UICompositionAnimations.Brushes"
-    xmlns:effects="using:UICompositionAnimations.Brushes.Effects">
+    xmlns:brushes="using:UICompositionAnimations.Brushes">
 
     <!--Shell header background brush-->
     <brushes:AcrylicBrush
@@ -23,19 +22,14 @@
         TextureUri="/Assets/Misc/noise_low.png"/>
 
     <!--Sub page brushes-->
-    <brushes:PipelineBrush
+    <brushes:AcrylicBrush
         x:Key="SubFrameHostBackgroundBrush"
-        FallbackColor="#C0080808">
-        <brushes:PipelineBrush.Effects>
-            <effects:AcrylicEffect
-                Source="Backdrop"
-                BlurAmount="8"
-                Tint="#FF080808"
-                TintMix="0.4"
-                TextureUri="/Assets/Misc/noise_low.png"/>
-            <effects:SaturationEffect Value="0.6"/>
-        </brushes:PipelineBrush.Effects>
-    </brushes:PipelineBrush>
+        Source="Backdrop"
+        FallbackColor="#C0080808"
+        BlurAmount="8"
+        Tint="#FF080808"
+        TintMix="0.4"
+        TextureUri="/Assets/Misc/noise_low.png"/>
     <Color x:Key="SubFrameBackgroundColor">#FF222529</Color>
     <SolidColorBrush x:Key="SubFrameBackgroundBrush" Color="{StaticResource SubFrameBackgroundColor}"/>
 
