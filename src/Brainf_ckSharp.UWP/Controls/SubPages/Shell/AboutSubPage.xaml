@@ -25,7 +25,7 @@
                 x:Uid="About/AppDescription"
                 FontSize="13"
                 IsTextSelectionEnabled="False"
-                Text="Brainf*ck# is a console and IDE for **Brainf*ck/PBrain**..."
+                Text="**Brainf*ck#** is a console and IDE for **Brainf*ck/PBrain**.&#x0a;&#x0a;Thanks to **Andrea Salvati** for his help with the original interpreter algorithm that we designed back in 2015, **Camil Demetrescu** for the idea to port **Brainf*ck#** to Windows 10 and **Christopher Blackman** for his help during the app development."
                 Background="Transparent"
                 x:Name="DescriptionBlock"
                 RelativePanel.Below="TitleBlock"
@@ -124,11 +124,17 @@
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="Padding" Value="0,0,0,8"/>
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="VerticalAlignment" Value="Stretch"/>
+                        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                     </Style>
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <misc:FeaturedLinkTemplate/>
+                        <misc:FeaturedLinkTemplate
+                            Image="/Assets/Misc/donate.png"
+                            NavigationUri="https://www.paypal.me/sergiopedri"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

@@ -25,7 +25,7 @@ namespace Brainf_ckSharp.UWP.Controls.SubPages.Shell
         public double MaxExpandedWidth { get; } = 400;
 
         /// <inheritdoc/>
-        public double MaxExpandedHeight { get; } = 720;
+        public double MaxExpandedHeight { get; } = 560;
 
         // Loads the current data when the page is loaded
         private void AboutSubPage_Loaded(object sender, RoutedEventArgs e) => _ = ViewModel!.LoadDataAsync();
