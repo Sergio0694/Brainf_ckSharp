@@ -151,6 +151,8 @@
             Style="{StaticResource ExpandedSquareButtonRevealStyle}"
             Background="{ThemeResource GitHubContributorBackgroundBrush}"
             CornerRadius="8"
+            Padding="8,0,8,0"
+            HorizontalContentAlignment="Left"
             Click="Contributor_Clicked">
             <Button.Resources>
 

@@ -7,137 +7,134 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:gitHub="using:Brainf_ckSharp.UWP.Controls.DataTemplates.GitHub"
     xmlns:misc="using:Brainf_ckSharp.UWP.Controls.DataTemplates.Misc"
+    xmlns:host="using:Brainf_ckSharp.UWP.Controls.SubPages.Host"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
     <!--Root-->
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <RelativePanel Padding="24">
+    <host:SubPageFrame Title="ABOUT">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <RelativePanel Padding="12,0,12,12">
 
-            <!--Title-->
-            <TextBlock 
-                x:Uid="About/TitleBlock" x:Name="TitleBlock" 
-                Text="ABOUT" FontWeight="SemiBold" FontSize="20"/>
+                <!--App description-->
+                <controls:MarkdownTextBlock
+                    x:Uid="About/AppDescription"
+                    FontSize="13"
+                    IsTextSelectionEnabled="False"
+                    Text="**Brainf*ck#** is a console and IDE for **Brainf*ck/PBrain**.&#x0a;&#x0a;Thanks to **Andrea Salvati** for his help with the original interpreter algorithm that we designed back in 2015, **Camil Demetrescu** for the idea to port **Brainf*ck#** to Windows 10 and **Christopher Blackman** for his help during the app development."
+                    Background="Transparent"
+                    x:Name="DescriptionBlock"
+                    Margin="0,12,0,0"/>
 
-            <!--App description-->
-            <controls:MarkdownTextBlock
-                x:Uid="About/AppDescription"
-                FontSize="13"
-                IsTextSelectionEnabled="False"
-                Text="**Brainf*ck#** is a console and IDE for **Brainf*ck/PBrain**.&#x0a;&#x0a;Thanks to **Andrea Salvati** for his help with the original interpreter algorithm that we designed back in 2015, **Camil Demetrescu** for the idea to port **Brainf*ck#** to Windows 10 and **Christopher Blackman** for his help during the app development."
-                Background="Transparent"
-                x:Name="DescriptionBlock"
-                RelativePanel.Below="TitleBlock"
-                Margin="0,12,0,0"/>
-
-            <!--App version-->
-            <TextBlock 
-                x:Name="AppVersionBlock"
-                RelativePanel.Below="DescriptionBlock"
-                Margin="0,12,0,0">
-                    <Run Text="Build:" FontWeight="SemiBold" FontSize="14"/>
-                    <Run 
-                        Text="{x:Bind ViewModel.AppVersion}"
-                        FontSize="15" FontWeight="SemiBold" FontFamily="Consolas"/>
-                    <Run Text="|"/>
-                    <Run 
-                        Text="{x:Bind ViewModel.PackageArchitecture}"
-                        FontSize="15" FontWeight="SemiBold" FontFamily="Consolas"/>
-            </TextBlock>
-
-            <!--Git branch-->
-            <Viewbox 
-                x:Name="GitBranchIcon"
-                Height="20" Width="20"
-                Margin="0,8,0,0"
-                RelativePanel.Below="AppVersionBlock">
-                <PathIcon
-                    Foreground="#F05133"
-                    Data="{StaticResource GitBranchIconPath}"/>
-            </Viewbox>
-            <Viewbox
-                Margin="8,8,0,0"
-                RelativePanel.RightOf="GitBranchIcon"
-                RelativePanel.AlignVerticalCenterWith="GitBranchIcon"
-                StretchDirection="DownOnly">
-                <TextBlock>
-                    <Run 
-                        Text="{x:Bind ViewModel.GitBranch}"
-                        FontSize="14" FontFamily="Consolas"/>
-                    <Run Text="|"/>
-                    <Run 
-                        Text="{x:Bind ViewModel.GitCommit}"
-                        FontSize="14" FontFamily="Consolas"/>
+                <!--App version-->
+                <TextBlock 
+                    x:Name="AppVersionBlock"
+                    RelativePanel.Below="DescriptionBlock"
+                    Margin="0,12,0,0">
+                        <Run Text="Build:" FontWeight="SemiBold" FontSize="14"/>
+                        <Run 
+                            Text="{x:Bind ViewModel.AppVersion}"
+                            FontSize="15" FontWeight="SemiBold" FontFamily="Consolas"/>
+                        <Run Text="|"/>
+                        <Run 
+                            Text="{x:Bind ViewModel.PackageArchitecture}"
+                            FontSize="15" FontWeight="SemiBold" FontFamily="Consolas"/>
                 </TextBlock>
-            </Viewbox>
 
-            <!--Developers-->
-            <TextBlock
-                x:Uid="About/Developers"
-                Text="Developed by" 
-                FontWeight="SemiBold" FontSize="14"
-                Margin="0,16,0,0"
-                x:Name="UWPBlock"
-                RelativePanel.Below="GitBranchIcon"/>
-            <ListView
-                x:Name="DevelopersList"
-                Margin="-8,2,-8,-8" Padding="8"
-                ItemsSource="{x:Bind ViewModel.Developers, Mode=OneWay}"
-                SelectionMode="None" IsItemClickEnabled="False"
-                ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                RelativePanel.Below="UWPBlock"
-                RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.AlignRightWithPanel="True">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="Padding" Value="0,0,0,8"/>
-                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        <Setter Property="VerticalAlignment" Value="Stretch"/>
-                        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <gitHub:DeveloperTemplate/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                <!--Git branch-->
+                <Viewbox 
+                    x:Name="GitBranchIcon"
+                    Height="20" Width="20"
+                    Margin="0,8,0,0"
+                    RelativePanel.Below="AppVersionBlock">
+                    <PathIcon
+                        Foreground="#F05133"
+                        Data="{StaticResource GitBranchIconPath}"/>
+                </Viewbox>
+                <Viewbox
+                    Margin="8,8,0,0"
+                    RelativePanel.RightOf="GitBranchIcon"
+                    RelativePanel.AlignVerticalCenterWith="GitBranchIcon"
+                    StretchDirection="DownOnly">
+                    <TextBlock>
+                        <Run 
+                            Text="{x:Bind ViewModel.GitBranch}"
+                            FontSize="14" FontFamily="Consolas"/>
+                        <Run Text="|"/>
+                        <Run 
+                            Text="{x:Bind ViewModel.GitCommit}"
+                            FontSize="14" FontFamily="Consolas"/>
+                    </TextBlock>
+                </Viewbox>
 
-            <!--Contacts-->
-            <TextBlock
-                x:Uid="About/Support"
-                Text="Support us" 
-                FontWeight="SemiBold" FontSize="14"
-                Margin="0,8,0,0"
-                x:Name="SupportBlock"
-                RelativePanel.Below="DevelopersList"/>
-            <ListView 
-                Margin="-8,2,-8,-8" Padding="8"
-                ItemsSource="{x:Bind ViewModel.DonationMockupSource, Mode=OneWay}"
-                SelectionMode="None" IsItemClickEnabled="False"
-                ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                RelativePanel.Below="SupportBlock"
-                RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.AlignRightWithPanel="True">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="Padding" Value="0,0,0,8"/>
-                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        <Setter Property="VerticalAlignment" Value="Stretch"/>
-                        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <misc:FeaturedLinkTemplate
-                            Image="/Assets/Misc/donate.png"
-                            NavigationUri="https://www.paypal.me/sergiopedri"/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </RelativePanel>
-    </ScrollViewer>
+                <!--Developers-->
+                <TextBlock
+                    x:Uid="About/Developers"
+                    Text="Developed by" 
+                    FontWeight="SemiBold" FontSize="14"
+                    Margin="0,16,0,0"
+                    x:Name="UWPBlock"
+                    RelativePanel.Below="GitBranchIcon"/>
+                <ListView
+                    x:Name="DevelopersList"
+                    Margin="-8,2,-8,-8" Padding="8"
+                    ItemsSource="{x:Bind ViewModel.Developers, Mode=OneWay}"
+                    SelectionMode="None" IsItemClickEnabled="False"
+                    ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                    RelativePanel.Below="UWPBlock"
+                    RelativePanel.AlignLeftWithPanel="True"
+                    RelativePanel.AlignRightWithPanel="True">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Padding" Value="0,0,0,8"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <gitHub:DeveloperTemplate/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <!--Contacts-->
+                <TextBlock
+                    x:Uid="About/Support"
+                    Text="Support us" 
+                    FontWeight="SemiBold" FontSize="14"
+                    Margin="0,8,0,0"
+                    x:Name="SupportBlock"
+                    RelativePanel.Below="DevelopersList"/>
+                <ListView 
+                    Margin="-8,2,-8,-8" Padding="8"
+                    ItemsSource="{x:Bind ViewModel.DonationMockupSource, Mode=OneWay}"
+                    SelectionMode="None" IsItemClickEnabled="False"
+                    ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                    RelativePanel.Below="SupportBlock"
+                    RelativePanel.AlignLeftWithPanel="True"
+                    RelativePanel.AlignRightWithPanel="True">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Padding" Value="0,0,0,8"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <misc:FeaturedLinkTemplate
+                                Image="/Assets/Misc/donate.png"
+                                NavigationUri="https://www.paypal.me/sergiopedri"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </RelativePanel>
+        </ScrollViewer>
+    </host:SubPageFrame>
 </UserControl>
