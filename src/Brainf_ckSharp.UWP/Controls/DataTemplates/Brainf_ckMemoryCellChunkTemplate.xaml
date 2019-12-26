@@ -65,6 +65,7 @@
             HorizontalAlignment="Left">
             <TextBlock
                 Text="{x:Bind functions:NumericFunctions.ConvertToVisibleText(ViewModel.Zero.Value), Mode=OneWay, FallbackValue=0}"
+                Foreground="{x:Bind functions:NumericFunctions.PositiveValueToAccentBrushOrFallback(ViewModel.Zero.Value), Mode=OneWay}"
                 Style="{StaticResource ValueBlockStyle}"/>
         </Viewbox>
         <Viewbox 
@@ -74,6 +75,7 @@
             HorizontalAlignment="Left">
             <TextBlock
                 Text="{x:Bind functions:NumericFunctions.ConvertToVisibleText(ViewModel.One.Value), Mode=OneWay, FallbackValue=0}"
+                Foreground="{x:Bind functions:NumericFunctions.PositiveValueToAccentBrushOrFallback(ViewModel.One.Value), Mode=OneWay}"
                 Style="{StaticResource ValueBlockStyle}"/>
         </Viewbox>
         <Viewbox 
@@ -83,6 +85,7 @@
             HorizontalAlignment="Left">
             <TextBlock
                 Text="{x:Bind functions:NumericFunctions.ConvertToVisibleText(ViewModel.Two.Value), Mode=OneWay, FallbackValue=0}"
+                Foreground="{x:Bind functions:NumericFunctions.PositiveValueToAccentBrushOrFallback(ViewModel.Two.Value), Mode=OneWay}"
                 Style="{StaticResource ValueBlockStyle}"/>
         </Viewbox>
         <Viewbox 
@@ -92,6 +95,7 @@
             HorizontalAlignment="Left">
             <TextBlock
                 Text="{x:Bind functions:NumericFunctions.ConvertToVisibleText(ViewModel.Three.Value), Mode=OneWay, FallbackValue=0}"
+                Foreground="{x:Bind functions:NumericFunctions.PositiveValueToAccentBrushOrFallback(ViewModel.Three.Value), Mode=OneWay}"
                 Style="{StaticResource ValueBlockStyle}"/>
         </Viewbox>
 

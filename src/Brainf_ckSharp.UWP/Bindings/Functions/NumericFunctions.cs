@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml.Media;
+using Brainf_ckSharp.UWP.Resources;
 
 namespace Brainf_ckSharp.UWP.Bindings.Functions
 {
@@ -39,9 +40,16 @@ namespace Brainf_ckSharp.UWP.Bindings.Functions
             };
         }
 
-        public static SolidColorBrush PositiveValueToAccentBrushOrFallback(ushort c)
+        /// <summary>
+        /// Gets either the accent brush or a fallback brush depending on the input value
+        /// </summary>
+        /// <param name="c">The input value to check</param>
+        /// <returns>The accent brush if <paramref name="c"/> is positive, a fallback brush otherwise</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Brush PositiveValueToAccentBrushOrFallback(ushort c)
         {
-            return default;
+            return c > 0 ? XamlResources.AccentBrush : XamlResources.Get<Brush>("ZeroValueInMemoryViewerBrush");
         }
     }
 }
