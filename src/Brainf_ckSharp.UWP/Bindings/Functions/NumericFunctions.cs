@@ -11,16 +11,6 @@ namespace Brainf_ckSharp.UWP.Bindings.Functions
     public static class NumericFunctions
     {
         /// <summary>
-        /// Returns the input value if it's a positive number, or a fallback value otherwise
-        /// </summary>
-        /// <param name="value">The input value to check and possibly return</param>
-        /// <param name="fallback">The fallback value to use if the input is not valid</param>
-        /// <returns><paramref name="value"/> if it's a positive number, <paramref name="fallback"/> otherwise</returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int IntToPositiveValueOrFallback(int value, int fallback) => value >= 0 ? value : fallback;
-
-        /// <summary>
         /// Converts a given character into a visible <see cref="string"/> representing its value in a visible way
         /// </summary>
         /// <param name="c">The input character to convert</param>
@@ -51,5 +41,14 @@ namespace Brainf_ckSharp.UWP.Bindings.Functions
         {
             return c > 0 ? XamlResources.AccentBrush : XamlResources.Get<Brush>("ZeroValueInMemoryViewerBrush");
         }
+
+        /// <summary>
+        /// Converts the given <see cref="bool"/> value into a <see cref="double"/>
+        /// </summary>
+        /// <param name="flag">The input value to convert</param>
+        /// <returns>1 if <paramref name="flag"/> is <see langword="true"/>, 0 otherwise</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double BoolToDouble(bool flag) => Unsafe.As<bool, byte>(ref flag);
     }
 }

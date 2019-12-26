@@ -44,19 +44,12 @@
             FontSize="10"
             Style="{StaticResource FontIconTextBlockStyle}"
             Text="{StaticResource MemoryViewerPositionIndicator}"
-            Visibility="{x:Bind ViewModel.IsChunkSelected, Mode=OneWay}"
-            Grid.Column="{x:Bind functions:NumericFunctions.IntToPositiveValueOrFallback(ViewModel.SelectedIndex, 0), Mode=OneWay}">
+            Opacity="{x:Bind functions:NumericFunctions.BoolToDouble(ViewModel.IsChunkSelected), Mode=OneWay}"
+            Grid.Column="{x:Bind ViewModel.SelectedIndex, Mode=OneWay}">
             <animations:Implicit.Animations>
-                <animations:Vector3Animation Target="Offset" Duration="0:0:0.4"/>
+                <animations:OffsetAnimation Duration="0:0:0.4"/>
+                <animations:OpacityAnimation Duration="0:0:0.4"/>
             </animations:Implicit.Animations>
-            <animations:Implicit.ShowAnimations>
-                <animations:OpacityAnimation Duration="0:0:0.4" To="1"/>
-                <animations:ScalarAnimation Target="Translation.Y" Duration="0:0:0.4" From="4" To="0"/>
-            </animations:Implicit.ShowAnimations>
-            <animations:Implicit.HideAnimations>
-                <animations:OpacityAnimation Duration="0:0:0.4" To="0"/>
-                <animations:ScalarAnimation Target="Translation.Y" Duration="0:0:0.4" From="0" To="-4"/>
-            </animations:Implicit.HideAnimations>
         </TextBlock>
 
         <!--Memory chunk-->

@@ -78,26 +78,17 @@ namespace Brainf_ckSharp.UWP.Models.Console.Controls
         /// Gets whether or not the current position is within the current chunk
         /// </summary>
         public bool IsChunkSelected => _Zero.IsSelected ||
-                                     _One.IsSelected ||
-                                     _Two.IsSelected ||
-                                     _Three.IsSelected;
+                                       _One.IsSelected ||
+                                       _Two.IsSelected ||
+                                       _Three.IsSelected;
+
+        private int _SelectedIndex;
 
         /// <summary>
         /// Gets the index of the selected cell in the current chunk, if present
         /// </summary>
-        /// <remarks>This property returns -1 when none of the cells in the current instance are selected</remarks>
-        public int SelectedIndex
-        {
-            get
-            {
-                if (_Zero.IsSelected) return 0;
-                if (_One.IsSelected) return 1;
-                if (_Two.IsSelected) return 2;
-                if (_Three.IsSelected) return 3;
-
-                return -1;
-            }
-        }
+        /// <remarks>This property clamps the relative offset in the [0,3] range</remarks>
+        public int SelectedIndex => Math.Clamp(_SelectedIndex, BaseOffset, BaseOffset + 4) - BaseOffset;
 
         /// <summary>
         /// Updates the current model from the input machine state
@@ -111,6 +102,8 @@ namespace Brainf_ckSharp.UWP.Models.Console.Controls
             One = state[BaseOffset + 1];
             Two = state[BaseOffset + 2];
             Three = state[BaseOffset + 3];
+
+            _SelectedIndex = state.Position;
 
             RaisePropertyChanged(nameof(IsChunkSelected));
             RaisePropertyChanged(nameof(SelectedIndex));
