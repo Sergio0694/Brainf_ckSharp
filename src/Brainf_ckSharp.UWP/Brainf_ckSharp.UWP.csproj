@@ -259,6 +259,10 @@
       <Project>{aceea540-7a2c-4705-ac68-5a8c3a5c2a38}</Project>
       <Name>Brainf_ckSharp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GitHub\GitHub.csproj">
+      <Project>{9122f0d6-af88-46a6-b91f-ebafe7f59672}</Project>
+      <Name>GitHub</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\DataTemplates\Brainf_ckMemoryCellChunkTemplate.xaml">
