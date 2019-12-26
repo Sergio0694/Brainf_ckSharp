@@ -13,6 +13,7 @@
     xmlns:virtualKeyboard="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.VirtualKeyboard"
     xmlns:functions="using:Brainf_ckSharp.UWP.Bindings.Functions"
     xmlns:memoryViewer="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.MemoryViewer"
+    xmlns:host="using:Brainf_ckSharp.UWP.Controls.SubPages.Host"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -250,7 +251,8 @@
                 </AppBarButton>
                 <AppBarButton
                     Label="About"
-                    Icon="{markupExtensions:FontIcon Glyph={StaticResource AboutIcon}}">
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource AboutIcon}}"
+                    Click="{x:Bind ViewModel.ShowAppInfo}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator Key="A" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>
@@ -262,5 +264,10 @@
         <Canvas
             Grid.Row="5"
             Background="{StaticResource BackgroundInfoBrush}"/>
+
+        <!--Sub page host-->
+        <host:SubPageHost
+            Grid.Row="0"
+            Grid.RowSpan="6"/>
     </Grid>
 </UserControl>

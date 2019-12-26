@@ -21,6 +21,18 @@
         TintMix="0.9"
         TextureUri="/Assets/Misc/noise_low.png"/>
 
+    <!--Sub page brushes-->
+    <brushes:AcrylicBrush
+        x:Key="SubFrameHostBackgroundBrush"
+        Source="Backdrop"
+        FallbackColor="#C0080808"
+        BlurAmount="8"
+        Tint="#FF080808"
+        TintMix="0.4"
+        TextureUri="/Assets/Misc/noise_low.png"/>
+    <Color x:Key="SubFrameBackgroundColor">#FF222529</Color>
+    <SolidColorBrush x:Key="SubFrameBackgroundBrush" Color="{StaticResource SubFrameBackgroundColor}"/>
+
     <!--Commands-->
     <Color x:Key="RunColor">#FF008000</Color>
     <SolidColorBrush x:Key="RunBrush" Color="{StaticResource RunColor}"/>
@@ -32,5 +44,7 @@
 
     <!--Misc-->
     <SolidColorBrush x:Key="ZeroValueInMemoryViewerBrush" Color="#D0FFFFFF"/>
+    <SolidColorBrush x:Key="GitHubContributorBackgroundBrush" Color="#FF191B1E"/>
+    <SolidColorBrush x:Key="WidgetHeaderForeground" Color="#FFA0A0A0"/>
 
 </ResourceDictionary>

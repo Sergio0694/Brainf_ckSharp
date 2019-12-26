@@ -1,0 +1,105 @@
+﻿<UserControl
+    x:Class="Brainf_ckSharp.UWP.Controls.DataTemplates.Misc.FeaturedLinkTemplate"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <UserControl.Resources>
+
+        <!--Thumbnail animations-->
+        <Storyboard x:Name="StoryboardZoomIn">
+            <DoubleAnimation 
+                EnableDependentAnimation="True"
+                Storyboard.TargetProperty="ScaleX"
+                Storyboard.TargetName="RootTransform"
+                Duration="0:0:0.4" To="1.02">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation 
+                EnableDependentAnimation="True"
+                Storyboard.TargetProperty="ScaleY"
+                Storyboard.TargetName="RootTransform"
+                Duration="0:0:0.4" To="1.02">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation
+                EnableDependentAnimation="True"
+                Storyboard.TargetProperty="ShadowOpacity"
+                Storyboard.TargetName="ShadowPanel"
+                Duration="0:0:0.4" To="1"/>
+        </Storyboard>
+        <Storyboard x:Name="StoryboardZoomOut">
+            <DoubleAnimation 
+                EnableDependentAnimation="True"
+                Storyboard.TargetProperty="ScaleX"
+                Storyboard.TargetName="RootTransform"
+                Duration="0:0:0.4" To="1">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation 
+                EnableDependentAnimation="True"
+                Storyboard.TargetProperty="ScaleY"
+                Storyboard.TargetName="RootTransform"
+                Duration="0:0:0.4" To="1">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation
+                EnableDependentAnimation="True"
+                Storyboard.TargetProperty="ShadowOpacity"
+                Storyboard.TargetName="ShadowPanel"
+                Duration="0:0:0.4" To="0"/>
+        </Storyboard>
+    </UserControl.Resources>
+
+    <!--Root-->
+    <controls:DropShadowPanel
+        Height="80"
+        x:Name="ShadowPanel"
+        Color="Black"
+        ShadowOpacity="0"
+        BlurRadius="8"
+        OffsetY="4"
+        HorizontalContentAlignment="Stretch"
+        RenderTransformOrigin="0.5, 0.5">
+        <controls:DropShadowPanel.RenderTransform>
+            <ScaleTransform x:Name="RootTransform"/>
+        </controls:DropShadowPanel.RenderTransform>
+
+        <!--Animation triggers-->
+        <interactivity:Interaction.Behaviors>
+            <core:EventTriggerBehavior EventName="PointerEntered">
+                <core:CallMethodAction TargetObject="{x:Bind StoryboardZoomIn}" MethodName="Begin"/>
+            </core:EventTriggerBehavior>
+            <core:EventTriggerBehavior EventName="PointerExited">
+                <core:CallMethodAction TargetObject="{x:Bind StoryboardZoomOut}" MethodName="Begin"/>
+            </core:EventTriggerBehavior>
+        </interactivity:Interaction.Behaviors>
+
+        <!--Link button-->
+        <Button
+            CornerRadius="8"
+            Style="{StaticResource ButtonRevealShowsAboveContentStyle}"
+            Background="{ThemeResource GitHubContributorBackgroundBrush}"
+            Click="RootButton_Clicked">
+            <Image
+                Source="{x:Bind Image, Mode=OneWay}"
+                Stretch="UniformToFill"
+                VerticalAlignment="Center"/>
+        </Button>
+    </controls:DropShadowPanel>
+</UserControl>

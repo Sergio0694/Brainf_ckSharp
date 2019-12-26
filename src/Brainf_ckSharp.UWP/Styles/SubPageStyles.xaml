@@ -1,0 +1,56 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:host="using:Brainf_ckSharp.UWP.Controls.SubPages.Host">
+
+    <!--Sub page frame style-->
+    <Style TargetType="host:SubPageFrame">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="host:SubPageFrame">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!--Title border-->
+                        <Border
+                            Background="#40000000"
+                            Height="40">
+                            <TextBlock
+                                Text="{TemplateBinding Title}"
+                                FontWeight="SemiBold"
+                                FontSize="18"
+                                VerticalAlignment="Center"
+                                Margin="12,0,0,0"/>
+                        </Border>
+
+                        <!--Sub page-->
+                        <ContentPresenter
+                            Grid.Row="1"
+                            Content="{TemplateBinding Content}"
+                            Background="{TemplateBinding Background}"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            Padding="0"/>
+
+                        <!--Drop shadow from the title border-->
+                        <Rectangle
+                            Grid.Row="1"
+                            VerticalAlignment="Top"
+                            IsHitTestVisible="False"
+                            Height="8">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush EndPoint="0,0" StartPoint="0,1">
+                                    <GradientStop Color="#60000000" Offset="1"/>
+                                    <GradientStop Offset="0"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+</ResourceDictionary>
