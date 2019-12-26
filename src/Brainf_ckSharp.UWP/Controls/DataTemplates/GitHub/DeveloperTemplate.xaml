@@ -123,7 +123,8 @@
     <controls:DropShadowPanel
         Height="80"
         x:Name="ShadowPanel"
-        Color="{ThemeResource ThemeShadowColor}" ShadowOpacity="0"
+        Color="Black"
+        ShadowOpacity="0"
         BlurRadius="8" OffsetY="4"
         HorizontalContentAlignment="Stretch"
         RenderTransformOrigin="0.5, 0.5">
@@ -183,7 +184,8 @@
                     <!--Bio-->
                     <TextBlock
                         Text="{x:Bind ViewModel.Bio}"
-                        FontSize="13" Foreground="{ThemeResource WidgetHeaderForeground}"
+                        FontSize="13"
+                        Foreground="{ThemeResource WidgetHeaderForeground}"
                         TextWrapping="WrapWholeWords" MaxLines="2" TextTrimming="CharacterEllipsis"
                         Margin="0,0,4,0"/>
                 </StackPanel>

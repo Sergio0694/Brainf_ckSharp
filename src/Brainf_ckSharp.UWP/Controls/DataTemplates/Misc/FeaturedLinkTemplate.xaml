@@ -81,7 +81,6 @@
             Background="{ThemeResource GitHubContributorBackgroundBrush}"
             Click="RootButton_Clicked">
             <Image
-                Source="{x:Bind ImageUri, Mode=OneWay}"
                 Stretch="UniformToFill"
                 VerticalAlignment="Center"/>
         </Button>

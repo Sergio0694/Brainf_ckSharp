@@ -45,5 +45,6 @@
     <!--Misc-->
     <SolidColorBrush x:Key="ZeroValueInMemoryViewerBrush" Color="#D0FFFFFF"/>
     <SolidColorBrush x:Key="GitHubContributorBackgroundBrush" Color="#FF191B1E"/>
+    <SolidColorBrush x:Key="WidgetHeaderForeground" Color="#FFA0A0A0"/>
 
 </ResourceDictionary>

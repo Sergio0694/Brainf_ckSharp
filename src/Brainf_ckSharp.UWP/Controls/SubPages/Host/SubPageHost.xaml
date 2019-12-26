@@ -104,7 +104,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!--Close button-->
-                <Button 
+                <Button
                     x:Name="CloseButton"
                     VerticalAlignment="Top"
                     Height="48" Width="48"

@@ -30,7 +30,7 @@ namespace Brainf_ckSharp.UWP.Controls.SubPages.Host
 
             // Navigation
             Messenger.Default.Register<SubPageNavigationRequestMessage>(this, m => DisplaySubFramePage(m.SubPage));
-            Messenger.Default.Register<SubFrameCloseRequestMessage>(this, _ => CloseSubFramePage());
+            Messenger.Default.Register<SubPageCloseRequestMessage>(this, _ => CloseSubFramePage());
             SystemNavigationManager.GetForCurrentView().BackRequested += SubFrameControl_BackRequested;
             Messenger.Default.Register<LoadingStateUpdateNotificationMessage>(this, m => HandleLoadingUI(m.Value));
 
@@ -256,11 +256,11 @@ namespace Brainf_ckSharp.UWP.Controls.SubPages.Host
         private void SubFrameContentHost_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (ContentBorder.GetRelativeBounds(this).Contains(e.GetPosition(this))) return;
-            Messenger.Default.Send(new SubFrameCloseRequestMessage());
+            Messenger.Default.Send(new SubPageCloseRequestMessage());
         }
 
         // Sends a request to close the current sub frame page
-        private void CloseButton_OnClick(object sender, RoutedEventArgs e) => Messenger.Default.Send(new SubFrameCloseRequestMessage());
+        private void CloseButton_OnClick(object sender, RoutedEventArgs e) => Messenger.Default.Send(new SubPageCloseRequestMessage());
 
         #endregion
     }
