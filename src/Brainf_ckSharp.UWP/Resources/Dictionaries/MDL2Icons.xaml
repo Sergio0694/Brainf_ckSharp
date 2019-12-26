@@ -9,7 +9,8 @@
     <!--Stdin header-->
     <x:String x:Key="OperatorsKeyboardIcon">&#xE92E;</x:String>
     <x:String x:Key="QuickMemoryViewerIcon">&#xE96A;</x:String>
-    <x:String x:Key="ExpandeArrowIcon">&#xE011;</x:String>
+    <x:String x:Key="ExpanderArrowIcon">&#xE011;</x:String>
+    <x:String x:Key="MemoryViewerPositionIndicator">&#xEC11;</x:String>
 
     <!--Command bar-->
     <x:String x:Key="RunIcon">&#xE102;</x:String>

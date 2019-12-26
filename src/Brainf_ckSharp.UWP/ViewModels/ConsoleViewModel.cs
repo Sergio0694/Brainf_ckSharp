@@ -7,7 +7,8 @@ using Brainf_ckSharp.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Tools;
-using Brainf_ckSharp.UWP.Messages.Console;
+using Brainf_ckSharp.UWP.Messages.Console.Commands;
+using Brainf_ckSharp.UWP.Messages.Console.MemoryState;
 using Brainf_ckSharp.UWP.Messages.InputPanel;
 using Brainf_ckSharp.UWP.Models.Console;
 using Brainf_ckSharp.UWP.Models.Console.Interfaces;
@@ -41,12 +42,24 @@ namespace Brainf_ckSharp.UWP.ViewModels
             Messenger.Default.Register<RestartConsoleRequestMessage>(this, m => _ = RestartAsync());
             Messenger.Default.Register<ClearConsoleScreenRequestMessage>(this, m => _ = ClearScreenAsync());
             Messenger.Default.Register<RepeatCommandRequestMessage>(this, m => _ = RepeatLastScriptAsync());
+            Messenger.Default.Register<MemoryStateRequestMessage>(this, m => m.ReportResult(MachineState));
         }
+
+        private IReadOnlyTuringMachineState _MachineState = TuringMachineStateProvider.Default;
 
         /// <summary>
         /// Gets the <see cref="IReadOnlyTuringMachineState"/> instance currently in use
         /// </summary>
-        public IReadOnlyTuringMachineState MachineState { get; private set; } = TuringMachineStateProvider.Default;
+        public IReadOnlyTuringMachineState MachineState
+        {
+            get => _MachineState;
+            set
+            {
+                _MachineState = value;
+
+                Messenger.Default.Send(new MemoryStateChangedNotificationMessage(value));
+            }
+        }
 
         /// <summary>
         /// Adds a new operator to the last command in the console
@@ -163,6 +176,8 @@ namespace Brainf_ckSharp.UWP.ViewModels
                 {
                     // In all cases, update the current memory state
                     MachineState = result.Value.MachineState;
+
+                    // Display textual results and exit codes
                     if (!string.IsNullOrEmpty(result.Value.Stdout)) Source.Add(new ConsoleResult(result.Value.Stdout));
                     if (!result.Value.ExitCode.HasFlag(ExitCode.Success)) Source.Add(new ConsoleException(result.Value.ExitCode));
                 }

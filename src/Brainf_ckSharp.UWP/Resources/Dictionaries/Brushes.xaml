@@ -27,7 +27,10 @@
     <Color x:Key="DebugColor">#FFD1212A</Color>
     <SolidColorBrush x:Key="DebugBrush" Color="{StaticResource DebugColor}"/>
 
-    <!--Backgorund info bar brush-->
+    <!--Background info bar brush-->
     <SolidColorBrush x:Key="BackgroundInfoBrush" Color="#FF007ACC"/>
+
+    <!--Misc-->
+    <SolidColorBrush x:Key="ZeroValueInMemoryViewerBrush" Color="#D0FFFFFF"/>
 
 </ResourceDictionary>

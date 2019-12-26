@@ -29,6 +29,8 @@ namespace Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header
 
             _RootButton = (Button)GetTemplateChild(RootButtonName) ?? throw new InvalidOperationException($"Can't find {RootButtonName}");
             _RootButton.Click += RootButton_Click;
+
+            UpdateVisualState();
         }
 
         /// <summary>
@@ -47,7 +49,7 @@ namespace Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header
             nameof(Icon),
             typeof(string),
             typeof(MinimalHeaderButton),
-            new PropertyMetadata(string.Empty));
+            new PropertyMetadata(DependencyProperty.UnsetValue));
 
         /// <summary>
         /// Gets or sets whether or not the control is currently selected
@@ -65,7 +67,7 @@ namespace Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header
             nameof(IsSelected),
             typeof(bool),
             typeof(MinimalHeaderButton),
-            new PropertyMetadata(default(bool), OnIsSelectedPropertyChanged));
+            new PropertyMetadata(DependencyProperty.UnsetValue, OnIsSelectedPropertyChanged));
 
         /// <summary>
         /// Raised whenever the <see cref="IsSelected"/> property is set to <see langword="true"/>
@@ -80,12 +82,19 @@ namespace Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header
         private static void OnIsSelectedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             MinimalHeaderButton @this = (MinimalHeaderButton)d;
-            if (e.NewValue is bool value && value)
-            {
-                VisualStateManager.GoToState(@this, SelectedVisualStateName, false);
-                @this.Selected?.Invoke(@this, EventArgs.Empty);
-            }
-            else VisualStateManager.GoToState(@this, DefaultVisualStateName, false);
+
+            if (e.NewValue is bool value && value) @this.Selected?.Invoke(@this, EventArgs.Empty);
+            @this.UpdateVisualState();
+        }
+
+        /// <summary>
+        /// Applies the correct visual state when the <see cref="IsSelected"/> property changes
+        /// </summary>
+        /// <remarks>This method also needs to be called when the template is applied</remarks>
+        private void UpdateVisualState()
+        {
+            string name = IsSelected ? SelectedVisualStateName : DefaultVisualStateName;
+            VisualStateManager.GoToState(this, name, false);
         }
 
         // Updates the UI when the control is selected

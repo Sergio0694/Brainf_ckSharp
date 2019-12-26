@@ -121,16 +121,25 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AttachedProperties\AutoScrollingListViewHelper.cs" />
+    <Compile Include="AttachedProperties\CharacterRotationHelper.cs" />
+    <Compile Include="AttachedProperties\ItemsWrapGridHelper.cs" />
+    <Compile Include="AttachedProperties\ListViewBaseHelper.cs" />
     <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.cs" />
     <Compile Include="Bindings\Functions\Console\SyntaxErrorFormatterFunctions.cs" />
+    <Compile Include="Bindings\Functions\NumericFunctions.cs" />
     <Compile Include="Bindings\Functions\PivotSelectionFunctions.cs" />
     <Compile Include="Constants\Settings.cs" />
     <Compile Include="Constants\SettingsKeys.cs" />
+    <Compile Include="Controls\DataTemplates\Brainf_ckMemoryCellChunkTemplate.xaml.cs">
+      <DependentUpon>Brainf_ckMemoryCellChunkTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Host\InputPanel\Header\MinimalHeaderButton.cs" />
     <Compile Include="Controls\Host\InputPanel\Header\StdinHeader.xaml.cs">
       <DependentUpon>StdinHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Host\InputPanel\MemoryViewer\CompactMemoryViewer.xaml.cs">
+      <DependentUpon>CompactMemoryViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Host\InputPanel\VirtualKeyboard\OperatorButton.cs" />
     <Compile Include="Controls\Host\InputPanel\VirtualKeyboard\OperatorsKeyboard.xaml.cs">
@@ -145,6 +154,7 @@
     <Compile Include="Controls\Host\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Windows.UI.Xaml.Controls\LockedPivot.cs" />
     <Compile Include="Extensions\GalaSoft.MvvmLight.Messaging\MessengerExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IListExtensions.cs" />
@@ -155,12 +165,14 @@
     <Compile Include="MarkupExtensions\FontIconExtension.cs" />
     <Compile Include="Messages\Abstract\RequestMessageBase{T}.cs" />
     <Compile Include="Messages\Abstract\ValueChangedMessageBase{T}.cs" />
-    <Compile Include="Messages\Console\ClearCommandRequestMessage.cs" />
-    <Compile Include="Messages\Console\ClearConsoleScreenRequestMessage.cs" />
-    <Compile Include="Messages\Console\DeleteOperatorRequestMessage.cs" />
-    <Compile Include="Messages\Console\RepeatCommandRequestMessage.cs" />
-    <Compile Include="Messages\Console\RestartConsoleRequestMessage.cs" />
-    <Compile Include="Messages\Console\RunCommandRequestMessage.cs" />
+    <Compile Include="Messages\Console\Commands\ClearCommandRequestMessage.cs" />
+    <Compile Include="Messages\Console\Commands\ClearConsoleScreenRequestMessage.cs" />
+    <Compile Include="Messages\Console\Commands\DeleteOperatorRequestMessage.cs" />
+    <Compile Include="Messages\Console\Commands\RepeatCommandRequestMessage.cs" />
+    <Compile Include="Messages\Console\Commands\RestartConsoleRequestMessage.cs" />
+    <Compile Include="Messages\Console\Commands\RunCommandRequestMessage.cs" />
+    <Compile Include="Messages\Console\MemoryState\MemoryStateChangedNotificationMessage.cs" />
+    <Compile Include="Messages\Console\MemoryState\MemoryStateRequestMessage.cs" />
     <Compile Include="Messages\InputPanel\CharacterReceivedNotificationMessage.cs" />
     <Compile Include="Messages\InputPanel\OperatorKeyPressedNotificationMessage.cs" />
     <Compile Include="Messages\InputPanel\StdinRequestMessage.cs" />
@@ -170,11 +182,13 @@
     <Compile Include="Models\Console\ConsoleException.cs" />
     <Compile Include="Models\Console\ConsoleResult.cs" />
     <Compile Include="Models\Console\ConsoleSyntaxError.cs" />
+    <Compile Include="Models\Console\Controls\Brainf_ckMemoryCellChunk.cs" />
     <Compile Include="Models\Console\Interfaces\IConsoleEntry.cs" />
     <Compile Include="Models\Themes\Enums\LineHighlightStyle.cs" />
     <Compile Include="Models\Themes\ThemeInfo.cs" />
     <Compile Include="Models\Themes\Themes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\XamlResources.cs" />
     <Compile Include="Services\Keyboard\IKeyboardListenerService.cs" />
     <Compile Include="Services\Keyboard\KeyboardListenerService.cs" />
     <Compile Include="Services\ServicesManager.cs" />
@@ -183,6 +197,7 @@
     <Compile Include="TemplateSelectors\ConsoleEntryTemplateSelector.cs" />
     <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase{T}.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
+    <Compile Include="ViewModels\Controls\CompactMemoryViewerViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
@@ -236,11 +251,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\DataTemplates\Brainf_ckMemoryCellChunkTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Host\Header\HeaderPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Host\InputPanel\Header\StdinHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Host\InputPanel\MemoryViewer\CompactMemoryViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -273,6 +296,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\TelerikStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\TextStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
