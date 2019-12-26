@@ -110,6 +110,9 @@
                     Height="48" Width="48"
                     Style="{StaticResource ExpandedSquareButtonRevealStyle}"
                     Click="CloseButton_OnClick">
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="Escape"/>
+                    </Button.KeyboardAccelerators>
                     <SymbolIcon Symbol="Back" Foreground="White"/>
                 </Button>
 
