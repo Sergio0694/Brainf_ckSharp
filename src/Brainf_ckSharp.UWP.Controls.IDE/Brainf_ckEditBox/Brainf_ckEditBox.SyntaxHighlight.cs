@@ -5,6 +5,7 @@ using Windows.UI.Text;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System;
+using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
 using Brainf_ckSharp.Uwp.Themes;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
@@ -70,9 +71,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     start > 1 &&
                     text[start - 2] != '\r')
                 {
-                    autocomplete = $"\r{new string('\t', depth)}{Characters.LoopStart}\r{new string('\t', depth + 1)}\r{new string('\t', depth)}{Characters.LoopEnd}";
+                    autocomplete = CodeGenerator.GetBracketAutocompleteText(BracketsFormattingStyle.NewLine, depth);
                 }
-                else autocomplete = $"{Characters.LoopStart}\r{new string('\t', depth + 1)}\r{new string('\t', depth)}{Characters.LoopEnd}";
+                else autocomplete = CodeGenerator.GetBracketAutocompleteText(BracketsFormattingStyle.SameLine, depth);
 
                 // Set the autocomplete text and color it
                 range.SetText(TextSetOptions.None, autocomplete);

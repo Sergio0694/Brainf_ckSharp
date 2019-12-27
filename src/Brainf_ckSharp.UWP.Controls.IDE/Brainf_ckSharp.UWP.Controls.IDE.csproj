@@ -107,6 +107,7 @@
     <DebugType>full</DebugType>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -117,6 +118,7 @@
     <DebugType>pdbonly</DebugType>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
@@ -126,6 +128,7 @@
     <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.Properties.cs" />
     <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.SyntaxHighlight.cs" />
     <Compile Include="Brainf_ckEditBox\Enums\BracketsFormattingStyle.cs" />
+    <Compile Include="Brainf_ckEditBox\Helpers\CodeGenerator.cs" />
     <Compile Include="Extensions\System\StringExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Text\ITextDocumentExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
