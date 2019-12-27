@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Input;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.Controls.Windows.UI.Xaml.Controls
+namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
 {
     /// <summary>
     /// A custom <see cref="Pivot"/> control that disables its touch gestures to change the selected page

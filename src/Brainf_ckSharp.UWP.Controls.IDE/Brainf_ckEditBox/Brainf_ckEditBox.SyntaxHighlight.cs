@@ -3,10 +3,9 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Windows.UI.Text;
 using Brainf_ckSharp.Constants;
-using Brainf_ckSharp.UWP.Constants;
-using Brainf_ckSharp.UWP.Models.Themes;
+using Brainf_ckSharp.Uwp.Themes;
 
-namespace Brainf_ckSharp.UWP.Controls.IDE
+namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
     public sealed partial class Brainf_ckEditBox
     {
@@ -71,13 +70,13 @@ namespace Brainf_ckSharp.UWP.Controls.IDE
             if (c == Characters.LoopStart)
             {
                 ITextRange range = Document.GetRange(start - 1, start);
-                range.CharacterFormat.ForegroundColor = Settings.Theme.GetColor('[');
+                range.CharacterFormat.ForegroundColor = SyntaxHighlightTheme.GetColor('[');
 
                 Document.Selection.Text = "TEST]";
 
                 start += 5;
                 range = Document.GetRange(start - 1, start);
-                range.CharacterFormat.ForegroundColor = Settings.Theme.GetColor(']');
+                range.CharacterFormat.ForegroundColor = SyntaxHighlightTheme.GetColor(']');
 
                 Document.Selection.StartPosition = Document.Selection.EndPosition;
             }
@@ -105,12 +104,12 @@ namespace Brainf_ckSharp.UWP.Controls.IDE
 
                 // Find the edge of the current chunk of characters
                 while (++j < end)
-                    if (!ThemeInfo.HaveSameColor(c, Unsafe.Add(ref r0, j)))
+                    if (!Brainf_ckTheme.HaveSameColor(c, Unsafe.Add(ref r0, j)))
                         break;
 
                 // Highlight the current range
                 ITextRange range = Document.GetRange(i, j);
-                range.CharacterFormat.ForegroundColor = Settings.Theme.GetColor(c);
+                range.CharacterFormat.ForegroundColor = SyntaxHighlightTheme.GetColor(c);
             }
         }
 
@@ -133,12 +132,12 @@ namespace Brainf_ckSharp.UWP.Controls.IDE
 
                 // Find the edge of the current chunk of characters
                 while (++j < end)
-                    if (!ThemeInfo.HaveSameColor(c, Unsafe.Add(ref r0, j)))
+                    if (!Brainf_ckTheme.HaveSameColor(c, Unsafe.Add(ref r0, j)))
                         break;
 
                 // Highlight the current range, adding back the offset
                 ITextRange range = Document.GetRange(offset + i, offset + j);
-                range.CharacterFormat.ForegroundColor = Settings.Theme.GetColor(c);
+                range.CharacterFormat.ForegroundColor = SyntaxHighlightTheme.GetColor(c);
             }
         }
     }

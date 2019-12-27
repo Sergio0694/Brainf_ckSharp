@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Controls;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.Controls.Telerik.UI.Controls
+namespace Brainf_ckSharp.Uwp.Controls.Telerik.UI.Controls
 {
     /// <summary>
     /// A custom <see cref="Control"/> that displays a header and an expandable content

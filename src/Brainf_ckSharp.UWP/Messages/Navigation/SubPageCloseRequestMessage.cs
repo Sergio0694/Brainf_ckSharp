@@ -1,4 +1,4 @@
-﻿namespace Brainf_ckSharp.UWP.Messages.Navigation
+﻿namespace Brainf_ckSharp.Uwp.Messages.Navigation
 {
     /// <summary>
     /// A message that requests to close the currently displayed sub page

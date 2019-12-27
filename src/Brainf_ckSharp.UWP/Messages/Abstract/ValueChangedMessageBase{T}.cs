@@ -1,4 +1,4 @@
-﻿namespace Brainf_ckSharp.UWP.Messages.Abstract
+﻿namespace Brainf_ckSharp.Uwp.Messages.Abstract
 {
     /// <summary>
     /// A base message that signals whenever a specific value has changed

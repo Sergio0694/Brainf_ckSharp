@@ -1,4 +1,4 @@
-﻿namespace Brainf_ckSharp.UWP.Constants
+﻿namespace Brainf_ckSharp.Uwp.Constants
 {
     /// <summary>
     /// A <see langword="class"/> that holds the various setting keys used in the app

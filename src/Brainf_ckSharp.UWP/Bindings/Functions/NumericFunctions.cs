@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml.Media;
-using Brainf_ckSharp.UWP.Resources;
+using Brainf_ckSharp.Uwp.Resources;
 
-namespace Brainf_ckSharp.UWP.Bindings.Functions
+namespace Brainf_ckSharp.Uwp.Bindings.Functions
 {
     /// <summary>
     /// A <see langword="class"/> with a collection of helper functions for bindings to numeric values

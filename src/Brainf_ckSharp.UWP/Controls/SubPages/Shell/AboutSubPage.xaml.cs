@@ -1,11 +1,11 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.UWP.Controls.SubPages.Interfaces;
+using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
 using Legere.ViewModels.SubPages.Shell;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.Controls.SubPages.Shell
+namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell
 {
     /// <summary>
     /// A sub page that displays general info on the app

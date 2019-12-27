@@ -1,6 +1,6 @@
 ﻿using Windows.UI.Xaml.Controls;
 
-namespace Brainf_ckSharp.UWP.Messages.Navigation
+namespace Brainf_ckSharp.Uwp.Messages.Navigation
 {
     /// <summary>
     /// A message that signals a request to display a page in the sub page host

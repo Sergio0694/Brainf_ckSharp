@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Controls;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header
+namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.Header
 {
     /// <summary>
     /// A templated <see cref="Control"/> that acts as a minimal header button in the stdin header

@@ -2,7 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace Brainf_ckSharp.UWP.Controls.Host.Header
+namespace Brainf_ckSharp.Uwp.Controls.Host.Header
 {
     public sealed partial class HeaderPanel : UserControl
     {

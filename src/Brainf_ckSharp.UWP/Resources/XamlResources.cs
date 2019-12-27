@@ -6,7 +6,7 @@ using Windows.UI.Xaml.Media;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.Resources
+namespace Brainf_ckSharp.Uwp.Resources
 {
     /// <summary>
     /// A small <see langword="class"/> that exposes some commonly used XAML resources

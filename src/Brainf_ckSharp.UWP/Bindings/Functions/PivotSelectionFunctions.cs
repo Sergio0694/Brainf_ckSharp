@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 
-namespace Brainf_ckSharp.UWP.Bindings.Functions
+namespace Brainf_ckSharp.Uwp.Bindings.Functions
 {
     /// <summary>
     /// A <see langword="class"/> with a collection of helper functions for bindings with a <see cref="Windows.UI.Xaml.Controls.Pivot"/> control

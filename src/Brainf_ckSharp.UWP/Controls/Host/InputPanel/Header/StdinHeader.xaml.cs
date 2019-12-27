@@ -1,14 +1,14 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.UWP.Constants;
-using Brainf_ckSharp.UWP.Messages.InputPanel;
-using Brainf_ckSharp.UWP.Services.Keyboard;
-using Brainf_ckSharp.UWP.Services.Settings;
+using Brainf_ckSharp.Uwp.Constants;
+using Brainf_ckSharp.Uwp.Messages.InputPanel;
+using Brainf_ckSharp.Uwp.Services.Keyboard;
+using Brainf_ckSharp.Uwp.Services.Settings;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 
-namespace Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header
+namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.Header
 {
     public sealed partial class StdinHeader : UserControl
     {

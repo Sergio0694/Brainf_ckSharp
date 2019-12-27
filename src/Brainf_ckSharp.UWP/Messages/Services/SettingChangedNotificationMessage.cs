@@ -1,4 +1,4 @@
-﻿namespace Brainf_ckSharp.UWP.Messages.Services
+﻿namespace Brainf_ckSharp.Uwp.Messages.Services
 {
     /// <summary>
     /// A message that notifies whenever a given setting has changed

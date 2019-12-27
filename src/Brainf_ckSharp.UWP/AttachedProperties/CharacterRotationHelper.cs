@@ -4,7 +4,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
-namespace Brainf_ckSharp.UWP.AttachedProperties
+namespace Brainf_ckSharp.Uwp.AttachedProperties
 {
     /// <summary>
     /// An attached property that sets a <see cref="CompositeTransform"/> object to a <see cref="TextBlock"/> control if needed

@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace Brainf_ckSharp.UWP.Extensions.System
+namespace Brainf_ckSharp.Uwp.Extensions.System
 {
     /// <summary>
     /// An extension <see langword="class"/> for the <see cref="string"/> type

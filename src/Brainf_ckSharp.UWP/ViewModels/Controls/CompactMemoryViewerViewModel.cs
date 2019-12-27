@@ -1,12 +1,12 @@
 ﻿using Brainf_ckSharp.Interfaces;
-using Brainf_ckSharp.UWP.Messages.Console.MemoryState;
-using Brainf_ckSharp.UWP.Models.Console.Controls;
-using Brainf_ckSharp.UWP.ViewModels.Abstract;
+using Brainf_ckSharp.Uwp.Messages.Console.MemoryState;
+using Brainf_ckSharp.Uwp.Models.Console.Controls;
+using Brainf_ckSharp.Uwp.ViewModels.Abstract;
 using GalaSoft.MvvmLight.Messaging;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.ViewModels.Controls
+namespace Brainf_ckSharp.Uwp.ViewModels.Controls
 {
     /// <summary>
     /// A view model for a compact memory viewer for the interactive REPL console

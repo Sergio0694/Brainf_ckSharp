@@ -9,7 +9,7 @@ using Microsoft.Toolkit.Uwp.UI.Extensions;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.AttachedProperties
+namespace Brainf_ckSharp.Uwp.AttachedProperties
 {
     /// <summary>
     /// A <see langword="class"/> with an attached XAML property to control the auto scrolling on a target <see cref="ListViewBase"/> control

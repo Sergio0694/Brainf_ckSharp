@@ -1,6 +1,6 @@
 ﻿using Windows.UI.Xaml.Controls;
 
-namespace Brainf_ckSharp.UWP.Controls.SubPages.Shell.UserGuide.CodeSamples
+namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.CodeSamples
 {
     /// <summary>
     /// A control that displays a code sample with a simple loop

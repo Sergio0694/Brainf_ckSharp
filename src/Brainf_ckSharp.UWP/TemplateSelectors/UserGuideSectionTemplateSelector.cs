@@ -1,9 +1,9 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.UWP.Enums;
+using Brainf_ckSharp.Uwp.Enums;
 
-namespace Brainf_ckSharp.UWP.TemplateSelectors
+namespace Brainf_ckSharp.Uwp.TemplateSelectors
 {
     /// <summary>
     /// A template selector for user guide sections

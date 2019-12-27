@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Animation;
 
-namespace Brainf_ckSharp.UWP.AttachedProperties
+namespace Brainf_ckSharp.Uwp.AttachedProperties
 {
     /// <summary>
     /// A <see langword="class"/> with an attached XAML property to display a blinking animation on a target <see cref="UIElement"/>

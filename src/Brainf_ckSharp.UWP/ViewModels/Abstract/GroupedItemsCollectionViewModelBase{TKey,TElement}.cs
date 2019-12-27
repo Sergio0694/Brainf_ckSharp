@@ -3,7 +3,7 @@ using Windows.Foundation.Collections;
 using Windows.UI.Xaml.Data;
 using GalaSoft.MvvmLight;
 
-namespace Brainf_ckSharp.UWP.ViewModels.Abstract
+namespace Brainf_ckSharp.Uwp.ViewModels.Abstract
 {
     /// <summary>
     /// A view model for a view that exposes a grouped collection of items of a given type

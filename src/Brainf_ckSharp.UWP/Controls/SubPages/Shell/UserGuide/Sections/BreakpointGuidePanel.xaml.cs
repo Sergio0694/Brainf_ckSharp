@@ -1,6 +1,6 @@
 ﻿using Windows.UI.Xaml.Controls;
 
-namespace Brainf_ckSharp.UWP.Controls.SubPages.Shell.UserGuide.Sections
+namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.Sections
 {
     /// <summary>
     /// A panel that displays info on the use of breakpoints to debug code

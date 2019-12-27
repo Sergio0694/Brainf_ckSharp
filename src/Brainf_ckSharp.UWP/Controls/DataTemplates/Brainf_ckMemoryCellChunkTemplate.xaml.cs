@@ -1,9 +1,9 @@
 ﻿using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.UWP.Models.Console.Controls;
+using Brainf_ckSharp.Uwp.Models.Console.Controls;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.Controls.DataTemplates
+namespace Brainf_ckSharp.Uwp.Controls.DataTemplates
 {
     /// <summary>
     /// A template to display a <see cref="Brainf_ckMemoryCellChunk"/> model

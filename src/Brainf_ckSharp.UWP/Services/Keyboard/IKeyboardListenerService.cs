@@ -1,4 +1,4 @@
-﻿namespace Brainf_ckSharp.UWP.Services.Keyboard
+﻿namespace Brainf_ckSharp.Uwp.Services.Keyboard
 {
     /// <summary>
     /// The default <see langword="interface"/> for the a service that listens for keyboard strokes and shortcuts

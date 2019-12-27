@@ -1,8 +1,8 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
-using Brainf_ckSharp.UWP.Enums;
+using Brainf_ckSharp.Uwp.Enums;
 
-namespace Brainf_ckSharp.UWP.Bindings.Converters.UserGuide
+namespace Brainf_ckSharp.Uwp.Bindings.Converters.UserGuide
 {
     /// <summary>
     /// A converter that returns an uppercase title for a given <see cref="UserGuideSection"/> value

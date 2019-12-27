@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Controls;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.Controls.Host.InputPanel.VirtualKeyboard
+namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.VirtualKeyboard
 {
     /// <summary>
     /// A templated <see cref="Control"/> for a Brainf*ck/PBrain operator

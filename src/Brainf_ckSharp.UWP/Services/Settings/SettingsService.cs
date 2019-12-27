@@ -2,11 +2,11 @@
 using System.Runtime.CompilerServices;
 using Windows.Foundation.Collections;
 using Windows.Storage;
-using Brainf_ckSharp.UWP.Constants;
-using Brainf_ckSharp.UWP.Messages.Services;
+using Brainf_ckSharp.Uwp.Constants;
+using Brainf_ckSharp.Uwp.Messages.Services;
 using GalaSoft.MvvmLight.Messaging;
 
-namespace Brainf_ckSharp.UWP.Services.Settings
+namespace Brainf_ckSharp.Uwp.Services.Settings
 {
     /// <summary>
     /// A simple <see langword="class"/> that handles the local app settings

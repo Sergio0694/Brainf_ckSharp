@@ -1,6 +1,6 @@
-﻿using Brainf_ckSharp.UWP.Messages.Abstract;
+﻿using Brainf_ckSharp.Uwp.Messages.Abstract;
 
-namespace Brainf_ckSharp.UWP.Messages.Navigation
+namespace Brainf_ckSharp.Uwp.Messages.Navigation
 {
     /// <summary>
     /// A message that indicates whenever the app global loading state changes
