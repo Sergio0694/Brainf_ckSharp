@@ -1,4 +1,5 @@
 ﻿using Brainf_ckSharp.UWP.Controls.SubPages.Shell;
+using Brainf_ckSharp.UWP.Controls.SubPages.Shell.UserGuide;
 using Brainf_ckSharp.UWP.Messages.Console.Commands;
 using Brainf_ckSharp.UWP.Messages.Navigation;
 using GalaSoft.MvvmLight;
@@ -45,5 +46,10 @@ namespace Brainf_ckSharp.UWP.ViewModels
         /// Shows the info about the current app
         /// </summary>
         public void ShowAppInfo() => Messenger.Default.Send(SubPageNavigationRequestMessage.To<AboutSubPage>());
+
+        /// <summary>
+        /// Shows the user guide
+        /// </summary>
+        public void ShowUserGuide() => Messenger.Default.Send(SubPageNavigationRequestMessage.To<UserGuideSubPage>());
     }
 }

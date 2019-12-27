@@ -10,6 +10,17 @@ namespace Brainf_ckSharp.UWP.ViewModels.Abstract
     /// </summary>
     public abstract class GroupedItemsCollectionViewModelBase<TKey, TValue> : ViewModelBase
     {
+        /// <summary>
+        /// Creates a new <see cref="GroupedItemsCollectionViewModelBase{TKey,TValue}"/> instance
+        /// </summary>
+        protected GroupedItemsCollectionViewModelBase() : this(new ObservableCollection<ObservableGroup<TKey, TValue>>()) { }
+
+        /// <summary>
+        /// Creates a new <see cref="GroupedItemsCollectionViewModelBase{TKey,TValue}"/> instance with the specified parameters
+        /// </summary>
+        /// <param name="source">The initial collection to use to initialize <see cref="Source"/></param>
+        protected GroupedItemsCollectionViewModelBase(ObservableCollection<ObservableGroup<TKey, TValue>> source) => Source = source;
+
         private ObservableCollection<ObservableGroup<TKey, TValue>> _Source;
 
         /// <summary>

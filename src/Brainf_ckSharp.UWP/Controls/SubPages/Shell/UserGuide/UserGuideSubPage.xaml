@@ -33,7 +33,7 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <host:SubPageFrame Title="User guide">
+    <host:SubPageFrame Title="USER GUIDE">
 
         <!--Semantic zoom-->
         <SemanticZoom>
@@ -44,7 +44,8 @@
                     ItemsSource="{x:Bind ViewModel.View, Mode=OneWay}"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
-                    IsItemClickEnabled="False">
+                    IsItemClickEnabled="False"
+                    SelectionMode="None">
                     <ListView.ItemTemplateSelector>
                         <templateSelectors:UserGuideSectionTemplateSelector
                             IntroductionTemplate="{StaticResource LanguageIntroductionTemplate}"
