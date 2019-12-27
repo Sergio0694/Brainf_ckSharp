@@ -5,7 +5,7 @@ using Windows.UI.Text;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Themes;
 
-namespace Brainf_ckSharp.Uwp.Controls.Ide.Brainf_ckEditBox
+namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
     public sealed partial class Brainf_ckEditBox
     {
