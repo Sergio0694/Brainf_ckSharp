@@ -1,4 +1,5 @@
 ﻿using Windows.UI.Xaml;
+using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Themes;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
@@ -12,6 +13,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         {
             get => (bool)GetValue(IsAutomaticBracketsIndentationEnabledProperty);
             set => SetValue(IsAutomaticBracketsIndentationEnabledProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the formatting style for brackets
+        /// </summary>
+        public BracketsFormattingStyle BracketsFormattingStyle
+        {
+            get => (BracketsFormattingStyle)GetValue(BracketsFormattingStyleProperty);
+            set => SetValue(BracketsFormattingStyleProperty, value);
         }
 
         /// <summary>
@@ -32,6 +42,16 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 typeof(bool),
                 typeof(Brainf_ckEditBox),
                 new PropertyMetadata(default(bool)));
+
+        /// <summary>
+        /// Gets the dependency property for <see cref="BracketsFormattingStyle"/>.
+        /// </summary>
+        public static readonly DependencyProperty BracketsFormattingStyleProperty =
+            DependencyProperty.Register(
+                nameof(BracketsFormattingStyle),
+                typeof(BracketsFormattingStyle),
+                typeof(Brainf_ckEditBox),
+                new PropertyMetadata(default(BracketsFormattingStyle)));
 
         /// <summary>
         /// Gets the dependency property for <see cref="SyntaxHighlightTheme"/>.

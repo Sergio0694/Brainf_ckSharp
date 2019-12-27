@@ -125,6 +125,7 @@
     <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.cs" />
     <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.Properties.cs" />
     <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.SyntaxHighlight.cs" />
+    <Compile Include="Brainf_ckEditBox\Enums\BracketsFormattingStyle.cs" />
     <Compile Include="Extensions\Windows.UI.Text\ITextDocumentExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Brainf_ckSharp.UWP.Controls.IDE.rd.xml" />

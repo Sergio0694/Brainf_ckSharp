@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Windows.UI.Text;
 using Brainf_ckSharp.Constants;
+using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Themes;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
@@ -11,11 +12,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     {
         private string _Text = "\r";
 
-        private int _TextLength = 1;
-
         private int _SelectionLength = 0;
 
         private int _SelectionStart = 0;
+
+        private bool _IsSyntaxValid = true;
 
         /// <summary>
         /// Applies the syntaxt highlight to the current document, using less resources as possible
@@ -29,10 +30,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 selectionLength = Document.Selection.Length,
                 selectionStart = Document.Selection.StartPosition;
 
-            if (textLength == _TextLength + 1 ||
+            if (textLength == _Text.Length + 1 ||
                 _SelectionLength > 1 && selectionLength == 0 && selectionStart > 0)
             {
-                TryFormatSingleCharacter(text, selectionStart);
+                TryFormatSingleCharacter(ref text, selectionStart);
                 //ApplySyntaxHighlight(text, selectionStart - 1, selectionStart);
             }
             else
@@ -42,7 +43,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
 
             _Text = text;
-            _TextLength = textLength;
+            _IsSyntaxValid = Brainf_ckParser.ValidateSyntax(text).IsSuccessOrEmptyScript;
         }
 
         private static int CalculateIndentationDepth(string text, int start)
@@ -63,18 +64,44 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             return depth;
         }
 
-        private void TryFormatSingleCharacter(string text, int start)
+        private void TryFormatSingleCharacter(ref string text, int start)
         {
             char c = text[start - 1];
 
-            if (c == Characters.LoopStart)
+            if (c == Characters.LoopStart && _IsSyntaxValid)
             {
-                Document.SetRangeColor(start - 1, start, SyntaxHighlightTheme.GetColor('['));
-                Document.Selection.Text = "]";
-                Document.SetRangeColor(start, start + 1, SyntaxHighlightTheme.GetColor(']'));
-                Document.Selection.StartPosition = Document.Selection.EndPosition;
+                int depth = CalculateIndentationDepth(text, start - 1);
+                ITextRange range = Document.GetRange(start - 1, start);
+                string autocomplete;
+
+                /* Handle the two possible bracket formatting options. If the bracket needs
+                 * to go on a new line, check for edge cases and then prepare the new text
+                 * with the leading new line. Otherwise, simply replace the open bracket
+                 * on the same line and insert the autocomplete text. Using a single replacement
+                 * improves performance, as the color can be applied in a single pass. */
+                if (BracketsFormattingStyle == BracketsFormattingStyle.NewLine &&
+                    start > 1 &&
+                    text[start - 2] != '\r')
+                {
+                    autocomplete = $"\r{new string('\t', depth)}{Characters.LoopStart}\r{new string('\t', depth + 1)}\r{new string('\t', depth)}{Characters.LoopEnd}";
+                }
+                else autocomplete = $"{Characters.LoopStart}\r{new string('\t', depth + 1)}\r{new string('\t', depth)}{Characters.LoopEnd}";
+
+                // Set the autocomplete text and color it
+                range.SetText(TextSetOptions.None, autocomplete);
+                range.CharacterFormat.ForegroundColor = SyntaxHighlightTheme.GetColor(Characters.LoopStart);
+
+                /* Move the selection at the end of the added line between the brackets.
+                 * Start is the position right after the first inserted bracket, which was replaced.
+                 * It gets shifted ahead by the length of the replacement text, minus the number of
+                 * tabs before the closing bracket, and 3 which is the number of additional characters
+                 * that were inserted with respect to the end: the first replaced bracket,
+                 * the closing bracket, and the new line before the line with the last bracket. */
+                Document.Selection.StartPosition = Document.Selection.EndPosition = start + autocomplete.Length - (depth + 3);
+
+                text = Document.GetText();
             }
-            else ApplySyntaxHighlight(text, start - 1, start);
+            else Document.SetRangeColor(start - 1, start, SyntaxHighlightTheme.GetColor(c));
         }
 
         /// <summary>
