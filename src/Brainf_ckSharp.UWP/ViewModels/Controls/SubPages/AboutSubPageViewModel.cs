@@ -10,6 +10,9 @@ using User = GitHub.Models.User;
 
 namespace Legere.ViewModels.SubPages.Shell
 {
+    /// <summary>
+    /// A view model for the about page in the app
+    /// </summary>
     public sealed class AboutSubPageViewModel : ViewModelBase
     {
         /// <summary>
