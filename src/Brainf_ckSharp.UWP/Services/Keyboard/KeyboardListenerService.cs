@@ -1,9 +1,9 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
-using Brainf_ckSharp.UWP.Messages.InputPanel;
+using Brainf_ckSharp.Uwp.Messages.InputPanel;
 using GalaSoft.MvvmLight.Messaging;
 
-namespace Brainf_ckSharp.UWP.Services.Keyboard
+namespace Brainf_ckSharp.Uwp.Services.Keyboard
 {
     /// <summary>
     /// A <see langword="class"/> that listens to the global <see cref="UIElement.CharacterReceived"/> event for the current app window

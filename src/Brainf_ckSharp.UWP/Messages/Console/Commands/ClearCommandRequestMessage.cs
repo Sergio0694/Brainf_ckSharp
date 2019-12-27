@@ -1,4 +1,4 @@
-﻿namespace Brainf_ckSharp.UWP.Messages.Console.Commands
+﻿namespace Brainf_ckSharp.Uwp.Messages.Console.Commands
 {
     /// <summary>
     /// A message that represents a request to clear the current console command

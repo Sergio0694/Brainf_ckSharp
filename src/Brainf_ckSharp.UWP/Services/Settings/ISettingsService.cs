@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 
-namespace Brainf_ckSharp.UWP.Services.Settings
+namespace Brainf_ckSharp.Uwp.Services.Settings
 {
     /// <summary>
     /// The default <see langword="interface"/> for the settings manager used in the app

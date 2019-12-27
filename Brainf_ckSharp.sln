@@ -30,7 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_SolutionItems", "_Solution
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.UWP", "src\Brainf_ckSharp.UWP\Brainf_ckSharp.UWP.csproj", "{45467BB7-1876-4182-B6B5-B0E5986CD96D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.Uwp", "src\Brainf_ckSharp.Uwp\Brainf_ckSharp.Uwp.csproj", "{45467BB7-1876-4182-B6B5-B0E5986CD96D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitHub", "src\GitHub\GitHub.csproj", "{9122F0D6-AF88-46A6-B91F-EBAFE7F59672}"
 EndProject

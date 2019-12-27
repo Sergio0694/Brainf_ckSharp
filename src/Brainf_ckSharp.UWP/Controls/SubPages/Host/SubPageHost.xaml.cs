@@ -5,15 +5,15 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Brainf_ckSharp.UWP.Controls.SubPages.Interfaces;
-using Brainf_ckSharp.UWP.Extensions.System;
-using Brainf_ckSharp.UWP.Extensions.Windows.UI.Xaml;
-using Brainf_ckSharp.UWP.Messages.Navigation;
+using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
+using Brainf_ckSharp.Uwp.Extensions.System;
+using Brainf_ckSharp.Uwp.Extensions.Windows.UI.Xaml;
+using Brainf_ckSharp.Uwp.Messages.Navigation;
 using GalaSoft.MvvmLight.Messaging;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.Controls.SubPages.Host
+namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
 {
     /// <summary>
     /// An adaptive host for displaying custom controls

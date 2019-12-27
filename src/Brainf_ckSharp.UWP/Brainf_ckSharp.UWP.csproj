@@ -9,8 +9,8 @@
     <ProjectGuid>{45467BB7-1876-4182-B6B5-B0E5986CD96D}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Brainf_ckSharp.UWP</RootNamespace>
-    <AssemblyName>Brainf_ckSharp.UWP</AssemblyName>
+    <RootNamespace>Brainf_ckSharp.Uwp</RootNamespace>
+    <AssemblyName>Brainf_ckSharp.Uwp</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>

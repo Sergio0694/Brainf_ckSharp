@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
-using Brainf_ckSharp.UWP.Constants;
-using Brainf_ckSharp.UWP.Extensions.System;
+using Brainf_ckSharp.Uwp.Constants;
+using Brainf_ckSharp.Uwp.Extensions.System;
 using Brainf_ckSharp.Uwp.Themes;
 
-namespace Brainf_ckSharp.UWP.AttachedProperties
+namespace Brainf_ckSharp.Uwp.AttachedProperties
 {
     /// <summary>
     /// A <see langword="class"/> with an attached XAML property to formatted Brainf*ck/PBrain code
@@ -111,7 +111,7 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
                 {
                     // Check how many characters can be inserted into the last existing run
                     int i = start;
-                    while (i < end && ThemeInfo.HaveSameColor(run.Text[0], newValue[i]))
+                    while (i < end && Brainf_ckTheme.HaveSameColor(run.Text[0], newValue[i]))
                     {
                         i++;
                     }
@@ -139,7 +139,7 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
                 int i = start + 1;
 
                 // Aggregate as many characters as possible into a single run
-                while (i < end && ThemeInfo.HaveSameColor(c, newValue[i]))
+                while (i < end && Brainf_ckTheme.HaveSameColor(c, newValue[i]))
                 {
                     i++;
                 }
@@ -148,7 +148,7 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
                 @this.Inlines.Add(new Run
                 {
                     Text = newValue.AsSpan(start, i - start).InterleaveWithCharacter(ZeroWidthSpace),
-                    Foreground = Settings.Theme.GetBrush(c)
+                    Foreground = Settings.Brainf_ckTheme.GetBrush(c)
                 });
 
                 start = i;

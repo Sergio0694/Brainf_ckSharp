@@ -2,7 +2,7 @@
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 
-namespace Brainf_ckSharp.UWP.Controls.SubPages.Shell.UserGuide.Templates
+namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.Templates
 {
     /// <summary>
     /// A template that displays info on a given Brainf*ck/PBrain operator

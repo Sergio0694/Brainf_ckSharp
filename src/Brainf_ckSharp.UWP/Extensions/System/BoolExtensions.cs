@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 
-namespace Brainf_ckSharp.UWP.Extensions.System
+namespace Brainf_ckSharp.Uwp.Extensions.System
 {
     /// <summary>
     /// An extension <see langword="class"/> for the <see cref="bool"/> type

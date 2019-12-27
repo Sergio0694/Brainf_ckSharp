@@ -17,9 +17,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// Gets or sets the syntax highlight theme to use
         /// </summary>
-        public ThemeInfo SyntaxHighlightTheme
+        public Brainf_ckTheme SyntaxHighlightTheme
         {
-            get => (ThemeInfo)GetValue(SyntaxHighlightThemeProperty);
+            get => (Brainf_ckTheme)GetValue(SyntaxHighlightThemeProperty);
             set => SetValue(SyntaxHighlightThemeProperty, value);
         }
 
@@ -39,8 +39,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         public static readonly DependencyProperty SyntaxHighlightThemeProperty =
             DependencyProperty.Register(
                 nameof(SyntaxHighlightTheme),
-                typeof(ThemeInfo),
+                typeof(Brainf_ckTheme),
                 typeof(Brainf_ckEditBox),
-                new PropertyMetadata(Themes.Themes.VisualStudio));
+                new PropertyMetadata(Brainf_ckThemes.VisualStudio));
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
-using Brainf_ckSharp.UWP.Messages.Abstract;
+using Brainf_ckSharp.Uwp.Messages.Abstract;
 
 namespace GalaSoft.MvvmLight.Messaging
 {

@@ -104,7 +104,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
                 // Find the edge of the current chunk of characters
                 while (++j < end)
-                    if (!ThemeInfo.HaveSameColor(c, Unsafe.Add(ref r0, j)))
+                    if (!Brainf_ckTheme.HaveSameColor(c, Unsafe.Add(ref r0, j)))
                         break;
 
                 // Highlight the current range
@@ -132,7 +132,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
                 // Find the edge of the current chunk of characters
                 while (++j < end)
-                    if (!ThemeInfo.HaveSameColor(c, Unsafe.Add(ref r0, j)))
+                    if (!Brainf_ckTheme.HaveSameColor(c, Unsafe.Add(ref r0, j)))
                         break;
 
                 // Highlight the current range, adding back the offset

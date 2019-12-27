@@ -7,7 +7,7 @@ using Launcher = Windows.System.Launcher;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.Controls.DataTemplates.GitHub
+namespace Brainf_ckSharp.Uwp.Controls.DataTemplates.GitHub
 {
     /// <summary>
     /// A template for a GitHub user

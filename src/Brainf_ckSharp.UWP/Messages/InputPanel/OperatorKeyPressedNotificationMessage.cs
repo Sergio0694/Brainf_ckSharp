@@ -1,6 +1,6 @@
-﻿using Brainf_ckSharp.UWP.Messages.Abstract;
+﻿using Brainf_ckSharp.Uwp.Messages.Abstract;
 
-namespace Brainf_ckSharp.UWP.Messages.InputPanel
+namespace Brainf_ckSharp.Uwp.Messages.InputPanel
 {
     /// <summary>
     /// A message that notifies whenever a key for a Brainf*ck/PBrain operator is pressed

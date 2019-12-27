@@ -1,6 +1,6 @@
 ﻿using Windows.UI.Xaml.Markup;
 
-namespace Brainf_ckSharp.UWP.MarkupExtensions
+namespace Brainf_ckSharp.Uwp.MarkupExtensions
 {
     /// <summary>
     /// A markup extension that converts <see cref="bool"/> values in XAML to their boxed version

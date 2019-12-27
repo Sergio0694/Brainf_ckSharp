@@ -7,15 +7,15 @@ using Brainf_ckSharp.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Tools;
-using Brainf_ckSharp.UWP.Messages.Console.Commands;
-using Brainf_ckSharp.UWP.Messages.Console.MemoryState;
-using Brainf_ckSharp.UWP.Messages.InputPanel;
-using Brainf_ckSharp.UWP.Models.Console;
-using Brainf_ckSharp.UWP.Models.Console.Interfaces;
-using Brainf_ckSharp.UWP.ViewModels.Abstract;
+using Brainf_ckSharp.Uwp.Messages.Console.Commands;
+using Brainf_ckSharp.Uwp.Messages.Console.MemoryState;
+using Brainf_ckSharp.Uwp.Messages.InputPanel;
+using Brainf_ckSharp.Uwp.Models.Console;
+using Brainf_ckSharp.Uwp.Models.Console.Interfaces;
+using Brainf_ckSharp.Uwp.ViewModels.Abstract;
 using GalaSoft.MvvmLight.Messaging;
 
-namespace Brainf_ckSharp.UWP.ViewModels
+namespace Brainf_ckSharp.Uwp.ViewModels
 {
     /// <summary>
     /// A view model for an interactive REPL console for Brainf*ck/PBrain

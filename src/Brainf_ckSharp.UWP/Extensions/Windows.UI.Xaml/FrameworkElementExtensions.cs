@@ -2,7 +2,7 @@
 using Windows.Foundation;
 using Windows.UI.Xaml;
 
-namespace Brainf_ckSharp.UWP.Extensions.Windows.UI.Xaml
+namespace Brainf_ckSharp.Uwp.Extensions.Windows.UI.Xaml
 {
     /// <summary>
     /// An extension <see langword="class"/> for the <see cref="FrameworkElement"/> type

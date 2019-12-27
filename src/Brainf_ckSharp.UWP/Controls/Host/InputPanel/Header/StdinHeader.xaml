@@ -1,12 +1,12 @@
 ﻿<UserControl
-    x:Class="Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header.StdinHeader"
+    x:Class="Brainf_ckSharp.Uwp.Controls.Host.InputPanel.Header.StdinHeader"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:functions="using:Brainf_ckSharp.UWP.Bindings.Functions"
+    xmlns:functions="using:Brainf_ckSharp.Uwp.Bindings.Functions"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
-    xmlns:header="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header"
+    xmlns:header="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel.Header"
     mc:Ignorable="d"
     d:DesignHeight="48"
     d:DesignWidth="400">

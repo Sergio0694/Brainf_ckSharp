@@ -1,7 +1,7 @@
 ﻿using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.UWP.ViewModels.Controls;
+using Brainf_ckSharp.Uwp.ViewModels.Controls;
 
-namespace Brainf_ckSharp.UWP.Controls.Host.InputPanel.MemoryViewer
+namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.MemoryViewer
 {
     /// <summary>
     /// A compact memory viewer for the interactive REPL console
