@@ -1,6 +1,6 @@
 ﻿using System;
-using Brainf_ckSharp.UWP.Models.Themes;
 using Brainf_ckSharp.UWP.Services.Settings;
+using Brainf_ckSharp.Uwp.Themes;
 using GalaSoft.MvvmLight.Ioc;
 
 namespace Brainf_ckSharp.UWP.Constants
@@ -17,7 +17,7 @@ namespace Brainf_ckSharp.UWP.Constants
         {
             return SimpleIoc.Default.GetInstance<ISettingsService>().GetValue<int>(SettingsKeys.Theme) switch
             {
-                0 => Themes.Default,
+                0 => Themes.VisualStudio,
                 1 => Themes.Monokai,
                 2 => Themes.Dracula,
                 3 => Themes.Base16,
