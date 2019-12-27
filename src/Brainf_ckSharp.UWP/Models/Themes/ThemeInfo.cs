@@ -153,6 +153,7 @@ namespace Brainf_ckSharp.UWP.Models.Themes
             if (second > first) (first, second) = (second, first);
 
             return
+                !Brainf_ckParser.IsOperator(first) && !Brainf_ckParser.IsOperator(second) ||
                 first == Characters.BackwardPtr && second == Characters.ForwardPtr ||
                 first == Characters.Plus && second == Characters.Minus ||
                 first == Characters.LoopStart && second == Characters.LoopEnd ||
