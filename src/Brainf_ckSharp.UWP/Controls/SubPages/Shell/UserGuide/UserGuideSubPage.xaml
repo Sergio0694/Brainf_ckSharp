@@ -14,22 +14,79 @@
 
         <!--Introduction-->
         <DataTemplate x:Key="LanguageIntroductionTemplate">
-            <sections:LanguageIntroductionGuidePanel/>
+            <sections:LanguageIntroductionGuidePanel Margin="0,12,0,12"/>
         </DataTemplate>
 
         <!--Code samples-->
         <DataTemplate x:Key="CodeSamplesTemplate">
-            <sections:CodeSamplesGuidePanel/>
+            <sections:CodeSamplesGuidePanel Margin="0,12,0,12"/>
         </DataTemplate>
 
         <!--PBrain-->
         <DataTemplate x:Key="PBraainExtensionTemplate">
-            <sections:PBrainExtensionGuidePanel/>
+            <sections:PBrainExtensionGuidePanel Margin="0,12,0,12"/>
         </DataTemplate>
 
         <!--Debugging-->
         <DataTemplate x:Key="DebuggingTemplate">
-            <sections:BreakpointGuidePanel/>
+            <sections:BreakpointGuidePanel Margin="0,12,0,12"/>
+        </DataTemplate>
+
+        <!--Header template-->
+        <DataTemplate x:Key="SectionHeaderTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!--Top shadow-->
+                <Rectangle
+                    VerticalAlignment="Top"
+                    IsHitTestVisible="False"
+                    Height="8">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush EndPoint="0,0" StartPoint="0,1">
+                            <GradientStop Offset="1"/>
+                            <GradientStop Color="#60000000" Offset="0"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <!--Header button-->
+                <Button
+                    Grid.Row="1"
+                    Style="{StaticResource ExpandedSquareButtonRevealStyle}"
+                    Background="#12000000"
+                    Height="40"
+                    HorizontalContentAlignment="Left">
+                    <TextBlock
+                        Text="{Binding Key}"
+                        FontWeight="SemiBold"
+                        FontSize="18"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        HorizontalTextAlignment="Left"
+                        Margin="12,0,0,0"/>
+                </Button>
+
+                <!--Bottom shadow-->
+                <Rectangle
+                    Grid.Row="1"
+                    VerticalAlignment="Bottom"
+                    IsHitTestVisible="False"
+                    Height="8">
+                    <Rectangle.RenderTransform>
+                        <TranslateTransform Y="8"/>
+                    </Rectangle.RenderTransform>
+                    <Rectangle.Fill>
+                        <LinearGradientBrush EndPoint="0,0" StartPoint="0,1">
+                            <GradientStop Color="#60000000" Offset="1"/>
+                            <GradientStop Offset="0"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
         </DataTemplate>
     </UserControl.Resources>
 
@@ -45,7 +102,8 @@
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     IsItemClickEnabled="False"
-                    SelectionMode="None">
+                    SelectionMode="None"
+                    Margin="0,-8,0,0">
                     <ListView.ItemTemplateSelector>
                         <templateSelectors:UserGuideSectionTemplateSelector
                             IntroductionTemplate="{StaticResource LanguageIntroductionTemplate}"
@@ -53,6 +111,11 @@
                             PBrainTemplate="{StaticResource PBraainExtensionTemplate}"
                             DebuggingTemplate="{StaticResource DebuggingTemplate}"/>
                     </ListView.ItemTemplateSelector>
+                    <ListView.GroupStyle>
+                        <GroupStyle
+                            HeaderTemplate="{StaticResource SectionHeaderTemplate}"
+                            HeaderContainerStyle="{StaticResource ExpandedListViewHeaderItemStyle}"/>
+                    </ListView.GroupStyle>
                 </ListView>
             </SemanticZoom.ZoomedInView>
             <SemanticZoom.ZoomedOutView>
