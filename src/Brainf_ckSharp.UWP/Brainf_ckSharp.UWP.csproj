@@ -200,12 +200,14 @@
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Windows.UI.Xaml.Controls\LockedPivot.cs" />
+    <Compile Include="Enums\UserGuideSection.cs" />
     <Compile Include="Extensions\GalaSoft.MvvmLight.Messaging\MessengerExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IListExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IReadOnlyListExtensions.cs" />
     <Compile Include="Extensions\System.Collections.ObjectModel\ObservableGroup{TKey,TElement}.cs" />
     <Compile Include="Extensions\System\BoolExtensions.cs" />
+    <Compile Include="Extensions\System\Enum{T}.cs" />
     <Compile Include="Extensions\System\StringExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Xaml\FrameworkElementExtensions.cs" />
     <Compile Include="Helpers\UI\TitleBarHelper.cs" />
@@ -246,11 +248,13 @@
     <Compile Include="Services\Settings\ISettingsService.cs" />
     <Compile Include="Services\Settings\SettingsService.cs" />
     <Compile Include="TemplateSelectors\ConsoleEntryTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\UserGuideSectionTemplateSelector.cs" />
     <Compile Include="ViewModels\Abstract\GroupedItemsCollectionViewModelBase{TKey,TElement}.cs" />
     <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase{T}.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
     <Compile Include="ViewModels\Controls\CompactMemoryViewerViewModel.cs" />
     <Compile Include="ViewModels\Controls\SubPages\AboutSubPageViewModel.cs" />
+    <Compile Include="ViewModels\Controls\SubPages\UserGuideSubPageViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
