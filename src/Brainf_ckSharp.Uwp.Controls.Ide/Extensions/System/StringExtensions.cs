@@ -1,12 +1,12 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Brainf_ckSharp.Constants;
+using Brainf_ckSharp.Helpers;
 
 #nullable enable
 
-namespace Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System
+namespace System
 {
     /// <summary>
     /// A <see langword="class"/> with some extension methods for the <see cref="string"/> type
@@ -22,6 +22,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System
         [Pure]
         public static int CalculateIndentationDepth(this string text, int end)
         {
+            DebugGuard.MustBeGreaterThan(text.Length, 0, nameof(text));
+            DebugGuard.MustBeGreaterThanOrEqualTo(end, 0, nameof(end));
+            DebugGuard.MustBeLessThan(end, text.Length, nameof(end));
+
             ref char r0 = ref MemoryMarshal.GetReference(text.AsSpan());
 
             int depth = 0;

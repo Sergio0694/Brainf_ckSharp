@@ -7,7 +7,7 @@ namespace Brainf_ckSharp.Helpers
     /// A <see langword="class"/> that contains APIs to debug code
     /// </summary>
     [DebuggerStepThrough]
-    internal static class Guard
+    public static class Guard
     {
         /// <summary>
         /// Asserts that the input value must be less than a specified value

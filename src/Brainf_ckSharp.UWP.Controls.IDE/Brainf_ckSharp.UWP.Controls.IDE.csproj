@@ -140,6 +140,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Brainf_ckSharp.Helpers\Brainf_ckSharp.Helpers.csproj">
+      <Project>{a464d3e4-c6e0-48ec-a786-c2db610d9bd0}</Project>
+      <Name>Brainf_ckSharp.Helpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Brainf_ckSharp.Uwp.Themes\Brainf_ckSharp.Uwp.Themes.csproj">
       <Project>{bd6f7b87-b1aa-46a7-b03a-9d299ea6f636}</Project>
       <Name>Brainf_ckSharp.Uwp.Themes</Name>

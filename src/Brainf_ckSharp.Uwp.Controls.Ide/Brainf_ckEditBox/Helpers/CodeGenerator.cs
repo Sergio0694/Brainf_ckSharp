@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Constants;
+using Brainf_ckSharp.Helpers;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers
@@ -18,6 +19,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers
         [Pure]
         public static unsafe string GetBracketAutocompleteText(BracketsFormattingStyle style, int depth)
         {
+            DebugGuard.MustBeGreaterThanOrEqualTo(depth, 0, nameof(depth));
+
             /* This is the maximum length for the newline style.
              * It contains a series of 3 indentations, plus the space
              * for the 2 brackets and the 3 newline characters. */
