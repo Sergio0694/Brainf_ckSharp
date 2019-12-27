@@ -23,6 +23,21 @@ namespace Windows.UI.Text
         }
 
         /// <summary>
+        /// Sets the foreground color of a given range in the input <see cref="ITextDocument"/> instance
+        /// </summary>
+        /// <param name="document">The input <see cref="ITextDocument"/> instance to modify</param>
+        /// <param name="start">The start index of the range to modify</param>
+        /// <param name="end">The end index of the range to modify</param>
+        /// <param name="color">The color to use for the target text range</param>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void SetRangeColor(this ITextDocument document, int start, int end, Color color)
+        {
+            ITextRange range = document.GetRange(start, end);
+            range.CharacterFormat.ForegroundColor = color;
+        }
+
+        /// <summary>
         /// Gets the plain text from the input <see cref="ITextRange"/> instance
         /// </summary>
         /// <param name="range">The range to read the text from</param>

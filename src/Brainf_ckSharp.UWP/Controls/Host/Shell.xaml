@@ -14,6 +14,7 @@
     xmlns:functions="using:Brainf_ckSharp.Uwp.Bindings.Functions"
     xmlns:memoryViewer="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel.MemoryViewer"
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
+    xmlns:ide="using:Brainf_ckSharp.Uwp.Controls.Ide"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -39,7 +40,9 @@
                 <views:ConsoleView/>
             </PivotItem>
             <PivotItem>
-                <Grid Background="Gray"/>
+                <Grid Background="#FF1E1E1E" Padding="0,100,0,0">
+                    <ide:Brainf_ckEditBox/>
+                </Grid>
             </PivotItem>
         </Pivot>
 

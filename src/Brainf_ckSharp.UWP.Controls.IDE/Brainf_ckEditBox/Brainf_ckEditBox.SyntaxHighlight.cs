@@ -69,15 +69,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             if (c == Characters.LoopStart)
             {
-                ITextRange range = Document.GetRange(start - 1, start);
-                range.CharacterFormat.ForegroundColor = SyntaxHighlightTheme.GetColor('[');
-
-                Document.Selection.Text = "TEST]";
-
-                start += 5;
-                range = Document.GetRange(start - 1, start);
-                range.CharacterFormat.ForegroundColor = SyntaxHighlightTheme.GetColor(']');
-
+                Document.SetRangeColor(start - 1, start, SyntaxHighlightTheme.GetColor('['));
+                Document.Selection.Text = "]";
+                Document.SetRangeColor(start, start + 1, SyntaxHighlightTheme.GetColor(']'));
                 Document.Selection.StartPosition = Document.Selection.EndPosition;
             }
             else ApplySyntaxHighlight(text, start - 1, start);
@@ -108,8 +102,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         break;
 
                 // Highlight the current range
-                ITextRange range = Document.GetRange(i, j);
-                range.CharacterFormat.ForegroundColor = SyntaxHighlightTheme.GetColor(c);
+                Document.SetRangeColor(i, j, SyntaxHighlightTheme.GetColor(c));
             }
         }
 
@@ -136,8 +129,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         break;
 
                 // Highlight the current range, adding back the offset
-                ITextRange range = Document.GetRange(offset + i, offset + j);
-                range.CharacterFormat.ForegroundColor = SyntaxHighlightTheme.GetColor(c);
+                Document.SetRangeColor(offset + i, offset + j, SyntaxHighlightTheme.GetColor(c));
             }
         }
     }
