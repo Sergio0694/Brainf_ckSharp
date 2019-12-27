@@ -32,11 +32,13 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         {
             if (!args.IsContentChanging) return;
 
-            // Batch updates
+            // Enable the undo grouping
             IsUndoGroupingEnabled = true;
 
             // Syntax highlight
+            Document.BatchDisplayUpdates();
             ApplySyntaxHighlight();
+            Document.ApplyDisplayUpdates();
         }
 
         private bool _IsUndoGroupingEnabled;
@@ -51,16 +53,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 if (_IsUndoGroupingEnabled != value)
                 {
                     _IsUndoGroupingEnabled = value;
-                    if (value)
-                    {
-                        Document.BatchDisplayUpdates();
-                        Document.BeginUndoGroup();
-                    }
-                    else
-                    {
-                        Document.EndUndoGroup();
-                        Document.ApplyDisplayUpdates();
-                    }
+                    if (value) Document.BeginUndoGroup();
+                    else Document.EndUndoGroup();
                 }
             }
         }
