@@ -8,7 +8,7 @@ namespace Windows.UI.Text
     /// <summary>
     /// A <see langword="class"/> with some extension methods for the <see cref="ITextDocument"/> type
     /// </summary>
-    public static class ITextDocumentExtensions
+    internal static class ITextDocumentExtensions
     {
         /// <summary>
         /// Gets the plain text from the input <see cref="ITextDocument"/> instance

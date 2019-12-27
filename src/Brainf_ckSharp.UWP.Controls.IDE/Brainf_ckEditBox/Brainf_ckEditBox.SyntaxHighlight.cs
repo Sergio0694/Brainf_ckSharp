@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using Windows.UI.Text;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
+using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System;
 using Brainf_ckSharp.Uwp.Themes;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
@@ -33,8 +34,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             if (textLength == _Text.Length + 1 ||
                 _SelectionLength > 1 && selectionLength == 0 && selectionStart > 0)
             {
-                TryFormatSingleCharacter(ref text, selectionStart);
-                //ApplySyntaxHighlight(text, selectionStart - 1, selectionStart);
+                FormatSingleCharacter(ref text, selectionStart);
             }
             else
             {
@@ -46,31 +46,18 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             _IsSyntaxValid = Brainf_ckParser.ValidateSyntax(text).IsSuccessOrEmptyScript;
         }
 
-        private static int CalculateIndentationDepth(string text, int start)
-        {
-            ref char r0 = ref MemoryMarshal.GetReference(text.AsSpan());
-
-            int depth = 0;
-
-            for (int i = 0; i < start; i++)
-            {
-                switch (Unsafe.Add(ref r0, i))
-                {
-                    case Characters.LoopStart: depth++; break;
-                    case Characters.LoopEnd: depth--; break;
-                }
-            }
-
-            return depth;
-        }
-
-        private void TryFormatSingleCharacter(ref string text, int start)
+        /// <summary>
+        /// Formats a single character being inserted by the user
+        /// </summary>
+        /// <param name="text">The current source code, which will be updated in case of an autocomplete</param>
+        /// <param name="start">The current index for the formatting operation</param>
+        private void FormatSingleCharacter(ref string text, int start)
         {
             char c = text[start - 1];
 
             if (c == Characters.LoopStart && _IsSyntaxValid)
             {
-                int depth = CalculateIndentationDepth(text, start - 1);
+                int depth = text.CalculateIndentationDepth(start - 1);
                 ITextRange range = Document.GetRange(start - 1, start);
                 string autocomplete;
 
@@ -98,6 +85,17 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                  * that were inserted with respect to the end: the first replaced bracket,
                  * the closing bracket, and the new line before the line with the last bracket. */
                 Document.Selection.StartPosition = Document.Selection.EndPosition = start + autocomplete.Length - (depth + 3);
+
+                text = Document.GetText();
+            }
+            else if (c == '\r' && _IsSyntaxValid)
+            {
+                int depth = text.CalculateIndentationDepth(start);
+                string autocomplete = new string('\t', depth);
+
+                // Simply insert the tabs at the current selection, then collapse it
+                Document.Selection.Text = autocomplete;
+                Document.Selection.StartPosition = Document.Selection.EndPosition;
 
                 text = Document.GetText();
             }
