@@ -4,7 +4,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Brainf_ckSharp.UWP.Constants;
 using Brainf_ckSharp.UWP.Extensions.System;
-using Brainf_ckSharp.UWP.Models.Themes;
+using Brainf_ckSharp.Uwp.Themes;
 
 namespace Brainf_ckSharp.UWP.AttachedProperties
 {
