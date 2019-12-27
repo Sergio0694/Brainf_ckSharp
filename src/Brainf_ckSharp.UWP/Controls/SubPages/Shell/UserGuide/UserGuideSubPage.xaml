@@ -32,8 +32,8 @@
             <sections:BreakpointGuidePanel Margin="0,12,0,12"/>
         </DataTemplate>
 
-        <!--Header template-->
-        <DataTemplate x:Key="SectionHeaderTemplate">
+        <!--Zoomed in header template-->
+        <DataTemplate x:Key="SectionZoomedInHeaderTemplate">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="8"/>
@@ -88,6 +88,33 @@
                 </Rectangle>
             </Grid>
         </DataTemplate>
+
+        <!--Zoomed out header template-->
+        <DataTemplate x:Key="SectionZoomedOutHeaderTemplate">
+            <StackPanel Padding="0,12,0,0">
+                <TextBlock
+                    Text="{Binding Group.Key}"
+                    FontWeight="SemiBold"
+                    FontSize="18"
+                    TextLineBounds="Tight"
+                    Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalTextAlignment="Left"
+                    Margin="12,0,12,0"/>
+                <TextBlock
+                    Text="{Binding Group.Key}"
+                    Foreground="LightGray"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalTextAlignment="Left"
+                    Margin="12,0,12,0"/>
+                <Rectangle
+                    Margin="0,12,0,0"
+                    Height="2"
+                    Fill="#A0000000"/>
+            </StackPanel>
+        </DataTemplate>
     </UserControl.Resources>
 
     <host:SubPageFrame Title="USER GUIDE">
@@ -113,7 +140,7 @@
                     </ListView.ItemTemplateSelector>
                     <ListView.GroupStyle>
                         <GroupStyle
-                            HeaderTemplate="{StaticResource SectionHeaderTemplate}"
+                            HeaderTemplate="{StaticResource SectionZoomedInHeaderTemplate}"
                             HeaderContainerStyle="{StaticResource ExpandedListViewHeaderItemStyle}"/>
                     </ListView.GroupStyle>
                 </ListView>
@@ -122,7 +149,18 @@
 
                 <!--ZoomedOutView-->
                 <ListView 
-                    ItemsSource="{x:Bind ViewModel.CollectionGroups, Mode=OneWay}"/>
+                    ItemsSource="{x:Bind ViewModel.CollectionGroups, Mode=OneWay}"
+                    ItemTemplate="{StaticResource SectionZoomedOutHeaderTemplate}">
+                    <ListView.Resources>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Background" Value="#32000000"/>
+                        </Style>
+                    </ListView.Resources>
+                </ListView>
             </SemanticZoom.ZoomedOutView>
         </SemanticZoom>
     </host:SubPageFrame>

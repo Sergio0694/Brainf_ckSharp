@@ -30,7 +30,7 @@
         Tint="#FF080808"
         TintMix="0.4"
         TextureUri="/Assets/Misc/noise_low.png"/>
-    <Color x:Key="SubFrameBackgroundColor">#FF202020</Color>
+    <Color x:Key="SubFrameBackgroundColor">#C0202020</Color>
     <SolidColorBrush x:Key="SubFrameBackgroundBrush" Color="{StaticResource SubFrameBackgroundColor}"/>
 
     <!--Commands-->
