@@ -12,7 +12,7 @@ namespace Brainf_ckSharp.Uwp.Themes
     /// <summary>
     /// A model that that holds all the relevant color info on a given formatting theme
     /// </summary>
-    public sealed class ThemeInfo
+    public sealed class Brainf_ckTheme
     {
         /// <summary>
         /// The syntax highlight brushes map for the available operators
@@ -26,7 +26,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         private readonly Brush CommentsBrush;
 
         /// <summary>
-        /// Creates a new <see cref="ThemeInfo"/> instance with the specified parameters
+        /// Creates a new <see cref="Brainf_ckTheme"/> instance with the specified parameters
         /// </summary>
         /// <param name="background">The IDE background color</param>
         /// <param name="breakpoints">The breakpoints pane background color</param>
@@ -44,7 +44,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         /// <param name="lineStyle">The line highlight style</param>
         /// <param name="lineColor">The color of the line highlight</param>
         /// <param name="name">The name of the new theme to create</param>
-        public ThemeInfo(
+        public Brainf_ckTheme(
             Color background,
             Color breakpoints,
             Color lineNumbers,
