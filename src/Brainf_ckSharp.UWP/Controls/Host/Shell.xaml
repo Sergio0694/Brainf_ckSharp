@@ -257,6 +257,14 @@
                         <KeyboardAccelerator Key="A" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
+                <AppBarButton
+                    Label="User guide"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource UserGuideIcon}}"
+                    Click="{x:Bind ViewModel.ShowUserGuide}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="G" Modifiers="Control"/>
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
             </controls:AnimatedCommandBar.SecondaryCommands>
         </controls:AnimatedCommandBar>
 

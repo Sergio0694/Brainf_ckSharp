@@ -30,7 +30,7 @@
         Tint="#FF080808"
         TintMix="0.4"
         TextureUri="/Assets/Misc/noise_low.png"/>
-    <Color x:Key="SubFrameBackgroundColor">#FF222529</Color>
+    <Color x:Key="SubFrameBackgroundColor">#C0202020</Color>
     <SolidColorBrush x:Key="SubFrameBackgroundBrush" Color="{StaticResource SubFrameBackgroundColor}"/>
 
     <!--Commands-->
@@ -41,6 +41,11 @@
 
     <!--Background info bar brush-->
     <SolidColorBrush x:Key="BackgroundInfoBrush" Color="#FF007ACC"/>
+
+    <!--Breakpoints-->
+    <SolidColorBrush x:Key="BreakpointFillBrush" Color="#FFE51400"/>
+    <SolidColorBrush x:Key="BreakpointBorderBrush" Color="#FFF4DFDD"/>
+    <SolidColorBrush x:Key="BreakpointLineBrush" Color="#FF762C2C"/>
 
     <!--Misc-->
     <SolidColorBrush x:Key="ZeroValueInMemoryViewerBrush" Color="#D0FFFFFF"/>

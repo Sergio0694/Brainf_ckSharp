@@ -31,5 +31,6 @@
     <x:String x:Key="SaveAsIcon">&#xEA35;</x:String>
     <x:String x:Key="SettingsIcon">&#xE115;</x:String>
     <x:String x:Key="AboutIcon">&#xED15;</x:String>
+    <x:String x:Key="UserGuideIcon">&#xE82D;</x:String>
     
 </ResourceDictionary>

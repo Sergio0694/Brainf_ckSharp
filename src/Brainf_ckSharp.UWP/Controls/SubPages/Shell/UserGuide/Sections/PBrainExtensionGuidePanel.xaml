@@ -1,0 +1,54 @@
+﻿<UserControl
+    x:Class="Brainf_ckSharp.UWP.Controls.SubPages.Shell.UserGuide.Sections.PBrainExtensionGuidePanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:templates="using:Brainf_ckSharp.UWP.Controls.SubPages.Shell.UserGuide.Templates"
+    mc:Ignorable="d"
+    d:DesignHeight="1000"
+    d:DesignWidth="400">
+
+    <!--Root-->
+    <StackPanel Spacing="12">
+
+        <!--Description-->
+        <TextBlock 
+            TextWrapping="WrapWholeWords"
+            FontSize="14"
+            Text="PBrain is an extension of the Brainf*ck language, created by Paul M. Parks. It adds support for functions, with the addition of the following operators:"
+            x:Uid="GuidePBrain"/>
+
+        <!--Operators-->
+        <templates:OperatorInfoTemplate
+            Margin="0,4,0,0"
+            ItemName="("
+            Description="Defines a function and binds it to the value of the current memory cell"
+            x:Uid="GuidePBrainOperator1"
+            ItemNameForegroundBrush="#FF009191"/>
+        <templates:OperatorInfoTemplate
+            ItemName=")"
+            Description="Ends the current function definition"
+            x:Uid="GuidePBrainOperator2"
+            ItemNameForegroundBrush="#FF009191"/>
+        <templates:OperatorInfoTemplate
+            ItemName=":"
+            Description="Calls the function associated with the value of the current memory cell"
+            x:Uid="GuidePBrainOperator3"
+            ItemNameForegroundBrush="#FF1E7499"/>
+
+        <!--Warning-->
+        <TextBlock 
+            Margin="0,4,0,0"
+            TextWrapping="WrapWholeWords"
+            FontSize="14">
+            <Run
+                FontFamily="Segoe MDL2 Assets"
+                Text="&#xE7BA;"
+                Foreground="OrangeRed"/>
+            <Run 
+                Text="A function definition must contain at least a Brainf*ck operator and its body can't be empty. Moreover, it is not possible to define nested functions."
+                x:Uid="GuidePBrainWarning"/>
+        </TextBlock>
+    </StackPanel>
+</UserControl>

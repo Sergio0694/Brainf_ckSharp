@@ -126,6 +126,8 @@
     <Compile Include="AttachedProperties\ListViewBaseHelper.cs" />
     <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.cs" />
+    <Compile Include="Bindings\Converters\UserGuide\UserGuideSectionToDescriptionConverter.cs" />
+    <Compile Include="Bindings\Converters\UserGuide\UserGuideSectionToTitleConverter.cs" />
     <Compile Include="Bindings\Functions\Console\SyntaxErrorFormatterFunctions.cs" />
     <Compile Include="Bindings\Functions\NumericFunctions.cs" />
     <Compile Include="Bindings\Functions\PivotSelectionFunctions.cs" />
@@ -160,6 +162,36 @@
     <Compile Include="Controls\SubPages\Shell\AboutSubPage.xaml.cs">
       <DependentUpon>AboutSubPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\BreakpointCodePreview.xaml.cs">
+      <DependentUpon>BreakpointCodePreview.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\PrintHelloCodeSample.xaml.cs">
+      <DependentUpon>PrintHelloCodeSample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\ResetLoopCodePreview.xaml.cs">
+      <DependentUpon>ResetLoopCodePreview.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\SimpleLoopCodePreview.xaml.cs">
+      <DependentUpon>SimpleLoopCodePreview.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\BreakpointGuidePanel.xaml.cs">
+      <DependentUpon>BreakpointGuidePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\CodeSamplesGuidePanel.xaml.cs">
+      <DependentUpon>CodeSamplesGuidePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\LanguageIntroductionGuidePanel.xaml.cs">
+      <DependentUpon>LanguageIntroductionGuidePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\PBrainExtensionGuidePanel.xaml.cs">
+      <DependentUpon>PBrainExtensionGuidePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\Templates\OperatorInfoTemplate.xaml.cs">
+      <DependentUpon>OperatorInfoTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\UserGuideSubPage.xaml.cs">
+      <DependentUpon>UserGuideSubPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Telerik.UI.Controls\ExpanderControl.cs" />
     <Compile Include="Controls\Windows.UI.Xaml.Controls\AnimatedCommandBar.cs" />
     <Compile Include="Controls\Host\Header\HeaderButton.cs" />
@@ -170,11 +202,14 @@
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Windows.UI.Xaml.Controls\LockedPivot.cs" />
+    <Compile Include="Enums\UserGuideSection.cs" />
     <Compile Include="Extensions\GalaSoft.MvvmLight.Messaging\MessengerExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IListExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IReadOnlyListExtensions.cs" />
+    <Compile Include="Extensions\System.Collections.ObjectModel\ObservableGroup{TKey,TElement}.cs" />
     <Compile Include="Extensions\System\BoolExtensions.cs" />
+    <Compile Include="Extensions\System\Enum{T}.cs" />
     <Compile Include="Extensions\System\StringExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Xaml\FrameworkElementExtensions.cs" />
     <Compile Include="Helpers\UI\TitleBarHelper.cs" />
@@ -215,10 +250,13 @@
     <Compile Include="Services\Settings\ISettingsService.cs" />
     <Compile Include="Services\Settings\SettingsService.cs" />
     <Compile Include="TemplateSelectors\ConsoleEntryTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\UserGuideSectionTemplateSelector.cs" />
+    <Compile Include="ViewModels\Abstract\GroupedItemsCollectionViewModelBase{TKey,TElement}.cs" />
     <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase{T}.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
     <Compile Include="ViewModels\Controls\CompactMemoryViewerViewModel.cs" />
     <Compile Include="ViewModels\Controls\SubPages\AboutSubPageViewModel.cs" />
+    <Compile Include="ViewModels\Controls\SubPages\UserGuideSubPageViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
@@ -327,6 +365,46 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\BreakpointCodePreview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\PrintHelloCodeSample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\ResetLoopCodePreview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\SimpleLoopCodePreview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\Sections\BreakpointGuidePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\Sections\CodeSamplesGuidePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\Sections\LanguageIntroductionGuidePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\Sections\PBrainExtensionGuidePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\Templates\OperatorInfoTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\UserGuideSubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Dictionaries\Brushes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -348,6 +426,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\ClassicStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\MiscStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
