@@ -153,6 +153,8 @@
     <Compile Include="Controls\Host\InputPanel\VirtualKeyboard\OperatorsKeyboard.xaml.cs">
       <DependentUpon>OperatorsKeyboard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\IDE\Brainf_ckEditBox.cs" />
+    <Compile Include="Controls\IDE\Brainf_ckEditBox.SyntaxHighlight.cs" />
     <Compile Include="Controls\SubPages\Host\SubPageFrame.cs" />
     <Compile Include="Controls\SubPages\Host\SubPageHost.xaml.cs">
       <DependentUpon>SubPageHost.xaml</DependentUpon>
@@ -193,6 +195,7 @@
       <DependentUpon>UserGuideSubPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Telerik.UI.Controls\ExpanderControl.cs" />
+    <Compile Include="Controls\Windows.UI.Text\ITextDocumentExtensions.cs" />
     <Compile Include="Controls\Windows.UI.Xaml.Controls\AnimatedCommandBar.cs" />
     <Compile Include="Controls\Host\Header\HeaderButton.cs" />
     <Compile Include="Controls\Host\Header\HeaderPanel.xaml.cs">
