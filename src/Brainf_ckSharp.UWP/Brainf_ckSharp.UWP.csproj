@@ -155,6 +155,7 @@
     </Compile>
     <Compile Include="Controls\IDE\Brainf_ckEditBox.cs" />
     <Compile Include="Controls\IDE\Brainf_ckEditBox.SyntaxHighlight.cs" />
+    <Compile Include="Controls\IDE\Brainf_ckEditBox.Properties.cs" />
     <Compile Include="Controls\SubPages\Host\SubPageFrame.cs" />
     <Compile Include="Controls\SubPages\Host\SubPageHost.xaml.cs">
       <DependentUpon>SubPageHost.xaml</DependentUpon>

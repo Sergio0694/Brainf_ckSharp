@@ -74,7 +74,7 @@ namespace Brainf_ckSharp
         /// <param name="source">The input script to validate</param>
         /// <returns>A <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</returns>
         [Pure]
-        public static SyntaxValidationResult IsSyntaxValid(string source)
+        public static SyntaxValidationResult ValidateSyntax(string source)
         {
             // Local variables to track the depth and the function definitions
             int
@@ -184,7 +184,7 @@ namespace Brainf_ckSharp
         internal static UnsafeMemoryBuffer<byte>? TryParse(string source, out SyntaxValidationResult validationResult)
         {
             // Check the syntax of the input source code
-            validationResult = IsSyntaxValid(source);
+            validationResult = ValidateSyntax(source);
 
             if (!validationResult.IsSuccess) return null;
 

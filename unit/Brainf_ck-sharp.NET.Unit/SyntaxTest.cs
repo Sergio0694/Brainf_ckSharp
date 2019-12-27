@@ -30,7 +30,7 @@ namespace Brainf_ckSharp.Unit
         // Tests a valid script
         private static void AssertIsValid(string script)
         {
-            SyntaxValidationResult result = Brainf_ckParser.IsSyntaxValid(script);
+            SyntaxValidationResult result = Brainf_ckParser.ValidateSyntax(script);
 
             Assert.IsTrue(result.IsSuccess);
             Assert.AreEqual(result.ErrorOffset, -1);
@@ -64,7 +64,7 @@ namespace Brainf_ckSharp.Unit
         // Tests an invalid script
         private static void AssertIsInvalid(string script, int position, SyntaxError error)
         {
-            SyntaxValidationResult result = Brainf_ckParser.IsSyntaxValid(script);
+            SyntaxValidationResult result = Brainf_ckParser.ValidateSyntax(script);
 
             Assert.IsFalse(result.IsSuccess);
             Assert.AreEqual(result.ErrorOffset, position);
