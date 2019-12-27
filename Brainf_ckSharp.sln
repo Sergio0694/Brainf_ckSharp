@@ -34,7 +34,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.UWP", "src\B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitHub", "src\GitHub\GitHub.csproj", "{9122F0D6-AF88-46A6-B91F-EBAFE7F59672}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.UWP.Controls.IDE", "src\Brainf_ckSharp.UWP.Controls.IDE\Brainf_ckSharp.UWP.Controls.IDE.csproj", "{473069AA-080A-493E-B7A8-0BEE7B0B00F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.Uwp.Controls.Ide", "src\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckSharp.Uwp.Controls.Ide.csproj", "{473069AA-080A-493E-B7A8-0BEE7B0B00F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.Uwp.Themes", "src\Brainf_ckSharp.Uwp.Themes\Brainf_ckSharp.Uwp.Themes.csproj", "{BD6F7B87-B1AA-46A7-B03A-9D299EA6F636}"
 EndProject

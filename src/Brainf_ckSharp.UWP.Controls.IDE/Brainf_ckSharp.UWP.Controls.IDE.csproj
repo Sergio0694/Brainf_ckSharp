@@ -9,8 +9,8 @@
     <ProjectGuid>{473069AA-080A-493E-B7A8-0BEE7B0B00F1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Brainf_ckSharp.UWP.Controls.IDE</RootNamespace>
-    <AssemblyName>Brainf_ckSharp.UWP.Controls.IDE</AssemblyName>
+    <RootNamespace>Brainf_ckSharp.Uwp.Controls.Ide</RootNamespace>
+    <AssemblyName>Brainf_ckSharp.Uwp.Controls.Ide</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>

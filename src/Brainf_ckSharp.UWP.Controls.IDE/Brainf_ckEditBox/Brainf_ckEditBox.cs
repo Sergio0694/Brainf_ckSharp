@@ -4,7 +4,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 
-namespace Brainf_ckSharp.UWP.Controls.IDE
+namespace Brainf_ckSharp.Uwp.Controls.Ide.Brainf_ckEditBox
 {
     /// <summary>
     /// A custom <see cref="RichEditBox"/> that formats Brainf*ck/PBrain code

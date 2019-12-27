@@ -312,9 +312,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Brainf_ckSharp.UWP.Controls.IDE\Brainf_ckSharp.UWP.Controls.IDE.csproj">
+    <ProjectReference Include="..\Brainf_ckSharp.UWP.Controls.IDE\Brainf_ckSharp.Uwp.Controls.Ide.csproj">
       <Project>{473069aa-080a-493e-b7a8-0bee7b0b00f1}</Project>
-      <Name>Brainf_ckSharp.UWP.Controls.IDE</Name>
+      <Name>Brainf_ckSharp.Uwp.Controls.Ide</Name>
     </ProjectReference>
     <ProjectReference Include="..\Brainf_ckSharp.Uwp.Themes\Brainf_ckSharp.Uwp.Themes.csproj">
       <Project>{bd6f7b87-b1aa-46a7-b03a-9d299ea6f636}</Project>

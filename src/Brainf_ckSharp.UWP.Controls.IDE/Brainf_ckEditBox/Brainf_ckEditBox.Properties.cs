@@ -1,7 +1,7 @@
 ﻿using Windows.UI.Xaml;
 using Brainf_ckSharp.Uwp.Themes;
 
-namespace Brainf_ckSharp.UWP.Controls.IDE
+namespace Brainf_ckSharp.Uwp.Controls.Ide.Brainf_ckEditBox
 {
     public sealed partial class Brainf_ckEditBox
     {
@@ -41,6 +41,6 @@ namespace Brainf_ckSharp.UWP.Controls.IDE
                 nameof(SyntaxHighlightTheme),
                 typeof(ThemeInfo),
                 typeof(Brainf_ckEditBox),
-                new PropertyMetadata(Themes.VisualStudio));
+                new PropertyMetadata(default(ThemeInfo)));
     }
 }
