@@ -7,6 +7,7 @@
     xmlns:host="using:Brainf_ckSharp.UWP.Controls.SubPages.Host"
     xmlns:sections="using:Brainf_ckSharp.UWP.Controls.SubPages.Shell.UserGuide.Sections"
     xmlns:templateSelectors="using:Brainf_ckSharp.UWP.TemplateSelectors"
+    xmlns:userGuide="using:Brainf_ckSharp.UWP.Bindings.Converters.UserGuide"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -93,7 +94,7 @@
         <DataTemplate x:Key="SectionZoomedOutHeaderTemplate">
             <StackPanel Padding="0,12,0,0">
                 <TextBlock
-                    Text="{Binding Group.Key}"
+                    Text="{Binding Group.Key, Converter={StaticResource UserGuideSectionToTitleConverter}, Mode=OneTime}"
                     FontWeight="SemiBold"
                     FontSize="18"
                     TextLineBounds="Tight"
@@ -103,18 +104,22 @@
                     HorizontalTextAlignment="Left"
                     Margin="12,0,12,0"/>
                 <TextBlock
-                    Text="{Binding Group.Key}"
+                    Text="{Binding Group.Key, Converter={StaticResource UserGuideSectionToDescriptionConverter}, Mode=OneTime}"
                     Foreground="LightGray"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     HorizontalTextAlignment="Left"
-                    Margin="12,0,12,0"/>
+                    Margin="12,4,12,0"/>
                 <Rectangle
                     Margin="0,12,0,0"
                     Height="2"
                     Fill="#A0000000"/>
             </StackPanel>
         </DataTemplate>
+
+        <!--Converters-->
+        <userGuide:UserGuideSectionToTitleConverter x:Key="UserGuideSectionToTitleConverter"/>
+        <userGuide:UserGuideSectionToDescriptionConverter x:Key="UserGuideSectionToDescriptionConverter"/>
     </UserControl.Resources>
 
     <host:SubPageFrame Title="USER GUIDE">

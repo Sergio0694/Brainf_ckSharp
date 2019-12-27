@@ -126,6 +126,8 @@
     <Compile Include="AttachedProperties\ListViewBaseHelper.cs" />
     <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.cs" />
+    <Compile Include="Bindings\Converters\UserGuide\UserGuideSectionToDescriptionConverter.cs" />
+    <Compile Include="Bindings\Converters\UserGuide\UserGuideSectionToTitleConverter.cs" />
     <Compile Include="Bindings\Functions\Console\SyntaxErrorFormatterFunctions.cs" />
     <Compile Include="Bindings\Functions\NumericFunctions.cs" />
     <Compile Include="Bindings\Functions\PivotSelectionFunctions.cs" />
