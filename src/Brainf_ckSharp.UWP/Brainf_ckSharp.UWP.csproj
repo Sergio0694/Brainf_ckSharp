@@ -187,6 +187,9 @@
     <Compile Include="Controls\SubPages\Shell\UserGuide\Templates\OperatorInfoTemplate.xaml.cs">
       <DependentUpon>OperatorInfoTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\UserGuideSubPage.xaml.cs">
+      <DependentUpon>UserGuideSubPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Telerik.UI.Controls\ExpanderControl.cs" />
     <Compile Include="Controls\Windows.UI.Xaml.Controls\AnimatedCommandBar.cs" />
     <Compile Include="Controls\Host\Header\HeaderButton.cs" />
@@ -201,6 +204,7 @@
     <Compile Include="Extensions\System.Collections.Generic\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IListExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IReadOnlyListExtensions.cs" />
+    <Compile Include="Extensions\System.Collections.ObjectModel\ObservableGroup{TKey,TElement}.cs" />
     <Compile Include="Extensions\System\BoolExtensions.cs" />
     <Compile Include="Extensions\System\StringExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Xaml\FrameworkElementExtensions.cs" />
@@ -242,6 +246,7 @@
     <Compile Include="Services\Settings\ISettingsService.cs" />
     <Compile Include="Services\Settings\SettingsService.cs" />
     <Compile Include="TemplateSelectors\ConsoleEntryTemplateSelector.cs" />
+    <Compile Include="ViewModels\Abstract\GroupedItemsCollectionViewModelBase{TKey,TElement}.cs" />
     <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase{T}.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
     <Compile Include="ViewModels\Controls\CompactMemoryViewerViewModel.cs" />
@@ -387,6 +392,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\SubPages\Shell\UserGuide\Templates\OperatorInfoTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\UserGuideSubPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

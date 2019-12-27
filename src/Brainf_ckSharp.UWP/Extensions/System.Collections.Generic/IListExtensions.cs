@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace System.Collections.Generic
 {
@@ -9,12 +10,30 @@ namespace System.Collections.Generic
     internal static class IListExtensions
     {
         /// <summary>
+        /// An implementation of <see cref="Enumerable.FirstOrDefault{T}(IEnumerable{T})"/> that works in O(1) on <see cref="IList{T}"/> instances
+        /// </summary>
+        /// <typeparam name="T">The type of items in the input list</typeparam>
+        /// <param name="items">The input list of <typeparamref name="T"/> items</param>
+        /// <returns>Either the first item in <paramref name="items"/>, or the default <typeparamref name="T"/> value</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T FirstOrDefault<T>(this IList<T> items)
+        {
+            return items.Count switch
+            {
+                0 => default,
+                { } n => items[0]
+            };
+        }
+
+        /// <summary>
         /// An implementation of <see cref="Enumerable.LastOrDefault{T}(IEnumerable{T})"/> that works in O(1) on <see cref="IList{T}"/> instances
         /// </summary>
         /// <typeparam name="T">The type of items in the input list</typeparam>
         /// <param name="items">The input list of <typeparamref name="T"/> items</param>
         /// <returns>Either the last item in <paramref name="items"/>, or the default <typeparamref name="T"/> value</returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T LastOrDefault<T>(this IList<T> items)
         {
             return items.Count switch
@@ -29,6 +48,7 @@ namespace System.Collections.Generic
         /// </summary>
         /// <typeparam name="T">The type of items in the input list</typeparam>
         /// <param name="items">The input list of <typeparamref name="T"/> items</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RemoveLast<T>(this IList<T> items) => items.RemoveAt(items.Count - 1);
     }
 }
