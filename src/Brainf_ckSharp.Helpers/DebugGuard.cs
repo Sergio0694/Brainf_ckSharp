@@ -9,6 +9,9 @@ namespace Brainf_ckSharp.Helpers
     [DebuggerStepThrough]
     public static class DebugGuard
     {
+        /// <summary>
+        /// The compile time conditional constant for the methods the <see cref="DebugGuard"/> <see langword="class"/>
+        /// </summary>
         private const string DEBUG = nameof(DEBUG);
 
         /// <summary>
