@@ -25,7 +25,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private void Brainf_ckEditBox_SelectionChanging(RichEditBox sender, RichEditBoxSelectionChangingEventArgs args)
         {
             _SelectionLength = args.SelectionLength;
-            _SelectionStart = args.SelectionStart;
         }
 
         // Checks when the text changes and applies the syntax highlight
@@ -77,8 +76,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             bool ctrl = VirtualKey.Control.IsDown();
             if (ctrl && IgnoredShortcuts.Contains(e.Key))
             {
-                e.Handled = true;
-                return;
+                goto HandleAndReturn;
             }
 
             IsUndoGroupingEnabled = true;
@@ -93,8 +91,16 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             if (ctrl && e.Key == VirtualKey.Z && Document.CanUndo())
             {
                 Document.Undo();
-                base.OnKeyDown(e);
-                return;
+
+                goto BaseOnKeyDown;
+            }
+
+            // Delete key
+            if (e.Key == VirtualKey.Back)
+            {
+                _IsDeleteRequested = true;
+
+                goto BaseOnKeyDown;
             }
 
             // Tab shortcuts
@@ -111,20 +117,24 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 }
                 else if (VirtualKey.Shift.IsDown()) ShiftBackward();
                 else ShiftForward();
-                
-                e.Handled = true;
-                return;
+
+                goto HandleAndReturn;
             }
 
             // Manually handle the enter key to avoid \v
             if (e.Key == VirtualKey.Enter)
             {
                 Document.Selection.TypeText("\r");
-                e.Handled = true;
-                return;
+
+                goto HandleAndReturn;
             }
 
+            BaseOnKeyDown:
             base.OnKeyDown(e);
+            return;
+
+            HandleAndReturn:
+            e.Handled = true;
         }
     }
 }

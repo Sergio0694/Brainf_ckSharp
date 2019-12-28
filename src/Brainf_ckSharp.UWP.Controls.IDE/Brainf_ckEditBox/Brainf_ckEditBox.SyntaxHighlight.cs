@@ -12,13 +12,25 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
     public sealed partial class Brainf_ckEditBox
     {
+        /// <summary>
+        /// The current text displayed in the control
+        /// </summary>
         private string _Text = "\r";
 
-        private int _SelectionLength = 0;
+        /// <summary>
+        /// The length of the current selection
+        /// </summary>
+        private int _SelectionLength;
 
-        private int _SelectionStart = 0;
-
+        /// <summary>
+        /// Indicates whether the current syntax is valid
+        /// </summary>
         private bool _IsSyntaxValid = true;
+
+        /// <summary>
+        /// Indicates whether the delete key was pressed
+        /// </summary>
+        private bool _IsDeleteRequested;
 
         /// <summary>
         /// Applies the syntaxt highlight to the current document, using less resources as possible
@@ -34,16 +46,25 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     selectionLength = Document.Selection.Length,
                     selectionStart = Document.Selection.StartPosition;
 
-                if (textLength == _Text.Length + 1 ||
-                    _SelectionLength > 1 && selectionLength == 0 && selectionStart > 0)
+                /* Handle all the possible cases individually.
+                 *   - If the current selection has a length of 0 and is not the first position in
+                 *     the text, it means that the user might have typed a single character, or
+                 *     replaced a selection with a single character. A single character is typed
+                 *     if the previous selection had a length of 0 as well, and the current text
+                 *     has one more character than the previous one. Otherwise, check whether the
+                 *     previous selection had a length of at least a single character.
+                 *   - If a deletion is requested, just skip the formatting entirely. If no new
+                 *     characters have been typed, there is no need to highlight anything.
+                 *   - As a last resort, just format the entire text from start to finish. */
+                if (selectionLength == 0 &&
+                    selectionStart > 0 &&
+                    (_SelectionLength == 0 && textLength == _Text.Length + 1) ||
+                    _SelectionLength > 1)
                 {
                     FormatSingleCharacter(ref text, selectionStart);
                 }
-                else
-                {
-                    FormatRange(text, 0, textLength);
-                }
-
+                else if (_IsDeleteRequested) _IsDeleteRequested = false;
+                else FormatRange(text, 0, textLength);
 
                 _Text = text;
                 _IsSyntaxValid = Brainf_ckParser.ValidateSyntax(text).IsSuccessOrEmptyScript;
@@ -141,6 +162,34 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
                 // Highlight the current range
                 Document.SetRangeColor(i, j, SyntaxHighlightTheme.GetColor(c));
+            }
+        }
+
+        /// <summary>
+        /// Programmatically deletes the current character, or the current selection
+        /// </summary>
+        private void DeleteSelectionOrCharacter()
+        {
+            int
+                selectionLength = Document.Selection.Length,
+                selectionEnd = Document.Selection.EndPosition;
+
+            if (selectionEnd == 0) return;
+
+            using (FormattingLock.For(this))
+            {
+                // Remove text in the current selection, or delete the previous character
+                if (selectionLength > 0) Document.Selection.Text = string.Empty;
+                else
+                {
+                    // Delete and adjust the selection
+                    Document.GetRange(selectionEnd - 1, selectionEnd).Text = string.Empty;
+                    Document.Selection.StartPosition = Document.Selection.EndPosition = selectionEnd - 1;
+                }
+
+                // Update the current syntax validation
+                string text = _Text = Document.GetText();
+                _IsSyntaxValid = Brainf_ckParser.ValidateSyntax(text).IsSuccessOrEmptyScript;
             }
         }
 
