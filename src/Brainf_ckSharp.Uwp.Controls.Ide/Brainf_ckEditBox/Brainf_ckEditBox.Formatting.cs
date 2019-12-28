@@ -280,10 +280,14 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
                 int
                     sourceLength = source.Length,
-                    selectionStart = Document.Selection.StartPosition;
+                    selectionStart = Document.Selection.StartPosition,
+                    selectionEnd = selectionStart + sourceLength;
 
                 // Only format the inserted text
-                FormatRange(text, selectionStart, selectionStart + sourceLength);
+                FormatRange(text, selectionStart, selectionEnd);
+
+                // Set the selection after the pasted text
+                Document.Selection.StartPosition = Document.Selection.EndPosition;
             }
         }
     }
