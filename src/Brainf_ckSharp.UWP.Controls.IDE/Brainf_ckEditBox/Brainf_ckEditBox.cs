@@ -119,6 +119,14 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 return;
             }
 
+            // Manually handle the enter key to avoid \v
+            if (e.Key == VirtualKey.Enter)
+            {
+                Document.Selection.TypeText("\r");
+                e.Handled = true;
+                return;
+            }
+
             base.OnKeyDown(e);
         }
     }
