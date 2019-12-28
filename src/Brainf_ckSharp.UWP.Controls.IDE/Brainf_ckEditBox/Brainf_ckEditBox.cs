@@ -95,8 +95,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 goto BaseOnKeyDown;
             }
 
-            // Delete key
-            if (e.Key == VirtualKey.Back)
+            // Delete/canc keys
+            if (e.Key == VirtualKey.Back ||
+                e.Key == VirtualKey.Delete)
             {
                 _IsDeleteRequested = true;
 
