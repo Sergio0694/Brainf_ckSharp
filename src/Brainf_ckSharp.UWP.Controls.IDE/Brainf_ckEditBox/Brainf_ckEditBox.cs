@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -99,10 +100,24 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 return;
             }
 
-            // Handle the tab key and programmatically type '\t'
+            // Tab shortcuts
             if (e.Key == VirtualKey.Tab)
             {
-                Document.Selection.TypeText("\t");
+                /* There are three possible operations to perform when the
+                 * tab key is pressed. If the current selection is up to a
+                 * single character, a '\t' is typed. Otherwise, the current
+                 * selection is shifted forwards or backwards by adding and
+                 * removing tabs depending on whether the shift key is down. */
+                if (Math.Abs(Document.Selection.Length) <= 1)
+                {
+                    Document.Selection.TypeText("\t");
+                }
+                else if (VirtualKey.Shift.IsDown())
+                {
+                    // TODO
+                }
+                else ShiftForward();
+                
                 e.Handled = true;
                 return;
             }

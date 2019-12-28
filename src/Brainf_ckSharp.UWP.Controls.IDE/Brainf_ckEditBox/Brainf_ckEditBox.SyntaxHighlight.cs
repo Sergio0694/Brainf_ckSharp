@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading;
 using Windows.UI.Text;
 using Brainf_ckSharp.Constants;
+using Brainf_ckSharp.Helpers;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
 using Brainf_ckSharp.Uwp.Themes;
@@ -38,7 +40,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             }
             else
             {
-                ApplySyntaxHighlight(text, 0, textLength);
+                FormatRange(text, 0, textLength);
             }
 
 
@@ -47,12 +49,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
-        /// Formats a single character being inserted by the user
+        /// Formats and applies the syntax highlight a single character being inserted by the user
         /// </summary>
         /// <param name="text">The current source code, which will be updated in case of an autocomplete</param>
         /// <param name="start">The current index for the formatting operation</param>
         private void FormatSingleCharacter(ref string text, int start)
         {
+            DebugGuard.MustBeGreaterThan(start, 0, nameof(start));
+            DebugGuard.MustBeLessThan(start, text.Length, nameof(start));
+
             char c = text[start - 1];
 
             if (c == Characters.LoopStart && _IsSyntaxValid)
@@ -108,8 +113,14 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="text">The plain text currently displayed in the control</param>
         /// <param name="start">The initial position to apply the highlight to</param>
         /// <param name="end">The final position to apply the highlight to</param>
-        private void ApplySyntaxHighlight(string text, int start, int end)
+        private void FormatRange(string text, int start, int end)
         {
+            DebugGuard.MustBeGreaterThanOrEqualTo(start, 0, nameof(start));
+            DebugGuard.MustBeGreaterThan(end, 0, nameof(end));
+            DebugGuard.MustBeLessThan(start, end, nameof(start));
+            DebugGuard.MustBeLessThan(start, text.Length, nameof(start));
+            DebugGuard.MustBeLessThanOrEqualTo(end, text.Length, nameof(end));
+
             ref char r0 = ref MemoryMarshal.GetReference(text.AsSpan());
 
             /* Iterate over the current range from the input text,
@@ -132,30 +143,25 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
-        /// Applies the syntax highlight to a specified range in the current text document
+        /// Shifts the current text selection forward by adding leading tabs
         /// </summary>
-        /// <param name="text">The plain text currently displayed in the control</param>
-        /// <param name="offset">The offset of <paramref name="text"/> into the current document</param>
-        private void ApplySyntaxHighlight(string text, int offset)
+        private void ShiftForward()
         {
-            int end = text.Length;
+            DebugGuard.MustBeGreaterThanOrEqualTo(Math.Abs(Document.Selection.Length), 2, nameof(Document.Selection));
+            
+            // Get the current selection text and range
+            var bounds = Document.Selection.GetBounds();
+            string text = Document.Selection.GetText();
             ref char r0 = ref MemoryMarshal.GetReference(text.AsSpan());
+            int count = 1;
 
-            /* Iterate over the current string with offset and apply the
-             * highlight to all the available characters. Like with the
-             * first overload, compatible characters are aggregated. */
-            for (int i = 0, j = i; j < end; i = j)
-            {
-                char c = Unsafe.Add(ref r0, i);
+            // Initial tab
+            Document.GetRangeAt(bounds.Start).Text = "\t";
 
-                // Find the edge of the current chunk of characters
-                while (++j < end)
-                    if (!Brainf_ckTheme.HaveSameColor(c, Unsafe.Add(ref r0, j)))
-                        break;
-
-                // Highlight the current range, adding back the offset
-                Document.SetRangeColor(offset + i, offset + j, SyntaxHighlightTheme.GetColor(c));
-            }
+            // Insert a tab before each new line character
+            for (int i = bounds.Start; i < bounds.End - 1; i++)
+                if (Unsafe.Add(ref r0, i) == '\r')
+                    Document.GetRangeAt(i + 1 + count++).Text = "\t";
         }
     }
 }
