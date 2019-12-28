@@ -130,6 +130,7 @@
     <Compile Include="Brainf_ckEditBox\Enums\BracketsFormattingStyle.cs" />
     <Compile Include="Brainf_ckEditBox\Helpers\CodeGenerator.cs" />
     <Compile Include="Extensions\System\StringExtensions.cs" />
+    <Compile Include="Extensions\Windows.System\VirtualKeyExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Text\ITextDocumentExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Brainf_ckSharp.UWP.Controls.IDE.rd.xml" />
