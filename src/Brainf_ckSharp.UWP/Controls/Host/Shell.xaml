@@ -46,6 +46,21 @@
             </PivotItem>
         </Pivot>
 
+        <!--Header drop shadow-->
+        <Rectangle
+            Grid.Row="2"
+            VerticalAlignment="Top"
+            IsHitTestVisible="False"
+            Height="8"
+            Visibility="Visible">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0,0" StartPoint="0,1">
+                    <GradientStop Color="#60000000" Offset="1"/>
+                    <GradientStop Offset="0"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
         <!--Background-->
         <Border
             Grid.Row="0"
