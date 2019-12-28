@@ -56,9 +56,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private ScrollViewer? _ContentElement;
 
         /// <summary>
-        /// The <see cref="ScrollBar"/> instance for the main content
+        /// The vertical <see cref="ScrollBar"/> instance for the main content
         /// </summary>
-        private ScrollBar? _ContentScrollBar;
+        private ScrollBar? _VerticalContentScrollBar;
 
         /// <summary>
         /// The <see cref="TextBlock"/> instance for the placeholder
@@ -90,9 +90,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="e">The <see cref="RoutedEventArgs"/> for <see cref="FrameworkElement.Loaded"/></param>
         private void ContentElement_Loaded(object sender, RoutedEventArgs e)
         {
-            _ContentScrollBar = (ScrollBar)_ContentElement.FindDescendantByName(VerticalScrollBarName);
+            _VerticalContentScrollBar = (ScrollBar)_ContentElement.FindDescendantByName(VerticalScrollBarName);
 
-            Guard.MustBeNotNull(_ContentScrollBar, nameof(ContentElementName));
+            Guard.MustBeNotNull(_VerticalContentScrollBar, nameof(ContentElementName));
+
+            _VerticalContentScrollBar.Margin = VerticalScrollBarMargin;
         }
     }
 }
