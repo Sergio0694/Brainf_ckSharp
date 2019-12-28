@@ -14,6 +14,22 @@ namespace System
     internal static class StringExtensions
     {
         /// <summary>
+        /// Converts a given text to the equivalent with CR line endings
+        /// </summary>
+        /// <param name="text">The input text to parse and convert</param>
+        /// <returns>A <see cref="string"/> equivalent to <paramref name="text"/>, with CR endings</returns>
+        [Pure]
+        public static string WithCarriageReturnLineEndings(this string text)
+        {
+            if (text.Length == 0) return text;
+
+            return text
+                .Replace("\r\n", "\r")
+                .Replace('\n', '\r')
+                .Replace('\v', '\r');
+        }
+
+        /// <summary>
         /// Calculates the indentation depth in a given script, up to a specified index
         /// </summary>
         /// <param name="text">The input script to parse</param>

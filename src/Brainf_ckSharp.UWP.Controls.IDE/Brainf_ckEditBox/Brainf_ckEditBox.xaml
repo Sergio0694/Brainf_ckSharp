@@ -32,6 +32,8 @@
         <Setter Property="ContextFlyout" Value="{StaticResource TextControlCommandBarContextFlyout}" />
         <Setter Property="SelectionFlyout" Value="{StaticResource TextControlCommandBarSelectionFlyout}" />
         <Setter Property="IsSpellCheckEnabled" Value="False"/>
+        <Setter Property="IsTextPredictionEnabled" Value="False"/>
+        <Setter Property="ClipboardCopyFormat" Value="PlainText"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RichEditBox">

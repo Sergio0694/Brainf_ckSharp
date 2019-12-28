@@ -4,6 +4,7 @@ using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
@@ -20,8 +21,22 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             SelectionChanging += Brainf_ckEditBox_SelectionChanging;
             TextChanging += MarkdownRichEditBox_TextChanging;
             TextChanged += MarkdownRichEditBox_TextChanged;
+            Paste += Brainf_ckEditBox_Paste;
         }
 
+        // Handles text being pasted by the user
+        private async void Brainf_ckEditBox_Paste(object sender, TextControlPasteEventArgs e)
+        {
+            e.Handled = true;
+
+            // Insert the text if there is some available
+            if (await ClipboardHelper.TryGetTextAsync() is { } text)
+            {
+                InsertText(text);
+            }
+        }
+
+        // Updates the length of the current selection
         private void Brainf_ckEditBox_SelectionChanging(RichEditBox sender, RichEditBoxSelectionChangingEventArgs args)
         {
             _SelectionLength = args.SelectionLength;

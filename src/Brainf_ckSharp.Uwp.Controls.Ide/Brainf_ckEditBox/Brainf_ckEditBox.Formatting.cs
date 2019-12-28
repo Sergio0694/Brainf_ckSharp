@@ -258,5 +258,33 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 _Text = Document.GetText();
             }
         }
+
+        /// <summary>
+        /// Inserts a given source <see cref="string"/> into the current selection
+        /// </summary>
+        /// <param name="source">The source text to insert</param>
+        private void InsertText(string source)
+        {
+            if (source.Length == 0) return;
+
+            // Adjust the line endings
+            source = source.WithCarriageReturnLineEndings();
+
+            using (FormattingLock.For(this))
+            {
+                Document.Selection.Text = source;
+
+                // Update the current syntax validation
+                string text = _Text = Document.GetText();
+                _IsSyntaxValid = Brainf_ckParser.ValidateSyntax(text).IsSuccessOrEmptyScript;
+
+                int
+                    sourceLength = source.Length,
+                    selectionStart = Document.Selection.StartPosition;
+
+                // Only format the inserted text
+                FormatRange(text, selectionStart, selectionStart + sourceLength);
+            }
+        }
     }
 }
