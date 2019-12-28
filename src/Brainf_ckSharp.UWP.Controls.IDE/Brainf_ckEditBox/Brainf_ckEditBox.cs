@@ -109,10 +109,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 {
                     Document.Selection.TypeText("\t");
                 }
-                else if (VirtualKey.Shift.IsDown())
-                {
-                    // TODO
-                }
+                else if (VirtualKey.Shift.IsDown()) ShiftBackward();
                 else ShiftForward();
                 
                 e.Handled = true;

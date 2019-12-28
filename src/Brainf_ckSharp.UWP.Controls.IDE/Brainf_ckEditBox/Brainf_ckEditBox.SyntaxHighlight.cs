@@ -172,5 +172,42 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 _Text = Document.GetText();
             }
         }
+
+        /// <summary>
+        /// Shifts the current text selection backward by removing leading tabs
+        /// </summary>
+        private void ShiftBackward()
+        {
+            DebugGuard.MustBeGreaterThanOrEqualTo(Math.Abs(Document.Selection.Length), 2, nameof(Document.Selection));
+
+            using (FormattingLock.For(this))
+            {
+                // Get the current selection text and range
+                var bounds = Document.Selection.GetBounds();
+                string text = Document.Selection.GetText();
+                ref char r0 = ref MemoryMarshal.GetReference(text.AsSpan());
+                int
+                    length = text.Length,
+                    count = 0;
+
+                // Remove leading \t from each line, if present
+                for (int i = 0; i < length; i++)
+                {
+                    // Remove the current \t
+                    if (Unsafe.Add(ref r0, i) == '\t')
+                    {
+                        int offset = bounds.Start + i - count++;
+                        Document.GetRange(offset, offset + 1).Text = string.Empty;
+                    }
+
+                    // Move to the following \r
+                    i++;
+                    while (i < length && Unsafe.Add(ref r0, i) != '\r')
+                        i++;
+                }
+
+                _Text = Document.GetText();
+            }
+        }
     }
 }

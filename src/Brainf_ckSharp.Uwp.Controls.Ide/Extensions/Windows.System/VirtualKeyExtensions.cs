@@ -21,7 +21,7 @@ namespace Windows.System
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsDown(this VirtualKey key)
         {
-            CoreVirtualKeyStates state = Window.Current.CoreWindow.GetKeyState(VirtualKey.Control);
+            CoreVirtualKeyStates state = Window.Current.CoreWindow.GetKeyState(key);
             return (state & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down;
         }
     }
