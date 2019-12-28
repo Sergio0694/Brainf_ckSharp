@@ -33,10 +33,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         {
             if (!args.IsContentChanging) return;
 
-            // Syntax highlight
-            Document.BatchDisplayUpdates();
             ApplySyntaxHighlight();
-            Document.ApplyDisplayUpdates();
         }
 
         private bool _IsUndoGroupingEnabled;

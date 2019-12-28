@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Threading;
 using Windows.UI.Text;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Helpers;
@@ -26,26 +25,29 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         private void ApplySyntaxHighlight()
         {
-            string text = Document.GetText();
-
-            int
-                textLength = text.Length,
-                selectionLength = Document.Selection.Length,
-                selectionStart = Document.Selection.StartPosition;
-
-            if (textLength == _Text.Length + 1 ||
-                _SelectionLength > 1 && selectionLength == 0 && selectionStart > 0)
+            using (FormattingLock.For(this))
             {
-                FormatSingleCharacter(ref text, selectionStart);
-            }
-            else
-            {
-                FormatRange(text, 0, textLength);
-            }
+                string text = Document.GetText();
+
+                int
+                    textLength = text.Length,
+                    selectionLength = Document.Selection.Length,
+                    selectionStart = Document.Selection.StartPosition;
+
+                if (textLength == _Text.Length + 1 ||
+                    _SelectionLength > 1 && selectionLength == 0 && selectionStart > 0)
+                {
+                    FormatSingleCharacter(ref text, selectionStart);
+                }
+                else
+                {
+                    FormatRange(text, 0, textLength);
+                }
 
 
-            _Text = text;
-            _IsSyntaxValid = Brainf_ckParser.ValidateSyntax(text).IsSuccessOrEmptyScript;
+                _Text = text;
+                _IsSyntaxValid = Brainf_ckParser.ValidateSyntax(text).IsSuccessOrEmptyScript;
+            }
         }
 
         /// <summary>
@@ -148,20 +150,25 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private void ShiftForward()
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(Math.Abs(Document.Selection.Length), 2, nameof(Document.Selection));
-            
-            // Get the current selection text and range
-            var bounds = Document.Selection.GetBounds();
-            string text = Document.Selection.GetText();
-            ref char r0 = ref MemoryMarshal.GetReference(text.AsSpan());
-            int count = 1;
 
-            // Initial tab
-            Document.GetRangeAt(bounds.Start).Text = "\t";
+            using (FormattingLock.For(this))
+            {
+                // Get the current selection text and range
+                var bounds = Document.Selection.GetBounds();
+                string text = Document.Selection.GetText();
+                ref char r0 = ref MemoryMarshal.GetReference(text.AsSpan());
+                int count = 1;
 
-            // Insert a tab before each new line character
-            for (int i = bounds.Start; i < bounds.End - 1; i++)
-                if (Unsafe.Add(ref r0, i) == '\r')
-                    Document.GetRangeAt(i + 1 + count++).Text = "\t";
+                // Initial tab
+                Document.GetRangeAt(bounds.Start).Text = "\t";
+
+                // Insert a tab before each new line character
+                for (int i = bounds.Start; i < bounds.End - 1; i++)
+                    if (Unsafe.Add(ref r0, i) == '\r')
+                        Document.GetRangeAt(i + 1 + count++).Text = "\t";
+
+                _Text = Document.GetText();
+            }
         }
     }
 }
