@@ -157,15 +157,17 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 var bounds = Document.Selection.GetBounds();
                 string text = Document.Selection.GetText();
                 ref char r0 = ref MemoryMarshal.GetReference(text.AsSpan());
-                int count = 1;
+                int
+                    max = text.Length - 1,
+                    count = 2; // Initial \t, +1 after each \r
 
                 // Initial tab
                 Document.GetRangeAt(bounds.Start).Text = "\t";
 
                 // Insert a tab before each new line character
-                for (int i = bounds.Start; i < bounds.End - 1; i++)
+                for (int i = 0; i < max; i++)
                     if (Unsafe.Add(ref r0, i) == '\r')
-                        Document.GetRangeAt(i + 1 + count++).Text = "\t";
+                        Document.GetRangeAt(bounds.Start + i + count++).Text = "\t";
 
                 _Text = Document.GetText();
             }
