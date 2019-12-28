@@ -124,6 +124,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.Template.cs" />
     <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.cs" />
     <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.Properties.cs" />
     <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.Formatting.cs" />
@@ -141,6 +142,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI">
+      <Version>6.0.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
