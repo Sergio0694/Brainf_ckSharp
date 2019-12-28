@@ -25,6 +25,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 This = @this;
 
                 @this.TextChanging -= @this.MarkdownRichEditBox_TextChanging;
+                @this.TextChanged -= @this.MarkdownRichEditBox_TextChanged;
                 @this.Document.BatchDisplayUpdates();
             }
 
@@ -41,7 +42,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             public void Dispose()
             {
                 This.TextChanging += This.MarkdownRichEditBox_TextChanging;
+                This.TextChanged += This.MarkdownRichEditBox_TextChanged;
                 This.Document.ApplyDisplayUpdates();
+                This.IsUndoGroupingEnabled = false;
             }
         }
     }
