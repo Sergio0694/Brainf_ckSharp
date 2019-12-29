@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ide="using:Brainf_ckSharp.Uwp.Controls.Ide">
+    xmlns:ide="using:Brainf_ckSharp.Uwp.Controls.Ide"
+    xmlns:win2d="using:Microsoft.Graphics.Canvas.UI.Xaml">
 
     <!--IDE RichEditBox style-->
     <Style TargetType="ide:Brainf_ckEditBox">
@@ -105,6 +106,9 @@
                             CornerRadius="{TemplateBinding CornerRadius}"
                             MinWidth="{ThemeResource TextControlThemeMinWidth}"
                             MinHeight="{ThemeResource TextControlThemeMinHeight}" />
+                        <win2d:CanvasControl
+                            x:Name="TextOverlaysCanvas"
+                            Grid.Row="1"/>
                         <ScrollViewer
                             x:Name="ContentScroller"
                             Grid.Row="1"

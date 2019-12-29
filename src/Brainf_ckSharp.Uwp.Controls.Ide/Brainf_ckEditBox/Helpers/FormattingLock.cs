@@ -2,6 +2,8 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
+#nullable enable
+
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
     public sealed partial class Brainf_ckEditBox
@@ -45,6 +47,13 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 This.TextChanged += This.MarkdownRichEditBox_TextChanged;
                 This.Document.ApplyDisplayUpdates();
                 This.IsUndoGroupingEnabled = false;
+
+                // Redraw the overlays, if needed
+                if (This._IsSyntaxValid && This.TryUpdateBracketsList())
+                {
+                    This.ProcessColumnGuides();
+                    This._TextOverlaysCanvas!.Invalidate();
+                }
             }
         }
     }

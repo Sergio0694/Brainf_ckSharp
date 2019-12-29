@@ -29,7 +29,7 @@ namespace Brainf_ckSharp.Buffers
         /// <param name="size">The size of the new memory buffer to use</param>
         private unsafe MemoryOwner(int size)
         {
-            DebugGuard.MustBeGreaterThan(size, 0, nameof(size));
+            DebugGuard.MustBeGreaterThanOrEqualTo(size, 0, nameof(size));
 
             Size = size;
             Buffer = ArrayPool<byte>.Shared.Rent(size * sizeof(T));
@@ -42,7 +42,7 @@ namespace Brainf_ckSharp.Buffers
         /// <param name="buffer">The existing buffer to use</param>
         private unsafe MemoryOwner(int size, byte[] buffer)
         {
-            DebugGuard.MustBeGreaterThan(size, 0, nameof(size));
+            DebugGuard.MustBeGreaterThanOrEqualTo(size, 0, nameof(size));
             DebugGuard.MustBeGreaterThanOrEqualTo(buffer.Length, size * sizeof(T), nameof(buffer));
 
             Size = size;

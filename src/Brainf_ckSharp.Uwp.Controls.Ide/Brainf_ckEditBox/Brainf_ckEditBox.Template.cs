@@ -2,17 +2,19 @@
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Brainf_ckSharp.Helpers;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 
 #nullable enable
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
-    [TemplatePart(Name = "HeaderContentPresenter", Type = typeof(ContentPresenter))]
-    [TemplatePart(Name = "BorderElement", Type = typeof(Border))]
-    [TemplatePart(Name = "ContentScroller", Type = typeof(ContentPresenter))]
-    [TemplatePart(Name = "ContentElement", Type = typeof(ScrollViewer))]
-    [TemplatePart(Name = "PlaceholderTextContentPresenter", Type = typeof(TextBlock))]
+    [TemplatePart(Name = HeaderContentPresenterName, Type = typeof(ContentPresenter))]
+    [TemplatePart(Name = BorderElementName, Type = typeof(Border))]
+    [TemplatePart(Name = TextOverlaysCanvasName, Type = typeof(CanvasControl))]
+    [TemplatePart(Name = ContentScrollerName, Type = typeof(ContentPresenter))]
+    [TemplatePart(Name = ContentElementName, Type = typeof(ScrollViewer))]
+    [TemplatePart(Name = PlaceholderTextContentPresenterName, Type = typeof(TextBlock))]
     public sealed partial class Brainf_ckEditBox
     {
         /// <summary>
@@ -24,6 +26,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// The name of the <see cref="Border"/> instance for the control
         /// </summary>
         private const string BorderElementName = "BorderElement";
+
+        /// <summary>
+        /// The name of the <see cref="CanvasControl"/> instance for the control
+        /// </summary>
+        private const string TextOverlaysCanvasName = "TextOverlaysCanvas";
 
         /// <summary>
         /// The name of the <see cref="ScrollViewer"/> instance for the main content
@@ -56,6 +63,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private Border? _BorderElement;
 
         /// <summary>
+        /// The <see cref="CanvasControl"/> instance for the control
+        /// </summary>
+        private CanvasControl? _TextOverlaysCanvas;
+
+        /// <summary>
         /// The <see cref="ScrollViewer"/> instance for the main content
         /// </summary>
         private ScrollViewer? _ContentScroller;
@@ -82,16 +94,19 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             _HeaderContentPresenter = (ContentPresenter)GetTemplateChild(HeaderContentPresenterName);
             _BorderElement = (Border)GetTemplateChild(BorderElementName);
+            _TextOverlaysCanvas = (CanvasControl)GetTemplateChild(TextOverlaysCanvasName);
             _ContentScroller = (ScrollViewer)GetTemplateChild(ContentScrollerName);
             _ContentElement = (ContentPresenter)GetTemplateChild(ContentElementName);
             _PlaceholderTextContentPresenter = (TextBlock)GetTemplateChild(PlaceholderTextContentPresenterName);
 
             Guard.MustBeNotNull(_HeaderContentPresenter, HeaderContentPresenterName);
             Guard.MustBeNotNull(_BorderElement, BorderElementName);
+            Guard.MustBeNotNull(_TextOverlaysCanvas, nameof(TextOverlaysCanvasName));
             Guard.MustBeNotNull(_ContentScroller, ContentScrollerName);
             Guard.MustBeNotNull(_ContentElement, ContentElementName);
             Guard.MustBeNotNull(_PlaceholderTextContentPresenter, PlaceholderTextContentPresenterName);
 
+            _TextOverlaysCanvas.Draw += TextOverlaysCanvas_Draw;
             _ContentScroller.Loaded += ContentElement_Loaded;
         }
 

@@ -3,11 +3,14 @@ using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Windows.Foundation;
+using Windows.UI;
 using Windows.UI.Text;
 using Brainf_ckSharp.Buffers;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Helpers;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models;
+using Microsoft.Graphics.Canvas.Geometry;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 
 #nullable enable
 
@@ -24,6 +27,28 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// The current sequence of column guide coordinates to render
         /// </summary>
         private MemoryOwner<ColumnGuideInfo> _ColumnGuides = MemoryOwner<ColumnGuideInfo>.Allocate(0);
+
+        /// <summary>
+        /// Draws the text overlays when an update is requested
+        /// </summary>
+        /// <param name="sender">The sender <see cref="CanvasControl"/> instance</param>
+        /// <param name="args">The <see cref="CanvasDrawEventArgs"/> for the current instance</param>
+        private void TextOverlaysCanvas_Draw(CanvasControl sender, CanvasDrawEventArgs args)
+        {
+            CanvasStrokeStyle style = new CanvasStrokeStyle { CustomDashStyle = new float[] { 2, 4 } };
+
+            foreach (ColumnGuideInfo guideInfo in _ColumnGuides.Span)
+            {
+                args.DrawingSession.DrawLine(
+                    guideInfo.X + 0.5f,
+                    guideInfo.Y - 0.5f,
+                    guideInfo.X + 0.5f,
+                    guideInfo.Y + guideInfo.Height + 0.5f,
+                    Colors.LightGray,
+                    1,
+                    style);
+            }
+        }
 
         /// <summary>
         /// Tries to update the current sequence of brackets displayed in the text

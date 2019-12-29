@@ -86,7 +86,7 @@ namespace Brainf_ckSharp.Buffers
         /// <returns>A new <see cref="UnsafeMemory{T}"/> instance mapping values in the [start, end) range on the current buffer</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public UnsafeMemory<T> Slice(in Range range)
+        internal UnsafeMemory<T> Slice(in Range range)
         {
             DebugGuard.MustBeLessThan(range.Start, Size, nameof(range));
             DebugGuard.MustBeLessThanOrEqualTo(range.End, Size, nameof(range));
