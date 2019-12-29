@@ -128,6 +128,7 @@
     <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.cs" />
     <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.Properties.cs" />
     <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.Formatting.cs" />
+    <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.Win2D.cs" />
     <Compile Include="Brainf_ckEditBox\Enums\BracketsFormattingStyle.cs" />
     <Compile Include="Brainf_ckEditBox\Helpers\ClipboardHelper.cs" />
     <Compile Include="Brainf_ckEditBox\Helpers\CodeGenerator.cs" />
