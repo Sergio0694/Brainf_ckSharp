@@ -57,6 +57,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         {
             CanvasStrokeStyle style = new CanvasStrokeStyle { CustomDashStyle = new float[] { 2, 4 } };
 
+            float offset = (float)Padding.Top;
+
             // Spaces
             foreach (Rect spaceArea in _SpaceAreas.Span)
             {
@@ -64,8 +66,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 {
                     Height = 2,
                     Width = 2,
-                    X = spaceArea.Left + (spaceArea.Right - spaceArea.Left) / 2 + 3,
-                    Y = spaceArea.Top + (spaceArea.Bottom - spaceArea.Top) / 2 - 1
+                    X = spaceArea.Left + (spaceArea.Right - spaceArea.Left) / 2 + 7,
+                    Y = spaceArea.Top + (spaceArea.Bottom - spaceArea.Top) / 2 + offset
                 };
                 args.DrawingSession.FillRectangle(dot, Colors.DimGray);
             }
@@ -81,8 +83,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     {
                         Height = 2,
                         Width = 2,
-                        X = tabArea.Left + width / 2 + 5,
-                        Y = tabArea.Top + (tabArea.Bottom - tabArea.Top) / 2 - 1
+                        X = tabArea.Left + width / 2 + 8,
+                        Y = tabArea.Top + (tabArea.Bottom - tabArea.Top) / 2 + offset
                     };
                     args.DrawingSession.FillRectangle(dot, Colors.DimGray);
                 }
@@ -90,8 +92,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 {
                     // Arrow indicator
                     float
-                        x = (float)(tabArea.Left + width / 2),
-                        y = (float)(tabArea.Top + (tabArea.Bottom - tabArea.Top) / 2 - 2);
+                        x = (float)(tabArea.Left + width / 2) + 4,
+                        y = (float)(tabArea.Top + (tabArea.Bottom - tabArea.Top) / 2) + offset;
                     int length = width < 28 ? 8 : 12;
                     args.DrawingSession.DrawLine(x, y + 2, x + length, y + 2, Colors.DimGray);
                     args.DrawingSession.DrawLine(x + length - 2, y, x + length, y + 2, Colors.DimGray);
@@ -104,10 +106,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             {
                 args.DrawingSession.DrawLine(
                     guideInfo.X + 0.5f,
-                    guideInfo.Y - 0.5f,
+                    guideInfo.Y - 0.5f + offset,
                     guideInfo.X + 0.5f,
-                    guideInfo.Y + guideInfo.Height + 0.5f,
-                    Colors.LightGray,
+                    guideInfo.Y + guideInfo.Height + 0.5f + offset,
+                    Colors.Gray,
                     1,
                     style);
             }
@@ -294,8 +296,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             // Skip if there are no brackets to render
             if (columnGuides.Size == 0) return;
-
-            float offset = (float)Padding.Top + 22;
             ref (int Start, int End) bracketPairsRef = ref bracketPairs.GetReference();
             ref ColumnGuideInfo columnGuidesRef = ref columnGuides.GetReference();
 
@@ -311,7 +311,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 // Render the new line guide
                 ColumnGuideInfo guideInfo = new ColumnGuideInfo(
                     MathF.Min((float)open.X, (float)close.X) + 10,
-                    (float)open.Top + offset,
+                    (float)open.Top + 22,
                     (float)(close.Top - open.Bottom));
                 Unsafe.Add(ref columnGuidesRef, i) = guideInfo;
             }
