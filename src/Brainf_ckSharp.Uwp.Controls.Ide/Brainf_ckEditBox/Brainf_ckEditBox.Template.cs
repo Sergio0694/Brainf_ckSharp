@@ -107,6 +107,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             Guard.MustBeNotNull(_ContentElement, ContentElementName);
             Guard.MustBeNotNull(_PlaceholderTextContentPresenter, PlaceholderTextContentPresenterName);
 
+            _ContentElement.SizeChanged += _ContentElement_SizeChanged;
             _TextOverlaysCanvas.Draw += TextOverlaysCanvas_Draw;
             _ContentScroller.Loaded += ContentElement_Loaded;
 
@@ -126,6 +127,24 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             Guard.MustBeNotNull(_VerticalContentScrollBar, nameof(_ContentScroller));
 
             _VerticalContentScrollBar.Margin = VerticalScrollBarMargin;
+        }
+
+        /// <summary>
+        /// A handler that is invoked whenever the text renderer is resized
+        /// </summary>
+        /// <param name="sender">The <see cref="ContentPresenter"/> that hosts the text renderer</param>
+        /// <param name="e">The <see cref="SizeChangedEventArgs"/> for <see cref="FrameworkElement.SizeChanged"/></param>
+        private void _ContentElement_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            /* This handler makes sure the Win2D canvas has enough space to render all of
+             * its content. Since it's placed inside a canvas in the template, all its
+             * area outside of the current viewport is still rendered, so that when
+             * the expression animation scrolls the Win2D canvas around, all the text
+             * overlays that were previously out of bounds can become visible.
+             * The height is also considering the top padding set by the user,
+             * plus 20 more DIPs just to be extra safe. */
+            _TextOverlaysCanvas!.Height = e.NewSize.Height + Padding.Top + 20;
+            _TextOverlaysCanvas.Width = e.NewSize.Width;
         }
     }
 }

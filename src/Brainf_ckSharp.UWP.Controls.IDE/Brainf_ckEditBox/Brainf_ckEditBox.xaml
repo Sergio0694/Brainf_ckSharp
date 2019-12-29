@@ -106,9 +106,9 @@
                             CornerRadius="{TemplateBinding CornerRadius}"
                             MinWidth="{ThemeResource TextControlThemeMinWidth}"
                             MinHeight="{ThemeResource TextControlThemeMinHeight}" />
-                        <win2d:CanvasControl
-                            x:Name="TextOverlaysCanvas"
-                            Grid.Row="1"/>
+                        <Canvas Grid.Row="1">
+                            <win2d:CanvasControl x:Name="TextOverlaysCanvas"/>
+                        </Canvas>
                         <ScrollViewer
                             x:Name="ContentScroller"
                             Grid.Row="1"
