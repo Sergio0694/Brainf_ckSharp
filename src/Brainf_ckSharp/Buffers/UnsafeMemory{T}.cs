@@ -9,7 +9,7 @@ namespace Brainf_ckSharp.Buffers
     /// A <see langword="struct"/> that maps a range of <typeparamref name="T"/> values on an existing buffer
     /// </summary>
     /// <typeparam name="T">The type of items stored in the underlying buffer</typeparam>
-    internal readonly unsafe struct UnsafeMemory<T> where T : unmanaged
+    public readonly unsafe struct UnsafeMemory<T> where T : unmanaged
     {
         /// <summary>
         /// The size of the usable buffer for the current instance

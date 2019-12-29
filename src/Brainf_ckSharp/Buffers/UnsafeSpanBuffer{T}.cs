@@ -11,7 +11,7 @@ namespace Brainf_ckSharp.Buffers
     /// </summary>
     /// <typeparam name="T">The type of items stored in the underlying buffer</typeparam>
     /// <remarks>This type mirrors <see cref="UnsafeMemoryBuffer{T}"/>, but as a value type</remarks>
-    internal unsafe ref struct UnsafeSpanBuffer<T> where T : unmanaged
+    public unsafe ref struct UnsafeSpanBuffer<T> where T : unmanaged
     {
         /// <summary>
         /// The size of the usable buffer within <see cref="Buffer"/>

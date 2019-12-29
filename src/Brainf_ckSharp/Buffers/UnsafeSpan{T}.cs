@@ -11,7 +11,7 @@ namespace Brainf_ckSharp.Buffers
     /// A <see langword="struct"/> that owns a memory buffer shared from a common pool
     /// </summary>
     /// <typeparam name="T">The type of items stored in the underlying buffer</typeparam>
-    internal ref struct UnsafeSpan<T> where T : unmanaged
+    public ref struct UnsafeSpan<T> where T : unmanaged
     {
         /// <summary>
         /// The size of the usable buffer within <see cref="Buffer"/>
