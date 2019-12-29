@@ -10,24 +10,11 @@ using UICompositionAnimations.Enums;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
-    [TemplatePart(Name = HeaderContentPresenterName, Type = typeof(ContentPresenter))]
-    [TemplatePart(Name = BorderElementName, Type = typeof(Border))]
     [TemplatePart(Name = TextOverlaysCanvasName, Type = typeof(CanvasControl))]
     [TemplatePart(Name = ContentScrollerName, Type = typeof(ContentPresenter))]
     [TemplatePart(Name = ContentElementName, Type = typeof(ScrollViewer))]
-    [TemplatePart(Name = PlaceholderTextContentPresenterName, Type = typeof(TextBlock))]
     public sealed partial class Brainf_ckEditBox
     {
-        /// <summary>
-        /// The name of the <see cref="ContentPresenter"/> instance for the header
-        /// </summary>
-        private const string HeaderContentPresenterName = "HeaderContentPresenter";
-
-        /// <summary>
-        /// The name of the <see cref="Border"/> instance for the control
-        /// </summary>
-        private const string BorderElementName = "BorderElement";
-
         /// <summary>
         /// The name of the <see cref="CanvasControl"/> instance for the control
         /// </summary>
@@ -49,21 +36,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private const string VerticalScrollBarName = "VerticalScrollBar";
 
         /// <summary>
-        /// The name of the <see cref="TextBlock"/> instance for the placeholder
-        /// </summary>
-        private const string PlaceholderTextContentPresenterName = "PlaceholderTextContentPresenter";
-
-        /// <summary>
-        /// The <see cref="ContentPresenter"/> instance for the header
-        /// </summary>
-        private ContentPresenter? _HeaderContentPresenter;
-
-        /// <summary>
-        /// The <see cref="Border"/> instance for the control
-        /// </summary>
-        private Border? _BorderElement;
-
-        /// <summary>
         /// The <see cref="CanvasControl"/> instance for the control
         /// </summary>
         private CanvasControl? _TextOverlaysCanvas;
@@ -83,29 +55,18 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         private ScrollBar? _VerticalContentScrollBar;
 
-        /// <summary>
-        /// The <see cref="TextBlock"/> instance for the placeholder
-        /// </summary>
-        private TextBlock? _PlaceholderTextContentPresenter;
-
         /// <inheritdoc/>
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
-            _HeaderContentPresenter = (ContentPresenter)GetTemplateChild(HeaderContentPresenterName);
-            _BorderElement = (Border)GetTemplateChild(BorderElementName);
             _TextOverlaysCanvas = (CanvasControl)GetTemplateChild(TextOverlaysCanvasName);
             _ContentScroller = (ScrollViewer)GetTemplateChild(ContentScrollerName);
             _ContentElement = (ContentPresenter)GetTemplateChild(ContentElementName);
-            _PlaceholderTextContentPresenter = (TextBlock)GetTemplateChild(PlaceholderTextContentPresenterName);
 
-            Guard.MustBeNotNull(_HeaderContentPresenter, HeaderContentPresenterName);
-            Guard.MustBeNotNull(_BorderElement, BorderElementName);
             Guard.MustBeNotNull(_TextOverlaysCanvas, nameof(TextOverlaysCanvasName));
             Guard.MustBeNotNull(_ContentScroller, ContentScrollerName);
             Guard.MustBeNotNull(_ContentElement, ContentElementName);
-            Guard.MustBeNotNull(_PlaceholderTextContentPresenter, PlaceholderTextContentPresenterName);
 
             _ContentElement.SizeChanged += _ContentElement_SizeChanged;
             _TextOverlaysCanvas.Draw += TextOverlaysCanvas_Draw;

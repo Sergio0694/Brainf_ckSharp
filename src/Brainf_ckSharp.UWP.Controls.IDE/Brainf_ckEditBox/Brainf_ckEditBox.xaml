@@ -21,7 +21,7 @@
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
-        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontSize" Value="14" />
         <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollMode" Value="Auto" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
@@ -41,39 +41,11 @@
                     <Grid>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Disabled">
-
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderContentPresenter" Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TextControlHeaderForegroundDisabled}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BorderElement" Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TextControlBackgroundDisabled}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BorderElement" Storyboard.TargetProperty="BorderBrush">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TextControlBorderBrushDisabled}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentElement" Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TextControlForegroundDisabled}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PlaceholderTextContentPresenter" Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TextControlPlaceholderForegroundDisabled}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Normal" />
-                                <VisualState x:Name="PointerOver">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PlaceholderTextContentPresenter" Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TextControlPlaceholderForegroundPointerOver}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
+                                <VisualState x:Name="Disabled"/>
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="PointerOver"/>
                                 <VisualState x:Name="Focused">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PlaceholderTextContentPresenter" Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TextControlPlaceholderForegroundFocused}" />
-                                        </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentElement" Storyboard.TargetProperty="RequestedTheme">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="Dark" />
                                         </ObjectAnimationUsingKeyFrames>
@@ -81,37 +53,22 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <ContentPresenter 
-                            x:Name="HeaderContentPresenter"
-                            Grid.Row="0"
-                            Foreground="{ThemeResource TextControlHeaderForeground}"
-                            Margin="{ThemeResource RichEditBoxTopHeaderMargin}"
-                            Content="{TemplateBinding Header}"
-                            ContentTemplate="{TemplateBinding HeaderTemplate}"
-                            FontWeight="Normal"
-                            TextWrapping="Wrap"
-                            VerticalAlignment="Top"
-                            Visibility="Collapsed"
-                            x:DeferLoadStrategy="Lazy" />
-                        <Border
-                            x:Name="BorderElement"
-                            Grid.Row="1"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{TemplateBinding CornerRadius}"
-                            MinWidth="{ThemeResource TextControlThemeMinWidth}"
-                            MinHeight="{ThemeResource TextControlThemeMinHeight}" />
-                        <Canvas Grid.Row="1">
+
+                        <!--Canvas that hosts the Win2D canvas used to render the text overlays.
+                            The Win2D canvas is inside a canvas so that it's free to expand beyond
+                            the viewport area, which is needed in order to render all the overlays
+                            for the text currently displayed in the control at all times.
+                            The size of the Win2D canvas is by the content presenter.-->
+                        <Canvas>
                             <win2d:CanvasControl x:Name="TextOverlaysCanvas"/>
                         </Canvas>
+
+                        <!--Scroller with a presenter for the text renderer. This is done so that
+                            the text renderer can have a padding, which is used to simulate a
+                            scrollable header around the text. Furthermore, having an intermediate
+                            content presenter makes the scrolling smoother and not line by line.-->
                         <ScrollViewer
                             x:Name="ContentScroller"
-                            Grid.Row="1"
                             HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
                             HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                             VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
@@ -127,16 +84,6 @@
                                 x:Name="ContentElement"
                                 Margin="{TemplateBinding Padding}"/>
                         </ScrollViewer>
-                        <TextBlock
-                            x:Name="PlaceholderTextContentPresenter"
-                            Grid.Row="1"
-                            Foreground="{ThemeResource TextControlPlaceholderForeground}"
-                            Margin="{TemplateBinding BorderThickness}"
-                            Padding="{TemplateBinding Padding}"
-                            Text="{TemplateBinding PlaceholderText}"
-                            TextAlignment="{TemplateBinding TextAlignment}"
-                            TextWrapping="{TemplateBinding TextWrapping}"
-                            IsHitTestVisible="False" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
