@@ -29,6 +29,26 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private MemoryOwner<ColumnGuideInfo> _ColumnGuides = MemoryOwner<ColumnGuideInfo>.Allocate(0);
 
         /// <summary>
+        /// The current sequence of indices for the space characters to render
+        /// </summary>
+        private MemoryOwner<int> _SpaceIndices = MemoryOwner<int>.Allocate(0);
+
+        /// <summary>
+        /// The current sequence of areas for the space characters to render
+        /// </summary>
+        private MemoryOwner<Rect> _SpaceAreas = MemoryOwner<Rect>.Allocate(0);
+
+        /// <summary>
+        /// The current sequence of indices for the tab characters to render
+        /// </summary>
+        private MemoryOwner<int> _TabIndices = MemoryOwner<int>.Allocate(0);
+
+        /// <summary>
+        /// The current sequence of areas for the tab characters to render
+        /// </summary>
+        private MemoryOwner<Rect> _TabAreas = MemoryOwner<Rect>.Allocate(0);
+
+        /// <summary>
         /// Draws the text overlays when an update is requested
         /// </summary>
         /// <param name="sender">The sender <see cref="CanvasControl"/> instance</param>
@@ -37,6 +57,49 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         {
             CanvasStrokeStyle style = new CanvasStrokeStyle { CustomDashStyle = new float[] { 2, 4 } };
 
+            // Spaces
+            foreach (Rect spaceArea in _SpaceAreas.Span)
+            {
+                Rect dot = new Rect
+                {
+                    Height = 2,
+                    Width = 2,
+                    X = spaceArea.Left + (spaceArea.Right - spaceArea.Left) / 2 + 3,
+                    Y = spaceArea.Top + (spaceArea.Bottom - spaceArea.Top) / 2 - 1
+                };
+                args.DrawingSession.FillRectangle(dot, Colors.DimGray);
+            }
+
+            // Tabs
+            foreach (Rect tabArea in _TabAreas.Span)
+            {
+                double width = tabArea.Right - tabArea.Left;
+                if (width < 12)
+                {
+                    // Small dot at the center
+                    Rect dot = new Rect
+                    {
+                        Height = 2,
+                        Width = 2,
+                        X = tabArea.Left + width / 2 + 5,
+                        Y = tabArea.Top + (tabArea.Bottom - tabArea.Top) / 2 - 1
+                    };
+                    args.DrawingSession.FillRectangle(dot, Colors.DimGray);
+                }
+                else
+                {
+                    // Arrow indicator
+                    float
+                        x = (float)(tabArea.Left + width / 2),
+                        y = (float)(tabArea.Top + (tabArea.Bottom - tabArea.Top) / 2 - 2);
+                    int length = width < 28 ? 8 : 12;
+                    args.DrawingSession.DrawLine(x, y + 2, x + length, y + 2, Colors.DimGray);
+                    args.DrawingSession.DrawLine(x + length - 2, y, x + length, y + 2, Colors.DimGray);
+                    args.DrawingSession.DrawLine(x + length - 2, y + 4, x + length, y + 2, Colors.DimGray);
+                }
+            }
+
+            // Column guides
             foreach (ColumnGuideInfo guideInfo in _ColumnGuides.Span)
             {
                 args.DrawingSession.DrawLine(
@@ -47,6 +110,101 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     Colors.LightGray,
                     1,
                     style);
+            }
+        }
+
+        /// <summary>
+        /// Tries to update the current sequences of spaces and tabs in the text
+        /// </summary>
+        /// <returns><see langword="true"/> if the sequences were updated, <see langword="false"/> otherwise</returns>
+        [Pure]
+        private bool TryUpdateWhitespaceCharactersList()
+        {
+            // Prepare the current text
+            ReadOnlySpan<char> text = _Text.AsSpan();
+            ref char r0 = ref MemoryMarshal.GetReference(text);
+            int length = text.Length;
+
+            // Target buffers
+            MemoryOwner<int>
+                spaces = MemoryOwner<int>.Allocate(length),
+                tabs = MemoryOwner<int>.Allocate(length);
+            ref int spacesRef = ref spaces.GetReference();
+            ref int tabsRef = ref tabs.GetReference();
+            int
+                spacesCount = 0,
+                tabsCount = 0;
+
+            // Go through the executable
+            for (int i = 0; i < length; i++)
+            {
+                switch (Unsafe.Add(ref r0, i))
+                {
+                    case ' ':
+                        Unsafe.Add(ref spacesRef, spacesCount++) = i;
+                        break;
+                    case '\t':
+                        Unsafe.Add(ref tabsRef, tabsCount++) = i;
+                        break;
+                }
+            }
+
+            // Update the current data
+            _SpaceIndices.Dispose();
+            _SpaceIndices = spaces.Slice(spacesCount);
+            _TabIndices.Dispose();
+            _TabIndices = tabs.Slice(tabsCount);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Processes the current whitespace info and updates <see cref="_SpaceAreas"/> and <see cref="_TabAreas"/>
+        /// </summary>
+        private void ProcessWhitespaceData()
+        {
+            _SpaceAreas.Dispose();
+
+            // Spaces first
+            MemoryOwner<int> spaceIndices = _SpaceIndices;
+            MemoryOwner<Rect> spaceAreas = MemoryOwner<Rect>.Allocate(spaceIndices.Size);
+
+            _SpaceAreas = spaceAreas;
+
+            // Skip if there are no spaces
+            if (spaceAreas.Size > 0)
+            {
+                ref int spaceIndicesRef = ref spaceIndices.GetReference();
+                ref Rect spaceAreasRef = ref spaceAreas.GetReference();
+
+                for (int i = 0; i < spaceIndices.Size; i++)
+                {
+                    int index = Unsafe.Add(ref spaceIndicesRef, i);
+                    ITextRange range = Document.GetRange(index, index + 1);
+                    range.GetRect(PointOptions.Transform, out Unsafe.Add(ref spaceAreasRef, i), out _);
+                }
+            }
+
+            _TabAreas.Dispose();
+
+            // Then tabs
+            MemoryOwner<int> tabIndices = _TabIndices;
+            MemoryOwner<Rect> tabAreas = MemoryOwner<Rect>.Allocate(tabIndices.Size);
+
+            _TabAreas = tabAreas;
+
+            // Skip if there are no tabs
+            if (tabAreas.Size > 0)
+            {
+                ref int tabIndicesRef = ref tabIndices.GetReference();
+                ref Rect tabAreasRef = ref tabAreas.GetReference();
+
+                for (int i = 0; i < tabIndices.Size; i++)
+                {
+                    int index = Unsafe.Add(ref tabIndicesRef, i);
+                    ITextRange range = Document.GetRange(index, index + 1);
+                    range.GetRect(PointOptions.Transform, out Unsafe.Add(ref tabAreasRef, i), out _);
+                }
             }
         }
 

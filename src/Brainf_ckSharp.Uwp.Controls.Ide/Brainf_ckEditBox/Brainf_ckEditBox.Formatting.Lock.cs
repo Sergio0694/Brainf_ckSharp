@@ -49,11 +49,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 This.IsUndoGroupingEnabled = false;
 
                 // Redraw the overlays, if needed
-                if (This._IsSyntaxValid && This.TryUpdateBracketsList())
-                {
-                    This.ProcessColumnGuides();
-                    This._TextOverlaysCanvas!.Invalidate();
-                }
+                if (This._IsSyntaxValid && This.TryUpdateBracketsList()) This.ProcessColumnGuides();
+                if (This.TryUpdateWhitespaceCharactersList()) This.ProcessWhitespaceData();
+
+                This._TextOverlaysCanvas!.Invalidate();
             }
         }
     }
