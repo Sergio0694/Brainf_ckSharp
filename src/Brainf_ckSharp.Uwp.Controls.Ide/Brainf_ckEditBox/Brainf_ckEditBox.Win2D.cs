@@ -164,46 +164,33 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private void ProcessWhitespaceData()
         {
             _SpaceAreas.Dispose();
-
-            // Spaces first
-            MemoryOwner<int> spaceIndices = _SpaceIndices;
-            MemoryOwner<Rect> spaceAreas = MemoryOwner<Rect>.Allocate(spaceIndices.Size);
-
-            _SpaceAreas = spaceAreas;
-
-            // Skip if there are no spaces
-            if (spaceAreas.Size > 0)
-            {
-                ref int spaceIndicesRef = ref spaceIndices.GetReference();
-                ref Rect spaceAreasRef = ref spaceAreas.GetReference();
-
-                for (int i = 0; i < spaceIndices.Size; i++)
-                {
-                    int index = Unsafe.Add(ref spaceIndicesRef, i);
-                    ITextRange range = Document.GetRange(index, index + 1);
-                    range.GetRect(PointOptions.Transform, out Unsafe.Add(ref spaceAreasRef, i), out _);
-                }
-            }
-
             _TabAreas.Dispose();
 
-            // Then tabs
-            MemoryOwner<int> tabIndices = _TabIndices;
-            MemoryOwner<Rect> tabAreas = MemoryOwner<Rect>.Allocate(tabIndices.Size);
+            ProcessCharacterData(ref _SpaceIndices, out _SpaceAreas);
+            ProcessCharacterData(ref _TabIndices, out _TabAreas);
+        }
 
-            _TabAreas = tabAreas;
+        /// <summary>
+        /// Processes data for a given sequence of characters
+        /// </summary>
+        /// <param name="indices">The input sequence of indices for characters to inspect</param>
+        /// <param name="areas">The resulting sequence of areas for the targeted characters</param>
+        private void ProcessCharacterData(ref MemoryOwner<int> indices, out MemoryOwner<Rect> areas)
+        {
+            areas = MemoryOwner<Rect>.Allocate(indices.Size);
 
-            // Skip if there are no tabs
-            if (tabAreas.Size > 0)
+            // Skip if there are no characters
+            if (indices.Size > 0)
             {
-                ref int tabIndicesRef = ref tabIndices.GetReference();
-                ref Rect tabAreasRef = ref tabAreas.GetReference();
+                int size = indices.Size;
+                ref int indicesRef = ref indices.GetReference();
+                ref Rect areasRef = ref areas.GetReference();
 
-                for (int i = 0; i < tabIndices.Size; i++)
+                for (int i = 0; i < size; i++)
                 {
-                    int index = Unsafe.Add(ref tabIndicesRef, i);
+                    int index = Unsafe.Add(ref indicesRef, i);
                     ITextRange range = Document.GetRange(index, index + 1);
-                    range.GetRect(PointOptions.Transform, out Unsafe.Add(ref tabAreasRef, i), out _);
+                    range.GetRect(PointOptions.Transform, out Unsafe.Add(ref areasRef, i), out _);
                 }
             }
         }
