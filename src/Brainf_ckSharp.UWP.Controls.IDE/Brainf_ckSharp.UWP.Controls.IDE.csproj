@@ -132,7 +132,7 @@
     <Compile Include="Brainf_ckEditBox\Enums\BracketsFormattingStyle.cs" />
     <Compile Include="Brainf_ckEditBox\Helpers\ClipboardHelper.cs" />
     <Compile Include="Brainf_ckEditBox\Helpers\CodeGenerator.cs" />
-    <Compile Include="Brainf_ckEditBox\Helpers\FormattingLock.cs" />
+    <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.Formatting.Lock.cs" />
     <Compile Include="Brainf_ckEditBox\Models\ColumnGuideInfo.cs" />
     <Compile Include="Extensions\System\StringExtensions.cs" />
     <Compile Include="Extensions\Windows.System\VirtualKeyExtensions.cs" />
