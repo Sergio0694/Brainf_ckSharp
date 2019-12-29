@@ -150,6 +150,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             // Skip if there are no brackets to render
             if (columnGuides.Size == 0) return;
 
+            float offset = (float)Padding.Top + 22;
             ref (int Start, int End) bracketPairsRef = ref bracketPairs.GetReference();
             ref ColumnGuideInfo columnGuidesRef = ref columnGuides.GetReference();
 
@@ -164,8 +165,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
                 // Render the new line guide
                 ColumnGuideInfo guideInfo = new ColumnGuideInfo(
-                    MathF.Min((float)open.X, (float)close.X),
-                    (float)open.Top,
+                    MathF.Min((float)open.X, (float)close.X) + 10,
+                    (float)open.Top + offset,
                     (float)(close.Top - open.Bottom));
                 Unsafe.Add(ref columnGuidesRef, i) = guideInfo;
             }

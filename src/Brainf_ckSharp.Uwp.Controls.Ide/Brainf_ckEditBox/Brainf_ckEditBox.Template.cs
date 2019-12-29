@@ -4,6 +4,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Brainf_ckSharp.Helpers;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
+using UICompositionAnimations.Enums;
 
 #nullable enable
 
@@ -108,6 +109,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             _TextOverlaysCanvas.Draw += TextOverlaysCanvas_Draw;
             _ContentScroller.Loaded += ContentElement_Loaded;
+
+            _ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.Y);
+            _ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.X);
         }
 
         /// <summary>
