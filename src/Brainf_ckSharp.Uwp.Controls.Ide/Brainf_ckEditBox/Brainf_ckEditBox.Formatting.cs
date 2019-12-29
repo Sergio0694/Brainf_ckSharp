@@ -18,6 +18,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private string _Text = "\r";
 
         /// <summary>
+        /// The start position of the current selection
+        /// </summary>
+        private int _SelectionStart;
+
+        /// <summary>
         /// The length of the current selection
         /// </summary>
         private int _SelectionLength;
@@ -53,6 +58,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                  *     if the previous selection had a length of 0 as well, and the current text
                  *     has one more character than the previous one. Otherwise, check whether the
                  *     previous selection had a length of at least a single character.
+                 *   - If CTRL + Z was pressed and it resulted in a single typed character being
+                 *     deleted, ignore this case to avoid formatting the entire text again.
                  *   - If a deletion is requested, just skip the formatting entirely. If no new
                  *     characters have been typed, there is no need to highlight anything.
                  *   - As a last resort, just format the entire text from start to finish. */
@@ -62,6 +69,13 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     _SelectionLength > 1)
                 {
                     FormatSingleCharacter(ref text, selectionStart);
+                }
+                else if (selectionLength == 0 &&
+                         _SelectionLength == 0 &&
+                         textLength == _Text.Length - 1 &&
+                         selectionStart == _SelectionStart)
+                {
+                    // CTRL + Z, do nothing
                 }
                 else if (_IsDeleteRequested) _IsDeleteRequested = false;
                 else FormatRange(text, 0, textLength);
