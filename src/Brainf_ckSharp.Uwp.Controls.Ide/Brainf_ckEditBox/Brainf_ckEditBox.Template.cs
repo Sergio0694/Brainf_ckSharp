@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Brainf_ckSharp.Helpers;
@@ -11,6 +10,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
     [TemplatePart(Name = "HeaderContentPresenter", Type = typeof(ContentPresenter))]
     [TemplatePart(Name = "BorderElement", Type = typeof(Border))]
+    [TemplatePart(Name = "ContentScroller", Type = typeof(ContentPresenter))]
     [TemplatePart(Name = "ContentElement", Type = typeof(ScrollViewer))]
     [TemplatePart(Name = "PlaceholderTextContentPresenter", Type = typeof(TextBlock))]
     public sealed partial class Brainf_ckEditBox
@@ -24,6 +24,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// The name of the <see cref="Border"/> instance for the control
         /// </summary>
         private const string BorderElementName = "BorderElement";
+
+        /// <summary>
+        /// The name of the <see cref="ScrollViewer"/> instance for the main content
+        /// </summary>
+        private const string ContentScrollerName = "ContentScroller";
 
         /// <summary>
         /// The name of the <see cref="ScrollViewer"/> instance for the main content
@@ -53,7 +58,12 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// The <see cref="ScrollViewer"/> instance for the main content
         /// </summary>
-        private ScrollViewer? _ContentElement;
+        private ScrollViewer? _ContentScroller;
+
+        /// <summary>
+        /// The <see cref="ContentPresenter"/> instance for the main content
+        /// </summary>
+        private ContentPresenter? _ContentElement;
 
         /// <summary>
         /// The vertical <see cref="ScrollBar"/> instance for the main content
@@ -72,27 +82,29 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             _HeaderContentPresenter = (ContentPresenter)GetTemplateChild(HeaderContentPresenterName);
             _BorderElement = (Border)GetTemplateChild(BorderElementName);
-            _ContentElement = (ScrollViewer)GetTemplateChild(ContentElementName);
+            _ContentScroller = (ScrollViewer)GetTemplateChild(ContentScrollerName);
+            _ContentElement = (ContentPresenter)GetTemplateChild(ContentElementName);
             _PlaceholderTextContentPresenter = (TextBlock)GetTemplateChild(PlaceholderTextContentPresenterName);
 
             Guard.MustBeNotNull(_HeaderContentPresenter, HeaderContentPresenterName);
             Guard.MustBeNotNull(_BorderElement, BorderElementName);
+            Guard.MustBeNotNull(_ContentScroller, ContentScrollerName);
             Guard.MustBeNotNull(_ContentElement, ContentElementName);
             Guard.MustBeNotNull(_PlaceholderTextContentPresenter, PlaceholderTextContentPresenterName);
 
-            _ContentElement.Loaded += ContentElement_Loaded;
+            _ContentScroller.Loaded += ContentElement_Loaded;
         }
 
         /// <summary>
-        /// A handler that is invoked when <see cref="_ContentElement"/> is loaded
+        /// A handler that is invoked when <see cref="_ContentScroller"/> is loaded
         /// </summary>
         /// <param name="sender">The <see cref="ScrollViewer"/> for the main content</param>
         /// <param name="e">The <see cref="RoutedEventArgs"/> for <see cref="FrameworkElement.Loaded"/></param>
         private void ContentElement_Loaded(object sender, RoutedEventArgs e)
         {
-            _VerticalContentScrollBar = (ScrollBar)_ContentElement.FindDescendantByName(VerticalScrollBarName);
+            _VerticalContentScrollBar = (ScrollBar)_ContentScroller.FindDescendantByName(VerticalScrollBarName);
 
-            Guard.MustBeNotNull(_VerticalContentScrollBar, nameof(ContentElementName));
+            Guard.MustBeNotNull(_VerticalContentScrollBar, nameof(_ContentScroller));
 
             _VerticalContentScrollBar.Margin = VerticalScrollBarMargin;
         }

@@ -40,8 +40,10 @@
                 <views:ConsoleView/>
             </PivotItem>
             <PivotItem>
-                <Grid Background="#FF1E1E1E" Padding="0,100,0,0">
-                    <ide:Brainf_ckEditBox/>
+                <Grid Background="#FF1E1E1E">
+                    <ide:Brainf_ckEditBox
+                        Padding="8,108,8,8"
+                        VerticalScrollBarMargin="0,100,0,0"/>
                 </Grid>
             </PivotItem>
         </Pivot>
