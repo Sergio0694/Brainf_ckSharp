@@ -1,5 +1,6 @@
 ﻿using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Uwp.ViewModels;
+using Brainf_ckSharp.Uwp.ViewModels.Views;
 
 #nullable enable
 

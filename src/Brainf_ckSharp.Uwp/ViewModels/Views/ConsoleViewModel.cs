@@ -15,7 +15,7 @@ using Brainf_ckSharp.Uwp.Models.Console.Interfaces;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
 using GalaSoft.MvvmLight.Messaging;
 
-namespace Brainf_ckSharp.Uwp.ViewModels
+namespace Brainf_ckSharp.Uwp.ViewModels.Views
 {
     /// <summary>
     /// A view model for an interactive REPL console for Brainf*ck/PBrain

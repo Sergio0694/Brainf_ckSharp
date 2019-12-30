@@ -252,7 +252,7 @@
     <Compile Include="ViewModels\Abstract\Collections\GroupedItemsCollectionViewModelBase{TKey,TElement}.cs" />
     <Compile Include="ViewModels\Abstract\Collections\ItemsCollectionViewModelBase{T}.cs" />
     <Compile Include="ViewModels\Abstract\ReactiveViewModelBase.cs" />
-    <Compile Include="ViewModels\ConsoleViewModel.cs" />
+    <Compile Include="ViewModels\Views\ConsoleViewModel.cs" />
     <Compile Include="ViewModels\Controls\CompactMemoryViewerViewModel.cs" />
     <Compile Include="ViewModels\Controls\SubPages\AboutSubPageViewModel.cs" />
     <Compile Include="ViewModels\Controls\SubPages\UserGuideSubPageViewModel.cs" />
