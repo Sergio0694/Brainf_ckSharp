@@ -257,8 +257,12 @@
     <Compile Include="ViewModels\Controls\SubPages\AboutSubPageViewModel.cs" />
     <Compile Include="ViewModels\Controls\SubPages\UserGuideSubPageViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="ViewModels\Views\IDEViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\IDEView.xaml.cs">
+      <DependentUpon>IDEView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -453,6 +457,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConsoleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\IDEView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

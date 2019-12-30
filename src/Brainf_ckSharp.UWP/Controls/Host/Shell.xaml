@@ -14,7 +14,6 @@
     xmlns:functions="using:Brainf_ckSharp.Uwp.Bindings.Functions"
     xmlns:memoryViewer="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel.MemoryViewer"
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
-    xmlns:ide="using:Brainf_ckSharp.Uwp.Controls.Ide"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     mc:Ignorable="d"
     d:DesignHeight="600"
@@ -41,11 +40,7 @@
                 <views:ConsoleView attachedProperties:ReactiveViewModelHelper.IsActive="{x:Bind functions:PivotSelectionFunctions.IndexToBool(RootHeader.SelectedIndex, 0), Mode=OneWay, FallbackValue=True}"/>
             </PivotItem>
             <PivotItem>
-                <Grid Background="#FF1E1E1E">
-                    <ide:Brainf_ckEditBox
-                        Padding="8,108,8,8"
-                        VerticalScrollBarMargin="0,100,0,0"/>
-                </Grid>
+                <views:IDEView attachedProperties:ReactiveViewModelHelper.IsActive="{x:Bind functions:PivotSelectionFunctions.IndexToBool(RootHeader.SelectedIndex, 1), Mode=OneWay, FallbackValue=False}"/>
             </PivotItem>
         </Pivot>
 
