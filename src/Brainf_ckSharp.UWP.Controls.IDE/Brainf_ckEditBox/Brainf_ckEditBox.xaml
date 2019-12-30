@@ -10,12 +10,10 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="ContentLinkForegroundColor" Value="{ThemeResource ContentLinkForegroundColor}" />
         <Setter Property="ContentLinkBackgroundColor" Value="{ThemeResource ContentLinkBackgroundColor}" />
-        <Setter Property="SelectionHighlightColor" Value="{ThemeResource TextControlSelectionHighlightColor}" />
+        <Setter Property="SelectionHighlightColor" Value="{ThemeResource SystemControlHighlightAccentBrush}" />
         <Setter Property="SelectionHighlightColorWhenNotFocused">
             <Setter.Value>
-                <SolidColorBrush 
-                    Color="{ThemeResource SystemAccentColor}"
-                    Opacity="0.8"/>
+                <SolidColorBrush Color="{ThemeResource SystemAccentColorDark1}"/>
             </Setter.Value>
         </Setter>
         <Setter Property="BorderBrush" Value="Transparent" />
