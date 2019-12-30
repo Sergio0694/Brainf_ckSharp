@@ -54,13 +54,31 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
 
-                        <!--Canvas that hosts the Win2D canvas used to render the text overlays.
-                            The Win2D canvas is inside a canvas so that it's free to expand beyond
-                            the viewport area, which is needed in order to render all the overlays
-                            for the text currently displayed in the control at all times.
+                        <!--Canvas that hosts the Win2D canvas used to render the text overlays,
+                            the line highlight and cursor indicator. All these controls are
+                            inside a canvas so that they're free to expand beyond the viewport
+                            area, which is needed in order to render all the overlays
+                            for the text currently displayed in the control at all times,
+                            and for the indicators to be translated correctly while still
+                            being able to be scrolled with the text by the user.
                             The size of the Win2D canvas is by the content presenter.-->
-                        <Canvas>
+                        <Canvas x:Name="BackgroundCanvas">
+
+                            <!--Win2D canvas for whitespaces and column guides-->
                             <win2d:CanvasControl x:Name="TextOverlaysCanvas"/>
+
+                            <!--Current line indicator-->
+                            <Border 
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Top"
+                                Height="20"
+                                BorderThickness="2"
+                                BorderBrush="#30FFFFFF"
+                                x:Name="SelectionHighlightBorder">
+                                <Border.RenderTransform>
+                                    <TranslateTransform/>
+                                </Border.RenderTransform>
+                            </Border>
                         </Canvas>
 
                         <!--Scroller with a presenter for the text renderer. This is done so that

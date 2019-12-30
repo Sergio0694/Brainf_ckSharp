@@ -6,7 +6,10 @@ using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
+
+#nullable enable
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
@@ -39,7 +42,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
-        /// Adjusts the scrolling offset on both axes when the selection changes
+        /// Adjusts the UI when the selection changes
         /// </summary>
         /// <param name="sender">The current <see cref="Brainf_ckEditBox"/> instance</param>
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance for the <see cref="RichEditBox.SelectionChanged"/> event</param>
@@ -48,7 +51,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             Document.Selection.GetRect(PointOptions.Transform, out Rect rect, out _);
 
             double
-                verticalOffset = _ContentScroller.VerticalOffset,
+                verticalOffset = _ContentScroller!.VerticalOffset,
                 horizontalOffset = _ContentScroller.HorizontalOffset,
                 viewportHeight = _ContentScroller.ViewportHeight - VerticalScrollBarMargin.Top,
                 viewportWidth = _ContentScroller.ViewportWidth,
@@ -79,7 +82,18 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             }
             else vertical = null;
 
+            // Scroll to selection
             _ContentScroller.ChangeView(horizontal, vertical, null, false);
+
+            /* Adjust the UI of the selected line highlight. Translate it to the right
+             * position, and make it invisible if the current selection is not collapsed
+              to a single point. This is the same behavior of Visual Studio. */
+            if (_SelectionLength > 0) _SelectionHighlightBorder!.Opacity = 0;
+            else
+            {
+                _SelectionHighlightBorder!.Opacity = 1;
+                ((TranslateTransform)_SelectionHighlightBorder.RenderTransform).Y = rect.Top + Padding.Top;
+            }
         }
 
         /// <summary>
