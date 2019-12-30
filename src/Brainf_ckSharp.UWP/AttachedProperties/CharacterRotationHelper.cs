@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -18,7 +17,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
         /// <returns>The value of the <see cref="CharacterProperty"/> property for the input <see cref="TextBlock"/> instance</returns>
         public static char GetCharacter(TextBlock element)
         {
-            return element.GetValue(CharacterProperty).To<char>();
+            return (char)element.GetValue(CharacterProperty);
         }
 
         /// <summary>
