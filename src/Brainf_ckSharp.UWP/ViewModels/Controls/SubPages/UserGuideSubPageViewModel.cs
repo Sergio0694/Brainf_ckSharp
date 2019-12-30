@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using Brainf_ckSharp.Uwp.Enums;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract;
+using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
 
 namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
 {

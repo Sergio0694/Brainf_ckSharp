@@ -12,7 +12,7 @@ using Brainf_ckSharp.Uwp.Messages.Console.MemoryState;
 using Brainf_ckSharp.Uwp.Messages.InputPanel;
 using Brainf_ckSharp.Uwp.Models.Console;
 using Brainf_ckSharp.Uwp.Models.Console.Interfaces;
-using Brainf_ckSharp.Uwp.ViewModels.Abstract;
+using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ckSharp.Uwp.ViewModels
@@ -34,6 +34,12 @@ namespace Brainf_ckSharp.Uwp.ViewModels
         {
             Source.Add(new ConsoleCommand());
 
+            Messenger.Default.Register<MemoryStateRequestMessage>(this, m => m.ReportResult(MachineState));
+        }
+
+        /// <inheritdoc/>
+        protected override void OnActivate()
+        {
             Messenger.Default.Register<CharacterReceivedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m));
             Messenger.Default.Register<OperatorKeyPressedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m));
             Messenger.Default.Register<RunCommandRequestMessage>(this, m => _ = ExecuteCommandAsync());
@@ -42,7 +48,6 @@ namespace Brainf_ckSharp.Uwp.ViewModels
             Messenger.Default.Register<RestartConsoleRequestMessage>(this, m => _ = RestartAsync());
             Messenger.Default.Register<ClearConsoleScreenRequestMessage>(this, m => _ = ClearScreenAsync());
             Messenger.Default.Register<RepeatCommandRequestMessage>(this, m => _ = RepeatLastScriptAsync());
-            Messenger.Default.Register<MemoryStateRequestMessage>(this, m => m.ReportResult(MachineState));
         }
 
         private IReadOnlyTuringMachineState _MachineState = TuringMachineStateProvider.Default;

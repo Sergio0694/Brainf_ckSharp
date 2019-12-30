@@ -1,7 +1,7 @@
 ﻿using Brainf_ckSharp.Interfaces;
 using Brainf_ckSharp.Uwp.Messages.Console.MemoryState;
 using Brainf_ckSharp.Uwp.Models.Console.Controls;
-using Brainf_ckSharp.Uwp.ViewModels.Abstract;
+using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
 using GalaSoft.MvvmLight.Messaging;
 
 #nullable enable
