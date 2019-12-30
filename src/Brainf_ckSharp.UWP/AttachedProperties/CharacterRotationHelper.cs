@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
-namespace Brainf_ckSharp.UWP.AttachedProperties
+namespace Brainf_ckSharp.Uwp.AttachedProperties
 {
     /// <summary>
     /// An attached property that sets a <see cref="CompositeTransform"/> object to a <see cref="TextBlock"/> control if needed
@@ -18,7 +17,7 @@ namespace Brainf_ckSharp.UWP.AttachedProperties
         /// <returns>The value of the <see cref="CharacterProperty"/> property for the input <see cref="TextBlock"/> instance</returns>
         public static char GetCharacter(TextBlock element)
         {
-            return element.GetValue(CharacterProperty).To<char>();
+            return (char)element.GetValue(CharacterProperty);
         }
 
         /// <summary>

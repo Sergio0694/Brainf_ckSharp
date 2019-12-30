@@ -9,8 +9,8 @@
     <ProjectGuid>{45467BB7-1876-4182-B6B5-B0E5986CD96D}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Brainf_ckSharp.UWP</RootNamespace>
-    <AssemblyName>Brainf_ckSharp.UWP</AssemblyName>
+    <RootNamespace>Brainf_ckSharp.Uwp</RootNamespace>
+    <AssemblyName>Brainf_ckSharp.Uwp</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
@@ -126,6 +126,7 @@
     <Compile Include="AttachedProperties\ListViewBaseHelper.cs" />
     <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.cs" />
+    <Compile Include="AttachedProperties\ReactiveViewModelHelper.cs" />
     <Compile Include="Bindings\Converters\UserGuide\UserGuideSectionToDescriptionConverter.cs" />
     <Compile Include="Bindings\Converters\UserGuide\UserGuideSectionToTitleConverter.cs" />
     <Compile Include="Bindings\Functions\Console\SyntaxErrorFormatterFunctions.cs" />
@@ -239,9 +240,6 @@
     <Compile Include="Models\Console\ConsoleSyntaxError.cs" />
     <Compile Include="Models\Console\Controls\Brainf_ckMemoryCellChunk.cs" />
     <Compile Include="Models\Console\Interfaces\IConsoleEntry.cs" />
-    <Compile Include="Models\Themes\Enums\LineHighlightStyle.cs" />
-    <Compile Include="Models\Themes\ThemeInfo.cs" />
-    <Compile Include="Models\Themes\Themes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\XamlResources.cs" />
     <Compile Include="Services\Keyboard\IKeyboardListenerService.cs" />
@@ -251,15 +249,20 @@
     <Compile Include="Services\Settings\SettingsService.cs" />
     <Compile Include="TemplateSelectors\ConsoleEntryTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\UserGuideSectionTemplateSelector.cs" />
-    <Compile Include="ViewModels\Abstract\GroupedItemsCollectionViewModelBase{TKey,TElement}.cs" />
-    <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase{T}.cs" />
-    <Compile Include="ViewModels\ConsoleViewModel.cs" />
+    <Compile Include="ViewModels\Abstract\Collections\GroupedItemsCollectionViewModelBase{TKey,TElement}.cs" />
+    <Compile Include="ViewModels\Abstract\Collections\ItemsCollectionViewModelBase{T}.cs" />
+    <Compile Include="ViewModels\Abstract\ReactiveViewModelBase.cs" />
+    <Compile Include="ViewModels\Views\ConsoleViewModel.cs" />
     <Compile Include="ViewModels\Controls\CompactMemoryViewerViewModel.cs" />
     <Compile Include="ViewModels\Controls\SubPages\AboutSubPageViewModel.cs" />
     <Compile Include="ViewModels\Controls\SubPages\UserGuideSubPageViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="ViewModels\Views\IDEViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\IDEView.xaml.cs">
+      <DependentUpon>IDEView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -315,6 +318,14 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Brainf_ckSharp.UWP.Controls.IDE\Brainf_ckSharp.Uwp.Controls.Ide.csproj">
+      <Project>{473069aa-080a-493e-b7a8-0bee7b0b00f1}</Project>
+      <Name>Brainf_ckSharp.Uwp.Controls.Ide</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Brainf_ckSharp.Uwp.Themes\Brainf_ckSharp.Uwp.Themes.csproj">
+      <Project>{bd6f7b87-b1aa-46a7-b03a-9d299ea6f636}</Project>
+      <Name>Brainf_ckSharp.Uwp.Themes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Brainf_ckSharp\Brainf_ckSharp.csproj">
       <Project>{aceea540-7a2c-4705-ac68-5a8c3a5c2a38}</Project>
       <Name>Brainf_ckSharp</Name>
@@ -446,6 +457,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConsoleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\IDEView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,4 +1,4 @@
-﻿namespace Brainf_ckSharp.UWP.Controls.SubPages.Interfaces
+﻿namespace Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces
 {
     /// <summary>
     /// An <see langword="interface"/> for a sub page with size constraints

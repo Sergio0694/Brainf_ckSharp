@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using Brainf_ckSharp.UWP.Enums;
-using Brainf_ckSharp.UWP.ViewModels.Abstract;
+using Brainf_ckSharp.Uwp.Enums;
+using Brainf_ckSharp.Uwp.ViewModels.Abstract;
+using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
 
-namespace Brainf_ckSharp.UWP.ViewModels.Controls.SubPages
+namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
 {
     /// <summary>
     /// A view model for the user guide in the app

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Brainf_ckSharp.UWP.Messages.Abstract
+namespace Brainf_ckSharp.Uwp.Messages.Abstract
 {
     /// <summary>
     /// A base <see langword="class"/> for request message

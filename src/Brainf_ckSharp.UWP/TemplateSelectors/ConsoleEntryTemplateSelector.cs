@@ -1,9 +1,9 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.UWP.Models.Console;
+using Brainf_ckSharp.Uwp.Models.Console;
 
-namespace Brainf_ckSharp.UWP.TemplateSelectors
+namespace Brainf_ckSharp.Uwp.TemplateSelectors
 {
     /// <summary>
     /// A template selector for console entries

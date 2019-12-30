@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 
-namespace Brainf_ckSharp.UWP.Bindings.Functions.Console
+namespace Brainf_ckSharp.Uwp.Bindings.Functions.Console
 {
     /// <summary>
     /// A <see langword="class"/> with a collection of helper functions displaying syntax errors

@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Media;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.MarkupExtensions
+namespace Brainf_ckSharp.Uwp.MarkupExtensions
 {
     /// <summary>
     /// A markup extension that can be used to create a <see cref="FontIcon"/> from a <see cref="string"/> that specifies a Segoe MDL2 Assets icon

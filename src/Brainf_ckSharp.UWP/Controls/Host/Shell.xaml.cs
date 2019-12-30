@@ -1,9 +1,9 @@
 ﻿using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.UWP.ViewModels;
+using Brainf_ckSharp.Uwp.ViewModels;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.Controls.Host
+namespace Brainf_ckSharp.Uwp.Controls.Host
 {
     /// <summary>
     /// The shell that aacts as root visual element for the application

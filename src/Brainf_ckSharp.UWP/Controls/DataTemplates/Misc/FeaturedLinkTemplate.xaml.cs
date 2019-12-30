@@ -6,7 +6,7 @@ using Windows.UI.Xaml.Media;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.Controls.DataTemplates.Misc
+namespace Brainf_ckSharp.Uwp.Controls.DataTemplates.Misc
 {
     public sealed partial class FeaturedLinkTemplate : UserControl
     {

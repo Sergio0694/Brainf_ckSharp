@@ -6,7 +6,7 @@ using Windows.UI.Xaml.Controls;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.AttachedProperties
+namespace Brainf_ckSharp.Uwp.AttachedProperties
 {
     /// <summary>
     /// A <see langword="class"/> with an attached XAML property to control the auto scrolling on a target <see cref="ItemsWrapGrid"/> control

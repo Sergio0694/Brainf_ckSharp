@@ -3,7 +3,7 @@ using Windows.UI.Xaml.Controls;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.Controls.SubPages.Host
+namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
 {
     /// <summary>
     /// A <see cref="ContentControl"/> that acts as a frame for a sub page

@@ -1,4 +1,4 @@
-﻿namespace Brainf_ckSharp.UWP.Models.Themes.Enums
+﻿namespace Brainf_ckSharp.Uwp.Themes.Enums
 {
     /// <summary>
     /// An <see langword="enum"/> that indicates the type of line highlight for a given theme

@@ -7,8 +7,11 @@ namespace Brainf_ckSharp.Helpers
     /// A <see langword="class"/> that contains conditional APIs to debug code
     /// </summary>
     [DebuggerStepThrough]
-    internal static class DebugGuard
+    public static class DebugGuard
     {
+        /// <summary>
+        /// The compile time conditional constant for the methods the <see cref="DebugGuard"/> <see langword="class"/>
+        /// </summary>
         private const string DEBUG = nameof(DEBUG);
 
         /// <summary>

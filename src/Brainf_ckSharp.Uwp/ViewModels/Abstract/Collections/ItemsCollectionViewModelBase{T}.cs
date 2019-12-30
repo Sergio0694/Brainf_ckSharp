@@ -3,13 +3,13 @@ using GalaSoft.MvvmLight;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.ViewModels.Abstract
+namespace Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections
 {
     /// <summary>
     /// A view model for a view that exposes a collection of items of a given type
     /// </summary>
     /// <typeparam name="T">The type of items in the exposed collection</typeparam>
-    public abstract class ItemsCollectionViewModelBase<T> : ViewModelBase
+    public abstract class ItemsCollectionViewModelBase<T> : ReactiveViewModelBase
     {
         private ObservableCollection<T> _Source = new ObservableCollection<T>();
 

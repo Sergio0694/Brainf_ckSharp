@@ -1,24 +1,26 @@
-﻿using Brainf_ckSharp.UWP.Models.Themes.Enums;
+﻿using Windows.UI;
+using Brainf_ckSharp.Uwp.Themes.Enums;
 using Microsoft.Toolkit.Uwp.Helpers;
-using Windows.UI;
 
-namespace Brainf_ckSharp.UWP.Models.Themes
+#nullable enable
+
+namespace Brainf_ckSharp.Uwp.Themes
 {
     /// <summary>
     /// A <see langword="class"/> that exposes a collection of available themes
     /// </summary>
-    public static class Themes
+    public static class Brainf_ckThemes
     {
-        private static ThemeInfo _Default;
+        private static Brainf_ckTheme? _VisualStudio;
 
         /// <summary>
-        /// Gets the default theme for the app
+        /// Gets the Visual Studio theme
         /// </summary>
-        public static ThemeInfo Default
+        public static Brainf_ckTheme VisualStudio
         {
             get
             {
-                _Default ??= new ThemeInfo(
+                _VisualStudio ??= new Brainf_ckTheme(
                     "#FF1E1E1E".ToColor(),
                     "#FF333333".ToColor(),
                     "#FF237CAD".ToColor(),
@@ -34,22 +36,53 @@ namespace Brainf_ckSharp.UWP.Models.Themes
                     "#FF1E7499".ToColor(),
                     LineHighlightStyle.Outline,
                     "#30FFFFFF".ToColor(),
-                    nameof(Default));
+                    "Visual Studio");
 
-                return _Default;
+                return _VisualStudio;
             }
         }
 
-        private static ThemeInfo _Monokai;
+        private static Brainf_ckTheme? _VisualStudioCode;
+
+        /// <summary>
+        /// Gets the Visual Studio Code theme
+        /// </summary>
+        public static Brainf_ckTheme VisualStudioCode
+        {
+            get
+            {
+                _VisualStudioCode ??= new Brainf_ckTheme(
+                    "#FF1E1E1E".ToColor(),
+                    "#FF252526".ToColor(),
+                    "#FF4B4B4B".ToColor(),
+                    "#FF404040".ToColor(),
+                    null,
+                    "#FF4B8B43".ToColor(),
+                    "#FF68D0FE".ToColor(),
+                    "#FFD4D4D4".ToColor(),
+                    "#FF31BEB0".ToColor(),
+                    "#FFC3622C".ToColor(),
+                    "#FFD0A641".ToColor(),
+                    "#FF437AC1".ToColor(),
+                    "#FF2F9187".ToColor(),
+                    LineHighlightStyle.Outline,
+                    "#20FFFFFF".ToColor(),
+                    "Visual Studio Code");
+
+                return _VisualStudioCode;
+            }
+        }
+
+        private static Brainf_ckTheme? _Monokai;
 
         /// <summary>
         /// Gets the Monokai theme inspired to Atom and Sublime Text
         /// </summary>
-        public static ThemeInfo Monokai
+        public static Brainf_ckTheme Monokai
         {
             get
             {
-                _Monokai ??= new ThemeInfo(
+                _Monokai ??= new Brainf_ckTheme(
                     "#FF272822".ToColor(),
                     "#FF49483E".ToColor(),
                     "#FFA4A59E".ToColor(),
@@ -71,16 +104,16 @@ namespace Brainf_ckSharp.UWP.Models.Themes
             }
         }
 
-        private static ThemeInfo _Dracula;
+        private static Brainf_ckTheme? _Dracula;
 
         /// <summary>
         /// Gets the Dracula theme, ispired to the same theme available for Atom and Sublime Text
         /// </summary>
-        public static ThemeInfo Dracula
+        public static Brainf_ckTheme Dracula
         {
             get
             {
-                _Dracula ??= new ThemeInfo(
+                _Dracula ??= new Brainf_ckTheme(
                     "#FF282A36".ToColor(),
                     "#FF414456".ToColor(),
                     "#FFA5A5A6".ToColor(),
@@ -102,16 +135,16 @@ namespace Brainf_ckSharp.UWP.Models.Themes
             }
         }
 
-        private static ThemeInfo _Vim;
+        private static Brainf_ckTheme? _Vim;
 
         /// <summary>
         /// Gets the Vim from the old-school code editor
         /// </summary>
-        public static ThemeInfo Vim
+        public static Brainf_ckTheme Vim
         {
             get
             {
-                _Vim ??= new ThemeInfo(
+                _Vim ??= new Brainf_ckTheme(
                     "#FF171717".ToColor(),
                     "#FF252525".ToColor(),
                     "#FF727272".ToColor(),
@@ -133,16 +166,16 @@ namespace Brainf_ckSharp.UWP.Models.Themes
             }
         }
 
-        private static ThemeInfo _OneDark;
+        private static Brainf_ckTheme? _OneDark;
 
         /// <summary>
         /// Gets the Vim from the old-school code editor
         /// </summary>
-        public static ThemeInfo OneDark
+        public static Brainf_ckTheme OneDark
         {
             get
             {
-                _OneDark ??= new ThemeInfo(
+                _OneDark ??= new Brainf_ckTheme(
                     "#FF282C34".ToColor(),
                     "#FF383E49".ToColor(),
                     "#FF5A5A5A".ToColor(),
@@ -164,16 +197,16 @@ namespace Brainf_ckSharp.UWP.Models.Themes
             }
         }
 
-        private static ThemeInfo _Base16;
+        private static Brainf_ckTheme? _Base16;
 
         /// <summary>
         /// Gets the Vim from the old-school code editor
         /// </summary>
-        public static ThemeInfo Base16
+        public static Brainf_ckTheme Base16
         {
             get
             {
-                _Base16 ??= new ThemeInfo(
+                _Base16 ??= new Brainf_ckTheme(
                     "#FF1D1F21".ToColor(),
                     "#FF373B41".ToColor(),
                     "#FF656767".ToColor(),
@@ -192,37 +225,6 @@ namespace Brainf_ckSharp.UWP.Models.Themes
                     "Base 16");
 
                 return _Base16;
-            }
-        }
-
-        private static ThemeInfo _VisualStudioCode;
-
-        /// <summary>
-        /// Gets the Vim from the old-school code editor
-        /// </summary>
-        public static ThemeInfo VisualStudioCode
-        {
-            get
-            {
-                _VisualStudioCode ??= new ThemeInfo(
-                    "#FF1E1E1E".ToColor(),
-                    "#FF252526".ToColor(),
-                    "#FF4B4B4B".ToColor(),
-                    "#FF404040".ToColor(),
-                    null,
-                    "#FF4B8B43".ToColor(),
-                    "#FF68D0FE".ToColor(),
-                    "#FFD4D4D4".ToColor(),
-                    "#FF31BEB0".ToColor(),
-                    "#FFC3622C".ToColor(),
-                    "#FFD0A641".ToColor(),
-                    "#FF437AC1".ToColor(),
-                    "#FF2F9187".ToColor(),
-                    LineHighlightStyle.Outline,
-                    "#20FFFFFF".ToColor(),
-                    "Visual Studio Code");
-
-                return _VisualStudioCode;
             }
         }
     }

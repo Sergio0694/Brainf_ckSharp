@@ -1,14 +1,14 @@
 ﻿using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
-using Brainf_ckSharp.UWP.Controls.Host;
-using Brainf_ckSharp.UWP.Helpers.UI;
-using Brainf_ckSharp.UWP.Services;
-using Brainf_ckSharp.UWP.Services.Keyboard;
-using Brainf_ckSharp.UWP.Services.Settings;
+using Brainf_ckSharp.Uwp.Controls.Host;
+using Brainf_ckSharp.Uwp.Helpers.UI;
+using Brainf_ckSharp.Uwp.Services;
+using Brainf_ckSharp.Uwp.Services.Keyboard;
+using Brainf_ckSharp.Uwp.Services.Settings;
 using GalaSoft.MvvmLight.Ioc;
 
-namespace Brainf_ckSharp.UWP
+namespace Brainf_ckSharp.Uwp
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.

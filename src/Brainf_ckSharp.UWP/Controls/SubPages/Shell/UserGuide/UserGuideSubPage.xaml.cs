@@ -1,10 +1,10 @@
 ﻿using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.UWP.Controls.SubPages.Interfaces;
-using Brainf_ckSharp.UWP.ViewModels.Controls.SubPages;
+using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
+using Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.Controls.SubPages.Shell.UserGuide
+namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide
 {
     /// <summary>
     /// A sub page that displays the user guide for the app

@@ -3,7 +3,7 @@ using Brainf_ckSharp.Interfaces;
 using Brainf_ckSharp.Models;
 using GalaSoft.MvvmLight;
 
-namespace Brainf_ckSharp.UWP.Models.Console.Controls
+namespace Brainf_ckSharp.Uwp.Models.Console.Controls
 {
     /// <summary>
     /// A model that represents a group of 4 contiguous memory cells

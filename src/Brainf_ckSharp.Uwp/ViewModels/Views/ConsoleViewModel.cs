@@ -7,15 +7,15 @@ using Brainf_ckSharp.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Tools;
-using Brainf_ckSharp.UWP.Messages.Console.Commands;
-using Brainf_ckSharp.UWP.Messages.Console.MemoryState;
-using Brainf_ckSharp.UWP.Messages.InputPanel;
-using Brainf_ckSharp.UWP.Models.Console;
-using Brainf_ckSharp.UWP.Models.Console.Interfaces;
-using Brainf_ckSharp.UWP.ViewModels.Abstract;
+using Brainf_ckSharp.Uwp.Messages.Console.Commands;
+using Brainf_ckSharp.Uwp.Messages.Console.MemoryState;
+using Brainf_ckSharp.Uwp.Messages.InputPanel;
+using Brainf_ckSharp.Uwp.Models.Console;
+using Brainf_ckSharp.Uwp.Models.Console.Interfaces;
+using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
 using GalaSoft.MvvmLight.Messaging;
 
-namespace Brainf_ckSharp.UWP.ViewModels
+namespace Brainf_ckSharp.Uwp.ViewModels.Views
 {
     /// <summary>
     /// A view model for an interactive REPL console for Brainf*ck/PBrain
@@ -34,6 +34,12 @@ namespace Brainf_ckSharp.UWP.ViewModels
         {
             Source.Add(new ConsoleCommand());
 
+            Messenger.Default.Register<MemoryStateRequestMessage>(this, m => m.ReportResult(MachineState));
+        }
+
+        /// <inheritdoc/>
+        protected override void OnActivate()
+        {
             Messenger.Default.Register<CharacterReceivedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m));
             Messenger.Default.Register<OperatorKeyPressedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m));
             Messenger.Default.Register<RunCommandRequestMessage>(this, m => _ = ExecuteCommandAsync());
@@ -42,7 +48,6 @@ namespace Brainf_ckSharp.UWP.ViewModels
             Messenger.Default.Register<RestartConsoleRequestMessage>(this, m => _ = RestartAsync());
             Messenger.Default.Register<ClearConsoleScreenRequestMessage>(this, m => _ = ClearScreenAsync());
             Messenger.Default.Register<RepeatCommandRequestMessage>(this, m => _ = RepeatLastScriptAsync());
-            Messenger.Default.Register<MemoryStateRequestMessage>(this, m => m.ReportResult(MachineState));
         }
 
         private IReadOnlyTuringMachineState _MachineState = TuringMachineStateProvider.Default;

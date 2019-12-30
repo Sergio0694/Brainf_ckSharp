@@ -10,7 +10,7 @@ namespace Brainf_ckSharp.Buffers
     /// A <see langword="class"/> that owns a memory buffer that can be used across stack frames
     /// </summary>
     /// <typeparam name="T">The type of items stored in the underlying buffer</typeparam>
-    internal unsafe class UnsafeMemoryBuffer<T> : IDisposable where T : unmanaged
+    public unsafe class UnsafeMemoryBuffer<T> : IDisposable where T : unmanaged
     {
         /// <summary>
         /// The size of the usable buffer within <see cref="Buffer"/>

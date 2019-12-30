@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Controls;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.Controls.Host.Header
+namespace Brainf_ckSharp.Uwp.Controls.Host.Header
 {
     /// <summary>
     /// A templated <see cref="Control"/> that acts as a header button in the shell

@@ -1,6 +1,6 @@
-﻿using Brainf_ckSharp.UWP.Models.Console.Interfaces;
+﻿using Brainf_ckSharp.Uwp.Models.Console.Interfaces;
 
-namespace Brainf_ckSharp.UWP.Models.Console
+namespace Brainf_ckSharp.Uwp.Models.Console
 {
     /// <summary>
     /// A model for a console result with an output text

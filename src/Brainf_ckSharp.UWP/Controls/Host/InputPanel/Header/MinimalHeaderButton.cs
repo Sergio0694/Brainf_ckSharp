@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Controls;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header
+namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.Header
 {
     /// <summary>
     /// A templated <see cref="Control"/> that acts as a minimal header button in the stdin header
@@ -14,6 +14,7 @@ namespace Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header
     {
         // Constants for the template
         private const string RootButtonName = "RootButton";
+        private const string DisabledVisualStateName = "Disabled";
         private const string DefaultVisualStateName = "Default";
         private const string SelectedVisualStateName = "Selected";
 
@@ -21,6 +22,14 @@ namespace Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header
         /// The root <see cref="Button"/> control
         /// </summary>
         private Button? _RootButton;
+
+        /// <summary>
+        /// Creates a new <see cref="MinimalHeaderButton"/> instance
+        /// </summary>
+        public MinimalHeaderButton()
+        {
+            RegisterPropertyChangedCallback(IsEnabledProperty, OnIsEnabledChanged);
+        }
 
         /// <inheritdoc/>
         protected override void OnApplyTemplate()
@@ -75,6 +84,11 @@ namespace Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header
         public event EventHandler? Selected;
 
         /// <summary>
+        /// Raised whenever the <see cref="IsSelected"/> property is set to <see langword="false"/>
+        /// </summary>
+        public event EventHandler? Deselected;
+
+        /// <summary>
         /// Updates the UI when <see cref="IsSelected"/> changes
         /// </summary>
         /// <param name="d">The source <see cref="DependencyObject"/> instance</param>
@@ -84,17 +98,31 @@ namespace Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header
             MinimalHeaderButton @this = (MinimalHeaderButton)d;
 
             if (e.NewValue is bool value && value) @this.Selected?.Invoke(@this, EventArgs.Empty);
+            else @this.Deselected?.Invoke(@this, EventArgs.Empty);
+
             @this.UpdateVisualState();
         }
 
         /// <summary>
-        /// Applies the correct visual state when the <see cref="IsSelected"/> property changes
+        /// Applies the correct visual state when the <see cref="IsSelected"/> or <see cref="Control.IsEnabled"/> property change
         /// </summary>
         /// <remarks>This method also needs to be called when the template is applied</remarks>
         private void UpdateVisualState()
         {
-            string name = IsSelected ? SelectedVisualStateName : DefaultVisualStateName;
-            VisualStateManager.GoToState(this, name, false);
+            if (!IsEnabled) VisualStateManager.GoToState(this, DisabledVisualStateName, false);
+            else if (IsSelected) VisualStateManager.GoToState(this, SelectedVisualStateName, false);
+            else VisualStateManager.GoToState(this, DefaultVisualStateName, false);
+        }
+
+        /// <summary>
+        /// Updates the UI when <see cref="Control.IsEnabled"/> changes
+        /// </summary>
+        /// <param name="sender">The source <see cref="DependencyObject"/> instance</param>
+        /// <param name="dp">The source <see cref="DependencyProperty"/> info for the current update</param>
+        private void OnIsEnabledChanged(DependencyObject sender, DependencyProperty dp)
+        {
+            if (!IsEnabled && IsSelected) IsSelected = false;
+            else UpdateVisualState();
         }
 
         // Updates the UI when the control is selected

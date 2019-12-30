@@ -1,11 +1,11 @@
-﻿using Brainf_ckSharp.UWP.Controls.SubPages.Shell;
-using Brainf_ckSharp.UWP.Controls.SubPages.Shell.UserGuide;
-using Brainf_ckSharp.UWP.Messages.Console.Commands;
-using Brainf_ckSharp.UWP.Messages.Navigation;
+﻿using Brainf_ckSharp.Uwp.Controls.SubPages.Shell;
+using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide;
+using Brainf_ckSharp.Uwp.Messages.Console.Commands;
+using Brainf_ckSharp.Uwp.Messages.Navigation;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 
-namespace Brainf_ckSharp.UWP.ViewModels
+namespace Brainf_ckSharp.Uwp.ViewModels
 {
     /// <summary>
     /// A view model for the root shell control

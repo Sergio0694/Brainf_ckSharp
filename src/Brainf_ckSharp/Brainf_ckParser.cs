@@ -74,7 +74,15 @@ namespace Brainf_ckSharp
         /// <param name="source">The input script to validate</param>
         /// <returns>A <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</returns>
         [Pure]
-        public static SyntaxValidationResult IsSyntaxValid(string source)
+        public static SyntaxValidationResult ValidateSyntax(string source) => ValidateSyntax(source.AsSpan());
+
+        /// <summary>
+        /// Checks whether or not the syntax of the input script is valid
+        /// </summary>
+        /// <param name="span">A <see cref="ReadOnlySpan{T}"/> instance with the input script to validate</param>
+        /// <returns>A <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</returns>
+        [Pure]
+        public static SyntaxValidationResult ValidateSyntax(ReadOnlySpan<char> span)
         {
             // Local variables to track the depth and the function definitions
             int
@@ -86,9 +94,9 @@ namespace Brainf_ckSharp
                 functionOps = 0,
                 totalOps = 0;
 
-            for (int i = 0; i < source.Length; i++)
+            for (int i = 0; i < span.Length; i++)
             {
-                switch (source[i])
+                switch (span[i])
                 {
                     case Characters.Plus:
                     case Characters.Minus:
@@ -184,7 +192,7 @@ namespace Brainf_ckSharp
         internal static UnsafeMemoryBuffer<byte>? TryParse(string source, out SyntaxValidationResult validationResult)
         {
             // Check the syntax of the input source code
-            validationResult = IsSyntaxValid(source);
+            validationResult = ValidateSyntax(source);
 
             if (!validationResult.IsSuccess) return null;
 

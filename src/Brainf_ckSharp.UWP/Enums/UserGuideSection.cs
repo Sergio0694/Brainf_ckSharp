@@ -1,4 +1,4 @@
-﻿namespace Brainf_ckSharp.UWP.Enums
+﻿namespace Brainf_ckSharp.Uwp.Enums
 {
     /// <summary>
     /// Aan <see langword="enum"/> that indicates a section of the app user guide

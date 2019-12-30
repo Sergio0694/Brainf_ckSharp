@@ -1,9 +1,9 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:hostHeader="using:Brainf_ckSharp.UWP.Controls.Host.Header"
-    xmlns:inputPanelHeader="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.Header"
-    xmlns:virtualKeyboard="using:Brainf_ckSharp.UWP.Controls.Host.InputPanel.VirtualKeyboard"
+    xmlns:hostHeader="using:Brainf_ckSharp.Uwp.Controls.Host.Header"
+    xmlns:inputPanelHeader="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel.Header"
+    xmlns:virtualKeyboard="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel.VirtualKeyboard"
     xmlns:winui="using:Microsoft.UI.Xaml.Media">
 
     <!--Custom base style for buttons, expanding the style from WinUI-->
@@ -178,10 +178,23 @@
             <Setter.Value>
                 <ControlTemplate TargetType="inputPanelHeader:MinimalHeaderButton">
                     <Button x:Name="RootButton" Style="{StaticResource ExpandedSquareButtonRevealStyle}">
+                        <Button.Resources>
+                            <SolidColorBrush x:Key="ButtonRevealBackgroundDisabled" Color="#40181818"/>
+                        </Button.Resources>
 
                         <!--Visual states-->
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup>
+                                <VisualState x:Name="Disabled">
+                                    <VisualState.Setters>
+                                        <Setter
+                                            Target="IconBlock.Foreground"
+                                            Value="DarkGray"/>
+                                        <Setter
+                                            Target="RootButton.Background"
+                                            Value="Transparent"/>
+                                    </VisualState.Setters>
+                                </VisualState>
                                 <VisualState x:Name="Default">
                                     <VisualState.Setters>
                                         <Setter

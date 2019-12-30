@@ -1,9 +1,9 @@
 ﻿using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.UWP.ViewModels;
+using Brainf_ckSharp.Uwp.ViewModels.Views;
 
 #nullable enable
 
-namespace Brainf_ckSharp.UWP.Views
+namespace Brainf_ckSharp.Uwp.Views
 {
     /// <summary>
     /// A view for an interactive REPL console for Brainf*ck/PBrain

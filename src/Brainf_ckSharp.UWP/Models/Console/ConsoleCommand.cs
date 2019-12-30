@@ -1,7 +1,7 @@
-﻿using Brainf_ckSharp.UWP.Models.Console.Interfaces;
+﻿using Brainf_ckSharp.Uwp.Models.Console.Interfaces;
 using GalaSoft.MvvmLight;
 
-namespace Brainf_ckSharp.UWP.Models.Console
+namespace Brainf_ckSharp.Uwp.Models.Console
 {
     /// <summary>
     /// A model for a console command being typed by the user

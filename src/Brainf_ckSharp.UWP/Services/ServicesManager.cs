@@ -1,9 +1,9 @@
-﻿using Brainf_ckSharp.UWP.Services.Keyboard;
-using Brainf_ckSharp.UWP.Services.Settings;
+﻿using Brainf_ckSharp.Uwp.Services.Keyboard;
+using Brainf_ckSharp.Uwp.Services.Settings;
 using GalaSoft.MvvmLight.Ioc;
 using GitHub;
 
-namespace Brainf_ckSharp.UWP.Services
+namespace Brainf_ckSharp.Uwp.Services
 {
     /// <summary>
     /// A <see langword="class"/> that manages the various IoC services used in the app
@@ -17,7 +17,7 @@ namespace Brainf_ckSharp.UWP.Services
         {
             SimpleIoc.Default.Register<ISettingsService, SettingsService>();
             SimpleIoc.Default.Register<IKeyboardListenerService, KeyboardListenerService>();
-            SimpleIoc.Default.Register(() => GitHubRestFactory.GetGitHubService("Brainf_ckSharp|UWP"));
+            SimpleIoc.Default.Register(() => GitHubRestFactory.GetGitHubService("Brainf_ckSharp|Uwp"));
         }
     }
 }
