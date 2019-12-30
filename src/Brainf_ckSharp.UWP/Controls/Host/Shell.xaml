@@ -90,12 +90,14 @@
                 HeaderHeight="48"
                 ExpandableContentHeight="180">
                 <telerik:ExpanderControl.Header>
-                    <inputPanelHeader:StdinHeader x:Name="StdinHeader"/>
+                    <inputPanelHeader:StdinHeader
+                        x:Name="StdinHeader"
+                        ShellSelectedIndex="{x:Bind RootHeader.SelectedIndex, Mode=OneWay, FallbackValue=0}"/>
                 </telerik:ExpanderControl.Header>
                 <telerik:ExpanderControl.ExpandableContent>
                     <controls:LockedPivot
                         Style="{StaticResource ExpandedPivotWithNoHeaderStyle}"
-                        SelectedIndex="{x:Bind StdinHeader.SelectedIndex, Mode=OneWay, FallbackValue=0}">
+                        SelectedIndex="{x:Bind StdinHeader.StdinSelectedIndex, Mode=OneWay, FallbackValue=0}">
                         <PivotItem>
                             <virtualKeyboard:OperatorsKeyboard/>
                         </PivotItem>

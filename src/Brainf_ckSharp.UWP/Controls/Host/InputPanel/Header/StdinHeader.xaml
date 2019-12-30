@@ -44,13 +44,15 @@
         <header:MinimalHeaderButton
             Grid.Column="0"
             Icon="{StaticResource OperatorsKeyboardIcon}"
-            IsSelected="{x:Bind functions:PivotSelectionFunctions.IndexToBool(SelectedIndex, 0), Mode=OneWay}"
+            IsSelected="{x:Bind functions:PivotSelectionFunctions.IndexToBool(StdinSelectedIndex, 0), Mode=OneWay}"
             Selected="VirtualKeyboardHeaderSelected"/>
         <header:MinimalHeaderButton
             Icon="{StaticResource QuickMemoryViewerIcon}"
             Grid.Column="1"
-            IsSelected="{x:Bind functions:PivotSelectionFunctions.IndexToBool(SelectedIndex, 1), Mode=OneWay}"
-            Selected="MemoryViewerHeaderSelected"/>
+            IsSelected="{x:Bind functions:PivotSelectionFunctions.IndexToBool(StdinSelectedIndex, 1), Mode=OneWay}"
+            IsEnabled="{x:Bind functions:PivotSelectionFunctions.IndexToBool(ShellSelectedIndex, 0), Mode=OneWay}"
+            Selected="MemoryViewerHeaderSelected"
+            Deselected="MemoryViewerHeaderDeselected"/>
 
         <!--Sliding indicator-->
         <Rectangle 

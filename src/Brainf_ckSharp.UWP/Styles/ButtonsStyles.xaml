@@ -178,10 +178,23 @@
             <Setter.Value>
                 <ControlTemplate TargetType="inputPanelHeader:MinimalHeaderButton">
                     <Button x:Name="RootButton" Style="{StaticResource ExpandedSquareButtonRevealStyle}">
+                        <Button.Resources>
+                            <SolidColorBrush x:Key="ButtonRevealBackgroundDisabled" Color="#40181818"/>
+                        </Button.Resources>
 
                         <!--Visual states-->
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup>
+                                <VisualState x:Name="Disabled">
+                                    <VisualState.Setters>
+                                        <Setter
+                                            Target="IconBlock.Foreground"
+                                            Value="DarkGray"/>
+                                        <Setter
+                                            Target="RootButton.Background"
+                                            Value="Transparent"/>
+                                    </VisualState.Setters>
+                                </VisualState>
                                 <VisualState x:Name="Default">
                                     <VisualState.Setters>
                                         <Setter

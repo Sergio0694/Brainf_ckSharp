@@ -43,7 +43,6 @@ namespace System
             DebugGuard.MustBeLessThan(end, text.Length, nameof(end));
 
             ref char r0 = ref MemoryMarshal.GetReference(text.AsSpan());
-
             int depth = 0;
 
             /* Only track open and closed brackets. This method assumes that
