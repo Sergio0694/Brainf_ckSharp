@@ -85,14 +85,26 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             // Scroll to selection
             _ContentScroller.ChangeView(horizontal, vertical, null, false);
 
-            /* Adjust the UI of the selected line highlight. Translate it to the right
-             * position, and make it invisible if the current selection is not collapsed
-              to a single point. This is the same behavior of Visual Studio. */
-            if (_SelectionLength > 0) _SelectionHighlightBorder!.Opacity = 0;
+            /* Adjust the UI of the selected line highlight and the cursor indicator.
+             * Both elements are translated to the right position and made visible
+             * if the current selection is not collapsed to a single point, otherwise
+             * they're both hidden. This is the same behavior of Visual Studio. */
+            if (_SelectionLength > 0)
+            {
+                _SelectionHighlightBorder!.Opacity = 0;
+                _CursorIndicatorRectangle!.Visibility = Visibility.Collapsed;
+            }
             else
             {
+                // Line highlight
                 _SelectionHighlightBorder!.Opacity = 1;
                 ((TranslateTransform)_SelectionHighlightBorder.RenderTransform).Y = rect.Top + Padding.Top;
+
+                // Cursor indicator
+                _CursorIndicatorRectangle!.Visibility = Visibility.Visible;
+                TranslateTransform cursorTransform = (TranslateTransform)_CursorIndicatorRectangle.RenderTransform;
+                cursorTransform.X = rect.X + 8;
+                cursorTransform.Y = rect.Y + Padding.Top;
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Shapes;
 using Brainf_ckSharp.Helpers;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
@@ -13,6 +14,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     [TemplatePart(Name = BackgroundCanvasName, Type = typeof(Canvas))]
     [TemplatePart(Name = TextOverlaysCanvasName, Type = typeof(CanvasControl))]
     [TemplatePart(Name = SelectionHighlightBorderName, Type = typeof(Border))]
+    [TemplatePart(Name = CursorIndicatorRectangleName, Type = typeof(Rectangle))]
     [TemplatePart(Name = ContentScrollerName, Type = typeof(ContentPresenter))]
     [TemplatePart(Name = ContentElementName, Type = typeof(ScrollViewer))]
     public sealed partial class Brainf_ckEditBox
@@ -31,6 +33,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// The name of the <see cref="Border"/> that highlights the current selection
         /// </summary>
         private const string SelectionHighlightBorderName = "SelectionHighlightBorder";
+
+        /// <summary>
+        /// The name of the <see cref="Rectangle"/> that indicates the position of the cursor
+        /// </summary>
+        private const string CursorIndicatorRectangleName = "CursorIndicatorRectangle";
 
         /// <summary>
         /// The name of the <see cref="ScrollViewer"/> instance for the main content
@@ -63,6 +70,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private Border? _SelectionHighlightBorder;
 
         /// <summary>
+        /// The <see cref="Rectangle"/> instance to indicate the cursor position
+        /// </summary>
+        private Rectangle? _CursorIndicatorRectangle;
+
+        /// <summary>
         /// The <see cref="ScrollViewer"/> instance for the main content
         /// </summary>
         private ScrollViewer? _ContentScroller;
@@ -85,12 +97,14 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             _BackgroundCanvas = (Canvas)GetTemplateChild(BackgroundCanvasName);
             _TextOverlaysCanvas = (CanvasControl)GetTemplateChild(TextOverlaysCanvasName);
             _SelectionHighlightBorder = (Border)GetTemplateChild(SelectionHighlightBorderName);
+            _CursorIndicatorRectangle = (Rectangle)GetTemplateChild(CursorIndicatorRectangleName);
             _ContentScroller = (ScrollViewer)GetTemplateChild(ContentScrollerName);
             _ContentElement = (ContentPresenter)GetTemplateChild(ContentElementName);
 
             Guard.MustBeNotNull(_BackgroundCanvas, nameof(BackgroundCanvasName));
             Guard.MustBeNotNull(_TextOverlaysCanvas, nameof(TextOverlaysCanvasName));
             Guard.MustBeNotNull(_SelectionHighlightBorder, nameof(SelectionHighlightBorderName));
+            Guard.MustBeNotNull(_CursorIndicatorRectangle, nameof(CursorIndicatorRectangleName));
             Guard.MustBeNotNull(_ContentScroller, ContentScrollerName);
             Guard.MustBeNotNull(_ContentElement, ContentElementName);
 
@@ -102,6 +116,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             _ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.Y);
             _ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.X);
             _ContentScroller.StartExpressionAnimation(_SelectionHighlightBorder, Axis.Y);
+            _ContentScroller.StartExpressionAnimation(_CursorIndicatorRectangle, Axis.Y);
+            _ContentScroller.StartExpressionAnimation(_CursorIndicatorRectangle, Axis.Y);
         }
 
         /// <summary>

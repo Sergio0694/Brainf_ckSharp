@@ -40,8 +40,22 @@
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Disabled"/>
-                                <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="PointerOver"/>
+                                <VisualState x:Name="Normal">
+
+                                    <!--Blinking cursor animation when text is not focused-->
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames
+                                            AutoReverse="True"
+                                            RepeatBehavior="Forever"
+                                            BeginTime="0:0:0.500"
+                                            Duration="0:0:1.500"
+                                            Storyboard.TargetName="CursorIndicatorRectangle"
+                                            Storyboard.TargetProperty="Opacity">
+                                            <DiscreteDoubleKeyFrame KeyTime="0:0:0.500" Value="1"/>
+                                            <DiscreteDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
                                 <VisualState x:Name="Focused">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentElement" Storyboard.TargetProperty="RequestedTheme">
@@ -66,17 +80,29 @@
                             <win2d:CanvasControl x:Name="TextOverlaysCanvas"/>
 
                             <!--Current line indicator-->
-                            <Border 
+                            <Border
+                                x:Name="SelectionHighlightBorder"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Top"
                                 Height="20"
                                 BorderThickness="2"
-                                BorderBrush="#30FFFFFF"
-                                x:Name="SelectionHighlightBorder">
+                                BorderBrush="#30FFFFFF">
                                 <Border.RenderTransform>
                                     <TranslateTransform/>
                                 </Border.RenderTransform>
                             </Border>
+
+                            <!--Cursor indicator-->
+                            <Rectangle
+                                x:Name="CursorIndicatorRectangle"
+                                Opacity="0"
+                                Width="1.5"
+                                Height="20"
+                                Fill="LightGray">
+                                <Rectangle.RenderTransform>
+                                    <TranslateTransform X="4"/>
+                                </Rectangle.RenderTransform>
+                            </Rectangle>
                         </Canvas>
 
                         <!--Scroller with a presenter for the text renderer. This is done so that
