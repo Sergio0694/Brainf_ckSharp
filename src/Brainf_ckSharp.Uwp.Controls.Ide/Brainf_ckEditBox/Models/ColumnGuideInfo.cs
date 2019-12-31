@@ -3,7 +3,7 @@
     /// <summary>
     /// A simple <see langword="struct"/> representing the coordinates and the size info on a column guide
     /// </summary>
-    public readonly struct ColumnGuideInfo
+    internal readonly struct ColumnGuideInfo
     {
         /// <summary>
         /// The X coordinate of the column guide
