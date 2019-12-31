@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Brainf_ckSharp.Helpers
 {
@@ -13,6 +14,19 @@ namespace Brainf_ckSharp.Helpers
         /// The compile time conditional constant for the methods the <see cref="DebugGuard"/> <see langword="class"/>
         /// </summary>
         private const string DEBUG = nameof(DEBUG);
+
+        /// <summary>
+        /// Asserts that the input pointer is not <see langword="null"/>
+        /// </summary>
+        /// <typeparam name="T">The type of the input pointer</typeparam>
+        /// <param name="p">The input <typeparamref name="T"/> pointer to test</param>
+        /// <param name="name">The name of the input pointer being tested</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="p"/> is <see langword="null"/></exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static unsafe void MustBeNotNull<T>(T* p, string name) where T : unmanaged
+        {
+            if (p == null) throw new ArgumentNullException(name, $"Parameter {name} must be not null");
+        }
 
         /// <summary>
         /// Asserts that the input expression is <see langword="true"/>

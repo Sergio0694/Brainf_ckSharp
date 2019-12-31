@@ -137,7 +137,9 @@
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.cs">
       <DependentUpon>Brainf_ckIde.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Brainf_ckIde\Helpers\TextGenerator.cs" />
     <Compile Include="Extensions\System\StringExtensions.cs" />
+    <Compile Include="Extensions\System\UInt32Extensions.cs" />
     <Compile Include="Extensions\Windows.System\VirtualKeyExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Text\ITextDocumentExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Text\ITextRangeExtensions.cs" />
