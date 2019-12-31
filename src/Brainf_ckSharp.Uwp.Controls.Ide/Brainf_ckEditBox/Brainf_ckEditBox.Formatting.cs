@@ -72,7 +72,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                          textLength == oldText.Length - 1 &&
                          selectionStart == _SelectionStart)
                 {
-                    // CTRL + Z, do nothing
+                    /* This branch also captures single character deletions.
+                     * Set the property to false to make sure the formatting
+                     * isn't compromised in future runs by the property
+                     * remaining true because this branch took precedence. */
+                    _IsDeleteRequested = false;
                 }
                 else if (_IsDeleteRequested) _IsDeleteRequested = false;
                 else FormatRange(newText, 0, textLength);
