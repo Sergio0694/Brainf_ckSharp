@@ -7,6 +7,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     public sealed partial class Brainf_ckEditBox
     {
         /// <summary>
+        /// Gets the text currently displayed in the control
+        /// </summary>
+        public string Text
+        {
+            get => (string)GetValue(TextProperty);
+            set => SetValue(TextProperty, value);
+        }
+
+        /// <summary>
         /// Gets or sets the margin of the vertical scrolling bar for the control
         /// </summary>
         public Thickness VerticalScrollBarMargin
@@ -14,6 +23,43 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             get => (Thickness)GetValue(VerticalScrollBarMarginProperty);
             set => SetValue(VerticalScrollBarMarginProperty, value);
         }
+
+        /// <summary>
+        /// Gets or sets whether or not to automatically indent brackets and parentheses
+        /// </summary>
+        public bool IsAutomaticBracketsIndentationEnabled
+        {
+            get => (bool)GetValue(IsAutomaticBracketsIndentationEnabledProperty);
+            set => SetValue(IsAutomaticBracketsIndentationEnabledProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the formatting style for brackets
+        /// </summary>
+        public BracketsFormattingStyle BracketsFormattingStyle
+        {
+            get => (BracketsFormattingStyle)GetValue(BracketsFormattingStyleProperty);
+            set => SetValue(BracketsFormattingStyleProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the syntax highlight theme to use
+        /// </summary>
+        public Brainf_ckTheme SyntaxHighlightTheme
+        {
+            get => (Brainf_ckTheme)GetValue(SyntaxHighlightThemeProperty);
+            set => SetValue(SyntaxHighlightThemeProperty, value);
+        }
+
+        /// <summary>
+        /// Gets the dependency property for <see cref="Text"/>.
+        /// </summary>
+        public static readonly DependencyProperty TextProperty =
+            DependencyProperty.Register(
+                nameof(Text),
+                typeof(string),
+                typeof(Brainf_ckEditBox),
+                new PropertyMetadata("\r"));
 
         /// <summary>
         /// Gets the dependency property for <see cref="VerticalScrollBarMargin"/>.
@@ -24,6 +70,36 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 typeof(Thickness),
                 typeof(Brainf_ckEditBox),
                 new PropertyMetadata(default(Thickness), OnVerticalScrollBarMarginPropertyChanged));
+
+        /// <summary>
+        /// Gets the dependency property for <see cref="IsAutomaticBracketsIndentationEnabled"/>.
+        /// </summary>
+        public static readonly DependencyProperty IsAutomaticBracketsIndentationEnabledProperty =
+            DependencyProperty.Register(
+                nameof(IsAutomaticBracketsIndentationEnabled),
+                typeof(bool),
+                typeof(Brainf_ckEditBox),
+                new PropertyMetadata(default(bool)));
+
+        /// <summary>
+        /// Gets the dependency property for <see cref="BracketsFormattingStyle"/>.
+        /// </summary>
+        public static readonly DependencyProperty BracketsFormattingStyleProperty =
+            DependencyProperty.Register(
+                nameof(BracketsFormattingStyle),
+                typeof(BracketsFormattingStyle),
+                typeof(Brainf_ckEditBox),
+                new PropertyMetadata(default(BracketsFormattingStyle)));
+
+        /// <summary>
+        /// Gets the dependency property for <see cref="SyntaxHighlightTheme"/>.
+        /// </summary>
+        public static readonly DependencyProperty SyntaxHighlightThemeProperty =
+            DependencyProperty.Register(
+                nameof(SyntaxHighlightTheme),
+                typeof(Brainf_ckTheme),
+                typeof(Brainf_ckEditBox),
+                new PropertyMetadata(Brainf_ckThemes.VisualStudio));
 
         /// <summary>
         /// Updates the <see cref="FrameworkElement.Margin"/> property for <see cref="_VerticalContentScrollBar"/> when <see cref="VerticalScrollBarMargin"/> changes
@@ -38,62 +114,5 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             @this._VerticalContentScrollBar.Margin = (Thickness)e.NewValue;
         }
-
-        /// <summary>
-        /// Gets or sets whether or not to automatically indent brackets and parentheses
-        /// </summary>
-        public bool IsAutomaticBracketsIndentationEnabled
-        {
-            get => (bool)GetValue(IsAutomaticBracketsIndentationEnabledProperty);
-            set => SetValue(IsAutomaticBracketsIndentationEnabledProperty, value);
-        }
-
-        /// <summary>
-        /// Gets the dependency property for <see cref="IsAutomaticBracketsIndentationEnabled"/>.
-        /// </summary>
-        public static readonly DependencyProperty IsAutomaticBracketsIndentationEnabledProperty =
-            DependencyProperty.Register(
-                nameof(IsAutomaticBracketsIndentationEnabled),
-                typeof(bool),
-                typeof(Brainf_ckEditBox),
-                new PropertyMetadata(default(bool)));
-
-        /// <summary>
-        /// Gets or sets the formatting style for brackets
-        /// </summary>
-        public BracketsFormattingStyle BracketsFormattingStyle
-        {
-            get => (BracketsFormattingStyle)GetValue(BracketsFormattingStyleProperty);
-            set => SetValue(BracketsFormattingStyleProperty, value);
-        }
-
-        /// <summary>
-        /// Gets the dependency property for <see cref="BracketsFormattingStyle"/>.
-        /// </summary>
-        public static readonly DependencyProperty BracketsFormattingStyleProperty =
-            DependencyProperty.Register(
-                nameof(BracketsFormattingStyle),
-                typeof(BracketsFormattingStyle),
-                typeof(Brainf_ckEditBox),
-                new PropertyMetadata(default(BracketsFormattingStyle)));
-
-        /// <summary>
-        /// Gets or sets the syntax highlight theme to use
-        /// </summary>
-        public Brainf_ckTheme SyntaxHighlightTheme
-        {
-            get => (Brainf_ckTheme)GetValue(SyntaxHighlightThemeProperty);
-            set => SetValue(SyntaxHighlightThemeProperty, value);
-        }
-
-        /// <summary>
-        /// Gets the dependency property for <see cref="SyntaxHighlightTheme"/>.
-        /// </summary>
-        public static readonly DependencyProperty SyntaxHighlightThemeProperty =
-            DependencyProperty.Register(
-                nameof(SyntaxHighlightTheme),
-                typeof(Brainf_ckTheme),
-                typeof(Brainf_ckEditBox),
-                new PropertyMetadata(Brainf_ckThemes.VisualStudio));
     }
 }

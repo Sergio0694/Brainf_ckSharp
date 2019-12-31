@@ -13,9 +13,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     public sealed partial class Brainf_ckEditBox
     {
         /// <summary>
-        /// The current text displayed in the control
+        /// Indicates whether the current syntax is valid
         /// </summary>
-        private string _Text = "\r";
+        private bool _IsSyntaxValid = true;
 
         /// <summary>
         /// The start position of the current selection
@@ -26,11 +26,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// The length of the current selection
         /// </summary>
         private int _SelectionLength;
-
-        /// <summary>
-        /// Indicates whether the current syntax is valid
-        /// </summary>
-        private bool _IsSyntaxValid = true;
 
         /// <summary>
         /// Indicates whether the delete key was pressed
@@ -44,10 +39,12 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         {
             using (FormattingLock.For(this))
             {
-                string text = Document.GetText();
+                string
+                    oldText = Text,
+                    newText = Document.GetText();
 
                 int
-                    textLength = text.Length,
+                    textLength = newText.Length,
                     selectionLength = Document.Selection.Length,
                     selectionStart = Document.Selection.StartPosition;
 
@@ -65,23 +62,23 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                  *   - As a last resort, just format the entire text from start to finish. */
                 if (selectionLength == 0 &&
                     selectionStart > 0 &&
-                    (_SelectionLength == 0 && textLength == _Text.Length + 1) ||
+                    (_SelectionLength == 0 && textLength == oldText.Length + 1) ||
                     _SelectionLength > 1)
                 {
-                    FormatSingleCharacter(ref text, selectionStart);
+                    FormatSingleCharacter(ref newText, selectionStart);
                 }
                 else if (selectionLength == 0 &&
                          _SelectionLength == 0 &&
-                         textLength == _Text.Length - 1 &&
+                         textLength == oldText.Length - 1 &&
                          selectionStart == _SelectionStart)
                 {
                     // CTRL + Z, do nothing
                 }
                 else if (_IsDeleteRequested) _IsDeleteRequested = false;
-                else FormatRange(text, 0, textLength);
+                else FormatRange(newText, 0, textLength);
 
-                _Text = text;
-                _IsSyntaxValid = Brainf_ckParser.ValidateSyntax(text).IsSuccessOrEmptyScript;
+                Text = newText;
+                _IsSyntaxValid = Brainf_ckParser.ValidateSyntax(newText).IsSuccessOrEmptyScript;
             }
         }
 
@@ -202,7 +199,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 }
 
                 // Update the current syntax validation
-                string text = _Text = Document.GetText();
+                string text = Text = Document.GetText();
                 _IsSyntaxValid = Brainf_ckParser.ValidateSyntax(text).IsSuccessOrEmptyScript;
             }
         }
@@ -232,7 +229,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     if (Unsafe.Add(ref r0, i) == '\r')
                         Document.GetRangeAt(bounds.Start + i + count++).Text = "\t";
 
-                _Text = Document.GetText();
+                Text = Document.GetText();
             }
         }
 
@@ -269,7 +266,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         i++;
                 }
 
-                _Text = Document.GetText();
+                Text = Document.GetText();
             }
         }
 
@@ -289,7 +286,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 Document.Selection.Text = source;
 
                 // Update the current syntax validation
-                string text = _Text = Document.GetText();
+                string text = Text = Document.GetText();
                 _IsSyntaxValid = Brainf_ckParser.ValidateSyntax(text).IsSuccessOrEmptyScript;
 
                 int
