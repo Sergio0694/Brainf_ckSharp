@@ -14,6 +14,31 @@ namespace System
     internal static class StringExtensions
     {
         /// <summary>
+        /// Counts the number of occurrences of a given character into a target <see cref="string"/>
+        /// </summary>
+        /// <param name="text">The input text to read</param>
+        /// <param name="c">The character to look for</param>
+        /// <returns>The number of occurrences of <paramref name="c"/> in <paramref name="text"/></returns>
+        [Pure]
+        public static int Count(this string text, char c)
+        {
+            int length = text.Length;
+
+            // Empty string, just return 0
+            if (length == 0) return 0;
+
+            ref char r0 = ref MemoryMarshal.GetReference(text.AsSpan());
+            int result = 0;
+
+            // Go over the input text and look for the character
+            for (int i = 0; i < length; i++)
+                if (Unsafe.Add(ref r0, i) == c)
+                    result++;
+
+            return result;
+        }
+
+        /// <summary>
         /// Converts a given text to the equivalent with CR line endings
         /// </summary>
         /// <param name="text">The input text to parse and convert</param>

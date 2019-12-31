@@ -5,12 +5,45 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ide="using:Brainf_ckSharp.Uwp.Controls.Ide"
+    xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
+    <!--Root-->
     <Grid Background="#FF1E1E1E">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="28"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Breakpoints canvas-->
+        <Canvas 
+            Grid.Column="0"
+            Background="#FF333333"/>
+
+        <!--Line numbers grid-->
+        <Canvas Grid.Column="1">
+            <TextBlock
+                x:Name="LineBlock"
+                Width="28"
+                FontSize="15"
+                attachedProperties:NumberOfLinesHelper.ReferenceText="{x:Bind CodeEditBox.Text, Mode=OneWay, FallbackValue=\r}"
+                Foreground="#FF237CAD"
+                HorizontalAlignment="Right"
+                TextAlignment="Right"
+                TextTrimming="CharacterEllipsis">
+                <TextBlock.RenderTransform>
+                    <TranslateTransform Y="108"/>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+        </Canvas>
+
+        <!--Edit box-->
         <ide:Brainf_ckEditBox
+            x:Name="CodeEditBox"
+            Grid.Column="2"
             Padding="8,108,8,8"
             VerticalScrollBarMargin="0,100,0,0"/>
     </Grid>

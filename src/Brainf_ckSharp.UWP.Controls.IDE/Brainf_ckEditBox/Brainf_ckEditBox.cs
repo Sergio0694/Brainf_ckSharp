@@ -51,10 +51,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             Document.Selection.GetRect(PointOptions.Transform, out Rect rect, out _);
 
             double
-                verticalOffset = _ContentScroller!.VerticalOffset,
-                horizontalOffset = _ContentScroller.HorizontalOffset,
-                viewportHeight = _ContentScroller.ViewportHeight - VerticalScrollBarMargin.Top,
-                viewportWidth = _ContentScroller.ViewportWidth,
+                verticalOffset = ContentScroller!.VerticalOffset,
+                horizontalOffset = ContentScroller.HorizontalOffset,
+                viewportHeight = ContentScroller.ViewportHeight - VerticalScrollBarMargin.Top,
+                viewportWidth = ContentScroller.ViewportWidth,
                 transformedVerticalOffset = rect.Top - verticalOffset;
 
             const double NegativeLeftOffsetBeforeSelection = 12;
@@ -83,7 +83,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             else vertical = null;
 
             // Scroll to selection
-            _ContentScroller.ChangeView(horizontal, vertical, null, false);
+            ContentScroller.ChangeView(horizontal, vertical, null, false);
 
             /* Adjust the UI of the selected line highlight and the cursor indicator.
              * Both elements are translated to the right position and made visible

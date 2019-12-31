@@ -75,11 +75,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private Rectangle? _CursorIndicatorRectangle;
 
         /// <summary>
-        /// The <see cref="ScrollViewer"/> instance for the main content
-        /// </summary>
-        private ScrollViewer? _ContentScroller;
-
-        /// <summary>
         /// The <see cref="ContentPresenter"/> instance for the main content
         /// </summary>
         private ContentPresenter? _ContentElement;
@@ -88,6 +83,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// The vertical <see cref="ScrollBar"/> instance for the main content
         /// </summary>
         private ScrollBar? _VerticalContentScrollBar;
+
+        /// <summary>
+        /// Gets the <see cref="ScrollViewer"/> instance for the main content
+        /// </summary>
+        public ScrollViewer? ContentScroller { get; private set; }
 
         /// <inheritdoc/>
         protected override void OnApplyTemplate()
@@ -98,26 +98,26 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             _TextOverlaysCanvas = (CanvasControl)GetTemplateChild(TextOverlaysCanvasName);
             _SelectionHighlightBorder = (Border)GetTemplateChild(SelectionHighlightBorderName);
             _CursorIndicatorRectangle = (Rectangle)GetTemplateChild(CursorIndicatorRectangleName);
-            _ContentScroller = (ScrollViewer)GetTemplateChild(ContentScrollerName);
+            ContentScroller = (ScrollViewer)GetTemplateChild(ContentScrollerName);
             _ContentElement = (ContentPresenter)GetTemplateChild(ContentElementName);
 
             Guard.MustBeNotNull(_BackgroundCanvas, nameof(BackgroundCanvasName));
             Guard.MustBeNotNull(_TextOverlaysCanvas, nameof(TextOverlaysCanvasName));
             Guard.MustBeNotNull(_SelectionHighlightBorder, nameof(SelectionHighlightBorderName));
             Guard.MustBeNotNull(_CursorIndicatorRectangle, nameof(CursorIndicatorRectangleName));
-            Guard.MustBeNotNull(_ContentScroller, ContentScrollerName);
+            Guard.MustBeNotNull(ContentScroller, ContentScrollerName);
             Guard.MustBeNotNull(_ContentElement, ContentElementName);
 
             _BackgroundCanvas.SizeChanged += BackgroundCanvas_SizeChanged;
             _TextOverlaysCanvas.Draw += TextOverlaysCanvas_Draw;
-            _ContentScroller.Loaded += ContentElement_Loaded;
+            ContentScroller.Loaded += ContentElement_Loaded;
             _ContentElement.SizeChanged += _ContentElement_SizeChanged;
 
-            _ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.Y);
-            _ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.X);
-            _ContentScroller.StartExpressionAnimation(_SelectionHighlightBorder, Axis.Y);
-            _ContentScroller.StartExpressionAnimation(_CursorIndicatorRectangle, Axis.Y);
-            _ContentScroller.StartExpressionAnimation(_CursorIndicatorRectangle, Axis.Y);
+            ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.Y);
+            ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.X);
+            ContentScroller.StartExpressionAnimation(_SelectionHighlightBorder, Axis.Y);
+            ContentScroller.StartExpressionAnimation(_CursorIndicatorRectangle, Axis.Y);
+            ContentScroller.StartExpressionAnimation(_CursorIndicatorRectangle, Axis.Y);
         }
 
         /// <summary>
@@ -131,15 +131,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
-        /// A handler that is invoked when <see cref="_ContentScroller"/> is loaded
+        /// A handler that is invoked when <see cref="ContentScroller"/> is loaded
         /// </summary>
         /// <param name="sender">The <see cref="ScrollViewer"/> for the main content</param>
         /// <param name="e">The <see cref="RoutedEventArgs"/> for <see cref="FrameworkElement.Loaded"/></param>
         private void ContentElement_Loaded(object sender, RoutedEventArgs e)
         {
-            _VerticalContentScrollBar = (ScrollBar)_ContentScroller.FindDescendantByName(VerticalScrollBarName);
+            _VerticalContentScrollBar = (ScrollBar)ContentScroller.FindDescendantByName(VerticalScrollBarName);
 
-            Guard.MustBeNotNull(_VerticalContentScrollBar, nameof(_ContentScroller));
+            Guard.MustBeNotNull(_VerticalContentScrollBar, nameof(ContentScroller));
 
             _VerticalContentScrollBar.Margin = VerticalScrollBarMargin;
         }
