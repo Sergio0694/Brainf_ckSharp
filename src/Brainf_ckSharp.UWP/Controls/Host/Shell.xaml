@@ -40,7 +40,7 @@
                 <views:ConsoleView attachedProperties:ReactiveViewModelHelper.IsActive="{x:Bind functions:PivotSelectionFunctions.IndexToBool(RootHeader.SelectedIndex, 0), Mode=OneWay, FallbackValue=True}"/>
             </PivotItem>
             <PivotItem>
-                <views:IDEView attachedProperties:ReactiveViewModelHelper.IsActive="{x:Bind functions:PivotSelectionFunctions.IndexToBool(RootHeader.SelectedIndex, 1), Mode=OneWay, FallbackValue=False}"/>
+                <views:IdeView attachedProperties:ReactiveViewModelHelper.IsActive="{x:Bind functions:PivotSelectionFunctions.IndexToBool(RootHeader.SelectedIndex, 1), Mode=OneWay, FallbackValue=False}"/>
             </PivotItem>
         </Pivot>
 

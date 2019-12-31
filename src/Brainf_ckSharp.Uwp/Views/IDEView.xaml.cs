@@ -8,17 +8,17 @@ namespace Brainf_ckSharp.Uwp.Views
     /// <summary>
     /// A view for a Brainf*ck/PBrain IDE
     /// </summary>
-    public sealed partial class IDEView : UserControl
+    public sealed partial class IdeView : UserControl
     {
-        public IDEView()
+        public IdeView()
         {
             this.InitializeComponent();
-            this.DataContext = new IDEViewModel();
+            this.DataContext = new IdeViewModel();
         }
 
         /// <summary>
-        /// Gets the <see cref="IDEViewModel"/> instance for the current view
+        /// Gets the <see cref="IdeViewModel"/> instance for the current view
         /// </summary>
-        public IDEViewModel? ViewModel => this.DataContext as IDEViewModel;
+        public IdeViewModel? ViewModel => this.DataContext as IdeViewModel;
     }
 }

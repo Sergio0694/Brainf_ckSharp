@@ -134,6 +134,9 @@
     <Compile Include="Brainf_ckEditBox\Helpers\CodeGenerator.cs" />
     <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.Formatting.Lock.cs" />
     <Compile Include="Brainf_ckEditBox\Models\ColumnGuideInfo.cs" />
+    <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.cs">
+      <DependentUpon>Brainf_ckIde.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\System\StringExtensions.cs" />
     <Compile Include="Extensions\Windows.System\VirtualKeyExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Text\ITextDocumentExtensions.cs" />
@@ -171,6 +174,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Brainf_ckEditBox\Brainf_ckEditBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Brainf_ckIde\Brainf_ckIde.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
