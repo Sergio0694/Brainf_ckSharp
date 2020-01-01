@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ide="using:Brainf_ckSharp.Uwp.Controls.Ide"
-    xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
+    xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -15,11 +15,13 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="28"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="12"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!--Breakpoints canvas-->
-        <Canvas 
+        <!--Breakpoints canvas background-->
+        <Border
             Grid.Column="0"
             Background="#FF333333"/>
 
@@ -29,7 +31,6 @@
                 x:Name="LineBlock"
                 Width="28"
                 FontSize="15"
-                attachedProperties:NumberOfLinesHelper.ReferenceText="{x:Bind CodeEditBox.PlainText, Mode=OneWay, FallbackValue=\r}"
                 Foreground="#FF237CAD"
                 HorizontalAlignment="Right"
                 TextAlignment="Right"
@@ -40,11 +41,22 @@
             </TextBlock>
         </Canvas>
 
+        <!--Canvas with the Win2D canvas used to render all the IDE overlays.
+            Just like in the code editor, the Win2D canvas is hosted inside a
+            parent canvas that lets it expand out of bounds so that it's
+            free to render all the necessary overlays.-->
+        <Canvas
+            Grid.Column="0"
+            Grid.ColumnSpan="4">
+            <xaml:CanvasControl x:Name="IdeOverlaysCaanvas"/>
+        </Canvas>
+
         <!--Edit box-->
         <ide:Brainf_ckEditBox
             x:Name="CodeEditBox"
-            Grid.Column="2"
+            Grid.Column="5"
             Padding="8,108,8,8"
-            VerticalScrollBarMargin="0,100,0,0"/>
+            VerticalScrollBarMargin="0,100,0,0"
+            PlainTextChanged="CodeEditBox_OnPlainTextChanged"/>
     </Grid>
 </UserControl>

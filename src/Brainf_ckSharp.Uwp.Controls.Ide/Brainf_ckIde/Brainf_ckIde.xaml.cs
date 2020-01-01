@@ -1,5 +1,7 @@
-﻿using Windows.UI.Xaml;
+﻿using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
 using UICompositionAnimations.Enums;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
@@ -26,6 +28,26 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private void Brainf_ckIde_Loaded(object sender, RoutedEventArgs e)
         {
             CodeEditBox.ContentScroller!.StartExpressionAnimation(LineBlock, Axis.Y);
+        }
+
+        /// <summary>
+        /// Updates the UI when the source code displayed into the <see cref="Brainf_ckEditBox"/> instance changes
+        /// </summary>
+        /// <param name="sender">The <see cref="Brainf_ckEditBox"/> instance in use</param>
+        /// <param name="args">The new Brainf*ck/Pbrain source code being displayed</param>
+        private void CodeEditBox_OnPlainTextChanged(Brainf_ckEditBox sender, string args)
+        {
+            UpdateLineIndicators(args);
+        }
+
+        /// <summary>
+        /// Updates the <see cref="TextBlock"/> that displays the line number next to each line
+        /// </summary>
+        /// <param name="text">The new text being diplayed in the IDE</param>
+        private void UpdateLineIndicators(string text)
+        {
+            int numberOfLines = text.Count('\r');
+            LineBlock.Text = TextGenerator.GetLineNumbersText(numberOfLines);
         }
     }
 }
