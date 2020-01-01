@@ -29,6 +29,18 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         {
             CodeEditBox.ContentScroller!.StartExpressionAnimation(LineBlock, Axis.Y);
             CodeEditBox.ContentScroller.StartExpressionAnimation(IdeOverlaysCanvas, Axis.Y);
+            CodeEditBox.ContentElement!.SizeChanged += Brainf_ckIde_SizeChanged;
+        }
+
+        /// <summary>
+        /// Updates the size of the Win2D canvas when the UI is resized
+        /// </summary>
+        /// <param name="sender">The <see cref="Canvas"/> that hosts the text overlays</param>
+        /// <param name="e">The <see cref="SizeChangedEventArgs"/> for <see cref="FrameworkElement.SizeChanged"/></param>
+        private void Brainf_ckIde_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            IdeOverlaysCanvas.Height = e.NewSize.Height;
+            IdeOverlaysCanvas.Width = e.NewSize.Width + 72;
         }
 
         /// <summary>
@@ -38,6 +50,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="args">The new Brainf*ck/Pbrain source code being displayed</param>
         private void CodeEditBox_OnPlainTextChanged(Brainf_ckEditBox sender, string args)
         {
+            IdeOverlaysCanvas.Invalidate();
             UpdateLineIndicators(args);
         }
 

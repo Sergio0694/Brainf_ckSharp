@@ -50,9 +50,14 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private const string ContentElementName = "ContentElement";
 
         /// <summary>
-        /// The name of the vertical <see cref="ScrollBar"/> instance for <see cref="_ContentElement"/>
+        /// The name of the vertical <see cref="ScrollBar"/> instance for <see cref="ContentElement"/>
         /// </summary>
         private const string VerticalScrollBarName = "VerticalScrollBar";
+
+        /// <summary>
+        /// The <see cref="Canvas"/> instance for the control
+        /// </summary>
+        private Canvas? _BackgroundCanvas;
 
         /// <summary>
         /// The <see cref="CanvasControl"/> instance for the control
@@ -70,19 +75,14 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private Rectangle? _CursorIndicatorRectangle;
 
         /// <summary>
-        /// The <see cref="ContentPresenter"/> instance for the main content
-        /// </summary>
-        private ContentPresenter? _ContentElement;
-
-        /// <summary>
         /// The vertical <see cref="ScrollBar"/> instance for the main content
         /// </summary>
         private ScrollBar? _VerticalContentScrollBar;
 
         /// <summary>
-        /// The <see cref="Canvas"/> instance for the control
+        /// Gets the <see cref="ContentPresenter"/> instance for the main content
         /// </summary>
-        internal Canvas? BackgroundCanvas { get; private set; }
+        internal ContentPresenter? ContentElement { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="ScrollViewer"/> instance for the main content
@@ -94,24 +94,24 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         {
             base.OnApplyTemplate();
 
-            BackgroundCanvas = (Canvas)GetTemplateChild(BackgroundCanvasName);
+            _BackgroundCanvas = (Canvas)GetTemplateChild(BackgroundCanvasName);
             _TextOverlaysCanvas = (CanvasControl)GetTemplateChild(TextOverlaysCanvasName);
             _SelectionHighlightBorder = (Border)GetTemplateChild(SelectionHighlightBorderName);
             _CursorIndicatorRectangle = (Rectangle)GetTemplateChild(CursorIndicatorRectangleName);
             ContentScroller = (ScrollViewer)GetTemplateChild(ContentScrollerName);
-            _ContentElement = (ContentPresenter)GetTemplateChild(ContentElementName);
+            ContentElement = (ContentPresenter)GetTemplateChild(ContentElementName);
 
-            Guard.MustBeNotNull(BackgroundCanvas, nameof(BackgroundCanvasName));
+            Guard.MustBeNotNull(_BackgroundCanvas, nameof(BackgroundCanvasName));
             Guard.MustBeNotNull(_TextOverlaysCanvas, nameof(TextOverlaysCanvasName));
             Guard.MustBeNotNull(_SelectionHighlightBorder, nameof(SelectionHighlightBorderName));
             Guard.MustBeNotNull(_CursorIndicatorRectangle, nameof(CursorIndicatorRectangleName));
             Guard.MustBeNotNull(ContentScroller, ContentScrollerName);
-            Guard.MustBeNotNull(_ContentElement, ContentElementName);
+            Guard.MustBeNotNull(ContentElement, ContentElementName);
 
-            BackgroundCanvas.SizeChanged += BackgroundCanvas_SizeChanged;
+            _BackgroundCanvas.SizeChanged += BackgroundCanvas_SizeChanged;
             _TextOverlaysCanvas.Draw += TextOverlaysCanvas_Draw;
             ContentScroller.Loaded += ContentElement_Loaded;
-            _ContentElement.SizeChanged += _ContentElement_SizeChanged;
+            ContentElement.SizeChanged += _ContentElement_SizeChanged;
 
             ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.Y);
             ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.X);
