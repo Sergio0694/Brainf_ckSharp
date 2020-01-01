@@ -29,7 +29,7 @@
                 x:Name="LineBlock"
                 Width="28"
                 FontSize="15"
-                attachedProperties:NumberOfLinesHelper.ReferenceText="{x:Bind CodeEditBox.Text, Mode=OneWay, FallbackValue=\r}"
+                attachedProperties:NumberOfLinesHelper.ReferenceText="{x:Bind CodeEditBox.PlainText, Mode=OneWay, FallbackValue=\r}"
                 Foreground="#FF237CAD"
                 HorizontalAlignment="Right"
                 TextAlignment="Right"

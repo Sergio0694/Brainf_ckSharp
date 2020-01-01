@@ -40,7 +40,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             using (FormattingLock.For(this))
             {
                 string
-                    oldText = Text,
+                    oldText = PlainText,
                     newText = Document.GetText();
 
                 int
@@ -81,7 +81,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 else if (_IsDeleteRequested) _IsDeleteRequested = false;
                 else FormatRange(newText, 0, textLength);
 
-                Text = newText;
+                PlainText = newText;
                 _IsSyntaxValid = Brainf_ckParser.ValidateSyntax(newText).IsSuccessOrEmptyScript;
             }
         }
@@ -203,7 +203,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 }
 
                 // Update the current syntax validation
-                string text = Text = Document.GetText();
+                string text = PlainText = Document.GetText();
                 _IsSyntaxValid = Brainf_ckParser.ValidateSyntax(text).IsSuccessOrEmptyScript;
             }
         }
@@ -233,7 +233,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     if (Unsafe.Add(ref r0, i) == '\r')
                         Document.GetRangeAt(bounds.Start + i + count++).Text = "\t";
 
-                Text = Document.GetText();
+                PlainText = Document.GetText();
             }
         }
 
@@ -270,7 +270,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         i++;
                 }
 
-                Text = Document.GetText();
+                PlainText = Document.GetText();
             }
         }
 
@@ -290,7 +290,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 Document.Selection.Text = source;
 
                 // Update the current syntax validation
-                string text = Text = Document.GetText();
+                string text = PlainText = Document.GetText();
                 _IsSyntaxValid = Brainf_ckParser.ValidateSyntax(text).IsSuccessOrEmptyScript;
 
                 int
