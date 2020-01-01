@@ -55,11 +55,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private const string VerticalScrollBarName = "VerticalScrollBar";
 
         /// <summary>
-        /// The <see cref="Canvas"/> instance for the control
-        /// </summary>
-        private Canvas? _BackgroundCanvas;
-
-        /// <summary>
         /// The <see cref="CanvasControl"/> instance for the control
         /// </summary>
         private CanvasControl? _TextOverlaysCanvas;
@@ -85,30 +80,35 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private ScrollBar? _VerticalContentScrollBar;
 
         /// <summary>
+        /// The <see cref="Canvas"/> instance for the control
+        /// </summary>
+        internal Canvas? BackgroundCanvas { get; private set; }
+
+        /// <summary>
         /// Gets the <see cref="ScrollViewer"/> instance for the main content
         /// </summary>
-        public ScrollViewer? ContentScroller { get; private set; }
+        internal ScrollViewer? ContentScroller { get; private set; }
 
         /// <inheritdoc/>
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
-            _BackgroundCanvas = (Canvas)GetTemplateChild(BackgroundCanvasName);
+            BackgroundCanvas = (Canvas)GetTemplateChild(BackgroundCanvasName);
             _TextOverlaysCanvas = (CanvasControl)GetTemplateChild(TextOverlaysCanvasName);
             _SelectionHighlightBorder = (Border)GetTemplateChild(SelectionHighlightBorderName);
             _CursorIndicatorRectangle = (Rectangle)GetTemplateChild(CursorIndicatorRectangleName);
             ContentScroller = (ScrollViewer)GetTemplateChild(ContentScrollerName);
             _ContentElement = (ContentPresenter)GetTemplateChild(ContentElementName);
 
-            Guard.MustBeNotNull(_BackgroundCanvas, nameof(BackgroundCanvasName));
+            Guard.MustBeNotNull(BackgroundCanvas, nameof(BackgroundCanvasName));
             Guard.MustBeNotNull(_TextOverlaysCanvas, nameof(TextOverlaysCanvasName));
             Guard.MustBeNotNull(_SelectionHighlightBorder, nameof(SelectionHighlightBorderName));
             Guard.MustBeNotNull(_CursorIndicatorRectangle, nameof(CursorIndicatorRectangleName));
             Guard.MustBeNotNull(ContentScroller, ContentScrollerName);
             Guard.MustBeNotNull(_ContentElement, ContentElementName);
 
-            _BackgroundCanvas.SizeChanged += BackgroundCanvas_SizeChanged;
+            BackgroundCanvas.SizeChanged += BackgroundCanvas_SizeChanged;
             _TextOverlaysCanvas.Draw += TextOverlaysCanvas_Draw;
             ContentScroller.Loaded += ContentElement_Loaded;
             _ContentElement.SizeChanged += _ContentElement_SizeChanged;

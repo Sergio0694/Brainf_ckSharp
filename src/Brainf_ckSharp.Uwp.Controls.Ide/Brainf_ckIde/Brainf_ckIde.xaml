@@ -13,48 +13,56 @@
     <!--Root-->
     <Grid Background="#FF1E1E1E">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="28"/>
-            <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="12"/>
+            
+            <!--The first column leaves space for all the overlays on the left
+                side of the text box. These include the first column where
+                breakpoints are marked (20 DIPs), the column with the line
+                number indicators (28 DIPs), one with the git diff indicators
+                for files loaded from disk (12 DIPs) and finally one column
+                with the indentation indicators (12 DIPs), for a total
+                of 72 DIPs. All the overlays are rendered in a single Win2D
+                canvas that goes over all these areas, while the line
+                numbers are displayed through a single text block.-->
+            <ColumnDefinition Width="72"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <!--Breakpoints canvas background-->
         <Border
             Grid.Column="0"
+            Width="20"
+            HorizontalAlignment="Left"
             Background="#FF333333"/>
-
-        <!--Line numbers grid-->
-        <Canvas Grid.Column="1">
-            <TextBlock
-                x:Name="LineBlock"
-                Width="28"
-                FontSize="15"
-                Foreground="#FF237CAD"
-                HorizontalAlignment="Right"
-                TextAlignment="Right"
-                TextTrimming="CharacterEllipsis">
-                <TextBlock.RenderTransform>
-                    <TranslateTransform Y="108"/>
-                </TextBlock.RenderTransform>
-            </TextBlock>
-        </Canvas>
 
         <!--Canvas with the Win2D canvas used to render all the IDE overlays.
             Just like in the code editor, the Win2D canvas is hosted inside a
             parent canvas that lets it expand out of bounds so that it's
             free to render all the necessary overlays.-->
-        <Canvas
-            Grid.Column="0"
-            Grid.ColumnSpan="4">
-            <xaml:CanvasControl x:Name="IdeOverlaysCaanvas"/>
+        <Canvas Grid.Column="0">
+
+            <!--Line numbers grid-->
+            <TextBlock
+                x:Name="LineBlock"
+                Width="28"
+                FontSize="15"
+                Foreground="#FF237CAD"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Right"
+                TextAlignment="Right"
+                TextTrimming="CharacterEllipsis">
+                <TextBlock.RenderTransform>
+                    <TranslateTransform X="20" Y="108"/>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+
+            <!--Win2D canvas-->
+            <xaml:CanvasControl x:Name="IdeOverlaysCanvas"/>
         </Canvas>
 
         <!--Edit box-->
         <ide:Brainf_ckEditBox
             x:Name="CodeEditBox"
-            Grid.Column="5"
+            Grid.Column="1"
             Padding="8,108,8,8"
             VerticalScrollBarMargin="0,100,0,0"
             PlainTextChanged="CodeEditBox_OnPlainTextChanged"/>

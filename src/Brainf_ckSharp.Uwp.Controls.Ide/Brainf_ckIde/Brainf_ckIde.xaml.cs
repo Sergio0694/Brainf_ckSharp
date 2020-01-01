@@ -28,6 +28,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private void Brainf_ckIde_Loaded(object sender, RoutedEventArgs e)
         {
             CodeEditBox.ContentScroller!.StartExpressionAnimation(LineBlock, Axis.Y);
+            CodeEditBox.ContentScroller.StartExpressionAnimation(IdeOverlaysCanvas, Axis.Y);
         }
 
         /// <summary>
