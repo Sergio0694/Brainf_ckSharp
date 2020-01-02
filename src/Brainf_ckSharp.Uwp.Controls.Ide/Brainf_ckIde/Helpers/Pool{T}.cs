@@ -20,7 +20,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers
         /// <summary>
         /// The current pool of items
         /// </summary>
-        private static T[] _Items = ArrayPool<T>.Shared.Rent(MinimumPoolSize);
+        /// <remarks>Not using the array pool here since previous pools are no longer needed</remarks>
+        private static T[] _Items = new T[MinimumPoolSize];
 
         /// <summary>
         /// The current offset into the pool of items
@@ -53,12 +54,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers
             if (_Offset == _Items.Length)
             {
                 T[] oldItems = _Items;
-                T[] newItems = ArrayPool<T>.Shared.Rent(oldItems.Length * 2);
+                T[] newItems = new T[oldItems.Length * 2];
 
                 // Copy over the previous elements
                 oldItems.AsSpan().CopyTo(newItems);
-
-                ArrayPool<T>.Shared.Return(oldItems);
 
                 _Items = newItems;
 
