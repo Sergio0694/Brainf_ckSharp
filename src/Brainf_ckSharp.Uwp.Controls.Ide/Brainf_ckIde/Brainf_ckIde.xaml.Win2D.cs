@@ -65,6 +65,16 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private static readonly CanvasTextFormat TextFormat = new CanvasTextFormat { FontSize = 8 };
 
         /// <summary>
+        /// The current array of <see cref="IndentationIndicatorBase"/> instances to render
+        /// </summary>
+        private IndentationIndicatorBase[] _Indicators = ArrayPool<IndentationIndicatorBase>.Shared.Rent(1);
+
+        /// <summary>
+        /// The current number of valid items in <see cref="_Indicators"/>
+        /// </summary>
+        private int _IndicatorsCount;
+
+        /// <summary>
         /// Draws the IDE overlays when an update is requested
         /// </summary>
         /// <param name="sender">The sender <see cref="CanvasControl"/> instance</param>
@@ -218,17 +228,17 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             }
         }
 
-        private IndentationIndicatorBase[] _Indicators = ArrayPool<IndentationIndicatorBase>.Shared.Rent(1);
-
-        private int _IndicatorsCount;
-
-        private void TryUpdateIndentationInfo(string text)
+        /// <summary>
+        /// Updates the current indentation info to render
+        /// </summary>
+        /// <param name="text">The current source code being displayed</param>
+        /// <param name="numberOfLines">The current number of lines being displayed</param>
+        private void UpdateIndentationInfo(string text, int numberOfLines)
         {
             // Return the previous buffer
             ArrayPool<IndentationIndicatorBase>.Shared.Return(_Indicators);
 
             // Allocate the new buffer
-            int numberOfLines = text.Count('\r');
             IndentationIndicatorBase[] indicators = _Indicators = ArrayPool<IndentationIndicatorBase>.Shared.Rent(numberOfLines);
             ref IndentationIndicatorBase indicatorsRef = ref indicators[0]; // There's always at least one line
 
@@ -245,7 +255,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             // Additional tracking variables
             int
                 y = 0,
-                blankLines = 0,
                 startRootDepth = 0,
                 endRootDepth = 0,
                 maxRootDepth = 0,
@@ -376,7 +385,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
                             Unsafe.Add(ref indicatorsRef, y) = indicator;
                         }
-                        else blankLines++;
+                        else Unsafe.Add(ref indicatorsRef, y) = null;
 
                         // Update the persistent trackers across lines
                         y++;
