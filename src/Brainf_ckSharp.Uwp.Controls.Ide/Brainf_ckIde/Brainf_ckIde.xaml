@@ -23,7 +23,7 @@
                 of 72 DIPs. All the overlays are rendered in a single Win2D
                 canvas that goes over all these areas, while the line
                 numbers are displayed through a single text block.-->
-            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="72"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -61,7 +61,7 @@
                 Draw="IdeOverlaysCanvas_Draw"
                 Background="Black">
                 <xaml:CanvasControl.RenderTransform>
-                    <TranslateTransform Y="108"/>
+                    <TranslateTransform Y="110"/>
                 </xaml:CanvasControl.RenderTransform>
             </xaml:CanvasControl>
         </Canvas>
@@ -70,7 +70,7 @@
         <ide:Brainf_ckEditBox
             x:Name="CodeEditBox"
             Grid.Column="1"
-            Padding="8,108,8,8"
+            Padding="4,108,8,8"
             VerticalScrollBarMargin="0,100,0,0"
             PlainTextChanged="CodeEditBox_OnPlainTextChanged"/>
     </Grid>
