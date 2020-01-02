@@ -1,6 +1,10 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Windows.UI;
+using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Helpers;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Microsoft.Graphics.Canvas;
@@ -64,7 +68,21 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="args">The <see cref="CanvasDrawEventArgs"/> for the current instance</param>
         private void IdeOverlaysCanvas_Draw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            // TODO
+            foreach (var indicator in _Indicators)
+            {
+                switch (indicator)
+                {
+                    case FunctionIndicator function:
+                        DrawFunctionDeclaration(args.DrawingSession, GetOffsetAt(function.Y), function.Type);
+                        break;
+                    case BlockIndicator block:
+                        DrawIndentationBlock(args.DrawingSession, GetOffsetAt(block.Y), block.Depth, block.Type, block.IsWithinFunction);
+                        break;
+                    case LineIndicator line:
+                        DrawLine(args.DrawingSession, GetOffsetAt(line.Y), line.Type);
+                        break;
+                }
+            }
         }
 
         [Pure]
@@ -90,7 +108,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             else
             {
                 float middleOffset = offset + (IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f;
-                session.DrawLine(IndentationIndicatorsMiddleMargin, offset + IndentationIndicatorBlockSize, IndentationIndicatorsMiddleMargin, middleOffset, OutlineColor);
+                session.DrawLine(IndentationIndicatorsMiddleMargin, offset, IndentationIndicatorsMiddleMargin, middleOffset, OutlineColor);
             }
 
             // Horizontal marker
@@ -188,5 +206,163 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 session.DrawLine(horizontalOffset, middleOffset, IndentationIndicatorsRightMargin, middleOffset, OutlineColor);
             }
         }
+
+        private List<IndentationIndicatorBase> _Indicators = new List<IndentationIndicatorBase>();
+
+        private void TryUpdateIndentationInfo(string text)
+        {
+            ReadOnlySpan<char> span = text.AsSpan();
+            ref char r0 = ref MemoryMarshal.GetReference(span);
+            int length = span.Length;
+
+            List<IndentationIndicatorBase> indicators = new List<IndentationIndicatorBase>();
+
+            int
+                y = 0,
+                startRootDepth = 0,
+                endRootDepth = 0,
+                maxRootDepth = 0,
+                startFunctionDepth = 0,
+                endFunctionDepth = 0,
+                maxFunctionDepth = 0;
+            bool
+                hasRootLoopStarted = false,
+                hasFunctionStarted = false,
+                hasFunctionEnded = false,
+                hasFunctionLoopStarted = false,
+                startsWithinFunction = false,
+                isWithinFunction = false,
+                wasWithinFunction = false;
+
+
+            for (int i = 0; i < length; i++)
+            {
+                switch (Unsafe.Add(ref r0, i))
+                {
+                    /* For [ and ] operators, simply keep track of the current depth
+                        * level both in the root and in the scope of an open function */
+                    case Characters.LoopStart:
+                        if (isWithinFunction)
+                        {
+                            endFunctionDepth++;
+                            maxFunctionDepth = Math.Max(endFunctionDepth, maxFunctionDepth);
+                            hasFunctionLoopStarted = true;
+                        }
+                        else
+                        {
+                            endRootDepth++;
+                            maxRootDepth = Math.Max(endRootDepth, maxRootDepth);
+                            hasRootLoopStarted = true;
+                        }
+                        break;
+                    case Characters.LoopEnd:
+                        if (isWithinFunction) endFunctionDepth--;
+                        else endRootDepth--;
+                        break;
+
+                    /* For ( and ) operators, all is needed is to update the variables to
+                        * keep track of whether or not a function declaration is currently open,
+                        * and whether or not at least a function declaration was open
+                        * while parsing the current line in the input source code */
+                    case Characters.FunctionStart:
+                        isWithinFunction = true;
+                        wasWithinFunction = true;
+                        hasFunctionStarted = true;
+                        break;
+                    case Characters.FunctionEnd:
+                        isWithinFunction = false;
+                        hasFunctionEnded = true;
+                        break;
+
+                    // Process the line info at the end of each line
+                    case '\r':
+
+                        if (hasFunctionStarted)
+                        {
+                            IndentationType type;
+                            if (hasFunctionEnded)
+                            {
+                                if (isWithinFunction || endRootDepth > 0) type = IndentationType.SelfContainedAndContinuing;
+                                else type = IndentationType.SelfContained;
+                            }
+                            else type = IndentationType.Open;
+
+                            indicators.Add(new FunctionIndicator { Y = y, Type = type });
+                        }
+                        else if (hasRootLoopStarted)
+                        {
+                            IndentationType type;
+                            if (maxRootDepth > endRootDepth)
+                            {
+                                if (endRootDepth > 0) type = IndentationType.SelfContainedAndContinuing;
+                                else type = IndentationType.SelfContained;
+                            }
+                            else type = IndentationType.Open;
+
+                            indicators.Add(new BlockIndicator { Y = y, Type = type, Depth = maxRootDepth, IsWithinFunction = false });
+                        }
+                        else if (hasFunctionLoopStarted)
+                        {
+                            IndentationType type;
+                            if (maxFunctionDepth > endFunctionDepth)
+                            {
+                                if (endFunctionDepth > 0) type = IndentationType.SelfContainedAndContinuing;
+                                else type = IndentationType.SelfContained;
+                            }
+                            else type = IndentationType.Open;
+
+                            indicators.Add(new BlockIndicator { Y = y, Type = type, Depth = maxFunctionDepth, IsWithinFunction = true });
+                        }
+                        else if (hasFunctionEnded ||
+                                 endRootDepth < startRootDepth ||
+                                 endFunctionDepth < startFunctionDepth)
+                        {
+                            IndentationType type;
+                            if (isWithinFunction || endRootDepth > 0) type = IndentationType.SelfContainedAndContinuing;
+                            else type = IndentationType.SelfContained;
+
+                            indicators.Add(new LineIndicator { Y = y, Type = type });
+                        }
+                        else if (isWithinFunction || endRootDepth > 0)
+                        {
+                            indicators.Add(new LineIndicator { Y = y, Type = IndentationType.Open });
+                        }
+
+                        // Update the persistent trackers across lines
+                        y++;
+                        startRootDepth = endRootDepth;
+                        maxRootDepth = endRootDepth;
+                        startFunctionDepth = endFunctionDepth;
+                        maxFunctionDepth = endFunctionDepth;
+                        startsWithinFunction = isWithinFunction;
+                        hasRootLoopStarted = false;
+                        hasFunctionStarted = false;
+                        hasFunctionEnded = false;
+                        hasFunctionLoopStarted = false;
+                        break;
+                }
+            }
+
+            _Indicators = indicators;
+            IdeOverlaysCanvas.Invalidate();
+        }
+    }
+
+    internal abstract class IndentationIndicatorBase
+    {
+        public int Y { get; set; }
+
+        public IndentationType Type { get; set; }
+    }
+
+    internal sealed class LineIndicator : IndentationIndicatorBase { }
+
+    internal sealed class FunctionIndicator : IndentationIndicatorBase { }
+
+    internal sealed class BlockIndicator : IndentationIndicatorBase
+    {
+        public int Depth { get; set; }
+
+        public bool IsWithinFunction { get; set; }
     }
 }

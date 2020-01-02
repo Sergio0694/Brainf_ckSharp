@@ -52,6 +52,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         {
             IdeOverlaysCanvas.Invalidate();
             UpdateLineIndicators(args);
+            TryUpdateIndentationInfo(args);
         }
 
         /// <summary>

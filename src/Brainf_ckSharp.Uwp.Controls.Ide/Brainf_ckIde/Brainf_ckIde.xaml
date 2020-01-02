@@ -70,7 +70,7 @@
         <ide:Brainf_ckEditBox
             x:Name="CodeEditBox"
             Grid.Column="1"
-            Padding="4,108,8,8"
+            Padding="8,108,8,8"
             VerticalScrollBarMargin="0,100,0,0"
             PlainTextChanged="CodeEditBox_OnPlainTextChanged"/>
     </Grid>
