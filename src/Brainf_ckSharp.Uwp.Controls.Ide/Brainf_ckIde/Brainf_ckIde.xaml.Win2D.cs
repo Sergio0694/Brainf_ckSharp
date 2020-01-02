@@ -7,6 +7,8 @@ using Windows.UI;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Helpers;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
+using Brainf_ckSharp.Uwp.Controls.Ide.Models;
+using Brainf_ckSharp.Uwp.Controls.Ide.Models.Abstract;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Text;
 using Microsoft.Graphics.Canvas.UI.Xaml;
@@ -346,23 +348,5 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             _Indicators = indicators;
             IdeOverlaysCanvas.Invalidate();
         }
-    }
-
-    internal abstract class IndentationIndicatorBase
-    {
-        public int Y { get; set; }
-
-        public IndentationType Type { get; set; }
-    }
-
-    internal sealed class LineIndicator : IndentationIndicatorBase { }
-
-    internal sealed class FunctionIndicator : IndentationIndicatorBase { }
-
-    internal sealed class BlockIndicator : IndentationIndicatorBase
-    {
-        public int Depth { get; set; }
-
-        public bool IsWithinFunction { get; set; }
     }
 }
