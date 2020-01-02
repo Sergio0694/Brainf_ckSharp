@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Buffers;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -7,6 +7,7 @@ using Windows.UI;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Helpers;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
+using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models.Abstract;
 using Microsoft.Graphics.Canvas;
@@ -70,9 +71,12 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="args">The <see cref="CanvasDrawEventArgs"/> for the current instance</param>
         private void IdeOverlaysCanvas_Draw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            foreach (var indicator in _Indicators)
+            ref IndentationIndicatorBase r0 = ref _Indicators[0];
+            int count = _IndicatorsCount;
+
+            for (int i = 0; i < count; i++)
             {
-                switch (indicator)
+                switch (Unsafe.Add(ref r0, i))
                 {
                     case FunctionIndicator function:
                         DrawFunctionDeclaration(args.DrawingSession, GetOffsetAt(function.Y), function.Type);
@@ -87,6 +91,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             }
         }
 
+        /// <summary>
+        /// Gets the vertical offset corresponding to a given line
+        /// </summary>
+        /// <param name="i">The line for which to retrieve the vertical offset</param>
+        /// <returns>The vertical offset for a line at position <param name="i"></param></returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static float GetOffsetAt(int i) => 4 + IndentationIndicatorsElementHeight * i;
@@ -209,18 +218,34 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             }
         }
 
-        private List<IndentationIndicatorBase> _Indicators = new List<IndentationIndicatorBase>();
+        private IndentationIndicatorBase[] _Indicators = ArrayPool<IndentationIndicatorBase>.Shared.Rent(1);
+
+        private int _IndicatorsCount;
 
         private void TryUpdateIndentationInfo(string text)
         {
+            // Return the previous buffer
+            ArrayPool<IndentationIndicatorBase>.Shared.Return(_Indicators);
+
+            // Allocate the new buffer
+            int numberOfLines = text.Count('\r');
+            IndentationIndicatorBase[] indicators = _Indicators = ArrayPool<IndentationIndicatorBase>.Shared.Rent(numberOfLines);
+            ref IndentationIndicatorBase indicatorsRef = ref indicators[0]; // There's always at least one line
+
+            // Reset the pools
+            Pool<LineIndicator>.Reset();
+            Pool<BlockIndicator>.Reset();
+            Pool<FunctionIndicator>.Reset();
+
+            // Prepare the input text
             ReadOnlySpan<char> span = text.AsSpan();
             ref char r0 = ref MemoryMarshal.GetReference(span);
             int length = span.Length;
 
-            List<IndentationIndicatorBase> indicators = new List<IndentationIndicatorBase>();
-
+            // Additional tracking variables
             int
                 y = 0,
+                blankLines = 0,
                 startRootDepth = 0,
                 endRootDepth = 0,
                 maxRootDepth = 0,
@@ -236,7 +261,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 isWithinFunction = false,
                 wasWithinFunction = false;
 
-
+            // Iterate over all the characters
             for (int i = 0; i < length; i++)
             {
                 switch (Unsafe.Add(ref r0, i))
@@ -289,31 +314,45 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                             }
                             else type = IndentationType.Open;
 
-                            indicators.Add(new FunctionIndicator { Y = y, Type = type });
+                            FunctionIndicator indicator = Pool<FunctionIndicator>.Rent();
+                            indicator.Y = y;
+                            indicator.Type = type;
+
+                            Unsafe.Add(ref indicatorsRef, y) = indicator;
                         }
                         else if (hasRootLoopStarted)
                         {
                             IndentationType type;
                             if (maxRootDepth > endRootDepth)
                             {
-                                if (endRootDepth > 0) type = IndentationType.SelfContainedAndContinuing;
-                                else type = IndentationType.SelfContained;
+                                type = endRootDepth > 0 ? IndentationType.SelfContainedAndContinuing : IndentationType.SelfContained;
                             }
                             else type = IndentationType.Open;
 
-                            indicators.Add(new BlockIndicator { Y = y, Type = type, Depth = maxRootDepth, IsWithinFunction = false });
+                            BlockIndicator indicator = Pool<BlockIndicator>.Rent();
+                            indicator.Y = y;
+                            indicator.Type = type;
+                            indicator.Depth = maxRootDepth;
+                            indicator.IsWithinFunction = false;
+
+                            Unsafe.Add(ref indicatorsRef, y) = indicator;
                         }
                         else if (hasFunctionLoopStarted)
                         {
                             IndentationType type;
                             if (maxFunctionDepth > endFunctionDepth)
                             {
-                                if (endFunctionDepth > 0) type = IndentationType.SelfContainedAndContinuing;
-                                else type = IndentationType.SelfContained;
+                                type = endFunctionDepth > 0 ? IndentationType.SelfContainedAndContinuing : IndentationType.SelfContained;
                             }
                             else type = IndentationType.Open;
 
-                            indicators.Add(new BlockIndicator { Y = y, Type = type, Depth = maxFunctionDepth, IsWithinFunction = true });
+                            BlockIndicator indicator = Pool<BlockIndicator>.Rent();
+                            indicator.Y = y;
+                            indicator.Type = type;
+                            indicator.Depth = maxFunctionDepth;
+                            indicator.IsWithinFunction = true;
+
+                            Unsafe.Add(ref indicatorsRef, y) = indicator;
                         }
                         else if (hasFunctionEnded ||
                                  endRootDepth < startRootDepth ||
@@ -323,12 +362,21 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                             if (isWithinFunction || endRootDepth > 0) type = IndentationType.SelfContainedAndContinuing;
                             else type = IndentationType.SelfContained;
 
-                            indicators.Add(new LineIndicator { Y = y, Type = type });
+                            LineIndicator indicator = Pool<LineIndicator>.Rent();
+                            indicator.Y = y;
+                            indicator.Type = type;
+
+                            Unsafe.Add(ref indicatorsRef, y) = indicator;
                         }
                         else if (isWithinFunction || endRootDepth > 0)
                         {
-                            indicators.Add(new LineIndicator { Y = y, Type = IndentationType.Open });
+                            LineIndicator indicator = Pool<LineIndicator>.Rent();
+                            indicator.Y = y;
+                            indicator.Type = IndentationType.Open;
+
+                            Unsafe.Add(ref indicatorsRef, y) = indicator;
                         }
+                        else blankLines++;
 
                         // Update the persistent trackers across lines
                         y++;
@@ -346,6 +394,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             }
 
             _Indicators = indicators;
+            _IndicatorsCount = y - blankLines;
             IdeOverlaysCanvas.Invalidate();
         }
     }

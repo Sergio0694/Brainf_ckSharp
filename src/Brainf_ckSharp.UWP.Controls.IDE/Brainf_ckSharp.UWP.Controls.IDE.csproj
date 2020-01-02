@@ -139,6 +139,7 @@
     </Compile>
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.cs" />
     <Compile Include="Brainf_ckIde\Enums\IndentationType.cs" />
+    <Compile Include="Brainf_ckIde\Helpers\Pool{T}.cs" />
     <Compile Include="Brainf_ckIde\Helpers\TextGenerator.cs" />
     <Compile Include="Brainf_ckIde\Models\Abstract\IndentationIndicatorBase.cs" />
     <Compile Include="Brainf_ckIde\Models\BlockIndicator.cs" />
