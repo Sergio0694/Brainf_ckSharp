@@ -394,7 +394,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             }
 
             _Indicators = indicators;
-            _IndicatorsCount = y - blankLines;
+            _IndicatorsCount = y;
             IdeOverlaysCanvas.Invalidate();
         }
     }
