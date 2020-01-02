@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Windows.UI;
+using Brainf_ckSharp.Helpers;
+using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Text;
 using Microsoft.Graphics.Canvas.UI.Xaml;
@@ -74,10 +76,31 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         /// <param name="session">The target <see cref="CanvasDrawingSession"/> instance</param>
         /// <param name="offset">The current vertical offset to start drawing the line from</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void DrawLine(CanvasDrawingSession session, float offset)
+        /// <param name="indentationType">The type of line to draw</param>
+        private static void DrawLine(
+            CanvasDrawingSession session,
+            float offset,
+            IndentationType indentationType)
         {
-            session.DrawLine(IndentationIndicatorsMiddleMargin, offset, IndentationIndicatorsMiddleMargin, offset + IndentationIndicatorsElementHeight, OutlineColor);
+            // Vertical guide
+            if ((indentationType & IndentationType.FullSize) != 0)
+            {
+                session.DrawLine(IndentationIndicatorsMiddleMargin, offset, IndentationIndicatorsMiddleMargin, offset + IndentationIndicatorsElementHeight, OutlineColor);
+            }
+            else
+            {
+                float middleOffset = offset + (IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f;
+                session.DrawLine(IndentationIndicatorsMiddleMargin, offset + IndentationIndicatorBlockSize, IndentationIndicatorsMiddleMargin, middleOffset, OutlineColor);
+            }
+
+            // Horizontal marker
+            if ((indentationType & IndentationType.IsClosing) != 0)
+            {
+                float
+                    horizontalOffset = IndentationIndicatorsMiddleMargin - 0.5f,
+                    middleOffset = offset + (IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f + 0.5f;
+                session.DrawLine(horizontalOffset, middleOffset, IndentationIndicatorsRightMargin, middleOffset, OutlineColor);
+            }
         }
 
         /// <summary>
@@ -86,24 +109,31 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="session">The target <see cref="CanvasDrawingSession"/> instance</param>
         /// <param name="depth">The current indentation block depth</param>
         /// <param name="offset">The current vertical offset to start drawing the indentation block from</param>
-        /// <param name="isSelfContained">Whether or not the indentation block is self contained</param>
+        /// <param name="indentationType">The type of indentation block to draw</param>
         /// <param name="isWithinFunction">Whether or not the current block is contained within a function</param>
-        private static void DrawIndentationBlock(CanvasDrawingSession session, float offset, int depth, bool isSelfContained, bool isWithinFunction)
+        private static void DrawIndentationBlock(
+            CanvasDrawingSession session,
+            float offset,
+            int depth,
+            IndentationType indentationType,
+            bool isWithinFunction)
         {
+            DebugGuard.MustBeGreaterThanOrEqualTo(offset, 0, nameof(offset));
+            DebugGuard.MustBeGreaterThanOrEqualTo(depth, 1, nameof(depth));
+
+            // Indentation block
             if (isWithinFunction)
             {
                 session.DrawRoundedRectangle(IndentationIndicatorsLeftMargin, offset, IndentationIndicatorBlockSize, IndentationIndicatorBlockSize, 2, 2, OutlineColor);
             }
             else session.DrawRectangle(IndentationIndicatorsLeftMargin, offset, IndentationIndicatorBlockSize, IndentationIndicatorBlockSize, OutlineColor);
 
-            string text = depth <= 9 ? depth.ToString() : "-";
+            // Depth level counter
+            string text = depth <= 9 ? depth.ToString() : "•";
             session.DrawText(text, IndentationIndicatorsLeftMargin + 3, offset - 1, TextColor, TextFormat);
 
-            /* If the function has a depth greater than 1, or is within a function or is not self
-             * contained, it means that its vertical guide must reach the end of the current slot.
-             * Otherwise, the vertical guide must only reach half of the remaining slot space,
-             * and be immediately connected to the horizontal guide to indicate the closed level. */
-            if (depth > 1 || isWithinFunction || !isSelfContained)
+            // Vertical guide
+            if ((indentationType & IndentationType.FullSize) != 0)
             {
                 session.DrawLine(IndentationIndicatorsMiddleMargin, offset + IndentationIndicatorBlockSize, IndentationIndicatorsMiddleMargin, offset + IndentationIndicatorsElementHeight, OutlineColor);
             }
@@ -113,7 +143,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 session.DrawLine(IndentationIndicatorsMiddleMargin, offset + IndentationIndicatorBlockSize, IndentationIndicatorsMiddleMargin, middleOffset, OutlineColor);
             }
 
-            if (isSelfContained)
+            // Horizontal marker
+            if ((indentationType & IndentationType.IsClosing) != 0)
             {
                 float
                     horizontalOffset = IndentationIndicatorsMiddleMargin - 0.5f,
@@ -127,22 +158,35 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         /// <param name="session">The target <see cref="CanvasDrawingSession"/> instance</param>
         /// <param name="offset">The current vertical offset to start drawing the function declaration from</param>
-        /// <param name="isSelfContained">Whether or not the function declaration is self contained</param>
-        private static void DrawFunctionDeclaration(CanvasDrawingSession session, float offset, bool isSelfContained)
+        /// <param name="indentationType">The type of line to draw</param>
+        private static void DrawFunctionDeclaration(
+            CanvasDrawingSession session,
+            float offset,
+            IndentationType indentationType)
         {
             session.FillRoundedRectangle(IndentationIndicatorsLeftMargin, offset, IndentationIndicatorBlockSize, IndentationIndicatorBlockSize, 9999, 9999, FunctionBackgroundColor);
             session.DrawRoundedRectangle(IndentationIndicatorsLeftMargin, offset, IndentationIndicatorBlockSize, IndentationIndicatorBlockSize, 9999, 9999, OutlineColor);
             session.DrawText("f", IndentationIndicatorsLeftMargin + 4f, offset, TextColor, TextFormat);
 
-            if (isSelfContained)
+            // Vertical guide
+            if ((indentationType & IndentationType.FullSize) != 0)
+            {
+                session.DrawLine(IndentationIndicatorsMiddleMargin, offset + IndentationIndicatorBlockSize, IndentationIndicatorsMiddleMargin, offset + IndentationIndicatorsElementHeight, OutlineColor);
+            }
+            else
+            {
+                float middleOffset = offset + (IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f;
+                session.DrawLine(IndentationIndicatorsMiddleMargin, offset + IndentationIndicatorBlockSize, IndentationIndicatorsMiddleMargin, middleOffset, OutlineColor);
+            }
+
+            // Horizontal marker
+            if ((indentationType & IndentationType.IsClosing) != 0)
             {
                 float
                     horizontalOffset = IndentationIndicatorsMiddleMargin - 0.5f,
-                    middleOffset = offset + (IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f;
-                session.DrawLine(IndentationIndicatorsMiddleMargin, offset + IndentationIndicatorBlockSize, IndentationIndicatorsMiddleMargin, middleOffset, OutlineColor);
+                    middleOffset = offset + (IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f + 0.5f;
                 session.DrawLine(horizontalOffset, middleOffset, IndentationIndicatorsRightMargin, middleOffset, OutlineColor);
             }
-            else session.DrawLine(IndentationIndicatorsMiddleMargin, offset + IndentationIndicatorBlockSize, IndentationIndicatorsMiddleMargin, offset + IndentationIndicatorsElementHeight, OutlineColor);
         }
     }
 }

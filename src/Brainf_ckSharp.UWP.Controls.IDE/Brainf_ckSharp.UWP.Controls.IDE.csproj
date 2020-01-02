@@ -138,6 +138,7 @@
       <DependentUpon>Brainf_ckIde.xaml</DependentUpon>
     </Compile>
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.cs" />
+    <Compile Include="Brainf_ckIde\Enums\IndentationType.cs" />
     <Compile Include="Brainf_ckIde\Helpers\TextGenerator.cs" />
     <Compile Include="Extensions\System\StringExtensions.cs" />
     <Compile Include="Extensions\System\UInt32Extensions.cs" />
