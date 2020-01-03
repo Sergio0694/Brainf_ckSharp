@@ -103,7 +103,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 // Cursor indicator
                 _CursorIndicatorRectangle!.Visibility = Visibility.Visible;
                 TranslateTransform cursorTransform = (TranslateTransform)_CursorIndicatorRectangle.RenderTransform;
-                cursorTransform.X = rect.X + 8;
+                cursorTransform.X = rect.X + Padding.Left;
                 cursorTransform.Y = rect.Y + Padding.Top;
             }
         }

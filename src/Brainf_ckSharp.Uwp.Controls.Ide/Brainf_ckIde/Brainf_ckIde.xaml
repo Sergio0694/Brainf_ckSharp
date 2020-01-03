@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ide="using:Brainf_ckSharp.Uwp.Controls.Ide"
     xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    xmlns:attachedProperties="using:UICompositionAnimations.AttachedProperties"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -23,7 +24,7 @@
                 of 72 DIPs. All the overlays are rendered in a single Win2D
                 canvas that goes over all these areas, while the line
                 numbers are displayed through a single text block.-->
-            <ColumnDefinition Width="72"/>
+            <ColumnDefinition Width="70"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -70,7 +71,8 @@
         <ide:Brainf_ckEditBox
             x:Name="CodeEditBox"
             Grid.Column="1"
-            Padding="8,108,8,8"
+            attachedProperties:ClipHelper.ClipToBounds="True"
+            Padding="4,108,8,8"
             VerticalScrollBarMargin="0,100,0,0"
             PlainTextChanged="CodeEditBox_OnPlainTextChanged"/>
     </Grid>

@@ -77,7 +77,11 @@
                         <Canvas x:Name="BackgroundCanvas">
 
                             <!--Win2D canvas for whitespaces and column guides-->
-                            <win2d:CanvasControl x:Name="TextOverlaysCanvas"/>
+                            <win2d:CanvasControl x:Name="TextOverlaysCanvas">
+                                <win2d:CanvasControl.RenderTransform>
+                                    <TranslateTransform X="-4"/>
+                                </win2d:CanvasControl.RenderTransform>
+                            </win2d:CanvasControl>
 
                             <!--Current line indicator-->
                             <Border
@@ -100,7 +104,7 @@
                                 Height="20"
                                 Fill="LightGray">
                                 <Rectangle.RenderTransform>
-                                    <TranslateTransform X="4"/>
+                                    <TranslateTransform/>
                                 </Rectangle.RenderTransform>
                             </Rectangle>
                         </Canvas>
