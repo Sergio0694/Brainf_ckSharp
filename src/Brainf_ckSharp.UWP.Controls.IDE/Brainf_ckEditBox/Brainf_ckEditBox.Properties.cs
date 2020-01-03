@@ -1,6 +1,7 @@
 ﻿using Windows.Foundation;
 using Windows.UI.Xaml;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
+using Brainf_ckSharp.Uwp.Controls.Ide.Models;
 using Brainf_ckSharp.Uwp.Themes;
 
 #nullable enable
@@ -12,7 +13,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// Raised whenever the <see cref="PlainText"/> property changes
         /// </summary>
-        public event TypedEventHandler<Brainf_ckEditBox, string>? PlainTextChanged; 
+        public event TypedEventHandler<Brainf_ckEditBox, PlainTextChangedEventArgs>? PlainTextChanged;
 
         /// <summary>
         /// Gets the plain text currently displayed in the control
@@ -24,7 +25,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             {
                 SetValue(PlainTextProperty, value);
 
-                PlainTextChanged?.Invoke(this, value);
+                if (PlainTextChanged != null)
+                {
+                    PlainTextChangedEventArgs args = new PlainTextChangedEventArgs(value, _SyntaxValidationResult);
+                    PlainTextChanged(this, args);
+                }
             }
         }
 

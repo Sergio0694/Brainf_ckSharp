@@ -84,8 +84,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 else if (_IsDeleteRequested) _IsDeleteRequested = false;
                 else FormatRange(newText, 0, textLength);
 
-                PlainText = newText;
                 _SyntaxValidationResult = Brainf_ckParser.ValidateSyntax(newText);
+                PlainText = newText;
             }
         }
 
@@ -206,8 +206,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 }
 
                 // Update the current syntax validation
-                string text = PlainText = Document.GetText();
+                string text = Document.GetText();
+
                 _SyntaxValidationResult = Brainf_ckParser.ValidateSyntax(text);
+                PlainText = text;
             }
         }
 
@@ -293,8 +295,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 Document.Selection.Text = source;
 
                 // Update the current syntax validation
-                string text = PlainText = Document.GetText();
+                string text = Document.GetText();
+
                 _SyntaxValidationResult = Brainf_ckParser.ValidateSyntax(text);
+                PlainText = text;
 
                 int
                     sourceLength = source.Length,

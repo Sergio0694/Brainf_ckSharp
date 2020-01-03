@@ -246,11 +246,21 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// Updates the current indentation info to render
         /// </summary>
         /// <param name="text">The current source code being displayed</param>
+        /// <param name="isSyntaxValid">Whether or not the syntax in the input source code is valid</param>
         /// <param name="numberOfLines">The current number of lines being displayed</param>
-        private void UpdateIndentationInfo(string text, int numberOfLines)
+        private void UpdateIndentationInfo(string text, bool isSyntaxValid, int numberOfLines)
         {
             // Return the previous buffer
             ArrayPool<IndentationIndicatorBase>.Shared.Return(_Indicators);
+
+            // Skip if the current syntax is not valid
+            if (!isSyntaxValid)
+            {
+                _Indicators = ArrayPool<IndentationIndicatorBase>.Shared.Rent(1);
+                _IndicatorsCount = 0;
+                IdeOverlaysCanvas.Invalidate();
+                return;
+            }
 
             // Allocate the new buffer
             IndentationIndicatorBase[] indicators = _Indicators = ArrayPool<IndentationIndicatorBase>.Shared.Rent(numberOfLines);

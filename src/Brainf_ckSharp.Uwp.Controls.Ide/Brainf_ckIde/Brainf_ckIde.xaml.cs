@@ -2,6 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
+using Brainf_ckSharp.Uwp.Controls.Ide.Models;
 using UICompositionAnimations.Enums;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
@@ -54,13 +55,13 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// Updates the UI when the source code displayed into the <see cref="Brainf_ckEditBox"/> instance changes
         /// </summary>
         /// <param name="sender">The <see cref="Brainf_ckEditBox"/> instance in use</param>
-        /// <param name="args">The new Brainf*ck/Pbrain source code being displayed</param>
-        private void CodeEditBox_OnPlainTextChanged(Brainf_ckEditBox sender, string args)
+        /// <param name="args">The arguments for the new Brainf*ck/Pbrain source code being displayed</param>
+        private void CodeEditBox_OnPlainTextChanged(Brainf_ckEditBox sender, PlainTextChangedEventArgs args)
         {
-            int numberOfLines = args.Count('\r');
+            int numberOfLines = args.PlainText.Count('\r');
 
             UpdateLineIndicators(numberOfLines);
-            UpdateIndentationInfo(args, numberOfLines);
+            UpdateIndentationInfo(args.PlainText, args.ValidationResult.IsSuccessOrEmptyScript, numberOfLines);
         }
 
         /// <summary>
