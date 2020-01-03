@@ -47,7 +47,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="e">The <see cref="SizeChangedEventArgs"/> for <see cref="FrameworkElement.SizeChanged"/></param>
         private void Brainf_ckIde_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            IdeOverlaysCanvas.Height = e.NewSize.Height;
+            IdeOverlaysCanvas.Height = e.NewSize.Height + 20;
             IdeOverlaysCanvas.Width = e.NewSize.Width + 72;
         }
 
