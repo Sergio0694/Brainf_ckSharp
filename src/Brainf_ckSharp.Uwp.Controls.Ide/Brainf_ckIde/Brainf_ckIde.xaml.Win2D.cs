@@ -280,9 +280,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 hasFunctionStarted = false,
                 hasFunctionEnded = false,
                 hasFunctionLoopStarted = false,
-                startsWithinFunction = false,
-                isWithinFunction = false,
-                wasWithinFunction = false;
+                isWithinFunction = false;
 
             // Iterate over all the characters
             for (int i = 0; i < length; i++)
@@ -316,7 +314,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         * while parsing the current line in the input source code */
                     case Characters.FunctionStart:
                         isWithinFunction = true;
-                        wasWithinFunction = true;
                         hasFunctionStarted = true;
                         break;
                     case Characters.FunctionEnd:
@@ -365,7 +362,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                             IndentationType type;
                             if (maxFunctionDepth > endFunctionDepth)
                             {
-                                type = endFunctionDepth > 0 ? IndentationType.SelfContainedAndContinuing : IndentationType.SelfContained;
+                                if (isWithinFunction || endFunctionDepth > 0) type = IndentationType.SelfContainedAndContinuing;
+                                else type = IndentationType.SelfContained;
                             }
                             else type = IndentationType.Open;
 
@@ -407,7 +405,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         maxRootDepth = endRootDepth;
                         startFunctionDepth = endFunctionDepth;
                         maxFunctionDepth = endFunctionDepth;
-                        startsWithinFunction = isWithinFunction;
                         hasRootLoopStarted = false;
                         hasFunctionStarted = false;
                         hasFunctionEnded = false;
