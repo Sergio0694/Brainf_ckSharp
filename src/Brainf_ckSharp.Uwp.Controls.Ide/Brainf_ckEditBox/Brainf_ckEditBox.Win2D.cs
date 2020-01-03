@@ -207,7 +207,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         [Pure]
         private bool TryUpdateBracketsList()
         {
-            DebugGuard.MustBeTrue(_IsSyntaxValid, nameof(_IsSyntaxValid));
+            DebugGuard.MustBeTrue(_SyntaxValidationResult.IsSuccessOrEmptyScript, nameof(_SyntaxValidationResult));
 
             // Prepare the current text
             ReadOnlySpan<char> text = PlainText.AsSpan();

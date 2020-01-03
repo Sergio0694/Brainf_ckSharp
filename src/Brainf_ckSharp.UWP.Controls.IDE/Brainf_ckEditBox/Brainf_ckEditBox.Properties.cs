@@ -3,6 +3,8 @@ using Windows.UI.Xaml;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Themes;
 
+#nullable enable
+
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
     public sealed partial class Brainf_ckEditBox
@@ -10,7 +12,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// Raised whenever the <see cref="PlainText"/> property changes
         /// </summary>
-        public event TypedEventHandler<Brainf_ckEditBox, string> PlainTextChanged; 
+        public event TypedEventHandler<Brainf_ckEditBox, string>? PlainTextChanged; 
 
         /// <summary>
         /// Gets the plain text currently displayed in the control
