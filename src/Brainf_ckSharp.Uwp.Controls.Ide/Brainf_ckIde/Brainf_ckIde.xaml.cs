@@ -30,6 +30,13 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             CodeEditBox.ContentScroller!.StartExpressionAnimation(LineBlock, Axis.Y);
             CodeEditBox.ContentScroller.StartExpressionAnimation(IdeOverlaysCanvas, Axis.Y);
             CodeEditBox.ContentElement!.SizeChanged += Brainf_ckIde_SizeChanged;
+
+            /* Manually adjust the Win2D canvas size here, since when this handler runs
+             * for the code editor, the first size changed event for the inner content
+             * element has already been raised. Doing this fixes the Win2D canvas
+             * size without the user having to first manually resize the app window. */
+            IdeOverlaysCanvas.Height = CodeEditBox.ContentElement.ActualHeight;
+            IdeOverlaysCanvas.Width = CodeEditBox.ContentElement.ActualWidth + 72;
         }
 
         /// <summary>
