@@ -45,6 +45,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private const int IndentationIndicatorsElementHeight = 20;
 
         /// <summary>
+        /// The exact height each indentation element should have
+        /// </summary>
+        private const float IndentationIndicatorsTargetElementHeight = 19.9512f;
+
+        /// <summary>
         /// The color used to draw outlines for the indentation indicators
         /// </summary>
         private static readonly Color OutlineColor = "#FFA5A5A5".ToColor();
@@ -108,7 +113,16 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <returns>The vertical offset for a line at position <param name="i"></param></returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float GetOffsetAt(int i) => 4 + IndentationIndicatorsElementHeight * i;
+        private static float GetOffsetAt(int i)
+        {
+            float
+                approximateOffset = IndentationIndicatorsElementHeight * i,
+                targetOffset = IndentationIndicatorsTargetElementHeight * i,
+                delta = approximateOffset - targetOffset,
+                adjustment = MathF.Floor(delta);
+
+            return 4 + approximateOffset - adjustment;
+        }
 
         /// <summary>
         /// Draws a single vertical indentation line
