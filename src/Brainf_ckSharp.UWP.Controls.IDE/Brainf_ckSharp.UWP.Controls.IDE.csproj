@@ -138,7 +138,9 @@
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.cs">
       <DependentUpon>Brainf_ckIde.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.cs" />
+    <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Constants.cs" />
+    <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Load.cs" />
+    <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Draw.cs" />
     <Compile Include="Brainf_ckIde\Enums\IndentationType.cs" />
     <Compile Include="Brainf_ckIde\Helpers\Pool{T}.cs" />
     <Compile Include="Brainf_ckIde\Helpers\TextGenerator.cs" />
