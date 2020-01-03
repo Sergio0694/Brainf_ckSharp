@@ -36,20 +36,16 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             for (int i = 0; i < count; i++)
             {
-                IndentationIndicatorBase indicator = Unsafe.Add(ref r0, i);
-
-                float offset = GetOffsetAt(indicator.Y) + IndentationIndicatorsVerticalOffsetMargin;
-
                 switch (Unsafe.Add(ref r0, i))
                 {
-                    case FunctionIndicator _:
-                        DrawFunctionDeclaration(args.DrawingSession, offset, indicator.Type);
+                    case FunctionIndicator function:
+                        DrawFunctionDeclaration(args.DrawingSession, GetOffsetAt(function.Y) + IndentationIndicatorsVerticalOffsetMargin, function.Type);
                         break;
                     case BlockIndicator block:
-                        DrawIndentationBlock(args.DrawingSession, offset, block.Depth, block.Type, block.IsWithinFunction);
+                        DrawIndentationBlock(args.DrawingSession, GetOffsetAt(block.Y) + IndentationIndicatorsVerticalOffsetMargin, block.Depth, block.Type, block.IsWithinFunction);
                         break;
-                    case LineIndicator _:
-                        DrawLine(args.DrawingSession, offset, indicator.Type);
+                    case LineIndicator line:
+                        DrawLine(args.DrawingSession, GetOffsetAt(line.Y) + IndentationIndicatorsVerticalOffsetMargin, line.Type);
                         break;
                 }
             }
