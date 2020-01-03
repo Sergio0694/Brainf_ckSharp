@@ -59,16 +59,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         {
             int numberOfLines = args.Count('\r');
 
-            UpdateLineIndicators(args, numberOfLines);
+            UpdateLineIndicators(numberOfLines);
             UpdateIndentationInfo(args, numberOfLines);
         }
 
         /// <summary>
         /// Updates the <see cref="TextBlock"/> that displays the line number next to each line
         /// </summary>
-        /// <param name="text">The new text being diplayed in the IDE</param>
         /// <param name="numberOfLines">The current number of lines being displayed</param>
-        private void UpdateLineIndicators(string text, int numberOfLines)
+        private void UpdateLineIndicators(int numberOfLines)
         {
             LineBlock.Text = TextGenerator.GetLineNumbersText(numberOfLines);
         }

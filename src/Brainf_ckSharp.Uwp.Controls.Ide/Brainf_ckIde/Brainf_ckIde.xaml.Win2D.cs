@@ -324,6 +324,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     // Process the line info at the end of each line
                     case '\r':
 
+                        /* If a function was declared on the current line, that takes precedence
+                         * over everything else, and the function definition indicator will
+                         * always be displayed in this case. Different visual modes depend
+                         * on whether the function is self contained, and whether or not
+                         * there is a nested self contained loop on the same line. */
                         if (hasFunctionStarted)
                         {
                             IndentationType type;
@@ -342,6 +347,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         }
                         else if (hasRootLoopStarted)
                         {
+                            // Indentation indicator with square UI for root loops
                             IndentationType type;
                             if (maxRootDepth > endRootDepth)
                             {
@@ -359,6 +365,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         }
                         else if (hasFunctionLoopStarted)
                         {
+                            // Indentation indicator with rounded corners for loops within functions
                             IndentationType type;
                             if (maxFunctionDepth > endFunctionDepth)
                             {
@@ -379,6 +386,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                                  endRootDepth < startRootDepth ||
                                  endFunctionDepth < startFunctionDepth)
                         {
+                            /* This branch is taken when the current line only contains
+                             * at least a closed root or function loop. In this case, the
+                             * visual mode to use depends on whether or not there is an
+                             * additional external indentation scope still active at the end. */
                             IndentationType type;
                             if (isWithinFunction || endRootDepth > 0) type = IndentationType.SelfContainedAndContinuing;
                             else type = IndentationType.SelfContained;
@@ -391,6 +402,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         }
                         else if (isWithinFunction || endRootDepth > 0)
                         {
+                            // Active indentation level with no changes
                             LineIndicator indicator = Pool<LineIndicator>.Rent();
                             indicator.Y = y;
                             indicator.Type = IndentationType.Open;
