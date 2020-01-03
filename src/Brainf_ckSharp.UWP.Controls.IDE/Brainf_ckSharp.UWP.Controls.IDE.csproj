@@ -134,11 +134,18 @@
     <Compile Include="Brainf_ckEditBox\Helpers\CodeGenerator.cs" />
     <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.Formatting.Lock.cs" />
     <Compile Include="Brainf_ckEditBox\Models\ColumnGuideInfo.cs" />
-    <Compile Include="Brainf_ckIde\AttachedProperties\NumberOfLinesHelper.cs" />
+    <Compile Include="Brainf_ckEditBox\Models\PlainTextChangedEventArgs.cs" />
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.cs">
       <DependentUpon>Brainf_ckIde.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.cs" />
+    <Compile Include="Brainf_ckIde\Enums\IndentationType.cs" />
+    <Compile Include="Brainf_ckIde\Helpers\Pool{T}.cs" />
     <Compile Include="Brainf_ckIde\Helpers\TextGenerator.cs" />
+    <Compile Include="Brainf_ckIde\Models\Abstract\IndentationIndicatorBase.cs" />
+    <Compile Include="Brainf_ckIde\Models\BlockIndicator.cs" />
+    <Compile Include="Brainf_ckIde\Models\FunctionIndicator.cs" />
+    <Compile Include="Brainf_ckIde\Models\LineIndicator.cs" />
     <Compile Include="Extensions\System\StringExtensions.cs" />
     <Compile Include="Extensions\System\UInt32Extensions.cs" />
     <Compile Include="Extensions\Windows.System\VirtualKeyExtensions.cs" />

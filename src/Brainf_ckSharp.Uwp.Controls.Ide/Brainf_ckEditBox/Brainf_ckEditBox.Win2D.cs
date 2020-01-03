@@ -19,6 +19,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     public sealed partial class Brainf_ckEditBox
     {
         /// <summary>
+        /// The <see cref="CanvasStrokeStyle"/> for the vertical dashed column guides
+        /// </summary>
+        private static readonly CanvasStrokeStyle DashStrokeStyle = new CanvasStrokeStyle { CustomDashStyle = new float[] { 2, 4 } };
+
+        /// <summary>
         /// The current sequence of bracket pairs being displayed in the text
         /// </summary>
         private MemoryOwner<(int Start, int End)> _BracketPairs = MemoryOwner<(int, int)>.Allocate(0);
@@ -55,8 +60,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="args">The <see cref="CanvasDrawEventArgs"/> for the current instance</param>
         private void TextOverlaysCanvas_Draw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            CanvasStrokeStyle style = new CanvasStrokeStyle { CustomDashStyle = new float[] { 2, 4 } };
-
             float offset = (float)Padding.Top;
 
             // Spaces
@@ -111,7 +114,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     guideInfo.Y + guideInfo.Height + 0.5f + offset,
                     Colors.Gray,
                     1,
-                    style);
+                    DashStrokeStyle);
             }
         }
 
@@ -123,7 +126,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private bool TryUpdateWhitespaceCharactersList()
         {
             // Prepare the current text
-            ReadOnlySpan<char> text = Text.AsSpan();
+            ReadOnlySpan<char> text = PlainText.AsSpan();
             ref char r0 = ref MemoryMarshal.GetReference(text);
             int length = text.Length;
 
@@ -204,10 +207,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         [Pure]
         private bool TryUpdateBracketsList()
         {
-            DebugGuard.MustBeTrue(_IsSyntaxValid, nameof(_IsSyntaxValid));
+            DebugGuard.MustBeTrue(_SyntaxValidationResult.IsSuccessOrEmptyScript, nameof(_SyntaxValidationResult));
 
             // Prepare the current text
-            ReadOnlySpan<char> text = Text.AsSpan();
+            ReadOnlySpan<char> text = PlainText.AsSpan();
             ref char r0 = ref MemoryMarshal.GetReference(text);
             int length = text.Length;
 

@@ -4,18 +4,21 @@ using System.Runtime.InteropServices;
 using Windows.UI.Text;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Helpers;
+using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
 using Brainf_ckSharp.Uwp.Themes;
+
+#nullable enable
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
     public sealed partial class Brainf_ckEditBox
     {
         /// <summary>
-        /// Indicates whether the current syntax is valid
+        /// The syntax validation result for the currently displayed text
         /// </summary>
-        private bool _IsSyntaxValid = true;
+        private SyntaxValidationResult _SyntaxValidationResult = Brainf_ckParser.ValidateSyntax(string.Empty);
 
         /// <summary>
         /// The start position of the current selection
@@ -40,7 +43,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             using (FormattingLock.For(this))
             {
                 string
-                    oldText = Text,
+                    oldText = PlainText,
                     newText = Document.GetText();
 
                 int
@@ -81,8 +84,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 else if (_IsDeleteRequested) _IsDeleteRequested = false;
                 else FormatRange(newText, 0, textLength);
 
-                Text = newText;
-                _IsSyntaxValid = Brainf_ckParser.ValidateSyntax(newText).IsSuccessOrEmptyScript;
+                _SyntaxValidationResult = Brainf_ckParser.ValidateSyntax(newText);
+                PlainText = newText;
             }
         }
 
@@ -98,7 +101,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             char c = text[start - 1];
 
-            if (c == Characters.LoopStart && _IsSyntaxValid)
+            if (c == Characters.LoopStart && _SyntaxValidationResult.IsSuccessOrEmptyScript)
             {
                 int depth = text.CalculateIndentationDepth(start - 1);
                 ITextRange range = Document.GetRange(start - 1, start);
@@ -131,7 +134,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
                 text = Document.GetText();
             }
-            else if (c == '\r' && _IsSyntaxValid)
+            else if (c == '\r' && _SyntaxValidationResult.IsSuccessOrEmptyScript)
             {
                 int depth = text.CalculateIndentationDepth(start);
                 string autocomplete = new string('\t', depth);
@@ -203,8 +206,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 }
 
                 // Update the current syntax validation
-                string text = Text = Document.GetText();
-                _IsSyntaxValid = Brainf_ckParser.ValidateSyntax(text).IsSuccessOrEmptyScript;
+                string text = Document.GetText();
+
+                _SyntaxValidationResult = Brainf_ckParser.ValidateSyntax(text);
+                PlainText = text;
             }
         }
 
@@ -233,7 +238,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     if (Unsafe.Add(ref r0, i) == '\r')
                         Document.GetRangeAt(bounds.Start + i + count++).Text = "\t";
 
-                Text = Document.GetText();
+                PlainText = Document.GetText();
             }
         }
 
@@ -270,7 +275,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         i++;
                 }
 
-                Text = Document.GetText();
+                PlainText = Document.GetText();
             }
         }
 
@@ -290,8 +295,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 Document.Selection.Text = source;
 
                 // Update the current syntax validation
-                string text = Text = Document.GetText();
-                _IsSyntaxValid = Brainf_ckParser.ValidateSyntax(text).IsSuccessOrEmptyScript;
+                string text = Document.GetText();
+
+                _SyntaxValidationResult = Brainf_ckParser.ValidateSyntax(text);
+                PlainText = text;
 
                 int
                     sourceLength = source.Length,
