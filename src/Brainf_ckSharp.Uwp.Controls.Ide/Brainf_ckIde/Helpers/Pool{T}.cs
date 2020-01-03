@@ -60,10 +60,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers
 
                 _Items = newItems;
 
-                ref T r0 = ref newItems[_Offset];
+                ref T r0 = ref newItems[0];
                 int end = newItems.Length;
 
-                for (int i = 0; i < end; i++)
+                for (int i = _Offset; i < end; i++)
                 {
                     Unsafe.Add(ref r0, i) = new T();
                 }
