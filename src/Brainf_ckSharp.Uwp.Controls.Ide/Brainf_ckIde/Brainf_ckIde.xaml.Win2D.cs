@@ -20,6 +20,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     public sealed partial class Brainf_ckIde
     {
         /// <summary>
+        /// The middle padding for the start of the git diff markers
+        /// </summary>
+        private const int GitDiffMarkersMiddleMargin = IndentationIndicatorsLeftMargin - 6;
+
+        /// <summary>
         /// The left padding for the start of the indentation indicators
         /// </summary>
         private const int IndentationIndicatorsLeftMargin = 59;
@@ -48,6 +53,31 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// The exact height each indentation element should have
         /// </summary>
         private const float IndentationIndicatorsTargetElementHeight = 19.9512f;
+
+        /// <summary>
+        /// The vertical margin for the indentation guides
+        /// </summary>
+        private const float IndentationIndicatorsVerticalOffsetMargin = 4;
+
+        /// <summary>
+        /// The color used to draw the stroke of git diff markers for a saved line
+        /// </summary>
+        private static readonly Color SavedGitDiffMarkerStrokeColor = "#FF577430".ToColor();
+
+        /// <summary>
+        /// The color used to draw the outline of git diff markers for a saved line
+        /// </summary>
+        private static readonly Color SavedGitDiffMarkerOutlineColor = "#FF3A4927".ToColor();
+
+        /// <summary>
+        /// The color used to draw the stroke of git diff markers for a modified line
+        /// </summary>
+        private static readonly Color ModifiedGitDiffMarkerStrokeColor = "#FFEFF284".ToColor();
+
+        /// <summary>
+        /// The color used to draw the outline of git diff markers for a modified line
+        /// </summary>
+        private static readonly Color ModifiedGitDiffMarkerOutlineColor = "#FF868851".ToColor();
 
         /// <summary>
         /// The color used to draw outlines for the indentation indicators
@@ -91,16 +121,20 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             for (int i = 0; i < count; i++)
             {
+                IndentationIndicatorBase indicator = Unsafe.Add(ref r0, i);
+
+                float offset = GetOffsetAt(indicator.Y) + IndentationIndicatorsVerticalOffsetMargin;
+
                 switch (Unsafe.Add(ref r0, i))
                 {
-                    case FunctionIndicator function:
-                        DrawFunctionDeclaration(args.DrawingSession, GetOffsetAt(function.Y), function.Type);
+                    case FunctionIndicator _:
+                        DrawFunctionDeclaration(args.DrawingSession, offset, indicator.Type);
                         break;
                     case BlockIndicator block:
-                        DrawIndentationBlock(args.DrawingSession, GetOffsetAt(block.Y), block.Depth, block.Type, block.IsWithinFunction);
+                        DrawIndentationBlock(args.DrawingSession, offset, block.Depth, block.Type, block.IsWithinFunction);
                         break;
-                    case LineIndicator line:
-                        DrawLine(args.DrawingSession, GetOffsetAt(line.Y), line.Type);
+                    case LineIndicator _:
+                        DrawLine(args.DrawingSession, offset, indicator.Type);
                         break;
                 }
             }
@@ -119,9 +153,27 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 approximateOffset = IndentationIndicatorsElementHeight * i,
                 targetOffset = IndentationIndicatorsTargetElementHeight * i,
                 delta = approximateOffset - targetOffset,
-                adjustment = MathF.Floor(delta);
+                adjustment = MathF.Floor(delta),
+                target = approximateOffset - adjustment;
 
-            return 4 + approximateOffset - adjustment;
+            return target;
+        }
+
+        /// <summary>
+        /// Draws a git diff marker at a specified offset
+        /// </summary>
+        /// <param name="session">The target <see cref="CanvasDrawingSession"/> instance</param>
+        /// <param name="offset">The current vertical offset to start drawing the marker from</param>
+        /// <param name="strokeColor">The color to use for the marker stroke</param>
+        /// <param name="outlineColor">The color to use for the marker outline</param>
+        private static void DrawDiffMarker(
+            CanvasDrawingSession session,
+            float offset,
+            Color strokeColor,
+            Color outlineColor)
+        {
+            session.DrawLine(GitDiffMarkersMiddleMargin, offset, GitDiffMarkersMiddleMargin, offset + IndentationIndicatorsElementHeight, outlineColor, 6);
+            session.DrawLine(GitDiffMarkersMiddleMargin, offset, GitDiffMarkersMiddleMargin, offset + IndentationIndicatorsElementHeight, strokeColor, 4);
         }
 
         /// <summary>
