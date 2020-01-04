@@ -10,6 +10,44 @@ namespace System
     public static class ReadOnlySpanExtensions
     {
         /// <summary>
+        /// Counts the number of occurrences of a given <typeparamref name="T"/> item into a target <see cref="ReadOnlySpan{T}"/> instance
+        /// </summary>
+        /// <param name="span">The input <see cref="ReadOnlySpan{T}"/> instance to read</param>
+        /// <param name="c">The <typeparamref name="T"/> item to look for</param>
+        /// <returns>The number of occurrences of <paramref name="c"/> in <paramref name="span"/></returns>
+        [Pure]
+        public static int Count<T>(this ReadOnlySpan<T> span, T c) where T : IEquatable<T>
+        {
+            int length = span.Length;
+
+            // Empty span, just return 0
+            if (length == 0) return 0;
+
+            ref T r0 = ref MemoryMarshal.GetReference(span);
+            int result = 0;
+
+            // Go over the input text and look for the character
+            for (int i = 0; i < length; i++)
+                if (Unsafe.Add(ref r0, i).Equals(c))
+                    result++;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="ReadOnlySpanTokenizer{T}"/> instance with the specified parameters
+        /// </summary>
+        /// <param name="span">The target <see cref="ReadOnlySpan{T}"/> to tokenize</param>
+        /// <param name="separator">The separator <typeparamref name="T"/> item to use</param>
+        /// <returns>A <see cref="ReadOnlySpanTokenizer{T}"/> instance working on <paramref name="span"/></returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlySpanTokenizer<T> Tokenize<T>(this ReadOnlySpan<T> span, T separator) where T : IEquatable<T>
+        {
+            return new ReadOnlySpanTokenizer<T>(span, separator);
+        }
+
+        /// <summary>
         /// Gets a content hash from the input <see cref="ReadOnlySpan{T}"/> instance using the xxHash32 algorithm
         /// </summary>
         /// <typeparam name="T">The type of items in the input <see cref="ReadOnlySpan{T}"/> instance</typeparam>

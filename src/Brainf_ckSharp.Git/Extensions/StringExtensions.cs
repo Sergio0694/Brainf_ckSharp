@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace System
 {
@@ -16,32 +15,17 @@ namespace System
         /// <param name="c">The character to look for</param>
         /// <returns>The number of occurrences of <paramref name="c"/> in <paramref name="text"/></returns>
         [Pure]
-        public static int Count(this string text, char c)
-        {
-            int length = text.Length;
-
-            // Empty string, just return 0
-            if (length == 0) return 0;
-
-            ref char r0 = ref MemoryMarshal.GetReference(text.AsSpan());
-            int result = 0;
-
-            // Go over the input text and look for the character
-            for (int i = 0; i < length; i++)
-                if (Unsafe.Add(ref r0, i) == c)
-                    result++;
-
-            return result;
-        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int Count(this string text, char c) => text.AsSpan().Count(c);
 
         /// <summary>
-        /// Creates a new <see cref="StringTokenizer"/> instance with the specified parameters
+        /// Creates a new <see cref="ReadOnlySpanTokenizer{T}"/> instance with the specified parameters
         /// </summary>
         /// <param name="text">The target text to tokenize</param>
         /// <param name="separator">The separator character to use</param>
-        /// <returns>A <see cref="StringTokenizer"/> instance working on <paramref name="text"/></returns>
+        /// <returns>A <see cref="ReadOnlySpanTokenizer{T}"/> instance working on <paramref name="text"/></returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static StringTokenizer Tokenize(this string text, char separator) => new StringTokenizer(text, separator);
+        public static ReadOnlySpanTokenizer<char> Tokenize(this string text, char separator) => new ReadOnlySpanTokenizer<char>(text.AsSpan(), separator);
     }
 }

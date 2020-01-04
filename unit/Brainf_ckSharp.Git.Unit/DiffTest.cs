@@ -1,3 +1,4 @@
+using System;
 using System.Buffers;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -10,6 +11,13 @@ namespace Brainf_ckSharp.Git.Unit
     [TestClass]
     public class DiffTest
     {
+        [TestMethod]
+        public void EmptyString()
+        {
+            return;
+            Test(Array.Empty<LineModificationType>(), string.Empty, string.Empty);
+        }
+
         [TestMethod]
         public void Small()
         {
@@ -98,6 +106,17 @@ namespace Brainf_ckSharp.Git.Unit
                 oldText = data.Old.Replace("\n", string.Empty),
                 newText = data.New.Replace("\n", string.Empty);
 
+            Test(expected, oldText, newText);
+        }
+
+        /// <summary>
+        /// Runs a test for a pair of input text files
+        /// </summary>
+        /// <param name="expected">The expected results for the test</param>
+        /// <param name="oldText">The reference text to compare to</param>
+        /// <param name="newText">The updated text to compare</param>
+        private static void Test(LineModificationType[] expected, string oldText, string newText)
+        {
             MemoryOwner<LineModificationType> result = LineDiffer.ComputeDiff(oldText, newText, '\r');
 
             try

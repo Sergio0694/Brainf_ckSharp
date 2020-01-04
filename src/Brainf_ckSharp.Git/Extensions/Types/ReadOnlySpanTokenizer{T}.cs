@@ -4,34 +4,35 @@ using System.Runtime.CompilerServices;
 namespace System
 {
     /// <summary>
-    /// A <see langword="ref"/> <see langword="struct"/> that tokenizes a given <see cref="string"/> instance
+    /// A <see langword="ref"/> <see langword="struct"/> that tokenizes a given <see cref="ReadOnlySpan{T}"/> instance
     /// </summary>
-    public readonly ref struct StringTokenizer
+    /// <typeparam name="T">The type of items to tokenize</typeparam>
+    public readonly ref struct ReadOnlySpanTokenizer<T> where T : IEquatable<T>
     {
         /// <summary>
-        /// The target text to segment
+        /// The target <see cref="ReadOnlySpan{T}"/> instance
         /// </summary>
-        private readonly string Text;
+        private readonly ReadOnlySpan<T> Span;
 
         /// <summary>
-        /// The separator character to use
+        /// The separator <typeparamref name="T"/> item to use
         /// </summary>
-        private readonly char Separator;
+        private readonly T Separator;
 
         /// <summary>
-        /// Creates a new <see cref="StringTokenizer"/> instance with the specified parameters
+        /// Creates a new <see cref="ReadOnlySpanTokenizer{T}"/> instance with the specified parameters
         /// </summary>
-        /// <param name="text">The target text to tokenize</param>
-        /// <param name="separator">The separator character to use</param>
-        public StringTokenizer(string text, char separator)
+        /// <param name="span">The target <see cref="ReadOnlySpan{T}"/> to tokenize</param>
+        /// <param name="separator">The separator <typeparamref name="T"/> item to use</param>
+        public ReadOnlySpanTokenizer(ReadOnlySpan<T> span, T separator)
         {
-            Text = text;
+            Span = span;
             Separator = separator;
         }
 
         /// <inheritdoc cref="IEnumerable{T}.GetEnumerator"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Enumerator GetEnumerator() => new Enumerator(Text.AsSpan(), Separator);
+        public Enumerator GetEnumerator() => new Enumerator(Span, Separator);
 
         /// <summary>
         /// An enumerator for no-allocation substrings
@@ -41,12 +42,12 @@ namespace System
             /// <summary>
             /// The target <see cref="ReadOnlySpan{T}"/> instance
             /// </summary>
-            private readonly ReadOnlySpan<char> Span;
+            private readonly ReadOnlySpan<T> Span;
 
             /// <summary>
-            /// The separator character to use
+            /// The separator item to use
             /// </summary>
-            private readonly char Separator;
+            private readonly T Separator;
 
             /// <summary>
             /// The current initial offset
@@ -62,8 +63,8 @@ namespace System
             /// Creates a new <see cref="Enumerator"/> instance with the specified parameters
             /// </summary>
             /// <param name="span">The input <see cref="ReadOnlySpan{T}"/> instance</param>
-            /// <param name="separator">The sepaarator character to use</param>
-            public Enumerator(ReadOnlySpan<char> span, char separator)
+            /// <param name="separator">The separator item to use</param>
+            public Enumerator(ReadOnlySpan<T> span, T separator)
             {
                 Span = span;
                 Separator = separator;
@@ -103,7 +104,7 @@ namespace System
             }
 
             /// <inheritdoc cref="IEnumerator{T}.Current"/>
-            public ReadOnlySpan<char> Current
+            public ReadOnlySpan<T> Current
             {
                 [MethodImpl(MethodImplOptions.AggressiveInlining)]
                 get => Span.Slice(_Start, _End - _Start);
