@@ -101,7 +101,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         break;
 
                     // Process the line info at the end of each line
-                    case '\r':
+                    case Characters.CarriageReturn:
 
                         /* If a function was declared on the current line, that takes precedence
                          * over everything else, and the function definition indicator will

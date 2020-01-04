@@ -145,10 +145,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             {
                 switch (Unsafe.Add(ref r0, i))
                 {
-                    case ' ':
+                    case Characters.Space:
                         Unsafe.Add(ref spacesRef, spacesCount++) = i;
                         break;
-                    case '\t':
+                    case Characters.Tab:
                         Unsafe.Add(ref tabsRef, tabsCount++) = i;
                         break;
                 }
@@ -264,7 +264,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         break;
 
                     // Track each new line
-                    case '\r':
+                    case Characters.CarriageReturn:
                         y++;
                         break;
                 }

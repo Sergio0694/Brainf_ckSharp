@@ -68,7 +68,7 @@
         /// <summary>
         /// The tab character <see langword="'\t'"/>
         /// </summary>
-        public const char Tab = '\r';
+        public const char Tab = '\t';
 
         /// <summary>
         /// The line feed character <see langword="'\n'"/>

@@ -7,7 +7,7 @@ namespace System
     /// <summary>
     /// A <see langword="class"/> with some extension methods for the <see cref="string"/> type
     /// </summary>
-    internal static class StringExtensions
+    public static class StringExtensions
     {
         /// <summary>
         /// Counts the number of occurrences of a given character into a target <see cref="string"/>
