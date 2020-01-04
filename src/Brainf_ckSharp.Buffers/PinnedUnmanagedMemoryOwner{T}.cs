@@ -10,7 +10,7 @@ namespace Brainf_ckSharp.Buffers
     /// A <see langword="class"/> that owns a memory buffer that can be used across stack frames
     /// </summary>
     /// <typeparam name="T">The type of items stored in the underlying buffer</typeparam>
-    public unsafe class UnsafeMemoryBuffer<T> : IDisposable where T : unmanaged
+    public unsafe class PinnedUnmanagedMemoryOwner<T> : IDisposable where T : unmanaged
     {
         /// <summary>
         /// The size of the usable buffer within <see cref="Buffer"/>
@@ -34,16 +34,16 @@ namespace Brainf_ckSharp.Buffers
         private GCHandle _Handle;
 
         /// <summary>
-        /// Creates an empty <see cref="UnsafeMemoryBuffer{T}"/> instance
+        /// Creates an empty <see cref="PinnedUnmanagedMemoryOwner{T}"/> instance
         /// </summary>
-        protected UnsafeMemoryBuffer() { }
+        protected PinnedUnmanagedMemoryOwner() { }
 
         /// <summary>
-        /// Creates a new <see cref="UnsafeMemoryBuffer{T}"/> instance with the specified parameters
+        /// Creates a new <see cref="PinnedUnmanagedMemoryOwner{T}"/> instance with the specified parameters
         /// </summary>
         /// <param name="size">The size of the new memory buffer to use</param>
         /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
-        protected UnsafeMemoryBuffer(int size, bool clear)
+        protected PinnedUnmanagedMemoryOwner(int size, bool clear)
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(size, 0, nameof(size));
 
@@ -56,26 +56,26 @@ namespace Brainf_ckSharp.Buffers
         }
 
         /// <summary>
-        /// Creates a new <see cref="UnsafeMemoryBuffer{T}"/> instance with the specified parameters
+        /// Creates a new <see cref="PinnedUnmanagedMemoryOwner{T}"/> instance with the specified parameters
         /// </summary>
         /// <param name="size">The size of the new memory buffer to use</param>
         /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
         /// <remarks>This method is just a proxy for the <see langword="protected"/> constructor, for clarity</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UnsafeMemoryBuffer<T> Allocate(int size, bool clear) => new UnsafeMemoryBuffer<T>(size, clear);
+        public static PinnedUnmanagedMemoryOwner<T> Allocate(int size, bool clear) => new PinnedUnmanagedMemoryOwner<T>(size, clear);
 
         /// <summary>
-        /// Gets an empty <see cref="UnsafeMemoryBuffer{T}"/> instance
+        /// Gets an empty <see cref="PinnedUnmanagedMemoryOwner{T}"/> instance
         /// </summary>
-        public static UnsafeMemoryBuffer<T> Empty { get; } = new UnsafeMemoryBuffer<T>();
+        public static PinnedUnmanagedMemoryOwner<T> Empty { get; } = new PinnedUnmanagedMemoryOwner<T>();
 
         /// <summary>
-        /// Gets an <see cref="UnsafeMemory{T}"/> instance mapping the values on the current buffer
+        /// Gets an <see cref="UnmanagedSpan{T}"/> instance mapping the values on the current buffer
         /// </summary>
-        public UnsafeMemory<T> Memory
+        public UnmanagedSpan<T> Memory
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new UnsafeMemory<T>(Size, Ptr);
+            get => new UnmanagedSpan<T>(Size, Ptr);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Brainf_ckSharp.Buffers
         /// <summary>
         /// Invokes <see cref="Dispose"/> to free the allocated resources when this instance is destroyed
         /// </summary>
-        ~UnsafeMemoryBuffer() => Dispose();
+        ~PinnedUnmanagedMemoryOwner() => Dispose();
 
         /// <inheritdoc/>
         public void Dispose()

@@ -10,8 +10,8 @@ namespace Brainf_ckSharp.Buffers
     /// A <see langword="struct"/> that owns a memory buffer that can be used across stack frames
     /// </summary>
     /// <typeparam name="T">The type of items stored in the underlying buffer</typeparam>
-    /// <remarks>This type mirrors <see cref="UnsafeMemoryBuffer{T}"/>, but as a value type</remarks>
-    public unsafe ref struct UnsafeSpanBuffer<T> where T : unmanaged
+    /// <remarks>This type mirrors <see cref="PinnedUnmanagedMemoryOwner{T}"/>, but as a value type</remarks>
+    public unsafe ref struct StackOnlyPinnedUnmanagedMemoryOwner<T> where T : unmanaged
     {
         /// <summary>
         /// The size of the usable buffer within <see cref="Buffer"/>
@@ -35,12 +35,12 @@ namespace Brainf_ckSharp.Buffers
         private GCHandle _Handle;
 
         /// <summary>
-        /// Creates a new <see cref="UnsafeSpanBuffer{T}"/> instance with the specified parameters
+        /// Creates a new <see cref="StackOnlyPinnedUnmanagedMemoryOwner{T}"/> instance with the specified parameters
         /// </summary>
         /// <param name="size">The size of the new memory buffer to use</param>
         /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
-        /// <remarks>Not using a proxy like <see cref="UnsafeMemoryBuffer{T}.Allocate"/> here since it's a value type</remarks>
-        private UnsafeSpanBuffer(int size, bool clear)
+        /// <remarks>Not using a proxy like <see cref="PinnedUnmanagedMemoryOwner{T}.Allocate"/> here since it's a value type</remarks>
+        private StackOnlyPinnedUnmanagedMemoryOwner(int size, bool clear)
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(size, 0, nameof(size));
 
@@ -53,22 +53,22 @@ namespace Brainf_ckSharp.Buffers
         }
 
         /// <summary>
-        /// Gets an <see cref="UnsafeMemory{T}"/> instance mapping the values on the current buffer
+        /// Gets an <see cref="UnmanagedSpan{T}"/> instance mapping the values on the current buffer
         /// </summary>
-        public UnsafeMemory<T> Memory
+        public UnmanagedSpan<T> Memory
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new UnsafeMemory<T>(Size, Ptr);
+            get => new UnmanagedSpan<T>(Size, Ptr);
         }
 
         /// <summary>
-        /// Creates a new <see cref="UnsafeSpanBuffer{T}"/> instance with the specified parameters
+        /// Creates a new <see cref="StackOnlyPinnedUnmanagedMemoryOwner{T}"/> instance with the specified parameters
         /// </summary>
         /// <param name="size">The size of the new memory buffer to use</param>
         /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
         /// <remarks>This method is just a proxy for the <see langword="private"/> constructor, for clarity</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UnsafeSpanBuffer<T> Allocate(int size, bool clear) => new UnsafeSpanBuffer<T>(size, clear);
+        public static StackOnlyPinnedUnmanagedMemoryOwner<T> Allocate(int size, bool clear) => new StackOnlyPinnedUnmanagedMemoryOwner<T>(size, clear);
 
         /// <summary>
         /// Gets the <typeparamref name="T"/> value at the specified index in the current buffer

@@ -28,7 +28,7 @@ namespace Brainf_ckSharp
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
         private static InterpreterResult RunCore(
-            UnsafeMemoryBuffer<byte> operators,
+            PinnedUnmanagedMemoryOwner<byte> operators,
             string stdin,
             TuringMachineState machineState,
             CancellationToken executionToken)
@@ -39,11 +39,11 @@ namespace Brainf_ckSharp
             /* Initialize the temporary buffers, using the UnsafeSpanBuffer<T> type when possible
              * to save the extra allocations here. This is possible because all these buffers are
              * only used within the scope of this method, and disposed as soon as the method completes. */
-            using UnsafeSpanBuffer<bool> breakpoints = UnsafeSpanBuffer<bool>.Allocate(operators.Size, true);
-            using UnsafeMemoryBuffer<int> jumpTable = LoadJumpTable(operators, out int functionsCount);
-            using UnsafeSpanBuffer<Range> functions = UnsafeSpanBuffer<Range>.Allocate(ushort.MaxValue, true);
-            using UnsafeMemoryBuffer<ushort> definitions = LoadDefinitionsTable(functionsCount);
-            using UnsafeSpanBuffer<StackFrame> stackFrames = UnsafeSpanBuffer<StackFrame>.Allocate(Specs.MaximumStackSize, false);
+            using StackOnlyPinnedUnmanagedMemoryOwner<bool> breakpoints = StackOnlyPinnedUnmanagedMemoryOwner<bool>.Allocate(operators.Size, true);
+            using PinnedUnmanagedMemoryOwner<int> jumpTable = LoadJumpTable(operators, out int functionsCount);
+            using StackOnlyPinnedUnmanagedMemoryOwner<Range> functions = StackOnlyPinnedUnmanagedMemoryOwner<Range>.Allocate(ushort.MaxValue, true);
+            using PinnedUnmanagedMemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
+            using StackOnlyPinnedUnmanagedMemoryOwner<StackFrame> stackFrames = StackOnlyPinnedUnmanagedMemoryOwner<StackFrame>.Allocate(Specs.MaximumStackSize, false);
             using StdoutBuffer stdout = new StdoutBuffer();
 
             // Shared counters
@@ -126,16 +126,16 @@ namespace Brainf_ckSharp
             Guard.MustBeGreaterThanOrEqualTo(memorySize, 32, nameof(memorySize));
             Guard.MustBeLessThanOrEqualTo(memorySize, 1024, nameof(memorySize));
 
-            UnsafeMemoryBuffer<byte> operators = Brainf_ckParser.TryParse(source, out SyntaxValidationResult validationResult)!;
+            PinnedUnmanagedMemoryOwner<byte> operators = Brainf_ckParser.TryParse(source, out SyntaxValidationResult validationResult)!;
 
             if (!validationResult.IsSuccess) return Option<InterpreterSession>.From(validationResult);
 
             // Initialize the temporary buffers
-            UnsafeMemoryBuffer<bool> breakpointsTable = LoadBreakpointsTable(source, validationResult.OperatorsCount, breakpoints);
-            UnsafeMemoryBuffer<int> jumpTable = LoadJumpTable(operators, out int functionsCount);
-            UnsafeMemoryBuffer<Range> functions = UnsafeMemoryBuffer<Range>.Allocate(ushort.MaxValue, true);
-            UnsafeMemoryBuffer<ushort> definitions = LoadDefinitionsTable(functionsCount);
-            UnsafeMemoryBuffer<StackFrame> stackFrames = UnsafeMemoryBuffer<StackFrame>.Allocate(Specs.MaximumStackSize, false);
+            PinnedUnmanagedMemoryOwner<bool> breakpointsTable = LoadBreakpointsTable(source, validationResult.OperatorsCount, breakpoints);
+            PinnedUnmanagedMemoryOwner<int> jumpTable = LoadJumpTable(operators, out int functionsCount);
+            PinnedUnmanagedMemoryOwner<Range> functions = PinnedUnmanagedMemoryOwner<Range>.Allocate(ushort.MaxValue, true);
+            PinnedUnmanagedMemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
+            PinnedUnmanagedMemoryOwner<StackFrame> stackFrames = PinnedUnmanagedMemoryOwner<StackFrame>.Allocate(Specs.MaximumStackSize, false);
 
             // Initialize the root stack frame
             stackFrames[0] = new StackFrame(new Range(0, operators.Size), 0);
@@ -176,12 +176,12 @@ namespace Brainf_ckSharp
         /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
         /// <returns>The resulting <see cref="ExitCode"/> value for the current execution of the input script</returns>
         internal static ExitCode Run(
-            UnsafeMemory<byte> operators,
-            UnsafeMemory<bool> breakpoints,
-            UnsafeMemory<int> jumpTable,
-            UnsafeMemory<Range> functions,
-            UnsafeMemory<ushort> definitions,
-            UnsafeMemory<StackFrame> stackFrames,
+            UnmanagedSpan<byte> operators,
+            UnmanagedSpan<bool> breakpoints,
+            UnmanagedSpan<int> jumpTable,
+            UnmanagedSpan<Range> functions,
+            UnmanagedSpan<ushort> definitions,
+            UnmanagedSpan<StackFrame> stackFrames,
             ref int depth,
             ref int totalOperations,
             ref int totalFunctions,

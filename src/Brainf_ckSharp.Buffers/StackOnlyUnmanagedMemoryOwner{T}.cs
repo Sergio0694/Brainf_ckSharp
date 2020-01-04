@@ -11,7 +11,7 @@ namespace Brainf_ckSharp.Buffers
     /// A <see langword="struct"/> that owns a memory buffer shared from a common pool
     /// </summary>
     /// <typeparam name="T">The type of items stored in the underlying buffer</typeparam>
-    public ref struct UnsafeSpan<T> where T : unmanaged
+    public ref struct StackOnlyUnmanagedMemoryOwner<T> where T : unmanaged
     {
         /// <summary>
         /// The size of the usable buffer within <see cref="Buffer"/>
@@ -24,10 +24,10 @@ namespace Brainf_ckSharp.Buffers
         private readonly byte[] Buffer;
 
         /// <summary>
-        /// Creates a new <see cref="UnsafeSpan{T}"/> instance with the specified parameters
+        /// Creates a new <see cref="StackOnlyUnmanagedMemoryOwner{T}"/> instance with the specified parameters
         /// </summary>
         /// <param name="size">The size of the new memory buffer to use</param>
-        private unsafe UnsafeSpan(int size)
+        private unsafe StackOnlyUnmanagedMemoryOwner(int size)
         {
             DebugGuard.MustBeGreaterThan(size, 0, nameof(size));
 
@@ -36,12 +36,12 @@ namespace Brainf_ckSharp.Buffers
         }
 
         /// <summary>
-        /// Creates a new <see cref="UnsafeSpan{T}"/> instance with the specified parameters
+        /// Creates a new <see cref="StackOnlyUnmanagedMemoryOwner{T}"/> instance with the specified parameters
         /// </summary>
         /// <param name="size">The size of the new memory buffer to use</param>
         /// <remarks>This method is just a proxy for the <see langword="private"/> constructor, for clarity</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UnsafeSpan<T> Allocate(int size) => new UnsafeSpan<T>(size);
+        public static StackOnlyUnmanagedMemoryOwner<T> Allocate(int size) => new StackOnlyUnmanagedMemoryOwner<T>(size);
 
         /// <inheritdoc cref="MemoryMarshal.GetReference{T}(Span{T})"/>
         [Pure]

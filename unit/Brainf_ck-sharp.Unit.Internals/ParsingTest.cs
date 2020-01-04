@@ -15,7 +15,7 @@ namespace Brainf_ckSharp.Unit.Internals
         [TestMethod]
         public void ExtractSource()
         {
-            using UnsafeMemoryBuffer<byte> operators = UnsafeMemoryBuffer<byte>.Allocate(11, false);
+            using PinnedUnmanagedMemoryOwner<byte> operators = PinnedUnmanagedMemoryOwner<byte>.Allocate(11, false);
 
             operators[0] = Operators.Plus;
             operators[1] = Operators.Minus;
@@ -40,7 +40,7 @@ namespace Brainf_ckSharp.Unit.Internals
         {
             const string script = "[\n\tTest script\n]\n+++++[\n\t>++ 5 x 2 = 10\n\t<- Loop decrement\n]\n> Move to cell 1";
 
-            using UnsafeMemoryBuffer<byte>? operators = Brainf_ckParser.TryParse(script, out SyntaxValidationResult result);
+            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.TryParse(script, out SyntaxValidationResult result);
 
             Assert.IsTrue(result.IsSuccess);
             Assert.AreEqual(result.ErrorType, SyntaxError.None);

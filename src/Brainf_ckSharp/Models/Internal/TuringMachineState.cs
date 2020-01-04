@@ -15,7 +15,7 @@ namespace Brainf_ckSharp.Models.Internal
     /// <summary>
     /// A <see langword="class"/> that represents the state of a Turing machine
     /// </summary>
-    internal sealed unsafe class TuringMachineState : UnsafeMemoryBuffer<ushort>, IReadOnlyTuringMachineState
+    internal sealed unsafe class TuringMachineState : PinnedUnmanagedMemoryOwner<ushort>, IReadOnlyTuringMachineState
     {
         /// <summary>
         /// The current position within the underlying buffer

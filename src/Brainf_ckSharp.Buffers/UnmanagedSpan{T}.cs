@@ -8,7 +8,7 @@ namespace Brainf_ckSharp.Buffers
     /// A <see langword="struct"/> that maps a range of <typeparamref name="T"/> values on an existing buffer
     /// </summary>
     /// <typeparam name="T">The type of items stored in the underlying buffer</typeparam>
-    public readonly unsafe struct UnsafeMemory<T> where T : unmanaged
+    public readonly unsafe struct UnmanagedSpan<T> where T : unmanaged
     {
         /// <summary>
         /// The size of the usable buffer for the current instance
@@ -21,11 +21,11 @@ namespace Brainf_ckSharp.Buffers
         private readonly T* Ptr;
 
         /// <summary>
-        /// Creates a new <see cref="UnsafeMemory{T}"/> instance with the specified parameters
+        /// Creates a new <see cref="UnmanagedSpan{T}"/> instance with the specified parameters
         /// </summary>
         /// <param name="size">The size of the new memory buffer to use</param>
         /// <param name="ptr"></param>
-        public UnsafeMemory(int size, T* ptr)
+        public UnmanagedSpan(int size, T* ptr)
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(size, 0, nameof(size));
             DebugGuard.MustBeFalse(ptr == null && size > 0, nameof(ptr));
@@ -35,12 +35,12 @@ namespace Brainf_ckSharp.Buffers
         }
 
         /// <summary>
-        /// Gets an empty <see cref="UnsafeMemory{T}"/> instance
+        /// Gets an empty <see cref="UnmanagedSpan{T}"/> instance
         /// </summary>
-        public static UnsafeMemory<T> Empty
+        public static UnmanagedSpan<T> Empty
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new UnsafeMemory<T>(0, null);
+            get => new UnmanagedSpan<T>(0, null);
         }
 
         /// <summary>
@@ -60,14 +60,14 @@ namespace Brainf_ckSharp.Buffers
         }
 
         /// <summary>
-        /// Gets a new <see cref="UnsafeMemory{T}"/> instance representing a view over the current buffer
+        /// Gets a new <see cref="UnmanagedSpan{T}"/> instance representing a view over the current buffer
         /// </summary>
-        /// <param name="start">The inclusive starting index for the new <see cref="UnsafeMemory{T}"/> instance</param>
-        /// <param name="end">The exclusive ending index for the new <see cref="UnsafeMemory{T}"/> instance</param>
-        /// <returns>A new <see cref="UnsafeMemory{T}"/> instance mapping values in the [start, end) range on the current buffer</returns>
+        /// <param name="start">The inclusive starting index for the new <see cref="UnmanagedSpan{T}"/> instance</param>
+        /// <param name="end">The exclusive ending index for the new <see cref="UnmanagedSpan{T}"/> instance</param>
+        /// <returns>A new <see cref="UnmanagedSpan{T}"/> instance mapping values in the [start, end) range on the current buffer</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public UnsafeMemory<T> Slice(int start, int end)
+        public UnmanagedSpan<T> Slice(int start, int end)
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(start, 0, nameof(start));
             DebugGuard.MustBeGreaterThanOrEqualTo(end, 0, nameof(end));
@@ -75,7 +75,7 @@ namespace Brainf_ckSharp.Buffers
             DebugGuard.MustBeLessThanOrEqualTo(end, Size, nameof(end));
             DebugGuard.MustBeLessThanOrEqualTo(start, end, nameof(start));
 
-            return new UnsafeMemory<T>(end - start, Ptr + start);
+            return new UnmanagedSpan<T>(end - start, Ptr + start);
         }
     }
 }

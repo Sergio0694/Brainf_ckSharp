@@ -189,7 +189,7 @@ namespace Brainf_ckSharp
         /// <param name="validationResult">The <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</param>
         /// <returns>The resulting buffer of operators for the parsed script</returns>
         [Pure]
-        internal static UnsafeMemoryBuffer<byte>? TryParse(string source, out SyntaxValidationResult validationResult)
+        internal static PinnedUnmanagedMemoryOwner<byte>? TryParse(string source, out SyntaxValidationResult validationResult)
         {
             // Check the syntax of the input source code
             validationResult = ValidateSyntax(source);
@@ -197,7 +197,7 @@ namespace Brainf_ckSharp
             if (!validationResult.IsSuccess) return null;
 
             // Allocate the buffer of binary items with the input operators
-            UnsafeMemoryBuffer<byte> operators = UnsafeMemoryBuffer<byte>.Allocate(validationResult.OperatorsCount, false);
+            PinnedUnmanagedMemoryOwner<byte> operators = PinnedUnmanagedMemoryOwner<byte>.Allocate(validationResult.OperatorsCount, false);
 
             // Extract all the operators from the input source code
             ref byte r0 = ref MemoryMarshal.GetReference(OperatorsLookupTable);
@@ -252,10 +252,10 @@ namespace Brainf_ckSharp
         /// <param name="operators">The input sequence of parsed operators to read</param>
         /// <returns>A <see cref="string"/> representing the input sequence of operators</returns>
         [Pure]
-        internal static unsafe string ExtractSource(UnsafeMemory<byte> operators)
+        internal static unsafe string ExtractSource(UnmanagedSpan<byte> operators)
         {
             // Rent a buffer to use to build the final string
-            using UnsafeSpan<char> characters = UnsafeSpan<char>.Allocate(operators.Size);
+            using StackOnlyUnmanagedMemoryOwner<char> characters = StackOnlyUnmanagedMemoryOwner<char>.Allocate(operators.Size);
 
             ref char targetRef = ref characters.GetReference();
             ref byte lookupRef = ref MemoryMarshal.GetReference(OperatorsInverseLookupTable);
