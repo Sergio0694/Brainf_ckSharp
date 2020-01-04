@@ -37,12 +37,32 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="args">The <see cref="CanvasDrawEventArgs"/> for the current instance</param>
         private void IdeOverlaysCanvas_Draw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            ref IndentationIndicatorBase r0 = ref _IndentationIndicators[0];
-            int count = _IndentationIndicatorsCount;
+            int diffIndicatorsCount = _DiffIndicators.Size;
 
-            for (int i = 0; i < count; i++)
+            if (diffIndicatorsCount > 0)
             {
-                switch (Unsafe.Add(ref r0, i))
+                ref LineModificationType diffRef = ref _DiffIndicators.GetReference();
+
+                for (int i = 0; i < diffIndicatorsCount; i++)
+                {
+                    switch (Unsafe.Add(ref diffRef, i))
+                    {
+                        case LineModificationType.Modified:
+                            DrawDiffMarker(args.DrawingSession, GetOffsetAt(i), ModifiedGitDiffMarkerStrokeColor, ModifiedGitDiffMarkerOutlineColor);
+                            break;
+                        case LineModificationType.Saved:
+                            DrawDiffMarker(args.DrawingSession, GetOffsetAt(i), SavedGitDiffMarkerStrokeColor, SavedGitDiffMarkerOutlineColor);
+                            break;
+                    }
+                }
+            }
+
+            ref IndentationIndicatorBase indentationIndicatorsRef = ref _IndentationIndicators[0];
+            int indentationIndicatorsCount = _IndentationIndicatorsCount;
+
+            for (int i = 0; i < indentationIndicatorsCount; i++)
+            {
+                switch (Unsafe.Add(ref indentationIndicatorsRef, i))
                 {
                     case FunctionIndicator function:
                         DrawFunctionDeclaration(args.DrawingSession, GetOffsetAt(function.Y) + IndentationIndicatorsVerticalOffsetMargin, function.Type);

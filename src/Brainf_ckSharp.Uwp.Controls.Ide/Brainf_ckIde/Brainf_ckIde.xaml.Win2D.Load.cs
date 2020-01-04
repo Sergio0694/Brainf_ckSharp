@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Git;
+using Brainf_ckSharp.Git.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models.Abstract;
@@ -19,7 +20,13 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private void UpdateDiffInfo(string text)
         {
             _DiffIndicators.Dispose();
-            _DiffIndicators = LineDiffer.ComputeDiff(ReferenceText, text, Characters.CarriageReturn);
+
+            MemoryOwner<LineModificationType> diff = LineDiffer.ComputeDiff(ReferenceText, text, Characters.CarriageReturn);
+
+            /* The edit box always ends with a final \r that can't be removed by the user.
+             * Slicing out the last item prevents the modified marker from being displayed
+             * below the last line actually being typed by the user. */
+            _DiffIndicators = diff.Slice(diff.Size - 1);
         }
 
         /// <summary>

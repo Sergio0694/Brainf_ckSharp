@@ -34,6 +34,20 @@ namespace System.Buffers
         }
 
         /// <summary>
+        /// Creates a new <see cref="MemoryOwner{T}"/> instance with the specified parameters
+        /// </summary>
+        /// <param name="size">The size of the new memory buffer to use</param>
+        /// <param name="buffer">The existing buffer to use</param>
+        private MemoryOwner(int size, T[] buffer)
+        {
+            DebugGuard.MustBeGreaterThanOrEqualTo(size, 0, nameof(size));
+            DebugGuard.MustBeGreaterThanOrEqualTo(buffer.Length, size, nameof(buffer));
+
+            Size = size;
+            Buffer = buffer;
+        }
+
+        /// <summary>
         /// Gets a <see cref="Span{T}"/> with the contents of the current <see cref="MemoryOwner{T}"/> instance
         /// </summary>
         public Span<T> Span
@@ -56,6 +70,22 @@ namespace System.Buffers
         public ref T GetReference()
         {
             return ref Buffer[0];
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="MemoryOwner{T}"/> instance with a specified size over the current buffer
+        /// </summary>
+        /// <param name="size">The size of the new <see cref="MemoryOwner{T}"/> instance to create</param>
+        /// <returns>A new <see cref="MemoryOwner{T}"/> instance with a specified size over the current buffer</returns>
+        /// <remarks><see cref="Dispose"/> must never be called on <see cref="MemoryOwner{T}"/> instances pointing to the same buffer</remarks>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public MemoryOwner<T> Slice(int size)
+        {
+            DebugGuard.MustBeGreaterThanOrEqualTo(size, 0, nameof(size));
+            DebugGuard.MustBeLessThanOrEqualTo(size, Size, nameof(size));
+
+            return new MemoryOwner<T>(size, Buffer);
         }
 
         /// <inheritdoc cref="IDisposable.Dispose"/>

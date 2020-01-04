@@ -62,6 +62,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             int numberOfLines = args.PlainText.Count(Characters.CarriageReturn);
 
             UpdateLineIndicators(numberOfLines);
+            UpdateDiffInfo(args.PlainText);
             UpdateIndentationInfo(args.PlainText, args.ValidationResult.IsSuccessOrEmptyScript, numberOfLines);
         }
 
