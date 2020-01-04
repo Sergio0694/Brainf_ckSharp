@@ -171,6 +171,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Brainf_ckSharp.Buffers\Brainf_ckSharp.Buffers.csproj">
+      <Project>{5f365b29-7cdf-4272-b877-37ca69daad1b}</Project>
+      <Name>Brainf_ckSharp.Buffers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Brainf_ckSharp.Diagnostics\Brainf_ckSharp.Diagnostics.csproj">
       <Project>{a464d3e4-c6e0-48ec-a786-c2db610d9bd0}</Project>
       <Name>Brainf_ckSharp.Diagnostics</Name>
