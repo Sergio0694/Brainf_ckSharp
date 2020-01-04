@@ -33,5 +33,15 @@ namespace System
 
             return result;
         }
+
+        /// <summary>
+        /// Creates a new <see cref="StringTokenizer"/> instance with the specified parameters
+        /// </summary>
+        /// <param name="text">The target text to tokenize</param>
+        /// <param name="separator">The separator character to use</param>
+        /// <returns>A <see cref="StringTokenizer"/> instance working on <paramref name="text"/></returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static StringTokenizer Tokenize(this string text, char separator) => new StringTokenizer(text, separator);
     }
 }
