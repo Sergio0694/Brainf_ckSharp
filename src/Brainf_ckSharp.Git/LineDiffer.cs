@@ -23,15 +23,16 @@ namespace Brainf_ckSharp.Git
         /// </summary>
         /// <param name="oldText">The reference text to compare to</param>
         /// <param name="newText">The updated text to compare</param>
+        /// <param name="separator">The separator character to use to split lines in <paramref name="oldText"/> and <paramref name="newText"/></param>
         /// <returns>A <see cref="MemoryOwner{T}"/> instance with the sequence of line modifications</returns>
         [Pure]
         public static MemoryOwner<LineModificationType> ComputeDiff(string oldText, string newText, char separator)
         {
-            int OL = oldText.Count(separator) + 1;
-            int NL = newText.Count(separator) + 1;
+            int TextNumberOfLines = oldText.Count(separator) + 1;
+            int newNumberOfLines = newText.Count(separator) + 1;
 
-            object[] OA = ArrayPool<object>.Shared.Rent(OL);
-            object[] NA = ArrayPool<object>.Shared.Rent(NL);
+            object[] oldTemporaryValues = ArrayPool<object>.Shared.Rent(TextNumberOfLines);
+            object[] newTemporaryValues = ArrayPool<object>.Shared.Rent(newNumberOfLines);
 
             DictionarySlim<int, DiffEntry> table = LinesMap;
             table.Clear();
@@ -40,7 +41,13 @@ namespace Brainf_ckSharp.Git
 
             try
             {
-                // First pass
+                /* ==============
+                 * First pass
+                 * ==============
+                 * Iterate over all the lines in the new text file.
+                 * For each line, create the table entry if not present,
+                 * otherwise increment the line counter. Also set the
+                 * values in the temporary arrays to the table entires. */
                 int i = 0;
                 foreach (ReadOnlySpan<char> line in newText.Tokenize(separator))
                 {
@@ -60,11 +67,15 @@ namespace Brainf_ckSharp.Git
                         else entry.NumberOfOccurrencesInNewText = int.MaxValue;
                     }
 
-                    NA[i] = entry;
+                    newTemporaryValues[i] = entry;
                     i += 1;
                 }
 
-                // Second pass
+                /* ==============
+                 * Second pass
+                 * ==============
+                 * Same as the first pass, but acting on the old text,
+                 * and the associated temporary values and table entry fields. */
                 int j = 0;
                 foreach (ReadOnlySpan<char> line in oldText.Tokenize(separator))
                 {
@@ -86,54 +97,77 @@ namespace Brainf_ckSharp.Git
                     }
 
                     entry.LineNumberInOldText = j;
-                    OA[j] = entry;
+                    oldTemporaryValues[j] = entry;
                     j += 1;
                 }
 
-                // Third pass
+                /* ==============
+                 * Third pass
+                 * ==============
+                 * If a line exactly only once in both files, it means it's the same
+                 * line, although it might have been moved to a different location.
+                 * These are the only affected lines in this pass. */
                 i = 0;
-                for (; i < NL; i++)
+                for (; i < newNumberOfLines; i++)
                 {
-                    if (NA[i] is DiffEntry entry &&
+                    if (newTemporaryValues[i] is DiffEntry entry &&
                         entry.NumberOfOccurrencesInOldText == 1 &&
                         entry.NumberOfOccurrencesInNewText == 1)
                     {
                         int olno = entry.LineNumberInOldText;
-                        NA[i] = olno;
-                        OA[olno] = i;
+                        newTemporaryValues[i] = olno;
+                        oldTemporaryValues[olno] = i;
                     }
                 }
 
-                // Fourth pass
-                for (i = 0; i < NL - 1; i++)
+                /* ==============
+                 * Fourth pass
+                 * ==============
+                 * If a line doesn't have any changes, and the lines immediately
+                 * adjacent to it in both files are identical, this means the
+                 * line is the same line as well. This can be used to find
+                 * blocks of unchanged lines across the two text versions. */
+                for (i = 0; i < newNumberOfLines - 1; i++)
                 {
-                    if (NA[i] is int k &&
-                        k + 1 < OL &&
-                        NA[i + 1].Equals(OA[k + 1]))
+                    if (newTemporaryValues[i] is int k &&
+                        k + 1 < TextNumberOfLines &&
+                        newTemporaryValues[i + 1].Equals(oldTemporaryValues[k + 1]))
                     {
-                        NA[i + 1] = k + 1;
-                        OA[k + 1] = i + 1;
+                        newTemporaryValues[i + 1] = k + 1;
+                        oldTemporaryValues[k + 1] = i + 1;
                     }
                 }
 
-                // Fifth pass
-                for (i = NL - 1; i > 0; i--)
+                /* ==============
+                 * Fifth pass
+                 * ==============
+                 * Sames as the previous step, but acting in descending order. */
+                for (i = newNumberOfLines - 1; i > 0; i--)
                 {
-                    if (NA[i] is int k &&
+                    if (newTemporaryValues[i] is int k &&
                         k - 1 >= 0 &&
-                        NA[i - 1].Equals(OA[k - 1]))
+                        newTemporaryValues[i - 1].Equals(oldTemporaryValues[k - 1]))
                     {
-                        NA[i - 1] = k - 1;
-                        OA[k - 1] = i - 1;
+                        newTemporaryValues[i - 1] = k - 1;
+                        oldTemporaryValues[k - 1] = i - 1;
                     }
                 }
 
-                MemoryOwner<LineModificationType> result = MemoryOwner<LineModificationType>.Allocate(NL);
+                // Allocate the result array with on entry per line in the updated text
+                MemoryOwner<LineModificationType> result = MemoryOwner<LineModificationType>.Allocate(newNumberOfLines);
                 ref LineModificationType resultRef = ref result.GetReference();
 
-                for (i = 0; i < NL; i++)
+                /* ==============
+                 * Final pass
+                 * ==============
+                 * Each entry in the result array is set by reading data from the
+                 * temporary values for the new text. If an entry is an int it
+                 * means that that line was present in the old file too and in the
+                 * same location. Otherwise, if a table entry is present,
+                 * it means that the current line has been modified in some way. */
+                for (i = 0; i < newNumberOfLines; i++)
                 {
-                    if (NA[i] is int) Unsafe.Add(ref resultRef, i) = LineModificationType.None;
+                    if (newTemporaryValues[i] is int) Unsafe.Add(ref resultRef, i) = LineModificationType.None;
                     else Unsafe.Add(ref resultRef, i) = LineModificationType.Modified;
                 }
 
@@ -141,8 +175,8 @@ namespace Brainf_ckSharp.Git
             }
             finally
             {
-                ArrayPool<object>.Shared.Return(OA);
-                ArrayPool<object>.Shared.Return(NA);
+                ArrayPool<object>.Shared.Return(oldTemporaryValues);
+                ArrayPool<object>.Shared.Return(newTemporaryValues);
             }
         }
     }
