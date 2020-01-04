@@ -38,11 +38,11 @@ namespace Brainf_ckSharp
             /* Initialize the temporary buffers, using the UnsafeSpanBuffer<T> type when possible
              * to save the extra allocations here. This is possible because all these buffers are
              * only used within the scope of this method, and disposed as soon as the method completes. */
-            using UnsafeSpanBuffer<bool> breakpoints = new UnsafeSpanBuffer<bool>(operators.Size, true);
+            using UnsafeSpanBuffer<bool> breakpoints = UnsafeSpanBuffer<bool>.Allocate(operators.Size, true);
             using UnsafeMemoryBuffer<int> jumpTable = LoadJumpTable(operators, out int functionsCount);
-            using UnsafeSpanBuffer<Range> functions = new UnsafeSpanBuffer<Range>(ushort.MaxValue, true);
+            using UnsafeSpanBuffer<Range> functions = UnsafeSpanBuffer<Range>.Allocate(ushort.MaxValue, true);
             using UnsafeMemoryBuffer<ushort> definitions = LoadDefinitionsTable(functionsCount);
-            using UnsafeSpanBuffer<StackFrame> stackFrames = new UnsafeSpanBuffer<StackFrame>(Specs.MaximumStackSize, false);
+            using UnsafeSpanBuffer<StackFrame> stackFrames = UnsafeSpanBuffer<StackFrame>.Allocate(Specs.MaximumStackSize, false);
             using StdoutBuffer stdout = new StdoutBuffer();
 
             // Shared counters

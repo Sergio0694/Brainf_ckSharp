@@ -40,7 +40,7 @@ namespace Brainf_ckSharp.Buffers
         /// <param name="size">The size of the new memory buffer to use</param>
         /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
         /// <remarks>Not using a proxy like <see cref="UnsafeMemoryBuffer{T}.Allocate"/> here since it's a value type</remarks>
-        public UnsafeSpanBuffer(int size, bool clear)
+        private UnsafeSpanBuffer(int size, bool clear)
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(size, 0, nameof(size));
 
@@ -60,6 +60,15 @@ namespace Brainf_ckSharp.Buffers
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => new UnsafeMemory<T>(Size, Ptr);
         }
+
+        /// <summary>
+        /// Creates a new <see cref="UnsafeSpanBuffer{T}"/> instance with the specified parameters
+        /// </summary>
+        /// <param name="size">The size of the new memory buffer to use</param>
+        /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
+        /// <remarks>This method is just a proxy for the <see langword="private"/> constructor, for clarity</remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UnsafeSpanBuffer<T> Allocate(int size, bool clear) => new UnsafeSpanBuffer<T>(size, clear);
 
         /// <summary>
         /// Gets the <typeparamref name="T"/> value at the specified index in the current buffer
