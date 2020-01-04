@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Windows.UI;
+using Brainf_ckSharp.Git.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models.Abstract;
@@ -15,14 +16,19 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     public sealed partial class Brainf_ckIde
     {
         /// <summary>
-        /// The current array of <see cref="IndentationIndicatorBase"/> instances to render
+        /// The current buffer of line diff indicators
         /// </summary>
-        private IndentationIndicatorBase[] _Indicators = ArrayPool<IndentationIndicatorBase>.Shared.Rent(1);
+        private MemoryOwner<LineModificationType> _DiffIndicators = MemoryOwner<LineModificationType>.Allocate(0);
 
         /// <summary>
-        /// The current number of valid items in <see cref="_Indicators"/>
+        /// The current array of <see cref="IndentationIndicatorBase"/> instances to render
         /// </summary>
-        private int _IndicatorsCount;
+        private IndentationIndicatorBase[] _IndentationIndicators = ArrayPool<IndentationIndicatorBase>.Shared.Rent(1);
+
+        /// <summary>
+        /// The current number of valid items in <see cref="_IndentationIndicators"/>
+        /// </summary>
+        private int _IndentationIndicatorsCount;
 
         /// <summary>
         /// Draws the IDE overlays when an update is requested
@@ -31,8 +37,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="args">The <see cref="CanvasDrawEventArgs"/> for the current instance</param>
         private void IdeOverlaysCanvas_Draw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            ref IndentationIndicatorBase r0 = ref _Indicators[0];
-            int count = _IndicatorsCount;
+            ref IndentationIndicatorBase r0 = ref _IndentationIndicators[0];
+            int count = _IndentationIndicatorsCount;
 
             for (int i = 0; i < count; i++)
             {

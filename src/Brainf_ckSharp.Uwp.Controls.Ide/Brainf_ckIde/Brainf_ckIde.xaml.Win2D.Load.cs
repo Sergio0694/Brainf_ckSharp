@@ -3,6 +3,7 @@ using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Brainf_ckSharp.Constants;
+using Brainf_ckSharp.Git;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models.Abstract;
@@ -12,6 +13,16 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     public sealed partial class Brainf_ckIde
     {
         /// <summary>
+        /// Updates the current line diff indicators
+        /// </summary>
+        /// <param name="text">The current source code being displayed</param>
+        private void UpdateDiffInfo(string text)
+        {
+            _DiffIndicators.Dispose();
+            _DiffIndicators = LineDiffer.ComputeDiff(ReferenceText, text, Characters.CarriageReturn);
+        }
+
+        /// <summary>
         /// Updates the current indentation info to render
         /// </summary>
         /// <param name="text">The current source code being displayed</param>
@@ -20,19 +31,19 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private void UpdateIndentationInfo(string text, bool isSyntaxValid, int numberOfLines)
         {
             // Return the previous buffer
-            ArrayPool<IndentationIndicatorBase>.Shared.Return(_Indicators);
+            ArrayPool<IndentationIndicatorBase>.Shared.Return(_IndentationIndicators);
 
             // Skip if the current syntax is not valid
             if (!isSyntaxValid)
             {
-                _Indicators = ArrayPool<IndentationIndicatorBase>.Shared.Rent(1);
-                _IndicatorsCount = 0;
+                _IndentationIndicators = ArrayPool<IndentationIndicatorBase>.Shared.Rent(1);
+                _IndentationIndicatorsCount = 0;
                 IdeOverlaysCanvas.Invalidate();
                 return;
             }
 
             // Allocate the new buffer
-            IndentationIndicatorBase[] indicators = _Indicators = ArrayPool<IndentationIndicatorBase>.Shared.Rent(numberOfLines);
+            IndentationIndicatorBase[] indicators = _IndentationIndicators = ArrayPool<IndentationIndicatorBase>.Shared.Rent(numberOfLines);
             ref IndentationIndicatorBase indicatorsRef = ref indicators[0]; // There's always at least one line
 
             // Reset the pools
@@ -204,8 +215,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 }
             }
 
-            _Indicators = indicators;
-            _IndicatorsCount = y;
+            _IndentationIndicators = indicators;
+            _IndentationIndicatorsCount = y;
             IdeOverlaysCanvas.Invalidate();
         }
     }
