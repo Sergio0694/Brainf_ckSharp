@@ -14,7 +14,6 @@ namespace Brainf_ckSharp.Git.Unit
         [TestMethod]
         public void EmptyString()
         {
-            return;
             Test(Array.Empty<LineModificationType>(), string.Empty, string.Empty);
         }
 

@@ -26,8 +26,25 @@ namespace Brainf_ckSharp.Git
         /// <param name="separator">The separator character to use to split lines in <paramref name="oldText"/> and <paramref name="newText"/></param>
         /// <returns>A <see cref="MemoryOwner{T}"/> instance with the sequence of line modifications</returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static MemoryOwner<LineModificationType> ComputeDiff(string oldText, string newText, char separator)
         {
+            return ComputeDiff(oldText.AsSpan(), newText.AsSpan(), separator);
+        }
+
+        /// <summary>
+        /// Computes the line difference for a reference text and a new text
+        /// </summary>
+        /// <param name="oldText">The reference text to compare to</param>
+        /// <param name="newText">The updated text to compare</param>
+        /// <param name="separator">The separator character to use to split lines in <paramref name="oldText"/> and <paramref name="newText"/></param>
+        /// <returns>A <see cref="MemoryOwner{T}"/> instance with the sequence of line modifications</returns>
+        [Pure]
+        public static MemoryOwner<LineModificationType> ComputeDiff(ReadOnlySpan<char> oldText, ReadOnlySpan<char> newText, char separator)
+        {
+            // If the new text is empty, no modifications are returned
+            if (newText.IsEmpty) return MemoryOwner<LineModificationType>.Allocate(0);
+
             int TextNumberOfLines = oldText.Count(separator) + 1;
             int newNumberOfLines = newText.Count(separator) + 1;
 
