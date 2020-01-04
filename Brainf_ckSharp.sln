@@ -40,7 +40,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.Uwp.Themes",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Diagnostics", "src\Brainf_ckSharp.Diagnostics\Brainf_ckSharp.Diagnostics.csproj", "{A464D3E4-C6E0-48EC-A786-C2DB610D9BD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.Buffers", "src\Brainf_ckSharp.Buffers\Brainf_ckSharp.Buffers.csproj", "{5F365B29-7CDF-4272-B877-37CA69DAAD1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Buffers", "src\Brainf_ckSharp.Buffers\Brainf_ckSharp.Buffers.csproj", "{5F365B29-7CDF-4272-B877-37CA69DAAD1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.Git", "src\Brainf_ckSharp.Git\Brainf_ckSharp.Git.csproj", "{8000D892-951C-49B3-AE95-DB85D909C717}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -328,6 +330,26 @@ Global
 		{5F365B29-7CDF-4272-B877-37CA69DAAD1B}.Release|x64.Build.0 = Release|Any CPU
 		{5F365B29-7CDF-4272-B877-37CA69DAAD1B}.Release|x86.ActiveCfg = Release|Any CPU
 		{5F365B29-7CDF-4272-B877-37CA69DAAD1B}.Release|x86.Build.0 = Release|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|ARM.Build.0 = Debug|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|x64.Build.0 = Debug|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|x86.Build.0 = Debug|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|ARM.ActiveCfg = Release|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|ARM.Build.0 = Release|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|ARM64.Build.0 = Release|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|x64.ActiveCfg = Release|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|x64.Build.0 = Release|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|x86.ActiveCfg = Release|Any CPU
+		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
