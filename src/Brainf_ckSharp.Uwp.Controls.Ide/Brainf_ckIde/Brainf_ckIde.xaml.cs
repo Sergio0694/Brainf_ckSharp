@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models;
 using UICompositionAnimations.Enums;
@@ -58,9 +59,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="args">The arguments for the new Brainf*ck/Pbrain source code being displayed</param>
         private void CodeEditBox_OnPlainTextChanged(Brainf_ckEditBox sender, PlainTextChangedEventArgs args)
         {
-            int numberOfLines = args.PlainText.Count('\r');
+            int numberOfLines = args.PlainText.Count(Characters.CarriageReturn);
 
             UpdateLineIndicators(numberOfLines);
+            UpdateDiffInfo(args.PlainText);
             UpdateIndentationInfo(args.PlainText, args.ValidationResult.IsSuccessOrEmptyScript, numberOfLines);
         }
 

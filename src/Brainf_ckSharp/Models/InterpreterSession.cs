@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using Brainf_ckSharp.Buffers;
 using Brainf_ckSharp.Buffers.IO;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Extensions.Types;
@@ -19,32 +19,32 @@ namespace Brainf_ckSharp.Models
         /// <summary>
         /// The sequence of parsed operators to execute
         /// </summary>
-        private readonly UnsafeMemoryBuffer<byte> Operators;
+        private readonly PinnedUnmanagedMemoryOwner<byte> Operators;
 
         /// <summary>
         /// The table of breakpoints for the current executable
         /// </summary>
-        private readonly UnsafeMemoryBuffer<bool> Breakpoints;
+        private readonly PinnedUnmanagedMemoryOwner<bool> Breakpoints;
 
         /// <summary>
         /// The jump table for loops and function declarations
         /// </summary>
-        private readonly UnsafeMemoryBuffer<int> JumpTable;
+        private readonly PinnedUnmanagedMemoryOwner<int> JumpTable;
 
         /// <summary>
         /// The mapping of functions for the current execution
         /// </summary>
-        private readonly UnsafeMemoryBuffer<Range> Functions;
+        private readonly PinnedUnmanagedMemoryOwner<Range> Functions;
 
         /// <summary>
         /// The lookup table to check which functions are defined
         /// </summary>
-        private readonly UnsafeMemoryBuffer<ushort> Definitions;
+        private readonly PinnedUnmanagedMemoryOwner<ushort> Definitions;
 
         /// <summary>
         /// The sequence of stack frames for the current execution
         /// </summary>
-        private readonly UnsafeMemoryBuffer<StackFrame> StackFrames;
+        private readonly PinnedUnmanagedMemoryOwner<StackFrame> StackFrames;
 
         /// <summary>
         /// The input buffer to read characters from
@@ -111,12 +111,12 @@ namespace Brainf_ckSharp.Models
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
         internal InterpreterSession(
-            UnsafeMemoryBuffer<byte> operators,
-            UnsafeMemoryBuffer<bool> breakpoints,
-            UnsafeMemoryBuffer<int> jumpTable,
-            UnsafeMemoryBuffer<Range> functions,
-            UnsafeMemoryBuffer<ushort> definitions,
-            UnsafeMemoryBuffer<StackFrame> stackFrames,
+            PinnedUnmanagedMemoryOwner<byte> operators,
+            PinnedUnmanagedMemoryOwner<bool> breakpoints,
+            PinnedUnmanagedMemoryOwner<int> jumpTable,
+            PinnedUnmanagedMemoryOwner<Range> functions,
+            PinnedUnmanagedMemoryOwner<ushort> definitions,
+            PinnedUnmanagedMemoryOwner<StackFrame> stackFrames,
             string stdin,
             int memorySize,
             OverflowMode overflowMode,

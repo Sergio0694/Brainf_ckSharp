@@ -35,23 +35,23 @@ namespace Legere.ViewModels.SubPages.Shell
         /// </summary>
         public string GitCommit => ThisAssembly.Git.Commit;
 
-        private IEnumerable<User> _Developers;
+        private IEnumerable<User>? _Developers;
 
         /// <summary>
         /// Gets the list of lead developers to the Legere repository
         /// </summary>
-        public IEnumerable<User> Developers
+        public IEnumerable<User>? Developers
         {
             get => _Developers;
             private set => Set(ref _Developers, value);
         }
 
-        private IEnumerable<object> _DonationMockupSource;
+        private IEnumerable<object>? _DonationMockupSource;
 
         /// <summary>
         /// Gets the mockup list to load the donation placeholder
         /// </summary>
-        public IEnumerable<object> DonationMockupSource
+        public IEnumerable<object>? DonationMockupSource
         {
             get => _DonationMockupSource;
             private set => Set(ref _DonationMockupSource, value);

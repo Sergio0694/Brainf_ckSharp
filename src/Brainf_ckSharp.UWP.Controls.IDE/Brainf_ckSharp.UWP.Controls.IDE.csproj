@@ -138,9 +138,11 @@
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.cs">
       <DependentUpon>Brainf_ckIde.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.cs" />
+    <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Constants.cs" />
+    <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Load.cs" />
+    <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Draw.cs" />
+    <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Properties.cs" />
     <Compile Include="Brainf_ckIde\Enums\IndentationType.cs" />
-    <Compile Include="Brainf_ckIde\Helpers\Pool{T}.cs" />
     <Compile Include="Brainf_ckIde\Helpers\TextGenerator.cs" />
     <Compile Include="Brainf_ckIde\Models\Abstract\IndentationIndicatorBase.cs" />
     <Compile Include="Brainf_ckIde\Models\BlockIndicator.cs" />
@@ -169,9 +171,17 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Brainf_ckSharp.Helpers\Brainf_ckSharp.Helpers.csproj">
+    <ProjectReference Include="..\Brainf_ckSharp.Buffers\Brainf_ckSharp.Buffers.csproj">
+      <Project>{5f365b29-7cdf-4272-b877-37ca69daad1b}</Project>
+      <Name>Brainf_ckSharp.Buffers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Brainf_ckSharp.Diagnostics\Brainf_ckSharp.Diagnostics.csproj">
       <Project>{a464d3e4-c6e0-48ec-a786-c2db610d9bd0}</Project>
-      <Name>Brainf_ckSharp.Helpers</Name>
+      <Name>Brainf_ckSharp.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Brainf_ckSharp.Git\Brainf_ckSharp.Git.csproj">
+      <Project>{8000d892-951c-49b3-ae95-db85d909c717}</Project>
+      <Name>Brainf_ckSharp.Git</Name>
     </ProjectReference>
     <ProjectReference Include="..\Brainf_ckSharp.Uwp.Themes\Brainf_ckSharp.Uwp.Themes.csproj">
       <Project>{bd6f7b87-b1aa-46a7-b03a-9d299ea6f636}</Project>

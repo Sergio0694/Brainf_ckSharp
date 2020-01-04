@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Buffers;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
-using Brainf_ckSharp.Buffers;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Extensions.Types;
-using Brainf_ckSharp.Helpers;
 using Brainf_ckSharp.Models;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
 
@@ -21,8 +21,8 @@ namespace Brainf_ckSharp
         /// <returns>An <see cref="HaltedExecutionInfo"/> instance, if the input script was halted during its execution</returns>
         [Pure]
         internal static HaltedExecutionInfo? LoadDebugInfo(
-            UnsafeMemory<byte> operators,
-            UnsafeMemory<StackFrame> stackFrames,
+            UnmanagedSpan<byte> operators,
+            UnmanagedSpan<StackFrame> stackFrames,
             int depth)
         {
             DebugGuard.MustBeTrue(operators.Size > 0, nameof(operators));
@@ -51,7 +51,7 @@ namespace Brainf_ckSharp
                  * reinterpret cast saves a conditional jump in the asm code. */
                 bool zero = i == 0;
                 int offset = frame.Offset + Unsafe.As<bool, byte>(ref zero);
-                UnsafeMemory<byte> memory = operators.Slice(frame.Range.Start, offset);
+                UnmanagedSpan<byte> memory = operators.Slice(frame.Range.Start, offset);
                 string body = Brainf_ckParser.ExtractSource(memory);
 
                 Unsafe.Add(ref r0, i) = body;
@@ -77,9 +77,9 @@ namespace Brainf_ckSharp
         /// <returns>An array of <see cref="FunctionDefinition"/> instance with the defined functions</returns>
         [Pure]
         internal static FunctionDefinition[] LoadFunctionDefinitions(
-            UnsafeMemory<byte> operators,
-            UnsafeMemory<Range> functions,
-            UnsafeMemory<ushort> definitions,
+            UnmanagedSpan<byte> operators,
+            UnmanagedSpan<Range> functions,
+            UnmanagedSpan<ushort> definitions,
             int totalFunctions)
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(operators.Size, 0, nameof(operators));
@@ -100,7 +100,7 @@ namespace Brainf_ckSharp
                 ushort key = definitions[i];
                 Range range = functions[key];
                 int offset = range.Start - 1; // The range starts at the first function operator
-                UnsafeMemory<byte> memory = operators.Slice(in range);
+                UnmanagedSpan<byte> memory = operators.Slice(in range);
                 string body = Brainf_ckParser.ExtractSource(memory);
 
                 Unsafe.Add(ref r0, i) = new FunctionDefinition(key, i, offset, body);
@@ -116,11 +116,11 @@ namespace Brainf_ckSharp
         /// <param name="functionsCount">The total number of declared functions in the input sequence of operators</param>
         /// <returns>The resulting precomputed jump table for the input executable</returns>
         [Pure]
-        private static UnsafeMemoryBuffer<int> LoadJumpTable(UnsafeMemoryBuffer<byte> operators, out int functionsCount)
+        private static PinnedUnmanagedMemoryOwner<int> LoadJumpTable(PinnedUnmanagedMemoryOwner<byte> operators, out int functionsCount)
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(operators.Size, 0, nameof(operators));
 
-            UnsafeMemoryBuffer<int> jumpTable = UnsafeMemoryBuffer<int>.Allocate(operators.Size, false);
+            PinnedUnmanagedMemoryOwner<int> jumpTable = PinnedUnmanagedMemoryOwner<int>.Allocate(operators.Size, false);
 
             /* Temporarily allocate two buffers to store the indirect indices to build the jump table.
              * The two temporary buffers are initialized with a size of half the length of the input
@@ -131,8 +131,8 @@ namespace Brainf_ckSharp
              * allocating a GCHandle and pinning each temporary buffer, which is not necessary since
              * both buffers are only used in the scope of this method. */
             int tempBuffersLength = operators.Size / 2 + 1;
-            using UnsafeSpan<int> rootTempIndices = UnsafeSpan<int>.Allocate(tempBuffersLength);
-            using UnsafeSpan<int> functionTempIndices = UnsafeSpan<int>.Allocate(tempBuffersLength);
+            using StackOnlyUnmanagedMemoryOwner<int> rootTempIndices = StackOnlyUnmanagedMemoryOwner<int>.Allocate(tempBuffersLength);
+            using StackOnlyUnmanagedMemoryOwner<int> functionTempIndices = StackOnlyUnmanagedMemoryOwner<int>.Allocate(tempBuffersLength);
             ref int rootTempIndicesRef = ref rootTempIndices.GetReference();
             ref int functionTempIndicesRef = ref functionTempIndices.GetReference();
             functionsCount = 0;
@@ -192,14 +192,14 @@ namespace Brainf_ckSharp
         /// <returns>The resulting buffer to store keys for the declared functions</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static UnsafeMemoryBuffer<ushort> LoadDefinitionsTable(int functionsCount)
+        private static PinnedUnmanagedMemoryOwner<ushort> LoadDefinitionsTable(int functionsCount)
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(functionsCount, 0, nameof(functionsCount));
 
             return functionsCount switch
             {
-                0 => UnsafeMemoryBuffer<ushort>.Empty,
-                _ => UnsafeMemoryBuffer<ushort>.Allocate(functionsCount, false)
+                0 => PinnedUnmanagedMemoryOwner<ushort>.Empty,
+                _ => PinnedUnmanagedMemoryOwner<ushort>.Allocate(functionsCount, false)
             };
         }
 
@@ -211,7 +211,7 @@ namespace Brainf_ckSharp
         /// <param name="breakpoints">The sequence of indices for the breakpoints to apply to the script</param>
         /// <returns>The resulting precomputed breakpoints table for the input executable</returns>
         [Pure]
-        private static UnsafeMemoryBuffer<bool> LoadBreakpointsTable(
+        private static PinnedUnmanagedMemoryOwner<bool> LoadBreakpointsTable(
             string source,
             int operatorsCount,
             ReadOnlySpan<int> breakpoints)
@@ -221,7 +221,7 @@ namespace Brainf_ckSharp
              * built in O(M), and then provides constant time checking for each
              * character from the input script. The result is an algorithm that
              * builds the final breakpoints table in O(M + N) instead of O(M * N). */
-            using UnsafeMemoryBuffer<bool> temporaryBuffer = UnsafeMemoryBuffer<bool>.Allocate(source.Length, true);
+            using PinnedUnmanagedMemoryOwner<bool> temporaryBuffer = PinnedUnmanagedMemoryOwner<bool>.Allocate(source.Length, true);
 
             // Build the temporary table to store the indirect offsets of the breakpoints
             for (int i = 0; i < breakpoints.Length; i++)
@@ -234,7 +234,7 @@ namespace Brainf_ckSharp
                 temporaryBuffer[index] = true;
             }
 
-            UnsafeMemoryBuffer<bool> breakpointsBuffer = UnsafeMemoryBuffer<bool>.Allocate(operatorsCount, false);
+            PinnedUnmanagedMemoryOwner<bool> breakpointsBuffer = PinnedUnmanagedMemoryOwner<bool>.Allocate(operatorsCount, false);
 
             // Build the breakpoints table by going through the temporary table with the markers
             for (int i = 0, j = 0; j < source.Length; j++)

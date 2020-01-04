@@ -1,7 +1,7 @@
 ﻿namespace Brainf_ckSharp.Constants
 {
     /// <summary>
-    /// A <see langword="class"/> that exposes the collection of available Brainf*ck/PBrain characters
+    /// A <see langword="class"/> that exposes the collection of available Brainf*ck/PBrain characters, and common characters
     /// </summary>
     public static class Characters
     {
@@ -59,5 +59,25 @@
         /// The <see langword=":"/> operator, that invokes a specified function (<see langword="f[*ptr]()"/>)
         /// </summary>
         public const char FunctionCall = ':';
+
+        /// <summary>
+        /// The space character <see langword="' '"/>
+        /// </summary>
+        public const char Space = ' ';
+
+        /// <summary>
+        /// The tab character <see langword="'\t'"/>
+        /// </summary>
+        public const char Tab = '\t';
+
+        /// <summary>
+        /// The line feed character <see langword="'\n'"/>
+        /// </summary>
+        public const char LineFeed = '\n';
+
+        /// <summary>
+        /// The carriage return character <see langword="'\r'"/>
+        /// </summary>
+        public const char CarriageReturn = '\r';
     }
 }

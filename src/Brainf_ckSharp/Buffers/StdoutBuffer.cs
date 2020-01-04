@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Buffers;
+using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
 
 #pragma warning disable IDE0032
@@ -8,7 +9,7 @@ namespace Brainf_ckSharp.Buffers.IO
     /// <summary>
     /// A <see langword="class"/> that represents a memory area to be used as stdout buffer
     /// </summary>
-    internal sealed class StdoutBuffer : UnsafeMemoryBuffer<char>
+    internal sealed class StdoutBuffer : PinnedUnmanagedMemoryOwner<char>
     {
         /// <summary>
         /// The current position in the underlying buffer to write to

@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\MediumNew.txt" />
+    <None Remove="Assets\MediumOld.txt" />
+    <None Remove="Assets\SmallNew.txt" />
+    <None Remove="Assets\SmallOld.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\MediumNew.txt" />
+    <EmbeddedResource Include="Assets\MediumOld.txt" />
+    <EmbeddedResource Include="Assets\SmallNew.txt" />
+    <EmbeddedResource Include="Assets\SmallOld.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.0.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.0.0" />
+    <PackageReference Include="coverlet.collector" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Brainf_ckSharp.Git\Brainf_ckSharp.Git.csproj" />
+  </ItemGroup>
+
+</Project>

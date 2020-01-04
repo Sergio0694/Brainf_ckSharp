@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Windows.UI.Text;
 using Brainf_ckSharp.Constants;
-using Brainf_ckSharp.Helpers;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
@@ -114,7 +114,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                  * improves performance, as the color can be applied in a single pass. */
                 if (BracketsFormattingStyle == BracketsFormattingStyle.NewLine &&
                     start > 1 &&
-                    text[start - 2] != '\r')
+                    text[start - 2] != Characters.CarriageReturn)
                 {
                     autocomplete = CodeGenerator.GetBracketAutocompleteText(BracketsFormattingStyle.NewLine, depth);
                 }
@@ -134,10 +134,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
                 text = Document.GetText();
             }
-            else if (c == '\r' && _SyntaxValidationResult.IsSuccessOrEmptyScript)
+            else if (c == Characters.CarriageReturn && _SyntaxValidationResult.IsSuccessOrEmptyScript)
             {
                 int depth = text.CalculateIndentationDepth(start);
-                string autocomplete = new string('\t', depth);
+                string autocomplete = new string(Characters.Tab, depth);
 
                 // Simply insert the tabs at the current selection, then collapse it
                 Document.Selection.Text = autocomplete;
@@ -235,7 +235,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
                 // Insert a tab before each new line character
                 for (int i = 0; i < max; i++)
-                    if (Unsafe.Add(ref r0, i) == '\r')
+                    if (Unsafe.Add(ref r0, i) == Characters.CarriageReturn)
                         Document.GetRangeAt(bounds.Start + i + count++).Text = "\t";
 
                 PlainText = Document.GetText();
@@ -263,7 +263,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 for (int i = 0; i < length; i++)
                 {
                     // Remove the current \t
-                    if (Unsafe.Add(ref r0, i) == '\t')
+                    if (Unsafe.Add(ref r0, i) == Characters.Tab)
                     {
                         int offset = bounds.Start + i - count++;
                         Document.GetRange(offset, offset + 1).Text = string.Empty;
@@ -271,7 +271,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
                     // Move to the following \r
                     i++;
-                    while (i < length && Unsafe.Add(ref r0, i) != '\r')
+                    while (i < length && Unsafe.Add(ref r0, i) != Characters.CarriageReturn)
                         i++;
                 }
 

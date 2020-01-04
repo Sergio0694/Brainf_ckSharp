@@ -1,4 +1,4 @@
-﻿using Brainf_ckSharp.Buffers;
+﻿using System.Buffers;
 using Brainf_ckSharp.Extensions.Types;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Internal;
@@ -15,11 +15,11 @@ namespace Brainf_ckSharp.Unit.Internals
         [TestMethod]
         public void EmptyStackTrace()
         {
-            using UnsafeMemoryBuffer<byte>? operators = Brainf_ckParser.TryParse("++[>++>-]>+", out _);
+            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.TryParse("++[>++>-]>+", out _);
 
             Assert.IsNotNull(operators);
 
-            using UnsafeMemoryBuffer<StackFrame> stackFrames = UnsafeMemoryBuffer<StackFrame>.Allocate(512, false);
+            using PinnedUnmanagedMemoryOwner<StackFrame> stackFrames = PinnedUnmanagedMemoryOwner<StackFrame>.Allocate(512, false);
 
             stackFrames[0] = new StackFrame(new Range(0, operators!.Size), 10);
 
@@ -31,11 +31,11 @@ namespace Brainf_ckSharp.Unit.Internals
         [TestMethod]
         public void RootBreakpoint()
         {
-            using UnsafeMemoryBuffer<byte>? operators = Brainf_ckParser.TryParse("++[>++>-]>+", out _);
+            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.TryParse("++[>++>-]>+", out _);
 
             Assert.IsNotNull(operators);
 
-            using UnsafeMemoryBuffer<StackFrame> stackFrames = UnsafeMemoryBuffer<StackFrame>.Allocate(512, false);
+            using PinnedUnmanagedMemoryOwner<StackFrame> stackFrames = PinnedUnmanagedMemoryOwner<StackFrame>.Allocate(512, false);
 
             stackFrames[0] = new StackFrame(new Range(0, operators!.Size), 7);
 
@@ -51,11 +51,11 @@ namespace Brainf_ckSharp.Unit.Internals
         [TestMethod]
         public void FunctionCallBreakpoint()
         {
-            using UnsafeMemoryBuffer<byte>? operators = Brainf_ckParser.TryParse("(+>):+", out _);
+            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.TryParse("(+>):+", out _);
 
             Assert.IsNotNull(operators);
 
-            using UnsafeMemoryBuffer<StackFrame> stackFrames = UnsafeMemoryBuffer<StackFrame>.Allocate(512, false);
+            using PinnedUnmanagedMemoryOwner<StackFrame> stackFrames = PinnedUnmanagedMemoryOwner<StackFrame>.Allocate(512, false);
 
             stackFrames[0] = new StackFrame(new Range(0, operators!.Size), 5);
             stackFrames[1] = new StackFrame(new Range(1, 3), 2);

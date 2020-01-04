@@ -1,8 +1,7 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
-namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers
+namespace System.Buffers
 {
     /// <summary>
     /// A <see langword="class"/> that implements a pool of items of type <typeparamref name="T"/>

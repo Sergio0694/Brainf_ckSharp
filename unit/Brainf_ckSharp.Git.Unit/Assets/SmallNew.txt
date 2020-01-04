@@ -1,0 +1,14 @@
+﻿++++ first loop
+[
+	new line
+	>+++++ 25 in 2nd cell
+	[
+		>+ 25 in 8th edit 1
+		<<<<<<- loop end edit 2
+	]
+	<- return to 1st cell
+]
+new line
+>>---. H
+>>+. e
+test
