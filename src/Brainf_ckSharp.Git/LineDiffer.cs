@@ -24,10 +24,10 @@ namespace Brainf_ckSharp.Git
         /// <param name="newText">The updated text to compare</param>
         /// <returns>A <see cref="MemoryOwner{T}"/> instance with the sequence of line modifications</returns>
         [Pure]
-        public static MemoryOwner<LineModificationType> ComputeDiff(string oldText, string newText)
+        public static MemoryOwner<LineModificationType> ComputeDiff(string oldText, string newText, char separator)
         {
-            int OL = oldText.Count('\n') + 1;
-            int NL = newText.Count('\n') + 1;
+            int OL = oldText.Count(separator) + 1;
+            int NL = newText.Count(separator) + 1;
 
             object[] OA = ArrayPool<object>.Shared.Rent(OL);
             object[] NA = ArrayPool<object>.Shared.Rent(NL);
@@ -41,7 +41,7 @@ namespace Brainf_ckSharp.Git
             {
                 // First pass
                 int i = 0;
-                foreach (ReadOnlySpan<char> line in newText.Tokenize('\n'))
+                foreach (ReadOnlySpan<char> line in newText.Tokenize(separator))
                 {
                     int hash = line.GetxxHash32Code();
                     ref Entry entry = ref table.GetOrAddValueRef(hash);
@@ -65,7 +65,7 @@ namespace Brainf_ckSharp.Git
 
                 // Second pass
                 int j = 0;
-                foreach (ReadOnlySpan<char> line in oldText.Tokenize('\n'))
+                foreach (ReadOnlySpan<char> line in oldText.Tokenize(separator))
                 {
                     int hash = line.GetxxHash32Code();
                     ref Entry entry = ref table.GetOrAddValueRef(hash);
