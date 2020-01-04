@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Buffers;
 using System.Diagnostics;
 using System.Threading;
-using Brainf_ckSharp.Buffers;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Interfaces;

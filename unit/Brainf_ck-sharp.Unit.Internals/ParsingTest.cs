@@ -1,4 +1,4 @@
-﻿using Brainf_ckSharp.Buffers;
+﻿using System.Buffers;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;

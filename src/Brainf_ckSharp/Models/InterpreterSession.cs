@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using Brainf_ckSharp.Buffers;
 using Brainf_ckSharp.Buffers.IO;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Extensions.Types;

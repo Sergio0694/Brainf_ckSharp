@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using Brainf_ckSharp.Buffers;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Interfaces;
 

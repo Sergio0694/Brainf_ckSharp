@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Extensions.Types;
 
-namespace Brainf_ckSharp.Buffers
+namespace System.Buffers
 {
     /// <summary>
     /// A <see langword="class"/> with a collection of extension methods for the <see cref="UnmanagedSpan{T}"/> type

@@ -2,7 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
-namespace Brainf_ckSharp.Buffers
+namespace System.Buffers
 {
     /// <summary>
     /// A <see langword="struct"/> that maps a range of <typeparamref name="T"/> values on an existing buffer

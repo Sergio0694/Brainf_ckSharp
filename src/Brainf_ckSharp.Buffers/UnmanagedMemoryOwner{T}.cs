@@ -1,11 +1,9 @@
-﻿using System;
-using System.Buffers;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace Brainf_ckSharp.Buffers
+namespace System.Buffers
 {
     /// <summary>
     /// A <see langword="struct"/> that owns a memory buffer shared from a common pool

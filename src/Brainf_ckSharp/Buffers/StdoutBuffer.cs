@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Buffers;
+using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
 
 #pragma warning disable IDE0032
