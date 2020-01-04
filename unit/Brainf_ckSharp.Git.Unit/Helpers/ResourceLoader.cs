@@ -31,8 +31,8 @@ namespace Brainf_ckSharp.Git.Unit.Helpers
             using StreamReader newReader = new StreamReader(newStream);
 
             string
-                oldText = oldReader.ReadToEnd().Replace("\n", string.Empty),
-                newText = newReader.ReadToEnd().Replace("\n", string.Empty);
+                oldText = oldReader.ReadToEnd(),
+                newText = newReader.ReadToEnd();
 
             return (oldText, newText);
         }

@@ -1,0 +1,12 @@
+﻿++++ first loop
+[
+	>+++++ 25 in 2nd cell
+	[
+		>>>+++++ 125 in 7th
+		>+ 25 in 8th
+		<<<<<<- loop end
+	]
+	<- return to 1st cell
+]
+>>---. H
+>>+. e
