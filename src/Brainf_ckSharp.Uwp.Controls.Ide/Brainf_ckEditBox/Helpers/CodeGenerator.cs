@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Constants;
-using Brainf_ckSharp.Helpers;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers

@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Brainf_ckSharp.Helpers\Brainf_ckSharp.Helpers.csproj" />
+    <ProjectReference Include="..\Brainf_ckSharp.Diagnostics\Brainf_ckSharp.Diagnostics.csproj" />
   </ItemGroup>
 
 </Project>

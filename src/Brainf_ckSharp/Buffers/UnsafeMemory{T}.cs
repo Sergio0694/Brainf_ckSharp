@@ -1,7 +1,7 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Extensions.Types;
-using Brainf_ckSharp.Helpers;
 
 namespace Brainf_ckSharp.Buffers
 {

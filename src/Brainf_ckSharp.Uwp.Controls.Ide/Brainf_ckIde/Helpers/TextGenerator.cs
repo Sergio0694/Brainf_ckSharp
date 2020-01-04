@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Buffers;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
-using Brainf_ckSharp.Helpers;
 using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers

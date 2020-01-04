@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using Brainf_ckSharp.Buffers;
 using Brainf_ckSharp.Buffers.IO;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Extensions.Types;
-using Brainf_ckSharp.Helpers;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Models.Internal;
+using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
 using Stopwatch = System.Diagnostics.Stopwatch;
 
 namespace Brainf_ckSharp

@@ -38,7 +38,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.Uwp.Controls
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.Uwp.Themes", "src\Brainf_ckSharp.Uwp.Themes\Brainf_ckSharp.Uwp.Themes.csproj", "{BD6F7B87-B1AA-46A7-B03A-9D299EA6F636}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Helpers", "src\Brainf_ckSharp.Helpers\Brainf_ckSharp.Helpers.csproj", "{A464D3E4-C6E0-48EC-A786-C2DB610D9BD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Diagnostics", "src\Brainf_ckSharp.Diagnostics\Brainf_ckSharp.Diagnostics.csproj", "{A464D3E4-C6E0-48EC-A786-C2DB610D9BD0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.Buffers", "src\Brainf_ckSharp.Buffers\Brainf_ckSharp.Buffers.csproj", "{5F365B29-7CDF-4272-B877-37CA69DAAD1B}"
 EndProject

@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Windows.UI.Text;
 using Brainf_ckSharp.Constants;
-using Brainf_ckSharp.Helpers;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;

@@ -11,4 +11,8 @@
     <PackageReference Include="System.Memory" Version="4.5.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Brainf_ckSharp.Diagnostics\Brainf_ckSharp.Diagnostics.csproj" />
+  </ItemGroup>
+
 </Project>
