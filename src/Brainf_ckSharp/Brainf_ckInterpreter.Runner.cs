@@ -58,12 +58,12 @@ namespace Brainf_ckSharp
 
             // Start the interpreter
             ExitCode exitCode = Run(
-                operators.Memory,
-                breakpoints.Memory,
-                jumpTable.Memory,
-                functions.Memory,
-                definitions.Memory,
-                stackFrames.Memory,
+                operators.Span,
+                breakpoints.Span,
+                jumpTable.Span,
+                functions.Span,
+                definitions.Span,
+                stackFrames.Span,
                 ref depth,
                 ref totalOperations,
                 ref totalFunctions,
@@ -76,19 +76,19 @@ namespace Brainf_ckSharp
             stopwatch.Stop();
 
             // Rebuild the compacted source code
-            string sourceCode = Brainf_ckParser.ExtractSource(operators.Memory);
+            string sourceCode = Brainf_ckParser.ExtractSource(operators.Span);
 
             // Prepare the debug info
             HaltedExecutionInfo? debugInfo = LoadDebugInfo(
-                operators.Memory,
-                stackFrames.Memory,
+                operators.Span,
+                stackFrames.Span,
                 depth);
 
             // Build the collection of defined functions
             FunctionDefinition[] functionDefinitions = LoadFunctionDefinitions(
-                operators.Memory,
-                functions.Memory,
-                definitions.Memory,
+                operators.Span,
+                functions.Span,
+                definitions.Span,
                 totalFunctions);
 
             return new InterpreterResult(

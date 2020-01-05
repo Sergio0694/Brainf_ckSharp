@@ -246,7 +246,7 @@ namespace Brainf_ckSharp.Models.Internal
         {
             // Iterators don't allow unsafe code, so bounds checks can't be removed here
             for (int i = 0; i < Size; i++)
-                yield return new Brainf_ckMemoryCell(i, Memory[i], _Position == i);
+                yield return new Brainf_ckMemoryCell(i, Span[i], _Position == i);
         }
 
         /// <inheritdoc/>

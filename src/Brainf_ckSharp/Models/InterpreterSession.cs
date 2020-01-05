@@ -135,7 +135,7 @@ namespace Brainf_ckSharp.Models
             ExecutionToken = executionToken;
             DebugToken = debugToken;
             Stopwatch = new Stopwatch();
-            SourceCode = Brainf_ckParser.ExtractSource(operators.Memory);
+            SourceCode = Brainf_ckParser.ExtractSource(operators.Span);
         }
 
         private InterpreterResult? _Current;
@@ -161,12 +161,12 @@ namespace Brainf_ckSharp.Models
 
             // Execute the new interpreter debug step
             ExitCode exitCode = Brainf_ckInterpreter.Run(
-                Operators.Memory,
-                Breakpoints.Memory,
-                JumpTable.Memory,
-                Functions.Memory,
-                Definitions.Memory,
-                StackFrames.Memory,
+                Operators.Span,
+                Breakpoints.Span,
+                JumpTable.Span,
+                Functions.Span,
+                Definitions.Span,
+                StackFrames.Span,
                 ref _Depth,
                 ref _TotalOperations,
                 ref _TotalFunctions,
@@ -180,15 +180,15 @@ namespace Brainf_ckSharp.Models
 
             // Prepare the debug info
             HaltedExecutionInfo? debugInfo = Brainf_ckInterpreter.LoadDebugInfo(
-                Operators.Memory,
-                StackFrames.Memory,
+                Operators.Span,
+                StackFrames.Span,
                 _Depth);
 
             // Build the collection of defined functions
             FunctionDefinition[] functionDefinitions = Brainf_ckInterpreter.LoadFunctionDefinitions(
-                Operators.Memory,
-                Functions.Memory,
-                Definitions.Memory,
+                Operators.Span,
+                Functions.Span,
+                Definitions.Span,
                 _TotalFunctions);
 
             // Update the current interpreter result

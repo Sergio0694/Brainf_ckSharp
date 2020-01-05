@@ -29,7 +29,7 @@ namespace Brainf_ckSharp.Unit.Internals
             operators[9] = Operators.FunctionEnd;
             operators[10] = Operators.FunctionCall;
 
-            string source = Brainf_ckParser.ExtractSource(operators.Memory);
+            string source = Brainf_ckParser.ExtractSource(operators.Span);
 
             Assert.IsNotNull(source);
             Assert.AreEqual(source, "+-><.,[]():");
@@ -50,7 +50,7 @@ namespace Brainf_ckSharp.Unit.Internals
             Assert.IsNotNull(operators);
             Assert.AreEqual(operators!.Size, 15);
 
-            string source = Brainf_ckParser.ExtractSource(operators.Memory);
+            string source = Brainf_ckParser.ExtractSource(operators.Span);
 
             Assert.IsNotNull(source);
             Assert.AreEqual(source, "[]+++++[>++<-]>");

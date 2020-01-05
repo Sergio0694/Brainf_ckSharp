@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -54,15 +55,6 @@ namespace System.Buffers
         }
 
         /// <summary>
-        /// Creates a new <see cref="PinnedUnmanagedMemoryOwner{T}"/> instance with the specified parameters
-        /// </summary>
-        /// <param name="size">The size of the new memory buffer to use</param>
-        /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
-        /// <remarks>This method is just a proxy for the <see langword="protected"/> constructor, for clarity</remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PinnedUnmanagedMemoryOwner<T> Allocate(int size, bool clear) => new PinnedUnmanagedMemoryOwner<T>(size, clear);
-
-        /// <summary>
         /// Gets an empty <see cref="PinnedUnmanagedMemoryOwner{T}"/> instance
         /// </summary>
         public static PinnedUnmanagedMemoryOwner<T> Empty { get; } = new PinnedUnmanagedMemoryOwner<T>();
@@ -70,7 +62,7 @@ namespace System.Buffers
         /// <summary>
         /// Gets an <see cref="UnmanagedSpan{T}"/> instance mapping the values on the current buffer
         /// </summary>
-        public UnmanagedSpan<T> Memory
+        public UnmanagedSpan<T> Span
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => new UnmanagedSpan<T>(Size, Ptr);
@@ -90,6 +82,38 @@ namespace System.Buffers
 
                 return ref Ptr[index];
             }
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="PinnedUnmanagedMemoryOwner{T}"/> instance with the specified parameters
+        /// </summary>
+        /// <param name="size">The size of the new memory buffer to use</param>
+        /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
+        /// <remarks>This method is just a proxy for the <see langword="protected"/> constructor, for clarity</remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static PinnedUnmanagedMemoryOwner<T> Allocate(int size, bool clear) => new PinnedUnmanagedMemoryOwner<T>(size, clear);
+
+        /// <inheritdoc cref="MemoryMarshal.GetReference{T}(Span{T})"/>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref T GetReference()
+        {
+            DebugGuard.MustBeGreaterThan(Size, 0, nameof(Size));
+
+            return ref Unsafe.AsRef<T>(Ptr);
+        }
+
+        /// <summary>
+        /// Returns a <typeparamref name="T"/><see langword="*"/> pointer to the underlying buffer
+        /// </summary>
+        /// <returns>A <typeparamref name="T"/><see langword="*"/> pointer to the underlying buffer</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T* GetPointer()
+        {
+            DebugGuard.MustBeGreaterThan(Size, 0, nameof(Size));
+
+            return Ptr;
         }
 
         /// <summary>

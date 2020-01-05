@@ -53,20 +53,11 @@ namespace System.Buffers
         /// <summary>
         /// Gets an <see cref="UnmanagedSpan{T}"/> instance mapping the values on the current buffer
         /// </summary>
-        public UnmanagedSpan<T> Memory
+        public UnmanagedSpan<T> Span
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => new UnmanagedSpan<T>(Size, Ptr);
         }
-
-        /// <summary>
-        /// Creates a new <see cref="StackOnlyPinnedUnmanagedMemoryOwner{T}"/> instance with the specified parameters
-        /// </summary>
-        /// <param name="size">The size of the new memory buffer to use</param>
-        /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
-        /// <remarks>This method is just a proxy for the <see langword="private"/> constructor, for clarity</remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static StackOnlyPinnedUnmanagedMemoryOwner<T> Allocate(int size, bool clear) => new StackOnlyPinnedUnmanagedMemoryOwner<T>(size, clear);
 
         /// <summary>
         /// Gets the <typeparamref name="T"/> value at the specified index in the current buffer
@@ -83,6 +74,15 @@ namespace System.Buffers
                 return ref Ptr[index];
             }
         }
+
+        /// <summary>
+        /// Creates a new <see cref="StackOnlyPinnedUnmanagedMemoryOwner{T}"/> instance with the specified parameters
+        /// </summary>
+        /// <param name="size">The size of the new memory buffer to use</param>
+        /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
+        /// <remarks>This method is just a proxy for the <see langword="private"/> constructor, for clarity</remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static StackOnlyPinnedUnmanagedMemoryOwner<T> Allocate(int size, bool clear) => new StackOnlyPinnedUnmanagedMemoryOwner<T>(size, clear);
 
         /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
