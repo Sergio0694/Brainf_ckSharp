@@ -1,8 +1,7 @@
-﻿using System.Buffers;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
-namespace Brainf_ckSharp.Buffers.Extensions
+namespace System.Buffers
 {
     /// <summary>
     /// A <see langword="class"/> with some extension methods for the <see cref="PinnedUnmanagedMemoryOwnerExtensions"/> type

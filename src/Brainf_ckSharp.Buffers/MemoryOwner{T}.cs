@@ -2,7 +2,6 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Brainf_ckSharp.Buffers.Extensions.Types;
 
 namespace System.Buffers
 {
