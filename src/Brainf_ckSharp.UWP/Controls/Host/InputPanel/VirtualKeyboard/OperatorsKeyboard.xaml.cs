@@ -24,7 +24,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.VirtualKeyboard
         {
             if (sender is OperatorButton button &&
                 button.Operator.Length == 1 &&
-                button.Operator[0] is { } op &&
+                button.Operator[0] is char op &&
                 Brainf_ckParser.IsOperator(op))
             {
                 Messenger.Default.Send(new OperatorKeyPressedNotificationMessage(op));

@@ -118,7 +118,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             e.Handled = true;
 
             // Insert the text if there is some available
-            if (await ClipboardHelper.TryGetTextAsync() is { } text)
+            if (await ClipboardHelper.TryGetTextAsync() is string text)
             {
                 InsertText(text);
             }

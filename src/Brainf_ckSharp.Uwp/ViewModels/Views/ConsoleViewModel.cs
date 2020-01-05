@@ -198,7 +198,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         {
             using (await ExecutionMutex.LockAsync())
             {
-                if (Source.Reverse().OfType<ConsoleCommand>().Skip(1).FirstOrDefault() is { } previous)
+                if (Source.Reverse().OfType<ConsoleCommand>().Skip(1).FirstOrDefault() is ConsoleCommand previous)
                 {
                     if (!(Source.LastOrDefault() is ConsoleCommand current)) throw new InvalidOperationException("Missing console command to run");
 

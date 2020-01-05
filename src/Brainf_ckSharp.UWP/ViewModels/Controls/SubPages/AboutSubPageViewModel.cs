@@ -8,6 +8,8 @@ using GitHub.APIs;
 using Microsoft.Toolkit.Uwp.Helpers;
 using User = GitHub.Models.User;
 
+#nullable enable
+
 namespace Legere.ViewModels.SubPages.Shell
 {
     /// <summary>
@@ -35,7 +37,7 @@ namespace Legere.ViewModels.SubPages.Shell
         /// </summary>
         public string GitCommit => ThisAssembly.Git.Commit;
 
-        private IEnumerable<User>? _Developers;
+        private static IEnumerable<User>? _Developers;
 
         /// <summary>
         /// Gets the list of lead developers to the Legere repository
@@ -46,7 +48,7 @@ namespace Legere.ViewModels.SubPages.Shell
             private set => Set(ref _Developers, value);
         }
 
-        private IEnumerable<object>? _DonationMockupSource;
+        private static IEnumerable<object>? _DonationMockupSource;
 
         /// <summary>
         /// Gets the mockup list to load the donation placeholder
@@ -62,8 +64,17 @@ namespace Legere.ViewModels.SubPages.Shell
         /// </summary>
         public async Task LoadDataAsync()
         {
-            Developers = new[] { await SimpleIoc.Default.GetInstance<IGitHubService>().GetUserAsync("Sergio0694") };
-            DonationMockupSource = new[] { new object() };
+            if (Developers is IEnumerable<User>) return;
+
+            try
+            {
+                Developers = new[] { await SimpleIoc.Default.GetInstance<IGitHubService>().GetUserAsync("Sergio0694") };
+                DonationMockupSource = new[] { new object() };
+            }
+            catch
+            {
+                // Whoops!
+            }
         }
     }
 }
