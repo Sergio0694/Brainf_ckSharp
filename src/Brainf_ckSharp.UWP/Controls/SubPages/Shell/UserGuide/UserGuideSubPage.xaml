@@ -58,7 +58,7 @@
                 <Button
                     Grid.Row="1"
                     Style="{StaticResource ExpandedSquareButtonRevealStyle}"
-                    Background="#12000000"
+                    Background="#12101010"
                     Height="40"
                     HorizontalContentAlignment="Left">
                     <TextBlock
@@ -92,7 +92,7 @@
 
         <!--Zoomed out header template-->
         <DataTemplate x:Key="SectionZoomedOutHeaderTemplate">
-            <StackPanel Padding="0,12,0,0">
+            <StackPanel Spacing="4">
                 <TextBlock
                     Text="{Binding Group.Key, Converter={StaticResource UserGuideSectionToTitleConverter}, Mode=OneTime}"
                     FontWeight="SemiBold"
@@ -101,19 +101,13 @@
                     Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    HorizontalTextAlignment="Left"
-                    Margin="12,0,12,0"/>
+                    HorizontalTextAlignment="Left"/>
                 <TextBlock
                     Text="{Binding Group.Key, Converter={StaticResource UserGuideSectionToDescriptionConverter}, Mode=OneTime}"
                     Foreground="LightGray"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    HorizontalTextAlignment="Left"
-                    Margin="12,4,12,0"/>
-                <Rectangle
-                    Margin="0,12,0,0"
-                    Height="2"
-                    Fill="#A0000000"/>
+                    HorizontalTextAlignment="Left"/>
             </StackPanel>
         </DataTemplate>
 
@@ -155,14 +149,15 @@
                 <!--ZoomedOutView-->
                 <ListView 
                     ItemsSource="{x:Bind ViewModel.CollectionGroups, Mode=OneWay}"
-                    ItemTemplate="{StaticResource SectionZoomedOutHeaderTemplate}">
+                    ItemTemplate="{StaticResource SectionZoomedOutHeaderTemplate}"
+                    Background="#60000000">
                     <ListView.Resources>
                         <Style TargetType="ListViewItem">
-                            <Setter Property="Margin" Value="0"/>
-                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0,0,0,4"/>
+                            <Setter Property="Padding" Value="12,16,12,16"/>
                             <Setter Property="HorizontalAlignment" Value="Stretch"/>
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Setter Property="Background" Value="#32000000"/>
+                            <Setter Property="Background" Value="#FF171718"/>
                         </Style>
                     </ListView.Resources>
                 </ListView>
