@@ -8,11 +8,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Models.Abstract
     internal abstract class IndentationIndicatorBase
     {
         /// <summary>
-        /// Gets or sets the vertical line offset for the current instance
-        /// </summary>
-        public int Y { get; set; }
-
-        /// <summary>
         /// Gets or sets the <see cref="IndentationType"/> value for the current instance
         /// </summary>
         public IndentationType Type { get; set; }

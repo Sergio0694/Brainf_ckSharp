@@ -23,12 +23,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// The current array of <see cref="IndentationIndicatorBase"/> instances to render
         /// </summary>
-        private IndentationIndicatorBase[] _IndentationIndicators = ArrayPool<IndentationIndicatorBase>.Shared.Rent(1);
-
-        /// <summary>
-        /// The current number of valid items in <see cref="_IndentationIndicators"/>
-        /// </summary>
-        private int _IndentationIndicatorsCount;
+        private MemoryOwner<IndentationIndicatorBase> _IndentationIndicators = MemoryOwner<IndentationIndicatorBase>.Allocate(0);
 
         /// <summary>
         /// Draws the IDE overlays when an update is requested
@@ -37,41 +32,33 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="args">The <see cref="CanvasDrawEventArgs"/> for the current instance</param>
         private void IdeOverlaysCanvas_Draw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            int diffIndicatorsCount = _DiffIndicators.Size;
-
-            if (diffIndicatorsCount > 0)
+            // Git diff indicators
+            foreach (var modification in _DiffIndicators.Enumerate())
             {
-                ref LineModificationType diffRef = ref _DiffIndicators.GetReference();
-
-                for (int i = 0; i < diffIndicatorsCount; i++)
+                switch (modification.Value)
                 {
-                    switch (Unsafe.Add(ref diffRef, i))
-                    {
-                        case LineModificationType.Modified:
-                            DrawDiffMarker(args.DrawingSession, GetOffsetAt(i), ModifiedGitDiffMarkerStrokeColor, ModifiedGitDiffMarkerOutlineColor);
-                            break;
-                        case LineModificationType.Saved:
-                            DrawDiffMarker(args.DrawingSession, GetOffsetAt(i), SavedGitDiffMarkerStrokeColor, SavedGitDiffMarkerOutlineColor);
-                            break;
-                    }
+                    case LineModificationType.Modified:
+                        DrawDiffMarker(args.DrawingSession, GetOffsetAt(modification.Index), ModifiedGitDiffMarkerStrokeColor, ModifiedGitDiffMarkerOutlineColor);
+                        break;
+                    case LineModificationType.Saved:
+                        DrawDiffMarker(args.DrawingSession, GetOffsetAt(modification.Index), SavedGitDiffMarkerStrokeColor, SavedGitDiffMarkerOutlineColor);
+                        break;
                 }
             }
 
-            ref IndentationIndicatorBase indentationIndicatorsRef = ref _IndentationIndicators[0];
-            int indentationIndicatorsCount = _IndentationIndicatorsCount;
-
-            for (int i = 0; i < indentationIndicatorsCount; i++)
+            // Indentation indicators
+            foreach (var indicator in _IndentationIndicators.Enumerate())
             {
-                switch (Unsafe.Add(ref indentationIndicatorsRef, i))
+                switch (indicator.Value)
                 {
                     case FunctionIndicator function:
-                        DrawFunctionDeclaration(args.DrawingSession, GetOffsetAt(function.Y) + IndentationIndicatorsVerticalOffsetMargin, function.Type);
+                        DrawFunctionDeclaration(args.DrawingSession, GetOffsetAt(indicator.Index) + IndentationIndicatorsVerticalOffsetMargin, function.Type);
                         break;
                     case BlockIndicator block:
-                        DrawIndentationBlock(args.DrawingSession, GetOffsetAt(block.Y) + IndentationIndicatorsVerticalOffsetMargin, block.Depth, block.Type, block.IsWithinFunction);
+                        DrawIndentationBlock(args.DrawingSession, GetOffsetAt(indicator.Index) + IndentationIndicatorsVerticalOffsetMargin, block.Depth, block.Type, block.IsWithinFunction);
                         break;
                     case LineIndicator line:
-                        DrawLine(args.DrawingSession, GetOffsetAt(line.Y) + IndentationIndicatorsVerticalOffsetMargin, line.Type);
+                        DrawLine(args.DrawingSession, GetOffsetAt(indicator.Index) + IndentationIndicatorsVerticalOffsetMargin, line.Type);
                         break;
                 }
             }

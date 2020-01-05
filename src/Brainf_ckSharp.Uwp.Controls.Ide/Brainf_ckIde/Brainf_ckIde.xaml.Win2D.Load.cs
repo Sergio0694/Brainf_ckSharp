@@ -38,20 +38,19 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private void UpdateIndentationInfo(string text, bool isSyntaxValid, int numberOfLines)
         {
             // Return the previous buffer
-            ArrayPool<IndentationIndicatorBase>.Shared.Return(_IndentationIndicators);
+            _IndentationIndicators.Dispose();
 
             // Skip if the current syntax is not valid
             if (!isSyntaxValid)
             {
-                _IndentationIndicators = ArrayPool<IndentationIndicatorBase>.Shared.Rent(1);
-                _IndentationIndicatorsCount = 0;
+                _IndentationIndicators = MemoryOwner<IndentationIndicatorBase>.Allocate(0);
                 IdeOverlaysCanvas.Invalidate();
                 return;
             }
 
             // Allocate the new buffer
-            IndentationIndicatorBase[] indicators = _IndentationIndicators = ArrayPool<IndentationIndicatorBase>.Shared.Rent(numberOfLines);
-            ref IndentationIndicatorBase indicatorsRef = ref indicators[0]; // There's always at least one line
+            MemoryOwner<IndentationIndicatorBase> indicators = _IndentationIndicators = MemoryOwner<IndentationIndicatorBase>.Allocate(numberOfLines);
+            ref IndentationIndicatorBase indicatorsRef = ref indicators.GetReference(); // There's always at least one line
 
             // Reset the pools
             Pool<LineIndicator>.Reset();
@@ -137,7 +136,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                             else type = IndentationType.Open;
 
                             FunctionIndicator indicator = Pool<FunctionIndicator>.Rent();
-                            indicator.Y = y;
                             indicator.Type = type;
 
                             Unsafe.Add(ref indicatorsRef, y) = indicator;
@@ -153,7 +151,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                             else type = IndentationType.Open;
 
                             BlockIndicator indicator = Pool<BlockIndicator>.Rent();
-                            indicator.Y = y;
                             indicator.Type = type;
                             indicator.Depth = maxRootDepth;
                             indicator.IsWithinFunction = false;
@@ -172,7 +169,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                             else type = IndentationType.Open;
 
                             BlockIndicator indicator = Pool<BlockIndicator>.Rent();
-                            indicator.Y = y;
                             indicator.Type = type;
                             indicator.Depth = maxFunctionDepth;
                             indicator.IsWithinFunction = true;
@@ -192,7 +188,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                             else type = IndentationType.SelfContained;
 
                             LineIndicator indicator = Pool<LineIndicator>.Rent();
-                            indicator.Y = y;
                             indicator.Type = type;
 
                             Unsafe.Add(ref indicatorsRef, y) = indicator;
@@ -201,7 +196,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         {
                             // Active indentation level with no changes
                             LineIndicator indicator = Pool<LineIndicator>.Rent();
-                            indicator.Y = y;
                             indicator.Type = IndentationType.Open;
 
                             Unsafe.Add(ref indicatorsRef, y) = indicator;
@@ -222,8 +216,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 }
             }
 
-            _IndentationIndicators = indicators;
-            _IndentationIndicatorsCount = y;
             IdeOverlaysCanvas.Invalidate();
         }
     }

@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Brainf_ckSharp.Buffers.Extensions.Types;
 
 namespace System.Buffers
 {
@@ -71,6 +72,14 @@ namespace System.Buffers
         {
             return ref Buffer[0];
         }
+
+        /// <summary>
+        /// Returns a <see cref="ReadOnlySpanEnumerator{T}"/> instance that enumerates the items in the current buffer
+        /// </summary>
+        /// <returns>A<see cref="ReadOnlySpanEnumerator{T}"/> instance that enumerates the items in the current buffer</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ReadOnlySpanEnumerator<T> Enumerate() => new ReadOnlySpanEnumerator<T>(new ReadOnlySpan<T>(Buffer, 0, Size));
 
         /// <summary>
         /// Creates a new <see cref="MemoryOwner{T}"/> instance with a specified size over the current buffer
