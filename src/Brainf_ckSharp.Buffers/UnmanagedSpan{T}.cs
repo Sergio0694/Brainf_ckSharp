@@ -8,7 +8,8 @@ namespace System.Buffers
     /// A <see langword="struct"/> that maps a range of <typeparamref name="T"/> values on an existing buffer
     /// </summary>
     /// <typeparam name="T">The type of items stored in the underlying buffer</typeparam>
-    public readonly unsafe struct UnmanagedSpan<T> where T : unmanaged
+    /// <remarks>This type mirrors <see cref="Span{T}"/> but assumes pinned memory and skips bounds checks</remarks>
+    public readonly unsafe ref struct UnmanagedSpan<T> where T : unmanaged
     {
         /// <summary>
         /// The size of the usable buffer for the current instance

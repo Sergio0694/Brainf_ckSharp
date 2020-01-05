@@ -244,9 +244,10 @@ namespace Brainf_ckSharp.Models.Internal
         /// <inheritdoc/>
         public IEnumerator<Brainf_ckMemoryCell> GetEnumerator()
         {
-            // Iterators don't allow unsafe code, so bounds checks can't be removed here
             for (int i = 0; i < Size; i++)
-                yield return new Brainf_ckMemoryCell(i, Span[i], _Position == i);
+            {
+                yield return new Brainf_ckMemoryCell(i, this[i], _Position == i);
+            }
         }
 
         /// <inheritdoc/>
