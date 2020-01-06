@@ -46,6 +46,8 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
             Messenger.Default.Register<InsertNewLineRequestMessage>(this, _ => CharacterAdded?.Invoke(this, Characters.CarriageReturn));
             Messenger.Default.Register<DeleteCharacterRequestMessage>(this, _ => CharacterDeleted?.Invoke(this, EventArgs.Empty));
             Messenger.Default.Register<OpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync());
+            Messenger.Default.Register<SaveFileRequestMessage>(this, m => { });
+            Messenger.Default.Register<SaveFileAsRequestMessage>(this, m => { });
         }
 
         /// <summary>

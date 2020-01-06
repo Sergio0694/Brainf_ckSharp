@@ -59,6 +59,16 @@ namespace Brainf_ckSharp.Uwp.ViewModels
         public void OpenFile() => Messenger.Default.Send<OpenFileRequestMessage>();
 
         /// <summary>
+        /// Saves the current source code in the IDE to a file
+        /// </summary>
+        public void SaveFile() => Messenger.Default.Send<SaveFileRequestMessage>();
+
+        /// <summary>
+        /// Saves the current source code in the IDE to a new file
+        /// </summary>
+        public void SaveFileAs() => Messenger.Default.Send<SaveFileAsRequestMessage>();
+
+        /// <summary>
         /// Shows the info about the current app
         /// </summary>
         public void ShowAppInfo() => Messenger.Default.Send(SubPageNavigationRequestMessage.To<AboutSubPage>());

@@ -245,7 +245,8 @@
                 <AppBarButton
                     Label="Save"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource SaveIcon}}"
-                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}">
+                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
+                    Click="{x:Bind ViewModel.SaveFile}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator
                             Key="S" Modifiers="Control"
@@ -255,7 +256,8 @@
                 <AppBarButton
                     Label="Save as"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource SaveAsIcon}}"
-                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}">
+                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
+                    Click="{x:Bind ViewModel.SaveFileAs}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator
                             Key="S" Modifiers="Menu"

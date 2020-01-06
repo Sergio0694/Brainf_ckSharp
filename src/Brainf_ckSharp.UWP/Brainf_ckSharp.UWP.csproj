@@ -229,6 +229,8 @@
     <Compile Include="Messages\Ide\DeleteCharacterRequestMessage.cs" />
     <Compile Include="Messages\Ide\InsertNewLineRequestMessage.cs" />
     <Compile Include="Messages\Ide\OpenFileRequestMessage.cs" />
+    <Compile Include="Messages\Ide\SaveFileAsRequestMessage.cs" />
+    <Compile Include="Messages\Ide\SaveFileRequestMessage.cs" />
     <Compile Include="Messages\InputPanel\CharacterReceivedNotificationMessage.cs" />
     <Compile Include="Messages\InputPanel\OperatorKeyPressedNotificationMessage.cs" />
     <Compile Include="Messages\InputPanel\StdinRequestMessage.cs" />
