@@ -49,6 +49,11 @@ namespace Brainf_ckSharp.Uwp.ViewModels
         public void InsertNewLine() => Messenger.Default.Send<InsertNewLineRequestMessage>();
 
         /// <summary>
+        /// Deletes the last character in the IDE
+        /// </summary>
+        public void DeleteIdeCharacter() => Messenger.Default.Send<DeleteCharacterRequestMessage>();
+
+        /// <summary>
         /// Shows the info about the current app
         /// </summary>
         public void ShowAppInfo() => Messenger.Default.Send(SubPageNavigationRequestMessage.To<AboutSubPage>());

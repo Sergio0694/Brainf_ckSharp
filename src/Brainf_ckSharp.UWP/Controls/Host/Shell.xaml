@@ -185,7 +185,8 @@
                 <AppBarButton
                     Label="Delete"
                     Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DeleteIcon}}"
-                    Tag="{markupExtensions:Boolean Value=False}"/>
+                    Tag="{markupExtensions:Boolean Value=False}"
+                    Click="{x:Bind ViewModel.DeleteIdeCharacter}"/>
                 <AppBarButton
                     Label="Undo"
                     Icon="{markupExtensions:FontIconExtension Glyph={StaticResource UndoIcon}}"

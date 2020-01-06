@@ -186,7 +186,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// Programmatically deletes the current character, or the current selection
         /// </summary>
-        private void DeleteSelectionOrCharacter()
+        public void DeleteSelectionOrCharacter()
         {
             int
                 selectionLength = Document.Selection.Length,
