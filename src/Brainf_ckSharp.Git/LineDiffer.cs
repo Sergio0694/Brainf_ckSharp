@@ -14,6 +14,11 @@ namespace Brainf_ckSharp.Git
     public static class LineDiffer
     {
         /// <summary>
+        /// The maximum length of the input text segments to try the fast sequence comparison first
+        /// </summary>
+        private const int ShortPathNumberOfLinesThreshold = 2;
+
+        /// <summary>
         /// The reusable <see cref="DictionarySlim{TKey,TValue}"/>
         /// </summary>
         private static readonly DictionarySlim<int, DiffEntry> LinesMap = new DictionarySlim<int, DiffEntry>();
@@ -45,10 +50,22 @@ namespace Brainf_ckSharp.Git
             // If the new text is empty, no modifications are returned
             if (newText.IsEmpty) return MemoryOwner<LineModificationType>.Allocate(0);
 
-            int TextNumberOfLines = oldText.Count(separator) + 1;
+            int oldNumberOfLines = oldText.Count(separator) + 1;
             int newNumberOfLines = newText.Count(separator) + 1;
 
-            object[] oldTemporaryValues = ArrayPool<object>.Shared.Rent(TextNumberOfLines);
+            // Fast path if the input text segments have the same length and are short enough
+            if (oldText.Length == newText.Length &&
+                oldNumberOfLines == newNumberOfLines &&
+                oldNumberOfLines <= ShortPathNumberOfLinesThreshold &&
+                oldText.SequenceEqual(newText))
+            {
+                MemoryOwner<LineModificationType> result = MemoryOwner<LineModificationType>.Allocate(newNumberOfLines);
+                result.Span.Clear();
+
+                return result;
+            }
+
+            object[] oldTemporaryValues = ArrayPool<object>.Shared.Rent(oldNumberOfLines);
             object[] newTemporaryValues = ArrayPool<object>.Shared.Rent(newNumberOfLines);
 
             DictionarySlim<int, DiffEntry> table = LinesMap;
@@ -147,7 +164,7 @@ namespace Brainf_ckSharp.Git
                 for (i = 0; i < newNumberOfLines - 1; i++)
                 {
                     if (newTemporaryValues[i] is int k &&
-                        k + 1 < TextNumberOfLines &&
+                        k + 1 < oldNumberOfLines &&
                         newTemporaryValues[i + 1].Equals(oldTemporaryValues[k + 1]))
                     {
                         newTemporaryValues[i + 1] = k + 1;
