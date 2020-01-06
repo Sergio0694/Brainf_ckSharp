@@ -4,6 +4,7 @@ using Windows.Storage;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Messages.InputPanel;
+using Brainf_ckSharp.Uwp.Models.Ide;
 using Brainf_ckSharp.Uwp.Services.Files;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract;
 using GalaSoft.MvvmLight.Ioc;
@@ -28,15 +29,15 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         /// </summary>
         public event EventHandler? CharacterDeleted;
 
-        private string _LoadedText = "\r";
+        private SourceCode _Code = SourceCode.CreateEmpty();
 
         /// <summary>
         /// Gets or sets the loaded source code
         /// </summary>
-        public string LoadedText
+        public SourceCode Code
         {
-            get => _LoadedText;
-            set => Set(ref _LoadedText, value);
+            get => _Code;
+            private set => Set(ref _Code, value);
         }
 
         /// <inheritdoc/>
@@ -57,7 +58,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         {
             if (!(await SimpleIoc.Default.GetInstance<IFilesService>().TryPickOpenFileAsync(".bfs") is StorageFile file)) return;
 
-            LoadedText = await FileIO.ReadTextAsync(file);
+            Code = await SourceCode.LoadFromFileAsync(file);
         }
     }
 }

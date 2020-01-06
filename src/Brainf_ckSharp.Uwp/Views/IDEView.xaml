@@ -12,5 +12,5 @@
     <!--IDE-->
     <ide:Brainf_ckIde
         x:Name="CodeEditor"
-        ReferenceText="{x:Bind ViewModel.LoadedText, Mode=OneWay}"/>
+        ReferenceText="{x:Bind ViewModel.Code.Content, Mode=OneWay}"/>
 </UserControl>
