@@ -54,6 +54,11 @@ namespace Brainf_ckSharp.Uwp.ViewModels
         public void DeleteIdeCharacter() => Messenger.Default.Send<DeleteCharacterRequestMessage>();
 
         /// <summary>
+        /// Opens a new file in the IDE
+        /// </summary>
+        public void OpenFile() => Messenger.Default.Send<OpenFileRequestMessage>();
+
+        /// <summary>
         /// Shows the info about the current app
         /// </summary>
         public void ShowAppInfo() => Messenger.Default.Send(SubPageNavigationRequestMessage.To<AboutSubPage>());

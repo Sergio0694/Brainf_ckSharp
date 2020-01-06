@@ -228,6 +228,7 @@
     <Compile Include="Messages\Console\MemoryState\MemoryStateRequestMessage.cs" />
     <Compile Include="Messages\Ide\DeleteCharacterRequestMessage.cs" />
     <Compile Include="Messages\Ide\InsertNewLineRequestMessage.cs" />
+    <Compile Include="Messages\Ide\OpenFileRequestMessage.cs" />
     <Compile Include="Messages\InputPanel\CharacterReceivedNotificationMessage.cs" />
     <Compile Include="Messages\InputPanel\OperatorKeyPressedNotificationMessage.cs" />
     <Compile Include="Messages\InputPanel\StdinRequestMessage.cs" />
@@ -244,6 +245,8 @@
     <Compile Include="Models\Console\Interfaces\IConsoleEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\XamlResources.cs" />
+    <Compile Include="Services\Files\FilesService.cs" />
+    <Compile Include="Services\Files\IFilesService.cs" />
     <Compile Include="Services\Keyboard\IKeyboardListenerService.cs" />
     <Compile Include="Services\Keyboard\KeyboardListenerService.cs" />
     <Compile Include="Services\ServicesManager.cs" />

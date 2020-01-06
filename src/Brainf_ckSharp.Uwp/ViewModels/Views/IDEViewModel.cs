@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Messages.InputPanel;
@@ -30,6 +31,11 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
             Messenger.Default.Register<OperatorKeyPressedNotificationMessage>(this, m => CharacterAdded?.Invoke(this, m));
             Messenger.Default.Register<InsertNewLineRequestMessage>(this, _ => CharacterAdded?.Invoke(this, Characters.CarriageReturn));
             Messenger.Default.Register<DeleteCharacterRequestMessage>(this, _ => CharacterDeleted?.Invoke(this, EventArgs.Empty));
+        }
+
+        private async Task TryOpenFileAsync()
+        {
+
         }
     }
 }
