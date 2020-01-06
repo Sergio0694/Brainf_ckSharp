@@ -10,7 +10,5 @@
     d:DesignWidth="400">
 
     <!--IDE-->
-    <ide:Brainf_ckIde
-        x:Name="CodeEditor"
-        ReferenceText="{x:Bind ViewModel.Code.Content, Mode=OneWay}"/>
+    <ide:Brainf_ckIde x:Name="CodeEditor"/>
 </UserControl>

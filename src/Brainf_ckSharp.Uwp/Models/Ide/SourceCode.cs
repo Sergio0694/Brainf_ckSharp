@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.Storage;
 using GalaSoft.MvvmLight;
@@ -38,7 +39,7 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         /// <summary>
         /// Gets or sets the <see cref="StorageFile"/> instance for the current source code
         /// </summary>
-        public StorageFile? File { get; set; }
+        public StorageFile? File { get; private set; }
 
         /// <summary>
         /// Creates a new <see cref="SourceCode"/> instance with no linked file
@@ -58,6 +59,47 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
             string text = await FileIO.ReadTextAsync(file);
 
             return new SourceCode(text, file);
+        }
+
+        /// <summary>
+        /// Tries to save the current data to a specified file
+        /// </summary>
+        /// <returns><see langword="true"/> if the data was saved successfully, <see langword="false"/> otherwise</returns>
+        public async Task<bool> TrySaveAsync()
+        {
+            Guard.MustBeNotNull(File, nameof(File));
+
+            try
+            {
+                await FileIO.WriteTextAsync(File, Content);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Tries to save the current data to a new file
+        /// </summary>
+        /// <param name="file">The target file to use to save the data</param>
+        /// <returns><see langword="true"/> if the data was saved successfully, <see langword="false"/> otherwise</returns>
+        public async Task<bool> TrySaveAsAsync(StorageFile file)
+        {
+            try
+            {
+                await FileIO.WriteTextAsync(file, Content);
+
+                File = file;
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

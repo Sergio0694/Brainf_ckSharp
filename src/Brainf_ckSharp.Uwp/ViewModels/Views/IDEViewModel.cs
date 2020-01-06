@@ -29,6 +29,16 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         /// </summary>
         public event EventHandler? CharacterDeleted;
 
+        /// <summary>
+        /// Raised whenever a new source code is loaded and used as a reference
+        /// </summary>
+        public event EventHandler<string>? CodeLoaded;
+
+        /// <summary>
+        /// Raised whenever the current source code is saved by the user
+        /// </summary>
+        public event EventHandler? CodeSaved;
+
         private SourceCode _Code = SourceCode.CreateEmpty();
 
         /// <summary>
@@ -37,7 +47,13 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         public SourceCode Code
         {
             get => _Code;
-            private set => Set(ref _Code, value);
+            private set
+            {
+                if (Set(ref _Code, value))
+                {
+                    CodeLoaded?.Invoke(this, value.Content);
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -47,8 +63,8 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
             Messenger.Default.Register<InsertNewLineRequestMessage>(this, _ => CharacterAdded?.Invoke(this, Characters.CarriageReturn));
             Messenger.Default.Register<DeleteCharacterRequestMessage>(this, _ => CharacterDeleted?.Invoke(this, EventArgs.Empty));
             Messenger.Default.Register<OpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync());
-            Messenger.Default.Register<SaveFileRequestMessage>(this, m => { });
-            Messenger.Default.Register<SaveFileAsRequestMessage>(this, m => { });
+            Messenger.Default.Register<SaveFileRequestMessage>(this, m => _ = TrySaveTextAsync());
+            Messenger.Default.Register<SaveFileAsRequestMessage>(this, m => _ = TrySaveTextAsAsync());
         }
 
         /// <summary>
@@ -59,6 +75,31 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
             if (!(await SimpleIoc.Default.GetInstance<IFilesService>().TryPickOpenFileAsync(".bfs") is StorageFile file)) return;
 
             Code = await SourceCode.LoadFromFileAsync(file);
+        }
+
+        /// <summary>
+        /// Tries to save the current text to the current file, if possible
+        /// </summary>
+        private async Task TrySaveTextAsync()
+        {
+            if (Code.File == null) await TrySaveTextAsAsync();
+            else await Code.TrySaveAsync();
+
+            CodeSaved?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Tries to save the current text to a new file
+        /// </summary>
+        private async Task TrySaveTextAsAsync()
+        {
+            IFilesService filesService = SimpleIoc.Default.GetInstance<IFilesService>();
+
+            if (!(await filesService.TryPickSaveFileAsync(string.Empty, (string.Empty, ".bfs")) is StorageFile file)) return;
+
+            await Code.TrySaveAsAsync(file);
+
+            CodeSaved?.Invoke(this, EventArgs.Empty);
         }
     }
 }
