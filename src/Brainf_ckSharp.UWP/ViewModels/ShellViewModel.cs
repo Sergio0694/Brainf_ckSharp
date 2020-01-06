@@ -1,6 +1,7 @@
 ﻿using Brainf_ckSharp.Uwp.Controls.SubPages.Shell;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide;
 using Brainf_ckSharp.Uwp.Messages.Console.Commands;
+using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
@@ -41,6 +42,11 @@ namespace Brainf_ckSharp.Uwp.ViewModels
         /// Restarts the console and resets its state
         /// </summary>
         public void RestartConsole() => Messenger.Default.Send<RestartConsoleRequestMessage>();
+
+        /// <summary>
+        /// Inserts a new line into the IDE
+        /// </summary>
+        public void InsertNewLine() => Messenger.Default.Send<InsertNewLineRequestMessage>();
 
         /// <summary>
         /// Shows the info about the current app

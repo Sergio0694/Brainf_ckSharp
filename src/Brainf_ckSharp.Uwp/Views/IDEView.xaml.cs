@@ -15,7 +15,7 @@ namespace Brainf_ckSharp.Uwp.Views
             this.InitializeComponent();
             this.DataContext = new IdeViewModel();
 
-            ViewModel!.OperatorAdded += ViewModel_OperatorAdded;
+            ViewModel!.CharacterAdded += ViewModelCharacterAdded;
         }
 
         /// <summary>
@@ -28,6 +28,6 @@ namespace Brainf_ckSharp.Uwp.Views
         /// </summary>
         /// <param name="sender">The current <see cref="IdeViewModel"/> instance</param>
         /// <param name="e">The operator character to add to the text</param>
-        private void ViewModel_OperatorAdded(object sender, char e) => CodeEditor.TypeCharacter(e);
+        private void ViewModelCharacterAdded(object sender, char e) => CodeEditor.TypeCharacter(e);
     }
 }

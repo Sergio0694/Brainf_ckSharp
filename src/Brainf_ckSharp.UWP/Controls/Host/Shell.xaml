@@ -180,7 +180,8 @@
                 <AppBarButton
                     Label="New line"
                     Icon="{markupExtensions:FontIconExtension Glyph={StaticResource NewLineIcon}}"
-                    Tag="{markupExtensions:Boolean Value=False}"/>
+                    Tag="{markupExtensions:Boolean Value=False}"
+                    Click="{x:Bind ViewModel.InsertNewLine}"/>
                 <AppBarButton
                     Label="Delete"
                     Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DeleteIcon}}"
