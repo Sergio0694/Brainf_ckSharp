@@ -10,5 +10,5 @@
     d:DesignWidth="400">
 
     <!--IDE-->
-    <ide:Brainf_ckIde/>
+    <ide:Brainf_ckIde x:Name="CodeEditor"/>
 </UserControl>
