@@ -47,5 +47,29 @@ namespace Windows.UI.Text
             ITextRange range = document.GetRange(start, end);
             range.CharacterFormat.ForegroundColor = color;
         }
+
+        /// <summary>
+        /// Clears the undo history for a given input <see cref="ITextDocument"/> instance
+        /// </summary>
+        /// <param name="document">The input <see cref="ITextDocument"/> instance to modify</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void ClearUndoHistory(this ITextDocument document)
+        {
+            uint limit = document.UndoLimit;
+            document.UndoLimit = 0;
+            document.UndoLimit = limit;
+        }
+
+        /// <summary>
+        /// Loads a plain text document into the target <see cref="ITextDocument"/> instance
+        /// </summary>
+        /// <param name="document">The document to use to load the text</param>
+        /// <param name="text">The plain text to load</param>
+        public static void LoadFromString(this ITextDocument document, string text)
+        {
+            document.SetText(TextSetOptions.None, text);
+
+            document.ClearUndoHistory();
+        }
     }
 }

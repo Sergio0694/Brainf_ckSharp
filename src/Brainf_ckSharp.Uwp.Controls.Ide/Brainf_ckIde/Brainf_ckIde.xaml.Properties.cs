@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.UI.Text;
 using Windows.UI.Xaml;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
@@ -32,9 +33,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private static void OnReferenceTextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Brainf_ckIde @this = (Brainf_ckIde)d;
-            string newText = @this.CodeEditBox.PlainText;
+            string newText = (string)e.NewValue;
 
-            @this.UpdateDiffInfo(newText);
+            @this.CodeEditBox.Document.LoadFromString(newText);
         }
     }
 }

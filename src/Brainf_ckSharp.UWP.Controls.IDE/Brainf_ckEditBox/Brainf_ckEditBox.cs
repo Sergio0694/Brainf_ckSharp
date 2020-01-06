@@ -129,6 +129,13 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         {
             if (!args.IsContentChanging) return;
 
+            /* This is unnecessary in most situations, but it's needed in case the
+             * text is loaded from a stream, as in that case this event will be
+             * raised directly, without a previous pass from either OnKeyDown
+             * or the Paste handlers. Doing this makes sure that the formatting
+             * for the loaded text can't be undone with an undo request. */
+            IsUndoGroupingEnabled = true;
+
             ApplySyntaxHighlight();
         }
 
