@@ -1,4 +1,5 @@
-﻿using Brainf_ckSharp.Uwp.Services.Keyboard;
+﻿using Brainf_ckSharp.Uwp.Services.Files;
+using Brainf_ckSharp.Uwp.Services.Keyboard;
 using Brainf_ckSharp.Uwp.Services.Settings;
 using GalaSoft.MvvmLight.Ioc;
 using GitHub;
@@ -15,6 +16,7 @@ namespace Brainf_ckSharp.Uwp.Services
         /// </summary>
         public static void InitializeServices()
         {
+            SimpleIoc.Default.Register<IFilesService, FilesService>();
             SimpleIoc.Default.Register<ISettingsService, SettingsService>();
             SimpleIoc.Default.Register<IKeyboardListenerService, KeyboardListenerService>();
             SimpleIoc.Default.Register(() => GitHubRestFactory.GetGitHubService("Brainf_ckSharp|Uwp"));
