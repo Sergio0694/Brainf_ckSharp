@@ -22,20 +22,20 @@ namespace System
             // Get a reference to the first string character
             ref char r0 = ref MemoryMarshal.GetReference(span);
             int length = span.Length;
-            int i = 0, result = 0;
+            int i = 0, result;
 
             /* Only execute the SIMD-enabled branch if the Vector<T> APIs
-             * are hardware accelerated on the current CPU, and if the
-             * source span has at least Vector<ushort>.Count items to check.
+             * are hardware accelerated on the current CPU.
              * Vector<char> is not supported, but the type is equivalent to
              * ushort anyway, as they're both unsigned 16 bits integers. */
-            if (Vector.IsHardwareAccelerated &&
-                i + Vector<ushort>.Count < length)
+            if (Vector.IsHardwareAccelerated)
             {
                 int end = length - Vector<ushort>.Count;
-                Vector<ushort> partials = Vector<ushort>.Zero;
 
-                for (; i < end; i += Vector<ushort>.Count)
+                Vector<ushort> partials = Vector<ushort>.Zero;
+                Vector<ushort> vc = new Vector<ushort>(c);
+
+                for (; i <= end; i += Vector<ushort>.Count)
                 {
                     ref char ri = ref Unsafe.Add(ref r0, i);
 
@@ -46,7 +46,6 @@ namespace System
                      * and 0 otherwise. The final += is also calling the
                      * right vectorized instruction automatically. */
                     Vector<ushort> vi = Unsafe.As<char, Vector<ushort>>(ref ri);
-                    Vector<ushort> vc = new Vector<ushort>(c);
                     Vector<ushort> ve = Vector.Equals(vi, vc);
                     Vector<ushort> va = Vector.BitwiseAnd(ve, Vector<ushort>.One);
 
@@ -56,11 +55,18 @@ namespace System
                 // Compute the horizontal sum of the partial results
                 result = Vector.Dot(partials, Vector<ushort>.One);
             }
+            else result = 0;
 
             // Iterate over the remaining characters and count those that match
             for (; i < length; i++)
-                if (Unsafe.Add(ref r0, i) == c)
-                    result++;
+            {
+                /* Skip a conditional jump by assigning the comparison
+                 * result to a variable and reinterpreting a reference to
+                 * it as a byte reference. The byte value is then implicitly
+                 * cast to int before adding it to the result. */
+                bool equals = Unsafe.Add(ref r0, i) == c;
+                result += Unsafe.As<bool, byte>(ref equals);
+            }
 
             return result;
         }
