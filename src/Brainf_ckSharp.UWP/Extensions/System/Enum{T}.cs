@@ -11,6 +11,6 @@ namespace System
         /// <summary>
         /// Gets the list of values for the current instance
         /// </summary>
-        public static IReadOnlyList<T> Values { get; } = (T[])Enum.GetValues(typeof(T));
+        public static ReadOnlyMemory<T> Values { get; } = (T[])Enum.GetValues(typeof(T));
     }
 }
