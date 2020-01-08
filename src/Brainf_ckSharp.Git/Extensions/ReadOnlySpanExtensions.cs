@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.Contracts;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -10,25 +11,55 @@ namespace System
     public static class ReadOnlySpanExtensions
     {
         /// <summary>
-        /// Counts the number of occurrences of a given <typeparamref name="T"/> item into a target <see cref="ReadOnlySpan{T}"/> instance
+        /// Counts the number of occurrences of a given character into a target <see cref="ReadOnlySpan{T}"/> instance
         /// </summary>
         /// <param name="span">The input <see cref="ReadOnlySpan{T}"/> instance to read</param>
-        /// <param name="c">The <typeparamref name="T"/> item to look for</param>
+        /// <param name="c">The character to look for</param>
         /// <returns>The number of occurrences of <paramref name="c"/> in <paramref name="span"/></returns>
         [Pure]
-        public static int Count<T>(this ReadOnlySpan<T> span, T c) where T : IEquatable<T>
+        public static int Count(this ReadOnlySpan<char> span, char c)
         {
+            // Get a reference to the first string character
+            ref char r0 = ref MemoryMarshal.GetReference(span);
             int length = span.Length;
+            int i = 0, result = 0;
 
-            // Empty span, just return 0
-            if (length == 0) return 0;
+            /* Only execute the SIMD-enabled branch if the Vector<T> APIs
+             * are hardware accelerated on the current CPU, and if the
+             * source span has at least Vector<ushort>.Count items to check.
+             * Vector<char> is not supported, but the type is equivalent to
+             * ushort anyway, as they're both unsigned 16 bits integers. */
+            if (Vector.IsHardwareAccelerated &&
+                i + Vector<ushort>.Count < length)
+            {
+                int end = length - Vector<ushort>.Count;
+                Vector<ushort> partials = Vector<ushort>.Zero;
 
-            ref T r0 = ref MemoryMarshal.GetReference(span);
-            int result = 0;
+                for (; i < end; i += Vector<ushort>.Count)
+                {
+                    ref char ri = ref Unsafe.Add(ref r0, i);
 
-            // Go over the input text and look for the character
-            for (int i = 0; i < length; i++)
-                if (Unsafe.Add(ref r0, i).Equals(c))
+                    /* Load the current Vector<ushort> register.
+                     * Vector.Equals sets matching positions to all 1s, and
+                     * Vector.BitwiseAnd results in a Vector<ushort> with 1
+                     * in positions corresponding to matching characters,
+                     * and 0 otherwise. The final += is also calling the
+                     * right vectorized instruction automatically. */
+                    Vector<ushort> vi = Unsafe.As<char, Vector<ushort>>(ref ri);
+                    Vector<ushort> vc = new Vector<ushort>(c);
+                    Vector<ushort> ve = Vector.Equals(vi, vc);
+                    Vector<ushort> va = Vector.BitwiseAnd(ve, Vector<ushort>.One);
+
+                    partials += va;
+                }
+
+                // Compute the horizontal sum of the partial results
+                result = Vector.Dot(partials, Vector<ushort>.One);
+            }
+
+            // Iterate over the remaining characters and count those that match
+            for (; i < length; i++)
+                if (Unsafe.Add(ref r0, i) == c)
                     result++;
 
             return result;
