@@ -7,6 +7,7 @@
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     xmlns:ide="using:Brainf_ckSharp.Uwp.Models.Ide"
+    xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -38,84 +39,6 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <!--Zoomed in header template-->
-        <DataTemplate x:Key="SectionZoomedInHeaderTemplate">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="8"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <!--Top shadow-->
-                <Rectangle
-                    VerticalAlignment="Top"
-                    IsHitTestVisible="False"
-                    Height="8">
-                    <Rectangle.Fill>
-                        <LinearGradientBrush EndPoint="0,0" StartPoint="0,1">
-                            <GradientStop Offset="1"/>
-                            <GradientStop Color="#60000000" Offset="0"/>
-                        </LinearGradientBrush>
-                    </Rectangle.Fill>
-                </Rectangle>
-
-                <!--Header button-->
-                <Button
-                    Grid.Row="1"
-                    Style="{StaticResource ExpandedSquareButtonRevealStyle}"
-                    Background="#FF202020"
-                    Height="40"
-                    HorizontalContentAlignment="Left">
-                    <TextBlock
-                        Text="{Binding Key}"
-                        FontWeight="SemiBold"
-                        FontSize="18"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        HorizontalTextAlignment="Left"
-                        Margin="12,0,0,0"/>
-                </Button>
-
-                <!--Bottom shadow-->
-                <Rectangle
-                    Grid.Row="1"
-                    VerticalAlignment="Bottom"
-                    IsHitTestVisible="False"
-                    Height="8">
-                    <Rectangle.RenderTransform>
-                        <TranslateTransform Y="8"/>
-                    </Rectangle.RenderTransform>
-                    <Rectangle.Fill>
-                        <LinearGradientBrush EndPoint="0,0" StartPoint="0,1">
-                            <GradientStop Color="#60000000" Offset="1"/>
-                            <GradientStop Offset="0"/>
-                        </LinearGradientBrush>
-                    </Rectangle.Fill>
-                </Rectangle>
-            </Grid>
-        </DataTemplate>
-
-        <!--Zoomed out header template-->
-        <DataTemplate x:Key="SectionZoomedOutHeaderTemplate">
-            <StackPanel Spacing="4">
-                <TextBlock
-                    Text="{Binding Group.Key, Mode=OneTime}"
-                    FontWeight="SemiBold"
-                    FontSize="18"
-                    TextLineBounds="Tight"
-                    Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    HorizontalTextAlignment="Left"/>
-                <TextBlock
-                    Text="{Binding Group.Key, Mode=OneTime}"
-                    Foreground="LightGray"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    HorizontalTextAlignment="Left"/>
-            </StackPanel>
-        </DataTemplate>
     </UserControl.Resources>
 
     <host:SubPageFrame
@@ -145,9 +68,13 @@
                         </Style>
                     </ListView.Resources>
                     <ListView.GroupStyle>
-                        <GroupStyle
-                            HeaderTemplate="{StaticResource SectionZoomedInHeaderTemplate}"
-                            HeaderContainerStyle="{StaticResource ExpandedListViewHeaderItemStyle}"/>
+                        <GroupStyle HeaderContainerStyle="{StaticResource ExpandedListViewHeaderItemStyle}">
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <jumpList:SemanticZoomZoomedInViewHeaderTemplate Title="{Binding Key, Mode=OneTime}"/>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
                     </ListView.GroupStyle>
                 </ListView>
             </SemanticZoom.ZoomedInView>
@@ -156,7 +83,6 @@
                 <!--ZoomedOutView-->
                 <ListView 
                     ItemsSource="{x:Bind ViewModel.CollectionGroups, Mode=OneWay}"
-                    ItemTemplate="{StaticResource SectionZoomedOutHeaderTemplate}"
                     Background="#12000000">
                     <ListView.Resources>
                         <Style TargetType="ListViewItem">
@@ -167,6 +93,13 @@
                             <Setter Property="Background" Value="#FF171717"/>
                         </Style>
                     </ListView.Resources>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
+                                Title="{Binding Group.Key, Mode=OneTime}"
+                                Description="{Binding Group.Key, Mode=OneTime}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
             </SemanticZoom.ZoomedOutView>
         </SemanticZoom>

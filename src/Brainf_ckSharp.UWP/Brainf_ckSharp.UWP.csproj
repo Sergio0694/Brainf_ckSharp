@@ -140,6 +140,8 @@
     <Compile Include="Controls\DataTemplates\GitHub\DeveloperTemplate.xaml.cs">
       <DependentUpon>DeveloperTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DataTemplates\JumpList\SemanticZoomZoomedOutViewHeaderTemplate.cs" />
+    <Compile Include="Controls\DataTemplates\JumpList\SemanticZoomZoomedInViewHeaderTemplate.cs" />
     <Compile Include="Controls\DataTemplates\Misc\FeaturedLinkTemplate.xaml.cs">
       <DependentUpon>FeaturedLinkTemplate.xaml</DependentUpon>
     </Compile>
@@ -486,6 +488,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\ClassicStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\SemanticZoomStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
