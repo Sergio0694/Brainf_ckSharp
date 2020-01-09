@@ -28,7 +28,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         {
             StorageFolder samplesFolder = await StorageFolder.GetFolderFromPathAsync(SampleFilesPath);
             IReadOnlyList<StorageFile> sampleFiles = await samplesFolder.GetFilesAsync();
-            IReadOnlyList<string> sampleSnippets = await Task.WhenAll(sampleFiles.Select(file => LoadCodePreviewAsync(file, 80)));
+            IReadOnlyList<string> sampleSnippets = await Task.WhenAll(sampleFiles.Select(file => LoadCodePreviewAsync(file, 120)));
 
             Source.Add(new ObservableGroup<string, string>("Sample files", sampleSnippets));
         }
