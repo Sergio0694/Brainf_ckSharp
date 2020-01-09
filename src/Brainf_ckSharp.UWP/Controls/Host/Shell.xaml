@@ -238,6 +238,11 @@
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
+                    Label="Open code library"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource OpenFileIcon}}"
+                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
+                    Click="{x:Bind ViewModel.ShowCodeLibrary}"/>
+                <AppBarButton
                     Label="Open file"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource OpenFileIcon}}"
                     Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"

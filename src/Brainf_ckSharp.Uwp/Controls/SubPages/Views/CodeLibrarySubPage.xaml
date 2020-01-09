@@ -1,0 +1,136 @@
+﻿<UserControl
+    x:Class="Brainf_ckSharp.Uwp.Controls.SubPages.Views.CodeLibrarySubPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sections="using:Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.Sections"
+    xmlns:userGuide="using:Brainf_ckSharp.Uwp.Bindings.Converters.UserGuide"
+    xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
+    xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+
+        <!--Zoomed in header template-->
+        <DataTemplate x:Key="SectionZoomedInHeaderTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!--Top shadow-->
+                <Rectangle
+                    VerticalAlignment="Top"
+                    IsHitTestVisible="False"
+                    Height="8">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush EndPoint="0,0" StartPoint="0,1">
+                            <GradientStop Offset="1"/>
+                            <GradientStop Color="#60000000" Offset="0"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <!--Header button-->
+                <Button
+                    Grid.Row="1"
+                    Style="{StaticResource ExpandedSquareButtonRevealStyle}"
+                    Background="#12101010"
+                    Height="40"
+                    HorizontalContentAlignment="Left">
+                    <TextBlock
+                        Text="{Binding Key}"
+                        FontWeight="SemiBold"
+                        FontSize="18"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        HorizontalTextAlignment="Left"
+                        Margin="12,0,0,0"/>
+                </Button>
+
+                <!--Bottom shadow-->
+                <Rectangle
+                    Grid.Row="1"
+                    VerticalAlignment="Bottom"
+                    IsHitTestVisible="False"
+                    Height="8">
+                    <Rectangle.RenderTransform>
+                        <TranslateTransform Y="8"/>
+                    </Rectangle.RenderTransform>
+                    <Rectangle.Fill>
+                        <LinearGradientBrush EndPoint="0,0" StartPoint="0,1">
+                            <GradientStop Color="#60000000" Offset="1"/>
+                            <GradientStop Offset="0"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
+        </DataTemplate>
+
+        <!--Zoomed out header template-->
+        <DataTemplate x:Key="SectionZoomedOutHeaderTemplate">
+            <StackPanel Spacing="4">
+                <TextBlock
+                    Text="{Binding Group.Key, Mode=OneTime}"
+                    FontWeight="SemiBold"
+                    FontSize="18"
+                    TextLineBounds="Tight"
+                    Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalTextAlignment="Left"/>
+                <TextBlock
+                    Text="{Binding Group.Key, Mode=OneTime}"
+                    Foreground="LightGray"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalTextAlignment="Left"/>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <host:SubPageFrame Title="USER GUIDE">
+
+        <!--Semantic zoom-->
+        <SemanticZoom>
+            <SemanticZoom.ZoomedInView>
+
+                <!--ZoomedInView-->
+                <ListView
+                    ItemsSource="{x:Bind ViewModel.View, Mode=OneWay}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    IsItemClickEnabled="False"
+                    SelectionMode="None"
+                    Margin="0,-8,0,0">
+                    <ListView.GroupStyle>
+                        <GroupStyle
+                            HeaderTemplate="{StaticResource SectionZoomedInHeaderTemplate}"
+                            HeaderContainerStyle="{StaticResource ExpandedListViewHeaderItemStyle}"/>
+                    </ListView.GroupStyle>
+                </ListView>
+            </SemanticZoom.ZoomedInView>
+            <SemanticZoom.ZoomedOutView>
+
+                <!--ZoomedOutView-->
+                <ListView 
+                    ItemsSource="{x:Bind ViewModel.CollectionGroups, Mode=OneWay}"
+                    ItemTemplate="{StaticResource SectionZoomedOutHeaderTemplate}"
+                    Background="#60000000">
+                    <ListView.Resources>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Margin" Value="0,0,0,4"/>
+                            <Setter Property="Padding" Value="12,16,12,16"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Background" Value="#FF171718"/>
+                        </Style>
+                    </ListView.Resources>
+                </ListView>
+            </SemanticZoom.ZoomedOutView>
+        </SemanticZoom>
+    </host:SubPageFrame>
+</UserControl>
