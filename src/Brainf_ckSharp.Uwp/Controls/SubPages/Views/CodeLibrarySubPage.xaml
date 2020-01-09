@@ -16,7 +16,7 @@
         <DataTemplate
             x:Key="SourceCodeTemplate"
             x:DataType="ide:CodeLibraryEntry">
-            <StackPanel Spacing="4">
+            <StackPanel Spacing="8">
                 <TextBlock
                     Text="{x:Bind Title}"
                     FontWeight="SemiBold"

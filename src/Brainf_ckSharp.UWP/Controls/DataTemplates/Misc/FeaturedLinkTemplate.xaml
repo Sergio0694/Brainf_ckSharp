@@ -62,7 +62,7 @@
                 EnableDependentAnimation="True"
                 Storyboard.TargetProperty="ShadowOpacity"
                 Storyboard.TargetName="ShadowPanel"
-                Duration="0:0:0.4" To="0"/>
+                Duration="0:0:0.4" To="0.6"/>
         </Storyboard>
     </UserControl.Resources>
 
@@ -71,7 +71,7 @@
         Height="80"
         x:Name="ShadowPanel"
         Color="Black"
-        ShadowOpacity="0"
+        ShadowOpacity="0.6"
         BlurRadius="8"
         OffsetY="4"
         HorizontalContentAlignment="Stretch"
