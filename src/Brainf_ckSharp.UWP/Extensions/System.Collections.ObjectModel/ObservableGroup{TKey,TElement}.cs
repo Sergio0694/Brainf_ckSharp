@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel;
 
 #nullable enable
 
@@ -10,7 +11,7 @@ namespace System.Collections.ObjectModel
     /// </summary>
     /// <typeparam name="TKey">The type of the group key</typeparam>
     /// <typeparam name="TElement">The type of the elements in the group</typeparam>
-    public class ObservableGroup<TKey, TElement> : ObservableCollection<TElement>
+    public class ObservableGroup<TKey, TElement> : ObservableCollection<TElement>, IGroupedCollection where TKey : notnull
     {
         /// <summary>
         /// Creates a new <see cref="ObservableGroup{TKey,TElement}"/> instance with the specified parameters
@@ -35,5 +36,8 @@ namespace System.Collections.ObjectModel
         /// Gets the <typeparamref name="TKey"/> value that represents the current group
         /// </summary>
         public TKey Key { get; }
+
+        /// <inheritdoc/>
+        object IGroupedCollection.Key => Key;
     }
 }

@@ -9,6 +9,7 @@
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
     xmlns:userGuide="using:Brainf_ckSharp.Uwp.Bindings.Converters.UserGuide"
     xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
+    xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -63,8 +64,8 @@
                     <ListView.GroupStyle>
                         <GroupStyle HeaderContainerStyle="{StaticResource ExpandedListViewHeaderItemStyle}">
                             <GroupStyle.HeaderTemplate>
-                                <DataTemplate>
-                                    <jumpList:SemanticZoomZoomedInViewHeaderTemplate Title="{Binding Key, Mode=OneTime}"/>
+                                <DataTemplate x:DataType="objectModel:IGroupedCollection">
+                                    <jumpList:SemanticZoomZoomedInViewHeaderTemplate Title="{x:Bind Key, Converter={StaticResource UserGuideSectionToTitleConverter}}"/>
                                 </DataTemplate>
                             </GroupStyle.HeaderTemplate>
                         </GroupStyle>
@@ -87,10 +88,10 @@
                         </Style>
                     </ListView.Resources>
                     <ListView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="ICollectionViewGroup">
                             <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
-                                Title="{Binding Group.Key, Converter={StaticResource UserGuideSectionToTitleConverter}, Mode=OneTime}"
-                                Description="{Binding Group.Key, Converter={StaticResource UserGuideSectionToDescriptionConverter}, Mode=OneTime}"/>
+                                Title="{x:Bind Group.(objectModel:IGroupedCollection.Key), Converter={StaticResource UserGuideSectionToTitleConverter}}"
+                                Description="{x:Bind Group.(objectModel:IGroupedCollection.Key), Converter={StaticResource UserGuideSectionToDescriptionConverter}}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
