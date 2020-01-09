@@ -1,6 +1,8 @@
 ﻿using System;
 using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Brainf_ckSharp.Uwp.ViewModels.Views;
+using GalaSoft.MvvmLight.Messaging;
 
 #nullable enable
 
@@ -18,6 +20,7 @@ namespace Brainf_ckSharp.Uwp.Views
 
             ViewModel!.CharacterAdded += ViewModelCharacterAdded;
             ViewModel.CharacterDeleted += ViewModel_CharacterDeleted;
+            ViewModel.CodeLoaded += ViewModel_CodeLoaded;
         }
 
         /// <summary>
@@ -38,5 +41,17 @@ namespace Brainf_ckSharp.Uwp.Views
         /// <param name="sender">The current <see cref="IdeViewModel"/> instance</param>
         /// <param name="e">The empty <see cref="EventArgs"/> instance for this event</param>
         private void ViewModel_CharacterDeleted(object sender, EventArgs e) => CodeEditor.DeleteCharacter();
+
+        /// <summary>
+        /// Loads a new source code
+        /// </summary>
+        /// <param name="sender">The current <see cref="IdeViewModel"/> instance</param>
+        /// <param name="e">The <see cref="string"/> with the code to load</param>
+        private void ViewModel_CodeLoaded(object sender, string e)
+        {
+            Messenger.Default.Send<SubPageCloseRequestMessage>();
+
+            CodeEditor.ReferenceText = e;
+        }
     }
 }

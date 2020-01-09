@@ -7,8 +7,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Storage;
+using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Models.Ide;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
+using GalaSoft.MvvmLight.Messaging;
 
 #nullable enable
 
@@ -60,6 +62,22 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             IReadOnlyList<CodeLibraryEntry> samples = await GetSampleCodesAsync();
 
             Source.Add(new ObservableGroup<string, CodeLibraryEntry>("Sample files", samples));
+        }
+
+        /// <summary>
+        /// Sends a request to load a specified code entry
+        /// </summary>
+        /// <param name="entry">The selected <see cref="CodeLibraryEntry"/> model</param>
+        public async Task OpenFileAsync(CodeLibraryEntry entry)
+        {
+            if (SampleFilesMapping.Any(sample => Path.Combine(SampleFilesPath, $"{sample.Filename}.txt").Equals(entry.File.Path)))
+            {
+                Messenger.Default.Send(new LoadSourceCodeRequestMessage(await SourceCode.LoadFromReferenceFileAsync(entry.File)));
+            }
+            else if (await SourceCode.TryLoadFromEditableFileAsync(entry.File) is SourceCode sourceCode)
+            {
+                Messenger.Default.Send(new LoadSourceCodeRequestMessage(sourceCode));
+            }
         }
     }
 }

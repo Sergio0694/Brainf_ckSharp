@@ -62,7 +62,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels
         /// <summary>
         /// Opens a new file in the IDE
         /// </summary>
-        public void OpenFile() => Messenger.Default.Send<OpenFileRequestMessage>();
+        public void OpenFile() => Messenger.Default.Send<PickOpenFileRequestMessage>();
 
         /// <summary>
         /// Saves the current source code in the IDE to a file

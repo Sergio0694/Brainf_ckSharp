@@ -21,7 +21,7 @@
             <StackPanel Spacing="8">
                 <TextBlock
                     Text="{x:Bind Title}"
-                    FontWeight="SemiBold"
+                    FontWeight="Normal"
                     FontSize="18"
                     TextLineBounds="Tight"
                     Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
@@ -58,7 +58,8 @@
                     IsItemClickEnabled="True"
                     SelectionMode="None"
                     Margin="0,-8,0,0"
-                    ItemTemplate="{StaticResource SourceCodeTemplate}">
+                    ItemTemplate="{StaticResource SourceCodeTemplate}"
+                    ItemClick="{x:Bind CodeEntriesList_ItemClicked}">
                     <ListView.Resources>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Margin" Value="0,0,0,4"/>

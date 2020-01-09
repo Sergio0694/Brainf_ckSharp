@@ -21,11 +21,6 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         private const int CodePreviewLength = 120;
 
         /// <summary>
-        /// The underlying <see cref="StorageFile"/> instance for the current entry
-        /// </summary>
-        private readonly StorageFile File;
-
-        /// <summary>
         /// Creates a new <see cref="CodeLibraryEntry"/> instance with the specified parameters
         /// </summary>
         /// <param name="file">The underlying <see cref="StorageFile"/> instance for the new entry</param>
@@ -37,6 +32,11 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
             Title = title;
             Preview = preview;
         }
+
+        /// <summary>
+        /// Gets the underlying <see cref="StorageFile"/> instance for the current entry
+        /// </summary>
+        public StorageFile File { get; }
 
         /// <summary>
         /// Gets the title of the current entry

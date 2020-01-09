@@ -49,16 +49,36 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         public static SourceCode CreateEmpty() => new SourceCode("\r", null);
 
         /// <summary>
-        /// Creates a new <see cref="SourceCode"/> instance from the specified file
+        /// Creates a new <see cref="SourceCode"/> instance from the specified reference file
         /// </summary>
         /// <param name="file">The file to read the contents of the source code from</param>
         /// <returns>A new <see cref="SourceCode"/> instance with the contents of <paramref name="file"/></returns>
         [Pure]
-        public static async Task<SourceCode> LoadFromFileAsync(StorageFile file)
+        public static async Task<SourceCode> LoadFromReferenceFileAsync(StorageFile file)
         {
             string text = await FileIO.ReadTextAsync(file);
 
-            return new SourceCode(text, file);
+            return new SourceCode(text, null);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="SourceCode"/> instance from the specified editable file
+        /// </summary>
+        /// <param name="file">The file to read the contents of the source code from</param>
+        /// <returns>A new <see cref="SourceCode"/> instance with the contents of <paramref name="file"/></returns>
+        [Pure]
+        public static async Task<SourceCode?> TryLoadFromEditableFileAsync(StorageFile file)
+        {
+            try
+            {
+                string text = await FileIO.ReadTextAsync(file);
+
+                return new SourceCode(text, file);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>

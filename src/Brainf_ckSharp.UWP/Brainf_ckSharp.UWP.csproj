@@ -234,7 +234,8 @@
     <Compile Include="Messages\Console\MemoryState\MemoryStateRequestMessage.cs" />
     <Compile Include="Messages\Ide\DeleteCharacterRequestMessage.cs" />
     <Compile Include="Messages\Ide\InsertNewLineRequestMessage.cs" />
-    <Compile Include="Messages\Ide\OpenFileRequestMessage.cs" />
+    <Compile Include="Messages\Ide\LoadSourceCodeRequestMessage.cs" />
+    <Compile Include="Messages\Ide\PickOpenFileRequestMessage.cs" />
     <Compile Include="Messages\Ide\SaveFileAsRequestMessage.cs" />
     <Compile Include="Messages\Ide\SaveFileRequestMessage.cs" />
     <Compile Include="Messages\InputPanel\CharacterReceivedNotificationMessage.cs" />
