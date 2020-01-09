@@ -20,17 +20,54 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
     public sealed class CodeLibrarySubPageViewModel : GroupedItemsCollectionViewModelBase<string, string>
     {
         /// <summary>
-        /// Gets the path of folder that contains the sample files
+        /// The desired length of each loaded code preview
         /// </summary>
-        private static string SampleFilesPath { get; } = $@"{Package.Current.InstalledLocation.Path}\Assets\Samples\";
+        private const int CodePreviewLength = 120;
+
+        /// <summary>
+        /// The path of folder that contains the sample files
+        /// </summary>
+        private static readonly string SampleFilesPath = $@"{Package.Current.InstalledLocation.Path}\Assets\Samples\";
+
+        /// <summary>
+        /// The ordered mapping of available source code files
+        /// </summary>
+        private static readonly IReadOnlyList<(string Title, string Filename)> SampleFilesMapping = new[]
+        {
+            ("Hello World!", "HelloWorld"),
+            ("Unicode value", "UnicodeValue"),
+            ("Unicode sum", "UnicodeSum"),
+            ("Integer sum", "IntegerSum"),
+            ("Integer division", "IntegerDivision"),
+            ("Fibonacci", "Fibonacci"),
+            ("Header comment", "HeaderComment")
+        };
+
+        private static IReadOnlyList<string>? _SampleCodes;
+
+        /// <summary>
+        /// Loads the available code samples
+        /// </summary>
+        /// <returns>A <see cref="IReadOnlyList{T}"/> instance with the loaded code samples</returns>
+        [Pure]
+        private static async ValueTask<IReadOnlyList<string>> GetSampleCodesAsync()
+        {
+            return _SampleCodes ??= await Task.WhenAll(SampleFilesMapping.Select(async item =>
+            {
+                string path = Path.Combine(SampleFilesPath, $"{item.Filename}.txt");
+                StorageFile file = await StorageFile.GetFileFromPathAsync(path);
+                string preview = await LoadCodePreviewAsync(file, CodePreviewLength);
+
+                return preview;
+            }));
+        }
 
         public async Task LoadAsync()
         {
-            StorageFolder samplesFolder = await StorageFolder.GetFolderFromPathAsync(SampleFilesPath);
-            IReadOnlyList<StorageFile> sampleFiles = await samplesFolder.GetFilesAsync();
-            IReadOnlyList<string> sampleSnippets = await Task.WhenAll(sampleFiles.Select(file => LoadCodePreviewAsync(file, 120)));
+            // Load the code samples
+            IReadOnlyList<string> samples = await GetSampleCodesAsync();
 
-            Source.Add(new ObservableGroup<string, string>("Sample files", sampleSnippets));
+            Source.Add(new ObservableGroup<string, string>("Sample files", samples));
         }
 
         /// <summary>

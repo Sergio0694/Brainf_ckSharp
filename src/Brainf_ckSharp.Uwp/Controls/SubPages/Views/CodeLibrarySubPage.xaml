@@ -61,7 +61,7 @@
                 <Button
                     Grid.Row="1"
                     Style="{StaticResource ExpandedSquareButtonRevealStyle}"
-                    Background="#12101010"
+                    Background="#FF202020"
                     Height="40"
                     HorizontalContentAlignment="Left">
                     <TextBlock
@@ -115,7 +115,9 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <host:SubPageFrame Title="USER GUIDE">
+    <host:SubPageFrame
+        Title="CODE LIBRARY"
+        Background="#60000000">
 
         <!--Semantic zoom-->
         <SemanticZoom>
@@ -129,8 +131,7 @@
                     IsItemClickEnabled="True"
                     SelectionMode="None"
                     Margin="0,-8,0,0"
-                    ItemTemplate="{StaticResource SourceCodeTemplate}"
-                    Background="#60000000">
+                    ItemTemplate="{StaticResource SourceCodeTemplate}">
                     <ListView.Resources>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Margin" Value="0,0,0,4"/>
@@ -153,14 +154,14 @@
                 <ListView 
                     ItemsSource="{x:Bind ViewModel.CollectionGroups, Mode=OneWay}"
                     ItemTemplate="{StaticResource SectionZoomedOutHeaderTemplate}"
-                    Background="#60000000">
+                    Background="#12000000">
                     <ListView.Resources>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Margin" Value="0,0,0,4"/>
                             <Setter Property="Padding" Value="12,16,12,16"/>
                             <Setter Property="HorizontalAlignment" Value="Stretch"/>
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Setter Property="Background" Value="#FF171718"/>
+                            <Setter Property="Background" Value="#FF171717"/>
                         </Style>
                     </ListView.Resources>
                 </ListView>

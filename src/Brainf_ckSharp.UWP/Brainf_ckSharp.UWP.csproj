@@ -292,7 +292,7 @@
     <Content Include="Assets\Samples\Fibonacci.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Samples\HeaderComments.txt">
+    <Content Include="Assets\Samples\HeaderComment.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Samples\HelloWorld.txt">
@@ -301,7 +301,7 @@
     <Content Include="Assets\Samples\IntegerDivision.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Samples\Sum.txt">
+    <Content Include="Assets\Samples\IntegerSum.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Samples\UnicodeSum.txt">
@@ -345,6 +345,9 @@
     </PackageReference>
     <PackageReference Include="MvvmLight">
       <Version>5.4.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Threading.Tasks.Extensions">
+      <Version>4.5.3</Version>
     </PackageReference>
     <PackageReference Include="UICompositionAnimations">
       <Version>4.1.1</Version>

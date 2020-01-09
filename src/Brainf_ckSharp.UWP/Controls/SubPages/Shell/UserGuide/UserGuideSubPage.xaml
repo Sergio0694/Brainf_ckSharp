@@ -58,7 +58,7 @@
                 <Button
                     Grid.Row="1"
                     Style="{StaticResource ExpandedSquareButtonRevealStyle}"
-                    Background="#12101010"
+                    Background="#FF202020"
                     Height="40"
                     HorizontalContentAlignment="Left">
                     <TextBlock
