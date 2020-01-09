@@ -6,16 +6,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
+    xmlns:ide="using:Brainf_ckSharp.Uwp.Models.Ide"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
 
         <!--Source code template-->
-        <DataTemplate x:Key="SourceCodeTemplate">
+        <DataTemplate
+            x:Key="SourceCodeTemplate"
+            x:DataType="ide:CodeLibraryEntry">
             <StackPanel Spacing="4">
                 <TextBlock
-                    Text="Sample code"
+                    Text="{x:Bind Title}"
                     FontWeight="SemiBold"
                     FontSize="18"
                     TextLineBounds="Tight"
@@ -31,7 +34,7 @@
                     TextTrimming="CharacterEllipsis"
                     MaxLines="2"
                     FontSize="14">
-                    <Span attachedProperties:Brainf_ckInlineFormatterHelper.Source="{Binding}"/>
+                    <Span attachedProperties:Brainf_ckInlineFormatterHelper.Source="{x:Bind Preview}"/>
                 </TextBlock>
             </StackPanel>
         </DataTemplate>

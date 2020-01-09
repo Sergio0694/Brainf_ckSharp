@@ -248,6 +248,7 @@
     <Compile Include="Models\Console\ConsoleSyntaxError.cs" />
     <Compile Include="Models\Console\Controls\Brainf_ckMemoryCellChunk.cs" />
     <Compile Include="Models\Console\Interfaces\IConsoleEntry.cs" />
+    <Compile Include="Models\Ide\CodeLibraryEntry.cs" />
     <Compile Include="Models\Ide\SourceCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\XamlResources.cs" />
