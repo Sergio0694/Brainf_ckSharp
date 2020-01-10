@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\LargeNew.txt" />
+    <None Remove="Assets\LargeOld.txt" />
     <None Remove="Assets\MediumNew.txt" />
     <None Remove="Assets\MediumOld.txt" />
     <None Remove="Assets\SmallNew.txt" />
@@ -14,6 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Assets\LargeNew.txt" />
+    <EmbeddedResource Include="Assets\LargeOld.txt" />
     <EmbeddedResource Include="Assets\MediumNew.txt" />
     <EmbeddedResource Include="Assets\MediumOld.txt" />
     <EmbeddedResource Include="Assets\SmallNew.txt" />
