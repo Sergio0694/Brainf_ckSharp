@@ -18,6 +18,12 @@ namespace Brainf_ckSharp.Git.Unit
         }
 
         [TestMethod]
+        public void BlankText()
+        {
+            Test(new[] { LineModificationType.None, LineModificationType.None }, "\r", "\r");
+        }
+
+        [TestMethod]
         public void Small()
         {
             LineModificationType[] expected =
@@ -35,7 +41,8 @@ namespace Brainf_ckSharp.Git.Unit
                 LineModificationType.Modified,
                 LineModificationType.None,
                 LineModificationType.None,
-                LineModificationType.Modified
+                LineModificationType.Modified,
+                LineModificationType.None
             };
 
             Test(expected);
@@ -85,6 +92,7 @@ namespace Brainf_ckSharp.Git.Unit
                 LineModificationType.Modified,
                 LineModificationType.Modified,
                 LineModificationType.Modified,
+                LineModificationType.None,
                 LineModificationType.None,
                 LineModificationType.None
             };
