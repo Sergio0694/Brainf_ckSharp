@@ -101,6 +101,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -113,6 +114,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
@@ -217,6 +219,7 @@
     <Compile Include="Extensions\System.Collections.ObjectModel\ObservableGroup{TKey,TElement}.cs" />
     <Compile Include="Extensions\System\BoolExtensions.cs" />
     <Compile Include="Extensions\System\Enum{T}.cs" />
+    <Compile Include="Extensions\System\IntExtensions.cs" />
     <Compile Include="Extensions\System\StringExtensions.cs" />
     <Compile Include="Extensions\Windows.Storage\IStorageItemExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Xaml\FrameworkElementExtensions.cs" />
@@ -264,6 +267,7 @@
     <Compile Include="Services\ServicesManager.cs" />
     <Compile Include="Services\Settings\ISettingsService.cs" />
     <Compile Include="Services\Settings\SettingsService.cs" />
+    <Compile Include="StyleSelectors\CodeLibraryEntryItemContainerStyleSelector.cs" />
     <Compile Include="TemplateSelectors\ConsoleEntryTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\SourceCodeEntryTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\UserGuideSectionTemplateSelector.cs" />
@@ -368,6 +372,10 @@
     <ProjectReference Include="..\Brainf_ckSharp.Diagnostics\Brainf_ckSharp.Diagnostics.csproj">
       <Project>{a464d3e4-c6e0-48ec-a786-c2db610d9bd0}</Project>
       <Name>Brainf_ckSharp.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Brainf_ckSharp.Git\Brainf_ckSharp.Git.csproj">
+      <Project>{8000d892-951c-49b3-ae95-db85d909c717}</Project>
+      <Name>Brainf_ckSharp.Git</Name>
     </ProjectReference>
     <ProjectReference Include="..\Brainf_ckSharp.UWP.Controls.IDE\Brainf_ckSharp.Uwp.Controls.Ide.csproj">
       <Project>{473069aa-080a-493e-b7a8-0bee7b0b00f1}</Project>
