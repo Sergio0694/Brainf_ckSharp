@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Storage;
+using Brainf_ckSharp.Uwp.Extensions.Windows.Storage;
 using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Models.Ide;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
@@ -16,7 +17,7 @@ using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
 {
-    public sealed class CodeLibrarySubPageViewModel : GroupedItemsCollectionViewModelBase<string, CodeLibraryEntry>
+    public sealed class CodeLibrarySubPageViewModel : GroupedItemsCollectionViewModelBase<string, object>
     {
         /// <summary>
         /// The path of folder that contains the sample files
@@ -61,7 +62,8 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             // Load the code samples
             IReadOnlyList<CodeLibraryEntry> samples = await GetSampleCodesAsync();
 
-            Source.Add(new ObservableGroup<string, CodeLibraryEntry>("Sample files", samples));
+            Source.Add(new ObservableGroup<string, object>("Recent files", new[] { new object() }));
+            Source.Add(new ObservableGroup<string, object>("Sample files", samples));
         }
 
         /// <summary>
@@ -70,7 +72,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// <param name="entry">The selected <see cref="CodeLibraryEntry"/> model</param>
         public async Task OpenFileAsync(CodeLibraryEntry entry)
         {
-            if (SampleFilesMapping.Any(sample => Path.Combine(SampleFilesPath, $"{sample.Filename}.txt").Equals(entry.File.Path)))
+            if (entry.File.IsFromPackageDirectory())
             {
                 Messenger.Default.Send(new LoadSourceCodeRequestMessage(await SourceCode.LoadFromReferenceFileAsync(entry.File)));
             }

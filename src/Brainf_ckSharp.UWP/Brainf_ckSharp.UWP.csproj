@@ -218,6 +218,7 @@
     <Compile Include="Extensions\System\BoolExtensions.cs" />
     <Compile Include="Extensions\System\Enum{T}.cs" />
     <Compile Include="Extensions\System\StringExtensions.cs" />
+    <Compile Include="Extensions\Windows.Storage\IStorageItemExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Xaml\FrameworkElementExtensions.cs" />
     <Compile Include="Helpers\UI\TitleBarHelper.cs" />
     <Compile Include="MarkupExtensions\BooleanExtension.cs" />
@@ -264,6 +265,7 @@
     <Compile Include="Services\Settings\ISettingsService.cs" />
     <Compile Include="Services\Settings\SettingsService.cs" />
     <Compile Include="TemplateSelectors\ConsoleEntryTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\SourceCodeEntryTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\UserGuideSectionTemplateSelector.cs" />
     <Compile Include="ViewModels\Abstract\Collections\GroupedItemsCollectionViewModelBase{TKey,TElement}.cs" />
     <Compile Include="ViewModels\Abstract\Collections\ItemsCollectionViewModelBase{T}.cs" />

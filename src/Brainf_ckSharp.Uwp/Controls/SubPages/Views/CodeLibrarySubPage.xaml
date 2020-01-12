@@ -9,14 +9,42 @@
     xmlns:ide="using:Brainf_ckSharp.Uwp.Models.Ide"
     xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
     xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
+    xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
 
-        <!--Source code template-->
+        <!--History placeholder-->
+        <DataTemplate x:Key="HistoryPlaceholder">
+            <Border>
+                <Grid ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Style="{StaticResource FontIconTextBlockStyle}"
+                        Text="&#xE773;"
+                        FontSize="32"
+                        Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
+                    <TextBlock
+                        Grid.Column="1"
+                        TextWrapping="Wrap"
+                        FontSize="14"
+                        Foreground="#FFE0E0E0">
+                        <Run Text="There are no items in the source codes history."/>
+                        <LineBreak/><Run Text="Tap here to browse files on your device and pick one to load into the app!"/>
+                    </TextBlock>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <!--Sample source code template-->
         <DataTemplate
-            x:Key="SourceCodeTemplate"
+            x:Key="SampleCodeTemplate"
             x:DataType="ide:CodeLibraryEntry">
             <StackPanel Spacing="8">
                 <TextBlock
@@ -57,9 +85,7 @@
                     VerticalAlignment="Stretch"
                     IsItemClickEnabled="True"
                     SelectionMode="None"
-                    Margin="0,-8,0,0"
-                    ItemTemplate="{StaticResource SourceCodeTemplate}"
-                    ItemClick="{x:Bind CodeEntriesList_ItemClicked}">
+                    ItemClick="CodeEntriesList_ItemClicked">
                     <ListView.Resources>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Margin" Value="0,0,0,4"/>
@@ -73,11 +99,18 @@
                         <GroupStyle HeaderContainerStyle="{StaticResource ExpandedListViewHeaderItemStyle}">
                             <GroupStyle.HeaderTemplate>
                                 <DataTemplate x:DataType="objectModel:IGroupedCollection">
-                                    <jumpList:SemanticZoomZoomedInViewHeaderTemplate Title="{x:Bind Key}"/>
+                                    <jumpList:SemanticZoomZoomedInViewHeaderTemplate
+                                        Title="{x:Bind Key}"
+                                        Margin="0,-8,0,0"/>
                                 </DataTemplate>
                             </GroupStyle.HeaderTemplate>
                         </GroupStyle>
                     </ListView.GroupStyle>
+                    <ListView.ItemTemplateSelector>
+                        <templateSelectors:SourceCodeEntryTemplateSelector
+                            SampleTemplate="{StaticResource SampleCodeTemplate}"
+                            PlaceholderTemplate="{StaticResource HistoryPlaceholder}"/>
+                    </ListView.ItemTemplateSelector>
                 </ListView>
             </SemanticZoom.ZoomedInView>
             <SemanticZoom.ZoomedOutView>
