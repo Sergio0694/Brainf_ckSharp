@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Storage;
+using Windows.Storage.AccessCache;
 using Brainf_ckSharp.Uwp.Extensions.Windows.Storage;
 using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Models.Ide;
@@ -59,10 +60,19 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
 
         public async Task LoadAsync()
         {
+            // Load the recent files
+            IReadOnlyList<CodeLibraryEntry> recent = await Task.WhenAll(StorageApplicationPermissions.MostRecentlyUsedList.Entries.Select(async item =>
+            {
+                StorageFile file = await StorageApplicationPermissions.MostRecentlyUsedList.GetFileAsync(item.Token);
+                CodeLibraryEntry? entry = await CodeLibraryEntry.TryLoadFromFileAsync(file);
+
+                return entry ?? throw new InvalidOperationException($"Failed to load token {item.Token}");
+            }));
+
             // Load the code samples
             IReadOnlyList<CodeLibraryEntry> samples = await GetSampleCodesAsync();
 
-            Source.Add(new ObservableGroup<string, object>("Recent files", new[] { new object() }));
+            Source.Add(new ObservableGroup<string, object>("Recent files", recent.Append(new object())));
             Source.Add(new ObservableGroup<string, object>("Sample files", samples));
         }
 
