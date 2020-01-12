@@ -11,6 +11,7 @@
     xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
     xmlns:styleSelectors="using:Brainf_ckSharp.Uwp.StyleSelectors"
+    xmlns:extensions="using:Brainf_ckSharp.Uwp.Extensions.Windows.Storage"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -51,11 +52,22 @@
                     Text="{x:Bind Title}"
                     FontWeight="Normal"
                     FontSize="18"
-                    TextLineBounds="Tight"
+                    TextLineBounds="TrimToCapHeight"
                     Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     HorizontalTextAlignment="Left"/>
+                <TextBlock
+                    Text="{x:Bind extensions:IStorageItemExtensions.GetFormattedPath(File)}"
+                    FontWeight="Normal"
+                    FontSize="13"
+                    TextLineBounds="Tight"
+                    Foreground="#FFA0A0A0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalTextAlignment="Left"
+                    MaxLines="1"
+                    TextTrimming="CharacterEllipsis"/>
                 <TextBlock
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
@@ -99,7 +111,7 @@
 
     <host:SubPageFrame
         Title="CODE LIBRARY"
-        Background="#60000000">
+        Background="#72000000">
 
         <!--Semantic zoom-->
         <SemanticZoom>
@@ -156,9 +168,7 @@
             <SemanticZoom.ZoomedOutView>
 
                 <!--ZoomedOutView-->
-                <ListView 
-                    ItemsSource="{x:Bind ViewModel.CollectionGroups, Mode=OneWay}"
-                    Background="#12000000">
+                <ListView ItemsSource="{x:Bind ViewModel.CollectionGroups, Mode=OneWay}">
                     <ListView.Resources>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Margin" Value="0,0,0,4"/>
