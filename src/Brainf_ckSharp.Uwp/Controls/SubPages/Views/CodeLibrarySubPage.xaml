@@ -26,7 +26,7 @@
                     <TextBlock
                         Style="{StaticResource FontIconTextBlockStyle}"
                         Text="&#xE773;"
-                        FontSize="32"
+                        FontSize="24"
                         Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"/>
@@ -36,7 +36,7 @@
                         FontSize="14"
                         Foreground="#FFE0E0E0">
                         <Run Text="There are no items in the source codes history."/>
-                        <LineBreak/><Run Text="Tap here to browse files on your device and pick one to load into the app!"/>
+                        <LineBreak/><Run Text="Tap here to pick and open a file!"/>
                     </TextBlock>
                 </Grid>
             </Border>

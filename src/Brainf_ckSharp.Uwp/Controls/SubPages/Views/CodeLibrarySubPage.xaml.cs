@@ -44,7 +44,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views
         /// <param name="e">The <see cref="ItemClickEventArgs"/> instance with the clicked <see cref="CodeLibraryEntry"/> model</param>
         private void CodeEntriesList_ItemClicked(object sender, ItemClickEventArgs e)
         {
-            _ = ViewModel!.OpenFileAsync((CodeLibraryEntry)e.ClickedItem);
+            _ = ViewModel!.OpenFileAsync(e.ClickedItem);
         }
     }
 }

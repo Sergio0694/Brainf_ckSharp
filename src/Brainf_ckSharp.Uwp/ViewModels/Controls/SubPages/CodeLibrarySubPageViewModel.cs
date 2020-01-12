@@ -69,16 +69,22 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// <summary>
         /// Sends a request to load a specified code entry
         /// </summary>
-        /// <param name="entry">The selected <see cref="CodeLibraryEntry"/> model</param>
-        public async Task OpenFileAsync(CodeLibraryEntry entry)
+        /// <param name="model">The selected <see cref="CodeLibraryEntry"/> model, if present</param>
+        public async Task OpenFileAsync(object model)
         {
-            if (entry.File.IsFromPackageDirectory())
+            switch (model)
             {
-                Messenger.Default.Send(new LoadSourceCodeRequestMessage(await SourceCode.LoadFromReferenceFileAsync(entry.File)));
-            }
-            else if (await SourceCode.TryLoadFromEditableFileAsync(entry.File) is SourceCode sourceCode)
-            {
-                Messenger.Default.Send(new LoadSourceCodeRequestMessage(sourceCode));
+                case CodeLibraryEntry sample when sample.File.IsFromPackageDirectory():
+                    Messenger.Default.Send(new LoadSourceCodeRequestMessage(await SourceCode.LoadFromReferenceFileAsync(sample.File)));
+                    break;
+                case CodeLibraryEntry entry:
+                    if (!(await SourceCode.TryLoadFromEditableFileAsync(entry.File) is SourceCode sourceCode)) return;
+                    Messenger.Default.Send(new LoadSourceCodeRequestMessage(sourceCode));
+                    break;
+                case object _:
+                    Messenger.Default.Send<PickOpenFileRequestMessage>();
+                    break;
+                default: throw new ArgumentException("The input model can't be null");
             }
         }
     }
