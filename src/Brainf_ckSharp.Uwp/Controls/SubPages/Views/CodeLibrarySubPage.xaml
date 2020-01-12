@@ -10,6 +10,7 @@
     xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
     xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
+    xmlns:styleSelectors="using:Brainf_ckSharp.Uwp.StyleSelectors"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -20,13 +21,13 @@
             <Border>
                 <Grid ColumnSpacing="12">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="48"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock
                         Style="{StaticResource FontIconTextBlockStyle}"
                         Text="&#xE773;"
-                        FontSize="24"
+                        FontSize="20"
                         Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"/>
@@ -35,11 +36,37 @@
                         TextWrapping="Wrap"
                         FontSize="14"
                         Foreground="#FFE0E0E0">
-                        <Run Text="There are no items in the source codes history."/>
-                        <LineBreak/><Run Text="Tap here to pick and open a file!"/>
+                        <Run Text="Tap here to pick and open a file!"/>
                     </TextBlock>
                 </Grid>
             </Border>
+        </DataTemplate>
+
+        <!--Recent file template-->
+        <DataTemplate
+            x:Key="RecentFileTemplate"
+            x:DataType="ide:CodeLibraryEntry">
+            <StackPanel Spacing="8">
+                <TextBlock
+                    Text="{x:Bind Title}"
+                    FontWeight="Normal"
+                    FontSize="18"
+                    TextLineBounds="Tight"
+                    Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalTextAlignment="Left"/>
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalTextAlignment="Left"
+                    TextWrapping="Wrap"
+                    TextTrimming="CharacterEllipsis"
+                    MaxLines="2"
+                    FontSize="14">
+                    <Span attachedProperties:Brainf_ckInlineFormatterHelper.Source="{x:Bind Preview}"/>
+                </TextBlock>
+            </StackPanel>
         </DataTemplate>
 
         <!--Sample source code template-->
@@ -80,6 +107,7 @@
 
                 <!--ZoomedInView-->
                 <ListView
+                    Margin="0,0,0,-4"
                     ItemsSource="{x:Bind ViewModel.View, Mode=OneWay}"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
@@ -87,12 +115,18 @@
                     SelectionMode="None"
                     ItemClick="CodeEntriesList_ItemClicked">
                     <ListView.Resources>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="Margin" Value="0,0,0,4"/>
+                        <Style x:Key="BaseCodeLibraryEntryItemContainerStyle" TargetType="ListViewItem">
+                            <Setter Property="Margin" Value="0,0,0,0"/>
                             <Setter Property="Padding" Value="12,16,12,16"/>
                             <Setter Property="HorizontalAlignment" Value="Stretch"/>
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                             <Setter Property="Background" Value="#FF171717"/>
+                        </Style>
+                        <Style
+                            x:Key="CodeLibraryEntryItemContainerWithBottomMarginStyle"
+                            TargetType="ListViewItem"
+                            BasedOn="{StaticResource BaseCodeLibraryEntryItemContainerStyle}">
+                            <Setter Property="Margin" Value="0,0,0,4"/>
                         </Style>
                     </ListView.Resources>
                     <ListView.GroupStyle>
@@ -106,10 +140,16 @@
                             </GroupStyle.HeaderTemplate>
                         </GroupStyle>
                     </ListView.GroupStyle>
+                    <ListView.ItemContainerStyleSelector>
+                        <styleSelectors:CodeLibraryEntryItemContainerStyleSelector
+                            DefaultContainerStyle="{StaticResource CodeLibraryEntryItemContainerWithBottomMarginStyle}"
+                            PlaceholderContainerStyle="{StaticResource BaseCodeLibraryEntryItemContainerStyle}"/>
+                    </ListView.ItemContainerStyleSelector>
                     <ListView.ItemTemplateSelector>
                         <templateSelectors:SourceCodeEntryTemplateSelector
-                            SampleTemplate="{StaticResource SampleCodeTemplate}"
-                            PlaceholderTemplate="{StaticResource HistoryPlaceholder}"/>
+                            PlaceholderTemplate="{StaticResource HistoryPlaceholder}"
+                            RecentItemTemplate="{StaticResource RecentFileTemplate}"
+                            SampleTemplate="{StaticResource SampleCodeTemplate}"/>
                     </ListView.ItemTemplateSelector>
                 </ListView>
             </SemanticZoom.ZoomedInView>
