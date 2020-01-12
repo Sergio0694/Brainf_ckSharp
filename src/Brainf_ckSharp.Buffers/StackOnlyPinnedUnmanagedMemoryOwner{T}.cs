@@ -85,6 +85,7 @@ namespace System.Buffers
         public static StackOnlyPinnedUnmanagedMemoryOwner<T> Allocate(int size, bool clear) => new StackOnlyPinnedUnmanagedMemoryOwner<T>(size, clear);
 
         /// <inheritdoc cref="IDisposable.Dispose"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Dispose()
         {
             DebugGuard.MustBeTrue(_Handle.IsAllocated, nameof(_Handle));
