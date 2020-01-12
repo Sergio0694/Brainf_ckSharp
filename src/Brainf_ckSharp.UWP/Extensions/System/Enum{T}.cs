@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// A small <see langword="class"/> with some static extensions for an <see langword="enum"/> of a specific type
