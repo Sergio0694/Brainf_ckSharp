@@ -132,6 +132,7 @@
     <Compile Include="Bindings\Converters\UserGuide\UserGuideSectionToDescriptionConverter.cs" />
     <Compile Include="Bindings\Converters\UserGuide\UserGuideSectionToTitleConverter.cs" />
     <Compile Include="Bindings\Functions\Console\SyntaxErrorFormatterFunctions.cs" />
+    <Compile Include="Bindings\Functions\Ide\CodeLibraryEntryFavoriteStateFormatter.cs" />
     <Compile Include="Bindings\Functions\NumericFunctions.cs" />
     <Compile Include="Bindings\Functions\PivotSelectionFunctions.cs" />
     <Compile Include="Constants\Settings.cs" />

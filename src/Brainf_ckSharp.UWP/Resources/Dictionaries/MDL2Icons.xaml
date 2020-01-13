@@ -32,5 +32,9 @@
     <x:String x:Key="SettingsIcon">&#xE115;</x:String>
     <x:String x:Key="AboutIcon">&#xED15;</x:String>
     <x:String x:Key="UserGuideIcon">&#xE82D;</x:String>
+
+    <!--Code library-->
+    <x:String x:Key="AddToFavoritesIcon">&#xE00A;</x:String>
+    <x:String x:Key="RemoveFromFavoritesIcon">&#xE8D9;</x:String>
     
 </ResourceDictionary>
