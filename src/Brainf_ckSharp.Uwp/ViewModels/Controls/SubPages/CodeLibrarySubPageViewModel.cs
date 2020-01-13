@@ -10,6 +10,7 @@ using System.Windows.Input;
 using Windows.ApplicationModel;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
+using Brainf_ckSharp.Uwp.Enums;
 using Brainf_ckSharp.Uwp.Extensions.Windows.Storage;
 using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Models.Ide;
@@ -21,7 +22,7 @@ using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
 {
-    public sealed class CodeLibrarySubPageViewModel : GroupedItemsCollectionViewModelBase<string, object>
+    public sealed class CodeLibrarySubPageViewModel : GroupedItemsCollectionViewModelBase<CodeLibraryCategory, object>
     {
         /// <summary>
         /// The path of folder that contains the sample files
@@ -113,8 +114,8 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             // Load the code samples
             IReadOnlyList<CodeLibraryEntry> samples = await GetSampleCodesAsync();
 
-            Source.Add(new ObservableGroup<string, object>("Recent files", recent.Append(new object())));
-            Source.Add(new ObservableGroup<string, object>("Sample files", samples));
+            Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Recent, recent.Append(new object())));
+            Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Samples, samples));
         }
 
         /// <summary>
@@ -146,6 +147,9 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to toggle</param>
         public void ToggleFavorite(CodeLibraryEntry entry)
         {
+            /* If the current item is favorited, set is as not favorited
+             * and move it back into the recent files section.
+             * If the favorites section becomes empty, remove it entirely. */
             if (entry.Metadata.IsFavorited)
             {
                 entry.Metadata.IsFavorited = false;
@@ -153,18 +157,17 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
                 if (Source[0].Count == 1) Source.RemoveAt(0);
                 else Source[0].Remove(entry);
 
-                var group = Source.First(g => g.Key == "Recent files");
-
+                var group = Source.First(g => g.Key == CodeLibraryCategory.Recent);
                 group.Insert(0, entry);
             }
             else
             {
                 entry.Metadata.IsFavorited = true;
 
-                Source.First(g => g.Key == "Recent files").Remove(entry);
+                Source.First(g => g.Key == CodeLibraryCategory.Recent).Remove(entry);
 
-                if (Source[0].Key == "Favorites") Source[0].Insert(0, entry);
-                else Source.Insert(0, new ObservableGroup<string, object>("Favorites", new[] {entry }));
+                if (Source[0].Key == CodeLibraryCategory.Favorites) Source[0].Insert(0, entry);
+                else Source.Insert(0, new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Favorites, entry.AsEnumerable()));
             }
         }
     }

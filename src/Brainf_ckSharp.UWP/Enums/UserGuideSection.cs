@@ -3,6 +3,7 @@
     /// <summary>
     /// An <see cref="object"/> based <see langword="enum"/> that indicates a section of the app user guide
     /// </summary>
+    /// <remarks>This type is not a value type to avoid repeated boxing</remarks>
     public sealed class UserGuideSection
     {
         /// <summary>

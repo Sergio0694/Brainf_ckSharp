@@ -129,6 +129,8 @@
     <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.cs" />
     <Compile Include="AttachedProperties\ReactiveViewModelHelper.cs" />
+    <Compile Include="Bindings\Converters\CodeLibrary\CodeLibraryCategoryToUpperCameTitleConverter.cs" />
+    <Compile Include="Bindings\Converters\CodeLibrary\CodeLibraryCategoryToUpperTitleConverter.cs" />
     <Compile Include="Bindings\Converters\UserGuide\UserGuideSectionToDescriptionConverter.cs" />
     <Compile Include="Bindings\Converters\UserGuide\UserGuideSectionToTitleConverter.cs" />
     <Compile Include="Bindings\Functions\Console\SyntaxErrorFormatterFunctions.cs" />
@@ -211,6 +213,7 @@
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Windows.UI.Xaml.Controls\LockedPivot.cs" />
+    <Compile Include="Enums\CodeLibraryCategory.cs" />
     <Compile Include="Enums\UserGuideSection.cs" />
     <Compile Include="Extensions\GalaSoft.MvvmLight.Messaging\MessengerExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IEnumerableExtensions.cs" />

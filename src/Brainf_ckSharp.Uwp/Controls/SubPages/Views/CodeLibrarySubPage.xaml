@@ -12,10 +12,10 @@
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
     xmlns:styleSelectors="using:Brainf_ckSharp.Uwp.StyleSelectors"
     xmlns:extensions="using:Brainf_ckSharp.Uwp.Extensions.Windows.Storage"
-    xmlns:markupExtensions="using:Brainf_ckSharp.Uwp.MarkupExtensions"
     xmlns:functions="using:Brainf_ckSharp.Uwp.Bindings.Functions.Ide"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:codeLibrary="using:Brainf_ckSharp.Uwp.Bindings.Converters.CodeLibrary"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -157,6 +157,10 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
+
+        <!--Converters-->
+        <codeLibrary:CodeLibraryCategoryToUpperTitleConverter x:Key="CodeLibraryCategoryToUpperTitleConverter"/>
+        <codeLibrary:CodeLibraryCategoryToUpperCameTitleConverter x:Key="CodeLibraryCategoryToUpperCameTitleConverter"/>
     </UserControl.Resources>
 
     <host:SubPageFrame
@@ -195,7 +199,7 @@
                             <GroupStyle.HeaderTemplate>
                                 <DataTemplate x:DataType="objectModel:IGroupedCollection">
                                     <jumpList:SemanticZoomZoomedInViewHeaderTemplate
-                                        Title="{x:Bind Key}"
+                                        Title="{x:Bind Key, Converter={StaticResource CodeLibraryCategoryToUpperCameTitleConverter}}"
                                         Margin="0,-8,0,0"/>
                                 </DataTemplate>
                             </GroupStyle.HeaderTemplate>
@@ -230,8 +234,8 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="ICollectionViewGroup">
                             <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
-                                Title="{x:Bind Group.(objectModel:IGroupedCollection.Key)}"
-                                Description="{x:Bind Group.(objectModel:IGroupedCollection.Key)}"/>
+                                Title="{x:Bind Group.(objectModel:IGroupedCollection.Key), Converter={StaticResource CodeLibraryCategoryToUpperTitleConverter}}"
+                                Description="{x:Bind Group.(objectModel:IGroupedCollection.Key), Converter={StaticResource CodeLibraryCategoryToUpperTitleConverter}}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
