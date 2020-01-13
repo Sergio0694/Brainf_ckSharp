@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Storage;
@@ -64,7 +65,8 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             IReadOnlyList<CodeLibraryEntry> recent = await Task.WhenAll(StorageApplicationPermissions.MostRecentlyUsedList.Entries.Select(async item =>
             {
                 StorageFile file = await StorageApplicationPermissions.MostRecentlyUsedList.GetFileAsync(item.Token);
-                CodeLibraryEntry? entry = await CodeLibraryEntry.TryLoadFromFileAsync(file);
+                CodeMetadata metadata = string.IsNullOrEmpty(item.Metadata) ? CodeMetadata.Default : JsonSerializer.Deserialize<CodeMetadata>(item.Metadata);
+                CodeLibraryEntry? entry = await CodeLibraryEntry.TryLoadFromFileAsync(file, metadata);
 
                 return entry ?? throw new InvalidOperationException($"Failed to load token {item.Token}");
             }));

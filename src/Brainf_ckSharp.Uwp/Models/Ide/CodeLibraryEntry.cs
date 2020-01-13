@@ -8,6 +8,8 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Windows.Storage;
 
+#nullable enable
+
 namespace Brainf_ckSharp.Uwp.Models.Ide
 {
     /// <summary>
@@ -24,11 +26,13 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         /// Creates a new <see cref="CodeLibraryEntry"/> instance with the specified parameters
         /// </summary>
         /// <param name="file">The underlying <see cref="StorageFile"/> instance for the new entry</param>
+        /// <param name="metadata">The metadata for the current file</param>
         /// <param name="title">The title of the new entry</param>
         /// <param name="preview">The preview code for the new entry</param>
-        private CodeLibraryEntry(StorageFile file, string title, string preview)
+        private CodeLibraryEntry(StorageFile file, CodeMetadata metadata, string title, string preview)
         {
             File = file;
+            Metadata = metadata;
             Title = title;
             Preview = preview;
         }
@@ -37,6 +41,11 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         /// Gets the underlying <see cref="StorageFile"/> instance for the current entry
         /// </summary>
         public StorageFile File { get; }
+
+        /// <summary>
+        /// Gets the associated <see cref="CodeMetadata"/> instance for the current entry
+        /// </summary>
+        public CodeMetadata Metadata { get; }
 
         /// <summary>
         /// Gets the title of the current entry
@@ -52,11 +61,21 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         /// Tries to load a new <see cref="CodeLibraryEntry"/> instance for a specified file
         /// </summary>
         /// <param name="file">The input file to read data from</param>
+        /// <param name="metadata">The metadata for the current file</param>
         /// <returns>A new <see cref="CodeLibraryEntry"/> instance for <paramref name="file"/></returns>
         [Pure]
-        public static Task<CodeLibraryEntry?> TryLoadFromFileAsync(StorageFile file)
+        public static async Task<CodeLibraryEntry?> TryLoadFromFileAsync(StorageFile file, CodeMetadata metadata)
         {
-            return TryLoadFromFileAsync(file, file.DisplayName);
+            try
+            {
+                string preview = await LoadCodePreviewAsync(file, CodePreviewLength);
+
+                return new CodeLibraryEntry(file, metadata, file.DisplayName, preview);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -72,7 +91,7 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
             {
                 string preview = await LoadCodePreviewAsync(file, CodePreviewLength);
 
-                return new CodeLibraryEntry(file, title, preview);
+                return new CodeLibraryEntry(file, CodeMetadata.Default, title, preview);
             }
             catch
             {
