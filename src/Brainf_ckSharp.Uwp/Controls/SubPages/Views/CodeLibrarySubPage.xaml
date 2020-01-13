@@ -26,6 +26,16 @@
     </interactivity:Interaction.Behaviors>
     <UserControl.Resources>
 
+        <!--Request open file command-->
+        <XamlUICommand
+            x:Key="RequestOpenFileCommand"
+            Command="{x:Bind ViewModel.RequestOpenFileCommand}"/>
+
+        <!--Open file command-->
+        <XamlUICommand
+            x:Key="OpenFileCommand"
+            Command="{x:Bind ViewModel.OpenFileCommand}"/>
+
         <!--Toggle favorite command-->
         <XamlUICommand
             x:Key="ToggleFavoriteCommand"
@@ -33,7 +43,12 @@
 
         <!--History placeholder-->
         <DataTemplate x:Key="HistoryPlaceholder">
-            <Border>
+            <Border Background="Transparent">
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="Tapped">
+                        <core:InvokeCommandAction Command="{StaticResource RequestOpenFileCommand}"/>
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
                 <Grid ColumnSpacing="12">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="48"/>
@@ -76,6 +91,13 @@
                         </MenuFlyoutItem>
                     </MenuFlyout>
                 </StackPanel.ContextFlyout>
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="Tapped">
+                        <core:InvokeCommandAction
+                            Command="{StaticResource OpenFileCommand}"
+                            CommandParameter="{x:Bind}"/>
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
                 <TextBlock
                     Text="{x:Bind Title}"
                     FontWeight="Normal"
@@ -152,8 +174,7 @@
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     IsItemClickEnabled="True"
-                    SelectionMode="None"
-                    ItemClick="CodeEntriesList_ItemClicked">
+                    SelectionMode="None">
                     <ListView.Resources>
                         <Style x:Key="BaseCodeLibraryEntryItemContainerStyle" TargetType="ListViewItem">
                             <Setter Property="Margin" Value="0,0,0,0"/>

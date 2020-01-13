@@ -70,6 +70,8 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         public CodeLibrarySubPageViewModel()
         {
             LoadDataCommand = new RelayCommand(() => _ = LoadAsync());
+            RequestOpenFileCommand = new RelayCommand(RequestOpenFile);
+            OpenFileCommand = new RelayCommand<CodeLibraryEntry>(m => _ = OpenFileAsync(m));
             ToggleFavoriteCommand = new RelayCommand<CodeLibraryEntry>(ToggleFavorite);
         }
 
@@ -77,6 +79,16 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// Gets the <see cref="ICommand"/> instance responsible for loading the available source codes
         /// </summary>
         public ICommand LoadDataCommand { get; }
+
+        /// <summary>
+        /// Gets the <see cref="ICommand"/> instance responsible for picking a file to open
+        /// </summary>
+        public ICommand RequestOpenFileCommand { get; }
+
+        /// <summary>
+        /// Gets the <see cref="ICommand"/> instance responsible for opening a file
+        /// </summary>
+        public ICommand OpenFileCommand { get; }
 
         /// <summary>
         /// Gets the <see cref="ICommand"/> instance responsible for toggling a favorite item
@@ -106,24 +118,25 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         }
 
         /// <summary>
+        /// Requests to pick and open a source code file
+        /// </summary>
+        public void RequestOpenFile() => Messenger.Default.Send<PickOpenFileRequestMessage>();
+
+        /// <summary>
         /// Sends a request to load a specified code entry
         /// </summary>
-        /// <param name="model">The selected <see cref="CodeLibraryEntry"/> model, if present</param>
-        public async Task OpenFileAsync(object model)
+        /// <param name="entry">The selected <see cref="CodeLibraryEntry"/> model</param>
+        public async Task OpenFileAsync(CodeLibraryEntry entry)
         {
-            switch (model)
+            if (entry.File.IsFromPackageDirectory())
             {
-                case CodeLibraryEntry sample when sample.File.IsFromPackageDirectory():
-                    Messenger.Default.Send(new LoadSourceCodeRequestMessage(await SourceCode.LoadFromReferenceFileAsync(sample.File)));
-                    break;
-                case CodeLibraryEntry entry:
-                    if (!(await SourceCode.TryLoadFromEditableFileAsync(entry.File) is SourceCode sourceCode)) return;
-                    Messenger.Default.Send(new LoadSourceCodeRequestMessage(sourceCode));
-                    break;
-                case object _:
-                    Messenger.Default.Send<PickOpenFileRequestMessage>();
-                    break;
-                default: throw new ArgumentException("The input model can't be null");
+                SourceCode code = await SourceCode.LoadFromReferenceFileAsync(entry.File);
+                Messenger.Default.Send(new LoadSourceCodeRequestMessage(code));
+            }
+            else
+            {
+                if (!(await SourceCode.TryLoadFromEditableFileAsync(entry.File) is SourceCode sourceCode)) return;
+                Messenger.Default.Send(new LoadSourceCodeRequestMessage(sourceCode));
             }
         }
 
