@@ -14,10 +14,22 @@
     xmlns:extensions="using:Brainf_ckSharp.Uwp.Extensions.Windows.Storage"
     xmlns:markupExtensions="using:Brainf_ckSharp.Uwp.MarkupExtensions"
     xmlns:functions="using:Brainf_ckSharp.Uwp.Bindings.Functions.Ide"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <interactivity:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Loaded">
+            <core:InvokeCommandAction Command="{x:Bind ViewModel.LoadDataCommand}"/>
+        </core:EventTriggerBehavior>
+    </interactivity:Interaction.Behaviors>
     <UserControl.Resources>
+
+        <!--Toggle favorite command-->
+        <XamlUICommand
+            x:Key="ToggleFavoriteCommand"
+            Command="{x:Bind ViewModel.ToggleFavoriteCommand}"/>
 
         <!--History placeholder-->
         <DataTemplate x:Key="HistoryPlaceholder">
@@ -54,7 +66,10 @@
                 Background="Transparent"> <!--Hit target for the context menu-->
                 <StackPanel.ContextFlyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem Text="{x:Bind functions:CodeLibraryEntryFavoriteStateFormatter.FormatLabel(Metadata.IsFavorited)}">
+                        <MenuFlyoutItem
+                            Text="{x:Bind functions:CodeLibraryEntryFavoriteStateFormatter.FormatLabel(Metadata.IsFavorited)}"
+                            Command="{StaticResource ToggleFavoriteCommand}"
+                            CommandParameter="{x:Bind}">
                             <MenuFlyoutItem.Icon>
                                 <FontIcon Glyph="{x:Bind functions:CodeLibraryEntryFavoriteStateFormatter.FormatIcon(Metadata.IsFavorited)}"/>
                             </MenuFlyoutItem.Icon>

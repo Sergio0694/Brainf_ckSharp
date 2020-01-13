@@ -1,5 +1,4 @@
-﻿using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+﻿using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
 using Brainf_ckSharp.Uwp.Models.Ide;
 using Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages;
@@ -17,13 +16,6 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views
         {
             this.InitializeComponent();
             this.DataContext = new CodeLibrarySubPageViewModel();
-            this.Loaded += CodeLibrarySubPage_Loaded;
-        }
-
-        // Loads the current library when the page is displayed
-        private void CodeLibrarySubPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            _ = ViewModel!.LoadAsync();
         }
 
         /// <summary>

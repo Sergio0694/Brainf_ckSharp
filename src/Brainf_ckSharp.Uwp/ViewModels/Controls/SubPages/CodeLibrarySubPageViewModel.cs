@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.ApplicationModel;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
@@ -13,6 +14,7 @@ using Brainf_ckSharp.Uwp.Extensions.Windows.Storage;
 using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Models.Ide;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 
 #nullable enable
@@ -40,6 +42,9 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             ("Header comment", "HeaderComment")
         };
 
+        /// <summary>
+        /// The cached collection of sample codes, if available
+        /// </summary>
         private static IReadOnlyList<CodeLibraryEntry>? _SampleCodes;
 
         /// <summary>
@@ -59,13 +64,35 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             }));
         }
 
+        /// <summary>
+        /// Creates a new <see cref="CodeLibrarySubPageViewModel"/> instance
+        /// </summary>
+        public CodeLibrarySubPageViewModel()
+        {
+            LoadDataCommand = new RelayCommand(() => _ = LoadAsync());
+            ToggleFavoriteCommand = new RelayCommand<CodeLibraryEntry>(ToggleFavorite);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ICommand"/> instance responsible for loading the available source codes
+        /// </summary>
+        public ICommand LoadDataCommand { get; }
+
+        /// <summary>
+        /// Gets the <see cref="ICommand"/> instance responsible for toggling a favorite item
+        /// </summary>
+        public ICommand ToggleFavoriteCommand { get; }
+
+        /// <summary>
+        /// Loads the currently available code samples and recently used files
+        /// </summary>
         public async Task LoadAsync()
         {
             // Load the recent files
             IReadOnlyList<CodeLibraryEntry> recent = await Task.WhenAll(StorageApplicationPermissions.MostRecentlyUsedList.Entries.Select(async item =>
             {
                 StorageFile file = await StorageApplicationPermissions.MostRecentlyUsedList.GetFileAsync(item.Token);
-                CodeMetadata metadata = string.IsNullOrEmpty(item.Metadata) ? CodeMetadata.Default : JsonSerializer.Deserialize<CodeMetadata>(item.Metadata);
+                CodeMetadata metadata = string.IsNullOrEmpty(item.Metadata) ? new CodeMetadata() : JsonSerializer.Deserialize<CodeMetadata>(item.Metadata);
                 CodeLibraryEntry? entry = await CodeLibraryEntry.TryLoadFromFileAsync(file, metadata);
 
                 return entry ?? throw new InvalidOperationException($"Failed to load token {item.Token}");
@@ -97,6 +124,34 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
                     Messenger.Default.Send<PickOpenFileRequestMessage>();
                     break;
                 default: throw new ArgumentException("The input model can't be null");
+            }
+        }
+
+        /// <summary>
+        /// Toggles the favorite state of a given <see cref="CodeLibraryEntry"/> instance
+        /// </summary>
+        /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to toggle</param>
+        public void ToggleFavorite(CodeLibraryEntry entry)
+        {
+            if (entry.Metadata.IsFavorited)
+            {
+                entry.Metadata.IsFavorited = false;
+
+                if (Source[0].Count == 1) Source.RemoveAt(0);
+                else Source[0].Remove(entry);
+
+                var group = Source.First(g => g.Key == "Recent files");
+
+                group.Insert(0, entry);
+            }
+            else
+            {
+                entry.Metadata.IsFavorited = true;
+
+                Source.First(g => g.Key == "Recent files").Remove(entry);
+
+                if (Source[0].Key == "Favorites") Source[0].Insert(0, entry);
+                else Source.Insert(0, new ObservableGroup<string, object>("Favorites", new[] {entry }));
             }
         }
     }
