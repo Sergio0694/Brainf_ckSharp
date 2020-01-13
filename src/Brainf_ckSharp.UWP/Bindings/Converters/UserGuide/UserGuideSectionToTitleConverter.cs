@@ -12,14 +12,12 @@ namespace Brainf_ckSharp.Uwp.Bindings.Converters.UserGuide
         /// <inheritdoc/>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return value switch
-            {
-                UserGuideSection.Introduction => "INTRODUCTION",
-                UserGuideSection.PBrain => "PBRAIN",
-                UserGuideSection.Debugging => "DEBUGGING",
-                UserGuideSection.Samples => "SAMPLES",
-                _ => throw new ArgumentException($"Invalid input value: {value}", nameof(value))
-            };
+            if (value == UserGuideSection.Introduction) return "INTRODUCTION";
+            if (value == UserGuideSection.PBrain) return "PBRAIN";
+            if (value == UserGuideSection.Debugging) return "DEBUGGING";
+            if (value == UserGuideSection.Samples) return "SAMPLES";
+
+            throw new ArgumentException($"Invalid input value: {value}", nameof(value));
         }
 
         /// <inheritdoc/>
