@@ -16,6 +16,7 @@ using Brainf_ckSharp.Uwp.Extensions.Windows.Storage;
 using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Models.Ide;
 using Brainf_ckSharp.Uwp.Services.Clipboard;
+using Brainf_ckSharp.Uwp.Services.Share;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
@@ -77,6 +78,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             ProcessItemCommand = new RelayCommand<object>(ProcessItem);
             ToggleFavoriteCommand = new RelayCommand<CodeLibraryEntry>(ToggleFavorite);
             CopyToClipboardCommand = new RelayCommand<CodeLibraryEntry>(entry => _ = CopyToClipboardAsync(entry));
+            ShareCommand = new RelayCommand<CodeLibraryEntry>(Share);
             RemoveFromLibraryCommand = new RelayCommand<CodeLibraryEntry>(RemoveFromLibrary);
             DeleteCommand = new RelayCommand<CodeLibraryEntry>(Delete);
         }
@@ -100,6 +102,11 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// Gets the <see cref="ICommand"/> instance responsible for copying an item to the clipboard
         /// </summary>
         public ICommand CopyToClipboardCommand { get; }
+
+        /// <summary>
+        /// Gets the <see cref="ICommand"/> instance responsible for sharing an item
+        /// </summary>
+        public ICommand ShareCommand { get; }
 
         /// <summary>
         /// Gets the <see cref="ICommand"/> instance responsible for removing an item from the library
@@ -214,6 +221,15 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             string text = await FileIO.ReadTextAsync(entry.File);
 
             SimpleIoc.Default.GetInstance<IClipboardService>().TryCopy(text);
+        }
+
+        /// <summary>
+        /// Shares a specified entry
+        /// </summary>
+        /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to share</param>
+        public void Share(CodeLibraryEntry entry)
+        {
+            SimpleIoc.Default.GetInstance<IShareService>().Share(entry.Title, entry.File);
         }
 
         /// <summary>
