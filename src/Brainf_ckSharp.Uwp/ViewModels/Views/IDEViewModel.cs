@@ -5,6 +5,7 @@ using Windows.Storage.AccessCache;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Messages.InputPanel;
+using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Brainf_ckSharp.Uwp.Models.Ide;
 using Brainf_ckSharp.Uwp.Services.Files;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract;
@@ -53,6 +54,8 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
                 if (Set(ref _Code, value))
                 {
                     CodeLoaded?.Invoke(this, value.Content);
+
+                    Messenger.Default.Send<SubPageCloseRequestMessage>();
                 }
             }
         }

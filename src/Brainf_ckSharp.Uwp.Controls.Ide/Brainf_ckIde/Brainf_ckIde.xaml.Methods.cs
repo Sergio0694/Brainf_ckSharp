@@ -15,7 +15,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="text"></param>
         public void LoadText(string text)
         {
-            _ReferenceText = text;
+            _ReferenceText = text.Replace("\n", "");
+
+            _DiffIndicators.Span.Clear();
 
             CodeEditBox.Document.LoadFromString(text);
         }
