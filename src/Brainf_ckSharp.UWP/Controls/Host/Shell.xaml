@@ -134,7 +134,7 @@
                 </AppBarButton>
                 <AppBarButton
                     Label="Delete"
-                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DeleteIcon}}"
+                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DeleteKeyIcon}}"
                     Tag="{markupExtensions:Boolean Value=True}"
                     Click="{x:Bind ViewModel.DeleteConsoleOperator}">
                     <AppBarButton.KeyboardAccelerators>
@@ -184,7 +184,7 @@
                     Click="{x:Bind ViewModel.InsertNewLine}"/>
                 <AppBarButton
                     Label="Delete"
-                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DeleteIcon}}"
+                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DeleteKeyIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}"
                     Click="{x:Bind ViewModel.DeleteIdeCharacter}"/>
                 <AppBarButton

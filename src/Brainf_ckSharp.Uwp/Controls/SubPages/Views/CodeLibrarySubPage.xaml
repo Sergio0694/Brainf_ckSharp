@@ -113,7 +113,7 @@
                             CommandParameter="{x:Bind}"/>
                         <MenuFlyoutItem
                             Text="Delete"
-                            Icon="{markupExtensions:FontIcon Glyph={StaticResource DeleteIcon}}"
+                            Icon="{markupExtensions:FontIcon Glyph={StaticResource DeleteFileIcon}}"
                             Command="{StaticResource DeleteCommand}"
                             CommandParameter="{x:Bind}"/>
                     </MenuFlyout>
