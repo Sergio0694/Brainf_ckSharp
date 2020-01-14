@@ -1,4 +1,5 @@
-﻿using Windows.UI.Text;
+﻿using System;
+using Windows.UI.Text;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
@@ -15,7 +16,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="text"></param>
         public void LoadText(string text)
         {
-            _ReferenceText = text.Replace("\n", "");
+            _ReferenceText = text.WithCarriageReturnLineEndings();
 
             _DiffIndicators.Span.Clear();
 

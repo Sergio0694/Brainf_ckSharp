@@ -11,40 +11,34 @@ namespace System
     public static class StringExtensions
     {
         /// <summary>
-        /// Creates a <see cref="string"/> by alternating a given character between ones in an input instance
+        /// Creates a <see cref="string"/> by alternating a given character between ones in an input <see cref="ReadOnlySpan{T}"/>
         /// </summary>
         /// <param name="text">The input <see cref="ReadOnlySpan{T}"/> value, mapping the input text</param>
         /// <param name="c">The separator character to interleave</param>
         /// <returns>A new <see cref="string"/> instance with alternating source and separator characters</returns>
         [Pure]
-        public static string InterleaveWithCharacter(this ReadOnlySpan<char> text, char c)
+        public static unsafe string InterleaveWithCharacter(this ReadOnlySpan<char> text, char c)
         {
-            // Fallback for empty strings
-            int sourceLength = text.Length;
-            if (sourceLength == 0) return string.Empty;
+            int textLength = text.Length;
 
-            // Rent the temporary buffer
-            int bufferLength = sourceLength * 2;
-            char[] buffer = ArrayPool<char>.Shared.Rent(bufferLength);
+            if (textLength == 0) return string.Empty;
 
-            try
+            int bufferLength = textLength * 2;
+            using StackOnlyUnmanagedMemoryOwner<char> buffer = StackOnlyUnmanagedMemoryOwner<char>.Allocate(bufferLength);
+
+            fixed (char* p = &buffer.GetReference())
             {
                 ref char textRef = ref MemoryMarshal.GetReference(text);
-                ref char bufferRef = ref buffer[0];
+                ref char bufferRef = ref Unsafe.AsRef<char>(p);
 
                 // Alternate source characters with the separator
-                for (int i = 0; i < sourceLength; i++)
+                for (int i = 0; i < textLength; i++)
                 {
                     Unsafe.Add(ref bufferRef, i * 2) = Unsafe.Add(ref textRef, i);
                     Unsafe.Add(ref bufferRef, i * 2 + 1) = c;
                 }
 
-                // Create the new string with the correct view on the temporary buffer
-                return new string(buffer, 0, bufferLength);
-            }
-            finally
-            {
-                ArrayPool<char>.Shared.Return(buffer);
+                return new string(p, 0, bufferLength);
             }
         }
     }
