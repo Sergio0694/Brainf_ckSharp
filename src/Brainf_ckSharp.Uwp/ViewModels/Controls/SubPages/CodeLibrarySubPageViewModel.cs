@@ -114,7 +114,13 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             // Load the code samples
             IReadOnlyList<CodeLibraryEntry> samples = await GetSampleCodesAsync();
 
-            Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Recent, recent.Append(new object())));
+            // Add the favorites, if any
+            IReadOnlyList<CodeLibraryEntry> favorited = recent.Where(entry => entry.Metadata.IsFavorited).ToArray();
+            if (favorited.Count > 0) Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Favorites, favorited));
+
+            // Add the recent and sample items
+            IEnumerable<CodeLibraryEntry> unfavorited = recent.Where(entry => !entry.Metadata.IsFavorited);
+            Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Recent, unfavorited.Append(new object())));
             Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Samples, samples));
         }
 
@@ -169,6 +175,8 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
                 if (Source[0].Key == CodeLibraryCategory.Favorites) Source[0].Insert(0, entry);
                 else Source.Insert(0, new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Favorites, entry.AsEnumerable()));
             }
+
+            StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(entry.File.Path.GetxxHash32Code().ToHex(), entry.File, JsonSerializer.Serialize(entry.Metadata));
         }
     }
 }
