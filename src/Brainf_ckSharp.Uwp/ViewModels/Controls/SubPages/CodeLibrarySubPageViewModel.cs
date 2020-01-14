@@ -74,6 +74,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             ProcessItemCommand = new RelayCommand<object>(ProcessItem);
             ToggleFavoriteCommand = new RelayCommand<CodeLibraryEntry>(ToggleFavorite);
             RemoveFromLibraryCommand = new RelayCommand<CodeLibraryEntry>(RemoveFromLibrary);
+            DeleteCommand = new RelayCommand<CodeLibraryEntry>(Delete);
         }
 
         /// <summary>
@@ -95,6 +96,11 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// Gets the <see cref="ICommand"/> instance responsible for removing an item from the library
         /// </summary>
         public ICommand RemoveFromLibraryCommand { get; }
+
+        /// <summary>
+        /// Gets the <see cref="ICommand"/> instance responsible for deleting an item in the library
+        /// </summary>
+        public ICommand DeleteCommand { get; }
 
         /// <summary>
         /// Loads the currently available code samples and recently used files
@@ -202,6 +208,17 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             else group.Remove(entry);
 
             StorageApplicationPermissions.MostRecentlyUsedList.Remove(entry.File.Path.GetxxHash32Code().ToHex());
+        }
+
+        /// <summary>
+        /// Deletes a specific <see cref="CodeLibraryEntry"/> instance in the code library
+        /// </summary>
+        /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to delete</param>
+        public void Delete(CodeLibraryEntry entry)
+        {
+            RemoveFromLibrary(entry);
+
+            _ = entry.File.DeleteAsync();
         }
     }
 }

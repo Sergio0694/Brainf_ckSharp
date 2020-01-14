@@ -37,6 +37,11 @@
             x:Key="RemoveFromLibraryCommand"
             Command="{x:Bind ViewModel.RemoveFromLibraryCommand}"/>
 
+        <!--Delete command-->
+        <XamlUICommand
+            x:Key="DeleteCommand"
+            Command="{x:Bind ViewModel.RemoveFromLibraryCommand}"/>
+
         <!--History placeholder-->
         <DataTemplate x:Key="HistoryPlaceholder">
             <Border Background="Transparent">
@@ -85,6 +90,11 @@
                             Text="Remove from library"
                             Icon="{markupExtensions:FontIcon Glyph={StaticResource RemoveFromLibraryIcon}}"
                             Command="{StaticResource RemoveFromLibraryCommand}"
+                            CommandParameter="{x:Bind}"/>
+                        <MenuFlyoutItem
+                            Text="Delete"
+                            Icon="{markupExtensions:FontIcon Glyph={StaticResource DeleteIcon}}"
+                            Command="{StaticResource DeleteCommand}"
                             CommandParameter="{x:Bind}"/>
                     </MenuFlyout>
                 </StackPanel.ContextFlyout>
