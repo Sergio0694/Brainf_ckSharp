@@ -11,7 +11,7 @@
     xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
     xmlns:styleSelectors="using:Brainf_ckSharp.Uwp.StyleSelectors"
-    xmlns:extensions="using:Brainf_ckSharp.Uwp.Extensions.Windows.Storage"
+    xmlns:storage="using:Windows.Storage"
     xmlns:functions="using:Brainf_ckSharp.Uwp.Bindings.Functions.Ide"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
@@ -128,7 +128,7 @@
                     VerticalAlignment="Center"
                     HorizontalTextAlignment="Left"/>
                 <TextBlock
-                    Text="{x:Bind extensions:IStorageItemExtensions.GetFormattedPath(File)}"
+                    Text="{x:Bind storage:IStorageItemExtensions.GetFormattedPath(File)}"
                     FontWeight="Normal"
                     FontSize="13"
                     TextLineBounds="Tight"

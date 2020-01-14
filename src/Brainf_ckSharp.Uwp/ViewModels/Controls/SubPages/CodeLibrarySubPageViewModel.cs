@@ -8,11 +8,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel;
-using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Brainf_ckSharp.Uwp.Enums;
-using Brainf_ckSharp.Uwp.Extensions.Windows.Storage;
 using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Models.Ide;
 using Brainf_ckSharp.Uwp.Services.Clipboard;
@@ -124,9 +122,18 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         public async Task LoadAsync()
         {
             // Load the recent files
-            IReadOnlyList<CodeLibraryEntry> recent = await Task.WhenAll(StorageApplicationPermissions.MostRecentlyUsedList.Entries.Select(async item =>
+            IReadOnlyList<AccessListEntry> entries = StorageApplicationPermissions.MostRecentlyUsedList.Entries.ToArray();
+            IReadOnlyList<CodeLibraryEntry?> recent = await Task.WhenAll(entries.Select(async item =>
             {
-                StorageFile file = await StorageApplicationPermissions.MostRecentlyUsedList.GetFileAsync(item.Token);
+                // Try to get the target file
+                StorageFile? file = await StorageApplicationPermissions.MostRecentlyUsedList.TryGetFileAsync(item.Token);
+                if (file is null)
+                {
+                    StorageApplicationPermissions.MostRecentlyUsedList.Remove(item.Token);
+                    return null;
+                }
+
+                // Deserialize the metadata and prepare the model
                 CodeMetadata metadata = string.IsNullOrEmpty(item.Metadata) ? new CodeMetadata() : JsonSerializer.Deserialize<CodeMetadata>(item.Metadata);
                 CodeLibraryEntry? entry = await CodeLibraryEntry.TryLoadFromFileAsync(file, metadata);
 
@@ -137,11 +144,11 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             IReadOnlyList<CodeLibraryEntry> samples = await GetSampleCodesAsync();
 
             // Add the favorites, if any
-            IReadOnlyList<CodeLibraryEntry> favorited = recent.Where(entry => entry.Metadata.IsFavorited).ToArray();
+            IReadOnlyList<CodeLibraryEntry> favorited = recent.Where(entry => entry?.Metadata.IsFavorited == true).ToArray()!;
             if (favorited.Count > 0) Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Favorites, favorited));
 
             // Add the recent and sample items
-            IEnumerable<CodeLibraryEntry> unfavorited = recent.Where(entry => !entry.Metadata.IsFavorited);
+            IEnumerable<CodeLibraryEntry> unfavorited = recent.Where(entry => entry?.Metadata.IsFavorited == false)!;
             Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Recent, unfavorited.Append(new object())));
             Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Samples, samples));
         }

@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using Windows.ApplicationModel;
-using Windows.Storage;
-using JetBrains.Annotations;
 
-namespace Brainf_ckSharp.Uwp.Extensions.Windows.Storage
+namespace Windows.Storage
 {
     /// <summary>
     /// An extension <see langword="class"/> for the <see cref="IStorageItem"/> type
