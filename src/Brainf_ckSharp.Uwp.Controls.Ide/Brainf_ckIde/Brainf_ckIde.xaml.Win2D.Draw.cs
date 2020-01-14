@@ -18,7 +18,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// The current buffer of line diff indicators
         /// </summary>
-        private MemoryOwner<LineModificationType> _DiffIndicators = MemoryOwner<LineModificationType>.Allocate(0);
+        /// <remarks>The initial size is 1 since it corresponds to the default '\r' character in the control</remarks>
+        private MemoryOwner<LineModificationType> _DiffIndicators = MemoryOwner<LineModificationType>.Allocate(1);
 
         /// <summary>
         /// The current array of <see cref="IndentationIndicatorBase"/> instances to render

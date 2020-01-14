@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// A small <see langword="class"/> with some static extensions for an <see langword="enum"/> of a specific type
@@ -11,6 +9,6 @@ namespace System
         /// <summary>
         /// Gets the list of values for the current instance
         /// </summary>
-        public static IReadOnlyList<T> Values { get; } = (T[])Enum.GetValues(typeof(T));
+        public static ReadOnlyMemory<T> Values { get; } = (T[])Enum.GetValues(typeof(T));
     }
 }

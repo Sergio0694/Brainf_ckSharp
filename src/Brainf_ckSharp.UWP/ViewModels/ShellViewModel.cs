@@ -1,5 +1,6 @@
 ﻿using Brainf_ckSharp.Uwp.Controls.SubPages.Shell;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide;
+using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
 using Brainf_ckSharp.Uwp.Messages.Console.Commands;
 using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
@@ -52,6 +53,26 @@ namespace Brainf_ckSharp.Uwp.ViewModels
         /// Deletes the last character in the IDE
         /// </summary>
         public void DeleteIdeCharacter() => Messenger.Default.Send<DeleteCharacterRequestMessage>();
+
+        /// <summary>
+        /// Shows the code library
+        /// </summary>
+        public void ShowCodeLibrary() => Messenger.Default.Send(SubPageNavigationRequestMessage.To<CodeLibrarySubPage>());
+
+        /// <summary>
+        /// Opens a new file in the IDE
+        /// </summary>
+        public void OpenFile() => Messenger.Default.Send<PickOpenFileRequestMessage>();
+
+        /// <summary>
+        /// Saves the current source code in the IDE to a file
+        /// </summary>
+        public void SaveFile() => Messenger.Default.Send<SaveFileRequestMessage>();
+
+        /// <summary>
+        /// Saves the current source code in the IDE to a new file
+        /// </summary>
+        public void SaveFileAs() => Messenger.Default.Send<SaveFileAsRequestMessage>();
 
         /// <summary>
         /// Shows the info about the current app

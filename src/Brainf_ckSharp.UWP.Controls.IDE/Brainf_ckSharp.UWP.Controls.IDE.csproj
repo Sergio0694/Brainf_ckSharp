@@ -141,7 +141,6 @@
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Constants.cs" />
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Load.cs" />
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Draw.cs" />
-    <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Properties.cs" />
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Methods.cs" />
     <Compile Include="Brainf_ckIde\Enums\IndentationType.cs" />
     <Compile Include="Brainf_ckIde\Helpers\TextGenerator.cs" />

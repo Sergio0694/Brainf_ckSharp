@@ -17,7 +17,7 @@
     <x:String x:Key="DebugIcon">&#xEBE8;</x:String>
     <x:String x:Key="MemoryStateIcon">&#xE74C;</x:String>
     <x:String x:Key="ClearIcon">&#xE10A;</x:String>
-    <x:String x:Key="DeleteIcon">&#xE750;</x:String>
+    <x:String x:Key="DeleteKeyIcon">&#xE750;</x:String>
     <x:String x:Key="MoveIcon">&#xE759;</x:String>
     <x:String x:Key="NewLineIcon">&#xE751;</x:String>
     <x:String x:Key="UndoIcon">&#xE10E;</x:String>
@@ -26,11 +26,19 @@
     <x:String x:Key="RestartIcon">&#xE9F3;</x:String>
     <x:String x:Key="ClearScreen">&#xEA99;</x:String>
     <x:String x:Key="ShowUnicodeMapIcon">&#xEBDB;</x:String>
-    <x:String x:Key="CodeLibraryIcon">&#xED25;</x:String>
+    <x:String x:Key="OpenFileIcon">&#xED25;</x:String>
     <x:String x:Key="SaveIcon">&#xE105;</x:String>
     <x:String x:Key="SaveAsIcon">&#xEA35;</x:String>
     <x:String x:Key="SettingsIcon">&#xE115;</x:String>
     <x:String x:Key="AboutIcon">&#xED15;</x:String>
     <x:String x:Key="UserGuideIcon">&#xE82D;</x:String>
+
+    <!--Code library-->
+    <x:String x:Key="AddToFavoritesIcon">&#xE00A;</x:String>
+    <x:String x:Key="RemoveFromFavoritesIcon">&#xE8D9;</x:String>
+    <x:String x:Key="ShareIcon">&#xE72D;</x:String>
+    <x:String x:Key="CopyToClipboardIcon">&#xE8C8;</x:String>
+    <x:String x:Key="RemoveFromLibraryIcon">&#xE295;</x:String>
+    <x:String x:Key="DeleteFileIcon">&#xE107;</x:String>
     
 </ResourceDictionary>

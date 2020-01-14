@@ -18,6 +18,8 @@ namespace Brainf_ckSharp.Uwp.Views
 
             ViewModel!.CharacterAdded += ViewModelCharacterAdded;
             ViewModel.CharacterDeleted += ViewModel_CharacterDeleted;
+            ViewModel.CodeLoaded += ViewModel_CodeLoaded;
+            ViewModel.CodeSaved += ViewModel_CodeSaved;
         }
 
         /// <summary>
@@ -38,5 +40,25 @@ namespace Brainf_ckSharp.Uwp.Views
         /// <param name="sender">The current <see cref="IdeViewModel"/> instance</param>
         /// <param name="e">The empty <see cref="EventArgs"/> instance for this event</param>
         private void ViewModel_CharacterDeleted(object sender, EventArgs e) => CodeEditor.DeleteCharacter();
+
+        /// <summary>
+        /// Loads a given source code into the IDE
+        /// </summary>
+        /// <param name="sender">The current <see cref="IdeViewModel"/> instance</param>
+        /// <param name="e">The <see cref="string"/> with the code to load</param>
+        private void ViewModel_CodeLoaded(object sender, string e)
+        {
+            CodeEditor.LoadText(e);
+        }
+
+        /// <summary>
+        /// Marks the current source code as saved in the IDE
+        /// </summary>
+        /// <param name="sender">The current <see cref="IdeViewModel"/> instance</param>
+        /// <param name="e">The empty <see cref="EventArgs"/> instance for the event</param>
+        private void ViewModel_CodeSaved(object sender, EventArgs e)
+        {
+            CodeEditor.MarkTextAsSaved();
+        }
     }
 }

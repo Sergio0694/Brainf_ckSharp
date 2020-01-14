@@ -81,14 +81,14 @@ namespace System
                     length = Span.Length;
 
                 // Additional check if the separator is not the last character
-                if (end < length)
+                if (end <= length)
                 {
                     _Start = end;
 
                     int index = Span.Slice(end).IndexOf(Separator);
 
                     // Extract the current subsequence
-                    if (index > 0)
+                    if (index >= 0)
                     {
                         _End = end + index;
 

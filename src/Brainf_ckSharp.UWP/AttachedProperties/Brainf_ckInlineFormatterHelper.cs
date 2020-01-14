@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Brainf_ckSharp.Uwp.Constants;
-using Brainf_ckSharp.Uwp.Extensions.System;
 using Brainf_ckSharp.Uwp.Themes;
 
 namespace Brainf_ckSharp.Uwp.AttachedProperties

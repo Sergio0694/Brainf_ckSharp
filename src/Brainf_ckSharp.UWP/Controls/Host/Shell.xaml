@@ -134,7 +134,7 @@
                 </AppBarButton>
                 <AppBarButton
                     Label="Delete"
-                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DeleteIcon}}"
+                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DeleteKeyIcon}}"
                     Tag="{markupExtensions:Boolean Value=True}"
                     Click="{x:Bind ViewModel.DeleteConsoleOperator}">
                     <AppBarButton.KeyboardAccelerators>
@@ -184,7 +184,7 @@
                     Click="{x:Bind ViewModel.InsertNewLine}"/>
                 <AppBarButton
                     Label="Delete"
-                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DeleteIcon}}"
+                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DeleteKeyIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}"
                     Click="{x:Bind ViewModel.DeleteIdeCharacter}"/>
                 <AppBarButton
@@ -238,13 +238,20 @@
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
-                    Label="Show code library"
-                    Icon="{markupExtensions:FontIcon Glyph={StaticResource CodeLibraryIcon}}"
-                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"/>
+                    Label="Open code library"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource OpenFileIcon}}"
+                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
+                    Click="{x:Bind ViewModel.ShowCodeLibrary}"/>
+                <AppBarButton
+                    Label="Open file"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource OpenFileIcon}}"
+                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
+                    Click="{x:Bind ViewModel.OpenFile}"/>
                 <AppBarButton
                     Label="Save"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource SaveIcon}}"
-                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}">
+                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
+                    Click="{x:Bind ViewModel.SaveFile}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator
                             Key="S" Modifiers="Control"
@@ -254,7 +261,8 @@
                 <AppBarButton
                     Label="Save as"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource SaveAsIcon}}"
-                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}">
+                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
+                    Click="{x:Bind ViewModel.SaveFileAs}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator
                             Key="S" Modifiers="Menu"

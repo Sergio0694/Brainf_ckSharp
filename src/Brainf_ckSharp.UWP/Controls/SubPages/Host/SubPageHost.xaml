@@ -120,7 +120,7 @@
                 <Border 
                     x:Name="ContentBorder"
                     Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                    BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
+                    BorderBrush="{StaticResource SubFrameBorderBrush}"
                     Background="{ThemeResource SubFrameBackgroundBrush}" 
                     BorderThickness="1" CornerRadius="1">
                     <ContentControl 

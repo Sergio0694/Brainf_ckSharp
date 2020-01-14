@@ -14,19 +14,45 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     public sealed partial class Brainf_ckIde
     {
         /// <summary>
-        /// Updates the current line diff indicators
+        /// Updates the current line diff indicators when the displayed text changes
         /// </summary>
         /// <param name="text">The current source code being displayed</param>
         private void UpdateDiffInfo(string text)
         {
-            _DiffIndicators.Dispose();
+            MemoryOwner<LineModificationType> diff = LineDiffer.ComputeDiff(_ReferenceText, text, Characters.CarriageReturn);
 
-            MemoryOwner<LineModificationType> diff = LineDiffer.ComputeDiff(ReferenceText, text, Characters.CarriageReturn);
+            ref LineModificationType oldRef = ref _DiffIndicators.GetReference();
+            ref LineModificationType newRef = ref diff.GetReference();
+            int length = Math.Min(_DiffIndicators.Size, diff.Size);
+
+            // Maintain the saved indicators
+            for (int i = 0; i < length; i++)
+                if (Unsafe.Add(ref oldRef, i) == LineModificationType.Saved &&
+                    Unsafe.Add(ref newRef, i) == LineModificationType.None)
+                    Unsafe.Add(ref newRef, i) = LineModificationType.Saved;
+
+            _DiffIndicators.Dispose();
 
             /* The edit box always ends with a final \r that can't be removed by the user.
              * Slicing out the last item prevents the modified marker from being displayed
              * below the last line actually being typed by the user. */
             _DiffIndicators = diff.Slice(diff.Size - 1);
+        }
+
+        /// <summary>
+        /// Updates the current line diff when the current text is marked as saved
+        /// </summary>
+        private void UpdateDiffInfo()
+        {
+            int size = _DiffIndicators.Size;
+
+            if (size == 0) return;
+
+            ref LineModificationType r0 = ref _DiffIndicators.GetReference();
+
+            for (int i = 0; i < size; i++)
+                if (Unsafe.Add(ref r0, i) == LineModificationType.Modified)
+                    Unsafe.Add(ref r0, i) = LineModificationType.Saved;
         }
 
         /// <summary>
@@ -44,7 +70,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             if (!isSyntaxValid)
             {
                 _IndentationIndicators = MemoryOwner<IndentationIndicatorBase>.Allocate(0);
-                IdeOverlaysCanvas.Invalidate();
                 return;
             }
 
@@ -215,8 +240,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         break;
                 }
             }
-
-            IdeOverlaysCanvas.Invalidate();
         }
     }
 }
