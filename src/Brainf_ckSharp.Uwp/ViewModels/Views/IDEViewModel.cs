@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.AccessCache;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Messages.InputPanel;
@@ -62,7 +63,8 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
             Messenger.Default.Register<OperatorKeyPressedNotificationMessage>(this, m => CharacterAdded?.Invoke(this, m));
             Messenger.Default.Register<InsertNewLineRequestMessage>(this, _ => CharacterAdded?.Invoke(this, Characters.CarriageReturn));
             Messenger.Default.Register<DeleteCharacterRequestMessage>(this, _ => CharacterDeleted?.Invoke(this, EventArgs.Empty));
-            Messenger.Default.Register<OpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync());
+            Messenger.Default.Register<PickOpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync());
+            Messenger.Default.Register<LoadSourceCodeRequestMessage>(this, m => Code = m);
             Messenger.Default.Register<SaveFileRequestMessage>(this, m => _ = TrySaveTextAsync());
             Messenger.Default.Register<SaveFileAsRequestMessage>(this, m => _ = TrySaveTextAsAsync());
         }
@@ -74,7 +76,12 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         {
             if (!(await SimpleIoc.Default.GetInstance<IFilesService>().TryPickOpenFileAsync(".bfs") is StorageFile file)) return;
 
-            Code = await SourceCode.LoadFromFileAsync(file);
+            if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
+            {
+                Code = code;
+
+                StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(file.Path.GetxxHash32Code().ToHex(), file);
+            }
         }
 
         /// <summary>
@@ -98,6 +105,8 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
             if (!(await filesService.TryPickSaveFileAsync(string.Empty, (string.Empty, ".bfs")) is StorageFile file)) return;
 
             await Code.TrySaveAsAsync(file);
+
+            StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(file.Path.GetxxHash32Code().ToHex(), file);
 
             CodeSaved?.Invoke(this, EventArgs.Empty);
         }

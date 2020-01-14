@@ -68,6 +68,9 @@ namespace Brainf_ckSharp.Git
             object[] oldTemporaryValues = ArrayPool<object>.Shared.Rent(oldNumberOfLines);
             object[] newTemporaryValues = ArrayPool<object>.Shared.Rent(newNumberOfLines);
 
+            ref object oldTemporaryValuesRef = ref oldTemporaryValues[0];
+            ref object newTemporaryValuesRef = ref newTemporaryValues[0];
+
             DictionarySlim<int, DiffEntry> table = LinesMap;
             table.Clear();
 
@@ -125,13 +128,12 @@ namespace Brainf_ckSharp.Git
                     }
                     else
                     {
-                        if (entry.NumberOfOccurrencesInOldText == 0) entry.NumberOfOccurrencesInOldText = 1;
-                        else if (entry.NumberOfOccurrencesInOldText == 1) entry.NumberOfOccurrencesInOldText = 2;
+                        if (entry.NumberOfOccurrencesInOldText < 2) entry.NumberOfOccurrencesInOldText++;
                         else entry.NumberOfOccurrencesInOldText = int.MaxValue;
                     }
 
                     entry.LineNumberInOldText = j;
-                    oldTemporaryValues[j] = entry;
+                    Unsafe.Add(ref oldTemporaryValuesRef, j) = entry;
                     j += 1;
                 }
 
@@ -149,8 +151,8 @@ namespace Brainf_ckSharp.Git
                         entry.NumberOfOccurrencesInNewText == 1)
                     {
                         int olno = entry.LineNumberInOldText;
-                        newTemporaryValues[i] = olno;
-                        oldTemporaryValues[olno] = i;
+                        Unsafe.Add(ref newTemporaryValuesRef, i) = olno;
+                        Unsafe.Add(ref oldTemporaryValuesRef, olno) = i;
                     }
                 }
 
@@ -164,11 +166,16 @@ namespace Brainf_ckSharp.Git
                 for (i = 0; i < newNumberOfLines - 1; i++)
                 {
                     if (newTemporaryValues[i] is int k &&
-                        k + 1 < oldNumberOfLines &&
-                        newTemporaryValues[i + 1].Equals(oldTemporaryValues[k + 1]))
+                        k + 1 < oldNumberOfLines)
                     {
-                        newTemporaryValues[i + 1] = k + 1;
-                        oldTemporaryValues[k + 1] = i + 1;
+                        ref object newTemporaryValue = ref Unsafe.Add(ref newTemporaryValuesRef, i + 1);
+                        ref object oldTemporaryValue = ref Unsafe.Add(ref oldTemporaryValuesRef, k + 1);
+
+                        if (newTemporaryValue.Equals(oldTemporaryValue))
+                        {
+                            newTemporaryValue = k + 1;
+                            oldTemporaryValue = i + 1;
+                        }
                     }
                 }
 
@@ -179,11 +186,16 @@ namespace Brainf_ckSharp.Git
                 for (i = newNumberOfLines - 1; i > 0; i--)
                 {
                     if (newTemporaryValues[i] is int k &&
-                        k - 1 >= 0 &&
-                        newTemporaryValues[i - 1].Equals(oldTemporaryValues[k - 1]))
+                        k - 1 >= 0)
                     {
-                        newTemporaryValues[i - 1] = k - 1;
-                        oldTemporaryValues[k - 1] = i - 1;
+                        ref object newTemporaryValue = ref Unsafe.Add(ref newTemporaryValuesRef, i - 1);
+                        ref object oldTemporaryValue = ref Unsafe.Add(ref oldTemporaryValuesRef, k - 1);
+
+                        if (newTemporaryValue.Equals(oldTemporaryValue))
+                        {
+                            newTemporaryValue = k - 1;
+                            oldTemporaryValue = i - 1;
+                        }
                     }
                 }
 
@@ -201,8 +213,11 @@ namespace Brainf_ckSharp.Git
                  * it means that the current line has been modified in some way. */
                 for (i = 0; i < newNumberOfLines; i++)
                 {
-                    if (newTemporaryValues[i] is int) Unsafe.Add(ref resultRef, i) = LineModificationType.None;
-                    else Unsafe.Add(ref resultRef, i) = LineModificationType.Modified;
+                    Unsafe.Add(ref resultRef, i) = newTemporaryValues[i] switch
+                    {
+                        int _ => LineModificationType.None,
+                        _ => LineModificationType.Modified
+                    };
                 }
 
                 return result;

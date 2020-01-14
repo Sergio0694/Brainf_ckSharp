@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.UI.Core;
@@ -6,8 +7,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
-using Brainf_ckSharp.Uwp.Extensions.System;
-using Brainf_ckSharp.Uwp.Extensions.Windows.UI.Xaml;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
 using GalaSoft.MvvmLight.Messaging;
 

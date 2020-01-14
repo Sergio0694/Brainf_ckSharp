@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -56,6 +58,27 @@ namespace Brainf_ckSharp.Uwp.Resources
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => Get<SolidColorBrush>("SystemControlHighlightAccentBrush");
+        }
+
+        /// <summary>
+        /// A <see langword="class"/> with some hardcoded icons from the Segoe MDL2 Assets charset
+        /// </summary>
+        public static class Icons
+        {
+            public static readonly string AddToFavorites = Get();
+            public static readonly string RemoveFromFavorites = Get();
+
+            /// <summary>
+            /// A helper function that returns the appropriate icon from the XAML resource dictionary
+            /// </summary>
+            /// <param name="name">The name of the icon to retrieve</param>
+            [Pure]
+            private static string Get([CallerMemberName] string? name = null)
+            {
+                Guard.MustBeNotNull(name, nameof(name));
+
+                return Get<string>($"{name}Icon");
+            }
         }
     }
 }

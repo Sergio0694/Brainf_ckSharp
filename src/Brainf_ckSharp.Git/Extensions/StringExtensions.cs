@@ -27,5 +27,14 @@ namespace System
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ReadOnlySpanTokenizer<char> Tokenize(this string text, char separator) => new ReadOnlySpanTokenizer<char>(text.AsSpan(), separator);
+
+        /// <summary>
+        /// Gets a content hash from the input <see cref="string"/> instance using the xxHash32 algorithm
+        /// </summary>
+        /// <param name="text">The input <see cref="string"/> instance</param>
+        /// <returns>The xxHash32 value for the input <see cref="string"/> instance</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int GetxxHash32Code(this string text) => text.AsSpan().GetxxHash32Code();
     }
 }

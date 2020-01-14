@@ -101,6 +101,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -113,6 +114,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
@@ -127,9 +129,12 @@
     <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.cs" />
     <Compile Include="AttachedProperties\ReactiveViewModelHelper.cs" />
+    <Compile Include="Bindings\Converters\CodeLibrary\CodeLibraryCategoryToUpperCameTitleConverter.cs" />
+    <Compile Include="Bindings\Converters\CodeLibrary\CodeLibraryCategoryToUpperTitleConverter.cs" />
     <Compile Include="Bindings\Converters\UserGuide\UserGuideSectionToDescriptionConverter.cs" />
     <Compile Include="Bindings\Converters\UserGuide\UserGuideSectionToTitleConverter.cs" />
     <Compile Include="Bindings\Functions\Console\SyntaxErrorFormatterFunctions.cs" />
+    <Compile Include="Bindings\Functions\Ide\CodeLibraryEntryFavoriteStateFormatter.cs" />
     <Compile Include="Bindings\Functions\NumericFunctions.cs" />
     <Compile Include="Bindings\Functions\PivotSelectionFunctions.cs" />
     <Compile Include="Constants\Settings.cs" />
@@ -140,6 +145,8 @@
     <Compile Include="Controls\DataTemplates\GitHub\DeveloperTemplate.xaml.cs">
       <DependentUpon>DeveloperTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DataTemplates\JumpList\SemanticZoomZoomedOutViewHeaderTemplate.cs" />
+    <Compile Include="Controls\DataTemplates\JumpList\SemanticZoomZoomedInViewHeaderTemplate.cs" />
     <Compile Include="Controls\DataTemplates\Misc\FeaturedLinkTemplate.xaml.cs">
       <DependentUpon>FeaturedLinkTemplate.xaml</DependentUpon>
     </Compile>
@@ -193,6 +200,9 @@
     <Compile Include="Controls\SubPages\Shell\UserGuide\UserGuideSubPage.xaml.cs">
       <DependentUpon>UserGuideSubPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SubPages\Views\CodeLibrarySubPage.xaml.cs">
+      <DependentUpon>CodeLibrarySubPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Telerik.UI.Controls\ExpanderControl.cs" />
     <Compile Include="Controls\Windows.UI.Xaml.Controls\AnimatedCommandBar.cs" />
     <Compile Include="Controls\Host\Header\HeaderButton.cs" />
@@ -203,15 +213,21 @@
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Windows.UI.Xaml.Controls\LockedPivot.cs" />
+    <Compile Include="Enums\CodeLibraryCategory.cs" />
     <Compile Include="Enums\UserGuideSection.cs" />
     <Compile Include="Extensions\GalaSoft.MvvmLight.Messaging\MessengerExtensions.cs" />
+    <Compile Include="Extensions\Microsoft.Xaml.Interactions.Core\ItemClickBehavior.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IListExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IReadOnlyListExtensions.cs" />
+    <Compile Include="Extensions\System.Collections.ObjectModel\IGroupedCollection.cs" />
     <Compile Include="Extensions\System.Collections.ObjectModel\ObservableGroup{TKey,TElement}.cs" />
     <Compile Include="Extensions\System\BoolExtensions.cs" />
     <Compile Include="Extensions\System\Enum{T}.cs" />
+    <Compile Include="Extensions\System\IntExtensions.cs" />
     <Compile Include="Extensions\System\StringExtensions.cs" />
+    <Compile Include="Extensions\Windows.Storage\IStorageItemExtensions.cs" />
+    <Compile Include="Extensions\Windows.Storage\StorageItemMostRecentlyUsedListExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Xaml\FrameworkElementExtensions.cs" />
     <Compile Include="Helpers\UI\TitleBarHelper.cs" />
     <Compile Include="MarkupExtensions\BooleanExtension.cs" />
@@ -228,7 +244,8 @@
     <Compile Include="Messages\Console\MemoryState\MemoryStateRequestMessage.cs" />
     <Compile Include="Messages\Ide\DeleteCharacterRequestMessage.cs" />
     <Compile Include="Messages\Ide\InsertNewLineRequestMessage.cs" />
-    <Compile Include="Messages\Ide\OpenFileRequestMessage.cs" />
+    <Compile Include="Messages\Ide\LoadSourceCodeRequestMessage.cs" />
+    <Compile Include="Messages\Ide\PickOpenFileRequestMessage.cs" />
     <Compile Include="Messages\Ide\SaveFileAsRequestMessage.cs" />
     <Compile Include="Messages\Ide\SaveFileRequestMessage.cs" />
     <Compile Include="Messages\InputPanel\CharacterReceivedNotificationMessage.cs" />
@@ -245,9 +262,13 @@
     <Compile Include="Models\Console\ConsoleSyntaxError.cs" />
     <Compile Include="Models\Console\Controls\Brainf_ckMemoryCellChunk.cs" />
     <Compile Include="Models\Console\Interfaces\IConsoleEntry.cs" />
+    <Compile Include="Models\Ide\CodeLibraryEntry.cs" />
+    <Compile Include="Models\Ide\CodeMetadata.cs" />
     <Compile Include="Models\Ide\SourceCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\XamlResources.cs" />
+    <Compile Include="Services\Clipboard\ClipboardService.cs" />
+    <Compile Include="Services\Clipboard\IClipboardService.cs" />
     <Compile Include="Services\Files\FilesService.cs" />
     <Compile Include="Services\Files\IFilesService.cs" />
     <Compile Include="Services\Keyboard\IKeyboardListenerService.cs" />
@@ -255,11 +276,16 @@
     <Compile Include="Services\ServicesManager.cs" />
     <Compile Include="Services\Settings\ISettingsService.cs" />
     <Compile Include="Services\Settings\SettingsService.cs" />
+    <Compile Include="Services\Share\IShareService.cs" />
+    <Compile Include="Services\Share\ShareService.cs" />
+    <Compile Include="StyleSelectors\CodeLibraryEntryItemContainerStyleSelector.cs" />
     <Compile Include="TemplateSelectors\ConsoleEntryTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\SourceCodeEntryTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\UserGuideSectionTemplateSelector.cs" />
     <Compile Include="ViewModels\Abstract\Collections\GroupedItemsCollectionViewModelBase{TKey,TElement}.cs" />
     <Compile Include="ViewModels\Abstract\Collections\ItemsCollectionViewModelBase{T}.cs" />
     <Compile Include="ViewModels\Abstract\ReactiveViewModelBase.cs" />
+    <Compile Include="ViewModels\Controls\SubPages\CodeLibrarySubPageViewModel.cs" />
     <Compile Include="ViewModels\Views\ConsoleViewModel.cs" />
     <Compile Include="ViewModels\Controls\CompactMemoryViewerViewModel.cs" />
     <Compile Include="ViewModels\Controls\SubPages\AboutSubPageViewModel.cs" />
@@ -283,6 +309,27 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Misc\noise_low.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\Fibonacci.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\HeaderComment.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\HelloWorld.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\IntegerDivision.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\IntegerSum.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\UnicodeSum.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\UnicodeValue.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Properties\Default.rd.xml" />
@@ -321,14 +368,28 @@
     <PackageReference Include="MvvmLight">
       <Version>5.4.1.1</Version>
     </PackageReference>
+    <PackageReference Include="System.Text.Json">
+      <Version>4.7.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Threading.Tasks.Extensions">
+      <Version>4.5.3</Version>
+    </PackageReference>
     <PackageReference Include="UICompositionAnimations">
       <Version>4.1.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Brainf_ckSharp.Buffers\Brainf_ckSharp.Buffers.csproj">
+      <Project>{5f365b29-7cdf-4272-b877-37ca69daad1b}</Project>
+      <Name>Brainf_ckSharp.Buffers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Brainf_ckSharp.Diagnostics\Brainf_ckSharp.Diagnostics.csproj">
       <Project>{a464d3e4-c6e0-48ec-a786-c2db610d9bd0}</Project>
       <Name>Brainf_ckSharp.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Brainf_ckSharp.Git\Brainf_ckSharp.Git.csproj">
+      <Project>{8000d892-951c-49b3-ae95-db85d909c717}</Project>
+      <Name>Brainf_ckSharp.Git</Name>
     </ProjectReference>
     <ProjectReference Include="..\Brainf_ckSharp.UWP.Controls.IDE\Brainf_ckSharp.Uwp.Controls.Ide.csproj">
       <Project>{473069aa-080a-493e-b7a8-0bee7b0b00f1}</Project>
@@ -428,6 +489,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\SubPages\Views\CodeLibrarySubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Dictionaries\Brushes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -449,6 +514,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\ClassicStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\SemanticZoomStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

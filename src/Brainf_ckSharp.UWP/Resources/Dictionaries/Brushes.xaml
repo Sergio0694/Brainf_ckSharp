@@ -32,6 +32,7 @@
         TextureUri="/Assets/Misc/noise_low.png"/>
     <Color x:Key="SubFrameBackgroundColor">#C0202020</Color>
     <SolidColorBrush x:Key="SubFrameBackgroundBrush" Color="{StaticResource SubFrameBackgroundColor}"/>
+    <SolidColorBrush x:Key="SubFrameBorderBrush" Color="#FF555555"/>
 
     <!--Commands-->
     <Color x:Key="RunColor">#FF008000</Color>
@@ -49,7 +50,7 @@
 
     <!--Misc-->
     <SolidColorBrush x:Key="ZeroValueInMemoryViewerBrush" Color="#D0FFFFFF"/>
-    <SolidColorBrush x:Key="GitHubContributorBackgroundBrush" Color="#FF191B1E"/>
+    <SolidColorBrush x:Key="GitHubContributorBackgroundBrush" Color="#FF1A1B1C"/>
     <SolidColorBrush x:Key="WidgetHeaderForeground" Color="#FFA0A0A0"/>
 
 </ResourceDictionary>

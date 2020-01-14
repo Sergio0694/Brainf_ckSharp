@@ -1,10 +1,9 @@
-﻿using System;
-using System.Buffers;
+﻿using System.Buffers;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace Brainf_ckSharp.Uwp.Extensions.System
+namespace System
 {
     /// <summary>
     /// An extension <see langword="class"/> for the <see cref="string"/> type
