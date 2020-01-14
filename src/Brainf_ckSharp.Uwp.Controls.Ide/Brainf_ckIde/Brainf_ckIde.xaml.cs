@@ -64,6 +64,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             UpdateLineIndicators(numberOfLines);
             UpdateDiffInfo(args.PlainText);
             UpdateIndentationInfo(args.PlainText, args.ValidationResult.IsSuccessOrEmptyScript, numberOfLines);
+
+            IdeOverlaysCanvas.Invalidate();
         }
 
         /// <summary>
