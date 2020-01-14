@@ -32,6 +32,11 @@
             x:Key="ToggleFavoriteCommand"
             Command="{x:Bind ViewModel.ToggleFavoriteCommand}"/>
 
+        <!--Copy to clipboard command-->
+        <XamlUICommand
+            x:Key="CopyToClipboardCommand"
+            Command="{x:Bind ViewModel.CopyToClipboardCommand}"/>
+
         <!--Remove from library command-->
         <XamlUICommand
             x:Key="RemoveFromLibraryCommand"
@@ -85,6 +90,15 @@
                                 <FontIcon Glyph="{x:Bind functions:CodeLibraryEntryFavoriteStateFormatter.FormatIcon(Metadata.IsFavorited)}"/>
                             </MenuFlyoutItem.Icon>
                         </MenuFlyoutItem>
+                        <MenuFlyoutSubItem
+                            Text="Share"
+                            Icon="{markupExtensions:FontIcon Glyph={StaticResource ShareIcon}}">
+                            <MenuFlyoutItem
+                                Text="Copy to clipboard"
+                                Icon="{markupExtensions:FontIcon Glyph={StaticResource CopyToClipboardIcon}}"
+                                Command="{StaticResource CopyToClipboardCommand}"
+                                CommandParameter="{x:Bind}"/>
+                        </MenuFlyoutSubItem>
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem
                             Text="Remove from library"

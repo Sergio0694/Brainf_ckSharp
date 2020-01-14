@@ -8,14 +8,17 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Brainf_ckSharp.Uwp.Enums;
 using Brainf_ckSharp.Uwp.Extensions.Windows.Storage;
 using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Models.Ide;
+using Brainf_ckSharp.Uwp.Services.Clipboard;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 
 #nullable enable
@@ -73,6 +76,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             LoadDataCommand = new RelayCommand(() => _ = LoadAsync());
             ProcessItemCommand = new RelayCommand<object>(ProcessItem);
             ToggleFavoriteCommand = new RelayCommand<CodeLibraryEntry>(ToggleFavorite);
+            CopyToClipboardCommand = new RelayCommand<CodeLibraryEntry>(entry => _ = CopyToClipboardAsync(entry));
             RemoveFromLibraryCommand = new RelayCommand<CodeLibraryEntry>(RemoveFromLibrary);
             DeleteCommand = new RelayCommand<CodeLibraryEntry>(Delete);
         }
@@ -91,6 +95,11 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// Gets the <see cref="ICommand"/> instance responsible for toggling a favorite item
         /// </summary>
         public ICommand ToggleFavoriteCommand { get; }
+
+        /// <summary>
+        /// Gets the <see cref="ICommand"/> instance responsible for copying an item to the clipboard
+        /// </summary>
+        public ICommand CopyToClipboardCommand { get; }
 
         /// <summary>
         /// Gets the <see cref="ICommand"/> instance responsible for removing an item from the library
@@ -194,6 +203,17 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             }
 
             StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(entry.File.Path.GetxxHash32Code().ToHex(), entry.File, JsonSerializer.Serialize(entry.Metadata));
+        }
+
+        /// <summary>
+        /// Copies the content of a specified entry to the clipboard
+        /// </summary>
+        /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to copy to the clipboard</param>
+        public async Task CopyToClipboardAsync(CodeLibraryEntry entry)
+        {
+            string text = await FileIO.ReadTextAsync(entry.File);
+
+            SimpleIoc.Default.GetInstance<IClipboardService>().TryCopy(text);
         }
 
         /// <summary>
