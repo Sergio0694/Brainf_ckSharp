@@ -71,8 +71,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         public CodeLibrarySubPageViewModel()
         {
             LoadDataCommand = new RelayCommand(() => _ = LoadAsync());
-            RequestOpenFileCommand = new RelayCommand(RequestOpenFile);
-            OpenFileCommand = new RelayCommand<CodeLibraryEntry>(m => _ = OpenFileAsync(m));
+            ProcessItemCommand = new RelayCommand<object>(ProcessItem);
             ToggleFavoriteCommand = new RelayCommand<CodeLibraryEntry>(ToggleFavorite);
         }
 
@@ -82,14 +81,9 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         public ICommand LoadDataCommand { get; }
 
         /// <summary>
-        /// Gets the <see cref="ICommand"/> instance responsible for picking a file to open
+        /// Gets the <see cref="ICommand"/> instance responsible for processing a selected item
         /// </summary>
-        public ICommand RequestOpenFileCommand { get; }
-
-        /// <summary>
-        /// Gets the <see cref="ICommand"/> instance responsible for opening a file
-        /// </summary>
-        public ICommand OpenFileCommand { get; }
+        public ICommand ProcessItemCommand { get; }
 
         /// <summary>
         /// Gets the <see cref="ICommand"/> instance responsible for toggling a favorite item
@@ -122,6 +116,17 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             IEnumerable<CodeLibraryEntry> unfavorited = recent.Where(entry => !entry.Metadata.IsFavorited);
             Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Recent, unfavorited.Append(new object())));
             Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Samples, samples));
+        }
+
+        /// <summary>
+        /// Processes a given item
+        /// </summary>
+        /// <param name="item">The target item to process</param>
+        public void ProcessItem(object item)
+        {
+            if (item is CodeLibraryEntry entry) _ = OpenFileAsync(entry);
+            else if (item is object) RequestOpenFile();
+            else throw new ArgumentException("The input item can't be null");
         }
 
         /// <summary>
