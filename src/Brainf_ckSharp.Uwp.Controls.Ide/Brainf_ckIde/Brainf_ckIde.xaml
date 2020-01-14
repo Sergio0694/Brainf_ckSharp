@@ -45,7 +45,8 @@
             <TextBlock
                 x:Name="LineBlock"
                 Width="28"
-                FontSize="15"
+                Text="1"
+                FontSize="{x:Bind CodeEditBox.FontSize, Mode=OneWay}"
                 Foreground="#FF237CAD"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Right"
