@@ -36,5 +36,10 @@
     <!--Code library-->
     <x:String x:Key="AddToFavoritesIcon">&#xE00A;</x:String>
     <x:String x:Key="RemoveFromFavoritesIcon">&#xE8D9;</x:String>
+    <x:String x:Key="ShareIcon">&#xE72D;</x:String>
+    <x:String x:Key="CopyToClipboardIcon">&#xE8C8;</x:String>
+    <x:String x:Key="WindowsShareIcon">&#xED4D;</x:String>
+    <x:String x:Key="ShareViaEmailIcon">&#xE89C;</x:String>
+    <x:String x:Key="RemoveFromLibraryIcon">&#xE295;</x:String>
     
 </ResourceDictionary>

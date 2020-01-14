@@ -16,6 +16,7 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:codeLibrary="using:Brainf_ckSharp.Uwp.Bindings.Converters.CodeLibrary"
+    xmlns:markupExtensions="using:Brainf_ckSharp.Uwp.MarkupExtensions"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -30,6 +31,11 @@
         <XamlUICommand
             x:Key="ToggleFavoriteCommand"
             Command="{x:Bind ViewModel.ToggleFavoriteCommand}"/>
+
+        <!--Remove from library command-->
+        <XamlUICommand
+            x:Key="RemoveFromLibraryCommand"
+            Command="{x:Bind ViewModel.RemoveFromLibraryCommand}"/>
 
         <!--History placeholder-->
         <DataTemplate x:Key="HistoryPlaceholder">
@@ -74,6 +80,12 @@
                                 <FontIcon Glyph="{x:Bind functions:CodeLibraryEntryFavoriteStateFormatter.FormatIcon(Metadata.IsFavorited)}"/>
                             </MenuFlyoutItem.Icon>
                         </MenuFlyoutItem>
+                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutItem
+                            Text="Remove from library"
+                            Icon="{markupExtensions:FontIcon Glyph={StaticResource RemoveFromLibraryIcon}}"
+                            Command="{StaticResource RemoveFromLibraryCommand}"
+                            CommandParameter="{x:Bind}"/>
                     </MenuFlyout>
                 </StackPanel.ContextFlyout>
                 <TextBlock

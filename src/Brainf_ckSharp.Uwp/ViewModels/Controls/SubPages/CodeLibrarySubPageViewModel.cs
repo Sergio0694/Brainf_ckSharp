@@ -73,6 +73,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             LoadDataCommand = new RelayCommand(() => _ = LoadAsync());
             ProcessItemCommand = new RelayCommand<object>(ProcessItem);
             ToggleFavoriteCommand = new RelayCommand<CodeLibraryEntry>(ToggleFavorite);
+            RemoveFromLibraryCommand = new RelayCommand<CodeLibraryEntry>(RemoveFromLibrary);
         }
 
         /// <summary>
@@ -89,6 +90,11 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// Gets the <see cref="ICommand"/> instance responsible for toggling a favorite item
         /// </summary>
         public ICommand ToggleFavoriteCommand { get; }
+
+        /// <summary>
+        /// Gets the <see cref="ICommand"/> instance responsible for removing an item from the library
+        /// </summary>
+        public ICommand RemoveFromLibraryCommand { get; }
 
         /// <summary>
         /// Loads the currently available code samples and recently used files
@@ -182,6 +188,20 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             }
 
             StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(entry.File.Path.GetxxHash32Code().ToHex(), entry.File, JsonSerializer.Serialize(entry.Metadata));
+        }
+
+        /// <summary>
+        /// Removes a specific <see cref="CodeLibraryEntry"/> instance from the code library
+        /// </summary>
+        /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to remove</param>
+        public void RemoveFromLibrary(CodeLibraryEntry entry)
+        {
+            var group = Source.First(g => g.Contains(entry));
+
+            if (group.Count == 1) Source.Remove(group);
+            else group.Remove(entry);
+
+            StorageApplicationPermissions.MostRecentlyUsedList.Remove(entry.File.Path.GetxxHash32Code().ToHex());
         }
     }
 }
