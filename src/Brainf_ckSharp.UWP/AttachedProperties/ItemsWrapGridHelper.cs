@@ -74,10 +74,12 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
 
             double
                 desiredWidth = GetDesiredItemWidth(@this),
-                round = Math.Ceiling(e.NewSize.Width / desiredWidth),
-                columns = Math.Min(round, @this.MaximumRowsOrColumns),
-                size = e.NewSize.Width / columns;
-            @this.ItemWidth = size;
+                columns = Math.Ceiling(e.NewSize.Width / desiredWidth);
+
+            int maximumRowsOrColumns = @this.MaximumRowsOrColumns;
+            if (maximumRowsOrColumns > 0) columns = Math.Min(columns, maximumRowsOrColumns);
+
+            @this.ItemWidth = e.NewSize.Width / columns;
         }
     }
 }
