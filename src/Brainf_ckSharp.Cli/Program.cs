@@ -43,9 +43,49 @@ namespace Brainf_ckSharp.Cli
                 // Display the execution result
                 if (interpreterResult.Value is { })
                 {
+                    // Runtime error, if any
+                    if (!interpreterResult.Value.ExitCode.HasFlag(ExitCode.Success))
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.Write("[RUNTIME ERROR] ");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine(interpreterResult.Value.ExitCode switch
+                        {
+                            ExitCode.UpperBoundExceeded => "Upper bound exceeded",
+                            ExitCode.LowerBoundExceeded => "Lower bound exceeded",
+                            ExitCode.NegativeValue => "Negative value",
+                            ExitCode.MaxValueExceeded => "Maximum value exceeded",
+                            ExitCode.StdinBufferExhausted => "Stdin buffer exhausted",
+                            ExitCode.StdoutBufferLimitExceeded => "Stdout buffer limit exceeded",
+                            ExitCode.DuplicateFunctionDefinition => "Duplicate function definition",
+                            ExitCode.UndefinedFunctionCalled => "Undefined function call",
+                            ExitCode.ThresholdExceeded => "Threshold exceeded",
+                            _ => throw new ArgumentOutOfRangeException(nameof(ExitCode), $"Invalid error: {interpreterResult.Value.ExitCode}")
+                        });
+                    }
+
+                    // Stdout
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write("[STDOUT] ");
+                    Console.ForegroundColor = ConsoleColor.Gray;
                     Console.WriteLine(interpreterResult.Value.Stdout);
+                    Console.ForegroundColor = ConsoleColor.White;
 
                     if (options.Stdout is { }) File.WriteAllText(options.Stdout, interpreterResult.Value.Stdout);
+
+                    // Additional info, if verbose mode is on
+                    if (options.Verbose)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("[ELAPSED TIME] ");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine(interpreterResult.Value.ElapsedTime);
+
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("[TOTAL OPERATORS] ");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine(interpreterResult.Value.TotalOperations);
+                    }
                 }
                 else
                 {
