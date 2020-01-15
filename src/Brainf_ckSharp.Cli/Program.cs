@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using Brainf_ckSharp.Cli.Helpers;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
@@ -46,54 +47,54 @@ namespace Brainf_ckSharp.Cli
                     // Runtime error, if any
                     if (!interpreterResult.Value.ExitCode.HasFlag(ExitCode.Success))
                     {
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
-                        Console.Write("[RUNTIME ERROR] ");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine(interpreterResult.Value.ExitCode switch
-                        {
-                            ExitCode.UpperBoundExceeded => "Upper bound exceeded",
-                            ExitCode.LowerBoundExceeded => "Lower bound exceeded",
-                            ExitCode.NegativeValue => "Negative value",
-                            ExitCode.MaxValueExceeded => "Maximum value exceeded",
-                            ExitCode.StdinBufferExhausted => "Stdin buffer exhausted",
-                            ExitCode.StdoutBufferLimitExceeded => "Stdout buffer limit exceeded",
-                            ExitCode.DuplicateFunctionDefinition => "Duplicate function definition",
-                            ExitCode.UndefinedFunctionCalled => "Undefined function call",
-                            ExitCode.ThresholdExceeded => "Threshold exceeded",
-                            _ => throw new ArgumentOutOfRangeException(nameof(ExitCode), $"Invalid error: {interpreterResult.Value.ExitCode}")
-                        });
+                        Logger.Write(
+                            ConsoleColor.DarkRed,
+                            "runtime error",
+                            interpreterResult.Value.ExitCode switch
+                            {
+                                ExitCode.UpperBoundExceeded => "Upper bound exceeded",
+                                ExitCode.LowerBoundExceeded => "Lower bound exceeded",
+                                ExitCode.NegativeValue => "Negative value",
+                                ExitCode.MaxValueExceeded => "Maximum value exceeded",
+                                ExitCode.StdinBufferExhausted => "Stdin buffer exhausted",
+                                ExitCode.StdoutBufferLimitExceeded => "Stdout buffer limit exceeded",
+                                ExitCode.DuplicateFunctionDefinition => "Duplicate function definition",
+                                ExitCode.UndefinedFunctionCalled => "Undefined function call",
+                                ExitCode.ThresholdExceeded => "Threshold exceeded",
+                                _ => throw new ArgumentOutOfRangeException(nameof(ExitCode), $"Invalid error: {interpreterResult.Value.ExitCode}")
+                            });
                     }
 
                     // Stdout
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.Write("[STDOUT] ");
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    Console.WriteLine(interpreterResult.Value.Stdout);
-                    Console.ForegroundColor = ConsoleColor.White;
+                    Logger.Write(
+                        ConsoleColor.Cyan,
+                        ConsoleColor.Gray,
+                        "stdout",
+                        interpreterResult.Value.Stdout);
 
                     if (options.Stdout is { }) File.WriteAllText(options.Stdout, interpreterResult.Value.Stdout);
 
                     // Additional info, if verbose mode is on
                     if (options.Verbose)
                     {
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.Write("[ELAPSED TIME] ");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine(interpreterResult.Value.ElapsedTime);
+                        Logger.Write(
+                            ConsoleColor.Cyan,
+                            "elapsed time",
+                            interpreterResult.Value.ElapsedTime.ToString("g"));
 
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.Write("[TOTAL OPERATORS] ");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine(interpreterResult.Value.TotalOperations);
+                        Logger.Write(
+                            ConsoleColor.Cyan,
+                            "total operations",
+                            interpreterResult.Value.TotalOperations.ToString());
                     }
                 }
                 else
                 {
                     // Syntax error
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.Write("[SYNTAX ERROR] ");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine(interpreterResult.ValidationResult.ErrorType switch
+                    Logger.Write(
+                        ConsoleColor.DarkRed,
+                        "syntax error",
+                        interpreterResult.ValidationResult.ErrorType switch
                     {
                         SyntaxError.MismatchedSquareBracket => "Mismatched square bracket",
                         SyntaxError.IncompleteLoop => "Incomplete loop",
@@ -107,10 +108,10 @@ namespace Brainf_ckSharp.Cli
                     });
 
                     // Error position
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.Write("[ERROR OFFSET] ");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine(interpreterResult.ValidationResult.ErrorOffset);
+                    Logger.Write(
+                        ConsoleColor.DarkYellow,
+                        "error offset",
+                        interpreterResult.ValidationResult.ErrorOffset.ToString());
                 }
 
                 // Notify with a sound
