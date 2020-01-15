@@ -2,6 +2,7 @@
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.Uwp.Enums;
 using Brainf_ckSharp.Uwp.Models.Ide;
 
 #nullable enable
@@ -14,9 +15,14 @@ namespace Brainf_ckSharp.Uwp.TemplateSelectors
     public sealed class SourceCodeEntryTemplateSelector : DataTemplateSelector
     {
         /// <summary>
+        /// Gets or sets the <see cref="DataTemplate"/> for the placeholder in the favorites section
+        /// </summary>
+        public DataTemplate? FavoritePlaceholderTemplate { get; set; }
+
+        /// <summary>
         /// Gets or sets the <see cref="DataTemplate"/> for the placeholder in the history section
         /// </summary>
-        public DataTemplate? PlaceholderTemplate { get; set; }
+        public DataTemplate? RecentPlaceholderTemplate { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="DataTemplate"/> for a recent item
@@ -35,7 +41,8 @@ namespace Brainf_ckSharp.Uwp.TemplateSelectors
             {
                 CodeLibraryEntry entry when entry.File.IsFromPackageDirectory() => SampleTemplate,
                 CodeLibraryEntry _ => RecentItemTemplate,
-                object o when o.GetType() == typeof(object) => PlaceholderTemplate,
+                CodeLibraryCategory c when c == CodeLibraryCategory.Favorites => FavoritePlaceholderTemplate,
+                CodeLibraryCategory c when c == CodeLibraryCategory.Recent => RecentPlaceholderTemplate,
                 null => throw new ArgumentNullException(nameof(item), "The input item can't be null"),
                 _ => throw new ArgumentException($"Unsupported item of type {item.GetType()}")
             } ?? throw new ArgumentException($"Missing template for item of type {item.GetType()}");

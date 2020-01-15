@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Uwp.Enums;
@@ -36,19 +35,15 @@ namespace Brainf_ckSharp.Uwp.TemplateSelectors
         /// <inheritdoc/>
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            DataTemplate? template = null;
-
-            if (item == UserGuideSection.Introduction) template = IntroductionTemplate;
-            else if (item == UserGuideSection.Debugging) template = PBrainTemplate;
-            else if (item == UserGuideSection.PBrain) template = PBrainTemplate;
-            else if (item == UserGuideSection.Samples) template = CodeSamplesTemplate;
-
-            if (!(template is null)) return template;
-
-            Guard.MustBeNotNull(item, nameof(item));
-            Guard.MustBeOf<UserGuideSection>(item, nameof(item));
-
-            throw new ArgumentException("Missing template");
+            return item switch
+            {
+                UserGuideSection s when s == UserGuideSection.Introduction => IntroductionTemplate,
+                UserGuideSection s when s == UserGuideSection.Debugging => DebuggingTemplate,
+                UserGuideSection s when s == UserGuideSection.PBrain => PBrainTemplate,
+                UserGuideSection s when s == UserGuideSection.Samples => CodeSamplesTemplate,
+                null => throw new ArgumentNullException(nameof(item), "The input item can't be null"),
+                _ => throw new ArgumentException($"Unsupported item of type {item.GetType()}")
+            } ?? throw new ArgumentException($"Missing template for item of type {item.GetType()}");
         }
     }
 }

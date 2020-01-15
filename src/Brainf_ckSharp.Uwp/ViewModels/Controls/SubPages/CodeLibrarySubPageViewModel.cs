@@ -145,11 +145,11 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
 
             // Add the favorites, if any
             IReadOnlyList<CodeLibraryEntry> favorited = recent.Where(entry => entry?.Metadata.IsFavorited == true).ToArray()!;
-            if (favorited.Count > 0) Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Favorites, favorited));
+            Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Favorites, favorited.Append<object>(CodeLibraryCategory.Favorites)));
 
             // Add the recent and sample items
             IEnumerable<CodeLibraryEntry> unfavorited = recent.Where(entry => entry?.Metadata.IsFavorited == false)!;
-            Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Recent, unfavorited.Append(new object())));
+            Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Recent, unfavorited.Append<object>(CodeLibraryCategory.Recent)));
             Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Samples, samples));
         }
 

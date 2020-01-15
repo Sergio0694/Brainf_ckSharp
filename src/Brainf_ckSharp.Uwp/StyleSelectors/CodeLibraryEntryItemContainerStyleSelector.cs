@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.Uwp.Enums;
 using Brainf_ckSharp.Uwp.Models.Ide;
 
 namespace Brainf_ckSharp.Uwp.StyleSelectors
@@ -26,7 +27,7 @@ namespace Brainf_ckSharp.Uwp.StyleSelectors
             switch (item)
             {
                 case CodeLibraryEntry _: return DefaultContainerStyle;
-                case object _: return PlaceholderContainerStyle;
+                case CodeLibraryCategory _: return PlaceholderContainerStyle;
                 default: throw new ArgumentNullException(nameof(item), "The input item can't be null");
             }
         }

@@ -52,6 +52,32 @@
             x:Key="DeleteCommand"
             Command="{x:Bind ViewModel.RemoveFromLibraryCommand}"/>
 
+        <!--Favorite placeholder-->
+        <DataTemplate x:Key="FavoritePlaceholder">
+            <Border Background="Transparent">
+                <Grid ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="48"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Style="{StaticResource FontIconTextBlockStyle}"
+                        Text="{StaticResource FavoriteSectionIcon}"
+                        FontSize="20"
+                        Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
+                    <TextBlock
+                        Grid.Column="1"
+                        TextWrapping="Wrap"
+                        FontSize="14"
+                        Foreground="#FFE0E0E0">
+                        <Run Text="Tap here to pick, open a file and favorite it!"/>
+                    </TextBlock>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
         <!--History placeholder-->
         <DataTemplate x:Key="HistoryPlaceholder">
             <Border Background="Transparent">
@@ -62,7 +88,7 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock
                         Style="{StaticResource FontIconTextBlockStyle}"
-                        Text="&#xE773;"
+                        Text="{StaticResource RecentSectionIcon}"
                         FontSize="20"
                         Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
                         HorizontalAlignment="Center"
@@ -193,7 +219,6 @@
 
                 <!--ZoomedInView-->
                 <ListView
-                    Margin="0,0,0,-4"
                     ItemsSource="{x:Bind ViewModel.View, Mode=OneWay}"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
@@ -235,7 +260,8 @@
                     </ListView.ItemContainerStyleSelector>
                     <ListView.ItemTemplateSelector>
                         <templateSelectors:SourceCodeEntryTemplateSelector
-                            PlaceholderTemplate="{StaticResource HistoryPlaceholder}"
+                            FavoritePlaceholderTemplate="{StaticResource FavoritePlaceholder}"
+                            RecentPlaceholderTemplate="{StaticResource HistoryPlaceholder}"
                             RecentItemTemplate="{StaticResource RecentFileTemplate}"
                             SampleTemplate="{StaticResource SampleCodeTemplate}"/>
                     </ListView.ItemTemplateSelector>
