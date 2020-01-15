@@ -23,7 +23,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views
         public CodeLibrarySubPageViewModel? ViewModel => this.DataContext as CodeLibrarySubPageViewModel;
 
         /// <inheritdoc/>
-        public double MaxExpandedWidth { get; } = 460;
+        public double MaxExpandedWidth { get; } = 520;
 
         /// <inheritdoc/>
         public double MaxExpandedHeight { get; } = double.PositiveInfinity;

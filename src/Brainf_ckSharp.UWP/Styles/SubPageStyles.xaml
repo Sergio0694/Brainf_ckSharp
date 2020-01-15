@@ -16,7 +16,7 @@
                         <!--Title border-->
                         <Border
                             Background="#40000000"
-                            Height="40">
+                            Height="52">
                             <TextBlock
                                 Text="{TemplateBinding Title}"
                                 FontWeight="SemiBold"

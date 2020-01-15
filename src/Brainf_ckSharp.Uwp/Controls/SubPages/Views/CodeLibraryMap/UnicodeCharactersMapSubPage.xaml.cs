@@ -20,7 +20,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views.CodeLibraryMap
         public UnicodeCharactersMapSubPageViewModel? ViewModel => this.DataContext as UnicodeCharactersMapSubPageViewModel;
 
         /// <inheritdoc/>
-        public double MaxExpandedWidth { get; } = 460;
+        public double MaxExpandedWidth { get; } = 520;
 
         /// <inheritdoc/>
         public double MaxExpandedHeight { get; } = double.PositiveInfinity;

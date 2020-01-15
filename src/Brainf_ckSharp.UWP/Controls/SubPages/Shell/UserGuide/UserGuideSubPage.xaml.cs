@@ -26,7 +26,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide
         public UserGuideSubPageViewModel? ViewModel => this.DataContext as UserGuideSubPageViewModel;
 
         /// <inheritdoc/>
-        public double MaxExpandedWidth { get; } = 460;
+        public double MaxExpandedWidth { get; } = 520;
 
         /// <inheritdoc/>
         public double MaxExpandedHeight { get; } = double.PositiveInfinity;

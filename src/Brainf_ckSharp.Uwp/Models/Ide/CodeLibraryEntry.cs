@@ -21,7 +21,7 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         /// <summary>
         /// The desired length of each loaded code preview
         /// </summary>
-        private const int CodePreviewLength = 120;
+        private const int CodePreviewLength = 160;
 
         /// <summary>
         /// Creates a new <see cref="CodeLibraryEntry"/> instance with the specified parameters
