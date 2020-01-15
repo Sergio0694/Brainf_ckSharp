@@ -11,12 +11,13 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views.CodeLibraryMap
         public UnicodeCharactersMapSubPage()
         {
             this.InitializeComponent();
+            this.DataContext = new UnicodeCharactersMapSubPageViewModel();
         }
 
         /// <summary>
-        /// Gets the <see cref="CodeLibrarySubPageViewModel"/> instance for the current view
+        /// Gets the <see cref="UnicodeCharactersMapSubPageViewModel"/> instance for the current view
         /// </summary>
-        public CodeLibrarySubPageViewModel? ViewModel => this.DataContext as CodeLibrarySubPageViewModel;
+        public UnicodeCharactersMapSubPageViewModel? ViewModel => this.DataContext as UnicodeCharactersMapSubPageViewModel;
 
         /// <inheritdoc/>
         public double MaxExpandedWidth { get; } = 460;
