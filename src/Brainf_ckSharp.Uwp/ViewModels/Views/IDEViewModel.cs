@@ -65,7 +65,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
             Messenger.Default.Register<OperatorKeyPressedNotificationMessage>(this, m => CharacterAdded?.Invoke(this, m));
             Messenger.Default.Register<InsertNewLineRequestMessage>(this, _ => CharacterAdded?.Invoke(this, Characters.CarriageReturn));
             Messenger.Default.Register<DeleteCharacterRequestMessage>(this, _ => CharacterDeleted?.Invoke(this, EventArgs.Empty));
-            Messenger.Default.Register<PickOpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync());
+            Messenger.Default.Register<PickOpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync(m.Favorite));
             Messenger.Default.Register<LoadSourceCodeRequestMessage>(this, m => Code = m);
             Messenger.Default.Register<SaveFileRequestMessage>(this, m => _ = TrySaveTextAsync());
             Messenger.Default.Register<SaveFileAsRequestMessage>(this, m => _ = TrySaveTextAsAsync());
@@ -74,13 +74,22 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         /// <summary>
         /// Tries to open and load a source code file
         /// </summary>
-        private async Task TryLoadTextFromFileAsync()
+        /// <param name="favorite">Whether to immediately mark the item as favorite</param>
+        private async Task TryLoadTextFromFileAsync(bool favorite)
         {
             if (!(await SimpleIoc.Default.GetInstance<IFilesService>().TryPickOpenFileAsync(".bfs") is StorageFile file)) return;
 
             if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
             {
                 Code = code;
+
+                // Set the favorite state, if requested
+                if (favorite)
+                {
+                    Code.Metadata.IsFavorited = true;
+
+                    await Code.TrySaveAsync();
+                }
             }
         }
 

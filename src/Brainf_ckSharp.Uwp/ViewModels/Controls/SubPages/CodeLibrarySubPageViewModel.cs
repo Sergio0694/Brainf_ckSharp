@@ -160,14 +160,14 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         public void ProcessItem(object item)
         {
             if (item is CodeLibraryEntry entry) _ = OpenFileAsync(entry);
-            else if (item is CodeLibraryCategory) RequestOpenFile();
+            else if (item is CodeLibraryCategory c) RequestOpenFile(c == CodeLibraryCategory.Favorites);
             else throw new ArgumentException("The input item can't be null");
         }
 
         /// <summary>
         /// Requests to pick and open a source code file
         /// </summary>
-        public void RequestOpenFile() => Messenger.Default.Send<PickOpenFileRequestMessage>();
+        public void RequestOpenFile(bool favorite) => Messenger.Default.Send(new PickOpenFileRequestMessage(favorite));
 
         /// <summary>
         /// Sends a request to load a specified code entry
