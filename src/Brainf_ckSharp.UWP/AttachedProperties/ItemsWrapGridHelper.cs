@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -76,7 +75,8 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
             double
                 desiredWidth = GetDesiredItemWidth(@this),
                 round = Math.Ceiling(e.NewSize.Width / desiredWidth),
-                size = e.NewSize.Width / round;
+                columns = Math.Min(round, @this.MaximumRowsOrColumns),
+                size = e.NewSize.Width / columns;
             @this.ItemWidth = size;
         }
     }
