@@ -15,7 +15,7 @@ namespace Brainf_ckSharp.Cli
             's',
             "source",
             HelpText = "The source code to execute",
-            SetName = "source")]
+            Group = "source")]
         public string? Source { get; set; }
 
         /// <summary>
@@ -25,16 +25,16 @@ namespace Brainf_ckSharp.Cli
             'f',
             "file",
             HelpText = "The source file with the code to execute",
-            SetName = "source")]
+            Group = "source")]
         public string? SourceFile { get; set; }
 
         /// <summary>
         /// Gets or sets the stdin buffer to pass to the script
         /// </summary>
         [Option(
+            'i',
             "stdin",
-            HelpText = "The stdin buffer to pass to the script",
-            Required = false)]
+            HelpText = "The stdin buffer to pass to the script")]
         public string? Stdin { get; set; }
 
         /// <summary>
@@ -42,8 +42,7 @@ namespace Brainf_ckSharp.Cli
         /// </summary>
         [Option(
             "stdin-file",
-            HelpText = "The path of the file with the buffer to pass to the script",
-            Required = false)]
+            HelpText = "The path of the file with the buffer to pass to the script")]
         public string? StdinFile { get; set; }
 
         /// <summary>
@@ -70,6 +69,7 @@ namespace Brainf_ckSharp.Cli
         /// Gets or sets the path for a file to dump the output buffer to
         /// </summary>
         [Option(
+            'o',
             "stdout-file",
             HelpText = "The path for a file to dump the output buffer to",
             Required = false)]

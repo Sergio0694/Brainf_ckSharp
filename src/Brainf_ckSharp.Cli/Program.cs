@@ -13,13 +13,20 @@ namespace Brainf_ckSharp.Cli
     {
         public static void Main(string[] args)
         {
-            Parser parser = new Parser(options => options.CaseInsensitiveEnumValues = true);
+            Parser parser = new Parser(options =>
+            {
+                options.CaseInsensitiveEnumValues = true;
+                options.IgnoreUnknownArguments = false;
+                options.AutoHelp = true;
+                options.HelpWriter = Console.Out;
+            });
+
             ParserResult<Options> parserResult = parser.ParseArguments<Options>(args);
+
+            Logger.NewLine();
 
             parserResult.WithParsed(options =>
             {
-                Console.WriteLine();
-
                 // Get the source code to execute
                 string source;
                 if (options.SourceFile is { } && File.Exists(options.SourceFile))
@@ -27,6 +34,14 @@ namespace Brainf_ckSharp.Cli
                     source = File.ReadAllText(options.SourceFile);
                 }
                 else source = options.Source!;
+
+                // Get the stdin to use
+                string stdin;
+                if (options.StdinFile is { } && File.Exists(options.StdinFile))
+                {
+                    stdin = File.ReadAllText(options.StdinFile);
+                }
+                else stdin = options.Stdin ?? string.Empty;
 
                 // Create the cancellation token source
                 CancellationTokenSource cts = options.Timeout == 0
@@ -36,7 +51,7 @@ namespace Brainf_ckSharp.Cli
                 // Execute the code
                 Option<InterpreterResult> interpreterResult = Brainf_ckInterpreter.TryRun(
                     source,
-                    options.Stdin ?? string.Empty,
+                    stdin,
                     options.MemorySize,
                     options.OverflowMode,
                     cts.Token);
@@ -65,12 +80,13 @@ namespace Brainf_ckSharp.Cli
                             });
                     }
 
-                    // Stdout
+                    // Stdout, if any
                     Logger.Write(
                         ConsoleColor.DarkGray,
                         ConsoleColor.Yellow,
                         "stdout",
                         interpreterResult.Value.Stdout);
+                    Logger.NewLine();
 
                     if (options.Stdout is { }) File.WriteAllText(options.Stdout, interpreterResult.Value.Stdout);
 
@@ -80,6 +96,7 @@ namespace Brainf_ckSharp.Cli
                         // Source
                         Logger.Write(ConsoleColor.DarkGray, "source");
                         Logger.Highlight(interpreterResult.Value.SourceCode);
+                        Logger.NewLine();
                         Logger.NewLine();
 
                         // Elapsed time
@@ -133,7 +150,25 @@ namespace Brainf_ckSharp.Cli
             parserResult.WithNotParsed(errors =>
             {
                 foreach (Error error in errors)
-                    Console.WriteLine(error);
+                {
+                    if (error is HelpRequestedError) continue;
+
+                    Logger.Write(
+                        ConsoleColor.Red,
+                        "argument(s) error",
+                        error switch
+                        {
+                            BadFormatTokenError e => $"Bad token: \"{e.Token}\"",
+                            MissingValueOptionError e => $"Missing value: \"{e.NameInfo.LongName}\"",
+                            UnknownOptionError e => $"Unknown option: \"{e.Token}\"",
+                            MissingRequiredOptionError e => $"Missing option: \"{e.NameInfo.LongName}\"",
+                            MutuallyExclusiveSetError e => $"Mutually exclusive options set: \"{e.SetName}\"",
+                            BadFormatConversionError e => $"Conversion error: \"{e.NameInfo.LongName}\"",
+                            RepeatedOptionError e => $"Repeated option: \"{e.NameInfo.LongName}\"",
+                            MissingGroupOptionError e => $"Missing group option: \"{e.Group}\"",
+                            _ => throw new ArgumentOutOfRangeException(nameof(error), $"Unexpected error: {error.Tag}")
+                        });
+                }
             });
         }
     }
