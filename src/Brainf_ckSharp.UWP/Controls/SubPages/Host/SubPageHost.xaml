@@ -11,7 +11,8 @@
 
     <Grid
         x:Name="RootGrid"
-        Background="Transparent">
+        Background="Transparent"
+        KeyboardAcceleratorPlacementMode="Hidden">
         <Grid.KeyboardAccelerators>
             <KeyboardAccelerator
                 Key="Escape"
