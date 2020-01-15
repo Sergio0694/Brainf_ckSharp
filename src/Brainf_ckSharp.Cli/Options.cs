@@ -94,5 +94,15 @@ namespace Brainf_ckSharp.Cli
             HelpText = "Indicates whether or not to notify with a sound when the execution completes",
             Required = false)]
         public bool Beep { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether or not to show detailed statistics on a code execution
+        /// </summary>
+        [Option(
+            'v',
+            "verbose",
+            HelpText = "Indicates whether or not to show detailed statistics on a code execution",
+            Required = false)]
+        public bool Verbose { get; set; }
     }
 }
