@@ -200,8 +200,17 @@
     <Compile Include="Controls\SubPages\Shell\UserGuide\UserGuideSubPage.xaml.cs">
       <DependentUpon>UserGuideSubPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SubPages\Views\CodeLibraryMap\Templates\UnicodeNonVisibleCharactersGroupTemplate.xaml.cs">
+      <DependentUpon>UnicodeNonVisibleCharactersGroupTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Views\CodeLibraryMap\Templates\UnicodeVisibleCharacterTemplate.xaml.cs">
+      <DependentUpon>UnicodeVisibleCharacterTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SubPages\Views\CodeLibrarySubPage.xaml.cs">
       <DependentUpon>CodeLibrarySubPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Views\CodeLibraryMap\UnicodeCharactersMapSubPage.xaml.cs">
+      <DependentUpon>UnicodeCharactersMapSubPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Telerik.UI.Controls\ExpanderControl.cs" />
     <Compile Include="Controls\Windows.UI.Xaml.Controls\AnimatedCommandBar.cs" />
@@ -265,6 +274,7 @@
     <Compile Include="Models\Ide\CodeLibraryEntry.cs" />
     <Compile Include="Models\Ide\CodeMetadata.cs" />
     <Compile Include="Models\Ide\SourceCode.cs" />
+    <Compile Include="Models\UnicodeCharacter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\XamlResources.cs" />
     <Compile Include="Services\Clipboard\ClipboardService.cs" />
@@ -286,6 +296,7 @@
     <Compile Include="ViewModels\Abstract\Collections\ItemsCollectionViewModelBase{T}.cs" />
     <Compile Include="ViewModels\Abstract\ReactiveViewModelBase.cs" />
     <Compile Include="ViewModels\Controls\SubPages\CodeLibrarySubPageViewModel.cs" />
+    <Compile Include="ViewModels\Controls\SubPages\UnicodeCharactersMapSubPageViewModel.cs" />
     <Compile Include="ViewModels\Views\ConsoleViewModel.cs" />
     <Compile Include="ViewModels\Controls\CompactMemoryViewerViewModel.cs" />
     <Compile Include="ViewModels\Controls\SubPages\AboutSubPageViewModel.cs" />
@@ -489,7 +500,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\SubPages\Views\CodeLibraryMap\Templates\UnicodeNonVisibleCharactersGroupTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Views\CodeLibraryMap\Templates\UnicodeVisibleCharacterTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\SubPages\Views\CodeLibrarySubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Views\CodeLibraryMap\UnicodeCharactersMapSubPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

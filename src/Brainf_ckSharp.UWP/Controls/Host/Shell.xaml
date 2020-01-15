@@ -232,7 +232,8 @@
                 </AppBarButton>
                 <AppBarButton
                     Label="Show Unicode characters"
-                    Icon="{markupExtensions:FontIcon Glyph={StaticResource ShowUnicodeMapIcon}}">
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource ShowUnicodeMapIcon}}"
+                    Click="{x:Bind ViewModel.ShowUnicodeMap}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator Key="U" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>
