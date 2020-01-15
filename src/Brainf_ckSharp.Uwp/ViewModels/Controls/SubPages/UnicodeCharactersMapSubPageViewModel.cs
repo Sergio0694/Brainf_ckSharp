@@ -11,12 +11,12 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         private static readonly IReadOnlyList<UnicodeCharacter> _32To127;
 
         /// <summary>
-        /// The collection of characters in the [128, 159] range
+        /// The collection of characters in the [160, 255] range
         /// </summary>
-        private static readonly IReadOnlyList<UnicodeCharacter> _128To159;
+        private static readonly IReadOnlyList<UnicodeCharacter> _160To255;
 
         /// <summary>
-        /// Initializes <see cref="_32To127"/> and <see cref="_128To159"/> for future use
+        /// Initializes <see cref="_32To127"/> and <see cref="_160To255"/> for future use
         /// </summary>
         static UnicodeCharactersMapSubPageViewModel()
         {
@@ -29,14 +29,14 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
 
             _32To127 = first;
 
-            UnicodeCharacter[] second = new UnicodeCharacter[160 - 128];
+            UnicodeCharacter[] second = new UnicodeCharacter[256 - 160];
 
             for (int i = 0; i < second.Length; i++)
             {
                 second[i] = new UnicodeCharacter((char)(i + 160));
             }
 
-            _128To159 = second;
+            _160To255 = second;
         }
 
         /// <summary>
@@ -47,6 +47,6 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// <summary>
         /// Gets the collection of characters in the [128, 159] range
         /// </summary>
-        public IReadOnlyList<UnicodeCharacter> SecondCollection => _128To159;
+        public IReadOnlyList<UnicodeCharacter> SecondCollection => _160To255;
     }
 }
