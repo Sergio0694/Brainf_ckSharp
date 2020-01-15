@@ -67,8 +67,8 @@ namespace Brainf_ckSharp.Cli
 
                     // Stdout
                     Logger.Write(
-                        ConsoleColor.Cyan,
-                        ConsoleColor.Gray,
+                        ConsoleColor.DarkGray,
+                        ConsoleColor.Yellow,
                         "stdout",
                         interpreterResult.Value.Stdout);
 
@@ -77,13 +77,20 @@ namespace Brainf_ckSharp.Cli
                     // Additional info, if verbose mode is on
                     if (options.Verbose)
                     {
+                        // Source
+                        Logger.Write(ConsoleColor.DarkGray, "source");
+                        Logger.Highlight(interpreterResult.Value.SourceCode);
+                        Logger.NewLine();
+
+                        // Elapsed time
                         Logger.Write(
-                            ConsoleColor.Cyan,
+                            ConsoleColor.DarkGray,
                             "elapsed time",
                             interpreterResult.Value.ElapsedTime.ToString("g"));
 
+                        // Total operations
                         Logger.Write(
-                            ConsoleColor.Cyan,
+                            ConsoleColor.DarkGray,
                             "total operations",
                             interpreterResult.Value.TotalOperations.ToString());
                     }
