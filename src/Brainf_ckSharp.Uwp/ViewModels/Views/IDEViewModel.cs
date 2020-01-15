@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Windows.Storage;
-using Windows.Storage.AccessCache;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Messages.InputPanel;
@@ -82,8 +81,6 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
             if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
             {
                 Code = code;
-
-                StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(file.Path.GetxxHash32Code().ToHex(), file);
             }
         }
 
@@ -108,8 +105,6 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
             if (!(await filesService.TryPickSaveFileAsync(string.Empty, (string.Empty, ".bfs")) is StorageFile file)) return;
 
             await Code.TrySaveAsAsync(file);
-
-            StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(file.Path.GetxxHash32Code().ToHex(), file);
 
             CodeSaved?.Invoke(this, EventArgs.Empty);
         }

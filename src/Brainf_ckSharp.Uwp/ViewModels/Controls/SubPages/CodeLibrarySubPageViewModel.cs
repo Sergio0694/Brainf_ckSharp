@@ -160,7 +160,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         public void ProcessItem(object item)
         {
             if (item is CodeLibraryEntry entry) _ = OpenFileAsync(entry);
-            else if (item is object) RequestOpenFile();
+            else if (item is CodeLibraryCategory) RequestOpenFile();
             else throw new ArgumentException("The input item can't be null");
         }
 

@@ -11,6 +11,17 @@ namespace Windows.Storage
     public static class IStorageItemExtensions
     {
         /// <summary>
+        /// Gets a unique id for a given stored file
+        /// </summary>
+        /// <param name="item">The input <see cref="IStorageItem"/> instance to identify</param>
+        /// <returns>A <see cref="string"/> representing a unique id to identify the file on the drive</returns>
+        [Pure]
+        public static string GetId(this IStorageItem item)
+        {
+            return item.Path.GetxxHash32Code().ToHex();
+        }
+
+        /// <summary>
         /// Checks whether or not a given <see cref="IStorageItem"/> instance belongs to the installation directory
         /// </summary>
         /// <param name="item">The input <see cref="IStorageItem"/> instance to check</param>
