@@ -258,8 +258,10 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
             Messenger.Default.Send(new SubPageCloseRequestMessage());
         }
 
-        // Sends a request to close the current sub frame page
-        private void CloseButton_OnClick(object sender, RoutedEventArgs e) => Messenger.Default.Send(new SubPageCloseRequestMessage());
+        /// <summary>
+        /// Sends a request to close the current sub frame page
+        /// </summary>
+        private void SendCloseRequest() => Messenger.Default.Send(new SubPageCloseRequestMessage());
 
         #endregion
     }
