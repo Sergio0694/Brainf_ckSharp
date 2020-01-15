@@ -9,16 +9,6 @@ namespace Brainf_ckSharp.Cli
     public sealed class Options
     {
         /// <summary>
-        /// Gets or sets the source file with the code to execute
-        /// </summary>
-        [Option(
-            'f',
-            "file",
-            HelpText = "The source file with the code to execute",
-            SetName = "source")]
-        public string? SourceFile { get; set; }
-        
-        /// <summary>
         /// Gets or sets the source code to execute
         /// </summary>
         [Option(
@@ -29,13 +19,32 @@ namespace Brainf_ckSharp.Cli
         public string? Source { get; set; }
 
         /// <summary>
+        /// Gets or sets the source file with the code to execute
+        /// </summary>
+        [Option(
+            'f',
+            "file",
+            HelpText = "The source file with the code to execute",
+            SetName = "source")]
+        public string? SourceFile { get; set; }
+
+        /// <summary>
         /// Gets or sets the stdin buffer to pass to the script
         /// </summary>
         [Option(
-            "in",
+            "stdin",
             HelpText = "The stdin buffer to pass to the script",
             Required = false)]
         public string? Stdin { get; set; }
+
+        /// <summary>
+        /// Gets or sets the path of the file with the buffer to pass to the script
+        /// </summary>
+        [Option(
+            "stdin-file",
+            HelpText = "The path of the file with the buffer to pass to the script",
+            Required = false)]
+        public string? StdinFile { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the memory buffer to use
@@ -48,10 +57,20 @@ namespace Brainf_ckSharp.Cli
         public int MemorySize { get; set; }
 
         /// <summary>
+        /// Gets or sets the overflow mode to use for the memory buffer
+        /// </summary>
+        [Option(
+            "overflow",
+            Default = OverflowMode.ByteWithOverflow,
+            HelpText = "The overflow mode to use for the memory buffer [ByteWithOverflow|ByteWithNoOverflow|UshortWithOverflow|UshortWithNoOverflow]",
+            Required = false)]
+        public OverflowMode OverflowMode { get; set; }
+
+        /// <summary>
         /// Gets or sets the path for a file to dump the output buffer to
         /// </summary>
         [Option(
-            "out",
+            "stdout-file",
             HelpText = "The path for a file to dump the output buffer to",
             Required = false)]
         public string? Stdout { get; set; }
@@ -66,15 +85,14 @@ namespace Brainf_ckSharp.Cli
             HelpText = "The timeout in seconds for the script to execute (0 to disable)",
             Required = false)]
         public int Timeout { get; set; }
-        
+
         /// <summary>
-        /// Gets or sets the overflow mode to use for the memory buffer
+        /// Gets or sets whether or not to notify with a sound when the execution completes
         /// </summary>
         [Option(
-            "overflow",
-            Default = OverflowMode.ByteWithOverflow,
-            HelpText = "The overflow mode to use for the memory buffer",
+            "beep",
+            HelpText = "Indicates whether or not to notify with a sound when the execution completes",
             Required = false)]
-        public OverflowMode OverflowMode { get; set; }
+        public bool Beep { get; set; }
     }
 }

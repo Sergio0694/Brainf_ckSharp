@@ -11,7 +11,8 @@ namespace Brainf_ckSharp.Cli
     {
         public static void Main(string[] args)
         {
-            ParserResult<Options> parserResult = Parser.Default.ParseArguments<Options>(args);
+            Parser parser = new Parser(options => options.CaseInsensitiveEnumValues = true);
+            ParserResult<Options> parserResult = parser.ParseArguments<Options>(args);
 
             parserResult.WithParsed(options =>
             {
@@ -44,6 +45,14 @@ namespace Brainf_ckSharp.Cli
                     if (options.Stdout is { }) File.WriteAllText(options.Stdout, interpreterResult.Value.Stdout);
                 }
                 else Console.WriteLine(interpreterResult.ValidationResult.ErrorType);
+
+                // Notify with a sound
+                if (options.Beep)
+                {
+                    Console.Beep();
+                    Thread.Sleep(150);
+                    Console.Beep();
+                }
             });
 
             parserResult.WithNotParsed(errors =>
