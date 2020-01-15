@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.FileProperties;
 
 #nullable enable
 
@@ -26,12 +27,14 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         /// Creates a new <see cref="CodeLibraryEntry"/> instance with the specified parameters
         /// </summary>
         /// <param name="file">The underlying <see cref="StorageFile"/> instance for the new entry</param>
+        /// <param name="editTime">The edit time for <paramref name="file"/></param>
         /// <param name="metadata">The metadata for the current file</param>
         /// <param name="title">The title of the new entry</param>
         /// <param name="preview">The preview code for the new entry</param>
-        private CodeLibraryEntry(StorageFile file, CodeMetadata metadata, string title, string preview)
+        private CodeLibraryEntry(StorageFile file, DateTimeOffset editTime, CodeMetadata metadata, string title, string preview)
         {
             File = file;
+            EditTime = editTime;
             Metadata = metadata;
             Title = title;
             Preview = preview;
@@ -41,6 +44,11 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         /// Gets the underlying <see cref="StorageFile"/> instance for the current entry
         /// </summary>
         public StorageFile File { get; }
+
+        /// <summary>
+        /// Gets the edit time for the underlying <see cref="StorageFile"/> instance
+        /// </summary>
+        public DateTimeOffset EditTime { get; }
 
         /// <summary>
         /// Gets the associated <see cref="CodeMetadata"/> instance for the current entry
@@ -70,7 +78,9 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
             {
                 string preview = await LoadCodePreviewAsync(file, CodePreviewLength);
 
-                return new CodeLibraryEntry(file, metadata, file.DisplayName, preview);
+                BasicProperties props = await file.GetBasicPropertiesAsync();
+
+                return new CodeLibraryEntry(file, props.DateModified, metadata, file.DisplayName, preview);
             }
             catch
             {
@@ -91,7 +101,12 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
             {
                 string preview = await LoadCodePreviewAsync(file, CodePreviewLength);
 
-                return new CodeLibraryEntry(file, CodeMetadata.Default, title, preview);
+                /* This overload is used to load reference sample files.
+                 * As such, these don't need to be sorted chronologically,
+                 * so the properties loading can be skipped entirely.
+                 * The edit time is just set to the minimum value in this case,
+                 * since that property will not actually be used. */
+                return new CodeLibraryEntry(file, DateTimeOffset.MinValue, CodeMetadata.Default, title, preview);
             }
             catch
             {

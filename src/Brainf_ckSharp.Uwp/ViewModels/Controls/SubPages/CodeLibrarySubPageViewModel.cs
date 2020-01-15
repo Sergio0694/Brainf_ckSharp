@@ -140,15 +140,18 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
                 return entry ?? throw new InvalidOperationException($"Failed to load token {item.Token}");
             }));
 
+            // Sort chronologically
+            IReadOnlyList<CodeLibraryEntry?> sorted = recent.OrderByDescending(entry => entry?.EditTime).ToArray();
+
             // Load the code samples
             IReadOnlyList<CodeLibraryEntry> samples = await GetSampleCodesAsync();
 
             // Add the favorites, if any
-            IReadOnlyList<CodeLibraryEntry> favorited = recent.Where(entry => entry?.Metadata.IsFavorited == true).ToArray()!;
+            IEnumerable<CodeLibraryEntry> favorited = sorted.Where(entry => entry?.Metadata.IsFavorited == true)!;
             Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Favorites, favorited.Append<object>(CodeLibraryCategory.Favorites)));
 
             // Add the recent and sample items
-            IEnumerable<CodeLibraryEntry> unfavorited = recent.Where(entry => entry?.Metadata.IsFavorited == false)!;
+            IEnumerable<CodeLibraryEntry> unfavorited = sorted.Where(entry => entry?.Metadata.IsFavorited == false)!;
             Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Recent, unfavorited.Append<object>(CodeLibraryCategory.Recent)));
             Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Samples, samples));
         }
@@ -193,6 +196,13 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to toggle</param>
         public void ToggleFavorite(CodeLibraryEntry entry)
         {
+            // Shared comparison function to insert items in a target group
+            static int Comparer(object a, object b)
+            {
+                if (a is CodeLibraryEntry left && b is CodeLibraryEntry right) return left.EditTime.CompareTo(right.EditTime);
+                return -1;
+            }
+
             /* If the current item is favorited, set is as not favorited
              * and move it back into the recent files section.
              * If the favorites section becomes empty, remove it entirely. */
@@ -200,23 +210,18 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             {
                 entry.Metadata.IsFavorited = false;
 
-                if (Source[0].Count == 1) Source.RemoveAt(0);
-                else Source[0].Remove(entry);
-
-                var group = Source.First(g => g.Key == CodeLibraryCategory.Recent);
-                group.Insert(0, entry);
+                Source[0].Remove(entry);
+                Source[1].InsertSorted(entry, Comparer);
             }
             else
             {
                 entry.Metadata.IsFavorited = true;
 
-                Source.First(g => g.Key == CodeLibraryCategory.Recent).Remove(entry);
-
-                if (Source[0].Key == CodeLibraryCategory.Favorites) Source[0].Insert(0, entry);
-                else Source.Insert(0, new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Favorites, entry.AsEnumerable()));
+                Source[1].Remove(entry);
+                Source[0].InsertSorted(entry, Comparer);
             }
 
-            StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(entry.File.Path.GetxxHash32Code().ToHex(), entry.File, JsonSerializer.Serialize(entry.Metadata));
+            StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(entry.File.GetId(), entry.File, JsonSerializer.Serialize(entry.Metadata));
         }
 
         /// <summary>
