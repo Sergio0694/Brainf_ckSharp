@@ -44,7 +44,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Buffers", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Git", "src\Brainf_ckSharp.Git\Brainf_ckSharp.Git.csproj", "{8000D892-951C-49B3-AE95-DB85D909C717}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.Git.Unit", "unit\Brainf_ckSharp.Git.Unit\Brainf_ckSharp.Git.Unit.csproj", "{30633C10-1E41-48A5-A106-11811E330D57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Git.Unit", "unit\Brainf_ckSharp.Git.Unit\Brainf_ckSharp.Git.Unit.csproj", "{30633C10-1E41-48A5-A106-11811E330D57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.Cli", "src\Brainf_ckSharp.Cli\Brainf_ckSharp.Cli.csproj", "{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -372,6 +374,26 @@ Global
 		{30633C10-1E41-48A5-A106-11811E330D57}.Release|x64.Build.0 = Release|Any CPU
 		{30633C10-1E41-48A5-A106-11811E330D57}.Release|x86.ActiveCfg = Release|Any CPU
 		{30633C10-1E41-48A5-A106-11811E330D57}.Release|x86.Build.0 = Release|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Debug|ARM.Build.0 = Debug|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Debug|x64.Build.0 = Debug|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Debug|x86.Build.0 = Debug|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Release|ARM.ActiveCfg = Release|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Release|ARM.Build.0 = Release|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Release|ARM64.Build.0 = Release|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Release|x64.ActiveCfg = Release|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Release|x64.Build.0 = Release|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Release|x86.ActiveCfg = Release|Any CPU
+		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
