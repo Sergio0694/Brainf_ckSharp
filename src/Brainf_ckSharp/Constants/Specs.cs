@@ -8,6 +8,16 @@ namespace Brainf_ckSharp.Constants
     internal static class Specs
     {
         /// <summary>
+        /// The minimum allowed memory size
+        /// </summary>
+        public const int MinimumMemorySize = 32;
+
+        /// <summary>
+        /// The maximum allowed memory size
+        /// </summary>
+        public const int MaximumMemorySize = 1024 * 64;
+
+        /// <summary>
         /// The default memory size for machine states used to run scripts
         /// </summary>
         public const int DefaultMemorySize = 128;
@@ -25,6 +35,6 @@ namespace Brainf_ckSharp.Constants
         /// <summary>
         /// The maximum allowed size for the output buffer
         /// </summary>
-        public const int StdoutBufferSizeLimit = 1024;
+        public const int StdoutBufferSizeLimit = 1024 * 8;
     }
 }

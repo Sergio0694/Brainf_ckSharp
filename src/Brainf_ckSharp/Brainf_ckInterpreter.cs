@@ -113,8 +113,8 @@ namespace Brainf_ckSharp
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
         public static Option<InterpreterResult> TryRun(string source, string stdin, int memorySize, OverflowMode overflowMode, CancellationToken executionToken)
         {
-            Guard.MustBeGreaterThanOrEqualTo(memorySize, 32, nameof(memorySize));
-            Guard.MustBeLessThanOrEqualTo(memorySize, 1024, nameof(memorySize));
+            Guard.MustBeGreaterThanOrEqualTo(memorySize, Specs.MinimumMemorySize, nameof(memorySize));
+            Guard.MustBeLessThanOrEqualTo(memorySize, Specs.MaximumMemorySize, nameof(memorySize));
 
             using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.TryParse(source, out SyntaxValidationResult validationResult);
 
