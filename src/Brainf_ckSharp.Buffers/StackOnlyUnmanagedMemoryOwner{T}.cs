@@ -25,12 +25,15 @@ namespace System.Buffers
         /// Creates a new <see cref="StackOnlyUnmanagedMemoryOwner{T}"/> instance with the specified parameters
         /// </summary>
         /// <param name="size">The size of the new memory buffer to use</param>
-        private unsafe StackOnlyUnmanagedMemoryOwner(int size)
+        /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
+        private unsafe StackOnlyUnmanagedMemoryOwner(int size, bool clear)
         {
             DebugGuard.MustBeGreaterThan(size, 0, nameof(size));
 
             Size = size;
             Buffer = ArrayPool<byte>.Shared.Rent(size * sizeof(T));
+
+            if (clear) Buffer.AsSpan(0, size).Clear();
         }
 
         /// <summary>
@@ -39,7 +42,16 @@ namespace System.Buffers
         /// <param name="size">The size of the new memory buffer to use</param>
         /// <remarks>This method is just a proxy for the <see langword="private"/> constructor, for clarity</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static StackOnlyUnmanagedMemoryOwner<T> Allocate(int size) => new StackOnlyUnmanagedMemoryOwner<T>(size);
+        public static StackOnlyUnmanagedMemoryOwner<T> Allocate(int size) => new StackOnlyUnmanagedMemoryOwner<T>(size, false);
+
+        /// <summary>
+        /// Creates a new <see cref="StackOnlyUnmanagedMemoryOwner{T}"/> instance with the specified parameters
+        /// </summary>
+        /// <param name="size">The size of the new memory buffer to use</param>
+        /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
+        /// <remarks>This method is just a proxy for the <see langword="private"/> constructor, for clarity</remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static StackOnlyUnmanagedMemoryOwner<T> Allocate(int size, bool clear) => new StackOnlyUnmanagedMemoryOwner<T>(size, clear);
 
         /// <inheritdoc cref="MemoryMarshal.GetReference{T}(Span{T})"/>
         [Pure]

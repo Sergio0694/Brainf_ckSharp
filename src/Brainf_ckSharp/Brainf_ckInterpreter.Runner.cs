@@ -27,7 +27,7 @@ namespace Brainf_ckSharp
         /// <param name="machineState">The target machine state to use to run the script</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-        private static InterpreterResult RunCore(
+        private static unsafe InterpreterResult RunCore(
             PinnedUnmanagedMemoryOwner<byte> operators,
             string stdin,
             TuringMachineState machineState,
@@ -36,71 +36,78 @@ namespace Brainf_ckSharp
             DebugGuard.MustBeGreaterThanOrEqualTo(operators.Size, 0, nameof(operators));
             DebugGuard.MustBeGreaterThanOrEqualTo(machineState.Size, 0, nameof(machineState));
 
-            /* Initialize the temporary buffers, using the UnsafeSpanBuffer<T> type when possible
+            /* Initialize the temporary buffers, using the StackOnlyUnmanagedMemoryOwner<T> type when possible
              * to save the extra allocations here. This is possible because all these buffers are
-             * only used within the scope of this method, and disposed as soon as the method completes. */
-            using StackOnlyPinnedUnmanagedMemoryOwner<bool> breakpoints = StackOnlyPinnedUnmanagedMemoryOwner<bool>.Allocate(operators.Size, true);
+             * only used within the scope of this method, and disposed as soon as the method completes.
+             * Additionally, when this type is used, memory is pinned using a fixed statement instead
+             * of the GCHandle, which has slightly less overhead for the runtime. */
+            using StackOnlyUnmanagedMemoryOwner<bool> breakpoints = StackOnlyUnmanagedMemoryOwner<bool>.Allocate(operators.Size, true);
             using PinnedUnmanagedMemoryOwner<int> jumpTable = LoadJumpTable(operators, out int functionsCount);
-            using StackOnlyPinnedUnmanagedMemoryOwner<Range> functions = StackOnlyPinnedUnmanagedMemoryOwner<Range>.Allocate(ushort.MaxValue, true);
+            using StackOnlyUnmanagedMemoryOwner<Range> functions = StackOnlyUnmanagedMemoryOwner<Range>.Allocate(ushort.MaxValue, true);
             using PinnedUnmanagedMemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
-            using StackOnlyPinnedUnmanagedMemoryOwner<StackFrame> stackFrames = StackOnlyPinnedUnmanagedMemoryOwner<StackFrame>.Allocate(Specs.MaximumStackSize, false);
+            using StackOnlyUnmanagedMemoryOwner<StackFrame> stackFrames = StackOnlyUnmanagedMemoryOwner<StackFrame>.Allocate(Specs.MaximumStackSize, false);
             using StdoutBuffer stdout = new StdoutBuffer();
 
-            // Shared counters
-            int depth = 0;
-            int totalOperations = 0;
-            int totalFunctions = 0;
+            fixed (bool* breakpointsPtr = &breakpoints.GetReference())
+            fixed (Range* functionsPtr = &functions.GetReference())
+            fixed (StackFrame* stackFramesPtr = &stackFrames.GetReference())
+            {
+                // Shared counters
+                int depth = 0;
+                int totalOperations = 0;
+                int totalFunctions = 0;
 
-            // Manually set the initial stack frame to the entire script
-            stackFrames[0] = new StackFrame(new Range(0, operators.Size), 0);
+                // Manually set the initial stack frame to the entire script
+                stackFramesPtr[0] = new StackFrame(new Range(0, operators.Size), 0);
 
-            Stopwatch stopwatch = Stopwatch.StartNew();
+                Stopwatch stopwatch = Stopwatch.StartNew();
 
-            // Start the interpreter
-            ExitCode exitCode = Run(
-                operators.Span,
-                breakpoints.Span,
-                jumpTable.Span,
-                functions.Span,
-                definitions.Span,
-                stackFrames.Span,
-                ref depth,
-                ref totalOperations,
-                ref totalFunctions,
-                machineState,
-                new StdinBuffer(stdin),
-                stdout,
-                executionToken,
-                CancellationToken.None);
+                // Start the interpreter
+                ExitCode exitCode = Run(
+                    operators.Span,
+                    new UnmanagedSpan<bool>(breakpoints.Size, breakpointsPtr),
+                    jumpTable.Span,
+                    new UnmanagedSpan<Range>(ushort.MaxValue, functionsPtr),
+                    definitions.Span,
+                    new UnmanagedSpan<StackFrame>(Specs.MaximumStackSize, stackFramesPtr),
+                    ref depth,
+                    ref totalOperations,
+                    ref totalFunctions,
+                    machineState,
+                    new StdinBuffer(stdin),
+                    stdout,
+                    executionToken,
+                    CancellationToken.None);
 
-            stopwatch.Stop();
+                stopwatch.Stop();
 
-            // Rebuild the compacted source code
-            string sourceCode = Brainf_ckParser.ExtractSource(operators.Span);
+                // Rebuild the compacted source code
+                string sourceCode = Brainf_ckParser.ExtractSource(operators.Span);
 
-            // Prepare the debug info
-            HaltedExecutionInfo? debugInfo = LoadDebugInfo(
-                operators.Span,
-                stackFrames.Span,
-                depth);
+                // Prepare the debug info
+                HaltedExecutionInfo? debugInfo = LoadDebugInfo(
+                    operators.Span,
+                    new UnmanagedSpan<StackFrame>(Specs.MaximumStackSize, stackFramesPtr),
+                    depth);
 
-            // Build the collection of defined functions
-            FunctionDefinition[] functionDefinitions = LoadFunctionDefinitions(
-                operators.Span,
-                functions.Span,
-                definitions.Span,
-                totalFunctions);
+                // Build the collection of defined functions
+                FunctionDefinition[] functionDefinitions = LoadFunctionDefinitions(
+                    operators.Span,
+                    new UnmanagedSpan<Range>(ushort.MaxValue, functionsPtr),
+                    definitions.Span,
+                    totalFunctions);
 
-            return new InterpreterResult(
-                sourceCode,
-                exitCode,
-                debugInfo,
-                machineState,
-                functionDefinitions,
-                stdin,
-                stdout.ToString(),
-                stopwatch.Elapsed,
-                totalOperations);
+                return new InterpreterResult(
+                    sourceCode,
+                    exitCode,
+                    debugInfo,
+                    machineState,
+                    functionDefinitions,
+                    stdin,
+                    stdout.ToString(),
+                    stopwatch.Elapsed,
+                    totalOperations);
+            }
         }
 
         /// <summary>

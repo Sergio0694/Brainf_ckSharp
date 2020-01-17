@@ -86,7 +86,7 @@ namespace Brainf_ckSharp.Unit
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
             Assert.AreEqual(result.Value!.ExitCode, ExitCode.StdoutBufferLimitExceeded);
-            Assert.AreEqual(result.Value.Stdout, new string('a', 1024));
+            Assert.AreEqual(result.Value.Stdout, new string('a', 1024 * 8));
             Assert.IsNotNull(result.Value.ExceptionInfo);
             Assert.AreEqual(result.Value.ExceptionInfo!.StackTrace.Count, 1);
             Assert.AreEqual(result.Value.ExceptionInfo.StackTrace[0], ",[.");
