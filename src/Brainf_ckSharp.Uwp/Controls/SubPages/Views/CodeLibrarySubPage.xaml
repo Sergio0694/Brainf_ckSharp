@@ -17,9 +17,13 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:codeLibrary="using:Brainf_ckSharp.Uwp.Bindings.Converters.CodeLibrary"
     xmlns:markupExtensions="using:Brainf_ckSharp.Uwp.MarkupExtensions"
+    xmlns:subPages="using:Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.DataContext>
+        <subPages:CodeLibrarySubPageViewModel x:Name="ViewModel"/>
+    </UserControl.DataContext>
     <interactivity:Interaction.Behaviors>
         <core:EventTriggerBehavior EventName="Loaded">
             <core:InvokeCommandAction Command="{x:Bind ViewModel.LoadDataCommand}"/>

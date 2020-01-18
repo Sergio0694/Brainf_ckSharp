@@ -1,5 +1,4 @@
 ﻿using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.Uwp.ViewModels.Controls;
 
 namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.MemoryViewer
 {
@@ -11,12 +10,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.MemoryViewer
         public CompactMemoryViewer()
         {
             this.InitializeComponent();
-            this.DataContext = new CompactMemoryViewerViewModel();
         }
-
-        /// <summary>
-        /// Gets the <see cref="CompactMemoryViewerViewModel"/> instance for the current view
-        /// </summary>
-        public CompactMemoryViewerViewModel? ViewModel => this.DataContext as CompactMemoryViewerViewModel;
     }
 }

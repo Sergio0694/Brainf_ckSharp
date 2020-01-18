@@ -1,5 +1,4 @@
 ﻿using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.Uwp.ViewModels;
 
 #nullable enable
 
@@ -13,12 +12,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         public Shell()
         {
             this.InitializeComponent();
-            this.DataContext = new ShellViewModel();
         }
-
-        /// <summary>
-        /// Gets the <see cref="ShellViewModel"/> instance for the current view
-        /// </summary>
-        public ShellViewModel? ViewModel => this.DataContext as ShellViewModel;
     }
 }

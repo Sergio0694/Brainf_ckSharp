@@ -15,9 +15,13 @@
     xmlns:memoryViewer="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel.MemoryViewer"
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
+    xmlns:viewModels="using:Brainf_ckSharp.Uwp.ViewModels"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
+    <UserControl.DataContext>
+        <viewModels:ShellViewModel x:Name="ViewModel"/>
+    </UserControl.DataContext>
 
     <!--Main app UI-->
     <Grid>

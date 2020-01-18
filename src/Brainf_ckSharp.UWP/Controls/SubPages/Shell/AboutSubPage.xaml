@@ -8,9 +8,20 @@
     xmlns:gitHub="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.GitHub"
     xmlns:misc="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.Misc"
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
+    xmlns:shell="using:Legere.ViewModels.SubPages.Shell"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.DataContext>
+        <shell:AboutSubPageViewModel x:Name="ViewModel"/>
+    </UserControl.DataContext>
+    <interactivity:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Loaded">
+            <core:InvokeCommandAction Command="{x:Bind ViewModel.LoadDataCommand}"/>
+        </core:EventTriggerBehavior>
+    </interactivity:Interaction.Behaviors>
 
     <!--Root-->
     <host:SubPageFrame Title="ABOUT">

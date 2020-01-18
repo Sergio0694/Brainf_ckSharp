@@ -14,18 +14,7 @@ namespace Brainf_ckSharp.Uwp.Views
         public IdeView()
         {
             this.InitializeComponent();
-            this.DataContext = new IdeViewModel();
-
-            ViewModel!.CharacterAdded += ViewModelCharacterAdded;
-            ViewModel.CharacterDeleted += ViewModel_CharacterDeleted;
-            ViewModel.CodeLoaded += ViewModel_CodeLoaded;
-            ViewModel.CodeSaved += ViewModel_CodeSaved;
         }
-
-        /// <summary>
-        /// Gets the <see cref="IdeViewModel"/> instance for the current view
-        /// </summary>
-        public IdeViewModel? ViewModel => this.DataContext as IdeViewModel;
 
         /// <summary>
         /// Types a new operator character into the IDE when requested by the user

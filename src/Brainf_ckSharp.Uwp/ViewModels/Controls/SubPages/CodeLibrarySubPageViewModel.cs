@@ -72,7 +72,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// </summary>
         public CodeLibrarySubPageViewModel()
         {
-            LoadDataCommand = new RelayCommand(() => _ = LoadAsync());
+            LoadDataCommand = new RelayCommand(() => _ = LoadDataAsync());
             ProcessItemCommand = new RelayCommand<object>(ProcessItem);
             ToggleFavoriteCommand = new RelayCommand<CodeLibraryEntry>(ToggleFavorite);
             CopyToClipboardCommand = new RelayCommand<CodeLibraryEntry>(entry => _ = CopyToClipboardAsync(entry));
@@ -119,7 +119,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// <summary>
         /// Loads the currently available code samples and recently used files
         /// </summary>
-        public async Task LoadAsync()
+        public async Task LoadDataAsync()
         {
             // Load the recent files
             IReadOnlyList<AccessListEntry> entries = StorageApplicationPermissions.MostRecentlyUsedList.Entries.ToArray();

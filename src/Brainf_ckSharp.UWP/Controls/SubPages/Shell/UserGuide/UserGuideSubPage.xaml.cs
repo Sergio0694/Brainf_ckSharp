@@ -1,6 +1,5 @@
 ﻿using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
-using Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages;
 
 #nullable enable
 
@@ -17,13 +16,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide
         public UserGuideSubPage()
         {
             this.InitializeComponent();
-            this.DataContext = new UserGuideSubPageViewModel();
         }
-
-        /// <summary>
-        /// Gets the <see cref="UserGuideSubPageViewModel"/> instance for the current view
-        /// </summary>
-        public UserGuideSubPageViewModel? ViewModel => this.DataContext as UserGuideSubPageViewModel;
 
         /// <inheritdoc/>
         public double MaxExpandedWidth { get; } = 520;

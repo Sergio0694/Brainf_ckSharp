@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.ApplicationModel;
 using Windows.System;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 using GitHub.APIs;
 using Microsoft.Toolkit.Uwp.Helpers;
@@ -17,6 +19,19 @@ namespace Legere.ViewModels.SubPages.Shell
     /// </summary>
     public sealed class AboutSubPageViewModel : ViewModelBase
     {
+        /// <summary>
+        /// Creates a new <see cref="AboutSubPageViewModel"/> instance
+        /// </summary>
+        public AboutSubPageViewModel()
+        {
+            LoadDataCommand = new RelayCommand(() => _ = LoadDataAsync());
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ICommand"/> instance responsible for loading the available source codes
+        /// </summary>
+        public ICommand LoadDataCommand { get; }
+
         /// <summary>
         /// Forwards the <see cref="SystemInformation.ApplicationVersion"/> property
         /// </summary>

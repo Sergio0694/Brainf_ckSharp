@@ -10,9 +10,13 @@
     xmlns:userGuide="using:Brainf_ckSharp.Uwp.Bindings.Converters.UserGuide"
     xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
     xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
+    xmlns:subPages="using:Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.DataContext>
+        <subPages:UserGuideSubPageViewModel x:Name="ViewModel"/>
+    </UserControl.DataContext>
     <UserControl.Resources>
 
         <!--Introduction-->
