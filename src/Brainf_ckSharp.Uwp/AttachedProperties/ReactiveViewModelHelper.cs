@@ -39,7 +39,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
             new PropertyMetadata(DependencyProperty.UnsetValue, OnIsActivePropertyChanged));
 
         /// <summary>
-        /// Updates the UI when <see cref="CharacterProperty"/> changes
+        /// Updates the UI when <see cref="IsActiveProperty"/> changes
         /// </summary>
         /// <param name="d">The source <see cref="DependencyObject"/> instance</param>
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> info for the current update</param>
