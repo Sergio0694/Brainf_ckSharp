@@ -1,5 +1,5 @@
-﻿using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
+﻿using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml;
 using Brainf_ckSharp.Uwp.Controls.Host;
 using Brainf_ckSharp.Uwp.Helpers.UI;
@@ -11,18 +11,16 @@ using GalaSoft.MvvmLight.Ioc;
 namespace Brainf_ckSharp.Uwp
 {
     /// <summary>
-    /// Provides application-specific behavior to supplement the default Application class.
+    /// Provides application-specific behavior to supplement the default <see cref="Application"/> class
     /// </summary>
     sealed partial class App : Application
     {
         /// <summary>
-        /// Initializes the singleton application object. This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
+        /// Creates a new <see cref="App"/> instance
         /// </summary>
         public App()
         {
             this.InitializeComponent();
-            this.Suspending += OnSuspending;
         }
 
         /// <inheritdoc/>
@@ -48,20 +46,10 @@ namespace Brainf_ckSharp.Uwp
             // Activate the window when launching the app
             if (e.PrelaunchActivated == false)
             {
+                CoreApplication.EnablePrelaunch(true);
+
                 Window.Current.Activate();
             }
-        }
-
-        /// <summary>
-        /// Invoked when application execution is being suspended. Application state is saved
-        /// without knowing whether the application will be terminated or resumed with the contents
-        /// of memory still intact.
-        /// </summary>
-        /// <param name="sender">The source of the suspend request.</param>
-        /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
-        {
-            // TODO: Save application state and stop any background activity
         }
     }
 }
