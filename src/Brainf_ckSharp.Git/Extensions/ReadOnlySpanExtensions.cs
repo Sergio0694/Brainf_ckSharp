@@ -97,7 +97,7 @@ namespace System
             ref T r0 = ref MemoryMarshal.GetReference(span);
             ref byte r1 = ref Unsafe.As<T, byte>(ref r0);
             int
-                queue = 0,
+                hash = 0,
                 length = span.Length * Unsafe.SizeOf<T>(),
                 i = 0;
 
@@ -181,58 +181,10 @@ namespace System
                     }
 
                     /* Combine the partial hash values in each position.
-                     * The Vector<int>.Count is a compile time constant
-                     * for each generic type for the JIT, so the branches
-                     * not taken are completely eliminated in asm.
-                     * The loop below is actually already unrolled by the JIT, but
-                     * doing so manually results in slightly more efficient asm.*/
-                    if (Vector<int>.Count == 4)
+                     * The loop below is automatically unrolled by the JIT. */
+                    for (int j = 0; j < Vector<int>.Count; j++)
                     {
-                        // SSE
-                        queue = unchecked((queue * 397) ^ vh[0]);
-                        queue = unchecked((queue * 397) ^ vh[1]);
-                        queue = unchecked((queue * 397) ^ vh[2]);
-                        queue = unchecked((queue * 397) ^ vh[3]);
-                    }
-                    else if (Vector<int>.Count == 8)
-                    {
-                        // AVX2
-                        queue = unchecked((queue * 397) ^ vh[0]);
-                        queue = unchecked((queue * 397) ^ vh[1]);
-                        queue = unchecked((queue * 397) ^ vh[2]);
-                        queue = unchecked((queue * 397) ^ vh[3]);
-                        queue = unchecked((queue * 397) ^ vh[4]);
-                        queue = unchecked((queue * 397) ^ vh[5]);
-                        queue = unchecked((queue * 397) ^ vh[6]);
-                        queue = unchecked((queue * 397) ^ vh[7]);
-                    }
-                    else if (Vector<int>.Count == 16)
-                    {
-                        // AVX512
-                        queue = unchecked((queue * 397) ^ vh[0]);
-                        queue = unchecked((queue * 397) ^ vh[1]);
-                        queue = unchecked((queue * 397) ^ vh[2]);
-                        queue = unchecked((queue * 397) ^ vh[3]);
-                        queue = unchecked((queue * 397) ^ vh[4]);
-                        queue = unchecked((queue * 397) ^ vh[5]);
-                        queue = unchecked((queue * 397) ^ vh[6]);
-                        queue = unchecked((queue * 397) ^ vh[7]);
-                        queue = unchecked((queue * 397) ^ vh[8]);
-                        queue = unchecked((queue * 397) ^ vh[9]);
-                        queue = unchecked((queue * 397) ^ vh[10]);
-                        queue = unchecked((queue * 397) ^ vh[11]);
-                        queue = unchecked((queue * 397) ^ vh[12]);
-                        queue = unchecked((queue * 397) ^ vh[13]);
-                        queue = unchecked((queue * 397) ^ vh[14]);
-                        queue = unchecked((queue * 397) ^ vh[15]);
-                    }
-                    else
-                    {
-                        // Fallback on different register sizes
-                        for (int j = 0; j < Vector<int>.Count; j++)
-                        {
-                            queue = unchecked((queue * 397) ^ vh[j]);
-                        }
+                        hash = unchecked((hash * 397) ^ vh[j]);
                     }
                 }
 
@@ -249,35 +201,35 @@ namespace System
                 {
                     ref byte ri0 = ref Unsafe.Add(ref r1, sizeof(ulong) * 0 + i);
                     ulong value0 = Unsafe.ReadUnaligned<ulong>(ref ri0);
-                    queue = unchecked((queue * 397) ^ (int)value0 ^ (int)(value0 >> 32));
+                    hash = unchecked((hash * 397) ^ (int)value0 ^ (int)(value0 >> 32));
 
                     ref byte ri1 = ref Unsafe.Add(ref r1, sizeof(ulong) * 1 + i);
                     ulong value1 = Unsafe.ReadUnaligned<ulong>(ref ri1);
-                    queue = unchecked((queue * 397) ^ (int)value1 ^ (int)(value1 >> 32));
+                    hash = unchecked((hash * 397) ^ (int)value1 ^ (int)(value1 >> 32));
 
                     ref byte ri2 = ref Unsafe.Add(ref r1, sizeof(ulong) * 2 + i);
                     ulong value2 = Unsafe.ReadUnaligned<ulong>(ref ri2);
-                    queue = unchecked((queue * 397) ^ (int)value2 ^ (int)(value2 >> 32));
+                    hash = unchecked((hash * 397) ^ (int)value2 ^ (int)(value2 >> 32));
 
                     ref byte ri3 = ref Unsafe.Add(ref r1, sizeof(ulong) * 3 + i);
                     ulong value3 = Unsafe.ReadUnaligned<ulong>(ref ri3);
-                    queue = unchecked((queue * 397) ^ (int)value3 ^ (int)(value3 >> 32));
+                    hash = unchecked((hash * 397) ^ (int)value3 ^ (int)(value3 >> 32));
 
                     ref byte ri4 = ref Unsafe.Add(ref r1, sizeof(ulong) * 4 + i);
                     ulong value4 = Unsafe.ReadUnaligned<ulong>(ref ri4);
-                    queue = unchecked((queue * 397) ^ (int)value4 ^ (int)(value4 >> 32));
+                    hash = unchecked((hash * 397) ^ (int)value4 ^ (int)(value4 >> 32));
 
                     ref byte ri5 = ref Unsafe.Add(ref r1, sizeof(ulong) * 5 + i);
                     ulong value5 = Unsafe.ReadUnaligned<ulong>(ref ri5);
-                    queue = unchecked((queue * 397) ^ (int)value5 ^ (int)(value5 >> 32));
+                    hash = unchecked((hash * 397) ^ (int)value5 ^ (int)(value5 >> 32));
 
                     ref byte ri6 = ref Unsafe.Add(ref r1, sizeof(ulong) * 6 + i);
                     ulong value6 = Unsafe.ReadUnaligned<ulong>(ref ri6);
-                    queue = unchecked((queue * 397) ^ (int)value6 ^ (int)(value6 >> 32));
+                    hash = unchecked((hash * 397) ^ (int)value6 ^ (int)(value6 >> 32));
 
                     ref byte ri7 = ref Unsafe.Add(ref r1, sizeof(ulong) * 7 + i);
                     ulong value7 = Unsafe.ReadUnaligned<ulong>(ref ri7);
-                    queue = unchecked((queue * 397) ^ (int)value7 ^ (int)(value7 >> 32));
+                    hash = unchecked((hash * 397) ^ (int)value7 ^ (int)(value7 >> 32));
                 }
 
                 /* At this point, there are up to 63 bytes left.
@@ -287,35 +239,35 @@ namespace System
                 {
                     ref byte ri0 = ref Unsafe.Add(ref r1, sizeof(uint) * 0 + i);
                     uint value0 = Unsafe.ReadUnaligned<uint>(ref ri0);
-                    queue = unchecked((queue * 397) ^ (int)value0);
+                    hash = unchecked((hash * 397) ^ (int)value0);
 
                     ref byte ri1 = ref Unsafe.Add(ref r1, sizeof(uint) * 1 + i);
                     uint value1 = Unsafe.ReadUnaligned<uint>(ref ri1);
-                    queue = unchecked((queue * 397) ^ (int)value1);
+                    hash = unchecked((hash * 397) ^ (int)value1);
 
                     ref byte ri2 = ref Unsafe.Add(ref r1, sizeof(uint) * 2 + i);
                     uint value2 = Unsafe.ReadUnaligned<uint>(ref ri2);
-                    queue = unchecked((queue * 397) ^ (int)value2);
+                    hash = unchecked((hash * 397) ^ (int)value2);
 
                     ref byte ri3 = ref Unsafe.Add(ref r1, sizeof(uint) * 3 + i);
                     uint value3 = Unsafe.ReadUnaligned<uint>(ref ri3);
-                    queue = unchecked((queue * 397) ^ (int)value3);
+                    hash = unchecked((hash * 397) ^ (int)value3);
 
                     ref byte ri4 = ref Unsafe.Add(ref r1, sizeof(uint) * 4 + i);
                     uint value4 = Unsafe.ReadUnaligned<uint>(ref ri4);
-                    queue = unchecked((queue * 397) ^ (int)value4);
+                    hash = unchecked((hash * 397) ^ (int)value4);
 
                     ref byte ri5 = ref Unsafe.Add(ref r1, sizeof(uint) * 5 + i);
                     uint value5 = Unsafe.ReadUnaligned<uint>(ref ri5);
-                    queue = unchecked((queue * 397) ^ (int)value5);
+                    hash = unchecked((hash * 397) ^ (int)value5);
 
                     ref byte ri6 = ref Unsafe.Add(ref r1, sizeof(uint) * 6 + i);
                     uint value6 = Unsafe.ReadUnaligned<uint>(ref ri6);
-                    queue = unchecked((queue * 397) ^ (int)value6);
+                    hash = unchecked((hash * 397) ^ (int)value6);
 
                     ref byte ri7 = ref Unsafe.Add(ref r1, sizeof(uint) * 7 + i);
                     uint value7 = Unsafe.ReadUnaligned<uint>(ref ri7);
-                    queue = unchecked((queue * 397) ^ (int)value7);
+                    hash = unchecked((hash * 397) ^ (int)value7);
                 }
 
                 // The non-SIMD path leaves up to 31 unprocessed bytes
@@ -334,64 +286,44 @@ namespace System
             {
                 ref byte ri0 = ref Unsafe.Add(ref r1, sizeof(ushort) * 0 + i);
                 ushort value0 = Unsafe.ReadUnaligned<ushort>(ref ri0);
-                queue = unchecked((queue * 397) ^ value0);
+                hash = unchecked((hash * 397) ^ value0);
 
                 ref byte ri1 = ref Unsafe.Add(ref r1, sizeof(ushort) * 1 + i);
                 ushort value1 = Unsafe.ReadUnaligned<ushort>(ref ri1);
-                queue = unchecked((queue * 397) ^ value1);
+                hash = unchecked((hash * 397) ^ value1);
 
                 ref byte ri2 = ref Unsafe.Add(ref r1, sizeof(ushort) * 2 + i);
                 ushort value2 = Unsafe.ReadUnaligned<ushort>(ref ri2);
-                queue = unchecked((queue * 397) ^ value2);
+                hash = unchecked((hash * 397) ^ value2);
 
                 ref byte ri3 = ref Unsafe.Add(ref r1, sizeof(ushort) * 3 + i);
                 ushort value3 = Unsafe.ReadUnaligned<ushort>(ref ri3);
-                queue = unchecked((queue * 397) ^ value3);
+                hash = unchecked((hash * 397) ^ value3);
 
                 ref byte ri4 = ref Unsafe.Add(ref r1, sizeof(ushort) * 4 + i);
                 ushort value4 = Unsafe.ReadUnaligned<ushort>(ref ri4);
-                queue = unchecked((queue * 397) ^ value4);
+                hash = unchecked((hash * 397) ^ value4);
 
                 ref byte ri5 = ref Unsafe.Add(ref r1, sizeof(ushort) * 5 + i);
                 ushort value5 = Unsafe.ReadUnaligned<ushort>(ref ri5);
-                queue = unchecked((queue * 397) ^ value5);
+                hash = unchecked((hash * 397) ^ value5);
 
                 ref byte ri6 = ref Unsafe.Add(ref r1, sizeof(ushort) * 6 + i);
                 ushort value6 = Unsafe.ReadUnaligned<ushort>(ref ri6);
-                queue = unchecked((queue * 397) ^ value6);
+                hash = unchecked((hash * 397) ^ value6);
 
                 ref byte ri7 = ref Unsafe.Add(ref r1, sizeof(ushort) * 7 + i);
                 ushort value7 = Unsafe.ReadUnaligned<ushort>(ref ri7);
-                queue = unchecked((queue * 397) ^ value7);
+                hash = unchecked((hash * 397) ^ value7);
             }
 
             // Handle the leftover items
             for (; i < length; i++)
             {
-                queue = unchecked((queue * 397) ^ Unsafe.Add(ref r1, i));
+                hash = unchecked((hash * 397) ^ Unsafe.Add(ref r1, i));
             }
 
-            const uint Prime1 = 2654435761U;
-            const uint Prime2 = 2246822519U;
-            const uint Prime3 = 3266489917U;
-            const uint Prime4 = 668265263U;
-
-            /* The following code replicates (with some simplification) the
-             * xxHash32 procedure from the System.HashCode type. The reason
-             * this is reimplemented here is so that the seed is static and
-             * not randomly initialized at every startup.
-             * This guarantees repeatable hash codes if the data is the same. */
-            uint hash = Prime1 + (uint)queue + Prime3;
-
-            hash = (hash << 17) | (hash >> (32 - 17));
-            hash *= Prime4;
-            hash ^= hash >> 15;
-            hash *= Prime2;
-            hash ^= hash >> 13;
-            hash *= Prime3;
-            hash ^= hash >> 16;
-
-            return (int)hash;
+            return HashCode.Combine(hash);
         }
     }
 }
