@@ -255,7 +255,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             if (group.Count == 1) Source.Remove(group);
             else group.Remove(entry);
 
-            StorageApplicationPermissions.MostRecentlyUsedList.Remove(entry.File.Path.GetxxHash32Code().ToHex());
+            StorageApplicationPermissions.MostRecentlyUsedList.Remove(entry.File.Path.GetDjb2HashCode().ToHex());
         }
 
         /// <summary>

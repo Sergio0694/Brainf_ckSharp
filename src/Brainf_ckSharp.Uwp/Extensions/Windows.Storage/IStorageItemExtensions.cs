@@ -18,7 +18,7 @@ namespace Windows.Storage
         [Pure]
         public static string GetId(this IStorageItem item)
         {
-            return item.Path.GetxxHash32Code().ToHex();
+            return item.Path.GetDjb2HashCode().ToHex();
         }
 
         /// <summary>

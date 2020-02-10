@@ -85,11 +85,31 @@ namespace System
         }
 
         /// <summary>
+        /// Gets a content hash from the input <see cref="ReadOnlySpan{T}"/> instance using the Djb2 algorithm
+        /// </summary>
+        /// <typeparam name="T">The type of items in the input <see cref="ReadOnlySpan{T}"/> instance</typeparam>
+        /// <param name="span">The input <see cref="ReadOnlySpan{T}"/> instance</param>
+        /// <returns>The Djb2 value for the input <see cref="ReadOnlySpan{T}"/> instance</returns>
+        [Pure]
+        public static int GetDjb2HashCode<T>(this ReadOnlySpan<T> span) where T : notnull
+        {
+            int hash = 5381;
+
+            foreach (T item in span)
+            {
+                hash = unchecked((hash << 5) + hash + item.GetHashCode());
+            }
+
+            return hash;
+        }
+
+        /// <summary>
         /// Gets a content hash from the input <see cref="ReadOnlySpan{T}"/> instance using the xxHash32 algorithm
         /// </summary>
         /// <typeparam name="T">The type of items in the input <see cref="ReadOnlySpan{T}"/> instance</typeparam>
         /// <param name="span">The input <see cref="ReadOnlySpan{T}"/> instance</param>
         /// <returns>The xxHash32 value for the input <see cref="ReadOnlySpan{T}"/> instance</returns>
+        /// <remarks>The xxHash32 is only guaranteed to be deterministic within the scope of a single app execution</remarks>
         [Pure]
         public static int GetxxHash32Code<T>(this ReadOnlySpan<T> span) where T : unmanaged
         {
