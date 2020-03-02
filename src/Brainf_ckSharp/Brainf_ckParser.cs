@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Buffers;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -244,7 +245,16 @@ namespace Brainf_ckSharp
         /// <returns>The character representing the input operator</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static char GetCharacterFromOperator(byte opcode) => (char)OperatorsInverseLookupTable[opcode];
+        internal static char GetCharacterFromOperator(byte opcode)
+        {
+            DebugGuard.MustBeGreaterThanOrEqualTo(opcode, 0, nameof(opcode));
+            DebugGuard.MustBeLessThan(opcode, OperatorsLookupTable.Length, nameof(opcode));
+
+            ref byte r0 = ref MemoryMarshal.GetReference(OperatorsInverseLookupTable);
+            byte r1 = Unsafe.Add(ref r0, opcode);
+
+            return (char) r1;
+        }
 
         /// <summary>
         /// Extracts the compacted source code from a given sequence of operators
