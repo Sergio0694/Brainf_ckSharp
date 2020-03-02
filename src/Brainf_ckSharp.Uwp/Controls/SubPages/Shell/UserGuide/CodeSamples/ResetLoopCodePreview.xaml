@@ -1,0 +1,118 @@
+﻿<UserControl
+    x:Class="Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.CodeSamples.ResetLoopCodePreview"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="100"
+    d:DesignWidth="400">
+
+    <!--Root-->
+    <Grid Background="#FF1E1E1E">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="4"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Breakpoints pane-->
+        <Border 
+            Background="#FF333333"
+            Grid.Column="0"
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Width="20"
+            HorizontalAlignment="Left"/>
+
+        <!--Theme title-->
+        <Border
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Background="#FF333333">
+            <Border Background="#20000000">
+                <TextBlock
+                    IsTextScaleFactorEnabled="False"
+                    Margin="12,4,0,4"
+                    Text="Reset the current cell"
+                    x:Uid="GuideSampleResetTitle"/>
+            </Border>
+        </Border>
+
+        <!--Visual preview-->
+        <Grid
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="28"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Line numbers-->
+            <TextBlock
+                IsTextScaleFactorEnabled="False"
+                Grid.Column="1"
+                FontSize="15"
+                HorizontalAlignment="Right"
+                TextAlignment="Right"
+                TextTrimming="CharacterEllipsis"
+                Foreground="#FF237CAD"
+                Margin="0,1,0,0">
+                <Run Text="1"/><LineBreak/>
+                <Run Text="2"/><LineBreak/>
+                <Run Text="3"/>
+            </TextBlock>
+
+            <!--Vertical guide-->
+            <StackPanel
+                Canvas.ZIndex="0"
+                Grid.Column="2"
+                Width="1"
+                HorizontalAlignment="Left"
+                Margin="21,0,0,0">
+                <StackPanel.Clip>
+                    <RectangleGeometry Rect="0,0,1,20"/>
+                </StackPanel.Clip>
+                <StackPanel.RenderTransform>
+                    <TranslateTransform Y="22"/>
+                </StackPanel.RenderTransform>
+                <Rectangle
+                    Margin="0"
+                    Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+                <Rectangle Style="{StaticResource BracketsGuideRectangleStyle}"/>
+            </StackPanel>
+
+            <!--Code sample-->
+            <TextBlock
+                Canvas.ZIndex="2"
+                IsTextScaleFactorEnabled="False"
+                Margin="20,0,20,0"
+                Grid.Column="2"
+                FontSize="15">
+                <Run
+                    Text="["
+                    Foreground="#FF569CD6"/><LineBreak/>
+                <Run 
+                    Text="      -"
+                    Foreground="#FFFFFFFF"/>
+                <Run 
+                    Text="Subtract 1 each time"
+                    Foreground="#FF52AF3D"
+                    x:Uid="GuideSampleResetComment"/><LineBreak/>
+                <Run 
+                    Text="]"
+                    Foreground="#FF569CD6"/>
+            </TextBlock>
+        </Grid>
+    </Grid>
+</UserControl>

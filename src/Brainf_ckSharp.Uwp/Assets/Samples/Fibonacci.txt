@@ -1,0 +1,55 @@
+﻿[
+	This program prints the first n numbers of the Fibonacci sequence.
+	To use it, enter a two-digits number in the input buffer.
+	As this program, just like any other script in this language, is not
+	very efficient, try to keep the number small enough for best results.
+]
+++++++++[ setup print characters
+	>++++>++++++ space and '0'
+	<<-
+]>>
+. print initial sequence number
+[>+>+<<-]>>[<<+>>-]
+,>,<<[ read input digits
+	>->-<<- shift to base 10
+]
+>[<++++++++++>-]>[<<+>>-] get the actual input
+<<- decrement by 1 to fix iterations count
+>>>+ fibonacci counters in #5 and #6
+>>>+(->
+[>+<-]> leave 2 empty cells for later
+[
+	>>++++++++++ 10 in 3rd cell
+	<<[>+>>+<<<-]>>>[<<<+>>>-] duplicate x
+	<<[
+		->->+< sub 1 to copy and 10
+		[>>>] if != 0 skip
+		>[
+			<++++++++++ restore 10
+			>---------- keep track on result
+			>>>>+< increment digit counter
+		]
+		<<<<<
+	]
+	>[-] reset temp cell
+	>[<<+>>-] move resulting digit back
+	>>>>[<<<<<+>>>>>-] move other counter back
+	<<<<<<<[-] reset previous temp cell
+	+>> set marker for later and loop again
+]
+<< start from the last number
+[
+	+++++[>++++++++<-]>. sum 48 and print it
+	[-]<<< reset and go back one digit
+]) @printNumber
+<<<<< go back to cell before temp values
+(<[
+	<<.>> print the space character
+	->>> move to temp #1
+	[>+>+>>+<<<<-]>>[<<+>>-]<< duplicate
+	<[>+<-] sum temp #0 and #1
+	>>[<<+>>-] move backup to temp #0
+	>>:+ print the current number
+	<<<<<: recurse!
+]) @fibonacci
+:

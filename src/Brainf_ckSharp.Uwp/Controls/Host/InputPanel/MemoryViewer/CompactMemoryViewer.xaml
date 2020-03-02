@@ -1,0 +1,53 @@
+﻿<UserControl
+    x:Class="Brainf_ckSharp.Uwp.Controls.Host.InputPanel.MemoryViewer.CompactMemoryViewer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:dataTemplates="using:Brainf_ckSharp.Uwp.Controls.DataTemplates"
+    xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
+    xmlns:controls="using:Brainf_ckSharp.Uwp.ViewModels.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.DataContext>
+        <controls:CompactMemoryViewerViewModel x:Name="ViewModel"/>
+    </UserControl.DataContext>
+
+    <!--Memory cells grid-->
+    <GridView
+        Padding="4,0,0,0"
+        ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+        SelectionMode="None"
+        attachedProperties:ListViewBaseHelper.IsFluentRearrangingEnabled="True">
+        <GridView.Resources>
+
+            <!--Expand the items to cover all the available space-->
+            <Style TargetType="GridViewItem">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            </Style>
+        </GridView.Resources>
+        <GridView.ItemsPanel>
+            <ItemsPanelTemplate>
+                <ItemsWrapGrid
+                    ItemHeight="64"
+                    attachedProperties:ItemsWrapGridHelper.DesiredItemWidth="160"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+        </GridView.ItemsPanel>
+        <GridView.Header>
+            <Grid Height="4"/>
+        </GridView.Header>
+        <GridView.Footer>
+            <Grid Height="4"/>
+        </GridView.Footer>
+        <GridView.ItemTemplate>
+            <DataTemplate>
+                <dataTemplates:Brainf_ckMemoryCellChunkTemplate/>
+            </DataTemplate>
+        </GridView.ItemTemplate>
+    </GridView>
+</UserControl>

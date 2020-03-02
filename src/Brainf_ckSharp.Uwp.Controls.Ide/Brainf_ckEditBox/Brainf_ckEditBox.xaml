@@ -1,0 +1,139 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ide="using:Brainf_ckSharp.Uwp.Controls.Ide"
+    xmlns:win2d="using:Microsoft.Graphics.Canvas.UI.Xaml">
+
+    <!--IDE RichEditBox style-->
+    <Style TargetType="ide:Brainf_ckEditBox">
+        <Setter Property="Foreground" Value="{ThemeResource TextControlForeground}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="ContentLinkForegroundColor" Value="{ThemeResource ContentLinkForegroundColor}" />
+        <Setter Property="ContentLinkBackgroundColor" Value="{ThemeResource ContentLinkBackgroundColor}" />
+        <Setter Property="SelectionHighlightColor" Value="{ThemeResource SystemControlHighlightAccentBrush}" />
+        <Setter Property="SelectionHighlightColorWhenNotFocused">
+            <Setter.Value>
+                <SolidColorBrush Color="{ThemeResource SystemAccentColorDark1}"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollMode" Value="Auto" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="Padding" Value="{ThemeResource TextControlThemePadding}" />
+        <Setter Property="UseSystemFocusVisuals" Value="{ThemeResource IsApplicationFocusVisualKindReveal}" />
+        <Setter Property="ContextFlyout" Value="{StaticResource TextControlCommandBarContextFlyout}" />
+        <Setter Property="SelectionFlyout" Value="{StaticResource TextControlCommandBarSelectionFlyout}" />
+        <Setter Property="IsSpellCheckEnabled" Value="False"/>
+        <Setter Property="IsTextPredictionEnabled" Value="False"/>
+        <Setter Property="ClipboardCopyFormat" Value="PlainText"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RichEditBox">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Disabled"/>
+                                <VisualState x:Name="Normal">
+
+                                    <!--Blinking cursor animation when text is not focused-->
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames
+                                            AutoReverse="True"
+                                            RepeatBehavior="Forever"
+                                            BeginTime="0:0:0.500"
+                                            Duration="0:0:1.500"
+                                            Storyboard.TargetName="CursorIndicatorRectangle"
+                                            Storyboard.TargetProperty="Opacity">
+                                            <DiscreteDoubleKeyFrame KeyTime="0:0:0.500" Value="1"/>
+                                            <DiscreteDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentElement" Storyboard.TargetProperty="RequestedTheme">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Dark" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <!--Canvas that hosts the Win2D canvas used to render the text overlays,
+                            the line highlight and cursor indicator. All these controls are
+                            inside a canvas so that they're free to expand beyond the viewport
+                            area, which is needed in order to render all the overlays
+                            for the text currently displayed in the control at all times,
+                            and for the indicators to be translated correctly while still
+                            being able to be scrolled with the text by the user.
+                            The size of the Win2D canvas is by the content presenter.-->
+                        <Canvas x:Name="BackgroundCanvas">
+
+                            <!--Win2D canvas for whitespaces and column guides-->
+                            <win2d:CanvasControl x:Name="TextOverlaysCanvas">
+                                <win2d:CanvasControl.RenderTransform>
+                                    <TranslateTransform X="-4"/>
+                                </win2d:CanvasControl.RenderTransform>
+                            </win2d:CanvasControl>
+
+                            <!--Current line indicator-->
+                            <Border
+                                x:Name="SelectionHighlightBorder"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Top"
+                                Height="20"
+                                BorderThickness="2"
+                                BorderBrush="#30FFFFFF">
+                                <Border.RenderTransform>
+                                    <TranslateTransform/>
+                                </Border.RenderTransform>
+                            </Border>
+
+                            <!--Cursor indicator-->
+                            <Rectangle
+                                x:Name="CursorIndicatorRectangle"
+                                Opacity="0"
+                                Width="1.5"
+                                Height="20"
+                                Fill="LightGray">
+                                <Rectangle.RenderTransform>
+                                    <TranslateTransform/>
+                                </Rectangle.RenderTransform>
+                            </Rectangle>
+                        </Canvas>
+
+                        <!--Scroller with a presenter for the text renderer. This is done so that
+                            the text renderer can have a padding, which is used to simulate a
+                            scrollable header around the text. Furthermore, having an intermediate
+                            content presenter makes the scrolling smoother and not line by line.-->
+                        <ScrollViewer
+                            x:Name="ContentScroller"
+                            HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
+                            HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                            VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
+                            VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                            IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}"
+                            IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}"
+                            IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+                            Margin="{TemplateBinding BorderThickness}"
+                            IsTabStop="False"
+                            ZoomMode="Disabled"
+                            AutomationProperties.AccessibilityView="Raw">
+                            <ContentPresenter
+                                x:Name="ContentElement"
+                                Margin="{TemplateBinding Padding}"/>
+                        </ScrollViewer>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+</ResourceDictionary>

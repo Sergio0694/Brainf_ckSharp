@@ -1,0 +1,105 @@
+﻿<UserControl
+    x:Class="Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.UserGuideSubPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
+    xmlns:sections="using:Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.Sections"
+    xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
+    xmlns:userGuide="using:Brainf_ckSharp.Uwp.Bindings.Converters.UserGuide"
+    xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
+    xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
+    xmlns:subPages="using:Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.DataContext>
+        <subPages:UserGuideSubPageViewModel x:Name="ViewModel"/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+
+        <!--Introduction-->
+        <DataTemplate x:Key="LanguageIntroductionTemplate">
+            <sections:LanguageIntroductionGuidePanel Margin="0,12,0,12"/>
+        </DataTemplate>
+
+        <!--Code samples-->
+        <DataTemplate x:Key="CodeSamplesTemplate">
+            <sections:CodeSamplesGuidePanel Margin="0,12,0,12"/>
+        </DataTemplate>
+
+        <!--PBrain-->
+        <DataTemplate x:Key="PBraainExtensionTemplate">
+            <sections:PBrainExtensionGuidePanel Margin="0,12,0,12"/>
+        </DataTemplate>
+
+        <!--Debugging-->
+        <DataTemplate x:Key="DebuggingTemplate">
+            <sections:BreakpointGuidePanel Margin="0,12,0,12"/>
+        </DataTemplate>
+
+        <!--Converters-->
+        <userGuide:UserGuideSectionToTitleConverter x:Key="UserGuideSectionToTitleConverter"/>
+        <userGuide:UserGuideSectionToDescriptionConverter x:Key="UserGuideSectionToDescriptionConverter"/>
+    </UserControl.Resources>
+
+    <host:SubPageFrame Title="USER GUIDE">
+
+        <!--Semantic zoom-->
+        <SemanticZoom>
+            <SemanticZoom.ZoomedInView>
+
+                <!--ZoomedInView-->
+                <ListView
+                    ItemsSource="{x:Bind ViewModel.View, Mode=OneWay}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    IsItemClickEnabled="False"
+                    SelectionMode="None"
+                    Margin="0,-8,0,0">
+                    <ListView.ItemTemplateSelector>
+                        <templateSelectors:UserGuideSectionTemplateSelector
+                            IntroductionTemplate="{StaticResource LanguageIntroductionTemplate}"
+                            CodeSamplesTemplate="{StaticResource CodeSamplesTemplate}"
+                            PBrainTemplate="{StaticResource PBraainExtensionTemplate}"
+                            DebuggingTemplate="{StaticResource DebuggingTemplate}"/>
+                    </ListView.ItemTemplateSelector>
+                    <ListView.GroupStyle>
+                        <GroupStyle HeaderContainerStyle="{StaticResource ExpandedListViewHeaderItemStyle}">
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate x:DataType="objectModel:IGroupedCollection">
+                                    <jumpList:SemanticZoomZoomedInViewHeaderTemplate Title="{x:Bind Key, Converter={StaticResource UserGuideSectionToTitleConverter}}"/>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
+                </ListView>
+            </SemanticZoom.ZoomedInView>
+            <SemanticZoom.ZoomedOutView>
+
+                <!--ZoomedOutView-->
+                <ListView 
+                    ItemsSource="{x:Bind ViewModel.CollectionGroups, Mode=OneWay}"
+                    Background="#60000000">
+                    <ListView.Resources>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Margin" Value="0,0,0,4"/>
+                            <Setter Property="Padding" Value="12,16,12,16"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Background" Value="#FF171718"/>
+                        </Style>
+                    </ListView.Resources>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="ICollectionViewGroup">
+                            <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
+                                Title="{x:Bind Group.(objectModel:IGroupedCollection.Key), Converter={StaticResource UserGuideSectionToTitleConverter}}"
+                                Description="{x:Bind Group.(objectModel:IGroupedCollection.Key), Converter={StaticResource UserGuideSectionToDescriptionConverter}}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </SemanticZoom.ZoomedOutView>
+        </SemanticZoom>
+    </host:SubPageFrame>
+</UserControl>

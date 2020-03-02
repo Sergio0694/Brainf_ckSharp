@@ -1,0 +1,56 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:brushes="using:UICompositionAnimations.Brushes">
+
+    <!--Shell header background brush-->
+    <brushes:AcrylicBrush
+        x:Key="ShellHeaderBackgroundBrush"
+        Source="Backdrop"
+        BlurAmount="8"
+        Tint="#FF1E1E1E"
+        TintMix="0.6"
+        TextureUri="/Assets/Misc/noise_low.png"/>
+
+    <!--Virtual keyboard brush-->
+    <brushes:AcrylicBrush
+        x:Key="VirtualKeyboardBackgroundBrush"
+        Source="HostBackdrop"
+        FallbackColor="#FF141414"
+        Tint="#FF101010"
+        TintMix="0.9"
+        TextureUri="/Assets/Misc/noise_low.png"/>
+
+    <!--Sub page brushes-->
+    <brushes:AcrylicBrush
+        x:Key="SubFrameHostBackgroundBrush"
+        Source="Backdrop"
+        FallbackColor="#C0080808"
+        BlurAmount="8"
+        Tint="#FF080808"
+        TintMix="0.4"
+        TextureUri="/Assets/Misc/noise_low.png"/>
+    <Color x:Key="SubFrameBackgroundColor">#C0202020</Color>
+    <SolidColorBrush x:Key="SubFrameBackgroundBrush" Color="{StaticResource SubFrameBackgroundColor}"/>
+    <SolidColorBrush x:Key="SubFrameBorderBrush" Color="#FF555555"/>
+
+    <!--Commands-->
+    <Color x:Key="RunColor">#FF008000</Color>
+    <SolidColorBrush x:Key="RunBrush" Color="{StaticResource RunColor}"/>
+    <Color x:Key="DebugColor">#FFD1212A</Color>
+    <SolidColorBrush x:Key="DebugBrush" Color="{StaticResource DebugColor}"/>
+
+    <!--Background info bar brush-->
+    <SolidColorBrush x:Key="BackgroundInfoBrush" Color="#FF007ACC"/>
+
+    <!--Breakpoints-->
+    <SolidColorBrush x:Key="BreakpointFillBrush" Color="#FFE51400"/>
+    <SolidColorBrush x:Key="BreakpointBorderBrush" Color="#FFF4DFDD"/>
+    <SolidColorBrush x:Key="BreakpointLineBrush" Color="#FF762C2C"/>
+
+    <!--Misc-->
+    <SolidColorBrush x:Key="ZeroValueInMemoryViewerBrush" Color="#D0FFFFFF"/>
+    <SolidColorBrush x:Key="GitHubContributorBackgroundBrush" Color="#FF1A1B1C"/>
+    <SolidColorBrush x:Key="WidgetHeaderForeground" Color="#FFA0A0A0"/>
+
+</ResourceDictionary>
