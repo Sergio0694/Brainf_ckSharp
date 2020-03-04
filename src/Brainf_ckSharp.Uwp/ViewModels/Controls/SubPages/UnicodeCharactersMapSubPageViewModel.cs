@@ -1,52 +1,71 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Brainf_ckSharp.Uwp.Models;
+using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
+using GalaSoft.MvvmLight.Command;
 
 namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
 {
-    public sealed class UnicodeCharactersMapSubPageViewModel
+    public sealed class UnicodeCharactersMapSubPageViewModel : GroupedItemsCollectionViewModelBase<UnicodeInterval, UnicodeCharacter>
     {
+        /// <summary>
+        /// A mutex to avoid race conditions when loading <see cref="_32To127"/> and <see cref="_160To255"/>
+        /// </summary>
+        private static readonly AsyncMutex LoadingMutex = new AsyncMutex();
+
         /// <summary>
         /// The collection of characters in the [32, 127] range
         /// </summary>
-        private static readonly IReadOnlyList<UnicodeCharacter> _32To127;
+        private static IReadOnlyList<UnicodeCharacter> _32To127;
 
         /// <summary>
         /// The collection of characters in the [160, 255] range
         /// </summary>
-        private static readonly IReadOnlyList<UnicodeCharacter> _160To255;
+        private static IReadOnlyList<UnicodeCharacter> _160To255;
 
         /// <summary>
-        /// Initializes <see cref="_32To127"/> and <see cref="_160To255"/> for future use
+        /// Creates a new <see cref="UnicodeCharactersMapSubPageViewModel"/> instance
         /// </summary>
-        static UnicodeCharactersMapSubPageViewModel()
+        public UnicodeCharactersMapSubPageViewModel()
         {
-            UnicodeCharacter[] first = new UnicodeCharacter[128 - 32];
-
-            for (int i = 0; i < first.Length; i++)
-            {
-                first[i] = new UnicodeCharacter((char)(i + 32));
-            }
-
-            _32To127 = first;
-
-            UnicodeCharacter[] second = new UnicodeCharacter[256 - 160];
-
-            for (int i = 0; i < second.Length; i++)
-            {
-                second[i] = new UnicodeCharacter((char)(i + 160));
-            }
-
-            _160To255 = second;
+            LoadDataCommand = new RelayCommand(() => _ = LoadDataAsync());
         }
 
         /// <summary>
-        /// Gets the collection of characters in the [32, 127] range
+        /// Gets the <see cref="ICommand"/> instance responsible for loading the available source codes
         /// </summary>
-        public IReadOnlyList<UnicodeCharacter> FirstCollection => _32To127;
+        public ICommand LoadDataCommand { get; }
 
         /// <summary>
-        /// Gets the collection of characters in the [128, 159] range
+        /// Loads the grouped characters to display
         /// </summary>
-        public IReadOnlyList<UnicodeCharacter> SecondCollection => _160To255;
+        public async Task LoadDataAsync()
+        {
+            using (await LoadingMutex.LockAsync())
+            {
+                // Load the first group if needed
+                var first = _32To127 ??= await Task.Run(() => (
+                    from i in Enumerable.Range(0, 128 - 32)
+                    let c = (char)(i + 32)
+                    select new UnicodeCharacter(c)).ToArray());
+
+                Source.Add(new ObservableGroup<UnicodeInterval, UnicodeCharacter>(
+                    new UnicodeInterval(0, 31),
+                    first));
+
+                // Load the second group if needed
+                var second = _160To255 ??= await Task.Run(() => (
+                    from i in Enumerable.Range(0, 256 - 160)
+                    let c = (char)(i + 160)
+                    select new UnicodeCharacter(c)).ToArray());
+
+                Source.Add(new ObservableGroup<UnicodeInterval, UnicodeCharacter>(
+                    new UnicodeInterval(128, 159),
+                    second));
+            }
+        }
     }
 }

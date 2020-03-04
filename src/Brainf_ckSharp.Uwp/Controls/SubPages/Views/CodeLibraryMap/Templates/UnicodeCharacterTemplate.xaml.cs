@@ -7,9 +7,9 @@ using Brainf_ckSharp.Uwp.Models;
 
 namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views.CodeLibraryMap.Templates
 {
-    public sealed partial class UnicodeVisibleCharacterTemplate : UserControl
+    public sealed partial class UnicodeCharacterTemplate : UserControl
     {
-        public UnicodeVisibleCharacterTemplate()
+        public UnicodeCharacterTemplate()
         {
             this.InitializeComponent();
         }
@@ -26,17 +26,17 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views.CodeLibraryMap.Templates
         public static readonly DependencyProperty CharacterProperty = DependencyProperty.Register(
             nameof(Character),
             typeof(UnicodeCharacter),
-            typeof(UnicodeVisibleCharacterTemplate),
+            typeof(UnicodeCharacterTemplate),
             new PropertyMetadata(DependencyProperty.UnsetValue, OnCharacterPropertyChanged));
 
         /// <summary>
         /// Updates the <see cref="TextBlock.Text"/> property on <see cref="NumberBlock"/> and <see cref="ValueBlock"/> when <see cref="Character"/> changes
         /// </summary>
-        /// <param name="d">The source <see cref="UnicodeVisibleCharacterTemplate"/> instance</param>
+        /// <param name="d">The source <see cref="UnicodeCharacterTemplate"/> instance</param>
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance with the new <see cref="Character"/> value</param>
         private static void OnCharacterPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            UnicodeVisibleCharacterTemplate @this = (UnicodeVisibleCharacterTemplate)d;
+            UnicodeCharacterTemplate @this = (UnicodeCharacterTemplate)d;
             UnicodeCharacter value = (UnicodeCharacter)e.NewValue;
 
             @this.NumberBlock.Text = ((ushort)value.Value).ToString();

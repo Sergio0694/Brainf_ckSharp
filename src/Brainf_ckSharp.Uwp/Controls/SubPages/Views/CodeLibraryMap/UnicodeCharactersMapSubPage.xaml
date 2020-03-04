@@ -8,95 +8,95 @@
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     xmlns:models="using:Brainf_ckSharp.Uwp.Models"
+    xmlns:subPages="using:Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
+    xmlns:functions="using:Brainf_ckSharp.Uwp.Bindings.Functions"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.DataContext>
+        <subPages:UnicodeCharactersMapSubPageViewModel x:Name="ViewModel"/>
+    </UserControl.DataContext>
+    <interactivity:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Loaded">
+            <core:InvokeCommandAction Command="{x:Bind ViewModel.LoadDataCommand}"/>
+        </core:EventTriggerBehavior>
+    </interactivity:Interaction.Behaviors>
 
     <!--Root-->
     <host:SubPageFrame Title="UNICODE MAP">
-        <ScrollViewer>
-            <StackPanel Padding="16" Spacing="16">
+        <ListView
+            IsItemClickEnabled="False"
+            SelectionMode="None"
+            ItemsSource="{x:Bind ViewModel.View}"
+            Padding="12">
+            <ListView.Resources>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Margin" Value="4"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.Resources>
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderContainerStyle>
 
-                <!--[0-31] characters-->
-                <templates:UnicodeNonVisibleCharactersGroupTemplate
-                    Height="52"
-                    Value="[0, 31]"
-                    Description="Control characters"/>
-
-                <!--[32-127] characters-->
-                <ListView
-                    Margin="-4"
-                    IsItemClickEnabled="False"
-                    SelectionMode="None"
-                    ItemsSource="{x:Bind ViewModel.FirstCollection}"
-                    ScrollViewer.VerticalScrollMode="Disabled"
-                    ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                    <ListView.Resources>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="Margin" Value="4"/>
-                            <Setter Property="Padding" Value="0"/>
-                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Setter Property="VerticalAlignment" Value="Stretch"/>
-                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                        <!--Group header container style-->
+                        <Style TargetType="ListViewHeaderItem">
+                            <Setter Property="Margin" Value="4" />
+                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewHeaderItem">
+                                        <ContentPresenter
+                                            x:Name="ContentPresenter"
+                                            Margin="{TemplateBinding Padding}"
+                                            Content="{TemplateBinding Content}"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                            ContentTransitions="{TemplateBinding ContentTransitions}"
+                                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
                         </Style>
-                    </ListView.Resources>
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="models:UnicodeCharacter">
-                            <templates:UnicodeVisibleCharacterTemplate Character="{x:Bind}"/>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid
-                                Orientation="Horizontal"
-                                ItemHeight="56"
-                                attachedProperties:ItemsWrapGridHelper.DesiredItemWidth="128"
-                                MaximumRowsOrColumns="4"/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                </ListView>
+                    </GroupStyle.HeaderContainerStyle>
+                    <GroupStyle.HeaderTemplate>
 
-                <!--[128, 159] characters-->
-                <templates:UnicodeNonVisibleCharactersGroupTemplate
-                    Height="52"
-                    Value="[128, 159]"
-                    Description="Non visible characters"/>
-
-                <!--[160-255] characters-->
-                <ListView
-                    Margin="-4"
-                    IsItemClickEnabled="False"
-                    SelectionMode="None"
-                    ItemsSource="{x:Bind ViewModel.SecondCollection}"
-                    ScrollViewer.VerticalScrollMode="Disabled"
-                    ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                    <ListView.Resources>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="Margin" Value="4"/>
-                            <Setter Property="Padding" Value="0"/>
-                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Setter Property="VerticalAlignment" Value="Stretch"/>
-                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                        </Style>
-                    </ListView.Resources>
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="models:UnicodeCharacter">
-                            <templates:UnicodeVisibleCharacterTemplate Character="{x:Bind}"/>
+                        <!--Group header template-->
+                        <DataTemplate x:DataType="objectModel:IGroupedCollection">
+                            <templates:UnicodeIntervalTemplate
+                                Height="52"
+                                Value="{x:Bind Key.ToString()}"
+                                Description="{x:Bind functions:UnicodeIntervalDescriptionFormatter.FormatDescription((models:UnicodeInterval)Key)}"/>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid
-                                Orientation="Horizontal"
-                                ItemHeight="56"
-                                attachedProperties:ItemsWrapGridHelper.DesiredItemWidth="128"
-                                MaximumRowsOrColumns="4"/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                </ListView>
-            </StackPanel>
-        </ScrollViewer>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListView.GroupStyle>
+            <ListView.ItemTemplate>
+
+                <!--Character template-->
+                <DataTemplate x:DataType="models:UnicodeCharacter">
+                    <templates:UnicodeCharacterTemplate Character="{x:Bind}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid
+                        AreStickyGroupHeadersEnabled="False"
+                        Orientation="Horizontal"
+                        ItemHeight="56"
+                        attachedProperties:ItemsWrapGridHelper.DesiredItemWidth="128"
+                        MaximumRowsOrColumns="4"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
     </host:SubPageFrame>
 </UserControl>
