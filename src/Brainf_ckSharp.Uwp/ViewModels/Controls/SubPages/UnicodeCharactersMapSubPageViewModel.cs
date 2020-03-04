@@ -53,7 +53,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
                     select new UnicodeCharacter(c)).ToArray());
 
                 Source.Add(new ObservableGroup<UnicodeInterval, UnicodeCharacter>(
-                    new UnicodeInterval(32, 127),
+                    new UnicodeInterval(0, 31),
                     first));
 
                 // Load the second group if needed
@@ -63,7 +63,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
                     select new UnicodeCharacter(c)).ToArray());
 
                 Source.Add(new ObservableGroup<UnicodeInterval, UnicodeCharacter>(
-                    new UnicodeInterval(160, 255),
+                    new UnicodeInterval(128, 159),
                     second));
             }
         }
