@@ -71,7 +71,7 @@
 
                         <!--Group header template-->
                         <DataTemplate x:DataType="objectModel:IGroupedCollection">
-                            <templates:UnicodeNonVisibleCharactersGroupTemplate
+                            <templates:UnicodeIntervalTemplate
                                 Height="52"
                                 Value="{x:Bind Key.ToString()}"
                                 Description="Control characters"/>
@@ -83,7 +83,7 @@
 
                 <!--Character template-->
                 <DataTemplate x:DataType="models:UnicodeCharacter">
-                    <templates:UnicodeVisibleCharacterTemplate Character="{x:Bind}"/>
+                    <templates:UnicodeCharacterTemplate Character="{x:Bind}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.ItemsPanel>

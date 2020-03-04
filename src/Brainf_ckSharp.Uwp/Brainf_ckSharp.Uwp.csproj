@@ -200,11 +200,11 @@
     <Compile Include="Controls\SubPages\Shell\UserGuide\UserGuideSubPage.xaml.cs">
       <DependentUpon>UserGuideSubPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SubPages\Views\CodeLibraryMap\Templates\UnicodeNonVisibleCharactersGroupTemplate.xaml.cs">
-      <DependentUpon>UnicodeNonVisibleCharactersGroupTemplate.xaml</DependentUpon>
+    <Compile Include="Controls\SubPages\Views\CodeLibraryMap\Templates\UnicodeIntervalTemplate.xaml.cs">
+      <DependentUpon>UnicodeIntervalTemplate.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SubPages\Views\CodeLibraryMap\Templates\UnicodeVisibleCharacterTemplate.xaml.cs">
-      <DependentUpon>UnicodeVisibleCharacterTemplate.xaml</DependentUpon>
+    <Compile Include="Controls\SubPages\Views\CodeLibraryMap\Templates\UnicodeCharacterTemplate.xaml.cs">
+      <DependentUpon>UnicodeCharacterTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SubPages\Views\CodeLibrarySubPage.xaml.cs">
       <DependentUpon>CodeLibrarySubPage.xaml</DependentUpon>
@@ -501,11 +501,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\SubPages\Views\CodeLibraryMap\Templates\UnicodeNonVisibleCharactersGroupTemplate.xaml">
+    <Page Include="Controls\SubPages\Views\CodeLibraryMap\Templates\UnicodeIntervalTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\SubPages\Views\CodeLibraryMap\Templates\UnicodeVisibleCharacterTemplate.xaml">
+    <Page Include="Controls\SubPages\Views\CodeLibraryMap\Templates\UnicodeCharacterTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
