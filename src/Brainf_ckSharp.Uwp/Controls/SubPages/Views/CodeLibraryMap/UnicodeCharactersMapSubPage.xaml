@@ -12,6 +12,7 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
+    xmlns:functions="using:Brainf_ckSharp.Uwp.Bindings.Functions"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -74,7 +75,7 @@
                             <templates:UnicodeIntervalTemplate
                                 Height="52"
                                 Value="{x:Bind Key.ToString()}"
-                                Description="Control characters"/>
+                                Description="{x:Bind functions:UnicodeIntervalDescriptionFormatter.FormatDescription((models:UnicodeInterval)Key)}"/>
                         </DataTemplate>
                     </GroupStyle.HeaderTemplate>
                 </GroupStyle>

@@ -137,6 +137,7 @@
     <Compile Include="Bindings\Functions\Ide\CodeLibraryEntryFavoriteStateFormatter.cs" />
     <Compile Include="Bindings\Functions\NumericFunctions.cs" />
     <Compile Include="Bindings\Functions\PivotSelectionFunctions.cs" />
+    <Compile Include="Bindings\Functions\UnicodeIntervalDescriptionFormatter.cs" />
     <Compile Include="Constants\Settings.cs" />
     <Compile Include="Constants\SettingsKeys.cs" />
     <Compile Include="Controls\DataTemplates\Brainf_ckMemoryCellChunkTemplate.xaml.cs">
