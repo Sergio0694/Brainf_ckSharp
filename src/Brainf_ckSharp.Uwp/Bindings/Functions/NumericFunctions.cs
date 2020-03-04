@@ -41,14 +41,5 @@ namespace Brainf_ckSharp.Uwp.Bindings.Functions
         {
             return c > 0 ? XamlResources.AccentBrush : XamlResources.Get<Brush>("ZeroValueInMemoryViewerBrush");
         }
-
-        /// <summary>
-        /// Converts the given <see cref="bool"/> value into a <see cref="double"/>
-        /// </summary>
-        /// <param name="flag">The input value to convert</param>
-        /// <returns>1 if <paramref name="flag"/> is <see langword="true"/>, 0 otherwise</returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double BoolToDouble(bool flag) => Unsafe.As<bool, byte>(ref flag);
     }
 }

@@ -7,6 +7,7 @@
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:functions="using:Brainf_ckSharp.Uwp.Bindings.Functions"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
+    xmlns:system="using:System"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -44,7 +45,7 @@
             FontSize="10"
             Style="{StaticResource FontIconTextBlockStyle}"
             Text="{StaticResource MemoryViewerPositionIndicator}"
-            Opacity="{x:Bind functions:NumericFunctions.BoolToDouble(ViewModel.IsChunkSelected), Mode=OneWay}"
+            Opacity="{x:Bind system:BoolExtensions.ToInt(ViewModel.IsChunkSelected), Mode=OneWay}"
             Grid.Column="{x:Bind ViewModel.SelectedIndex, Mode=OneWay}">
             <animations:Implicit.Animations>
                 <animations:OffsetAnimation Duration="0:0:0.4"/>
