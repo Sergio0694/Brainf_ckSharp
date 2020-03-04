@@ -11,7 +11,6 @@
     xmlns:subPages="using:Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:system="using:System"
     xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
     mc:Ignorable="d"
     d:DesignHeight="300"
@@ -71,10 +70,10 @@
                     <GroupStyle.HeaderTemplate>
 
                         <!--Group header template-->
-                        <DataTemplate>
+                        <DataTemplate x:DataType="objectModel:IGroupedCollection">
                             <templates:UnicodeNonVisibleCharactersGroupTemplate
                                 Height="52"
-                                Value="[0, 31]"
+                                Value="{x:Bind Key.ToString()}"
                                 Description="Control characters"/>
                         </DataTemplate>
                     </GroupStyle.HeaderTemplate>

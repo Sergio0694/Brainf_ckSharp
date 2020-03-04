@@ -275,6 +275,7 @@
     <Compile Include="Models\Ide\CodeMetadata.cs" />
     <Compile Include="Models\Ide\SourceCode.cs" />
     <Compile Include="Models\UnicodeCharacter.cs" />
+    <Compile Include="Models\UnicodeInterval.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\XamlResources.cs" />
     <Compile Include="Services\Clipboard\ClipboardService.cs" />
