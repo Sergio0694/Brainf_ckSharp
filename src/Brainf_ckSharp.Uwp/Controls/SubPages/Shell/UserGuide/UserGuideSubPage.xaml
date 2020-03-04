@@ -7,10 +7,11 @@
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
     xmlns:sections="using:Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.Sections"
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
-    xmlns:userGuide="using:Brainf_ckSharp.Uwp.Bindings.Converters.UserGuide"
+    xmlns:functions="using:Brainf_ckSharp.Uwp.Bindings.Functions"
     xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
     xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
     xmlns:subPages="using:Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages"
+    xmlns:enums="using:Brainf_ckSharp.Uwp.Enums"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -38,10 +39,6 @@
         <DataTemplate x:Key="DebuggingTemplate">
             <sections:BreakpointGuidePanel Margin="0,12,0,12"/>
         </DataTemplate>
-
-        <!--Converters-->
-        <userGuide:UserGuideSectionToTitleConverter x:Key="UserGuideSectionToTitleConverter"/>
-        <userGuide:UserGuideSectionToDescriptionConverter x:Key="UserGuideSectionToDescriptionConverter"/>
     </UserControl.Resources>
 
     <host:SubPageFrame Title="USER GUIDE">
@@ -69,7 +66,7 @@
                         <GroupStyle HeaderContainerStyle="{StaticResource ExpandedListViewHeaderItemStyle}">
                             <GroupStyle.HeaderTemplate>
                                 <DataTemplate x:DataType="objectModel:IGroupedCollection">
-                                    <jumpList:SemanticZoomZoomedInViewHeaderTemplate Title="{x:Bind Key, Converter={StaticResource UserGuideSectionToTitleConverter}}"/>
+                                    <jumpList:SemanticZoomZoomedInViewHeaderTemplate Title="{x:Bind functions:UserGuideSectionFormatter.FormatTitle((enums:UserGuideSection)Key)}"/>
                                 </DataTemplate>
                             </GroupStyle.HeaderTemplate>
                         </GroupStyle>
@@ -94,8 +91,8 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="ICollectionViewGroup">
                             <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
-                                Title="{x:Bind Group.(objectModel:IGroupedCollection.Key), Converter={StaticResource UserGuideSectionToTitleConverter}}"
-                                Description="{x:Bind Group.(objectModel:IGroupedCollection.Key), Converter={StaticResource UserGuideSectionToDescriptionConverter}}"/>
+                                Title="{x:Bind functions:UserGuideSectionFormatter.FormatTitle((enums:UserGuideSection)Group.(objectModel:IGroupedCollection.Key))}"
+                                Description="{x:Bind functions:UserGuideSectionFormatter.FormatDescription((enums:UserGuideSection)Group.(objectModel:IGroupedCollection.Key))}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

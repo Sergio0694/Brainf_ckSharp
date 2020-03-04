@@ -129,14 +129,13 @@
     <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.cs" />
     <Compile Include="AttachedProperties\ReactiveViewModelHelper.cs" />
-    <Compile Include="Bindings\Converters\UserGuide\UserGuideSectionToDescriptionConverter.cs" />
-    <Compile Include="Bindings\Converters\UserGuide\UserGuideSectionToTitleConverter.cs" />
     <Compile Include="Bindings\Functions\CodeLibraryCategoryFormatter.cs" />
     <Compile Include="Bindings\Functions\Console\SyntaxErrorFormatterFunctions.cs" />
     <Compile Include="Bindings\Functions\Ide\CodeLibraryEntryFavoriteStateFormatter.cs" />
     <Compile Include="Bindings\Functions\NumericFunctions.cs" />
     <Compile Include="Bindings\Functions\PivotSelectionFunctions.cs" />
     <Compile Include="Bindings\Functions\UnicodeIntervalDescriptionFormatter.cs" />
+    <Compile Include="Bindings\Functions\UserGuideSectionFormatter.cs" />
     <Compile Include="Constants\Settings.cs" />
     <Compile Include="Constants\SettingsKeys.cs" />
     <Compile Include="Controls\DataTemplates\Brainf_ckMemoryCellChunkTemplate.xaml.cs">
