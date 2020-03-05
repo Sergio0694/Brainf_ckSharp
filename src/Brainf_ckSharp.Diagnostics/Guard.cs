@@ -16,7 +16,7 @@ namespace System.Diagnostics
         /// <param name="name">The name of the input parameter being tested</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="value"/> is <see langword="null"/></exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MustBeOf<T>(object value, string name) where T : class
+        public static void MustBeOf<T>(object value, string name)
         {
             if (value.GetType() != typeof(T)) throw new ArgumentException($"Parameter {name} must be of type {typeof(T)}, was {value.GetType()}", name);
         }

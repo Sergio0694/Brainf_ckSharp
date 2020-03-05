@@ -1,8 +1,6 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
-using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
@@ -21,17 +19,14 @@ namespace Brainf_ckSharp.Uwp.Resources
         /// <typeparam name="T">The type of resource to retrieve</typeparam>
         /// <param name="key">The key of the resource to retrieve</param>
         [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Get<T>(string key) => (T)Application.Current.Resources[key];
+        public static T Get<T>(string key)
+        {
+            object value = Application.Current.Resources[key];
 
-        /// <summary>
-        /// Safely tries to retrieve a resource with a specified key
-        /// </summary>
-        /// <typeparam name="T">The type of resource to retrieve</typeparam>
-        /// <param name="key">The key of the resource to retrieve</param>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T TryGet<T>(string key) => Application.Current.Resources.TryGetValue(key, out object value) ? (T)value : default;
+            Guard.MustBeOf<T>(value, nameof(value));
+
+            return (T)value;
+        }
 
         /// <summary>
         /// Assigns or creates a resource value with a specified key
@@ -39,25 +34,27 @@ namespace Brainf_ckSharp.Uwp.Resources
         /// <typeparam name="T">The type of resource to set</typeparam>
         /// <param name="key">The key of the resource to create or update</param>
         /// <param name="value">The resource value to set</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Set<T>(string key, T value) => Application.Current.Resources[key] = value;
 
         /// <summary>
-        /// Gets the current system accent color
+        /// A <see langword="class"/> with some hardcoded brushes
         /// </summary>
-        public static Color AccentColor
+        public static class Brushes
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => Get<Color>("SystemAccentColor");
-        }
+            public static readonly Brush SystemControlHighlightAccent = Get();
+            public static readonly Brush ZeroValueInMemoryViewer = Get();
 
-        /// <summary>
-        /// Gets the current system accent color brush
-        /// </summary>
-        public static Brush AccentBrush
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => Get<SolidColorBrush>("SystemControlHighlightAccentBrush");
+            /// <summary>
+            /// A helper function that returns the appropriate <see cref="Brush"/> from the XAML resource dictionary
+            /// </summary>
+            /// <param name="name">The name of the <see cref="Brush"/> to retrieve</param>
+            [Pure]
+            private static Brush Get([CallerMemberName] string? name = null)
+            {
+                Guard.MustBeNotNull(name, nameof(name));
+
+                return Get<Brush>($"{name}Brush");
+            }
         }
 
         /// <summary>

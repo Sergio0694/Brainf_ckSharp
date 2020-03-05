@@ -39,7 +39,9 @@ namespace Brainf_ckSharp.Uwp.Converters
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Brush ConvertPositiveValueToAccentBrushOrFallback(ushort c)
         {
-            return c > 0 ? XamlResources.AccentBrush : XamlResources.Get<Brush>("ZeroValueInMemoryViewerBrush");
+            return c > 0
+                ? XamlResources.Brushes.SystemControlHighlightAccent
+                : XamlResources.Brushes.ZeroValueInMemoryViewer;
         }
     }
 }
