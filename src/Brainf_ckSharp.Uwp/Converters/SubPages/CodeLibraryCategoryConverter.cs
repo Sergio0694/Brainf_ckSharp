@@ -2,20 +2,20 @@
 using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Uwp.Enums;
 
-namespace Brainf_ckSharp.Uwp.Bindings.Functions
+namespace Brainf_ckSharp.Uwp.Converters.SubPages
 {
     /// <summary>
     /// A <see langword="class"/> with helper functions to format <see cref="CodeLibraryCategory"/> instances
     /// </summary>
-    public static class CodeLibraryCategoryFormatter
+    public static class CodeLibraryCategoryConverter
     {
         /// <summary>
-        /// Formats the title of a <see cref="CodeLibraryCategory"/> instance
+        /// Converts a <see cref="CodeLibraryCategory"/> instance into its representation
         /// </summary>
         /// <param name="category">The input <see cref="CodeLibraryCategory"/> instance</param>
         /// <returns>A <see cref="string"/> representing the input <see cref="CodeLibraryCategory"/> instance</returns>
         [Pure]
-        public static string Format(CodeLibraryCategory category)
+        public static string Convert(CodeLibraryCategory category)
         {
             if (category == CodeLibraryCategory.Favorites) return "Favorites";
             if (category == CodeLibraryCategory.Recent) return "Recent";

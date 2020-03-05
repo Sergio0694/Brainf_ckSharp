@@ -2,20 +2,20 @@
 using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Uwp.Enums;
 
-namespace Brainf_ckSharp.Uwp.Bindings.Functions
+namespace Brainf_ckSharp.Uwp.Converters.SubPages
 {
     /// <summary>
     /// A <see langword="class"/> with helper functions to format <see cref="UserGuideSection"/> instances
     /// </summary>
-    public static class UserGuideSectionFormatter
+    public static class UserGuideSectionConverter
     {
         /// <summary>
-        /// Formats the title of a <see cref="UserGuideSection"/> instance
+        /// Converts a <see cref="UserGuideSection"/> instance into its title representation
         /// </summary>
         /// <param name="section">The input <see cref="UserGuideSection"/> instance</param>
         /// <returns>A <see cref="string"/> representing the input <see cref="UserGuideSection"/> instance</returns>
         [Pure]
-        public static string FormatTitle(UserGuideSection section)
+        public static string ConvertTitle(UserGuideSection section)
         {
             if (section == UserGuideSection.Introduction) return "Introduction";
             if (section == UserGuideSection.PBrain) return "PBrain";
@@ -26,12 +26,12 @@ namespace Brainf_ckSharp.Uwp.Bindings.Functions
         }
 
         /// <summary>
-        /// Formats the title of a <see cref="UserGuideSection"/> instance
+        /// Converts a <see cref="UserGuideSection"/> instance into its description representation
         /// </summary>
         /// <param name="section">The input <see cref="UserGuideSection"/> instance</param>
         /// <returns>A <see cref="string"/> representing the input <see cref="UserGuideSection"/> instance</returns>
         [Pure]
-        public static string FormatDescription(UserGuideSection section)
+        public static string ConvertDescription(UserGuideSection section)
         {
             if (section == UserGuideSection.Introduction) return "Learn how to use the Brainf*ck language";
             if (section == UserGuideSection.PBrain) return "Do more by using the PBrain extension operators";

@@ -7,7 +7,7 @@
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
     xmlns:console="using:Brainf_ckSharp.Uwp.Models.Console"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
-    xmlns:functions="using:Brainf_ckSharp.Uwp.Bindings.Functions.Console"
+    xmlns:convertersConsole="using:Brainf_ckSharp.Uwp.Converters.Console"
     xmlns:views="using:Brainf_ckSharp.Uwp.ViewModels.Views"
     mc:Ignorable="d"
     d:DesignHeight="300"
@@ -66,7 +66,7 @@
                     FontWeight="Bold"
                     Foreground="#FFC40030"/>
                 <Run 
-                    Text="{x:Bind functions:SyntaxErrorFormatterFunctions.Format(Result)}"
+                    Text="{x:Bind convertersConsole:SyntaxValidationResultConverter.Convert(Result)}"
                     FontWeight="Normal"
                     Foreground="#FFC40030"/>
             </TextBlock>

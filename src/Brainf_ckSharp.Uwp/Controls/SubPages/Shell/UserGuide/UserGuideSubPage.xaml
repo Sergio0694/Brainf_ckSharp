@@ -7,7 +7,7 @@
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
     xmlns:sections="using:Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.Sections"
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
-    xmlns:functions="using:Brainf_ckSharp.Uwp.Bindings.Functions"
+    xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
     xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
     xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
     xmlns:subPages="using:Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages"
@@ -66,7 +66,7 @@
                         <GroupStyle HeaderContainerStyle="{StaticResource ExpandedListViewHeaderItemStyle}">
                             <GroupStyle.HeaderTemplate>
                                 <DataTemplate x:DataType="objectModel:IGroupedCollection">
-                                    <jumpList:SemanticZoomZoomedInViewHeaderTemplate Title="{x:Bind functions:UserGuideSectionFormatter.FormatTitle((enums:UserGuideSection)Key)}"/>
+                                    <jumpList:SemanticZoomZoomedInViewHeaderTemplate Title="{x:Bind convertersSubPages:UserGuideSectionConverter.ConvertTitle((enums:UserGuideSection)Key)}"/>
                                 </DataTemplate>
                             </GroupStyle.HeaderTemplate>
                         </GroupStyle>
@@ -91,8 +91,8 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="ICollectionViewGroup">
                             <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
-                                Title="{x:Bind functions:UserGuideSectionFormatter.FormatTitle((enums:UserGuideSection)Group.(objectModel:IGroupedCollection.Key))}"
-                                Description="{x:Bind functions:UserGuideSectionFormatter.FormatDescription((enums:UserGuideSection)Group.(objectModel:IGroupedCollection.Key))}"/>
+                                Title="{x:Bind convertersSubPages:UserGuideSectionConverter.ConvertTitle((enums:UserGuideSection)Group.(objectModel:IGroupedCollection.Key))}"
+                                Description="{x:Bind convertersSubPages:UserGuideSectionConverter.ConvertDescription((enums:UserGuideSection)Group.(objectModel:IGroupedCollection.Key))}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
