@@ -1,6 +1,6 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.Uwp.Bindings.Functions;
+using Brainf_ckSharp.Uwp.Converters;
 using Brainf_ckSharp.Uwp.Models;
 
 #nullable enable
@@ -40,7 +40,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views.CodeLibraryMap.Templates
             UnicodeCharacter value = (UnicodeCharacter)e.NewValue;
 
             @this.NumberBlock.Text = ((ushort)value.Value).ToString();
-            @this.ValueBlock.Text = NumericFunctions.ConvertToVisibleText(value.Value);
+            @this.ValueBlock.Text = UInt16Converter.ConvertToVisibleText(value.Value);
         }
     }
 }
