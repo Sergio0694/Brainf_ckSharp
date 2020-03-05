@@ -101,7 +101,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
         {
             using (await SubFrameMutex.LockAsync())
             {
-                LoadingRing.Visibility = (Visibility)loading.ToInt();
+                LoadingRing.Visibility = (Visibility)(!loading).ToInt();
                 if (SubPage is UserControl page)
                 {
                     page.IsHitTestVisible = false;
@@ -109,7 +109,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
                     await Task.Delay(600);
                     SubPage = null;
                 }
-                else RootGrid.Visibility = (Visibility)loading.ToInt();
+                else RootGrid.Visibility = (Visibility)(!loading).ToInt();
             }
         }
 

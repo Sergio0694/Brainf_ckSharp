@@ -28,6 +28,6 @@ namespace Brainf_ckSharp.Uwp.Bindings.Functions
         /// <returns><see cref="Visibility.Visible"/> if the input values match, <see cref="Visibility.Collapsed"/> otherwise</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Visibility IndexToVisibility(int index, int target) => (Visibility)(index == target).ToInt();
+        public static Visibility IndexToVisibility(int index, int target) => (Visibility)(index != target).ToInt();
     }
 }
