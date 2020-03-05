@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:functions="using:Brainf_ckSharp.Uwp.Bindings.Functions"
+    xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:header="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel.Header"
     mc:Ignorable="d"
@@ -44,13 +44,13 @@
         <header:MinimalHeaderButton
             Grid.Column="0"
             Icon="{StaticResource OperatorsKeyboardIcon}"
-            IsSelected="{x:Bind functions:PivotSelectionFunctions.IndexToBool(StdinSelectedIndex, 0), Mode=OneWay}"
+            IsSelected="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(StdinSelectedIndex, 0), Mode=OneWay}"
             Selected="VirtualKeyboardHeaderSelected"/>
         <header:MinimalHeaderButton
             Icon="{StaticResource QuickMemoryViewerIcon}"
             Grid.Column="1"
-            IsSelected="{x:Bind functions:PivotSelectionFunctions.IndexToBool(StdinSelectedIndex, 1), Mode=OneWay}"
-            IsEnabled="{x:Bind functions:PivotSelectionFunctions.IndexToBool(ShellSelectedIndex, 0), Mode=OneWay}"
+            IsSelected="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(StdinSelectedIndex, 1), Mode=OneWay}"
+            IsEnabled="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(ShellSelectedIndex, 0), Mode=OneWay}"
             Selected="MemoryViewerHeaderSelected"
             Deselected="MemoryViewerHeaderDeselected"/>
 

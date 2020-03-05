@@ -11,11 +11,11 @@
     xmlns:shellHeader="using:Brainf_ckSharp.Uwp.Controls.Host.Header"
     xmlns:inputPanelHeader="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel.Header"
     xmlns:virtualKeyboard="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel.VirtualKeyboard"
-    xmlns:functions="using:Brainf_ckSharp.Uwp.Bindings.Functions"
     xmlns:memoryViewer="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel.MemoryViewer"
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     xmlns:viewModels="using:Brainf_ckSharp.Uwp.ViewModels"
+    xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -41,10 +41,10 @@
             Style="{StaticResource ExpandedPivotWithNoHeaderStyle}"
             SelectedIndex="{x:Bind RootHeader.SelectedIndex, Mode=OneWay}">
             <PivotItem>
-                <views:ConsoleView attachedProperties:ReactiveViewModelHelper.IsActive="{x:Bind functions:PivotSelectionFunctions.IndexToBool(RootHeader.SelectedIndex, 0), Mode=OneWay, FallbackValue=True}"/>
+                <views:ConsoleView attachedProperties:ReactiveViewModelHelper.IsActive="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(RootHeader.SelectedIndex, 0), Mode=OneWay, FallbackValue=True}"/>
             </PivotItem>
             <PivotItem>
-                <views:IdeView attachedProperties:ReactiveViewModelHelper.IsActive="{x:Bind functions:PivotSelectionFunctions.IndexToBool(RootHeader.SelectedIndex, 1), Mode=OneWay, FallbackValue=False}"/>
+                <views:IdeView attachedProperties:ReactiveViewModelHelper.IsActive="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(RootHeader.SelectedIndex, 1), Mode=OneWay, FallbackValue=False}"/>
             </PivotItem>
         </Pivot>
 
@@ -118,7 +118,7 @@
             Grid.Row="4"
             IsDynamicOverflowEnabled="False"
             Style="{StaticResource CommandBarRevealStyle}"
-            IsPrimaryContentDisplayed="{x:Bind functions:PivotSelectionFunctions.IndexToBool(RootHeader.SelectedIndex, 0), Mode=OneWay, FallbackValue=True}">
+            IsPrimaryContentDisplayed="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(RootHeader.SelectedIndex, 0), Mode=OneWay, FallbackValue=True}">
             <controls:AnimatedCommandBar.PrimaryCommands>
 
                 <!--Console buttons-->
@@ -205,33 +205,33 @@
                     Label="Repeat last script"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource RepeatScriptIcon}}"
                     Click="{x:Bind ViewModel.RepeatLastConsoleScript}"
-                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 0), Mode=OneWay}">
+                    Visibility="{x:Bind converters:PivotSelectionConverter.ConvertIndexToVisibility(RootHeader.SelectedIndex, 0), Mode=OneWay}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator
                             Key="F2" Modifiers="Control"
-                            IsEnabled="{x:Bind functions:PivotSelectionFunctions.IndexToBool(RootHeader.SelectedIndex, 0), Mode=OneWay}"/>
+                            IsEnabled="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(RootHeader.SelectedIndex, 0), Mode=OneWay}"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
                     Label="Restart"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource RestartIcon}}"
                     Click="{x:Bind ViewModel.RestartConsole}"
-                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 0), Mode=OneWay}">
+                    Visibility="{x:Bind converters:PivotSelectionConverter.ConvertIndexToVisibility(RootHeader.SelectedIndex, 0), Mode=OneWay}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator
                             Key="F6" Modifiers="Control"
-                            IsEnabled="{x:Bind functions:PivotSelectionFunctions.IndexToBool(RootHeader.SelectedIndex, 0), Mode=OneWay}"/>
+                            IsEnabled="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(RootHeader.SelectedIndex, 0), Mode=OneWay}"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
                     Label="Clear screen"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource ClearScreen}}"
                     Click="{x:Bind ViewModel.ClearConsoleScreen}"
-                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 0), Mode=OneWay}">
+                    Visibility="{x:Bind converters:PivotSelectionConverter.ConvertIndexToVisibility(RootHeader.SelectedIndex, 0), Mode=OneWay}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator
                             Key="F4" Modifiers="Control"
-                            IsEnabled="{x:Bind functions:PivotSelectionFunctions.IndexToBool(RootHeader.SelectedIndex, 0), Mode=OneWay}"/>
+                            IsEnabled="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(RootHeader.SelectedIndex, 0), Mode=OneWay}"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
@@ -245,33 +245,33 @@
                 <AppBarButton
                     Label="Open code library"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource OpenFileIcon}}"
-                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
+                    Visibility="{x:Bind converters:PivotSelectionConverter.ConvertIndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
                     Click="{x:Bind ViewModel.ShowCodeLibrary}"/>
                 <AppBarButton
                     Label="Open file"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource OpenFileIcon}}"
-                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
+                    Visibility="{x:Bind converters:PivotSelectionConverter.ConvertIndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
                     Click="{x:Bind ViewModel.OpenFile}"/>
                 <AppBarButton
                     Label="Save"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource SaveIcon}}"
-                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
+                    Visibility="{x:Bind converters:PivotSelectionConverter.ConvertIndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
                     Click="{x:Bind ViewModel.SaveFile}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator
                             Key="S" Modifiers="Control"
-                            IsEnabled="{x:Bind functions:PivotSelectionFunctions.IndexToBool(RootHeader.SelectedIndex, 1), Mode=OneWay}"/>
+                            IsEnabled="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(RootHeader.SelectedIndex, 1), Mode=OneWay}"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
                     Label="Save as"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource SaveAsIcon}}"
-                    Visibility="{x:Bind functions:PivotSelectionFunctions.IndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
+                    Visibility="{x:Bind converters:PivotSelectionConverter.ConvertIndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
                     Click="{x:Bind ViewModel.SaveFileAs}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator
                             Key="S" Modifiers="Menu"
-                            IsEnabled="{x:Bind functions:PivotSelectionFunctions.IndexToBool(RootHeader.SelectedIndex, 1), Mode=OneWay}"/>
+                            IsEnabled="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(RootHeader.SelectedIndex, 1), Mode=OneWay}"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarSeparator/>

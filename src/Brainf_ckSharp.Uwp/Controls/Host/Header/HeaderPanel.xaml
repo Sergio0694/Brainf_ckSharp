@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
-    xmlns:functions="using:Brainf_ckSharp.Uwp.Bindings.Functions"
+    xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:header="using:Brainf_ckSharp.Uwp.Controls.Host.Header"
     mc:Ignorable="d"
     d:DesignHeight="68"
@@ -38,7 +38,7 @@
             Icon="{StaticResource ConsoleIcon}"
             Text="Console"
             Height="68" Width="80"
-            IsSelected="{x:Bind functions:PivotSelectionFunctions.IndexToBool(SelectedIndex, 0), Mode=OneWay, FallbackValue=True}"
+            IsSelected="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(SelectedIndex, 0), Mode=OneWay, FallbackValue=True}"
             Selected="ConsoleHeaderSelected"/>
 
         <!--IDE button-->
@@ -47,7 +47,7 @@
             Text="IDE"
             Height="68" Width="80"
             Canvas.Left="82"
-            IsSelected="{x:Bind functions:PivotSelectionFunctions.IndexToBool(SelectedIndex, 1), Mode=OneWay}"
+            IsSelected="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(SelectedIndex, 1), Mode=OneWay}"
             Selected="IDEHeaderSelected"/>
 
         <!--Selection rectangle-->
