@@ -12,12 +12,12 @@
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
     xmlns:styleSelectors="using:Brainf_ckSharp.Uwp.StyleSelectors"
     xmlns:storage="using:Windows.Storage"
-    xmlns:functions="using:Brainf_ckSharp.Uwp.Bindings.Functions.Ide"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:codeLibrary="using:Brainf_ckSharp.Uwp.Bindings.Converters.CodeLibrary"
     xmlns:markupExtensions="using:Brainf_ckSharp.Uwp.MarkupExtensions"
     xmlns:subPages="using:Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages"
+    xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
+    xmlns:enums="using:Brainf_ckSharp.Uwp.Enums"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -118,11 +118,11 @@
                 <StackPanel.ContextFlyout>
                     <MenuFlyout>
                         <MenuFlyoutItem
-                            Text="{x:Bind functions:CodeLibraryEntryFavoriteStateFormatter.FormatLabel(Metadata.IsFavorited)}"
+                            Text="{x:Bind convertersSubPages:CodeMetadataConverter.ConvertFavoriteLabel(Metadata)}"
                             Command="{StaticResource ToggleFavoriteCommand}"
                             CommandParameter="{x:Bind}">
                             <MenuFlyoutItem.Icon>
-                                <FontIcon Glyph="{x:Bind functions:CodeLibraryEntryFavoriteStateFormatter.FormatIcon(Metadata.IsFavorited)}"/>
+                                <FontIcon Glyph="{x:Bind convertersSubPages:CodeMetadataConverter.ConvertFavoriteIcon(Metadata)}"/>
                             </MenuFlyoutItem.Icon>
                         </MenuFlyoutItem>
                         <MenuFlyoutItem
@@ -207,10 +207,6 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <!--Converters-->
-        <codeLibrary:CodeLibraryCategoryToUpperTitleConverter x:Key="CodeLibraryCategoryToUpperTitleConverter"/>
-        <codeLibrary:CodeLibraryCategoryToUpperCameTitleConverter x:Key="CodeLibraryCategoryToUpperCameTitleConverter"/>
     </UserControl.Resources>
 
     <host:SubPageFrame
@@ -251,7 +247,7 @@
                             <GroupStyle.HeaderTemplate>
                                 <DataTemplate x:DataType="objectModel:IGroupedCollection">
                                     <jumpList:SemanticZoomZoomedInViewHeaderTemplate
-                                        Title="{x:Bind Key, Converter={StaticResource CodeLibraryCategoryToUpperCameTitleConverter}}"
+                                        Title="{x:Bind convertersSubPages:CodeLibraryCategoryConverter.Convert((enums:CodeLibraryCategory)Key))}"
                                         Margin="0,-8,0,0"/>
                                 </DataTemplate>
                             </GroupStyle.HeaderTemplate>
@@ -287,8 +283,8 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="ICollectionViewGroup">
                             <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
-                                Title="{x:Bind Group.(objectModel:IGroupedCollection.Key), Converter={StaticResource CodeLibraryCategoryToUpperTitleConverter}}"
-                                Description="{x:Bind Group.(objectModel:IGroupedCollection.Key), Converter={StaticResource CodeLibraryCategoryToUpperTitleConverter}}"/>
+                                Title="{x:Bind convertersSubPages:CodeLibraryCategoryConverter.Convert((enums:CodeLibraryCategory)Group.(objectModel:IGroupedCollection.Key))}"
+                                Description="{Binding Group.Key}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

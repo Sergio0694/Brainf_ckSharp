@@ -1,13 +1,14 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 
-namespace Brainf_ckSharp.Uwp.Bindings.Functions
+namespace Brainf_ckSharp.Uwp.Converters
 {
     /// <summary>
     /// A <see langword="class"/> with a collection of helper functions for bindings with a <see cref="Windows.UI.Xaml.Controls.Pivot"/> control
     /// </summary>
-    public static class PivotSelectionFunctions
+    public static class PivotSelectionConverter
     {
         /// <summary>
         /// Checks whether the input index matches a target value
@@ -17,7 +18,7 @@ namespace Brainf_ckSharp.Uwp.Bindings.Functions
         /// <returns><see langword="true"/> if the input values match, <see langword="false"/> otherwise</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IndexToBool(int index, int target) => index == target;
+        public static bool ConvertIndexToBool(int index, int target) => index == target;
 
         /// <summary>
         /// Checks whether the input index matches a target value
@@ -27,6 +28,6 @@ namespace Brainf_ckSharp.Uwp.Bindings.Functions
         /// <returns><see cref="Visibility.Visible"/> if the input values match, <see cref="Visibility.Collapsed"/> otherwise</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Visibility IndexToVisibility(int index, int target) => index == target ? Visibility.Visible : Visibility.Collapsed;
+        public static Visibility ConvertIndexToVisibility(int index, int target) => (Visibility)(index != target).ToInt();
     }
 }

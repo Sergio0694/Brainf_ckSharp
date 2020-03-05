@@ -5,8 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
-    xmlns:functions="using:Brainf_ckSharp.Uwp.Bindings.Functions"
+    xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
+    xmlns:system="using:System"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -44,7 +45,7 @@
             FontSize="10"
             Style="{StaticResource FontIconTextBlockStyle}"
             Text="{StaticResource MemoryViewerPositionIndicator}"
-            Opacity="{x:Bind functions:NumericFunctions.BoolToDouble(ViewModel.IsChunkSelected), Mode=OneWay}"
+            Opacity="{x:Bind system:BoolExtensions.ToInt(ViewModel.IsChunkSelected), Mode=OneWay}"
             Grid.Column="{x:Bind ViewModel.SelectedIndex, Mode=OneWay}">
             <animations:Implicit.Animations>
                 <animations:OffsetAnimation Duration="0:0:0.4"/>
@@ -59,8 +60,8 @@
             Grid.Column="0"
             HorizontalAlignment="Left">
             <TextBlock
-                Text="{x:Bind functions:NumericFunctions.ConvertToVisibleText(ViewModel.Zero.Value), Mode=OneWay, FallbackValue=0}"
-                Foreground="{x:Bind functions:NumericFunctions.PositiveValueToAccentBrushOrFallback(ViewModel.Zero.Value), Mode=OneWay}"
+                Text="{x:Bind converters:UInt16Converter.ConvertToVisibleText(ViewModel.Zero.Value), Mode=OneWay, FallbackValue=0}"
+                Foreground="{x:Bind converters:UInt16Converter.ConvertPositiveValueToAccentBrushOrFallback(ViewModel.Zero.Value), Mode=OneWay}"
                 attachedProperties:CharacterRotationHelper.Character="{x:Bind ViewModel.Zero.Character, Mode=OneWay}"
                 Style="{StaticResource ValueBlockStyle}"/>
         </Viewbox>
@@ -70,8 +71,8 @@
             Grid.Column="1"
             HorizontalAlignment="Left">
             <TextBlock
-                Text="{x:Bind functions:NumericFunctions.ConvertToVisibleText(ViewModel.One.Value), Mode=OneWay, FallbackValue=0}"
-                Foreground="{x:Bind functions:NumericFunctions.PositiveValueToAccentBrushOrFallback(ViewModel.One.Value), Mode=OneWay}"
+                Text="{x:Bind converters:UInt16Converter.ConvertToVisibleText(ViewModel.One.Value), Mode=OneWay, FallbackValue=0}"
+                Foreground="{x:Bind converters:UInt16Converter.ConvertPositiveValueToAccentBrushOrFallback(ViewModel.One.Value), Mode=OneWay}"
                 attachedProperties:CharacterRotationHelper.Character="{x:Bind ViewModel.One.Character, Mode=OneWay}"
                 Style="{StaticResource ValueBlockStyle}"/>
         </Viewbox>
@@ -81,8 +82,8 @@
             Grid.Column="2"
             HorizontalAlignment="Left">
             <TextBlock
-                Text="{x:Bind functions:NumericFunctions.ConvertToVisibleText(ViewModel.Two.Value), Mode=OneWay, FallbackValue=0}"
-                Foreground="{x:Bind functions:NumericFunctions.PositiveValueToAccentBrushOrFallback(ViewModel.Two.Value), Mode=OneWay}"
+                Text="{x:Bind converters:UInt16Converter.ConvertToVisibleText(ViewModel.Two.Value), Mode=OneWay, FallbackValue=0}"
+                Foreground="{x:Bind converters:UInt16Converter.ConvertPositiveValueToAccentBrushOrFallback(ViewModel.Two.Value), Mode=OneWay}"
                 attachedProperties:CharacterRotationHelper.Character="{x:Bind ViewModel.Two.Character, Mode=OneWay}"
                 Style="{StaticResource ValueBlockStyle}"/>
         </Viewbox>
@@ -92,8 +93,8 @@
             Grid.Column="3"
             HorizontalAlignment="Left">
             <TextBlock
-                Text="{x:Bind functions:NumericFunctions.ConvertToVisibleText(ViewModel.Three.Value), Mode=OneWay, FallbackValue=0}"
-                Foreground="{x:Bind functions:NumericFunctions.PositiveValueToAccentBrushOrFallback(ViewModel.Three.Value), Mode=OneWay}"
+                Text="{x:Bind converters:UInt16Converter.ConvertToVisibleText(ViewModel.Three.Value), Mode=OneWay, FallbackValue=0}"
+                Foreground="{x:Bind converters:UInt16Converter.ConvertPositiveValueToAccentBrushOrFallback(ViewModel.Three.Value), Mode=OneWay}"
                 attachedProperties:CharacterRotationHelper.Character="{x:Bind ViewModel.Three.Character, Mode=OneWay}"
                 Style="{StaticResource ValueBlockStyle}"/>
         </Viewbox>

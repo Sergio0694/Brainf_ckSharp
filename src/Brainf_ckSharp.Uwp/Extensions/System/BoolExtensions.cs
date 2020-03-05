@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
-using Windows.UI.Xaml;
 
 namespace System
 {
@@ -10,16 +9,15 @@ namespace System
     public static class BoolExtensions
     {
         /// <summary>
-        /// Converts a <see cref="bool"/> value to the equivalent <see cref="Visibility"/> value
+        /// Converts the given <see cref="bool"/> value into an <see cref="int"/>
         /// </summary>
-        /// <param name="flag">The input <see cref="bool"/> value to convert</param>
-        /// <returns><see cref="Visibility.Visible"/> if <paramref name="flag"/> is <see langword="true"/>, <see cref="Visibility.Collapsed"/> otherwise</returns>
+        /// <param name="flag">The input value to convert</param>
+        /// <returns>1 if <paramref name="flag"/> is <see langword="true"/>, 0 otherwise</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Visibility ToVisibility(this bool flag)
+        public static int ToInt(this bool flag)
         {
-            int value = Unsafe.As<bool, byte>(ref flag);
-            return (Visibility)value;
+            return Unsafe.As<bool, byte>(ref flag);
         }
     }
 }

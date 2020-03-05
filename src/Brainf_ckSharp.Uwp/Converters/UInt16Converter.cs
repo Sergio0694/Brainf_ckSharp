@@ -3,12 +3,12 @@ using System.Runtime.CompilerServices;
 using Windows.UI.Xaml.Media;
 using Brainf_ckSharp.Uwp.Resources;
 
-namespace Brainf_ckSharp.Uwp.Bindings.Functions
+namespace Brainf_ckSharp.Uwp.Converters
 {
     /// <summary>
-    /// A <see langword="class"/> with a collection of helper functions for bindings to numeric values
+    /// A <see langword="class"/> with a collection of helper functions for bindings to <see cref="ushort"/> values
     /// </summary>
-    public static class NumericFunctions
+    public static class UInt16Converter
     {
         /// <summary>
         /// Converts a given character into a visible <see cref="string"/> representing its value in a visible way
@@ -37,18 +37,9 @@ namespace Brainf_ckSharp.Uwp.Bindings.Functions
         /// <returns>The accent brush if <paramref name="c"/> is positive, a fallback brush otherwise</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Brush PositiveValueToAccentBrushOrFallback(ushort c)
+        public static Brush ConvertPositiveValueToAccentBrushOrFallback(ushort c)
         {
             return c > 0 ? XamlResources.AccentBrush : XamlResources.Get<Brush>("ZeroValueInMemoryViewerBrush");
         }
-
-        /// <summary>
-        /// Converts the given <see cref="bool"/> value into a <see cref="double"/>
-        /// </summary>
-        /// <param name="flag">The input value to convert</param>
-        /// <returns>1 if <paramref name="flag"/> is <see langword="true"/>, 0 otherwise</returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double BoolToDouble(bool flag) => Unsafe.As<bool, byte>(ref flag);
     }
 }
