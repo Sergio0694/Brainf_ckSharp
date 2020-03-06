@@ -28,6 +28,13 @@ namespace Brainf_ckSharp.Models.Internal
             }
 
             /// <inheritdoc/>
+            public ushort Current
+            {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                get => Ptr[_Position];
+            }
+
+            /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveNext()
             {
@@ -108,6 +115,13 @@ namespace Brainf_ckSharp.Models.Internal
             }
 
             /// <inheritdoc/>
+            public ushort Current
+            {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                get => Ptr[_Position];
+            }
+
+            /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveNext()
             {
@@ -181,6 +195,13 @@ namespace Brainf_ckSharp.Models.Internal
                 Ptr = ptr;
                 MaxIndex = maxIndex;
                 _Position = position;
+            }
+
+            /// <inheritdoc/>
+            public ushort Current
+            {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                get => Ptr[_Position];
             }
 
             /// <inheritdoc/>
@@ -263,6 +284,13 @@ namespace Brainf_ckSharp.Models.Internal
                 Ptr = ptr;
                 MaxIndex = maxIndex;
                 _Position = position;
+            }
+
+            /// <inheritdoc/>
+            public ushort Current
+            {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                get => Ptr[_Position];
             }
 
             /// <inheritdoc/>

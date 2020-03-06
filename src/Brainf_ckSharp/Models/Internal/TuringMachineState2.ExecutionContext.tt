@@ -38,6 +38,13 @@ foreach (var mode in Enum.GetValues(typeof(OverflowMode)))
             }
 
             /// <inheritdoc/>
+            public ushort Current
+            {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                get => Ptr[_Position];
+            }
+
+            /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveNext()
             {
