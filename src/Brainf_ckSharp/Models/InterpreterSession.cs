@@ -2,6 +2,7 @@
 using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ckSharp.Buffers.IO;
 using Brainf_ckSharp.Enums;
@@ -157,26 +158,51 @@ namespace Brainf_ckSharp.Models
                 return false;
             }
 
-            Stopwatch.Start();
+            // Execute the mode specific implementation
+            switch (MachineState.Mode)
+            {
+                case OverflowMode.UshortWithNoOverflow: MoveNext<TuringMachineState.UshortWithNoOverflowExecutionContext>(); break;
+                case OverflowMode.UshortWithOverflow: MoveNext<TuringMachineState.UshortWithOverflowExecutionContext>(); break;
+                case OverflowMode.ByteWithNoOverflow: MoveNext<TuringMachineState.ByteWithNoOverflowExecutionContext>(); break;
+                case OverflowMode.ByteWithOverflow: MoveNext<TuringMachineState.ByteWithOverflowExecutionContext>(); break;
+                default: throw new ArgumentOutOfRangeException(nameof(MachineState.Mode), $"Invalid execution mode: {MachineState.Mode}");
+            };
 
-            // Execute the new interpreter debug step
-            ExitCode exitCode = Brainf_ckInterpreter.Run(
-                Operators.Span,
-                Breakpoints.Span,
-                JumpTable.Span,
-                Functions.Span,
-                Definitions.Span,
-                StackFrames.Span,
-                ref _Depth,
-                ref _TotalOperations,
-                ref _TotalFunctions,
-                MachineState,
-                StdinBuffer,
-                StdoutBuffer,
-                ExecutionToken,
-                DebugToken);
+            return true;
+        }
 
-            Stopwatch.Stop();
+        /// <summary>
+        /// Implements the <see cref="MoveNext"/> logic with a specific execution mode
+        /// </summary>
+        /// <typeparam name="TExecutionContext">The type implementing <see cref="IMachineStateExecutionContext"/> to use</typeparam>
+        private void MoveNext<TExecutionContext>()
+            where TExecutionContext : struct, IMachineStateExecutionContext
+        {
+            ExitCode exitCode;
+
+            using (TuringMachineState.ExecutionSession<TExecutionContext> session = MachineState.CreateExecutionSession<TExecutionContext>())
+            {
+                Stopwatch.Start();
+
+                // Execute the new interpreter debug step
+                exitCode = Brainf_ckInterpreter.Run(
+                    ref Unsafe.AsRef(session.ExecutionContext),
+                    Operators.Span,
+                    Breakpoints.Span,
+                    JumpTable.Span,
+                    Functions.Span,
+                    Definitions.Span,
+                    StackFrames.Span,
+                    ref _Depth,
+                    ref _TotalOperations,
+                    ref _TotalFunctions,
+                    StdinBuffer,
+                    StdoutBuffer,
+                    ExecutionToken,
+                    DebugToken);
+
+                Stopwatch.Stop();
+            }
 
             // Prepare the debug info
             HaltedExecutionInfo? debugInfo = Brainf_ckInterpreter.LoadDebugInfo(
@@ -202,8 +228,6 @@ namespace Brainf_ckSharp.Models
                 StdoutBuffer.ToString(),
                 Stopwatch.Elapsed,
                 _TotalOperations);
-
-            return true;
         }
 
         /// <inheritdoc/>
