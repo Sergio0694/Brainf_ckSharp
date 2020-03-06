@@ -18,7 +18,7 @@ namespace Brainf_ckSharp.Models.Internal
         /// <typeparam name="TExecutionContext">The type of execution context to retrieve</typeparam>
         /// <returns>An execution context of the specified type</returns>
         [Pure]
-        public TExecutionContext GetExecutionContext<TExecutionContext>()
+        private TExecutionContext GetExecutionContext<TExecutionContext>()
             where TExecutionContext : struct, IMachineStateExecutionContext
         {
             if (typeof(TExecutionContext) == typeof(UshortWithNoOverflowExecutionContext))

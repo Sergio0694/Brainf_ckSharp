@@ -20,7 +20,7 @@ namespace Brainf_ckSharp.Models.Internal
         /// <summary>
         /// The current position within the underlying buffer
         /// </summary>
-        private int _Position;
+        public int _Position;
 
         /// <summary>
         /// The overflow mode being used by the current instance
