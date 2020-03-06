@@ -96,6 +96,22 @@ namespace Brainf_ckSharp.Models.Internal
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryMoveNext(int count)
+            {
+                if (_Position + count > MaxIndex)
+                {
+                    _Position = MaxIndex;
+
+                    return MaxIndex - _Position;
+                }
+
+                _Position += count;
+
+                return count;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveBack()
             {
                 if (_Position == 0) return false;
@@ -103,6 +119,22 @@ namespace Brainf_ckSharp.Models.Internal
                 _Position--;
 
                 return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryMoveBack(int count)
+            {
+                if (_Position - count < 0)
+                {
+                    _Position = 0;
+
+                    return _Position;
+                }
+
+                _Position -= count;
+
+                return count;
             }
 
             /// <inheritdoc/>
@@ -120,6 +152,26 @@ namespace Brainf_ckSharp.Models.Internal
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryIncrement(int count)
+            {
+                ushort* current = Ptr + _Position;
+
+                if (*current + count > ushort.MaxValue)
+                {
+                    ushort temp = *current;
+
+                    *current = ushort.MaxValue;
+
+                    return ushort.MaxValue - temp;
+                }
+
+                *current = unchecked((ushort)(*current + 1));
+
+                return count;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryDecrement()
             {
                 ushort* current = Ptr + _Position;
@@ -129,6 +181,26 @@ namespace Brainf_ckSharp.Models.Internal
                 *current = (ushort)(*current - 1);
 
                 return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryDecrement(int count)
+            {
+                ushort* current = Ptr + _Position;
+
+                if (*current < count)
+                {
+                    ushort temp = *current;
+
+                    *current = 0;
+
+                    return temp;
+                }
+
+                *current = (ushort)(*current - count);
+
+                return count;
             }
 
             /// <inheritdoc/>
@@ -190,6 +262,22 @@ namespace Brainf_ckSharp.Models.Internal
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryMoveNext(int count)
+            {
+                if (_Position + count > MaxIndex)
+                {
+                    _Position = MaxIndex;
+
+                    return MaxIndex - _Position;
+                }
+
+                _Position += count;
+
+                return count;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveBack()
             {
                 if (_Position == 0) return false;
@@ -197,6 +285,22 @@ namespace Brainf_ckSharp.Models.Internal
                 _Position--;
 
                 return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryMoveBack(int count)
+            {
+                if (_Position - count < 0)
+                {
+                    _Position = 0;
+
+                    return _Position;
+                }
+
+                _Position -= count;
+
+                return count;
             }
 
             /// <inheritdoc/>
@@ -212,6 +316,17 @@ namespace Brainf_ckSharp.Models.Internal
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryIncrement(int count)
+            {
+                ushort* current = Ptr + _Position;
+
+                *current = unchecked((ushort)(*current + count));
+
+                return count;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryDecrement()
             {
                 ushort* current = Ptr + _Position;
@@ -219,6 +334,17 @@ namespace Brainf_ckSharp.Models.Internal
                 *current = unchecked((ushort)(*current - 1));
 
                 return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryDecrement(int count)
+            {
+                ushort* current = Ptr + _Position;
+
+                *current = unchecked((ushort)(*current - count));
+
+                return count;
             }
 
             /// <inheritdoc/>
@@ -280,6 +406,22 @@ namespace Brainf_ckSharp.Models.Internal
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryMoveNext(int count)
+            {
+                if (_Position + count > MaxIndex)
+                {
+                    _Position = MaxIndex;
+
+                    return MaxIndex - _Position;
+                }
+
+                _Position += count;
+
+                return count;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveBack()
             {
                 if (_Position == 0) return false;
@@ -291,15 +433,51 @@ namespace Brainf_ckSharp.Models.Internal
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryMoveBack(int count)
+            {
+                if (_Position - count < 0)
+                {
+                    _Position = 0;
+
+                    return _Position;
+                }
+
+                _Position -= count;
+
+                return count;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryIncrement()
             {
                 ushort* current = Ptr + _Position;
 
-                if (*current == ushort.MaxValue) return false;
+                if (*current == byte.MaxValue) return false;
 
                 *current = unchecked((byte)(*current + 1));
 
                 return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryIncrement(int count)
+            {
+                ushort* current = Ptr + _Position;
+
+                if (*current + count > byte.MaxValue)
+                {
+                    ushort temp = *current;
+
+                    *current = byte.MaxValue;
+
+                    return byte.MaxValue - temp;
+                }
+
+                *current = unchecked((byte)(*current + count));
+
+                return count;
             }
 
             /// <inheritdoc/>
@@ -313,6 +491,26 @@ namespace Brainf_ckSharp.Models.Internal
                 *current = (ushort)(*current - 1);
 
                 return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryDecrement(int count)
+            {
+                ushort* current = Ptr + _Position;
+
+                if (*current < count)
+                {
+                    ushort temp = *current;
+
+                    *current = 0;
+
+                    return temp;
+                }
+
+                *current = (ushort)(*current - count);
+
+                return count;
             }
 
             /// <inheritdoc/>
@@ -376,6 +574,22 @@ namespace Brainf_ckSharp.Models.Internal
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryMoveNext(int count)
+            {
+                if (_Position + count > MaxIndex)
+                {
+                    _Position = MaxIndex;
+
+                    return MaxIndex - _Position;
+                }
+
+                _Position += count;
+
+                return count;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveBack()
             {
                 if (_Position == 0) return false;
@@ -383,6 +597,22 @@ namespace Brainf_ckSharp.Models.Internal
                 _Position--;
 
                 return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryMoveBack(int count)
+            {
+                if (_Position - count < 0)
+                {
+                    _Position = 0;
+
+                    return _Position;
+                }
+
+                _Position -= count;
+
+                return count;
             }
 
             /// <inheritdoc/>
@@ -398,6 +628,17 @@ namespace Brainf_ckSharp.Models.Internal
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryIncrement(int count)
+            {
+                ushort* current = Ptr + _Position;
+
+                *current = unchecked((byte)(*current + count));
+
+                return count;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryDecrement()
             {
                 ushort* current = Ptr + _Position;
@@ -405,6 +646,17 @@ namespace Brainf_ckSharp.Models.Internal
                 *current = unchecked((byte)(*current - 1));
 
                 return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryDecrement(int count)
+            {
+                ushort* current = Ptr + _Position;
+
+                *current = unchecked((byte)(*current - count));
+
+                return count;
             }
 
             /// <inheritdoc/>

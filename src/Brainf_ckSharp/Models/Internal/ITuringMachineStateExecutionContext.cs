@@ -22,10 +22,24 @@
         bool TryMoveNext();
 
         /// <summary>
+        /// Tries to move the memory pointer forward
+        /// </summary>
+        /// <param name="count">The number of times to try to execute the operation</param>
+        /// <returns>The number of executed operations</returns>
+        int TryMoveNext(int count);
+
+        /// <summary>
         /// Tries to move the memory pointer back
         /// </summary>
         /// <returns><see langword="true"/> if the pointer was moved successfully, <see langword="false"/> otherwise</returns>
         bool TryMoveBack();
+
+        /// <summary>
+        /// Tries to move the memory pointer back
+        /// </summary>
+        /// <param name="count">The number of times to try to execute the operation</param>
+        /// <returns>The number of executed operations</returns>
+        int TryMoveBack(int count);
 
         /// <summary>
         /// Tries to increment the current memory location
@@ -34,10 +48,24 @@
         bool TryIncrement();
 
         /// <summary>
+        /// Tries to increment the current memory location
+        /// </summary>
+        /// <param name="count">The number of times to try to execute the operation</param>
+        /// <returns>The number of executed operations</returns>
+        int TryIncrement(int count);
+
+        /// <summary>
         /// Tries to decrement the current memory location
         /// </summary>
         /// <returns><see langword="true"/> if the memory location was decremented successfully, <see langword="false"/> otherwise</returns>
         bool TryDecrement();
+
+        /// <summary>
+        /// Tries to decrement the current memory location
+        /// </summary>
+        /// <param name="count">The number of times to try to execute the operation</param>
+        /// <returns>The number of executed operations</returns>
+        int TryDecrement(int count);
 
         /// <summary>
         /// Tries to set the current memory location to the value of a given character

@@ -92,6 +92,22 @@ foreach (var mode in Enum.GetValues(typeof(OverflowMode)))
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryMoveNext(int count)
+            {
+                if (_Position + count > MaxIndex)
+                {
+                    _Position = MaxIndex;
+
+                    return MaxIndex - _Position;
+                }
+
+                _Position += count;
+
+                return count;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveBack()
             {
                 if (_Position == 0) return false;
@@ -99,6 +115,22 @@ foreach (var mode in Enum.GetValues(typeof(OverflowMode)))
                 _Position--;
 
                 return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryMoveBack(int count)
+            {
+                if (_Position - count < 0)
+                {
+                    _Position = 0;
+
+                    return _Position;
+                }
+
+                _Position -= count;
+
+                return count;
             }
 
             /// <inheritdoc/>
@@ -125,7 +157,7 @@ switch (mode)
         break;
     case OverflowMode.ByteWithNoOverflow:
 #>
-                if (*current == ushort.MaxValue) return false;
+                if (*current == byte.MaxValue) return false;
 
                 *current = unchecked((byte)(*current + 1));
 <#
@@ -140,6 +172,61 @@ switch (mode)
 #>
 
                 return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryIncrement(int count)
+            {
+                ushort* current = Ptr + _Position;
+
+<#
+// Setup the correct increment code
+switch (mode)
+{
+    case OverflowMode.UshortWithNoOverflow:
+#>
+                if (*current + count > ushort.MaxValue)
+                {
+                    ushort temp = *current;
+
+                    *current = ushort.MaxValue;
+
+                    return ushort.MaxValue - temp;
+                }
+
+                *current = unchecked((ushort)(*current + 1));
+<#
+        break;
+    case OverflowMode.UshortWithOverflow:
+#>
+                *current = unchecked((ushort)(*current + count));
+<# 
+        break;
+    case OverflowMode.ByteWithNoOverflow:
+#>
+                if (*current + count > byte.MaxValue)
+                {
+                    ushort temp = *current;
+
+                    *current = byte.MaxValue;
+
+                    return byte.MaxValue - temp;
+                }
+
+                *current = unchecked((byte)(*current + count));
+<#
+        break;
+    case OverflowMode.ByteWithOverflow:
+#>
+                *current = unchecked((byte)(*current + count));
+<#  
+        break;
+    default: throw new ArgumentException($"Invalid overflow mode: {mode}", nameof(mode));
+}
+#>
+
+                return count;
             }
 
             /// <inheritdoc/>
@@ -175,6 +262,48 @@ switch (mode)
 #>
 
                 return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int TryDecrement(int count)
+            {
+                ushort* current = Ptr + _Position;
+
+<#
+// Setup the correct decrement code
+switch (mode)
+{
+    case OverflowMode.UshortWithNoOverflow:
+    case OverflowMode.ByteWithNoOverflow:
+#>
+                if (*current < count)
+                {
+                    ushort temp = *current;
+
+                    *current = 0;
+
+                    return temp;
+                }
+
+                *current = (ushort)(*current - count);
+<#
+        break;
+    case OverflowMode.UshortWithOverflow:
+#>
+                *current = unchecked((ushort)(*current - count));
+<#
+        break;
+    case OverflowMode.ByteWithOverflow:
+#>
+                *current = unchecked((byte)(*current - count));
+<#
+        break;
+    default: throw new ArgumentException($"Invalid overflow mode: {mode}", nameof(mode));
+}
+#>
+
+                return count;
             }
 
             /// <inheritdoc/>
