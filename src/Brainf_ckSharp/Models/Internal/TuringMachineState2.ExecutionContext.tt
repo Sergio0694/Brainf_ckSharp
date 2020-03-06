@@ -1,0 +1,181 @@
+﻿<#@ template language="C#"
+#><#@ assembly name="System.Core"
+#><#@ assembly name="$(TargetDir)Brainf_ckSharp.dll"
+#><#@ assembly name="NetStandard"
+#><#@ import namespace="System"
+#><#@ import namespace="Brainf_ckSharp.Enums" #>
+using System.Runtime.CompilerServices;
+using Brainf_ckSharp.Enums;
+
+#pragma warning disable IDE0032
+
+namespace Brainf_ckSharp.Models.Internal
+{
+    /// <summary>
+    /// A <see langword="class"/> that represents the state of a Turing machine
+    /// </summary>
+    internal sealed unsafe partial class TuringMachineState2
+    {
+<#
+foreach (var mode in Enum.GetValues(typeof(OverflowMode)))
+{
+#>
+        /// <summary>
+        /// A <see langword="struct"/> implementing <see cref="IMachineStateExecutionContext"/> for <see cref="OverflowMode.<#=mode#>"/>
+        /// </summary>
+        public struct <#=mode#>ExecutionContext : IMachineStateExecutionContext
+        {
+            private readonly ushort* Ptr;
+            private readonly int MaxIndex;
+            private int _Position;
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public <#=mode#>ExecutionContext(ushort* ptr, int maxIndex, int position)
+            {
+                Ptr = ptr;
+                MaxIndex = maxIndex;
+                _Position = position;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool TryMoveNext()
+            {
+                if (_Position == MaxIndex) return false;
+
+                _Position++;
+
+                return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool TryMoveBack()
+            {
+                if (_Position == 0) return false;
+
+                _Position--;
+
+                return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool TryIncrement()
+            {
+                ushort* current = Ptr + _Position;
+
+<#
+// Setup the correct increment code
+switch (mode)
+{
+    case OverflowMode.UshortWithNoOverflow:
+#>
+                if (*current == ushort.MaxValue) return false;
+
+                *current = unchecked((ushort)(*current + 1));
+<#
+        break;
+    case OverflowMode.UshortWithOverflow:
+#>
+                *current = unchecked((ushort)(*current + 1));
+<# 
+        break;
+    case OverflowMode.ByteWithNoOverflow:
+#>
+                if (*current == ushort.MaxValue) return false;
+
+                *current = unchecked((byte)(*current + 1));
+<#
+        break;
+    case OverflowMode.ByteWithOverflow:
+#>
+                *current = unchecked((byte)(*current + 1));
+<#  
+        break;
+    default: throw new ArgumentException($"Invalid overflow mode: {mode}", nameof(mode));
+}
+#>
+
+                return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool TryDecrement()
+            {
+                ushort* current = Ptr + _Position;
+
+<#
+// Setup the correct decrement code
+switch (mode)
+{
+    case OverflowMode.UshortWithNoOverflow:
+    case OverflowMode.ByteWithNoOverflow:
+#>
+                if (*current == 0) return false;
+
+                *current = (ushort)(*current - 1);
+<#
+        break;
+    case OverflowMode.UshortWithOverflow:
+#>
+                *current = unchecked((ushort)(*current - 1));
+<#
+        break;
+    case OverflowMode.ByteWithOverflow:
+#>
+                *current = unchecked((byte)(*current - 1));
+<#
+        break;
+    default: throw new ArgumentException($"Invalid overflow mode: {mode}", nameof(mode));
+}
+#>
+
+                return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool TryInput(char c)
+            {
+                ushort* current = Ptr + _Position;
+
+<#
+// Setup the correct input code
+switch (mode)
+{
+    case OverflowMode.UshortWithNoOverflow:
+    case OverflowMode.UshortWithOverflow:
+#>
+                *current = c;
+<#
+        break;
+    case OverflowMode.ByteWithNoOverflow:
+#>
+                if (c > byte.MaxValue) return false;
+
+                *current = c;
+<#
+        break;
+    case OverflowMode.ByteWithOverflow:
+#>
+                *current = unchecked((byte)c);
+<#
+        break;
+    default: throw new ArgumentException($"Invalid overflow mode: {mode}", nameof(mode));
+}
+#>
+
+                return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void ResetCell() => Ptr[_Position] = 0;
+        }
+<#    
+}
+#>
+    }
+}
