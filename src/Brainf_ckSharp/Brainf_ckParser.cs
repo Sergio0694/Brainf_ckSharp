@@ -13,7 +13,7 @@ namespace Brainf_ckSharp
     /// <summary>
     /// A <see langword="class"/> responsible for parsing and validating Brainf*ck/PBrain scripts
     /// </summary>
-    public static class Brainf_ckParser
+    public static partial class Brainf_ckParser
     {
         /// <summary>
         /// The maximum valid index in <see cref="OperatorsLookupTable"/>
