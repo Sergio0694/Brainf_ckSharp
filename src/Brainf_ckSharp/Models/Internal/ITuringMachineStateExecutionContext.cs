@@ -6,6 +6,11 @@
     internal interface IMachineStateExecutionContext
     {
         /// <summary>
+        /// Gets the current position on the memory buffer
+        /// </summary>
+        int Position { get; }
+
+        /// <summary>
         /// Gets the value at the current memory position
         /// </summary>
         ushort Current { get; }

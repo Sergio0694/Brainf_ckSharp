@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Enums;
 
 #pragma warning disable IDE0032
@@ -25,6 +26,13 @@ namespace Brainf_ckSharp.Models.Internal
                 Ptr = ptr;
                 MaxIndex = maxIndex;
                 _Position = position;
+            }
+
+            /// <inheritdoc/>
+            public int Position
+            {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                get => _Position;
             }
 
             /// <inheritdoc/>
@@ -115,6 +123,13 @@ namespace Brainf_ckSharp.Models.Internal
             }
 
             /// <inheritdoc/>
+            public int Position
+            {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                get => _Position;
+            }
+
+            /// <inheritdoc/>
             public ushort Current
             {
                 [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -195,6 +210,13 @@ namespace Brainf_ckSharp.Models.Internal
                 Ptr = ptr;
                 MaxIndex = maxIndex;
                 _Position = position;
+            }
+
+            /// <inheritdoc/>
+            public int Position
+            {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                get => _Position;
             }
 
             /// <inheritdoc/>
@@ -284,6 +306,13 @@ namespace Brainf_ckSharp.Models.Internal
                 Ptr = ptr;
                 MaxIndex = maxIndex;
                 _Position = position;
+            }
+
+            /// <inheritdoc/>
+            public int Position
+            {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                get => _Position;
             }
 
             /// <inheritdoc/>

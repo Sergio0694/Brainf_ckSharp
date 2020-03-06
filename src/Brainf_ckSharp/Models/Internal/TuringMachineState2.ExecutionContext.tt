@@ -4,6 +4,7 @@
 #><#@ assembly name="NetStandard"
 #><#@ import namespace="System"
 #><#@ import namespace="Brainf_ckSharp.Enums" #>
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Enums;
 
@@ -35,6 +36,13 @@ foreach (var mode in Enum.GetValues(typeof(OverflowMode)))
                 Ptr = ptr;
                 MaxIndex = maxIndex;
                 _Position = position;
+            }
+
+            /// <inheritdoc/>
+            public int Position
+            {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                get => _Position;
             }
 
             /// <inheritdoc/>
