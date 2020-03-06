@@ -10,7 +10,7 @@ namespace Brainf_ckSharp.Models.Internal
     /// <summary>
     /// A <see langword="class"/> that represents the state of a Turing machine
     /// </summary>
-    internal sealed unsafe partial class TuringMachineState2
+    internal sealed unsafe partial class TuringMachineState
     {
         /// <summary>
         /// Gets an execution context of the specified type

@@ -15,7 +15,7 @@ namespace Brainf_ckSharp.Models.Internal
     /// <summary>
     /// A <see langword="class"/> that represents the state of a Turing machine
     /// </summary>
-    internal sealed unsafe class TuringMachineState : PinnedUnmanagedMemoryOwner<ushort>, IReadOnlyTuringMachineState
+    internal sealed unsafe partial class TuringMachineState : PinnedUnmanagedMemoryOwner<ushort>, IReadOnlyTuringMachineState
     {
         /// <summary>
         /// The current position within the underlying buffer
@@ -25,7 +25,7 @@ namespace Brainf_ckSharp.Models.Internal
         /// <summary>
         /// The overflow mode being used by the current instance
         /// </summary>
-        private readonly OverflowMode Mode;
+        public readonly OverflowMode Mode;
 
         /// <summary>
         /// Creates a new blank machine state with the given parameters
