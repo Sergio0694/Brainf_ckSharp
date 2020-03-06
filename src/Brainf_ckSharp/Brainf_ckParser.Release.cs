@@ -46,8 +46,11 @@ namespace Brainf_ckSharp
             byte currentOperator = Unsafe.Add(ref r0, Unsafe.Add(ref sourceRef, j));
             int currentCount = 1;
 
-            // Extract all the operators from the input source code
-            for (; j < source.Length; j++)
+            /* Extract all the operators from the input source code.
+             * We increment j when the loop starts because that index will
+             * be pointing to the first operator, which has already been tracked.
+             * The search needs to start from the character right after that. */
+            for (j++; j < source.Length; j++)
             {
                 char c = Unsafe.Add(ref sourceRef, j);
                 int
@@ -72,6 +75,9 @@ namespace Brainf_ckSharp
                 }
             }
 
+            // Insert the last operator
+            buffer[i++] = new Brainf_ckOperation(currentOperator, currentCount);
+
             PinnedUnmanagedMemoryOwner<Brainf_ckOperation> operations = PinnedUnmanagedMemoryOwner<Brainf_ckOperation>.Allocate(i, false);
 
             /* Copy the compressed operators to the trimmed buffer.
@@ -81,6 +87,48 @@ namespace Brainf_ckSharp
             new Span<Brainf_ckOperation>(buffer.GetPointer(), i).CopyTo(new Span<Brainf_ckOperation>(operations.GetPointer(), operations.Size));
 
             return operations;
+        }
+
+        /// <summary>
+        /// Extracts the compacted source code from a given sequence of operations
+        /// </summary>
+        /// <param name="operations">The input sequence of parsed operations to read</param>
+        /// <returns>A <see cref="string"/> representing the input sequence of operations</returns>
+        [Pure]
+        internal static unsafe string ExtractSource(UnmanagedSpan<Brainf_ckOperation> operations)
+        {
+            int size = 0;
+
+            // Count the number of original operators
+            for (int i = 0; i < operations.Size; i++)
+                size += operations[i].Count;
+
+            // Rent a buffer to use to build the final string
+            using StackOnlyUnmanagedMemoryOwner<char> characters = StackOnlyUnmanagedMemoryOwner<char>.Allocate(size);
+
+            ref char targetRef = ref characters.GetReference();
+            ref byte lookupRef = ref MemoryMarshal.GetReference(OperatorsInverseLookupTable);
+
+            // Build the source string with the inverse operators lookup table
+            for (int i = 0, j = 0; i < operations.Size; i++)
+            {
+                Brainf_ckOperation operation = operations[i];
+                char op = (char)Unsafe.Add(ref lookupRef, operation.Operator);
+
+                // Copy the repeated operator
+                for (int k = 0; k < operation.Count; k++)
+                {
+                    Unsafe.Add(ref targetRef, j + k) = op;
+                }
+
+                j += operation.Count;
+            }
+
+            // Allocate the new string from the rented buffer
+            fixed (char* p = &targetRef)
+            {
+                return new string(p, 0, size);
+            }
         }
     }
 }
