@@ -188,7 +188,7 @@ namespace Brainf_ckSharp.Models.Internal
                     Ptr[_Position] = c;
                     break;
                 case OverflowMode.ByteWithOverflow:
-                    Ptr[_Position] = (ushort)(c % byte.MaxValue);
+                    Ptr[_Position] = (ushort)(c & byte.MaxValue);
                     break;
             }
 
