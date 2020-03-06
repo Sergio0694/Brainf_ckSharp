@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Enums;
 
@@ -11,6 +12,46 @@ namespace Brainf_ckSharp.Models.Internal
     /// </summary>
     internal sealed unsafe partial class TuringMachineState2
     {
+        /// <summary>
+        /// Gets an execution context of the specified type
+        /// </summary>
+        /// <typeparam name="TExecutionContext">The type of execution context to retrieve</typeparam>
+        /// <returns>An execution context of the specified type</returns>
+        [Pure]
+        public TExecutionContext GetExecutionContext<TExecutionContext>()
+            where TExecutionContext : struct, IMachineStateExecutionContext
+        {
+            if (typeof(TExecutionContext) == typeof(UshortWithNoOverflowExecutionContext))
+            {
+                var executionContext = new UshortWithNoOverflowExecutionContext(Ptr, Size - 1, _Position);
+
+                return Unsafe.As<UshortWithNoOverflowExecutionContext, TExecutionContext>(ref executionContext);
+            }
+
+            if (typeof(TExecutionContext) == typeof(UshortWithOverflowExecutionContext))
+            {
+                var executionContext = new UshortWithOverflowExecutionContext(Ptr, Size - 1, _Position);
+
+                return Unsafe.As<UshortWithOverflowExecutionContext, TExecutionContext>(ref executionContext);
+            }
+
+            if (typeof(TExecutionContext) == typeof(ByteWithNoOverflowExecutionContext))
+            {
+                var executionContext = new ByteWithNoOverflowExecutionContext(Ptr, Size - 1, _Position);
+
+                return Unsafe.As<ByteWithNoOverflowExecutionContext, TExecutionContext>(ref executionContext);
+            }
+
+            if (typeof(TExecutionContext) == typeof(ByteWithOverflowExecutionContext))
+            {
+                var executionContext = new ByteWithOverflowExecutionContext(Ptr, Size - 1, _Position);
+
+                return Unsafe.As<ByteWithOverflowExecutionContext, TExecutionContext>(ref executionContext);
+            }
+
+            throw new ArgumentException($"Invalid context type: {typeof(TExecutionContext)}", nameof(TExecutionContext));
+        }
+
         /// <summary>
         /// A <see langword="struct"/> implementing <see cref="IMachineStateExecutionContext"/> for <see cref="OverflowMode.UshortWithNoOverflow"/>
         /// </summary>
