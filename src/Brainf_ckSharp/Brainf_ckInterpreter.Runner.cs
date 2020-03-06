@@ -270,7 +270,7 @@ namespace Brainf_ckSharp
                     if (breakpoints[i] && !debugToken.IsCancellationRequested)
                     {
                         /* Disable the current breakpoint so that it won't be
-                            * triggered again when the execution resumes from this point */
+                         * triggered again when the execution resumes from this point */
                         breakpoints[i] = false;
                         goto BreakpointReached;
                     }
@@ -329,10 +329,9 @@ namespace Brainf_ckSharp
                                 totalOperations++;
                             }
                             else if (jumpTable[i] == i + 2 &&
-                                        operators[i + 1] == Operators.Minus &&
-                                        (!breakpoints[i + 1] &&
-                                        !breakpoints[i + 2] ||
-                                        debugToken.IsCancellationRequested))
+                                     operators[i + 1] == Operators.Minus &&
+                                     (!breakpoints[i + 1] && !breakpoints[i + 2] ||
+                                      debugToken.IsCancellationRequested))
                             {
                                 // Fast path for [-] loops
                                 executionContext.ResetCell();
