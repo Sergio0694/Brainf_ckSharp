@@ -109,6 +109,20 @@ namespace Brainf_ckSharp
         /// <param name="stdin">The input buffer to read data from</param>
         /// <param name="memorySize">The size of the state machine to create to run the script</param>
         /// <param name="overflowMode">The overflow mode to use in the state machine used to run the script</param>
+        /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
+        /// <remarks>Consider using an overload with a <see cref="CancellationToken"/> to prevent issues with non-halting scripts</remarks>
+        public static Option<InterpreterResult> TryRun2(string source, string stdin, int memorySize, OverflowMode overflowMode)
+        {
+            return TryRun2(source, stdin, memorySize, overflowMode, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Runs a given Brainf*ck/PBrain executable with the given parameters
+        /// </summary>
+        /// <param name="source">The source code to parse and execute</param>
+        /// <param name="stdin">The input buffer to read data from</param>
+        /// <param name="memorySize">The size of the state machine to create to run the script</param>
+        /// <param name="overflowMode">The overflow mode to use in the state machine used to run the script</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
         public static Option<InterpreterResult> TryRun(string source, string stdin, int memorySize, OverflowMode overflowMode, CancellationToken executionToken)
@@ -122,6 +136,30 @@ namespace Brainf_ckSharp
 
             TuringMachineState machineState = new TuringMachineState(memorySize, overflowMode);
             InterpreterResult result = RunCore(operators!, stdin, machineState, executionToken);
+
+            return Option<InterpreterResult>.From(validationResult, result);
+        }
+
+        /// <summary>
+        /// Runs a given Brainf*ck/PBrain executable with the given parameters
+        /// </summary>
+        /// <param name="source">The source code to parse and execute</param>
+        /// <param name="stdin">The input buffer to read data from</param>
+        /// <param name="memorySize">The size of the state machine to create to run the script</param>
+        /// <param name="overflowMode">The overflow mode to use in the state machine used to run the script</param>
+        /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
+        /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
+        public static Option<InterpreterResult> TryRun2(string source, string stdin, int memorySize, OverflowMode overflowMode, CancellationToken executionToken)
+        {
+            Guard.MustBeGreaterThanOrEqualTo(memorySize, Specs.MinimumMemorySize, nameof(memorySize));
+            Guard.MustBeLessThanOrEqualTo(memorySize, Specs.MaximumMemorySize, nameof(memorySize));
+
+            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.TryParse(source, out SyntaxValidationResult validationResult);
+
+            if (!validationResult.IsSuccess) return Option<InterpreterResult>.From(validationResult);
+
+            TuringMachineState machineState = new TuringMachineState(memorySize, overflowMode);
+            InterpreterResult result = RunCore2(operators!, stdin, machineState, executionToken);
 
             return Option<InterpreterResult>.From(validationResult, result);
         }

@@ -17,7 +17,7 @@ namespace Brainf_ckSharp.Models.Internal
         /// <typeparam name="TExecutionContext">The type of execution context to retrieve</typeparam>
         /// <returns>An execution session of the specified type</returns>
         [Pure]
-        private ExecutionSession<TExecutionContext> CreateExecutionSession<TExecutionContext>()
+        public ExecutionSession<TExecutionContext> CreateExecutionSession<TExecutionContext>()
             where TExecutionContext : struct, IMachineStateExecutionContext
         {
             return new ExecutionSession<TExecutionContext>(this);
