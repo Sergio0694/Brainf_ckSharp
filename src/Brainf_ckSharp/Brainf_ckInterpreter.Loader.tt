@@ -1,5 +1,6 @@
 ﻿<#@ template language="C#"
-#><#@ assembly name="System.Core" #>
+#><#@ assembly name="System.Core"
+#><#@ output extension=".g.cs" #>
 using System;
 using System.Buffers;
 using System.Diagnostics;
@@ -10,6 +11,8 @@ using Brainf_ckSharp.Extensions.Types;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Internal;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
+
+#nullable enable
 
 namespace Brainf_ckSharp
 {

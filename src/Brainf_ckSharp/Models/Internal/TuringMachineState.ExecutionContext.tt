@@ -3,7 +3,8 @@
 #><#@ assembly name="$(TargetDir)Brainf_ckSharp.dll"
 #><#@ assembly name="NetStandard"
 #><#@ import namespace="System"
-#><#@ import namespace="Brainf_ckSharp.Enums" #>
+#><#@ import namespace="Brainf_ckSharp.Enums"
+#><#@ output extension=".g.cs" #>
 using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;

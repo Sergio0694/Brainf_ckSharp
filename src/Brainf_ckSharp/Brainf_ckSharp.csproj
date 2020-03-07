@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -27,11 +27,11 @@
   <ItemGroup>
     <None Update="Brainf_ckInterpreter.Loader.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Brainf_ckInterpreter.Loader.cs</LastGenOutput>
+      <LastGenOutput>Brainf_ckInterpreter.Loader.g.cs</LastGenOutput>
     </None>
     <None Update="Models\Internal\TuringMachineState.ExecutionContext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TuringMachineState.ExecutionContext.cs</LastGenOutput>
+      <LastGenOutput>TuringMachineState.ExecutionContext.g.cs</LastGenOutput>
     </None>
   </ItemGroup>
 
@@ -40,12 +40,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Brainf_ckInterpreter.Loader.cs">
+    <Compile Update="Brainf_ckInterpreter.Loader.g.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Brainf_ckInterpreter.Loader.tt</DependentUpon>
     </Compile>
-    <Compile Update="Models\Internal\TuringMachineState.ExecutionContext.cs">
+    <Compile Update="Models\Internal\TuringMachineState.ExecutionContext.g.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>TuringMachineState.ExecutionContext.tt</DependentUpon>
