@@ -25,7 +25,10 @@ namespace Brainf_ckSharp.Unit
         public void AreOperators() => AssertIsOperator("+-><[].,():", true);
 
         [TestMethod]
-        public void AreNotOperators() => AssertIsOperator("abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*{}_=ABCDEFGHIJKLMNOPQRSTUVWXYZ", false);
+        public void AreNotOperators_Ascii() => AssertIsOperator("abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*{}_=ABCDEFGHIJKLMNOPQRSTUVWXYZ", false);
+
+        [TestMethod]
+        public void AreNotOperators_Unicode() => AssertIsOperator("©®℗™‰&⁜※௹₣₺﷼¼⅔⨊⨌⨏⨐ΔΕνΜΩχοἉ〒▽〒→_→ಠ_ಠ◑﹏◐😊😄🚀🍻🎉🤷‍♂️🐱‍🏍🐱‍🚀✅", false);
 
         // Tests a valid script
         private static void AssertIsValid(string script)
