@@ -171,7 +171,7 @@ namespace Brainf_ckSharp
             Guard.MustBeGreaterThanOrEqualTo(memorySize, 32, nameof(memorySize));
             Guard.MustBeLessThanOrEqualTo(memorySize, 1024, nameof(memorySize));
 
-            PinnedUnmanagedMemoryOwner<byte> operators = Brainf_ckParser.TryParse(source, out SyntaxValidationResult validationResult)!;
+            PinnedUnmanagedMemoryOwner<byte> operators = Brainf_ckParser.TryParseInDebugMode(source, out SyntaxValidationResult validationResult)!;
 
             if (!validationResult.IsSuccess) return Option<InterpreterSession>.From(validationResult);
 

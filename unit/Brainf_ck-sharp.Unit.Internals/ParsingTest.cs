@@ -42,7 +42,7 @@ namespace Brainf_ckSharp.Unit.Internals
         {
             const string script = "[\n\tTest script\n]\n+++++[\n\t>++ 5 x 2 = 10\n\t<- Loop decrement\n]\n> Move to cell 1";
 
-            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.TryParse(script, out SyntaxValidationResult result);
+            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.TryParseInDebugMode(script, out SyntaxValidationResult result);
 
             Assert.IsTrue(result.IsSuccess);
             Assert.AreEqual(result.ErrorType, SyntaxError.None);

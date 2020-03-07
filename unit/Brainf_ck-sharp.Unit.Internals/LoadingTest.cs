@@ -15,7 +15,7 @@ namespace Brainf_ckSharp.Unit.Internals
         [TestMethod]
         public void EmptyStackTrace()
         {
-            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.TryParse("++[>++>-]>+", out _);
+            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.TryParseInDebugMode("++[>++>-]>+", out _);
 
             Assert.IsNotNull(operators);
 
@@ -31,7 +31,7 @@ namespace Brainf_ckSharp.Unit.Internals
         [TestMethod]
         public void RootBreakpoint()
         {
-            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.TryParse("++[>++>-]>+", out _);
+            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.TryParseInDebugMode("++[>++>-]>+", out _);
 
             Assert.IsNotNull(operators);
 
@@ -51,7 +51,7 @@ namespace Brainf_ckSharp.Unit.Internals
         [TestMethod]
         public void FunctionCallBreakpoint()
         {
-            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.TryParse("(+>):+", out _);
+            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.TryParseInDebugMode("(+>):+", out _);
 
             Assert.IsNotNull(operators);
 
