@@ -48,7 +48,7 @@ namespace Brainf_ckSharp
                     byte r1 = Unsafe.Add(ref r0, offset);
 
                     // If the current character is an operator, convert and store it
-                    if (r1 != 0xFF) operators[i++] = new Brainf_ckOperator(r1);
+                    if (r1 != 0xFF) operators[i++] = r1;
                 }
 
                 return operators;
