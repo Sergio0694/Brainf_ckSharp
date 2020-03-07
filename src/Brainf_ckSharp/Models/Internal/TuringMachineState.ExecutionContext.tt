@@ -210,7 +210,7 @@ switch (mode)
                     return false;
                 }
 
-                *current = unchecked((ushort)(*current + 1));
+                *current = unchecked((<#=cellType#>)(*current + count));
 <#
         break;
     case OverflowMode.UshortWithOverflow:
