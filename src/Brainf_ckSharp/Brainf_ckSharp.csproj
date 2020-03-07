@@ -25,9 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Brainf_ckInterpreterLoader.tt">
+    <None Update="Brainf_ckInterpreter.Loader.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Brainf_ckInterpreterLoader.cs</LastGenOutput>
+      <LastGenOutput>Brainf_ckInterpreter.Loader.cs</LastGenOutput>
     </None>
     <None Update="Models\Internal\TuringMachineState.ExecutionContext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -40,10 +40,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Brainf_ckInterpreterLoader.cs">
+    <Compile Update="Brainf_ckInterpreter.Loader.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Brainf_ckInterpreterLoader.tt</DependentUpon>
+      <DependentUpon>Brainf_ckInterpreter.Loader.tt</DependentUpon>
     </Compile>
     <Compile Update="Models\Internal\TuringMachineState.ExecutionContext.cs">
       <DesignTime>True</DesignTime>
