@@ -31,7 +31,7 @@ namespace Brainf_ckSharp.Unit.Internals
             operators[9] = Operators.FunctionEnd;
             operators[10] = Operators.FunctionCall;
 
-            string source = Brainf_ckParser.ExtractSource(operators.Span);
+            string source = Brainf_ckParser.Debug.ExtractSource(operators.Span);
 
             Assert.IsNotNull(source);
             Assert.AreEqual(source, "+-><.,[]():");
@@ -42,7 +42,7 @@ namespace Brainf_ckSharp.Unit.Internals
         {
             const string script = "[\n\tTest script\n]\n+++++[\n\t>++ 5 x 2 = 10\n\t<- Loop decrement\n]\n> Move to cell 1";
 
-            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.TryParseInDebugMode(script, out SyntaxValidationResult result);
+            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.Debug.TryParse(script, out SyntaxValidationResult result);
 
             Assert.IsTrue(result.IsSuccess);
             Assert.AreEqual(result.ErrorType, SyntaxError.None);
@@ -52,7 +52,7 @@ namespace Brainf_ckSharp.Unit.Internals
             Assert.IsNotNull(operators);
             Assert.AreEqual(operators!.Size, 15);
 
-            string source = Brainf_ckParser.ExtractSource(operators.Span);
+            string source = Brainf_ckParser.Debug.ExtractSource(operators.Span);
 
             Assert.IsNotNull(source);
             Assert.AreEqual(source, "[]+++++[>++<-]>");
@@ -63,7 +63,7 @@ namespace Brainf_ckSharp.Unit.Internals
         {
             const string script = "[\n\tTest script\n]\n+++++[\n\t>++ 5 x 2 = 10\n\t<- Loop decrement\n]\n> Move to cell 1";
 
-            using PinnedUnmanagedMemoryOwner<Brainf_ckOperation>? operations = Brainf_ckParser.TryParseInReleaseMode(script, out SyntaxValidationResult result);
+            using PinnedUnmanagedMemoryOwner<Brainf_ckOperation>? operations = Brainf_ckParser.Release.TryParse(script, out SyntaxValidationResult result);
 
             Assert.IsTrue(result.IsSuccess);
             Assert.AreEqual(result.ErrorType, SyntaxError.None);
@@ -73,7 +73,7 @@ namespace Brainf_ckSharp.Unit.Internals
             Assert.IsNotNull(operations);
             Assert.AreEqual(operations!.Size, 10);
 
-            string source = Brainf_ckParser.ExtractSource(operations.Span);
+            string source = Brainf_ckParser.Release.ExtractSource(operations.Span);
 
             Assert.IsNotNull(source);
             Assert.AreEqual(source, "[]+++++[>++<-]>");

@@ -65,7 +65,7 @@ namespace Brainf_ckSharp
                 int offset = range.Start - 1; // The range starts at the first function operator
 
                 UnmanagedSpan<byte> memory = operators.Slice(in range);
-                string body = Brainf_ckParser.ExtractSource(memory);
+                string body = Brainf_ckParser.Debug.ExtractSource(memory);
 
                 Unsafe.Add(ref r0, i) = new FunctionDefinition(key, i, offset, body);
             }
@@ -214,7 +214,7 @@ namespace Brainf_ckSharp
             string[] stackTrace = new string[depth + 1];
             ref string r0 = ref stackTrace[0];
 
-            // Process all the declared functions
+            // Process all the stack frames
             for (int i = 0, j = depth; j >= 0; i++, j--)
             {
                 StackFrame frame = stackFrames[j];
@@ -231,7 +231,7 @@ namespace Brainf_ckSharp
                 bool zero = i == 0;
                 int offset = frame.Offset + Unsafe.As<bool, byte>(ref zero);
                 UnmanagedSpan<byte> memory = operators.Slice(frame.Range.Start, offset);
-                string body = Brainf_ckParser.ExtractSource(memory);
+                string body = Brainf_ckParser.Debug.ExtractSource(memory);
 
                 Unsafe.Add(ref r0, i) = body;
             }

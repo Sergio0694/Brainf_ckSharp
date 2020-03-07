@@ -48,7 +48,7 @@ namespace Brainf_ckSharp
                 int offset = range.Start - 1;
 
                 UnmanagedSpan<Brainf_ckOperation> memory = operations.Slice(in range);
-                string body = Brainf_ckParser.ExtractSource(memory);
+                string body = Brainf_ckParser.Release.ExtractSource(memory);
 
                 Unsafe.Add(ref r0, i) = new FunctionDefinition(key, i, offset, body);
             }

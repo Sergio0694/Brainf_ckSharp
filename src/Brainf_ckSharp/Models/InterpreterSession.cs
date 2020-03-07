@@ -136,7 +136,7 @@ namespace Brainf_ckSharp.Models
             ExecutionToken = executionToken;
             DebugToken = debugToken;
             Stopwatch = new Stopwatch();
-            SourceCode = Brainf_ckParser.ExtractSource(operators.Span);
+            SourceCode = Brainf_ckParser.Debug.ExtractSource(operators.Span);
         }
 
         private InterpreterResult? _Current;

@@ -116,7 +116,7 @@ namespace Brainf_ckSharp
             Guard.MustBeGreaterThanOrEqualTo(memorySize, Specs.MinimumMemorySize, nameof(memorySize));
             Guard.MustBeLessThanOrEqualTo(memorySize, Specs.MaximumMemorySize, nameof(memorySize));
 
-            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.TryParseInDebugMode(source, out SyntaxValidationResult validationResult);
+            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.Debug.TryParse(source, out SyntaxValidationResult validationResult);
 
             if (!validationResult.IsSuccess) return Option<InterpreterResult>.From(validationResult);
 
@@ -175,7 +175,7 @@ namespace Brainf_ckSharp
         {
             DebugGuard.MustBeTrue(initialState is TuringMachineState, nameof(initialState));
 
-            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.TryParseInDebugMode(source, out SyntaxValidationResult validationResult);
+            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.Debug.TryParse(source, out SyntaxValidationResult validationResult);
 
             if (!validationResult.IsSuccess) return Option<InterpreterResult>.From(validationResult);
 

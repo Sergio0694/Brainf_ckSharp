@@ -120,7 +120,7 @@ namespace Brainf_ckSharp
                 }
 
                 // Rebuild the compacted source code
-                string sourceCode = Brainf_ckParser.ExtractSource(operators.Span);
+                string sourceCode = Brainf_ckParser.Debug.ExtractSource(operators.Span);
 
                 // Prepare the debug info
                 HaltedExecutionInfo? debugInfo = LoadDebugInfo(
@@ -171,7 +171,7 @@ namespace Brainf_ckSharp
             Guard.MustBeGreaterThanOrEqualTo(memorySize, 32, nameof(memorySize));
             Guard.MustBeLessThanOrEqualTo(memorySize, 1024, nameof(memorySize));
 
-            PinnedUnmanagedMemoryOwner<byte> operators = Brainf_ckParser.TryParseInDebugMode(source, out SyntaxValidationResult validationResult)!;
+            PinnedUnmanagedMemoryOwner<byte> operators = Brainf_ckParser.Debug.TryParse(source, out SyntaxValidationResult validationResult)!;
 
             if (!validationResult.IsSuccess) return Option<InterpreterSession>.From(validationResult);
 
