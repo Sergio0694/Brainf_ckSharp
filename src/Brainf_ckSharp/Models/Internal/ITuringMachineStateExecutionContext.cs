@@ -25,8 +25,10 @@
         /// Tries to move the memory pointer forward
         /// </summary>
         /// <param name="count">The number of times to try to execute the operation</param>
-        /// <returns>The number of executed operations</returns>
-        int TryMoveNext(int count);
+        /// <param name="totalOperations">The total number of executed operators</param>
+        /// <returns><see langword="true"/> if the pointer was moved successfully, <see langword="false"/> otherwise</returns>
+        /// <remarks>The parameter <paramref name="totalOperations"/> is incremented by the number of successful operations executed</remarks>
+        bool TryMoveNext(int count, ref int totalOperations);
 
         /// <summary>
         /// Tries to move the memory pointer back
@@ -38,8 +40,10 @@
         /// Tries to move the memory pointer back
         /// </summary>
         /// <param name="count">The number of times to try to execute the operation</param>
-        /// <returns>The number of executed operations</returns>
-        int TryMoveBack(int count);
+        /// <param name="totalOperations">The total number of executed operators</param>
+        /// <returns><see langword="true"/> if the pointer was moved successfully, <see langword="false"/> otherwise</returns>
+        /// <remarks>The parameter <paramref name="totalOperations"/> is incremented by the number of successful operations executed</remarks>
+        bool TryMoveBack(int count, ref int totalOperations);
 
         /// <summary>
         /// Tries to increment the current memory location
@@ -51,8 +55,10 @@
         /// Tries to increment the current memory location
         /// </summary>
         /// <param name="count">The number of times to try to execute the operation</param>
-        /// <returns>The number of executed operations</returns>
-        int TryIncrement(int count);
+        /// <param name="totalOperations">The total number of executed operators</param>
+        /// <returns><see langword="true"/> if the pointer was moved successfully, <see langword="false"/> otherwise</returns>
+        /// <remarks>The parameter <paramref name="totalOperations"/> is incremented by the number of successful operations executed</remarks>
+        bool TryIncrement(int count, ref int totalOperations);
 
         /// <summary>
         /// Tries to decrement the current memory location
@@ -64,8 +70,10 @@
         /// Tries to decrement the current memory location
         /// </summary>
         /// <param name="count">The number of times to try to execute the operation</param>
-        /// <returns>The number of executed operations</returns>
-        int TryDecrement(int count);
+        /// <param name="totalOperations">The total number of executed operators</param>
+        /// <returns><see langword="true"/> if the pointer was moved successfully, <see langword="false"/> otherwise</returns>
+        /// <remarks>The parameter <paramref name="totalOperations"/> is incremented by the number of successful operations executed</remarks>
+        bool TryDecrement(int count, ref int totalOperations);
 
         /// <summary>
         /// Tries to set the current memory location to the value of a given character
