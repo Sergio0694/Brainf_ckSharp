@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Brainf_ckSharp.Models;
+using Brainf_ckSharp.Models.Opcodes;
 
 namespace Brainf_ckSharp
 {
@@ -14,7 +15,7 @@ namespace Brainf_ckSharp
         /// <summary>
         /// A <see langword="class"/> implementing parsing methods for the DEBUG configuration
         /// </summary>
-        internal static class Debug
+        private static class Debug
         {
             /// <summary>
             /// Tries to parse the input source script, if possible
@@ -23,7 +24,7 @@ namespace Brainf_ckSharp
             /// <param name="validationResult">The <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</param>
             /// <returns>The resulting buffer of operators for the parsed script</returns>
             [Pure]
-            public static PinnedUnmanagedMemoryOwner<byte>? TryParse(string source, out SyntaxValidationResult validationResult)
+            public static PinnedUnmanagedMemoryOwner<Brainf_ckOperator>? TryParse(string source, out SyntaxValidationResult validationResult)
             {
                 // Check the syntax of the input source code
                 validationResult = ValidateSyntax(source);
@@ -31,7 +32,7 @@ namespace Brainf_ckSharp
                 if (!validationResult.IsSuccess) return null;
 
                 // Allocate the buffer of binary items with the input operators
-                PinnedUnmanagedMemoryOwner<byte> operators = PinnedUnmanagedMemoryOwner<byte>.Allocate(validationResult.OperatorsCount, false);
+                PinnedUnmanagedMemoryOwner<Brainf_ckOperator> operators = PinnedUnmanagedMemoryOwner<Brainf_ckOperator>.Allocate(validationResult.OperatorsCount, false);
 
                 // Extract all the operators from the input source code
                 ref byte r0 = ref MemoryMarshal.GetReference(OperatorsLookupTable);
@@ -47,7 +48,7 @@ namespace Brainf_ckSharp
                     byte r1 = Unsafe.Add(ref r0, offset);
 
                     // If the current character is an operator, convert and store it
-                    if (r1 != 0xFF) operators[i++] = r1;
+                    if (r1 != 0xFF) operators[i++] = new Brainf_ckOperator(r1);
                 }
 
                 return operators;
@@ -59,7 +60,7 @@ namespace Brainf_ckSharp
             /// <param name="operators">The input sequence of parsed operators to read</param>
             /// <returns>A <see cref="string"/> representing the input sequence of operators</returns>
             [Pure]
-            public static unsafe string ExtractSource(UnmanagedSpan<byte> operators)
+            public static unsafe string ExtractSource(UnmanagedSpan<Brainf_ckOperator> operators)
             {
                 // Rent a buffer to use to build the final string
                 using StackOnlyUnmanagedMemoryOwner<char> characters = StackOnlyUnmanagedMemoryOwner<char>.Allocate(operators.Size);
@@ -70,7 +71,7 @@ namespace Brainf_ckSharp
                 // Build the source string with the inverse operators lookup table
                 for (int i = 0; i < operators.Size; i++)
                 {
-                    byte code = Unsafe.Add(ref lookupRef, operators[i]);
+                    byte code = Unsafe.Add(ref lookupRef, operators[i].Operator);
                     Unsafe.Add(ref targetRef, i) = (char)code;
                 }
 

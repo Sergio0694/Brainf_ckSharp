@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Brainf_ckSharp.Models;
-using Brainf_ckSharp.Models.Internal;
+using Brainf_ckSharp.Models.Opcodes;
 
 namespace Brainf_ckSharp
 {
@@ -16,8 +16,26 @@ namespace Brainf_ckSharp
         /// <summary>
         /// A <see langword="class"/> implementing parsing methods for the RELEASE configuration
         /// </summary>
-        internal static class Release
+        private static class Release
         {
+            /// <summary>
+            /// A lookup table to quickly check whether an operator can be compressed
+            /// </summary>
+            private static ReadOnlySpan<byte> CompressableOpratorsLookupTable => new[]
+            {
+                (byte)0, // [
+                (byte)0, // ]
+                (byte)0, // (
+                (byte)0, // )
+                (byte)1, // +
+                (byte)1, // -
+                (byte)1, // >
+                (byte)1, // <
+                (byte)0, // .
+                (byte)0, // ,
+                (byte)0, // :
+            };
+
             /// <summary>
             /// Tries to parse the input source script, if possible
             /// </summary>
@@ -48,8 +66,10 @@ namespace Brainf_ckSharp
                  * the previous while loop guarantees that the current character
                  * is an operator, and therefore also a valid lookup index. */
                 ref byte r0 = ref MemoryMarshal.GetReference(OperatorsLookupTable);
+                ref byte r1 = ref MemoryMarshal.GetReference(CompressableOpratorsLookupTable);
+                ref bool compressionTableRef = ref Unsafe.As<byte, bool>(ref r1);
                 byte currentOperator = Unsafe.Add(ref r0, Unsafe.Add(ref sourceRef, j));
-                int currentCount = 1;
+                ushort currentCount = 1;
 
                 /* Extract all the operators from the input source code.
                  * We increment j when the loop starts because that index will
@@ -63,19 +83,25 @@ namespace Brainf_ckSharp
                         sign = diff & (1 << 31),
                         mask = ~(sign >> 31),
                         offset = c & mask;
-                    byte r1 = Unsafe.Add(ref r0, offset);
+                    byte opRef = Unsafe.Add(ref r0, offset);
 
                     // Check if the character is an operator
-                    if (r1 == 0xFF) continue;
+                    if (opRef == 0xFF) continue;
 
                     // Accumulate the current operator or finalize the operation
-                    if (r1 == currentOperator) currentCount++;
+                    if (opRef == currentOperator &&
+                        currentCount < ushort.MaxValue &&
+                        Unsafe.Add(ref compressionTableRef, opRef))
+                    {
+                        // This is only allowed for ><+-
+                        currentCount++;
+                    }
                     else
                     {
                         buffer[i++] = new Brainf_ckOperation(currentOperator, currentCount);
 
                         // Start the new sequence compression
-                        currentOperator = r1;
+                        currentOperator = opRef;
                         currentCount = 1;
                     }
                 }

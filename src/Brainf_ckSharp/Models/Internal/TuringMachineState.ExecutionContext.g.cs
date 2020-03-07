@@ -173,7 +173,7 @@ namespace Brainf_ckSharp.Models.Internal
                     return false;
                 }
 
-                *current = unchecked((ushort)(*current + 1));
+                *current = unchecked((ushort)(*current + count));
 
                 totalOperations += count;
 
@@ -509,7 +509,7 @@ namespace Brainf_ckSharp.Models.Internal
                     return false;
                 }
 
-                *current = unchecked((ushort)(*current + 1));
+                *current = unchecked((byte)(*current + count));
 
                 totalOperations += count;
 

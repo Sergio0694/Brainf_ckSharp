@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -84,24 +83,6 @@ namespace Brainf_ckSharp
             byte r1 = Unsafe.Add(ref r0, offset);
 
             return r1 != 0xFF;
-        }
-
-        /// <summary>
-        /// Gets the corresponding <see cref="char"/> value for a given processed Brainf*ck/PBrain operator
-        /// </summary>
-        /// <param name="opcode">The input processed operator to convert</param>
-        /// <returns>The character representing the input operator</returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static char GetCharacterFromOperator(byte opcode)
-        {
-            DebugGuard.MustBeGreaterThanOrEqualTo(opcode, 0, nameof(opcode));
-            DebugGuard.MustBeLessThan(opcode, OperatorsLookupTable.Length, nameof(opcode));
-
-            ref byte r0 = ref MemoryMarshal.GetReference(OperatorsInverseLookupTable);
-            byte r1 = Unsafe.Add(ref r0, opcode);
-
-            return (char)r1;
         }
 
         /// <summary>
