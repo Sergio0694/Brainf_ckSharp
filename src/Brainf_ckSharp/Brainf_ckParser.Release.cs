@@ -78,20 +78,14 @@ namespace Brainf_ckSharp
                 for (j++; j < source.Length; j++)
                 {
                     char c = Unsafe.Add(ref sourceRef, j);
-                    int
-                        diff = OperatorsLookupTableMaxIndex - c,
-                        sign = diff & (1 << 31),
-                        mask = ~(sign >> 31),
-                        offset = c & mask;
-                    byte opRef = Unsafe.Add(ref r0, offset);
 
                     // Check if the character is an operator
-                    if (opRef == 0xFF) continue;
+                    if (!TryParseOperator(c, out byte op)) continue;
 
                     // Accumulate the current operator or finalize the operation
-                    if (opRef == currentOperator &&
-                        currentCount < ushort.MaxValue &&
-                        Unsafe.Add(ref compressionTableRef, opRef))
+                    if (op == currentOperator &&
+                        Unsafe.Add(ref compressionTableRef, op) &&
+                        currentCount < ushort.MaxValue)
                     {
                         // This is only allowed for ><+-
                         currentCount++;
@@ -101,7 +95,7 @@ namespace Brainf_ckSharp
                         buffer[i++] = new Brainf_ckOperation(currentOperator, currentCount);
 
                         // Start the new sequence compression
-                        currentOperator = opRef;
+                        currentOperator = op;
                         currentCount = 1;
                     }
                 }

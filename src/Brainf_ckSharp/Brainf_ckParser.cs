@@ -72,15 +72,43 @@ namespace Brainf_ckSharp
         /// <param name="c">The input character to check</param>
         /// <returns><see langword="true"/> if the input character is a Brainf*ck/PBrain operator, <see langword="false"/> otherwise</returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsOperator(char c)
         {
+            return TryParseOperator(c, out _);
+        }
+
+        /// <summary>
+        /// Checks whether or not an input character is a Brainf*ck/PBrain operator
+        /// </summary>
+        /// <param name="c">The input character to check</param>
+        /// <param name="op">The resulting operator, if <paramref name="c"/> was valid</param>
+        /// <returns><see langword="true"/> if the input character is a Brainf*ck/PBrain operator, <see langword="false"/> otherwise</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static bool TryParseOperator(char c, out byte op)
+        {
+            /* Check whether the input character is a valid index.
+             * The result is reinterpreted as a byte, and then
+             * decremented with overflow. If the index was valid,
+             * the result will be 0, otherwise -1 (0xFFFFFFFF).
+             * This value is then negated, resulting in 0xFFFFFFFF
+             * for valid indices, or 0 otherwise. The generated mask
+             * is then combined with the original index. This leaves
+             * the index intact if it was valid, otherwise zeroes it.
+             * The computed offset is finally used to access the
+             * lookup table: it will never go out of bounds. */
+            bool isInRange = c <= OperatorsLookupTableMaxIndex;
+            byte rangeFlag = Unsafe.As<bool, byte>(ref isInRange);
             int
-                diff = OperatorsLookupTableMaxIndex - c,
-                sign = diff & (1 << 31),
-                mask = ~(sign >> 31),
+                negativeFlag = unchecked(rangeFlag - 1),
+                mask = ~negativeFlag,
                 offset = c & mask;
             ref byte r0 = ref MemoryMarshal.GetReference(OperatorsLookupTable);
             byte r1 = Unsafe.Add(ref r0, offset);
+
+            // Assign op if the index was valid, clear it otherwise
+            op = unchecked((byte)(r1 & mask));
 
             return r1 != 0xFF;
         }

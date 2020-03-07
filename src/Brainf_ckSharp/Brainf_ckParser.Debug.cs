@@ -1,4 +1,5 @@
-﻿using System.Buffers;
+﻿using System;
+using System.Buffers;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -35,20 +36,14 @@ namespace Brainf_ckSharp
                 PinnedUnmanagedMemoryOwner<Brainf_ckOperator> operators = PinnedUnmanagedMemoryOwner<Brainf_ckOperator>.Allocate(validationResult.OperatorsCount, false);
 
                 // Extract all the operators from the input source code
-                ref byte r0 = ref MemoryMarshal.GetReference(OperatorsLookupTable);
+                ref char sourceRef = ref MemoryMarshal.GetReference(source.AsSpan());
+                ref byte opsRef = ref Unsafe.As<Brainf_ckOperator, byte>(ref operators.GetReference());
                 for (int i = 0, j = 0; j < source.Length; j++)
                 {
-                    // Explicitly get the lookup value to avoid a repeated memory access
-                    char c = source[j];
-                    int
-                        diff = OperatorsLookupTableMaxIndex - c,
-                        sign = diff & (1 << 31),
-                        mask = ~(sign >> 31),
-                        offset = c & mask;
-                    byte r1 = Unsafe.Add(ref r0, offset);
+                    char c = Unsafe.Add(ref sourceRef, j);
+                    ref byte op = ref Unsafe.Add(ref opsRef, i);
 
-                    // If the current character is an operator, convert and store it
-                    if (r1 != 0xFF) operators[i++] = r1;
+                    if (TryParseOperator(c, out op)) i++;
                 }
 
                 return operators;
