@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Brainf_ckSharp.Models;
-using Brainf_ckSharp.Models.Internal;
+using Brainf_ckSharp.Models.Opcodes;
 
 namespace Brainf_ckSharp
 {
@@ -16,7 +16,7 @@ namespace Brainf_ckSharp
         /// <summary>
         /// A <see langword="class"/> implementing parsing methods for the RELEASE configuration
         /// </summary>
-        internal static class Release
+        private static class Release
         {
             /// <summary>
             /// Tries to parse the input source script, if possible
@@ -49,7 +49,7 @@ namespace Brainf_ckSharp
                  * is an operator, and therefore also a valid lookup index. */
                 ref byte r0 = ref MemoryMarshal.GetReference(OperatorsLookupTable);
                 byte currentOperator = Unsafe.Add(ref r0, Unsafe.Add(ref sourceRef, j));
-                int currentCount = 1;
+                ushort currentCount = 1;
 
                 /* Extract all the operators from the input source code.
                  * We increment j when the loop starts because that index will
@@ -69,7 +69,7 @@ namespace Brainf_ckSharp
                     if (r1 == 0xFF) continue;
 
                     // Accumulate the current operator or finalize the operation
-                    if (r1 == currentOperator) currentCount++;
+                    if (r1 == currentOperator && currentCount < ushort.MaxValue) currentCount++;
                     else
                     {
                         buffer[i++] = new Brainf_ckOperation(currentOperator, currentCount);

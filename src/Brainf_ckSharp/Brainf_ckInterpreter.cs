@@ -8,6 +8,7 @@ using Brainf_ckSharp.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Models.Internal;
+using Brainf_ckSharp.Models.Opcodes;
 
 namespace Brainf_ckSharp
 {
@@ -116,7 +117,7 @@ namespace Brainf_ckSharp
             Guard.MustBeGreaterThanOrEqualTo(memorySize, Specs.MinimumMemorySize, nameof(memorySize));
             Guard.MustBeLessThanOrEqualTo(memorySize, Specs.MaximumMemorySize, nameof(memorySize));
 
-            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.Debug.TryParse(source, out SyntaxValidationResult validationResult);
+            using PinnedUnmanagedMemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>(source, out SyntaxValidationResult validationResult);
 
             if (!validationResult.IsSuccess) return Option<InterpreterResult>.From(validationResult);
 
@@ -175,7 +176,7 @@ namespace Brainf_ckSharp
         {
             DebugGuard.MustBeTrue(initialState is TuringMachineState, nameof(initialState));
 
-            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.Debug.TryParse(source, out SyntaxValidationResult validationResult);
+            using PinnedUnmanagedMemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>(source, out SyntaxValidationResult validationResult);
 
             if (!validationResult.IsSuccess) return Option<InterpreterResult>.From(validationResult);
 

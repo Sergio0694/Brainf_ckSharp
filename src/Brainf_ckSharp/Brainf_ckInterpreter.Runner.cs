@@ -10,6 +10,8 @@ using Brainf_ckSharp.Extensions.Types;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Models.Internal;
+using Brainf_ckSharp.Models.Opcodes;
+using Brainf_ckSharp.Models.Opcodes.Interfaces;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
 using Stopwatch = System.Diagnostics.Stopwatch;
 
@@ -23,26 +25,28 @@ namespace Brainf_ckSharp
         /// <summary>
         /// Runs a given Brainf*ck/PBrain executable with the given parameters
         /// </summary>
-        /// <param name="operators">The executable to run</param>
+        /// <typeparam name="TOpcode">The type of opcode to process</typeparam>
+        /// <param name="opcodes">The executable to run</param>
         /// <param name="stdin">The input buffer to read data from</param>
         /// <param name="machineState">The target machine state to use to run the script</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-        private static InterpreterResult RunCore(
-            PinnedUnmanagedMemoryOwner<byte> operators,
+        private static InterpreterResult RunCore<TOpcode>(
+            PinnedUnmanagedMemoryOwner<TOpcode> opcodes,
             string stdin,
             TuringMachineState machineState,
             CancellationToken executionToken)
+            where TOpcode : unmanaged, IOpcode
         {
-            DebugGuard.MustBeGreaterThanOrEqualTo(operators.Size, 0, nameof(operators));
+            DebugGuard.MustBeGreaterThanOrEqualTo(opcodes.Size, 0, nameof(opcodes));
             DebugGuard.MustBeGreaterThanOrEqualTo(machineState.Size, 0, nameof(machineState));
 
             return machineState.Mode switch
             {
-                OverflowMode.UshortWithNoOverflow => RunCore<TuringMachineState.UshortWithNoOverflowExecutionContext>(operators, stdin, machineState, executionToken),
-                OverflowMode.UshortWithOverflow => RunCore<TuringMachineState.UshortWithOverflowExecutionContext>(operators, stdin, machineState, executionToken),
-                OverflowMode.ByteWithNoOverflow => RunCore<TuringMachineState.ByteWithNoOverflowExecutionContext>(operators, stdin, machineState, executionToken),
-                OverflowMode.ByteWithOverflow => RunCore<TuringMachineState.ByteWithOverflowExecutionContext>(operators, stdin, machineState, executionToken),
+                OverflowMode.UshortWithNoOverflow => RunCore<TOpcode, TuringMachineState.UshortWithNoOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
+                OverflowMode.UshortWithOverflow => RunCore<TOpcode, TuringMachineState.UshortWithOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
+                OverflowMode.ByteWithNoOverflow => RunCore<TOpcode, TuringMachineState.ByteWithNoOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
+                OverflowMode.ByteWithOverflow => RunCore<TOpcode, TuringMachineState.ByteWithOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
@@ -50,20 +54,22 @@ namespace Brainf_ckSharp
         /// <summary>
         /// Runs a given Brainf*ck/PBrain executable with the given parameters
         /// </summary>
+        /// <typeparam name="TOpcode">The type of opcode to process</typeparam>
         /// <typeparam name="TExecutionContext">The type implementing <see cref="IMachineStateExecutionContext"/> to use</typeparam>
-        /// <param name="operators">The executable to run</param>
+        /// <param name="opcodes">The executable to run</param>
         /// <param name="stdin">The input buffer to read data from</param>
         /// <param name="machineState">The target machine state to use to run the script</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-        private static unsafe InterpreterResult RunCore<TExecutionContext>(
-            PinnedUnmanagedMemoryOwner<byte> operators,
+        private static unsafe InterpreterResult RunCore<TOpcode, TExecutionContext>(
+            PinnedUnmanagedMemoryOwner<TOpcode> opcodes,
             string stdin,
             TuringMachineState machineState,
             CancellationToken executionToken)
+            where TOpcode : unmanaged, IOpcode
             where TExecutionContext : struct, IMachineStateExecutionContext
         {
-            DebugGuard.MustBeGreaterThanOrEqualTo(operators.Size, 0, nameof(operators));
+            DebugGuard.MustBeGreaterThanOrEqualTo(opcodes.Size, 0, nameof(opcodes));
             DebugGuard.MustBeGreaterThanOrEqualTo(machineState.Size, 0, nameof(machineState));
 
             /* Initialize the temporary buffers, using the StackOnlyUnmanagedMemoryOwner<T> type when possible
@@ -71,8 +77,8 @@ namespace Brainf_ckSharp
              * only used within the scope of this method, and disposed as soon as the method completes.
              * Additionally, when this type is used, memory is pinned using a fixed statement instead
              * of the GCHandle, which has slightly less overhead for the runtime. */
-            using StackOnlyUnmanagedMemoryOwner<bool> breakpoints = StackOnlyUnmanagedMemoryOwner<bool>.Allocate(operators.Size, true);
-            using PinnedUnmanagedMemoryOwner<int> jumpTable = Debug.LoadJumpTable(operators, out int functionsCount);
+            using StackOnlyUnmanagedMemoryOwner<bool> breakpoints = StackOnlyUnmanagedMemoryOwner<bool>.Allocate(opcodes.Size, true);
+            using PinnedUnmanagedMemoryOwner<int> jumpTable = LoadJumpTable(opcodes, out int functionsCount);
             using StackOnlyUnmanagedMemoryOwner<Range> functions = StackOnlyUnmanagedMemoryOwner<Range>.Allocate(ushort.MaxValue, true);
             using PinnedUnmanagedMemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
             using StackOnlyUnmanagedMemoryOwner<StackFrame> stackFrames = StackOnlyUnmanagedMemoryOwner<StackFrame>.Allocate(Specs.MaximumStackSize, false);
@@ -91,7 +97,7 @@ namespace Brainf_ckSharp
                 TimeSpan elapsed;
 
                 // Manually set the initial stack frame to the entire script
-                stackFramesPtr[0] = new StackFrame(new Range(0, operators.Size), 0);
+                stackFramesPtr[0] = new StackFrame(new Range(0, opcodes.Size), 0);
 
                 // Create the execution session
                 using (TuringMachineState.ExecutionSession<TExecutionContext> session = machineState.CreateExecutionSession<TExecutionContext>())
@@ -101,7 +107,7 @@ namespace Brainf_ckSharp
                     // Start the interpreter
                     exitCode = Run(
                         ref Unsafe.AsRef(session.ExecutionContext),
-                        operators.Span,
+                        opcodes.Span,
                         new UnmanagedSpan<bool>(breakpoints.Size, breakpointsPtr),
                         jumpTable.Span,
                         new UnmanagedSpan<Range>(ushort.MaxValue, functionsPtr),
@@ -120,17 +126,17 @@ namespace Brainf_ckSharp
                 }
 
                 // Rebuild the compacted source code
-                string sourceCode = Brainf_ckParser.Debug.ExtractSource(operators.Span);
+                string sourceCode = Brainf_ckParser.ExtractSource(opcodes.Span);
 
                 // Prepare the debug info
-                HaltedExecutionInfo? debugInfo = Debug.LoadDebugInfo(
-                    operators.Span,
+                HaltedExecutionInfo? debugInfo = LoadDebugInfo(
+                    opcodes.Span,
                     new UnmanagedSpan<StackFrame>(Specs.MaximumStackSize, stackFramesPtr),
                     depth);
 
                 // Build the collection of defined functions
-                FunctionDefinition[] functionDefinitions = Debug.LoadFunctionDefinitions(
-                    operators.Span,
+                FunctionDefinition[] functionDefinitions = LoadFunctionDefinitions(
+                    opcodes.Span,
                     new UnmanagedSpan<Range>(ushort.MaxValue, functionsPtr),
                     definitions.Span,
                     totalFunctions);
@@ -171,23 +177,23 @@ namespace Brainf_ckSharp
             Guard.MustBeGreaterThanOrEqualTo(memorySize, 32, nameof(memorySize));
             Guard.MustBeLessThanOrEqualTo(memorySize, 1024, nameof(memorySize));
 
-            PinnedUnmanagedMemoryOwner<byte> operators = Brainf_ckParser.Debug.TryParse(source, out SyntaxValidationResult validationResult)!;
+            PinnedUnmanagedMemoryOwner<Brainf_ckOperator> opcodes = Brainf_ckParser.TryParse<Brainf_ckOperator>(source, out SyntaxValidationResult validationResult)!;
 
             if (!validationResult.IsSuccess) return Option<InterpreterSession>.From(validationResult);
 
             // Initialize the temporary buffers
             PinnedUnmanagedMemoryOwner<bool> breakpointsTable = Debug.LoadBreakpointsTable(source, validationResult.OperatorsCount, breakpoints);
-            PinnedUnmanagedMemoryOwner<int> jumpTable = Debug.LoadJumpTable(operators, out int functionsCount);
+            PinnedUnmanagedMemoryOwner<int> jumpTable = LoadJumpTable(opcodes, out int functionsCount);
             PinnedUnmanagedMemoryOwner<Range> functions = PinnedUnmanagedMemoryOwner<Range>.Allocate(ushort.MaxValue, true);
             PinnedUnmanagedMemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
             PinnedUnmanagedMemoryOwner<StackFrame> stackFrames = PinnedUnmanagedMemoryOwner<StackFrame>.Allocate(Specs.MaximumStackSize, false);
 
             // Initialize the root stack frame
-            stackFrames[0] = new StackFrame(new Range(0, operators.Size), 0);
+            stackFrames[0] = new StackFrame(new Range(0, opcodes.Size), 0);
 
             // Create the interpreter session
             InterpreterSession session = new InterpreterSession(
-                operators,
+                opcodes,
                 breakpointsTable,
                 jumpTable,
                 functions,
@@ -205,25 +211,26 @@ namespace Brainf_ckSharp
         /// <summary>
         /// Tries to run a given input Brainf*ck/PBrain executable
         /// </summary>
+        /// <typeparam name="TOpcode">The type of opcode to process</typeparam>
         /// <typeparam name="TExecutionContext">The type implementing <see cref="IMachineStateExecutionContext"/> to use</typeparam>
         /// <param name="executionContext">The target <typeparamref name="TExecutionContext"/>/> instance to execute the code on</param>
-        /// <param name="operators">The sequence of parsed operators to execute</param>
+        /// <param name="opcodes">The sequence of parsed opcodes to execute</param>
         /// <param name="breakpoints">The table of breakpoints for the current executable</param>
         /// <param name="jumpTable">The jump table for loops and function declarations</param>
         /// <param name="functions">The mapping of functions for the current execution</param>
         /// <param name="definitions">The lookup table to check which functions are defined</param>
         /// <param name="stackFrames">The sequence of stack frames for the current execution</param>
         /// <param name="depth">The current stack depth</param>
-        /// <param name="totalOperations">The total number of executed operators</param>
+        /// <param name="totalOperations">The total number of executed opcodes</param>
         /// <param name="totalFunctions">The total number of defined functions</param>
         /// <param name="stdin">The input buffer to read characters from</param>
         /// <param name="stdout">The output buffer to write characters to</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
         /// <returns>The resulting <see cref="ExitCode"/> value for the current execution of the input script</returns>
-        internal static ExitCode Run<TExecutionContext>(
+        internal static ExitCode Run<TOpcode, TExecutionContext>(
             ref TExecutionContext executionContext,
-            UnmanagedSpan<byte> operators,
+            UnmanagedSpan<TOpcode> opcodes,
             UnmanagedSpan<bool> breakpoints,
             UnmanagedSpan<int> jumpTable,
             UnmanagedSpan<Range> functions,
@@ -236,14 +243,15 @@ namespace Brainf_ckSharp
             StdoutBuffer stdout,
             CancellationToken executionToken,
             CancellationToken debugToken)
+            where TOpcode : unmanaged, IOpcode
             where TExecutionContext : struct, IMachineStateExecutionContext
         {
-            DebugGuard.MustBeTrue(operators.Size > 0, nameof(operators));
-            DebugGuard.MustBeEqualTo(breakpoints.Size, operators.Size, nameof(breakpoints));
-            DebugGuard.MustBeEqualTo(jumpTable.Size, operators.Size, nameof(jumpTable));
+            DebugGuard.MustBeTrue(opcodes.Size > 0, nameof(opcodes));
+            DebugGuard.MustBeEqualTo(breakpoints.Size, opcodes.Size, nameof(breakpoints));
+            DebugGuard.MustBeEqualTo(jumpTable.Size, opcodes.Size, nameof(jumpTable));
             DebugGuard.MustBeEqualTo(functions.Size, ushort.MaxValue, nameof(functions));
             DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Size, 0, nameof(definitions));
-            DebugGuard.MustBeLessThanOrEqualTo(definitions.Size, operators.Size / 3, nameof(definitions));
+            DebugGuard.MustBeLessThanOrEqualTo(definitions.Size, opcodes.Size / 3, nameof(definitions));
             DebugGuard.MustBeEqualTo(stackFrames.Size, Specs.MaximumStackSize, nameof(stackFrames));
             DebugGuard.MustBeGreaterThanOrEqualTo(depth, 0, nameof(depth));
             DebugGuard.MustBeGreaterThanOrEqualTo(totalOperations, 0, nameof(totalOperations));
@@ -263,7 +271,7 @@ namespace Brainf_ckSharp
                  * reach the start of the inner loop from a switch case. */
                 StackFrameLoop:
 
-                // Iterate over the current operators
+                // Iterate over the current opcodes
                 for (i = frame.Offset; i < frame.Range.End; i++)
                 {
                     // Check if a breakpoint has been reached
@@ -276,7 +284,7 @@ namespace Brainf_ckSharp
                     }
 
                     // Execute the current operator
-                    switch (operators[i])
+                    switch (opcodes[i].Operator)
                     {
                         // ptr++
                         case Operators.ForwardPtr:
@@ -329,7 +337,7 @@ namespace Brainf_ckSharp
                                 totalOperations++;
                             }
                             else if (jumpTable[i] == i + 2 &&
-                                     operators[i + 1] == Operators.Minus &&
+                                     opcodes[i + 1].Operator == Operators.Minus &&
                                      (!breakpoints[i + 1] && !breakpoints[i + 2] ||
                                       debugToken.IsCancellationRequested))
                             {
