@@ -43,10 +43,11 @@ foreach (var mode in Enum.GetValues(typeof(OverflowMode)))
 #>
             throw new ArgumentException($"Invalid context type: {typeof(TExecutionContext)}", nameof(TExecutionContext));
         }
-
 <#
-foreach (var mode in Enum.GetValues(typeof(OverflowMode)))
+foreach (var mode in (OverflowMode[])Enum.GetValues(typeof(OverflowMode)))
 {
+    WriteLine("");
+
     // Get the current cell type, for later use
     string cellType;
     switch (mode)

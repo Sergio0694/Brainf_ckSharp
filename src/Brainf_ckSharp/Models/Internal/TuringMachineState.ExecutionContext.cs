@@ -230,6 +230,7 @@ namespace Brainf_ckSharp.Models.Internal
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void ResetCell() => Ptr[_Position] = 0;
         }
+
         /// <summary>
         /// A <see langword="struct"/> implementing <see cref="IMachineStateExecutionContext"/> for <see cref="OverflowMode.UshortWithOverflow"/>
         /// </summary>
@@ -386,6 +387,7 @@ namespace Brainf_ckSharp.Models.Internal
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void ResetCell() => Ptr[_Position] = 0;
         }
+
         /// <summary>
         /// A <see langword="struct"/> implementing <see cref="IMachineStateExecutionContext"/> for <see cref="OverflowMode.ByteWithNoOverflow"/>
         /// </summary>
@@ -566,6 +568,7 @@ namespace Brainf_ckSharp.Models.Internal
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void ResetCell() => Ptr[_Position] = 0;
         }
+
         /// <summary>
         /// A <see langword="struct"/> implementing <see cref="IMachineStateExecutionContext"/> for <see cref="OverflowMode.ByteWithOverflow"/>
         /// </summary>
