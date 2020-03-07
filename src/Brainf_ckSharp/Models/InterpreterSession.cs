@@ -186,7 +186,7 @@ namespace Brainf_ckSharp.Models
                 Stopwatch.Start();
 
                 // Execute the new interpreter debug step
-                exitCode = Brainf_ckInterpreter.Run(
+                exitCode = Brainf_ckInterpreter.Debug.Run(
                     ref Unsafe.AsRef(session.ExecutionContext),
                     Opcodes.Span,
                     Breakpoints.Span,

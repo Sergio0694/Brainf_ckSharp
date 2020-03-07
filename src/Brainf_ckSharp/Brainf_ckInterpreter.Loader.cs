@@ -217,7 +217,7 @@ namespace Brainf_ckSharp
         /// <summary>
         /// A <see langword="class"/> implementing interpreter methods for the DEBUG configuration
         /// </summary>
-        internal static class Debug
+        internal static partial class Debug
         {
             /// <summary>
             /// Loads the breakpoints table for a given source code and collection of breakpoints

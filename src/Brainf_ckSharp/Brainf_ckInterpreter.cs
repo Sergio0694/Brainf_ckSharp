@@ -117,12 +117,12 @@ namespace Brainf_ckSharp
             Guard.MustBeGreaterThanOrEqualTo(memorySize, Specs.MinimumMemorySize, nameof(memorySize));
             Guard.MustBeLessThanOrEqualTo(memorySize, Specs.MaximumMemorySize, nameof(memorySize));
 
-            using PinnedUnmanagedMemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>(source, out SyntaxValidationResult validationResult);
+            using PinnedUnmanagedMemoryOwner<Brainf_ckOperation>? operations = Brainf_ckParser.TryParse<Brainf_ckOperation>(source, out SyntaxValidationResult validationResult);
 
             if (!validationResult.IsSuccess) return Option<InterpreterResult>.From(validationResult);
 
             TuringMachineState machineState = new TuringMachineState(memorySize, overflowMode);
-            InterpreterResult result = RunCore(operators!, stdin, machineState, executionToken);
+            InterpreterResult result = Release.RunCore(operations!, stdin, machineState, executionToken);
 
             return Option<InterpreterResult>.From(validationResult, result);
         }
@@ -176,12 +176,12 @@ namespace Brainf_ckSharp
         {
             DebugGuard.MustBeTrue(initialState is TuringMachineState, nameof(initialState));
 
-            using PinnedUnmanagedMemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>(source, out SyntaxValidationResult validationResult);
+            using PinnedUnmanagedMemoryOwner<Brainf_ckOperation>? operations = Brainf_ckParser.TryParse<Brainf_ckOperation>(source, out SyntaxValidationResult validationResult);
 
             if (!validationResult.IsSuccess) return Option<InterpreterResult>.From(validationResult);
 
             TuringMachineState machineState = (TuringMachineState)initialState.Clone();
-            InterpreterResult result = RunCore(operators!, stdin, machineState, executionToken);
+            InterpreterResult result = Release.RunCore(operations!, stdin, machineState, executionToken);
 
             return Option<InterpreterResult>.From(validationResult, result);
         }
@@ -195,7 +195,7 @@ namespace Brainf_ckSharp
         /// <remarks>Consider using an overload with a <see cref="CancellationToken"/> to prevent issues with non-halting scripts</remarks>
         public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints)
         {
-            return TryCreateSessionCore(source, breakpoints, string.Empty, Specs.DefaultMemorySize, Specs.DefaultOverflowMode, CancellationToken.None, CancellationToken.None);
+            return Debug.TryCreateSessionCore(source, breakpoints, string.Empty, Specs.DefaultMemorySize, Specs.DefaultOverflowMode, CancellationToken.None, CancellationToken.None);
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace Brainf_ckSharp
         /// <remarks>Consider using an overload with a second <see cref="CancellationToken"/> to be able to stop triggering breakpoints</remarks>
         public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints, CancellationToken executionToken)
         {
-            return TryCreateSessionCore(source, breakpoints, string.Empty, Specs.DefaultMemorySize, Specs.DefaultOverflowMode, executionToken, CancellationToken.None);
+            return Debug.TryCreateSessionCore(source, breakpoints, string.Empty, Specs.DefaultMemorySize, Specs.DefaultOverflowMode, executionToken, CancellationToken.None);
         }
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace Brainf_ckSharp
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterSession"/> instance with the results of the execution</returns>
         public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints, CancellationToken executionToken, CancellationToken debugToken)
         {
-            return TryCreateSessionCore(source, breakpoints, string.Empty, Specs.DefaultMemorySize, Specs.DefaultOverflowMode, executionToken, debugToken);
+            return Debug.TryCreateSessionCore(source, breakpoints, string.Empty, Specs.DefaultMemorySize, Specs.DefaultOverflowMode, executionToken, debugToken);
         }
 
         /// <summary>
@@ -234,7 +234,7 @@ namespace Brainf_ckSharp
         /// <remarks>Consider using an overload with a <see cref="CancellationToken"/> to prevent issues with non-halting scripts</remarks>
         public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints, string stdin)
         {
-            return TryCreateSessionCore(source, breakpoints, stdin, Specs.DefaultMemorySize, Specs.DefaultOverflowMode, CancellationToken.None, CancellationToken.None);
+            return Debug.TryCreateSessionCore(source, breakpoints, stdin, Specs.DefaultMemorySize, Specs.DefaultOverflowMode, CancellationToken.None, CancellationToken.None);
         }
 
         /// <summary>
@@ -248,7 +248,7 @@ namespace Brainf_ckSharp
         /// <remarks>Consider using an overload with a second <see cref="CancellationToken"/> to be able to stop triggering breakpoints</remarks>
         public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints, string stdin, CancellationToken executionToken)
         {
-            return TryCreateSessionCore(source, breakpoints, stdin, Specs.DefaultMemorySize, Specs.DefaultOverflowMode, executionToken, CancellationToken.None);
+            return Debug.TryCreateSessionCore(source, breakpoints, stdin, Specs.DefaultMemorySize, Specs.DefaultOverflowMode, executionToken, CancellationToken.None);
         }
 
         /// <summary>
@@ -262,7 +262,7 @@ namespace Brainf_ckSharp
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterSession"/> instance with the results of the execution</returns>
         public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints, string stdin, CancellationToken executionToken, CancellationToken debugToken)
         {
-            return TryCreateSessionCore(source, breakpoints, stdin, Specs.DefaultMemorySize, Specs.DefaultOverflowMode, executionToken, debugToken);
+            return Debug.TryCreateSessionCore(source, breakpoints, stdin, Specs.DefaultMemorySize, Specs.DefaultOverflowMode, executionToken, debugToken);
         }
 
         /// <summary>
@@ -276,7 +276,7 @@ namespace Brainf_ckSharp
         /// <remarks>Consider using an overload with a <see cref="CancellationToken"/> to prevent issues with non-halting scripts</remarks>
         public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints, string stdin, int memorySize)
         {
-            return TryCreateSessionCore(source, breakpoints, stdin, memorySize, Specs.DefaultOverflowMode, CancellationToken.None, CancellationToken.None);
+            return Debug.TryCreateSessionCore(source, breakpoints, stdin, memorySize, Specs.DefaultOverflowMode, CancellationToken.None, CancellationToken.None);
         }
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace Brainf_ckSharp
         /// <remarks>Consider using an overload with a second <see cref="CancellationToken"/> to be able to stop triggering breakpoints</remarks>
         public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints, string stdin, int memorySize, CancellationToken executionToken)
         {
-            return TryCreateSessionCore(source, breakpoints, stdin, memorySize, Specs.DefaultOverflowMode, executionToken, CancellationToken.None);
+            return Debug.TryCreateSessionCore(source, breakpoints, stdin, memorySize, Specs.DefaultOverflowMode, executionToken, CancellationToken.None);
         }
 
         /// <summary>
@@ -306,7 +306,7 @@ namespace Brainf_ckSharp
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterSession"/> instance with the results of the execution</returns>
         public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints, string stdin, int memorySize, CancellationToken executionToken, CancellationToken debugToken)
         {
-            return TryCreateSessionCore(source, breakpoints, stdin, memorySize, Specs.DefaultOverflowMode, executionToken, debugToken);
+            return Debug.TryCreateSessionCore(source, breakpoints, stdin, memorySize, Specs.DefaultOverflowMode, executionToken, debugToken);
         }
 
         /// <summary>
@@ -321,7 +321,7 @@ namespace Brainf_ckSharp
         /// <remarks>Consider using an overload with a <see cref="CancellationToken"/> to prevent issues with non-halting scripts</remarks>
         public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints, string stdin, int memorySize, OverflowMode overflowMode)
         {
-            return TryCreateSessionCore(source, breakpoints, stdin, memorySize, overflowMode, CancellationToken.None, CancellationToken.None);
+            return Debug.TryCreateSessionCore(source, breakpoints, stdin, memorySize, overflowMode, CancellationToken.None, CancellationToken.None);
         }
 
         /// <summary>
@@ -337,7 +337,7 @@ namespace Brainf_ckSharp
         /// <remarks>Consider using an overload with a second <see cref="CancellationToken"/> to be able to stop triggering breakpoints</remarks>
         public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints, string stdin, int memorySize, OverflowMode overflowMode, CancellationToken executionToken)
         {
-            return TryCreateSessionCore(source, breakpoints, stdin, memorySize, overflowMode, executionToken, CancellationToken.None);
+            return Debug.TryCreateSessionCore(source, breakpoints, stdin, memorySize, overflowMode, executionToken, CancellationToken.None);
         }
 
         /// <summary>
@@ -353,7 +353,7 @@ namespace Brainf_ckSharp
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterSession"/> instance with the results of the execution</returns>
         public static Option<InterpreterSession> TryCreateSession(string source, ReadOnlySpan<int> breakpoints, string stdin, int memorySize, OverflowMode overflowMode, CancellationToken executionToken, CancellationToken debugToken)
         {
-            return TryCreateSessionCore(source, breakpoints, stdin, memorySize, overflowMode, executionToken, debugToken);
+            return Debug.TryCreateSessionCore(source, breakpoints, stdin, memorySize, overflowMode, executionToken, debugToken);
         }
     }
 }
