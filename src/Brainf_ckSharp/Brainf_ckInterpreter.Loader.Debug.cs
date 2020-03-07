@@ -6,7 +6,6 @@ using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Extensions.Types;
 using Brainf_ckSharp.Models;
-using Brainf_ckSharp.Models.Internal;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
 
 namespace Brainf_ckSharp
@@ -14,58 +13,21 @@ namespace Brainf_ckSharp
     public static partial class Brainf_ckInterpreter
     {
         /// <summary>
-        /// Loads the <see cref="HaltedExecutionInfo"/> instance for a halted execution of a script, if available
+        /// Loads the function definitions table for a script to execute
         /// </summary>
-        /// <param name="operators">The sequence of parsed operators to execute</param>
-        /// <param name="stackFrames">The sequence of stack frames for the current execution</param>
-        /// <param name="depth">The current stack depth</param>
-        /// <returns>An <see cref="HaltedExecutionInfo"/> instance, if the input script was halted during its execution</returns>
+        /// <param name="functionsCount">The total number of declared functions in the script to execute</param>
+        /// <returns>The resulting buffer to store keys for the declared functions</returns>
         [Pure]
-        internal static HaltedExecutionInfo? LoadDebugInfo(
-            UnmanagedSpan<byte> operators,
-            UnmanagedSpan<StackFrame> stackFrames,
-            int depth)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static PinnedUnmanagedMemoryOwner<ushort> LoadDefinitionsTable(int functionsCount)
         {
-            DebugGuard.MustBeTrue(operators.Size > 0, nameof(operators));
-            DebugGuard.MustBeEqualTo(stackFrames.Size, Specs.MaximumStackSize, nameof(stackFrames));
-            DebugGuard.MustBeGreaterThanOrEqualTo(depth, -1, nameof(depth));
+            DebugGuard.MustBeGreaterThanOrEqualTo(functionsCount, 0, nameof(functionsCount));
 
-            // No exception info for scripts completed successfully
-            if (depth == -1) return null;
-
-            string[] stackTrace = new string[depth + 1];
-            ref string r0 = ref stackTrace[0];
-
-            // Process all the declared functions
-            for (int i = 0, j = depth; j >= 0; i++, j--)
+            return functionsCount switch
             {
-                StackFrame frame = stackFrames[j];
-
-                /* Adjust the offset and process the current range.
-                 * This is needed because in case of a partial execution, no matter
-                 * if it's a breakpoint or a crash, the stored offset in the top stack
-                 * frame will be the operator currently being executed, which needs to
-                 * be included in the processed string. For stack frames below that
-                 * instead, the offset already refers to the operator immediately after
-                 * the function call operator, so the offset doesn't need to be shifted
-                 * ahead before extracting the processed string. Doing this with a
-                 * reinterpret cast saves a conditional jump in the asm code. */
-                bool zero = i == 0;
-                int offset = frame.Offset + Unsafe.As<bool, byte>(ref zero);
-                UnmanagedSpan<byte> memory = operators.Slice(frame.Range.Start, offset);
-                string body = Brainf_ckParser.ExtractSource(memory);
-
-                Unsafe.Add(ref r0, i) = body;
-            }
-
-            // Extract the additional info
-            int errorOffset = stackFrames[depth].Offset;
-            char opcode = Brainf_ckParser.GetCharacterFromOperator(operators[errorOffset]);
-
-            return new HaltedExecutionInfo(
-                stackTrace,
-                opcode,
-                errorOffset);
+                0 => PinnedUnmanagedMemoryOwner<ushort>.Empty,
+                _ => PinnedUnmanagedMemoryOwner<ushort>.Allocate(functionsCount, false)
+            };
         }
 
         /// <summary>
@@ -103,50 +65,6 @@ namespace Brainf_ckSharp
                 int offset = range.Start - 1; // The range starts at the first function operator
 
                 UnmanagedSpan<byte> memory = operators.Slice(in range);
-                string body = Brainf_ckParser.ExtractSource(memory);
-
-                Unsafe.Add(ref r0, i) = new FunctionDefinition(key, i, offset, body);
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Loads the function definitions with the given executable and parameters
-        /// </summary>
-        /// <param name="operations">The sequence of parsed operations to execute</param>
-        /// <param name="functions">The mapping of functions for the current execution</param>
-        /// <param name="definitions">The lookup table to check which functions are defined</param>
-        /// <param name="totalFunctions">The total number of defined functions</param>
-        /// <returns>An array of <see cref="FunctionDefinition"/> instance with the defined functions</returns>
-        /// <remarks>This method mirrors <see cref="LoadFunctionDefinitions(UnmanagedSpan{byte},UnmanagedSpan{Range},UnmanagedSpan{ushort},int)"/></remarks>
-        [Pure]
-        internal static FunctionDefinition[] LoadFunctionDefinitions(
-            UnmanagedSpan<Brainf_ckOperation> operations,
-            UnmanagedSpan<Range> functions,
-            UnmanagedSpan<ushort> definitions,
-            int totalFunctions)
-        {
-            DebugGuard.MustBeGreaterThanOrEqualTo(operations.Size, 0, nameof(operations));
-            DebugGuard.MustBeEqualTo(functions.Size, ushort.MaxValue, nameof(functions));
-            DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Size, 0, nameof(definitions));
-            DebugGuard.MustBeLessThanOrEqualTo(definitions.Size, operations.Size / 3, nameof(definitions));
-            DebugGuard.MustBeGreaterThanOrEqualTo(totalFunctions, 0, nameof(totalFunctions));
-
-            // No declared functions
-            if (totalFunctions == 0) return Array.Empty<FunctionDefinition>();
-
-            FunctionDefinition[] result = new FunctionDefinition[totalFunctions];
-            ref FunctionDefinition r0 = ref result[0];
-
-            // Process all the declared functions
-            for (int i = 0; i < totalFunctions; i++)
-            {
-                ushort key = definitions[i];
-                Range range = functions[key];
-                int offset = range.Start - 1;
-
-                UnmanagedSpan<Brainf_ckOperation> memory = operations.Slice(in range);
                 string body = Brainf_ckParser.ExtractSource(memory);
 
                 Unsafe.Add(ref r0, i) = new FunctionDefinition(key, i, offset, body);
@@ -232,84 +150,6 @@ namespace Brainf_ckSharp
         }
 
         /// <summary>
-        /// Loads the jump table for loops and functions from a given executable
-        /// </summary>
-        /// <param name="operations">The sequence of parsed operations to inspect</param>
-        /// <param name="functionsCount">The total number of declared functions in the input sequence of operations</param>
-        /// <returns>The resulting precomputed jump table for the input executable</returns>
-        /// <remarks>This method mirrors <see cref="LoadJumpTable(PinnedUnmanagedMemoryOwner{byte},out int)"/></remarks>
-        [Pure]
-        private static PinnedUnmanagedMemoryOwner<int> LoadJumpTable(PinnedUnmanagedMemoryOwner<Brainf_ckOperation> operations, out int functionsCount)
-        {
-            DebugGuard.MustBeGreaterThanOrEqualTo(operations.Size, 0, nameof(operations));
-
-            PinnedUnmanagedMemoryOwner<int> jumpTable = PinnedUnmanagedMemoryOwner<int>.Allocate(operations.Size, false);
-
-            /* Temporarily allocate two buffers to store the indirect indices to build the jump table.
-             * This method perfectly mirrors the behavior of the one working directly on operators. */
-            int tempBuffersLength = operations.Size / 2 + 1;
-            using StackOnlyUnmanagedMemoryOwner<int> rootTempIndices = StackOnlyUnmanagedMemoryOwner<int>.Allocate(tempBuffersLength);
-            using StackOnlyUnmanagedMemoryOwner<int> functionTempIndices = StackOnlyUnmanagedMemoryOwner<int>.Allocate(tempBuffersLength);
-            ref int rootTempIndicesRef = ref rootTempIndices.GetReference();
-            ref int functionTempIndicesRef = ref functionTempIndices.GetReference();
-            functionsCount = 0;
-
-            // Go through the executable to build the jump table
-            for (int r = 0, f = -1, i = 0; i < operations.Size; i++)
-            {
-                switch (operations[i].Operator)
-                {
-                    // while (*ptr) {
-                    case Operators.LoopStart:
-                        if (f == -1) Unsafe.Add(ref rootTempIndicesRef, r++) = i;
-                        else Unsafe.Add(ref functionTempIndicesRef, f++) = i;
-                        break;
-
-                    // {
-                    case Operators.LoopEnd:
-                        int start = f == -1
-                            ? Unsafe.Add(ref rootTempIndicesRef, --r)
-                            : Unsafe.Add(ref functionTempIndicesRef, --f);
-                        jumpTable[start] = i;
-                        jumpTable[i] = start;
-                        break;
-
-                    // Function definition
-                    case Operators.FunctionStart:
-                        f = 1;
-                        functionTempIndicesRef = i;
-                        functionsCount++;
-                        break;
-                    case Operators.FunctionEnd:
-                        f = -1;
-                        jumpTable[functionTempIndicesRef] = i;
-                        jumpTable[i] = functionTempIndicesRef;
-                        break;
-                }
-            }
-
-            return jumpTable;
-        }
-
-        /// <summary>
-        /// Loads the function definitions table for a script to execute
-        /// </summary>
-        /// <param name="functionsCount">The total number of declared functions in the script to execute</param>
-        /// <returns>The resulting buffer to store keys for the declared functions</returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static PinnedUnmanagedMemoryOwner<ushort> LoadDefinitionsTable(int functionsCount)
-        {
-            DebugGuard.MustBeGreaterThanOrEqualTo(functionsCount, 0, nameof(functionsCount));
-
-            return functionsCount switch
-            {
-                0 => PinnedUnmanagedMemoryOwner<ushort>.Empty,
-                _ => PinnedUnmanagedMemoryOwner<ushort>.Allocate(functionsCount, false)
-            };
-        }
-
-        /// <summary>
         /// Loads the breakpoints table for a given source code and collection of breakpoints
         /// </summary>
         /// <param name="source">The source code to parse and execute</param>
@@ -330,10 +170,8 @@ namespace Brainf_ckSharp
             using PinnedUnmanagedMemoryOwner<bool> temporaryBuffer = PinnedUnmanagedMemoryOwner<bool>.Allocate(source.Length, true);
 
             // Build the temporary table to store the indirect offsets of the breakpoints
-            for (int i = 0; i < breakpoints.Length; i++)
+            foreach (int index in breakpoints)
             {
-                int index = breakpoints[i];
-
                 Guard.MustBeGreaterThan(index, 0, nameof(breakpoints));
                 Guard.MustBeLessThan(index, source.Length, nameof(breakpoints));
 
@@ -351,6 +189,61 @@ namespace Brainf_ckSharp
             }
 
             return breakpointsBuffer;
+        }
+
+        /// <summary>
+        /// Loads the <see cref="HaltedExecutionInfo"/> instance for a halted execution of a script, if available
+        /// </summary>
+        /// <param name="operators">The sequence of parsed operators to execute</param>
+        /// <param name="stackFrames">The sequence of stack frames for the current execution</param>
+        /// <param name="depth">The current stack depth</param>
+        /// <returns>An <see cref="HaltedExecutionInfo"/> instance, if the input script was halted during its execution</returns>
+        [Pure]
+        internal static HaltedExecutionInfo? LoadDebugInfo(
+            UnmanagedSpan<byte> operators,
+            UnmanagedSpan<StackFrame> stackFrames,
+            int depth)
+        {
+            DebugGuard.MustBeTrue(operators.Size > 0, nameof(operators));
+            DebugGuard.MustBeEqualTo(stackFrames.Size, Specs.MaximumStackSize, nameof(stackFrames));
+            DebugGuard.MustBeGreaterThanOrEqualTo(depth, -1, nameof(depth));
+
+            // No exception info for scripts completed successfully
+            if (depth == -1) return null;
+
+            string[] stackTrace = new string[depth + 1];
+            ref string r0 = ref stackTrace[0];
+
+            // Process all the declared functions
+            for (int i = 0, j = depth; j >= 0; i++, j--)
+            {
+                StackFrame frame = stackFrames[j];
+
+                /* Adjust the offset and process the current range.
+                 * This is needed because in case of a partial execution, no matter
+                 * if it's a breakpoint or a crash, the stored offset in the top stack
+                 * frame will be the operator currently being executed, which needs to
+                 * be included in the processed string. For stack frames below that
+                 * instead, the offset already refers to the operator immediately after
+                 * the function call operator, so the offset doesn't need to be shifted
+                 * ahead before extracting the processed string. Doing this with a
+                 * reinterpret cast saves a conditional jump in the asm code. */
+                bool zero = i == 0;
+                int offset = frame.Offset + Unsafe.As<bool, byte>(ref zero);
+                UnmanagedSpan<byte> memory = operators.Slice(frame.Range.Start, offset);
+                string body = Brainf_ckParser.ExtractSource(memory);
+
+                Unsafe.Add(ref r0, i) = body;
+            }
+
+            // Extract the additional info
+            int errorOffset = stackFrames[depth].Offset;
+            char opcode = Brainf_ckParser.GetCharacterFromOperator(operators[errorOffset]);
+
+            return new HaltedExecutionInfo(
+                stackTrace,
+                opcode,
+                errorOffset);
         }
     }
 }
