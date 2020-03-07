@@ -23,7 +23,7 @@ namespace Brainf_ckSharp.Unit.Internals
 
             stackFrames[0] = new StackFrame(new Range(0, operators!.Size), 10);
 
-            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo(operators.Span, stackFrames.Span, -1);
+            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.Debug.LoadDebugInfo(operators.Span, stackFrames.Span, -1);
 
             Assert.IsNull(exceptionInfo);
         }
@@ -39,7 +39,7 @@ namespace Brainf_ckSharp.Unit.Internals
 
             stackFrames[0] = new StackFrame(new Range(0, operators!.Size), 7);
 
-            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo(operators.Span, stackFrames.Span, 0);
+            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.Debug.LoadDebugInfo(operators.Span, stackFrames.Span, 0);
 
             Assert.IsNotNull(exceptionInfo);
             Assert.AreEqual(exceptionInfo!.StackTrace.Count, 1);
@@ -60,7 +60,7 @@ namespace Brainf_ckSharp.Unit.Internals
             stackFrames[0] = new StackFrame(new Range(0, operators!.Size), 5);
             stackFrames[1] = new StackFrame(new Range(1, 3), 2);
 
-            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo(operators.Span, stackFrames.Span, 1);
+            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.Debug.LoadDebugInfo(operators.Span, stackFrames.Span, 1);
 
             Assert.IsNotNull(exceptionInfo);
             Assert.AreEqual(exceptionInfo!.StackTrace.Count, 2);

@@ -27,7 +27,7 @@ namespace Brainf_ckSharp
             /// <param name="totalFunctions">The total number of defined functions</param>
             /// <returns>An array of <see cref="FunctionDefinition"/> instance with the defined functions</returns>
             [Pure]
-            internal static FunctionDefinition[] LoadFunctionDefinitions(
+            public static FunctionDefinition[] LoadFunctionDefinitions(
                 UnmanagedSpan<byte> operators,
                 UnmanagedSpan<Range> functions,
                 UnmanagedSpan<ushort> definitions,
@@ -68,7 +68,7 @@ namespace Brainf_ckSharp
             /// <param name="functionsCount">The total number of declared functions in the input sequence of operators</param>
             /// <returns>The resulting precomputed jump table for the input executable</returns>
             [Pure]
-            private static PinnedUnmanagedMemoryOwner<int> LoadJumpTable(
+            public static PinnedUnmanagedMemoryOwner<int> LoadJumpTable(
                 PinnedUnmanagedMemoryOwner<byte> operators,
                 out int functionsCount)
             {
@@ -147,7 +147,7 @@ namespace Brainf_ckSharp
             /// <param name="depth">The current stack depth</param>
             /// <returns>An <see cref="HaltedExecutionInfo"/> instance, if the input script was halted during its execution</returns>
             [Pure]
-            internal static HaltedExecutionInfo? LoadDebugInfo(
+            public static HaltedExecutionInfo? LoadDebugInfo(
                 UnmanagedSpan<byte> operators,
                 UnmanagedSpan<StackFrame> stackFrames,
                 int depth)
@@ -209,7 +209,7 @@ namespace Brainf_ckSharp
             /// <param name="totalFunctions">The total number of defined functions</param>
             /// <returns>An array of <see cref="FunctionDefinition"/> instance with the defined functions</returns>
             [Pure]
-            internal static FunctionDefinition[] LoadFunctionDefinitions(
+            public static FunctionDefinition[] LoadFunctionDefinitions(
                 UnmanagedSpan<Brainf_ckOperation> operations,
                 UnmanagedSpan<Range> functions,
                 UnmanagedSpan<ushort> definitions,
@@ -250,7 +250,7 @@ namespace Brainf_ckSharp
             /// <param name="functionsCount">The total number of declared functions in the input sequence of operations</param>
             /// <returns>The resulting precomputed jump table for the input executable</returns>
             [Pure]
-            private static PinnedUnmanagedMemoryOwner<int> LoadJumpTable(
+            public static PinnedUnmanagedMemoryOwner<int> LoadJumpTable(
                 PinnedUnmanagedMemoryOwner<Brainf_ckOperation> operations,
                 out int functionsCount)
             {
@@ -329,7 +329,7 @@ namespace Brainf_ckSharp
             /// <param name="depth">The current stack depth</param>
             /// <returns>An <see cref="HaltedExecutionInfo"/> instance, if the input script was halted during its execution</returns>
             [Pure]
-            internal static HaltedExecutionInfo? LoadDebugInfo(
+            public static HaltedExecutionInfo? LoadDebugInfo(
                 UnmanagedSpan<Brainf_ckOperation> operations,
                 UnmanagedSpan<StackFrame> stackFrames,
                 int depth)

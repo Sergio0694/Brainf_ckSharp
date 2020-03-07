@@ -42,7 +42,7 @@ foreach (var configuration in configurations)
             /// <param name="totalFunctions">The total number of defined functions</param>
             /// <returns>An array of <see cref="FunctionDefinition"/> instance with the defined functions</returns>
             [Pure]
-            internal static FunctionDefinition[] LoadFunctionDefinitions(
+            public static FunctionDefinition[] LoadFunctionDefinitions(
                 UnmanagedSpan<<#=configuration.Type#>> <#=configuration.Name#>,
                 UnmanagedSpan<Range> functions,
                 UnmanagedSpan<ushort> definitions,
@@ -83,7 +83,7 @@ foreach (var configuration in configurations)
             /// <param name="functionsCount">The total number of declared functions in the input sequence of <#=configuration.Name#></param>
             /// <returns>The resulting precomputed jump table for the input executable</returns>
             [Pure]
-            private static PinnedUnmanagedMemoryOwner<int> LoadJumpTable(
+            public static PinnedUnmanagedMemoryOwner<int> LoadJumpTable(
                 PinnedUnmanagedMemoryOwner<<#=configuration.Type#>> <#=configuration.Name#>,
                 out int functionsCount)
             {
@@ -162,7 +162,7 @@ foreach (var configuration in configurations)
             /// <param name="depth">The current stack depth</param>
             /// <returns>An <see cref="HaltedExecutionInfo"/> instance, if the input script was halted during its execution</returns>
             [Pure]
-            internal static HaltedExecutionInfo? LoadDebugInfo(
+            public static HaltedExecutionInfo? LoadDebugInfo(
                 UnmanagedSpan<<#=configuration.Type#>> <#=configuration.Name#>,
                 UnmanagedSpan<StackFrame> stackFrames,
                 int depth)

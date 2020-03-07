@@ -72,7 +72,7 @@ namespace Brainf_ckSharp
              * Additionally, when this type is used, memory is pinned using a fixed statement instead
              * of the GCHandle, which has slightly less overhead for the runtime. */
             using StackOnlyUnmanagedMemoryOwner<bool> breakpoints = StackOnlyUnmanagedMemoryOwner<bool>.Allocate(operators.Size, true);
-            using PinnedUnmanagedMemoryOwner<int> jumpTable = LoadJumpTable(operators, out int functionsCount);
+            using PinnedUnmanagedMemoryOwner<int> jumpTable = Debug.LoadJumpTable(operators, out int functionsCount);
             using StackOnlyUnmanagedMemoryOwner<Range> functions = StackOnlyUnmanagedMemoryOwner<Range>.Allocate(ushort.MaxValue, true);
             using PinnedUnmanagedMemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
             using StackOnlyUnmanagedMemoryOwner<StackFrame> stackFrames = StackOnlyUnmanagedMemoryOwner<StackFrame>.Allocate(Specs.MaximumStackSize, false);
@@ -123,13 +123,13 @@ namespace Brainf_ckSharp
                 string sourceCode = Brainf_ckParser.Debug.ExtractSource(operators.Span);
 
                 // Prepare the debug info
-                HaltedExecutionInfo? debugInfo = LoadDebugInfo(
+                HaltedExecutionInfo? debugInfo = Debug.LoadDebugInfo(
                     operators.Span,
                     new UnmanagedSpan<StackFrame>(Specs.MaximumStackSize, stackFramesPtr),
                     depth);
 
                 // Build the collection of defined functions
-                FunctionDefinition[] functionDefinitions = LoadFunctionDefinitions(
+                FunctionDefinition[] functionDefinitions = Debug.LoadFunctionDefinitions(
                     operators.Span,
                     new UnmanagedSpan<Range>(ushort.MaxValue, functionsPtr),
                     definitions.Span,
@@ -176,8 +176,8 @@ namespace Brainf_ckSharp
             if (!validationResult.IsSuccess) return Option<InterpreterSession>.From(validationResult);
 
             // Initialize the temporary buffers
-            PinnedUnmanagedMemoryOwner<bool> breakpointsTable = LoadBreakpointsTable(source, validationResult.OperatorsCount, breakpoints);
-            PinnedUnmanagedMemoryOwner<int> jumpTable = LoadJumpTable(operators, out int functionsCount);
+            PinnedUnmanagedMemoryOwner<bool> breakpointsTable = Debug.LoadBreakpointsTable(source, validationResult.OperatorsCount, breakpoints);
+            PinnedUnmanagedMemoryOwner<int> jumpTable = Debug.LoadJumpTable(operators, out int functionsCount);
             PinnedUnmanagedMemoryOwner<Range> functions = PinnedUnmanagedMemoryOwner<Range>.Allocate(ushort.MaxValue, true);
             PinnedUnmanagedMemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
             PinnedUnmanagedMemoryOwner<StackFrame> stackFrames = PinnedUnmanagedMemoryOwner<StackFrame>.Allocate(Specs.MaximumStackSize, false);
