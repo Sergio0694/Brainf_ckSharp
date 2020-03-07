@@ -47,6 +47,20 @@ foreach (var mode in Enum.GetValues(typeof(OverflowMode)))
 <#
 foreach (var mode in Enum.GetValues(typeof(OverflowMode)))
 {
+    // Get the current cell type, for later use
+    string cellType;
+    switch (mode)
+    {
+        case OverflowMode.UshortWithNoOverflow:
+        case OverflowMode.UshortWithOverflow:
+            cellType = "ushort";
+            break;
+        case OverflowMode.ByteWithNoOverflow:
+        case OverflowMode.ByteWithOverflow:
+            cellType = "byte";
+            break;
+        default: throw new ArgumentException($"Invalid overflow mode: {mode}", nameof(mode));
+    }
 #>
         /// <summary>
         /// A <see langword="struct"/> implementing <see cref="IMachineStateExecutionContext"/> for <see cref="OverflowMode.<#=mode#>"/>
@@ -144,28 +158,18 @@ foreach (var mode in Enum.GetValues(typeof(OverflowMode)))
 switch (mode)
 {
     case OverflowMode.UshortWithNoOverflow:
+    case OverflowMode.ByteWithNoOverflow:
 #>
-                if (*current == ushort.MaxValue) return false;
+                if (*current == <#=cellType#>.MaxValue) return false;
 
-                *current = unchecked((ushort)(*current + 1));
+                *current = unchecked((<#=cellType#>)(*current + 1));
 <#
         break;
     case OverflowMode.UshortWithOverflow:
-#>
-                *current = unchecked((ushort)(*current + 1));
-<# 
-        break;
-    case OverflowMode.ByteWithNoOverflow:
-#>
-                if (*current == byte.MaxValue) return false;
-
-                *current = unchecked((byte)(*current + 1));
-<#
-        break;
     case OverflowMode.ByteWithOverflow:
 #>
-                *current = unchecked((byte)(*current + 1));
-<#  
+                *current = unchecked((<#=cellType#>)(*current + 1));
+<# 
         break;
     default: throw new ArgumentException($"Invalid overflow mode: {mode}", nameof(mode));
 }
@@ -185,42 +189,25 @@ switch (mode)
 switch (mode)
 {
     case OverflowMode.UshortWithNoOverflow:
+    case OverflowMode.ByteWithNoOverflow:
 #>
-                if (*current + count > ushort.MaxValue)
+                if (*current + count > <#=cellType#>.MaxValue)
                 {
                     ushort temp = *current;
 
-                    *current = ushort.MaxValue;
+                    *current = <#=cellType#>.MaxValue;
 
-                    return ushort.MaxValue - temp;
+                    return <#=cellType#>.MaxValue - temp;
                 }
 
                 *current = unchecked((ushort)(*current + 1));
 <#
         break;
     case OverflowMode.UshortWithOverflow:
-#>
-                *current = unchecked((ushort)(*current + count));
-<# 
-        break;
-    case OverflowMode.ByteWithNoOverflow:
-#>
-                if (*current + count > byte.MaxValue)
-                {
-                    ushort temp = *current;
-
-                    *current = byte.MaxValue;
-
-                    return byte.MaxValue - temp;
-                }
-
-                *current = unchecked((byte)(*current + count));
-<#
-        break;
     case OverflowMode.ByteWithOverflow:
 #>
-                *current = unchecked((byte)(*current + count));
-<#  
+                *current = unchecked((<#=cellType#>)(*current + count));
+<# 
         break;
     default: throw new ArgumentException($"Invalid overflow mode: {mode}", nameof(mode));
 }
@@ -248,13 +235,9 @@ switch (mode)
 <#
         break;
     case OverflowMode.UshortWithOverflow:
-#>
-                *current = unchecked((ushort)(*current - 1));
-<#
-        break;
     case OverflowMode.ByteWithOverflow:
 #>
-                *current = unchecked((byte)(*current - 1));
+                *current = unchecked((<#=cellType#>)(*current - 1));
 <#
         break;
     default: throw new ArgumentException($"Invalid overflow mode: {mode}", nameof(mode));
@@ -290,13 +273,9 @@ switch (mode)
 <#
         break;
     case OverflowMode.UshortWithOverflow:
-#>
-                *current = unchecked((ushort)(*current - count));
-<#
-        break;
     case OverflowMode.ByteWithOverflow:
 #>
-                *current = unchecked((byte)(*current - count));
+                *current = unchecked((<#=cellType#>)(*current - count));
 <#
         break;
     default: throw new ArgumentException($"Invalid overflow mode: {mode}", nameof(mode));

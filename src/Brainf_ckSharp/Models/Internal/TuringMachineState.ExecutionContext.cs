@@ -475,7 +475,7 @@ namespace Brainf_ckSharp.Models.Internal
                     return byte.MaxValue - temp;
                 }
 
-                *current = unchecked((byte)(*current + count));
+                *current = unchecked((ushort)(*current + 1));
 
                 return count;
             }
