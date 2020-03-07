@@ -2,6 +2,7 @@
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
+using Brainf_ckSharp.Models.Opcodes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Brainf_ckSharp.Unit.Internals
@@ -15,7 +16,7 @@ namespace Brainf_ckSharp.Unit.Internals
         [TestMethod]
         public void ExtractSource()
         {
-            using PinnedUnmanagedMemoryOwner<byte> operators = PinnedUnmanagedMemoryOwner<byte>.Allocate(11, false);
+            using PinnedUnmanagedMemoryOwner<Brainf_ckOperator> operators = PinnedUnmanagedMemoryOwner<Brainf_ckOperator>.Allocate(11, false);
 
             operators[0] = Operators.Plus;
             operators[1] = Operators.Minus;
@@ -36,11 +37,11 @@ namespace Brainf_ckSharp.Unit.Internals
         }
 
         [TestMethod]
-        public void TryParse()
+        public void TryParseInDebugMode()
         {
             const string script = "[\n\tTest script\n]\n+++++[\n\t>++ 5 x 2 = 10\n\t<- Loop decrement\n]\n> Move to cell 1";
 
-            using PinnedUnmanagedMemoryOwner<byte>? operators = Brainf_ckParser.TryParse(script, out SyntaxValidationResult result);
+            using PinnedUnmanagedMemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>(script, out SyntaxValidationResult result);
 
             Assert.IsTrue(result.IsSuccess);
             Assert.AreEqual(result.ErrorType, SyntaxError.None);
@@ -51,6 +52,27 @@ namespace Brainf_ckSharp.Unit.Internals
             Assert.AreEqual(operators!.Size, 15);
 
             string source = Brainf_ckParser.ExtractSource(operators.Span);
+
+            Assert.IsNotNull(source);
+            Assert.AreEqual(source, "[]+++++[>++<-]>");
+        }
+
+        [TestMethod]
+        public void TryParseInReleaseMode()
+        {
+            const string script = "[\n\tTest script\n]\n+++++[\n\t>++ 5 x 2 = 10\n\t<- Loop decrement\n]\n> Move to cell 1";
+
+            using PinnedUnmanagedMemoryOwner<Brainf_ckOperation>? operations = Brainf_ckParser.TryParse<Brainf_ckOperation>(script, out SyntaxValidationResult result);
+
+            Assert.IsTrue(result.IsSuccess);
+            Assert.AreEqual(result.ErrorType, SyntaxError.None);
+            Assert.AreEqual(result.ErrorOffset, -1);
+            Assert.AreEqual(result.OperatorsCount, 15);
+
+            Assert.IsNotNull(operations);
+            Assert.AreEqual(operations!.Size, 10);
+
+            string source = Brainf_ckParser.ExtractSource(operations.Span);
 
             Assert.IsNotNull(source);
             Assert.AreEqual(source, "[]+++++[>++<-]>");

@@ -2,11 +2,13 @@
 using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ckSharp.Buffers.IO;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Extensions.Types;
 using Brainf_ckSharp.Models.Internal;
+using Brainf_ckSharp.Models.Opcodes;
 using Stopwatch = System.Diagnostics.Stopwatch;
 
 namespace Brainf_ckSharp.Models
@@ -17,9 +19,9 @@ namespace Brainf_ckSharp.Models
     public sealed class InterpreterSession : IEnumerator<InterpreterResult>
     {
         /// <summary>
-        /// The sequence of parsed operators to execute
+        /// The sequence of parsed opcodes to execute
         /// </summary>
-        private readonly PinnedUnmanagedMemoryOwner<byte> Operators;
+        private readonly PinnedUnmanagedMemoryOwner<Brainf_ckOperator> Opcodes;
 
         /// <summary>
         /// The table of breakpoints for the current executable
@@ -67,7 +69,7 @@ namespace Brainf_ckSharp.Models
         private int _Depth;
 
         /// <summary>
-        /// The total number of executed operators
+        /// The total number of executed opcodes
         /// </summary>
         private int _TotalOperations;
 
@@ -99,7 +101,7 @@ namespace Brainf_ckSharp.Models
         /// <summary>
         /// Creates a new <see cref="InterpreterSession"/> with the specified parameters
         /// </summary>
-        /// <param name="operators">The sequence of parsed operators to execute</param>
+        /// <param name="opcodes">The sequence of parsed opcodes to execute</param>
         /// <param name="breakpoints">The table of breakpoints for the current executable</param>
         /// <param name="jumpTable">The jump table for loops and function declarations</param>
         /// <param name="functions">The mapping of functions for the current execution</param>
@@ -111,7 +113,7 @@ namespace Brainf_ckSharp.Models
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
         internal InterpreterSession(
-            PinnedUnmanagedMemoryOwner<byte> operators,
+            PinnedUnmanagedMemoryOwner<Brainf_ckOperator> opcodes,
             PinnedUnmanagedMemoryOwner<bool> breakpoints,
             PinnedUnmanagedMemoryOwner<int> jumpTable,
             PinnedUnmanagedMemoryOwner<Range> functions,
@@ -123,7 +125,7 @@ namespace Brainf_ckSharp.Models
             CancellationToken executionToken,
             CancellationToken debugToken)
         {
-            Operators = operators;
+            Opcodes = opcodes;
             Breakpoints = breakpoints;
             JumpTable = jumpTable;
             Functions = functions;
@@ -135,7 +137,7 @@ namespace Brainf_ckSharp.Models
             ExecutionToken = executionToken;
             DebugToken = debugToken;
             Stopwatch = new Stopwatch();
-            SourceCode = Brainf_ckParser.ExtractSource(operators.Span);
+            SourceCode = Brainf_ckParser.ExtractSource(opcodes.Span);
         }
 
         private InterpreterResult? _Current;
@@ -157,36 +159,61 @@ namespace Brainf_ckSharp.Models
                 return false;
             }
 
-            Stopwatch.Start();
+            // Execute the mode specific implementation
+            switch (MachineState.Mode)
+            {
+                case OverflowMode.UshortWithNoOverflow: MoveNext<TuringMachineState.UshortWithNoOverflowExecutionContext>(); break;
+                case OverflowMode.UshortWithOverflow: MoveNext<TuringMachineState.UshortWithOverflowExecutionContext>(); break;
+                case OverflowMode.ByteWithNoOverflow: MoveNext<TuringMachineState.ByteWithNoOverflowExecutionContext>(); break;
+                case OverflowMode.ByteWithOverflow: MoveNext<TuringMachineState.ByteWithOverflowExecutionContext>(); break;
+                default: throw new ArgumentOutOfRangeException(nameof(MachineState.Mode), $"Invalid execution mode: {MachineState.Mode}");
+            };
 
-            // Execute the new interpreter debug step
-            ExitCode exitCode = Brainf_ckInterpreter.Run(
-                Operators.Span,
-                Breakpoints.Span,
-                JumpTable.Span,
-                Functions.Span,
-                Definitions.Span,
-                StackFrames.Span,
-                ref _Depth,
-                ref _TotalOperations,
-                ref _TotalFunctions,
-                MachineState,
-                StdinBuffer,
-                StdoutBuffer,
-                ExecutionToken,
-                DebugToken);
+            return true;
+        }
 
-            Stopwatch.Stop();
+        /// <summary>
+        /// Implements the <see cref="MoveNext"/> logic with a specific execution mode
+        /// </summary>
+        /// <typeparam name="TExecutionContext">The type implementing <see cref="IMachineStateExecutionContext"/> to use</typeparam>
+        private void MoveNext<TExecutionContext>()
+            where TExecutionContext : struct, IMachineStateExecutionContext
+        {
+            ExitCode exitCode;
+
+            using (TuringMachineState.ExecutionSession<TExecutionContext> session = MachineState.CreateExecutionSession<TExecutionContext>())
+            {
+                Stopwatch.Start();
+
+                // Execute the new interpreter debug step
+                exitCode = Brainf_ckInterpreter.Debug.Run(
+                    ref Unsafe.AsRef(session.ExecutionContext),
+                    Opcodes.Span,
+                    Breakpoints.Span,
+                    JumpTable.Span,
+                    Functions.Span,
+                    Definitions.Span,
+                    StackFrames.Span,
+                    ref _Depth,
+                    ref _TotalOperations,
+                    ref _TotalFunctions,
+                    StdinBuffer,
+                    StdoutBuffer,
+                    ExecutionToken,
+                    DebugToken);
+
+                Stopwatch.Stop();
+            }
 
             // Prepare the debug info
             HaltedExecutionInfo? debugInfo = Brainf_ckInterpreter.LoadDebugInfo(
-                Operators.Span,
+                Opcodes.Span,
                 StackFrames.Span,
                 _Depth);
 
             // Build the collection of defined functions
             FunctionDefinition[] functionDefinitions = Brainf_ckInterpreter.LoadFunctionDefinitions(
-                Operators.Span,
+                Opcodes.Span,
                 Functions.Span,
                 Definitions.Span,
                 _TotalFunctions);
@@ -202,8 +229,6 @@ namespace Brainf_ckSharp.Models
                 StdoutBuffer.ToString(),
                 Stopwatch.Elapsed,
                 _TotalOperations);
-
-            return true;
         }
 
         /// <inheritdoc/>
@@ -214,7 +239,7 @@ namespace Brainf_ckSharp.Models
         /// <inheritdoc/>
         public void Dispose()
         {
-            Operators.Dispose();
+            Opcodes.Dispose();
             Breakpoints.Dispose();
             JumpTable.Dispose();
             Functions.Dispose();

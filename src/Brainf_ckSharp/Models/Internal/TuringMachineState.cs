@@ -8,24 +8,22 @@ using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Interfaces;
 
-#pragma warning disable IDE0032
-
 namespace Brainf_ckSharp.Models.Internal
 {
     /// <summary>
     /// A <see langword="class"/> that represents the state of a Turing machine
     /// </summary>
-    internal sealed unsafe class TuringMachineState : PinnedUnmanagedMemoryOwner<ushort>, IReadOnlyTuringMachineState
+    internal sealed unsafe partial class TuringMachineState : PinnedUnmanagedMemoryOwner<ushort>, IReadOnlyTuringMachineState
     {
         /// <summary>
         /// The current position within the underlying buffer
         /// </summary>
-        private int _Position;
+        public int _Position;
 
         /// <summary>
         /// The overflow mode being used by the current instance
         /// </summary>
-        private readonly OverflowMode Mode;
+        public readonly OverflowMode Mode;
 
         /// <summary>
         /// Creates a new blank machine state with the given parameters
@@ -51,17 +49,8 @@ namespace Brainf_ckSharp.Models.Internal
         /// <inheritdoc/>
         public int Count => Size;
 
-        /// <summary>
-        /// Gets the value at the current memory position
-        /// </summary>
-        public ushort Current
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => Ptr[_Position];
-        }
-
         /// <inheritdoc/>
-        Brainf_ckMemoryCell IReadOnlyTuringMachineState.Current
+        public Brainf_ckMemoryCell Current
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => new Brainf_ckMemoryCell(_Position, Ptr[_Position], true);
@@ -79,127 +68,6 @@ namespace Brainf_ckSharp.Models.Internal
                 return new Brainf_ckMemoryCell(index, Ptr[index], _Position == index);
             }
         }
-
-        /// <summary>
-        /// Tries to move the memory pointer forward
-        /// </summary>
-        /// <returns><see langword="true"/> if the pointer was moved successfully, <see langword="false"/> otherwise</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal bool TryMoveNext()
-        {
-            if (_Position >= Size - 1) return false;
-
-            _Position++;
-            return true;
-        }
-
-        /// <summary>
-        /// Tries to move the memory pointer back
-        /// </summary>
-        /// <returns><see langword="true"/> if the pointer was moved successfully, <see langword="false"/> otherwise</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal bool TryMoveBack()
-        {
-            if (_Position == 0) return false;
-
-            _Position--;
-            return true;
-        }
-
-        /// <summary>
-        /// Tries to increment the current memory location
-        /// </summary>
-        /// <returns><see langword="true"/> if the memory location was incremented successfully, <see langword="false"/> otherwise</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal bool TryIncrement()
-        {
-            /* Using a local variable here helps the JITter avoid multiple accesses
-             * to the current memory cell when checking values and incrementing them.
-             * Additionally, the overflow mode is using a bitwise and to perform the
-             * mod operation - this works when the divisor is a power of 2 minus 1,
-             * like in the two cases below (255 and 65535). This is faster than
-             * using the mod operator, and saves a few more asm instructions. */
-            ushort current = Ptr[_Position];
-
-            switch (Mode)
-            {
-                case OverflowMode.UshortWithNoOverflow:
-                    if (current == ushort.MaxValue) return false;
-                    Ptr[_Position] = (ushort)(current + 1);
-                    break;
-                case OverflowMode.UshortWithOverflow:
-                    Ptr[_Position] = (ushort)((current + 1) & ushort.MaxValue);
-                    break;
-                case OverflowMode.ByteWithNoOverflow:
-                    if (current == byte.MaxValue) return false;
-                    Ptr[_Position] = (ushort)(current + 1);
-                    break;
-                case OverflowMode.ByteWithOverflow:
-                    Ptr[_Position] = (ushort)((current + 1) & byte.MaxValue);
-                    break;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Tries to decrement the current memory location
-        /// </summary>
-        /// <returns><see langword="true"/> if the memory location was decremented successfully, <see langword="false"/> otherwise</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal bool TryDecrement()
-        {
-            ushort current = Ptr[_Position];
-
-            switch (Mode)
-            {
-                case OverflowMode.UshortWithOverflow:
-                    Ptr[_Position] = (ushort)(current - 1);
-                    break;
-                case OverflowMode.ByteWithOverflow:
-                    Ptr[_Position] = (ushort)((current - 1) & byte.MaxValue);
-                    break;
-                case OverflowMode.ByteWithNoOverflow:
-                case OverflowMode.UshortWithNoOverflow:
-                    if (current == 0) return false;
-                    Ptr[_Position] = (ushort)(current - 1);
-                    break;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Tries to set the current memory location to the value of a given character
-        /// </summary>
-        /// <param name="c">The input charachter to assign to the current memory location</param>
-        /// <returns><see langword="true"/> if the input value was read correctly, <see langword="false"/> otherwise</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal bool TryInput(char c)
-        {
-            switch (Mode)
-            {
-                case OverflowMode.UshortWithNoOverflow:
-                case OverflowMode.UshortWithOverflow:
-                    Ptr[_Position] = c;
-                    break;
-                case OverflowMode.ByteWithNoOverflow:
-                    if (c > byte.MaxValue) return false;
-                    Ptr[_Position] = c;
-                    break;
-                case OverflowMode.ByteWithOverflow:
-                    Ptr[_Position] = (ushort)(c & byte.MaxValue);
-                    break;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Resets the value in the current memory cell
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void ResetCell() => Ptr[_Position] = 0;
 
         /// <inheritdoc/>
         public override bool Equals(object obj)
