@@ -174,7 +174,15 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
             if (!string.IsNullOrEmpty(command))
             {
                 string stdin = Messenger.Default.Request<StdinRequestMessage, string>();
-                Option<InterpreterResult> result = await Task.Run(() => Brainf_ckInterpreter.TryRun(command, stdin, MachineState));
+                Option<InterpreterResult> result = await Task.Run(() =>
+                {
+                    return Brainf_ckInterpreter
+                        .CreateReleaseConfiguration()
+                        .WithSource(command)
+                        .WithStdin(stdin)
+                        .WithInitialState(MachineState)
+                        .TryRun();
+                });
 
                 if (!result.ValidationResult.IsSuccess) Source.Add(new ConsoleSyntaxError(result.ValidationResult));
                 else
