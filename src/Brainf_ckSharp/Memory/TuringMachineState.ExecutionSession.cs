@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using Brainf_ckSharp.Memory.Interfaces;
 
 #pragma warning disable IDE0032
 
-namespace Brainf_ckSharp.Models.Internal
+namespace Brainf_ckSharp.Memory
 {
     /// <summary>
     /// A <see langword="class"/> that represents the state of a Turing machine

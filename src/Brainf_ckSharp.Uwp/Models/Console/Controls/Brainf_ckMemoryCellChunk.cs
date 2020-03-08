@@ -1,5 +1,5 @@
 ﻿using System;
-using Brainf_ckSharp.Interfaces;
+using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
 using GalaSoft.MvvmLight;
 
@@ -13,9 +13,9 @@ namespace Brainf_ckSharp.Uwp.Models.Console.Controls
         /// <summary>
         /// Creates a new <see cref="Brainf_ckMemoryCellChunk"/> instance with the specified parameters
         /// </summary>
-        /// <param name="state">The input <see cref="IReadOnlyTuringMachineState"/> instance to read data from</param>
+        /// <param name="state">The input <see cref="IReadOnlyMachineState"/> instance to read data from</param>
         /// <param name="offset">The offset of the first memory cell in the chunk with respect to the source memory state</param>
-        public Brainf_ckMemoryCellChunk(IReadOnlyTuringMachineState state, int offset)
+        public Brainf_ckMemoryCellChunk(IReadOnlyMachineState state, int offset)
         {
             BaseOffset = offset;
 
@@ -93,8 +93,8 @@ namespace Brainf_ckSharp.Uwp.Models.Console.Controls
         /// <summary>
         /// Updates the current model from the input machine state
         /// </summary>
-        /// <param name="state">The input <see cref="IReadOnlyTuringMachineState"/> instance to read data from</param>
-        public void UpdateFromState(IReadOnlyTuringMachineState state)
+        /// <param name="state">The input <see cref="IReadOnlyMachineState"/> instance to read data from</param>
+        public void UpdateFromState(IReadOnlyMachineState state)
         {
             if (state.Count < BaseOffset + 3) throw new ArgumentException($"The input state is too short: size of {state.Count} for an offset of {BaseOffset}", nameof(state));
 

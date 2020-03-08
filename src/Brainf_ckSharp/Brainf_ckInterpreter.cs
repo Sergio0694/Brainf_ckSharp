@@ -4,10 +4,10 @@ using System.Diagnostics;
 using System.Threading;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
-using Brainf_ckSharp.Interfaces;
+using Brainf_ckSharp.Memory;
+using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
-using Brainf_ckSharp.Models.Internal;
 using Brainf_ckSharp.Opcodes;
 
 namespace Brainf_ckSharp
@@ -134,7 +134,7 @@ namespace Brainf_ckSharp
         /// <param name="initialState">The initial state machine to use to start running the script from</param>
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
         /// <remarks>Consider using an overload with a <see cref="CancellationToken"/> to prevent issues with non-halting scripts</remarks>
-        public static Option<InterpreterResult> TryRun(string source, IReadOnlyTuringMachineState initialState)
+        public static Option<InterpreterResult> TryRun(string source, IReadOnlyMachineState initialState)
         {
             return TryRun(source, string.Empty, initialState, CancellationToken.None);
         }
@@ -146,7 +146,7 @@ namespace Brainf_ckSharp
         /// <param name="initialState">The initial state machine to use to start running the script from</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-        public static Option<InterpreterResult> TryRun(string source, IReadOnlyTuringMachineState initialState, CancellationToken executionToken)
+        public static Option<InterpreterResult> TryRun(string source, IReadOnlyMachineState initialState, CancellationToken executionToken)
         {
             return TryRun(source, string.Empty, initialState, executionToken);
         }
@@ -159,7 +159,7 @@ namespace Brainf_ckSharp
         /// <param name="initialState">The initial state machine to use to start running the script from</param>
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
         /// <remarks>Consider using an overload with a <see cref="CancellationToken"/> to prevent issues with non-halting scripts</remarks>
-        public static Option<InterpreterResult> TryRun(string source, string stdin, IReadOnlyTuringMachineState initialState)
+        public static Option<InterpreterResult> TryRun(string source, string stdin, IReadOnlyMachineState initialState)
         {
             return TryRun(source, stdin, initialState, CancellationToken.None);
         }
@@ -172,7 +172,7 @@ namespace Brainf_ckSharp
         /// <param name="initialState">The initial state machine to use to start running the script from</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-        public static Option<InterpreterResult> TryRun(string source, string stdin, IReadOnlyTuringMachineState initialState, CancellationToken executionToken)
+        public static Option<InterpreterResult> TryRun(string source, string stdin, IReadOnlyMachineState initialState, CancellationToken executionToken)
         {
             DebugGuard.MustBeTrue(initialState is TuringMachineState, nameof(initialState));
 

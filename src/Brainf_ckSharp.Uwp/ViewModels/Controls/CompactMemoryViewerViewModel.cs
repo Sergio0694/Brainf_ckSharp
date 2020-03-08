@@ -1,4 +1,4 @@
-﻿using Brainf_ckSharp.Interfaces;
+﻿using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Uwp.Messages.Console.MemoryState;
 using Brainf_ckSharp.Uwp.Models.Console.Controls;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
@@ -18,17 +18,17 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls
         /// </summary>
         public CompactMemoryViewerViewModel()
         {
-            MachineState = Messenger.Default.Request<MemoryStateRequestMessage, IReadOnlyTuringMachineState>();
+            MachineState = Messenger.Default.Request<MemoryStateRequestMessage, IReadOnlyMachineState>();
 
             Messenger.Default.Register<MemoryStateChangedNotificationMessage>(this, m => MachineState = m.Value);
         }
 
-        private IReadOnlyTuringMachineState? _MachineState;
+        private IReadOnlyMachineState? _MachineState;
 
         /// <summary>
-        /// Gets or sets the <see cref="IReadOnlyTuringMachineState"/> instance for the current view model
+        /// Gets or sets the <see cref="IReadOnlyMachineState"/> instance for the current view model
         /// </summary>
-        public IReadOnlyTuringMachineState? MachineState
+        public IReadOnlyMachineState? MachineState
         {
             get => _MachineState;
             set
@@ -45,8 +45,8 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls
         /// <summary>
         /// Updates the current model from the input machine state
         /// </summary>
-        /// <param name="state">The input <see cref="IReadOnlyTuringMachineState"/> instance to read data from</param>
-        public void UpdateFromState(IReadOnlyTuringMachineState? state)
+        /// <param name="state">The input <see cref="IReadOnlyMachineState"/> instance to read data from</param>
+        public void UpdateFromState(IReadOnlyMachineState? state)
         {
             if (state == null) Source.Clear();
             else

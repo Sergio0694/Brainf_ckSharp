@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Enums;
-using Brainf_ckSharp.Interfaces;
+using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Tools;
@@ -50,12 +50,12 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
             Messenger.Default.Register<RepeatCommandRequestMessage>(this, m => _ = RepeatLastScriptAsync());
         }
 
-        private IReadOnlyTuringMachineState _MachineState = TuringMachineStateProvider.Default;
+        private IReadOnlyMachineState _MachineState = MachineStateProvider.Default;
 
         /// <summary>
-        /// Gets the <see cref="IReadOnlyTuringMachineState"/> instance currently in use
+        /// Gets the <see cref="IReadOnlyMachineState"/> instance currently in use
         /// </summary>
-        public IReadOnlyTuringMachineState MachineState
+        public IReadOnlyMachineState MachineState
         {
             get => _MachineState;
             set
@@ -128,7 +128,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
                 else throw new InvalidOperationException("Missing console command to modify");
 
                 Source.Add(new ConsoleRestart());
-                MachineState = TuringMachineStateProvider.Default;
+                MachineState = MachineStateProvider.Default;
                 Source.Add(new ConsoleCommand());
             }
         }

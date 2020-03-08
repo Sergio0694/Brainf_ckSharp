@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Models\Internal\TuringMachineState.ExecutionContext.tt">
+    <None Update="Memory\TuringMachineState.ExecutionContext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>TuringMachineState.ExecutionContext.g.cs</LastGenOutput>
     </None>
@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Models\Internal\TuringMachineState.ExecutionContext.g.cs">
+    <Compile Update="Memory\TuringMachineState.ExecutionContext.g.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>TuringMachineState.ExecutionContext.tt</DependentUpon>

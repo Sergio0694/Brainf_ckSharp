@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Brainf_ckSharp.Enums;
-using Brainf_ckSharp.Interfaces;
+using Brainf_ckSharp.Memory.Interfaces;
 
 namespace Brainf_ckSharp.Models
 {
@@ -28,7 +28,7 @@ namespace Brainf_ckSharp.Models
         /// <summary>
         /// Gets the resulting memory state after running the script
         /// </summary>
-        public IReadOnlyTuringMachineState MachineState { get; }
+        public IReadOnlyMachineState MachineState { get; }
 
         /// <summary>
         /// Gets the sequence of functions that were defined when running the script
@@ -71,7 +71,7 @@ namespace Brainf_ckSharp.Models
             string sourceCode,
             ExitCode exitCode,
             HaltedExecutionInfo? exceptionInfo,
-            IReadOnlyTuringMachineState machineState,
+            IReadOnlyMachineState machineState,
             IReadOnlyList<FunctionDefinition> functions,
             string stdin,
             string stdout,

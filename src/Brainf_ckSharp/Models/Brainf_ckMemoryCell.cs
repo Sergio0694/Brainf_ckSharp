@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using Brainf_ckSharp.Memory.Interfaces;
 
 namespace Brainf_ckSharp.Models
 {
     /// <summary>
-    /// A model that represents the information on a given memory cell in a <see cref="Interfaces.IReadOnlyTuringMachineState"/> object
+    /// A model that represents the information on a given memory cell in a <see cref="IReadOnlyMachineState"/> object
     /// </summary>
     public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     {

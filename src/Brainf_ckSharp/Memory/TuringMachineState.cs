@@ -6,14 +6,15 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Enums;
-using Brainf_ckSharp.Interfaces;
+using Brainf_ckSharp.Memory.Interfaces;
+using Brainf_ckSharp.Models;
 
-namespace Brainf_ckSharp.Models.Internal
+namespace Brainf_ckSharp.Memory
 {
     /// <summary>
     /// A <see langword="class"/> that represents the state of a Turing machine
     /// </summary>
-    internal sealed unsafe partial class TuringMachineState : PinnedUnmanagedMemoryOwner<ushort>, IReadOnlyTuringMachineState
+    internal sealed unsafe partial class TuringMachineState : PinnedUnmanagedMemoryOwner<ushort>, IReadOnlyMachineState
     {
         /// <summary>
         /// The current position within the underlying buffer
@@ -77,7 +78,7 @@ namespace Brainf_ckSharp.Models.Internal
         }
 
         /// <inheritdoc/>
-        public bool Equals(IReadOnlyTuringMachineState other)
+        public bool Equals(IReadOnlyMachineState other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;

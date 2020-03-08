@@ -1,4 +1,4 @@
-﻿namespace Brainf_ckSharp.Models.Internal
+﻿namespace Brainf_ckSharp.Memory.Interfaces
 {
     /// <summary>
     /// An <see langword="interface"/> that is used by mode-specific execution contexts
