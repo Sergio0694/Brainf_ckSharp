@@ -21,19 +21,19 @@ namespace Brainf_ckSharp
             /// <summary>
             /// A lookup table to quickly check whether an operator can be compressed
             /// </summary>
-            private static ReadOnlySpan<byte> CompressableOperatorsLookupTable => new[]
+            private static ReadOnlySpan<bool> CompressableOperatorsLookupTable => new[]
             {
-                (byte)0, // [
-                (byte)0, // ]
-                (byte)0, // (
-                (byte)0, // )
-                (byte)1, // +
-                (byte)1, // -
-                (byte)1, // >
-                (byte)1, // <
-                (byte)0, // .
-                (byte)0, // ,
-                (byte)0, // :
+                false,  // [
+                false,  // ]
+                false,  // (
+                false,  // )
+                true,   // +
+                true,   // -
+                true,   // >
+                true,   // <
+                false,  // .
+                false,  // ,
+                false,  // :
             };
 
             /// <summary>
@@ -66,8 +66,7 @@ namespace Brainf_ckSharp
                  * the previous while loop guarantees that the current character
                  * is an operator, and therefore also a valid lookup index. */
                 ref byte r0 = ref MemoryMarshal.GetReference(OperatorsLookupTable);
-                ref byte r1 = ref MemoryMarshal.GetReference(CompressableOperatorsLookupTable);
-                ref bool compressionTableRef = ref Unsafe.As<byte, bool>(ref r1);
+                ref bool r1 = ref MemoryMarshal.GetReference(CompressableOperatorsLookupTable);
                 byte currentOperator = Unsafe.Add(ref r0, Unsafe.Add(ref sourceRef, j));
                 ushort currentCount = 1;
 
@@ -84,7 +83,7 @@ namespace Brainf_ckSharp
 
                     // Accumulate the current operator or finalize the operation
                     if (op == currentOperator &&
-                        Unsafe.Add(ref compressionTableRef, op) &&
+                        Unsafe.Add(ref r1, op) &&
                         currentCount < ushort.MaxValue)
                     {
                         // This is only allowed for ><+-
