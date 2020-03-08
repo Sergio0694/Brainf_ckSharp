@@ -6,12 +6,15 @@ using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckInterpreterOld = Brainf_ckSharp.Legacy.Brainf_ckInterpreter;
 using Brainf_ckInterpreterNew = Brainf_ckSharp.Brainf_ckInterpreter;
+using BenchmarkDotNet.Jobs;
 
 namespace Brainf_ck_sharp.Profiler
 {
     [MemoryDiagnoser]
     [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
     [CategoriesColumn]
+    [SimpleJob(RuntimeMoniker.NetCoreApp21)]
+    [SimpleJob(RuntimeMoniker.NetCoreApp31)]
     public class Brainf_ckBenchmark
     {
         [GlobalSetup]
