@@ -232,6 +232,12 @@ namespace Brainf_ckSharp
                 int operatorsCount,
                 ReadOnlySpan<int> breakpoints)
             {
+                // Fast path if there are no breakpoints to process
+                if (breakpoints.IsEmpty)
+                {
+                    return PinnedUnmanagedMemoryOwner<bool>.Allocate(operatorsCount, true);
+                }
+
                 /* This temporary buffer is used to build a quick lookup table for the
                  * valid indices from the input breakpoints collection. This table is
                  * built in O(M), and then provides constant time checking for each

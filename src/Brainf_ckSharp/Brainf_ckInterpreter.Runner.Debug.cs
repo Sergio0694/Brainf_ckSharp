@@ -52,7 +52,7 @@ namespace Brainf_ckSharp
                 if (!validationResult.IsSuccess) return Option<InterpreterSession>.From(validationResult);
 
                 // Initialize the temporary buffers
-                PinnedUnmanagedMemoryOwner<bool> breakpointsTable = Debug.LoadBreakpointsTable(source, validationResult.OperatorsCount, breakpoints);
+                PinnedUnmanagedMemoryOwner<bool> breakpointsTable = LoadBreakpointsTable(source, validationResult.OperatorsCount, breakpoints);
                 PinnedUnmanagedMemoryOwner<int> jumpTable = LoadJumpTable(opcodes, out int functionsCount);
                 PinnedUnmanagedMemoryOwner<Range> functions = PinnedUnmanagedMemoryOwner<Range>.Allocate(ushort.MaxValue, true);
                 PinnedUnmanagedMemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
