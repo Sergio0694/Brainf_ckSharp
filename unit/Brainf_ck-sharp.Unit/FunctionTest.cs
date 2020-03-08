@@ -13,7 +13,11 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = "+(,[>+<-]>.)>+:";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script, "a");
+            Option<InterpreterResult> result = Brainf_ckInterpreter
+                .CreateReleaseConfiguration()
+                .WithSource(script)
+                .WithStdin("a")
+                .TryRun();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
@@ -32,7 +36,10 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = "(+++):>:";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script);
+            Option<InterpreterResult> result = Brainf_ckInterpreter
+                .CreateReleaseConfiguration()
+                .WithSource(script)
+                .TryRun();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
@@ -51,7 +58,11 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = ">,<(>[>+<-<:]):>[<<+>>-]<<.[-]";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script, "%");
+            Option<InterpreterResult> result = Brainf_ckInterpreter
+                .CreateReleaseConfiguration()
+                .WithSource(script)
+                .WithStdin("%")
+                .TryRun();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);

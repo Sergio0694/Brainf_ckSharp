@@ -13,7 +13,10 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = "[]+++++[>+++++[>+++>++++[>+>+<<-]>>>+++++>+<<<<<<-]<-]>>---.>>+.>++++++++..+++.>>+++++++.<------.<.+++.------.<-.>>>+.";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script);
+            Option<InterpreterResult> result = Brainf_ckInterpreter
+                .CreateReleaseConfiguration()
+                .WithSource(script)
+                .TryRun();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
@@ -26,7 +29,11 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = "[,.,.,,.]++++++[>++++++++<-]>>,>>>,<<<[>+>+<<-]<[>+>-<<-]>[<+>-]>>>[>+>+<<-]<<<<[>+>>>>-<<<<<-]>[<+>-]>>>>>>,>>>,<<<[>+>+<<-]<<<<<<<[>+>>>>>>>-<<<<<<<<-]>>>>>>>>>>[>+>+<<-]<<<<<<<<<[>>>>>>>>>>-<<<<<<<<<<<+>-]>>>>>>>>>>>>>++[>++++++[>+++>++++>+++++<<<-]<-]>>---->----->+[<]<<<<<<<<<<<<<[>.[-]]>[[-]>]>>.[-]>>>>>>>>>>.>.<.<<<<<<<<[>.[-]]>[[-]>]>>.[-]>>>>.>>.[-]<[-]<.[-]<<<<<<<<<<<<<<[>>>++++++++++<<<-]>>>>>>[>>>++++++++++<<<-]>>>[<<<<<<<<<+>>>>>>>>>-]<<<<<<[<<<<+>>>>-]<<<<[>+<-]<[-]>>[>+++[>+++<-]>+<<[>+>>+<<<-]>>>[<<<+>>>-]<<[->->+<[>>>]>[<++++++++++>---------->>>>+<]<<<<<]>[-]>[<<+>>-]>>>>[<<<<<+>>>>>-]<<<<<<<[-]+>>]<<[+++++[>++++++++<-]>.[-]<<<]<";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script, "2375");
+            Option<InterpreterResult> result = Brainf_ckInterpreter
+                .CreateReleaseConfiguration()
+                .WithSource(script)
+                .WithStdin("2375")
+                .TryRun();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
@@ -39,7 +46,13 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = "[,.,.,,.]++++++[>++++++++<-]>>,>>>,<<<[>+>+<<-]<[>+>-<<-]>[<+>-]>>>[>+>+<<-]<<<<[>+>>>>-<<<<<-]>[<+>-]>>>>>>,>>>,<<<[>+>+<<-]<<<<<<<[>+>>>>>>>-<<<<<<<<-]>>>>>>>>>>[>+>+<<-]<<<<<<<<<[>>>>>>>>>>-<<<<<<<<<<<+>-]>>>>>>>>>>>>>++[>++++++[>+++>++++>+++++<<<-]<-]>>---->------>+[<]<<<<<<<<<<<<<[>.[-]]>[[-]>]>>.[-]>>>>>>>>>>.>.<.<<<<<<<<[>.[-]]>[[-]>]>>.[-]>>>>.>>.[-]<[-]<.[-]<<<<<<<<<<<<<<[>>>++++++++++<<<-]>>>>>>[>>>++++++++++<<<-]>>>[<<<<<<<<<+>>>>>>>>>-]<<<<<<[<<<<+>>>>-]<<<<[>[>+>+<<-]>>[<<+>>-]<<<-]<[-]>>[-]>[>+++[>+++<-]>+<<[>+>>+<<<-]>>>[<<<+>>>-]<<[->->+<[>>>]>[<++++++++++>---------->>>>+<]<<<<<]>[-]>[<<+>>-]>>>>[<<<<<+>>>>>-]<<<<<<<[-]+>>]<<[+++++[>++++++++<-]>.[-]<<<]<<";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script, "9985", 64, OverflowMode.UshortWithNoOverflow);
+            Option<InterpreterResult> result = Brainf_ckInterpreter
+                .CreateReleaseConfiguration()
+                .WithSource(script)
+                .WithStdin("9985")
+                .WithMemorySize(64)
+                .WithOverflowMode(OverflowMode.UshortWithNoOverflow)
+                .TryRun();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
@@ -52,7 +65,13 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = "[.,-.,,,.]++++++++[>++++>++++++<<-]>>.[>+>+<<-]>>[<<+>>-],>,<<[>->-<<-]>[<++++++++++>-]>[<<+>>-]<<-1>>>+>>>+(->[>+<-]>[>>++++++++++<<[>+>>+<<<-]>>>[<<<+>>>-]<<[->->+<[>>>]=>[<++++++++++>---------->>>>+<]<<<<<]>[-]>[<<+>>-]>>>>[<<<<<+>>>>>-]<<<<<<<[-]+>>]<<[+++++[>++++++++<-]>.[-]<<<])<<<<<(<[<<.>>->>>1[>+>+>>+<<<<-]>>[<<+>>-]<<<[>+<-]>>[<<+>>-]>>:+<<<<<:]):";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script, "24", 64, OverflowMode.UshortWithNoOverflow);
+            Option<InterpreterResult> result = Brainf_ckInterpreter
+                .CreateReleaseConfiguration()
+                .WithSource(script)
+                .WithStdin("24")
+                .WithMemorySize(64)
+                .WithOverflowMode(OverflowMode.UshortWithNoOverflow)
+                .TryRun();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);

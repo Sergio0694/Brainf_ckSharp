@@ -50,6 +50,7 @@ namespace Brainf_ckSharp.Unit
             Option<InterpreterResult> result = Brainf_ckInterpreter
                 .CreateReleaseConfiguration()
                 .WithSource(script)
+                .WithStdin("0")
                 .TryRun();
 
             Assert.IsNotNull(result);

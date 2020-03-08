@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
-using Brainf_ckSharp.Models.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Brainf_ckSharp.Unit
@@ -14,16 +13,23 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = "+++>>-++";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script);
+            using InterpreterSession? result = Brainf_ckInterpreter
+                .CreateDebugConfiguration()
+                .WithSource(script)
+                .TryRun()
+                .Value;
 
             Assert.IsNotNull(result);
-            Assert.IsNotNull(result.Value);
-            Assert.AreEqual(result.Value!.ExitCode, ExitCode.NegativeValue);
-            Assert.AreEqual(result.Value.Stdout, string.Empty);
-            Assert.AreEqual(result.Value.MachineState.Current.Value, 0);
-            Assert.IsNotNull(result.Value.ExceptionInfo);
-            Assert.AreEqual(result.Value.ExceptionInfo!.StackTrace.Count, 1);
-            Assert.AreEqual(result.Value.ExceptionInfo.StackTrace[0], "+++>>-");
+
+            result!.MoveNext();
+
+            Assert.IsNotNull(result.Current);
+            Assert.AreEqual(result.Current.ExitCode, ExitCode.NegativeValue);
+            Assert.AreEqual(result.Current.Stdout, string.Empty);
+            Assert.AreEqual(result.Current.MachineState.Current.Value, 0);
+            Assert.IsNotNull(result.Current.ExceptionInfo);
+            Assert.AreEqual(result.Current.ExceptionInfo!.StackTrace.Count, 1);
+            Assert.AreEqual(result.Current.ExceptionInfo.StackTrace[0], "+++>>-");
         }
 
         [TestMethod]
@@ -33,14 +39,22 @@ namespace Brainf_ckSharp.Unit
 
             const string script = "+[+-]";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script, cts.Token);
+            using InterpreterSession? result = Brainf_ckInterpreter
+                .CreateDebugConfiguration()
+                .WithSource(script)
+                .WithExecutionToken(cts.Token)
+                .TryRun()
+                .Value;
 
             Assert.IsNotNull(result);
-            Assert.IsNotNull(result.Value);
-            Assert.AreEqual(result.Value!.ExitCode, ExitCode.ThresholdExceeded);
-            Assert.AreEqual(result.Value.Stdout, string.Empty);
-            Assert.IsNotNull(result.Value.ExceptionInfo);
-            Assert.AreEqual(result.Value.ExceptionInfo!.StackTrace.Count, 1);
+
+            result!.MoveNext();
+
+            Assert.IsNotNull(result.Current);
+            Assert.AreEqual(result.Current!.ExitCode, ExitCode.ThresholdExceeded);
+            Assert.AreEqual(result.Current.Stdout, string.Empty);
+            Assert.IsNotNull(result.Current.ExceptionInfo);
+            Assert.AreEqual(result.Current.ExceptionInfo!.StackTrace.Count, 1);
         }
 
         [TestMethod]
@@ -48,16 +62,23 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = "(:):";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script);
+            using InterpreterSession? result = Brainf_ckInterpreter
+                .CreateDebugConfiguration()
+                .WithSource(script)
+                .TryRun()
+                .Value;
 
             Assert.IsNotNull(result);
-            Assert.IsNotNull(result.Value);
-            Assert.AreEqual(result.Value!.ExitCode, ExitCode.StackLimitExceeded);
-            Assert.AreEqual(result.Value.Stdout, string.Empty);
-            Assert.IsNotNull(result.Value.ExceptionInfo);
-            Assert.AreEqual(result.Value.ExceptionInfo!.StackTrace.Count, 512);
-            Assert.AreEqual(result.Value.ExceptionInfo.StackTrace[0], ":");
-            Assert.AreEqual(result.Value.ExceptionInfo.StackTrace[^1], "(:):");
+
+            result!.MoveNext();
+
+            Assert.IsNotNull(result.Current);
+            Assert.AreEqual(result.Current!.ExitCode, ExitCode.StackLimitExceeded);
+            Assert.AreEqual(result.Current.Stdout, string.Empty);
+            Assert.IsNotNull(result.Current.ExceptionInfo);
+            Assert.AreEqual(result.Current.ExceptionInfo!.StackTrace.Count, 512);
+            Assert.AreEqual(result.Current.ExceptionInfo.StackTrace[0], ":");
+            Assert.AreEqual(result.Current.ExceptionInfo.StackTrace[^1], "(:):");
         }
 
         [TestMethod]
@@ -65,15 +86,22 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = ",";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script);
+            using InterpreterSession? result = Brainf_ckInterpreter
+                .CreateDebugConfiguration()
+                .WithSource(script)
+                .TryRun()
+                .Value;
 
             Assert.IsNotNull(result);
-            Assert.IsNotNull(result.Value);
-            Assert.AreEqual(result.Value!.ExitCode, ExitCode.StdinBufferExhausted);
-            Assert.AreEqual(result.Value.Stdout, string.Empty);
-            Assert.IsNotNull(result.Value.ExceptionInfo);
-            Assert.AreEqual(result.Value.ExceptionInfo!.StackTrace.Count, 1);
-            Assert.AreEqual(result.Value.ExceptionInfo.StackTrace[0], ",");
+
+            result!.MoveNext();
+
+            Assert.IsNotNull(result.Current);
+            Assert.AreEqual(result.Current!.ExitCode, ExitCode.StdinBufferExhausted);
+            Assert.AreEqual(result.Current.Stdout, string.Empty);
+            Assert.IsNotNull(result.Current.ExceptionInfo);
+            Assert.AreEqual(result.Current.ExceptionInfo!.StackTrace.Count, 1);
+            Assert.AreEqual(result.Current.ExceptionInfo.StackTrace[0], ",");
         }
 
         [TestMethod]
@@ -81,15 +109,23 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = ",[.]";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script, "a");
+            using InterpreterSession? result = Brainf_ckInterpreter
+                .CreateDebugConfiguration()
+                .WithSource(script)
+                .WithStdin("a")
+                .TryRun()
+                .Value;
 
             Assert.IsNotNull(result);
-            Assert.IsNotNull(result.Value);
-            Assert.AreEqual(result.Value!.ExitCode, ExitCode.StdoutBufferLimitExceeded);
-            Assert.AreEqual(result.Value.Stdout, new string('a', 1024 * 8));
-            Assert.IsNotNull(result.Value.ExceptionInfo);
-            Assert.AreEqual(result.Value.ExceptionInfo!.StackTrace.Count, 1);
-            Assert.AreEqual(result.Value.ExceptionInfo.StackTrace[0], ",[.");
+
+            result!.MoveNext();
+
+            Assert.IsNotNull(result.Current);
+            Assert.AreEqual(result.Current!.ExitCode, ExitCode.StdoutBufferLimitExceeded);
+            Assert.AreEqual(result.Current.Stdout, new string('a', 1024 * 8));
+            Assert.IsNotNull(result.Current.ExceptionInfo);
+            Assert.AreEqual(result.Current.ExceptionInfo!.StackTrace.Count, 1);
+            Assert.AreEqual(result.Current.ExceptionInfo.StackTrace[0], ",[.");
         }
     }
 }
