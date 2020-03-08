@@ -3,9 +3,8 @@ using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
-using TuringMachineState = Brainf_ckSharp.Memory.TuringMachineState;
 
-namespace Brainf_ckSharp.Tools
+namespace Brainf_ckSharp.Memory.Tools
 {
     /// <summary>
     /// A <see langword="class"/> that provides the ability to create empty machine states for later use
