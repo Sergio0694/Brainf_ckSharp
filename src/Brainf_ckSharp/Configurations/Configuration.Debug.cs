@@ -44,12 +44,12 @@ namespace Brainf_ckSharp.Configurations
             }
             else
             {
-                Guard.MustBeNotNull(MemorySize, nameof(MemorySize));
-                Guard.MustBeGreaterThanOrEqualTo(MemorySize!.Value, Specs.MinimumMemorySize, nameof(MemorySize));
-                Guard.MustBeLessThanOrEqualTo(MemorySize!.Value, Specs.MaximumMemorySize, nameof(MemorySize));
-                Guard.MustBeNotNull(OverflowMode, nameof(OverflowMode));
+                int size = MemorySize ?? Specs.DefaultMemorySize;
 
-                initialState = new TuringMachineState(MemorySize.Value, OverflowMode!.Value);
+                Guard.MustBeGreaterThanOrEqualTo(size, Specs.MinimumMemorySize, nameof(MemorySize));
+                Guard.MustBeLessThanOrEqualTo(size, Specs.MaximumMemorySize, nameof(MemorySize));
+
+                initialState = new TuringMachineState(size, OverflowMode ?? Specs.DefaultOverflowMode);
             }
 
             return Brainf_ckInterpreter.Debug.TryCreateSession(

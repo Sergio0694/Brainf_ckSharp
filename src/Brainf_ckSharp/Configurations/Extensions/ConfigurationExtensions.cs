@@ -50,7 +50,7 @@ namespace Brainf_ckSharp
         /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
         /// <param name="initialState">The initial state machine to use to start running the script from</param>
         /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
-        /// <remarks>This property is mutually exclusive with <see cref="DebugConfiguration.MemorySize"/> and <see cref="DebugConfiguration.OverflowMode"/></remarks>
+        /// <remarks>This property will override the values of <see cref="DebugConfiguration.MemorySize"/> and <see cref="DebugConfiguration.OverflowMode"/></remarks>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly DebugConfiguration WithInitialState(in this DebugConfiguration configuration, IReadOnlyMachineState initialState)
@@ -66,7 +66,6 @@ namespace Brainf_ckSharp
         /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
         /// <param name="memorySize">The size of the state machine to create to run the script</param>
         /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
-        /// <remarks>This property is mutually exclusive with <see cref="DebugConfiguration.InitialState"/></remarks>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly DebugConfiguration WithMemorySize(in this DebugConfiguration configuration, int memorySize)
@@ -82,7 +81,6 @@ namespace Brainf_ckSharp
         /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
         /// <param name="overflowMode">The overflow mode to use in the state machine used to run the script</param>
         /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
-        /// <remarks>This property is mutually exclusive with <see cref="DebugConfiguration.InitialState"/></remarks>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly DebugConfiguration WithOverflowMode(in this DebugConfiguration configuration, OverflowMode overflowMode)
@@ -149,7 +147,7 @@ namespace Brainf_ckSharp
         /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
         /// <param name="initialState">The initial state machine to use to start running the script from</param>
         /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
-        /// <remarks>This property is mutually exclusive with <see cref="ReleaseConfiguration.MemorySize"/> and <see cref="ReleaseConfiguration.OverflowMode"/></remarks>
+        /// <remarks>This property will override the values of <see cref="ReleaseConfiguration.MemorySize"/> and <see cref="ReleaseConfiguration.OverflowMode"/></remarks>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly ReleaseConfiguration WithInitialState(in this ReleaseConfiguration configuration, IReadOnlyMachineState initialState)
@@ -165,7 +163,6 @@ namespace Brainf_ckSharp
         /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
         /// <param name="memorySize">The size of the state machine to create to run the script</param>
         /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
-        /// <remarks>This property is mutually exclusive with <see cref="ReleaseConfiguration.InitialState"/></remarks>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly ReleaseConfiguration WithMemorySize(in this ReleaseConfiguration configuration, int memorySize)
@@ -181,7 +178,6 @@ namespace Brainf_ckSharp
         /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
         /// <param name="overflowMode">The overflow mode to use in the state machine used to run the script</param>
         /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
-        /// <remarks>This property is mutually exclusive with <see cref="ReleaseConfiguration.InitialState"/></remarks>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly ReleaseConfiguration WithOverflowMode(in this ReleaseConfiguration configuration, OverflowMode overflowMode)
