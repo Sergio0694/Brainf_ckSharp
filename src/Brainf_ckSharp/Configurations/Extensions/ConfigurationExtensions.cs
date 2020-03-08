@@ -93,7 +93,6 @@ namespace Brainf_ckSharp
         /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution of long running scripts</param>
         /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
-        /// <remarks>This property is mutually exclusive with <see cref="DebugConfiguration.InitialState"/></remarks>
         [Pure]
         public static ref readonly DebugConfiguration WithExecutionToken(in this DebugConfiguration configuration, CancellationToken executionToken)
         {
@@ -187,7 +186,6 @@ namespace Brainf_ckSharp
         /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution of long running scripts</param>
         /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
-        /// <remarks>This property is mutually exclusive with <see cref="ReleaseConfiguration.InitialState"/></remarks>
         [Pure]
         public static ref readonly ReleaseConfiguration WithExecutionToken(in this ReleaseConfiguration configuration, CancellationToken executionToken)
         {

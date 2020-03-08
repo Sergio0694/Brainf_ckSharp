@@ -101,7 +101,6 @@ foreach (var name in names)
         /// <param name="configuration">The input <see cref="<#=name#>Configuration"/> instance</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution of long running scripts</param>
         /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
-        /// <remarks>This property is mutually exclusive with <see cref="<#=name#>Configuration.InitialState"/></remarks>
         [Pure]
         public static ref readonly <#=name#>Configuration WithExecutionToken(in this <#=name#>Configuration configuration, CancellationToken executionToken)
         {
