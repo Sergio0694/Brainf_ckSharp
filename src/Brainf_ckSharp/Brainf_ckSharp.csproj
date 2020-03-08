@@ -26,6 +26,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Configurations\Extensions\ConfigurationExtensions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ConfigurationExtensions.cs</LastGenOutput>
+    </None>
+    <None Update="Configurations\Configuration.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Configuration.cs</LastGenOutput>
+    </None>
     <None Update="Memory\TuringMachineState.ExecutionContext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>TuringMachineState.ExecutionContext.g.cs</LastGenOutput>
@@ -37,6 +45,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Configurations\Extensions\ConfigurationExtensions.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ConfigurationExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Configurations\Configuration.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Configuration.tt</DependentUpon>
+    </Compile>
     <Compile Update="Memory\TuringMachineState.ExecutionContext.g.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

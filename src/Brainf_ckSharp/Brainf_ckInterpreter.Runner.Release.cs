@@ -34,7 +34,7 @@ namespace Brainf_ckSharp
             /// <param name="machineState">The target machine state to use to run the script</param>
             /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
             /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-            public static InterpreterResult RunCore(
+            public static InterpreterResult Run(
                 PinnedUnmanagedMemoryOwner<Brainf_ckOperation> opcodes,
                 string stdin,
                 TuringMachineState machineState,
@@ -45,10 +45,10 @@ namespace Brainf_ckSharp
 
                 return machineState.Mode switch
                 {
-                    OverflowMode.UshortWithNoOverflow => RunCore<TuringMachineState.UshortWithNoOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
-                    OverflowMode.UshortWithOverflow => RunCore<TuringMachineState.UshortWithOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
-                    OverflowMode.ByteWithNoOverflow => RunCore<TuringMachineState.ByteWithNoOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
-                    OverflowMode.ByteWithOverflow => RunCore<TuringMachineState.ByteWithOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
+                    OverflowMode.UshortWithNoOverflow => Run<TuringMachineState.UshortWithNoOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
+                    OverflowMode.UshortWithOverflow => Run<TuringMachineState.UshortWithOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
+                    OverflowMode.ByteWithNoOverflow => Run<TuringMachineState.ByteWithNoOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
+                    OverflowMode.ByteWithOverflow => Run<TuringMachineState.ByteWithOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
                     _ => throw new ArgumentOutOfRangeException()
                 };
             }
@@ -62,7 +62,7 @@ namespace Brainf_ckSharp
             /// <param name="machineState">The target machine state to use to run the script</param>
             /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
             /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-            public static unsafe InterpreterResult RunCore<TExecutionContext>(
+            public static unsafe InterpreterResult Run<TExecutionContext>(
                 PinnedUnmanagedMemoryOwner<Brainf_ckOperation> opcodes,
                 string stdin,
                 TuringMachineState machineState,

@@ -22,6 +22,45 @@ namespace System.Diagnostics
         }
 
         /// <summary>
+        /// Asserts that the input value is assignable to a given type
+        /// </summary>
+        /// <typeparam name="T">The type of the input value</typeparam>
+        /// <param name="value">The input <typeparamref name="T"/> value to test</param>
+        /// <param name="name">The name of the input parameter being tested</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="value"/> is not <typeparamref name="T"/></exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MustBeAssignableTo<T>(object value, string name)
+        {
+            if (!(value is T)) throw new ArgumentException($"Parameter {name} must be assignable to {typeof(T)}, was {value.GetType()}", name);
+        }
+
+        /// <summary>
+        /// Asserts that the input value is <see langword="null"/>
+        /// </summary>
+        /// <typeparam name="T">The type of the input value</typeparam>
+        /// <param name="value">The input <typeparamref name="T"/> value to test</param>
+        /// <param name="name">The name of the input parameter being tested</param>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="value"/> is not <see langword="null"/></exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MustBeNull<T>(T value, string name) where T : class
+        {
+            if (!(value is null)) throw new ArgumentException(name, $"Parameter {name} must be null");
+        }
+
+        /// <summary>
+        /// Asserts that the input value is <see langword="null"/>
+        /// </summary>
+        /// <typeparam name="T">The type of the input value</typeparam>
+        /// <param name="value">The input <typeparamref name="T"/> value to test</param>
+        /// <param name="name">The name of the input parameter being tested</param>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="value"/> is not <see langword="null"/></exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MustBeNull<T>(T? value, string name) where T : struct
+        {
+            if (!(value is null)) throw new ArgumentException(name, $"Parameter {name} must be null");
+        }
+
+        /// <summary>
         /// Asserts that the input value is not <see langword="null"/>
         /// </summary>
         /// <typeparam name="T">The type of the input value</typeparam>
@@ -32,6 +71,33 @@ namespace System.Diagnostics
         public static void MustBeNotNull<T>(T value, string name) where T : class
         {
             if (value is null) throw new ArgumentNullException(name, $"Parameter {name} must be not null");
+        }
+
+        /// <summary>
+        /// Asserts that the input value is not <see langword="null"/>
+        /// </summary>
+        /// <typeparam name="T">The type of the input value</typeparam>
+        /// <param name="value">The input <typeparamref name="T"/> value to test</param>
+        /// <param name="name">The name of the input parameter being tested</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="value"/> is <see langword="null"/></exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MustBeNotNull<T>(T? value, string name) where T : struct
+        {
+            if (value is null) throw new ArgumentNullException(name, $"Parameter {name} must be not null");
+        }
+
+        /// <summary>
+        /// Asserts that the input value must be equal to a specified value
+        /// </summary>
+        /// <typeparam name="T">The type of input values to compare</typeparam>
+        /// <param name="value">The input <typeparamref name="T"/> value to test</param>
+        /// <param name="target">The target <typeparamref name="T"/> value that is accepted</param>
+        /// <param name="name">The name of the input parameter being tested</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="value"/> is != <paramref name="target"/></exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MustBeEqualTo<T>(T value, T target, string name) where T : IComparable<T>
+        {
+            if (value.CompareTo(target) != 0) throw new ArgumentOutOfRangeException(name, $"Parameter {name} must be != {target}, was {value}");
         }
 
         /// <summary>

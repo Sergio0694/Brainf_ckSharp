@@ -110,8 +110,7 @@ namespace Brainf_ckSharp.Models
         /// <param name="definitions">The lookup table to check which functions are defined</param>
         /// <param name="stackFrames">The sequence of stack frames for the current execution</param>
         /// <param name="stdin">The input <see cref="string"/> to read characters from</param>
-        /// <param name="memorySize">The size of the state machine to create to run the script</param>
-        /// <param name="overflowMode">The overflow mode to use in the state machine used to run the script</param>
+        /// <param name="machineState">The target machine state to use to run the script</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
         internal InterpreterSession(
@@ -122,8 +121,7 @@ namespace Brainf_ckSharp.Models
             PinnedUnmanagedMemoryOwner<ushort> definitions,
             PinnedUnmanagedMemoryOwner<StackFrame> stackFrames,
             string stdin,
-            int memorySize,
-            OverflowMode overflowMode,
+            TuringMachineState machineState,
             CancellationToken executionToken,
             CancellationToken debugToken)
         {
@@ -135,7 +133,7 @@ namespace Brainf_ckSharp.Models
             StackFrames = stackFrames;
             StdinBuffer = new StdinBuffer(stdin);
             StdoutBuffer = new StdoutBuffer();
-            MachineState = new TuringMachineState(memorySize, overflowMode);
+            MachineState = machineState;
             ExecutionToken = executionToken;
             DebugToken = debugToken;
             Stopwatch = new Stopwatch();
