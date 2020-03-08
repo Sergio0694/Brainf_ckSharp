@@ -12,7 +12,7 @@ namespace Brainf_ckSharp
     /// <summary>
     /// Extensions for building DEBUG configurations
     /// </summary>
-    public static class DebugConfigurationExtensions
+    public static partial class DebugConfigurationExtensions
     {
         /// <summary>
         /// Sets the source code to parse and execute for a given configuration
@@ -111,7 +111,7 @@ namespace Brainf_ckSharp
     /// <summary>
     /// Extensions for building RELEASE configurations
     /// </summary>
-    public static partial class ReleaseConfigurationExtensions
+    public static class ReleaseConfigurationExtensions
     {
         /// <summary>
         /// Sets the source code to parse and execute for a given configuration

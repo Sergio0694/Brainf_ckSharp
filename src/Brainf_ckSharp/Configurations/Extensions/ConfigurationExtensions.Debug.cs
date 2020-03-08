@@ -7,19 +7,19 @@ using Brainf_ckSharp.Configurations;
 namespace Brainf_ckSharp
 {
     /// <summary>
-    /// Extensions for building RELEASE configurations
+    /// Extensions for building DEBUG configurations
     /// </summary>
-    public static partial class ReleaseConfigurationExtensions
+    public static partial class DebugConfigurationExtensions
     {
         /// <summary>
         /// Sets the source code to parse and execute for a given configuration
         /// </summary>
-        /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
+        /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
         /// <param name="breakpoints">The sequence of indices for the breakpoints to apply to the script</param>
-        /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
+        /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ref readonly ReleaseConfiguration WithBreakpoints(in this ReleaseConfiguration configuration, ReadOnlyMemory<int> breakpoints)
+        public static ref readonly DebugConfiguration WithBreakpoints(in this DebugConfiguration configuration, ReadOnlyMemory<int> breakpoints)
         {
             Unsafe.AsRef(configuration.Breakpoints) = breakpoints;
 
@@ -29,12 +29,12 @@ namespace Brainf_ckSharp
         /// <summary>
         /// Sets the debug token for a given configuration
         /// </summary>
-        /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
+        /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
         /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
-        /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
+        /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ref readonly ReleaseConfiguration WithDebugToken(in this ReleaseConfiguration configuration, CancellationToken debugToken)
+        public static ref readonly DebugConfiguration WithDebugToken(in this DebugConfiguration configuration, CancellationToken debugToken)
         {
             Unsafe.AsRef(configuration.DebugToken) = debugToken;
 

@@ -20,7 +20,7 @@ foreach (var name in names)
     /// <summary>
     /// Extensions for building <#=name.ToUpper()#> configurations
     /// </summary>
-    public static <#=name == "Debug" ? "class" : "partial class"#> <#=name#>ConfigurationExtensions
+    public static <#=name == "Release" ? "class" : "partial class"#> <#=name#>ConfigurationExtensions
     {
         /// <summary>
         /// Sets the source code to parse and execute for a given configuration
