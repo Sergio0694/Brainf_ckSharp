@@ -11,6 +11,19 @@ namespace Brainf_ckSharp.Models
     public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     {
         /// <summary>
+        /// Creates a new instance with the given value
+        /// </summary>
+        /// <param name="index">The index for the memory cell</param>
+        /// <param name="value">The value for the memory cell</param>
+        /// <param name="isSelected">Gets whether the cell is selected</param>
+        internal Brainf_ckMemoryCell(int index, ushort value, bool isSelected)
+        {
+            Index = index;
+            Value = value;
+            IsSelected = isSelected;
+        }
+
+        /// <summary>
         /// Gets the numerical index for the current memory cell
         /// </summary>
         public int Index { get; }
@@ -30,25 +43,10 @@ namespace Brainf_ckSharp.Models
             get => (char)Value;
         }
 
-        private readonly bool _IsSelected;
-
         /// <summary>
         /// Gets whether or not the cell is currently selected
         /// </summary>
-        public bool IsSelected => _IsSelected;
-
-        /// <summary>
-        /// Creates a new instance with the given value
-        /// </summary>
-        /// <param name="index">The index for the memory cell</param>
-        /// <param name="value">The value for the memory cell</param>
-        /// <param name="isSelected">Gets whether the cell is selected</param>
-        internal Brainf_ckMemoryCell(int index, ushort value, bool isSelected)
-        {
-            Index = index;
-            Value = value;
-            _IsSelected = isSelected;
-        }
+        public bool IsSelected { get; }
 
         /// <summary>
         /// Checks whether or not two <see cref="Brainf_ckMemoryCell"/> instances are equal
@@ -69,9 +67,10 @@ namespace Brainf_ckSharp.Models
         /// <inheritdoc/>
         public bool Equals(Brainf_ckMemoryCell other)
         {
-            return Index == other.Index &&
-                   Value == other.Value &&
-                   IsSelected == other.IsSelected;
+            return
+                Index == other.Index &&
+                Value == other.Value &&
+                IsSelected == other.IsSelected;
         }
 
         /// <inheritdoc/>
@@ -80,14 +79,7 @@ namespace Brainf_ckSharp.Models
         /// <inheritdoc/>
         public override int GetHashCode()
         {
-            unchecked
-            {
-                int hashCode = Index;
-                hashCode = (hashCode * 397) ^ Value;
-                hashCode = (hashCode * 397) ^ Unsafe.As<bool, byte>(ref Unsafe.AsRef(in _IsSelected));
-
-                return hashCode;
-            }
+            return HashCode.Combine(Index, Value, IsSelected);
         }
     }
 }
