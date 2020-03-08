@@ -22,6 +22,19 @@ namespace System.Diagnostics
         }
 
         /// <summary>
+        /// Asserts that the input value is assignable to a given type
+        /// </summary>
+        /// <typeparam name="T">The type of the input value</typeparam>
+        /// <param name="value">The input <typeparamref name="T"/> value to test</param>
+        /// <param name="name">The name of the input parameter being tested</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="value"/> is not <typeparamref name="T"/></exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MustBeAssignableTo<T>(object value, string name)
+        {
+            if (!(value is T)) throw new ArgumentException($"Parameter {name} must be assignable to {typeof(T)}, was {value.GetType()}", name);
+        }
+
+        /// <summary>
         /// Asserts that the input value is <see langword="null"/>
         /// </summary>
         /// <typeparam name="T">The type of the input value</typeparam>

@@ -23,7 +23,7 @@ namespace Brainf_ckSharp.Uwp.Resources
         {
             object value = Application.Current.Resources[key];
 
-            Guard.MustBeOf<T>(value, nameof(value));
+            Guard.MustBeAssignableTo<T>(value, nameof(value));
 
             return (T)value;
         }
