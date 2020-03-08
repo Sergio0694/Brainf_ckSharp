@@ -1,12 +1,13 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using Brainf_ckSharp.Configurations;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
 
 #pragma warning disable CS0282
 
-namespace Brainf_ckSharp.Configurations
+namespace Brainf_ckSharp
 {
     /// <summary>
     /// Extensions for building DEBUG configurations

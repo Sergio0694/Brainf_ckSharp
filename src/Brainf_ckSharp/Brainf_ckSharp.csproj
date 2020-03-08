@@ -26,9 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Configurations\Configuration.Extensions.tt">
+    <None Update="Configurations\Extensions\ConfigurationExtensions.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Configuration.Extensions.cs</LastGenOutput>
+      <LastGenOutput>ConfigurationExtensions.cs</LastGenOutput>
     </None>
     <None Update="Configurations\Configuration.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -45,10 +45,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Configurations\Configuration.Extensions.cs">
+    <Compile Update="Configurations\Extensions\ConfigurationExtensions.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Configuration.Extensions.tt</DependentUpon>
+      <DependentUpon>ConfigurationExtensions.tt</DependentUpon>
     </Compile>
     <Compile Update="Configurations\Configuration.cs">
       <DesignTime>True</DesignTime>
