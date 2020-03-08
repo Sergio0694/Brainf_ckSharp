@@ -9,7 +9,7 @@ using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Extensions.Types;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Internal;
-using Brainf_ckSharp.Models.Opcodes;
+using Brainf_ckSharp.Opcodes;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
 using Stopwatch = System.Diagnostics.Stopwatch;
 

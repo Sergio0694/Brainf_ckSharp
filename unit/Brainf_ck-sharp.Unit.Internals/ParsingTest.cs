@@ -2,7 +2,7 @@
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
-using Brainf_ckSharp.Models.Opcodes;
+using Brainf_ckSharp.Opcodes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Brainf_ckSharp.Unit.Internals

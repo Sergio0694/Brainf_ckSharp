@@ -8,7 +8,7 @@ using Brainf_ckSharp.Buffers.IO;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Extensions.Types;
 using Brainf_ckSharp.Models.Internal;
-using Brainf_ckSharp.Models.Opcodes;
+using Brainf_ckSharp.Opcodes;
 using Stopwatch = System.Diagnostics.Stopwatch;
 
 namespace Brainf_ckSharp.Models

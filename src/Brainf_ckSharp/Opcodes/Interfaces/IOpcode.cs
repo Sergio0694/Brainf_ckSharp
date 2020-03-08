@@ -1,4 +1,4 @@
-﻿namespace Brainf_ckSharp.Models.Opcodes.Interfaces
+﻿namespace Brainf_ckSharp.Opcodes.Interfaces
 {
     /// <summary>
     /// An <see langword="interface"/> for a Brainf*ck/PBrain opcode

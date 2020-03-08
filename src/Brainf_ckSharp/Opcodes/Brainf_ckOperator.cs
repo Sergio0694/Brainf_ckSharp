@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Brainf_ckSharp.Models.Opcodes.Interfaces;
+using Brainf_ckSharp.Opcodes.Interfaces;
 
-namespace Brainf_ckSharp.Models.Opcodes
+namespace Brainf_ckSharp.Opcodes
 {
     /// <summary>
     /// A model that represents a Brainf*ck/PBrain opcode

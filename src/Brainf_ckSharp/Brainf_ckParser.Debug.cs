@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Brainf_ckSharp.Models;
-using Brainf_ckSharp.Models.Opcodes;
+using Brainf_ckSharp.Opcodes;
 
 namespace Brainf_ckSharp
 {

@@ -8,7 +8,7 @@ using Brainf_ckSharp.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Models.Internal;
-using Brainf_ckSharp.Models.Opcodes;
+using Brainf_ckSharp.Opcodes;
 
 namespace Brainf_ckSharp
 {
