@@ -17,32 +17,46 @@ namespace Brainf_ck_sharp.Profiler
         [GlobalSetup]
         public void Setup()
         {
-            if (HelloWorldOld() != HelloWorldNew() ||
-                SumOld() != SumNew() ||
-                MultiplyOld() != MultiplyNew() ||
-                FibonacciOld() != FibonacciNew())
+            static void Test(Func<string> f0, Func<string> f1, Func<string> f2)
             {
-                throw new InvalidOperationException("Error in the initialization");
+                string
+                    a = f0(),
+                    b = f1(),
+                    c = f2();
+
+                if (!a.Equals(b) || !a.Equals(c))
+                    throw new InvalidOperationException("Error in the initialization");
             }
+
+            Test(HW_Old, HW_Debug, HW_Release);
+            Test(S_Old, S_Debug, S_Release);
+            Test(M_Old, M_Debug, M_Release);
+            Test(F_Old, F_Debug, F_Release);
         }
 
         private const string HelloWorldScript = "[\n\tThis is a simple script\n\tthat just prints \"Hello world!\" to the Stdout buffer\n]\n+++++ first loop\n[\n\t>+++++ 25 in 2nd cell\n\t[\n\t\t>+++ 75 in 3rd\n\t\t>++++ 100 in 4th\n\t\t[\n\t\t\t>+>+ duplicate\n\t\t\t<<- the value\n\t\t]\n\t\t>>>+++++ 125 in 7th\n\t\t>+ 25 in 8th\n\t\t<<<<<<- loop end\n\t]\n\t<- return to 1st cell\n]\n>>---. H\n>>+. e\n>++++++++.. ll\n+++. o\n>>+++++++. space\n<------. W\n<. o\n+++. r\n------. l\n<-. d\n>>>+. !";
 
         private const string HelloWorldStdin = "";
 
-        /// <summary>
-        /// Prints "Hello world!"
-        /// </summary>
         [Benchmark(Baseline = true)]
         [BenchmarkCategory("HelloWorld")]
-        public string HelloWorldOld() => Brainf_ckInterpreterOld.Run(HelloWorldScript, HelloWorldStdin).Output;
+        public string HW_Old() => Brainf_ckInterpreterOld.Run(HelloWorldScript, HelloWorldStdin).Output;
 
-        /// <summary>
-        /// Prints "Hello world!"
-        /// </summary>
         [Benchmark]
         [BenchmarkCategory("HelloWorld")]
-        public string HelloWorldNew()
+        public string HW_Debug()
+        {
+            Option<InterpreterSession> result = Brainf_ckInterpreterNew.TryCreateSession(HelloWorldScript, ReadOnlySpan<int>.Empty, HelloWorldStdin, 64, OverflowMode.UshortWithNoOverflow);
+
+            using InterpreterSession enumerator = result.Value!;
+
+            enumerator.MoveNext();
+            return enumerator.Current.Stdout;
+        }
+
+        [Benchmark]
+        [BenchmarkCategory("HelloWorld")]
+        public string HW_Release()
         {
             Option<InterpreterResult> option = Brainf_ckInterpreterNew.TryRun(HelloWorldScript, HelloWorldStdin, 64, OverflowMode.UshortWithNoOverflow);
             option.Value!.MachineState.Dispose();
@@ -54,19 +68,25 @@ namespace Brainf_ck_sharp.Profiler
 
         private const string SumStdin = "2375";
 
-        /// <summary>
-        /// Prints "23 + 75 = 98"
-        /// </summary>
         [Benchmark(Baseline = true)]
         [BenchmarkCategory("Sum")]
-        public string SumOld() => Brainf_ckInterpreterOld.Run(SumScript, SumStdin).Output;
+        public string S_Old() => Brainf_ckInterpreterOld.Run(SumScript, SumStdin).Output;
 
-        /// <summary>
-        /// Prints "23 + 75 = 98"
-        /// </summary>
         [Benchmark]
         [BenchmarkCategory("Sum")]
-        public string SumNew()
+        public string S_Debug()
+        {
+            Option<InterpreterSession> result = Brainf_ckInterpreterNew.TryCreateSession(SumScript, ReadOnlySpan<int>.Empty, SumStdin, 64, OverflowMode.UshortWithNoOverflow);
+
+            using InterpreterSession enumerator = result.Value!;
+
+            enumerator.MoveNext();
+            return enumerator.Current.Stdout;
+        }
+
+        [Benchmark]
+        [BenchmarkCategory("Sum")]
+        public string S_Release()
         {
             Option<InterpreterResult> option = Brainf_ckInterpreterNew.TryRun(SumScript, SumStdin, 64, OverflowMode.UshortWithNoOverflow);
             option.Value!.MachineState.Dispose();
@@ -78,19 +98,25 @@ namespace Brainf_ck_sharp.Profiler
 
         private const string MultiplyStdin = "9985";
 
-        /// <summary>
-        /// Prints "99 * 85 = 8415"
-        /// </summary>
         [Benchmark(Baseline = true)]
         [BenchmarkCategory("Multiply")]
-        public string MultiplyOld() => Brainf_ckInterpreterOld.Run(MultiplyScript, MultiplyStdin).Output;
+        public string M_Old() => Brainf_ckInterpreterOld.Run(MultiplyScript, MultiplyStdin).Output;
 
-        /// <summary>
-        /// Prints "99 * 85 = 8415"
-        /// </summary>
         [Benchmark]
         [BenchmarkCategory("Multiply")]
-        public string MultiplyNew()
+        public string M_Debug()
+        {
+            Option<InterpreterSession> result = Brainf_ckInterpreterNew.TryCreateSession(MultiplyScript, ReadOnlySpan<int>.Empty, MultiplyStdin, 64, OverflowMode.UshortWithNoOverflow);
+
+            using InterpreterSession enumerator = result.Value!;
+
+            enumerator.MoveNext();
+            return enumerator.Current.Stdout;
+        }
+
+        [Benchmark]
+        [BenchmarkCategory("Multiply")]
+        public string M_Release()
         {
             Option<InterpreterResult> option = Brainf_ckInterpreterNew.TryRun(MultiplyScript, MultiplyStdin, 64, OverflowMode.UshortWithNoOverflow);
             option.Value!.MachineState.Dispose();
@@ -102,19 +128,25 @@ namespace Brainf_ck_sharp.Profiler
 
         private const string FibonacciStdin = "24";
 
-        /// <summary>
-        /// Prints "0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 10946 17711 28657"
-        /// </summary>
         [Benchmark(Baseline = true)]
         [BenchmarkCategory("Fibonacci")]
-        public string FibonacciOld() => Brainf_ckInterpreterOld.Run(FibonaccyScript, FibonacciStdin).Output;
+        public string F_Old() => Brainf_ckInterpreterOld.Run(FibonaccyScript, FibonacciStdin).Output;
 
-        /// <summary>
-        /// Prints "0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 10946 17711 28657"
-        /// </summary>
         [Benchmark]
         [BenchmarkCategory("Fibonacci")]
-        public string FibonacciNew()
+        public string F_Debug()
+        {
+            Option<InterpreterSession> result = Brainf_ckInterpreterNew.TryCreateSession(FibonaccyScript, ReadOnlySpan<int>.Empty, FibonacciStdin, 64, OverflowMode.UshortWithNoOverflow);
+
+            using InterpreterSession enumerator = result.Value!;
+
+            enumerator.MoveNext();
+            return enumerator.Current.Stdout;
+        }
+
+        [Benchmark]
+        [BenchmarkCategory("Fibonacci")]
+        public string F_Release()
         {
             Option<InterpreterResult> option = Brainf_ckInterpreterNew.TryRun(FibonaccyScript, FibonacciStdin, 64, OverflowMode.UshortWithNoOverflow);
             option.Value!.MachineState.Dispose();
