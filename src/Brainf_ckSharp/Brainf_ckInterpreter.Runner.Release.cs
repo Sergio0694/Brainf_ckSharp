@@ -3,7 +3,7 @@ using System.Buffers;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using Brainf_ckSharp.Buffers.IO;
+using Brainf_ckSharp.Buffers;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Extensions.Types;
@@ -97,6 +97,9 @@ namespace Brainf_ckSharp
                     // Manually set the initial stack frame to the entire script
                     stackFramesPtr[0] = new StackFrame(new Range(0, opcodes.Size), 0);
 
+                    // Wrap the stdin buffer
+                    StdinBuffer stdinBuffer = new StdinBuffer(stdin);
+
                     // Create the execution session
                     using (TuringMachineState.ExecutionSession<TExecutionContext> session = machineState.CreateExecutionSession<TExecutionContext>())
                     {
@@ -113,7 +116,7 @@ namespace Brainf_ckSharp
                             ref depth,
                             ref totalOperations,
                             ref totalFunctions,
-                            new StdinBuffer(stdin),
+                            ref stdinBuffer,
                             stdout,
                             executionToken);
 
@@ -178,7 +181,7 @@ namespace Brainf_ckSharp
                 ref int depth,
                 ref int totalOperations,
                 ref int totalFunctions,
-                StdinBuffer stdin,
+                ref StdinBuffer stdin,
                 StdoutBuffer stdout,
                 CancellationToken executionToken)
                 where TExecutionContext : struct, IMachineStateExecutionContext

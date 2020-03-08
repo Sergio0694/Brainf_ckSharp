@@ -4,7 +4,7 @@ using Brainf_ckSharp.Constants;
 
 #pragma warning disable IDE0032
 
-namespace Brainf_ckSharp.Buffers.IO
+namespace Brainf_ckSharp.Buffers
 {
     /// <summary>
     /// A <see langword="class"/> that represents a memory area to be used as stdout buffer
@@ -29,6 +29,7 @@ namespace Brainf_ckSharp.Buffers.IO
             if (_Position == Specs.StdoutBufferSizeLimit) return false;
 
             Ptr[_Position++] = c;
+
             return true;
         }
 

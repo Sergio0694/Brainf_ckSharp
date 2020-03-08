@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using Brainf_ckSharp.Buffers.IO;
+using Brainf_ckSharp.Buffers;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Extensions.Types;
 using Brainf_ckSharp.Memory;
@@ -199,7 +199,7 @@ namespace Brainf_ckSharp.Models
                     ref _Depth,
                     ref _TotalOperations,
                     ref _TotalFunctions,
-                    StdinBuffer,
+                    ref Unsafe.AsRef(StdinBuffer),
                     StdoutBuffer,
                     ExecutionToken,
                     DebugToken);

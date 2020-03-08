@@ -1,11 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Brainf_ckSharp.Buffers.IO
+namespace Brainf_ckSharp.Buffers
 {
     /// <summary>
-    /// A <see langword="class"/> that represents a memory area to be used as stdin buffer
+    /// A <see langword="struct"/> that represents a memory area to be used as stdin buffer
     /// </summary>
-    internal sealed class StdinBuffer
+    internal struct StdinBuffer
     {
         /// <summary>
         /// The underlying buffer to read characters from
@@ -21,7 +21,11 @@ namespace Brainf_ckSharp.Buffers.IO
         /// Creates a new <see cref="StdinBuffer"/> instance with the specified parameters
         /// </summary>
         /// <param name="data">The input data to use to read characters from</param>
-        public StdinBuffer(string data) => Data = data;
+        public StdinBuffer(string data)
+        {
+            Data = data;
+            _Position = 0;
+        }
 
         /// <summary>
         /// Tries to read a character from the current buffer
@@ -34,10 +38,12 @@ namespace Brainf_ckSharp.Buffers.IO
             if (_Position < Data.Length)
             {
                 c = Data[_Position++];
+
                 return true;
             }
 
             c = default;
+
             return false;
         }
 
