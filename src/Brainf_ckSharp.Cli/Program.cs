@@ -49,12 +49,14 @@ namespace Brainf_ckSharp.Cli
                     : new CancellationTokenSource(TimeSpan.FromSeconds(options.Timeout));
 
                 // Execute the code
-                Option<InterpreterResult> interpreterResult = Brainf_ckInterpreter.TryRun(
-                    source,
-                    stdin,
-                    options.MemorySize,
-                    options.OverflowMode,
-                    cts.Token);
+                Option<InterpreterResult> interpreterResult = Brainf_ckInterpreter
+                    .CreateReleaseConfiguration()
+                    .WithSource(source)
+                    .WithStdin(stdin)
+                    .WithMemorySize(options.MemorySize)
+                    .WithOverflowMode(options.OverflowMode)
+                    .WithExecutionToken(cts.Token)
+                    .TryRun();
 
                 // Display the execution result
                 if (interpreterResult.Value is { })

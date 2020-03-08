@@ -13,7 +13,10 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = "+++++";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script);
+            Option<InterpreterResult> result = Brainf_ckInterpreter
+                .CreateReleaseConfiguration()
+                .WithSource(script)
+                .TryRun();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
@@ -27,7 +30,10 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = "+++++---";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script);
+            Option<InterpreterResult> result = Brainf_ckInterpreter
+                .CreateReleaseConfiguration()
+                .WithSource(script)
+                .TryRun();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
@@ -41,7 +47,10 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = ",++.";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script, "0");
+            Option<InterpreterResult> result = Brainf_ckInterpreter
+                .CreateReleaseConfiguration()
+                .WithSource(script)
+                .TryRun();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
@@ -55,7 +64,10 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = "+++++[>++<-]>";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script);
+            Option<InterpreterResult> result = Brainf_ckInterpreter
+                .CreateReleaseConfiguration()
+                .WithSource(script)
+                .TryRun();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
@@ -69,7 +81,10 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = "[]";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script);
+            Option<InterpreterResult> result = Brainf_ckInterpreter
+                .CreateReleaseConfiguration()
+                .WithSource(script)
+                .TryRun();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
@@ -83,7 +98,11 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = ",[-]";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script, "0");
+            Option<InterpreterResult> result = Brainf_ckInterpreter
+                .CreateReleaseConfiguration()
+                .WithSource(script)
+                .WithStdin("0")
+                .TryRun();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
@@ -97,7 +116,11 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = ",[>+<-]>.";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script, "0");
+            Option<InterpreterResult> result = Brainf_ckInterpreter
+                .CreateReleaseConfiguration()
+                .WithSource(script)
+                .WithStdin("0")
+                .TryRun();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
@@ -111,7 +134,11 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = "++[>++[>+<-]<-]>,[>+<-]>.";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script, "0");
+            Option<InterpreterResult> result = Brainf_ckInterpreter
+                .CreateReleaseConfiguration()
+                .WithSource(script)
+                .WithStdin("0")
+                .TryRun();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
@@ -125,7 +152,11 @@ namespace Brainf_ckSharp.Unit
         {
             const string script = ",>,+[<.+>-]";
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(script, "A9");
+            Option<InterpreterResult> result = Brainf_ckInterpreter
+                .CreateReleaseConfiguration()
+                .WithSource(script)
+                .WithStdin("A9")
+                .TryRun();
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
