@@ -29,6 +29,7 @@ foreach (var name in names)
         /// <param name="source">The source code to parse and execute</param>
         /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly <#=name#>Configuration WithSource(in this <#=name#>Configuration configuration, string source)
         {
             Unsafe.AsRef(configuration.Source) = source;
@@ -43,6 +44,7 @@ foreach (var name in names)
         /// <param name="stdin">The input buffer to read data from</param>
         /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly <#=name#>Configuration WithStdin(in this <#=name#>Configuration configuration, string stdin)
         {
             Unsafe.AsRef(configuration.Stdin) = stdin;
@@ -58,6 +60,7 @@ foreach (var name in names)
         /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
         /// <remarks>This property is mutually exclusive with <see cref="<#=name#>Configuration.MemorySize"/> and <see cref="<#=name#>Configuration.OverflowMode"/></remarks>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly <#=name#>Configuration WithInitialState(in this <#=name#>Configuration configuration, IReadOnlyMachineState initialState)
         {
             Unsafe.AsRef(configuration.InitialState) = initialState;
@@ -73,6 +76,7 @@ foreach (var name in names)
         /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
         /// <remarks>This property is mutually exclusive with <see cref="<#=name#>Configuration.InitialState"/></remarks>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly <#=name#>Configuration WithMemorySize(in this <#=name#>Configuration configuration, int memorySize)
         {
             Unsafe.AsRef(configuration.MemorySize) = memorySize;
@@ -88,6 +92,7 @@ foreach (var name in names)
         /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
         /// <remarks>This property is mutually exclusive with <see cref="<#=name#>Configuration.InitialState"/></remarks>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly <#=name#>Configuration WithOverflowMode(in this <#=name#>Configuration configuration, OverflowMode overflowMode)
         {
             Unsafe.AsRef(configuration.OverflowMode) = overflowMode;
@@ -102,6 +107,7 @@ foreach (var name in names)
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution of long running scripts</param>
         /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly <#=name#>Configuration WithExecutionToken(in this <#=name#>Configuration configuration, CancellationToken executionToken)
         {
             Unsafe.AsRef(configuration.ExecutionToken) = executionToken;

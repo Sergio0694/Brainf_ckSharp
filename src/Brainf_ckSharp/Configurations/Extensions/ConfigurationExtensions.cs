@@ -21,6 +21,7 @@ namespace Brainf_ckSharp
         /// <param name="source">The source code to parse and execute</param>
         /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly DebugConfiguration WithSource(in this DebugConfiguration configuration, string source)
         {
             Unsafe.AsRef(configuration.Source) = source;
@@ -35,6 +36,7 @@ namespace Brainf_ckSharp
         /// <param name="stdin">The input buffer to read data from</param>
         /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly DebugConfiguration WithStdin(in this DebugConfiguration configuration, string stdin)
         {
             Unsafe.AsRef(configuration.Stdin) = stdin;
@@ -50,6 +52,7 @@ namespace Brainf_ckSharp
         /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
         /// <remarks>This property is mutually exclusive with <see cref="DebugConfiguration.MemorySize"/> and <see cref="DebugConfiguration.OverflowMode"/></remarks>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly DebugConfiguration WithInitialState(in this DebugConfiguration configuration, IReadOnlyMachineState initialState)
         {
             Unsafe.AsRef(configuration.InitialState) = initialState;
@@ -65,6 +68,7 @@ namespace Brainf_ckSharp
         /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
         /// <remarks>This property is mutually exclusive with <see cref="DebugConfiguration.InitialState"/></remarks>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly DebugConfiguration WithMemorySize(in this DebugConfiguration configuration, int memorySize)
         {
             Unsafe.AsRef(configuration.MemorySize) = memorySize;
@@ -80,6 +84,7 @@ namespace Brainf_ckSharp
         /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
         /// <remarks>This property is mutually exclusive with <see cref="DebugConfiguration.InitialState"/></remarks>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly DebugConfiguration WithOverflowMode(in this DebugConfiguration configuration, OverflowMode overflowMode)
         {
             Unsafe.AsRef(configuration.OverflowMode) = overflowMode;
@@ -94,6 +99,7 @@ namespace Brainf_ckSharp
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution of long running scripts</param>
         /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly DebugConfiguration WithExecutionToken(in this DebugConfiguration configuration, CancellationToken executionToken)
         {
             Unsafe.AsRef(configuration.ExecutionToken) = executionToken;
@@ -114,6 +120,7 @@ namespace Brainf_ckSharp
         /// <param name="source">The source code to parse and execute</param>
         /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly ReleaseConfiguration WithSource(in this ReleaseConfiguration configuration, string source)
         {
             Unsafe.AsRef(configuration.Source) = source;
@@ -128,6 +135,7 @@ namespace Brainf_ckSharp
         /// <param name="stdin">The input buffer to read data from</param>
         /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly ReleaseConfiguration WithStdin(in this ReleaseConfiguration configuration, string stdin)
         {
             Unsafe.AsRef(configuration.Stdin) = stdin;
@@ -143,6 +151,7 @@ namespace Brainf_ckSharp
         /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
         /// <remarks>This property is mutually exclusive with <see cref="ReleaseConfiguration.MemorySize"/> and <see cref="ReleaseConfiguration.OverflowMode"/></remarks>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly ReleaseConfiguration WithInitialState(in this ReleaseConfiguration configuration, IReadOnlyMachineState initialState)
         {
             Unsafe.AsRef(configuration.InitialState) = initialState;
@@ -158,6 +167,7 @@ namespace Brainf_ckSharp
         /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
         /// <remarks>This property is mutually exclusive with <see cref="ReleaseConfiguration.InitialState"/></remarks>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly ReleaseConfiguration WithMemorySize(in this ReleaseConfiguration configuration, int memorySize)
         {
             Unsafe.AsRef(configuration.MemorySize) = memorySize;
@@ -173,6 +183,7 @@ namespace Brainf_ckSharp
         /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
         /// <remarks>This property is mutually exclusive with <see cref="ReleaseConfiguration.InitialState"/></remarks>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly ReleaseConfiguration WithOverflowMode(in this ReleaseConfiguration configuration, OverflowMode overflowMode)
         {
             Unsafe.AsRef(configuration.OverflowMode) = overflowMode;
@@ -187,6 +198,7 @@ namespace Brainf_ckSharp
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution of long running scripts</param>
         /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly ReleaseConfiguration WithExecutionToken(in this ReleaseConfiguration configuration, CancellationToken executionToken)
         {
             Unsafe.AsRef(configuration.ExecutionToken) = executionToken;
