@@ -52,8 +52,8 @@ namespace Brainf_ckSharp.Configurations
                 initialState = new TuringMachineState(MemorySize.Value, OverflowMode!.Value);
             }
 
-            return Brainf_ckInterpreter.Debug.TryCreateSessionCore(
-                Source,
+            return Brainf_ckInterpreter.Debug.TryCreateSession(
+                Source!,
                 Breakpoints.Span,
                 Stdin ?? string.Empty,
                 initialState,

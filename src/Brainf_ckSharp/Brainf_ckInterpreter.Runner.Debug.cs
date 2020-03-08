@@ -35,7 +35,7 @@ namespace Brainf_ckSharp
             /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
             /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
             /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterSession"/> instance with the results of the execution</returns>
-            public static Option<InterpreterSession> TryCreateSessionCore(
+            public static Option<InterpreterSession> TryCreateSession(
                 string source,
                 ReadOnlySpan<int> breakpoints,
                 string stdin,

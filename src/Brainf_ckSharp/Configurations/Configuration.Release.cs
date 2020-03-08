@@ -46,7 +46,7 @@ namespace Brainf_ckSharp.Configurations
                 initialState = new TuringMachineState(MemorySize.Value, OverflowMode!.Value);
             }
 
-            InterpreterResult result = Brainf_ckInterpreter.Release.RunCore(
+            InterpreterResult result = Brainf_ckInterpreter.Release.Run(
                 operations!,
                 Stdin ?? string.Empty,
                 initialState,
