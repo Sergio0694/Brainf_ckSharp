@@ -9,7 +9,7 @@ namespace Brainf_ckSharp.Configurations
     /// <summary>
     /// A model for a DEBUG configuration being built
     /// </summary>
-    public readonly ref struct DebugConfiguration
+    public readonly ref partial struct DebugConfiguration
     {
         /// <summary>
         /// The source code to parse and execute

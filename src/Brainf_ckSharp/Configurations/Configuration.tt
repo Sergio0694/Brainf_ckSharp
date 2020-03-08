@@ -17,7 +17,7 @@ foreach (var name in names)
     /// <summary>
     /// A model for a <#=name.ToUpper()#> configuration being built
     /// </summary>
-    public readonly ref <#=name == "Debug" ? "struct" : "partial struct"#> <#=name#>Configuration
+    public readonly ref partial struct <#=name#>Configuration
     {
         /// <summary>
         /// The source code to parse and execute

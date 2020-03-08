@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Buffers;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
 using System.Threading;
+using Brainf_ckSharp.Configurations;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory;
@@ -17,6 +20,14 @@ namespace Brainf_ckSharp
     /// </summary>
     public static partial class Brainf_ckInterpreter
     {
+        /// <summary>
+        /// Creates a new <see cref="ReleaseConfiguration"/> instance to prepare a script execution in RELEASE mode
+        /// </summary>
+        /// <returns>A <see cref="ReleaseConfiguration"/> instance to prepare a script execution</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReleaseConfiguration CreateReleaseConfiguration() => default;
+
         /// <summary>
         /// Runs a given Brainf*ck/PBrain executable with the given parameters
         /// </summary>
