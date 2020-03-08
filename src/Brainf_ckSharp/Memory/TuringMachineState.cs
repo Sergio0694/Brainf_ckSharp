@@ -83,11 +83,12 @@ namespace Brainf_ckSharp.Memory
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return other is TuringMachineState state &&
-                   Size == state.Size &&
-                   Mode == state.Mode &&
-                   _Position == state._Position &&
-                   new ReadOnlySpan<ushort>(Ptr, Size).SequenceEqual(new ReadOnlySpan<ushort>(state.Ptr, Size));
+            return
+                other is TuringMachineState state &&
+                Size == state.Size &&
+                Mode == state.Mode &&
+                _Position == state._Position &&
+                new ReadOnlySpan<ushort>(Ptr, Size).SequenceEqual(new ReadOnlySpan<ushort>(state.Ptr, Size));
         }
 
         /// <inheritdoc/>
