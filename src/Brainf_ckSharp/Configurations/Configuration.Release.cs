@@ -33,6 +33,8 @@ namespace Brainf_ckSharp.Configurations
             {
                 Guard.MustBeNull(MemorySize, nameof(MemorySize));
                 Guard.MustBeNull(OverflowMode, nameof(OverflowMode));
+
+                initialState = (TuringMachineState)initialState.Clone();
             }
             else
             {
