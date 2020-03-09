@@ -2,8 +2,8 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Constants;
+using Brainf_ckSharp.Uwp.Controls.Ide.EventArgs;
 using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
-using Brainf_ckSharp.Uwp.Controls.Ide.Models;
 using UICompositionAnimations.Enums;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide

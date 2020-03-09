@@ -133,8 +133,9 @@
     <Compile Include="Brainf_ckEditBox\Helpers\ClipboardHelper.cs" />
     <Compile Include="Brainf_ckEditBox\Helpers\CodeGenerator.cs" />
     <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.Formatting.Lock.cs" />
+    <Compile Include="Brainf_ckEditBox\Models\BracketsPairInfo.cs" />
     <Compile Include="Brainf_ckEditBox\Models\ColumnGuideInfo.cs" />
-    <Compile Include="Brainf_ckEditBox\Models\PlainTextChangedEventArgs.cs" />
+    <Compile Include="Brainf_ckEditBox\EventArgs\PlainTextChangedEventArgs.cs" />
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.cs">
       <DependentUpon>Brainf_ckIde.xaml</DependentUpon>
     </Compile>

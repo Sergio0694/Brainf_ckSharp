@@ -26,7 +26,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// The current sequence of bracket pairs being displayed in the text
         /// </summary>
-        private UnmanagedMemoryOwner<(int Start, int End)> _BracketPairs = UnmanagedMemoryOwner<(int, int)>.Allocate(0);
+        private UnmanagedMemoryOwner<BracketsPairInfo> _BracketPairs = UnmanagedMemoryOwner<BracketsPairInfo>.Allocate(0);
 
         /// <summary>
         /// The current sequence of column guide coordinates to render
@@ -225,8 +225,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 y = 0;
 
             // Target buffer
-            UnmanagedMemoryOwner<(int, int)> jumpTable = UnmanagedMemoryOwner<(int, int)>.Allocate(length);
-            ref (int, int) jumpTableRef = ref jumpTable.GetReference();
+            UnmanagedMemoryOwner<BracketsPairInfo> jumpTable = UnmanagedMemoryOwner<BracketsPairInfo>.Allocate(length);
+            ref BracketsPairInfo jumpTableRef = ref jumpTable.GetReference();
 
             // Go through the executable to build the jump table for each open parenthesis or square bracket
             for (int r = 0, f = -1, i = 0; i < length; i++)
@@ -246,7 +246,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                             : Unsafe.Add(ref functionTempIndicesRef, --f);
                         if (start.Y < y)
                         {
-                            Unsafe.Add(ref jumpTableRef, jumps++) = (start.Index, i);
+                            Unsafe.Add(ref jumpTableRef, jumps++) = new BracketsPairInfo(start.Index, i);
                         }
                         break;
 
@@ -259,7 +259,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         f = -1;
                         if (functionTempIndicesRef.Y < y)
                         {
-                            Unsafe.Add(ref jumpTableRef, jumps++) = (functionTempIndicesRef.Index, i);
+                            Unsafe.Add(ref jumpTableRef, jumps++) = new BracketsPairInfo(functionTempIndicesRef.Index, i);
                         }
                         break;
 
@@ -292,14 +292,14 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             _ColumnGuides.Dispose();
 
             // Update the target buffer
-            UnmanagedMemoryOwner<(int, int)> bracketPairs = _BracketPairs;
+            UnmanagedMemoryOwner<BracketsPairInfo> bracketPairs = _BracketPairs;
             UnmanagedMemoryOwner<ColumnGuideInfo> columnGuides = UnmanagedMemoryOwner<ColumnGuideInfo>.Allocate(bracketPairs.Size);
 
             _ColumnGuides = columnGuides;
 
             // Skip if there are no brackets to render
             if (columnGuides.Size == 0) return;
-            ref (int Start, int End) bracketPairsRef = ref bracketPairs.GetReference();
+            ref BracketsPairInfo bracketPairsRef = ref bracketPairs.GetReference();
             ref ColumnGuideInfo columnGuidesRef = ref columnGuides.GetReference();
 
             for (int i = 0; i < bracketPairs.Size; i++)
