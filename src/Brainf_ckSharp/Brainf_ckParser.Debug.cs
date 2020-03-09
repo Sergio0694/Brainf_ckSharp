@@ -55,25 +55,27 @@ namespace Brainf_ckSharp
             /// <param name="operators">The input sequence of parsed operators to read</param>
             /// <returns>A <see cref="string"/> representing the input sequence of operators</returns>
             [Pure]
-            public static unsafe string ExtractSource(UnmanagedSpan<Brainf_ckOperator> operators)
+            public static unsafe string ExtractSource(ReadOnlySpan<Brainf_ckOperator> operators)
             {
                 // Rent a buffer to use to build the final string
-                using StackOnlyUnmanagedMemoryOwner<char> characters = StackOnlyUnmanagedMemoryOwner<char>.Allocate(operators.Size);
+                using StackOnlyUnmanagedMemoryOwner<char> characters = StackOnlyUnmanagedMemoryOwner<char>.Allocate(operators.Length);
 
                 ref char targetRef = ref characters.GetReference();
                 ref byte lookupRef = ref MemoryMarshal.GetReference(OperatorsInverseLookupTable);
+                ref Brainf_ckOperator operatorRef = ref MemoryMarshal.GetReference(operators);
 
                 // Build the source string with the inverse operators lookup table
-                for (int i = 0; i < operators.Size; i++)
+                for (int i = 0; i < operators.Length; i++)
                 {
-                    byte code = Unsafe.Add(ref lookupRef, operators[i].Operator);
+                    byte op = Unsafe.Add(ref operatorRef, i).Operator;
+                    byte code = Unsafe.Add(ref lookupRef, op);
                     Unsafe.Add(ref targetRef, i) = (char)code;
                 }
 
                 // Allocate the new string from the rented buffer
                 fixed (char* p = &targetRef)
                 {
-                    return new string(p, 0, operators.Size);
+                    return new string(p, 0, operators.Length);
                 }
             }
         }

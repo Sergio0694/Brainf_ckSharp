@@ -119,24 +119,27 @@ namespace Brainf_ckSharp
             /// <param name="operations">The input sequence of parsed operations to read</param>
             /// <returns>A <see cref="string"/> representing the input sequence of operations</returns>
             [Pure]
-            public static unsafe string ExtractSource(UnmanagedSpan<Brainf_ckOperation> operations)
+            public static unsafe string ExtractSource(ReadOnlySpan<Brainf_ckOperation> operations)
             {
                 int size = 0;
 
                 // Count the number of original operators
-                for (int i = 0; i < operations.Size; i++)
-                    size += operations[i].Count;
+                foreach (var opcode in operations)
+                {
+                    size += opcode.Count;
+                }
 
                 // Rent a buffer to use to build the final string
                 using StackOnlyUnmanagedMemoryOwner<char> characters = StackOnlyUnmanagedMemoryOwner<char>.Allocate(size);
 
                 ref char targetRef = ref characters.GetReference();
                 ref byte lookupRef = ref MemoryMarshal.GetReference(OperatorsInverseLookupTable);
+                ref Brainf_ckOperation operationRef = ref MemoryMarshal.GetReference(operations);
 
                 // Build the source string with the inverse operators lookup table
-                for (int i = 0, j = 0; i < operations.Size; i++)
+                for (int i = 0, j = 0; i < operations.Length; i++)
                 {
-                    Brainf_ckOperation operation = operations[i];
+                    Brainf_ckOperation operation = Unsafe.Add(ref operationRef, i);
                     char op = (char)Unsafe.Add(ref lookupRef, operation.Operator);
 
                     // Copy the repeated operator

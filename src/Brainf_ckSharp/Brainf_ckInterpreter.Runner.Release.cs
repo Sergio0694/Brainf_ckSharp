@@ -125,17 +125,17 @@ namespace Brainf_ckSharp
                     }
 
                     // Rebuild the compacted source code
-                    string sourceCode = Brainf_ckParser.ExtractSource(opcodes.Span);
+                    string sourceCode = Brainf_ckParser.ExtractSource(opcodes.CoreCLRReadOnlySpan);
 
                     // Prepare the debug info
                     HaltedExecutionInfo? debugInfo = LoadDebugInfo(
-                        opcodes.Span,
+                        opcodes.CoreCLRReadOnlySpan,
                         new UnmanagedSpan<StackFrame>(Specs.MaximumStackSize, stackFramesPtr),
                         depth);
 
                     // Build the collection of defined functions
                     FunctionDefinition[] functionDefinitions = LoadFunctionDefinitions(
-                        opcodes.Span,
+                        opcodes.CoreCLRReadOnlySpan,
                         new UnmanagedSpan<Range>(ushort.MaxValue, functionsPtr),
                         definitions.Span,
                         totalFunctions);

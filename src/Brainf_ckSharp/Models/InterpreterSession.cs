@@ -137,7 +137,7 @@ namespace Brainf_ckSharp.Models
             ExecutionToken = executionToken;
             DebugToken = debugToken;
             Stopwatch = new Stopwatch();
-            SourceCode = Brainf_ckParser.ExtractSource(opcodes.Span);
+            SourceCode = Brainf_ckParser.ExtractSource(opcodes.CoreCLRReadOnlySpan);
         }
 
         private InterpreterResult? _Current;
@@ -207,13 +207,13 @@ namespace Brainf_ckSharp.Models
 
             // Prepare the debug info
             HaltedExecutionInfo? debugInfo = Brainf_ckInterpreter.LoadDebugInfo(
-                Opcodes.Span,
+                Opcodes.CoreCLRReadOnlySpan,
                 StackFrames.Span,
                 _Depth);
 
             // Build the collection of defined functions
             FunctionDefinition[] functionDefinitions = Brainf_ckInterpreter.LoadFunctionDefinitions(
-                Opcodes.Span,
+                Opcodes.CoreCLRReadOnlySpan,
                 Functions.Span,
                 Definitions.Span,
                 _TotalFunctions);

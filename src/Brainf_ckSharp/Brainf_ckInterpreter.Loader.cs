@@ -42,16 +42,16 @@ namespace Brainf_ckSharp
         /// <returns>An array of <see cref="FunctionDefinition"/> instance with the defined functions</returns>
         [Pure]
         internal static FunctionDefinition[] LoadFunctionDefinitions<TOpcode>(
-            UnmanagedSpan<TOpcode> opcodes,
+            ReadOnlySpan<TOpcode> opcodes,
             UnmanagedSpan<Range> functions,
             UnmanagedSpan<ushort> definitions,
             int totalFunctions)
             where TOpcode : unmanaged, IOpcode
         {
-            DebugGuard.MustBeGreaterThanOrEqualTo(opcodes.Size, 0, nameof(opcodes));
+            DebugGuard.MustBeGreaterThanOrEqualTo(opcodes.Length, 0, nameof(opcodes));
             DebugGuard.MustBeEqualTo(functions.Size, ushort.MaxValue, nameof(functions));
             DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Size, 0, nameof(definitions));
-            DebugGuard.MustBeLessThanOrEqualTo(definitions.Size, opcodes.Size / 3, nameof(definitions));
+            DebugGuard.MustBeLessThanOrEqualTo(definitions.Size, opcodes.Length / 3, nameof(definitions));
             DebugGuard.MustBeGreaterThanOrEqualTo(totalFunctions, 0, nameof(totalFunctions));
 
             // No declared functions
@@ -65,10 +65,11 @@ namespace Brainf_ckSharp
             {
                 ushort key = definitions[i];
                 Range range = functions[key];
-                int offset = range.Start - 1; // The range starts at the first function operator
-                UnmanagedSpan<TOpcode> memory = opcodes.Slice(in range);
+                ReadOnlySpan<TOpcode> slice = opcodes.Slice(range.Start, range.Length);
 
-                string body = Brainf_ckParser.ExtractSource(memory);
+                string body = Brainf_ckParser.ExtractSource(slice);
+
+                int offset = range.Start - 1; // The range starts at the first function operator
 
                 Unsafe.Add(ref r0, i) = new FunctionDefinition(key, i, offset, body);
             }
@@ -166,12 +167,12 @@ namespace Brainf_ckSharp
         /// <returns>An <see cref="HaltedExecutionInfo"/> instance, if the input script was halted during its execution</returns>
         [Pure]
         internal static HaltedExecutionInfo? LoadDebugInfo<TOpcode>(
-            UnmanagedSpan<TOpcode> opcodes,
+            ReadOnlySpan<TOpcode> opcodes,
             UnmanagedSpan<StackFrame> stackFrames,
             int depth)
             where TOpcode : unmanaged, IOpcode
         {
-            DebugGuard.MustBeTrue(opcodes.Size > 0, nameof(opcodes));
+            DebugGuard.MustBeTrue(opcodes.Length > 0, nameof(opcodes));
             DebugGuard.MustBeEqualTo(stackFrames.Size, Specs.MaximumStackSize, nameof(stackFrames));
             DebugGuard.MustBeGreaterThanOrEqualTo(depth, -1, nameof(depth));
 
@@ -196,8 +197,11 @@ namespace Brainf_ckSharp
                  * ahead before extracting the processed string. Doing this with a
                  * reinterpret cast saves a conditional jump in the asm code. */
                 bool zero = i == 0;
-                int offset = frame.Offset + Unsafe.As<bool, byte>(ref zero);
-                UnmanagedSpan<TOpcode> memory = opcodes.Slice(frame.Range.Start, offset);
+                int
+                    start = frame.Range.Start,
+                    offset = frame.Offset + Unsafe.As<bool, byte>(ref zero),
+                    length = offset - start;
+                ReadOnlySpan<TOpcode> memory = opcodes.Slice(start, length);
 
                 string body = Brainf_ckParser.ExtractSource(memory);
 

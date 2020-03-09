@@ -65,29 +65,19 @@ namespace Brainf_ckSharp
         /// <returns>A <see cref="string"/> representing the input sequence of opcodes</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static unsafe string ExtractSource<TOpcode>(UnmanagedSpan<TOpcode> opcodes)
+        internal static string ExtractSource<TOpcode>(ReadOnlySpan<TOpcode> opcodes)
             where TOpcode : unmanaged, IOpcode
         {
-            DebugGuard.MustBeGreaterThan(opcodes.Size, 0, nameof(opcodes));
+            DebugGuard.MustBeGreaterThan(opcodes.Length, 0, nameof(opcodes));
 
             if (typeof(TOpcode) == typeof(Brainf_ckOperator))
             {
-                ref TOpcode r1 = ref opcodes[0];
-                ref Brainf_ckOperator r2 = ref Unsafe.As<TOpcode, Brainf_ckOperator>(ref r1);
-                Brainf_ckOperator* p = (Brainf_ckOperator*)Unsafe.AsPointer(ref r2);
-                UnmanagedSpan<Brainf_ckOperator> span = new UnmanagedSpan<Brainf_ckOperator>(opcodes.Size, p);
-
-                return Debug.ExtractSource(span);
+                return Debug.ExtractSource(MemoryMarshal.Cast<TOpcode, Brainf_ckOperator>(opcodes));
             }
             
             if (typeof(TOpcode) == typeof(Brainf_ckOperation))
             {
-                ref TOpcode r1 = ref opcodes[0];
-                ref Brainf_ckOperation r2 = ref Unsafe.As<TOpcode, Brainf_ckOperation>(ref r1);
-                Brainf_ckOperation* p = (Brainf_ckOperation*)Unsafe.AsPointer(ref r2);
-                UnmanagedSpan<Brainf_ckOperation> span = new UnmanagedSpan<Brainf_ckOperation>(opcodes.Size, p);
-
-                return Release.ExtractSource(span);
+                return Release.ExtractSource(MemoryMarshal.Cast<TOpcode, Brainf_ckOperation>(opcodes));
             }
             
             throw new ArgumentException($"Invalid opcode type: {typeof(TOpcode)}", nameof(TOpcode));
