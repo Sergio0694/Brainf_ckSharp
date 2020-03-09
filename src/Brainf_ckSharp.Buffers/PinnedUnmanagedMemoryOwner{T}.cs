@@ -71,15 +71,6 @@ namespace System.Buffers
         /// <summary>
         /// Gets an <see cref="Span{T}"/> instance mapping the values on the current buffer
         /// </summary>
-        public Span<T> CoreCLRSpan
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new Span<T>(Ptr, Size);
-        }
-
-        /// <summary>
-        /// Gets an <see cref="Span{T}"/> instance mapping the values on the current buffer
-        /// </summary>
         public ReadOnlySpan<T> CoreCLRReadOnlySpan
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]

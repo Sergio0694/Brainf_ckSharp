@@ -19,19 +19,19 @@ namespace System.Buffers
         /// <summary>
         /// The <see cref="byte"/> array that constitutes the memory buffer for the current instance
         /// </summary>
-        private readonly byte[] Buffer;
+        private readonly T[] Buffer;
 
         /// <summary>
         /// Creates a new <see cref="StackOnlyUnmanagedMemoryOwner{T}"/> instance with the specified parameters
         /// </summary>
         /// <param name="size">The size of the new memory buffer to use</param>
         /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
-        private unsafe StackOnlyUnmanagedMemoryOwner(int size, bool clear)
+        private StackOnlyUnmanagedMemoryOwner(int size, bool clear)
         {
             DebugGuard.MustBeGreaterThan(size, 0, nameof(size));
 
             Size = size;
-            Buffer = ArrayPool<byte>.Shared.Rent(size * sizeof(T));
+            Buffer = ArrayPool<T>.Shared.Rent(size);
 
             if (clear) Buffer.AsSpan(0, size).Clear();
         }
@@ -58,14 +58,14 @@ namespace System.Buffers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref T GetReference()
         {
-            return ref Unsafe.As<byte, T>(ref Buffer[0]);
+            return ref Buffer[0];
         }
 
         /// <inheritdoc cref="IDisposable.Dispose"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Dispose()
         {
-            ArrayPool<byte>.Shared.Return(Buffer);
+            ArrayPool<T>.Shared.Return(Buffer);
         }
     }
 }
