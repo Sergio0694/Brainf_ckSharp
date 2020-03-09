@@ -13,6 +13,20 @@
     <PackageReference Include="System.Memory" Version="4.5.3" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Scripts\Division.txt" />
+    <None Remove="Scripts\Fibonacci.txt" />
+    <None Remove="Scripts\HelloWorld.txt" />
+    <None Remove="Scripts\Multiply.txt" />
+    <None Remove="Scripts\Sum.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\Division.txt" />
+    <EmbeddedResource Include="Scripts\Fibonacci.txt" />
+    <EmbeddedResource Include="Scripts\HelloWorld.txt" />
+    <EmbeddedResource Include="Scripts\Sum.txt" />
+    <EmbeddedResource Include="Scripts\Multiply.txt" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.12.0" />

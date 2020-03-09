@@ -1,0 +1,165 @@
+﻿[2375]
+[23 + 75 = 98]
+[
+	To use this program, you'll need to enter 4 numbers in the buffer,
+	two for each number. If you want to sum a number that has a single digit,
+	you'll need to add a 0 before it.
+	For example, to sum 7 and 64, enter 0764 in the buffer.
+]
+++++++
+[
+	>++++++++<- 48 in cell 1
+]
+>>,>>>, read first number as x1; x2
+<<<[>+>+<<-] clone x1
+<
+[>+>-<<-] sub 48 to copied x1
+>
+[<+>-] restore 48
+>>> move to x2
+[>+>+<<-] clone x2
+<<<< move to 48
+[
+	>+>>>>- sub 48 to x2
+	<<<<<-
+]
+>
+[<+>-] restore copy of 48
+>>>>>> move after x2
+,>>>, read second one as y1; y2
+<<<
+[>+>+<<-] clone y1
+<<<<<<<
+[
+	>+>>>>>>>- sub 48 to y1
+	<<<<<<<<-
+]
+>>>>>>>>>> move to y2
+[>+>+<<-] clone it
+<<<<<<<<<
+[
+	>>>>>>>>>>- sub 48 to y2
+	<<<<<<<<<<<+>-
+]
+>>>>>>>>>>>>>++
+[
+	>++++++
+	[
+		>+++ 36
+		>++++ 48
+		>+++++ 60
+		<<<-
+	]
+	<-
+]
+>>---- space
+>----- plus symbol
+>+ = symbol
+<<<<<<<<<<<<<<<< go back to cell #0
+[
+	>. print x1 if not 0
+	[-]
+]
+> move to x2 in Unicode
+[[-]>] resets cells if needed
+>>. print x2
+[-]
+>>>>>>>>>>.>.<. print the sum operator
+<<<<<<<< move back to y1
+[
+	>. print y1 if not 0
+	[-]
+]
+> move to y1 in Unicode
+[[-]>] reset loop
+>>. print y2
+[-]
+>>>>.>>.
+[-] restore = symbol
+<[-] restore sum symbol
+<. print " = "
+[-] restore space character
+<<<<<<<<<<<<<< back to x1
+[
+	>>>++++++++++ 10*x1
+	<<<-
+]
+>>>>>>
+[
+	>>>++++++++++ 10*y1
+	<<<-
+]
+>>>
+[
+	<<<<<<<<<+ move y to 4th
+	>>>>>>>>>-
+]
+<<<<<<
+[
+	<<<<+> move x to 3rd
+	>>>-
+]
+<<<< return to x
+[
+	>+ sum x to y
+	<-
+]
+<
+[-] reset Unicode x value
+>> go to result
+[
+	>+++
+	[
+		>+++<- 10 in 3rd cell
+	]
+	>+<<
+	[
+		>+>>+<<<- 2*x
+	]
+	>>>
+	[
+		<<<+ move the copy
+		>>>- 
+	]
+	<< return to 1st cell
+	[
+		->->+ sub 1 to 10
+		< return to 3rd
+		[
+			>>> if != 0 skip
+		]
+		>
+		[
+			<++++++++++
+			>----------
+			>>>>+<
+		]
+		<<<<<
+	]
+	>[-] reset temp cell
+	>
+	[
+		<<+ move first value
+		>>-
+	]
+	>>>>
+	[
+		<<<<<+ move value
+		>>>>>-
+	]
+	<<<<<<<
+	[-] reset previous temp cell
+	+ set that cell to 1
+	>>
+]
+<< start from the last number
+[
+	+++++
+	[
+		>++++++++<-
+	]
+	>. sum 48 and print it
+	[-] reset cell
+	<<< go to previous number
+]
+< return to cell 0 at the end
