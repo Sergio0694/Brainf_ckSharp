@@ -19,7 +19,7 @@ namespace Brainf_ck_sharp.Profiler
     [SimpleJob(RuntimeMoniker.NetCoreApp31)]
     public class Brainf_ckBenchmark
     {
-        [Params("HelloWorld", "Sum", "Multiply", "Fibonacci")]
+        [Params("HelloWorld", "Sum", "Multiply", "Division", "Fibonacci")]
         public string Test;
 
         private string Script;
