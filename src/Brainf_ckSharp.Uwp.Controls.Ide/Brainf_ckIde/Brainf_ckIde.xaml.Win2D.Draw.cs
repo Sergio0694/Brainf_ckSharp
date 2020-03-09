@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Buffers;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
@@ -10,6 +9,7 @@ using Brainf_ckSharp.Uwp.Controls.Ide.Models;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models.Abstract;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
+using Microsoft.Toolkit.HighPerformance.Buffers;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
@@ -34,34 +34,40 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private void IdeOverlaysCanvas_Draw(CanvasControl sender, CanvasDrawEventArgs args)
         {
             // Git diff indicators
-            foreach (var modification in _DiffIndicators.Enumerate())
+            int i = 0;
+            foreach (var modification in _DiffIndicators.Span)
             {
-                switch (modification.Value)
+                switch (modification)
                 {
                     case LineModificationType.Modified:
-                        DrawDiffMarker(args.DrawingSession, GetOffsetAt(modification.Index), ModifiedGitDiffMarkerStrokeColor, ModifiedGitDiffMarkerOutlineColor);
+                        DrawDiffMarker(args.DrawingSession, GetOffsetAt(i), ModifiedGitDiffMarkerStrokeColor, ModifiedGitDiffMarkerOutlineColor);
                         break;
                     case LineModificationType.Saved:
-                        DrawDiffMarker(args.DrawingSession, GetOffsetAt(modification.Index), SavedGitDiffMarkerStrokeColor, SavedGitDiffMarkerOutlineColor);
+                        DrawDiffMarker(args.DrawingSession, GetOffsetAt(i), SavedGitDiffMarkerStrokeColor, SavedGitDiffMarkerOutlineColor);
                         break;
                 }
+
+                i++;
             }
 
             // Indentation indicators
-            foreach (var indicator in _IndentationIndicators.Enumerate())
+            i = 0;
+            foreach (var indicator in _IndentationIndicators.Span)
             {
-                switch (indicator.Value)
+                switch (indicator)
                 {
                     case FunctionIndicator function:
-                        DrawFunctionDeclaration(args.DrawingSession, GetOffsetAt(indicator.Index) + IndentationIndicatorsVerticalOffsetMargin, function.Type);
+                        DrawFunctionDeclaration(args.DrawingSession, GetOffsetAt(i) + IndentationIndicatorsVerticalOffsetMargin, function.Type);
                         break;
                     case BlockIndicator block:
-                        DrawIndentationBlock(args.DrawingSession, GetOffsetAt(indicator.Index) + IndentationIndicatorsVerticalOffsetMargin, block.Depth, block.Type, block.IsWithinFunction);
+                        DrawIndentationBlock(args.DrawingSession, GetOffsetAt(i) + IndentationIndicatorsVerticalOffsetMargin, block.Depth, block.Type, block.IsWithinFunction);
                         break;
                     case LineIndicator line:
-                        DrawLine(args.DrawingSession, GetOffsetAt(indicator.Index) + IndentationIndicatorsVerticalOffsetMargin, line.Type);
+                        DrawLine(args.DrawingSession, GetOffsetAt(i) + IndentationIndicatorsVerticalOffsetMargin, line.Type);
                         break;
                 }
+
+                i++;
             }
         }
 

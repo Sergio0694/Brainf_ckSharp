@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Buffers;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
@@ -11,6 +10,8 @@ using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models;
 using Microsoft.Graphics.Canvas.Geometry;
 using Microsoft.Graphics.Canvas.UI.Xaml;
+using Microsoft.Toolkit.HighPerformance.Buffers;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 #nullable enable
 
@@ -26,32 +27,32 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// The current sequence of bracket pairs being displayed in the text
         /// </summary>
-        private UnmanagedMemoryOwner<BracketsPairInfo> _BracketPairs = UnmanagedMemoryOwner<BracketsPairInfo>.Allocate(0);
+        private MemoryOwner<BracketsPairInfo> _BracketPairs = MemoryOwner<BracketsPairInfo>.Empty;
 
         /// <summary>
         /// The current sequence of column guide coordinates to render
         /// </summary>
-        private UnmanagedMemoryOwner<ColumnGuideInfo> _ColumnGuides = UnmanagedMemoryOwner<ColumnGuideInfo>.Allocate(0);
+        private MemoryOwner<ColumnGuideInfo> _ColumnGuides = MemoryOwner<ColumnGuideInfo>.Empty;
 
         /// <summary>
         /// The current sequence of indices for the space characters to render
         /// </summary>
-        private UnmanagedMemoryOwner<int> _SpaceIndices = UnmanagedMemoryOwner<int>.Allocate(0);
+        private MemoryOwner<int> _SpaceIndices = MemoryOwner<int>.Empty;
 
         /// <summary>
         /// The current sequence of areas for the space characters to render
         /// </summary>
-        private UnmanagedMemoryOwner<Rect> _SpaceAreas = UnmanagedMemoryOwner<Rect>.Allocate(0);
+        private MemoryOwner<Rect> _SpaceAreas = MemoryOwner<Rect>.Empty;
 
         /// <summary>
         /// The current sequence of indices for the tab characters to render
         /// </summary>
-        private UnmanagedMemoryOwner<int> _TabIndices = UnmanagedMemoryOwner<int>.Allocate(0);
+        private MemoryOwner<int> _TabIndices = MemoryOwner<int>.Empty;
 
         /// <summary>
         /// The current sequence of areas for the tab characters to render
         /// </summary>
-        private UnmanagedMemoryOwner<Rect> _TabAreas = UnmanagedMemoryOwner<Rect>.Allocate(0);
+        private MemoryOwner<Rect> _TabAreas = MemoryOwner<Rect>.Empty;
 
         /// <summary>
         /// Draws the text overlays when an update is requested
@@ -131,11 +132,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             int length = text.Length;
 
             // Target buffers
-            UnmanagedMemoryOwner<int>
-                spaces = UnmanagedMemoryOwner<int>.Allocate(length),
-                tabs = UnmanagedMemoryOwner<int>.Allocate(length);
-            ref int spacesRef = ref spaces.GetReference();
-            ref int tabsRef = ref tabs.GetReference();
+            MemoryOwner<int>
+                spaces = MemoryOwner<int>.Allocate(length),
+                tabs = MemoryOwner<int>.Allocate(length);
+            ref int spacesRef = ref spaces.DangerousGetReference();
+            ref int tabsRef = ref tabs.DangerousGetReference();
             int
                 spacesCount = 0,
                 tabsCount = 0;
@@ -156,9 +157,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             // Update the current data
             _SpaceIndices.Dispose();
-            _SpaceIndices = spaces.Slice(spacesCount);
+            _SpaceIndices = spaces.Slice(0, spacesCount);
             _TabIndices.Dispose();
-            _TabIndices = tabs.Slice(tabsCount);
+            _TabIndices = tabs.Slice(0, tabsCount);
 
             return true;
         }
@@ -180,16 +181,17 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         /// <param name="indices">The input sequence of indices for characters to inspect</param>
         /// <param name="areas">The resulting sequence of areas for the targeted characters</param>
-        private void ProcessCharacterData(ref UnmanagedMemoryOwner<int> indices, out UnmanagedMemoryOwner<Rect> areas)
+        private void ProcessCharacterData(ref MemoryOwner<int> indices, out MemoryOwner<Rect> areas)
         {
-            areas = UnmanagedMemoryOwner<Rect>.Allocate(indices.Size);
+            areas = MemoryOwner<Rect>.Allocate(indices.Length);
+
+            int size = indices.Length;
 
             // Skip if there are no characters
-            if (indices.Size > 0)
+            if (size > 0)
             {
-                int size = indices.Size;
-                ref int indicesRef = ref indices.GetReference();
-                ref Rect areasRef = ref areas.GetReference();
+                ref int indicesRef = ref indices.DangerousGetReference();
+                ref Rect areasRef = ref areas.DangerousGetReference();
 
                 for (int i = 0; i < size; i++)
                 {
@@ -216,17 +218,17 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             // Temporary buffers, just in the original method in the core library
             int tempBuffersLength = length / 2 + 1;
-            using StackOnlyUnmanagedMemoryOwner<(int, int)> rootTempIndices = StackOnlyUnmanagedMemoryOwner<(int, int)>.Allocate(tempBuffersLength);
-            using StackOnlyUnmanagedMemoryOwner<(int, int)> functionTempIndices = StackOnlyUnmanagedMemoryOwner<(int, int)>.Allocate(tempBuffersLength);
-            ref (int Index, int Y) rootTempIndicesRef = ref rootTempIndices.GetReference();
-            ref (int Index, int Y) functionTempIndicesRef = ref functionTempIndices.GetReference();
+            using MemoryOwner<(int, int)> rootTempIndices = MemoryOwner<(int, int)>.Allocate(tempBuffersLength);
+            using MemoryOwner<(int, int)> functionTempIndices = MemoryOwner<(int, int)>.Allocate(tempBuffersLength);
+            ref (int Index, int Y) rootTempIndicesRef = ref rootTempIndices.DangerousGetReference();
+            ref (int Index, int Y) functionTempIndicesRef = ref functionTempIndices.DangerousGetReference();
             int
                 jumps = 0,
                 y = 0;
 
             // Target buffer
-            UnmanagedMemoryOwner<BracketsPairInfo> jumpTable = UnmanagedMemoryOwner<BracketsPairInfo>.Allocate(length);
-            ref BracketsPairInfo jumpTableRef = ref jumpTable.GetReference();
+            MemoryOwner<BracketsPairInfo> jumpTable = MemoryOwner<BracketsPairInfo>.Allocate(length);
+            ref BracketsPairInfo jumpTableRef = ref jumpTable.DangerousGetReference();
 
             // Go through the executable to build the jump table for each open parenthesis or square bracket
             for (int r = 0, f = -1, i = 0; i < length; i++)
@@ -271,7 +273,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             }
 
             // Skip the update if both sequences match
-            if (_BracketPairs.AsBytes().SequenceEqual(jumpTable.AsBytes()))
+            if (_BracketPairs.Span.AsBytes().SequenceEqual(jumpTable.Span.AsBytes()))
             {
                 jumpTable.Dispose();
                 return false;
@@ -279,7 +281,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             // Update the current brackets sequence
             _BracketPairs.Dispose();
-            _BracketPairs = jumpTable.Slice(jumps);
+            _BracketPairs = jumpTable.Slice(0, jumps);
 
             return true;
         }
@@ -292,30 +294,31 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             _ColumnGuides.Dispose();
 
             // Update the target buffer
-            UnmanagedMemoryOwner<BracketsPairInfo> bracketPairs = _BracketPairs;
-            UnmanagedMemoryOwner<ColumnGuideInfo> columnGuides = UnmanagedMemoryOwner<ColumnGuideInfo>.Allocate(bracketPairs.Size);
+            MemoryOwner<BracketsPairInfo> bracketPairs = _BracketPairs;
+            MemoryOwner<ColumnGuideInfo> columnGuides = MemoryOwner<ColumnGuideInfo>.Allocate(bracketPairs.Length);
 
             _ColumnGuides = columnGuides;
 
             // Skip if there are no brackets to render
-            if (columnGuides.Size == 0) return;
-            ref BracketsPairInfo bracketPairsRef = ref bracketPairs.GetReference();
-            ref ColumnGuideInfo columnGuidesRef = ref columnGuides.GetReference();
+            if (columnGuides.Length == 0) return;
 
-            for (int i = 0; i < bracketPairs.Size; i++)
+            ref BracketsPairInfo bracketPairsRef = ref bracketPairs.DangerousGetReference();
+            ref ColumnGuideInfo columnGuidesRef = ref columnGuides.DangerousGetReference();
+
+            for (int i = 0; i < bracketPairs.Length; i++)
             {
-                // Get the initial and ending range
                 var bounds = Unsafe.Add(ref bracketPairsRef, i);
-                ITextRange range = Document.GetRangeAt(bounds.Start);
-                range.GetRect(PointOptions.Transform, out Rect open, out _);
-                range = Document.GetRangeAt(bounds.End);
-                range.GetRect(PointOptions.Transform, out Rect close, out _);
+
+                // Get the initial and ending range
+                Document.GetRangeAt(bounds.Start).GetRect(PointOptions.Transform, out Rect open, out _);
+                Document.GetRangeAt(bounds.End).GetRect(PointOptions.Transform, out Rect close, out _);
 
                 // Render the new line guide
                 ColumnGuideInfo guideInfo = new ColumnGuideInfo(
                     MathF.Min((float)open.X, (float)close.X) + 10,
                     (float)open.Top + 22,
                     (float)(close.Top - open.Bottom));
+
                 Unsafe.Add(ref columnGuidesRef, i) = guideInfo;
             }
         }

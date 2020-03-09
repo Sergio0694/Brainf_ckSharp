@@ -5,6 +5,8 @@ using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Git.Enums;
 using Brainf_ckSharp.Git.Models;
 using Microsoft.Collections.Extensions;
+using Microsoft.Toolkit.HighPerformance.Buffers;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 namespace Brainf_ckSharp.Git
 {
@@ -48,7 +50,10 @@ namespace Brainf_ckSharp.Git
         public static MemoryOwner<LineModificationType> ComputeDiff(ReadOnlySpan<char> oldText, ReadOnlySpan<char> newText, char separator)
         {
             // If the new text is empty, no modifications are returned
-            if (newText.IsEmpty) return MemoryOwner<LineModificationType>.Allocate(0);
+            if (newText.IsEmpty)
+            {
+                return MemoryOwner<LineModificationType>.Empty;
+            }
 
             int oldNumberOfLines = oldText.Count(separator) + 1;
             int newNumberOfLines = newText.Count(separator) + 1;
@@ -59,17 +64,14 @@ namespace Brainf_ckSharp.Git
                 oldNumberOfLines <= ShortPathNumberOfLinesThreshold &&
                 oldText.SequenceEqual(newText))
             {
-                MemoryOwner<LineModificationType> result = MemoryOwner<LineModificationType>.Allocate(newNumberOfLines);
-                result.Span.Clear();
-
-                return result;
+                return MemoryOwner<LineModificationType>.Allocate(newNumberOfLines, true);
             }
 
             object[] oldTemporaryValues = ArrayPool<object>.Shared.Rent(oldNumberOfLines);
             object[] newTemporaryValues = ArrayPool<object>.Shared.Rent(newNumberOfLines);
 
-            ref object oldTemporaryValuesRef = ref oldTemporaryValues[0];
-            ref object newTemporaryValuesRef = ref newTemporaryValues[0];
+            ref object oldTemporaryValuesRef = ref oldTemporaryValues.DangerousGetReference();
+            ref object newTemporaryValuesRef = ref newTemporaryValues.DangerousGetReference();
 
             DictionarySlim<int, DiffEntry> table = LinesMap;
             table.Clear();
@@ -201,7 +203,7 @@ namespace Brainf_ckSharp.Git
 
                 // Allocate the result array with on entry per line in the updated text
                 MemoryOwner<LineModificationType> result = MemoryOwner<LineModificationType>.Allocate(newNumberOfLines);
-                ref LineModificationType resultRef = ref result.GetReference();
+                ref LineModificationType resultRef = ref result.DangerousGetReference();
 
                 /* ==============
                  * Final pass
@@ -213,7 +215,7 @@ namespace Brainf_ckSharp.Git
                  * it means that the current line has been modified in some way. */
                 for (i = 0; i < newNumberOfLines; i++)
                 {
-                    Unsafe.Add(ref resultRef, i) = newTemporaryValues[i] switch
+                    Unsafe.Add(ref resultRef, i) = Unsafe.Add(ref newTemporaryValuesRef, i) switch
                     {
                         int _ => LineModificationType.None,
                         _ => LineModificationType.Modified
