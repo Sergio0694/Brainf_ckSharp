@@ -46,7 +46,10 @@ namespace Brainf_ck_sharp.Profiler
         }
 
         [Benchmark(Baseline = true)]
-        public string Legacy() => Brainf_ckInterpreterOld.Run(Script, Stdin).Output;
+        public string Legacy()
+        {
+            return Brainf_ckInterpreterOld.Run(Script, Stdin).Output;
+        }
 
         [Benchmark]
         public string Debug()
