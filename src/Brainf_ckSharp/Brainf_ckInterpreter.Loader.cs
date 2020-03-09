@@ -43,13 +43,13 @@ namespace Brainf_ckSharp
         [Pure]
         internal static FunctionDefinition[] LoadFunctionDefinitions<TOpcode>(
             ReadOnlySpan<TOpcode> opcodes,
-            UnmanagedSpan<Range> functions,
+            ReadOnlySpan<Range> functions,
             UnmanagedSpan<ushort> definitions,
             int totalFunctions)
             where TOpcode : unmanaged, IOpcode
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(opcodes.Length, 0, nameof(opcodes));
-            DebugGuard.MustBeEqualTo(functions.Size, ushort.MaxValue, nameof(functions));
+            DebugGuard.MustBeEqualTo(functions.Length, ushort.MaxValue, nameof(functions));
             DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Size, 0, nameof(definitions));
             DebugGuard.MustBeLessThanOrEqualTo(definitions.Size, opcodes.Length / 3, nameof(definitions));
             DebugGuard.MustBeGreaterThanOrEqualTo(totalFunctions, 0, nameof(totalFunctions));
@@ -168,12 +168,12 @@ namespace Brainf_ckSharp
         [Pure]
         internal static HaltedExecutionInfo? LoadDebugInfo<TOpcode>(
             ReadOnlySpan<TOpcode> opcodes,
-            UnmanagedSpan<StackFrame> stackFrames,
+            ReadOnlySpan<StackFrame> stackFrames,
             int depth)
             where TOpcode : unmanaged, IOpcode
         {
             DebugGuard.MustBeTrue(opcodes.Length > 0, nameof(opcodes));
-            DebugGuard.MustBeEqualTo(stackFrames.Size, Specs.MaximumStackSize, nameof(stackFrames));
+            DebugGuard.MustBeEqualTo(stackFrames.Length, Specs.MaximumStackSize, nameof(stackFrames));
             DebugGuard.MustBeGreaterThanOrEqualTo(depth, -1, nameof(depth));
 
             // No exception info for scripts completed successfully

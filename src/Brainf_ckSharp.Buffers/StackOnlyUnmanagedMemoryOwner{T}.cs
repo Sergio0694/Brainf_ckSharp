@@ -61,6 +61,15 @@ namespace System.Buffers
             return ref Buffer[0];
         }
 
+        /// <summary>
+        /// Gets a <see cref="Span{T}"/> instance mapping the values on the current buffer
+        /// </summary>
+        public Span<T> CoreCLRSpan
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => new Span<T>(Buffer, 0, Size);
+        }
+
         /// <inheritdoc cref="IDisposable.Dispose"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Dispose()

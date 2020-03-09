@@ -69,7 +69,7 @@ namespace System.Buffers
         }
 
         /// <summary>
-        /// Gets an <see cref="Span{T}"/> instance mapping the values on the current buffer
+        /// Gets a <see cref="Span{T}"/> instance mapping the values on the current buffer
         /// </summary>
         public ReadOnlySpan<T> CoreCLRReadOnlySpan
         {

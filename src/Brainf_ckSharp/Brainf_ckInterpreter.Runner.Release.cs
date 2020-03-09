@@ -83,74 +83,70 @@ namespace Brainf_ckSharp
                 using StackOnlyUnmanagedMemoryOwner<StackFrame> stackFrames = StackOnlyUnmanagedMemoryOwner<StackFrame>.Allocate(Specs.MaximumStackSize, false);
                 using StdoutBuffer stdout = new StdoutBuffer();
 
-                fixed (Range* functionsPtr = &functions.GetReference())
-                fixed (StackFrame* stackFramesPtr = &stackFrames.GetReference())
+                // Shared counters
+                int
+                    depth = 0,
+                    totalOperations = 0,
+                    totalFunctions = 0;
+                ExitCode exitCode;
+                TimeSpan elapsed;
+
+                // Manually set the initial stack frame to the entire script
+                stackFrames.GetReference() = new StackFrame(new Range(0, opcodes.Size), 0);
+
+                // Wrap the stdin buffer
+                StdinBuffer stdinBuffer = new StdinBuffer(stdin);
+
+                // Create the execution session
+                using (TuringMachineState.ExecutionSession<TExecutionContext> session = machineState.CreateExecutionSession<TExecutionContext>())
                 {
-                    // Shared counters
-                    int
-                        depth = 0,
-                        totalOperations = 0,
-                        totalFunctions = 0;
-                    ExitCode exitCode;
-                    TimeSpan elapsed;
+                    Stopwatch stopwatch = Stopwatch.StartNew();
 
-                    // Manually set the initial stack frame to the entire script
-                    stackFramesPtr[0] = new StackFrame(new Range(0, opcodes.Size), 0);
-
-                    // Wrap the stdin buffer
-                    StdinBuffer stdinBuffer = new StdinBuffer(stdin);
-
-                    // Create the execution session
-                    using (TuringMachineState.ExecutionSession<TExecutionContext> session = machineState.CreateExecutionSession<TExecutionContext>())
-                    {
-                        Stopwatch stopwatch = Stopwatch.StartNew();
-
-                        // Start the interpreter
-                        exitCode = Run(
-                            ref Unsafe.AsRef(session.ExecutionContext),
-                            opcodes.Span,
-                            jumpTable.Span,
-                            new UnmanagedSpan<Range>(ushort.MaxValue, functionsPtr),
-                            definitions.Span,
-                            new UnmanagedSpan<StackFrame>(Specs.MaximumStackSize, stackFramesPtr),
-                            ref depth,
-                            ref totalOperations,
-                            ref totalFunctions,
-                            ref stdinBuffer,
-                            stdout,
-                            executionToken);
-
-                        stopwatch.Stop();
-                        elapsed = stopwatch.Elapsed;
-                    }
-
-                    // Rebuild the compacted source code
-                    string sourceCode = Brainf_ckParser.ExtractSource(opcodes.CoreCLRReadOnlySpan);
-
-                    // Prepare the debug info
-                    HaltedExecutionInfo? debugInfo = LoadDebugInfo(
-                        opcodes.CoreCLRReadOnlySpan,
-                        new UnmanagedSpan<StackFrame>(Specs.MaximumStackSize, stackFramesPtr),
-                        depth);
-
-                    // Build the collection of defined functions
-                    FunctionDefinition[] functionDefinitions = LoadFunctionDefinitions(
-                        opcodes.CoreCLRReadOnlySpan,
-                        new UnmanagedSpan<Range>(ushort.MaxValue, functionsPtr),
+                    // Start the interpreter
+                    exitCode = Run(
+                        ref Unsafe.AsRef(session.ExecutionContext),
+                        opcodes.Span,
+                        jumpTable.Span,
+                        functions.CoreCLRSpan,
                         definitions.Span,
-                        totalFunctions);
+                        stackFrames.CoreCLRSpan,
+                        ref depth,
+                        ref totalOperations,
+                        ref totalFunctions,
+                        ref stdinBuffer,
+                        stdout,
+                        executionToken);
 
-                    return new InterpreterResult(
-                        sourceCode,
-                        exitCode,
-                        debugInfo,
-                        machineState,
-                        functionDefinitions,
-                        stdin,
-                        stdout.ToString(),
-                        elapsed,
-                        totalOperations);
+                    stopwatch.Stop();
+                    elapsed = stopwatch.Elapsed;
                 }
+
+                // Rebuild the compacted source code
+                string sourceCode = Brainf_ckParser.ExtractSource(opcodes.CoreCLRReadOnlySpan);
+
+                // Prepare the debug info
+                HaltedExecutionInfo? debugInfo = LoadDebugInfo(
+                    opcodes.CoreCLRReadOnlySpan,
+                    stackFrames.CoreCLRSpan,
+                    depth);
+
+                // Build the collection of defined functions
+                FunctionDefinition[] functionDefinitions = LoadFunctionDefinitions(
+                    opcodes.CoreCLRReadOnlySpan,
+                    functions.CoreCLRSpan,
+                    definitions.Span,
+                    totalFunctions);
+
+                return new InterpreterResult(
+                    sourceCode,
+                    exitCode,
+                    debugInfo,
+                    machineState,
+                    functionDefinitions,
+                    stdin,
+                    stdout.ToString(),
+                    elapsed,
+                    totalOperations);
             }
 
             /// <summary>
@@ -175,9 +171,9 @@ namespace Brainf_ckSharp
                 ref TExecutionContext executionContext,
                 UnmanagedSpan<Brainf_ckOperation> opcodes,
                 UnmanagedSpan<int> jumpTable,
-                UnmanagedSpan<Range> functions,
+                Span<Range> functions,
                 UnmanagedSpan<ushort> definitions,
-                UnmanagedSpan<StackFrame> stackFrames,
+                Span<StackFrame> stackFrames,
                 ref int depth,
                 ref int totalOperations,
                 ref int totalFunctions,
@@ -188,10 +184,10 @@ namespace Brainf_ckSharp
             {
                 DebugGuard.MustBeTrue(opcodes.Size > 0, nameof(opcodes));
                 DebugGuard.MustBeEqualTo(jumpTable.Size, opcodes.Size, nameof(jumpTable));
-                DebugGuard.MustBeEqualTo(functions.Size, ushort.MaxValue, nameof(functions));
+                DebugGuard.MustBeEqualTo(functions.Length, ushort.MaxValue, nameof(functions));
                 DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Size, 0, nameof(definitions));
                 DebugGuard.MustBeLessThanOrEqualTo(definitions.Size, opcodes.Size / 3, nameof(definitions));
-                DebugGuard.MustBeEqualTo(stackFrames.Size, Specs.MaximumStackSize, nameof(stackFrames));
+                DebugGuard.MustBeEqualTo(stackFrames.Length, Specs.MaximumStackSize, nameof(stackFrames));
                 DebugGuard.MustBeGreaterThanOrEqualTo(depth, 0, nameof(depth));
                 DebugGuard.MustBeGreaterThanOrEqualTo(totalOperations, 0, nameof(totalOperations));
                 DebugGuard.MustBeGreaterThanOrEqualTo(totalFunctions, 0, nameof(totalFunctions));

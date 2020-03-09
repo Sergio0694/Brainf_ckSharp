@@ -208,13 +208,13 @@ namespace Brainf_ckSharp.Models
             // Prepare the debug info
             HaltedExecutionInfo? debugInfo = Brainf_ckInterpreter.LoadDebugInfo(
                 Opcodes.CoreCLRReadOnlySpan,
-                StackFrames.Span,
+                StackFrames.CoreCLRReadOnlySpan,
                 _Depth);
 
             // Build the collection of defined functions
             FunctionDefinition[] functionDefinitions = Brainf_ckInterpreter.LoadFunctionDefinitions(
                 Opcodes.CoreCLRReadOnlySpan,
-                Functions.Span,
+                Functions.CoreCLRReadOnlySpan,
                 Definitions.Span,
                 _TotalFunctions);
 
