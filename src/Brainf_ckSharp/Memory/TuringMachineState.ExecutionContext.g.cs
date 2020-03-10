@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 #pragma warning disable IDE0032
 
@@ -11,7 +12,7 @@ namespace Brainf_ckSharp.Memory
     /// <summary>
     /// A <see langword="class"/> that represents the state of a Turing machine
     /// </summary>
-    internal sealed unsafe partial class TuringMachineState
+    internal sealed partial class TuringMachineState
     {
         /// <summary>
         /// Gets an execution context of the specified type
@@ -19,33 +20,36 @@ namespace Brainf_ckSharp.Memory
         /// <typeparam name="TExecutionContext">The type of execution context to retrieve</typeparam>
         /// <returns>An execution context of the specified type</returns>
         [Pure]
-        private TExecutionContext GetExecutionContext<TExecutionContext>()
+        private unsafe TExecutionContext GetExecutionContext<TExecutionContext>()
             where TExecutionContext : struct, IMachineStateExecutionContext
         {
+            // The underlying buffer is guaranteed not to be null or unpinned here
+            ushort* ptr = (ushort*)Unsafe.AsPointer(ref Buffer.DangerousGetReference());
+
             if (typeof(TExecutionContext) == typeof(UshortWithNoOverflowExecutionContext))
             {
-                var executionContext = new UshortWithNoOverflowExecutionContext(Ptr, Size - 1, _Position);
+                var executionContext = new UshortWithNoOverflowExecutionContext(ptr, Size - 1, _Position);
 
                 return Unsafe.As<UshortWithNoOverflowExecutionContext, TExecutionContext>(ref executionContext);
             }
 
             if (typeof(TExecutionContext) == typeof(UshortWithOverflowExecutionContext))
             {
-                var executionContext = new UshortWithOverflowExecutionContext(Ptr, Size - 1, _Position);
+                var executionContext = new UshortWithOverflowExecutionContext(ptr, Size - 1, _Position);
 
                 return Unsafe.As<UshortWithOverflowExecutionContext, TExecutionContext>(ref executionContext);
             }
 
             if (typeof(TExecutionContext) == typeof(ByteWithNoOverflowExecutionContext))
             {
-                var executionContext = new ByteWithNoOverflowExecutionContext(Ptr, Size - 1, _Position);
+                var executionContext = new ByteWithNoOverflowExecutionContext(ptr, Size - 1, _Position);
 
                 return Unsafe.As<ByteWithNoOverflowExecutionContext, TExecutionContext>(ref executionContext);
             }
 
             if (typeof(TExecutionContext) == typeof(ByteWithOverflowExecutionContext))
             {
-                var executionContext = new ByteWithOverflowExecutionContext(Ptr, Size - 1, _Position);
+                var executionContext = new ByteWithOverflowExecutionContext(ptr, Size - 1, _Position);
 
                 return Unsafe.As<ByteWithOverflowExecutionContext, TExecutionContext>(ref executionContext);
             }
@@ -56,7 +60,7 @@ namespace Brainf_ckSharp.Memory
         /// <summary>
         /// A <see langword="struct"/> implementing <see cref="IMachineStateExecutionContext"/> for <see cref="OverflowMode.UshortWithNoOverflow"/>
         /// </summary>
-        public struct UshortWithNoOverflowExecutionContext : IMachineStateExecutionContext
+        public unsafe struct UshortWithNoOverflowExecutionContext : IMachineStateExecutionContext
         {
             private readonly ushort* Ptr;
             private readonly int MaxIndex;
@@ -235,7 +239,7 @@ namespace Brainf_ckSharp.Memory
         /// <summary>
         /// A <see langword="struct"/> implementing <see cref="IMachineStateExecutionContext"/> for <see cref="OverflowMode.UshortWithOverflow"/>
         /// </summary>
-        public struct UshortWithOverflowExecutionContext : IMachineStateExecutionContext
+        public unsafe struct UshortWithOverflowExecutionContext : IMachineStateExecutionContext
         {
             private readonly ushort* Ptr;
             private readonly int MaxIndex;
@@ -392,7 +396,7 @@ namespace Brainf_ckSharp.Memory
         /// <summary>
         /// A <see langword="struct"/> implementing <see cref="IMachineStateExecutionContext"/> for <see cref="OverflowMode.ByteWithNoOverflow"/>
         /// </summary>
-        public struct ByteWithNoOverflowExecutionContext : IMachineStateExecutionContext
+        public unsafe struct ByteWithNoOverflowExecutionContext : IMachineStateExecutionContext
         {
             private readonly ushort* Ptr;
             private readonly int MaxIndex;
@@ -573,7 +577,7 @@ namespace Brainf_ckSharp.Memory
         /// <summary>
         /// A <see langword="struct"/> implementing <see cref="IMachineStateExecutionContext"/> for <see cref="OverflowMode.ByteWithOverflow"/>
         /// </summary>
-        public struct ByteWithOverflowExecutionContext : IMachineStateExecutionContext
+        public unsafe struct ByteWithOverflowExecutionContext : IMachineStateExecutionContext
         {
             private readonly ushort* Ptr;
             private readonly int MaxIndex;

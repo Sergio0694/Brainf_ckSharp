@@ -9,6 +9,7 @@ using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 #pragma warning disable IDE0032
 
@@ -17,7 +18,7 @@ namespace Brainf_ckSharp.Memory
     /// <summary>
     /// A <see langword="class"/> that represents the state of a Turing machine
     /// </summary>
-    internal sealed unsafe partial class TuringMachineState
+    internal sealed partial class TuringMachineState
     {
         /// <summary>
         /// Gets an execution context of the specified type
@@ -25,16 +26,19 @@ namespace Brainf_ckSharp.Memory
         /// <typeparam name="TExecutionContext">The type of execution context to retrieve</typeparam>
         /// <returns>An execution context of the specified type</returns>
         [Pure]
-        private TExecutionContext GetExecutionContext<TExecutionContext>()
+        private unsafe TExecutionContext GetExecutionContext<TExecutionContext>()
             where TExecutionContext : struct, IMachineStateExecutionContext
         {
+            // The underlying buffer is guaranteed not to be null or unpinned here
+            ushort* ptr = (ushort*)Unsafe.AsPointer(ref Buffer.DangerousGetReference());
+
 <#
 foreach (var mode in Enum.GetValues(typeof(OverflowMode)))
 {
 #>
             if (typeof(TExecutionContext) == typeof(<#=mode#>ExecutionContext))
             {
-                var executionContext = new <#=mode#>ExecutionContext(Ptr, Size - 1, _Position);
+                var executionContext = new <#=mode#>ExecutionContext(ptr, Size - 1, _Position);
 
                 return Unsafe.As<<#=mode#>ExecutionContext, TExecutionContext>(ref executionContext);
             }
@@ -67,7 +71,7 @@ foreach (var mode in (OverflowMode[])Enum.GetValues(typeof(OverflowMode)))
         /// <summary>
         /// A <see langword="struct"/> implementing <see cref="IMachineStateExecutionContext"/> for <see cref="OverflowMode.<#=mode#>"/>
         /// </summary>
-        public struct <#=mode#>ExecutionContext : IMachineStateExecutionContext
+        public unsafe struct <#=mode#>ExecutionContext : IMachineStateExecutionContext
         {
             private readonly ushort* Ptr;
             private readonly int MaxIndex;
