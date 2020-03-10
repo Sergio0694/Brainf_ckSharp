@@ -19,7 +19,7 @@ namespace Brainf_ckSharp.Profiler
         /// <summary>
         /// The name of the script to benchmark
         /// </summary>
-        [Params("HelloWorld", "Sum", "Multiply", "Division", "Fibonacci")]
+        [Params("HelloWorld", "Sum", "Multiply", "Division", "Fibonacci", "Mandelbrot")]
         public string? Name;
 
         /// <summary>
