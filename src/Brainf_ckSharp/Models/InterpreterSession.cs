@@ -142,7 +142,7 @@ namespace Brainf_ckSharp.Models
             ExecutionToken = executionToken;
             DebugToken = debugToken;
             Stopwatch = new Stopwatch();
-            SourceCode = Brainf_ckParser.ExtractSource<Brainf_ckOperator>(opcodes.Span);
+            SourceCode = Brainf_ckParser.ExtractSource(opcodes.Span);
         }
 
         private InterpreterResult? _Current;
@@ -193,12 +193,12 @@ namespace Brainf_ckSharp.Models
                 // Execute the new interpreter debug step
                 exitCode = Brainf_ckInterpreter.Debug.Run(
                     ref Unsafe.AsRef(session.ExecutionContext),
-                    Opcodes.Span,
-                    Breakpoints.Span,
-                    JumpTable.Span,
-                    Functions.Span,
-                    Definitions.Span,
-                    StackFrames.Span,
+                    ref Opcodes.DangerousGetReference(),
+                    ref Breakpoints.DangerousGetReference(),
+                    ref JumpTable.DangerousGetReference(),
+                    ref Functions.DangerousGetReference(),
+                    ref Definitions.DangerousGetReference(),
+                    ref StackFrames.DangerousGetReference(),
                     ref _Depth,
                     ref _TotalOperations,
                     ref _TotalFunctions,
@@ -211,13 +211,13 @@ namespace Brainf_ckSharp.Models
             }
 
             // Prepare the debug info
-            HaltedExecutionInfo? debugInfo = Brainf_ckInterpreter.LoadDebugInfo<Brainf_ckOperator>(
+            HaltedExecutionInfo? debugInfo = Brainf_ckInterpreter.LoadDebugInfo(
                 Opcodes.Span,
                 StackFrames.Span,
                 _Depth);
 
             // Build the collection of defined functions
-            FunctionDefinition[] functionDefinitions = Brainf_ckInterpreter.LoadFunctionDefinitions<Brainf_ckOperator>(
+            FunctionDefinition[] functionDefinitions = Brainf_ckInterpreter.LoadFunctionDefinitions(
                 Opcodes.Span,
                 Functions.Span,
                 Definitions.Span,

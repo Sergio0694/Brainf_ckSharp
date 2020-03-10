@@ -43,7 +43,7 @@ namespace Brainf_ckSharp
             /// <param name="validationResult">The <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</param>
             /// <returns>The resulting buffer of operators for the parsed script</returns>
             [Pure]
-            public static unsafe MemoryOwner<Brainf_ckOperation>? TryParse(string source, out SyntaxValidationResult validationResult)
+            public static MemoryOwner<Brainf_ckOperation>? TryParse(string source, out SyntaxValidationResult validationResult)
             {
                 // Check the syntax of the input source code
                 validationResult = ValidateSyntax(source);
@@ -120,7 +120,7 @@ namespace Brainf_ckSharp
             /// <param name="operations">The input sequence of parsed operations to read</param>
             /// <returns>A <see cref="string"/> representing the input sequence of operations</returns>
             [Pure]
-            public static unsafe string ExtractSource(ReadOnlySpan<Brainf_ckOperation> operations)
+            public static unsafe string ExtractSource(Span<Brainf_ckOperation> operations)
             {
                 int size = 0;
 

@@ -65,7 +65,7 @@ namespace Brainf_ckSharp
         /// <returns>A <see cref="string"/> representing the input sequence of opcodes</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static string ExtractSource<TOpcode>(ReadOnlySpan<TOpcode> opcodes)
+        internal static string ExtractSource<TOpcode>(Span<TOpcode> opcodes)
             where TOpcode : unmanaged, IOpcode
         {
             DebugGuard.MustBeGreaterThan(opcodes.Length, 0, nameof(opcodes));

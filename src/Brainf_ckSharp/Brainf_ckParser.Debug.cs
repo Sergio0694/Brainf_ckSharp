@@ -55,7 +55,7 @@ namespace Brainf_ckSharp
             /// <param name="operators">The input sequence of parsed operators to read</param>
             /// <returns>A <see cref="string"/> representing the input sequence of operators</returns>
             [Pure]
-            public static unsafe string ExtractSource(ReadOnlySpan<Brainf_ckOperator> operators)
+            public static unsafe string ExtractSource(Span<Brainf_ckOperator> operators)
             {
                 // Rent a buffer to use to build the final string
                 using SpanOwner<char> characters = SpanOwner<char>.Allocate(operators.Length);

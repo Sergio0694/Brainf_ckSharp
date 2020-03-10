@@ -42,9 +42,9 @@ namespace Brainf_ckSharp
         /// <returns>An array of <see cref="FunctionDefinition"/> instance with the defined functions</returns>
         [Pure]
         internal static FunctionDefinition[] LoadFunctionDefinitions<TOpcode>(
-            ReadOnlySpan<TOpcode> opcodes,
-            ReadOnlySpan<Range> functions,
-            ReadOnlySpan<ushort> definitions,
+            Span<TOpcode> opcodes,
+            Span<Range> functions,
+            Span<ushort> definitions,
             int totalFunctions)
             where TOpcode : unmanaged, IOpcode
         {
@@ -65,7 +65,7 @@ namespace Brainf_ckSharp
             {
                 ushort key = definitions[i];
                 Range range = functions[key];
-                ReadOnlySpan<TOpcode> slice = opcodes.Slice(range.Start, range.Length);
+                Span<TOpcode> slice = opcodes.Slice(range.Start, range.Length);
 
                 string body = Brainf_ckParser.ExtractSource(slice);
 
@@ -86,7 +86,7 @@ namespace Brainf_ckSharp
         /// <returns>The resulting precomputed jump table for the input executable</returns>
         [Pure]
         private static MemoryOwner<int> LoadJumpTable<TOpcode>(
-            ReadOnlySpan<TOpcode> opcodes,
+            Span<TOpcode> opcodes,
             out int functionsCount)
             where TOpcode : unmanaged, IOpcode
         {
@@ -165,8 +165,8 @@ namespace Brainf_ckSharp
         /// <returns>An <see cref="HaltedExecutionInfo"/> instance, if the input script was halted during its execution</returns>
         [Pure]
         internal static HaltedExecutionInfo? LoadDebugInfo<TOpcode>(
-            ReadOnlySpan<TOpcode> opcodes,
-            ReadOnlySpan<StackFrame> stackFrames,
+            Span<TOpcode> opcodes,
+            Span<StackFrame> stackFrames,
             int depth)
             where TOpcode : unmanaged, IOpcode
         {
@@ -199,7 +199,7 @@ namespace Brainf_ckSharp
                     start = frame.Range.Start,
                     offset = frame.Offset + Unsafe.As<bool, byte>(ref zero),
                     length = offset - start;
-                ReadOnlySpan<TOpcode> memory = opcodes.Slice(start, length);
+                Span<TOpcode> memory = opcodes.Slice(start, length);
 
                 string body = Brainf_ckParser.ExtractSource(memory);
 

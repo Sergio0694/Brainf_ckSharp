@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using Brainf_ckSharp.Buffers;
 using Brainf_ckSharp.Constants;
@@ -35,7 +36,7 @@ namespace Brainf_ckSharp
             /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
             /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
             public static InterpreterResult Run(
-                ReadOnlySpan<Brainf_ckOperation> opcodes,
+                Span<Brainf_ckOperation> opcodes,
                 string stdin,
                 TuringMachineState machineState,
                 CancellationToken executionToken)
@@ -63,7 +64,7 @@ namespace Brainf_ckSharp
             /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
             /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
             private static InterpreterResult Run<TExecutionContext>(
-                ReadOnlySpan<Brainf_ckOperation> opcodes,
+                Span<Brainf_ckOperation> opcodes,
                 string stdin,
                 TuringMachineState machineState,
                 CancellationToken executionToken)
@@ -102,11 +103,11 @@ namespace Brainf_ckSharp
                     // Start the interpreter
                     exitCode = Run(
                         ref Unsafe.AsRef(session.ExecutionContext),
-                        opcodes,
-                        jumpTable.Span,
-                        functions.Span,
-                        definitions.Span,
-                        stackFrames.Span,
+                        ref MemoryMarshal.GetReference(opcodes),
+                        ref jumpTable.DangerousGetReference(),
+                        ref functions.DangerousGetReference(),
+                        ref definitions.DangerousGetReference(),
+                        ref stackFrames.DangerousGetReference(),
                         ref depth,
                         ref totalOperations,
                         ref totalFunctions,
@@ -166,11 +167,11 @@ namespace Brainf_ckSharp
             /// <remarks>This method mirrors the one from the <see cref="Debug"/> class, but with more optimizations</remarks>
             private static ExitCode Run<TExecutionContext>(
                 ref TExecutionContext executionContext,
-                ReadOnlySpan<Brainf_ckOperation> opcodes,
-                ReadOnlySpan<int> jumpTable,
-                Span<Range> functions,
-                Span<ushort> definitions,
-                Span<StackFrame> stackFrames,
+                ref Brainf_ckOperation opcodes,
+                ref int jumpTable,
+                ref Range functions,
+                ref ushort definitions,
+                ref StackFrame stackFrames,
                 ref int depth,
                 ref int totalOperations,
                 ref int totalFunctions,
@@ -179,12 +180,6 @@ namespace Brainf_ckSharp
                 CancellationToken executionToken)
                 where TExecutionContext : struct, IMachineStateExecutionContext
             {
-                DebugGuard.MustBeTrue(opcodes.Length > 0, nameof(opcodes));
-                DebugGuard.MustBeEqualTo(jumpTable.Length, opcodes.Length, nameof(jumpTable));
-                DebugGuard.MustBeEqualTo(functions.Length, ushort.MaxValue, nameof(functions));
-                DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Length, 0, nameof(definitions));
-                DebugGuard.MustBeLessThanOrEqualTo(definitions.Length, opcodes.Length / 3, nameof(definitions));
-                DebugGuard.MustBeEqualTo(stackFrames.Length, Specs.MaximumStackSize, nameof(stackFrames));
                 DebugGuard.MustBeGreaterThanOrEqualTo(depth, 0, nameof(depth));
                 DebugGuard.MustBeGreaterThanOrEqualTo(totalOperations, 0, nameof(totalOperations));
                 DebugGuard.MustBeGreaterThanOrEqualTo(totalFunctions, 0, nameof(totalFunctions));
@@ -194,7 +189,7 @@ namespace Brainf_ckSharp
                 int i;
                 do
                 {
-                    frame = stackFrames[depth];
+                    frame = Unsafe.Add(ref stackFrames, depth);
 
                     /* This label is used when a function call is performed: a new stack frame
                      * is pushed in the frames collection and then a goto is used to jump out
@@ -206,7 +201,7 @@ namespace Brainf_ckSharp
                     // Iterate over the current opcodes
                     for (i = frame.Offset; i < frame.Range.End; i++)
                     {
-                        Brainf_ckOperation opcode = opcodes[i];
+                        Brainf_ckOperation opcode = Unsafe.Add(ref opcodes, i);
 
                         // Execute the current operator
                         switch (opcode.Operator)
@@ -258,11 +253,11 @@ namespace Brainf_ckSharp
                                 // Check whether the loop is active
                                 if (executionContext.Current == 0)
                                 {
-                                    i = jumpTable[i];
+                                    i = Unsafe.Add(ref jumpTable, i);
                                     totalOperations++;
                                 }
-                                else if (jumpTable[i] == i + 2 &&
-                                         opcodes[i + 1].Operator == Operators.Minus)
+                                else if (Unsafe.Add(ref jumpTable, i) == i + 2 &&
+                                         Unsafe.Add(ref opcodes, i + 1).Operator == Operators.Minus)
                                 {
                                     // Fast path for [-] loops
                                     executionContext.ResetCell();
@@ -277,7 +272,7 @@ namespace Brainf_ckSharp
                                 // Check whether the loop is still active and can be repeated
                                 if (executionContext.Current > 0)
                                 {
-                                    i = jumpTable[i];
+                                    i = Unsafe.Add(ref jumpTable, i);
 
                                     // Check whether the code can still be executed before starting an active loop
                                     if (executionToken.IsCancellationRequested) goto ThresholdExceeded;
@@ -289,12 +284,12 @@ namespace Brainf_ckSharp
                             case Operators.FunctionStart:
                             {
                                 // Check for duplicate function definitions
-                                if (functions[executionContext.Current].Length != 0) goto DuplicateFunctionDefinition;
+                                if (Unsafe.Add(ref functions, executionContext.Current).Length != 0) goto DuplicateFunctionDefinition;
 
                                 // Save the new function definition
-                                Range function = new Range(i + 1, jumpTable[i]);
-                                functions[executionContext.Current] = function;
-                                definitions[totalFunctions++] = executionContext.Current;
+                                Range function = new Range(i + 1, Unsafe.Add(ref jumpTable, i));
+                                Unsafe.Add(ref functions, executionContext.Current) = function;
+                                Unsafe.Add(ref definitions, totalFunctions++) = executionContext.Current;
                                 totalOperations++;
                                 i += function.Length;
                                 break;
@@ -304,7 +299,7 @@ namespace Brainf_ckSharp
                             case Operators.FunctionCall:
                             {
                                 // Try to retrieve the function to invoke
-                                Range function = functions[executionContext.Current];
+                                Range function = Unsafe.Add(ref functions, executionContext.Current);
                                 if (function.Length == 0) goto UndefinedFunctionCalled;
 
                                 // Ensure the stack has space for the new function invocation
@@ -314,7 +309,7 @@ namespace Brainf_ckSharp
                                 if (executionToken.IsCancellationRequested) goto ThresholdExceeded;
 
                                 // Update the current stack frame and exit the inner loop
-                                stackFrames[depth++] = frame.WithOffset(i + 1);
+                                Unsafe.Add(ref stackFrames, depth++) = frame.WithOffset(i + 1);
                                 frame = new StackFrame(function);
                                 totalOperations++;
                                 goto StackFrameLoop;
@@ -366,7 +361,7 @@ namespace Brainf_ckSharp
                 exitCode = ExitCode.StackLimitExceeded;
 
                 UpdateStackFrameAndExit:
-                stackFrames[depth] = frame.WithOffset(i);
+                Unsafe.Add(ref stackFrames, depth) = frame.WithOffset(i);
                 return exitCode;
             }
         }
