@@ -24,7 +24,7 @@ namespace Brainf_ckSharp.Unit
     }
 
     [TestClass]
-    public class DebugTest
+    public partial class DebugTest
     {
         // Executes a script in DEBUG mode
         [Pure]
@@ -50,25 +50,10 @@ namespace Brainf_ckSharp.Unit
                 return session.Value.Current;
             }
         }
-
-        [TestMethod]
-        public void HelloWorld() => ScriptTest.TestScript(Run);
-
-        [TestMethod]
-        public void Sum() => ScriptTest.TestScript(Run);
-
-        [TestMethod]
-        public void Multiply() => ScriptTest.TestScript(Run);
-
-        [TestMethod]
-        public void Division() => ScriptTest.TestScript(Run);
-
-        [TestMethod]
-        public void Fibonacci() => ScriptTest.TestScript(Run);
     }
 
     [TestClass]
-    public class ReleaseTest
+    public partial class ReleaseTest
     {
         // Executes a script in RELEASE mode
         [Pure]
@@ -87,20 +72,5 @@ namespace Brainf_ckSharp.Unit
 
             return result.Value!;
         }
-
-        [TestMethod]
-        public void HelloWorld() => ScriptTest.TestScript(Run);
-
-        [TestMethod]
-        public void Sum() => ScriptTest.TestScript(Run);
-
-        [TestMethod]
-        public void Multiply() => ScriptTest.TestScript(Run);
-
-        [TestMethod]
-        public void Division() => ScriptTest.TestScript(Run);
-
-        [TestMethod]
-        public void Fibonacci() => ScriptTest.TestScript(Run);
     }
 }

@@ -23,6 +23,25 @@
     <ProjectReference Include="..\..\src\Brainf_ckSharp\Brainf_ckSharp.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ScriptTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ScriptTest.g.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ScriptTest.g.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ScriptTest.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
   <Import Project="..\Brainf_ckSharp.Unit.Shared\Brainf_ckSharp.Unit.Shared.projitems" Label="Shared" />
 
 </Project>
