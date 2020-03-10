@@ -1,6 +1,6 @@
 ﻿using Brainf_ckSharp.Models;
 
-namespace Brainf_ckSharp.Uwp.Controls.Ide.Models
+namespace Brainf_ckSharp.Uwp.Controls.Ide.EventArgs
 {
     /// <summary>
     /// A <see langword="class"/> that contains info to signal plain text changes

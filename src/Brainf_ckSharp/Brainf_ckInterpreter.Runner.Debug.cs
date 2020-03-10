@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Buffers;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ckSharp.Buffers;
 using Brainf_ckSharp.Constants;
@@ -11,6 +11,7 @@ using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Opcodes;
+using Microsoft.Toolkit.HighPerformance.Buffers;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
 
 namespace Brainf_ckSharp
@@ -43,19 +44,19 @@ namespace Brainf_ckSharp
                 CancellationToken executionToken,
                 CancellationToken debugToken)
             {
-                PinnedUnmanagedMemoryOwner<Brainf_ckOperator> opcodes = Brainf_ckParser.TryParse<Brainf_ckOperator>(source, out SyntaxValidationResult validationResult)!;
+                MemoryOwner<Brainf_ckOperator> opcodes = Brainf_ckParser.TryParse<Brainf_ckOperator>(source, out SyntaxValidationResult validationResult)!;
 
                 if (!validationResult.IsSuccess) return Option<InterpreterSession>.From(validationResult);
 
                 // Initialize the temporary buffers
-                PinnedUnmanagedMemoryOwner<bool> breakpointsTable = LoadBreakpointsTable(source, validationResult.OperatorsCount, breakpoints);
-                PinnedUnmanagedMemoryOwner<int> jumpTable = LoadJumpTable(opcodes, out int functionsCount);
-                PinnedUnmanagedMemoryOwner<Range> functions = PinnedUnmanagedMemoryOwner<Range>.Allocate(ushort.MaxValue, true);
-                PinnedUnmanagedMemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
-                PinnedUnmanagedMemoryOwner<StackFrame> stackFrames = PinnedUnmanagedMemoryOwner<StackFrame>.Allocate(Specs.MaximumStackSize, false);
+                MemoryOwner<bool> breakpointsTable = LoadBreakpointsTable(source, validationResult.OperatorsCount, breakpoints);
+                MemoryOwner<int> jumpTable = LoadJumpTable(opcodes.Span, out int functionsCount);
+                MemoryOwner<Range> functions = MemoryOwner<Range>.Allocate(ushort.MaxValue, AllocationMode.Clear);
+                MemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
+                MemoryOwner<StackFrame> stackFrames = MemoryOwner<StackFrame>.Allocate(Specs.MaximumStackSize);
 
                 // Initialize the root stack frame
-                stackFrames[0] = new StackFrame(new Range(0, opcodes.Size), 0);
+                stackFrames.DangerousGetReference() = new StackFrame(new Range(0, opcodes.Length), 0);
 
                 // Create the interpreter session
                 InterpreterSession session = new InterpreterSession(
@@ -94,12 +95,12 @@ namespace Brainf_ckSharp
             /// <returns>The resulting <see cref="ExitCode"/> value for the current execution of the input script</returns>
             public static ExitCode Run<TExecutionContext>(
                 ref TExecutionContext executionContext,
-                UnmanagedSpan<Brainf_ckOperator> opcodes,
-                UnmanagedSpan<bool> breakpoints,
-                UnmanagedSpan<int> jumpTable,
-                UnmanagedSpan<Range> functions,
-                UnmanagedSpan<ushort> definitions,
-                UnmanagedSpan<StackFrame> stackFrames,
+                ref Brainf_ckOperator opcodes,
+                ref bool breakpoints,
+                ref int jumpTable,
+                ref Range functions,
+                ref ushort definitions,
+                ref StackFrame stackFrames,
                 ref int depth,
                 ref int totalOperations,
                 ref int totalFunctions,
@@ -109,13 +110,6 @@ namespace Brainf_ckSharp
                 CancellationToken debugToken)
                 where TExecutionContext : struct, IMachineStateExecutionContext
             {
-                DebugGuard.MustBeTrue(opcodes.Size > 0, nameof(opcodes));
-                DebugGuard.MustBeEqualTo(breakpoints.Size, opcodes.Size, nameof(breakpoints));
-                DebugGuard.MustBeEqualTo(jumpTable.Size, opcodes.Size, nameof(jumpTable));
-                DebugGuard.MustBeEqualTo(functions.Size, ushort.MaxValue, nameof(functions));
-                DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Size, 0, nameof(definitions));
-                DebugGuard.MustBeLessThanOrEqualTo(definitions.Size, opcodes.Size / 3, nameof(definitions));
-                DebugGuard.MustBeEqualTo(stackFrames.Size, Specs.MaximumStackSize, nameof(stackFrames));
                 DebugGuard.MustBeGreaterThanOrEqualTo(depth, 0, nameof(depth));
                 DebugGuard.MustBeGreaterThanOrEqualTo(totalOperations, 0, nameof(totalOperations));
                 DebugGuard.MustBeGreaterThanOrEqualTo(totalFunctions, 0, nameof(totalFunctions));
@@ -125,7 +119,7 @@ namespace Brainf_ckSharp
                 int i;
                 do
                 {
-                    frame = stackFrames[depth];
+                    frame = Unsafe.Add(ref stackFrames, depth);
 
                     /* This label is used when a function call is performed: a new stack frame
                      * is pushed in the frames collection and then a goto is used to jump out
@@ -138,16 +132,16 @@ namespace Brainf_ckSharp
                     for (i = frame.Offset; i < frame.Range.End; i++)
                     {
                         // Check if a breakpoint has been reached
-                        if (breakpoints[i] && !debugToken.IsCancellationRequested)
+                        if (Unsafe.Add(ref breakpoints, i) && !debugToken.IsCancellationRequested)
                         {
                             /* Disable the current breakpoint so that it won't be
                              * triggered again when the execution resumes from this point */
-                            breakpoints[i] = false;
+                            Unsafe.Add(ref breakpoints, i) = false;
                             goto BreakpointReached;
                         }
 
                         // Execute the current operator
-                        switch (opcodes[i].Operator)
+                        switch (Unsafe.Add(ref opcodes, i).Operator)
                         {
                             // ptr++
                             case Operators.ForwardPtr:
@@ -196,7 +190,7 @@ namespace Brainf_ckSharp
                                 // Check whether the loop is active
                                 if (executionContext.Current == 0)
                                 {
-                                    i = jumpTable[i];
+                                    i = Unsafe.Add(ref jumpTable, i);
                                     totalOperations++;
                                 }
                                 break;
@@ -207,7 +201,7 @@ namespace Brainf_ckSharp
                                 // Check whether the loop is still active and can be repeated
                                 if (executionContext.Current > 0)
                                 {
-                                    i = jumpTable[i];
+                                    i = Unsafe.Add(ref jumpTable, i);
 
                                     // Check whether the code can still be executed before starting an active loop
                                     if (executionToken.IsCancellationRequested) goto ThresholdExceeded;
@@ -219,12 +213,12 @@ namespace Brainf_ckSharp
                             case Operators.FunctionStart:
                             {
                                 // Check for duplicate function definitions
-                                if (functions[executionContext.Current].Length != 0) goto DuplicateFunctionDefinition;
+                                if (Unsafe.Add(ref functions, executionContext.Current).Length != 0) goto DuplicateFunctionDefinition;
 
                                 // Save the new function definition
-                                Range function = new Range(i + 1, jumpTable[i]);
-                                functions[executionContext.Current] = function;
-                                definitions[totalFunctions++] = executionContext.Current;
+                                Range function = new Range(i + 1, Unsafe.Add(ref jumpTable, i));
+                                Unsafe.Add(ref functions, executionContext.Current) = function;
+                                Unsafe.Add(ref definitions, totalFunctions++) = executionContext.Current;
                                 totalOperations++;
                                 i += function.Length;
                                 break;
@@ -234,7 +228,7 @@ namespace Brainf_ckSharp
                             case Operators.FunctionCall:
                             {
                                 // Try to retrieve the function to invoke
-                                Range function = functions[executionContext.Current];
+                                Range function = Unsafe.Add(ref functions, executionContext.Current);
                                 if (function.Length == 0) goto UndefinedFunctionCalled;
 
                                 // Ensure the stack has space for the new function invocation
@@ -244,7 +238,7 @@ namespace Brainf_ckSharp
                                 if (executionToken.IsCancellationRequested) goto ThresholdExceeded;
 
                                 // Update the current stack frame and exit the inner loop
-                                stackFrames[depth++] = frame.WithOffset(i + 1);
+                                Unsafe.Add(ref stackFrames, depth++) = frame.WithOffset(i + 1);
                                 frame = new StackFrame(function);
                                 totalOperations++;
                                 goto StackFrameLoop;
@@ -307,7 +301,7 @@ namespace Brainf_ckSharp
                 exitCode = ExitCode.StackLimitExceeded;
 
                 UpdateStackFrameAndExit:
-                stackFrames[depth] = frame.WithOffset(i);
+                Unsafe.Add(ref stackFrames, depth) = frame.WithOffset(i);
                 return exitCode;
             }
         }

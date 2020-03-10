@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ckSharp.Buffers;
 using Brainf_ckSharp.Enums;
-using Brainf_ckSharp.Extensions.Types;
 using Brainf_ckSharp.Memory;
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models.Internal;
 using Brainf_ckSharp.Opcodes;
+using Microsoft.Toolkit.HighPerformance.Buffers;
+using Range = Brainf_ckSharp.Extensions.Types.Range;
 using Stopwatch = System.Diagnostics.Stopwatch;
 
 namespace Brainf_ckSharp.Models
@@ -23,32 +23,32 @@ namespace Brainf_ckSharp.Models
         /// <summary>
         /// The sequence of parsed opcodes to execute
         /// </summary>
-        private readonly PinnedUnmanagedMemoryOwner<Brainf_ckOperator> Opcodes;
+        private readonly MemoryOwner<Brainf_ckOperator> Opcodes;
 
         /// <summary>
         /// The table of breakpoints for the current executable
         /// </summary>
-        private readonly PinnedUnmanagedMemoryOwner<bool> Breakpoints;
+        private readonly MemoryOwner<bool> Breakpoints;
 
         /// <summary>
         /// The jump table for loops and function declarations
         /// </summary>
-        private readonly PinnedUnmanagedMemoryOwner<int> JumpTable;
+        private readonly MemoryOwner<int> JumpTable;
 
         /// <summary>
         /// The mapping of functions for the current execution
         /// </summary>
-        private readonly PinnedUnmanagedMemoryOwner<Range> Functions;
+        private readonly MemoryOwner<Range> Functions;
 
         /// <summary>
         /// The lookup table to check which functions are defined
         /// </summary>
-        private readonly PinnedUnmanagedMemoryOwner<ushort> Definitions;
+        private readonly MemoryOwner<ushort> Definitions;
 
         /// <summary>
         /// The sequence of stack frames for the current execution
         /// </summary>
-        private readonly PinnedUnmanagedMemoryOwner<StackFrame> StackFrames;
+        private readonly MemoryOwner<StackFrame> StackFrames;
 
         /// <summary>
         /// The input buffer to read characters from
@@ -101,6 +101,11 @@ namespace Brainf_ckSharp.Models
         private readonly string SourceCode;
 
         /// <summary>
+        /// Indicates whether or not the current instance has already been disposed
+        /// </summary>
+        private bool _Disposed;
+
+        /// <summary>
         /// Creates a new <see cref="InterpreterSession"/> with the specified parameters
         /// </summary>
         /// <param name="opcodes">The sequence of parsed opcodes to execute</param>
@@ -114,12 +119,12 @@ namespace Brainf_ckSharp.Models
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
         internal InterpreterSession(
-            PinnedUnmanagedMemoryOwner<Brainf_ckOperator> opcodes,
-            PinnedUnmanagedMemoryOwner<bool> breakpoints,
-            PinnedUnmanagedMemoryOwner<int> jumpTable,
-            PinnedUnmanagedMemoryOwner<Range> functions,
-            PinnedUnmanagedMemoryOwner<ushort> definitions,
-            PinnedUnmanagedMemoryOwner<StackFrame> stackFrames,
+            MemoryOwner<Brainf_ckOperator> opcodes,
+            MemoryOwner<bool> breakpoints,
+            MemoryOwner<int> jumpTable,
+            MemoryOwner<Range> functions,
+            MemoryOwner<ushort> definitions,
+            MemoryOwner<StackFrame> stackFrames,
             string stdin,
             TuringMachineState machineState,
             CancellationToken executionToken,
@@ -188,12 +193,12 @@ namespace Brainf_ckSharp.Models
                 // Execute the new interpreter debug step
                 exitCode = Brainf_ckInterpreter.Debug.Run(
                     ref Unsafe.AsRef(session.ExecutionContext),
-                    Opcodes.Span,
-                    Breakpoints.Span,
-                    JumpTable.Span,
-                    Functions.Span,
-                    Definitions.Span,
-                    StackFrames.Span,
+                    ref Opcodes.DangerousGetReference(),
+                    ref Breakpoints.DangerousGetReference(),
+                    ref JumpTable.DangerousGetReference(),
+                    ref Functions.DangerousGetReference(),
+                    ref Definitions.DangerousGetReference(),
+                    ref StackFrames.DangerousGetReference(),
                     ref _Depth,
                     ref _TotalOperations,
                     ref _TotalFunctions,
@@ -239,6 +244,10 @@ namespace Brainf_ckSharp.Models
         /// <inheritdoc/>
         public void Dispose()
         {
+            if (_Disposed) return;
+
+            _Disposed = true;
+
             Opcodes.Dispose();
             Breakpoints.Dispose();
             JumpTable.Dispose();

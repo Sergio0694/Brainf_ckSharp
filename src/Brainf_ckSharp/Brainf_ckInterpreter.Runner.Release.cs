@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Buffers;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using Brainf_ckSharp.Buffers;
 using Brainf_ckSharp.Constants;
@@ -11,6 +11,7 @@ using Brainf_ckSharp.Memory;
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Opcodes;
+using Microsoft.Toolkit.HighPerformance.Buffers;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
 using Stopwatch = System.Diagnostics.Stopwatch;
 
@@ -35,12 +36,12 @@ namespace Brainf_ckSharp
             /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
             /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
             public static InterpreterResult Run(
-                PinnedUnmanagedMemoryOwner<Brainf_ckOperation> opcodes,
+                Span<Brainf_ckOperation> opcodes,
                 string stdin,
                 TuringMachineState machineState,
                 CancellationToken executionToken)
             {
-                DebugGuard.MustBeGreaterThanOrEqualTo(opcodes.Size, 0, nameof(opcodes));
+                DebugGuard.MustBeGreaterThanOrEqualTo(opcodes.Length, 0, nameof(opcodes));
                 DebugGuard.MustBeGreaterThanOrEqualTo(machineState.Size, 0, nameof(machineState));
 
                 return machineState.Mode switch
@@ -62,95 +63,88 @@ namespace Brainf_ckSharp
             /// <param name="machineState">The target machine state to use to run the script</param>
             /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
             /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-            public static unsafe InterpreterResult Run<TExecutionContext>(
-                PinnedUnmanagedMemoryOwner<Brainf_ckOperation> opcodes,
+            private static InterpreterResult Run<TExecutionContext>(
+                Span<Brainf_ckOperation> opcodes,
                 string stdin,
                 TuringMachineState machineState,
                 CancellationToken executionToken)
                 where TExecutionContext : struct, IMachineStateExecutionContext
             {
-                DebugGuard.MustBeGreaterThanOrEqualTo(opcodes.Size, 0, nameof(opcodes));
-                DebugGuard.MustBeGreaterThanOrEqualTo(machineState.Size, 0, nameof(machineState));
-
-                /* Initialize the temporary buffers, using the StackOnlyUnmanagedMemoryOwner<T> type when possible
+                /* Initialize the temporary buffers, using the SpanOwner<T> type when possible
                  * to save the extra allocations here. This is possible because all these buffers are
                  * only used within the scope of this method, and disposed as soon as the method completes.
                  * Additionally, when this type is used, memory is pinned using a fixed statement instead
                  * of the GCHandle, which has slightly less overhead for the runtime. */
-                using PinnedUnmanagedMemoryOwner<int> jumpTable = LoadJumpTable(opcodes, out int functionsCount);
-                using StackOnlyUnmanagedMemoryOwner<Range> functions = StackOnlyUnmanagedMemoryOwner<Range>.Allocate(ushort.MaxValue, true);
-                using PinnedUnmanagedMemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
-                using StackOnlyUnmanagedMemoryOwner<StackFrame> stackFrames = StackOnlyUnmanagedMemoryOwner<StackFrame>.Allocate(Specs.MaximumStackSize, false);
+                using MemoryOwner<int> jumpTable = LoadJumpTable(opcodes, out int functionsCount);
+                using SpanOwner<Range> functions = SpanOwner<Range>.Allocate(ushort.MaxValue, AllocationMode.Clear);
+                using MemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
+                using SpanOwner<StackFrame> stackFrames = SpanOwner<StackFrame>.Allocate(Specs.MaximumStackSize);
                 using StdoutBuffer stdout = new StdoutBuffer();
 
-                fixed (Range* functionsPtr = &functions.GetReference())
-                fixed (StackFrame* stackFramesPtr = &stackFrames.GetReference())
+                // Shared counters
+                int
+                    depth = 0,
+                    totalOperations = 0,
+                    totalFunctions = 0;
+                ExitCode exitCode;
+                TimeSpan elapsed;
+
+                // Manually set the initial stack frame to the entire script
+                stackFrames.DangerousGetReference() = new StackFrame(new Range(0, opcodes.Length), 0);
+
+                // Wrap the stdin buffer
+                StdinBuffer stdinBuffer = new StdinBuffer(stdin);
+
+                // Create the execution session
+                using (TuringMachineState.ExecutionSession<TExecutionContext> session = machineState.CreateExecutionSession<TExecutionContext>())
                 {
-                    // Shared counters
-                    int
-                        depth = 0,
-                        totalOperations = 0,
-                        totalFunctions = 0;
-                    ExitCode exitCode;
-                    TimeSpan elapsed;
+                    Stopwatch stopwatch = Stopwatch.StartNew();
 
-                    // Manually set the initial stack frame to the entire script
-                    stackFramesPtr[0] = new StackFrame(new Range(0, opcodes.Size), 0);
+                    // Start the interpreter
+                    exitCode = Run(
+                        ref Unsafe.AsRef(session.ExecutionContext),
+                        ref MemoryMarshal.GetReference(opcodes),
+                        ref jumpTable.DangerousGetReference(),
+                        ref functions.DangerousGetReference(),
+                        ref definitions.DangerousGetReference(),
+                        ref stackFrames.DangerousGetReference(),
+                        ref depth,
+                        ref totalOperations,
+                        ref totalFunctions,
+                        ref stdinBuffer,
+                        stdout,
+                        executionToken);
 
-                    // Wrap the stdin buffer
-                    StdinBuffer stdinBuffer = new StdinBuffer(stdin);
-
-                    // Create the execution session
-                    using (TuringMachineState.ExecutionSession<TExecutionContext> session = machineState.CreateExecutionSession<TExecutionContext>())
-                    {
-                        Stopwatch stopwatch = Stopwatch.StartNew();
-
-                        // Start the interpreter
-                        exitCode = Run(
-                            ref Unsafe.AsRef(session.ExecutionContext),
-                            opcodes.Span,
-                            jumpTable.Span,
-                            new UnmanagedSpan<Range>(ushort.MaxValue, functionsPtr),
-                            definitions.Span,
-                            new UnmanagedSpan<StackFrame>(Specs.MaximumStackSize, stackFramesPtr),
-                            ref depth,
-                            ref totalOperations,
-                            ref totalFunctions,
-                            ref stdinBuffer,
-                            stdout,
-                            executionToken);
-
-                        stopwatch.Stop();
-                        elapsed = stopwatch.Elapsed;
-                    }
-
-                    // Rebuild the compacted source code
-                    string sourceCode = Brainf_ckParser.ExtractSource(opcodes.Span);
-
-                    // Prepare the debug info
-                    HaltedExecutionInfo? debugInfo = LoadDebugInfo(
-                        opcodes.Span,
-                        new UnmanagedSpan<StackFrame>(Specs.MaximumStackSize, stackFramesPtr),
-                        depth);
-
-                    // Build the collection of defined functions
-                    FunctionDefinition[] functionDefinitions = LoadFunctionDefinitions(
-                        opcodes.Span,
-                        new UnmanagedSpan<Range>(ushort.MaxValue, functionsPtr),
-                        definitions.Span,
-                        totalFunctions);
-
-                    return new InterpreterResult(
-                        sourceCode,
-                        exitCode,
-                        debugInfo,
-                        machineState,
-                        functionDefinitions,
-                        stdin,
-                        stdout.ToString(),
-                        elapsed,
-                        totalOperations);
+                    stopwatch.Stop();
+                    elapsed = stopwatch.Elapsed;
                 }
+
+                // Rebuild the compacted source code
+                string sourceCode = Brainf_ckParser.ExtractSource(opcodes);
+
+                // Prepare the debug info
+                HaltedExecutionInfo? debugInfo = LoadDebugInfo(
+                    opcodes,
+                    stackFrames.Span,
+                    depth);
+
+                // Build the collection of defined functions
+                FunctionDefinition[] functionDefinitions = LoadFunctionDefinitions(
+                    opcodes,
+                    functions.Span,
+                    definitions.Span,
+                    totalFunctions);
+
+                return new InterpreterResult(
+                    sourceCode,
+                    exitCode,
+                    debugInfo,
+                    machineState,
+                    functionDefinitions,
+                    stdin,
+                    stdout.ToString(),
+                    elapsed,
+                    totalOperations);
             }
 
             /// <summary>
@@ -171,13 +165,13 @@ namespace Brainf_ckSharp
             /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
             /// <returns>The resulting <see cref="ExitCode"/> value for the current execution of the input script</returns>
             /// <remarks>This method mirrors the one from the <see cref="Debug"/> class, but with more optimizations</remarks>
-            public static ExitCode Run<TExecutionContext>(
+            private static ExitCode Run<TExecutionContext>(
                 ref TExecutionContext executionContext,
-                UnmanagedSpan<Brainf_ckOperation> opcodes,
-                UnmanagedSpan<int> jumpTable,
-                UnmanagedSpan<Range> functions,
-                UnmanagedSpan<ushort> definitions,
-                UnmanagedSpan<StackFrame> stackFrames,
+                ref Brainf_ckOperation opcodes,
+                ref int jumpTable,
+                ref Range functions,
+                ref ushort definitions,
+                ref StackFrame stackFrames,
                 ref int depth,
                 ref int totalOperations,
                 ref int totalFunctions,
@@ -186,12 +180,6 @@ namespace Brainf_ckSharp
                 CancellationToken executionToken)
                 where TExecutionContext : struct, IMachineStateExecutionContext
             {
-                DebugGuard.MustBeTrue(opcodes.Size > 0, nameof(opcodes));
-                DebugGuard.MustBeEqualTo(jumpTable.Size, opcodes.Size, nameof(jumpTable));
-                DebugGuard.MustBeEqualTo(functions.Size, ushort.MaxValue, nameof(functions));
-                DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Size, 0, nameof(definitions));
-                DebugGuard.MustBeLessThanOrEqualTo(definitions.Size, opcodes.Size / 3, nameof(definitions));
-                DebugGuard.MustBeEqualTo(stackFrames.Size, Specs.MaximumStackSize, nameof(stackFrames));
                 DebugGuard.MustBeGreaterThanOrEqualTo(depth, 0, nameof(depth));
                 DebugGuard.MustBeGreaterThanOrEqualTo(totalOperations, 0, nameof(totalOperations));
                 DebugGuard.MustBeGreaterThanOrEqualTo(totalFunctions, 0, nameof(totalFunctions));
@@ -201,7 +189,7 @@ namespace Brainf_ckSharp
                 int i;
                 do
                 {
-                    frame = stackFrames[depth];
+                    frame = Unsafe.Add(ref stackFrames, depth);
 
                     /* This label is used when a function call is performed: a new stack frame
                      * is pushed in the frames collection and then a goto is used to jump out
@@ -213,7 +201,7 @@ namespace Brainf_ckSharp
                     // Iterate over the current opcodes
                     for (i = frame.Offset; i < frame.Range.End; i++)
                     {
-                        Brainf_ckOperation opcode = opcodes[i];
+                        Brainf_ckOperation opcode = Unsafe.Add(ref opcodes, i);
 
                         // Execute the current operator
                         switch (opcode.Operator)
@@ -265,11 +253,11 @@ namespace Brainf_ckSharp
                                 // Check whether the loop is active
                                 if (executionContext.Current == 0)
                                 {
-                                    i = jumpTable[i];
+                                    i = Unsafe.Add(ref jumpTable, i);
                                     totalOperations++;
                                 }
-                                else if (jumpTable[i] == i + 2 &&
-                                         opcodes[i + 1].Operator == Operators.Minus)
+                                else if (Unsafe.Add(ref jumpTable, i) == i + 2 &&
+                                         Unsafe.Add(ref opcodes, i + 1).Operator == Operators.Minus)
                                 {
                                     // Fast path for [-] loops
                                     executionContext.ResetCell();
@@ -284,7 +272,7 @@ namespace Brainf_ckSharp
                                 // Check whether the loop is still active and can be repeated
                                 if (executionContext.Current > 0)
                                 {
-                                    i = jumpTable[i];
+                                    i = Unsafe.Add(ref jumpTable, i);
 
                                     // Check whether the code can still be executed before starting an active loop
                                     if (executionToken.IsCancellationRequested) goto ThresholdExceeded;
@@ -296,12 +284,12 @@ namespace Brainf_ckSharp
                             case Operators.FunctionStart:
                             {
                                 // Check for duplicate function definitions
-                                if (functions[executionContext.Current].Length != 0) goto DuplicateFunctionDefinition;
+                                if (Unsafe.Add(ref functions, executionContext.Current).Length != 0) goto DuplicateFunctionDefinition;
 
                                 // Save the new function definition
-                                Range function = new Range(i + 1, jumpTable[i]);
-                                functions[executionContext.Current] = function;
-                                definitions[totalFunctions++] = executionContext.Current;
+                                Range function = new Range(i + 1, Unsafe.Add(ref jumpTable, i));
+                                Unsafe.Add(ref functions, executionContext.Current) = function;
+                                Unsafe.Add(ref definitions, totalFunctions++) = executionContext.Current;
                                 totalOperations++;
                                 i += function.Length;
                                 break;
@@ -311,7 +299,7 @@ namespace Brainf_ckSharp
                             case Operators.FunctionCall:
                             {
                                 // Try to retrieve the function to invoke
-                                Range function = functions[executionContext.Current];
+                                Range function = Unsafe.Add(ref functions, executionContext.Current);
                                 if (function.Length == 0) goto UndefinedFunctionCalled;
 
                                 // Ensure the stack has space for the new function invocation
@@ -321,7 +309,7 @@ namespace Brainf_ckSharp
                                 if (executionToken.IsCancellationRequested) goto ThresholdExceeded;
 
                                 // Update the current stack frame and exit the inner loop
-                                stackFrames[depth++] = frame.WithOffset(i + 1);
+                                Unsafe.Add(ref stackFrames, depth++) = frame.WithOffset(i + 1);
                                 frame = new StackFrame(function);
                                 totalOperations++;
                                 goto StackFrameLoop;
@@ -373,7 +361,7 @@ namespace Brainf_ckSharp
                 exitCode = ExitCode.StackLimitExceeded;
 
                 UpdateStackFrameAndExit:
-                stackFrames[depth] = frame.WithOffset(i);
+                Unsafe.Add(ref stackFrames, depth) = frame.WithOffset(i);
                 return exitCode;
             }
         }

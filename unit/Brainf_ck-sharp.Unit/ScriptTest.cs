@@ -1,82 +1,76 @@
-﻿using Brainf_ckSharp.Enums;
+﻿using System;
+using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
+using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
-using Brainf_ckSharp.Models.Base;
+using Brainf_ckSharp.Unit.Shared;
+using Brainf_ckSharp.Unit.Shared.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Brainf_ckSharp.Unit
 {
-    [TestClass]
     public class ScriptTest
     {
-        [TestMethod]
-        public void HelloWorld()
+        // Tests a script with a given runner
+        public static void TestScript(Func<Script, InterpreterResult> runner, [CallerMemberName] string? name = null)
         {
-            const string script = "[]+++++[>+++++[>+++>++++[>+>+<<-]>>>+++++>+<<<<<<-]<-]>>---.>>+.>++++++++..+++.>>+++++++.<------.<.+++.------.<-.>>>+.";
+            var script = ScriptLoader.LoadScriptByName(name!);
+            var debug = runner(script);
 
-            Option<InterpreterResult> result = Brainf_ckInterpreter
-                .CreateReleaseConfiguration()
-                .WithSource(script)
-                .TryRun();
-
-            Assert.IsNotNull(result);
-            Assert.IsNotNull(result.Value);
-            Assert.AreEqual(result.Value!.ExitCode, ExitCode.Success);
-            Assert.AreEqual(result.Value.Stdout, "Hello world!");
+            Assert.IsNotNull(debug);
+            Assert.AreEqual(debug.ExitCode, ExitCode.Success);
+            Assert.AreEqual(debug.Stdout, script.Stdout);
         }
+    }
 
-        [TestMethod]
-        public void Sum()
+    [TestClass]
+    public partial class DebugTest
+    {
+        // Executes a script in DEBUG mode
+        [Pure]
+        private static InterpreterResult Run(Script script)
         {
-            const string script = "[,.,.,,.]++++++[>++++++++<-]>>,>>>,<<<[>+>+<<-]<[>+>-<<-]>[<+>-]>>>[>+>+<<-]<<<<[>+>>>>-<<<<<-]>[<+>-]>>>>>>,>>>,<<<[>+>+<<-]<<<<<<<[>+>>>>>>>-<<<<<<<<-]>>>>>>>>>>[>+>+<<-]<<<<<<<<<[>>>>>>>>>>-<<<<<<<<<<<+>-]>>>>>>>>>>>>>++[>++++++[>+++>++++>+++++<<<-]<-]>>---->----->+[<]<<<<<<<<<<<<<[>.[-]]>[[-]>]>>.[-]>>>>>>>>>>.>.<.<<<<<<<<[>.[-]]>[[-]>]>>.[-]>>>>.>>.[-]<[-]<.[-]<<<<<<<<<<<<<<[>>>++++++++++<<<-]>>>>>>[>>>++++++++++<<<-]>>>[<<<<<<<<<+>>>>>>>>>-]<<<<<<[<<<<+>>>>-]<<<<[>+<-]<[-]>>[>+++[>+++<-]>+<<[>+>>+<<<-]>>>[<<<+>>>-]<<[->->+<[>>>]>[<++++++++++>---------->>>>+<]<<<<<]>[-]>[<<+>>-]>>>>[<<<<<+>>>>>-]<<<<<<<[-]+>>]<<[+++++[>++++++++<-]>.[-]<<<]<";
-
-            Option<InterpreterResult> result = Brainf_ckInterpreter
-                .CreateReleaseConfiguration()
-                .WithSource(script)
-                .WithStdin("2375")
+            var session = Brainf_ckInterpreter
+                .CreateDebugConfiguration()
+                .WithSource(script.Source)
+                .WithStdin(script.Stdin)
+                .WithMemorySize(script.MemorySize)
+                .WithOverflowMode(script.OverflowMode)
                 .TryRun();
 
-            Assert.IsNotNull(result);
-            Assert.IsNotNull(result.Value);
-            Assert.AreEqual(result.Value!.ExitCode, ExitCode.Success);
-            Assert.AreEqual(result.Value.Stdout, "23 + 75 = 98");
+            Assert.IsNotNull(session.Value);
+            Assert.IsTrue(session.ValidationResult.IsSuccess);
+
+            using (session.Value)
+            {
+                session.Value!.MoveNext();
+
+                Assert.IsNotNull(session.Value.Current);
+
+                return session.Value.Current;
+            }
         }
+    }
 
-        [TestMethod]
-        public void Multiplication()
+    [TestClass]
+    public partial class ReleaseTest
+    {
+        // Executes a script in RELEASE mode
+        [Pure]
+        private static InterpreterResult Run(Script script)
         {
-            const string script = "[,.,.,,.]++++++[>++++++++<-]>>,>>>,<<<[>+>+<<-]<[>+>-<<-]>[<+>-]>>>[>+>+<<-]<<<<[>+>>>>-<<<<<-]>[<+>-]>>>>>>,>>>,<<<[>+>+<<-]<<<<<<<[>+>>>>>>>-<<<<<<<<-]>>>>>>>>>>[>+>+<<-]<<<<<<<<<[>>>>>>>>>>-<<<<<<<<<<<+>-]>>>>>>>>>>>>>++[>++++++[>+++>++++>+++++<<<-]<-]>>---->------>+[<]<<<<<<<<<<<<<[>.[-]]>[[-]>]>>.[-]>>>>>>>>>>.>.<.<<<<<<<<[>.[-]]>[[-]>]>>.[-]>>>>.>>.[-]<[-]<.[-]<<<<<<<<<<<<<<[>>>++++++++++<<<-]>>>>>>[>>>++++++++++<<<-]>>>[<<<<<<<<<+>>>>>>>>>-]<<<<<<[<<<<+>>>>-]<<<<[>[>+>+<<-]>>[<<+>>-]<<<-]<[-]>>[-]>[>+++[>+++<-]>+<<[>+>>+<<<-]>>>[<<<+>>>-]<<[->->+<[>>>]>[<++++++++++>---------->>>>+<]<<<<<]>[-]>[<<+>>-]>>>>[<<<<<+>>>>>-]<<<<<<<[-]+>>]<<[+++++[>++++++++<-]>.[-]<<<]<<";
-
-            Option<InterpreterResult> result = Brainf_ckInterpreter
+            var result = Brainf_ckInterpreter
                 .CreateReleaseConfiguration()
-                .WithSource(script)
-                .WithStdin("9985")
-                .WithMemorySize(64)
-                .WithOverflowMode(OverflowMode.UshortWithNoOverflow)
+                .WithSource(script.Source)
+                .WithStdin(script.Stdin)
+                .WithMemorySize(script.MemorySize)
+                .WithOverflowMode(script.OverflowMode)
                 .TryRun();
 
-            Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
-            Assert.AreEqual(result.Value!.ExitCode, ExitCode.Success);
-            Assert.AreEqual(result.Value.Stdout, "99 * 85 = 8415");
-        }
+            Assert.IsTrue(result.ValidationResult.IsSuccess);
 
-        [TestMethod]
-        public void Fibonacci()
-        {
-            const string script = "[.,-.,,,.]++++++++[>++++>++++++<<-]>>.[>+>+<<-]>>[<<+>>-],>,<<[>->-<<-]>[<++++++++++>-]>[<<+>>-]<<-1>>>+>>>+(->[>+<-]>[>>++++++++++<<[>+>>+<<<-]>>>[<<<+>>>-]<<[->->+<[>>>]=>[<++++++++++>---------->>>>+<]<<<<<]>[-]>[<<+>>-]>>>>[<<<<<+>>>>>-]<<<<<<<[-]+>>]<<[+++++[>++++++++<-]>.[-]<<<])<<<<<(<[<<.>>->>>1[>+>+>>+<<<<-]>>[<<+>>-]<<<[>+<-]>>[<<+>>-]>>:+<<<<<:]):";
-
-            Option<InterpreterResult> result = Brainf_ckInterpreter
-                .CreateReleaseConfiguration()
-                .WithSource(script)
-                .WithStdin("24")
-                .WithMemorySize(64)
-                .WithOverflowMode(OverflowMode.UshortWithNoOverflow)
-                .TryRun();
-
-            Assert.IsNotNull(result);
-            Assert.IsNotNull(result.Value);
-            Assert.AreEqual(result.Value!.ExitCode, ExitCode.Success);
-            Assert.AreEqual(result.Value.Stdout, "0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 10946 17711 28657");
+            return result.Value!;
         }
     }
 }

@@ -1,9 +1,9 @@
 using System;
-using System.Buffers;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Git.Enums;
 using Brainf_ckSharp.Git.Unit.Helpers;
+using Microsoft.Toolkit.HighPerformance.Buffers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Brainf_ckSharp.Git.Unit
@@ -147,7 +147,7 @@ namespace Brainf_ckSharp.Git.Unit
 
             try
             {
-                Assert.AreEqual(expected.Length, result.Size);
+                Assert.AreEqual(expected.Length, result.Length);
 
                 if (expected.Length == 0) return;
 

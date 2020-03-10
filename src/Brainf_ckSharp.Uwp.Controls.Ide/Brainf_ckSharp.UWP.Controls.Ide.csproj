@@ -4,6 +4,7 @@
   <PropertyGroup>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{473069AA-080A-493E-B7A8-0BEE7B0B00F1}</ProjectGuid>
@@ -133,8 +134,9 @@
     <Compile Include="Brainf_ckEditBox\Helpers\ClipboardHelper.cs" />
     <Compile Include="Brainf_ckEditBox\Helpers\CodeGenerator.cs" />
     <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.Formatting.Lock.cs" />
+    <Compile Include="Brainf_ckEditBox\Models\BracketsPairInfo.cs" />
     <Compile Include="Brainf_ckEditBox\Models\ColumnGuideInfo.cs" />
-    <Compile Include="Brainf_ckEditBox\Models\PlainTextChangedEventArgs.cs" />
+    <Compile Include="Brainf_ckEditBox\EventArgs\PlainTextChangedEventArgs.cs" />
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.cs">
       <DependentUpon>Brainf_ckIde.xaml</DependentUpon>
     </Compile>
@@ -171,10 +173,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Brainf_ckSharp.Buffers\Brainf_ckSharp.Buffers.csproj">
-      <Project>{5f365b29-7cdf-4272-b877-37ca69daad1b}</Project>
-      <Name>Brainf_ckSharp.Buffers</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Brainf_ckSharp.Diagnostics\Brainf_ckSharp.Diagnostics.csproj">
       <Project>{a464d3e4-c6e0-48ec-a786-c2db610d9bd0}</Project>
       <Name>Brainf_ckSharp.Diagnostics</Name>
@@ -190,6 +188,10 @@
     <ProjectReference Include="..\Brainf_ckSharp\Brainf_ckSharp.csproj">
       <Project>{aceea540-7a2c-4705-ac68-5a8c3a5c2a38}</Project>
       <Name>Brainf_ckSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Toolkit.HighPerformance\Microsoft.Toolkit.HighPerformance.csproj">
+      <Project>{66fd6968-86b8-45d9-9b07-fed7dfc4bf0b}</Project>
+      <Name>Microsoft.Toolkit.HighPerformance</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

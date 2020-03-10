@@ -8,6 +8,7 @@ using Brainf_ckSharp.Git.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models.Abstract;
+using Microsoft.Toolkit.HighPerformance.Buffers;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
@@ -21,9 +22,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         {
             MemoryOwner<LineModificationType> diff = LineDiffer.ComputeDiff(_ReferenceText, text, Characters.CarriageReturn);
 
-            ref LineModificationType oldRef = ref _DiffIndicators.GetReference();
-            ref LineModificationType newRef = ref diff.GetReference();
-            int length = Math.Min(_DiffIndicators.Size, diff.Size);
+            ref LineModificationType oldRef = ref _DiffIndicators.DangerousGetReference();
+            ref LineModificationType newRef = ref diff.DangerousGetReference();
+            int length = Math.Min(_DiffIndicators.Length, diff.Length);
 
             // Maintain the saved indicators
             for (int i = 0; i < length; i++)
@@ -36,7 +37,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             /* The edit box always ends with a final \r that can't be removed by the user.
              * Slicing out the last item prevents the modified marker from being displayed
              * below the last line actually being typed by the user. */
-            _DiffIndicators = diff.Slice(diff.Size - 1);
+            _DiffIndicators = diff.Slice(0, diff.Length - 1);
         }
 
         /// <summary>
@@ -44,11 +45,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         private void UpdateDiffInfo()
         {
-            int size = _DiffIndicators.Size;
+            int size = _DiffIndicators.Length;
 
             if (size == 0) return;
 
-            ref LineModificationType r0 = ref _DiffIndicators.GetReference();
+            ref LineModificationType r0 = ref _DiffIndicators.DangerousGetReference();
 
             for (int i = 0; i < size; i++)
                 if (Unsafe.Add(ref r0, i) == LineModificationType.Modified)
@@ -75,7 +76,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             // Allocate the new buffer
             MemoryOwner<IndentationIndicatorBase> indicators = _IndentationIndicators = MemoryOwner<IndentationIndicatorBase>.Allocate(numberOfLines);
-            ref IndentationIndicatorBase indicatorsRef = ref indicators.GetReference(); // There's always at least one line
+            ref IndentationIndicatorBase indicatorsRef = ref indicators.DangerousGetReference(); // There's always at least one line
 
             // Reset the pools
             Pool<LineIndicator>.Reset();

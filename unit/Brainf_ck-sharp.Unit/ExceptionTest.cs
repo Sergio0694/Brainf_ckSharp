@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -77,8 +78,8 @@ namespace Brainf_ckSharp.Unit
             Assert.AreEqual(result.Current.Stdout, string.Empty);
             Assert.IsNotNull(result.Current.ExceptionInfo);
             Assert.AreEqual(result.Current.ExceptionInfo!.StackTrace.Count, 512);
-            Assert.AreEqual(result.Current.ExceptionInfo.StackTrace[0], ":");
-            Assert.AreEqual(result.Current.ExceptionInfo.StackTrace[^1], "(:):");
+            Assert.AreEqual(result.Current.ExceptionInfo.StackTrace.First(), ":");
+            Assert.AreEqual(result.Current.ExceptionInfo.StackTrace.Last(), "(:):");
         }
 
         [TestMethod]

@@ -1,7 +1,7 @@
 ﻿using Windows.Foundation;
 using Windows.UI.Xaml;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
-using Brainf_ckSharp.Uwp.Controls.Ide.Models;
+using Brainf_ckSharp.Uwp.Controls.Ide.EventArgs;
 using Brainf_ckSharp.Uwp.Themes;
 
 #nullable enable

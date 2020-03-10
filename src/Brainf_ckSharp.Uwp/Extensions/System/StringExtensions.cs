@@ -1,7 +1,7 @@
-﻿using System.Buffers;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Microsoft.Toolkit.HighPerformance.Buffers;
 
 namespace System
 {
@@ -23,22 +23,22 @@ namespace System
 
             if (textLength == 0) return string.Empty;
 
-            int bufferLength = textLength * 2;
-            using StackOnlyUnmanagedMemoryOwner<char> buffer = StackOnlyUnmanagedMemoryOwner<char>.Allocate(bufferLength);
+            using SpanOwner<char> buffer = SpanOwner<char>.Allocate(textLength * 2);
 
-            fixed (char* p = &buffer.GetReference())
+            ref char textRef = ref MemoryMarshal.GetReference(text);
+            ref char bufferRef = ref buffer.DangerousGetReference();
+
+            // Alternate source characters with the separator
+            for (int i = 0; i < textLength; i++)
             {
-                ref char textRef = ref MemoryMarshal.GetReference(text);
-                ref char bufferRef = ref Unsafe.AsRef<char>(p);
+                Unsafe.Add(ref bufferRef, i * 2) = Unsafe.Add(ref textRef, i);
+                Unsafe.Add(ref bufferRef, i * 2 + 1) = c;
+            }
 
-                // Alternate source characters with the separator
-                for (int i = 0; i < textLength; i++)
-                {
-                    Unsafe.Add(ref bufferRef, i * 2) = Unsafe.Add(ref textRef, i);
-                    Unsafe.Add(ref bufferRef, i * 2 + 1) = c;
-                }
-
-                return new string(p, 0, bufferLength);
+            // Create a string from the temporary buffer
+            fixed (char* p = &bufferRef)
+            {
+                return new string(p, 0, buffer.Length);
             }
         }
     }

@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Buffers;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Opcodes;
+using Microsoft.Toolkit.HighPerformance.Buffers;
 
 namespace Brainf_ckSharp
 {
@@ -43,7 +43,7 @@ namespace Brainf_ckSharp
             /// <param name="validationResult">The <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</param>
             /// <returns>The resulting buffer of operators for the parsed script</returns>
             [Pure]
-            public static unsafe PinnedUnmanagedMemoryOwner<Brainf_ckOperation>? TryParse(string source, out SyntaxValidationResult validationResult)
+            public static MemoryOwner<Brainf_ckOperation>? TryParse(string source, out SyntaxValidationResult validationResult)
             {
                 // Check the syntax of the input source code
                 validationResult = ValidateSyntax(source);
@@ -51,7 +51,8 @@ namespace Brainf_ckSharp
                 if (!validationResult.IsSuccess) return null;
 
                 // Allocate the buffer of binary items with the input operations
-                using PinnedUnmanagedMemoryOwner<Brainf_ckOperation> buffer = PinnedUnmanagedMemoryOwner<Brainf_ckOperation>.Allocate(validationResult.OperatorsCount, false);
+                using SpanOwner<Brainf_ckOperation> buffer = SpanOwner<Brainf_ckOperation>.Allocate(validationResult.OperatorsCount);
+                ref Brainf_ckOperation bufferRef = ref buffer.DangerousGetReference();
 
                 ref char sourceRef = ref MemoryMarshal.GetReference(source.AsSpan());
                 int i = 0, j = 0;
@@ -91,7 +92,7 @@ namespace Brainf_ckSharp
                     }
                     else
                     {
-                        buffer[i++] = new Brainf_ckOperation(currentOperator, currentCount);
+                        Unsafe.Add(ref bufferRef, i++) = new Brainf_ckOperation(currentOperator, currentCount);
 
                         // Start the new sequence compression
                         currentOperator = op;
@@ -100,15 +101,15 @@ namespace Brainf_ckSharp
                 }
 
                 // Insert the last operator
-                buffer[i++] = new Brainf_ckOperation(currentOperator, currentCount);
+                Unsafe.Add(ref bufferRef, i++) = new Brainf_ckOperation(currentOperator, currentCount);
 
-                PinnedUnmanagedMemoryOwner<Brainf_ckOperation> operations = PinnedUnmanagedMemoryOwner<Brainf_ckOperation>.Allocate(i, false);
+                MemoryOwner<Brainf_ckOperation> operations = MemoryOwner<Brainf_ckOperation>.Allocate(i);
 
                 /* Copy the compressed operators to the trimmed buffer.
                  * This is necessary because the source buffer was sized for
                  * the worst case scenario where the source contained just operators
                  * with no repeated pairs, and without any comments at all. */
-                new Span<Brainf_ckOperation>(buffer.GetPointer(), i).CopyTo(new Span<Brainf_ckOperation>(operations.GetPointer(), operations.Size));
+                buffer.Span.Slice(0, i).CopyTo(operations.Span);
 
                 return operations;
             }
@@ -119,24 +120,27 @@ namespace Brainf_ckSharp
             /// <param name="operations">The input sequence of parsed operations to read</param>
             /// <returns>A <see cref="string"/> representing the input sequence of operations</returns>
             [Pure]
-            public static unsafe string ExtractSource(UnmanagedSpan<Brainf_ckOperation> operations)
+            public static unsafe string ExtractSource(Span<Brainf_ckOperation> operations)
             {
                 int size = 0;
 
                 // Count the number of original operators
-                for (int i = 0; i < operations.Size; i++)
-                    size += operations[i].Count;
+                foreach (var opcode in operations)
+                {
+                    size += opcode.Count;
+                }
 
                 // Rent a buffer to use to build the final string
-                using StackOnlyUnmanagedMemoryOwner<char> characters = StackOnlyUnmanagedMemoryOwner<char>.Allocate(size);
+                using SpanOwner<char> characters = SpanOwner<char>.Allocate(size);
 
-                ref char targetRef = ref characters.GetReference();
+                ref char targetRef = ref characters.DangerousGetReference();
                 ref byte lookupRef = ref MemoryMarshal.GetReference(OperatorsInverseLookupTable);
+                ref Brainf_ckOperation operationRef = ref MemoryMarshal.GetReference(operations);
 
                 // Build the source string with the inverse operators lookup table
-                for (int i = 0, j = 0; i < operations.Size; i++)
+                for (int i = 0, j = 0; i < operations.Length; i++)
                 {
-                    Brainf_ckOperation operation = operations[i];
+                    Brainf_ckOperation operation = Unsafe.Add(ref operationRef, i);
                     char op = (char)Unsafe.Add(ref lookupRef, operation.Operator);
 
                     // Copy the repeated operator

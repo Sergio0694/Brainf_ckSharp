@@ -1,5 +1,4 @@
-﻿using System.Buffers;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
@@ -7,6 +6,7 @@ using Brainf_ckSharp.Memory;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Opcodes;
+using Microsoft.Toolkit.HighPerformance.Buffers;
 
 namespace Brainf_ckSharp.Configurations
 {
@@ -25,7 +25,7 @@ namespace Brainf_ckSharp.Configurations
         {
             Guard.MustBeNotNull(Source, nameof(Source));
 
-            using PinnedUnmanagedMemoryOwner<Brainf_ckOperation>? operations = Brainf_ckParser.TryParse<Brainf_ckOperation>(Source!, out SyntaxValidationResult validationResult);
+            using MemoryOwner<Brainf_ckOperation>? operations = Brainf_ckParser.TryParse<Brainf_ckOperation>(Source!, out SyntaxValidationResult validationResult);
 
             if (!validationResult.IsSuccess) return Option<InterpreterResult>.From(validationResult);
 
@@ -47,7 +47,7 @@ namespace Brainf_ckSharp.Configurations
             }
 
             InterpreterResult result = Brainf_ckInterpreter.Release.Run(
-                operations!,
+                operations!.Span,
                 Stdin ?? string.Empty,
                 initialState,
                 ExecutionToken);

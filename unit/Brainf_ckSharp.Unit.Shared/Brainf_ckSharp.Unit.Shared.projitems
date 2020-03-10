@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>2c0edaf2-b222-4f0f-b1a3-569508bb80e2</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Brainf_ckSharp.Unit.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Assets\Division.txt" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Assets\Fibonacci.txt" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Assets\HelloWorld.txt" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Assets\Multiply.txt" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Assets\Sum.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Script.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ScriptLoader.cs" />
+  </ItemGroup>
+</Project>
