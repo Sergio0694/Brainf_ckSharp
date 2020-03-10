@@ -6,12 +6,12 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ckSharp.Buffers;
 using Brainf_ckSharp.Enums;
-using Brainf_ckSharp.Extensions.Types;
 using Brainf_ckSharp.Memory;
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models.Internal;
 using Brainf_ckSharp.Opcodes;
 using Microsoft.Toolkit.HighPerformance.Buffers;
+using Range = Brainf_ckSharp.Extensions.Types.Range;
 using Stopwatch = System.Diagnostics.Stopwatch;
 
 namespace Brainf_ckSharp.Models
@@ -100,6 +100,11 @@ namespace Brainf_ckSharp.Models
         /// The original source code for the interpreted script
         /// </summary>
         private readonly string SourceCode;
+
+        /// <summary>
+        /// Indicates whether or not the current instance has already been disposed
+        /// </summary>
+        private bool _Disposed;
 
         /// <summary>
         /// Creates a new <see cref="InterpreterSession"/> with the specified parameters
@@ -240,6 +245,10 @@ namespace Brainf_ckSharp.Models
         /// <inheritdoc/>
         public void Dispose()
         {
+            if (_Disposed) return;
+
+            _Disposed = true;
+
             Opcodes.Dispose();
             Breakpoints.Dispose();
             JumpTable.Dispose();
