@@ -20,10 +20,23 @@ namespace System.Diagnostics
         /// <param name="p">The input <typeparamref name="T"/> pointer to test</param>
         /// <param name="name">The name of the input pointer being tested</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="p"/> is <see langword="null"/></exception>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [Conditional(DEBUG)]
         public static unsafe void MustBeNotNull<T>(T* p, string name) where T : unmanaged
         {
             if (p == null) throw new ArgumentNullException(name, $"Parameter {name} must be not null");
+        }
+
+        /// <summary>
+        /// Asserts that the input value is not <see langword="null"/>
+        /// </summary>
+        /// <typeparam name="T">The type of the input value</typeparam>
+        /// <param name="value">The input <typeparamref name="T"/> value to test</param>
+        /// <param name="name">The name of the input parameter being tested</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="value"/> is <see langword="null"/></exception>
+        [Conditional(DEBUG)]
+        public static void MustBeNotNull<T>(T value, string name) where T : class
+        {
+            if (value is null) throw new ArgumentNullException(name, $"Parameter {name} must be not null");
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ using System.Buffers;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 #nullable enable
 
@@ -47,7 +48,11 @@ namespace Brainf_ckSharp.Buffers
         {
             if (_Position == Specs.StdoutBufferSizeLimit) return false;
 
-            Buffer![_Position++] = c;
+            DebugGuard.MustBeNotNull(Buffer, nameof(Buffer));
+            DebugGuard.MustBeGreaterThanOrEqualTo(_Position, 0, nameof(_Position));
+            DebugGuard.MustBeLessThan(_Position, Buffer!.Length, nameof(Buffer));
+
+            Buffer.DangerousGetReferenceAt(_Position++) = c;
 
             return true;
         }
