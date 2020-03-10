@@ -1,5 +1,7 @@
 ﻿|
 Hello world!|
+64|
+UshortWithNoOverflow|
 [
 	This is a simple script
 	that just prints "Hello world!" to the Stdout buffer

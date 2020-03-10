@@ -9,13 +9,14 @@
     <Import_RootNamespace>Brainf_ckSharp.Unit.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Scripts\Division.txt" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Scripts\Fibonacci.txt" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Scripts\HelloWorld.txt" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Scripts\Multiply.txt" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Scripts\Sum.txt" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Assets\Division.txt" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Assets\Fibonacci.txt" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Assets\HelloWorld.txt" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Assets\Multiply.txt" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Assets\Sum.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Script.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ScriptLoader.cs" />
   </ItemGroup>
 </Project>

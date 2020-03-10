@@ -1,7 +1,10 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Brainf_ckSharp.Enums;
+using Brainf_ckSharp.Unit.Shared.Models;
 
 #nullable enable
 
@@ -18,7 +21,7 @@ namespace Brainf_ckSharp.Unit.Shared
         /// <param name="name">The name of the script to load</param>
         /// <returns>The data for the requested script</returns>
         [Pure]
-        public static (string Stdin, string Output, string Source) LoadScriptByName(string name)
+        public static Script LoadScriptByName(string name)
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
             string filename = assembly.GetManifestResourceNames().First(path => path.EndsWith($"{name}.txt"));
@@ -27,9 +30,14 @@ namespace Brainf_ckSharp.Unit.Shared
             using StreamReader reader = new StreamReader(stream);
 
             string text = reader.ReadToEnd();
-            string[] parts = text.Split("|");
+            string[] parts = text.Split("|").Select(p => p.Trim()).ToArray();
 
-            return (parts[0].Trim(), parts[1].Trim(), parts[2].Trim());
+            return new Script(
+                parts[0],
+                parts[1],
+                int.Parse(parts[2]),
+                Enum.Parse<OverflowMode>(parts[3]),
+                parts[4]);
         }
     }
 }
