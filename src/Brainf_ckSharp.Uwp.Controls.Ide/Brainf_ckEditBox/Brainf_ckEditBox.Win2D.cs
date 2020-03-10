@@ -218,8 +218,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             // Temporary buffers, just in the original method in the core library
             int tempBuffersLength = length / 2 + 1;
-            using MemoryOwner<(int, int)> rootTempIndices = MemoryOwner<(int, int)>.Allocate(tempBuffersLength);
-            using MemoryOwner<(int, int)> functionTempIndices = MemoryOwner<(int, int)>.Allocate(tempBuffersLength);
+            using SpanOwner<(int, int)> rootTempIndices = SpanOwner<(int, int)>.Allocate(tempBuffersLength);
+            using SpanOwner<(int, int)> functionTempIndices = SpanOwner<(int, int)>.Allocate(tempBuffersLength);
             ref (int Index, int Y) rootTempIndicesRef = ref rootTempIndices.DangerousGetReference();
             ref (int Index, int Y) functionTempIndicesRef = ref functionTempIndices.DangerousGetReference();
             int
@@ -227,7 +227,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 y = 0;
 
             // Target buffer
-            MemoryOwner<BracketsPairInfo> jumpTable = MemoryOwner<BracketsPairInfo>.Allocate(length);
+            MemoryOwner<BracketsPairInfo> jumpTable = MemoryOwner<BracketsPairInfo>.Allocate(tempBuffersLength);
             ref BracketsPairInfo jumpTableRef = ref jumpTable.DangerousGetReference();
 
             // Go through the executable to build the jump table for each open parenthesis or square bracket
@@ -248,6 +248,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                             : Unsafe.Add(ref functionTempIndicesRef, --f);
                         if (start.Y < y)
                         {
+                            DebugGuard.MustBeLessThan(jumps, tempBuffersLength, nameof(jumps));
+
                             Unsafe.Add(ref jumpTableRef, jumps++) = new BracketsPairInfo(start.Index, i);
                         }
                         break;
@@ -261,6 +263,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         f = -1;
                         if (functionTempIndicesRef.Y < y)
                         {
+                            DebugGuard.MustBeLessThan(jumps, tempBuffersLength, nameof(jumps));
+
                             Unsafe.Add(ref jumpTableRef, jumps++) = new BracketsPairInfo(functionTempIndicesRef.Index, i);
                         }
                         break;
