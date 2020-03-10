@@ -11,6 +11,7 @@ using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Opcodes;
+using Microsoft.Toolkit.HighPerformance.Buffers;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
 
 namespace Brainf_ckSharp
@@ -43,19 +44,19 @@ namespace Brainf_ckSharp
                 CancellationToken executionToken,
                 CancellationToken debugToken)
             {
-                PinnedUnmanagedMemoryOwner<Brainf_ckOperator> opcodes = Brainf_ckParser.TryParse<Brainf_ckOperator>(source, out SyntaxValidationResult validationResult)!;
+                MemoryOwner<Brainf_ckOperator> opcodes = Brainf_ckParser.TryParse<Brainf_ckOperator>(source, out SyntaxValidationResult validationResult)!;
 
                 if (!validationResult.IsSuccess) return Option<InterpreterSession>.From(validationResult);
 
                 // Initialize the temporary buffers
                 PinnedUnmanagedMemoryOwner<bool> breakpointsTable = LoadBreakpointsTable(source, validationResult.OperatorsCount, breakpoints);
-                PinnedUnmanagedMemoryOwner<int> jumpTable = LoadJumpTable(opcodes, out int functionsCount);
+                MemoryOwner<int> jumpTable = LoadJumpTable<Brainf_ckOperator>(opcodes.Span, out int functionsCount);
                 PinnedUnmanagedMemoryOwner<Range> functions = PinnedUnmanagedMemoryOwner<Range>.Allocate(ushort.MaxValue, true);
                 PinnedUnmanagedMemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
                 PinnedUnmanagedMemoryOwner<StackFrame> stackFrames = PinnedUnmanagedMemoryOwner<StackFrame>.Allocate(Specs.MaximumStackSize, false);
 
                 // Initialize the root stack frame
-                stackFrames[0] = new StackFrame(new Range(0, opcodes.Size), 0);
+                stackFrames[0] = new StackFrame(new Range(0, opcodes.Length), 0);
 
                 // Create the interpreter session
                 InterpreterSession session = new InterpreterSession(
@@ -94,9 +95,9 @@ namespace Brainf_ckSharp
             /// <returns>The resulting <see cref="ExitCode"/> value for the current execution of the input script</returns>
             public static ExitCode Run<TExecutionContext>(
                 ref TExecutionContext executionContext,
-                UnmanagedSpan<Brainf_ckOperator> opcodes,
+                ReadOnlySpan<Brainf_ckOperator> opcodes,
                 UnmanagedSpan<bool> breakpoints,
-                UnmanagedSpan<int> jumpTable,
+                ReadOnlySpan<int> jumpTable,
                 UnmanagedSpan<Range> functions,
                 UnmanagedSpan<ushort> definitions,
                 UnmanagedSpan<StackFrame> stackFrames,
@@ -109,12 +110,12 @@ namespace Brainf_ckSharp
                 CancellationToken debugToken)
                 where TExecutionContext : struct, IMachineStateExecutionContext
             {
-                DebugGuard.MustBeTrue(opcodes.Size > 0, nameof(opcodes));
-                DebugGuard.MustBeEqualTo(breakpoints.Size, opcodes.Size, nameof(breakpoints));
-                DebugGuard.MustBeEqualTo(jumpTable.Size, opcodes.Size, nameof(jumpTable));
+                DebugGuard.MustBeTrue(opcodes.Length > 0, nameof(opcodes));
+                DebugGuard.MustBeEqualTo(breakpoints.Size, opcodes.Length, nameof(breakpoints));
+                DebugGuard.MustBeEqualTo(jumpTable.Length, opcodes.Length, nameof(jumpTable));
                 DebugGuard.MustBeEqualTo(functions.Size, ushort.MaxValue, nameof(functions));
                 DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Size, 0, nameof(definitions));
-                DebugGuard.MustBeLessThanOrEqualTo(definitions.Size, opcodes.Size / 3, nameof(definitions));
+                DebugGuard.MustBeLessThanOrEqualTo(definitions.Size, opcodes.Length / 3, nameof(definitions));
                 DebugGuard.MustBeEqualTo(stackFrames.Size, Specs.MaximumStackSize, nameof(stackFrames));
                 DebugGuard.MustBeGreaterThanOrEqualTo(depth, 0, nameof(depth));
                 DebugGuard.MustBeGreaterThanOrEqualTo(totalOperations, 0, nameof(totalOperations));

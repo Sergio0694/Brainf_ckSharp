@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Buffers;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
@@ -7,6 +6,7 @@ using System.Runtime.InteropServices;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Opcodes;
 using Brainf_ckSharp.Opcodes.Interfaces;
+using Microsoft.Toolkit.HighPerformance.Buffers;
 
 namespace Brainf_ckSharp
 {
@@ -41,17 +41,17 @@ namespace Brainf_ckSharp
         /// <returns>The resulting buffer of opcodes for the parsed script</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static PinnedUnmanagedMemoryOwner<TOpcode>? TryParse<TOpcode>(string source, out SyntaxValidationResult validationResult)
+        internal static MemoryOwner<TOpcode>? TryParse<TOpcode>(string source, out SyntaxValidationResult validationResult)
             where TOpcode : unmanaged, IOpcode
         {
             if (typeof(TOpcode) == typeof(Brainf_ckOperator))
             {
-                return Debug.TryParse(source, out validationResult) as PinnedUnmanagedMemoryOwner<TOpcode>;
+                return Debug.TryParse(source, out validationResult) as MemoryOwner<TOpcode>;
             }
 
             if (typeof(TOpcode) == typeof(Brainf_ckOperation))
             {
-                return Release.TryParse(source, out validationResult) as PinnedUnmanagedMemoryOwner<TOpcode>;
+                return Release.TryParse(source, out validationResult) as MemoryOwner<TOpcode>;
             }
 
             throw new ArgumentException($"Invalid opcode type: {typeof(TOpcode)}", nameof(TOpcode));

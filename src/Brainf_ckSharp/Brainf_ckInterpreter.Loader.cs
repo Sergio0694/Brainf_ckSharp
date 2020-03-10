@@ -86,21 +86,22 @@ namespace Brainf_ckSharp
         /// <param name="functionsCount">The total number of declared functions in the input sequence of opcodes</param>
         /// <returns>The resulting precomputed jump table for the input executable</returns>
         [Pure]
-        private static PinnedUnmanagedMemoryOwner<int> LoadJumpTable<TOpcode>(
-            PinnedUnmanagedMemoryOwner<TOpcode> opcodes,
+        private static MemoryOwner<int> LoadJumpTable<TOpcode>(
+            ReadOnlySpan<TOpcode> opcodes,
             out int functionsCount)
             where TOpcode : unmanaged, IOpcode
         {
-            DebugGuard.MustBeGreaterThanOrEqualTo(opcodes.Size, 0, nameof(opcodes));
+            DebugGuard.MustBeGreaterThanOrEqualTo(opcodes.Length, 0, nameof(opcodes));
 
-            PinnedUnmanagedMemoryOwner<int> jumpTable = PinnedUnmanagedMemoryOwner<int>.Allocate(opcodes.Size, false);
+            MemoryOwner<int> jumpTable = MemoryOwner<int>.Allocate(opcodes.Length);
+            ref int jumpTableRef = ref jumpTable.DangerousGetReference();
 
             /* Temporarily allocate two buffers to store the indirect indices to build the jump table.
              * The two temporary buffers are initialized with a size of half the length of the input
              * executable, because that is the maximum number of open square brackets in a valid source file.
              * The two temporary buffers are used to implement an indirect indexing system while building
              * the table, which allows to reduce the complexity of the operation from O(N^2) to O(N). */
-            int tempBuffersLength = opcodes.Size / 2 + 1;
+            int tempBuffersLength = opcodes.Length / 2 + 1;
             using SpanOwner<int> rootTempIndices = SpanOwner<int>.Allocate(tempBuffersLength);
             using SpanOwner<int> functionTempIndices = SpanOwner<int>.Allocate(tempBuffersLength);
             ref int rootTempIndicesRef = ref rootTempIndices.DangerousGetReference();
@@ -108,7 +109,7 @@ namespace Brainf_ckSharp
             functionsCount = 0;
 
             // Go through the executable to build the jump table for each open parenthesis or square bracket
-            for (int r = 0, f = -1, i = 0; i < opcodes.Size; i++)
+            for (int r = 0, f = -1, i = 0; i < opcodes.Length; i++)
             {
                 switch (opcodes[i].Operator)
                 {
@@ -130,8 +131,8 @@ namespace Brainf_ckSharp
                         int start = f == -1
                             ? Unsafe.Add(ref rootTempIndicesRef, --r)
                             : Unsafe.Add(ref functionTempIndicesRef, --f);
-                        jumpTable[start] = i;
-                        jumpTable[i] = start;
+                        Unsafe.Add(ref jumpTableRef, start) = i;
+                        Unsafe.Add(ref jumpTableRef, i) = start;
                         break;
 
                     /* When a function definition starts, the offset into the
@@ -146,8 +147,8 @@ namespace Brainf_ckSharp
                         break;
                     case Operators.FunctionEnd:
                         f = -1;
-                        jumpTable[functionTempIndicesRef] = i;
-                        jumpTable[i] = functionTempIndicesRef;
+                        Unsafe.Add(ref jumpTableRef, functionTempIndicesRef) = i;
+                        Unsafe.Add(ref jumpTableRef, i) = functionTempIndicesRef;
                         break;
                 }
             }

@@ -36,12 +36,12 @@ namespace Brainf_ckSharp
             /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
             /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
             public static InterpreterResult Run(
-                PinnedUnmanagedMemoryOwner<Brainf_ckOperation> opcodes,
+                ReadOnlySpan<Brainf_ckOperation> opcodes,
                 string stdin,
                 TuringMachineState machineState,
                 CancellationToken executionToken)
             {
-                DebugGuard.MustBeGreaterThanOrEqualTo(opcodes.Size, 0, nameof(opcodes));
+                DebugGuard.MustBeGreaterThanOrEqualTo(opcodes.Length, 0, nameof(opcodes));
                 DebugGuard.MustBeGreaterThanOrEqualTo(machineState.Size, 0, nameof(machineState));
 
                 return machineState.Mode switch
@@ -63,22 +63,19 @@ namespace Brainf_ckSharp
             /// <param name="machineState">The target machine state to use to run the script</param>
             /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
             /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-            public static InterpreterResult Run<TExecutionContext>(
-                PinnedUnmanagedMemoryOwner<Brainf_ckOperation> opcodes,
+            private static InterpreterResult Run<TExecutionContext>(
+                ReadOnlySpan<Brainf_ckOperation> opcodes,
                 string stdin,
                 TuringMachineState machineState,
                 CancellationToken executionToken)
                 where TExecutionContext : struct, IMachineStateExecutionContext
             {
-                DebugGuard.MustBeGreaterThanOrEqualTo(opcodes.Size, 0, nameof(opcodes));
-                DebugGuard.MustBeGreaterThanOrEqualTo(machineState.Size, 0, nameof(machineState));
-
                 /* Initialize the temporary buffers, using the SpanOwner<T> type when possible
                  * to save the extra allocations here. This is possible because all these buffers are
                  * only used within the scope of this method, and disposed as soon as the method completes.
                  * Additionally, when this type is used, memory is pinned using a fixed statement instead
                  * of the GCHandle, which has slightly less overhead for the runtime. */
-                using PinnedUnmanagedMemoryOwner<int> jumpTable = LoadJumpTable(opcodes, out int functionsCount);
+                using MemoryOwner<int> jumpTable = LoadJumpTable(opcodes, out int functionsCount);
                 using SpanOwner<Range> functions = SpanOwner<Range>.Allocate(ushort.MaxValue, AllocationMode.Clear);
                 using PinnedUnmanagedMemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
                 using SpanOwner<StackFrame> stackFrames = SpanOwner<StackFrame>.Allocate(Specs.MaximumStackSize);
@@ -93,7 +90,7 @@ namespace Brainf_ckSharp
                 TimeSpan elapsed;
 
                 // Manually set the initial stack frame to the entire script
-                stackFrames.DangerousGetReference() = new StackFrame(new Range(0, opcodes.Size), 0);
+                stackFrames.DangerousGetReference() = new StackFrame(new Range(0, opcodes.Length), 0);
 
                 // Wrap the stdin buffer
                 StdinBuffer stdinBuffer = new StdinBuffer(stdin);
@@ -106,7 +103,7 @@ namespace Brainf_ckSharp
                     // Start the interpreter
                     exitCode = Run(
                         ref Unsafe.AsRef(session.ExecutionContext),
-                        opcodes.Span,
+                        opcodes,
                         jumpTable.Span,
                         functions.Span,
                         definitions.Span,
@@ -123,17 +120,17 @@ namespace Brainf_ckSharp
                 }
 
                 // Rebuild the compacted source code
-                string sourceCode = Brainf_ckParser.ExtractSource(opcodes.CoreCLRReadOnlySpan);
+                string sourceCode = Brainf_ckParser.ExtractSource(opcodes);
 
                 // Prepare the debug info
                 HaltedExecutionInfo? debugInfo = LoadDebugInfo(
-                    opcodes.CoreCLRReadOnlySpan,
+                    opcodes,
                     stackFrames.Span,
                     depth);
 
                 // Build the collection of defined functions
                 FunctionDefinition[] functionDefinitions = LoadFunctionDefinitions(
-                    opcodes.CoreCLRReadOnlySpan,
+                    opcodes,
                     functions.Span,
                     definitions.Span,
                     totalFunctions);
@@ -168,10 +165,10 @@ namespace Brainf_ckSharp
             /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
             /// <returns>The resulting <see cref="ExitCode"/> value for the current execution of the input script</returns>
             /// <remarks>This method mirrors the one from the <see cref="Debug"/> class, but with more optimizations</remarks>
-            public static ExitCode Run<TExecutionContext>(
+            private static ExitCode Run<TExecutionContext>(
                 ref TExecutionContext executionContext,
-                UnmanagedSpan<Brainf_ckOperation> opcodes,
-                UnmanagedSpan<int> jumpTable,
+                ReadOnlySpan<Brainf_ckOperation> opcodes,
+                ReadOnlySpan<int> jumpTable,
                 Span<Range> functions,
                 UnmanagedSpan<ushort> definitions,
                 Span<StackFrame> stackFrames,
@@ -183,11 +180,11 @@ namespace Brainf_ckSharp
                 CancellationToken executionToken)
                 where TExecutionContext : struct, IMachineStateExecutionContext
             {
-                DebugGuard.MustBeTrue(opcodes.Size > 0, nameof(opcodes));
-                DebugGuard.MustBeEqualTo(jumpTable.Size, opcodes.Size, nameof(jumpTable));
+                DebugGuard.MustBeTrue(opcodes.Length > 0, nameof(opcodes));
+                DebugGuard.MustBeEqualTo(jumpTable.Length, opcodes.Length, nameof(jumpTable));
                 DebugGuard.MustBeEqualTo(functions.Length, ushort.MaxValue, nameof(functions));
                 DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Size, 0, nameof(definitions));
-                DebugGuard.MustBeLessThanOrEqualTo(definitions.Size, opcodes.Size / 3, nameof(definitions));
+                DebugGuard.MustBeLessThanOrEqualTo(definitions.Size, opcodes.Length / 3, nameof(definitions));
                 DebugGuard.MustBeEqualTo(stackFrames.Length, Specs.MaximumStackSize, nameof(stackFrames));
                 DebugGuard.MustBeGreaterThanOrEqualTo(depth, 0, nameof(depth));
                 DebugGuard.MustBeGreaterThanOrEqualTo(totalOperations, 0, nameof(totalOperations));

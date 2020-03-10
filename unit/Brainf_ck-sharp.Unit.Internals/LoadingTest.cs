@@ -3,6 +3,7 @@ using Brainf_ckSharp.Extensions.Types;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Internal;
 using Brainf_ckSharp.Opcodes;
+using Microsoft.Toolkit.HighPerformance.Buffers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Brainf_ckSharp.Unit.Internals
@@ -16,15 +17,15 @@ namespace Brainf_ckSharp.Unit.Internals
         [TestMethod]
         public void EmptyStackTrace()
         {
-            using PinnedUnmanagedMemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>("++[>++>-]>+", out _);
+            using MemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>("++[>++>-]>+", out _);
 
             Assert.IsNotNull(operators);
 
             using PinnedUnmanagedMemoryOwner<StackFrame> stackFrames = PinnedUnmanagedMemoryOwner<StackFrame>.Allocate(512, false);
 
-            stackFrames[0] = new StackFrame(new Range(0, operators!.Size), 10);
+            stackFrames[0] = new StackFrame(new Range(0, operators!.Length), 10);
 
-            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo(operators.CoreCLRReadOnlySpan, stackFrames.CoreCLRReadOnlySpan, -1);
+            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo<Brainf_ckOperator>(operators.Span, stackFrames.CoreCLRReadOnlySpan, -1);
 
             Assert.IsNull(exceptionInfo);
         }
@@ -32,15 +33,15 @@ namespace Brainf_ckSharp.Unit.Internals
         [TestMethod]
         public void RootBreakpoint()
         {
-            using PinnedUnmanagedMemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>("++[>++>-]>+", out _);
+            using MemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>("++[>++>-]>+", out _);
 
             Assert.IsNotNull(operators);
 
             using PinnedUnmanagedMemoryOwner<StackFrame> stackFrames = PinnedUnmanagedMemoryOwner<StackFrame>.Allocate(512, false);
 
-            stackFrames[0] = new StackFrame(new Range(0, operators!.Size), 7);
+            stackFrames[0] = new StackFrame(new Range(0, operators!.Length), 7);
 
-            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo(operators.CoreCLRReadOnlySpan, stackFrames.CoreCLRReadOnlySpan, 0);
+            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo<Brainf_ckOperator>(operators.Span, stackFrames.CoreCLRReadOnlySpan, 0);
 
             Assert.IsNotNull(exceptionInfo);
             Assert.AreEqual(exceptionInfo!.StackTrace.Count, 1);
@@ -52,16 +53,16 @@ namespace Brainf_ckSharp.Unit.Internals
         [TestMethod]
         public void FunctionCallBreakpoint()
         {
-            using PinnedUnmanagedMemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>("(+>):+", out _);
+            using MemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>("(+>):+", out _);
 
             Assert.IsNotNull(operators);
 
             using PinnedUnmanagedMemoryOwner<StackFrame> stackFrames = PinnedUnmanagedMemoryOwner<StackFrame>.Allocate(512, false);
 
-            stackFrames[0] = new StackFrame(new Range(0, operators!.Size), 5);
+            stackFrames[0] = new StackFrame(new Range(0, operators!.Length), 5);
             stackFrames[1] = new StackFrame(new Range(1, 3), 2);
 
-            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo(operators.CoreCLRReadOnlySpan, stackFrames.CoreCLRReadOnlySpan, 1);
+            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo<Brainf_ckOperator>(operators.Span, stackFrames.CoreCLRReadOnlySpan, 1);
 
             Assert.IsNotNull(exceptionInfo);
             Assert.AreEqual(exceptionInfo!.StackTrace.Count, 2);

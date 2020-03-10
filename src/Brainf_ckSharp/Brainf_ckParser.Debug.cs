@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Buffers;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -26,7 +25,7 @@ namespace Brainf_ckSharp
             /// <param name="validationResult">The <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</param>
             /// <returns>The resulting buffer of operators for the parsed script</returns>
             [Pure]
-            public static PinnedUnmanagedMemoryOwner<Brainf_ckOperator>? TryParse(string source, out SyntaxValidationResult validationResult)
+            public static MemoryOwner<Brainf_ckOperator>? TryParse(string source, out SyntaxValidationResult validationResult)
             {
                 // Check the syntax of the input source code
                 validationResult = ValidateSyntax(source);
@@ -34,11 +33,11 @@ namespace Brainf_ckSharp
                 if (!validationResult.IsSuccess) return null;
 
                 // Allocate the buffer of binary items with the input operators
-                PinnedUnmanagedMemoryOwner<Brainf_ckOperator> operators = PinnedUnmanagedMemoryOwner<Brainf_ckOperator>.Allocate(validationResult.OperatorsCount, false);
+                MemoryOwner<Brainf_ckOperator> operators = MemoryOwner<Brainf_ckOperator>.Allocate(validationResult.OperatorsCount);
 
                 // Extract all the operators from the input source code
                 ref char sourceRef = ref MemoryMarshal.GetReference(source.AsSpan());
-                ref byte opsRef = ref Unsafe.As<Brainf_ckOperator, byte>(ref operators.GetReference());
+                ref byte opsRef = ref Unsafe.As<Brainf_ckOperator, byte>(ref operators.DangerousGetReference());
                 for (int i = 0, j = 0; j < source.Length; j++)
                 {
                     char c = Unsafe.Add(ref sourceRef, j);

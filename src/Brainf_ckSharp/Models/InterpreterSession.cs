@@ -11,6 +11,7 @@ using Brainf_ckSharp.Memory;
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models.Internal;
 using Brainf_ckSharp.Opcodes;
+using Microsoft.Toolkit.HighPerformance.Buffers;
 using Stopwatch = System.Diagnostics.Stopwatch;
 
 namespace Brainf_ckSharp.Models
@@ -23,7 +24,7 @@ namespace Brainf_ckSharp.Models
         /// <summary>
         /// The sequence of parsed opcodes to execute
         /// </summary>
-        private readonly PinnedUnmanagedMemoryOwner<Brainf_ckOperator> Opcodes;
+        private readonly MemoryOwner<Brainf_ckOperator> Opcodes;
 
         /// <summary>
         /// The table of breakpoints for the current executable
@@ -33,7 +34,7 @@ namespace Brainf_ckSharp.Models
         /// <summary>
         /// The jump table for loops and function declarations
         /// </summary>
-        private readonly PinnedUnmanagedMemoryOwner<int> JumpTable;
+        private readonly MemoryOwner<int> JumpTable;
 
         /// <summary>
         /// The mapping of functions for the current execution
@@ -114,9 +115,9 @@ namespace Brainf_ckSharp.Models
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
         internal InterpreterSession(
-            PinnedUnmanagedMemoryOwner<Brainf_ckOperator> opcodes,
+            MemoryOwner<Brainf_ckOperator> opcodes,
             PinnedUnmanagedMemoryOwner<bool> breakpoints,
-            PinnedUnmanagedMemoryOwner<int> jumpTable,
+            MemoryOwner<int> jumpTable,
             PinnedUnmanagedMemoryOwner<Range> functions,
             PinnedUnmanagedMemoryOwner<ushort> definitions,
             PinnedUnmanagedMemoryOwner<StackFrame> stackFrames,
@@ -137,7 +138,7 @@ namespace Brainf_ckSharp.Models
             ExecutionToken = executionToken;
             DebugToken = debugToken;
             Stopwatch = new Stopwatch();
-            SourceCode = Brainf_ckParser.ExtractSource(opcodes.CoreCLRReadOnlySpan);
+            SourceCode = Brainf_ckParser.ExtractSource<Brainf_ckOperator>(opcodes.Span);
         }
 
         private InterpreterResult? _Current;
@@ -206,14 +207,14 @@ namespace Brainf_ckSharp.Models
             }
 
             // Prepare the debug info
-            HaltedExecutionInfo? debugInfo = Brainf_ckInterpreter.LoadDebugInfo(
-                Opcodes.CoreCLRReadOnlySpan,
+            HaltedExecutionInfo? debugInfo = Brainf_ckInterpreter.LoadDebugInfo<Brainf_ckOperator>(
+                Opcodes.Span,
                 StackFrames.CoreCLRReadOnlySpan,
                 _Depth);
 
             // Build the collection of defined functions
-            FunctionDefinition[] functionDefinitions = Brainf_ckInterpreter.LoadFunctionDefinitions(
-                Opcodes.CoreCLRReadOnlySpan,
+            FunctionDefinition[] functionDefinitions = Brainf_ckInterpreter.LoadFunctionDefinitions<Brainf_ckOperator>(
+                Opcodes.Span,
                 Functions.CoreCLRReadOnlySpan,
                 Definitions.Span,
                 _TotalFunctions);
