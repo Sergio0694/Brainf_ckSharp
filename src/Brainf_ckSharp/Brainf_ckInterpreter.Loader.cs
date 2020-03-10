@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Buffers;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
@@ -21,14 +20,14 @@ namespace Brainf_ckSharp
         /// <returns>The resulting buffer to store keys for the declared functions</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static PinnedUnmanagedMemoryOwner<ushort> LoadDefinitionsTable(int functionsCount)
+        private static MemoryOwner<ushort> LoadDefinitionsTable(int functionsCount)
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(functionsCount, 0, nameof(functionsCount));
 
             return functionsCount switch
             {
-                0 => PinnedUnmanagedMemoryOwner<ushort>.Empty,
-                _ => PinnedUnmanagedMemoryOwner<ushort>.Allocate(functionsCount, false)
+                0 => MemoryOwner<ushort>.Empty,
+                _ => MemoryOwner<ushort>.Allocate(functionsCount)
             };
         }
 
@@ -45,14 +44,14 @@ namespace Brainf_ckSharp
         internal static FunctionDefinition[] LoadFunctionDefinitions<TOpcode>(
             ReadOnlySpan<TOpcode> opcodes,
             ReadOnlySpan<Range> functions,
-            UnmanagedSpan<ushort> definitions,
+            ReadOnlySpan<ushort> definitions,
             int totalFunctions)
             where TOpcode : unmanaged, IOpcode
         {
             DebugGuard.MustBeGreaterThanOrEqualTo(opcodes.Length, 0, nameof(opcodes));
             DebugGuard.MustBeEqualTo(functions.Length, ushort.MaxValue, nameof(functions));
-            DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Size, 0, nameof(definitions));
-            DebugGuard.MustBeLessThanOrEqualTo(definitions.Size, opcodes.Length / 3, nameof(definitions));
+            DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Length, 0, nameof(definitions));
+            DebugGuard.MustBeLessThanOrEqualTo(definitions.Length, opcodes.Length / 3, nameof(definitions));
             DebugGuard.MustBeGreaterThanOrEqualTo(totalFunctions, 0, nameof(totalFunctions));
 
             // No declared functions
@@ -230,7 +229,7 @@ namespace Brainf_ckSharp
             /// <param name="breakpoints">The sequence of indices for the breakpoints to apply to the script</param>
             /// <returns>The resulting precomputed breakpoints table for the input executable</returns>
             [Pure]
-            public static PinnedUnmanagedMemoryOwner<bool> LoadBreakpointsTable(
+            public static MemoryOwner<bool> LoadBreakpointsTable(
                 string source,
                 int operatorsCount,
                 ReadOnlySpan<int> breakpoints)
@@ -238,7 +237,7 @@ namespace Brainf_ckSharp
                 // Fast path if there are no breakpoints to process
                 if (breakpoints.IsEmpty)
                 {
-                    return PinnedUnmanagedMemoryOwner<bool>.Allocate(operatorsCount, true);
+                    return MemoryOwner<bool>.Allocate(operatorsCount, AllocationMode.Clear);
                 }
 
                 /* This temporary buffer is used to build a quick lookup table for the
@@ -246,7 +245,8 @@ namespace Brainf_ckSharp
                  * built in O(M), and then provides constant time checking for each
                  * character from the input script. The result is an algorithm that
                  * builds the final breakpoints table in O(M + N) instead of O(M * N). */
-                using PinnedUnmanagedMemoryOwner<bool> temporaryBuffer = PinnedUnmanagedMemoryOwner<bool>.Allocate(source.Length, true);
+                using SpanOwner<bool> temporaryBuffer = SpanOwner<bool>.Allocate(source.Length, AllocationMode.Clear);
+                ref bool temporaryBufferRef = ref temporaryBuffer.DangerousGetReference();
 
                 // Build the temporary table to store the indirect offsets of the breakpoints
                 foreach (int index in breakpoints)
@@ -254,17 +254,18 @@ namespace Brainf_ckSharp
                     Guard.MustBeGreaterThan(index, 0, nameof(breakpoints));
                     Guard.MustBeLessThan(index, source.Length, nameof(breakpoints));
 
-                    temporaryBuffer[index] = true;
+                    Unsafe.Add(ref temporaryBufferRef, index) = true;
                 }
 
-                PinnedUnmanagedMemoryOwner<bool> breakpointsBuffer = PinnedUnmanagedMemoryOwner<bool>.Allocate(operatorsCount, false);
+                MemoryOwner<bool> breakpointsBuffer = MemoryOwner<bool>.Allocate(operatorsCount);
+                ref bool breakpointsBufferRef = ref breakpointsBuffer.DangerousGetReference();
 
                 // Build the breakpoints table by going through the temporary table with the markers
                 for (int i = 0, j = 0; j < source.Length; j++)
                 {
                     if (!Brainf_ckParser.IsOperator(source[i])) continue;
 
-                    breakpointsBuffer[i++] = temporaryBuffer[j];
+                    Unsafe.Add(ref breakpointsBufferRef, i++) = Unsafe.Add(ref temporaryBufferRef, j);
                 }
 
                 return breakpointsBuffer;

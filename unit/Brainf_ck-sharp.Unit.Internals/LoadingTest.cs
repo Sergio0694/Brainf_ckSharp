@@ -1,5 +1,4 @@
-﻿using System.Buffers;
-using Brainf_ckSharp.Extensions.Types;
+﻿using Brainf_ckSharp.Extensions.Types;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Internal;
 using Brainf_ckSharp.Opcodes;
@@ -21,11 +20,11 @@ namespace Brainf_ckSharp.Unit.Internals
 
             Assert.IsNotNull(operators);
 
-            using PinnedUnmanagedMemoryOwner<StackFrame> stackFrames = PinnedUnmanagedMemoryOwner<StackFrame>.Allocate(512, false);
+            using MemoryOwner<StackFrame> stackFrames = MemoryOwner<StackFrame>.Allocate(512);
 
-            stackFrames[0] = new StackFrame(new Range(0, operators!.Length), 10);
+            stackFrames.DangerousGetReference() = new StackFrame(new Range(0, operators!.Length), 10);
 
-            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo<Brainf_ckOperator>(operators.Span, stackFrames.CoreCLRReadOnlySpan, -1);
+            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo<Brainf_ckOperator>(operators.Span, stackFrames.Span, -1);
 
             Assert.IsNull(exceptionInfo);
         }
@@ -37,11 +36,11 @@ namespace Brainf_ckSharp.Unit.Internals
 
             Assert.IsNotNull(operators);
 
-            using PinnedUnmanagedMemoryOwner<StackFrame> stackFrames = PinnedUnmanagedMemoryOwner<StackFrame>.Allocate(512, false);
+            using MemoryOwner<StackFrame> stackFrames = MemoryOwner<StackFrame>.Allocate(512);
 
-            stackFrames[0] = new StackFrame(new Range(0, operators!.Length), 7);
+            stackFrames.DangerousGetReference() = new StackFrame(new Range(0, operators!.Length), 7);
 
-            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo<Brainf_ckOperator>(operators.Span, stackFrames.CoreCLRReadOnlySpan, 0);
+            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo<Brainf_ckOperator>(operators.Span, stackFrames.Span, 0);
 
             Assert.IsNotNull(exceptionInfo);
             Assert.AreEqual(exceptionInfo!.StackTrace.Count, 1);
@@ -57,12 +56,12 @@ namespace Brainf_ckSharp.Unit.Internals
 
             Assert.IsNotNull(operators);
 
-            using PinnedUnmanagedMemoryOwner<StackFrame> stackFrames = PinnedUnmanagedMemoryOwner<StackFrame>.Allocate(512, false);
+            using MemoryOwner<StackFrame> stackFrames = MemoryOwner<StackFrame>.Allocate(512);
 
-            stackFrames[0] = new StackFrame(new Range(0, operators!.Length), 5);
-            stackFrames[1] = new StackFrame(new Range(1, 3), 2);
+            stackFrames.Span[0] = new StackFrame(new Range(0, operators!.Length), 5);
+            stackFrames.Span[1] = new StackFrame(new Range(1, 3), 2);
 
-            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo<Brainf_ckOperator>(operators.Span, stackFrames.CoreCLRReadOnlySpan, 1);
+            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo<Brainf_ckOperator>(operators.Span, stackFrames.Span, 1);
 
             Assert.IsNotNull(exceptionInfo);
             Assert.AreEqual(exceptionInfo!.StackTrace.Count, 2);

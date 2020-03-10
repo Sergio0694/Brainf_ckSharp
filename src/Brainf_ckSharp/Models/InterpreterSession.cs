@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -29,7 +28,7 @@ namespace Brainf_ckSharp.Models
         /// <summary>
         /// The table of breakpoints for the current executable
         /// </summary>
-        private readonly PinnedUnmanagedMemoryOwner<bool> Breakpoints;
+        private readonly MemoryOwner<bool> Breakpoints;
 
         /// <summary>
         /// The jump table for loops and function declarations
@@ -39,17 +38,17 @@ namespace Brainf_ckSharp.Models
         /// <summary>
         /// The mapping of functions for the current execution
         /// </summary>
-        private readonly PinnedUnmanagedMemoryOwner<Range> Functions;
+        private readonly MemoryOwner<Range> Functions;
 
         /// <summary>
         /// The lookup table to check which functions are defined
         /// </summary>
-        private readonly PinnedUnmanagedMemoryOwner<ushort> Definitions;
+        private readonly MemoryOwner<ushort> Definitions;
 
         /// <summary>
         /// The sequence of stack frames for the current execution
         /// </summary>
-        private readonly PinnedUnmanagedMemoryOwner<StackFrame> StackFrames;
+        private readonly MemoryOwner<StackFrame> StackFrames;
 
         /// <summary>
         /// The input buffer to read characters from
@@ -121,11 +120,11 @@ namespace Brainf_ckSharp.Models
         /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
         internal InterpreterSession(
             MemoryOwner<Brainf_ckOperator> opcodes,
-            PinnedUnmanagedMemoryOwner<bool> breakpoints,
+            MemoryOwner<bool> breakpoints,
             MemoryOwner<int> jumpTable,
-            PinnedUnmanagedMemoryOwner<Range> functions,
-            PinnedUnmanagedMemoryOwner<ushort> definitions,
-            PinnedUnmanagedMemoryOwner<StackFrame> stackFrames,
+            MemoryOwner<Range> functions,
+            MemoryOwner<ushort> definitions,
+            MemoryOwner<StackFrame> stackFrames,
             string stdin,
             TuringMachineState machineState,
             CancellationToken executionToken,
@@ -214,13 +213,13 @@ namespace Brainf_ckSharp.Models
             // Prepare the debug info
             HaltedExecutionInfo? debugInfo = Brainf_ckInterpreter.LoadDebugInfo<Brainf_ckOperator>(
                 Opcodes.Span,
-                StackFrames.CoreCLRReadOnlySpan,
+                StackFrames.Span,
                 _Depth);
 
             // Build the collection of defined functions
             FunctionDefinition[] functionDefinitions = Brainf_ckInterpreter.LoadFunctionDefinitions<Brainf_ckOperator>(
                 Opcodes.Span,
-                Functions.CoreCLRReadOnlySpan,
+                Functions.Span,
                 Definitions.Span,
                 _TotalFunctions);
 

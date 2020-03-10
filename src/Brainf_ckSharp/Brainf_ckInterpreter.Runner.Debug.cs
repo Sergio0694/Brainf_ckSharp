@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Buffers;
 using System.Diagnostics;
 using System.Threading;
 using Brainf_ckSharp.Buffers;
@@ -49,14 +48,14 @@ namespace Brainf_ckSharp
                 if (!validationResult.IsSuccess) return Option<InterpreterSession>.From(validationResult);
 
                 // Initialize the temporary buffers
-                PinnedUnmanagedMemoryOwner<bool> breakpointsTable = LoadBreakpointsTable(source, validationResult.OperatorsCount, breakpoints);
+                MemoryOwner<bool> breakpointsTable = LoadBreakpointsTable(source, validationResult.OperatorsCount, breakpoints);
                 MemoryOwner<int> jumpTable = LoadJumpTable<Brainf_ckOperator>(opcodes.Span, out int functionsCount);
-                PinnedUnmanagedMemoryOwner<Range> functions = PinnedUnmanagedMemoryOwner<Range>.Allocate(ushort.MaxValue, true);
-                PinnedUnmanagedMemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
-                PinnedUnmanagedMemoryOwner<StackFrame> stackFrames = PinnedUnmanagedMemoryOwner<StackFrame>.Allocate(Specs.MaximumStackSize, false);
+                MemoryOwner<Range> functions = MemoryOwner<Range>.Allocate(ushort.MaxValue, AllocationMode.Clear);
+                MemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
+                MemoryOwner<StackFrame> stackFrames = MemoryOwner<StackFrame>.Allocate(Specs.MaximumStackSize);
 
                 // Initialize the root stack frame
-                stackFrames[0] = new StackFrame(new Range(0, opcodes.Length), 0);
+                stackFrames.DangerousGetReference() = new StackFrame(new Range(0, opcodes.Length), 0);
 
                 // Create the interpreter session
                 InterpreterSession session = new InterpreterSession(
@@ -96,11 +95,11 @@ namespace Brainf_ckSharp
             public static ExitCode Run<TExecutionContext>(
                 ref TExecutionContext executionContext,
                 ReadOnlySpan<Brainf_ckOperator> opcodes,
-                UnmanagedSpan<bool> breakpoints,
+                Span<bool> breakpoints,
                 ReadOnlySpan<int> jumpTable,
-                UnmanagedSpan<Range> functions,
-                UnmanagedSpan<ushort> definitions,
-                UnmanagedSpan<StackFrame> stackFrames,
+                Span<Range> functions,
+                Span<ushort> definitions,
+                Span<StackFrame> stackFrames,
                 ref int depth,
                 ref int totalOperations,
                 ref int totalFunctions,
@@ -111,12 +110,12 @@ namespace Brainf_ckSharp
                 where TExecutionContext : struct, IMachineStateExecutionContext
             {
                 DebugGuard.MustBeTrue(opcodes.Length > 0, nameof(opcodes));
-                DebugGuard.MustBeEqualTo(breakpoints.Size, opcodes.Length, nameof(breakpoints));
+                DebugGuard.MustBeEqualTo(breakpoints.Length, opcodes.Length, nameof(breakpoints));
                 DebugGuard.MustBeEqualTo(jumpTable.Length, opcodes.Length, nameof(jumpTable));
-                DebugGuard.MustBeEqualTo(functions.Size, ushort.MaxValue, nameof(functions));
-                DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Size, 0, nameof(definitions));
-                DebugGuard.MustBeLessThanOrEqualTo(definitions.Size, opcodes.Length / 3, nameof(definitions));
-                DebugGuard.MustBeEqualTo(stackFrames.Size, Specs.MaximumStackSize, nameof(stackFrames));
+                DebugGuard.MustBeEqualTo(functions.Length, ushort.MaxValue, nameof(functions));
+                DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Length, 0, nameof(definitions));
+                DebugGuard.MustBeLessThanOrEqualTo(definitions.Length, opcodes.Length / 3, nameof(definitions));
+                DebugGuard.MustBeEqualTo(stackFrames.Length, Specs.MaximumStackSize, nameof(stackFrames));
                 DebugGuard.MustBeGreaterThanOrEqualTo(depth, 0, nameof(depth));
                 DebugGuard.MustBeGreaterThanOrEqualTo(totalOperations, 0, nameof(totalOperations));
                 DebugGuard.MustBeGreaterThanOrEqualTo(totalFunctions, 0, nameof(totalFunctions));

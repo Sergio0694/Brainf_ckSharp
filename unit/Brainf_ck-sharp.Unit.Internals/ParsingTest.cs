@@ -1,5 +1,4 @@
-﻿using System.Buffers;
-using Brainf_ckSharp.Constants;
+﻿using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Opcodes;
@@ -17,21 +16,21 @@ namespace Brainf_ckSharp.Unit.Internals
         [TestMethod]
         public void ExtractSource()
         {
-            using PinnedUnmanagedMemoryOwner<Brainf_ckOperator> operators = PinnedUnmanagedMemoryOwner<Brainf_ckOperator>.Allocate(11, false);
+            using MemoryOwner<Brainf_ckOperator> operators = MemoryOwner<Brainf_ckOperator>.Allocate(11);
 
-            operators[0] = Operators.Plus;
-            operators[1] = Operators.Minus;
-            operators[2] = Operators.ForwardPtr;
-            operators[3] = Operators.BackwardPtr;
-            operators[4] = Operators.PrintChar;
-            operators[5] = Operators.ReadChar;
-            operators[6] = Operators.LoopStart;
-            operators[7] = Operators.LoopEnd;
-            operators[8] = Operators.FunctionStart;
-            operators[9] = Operators.FunctionEnd;
-            operators[10] = Operators.FunctionCall;
+            operators.Span[0] = Operators.Plus;
+            operators.Span[1] = Operators.Minus;
+            operators.Span[2] = Operators.ForwardPtr;
+            operators.Span[3] = Operators.BackwardPtr;
+            operators.Span[4] = Operators.PrintChar;
+            operators.Span[5] = Operators.ReadChar;
+            operators.Span[6] = Operators.LoopStart;
+            operators.Span[7] = Operators.LoopEnd;
+            operators.Span[8] = Operators.FunctionStart;
+            operators.Span[9] = Operators.FunctionEnd;
+            operators.Span[10] = Operators.FunctionCall;
 
-            string source = Brainf_ckParser.ExtractSource(operators.CoreCLRReadOnlySpan);
+            string source = Brainf_ckParser.ExtractSource<Brainf_ckOperator>(operators.Span);
 
             Assert.IsNotNull(source);
             Assert.AreEqual(source, "+-><.,[]():");

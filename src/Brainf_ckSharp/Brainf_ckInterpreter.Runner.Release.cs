@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Buffers;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -77,7 +76,7 @@ namespace Brainf_ckSharp
                  * of the GCHandle, which has slightly less overhead for the runtime. */
                 using MemoryOwner<int> jumpTable = LoadJumpTable(opcodes, out int functionsCount);
                 using SpanOwner<Range> functions = SpanOwner<Range>.Allocate(ushort.MaxValue, AllocationMode.Clear);
-                using PinnedUnmanagedMemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
+                using MemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
                 using SpanOwner<StackFrame> stackFrames = SpanOwner<StackFrame>.Allocate(Specs.MaximumStackSize);
                 using StdoutBuffer stdout = new StdoutBuffer();
 
@@ -170,7 +169,7 @@ namespace Brainf_ckSharp
                 ReadOnlySpan<Brainf_ckOperation> opcodes,
                 ReadOnlySpan<int> jumpTable,
                 Span<Range> functions,
-                UnmanagedSpan<ushort> definitions,
+                Span<ushort> definitions,
                 Span<StackFrame> stackFrames,
                 ref int depth,
                 ref int totalOperations,
@@ -183,8 +182,8 @@ namespace Brainf_ckSharp
                 DebugGuard.MustBeTrue(opcodes.Length > 0, nameof(opcodes));
                 DebugGuard.MustBeEqualTo(jumpTable.Length, opcodes.Length, nameof(jumpTable));
                 DebugGuard.MustBeEqualTo(functions.Length, ushort.MaxValue, nameof(functions));
-                DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Size, 0, nameof(definitions));
-                DebugGuard.MustBeLessThanOrEqualTo(definitions.Size, opcodes.Length / 3, nameof(definitions));
+                DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Length, 0, nameof(definitions));
+                DebugGuard.MustBeLessThanOrEqualTo(definitions.Length, opcodes.Length / 3, nameof(definitions));
                 DebugGuard.MustBeEqualTo(stackFrames.Length, Specs.MaximumStackSize, nameof(stackFrames));
                 DebugGuard.MustBeGreaterThanOrEqualTo(depth, 0, nameof(depth));
                 DebugGuard.MustBeGreaterThanOrEqualTo(totalOperations, 0, nameof(totalOperations));
