@@ -11,6 +11,7 @@ using Brainf_ckSharp.Memory;
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Opcodes;
+using Microsoft.Toolkit.HighPerformance.Buffers;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
 using Stopwatch = System.Diagnostics.Stopwatch;
 
@@ -62,7 +63,7 @@ namespace Brainf_ckSharp
             /// <param name="machineState">The target machine state to use to run the script</param>
             /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
             /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-            public static unsafe InterpreterResult Run<TExecutionContext>(
+            public static InterpreterResult Run<TExecutionContext>(
                 PinnedUnmanagedMemoryOwner<Brainf_ckOperation> opcodes,
                 string stdin,
                 TuringMachineState machineState,
@@ -72,15 +73,15 @@ namespace Brainf_ckSharp
                 DebugGuard.MustBeGreaterThanOrEqualTo(opcodes.Size, 0, nameof(opcodes));
                 DebugGuard.MustBeGreaterThanOrEqualTo(machineState.Size, 0, nameof(machineState));
 
-                /* Initialize the temporary buffers, using the StackOnlyUnmanagedMemoryOwner<T> type when possible
+                /* Initialize the temporary buffers, using the SpanOwner<T> type when possible
                  * to save the extra allocations here. This is possible because all these buffers are
                  * only used within the scope of this method, and disposed as soon as the method completes.
                  * Additionally, when this type is used, memory is pinned using a fixed statement instead
                  * of the GCHandle, which has slightly less overhead for the runtime. */
                 using PinnedUnmanagedMemoryOwner<int> jumpTable = LoadJumpTable(opcodes, out int functionsCount);
-                using StackOnlyUnmanagedMemoryOwner<Range> functions = StackOnlyUnmanagedMemoryOwner<Range>.Allocate(ushort.MaxValue, true);
+                using SpanOwner<Range> functions = SpanOwner<Range>.Allocate(ushort.MaxValue, AllocationMode.Clear);
                 using PinnedUnmanagedMemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
-                using StackOnlyUnmanagedMemoryOwner<StackFrame> stackFrames = StackOnlyUnmanagedMemoryOwner<StackFrame>.Allocate(Specs.MaximumStackSize, false);
+                using SpanOwner<StackFrame> stackFrames = SpanOwner<StackFrame>.Allocate(Specs.MaximumStackSize);
                 using StdoutBuffer stdout = new StdoutBuffer();
 
                 // Shared counters
@@ -92,7 +93,7 @@ namespace Brainf_ckSharp
                 TimeSpan elapsed;
 
                 // Manually set the initial stack frame to the entire script
-                stackFrames.GetReference() = new StackFrame(new Range(0, opcodes.Size), 0);
+                stackFrames.DangerousGetReference() = new StackFrame(new Range(0, opcodes.Size), 0);
 
                 // Wrap the stdin buffer
                 StdinBuffer stdinBuffer = new StdinBuffer(stdin);
@@ -107,9 +108,9 @@ namespace Brainf_ckSharp
                         ref Unsafe.AsRef(session.ExecutionContext),
                         opcodes.Span,
                         jumpTable.Span,
-                        functions.CoreCLRSpan,
+                        functions.Span,
                         definitions.Span,
-                        stackFrames.CoreCLRSpan,
+                        stackFrames.Span,
                         ref depth,
                         ref totalOperations,
                         ref totalFunctions,
@@ -127,13 +128,13 @@ namespace Brainf_ckSharp
                 // Prepare the debug info
                 HaltedExecutionInfo? debugInfo = LoadDebugInfo(
                     opcodes.CoreCLRReadOnlySpan,
-                    stackFrames.CoreCLRSpan,
+                    stackFrames.Span,
                     depth);
 
                 // Build the collection of defined functions
                 FunctionDefinition[] functionDefinitions = LoadFunctionDefinitions(
                     opcodes.CoreCLRReadOnlySpan,
-                    functions.CoreCLRSpan,
+                    functions.Span,
                     definitions.Span,
                     totalFunctions);
 

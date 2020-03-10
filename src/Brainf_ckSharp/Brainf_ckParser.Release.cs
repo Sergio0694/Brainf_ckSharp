@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Opcodes;
+using Microsoft.Toolkit.HighPerformance.Buffers;
 
 namespace Brainf_ckSharp
 {
@@ -130,9 +131,9 @@ namespace Brainf_ckSharp
                 }
 
                 // Rent a buffer to use to build the final string
-                using StackOnlyUnmanagedMemoryOwner<char> characters = StackOnlyUnmanagedMemoryOwner<char>.Allocate(size);
+                using SpanOwner<char> characters = SpanOwner<char>.Allocate(size);
 
-                ref char targetRef = ref characters.GetReference();
+                ref char targetRef = ref characters.DangerousGetReference();
                 ref byte lookupRef = ref MemoryMarshal.GetReference(OperatorsInverseLookupTable);
                 ref Brainf_ckOperation operationRef = ref MemoryMarshal.GetReference(operations);
 

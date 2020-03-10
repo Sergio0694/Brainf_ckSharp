@@ -7,6 +7,7 @@ using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Extensions.Types;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Opcodes.Interfaces;
+using Microsoft.Toolkit.HighPerformance.Buffers;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
 
 namespace Brainf_ckSharp
@@ -98,15 +99,12 @@ namespace Brainf_ckSharp
              * The two temporary buffers are initialized with a size of half the length of the input
              * executable, because that is the maximum number of open square brackets in a valid source file.
              * The two temporary buffers are used to implement an indirect indexing system while building
-             * the table, which allows to reduce the complexity of the operation from O(N^2) to O(N).
-             * UnsafeSpan<T> is used directly here instead of UnsafeMemoryBuffer<T> to save the cost of
-             * allocating a GCHandle and pinning each temporary buffer, which is not necessary since
-             * both buffers are only used in the scope of this method. */
+             * the table, which allows to reduce the complexity of the operation from O(N^2) to O(N). */
             int tempBuffersLength = opcodes.Size / 2 + 1;
-            using StackOnlyUnmanagedMemoryOwner<int> rootTempIndices = StackOnlyUnmanagedMemoryOwner<int>.Allocate(tempBuffersLength);
-            using StackOnlyUnmanagedMemoryOwner<int> functionTempIndices = StackOnlyUnmanagedMemoryOwner<int>.Allocate(tempBuffersLength);
-            ref int rootTempIndicesRef = ref rootTempIndices.GetReference();
-            ref int functionTempIndicesRef = ref functionTempIndices.GetReference();
+            using SpanOwner<int> rootTempIndices = SpanOwner<int>.Allocate(tempBuffersLength);
+            using SpanOwner<int> functionTempIndices = SpanOwner<int>.Allocate(tempBuffersLength);
+            ref int rootTempIndicesRef = ref rootTempIndices.DangerousGetReference();
+            ref int functionTempIndicesRef = ref functionTempIndices.DangerousGetReference();
             functionsCount = 0;
 
             // Go through the executable to build the jump table for each open parenthesis or square bracket
