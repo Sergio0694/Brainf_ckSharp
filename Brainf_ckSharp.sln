@@ -48,7 +48,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Cli", "src\B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Toolkit.HighPerformance", "src\Microsoft.Toolkit.HighPerformance\Microsoft.Toolkit.HighPerformance.csproj", "{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Brainf_ckSharp.Unit.Shared", "unit\Brainf_ckSharp.Unit.Shared\Brainf_ckSharp.Unit.Shared.shproj", "{2C0EDAF2-B222-4F0F-B1A3-569508BB80E2}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		unit\Brainf_ckSharp.Unit.Shared\Brainf_ckSharp.Unit.Shared.projitems*{2c0edaf2-b222-4f0f-b1a3-569508bb80e2}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
@@ -407,6 +412,7 @@ Global
 		{5482BCBE-6A23-4A3D-A0BE-851698B2E73F} = {33D9956A-7535-49AE-811D-B3A4E41E4452}
 		{E063B8CE-478C-43E7-B741-B45EEABA52DB} = {B16A8398-D555-46C8-972A-3F044BEBF8F3}
 		{30633C10-1E41-48A5-A106-11811E330D57} = {33D9956A-7535-49AE-811D-B3A4E41E4452}
+		{2C0EDAF2-B222-4F0F-B1A3-569508BB80E2} = {33D9956A-7535-49AE-811D-B3A4E41E4452}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1CF4C98B-AA02-437F-835B-5180310D2C16}
