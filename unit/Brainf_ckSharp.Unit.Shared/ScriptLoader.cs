@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 #nullable enable
 
@@ -27,10 +26,10 @@ namespace Brainf_ckSharp.Unit.Shared
             using Stream stream = assembly.GetManifestResourceStream(filename)!;
             using StreamReader reader = new StreamReader(stream);
 
-            return (
-                Regex.Match(reader.ReadLine()!, @"\[([^]]+)\]").Groups[1].Value,
-                Regex.Match(reader.ReadLine()!, @"\[([^]]+)\]").Groups[1].Value,
-                reader.ReadToEnd());
+            string text = reader.ReadToEnd();
+            string[] parts = text.Split("|");
+
+            return (parts[0].Trim(), parts[1].Trim(), parts[2].Trim());
         }
     }
 }

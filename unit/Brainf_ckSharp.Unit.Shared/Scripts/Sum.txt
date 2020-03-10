@@ -1,5 +1,5 @@
-﻿[2375]
-[23 + 75 = 98]
+﻿2375|
+23 + 75 = 98|
 [
 	To use this program, you'll need to enter 4 numbers in the buffer,
 	two for each number. If you want to sum a number that has a single digit,

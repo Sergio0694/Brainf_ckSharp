@@ -1,5 +1,5 @@
-﻿[]
-[Hello world!]
+﻿|
+Hello world!|
 [
 	This is a simple script
 	that just prints "Hello world!" to the Stdout buffer
