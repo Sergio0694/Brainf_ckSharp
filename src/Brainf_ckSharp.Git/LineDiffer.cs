@@ -64,7 +64,7 @@ namespace Brainf_ckSharp.Git
                 oldNumberOfLines <= ShortPathNumberOfLinesThreshold &&
                 oldText.SequenceEqual(newText))
             {
-                return MemoryOwner<LineModificationType>.Allocate(newNumberOfLines, true);
+                return MemoryOwner<LineModificationType>.Allocate(newNumberOfLines, AllocationMode.Clear);
             }
 
             object[] oldTemporaryValues = ArrayPool<object>.Shared.Rent(oldNumberOfLines);
