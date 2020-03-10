@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
@@ -8,12 +9,26 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Brainf_ckSharp.Unit
 {
-    [TestClass]
     public class ScriptTest
+    {
+        // Tests a script with a given runner
+        public static void TestScript(Func<Script, InterpreterResult> runner, [CallerMemberName] string? name = null)
+        {
+            var script = ScriptLoader.LoadScriptByName(name!);
+            var debug = runner(script);
+
+            Assert.IsNotNull(debug);
+            Assert.AreEqual(debug.ExitCode, ExitCode.Success);
+            Assert.AreEqual(debug.Stdout, script.Stdout);
+        }
+    }
+
+    [TestClass]
+    public class DebugTest
     {
         // Executes a script in DEBUG mode
         [Pure]
-        private static InterpreterResult RunInDebugConfiguration(Script script)
+        private static InterpreterResult Run(Script script)
         {
             var session = Brainf_ckInterpreter
                 .CreateDebugConfiguration()
@@ -36,9 +51,28 @@ namespace Brainf_ckSharp.Unit
             }
         }
 
+        [TestMethod]
+        public void HelloWorld() => ScriptTest.TestScript(Run);
+
+        [TestMethod]
+        public void Sum() => ScriptTest.TestScript(Run);
+
+        [TestMethod]
+        public void Multiply() => ScriptTest.TestScript(Run);
+
+        [TestMethod]
+        public void Division() => ScriptTest.TestScript(Run);
+
+        [TestMethod]
+        public void Fibonacci() => ScriptTest.TestScript(Run);
+    }
+
+    [TestClass]
+    public class ReleaseTest
+    {
         // Executes a script in RELEASE mode
         [Pure]
-        private static InterpreterResult RunInReleaseConfiguration(Script script)
+        private static InterpreterResult Run(Script script)
         {
             var result = Brainf_ckInterpreter
                 .CreateReleaseConfiguration()
@@ -54,39 +88,19 @@ namespace Brainf_ckSharp.Unit
             return result.Value!;
         }
 
-        // Tests a script in DEBUG and RELEASE configuration
-        private static void TestScript([CallerMemberName] string? name = null)
-        {
-            var script = ScriptLoader.LoadScriptByName(name!);
-
-            // DEBUG
-            var debug = RunInDebugConfiguration(script);
-
-            Assert.IsNotNull(debug);
-            Assert.AreEqual(debug.ExitCode, ExitCode.Success);
-            Assert.AreEqual(debug.Stdout, script.Stdout);
-
-            // RELEASE
-            var release = RunInReleaseConfiguration(script);
-
-            Assert.IsNotNull(release);
-            Assert.AreEqual(release.ExitCode, ExitCode.Success);
-            Assert.AreEqual(release.Stdout, script.Stdout);
-        }
+        [TestMethod]
+        public void HelloWorld() => ScriptTest.TestScript(Run);
 
         [TestMethod]
-        public void HelloWorld() => TestScript();
+        public void Sum() => ScriptTest.TestScript(Run);
 
         [TestMethod]
-        public void Sum() => TestScript();
+        public void Multiply() => ScriptTest.TestScript(Run);
 
         [TestMethod]
-        public void Multiply() => TestScript();
+        public void Division() => ScriptTest.TestScript(Run);
 
         [TestMethod]
-        public void Division() => TestScript();
-
-        [TestMethod]
-        public void Fibonacci() => TestScript();
+        public void Fibonacci() => ScriptTest.TestScript(Run);
     }
 }
