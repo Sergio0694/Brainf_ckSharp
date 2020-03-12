@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
 namespace Brainf_ckSharp.Uwp.Profiler
@@ -14,8 +15,12 @@ namespace Brainf_ckSharp.Uwp.Profiler
         }
 
         /// <inheritdoc/>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            string result = await Brainf_ckBenchmark.RunAsync();
+
+            MarkdownTextBlock.Text = result;
+            ProgressBar.Visibility = Visibility.Collapsed;
         }
     }
 }

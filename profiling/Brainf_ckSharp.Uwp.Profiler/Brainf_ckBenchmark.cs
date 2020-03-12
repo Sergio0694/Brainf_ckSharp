@@ -18,29 +18,29 @@ using Brainf_ckSharp.Unit.Shared.Models;
 
 namespace Brainf_ckSharp.Uwp.Profiler
 {
-    public sealed class Brainf_ckBenchmark
+    public static class Brainf_ckBenchmark
     {
         /// <summary>
         /// The number of benchmarking runs to run for each benchmark
         /// </summary>
-        private const int NumberOfRuns = 4;
+        private const int NumberOfRuns = 10;
 
         /// <summary>
         /// Executes the available benchmarks
         /// </summary>
         /// <returns>A markdown table with the results</returns>
-        public async Task<string> RunAsync()
+        public static async Task<string> RunAsync()
         {
             StorageFolder scriptsFolder = await Package.Current.InstalledLocation.GetFolderAsync(@"Assets\Scripts");
             IReadOnlyCollection<StorageFile> scriptFiles = await scriptsFolder.GetFilesAsync();
 
             StringBuilder builder = new StringBuilder();
 
-            builder.AppendLine("          Test |  Config. |         Mean |          Min |          Max |");
+            builder.AppendLine("|         Test |  Config. |         Mean |          Min |          Max |");
             builder.AppendLine("|-------------:|----------|-------------:|-------------:|-------------:|");
 
             int i = 0;
-            foreach (StorageFile scriptFile in scriptFiles)
+            foreach (StorageFile scriptFile in scriptFiles.Where(f => f.Name.Contains("Fibonacci") || f.Name.Contains("Multiply")))
             {
                 using var stream = await scriptFile.OpenStreamForReadAsync();
                 using var reader = new StreamReader(stream);
@@ -48,7 +48,7 @@ namespace Brainf_ckSharp.Uwp.Profiler
                 await Task.Run(() =>
                 {
                     string
-                        name = scriptFile.DisplayName.PadLeft(14),
+                        name = $"{scriptFile.DisplayName} ".PadLeft(14),
                         text = reader.ReadToEnd();
                     string[] parts = text.Split("|").Select(p => p.TrimStart().Replace("\r", string.Empty)).ToArray();
 
@@ -103,7 +103,7 @@ namespace Brainf_ckSharp.Uwp.Profiler
             {
                 timer.Restart();
 
-                runner.Run(script);
+                _ = runner.Run(script);
 
                 timer.Stop();
 
