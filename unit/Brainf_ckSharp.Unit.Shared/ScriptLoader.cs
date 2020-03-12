@@ -30,7 +30,7 @@ namespace Brainf_ckSharp.Unit.Shared
             using StreamReader reader = new StreamReader(stream);
 
             string text = reader.ReadToEnd();
-            string[] parts = text.Split("|").Select(p => p.Trim()).ToArray();
+            string[] parts = text.Split("|").Select(p => p.TrimStart().Replace("\r", string.Empty)).ToArray();
 
             return new Script(
                 parts[0],
