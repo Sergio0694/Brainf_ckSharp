@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -24,6 +25,12 @@ namespace Brainf_ckSharp.Uwp.Profiler
 
             MarkdownTextBlock.Text = result;
             ProgressBar.Visibility = Visibility.Collapsed;
+
+            DataPackage package = new DataPackage { RequestedOperation = DataPackageOperation.Copy };
+            package.SetText(result);
+
+            Clipboard.SetContent(package);
+            Clipboard.Flush();
         }
     }
 }
