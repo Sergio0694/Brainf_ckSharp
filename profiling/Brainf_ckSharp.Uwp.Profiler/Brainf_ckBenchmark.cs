@@ -40,7 +40,7 @@ namespace Brainf_ckSharp.Uwp.Profiler
             builder.AppendLine("|-------------:|----------|-------------:|-------------:|-------------:|");
 
             int i = 0;
-            foreach (StorageFile scriptFile in scriptFiles.Where(f => f.Name.Contains("Fibonacci") || f.Name.Contains("Multiply")))
+            foreach (StorageFile scriptFile in scriptFiles)
             {
                 using var stream = await scriptFile.OpenStreamForReadAsync();
                 using var reader = new StreamReader(stream);
@@ -137,7 +137,10 @@ namespace Brainf_ckSharp.Uwp.Profiler
                 if (time.Ticks > max) max = time.Ticks;
             }
 
-            avg /= times.Length;
+            avg -= min;
+            avg -= max;
+
+            avg /= times.Length - 2;
 
             string
                 first = TimeSpan.FromTicks(avg).ToString("m':'s'.'ffffff").PadLeft(14),

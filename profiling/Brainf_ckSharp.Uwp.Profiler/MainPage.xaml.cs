@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml;
+﻿using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -17,6 +18,8 @@ namespace Brainf_ckSharp.Uwp.Profiler
         /// <inheritdoc/>
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            await Task.Delay(2000);
+
             string result = await Brainf_ckBenchmark.RunAsync();
 
             MarkdownTextBlock.Text = result;
