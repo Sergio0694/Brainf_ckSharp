@@ -1,4 +1,5 @@
 ﻿using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 namespace Brainf_ckSharp.Uwp.Profiler
 {
@@ -10,6 +11,11 @@ namespace Brainf_ckSharp.Uwp.Profiler
         public MainPage()
         {
             this.InitializeComponent();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
         }
     }
 }

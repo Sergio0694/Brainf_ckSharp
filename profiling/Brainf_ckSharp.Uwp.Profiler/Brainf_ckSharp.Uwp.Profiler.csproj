@@ -18,6 +18,7 @@
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -122,6 +123,9 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="..\..\unit\Brainf_ckSharp.Unit.Shared\Models\Script.cs">
+      <Link>Models\Script.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +134,30 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\unit\Brainf_ckSharp.Unit.Shared\Assets\Division.txt">
+      <Link>Assets\Scripts\Division.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\unit\Brainf_ckSharp.Unit.Shared\Assets\Fibonacci.txt">
+      <Link>Assets\Scripts\Fibonacci.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\unit\Brainf_ckSharp.Unit.Shared\Assets\HelloWorld.txt">
+      <Link>Assets\Scripts\HelloWorld.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\unit\Brainf_ckSharp.Unit.Shared\Assets\Mandelbrot.txt">
+      <Link>Assets\Scripts\Mandelbrot.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\unit\Brainf_ckSharp.Unit.Shared\Assets\Multiply.txt">
+      <Link>Assets\Scripts\Multiply.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\unit\Brainf_ckSharp.Unit.Shared\Assets\Sum.txt">
+      <Link>Assets\Scripts\Sum.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -154,7 +182,13 @@
       <Version>6.2.9</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="..\..\unit\Brainf_ckSharp.Unit.Shared\Brainf_ckSharp.Unit.Shared.projitems" Label="Shared" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Brainf_ckSharp\Brainf_ckSharp.csproj">
+      <Project>{aceea540-7a2c-4705-ac68-5a8c3a5c2a38}</Project>
+      <Name>Brainf_ckSharp</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
