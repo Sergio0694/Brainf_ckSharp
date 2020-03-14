@@ -3,7 +3,6 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{45467BB7-1876-4182-B6B5-B0E5986CD96D}</ProjectGuid>
@@ -224,7 +223,8 @@
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Windows.UI.Xaml.Controls\LockedPivot.cs" />
-    <Compile Include="Enums\InterpreterSessionSection.cs" />
+    <Compile Include="Enums\Abstract\Box{T}.cs" />
+    <Compile Include="Enums\IdeResultSection.cs" />
     <Compile Include="Enums\CodeLibraryCategory.cs" />
     <Compile Include="Enums\UserGuideSection.cs" />
     <Compile Include="Extensions\GalaSoft.MvvmLight.Messaging\MessengerExtensions.cs" />
@@ -296,6 +296,7 @@
     <Compile Include="Services\Share\ShareService.cs" />
     <Compile Include="StyleSelectors\CodeLibraryEntryItemContainerStyleSelector.cs" />
     <Compile Include="TemplateSelectors\ConsoleEntryTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\IdeResultSectionTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\SourceCodeEntryTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\UserGuideSectionTemplateSelector.cs" />
     <Compile Include="ViewModels\Abstract\Collections\GroupedItemsCollectionViewModelBase{TKey,TElement}.cs" />

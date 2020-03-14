@@ -10,7 +10,7 @@ using Brainf_ckSharp.Uwp.Models.Ide;
 namespace Brainf_ckSharp.Uwp.TemplateSelectors
 {
     /// <summary>
-    /// A template selector for user guide sections
+    /// A template selector for source code entries
     /// </summary>
     public sealed class SourceCodeEntryTemplateSelector : DataTemplateSelector
     {
