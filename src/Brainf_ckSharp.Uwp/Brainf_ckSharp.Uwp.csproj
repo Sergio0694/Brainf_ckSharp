@@ -131,6 +131,7 @@
     <Compile Include="Controls\SubPages\Views\IdeSessionView.xaml.cs">
       <DependentUpon>IdeSessionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\SubPages\IdeResultSectionConverter.cs" />
     <Compile Include="Converters\SubPages\CodeLibraryCategoryConverter.cs" />
     <Compile Include="Converters\Console\SyntaxValidationResultConverter.cs" />
     <Compile Include="Converters\SubPages\CodeMetadataConverter.cs" />
