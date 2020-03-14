@@ -1,8 +1,14 @@
 ﻿using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
+
+#nullable enable
 
 namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views
 {
-    public sealed partial class IdeSessionView : UserControl
+    /// <summary>
+    /// A sub page that displays the result of a script being executed from the IDE
+    /// </summary>
+    public sealed partial class IdeSessionView : UserControl, IConstrainedSubPage
     {
         /// <summary>
         /// Creates a new <see cref="IdeSessionView"/> instance with the specified parameters
@@ -16,5 +22,11 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views
             ViewModel.Script = script;
             ViewModel.Stdin = stdin;
         }
+
+        /// <inheritdoc/>
+        public double MaxExpandedWidth { get; } = 520;
+
+        /// <inheritdoc/>
+        public double MaxExpandedHeight { get; } = double.PositiveInfinity;
     }
 }
