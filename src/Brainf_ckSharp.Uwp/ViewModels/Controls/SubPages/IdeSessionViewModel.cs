@@ -12,7 +12,7 @@ using GalaSoft.MvvmLight.Command;
 
 namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
 {
-    public sealed class IdeSessionViewModel : GroupedItemsCollectionViewModelBase<InterpreterSessionSection, InterpreterResult>
+    public sealed class IdeSessionViewModel : GroupedItemsCollectionViewModelBase<IdeResultSection, InterpreterResult>
     {
         /// <summary>
         /// Creates a new <see cref="IdeSessionViewModel"/> instance
@@ -78,26 +78,26 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
              * available info for the current script execution.
              * Each template is responsible for extracting info from it
              * and display according to its own function and section type. */
-            if (!result.ExitCode.HasFlag(ExitCode.Success)) Source.Add(InterpreterSessionSection.ExceptionType, result);
-            if (result.Stdout.Length > 0) Source.Add(InterpreterSessionSection.Stdout, result);
+            if (!result.ExitCode.HasFlag(ExitCode.Success)) Source.Add(IdeResultSection.ExceptionType, result);
+            if (result.Stdout.Length > 0) Source.Add(IdeResultSection.Stdout, result);
             
-            if (result.ExitCode.HasFlag(ExitCode.ExceptionThrown)) Source.Add(InterpreterSessionSection.ErrorLocation, result);
-            else if (result.ExitCode.HasFlag(ExitCode.BreakpointReached)) Source.Add(InterpreterSessionSection.BreakpointReached, result);
+            if (result.ExitCode.HasFlag(ExitCode.ExceptionThrown)) Source.Add(IdeResultSection.ErrorLocation, result);
+            else if (result.ExitCode.HasFlag(ExitCode.BreakpointReached)) Source.Add(IdeResultSection.BreakpointReached, result);
 
             if (result.ExitCode.HasFlag(ExitCode.ExceptionThrown) ||
                 result.ExitCode.HasFlag(ExitCode.ThresholdExceeded) ||
                 result.ExitCode.HasFlag(ExitCode.BreakpointReached))
             {
-                Source.Add(InterpreterSessionSection.StackTrace, result);
+                Source.Add(IdeResultSection.StackTrace, result);
             }
 
-            Source.Add(InterpreterSessionSection.SourceCode, result);
+            Source.Add(IdeResultSection.SourceCode, result);
 
-            if (result.Functions.Count > 0) Source.Add(InterpreterSessionSection.FunctionDefinitions, result);
+            if (result.Functions.Count > 0) Source.Add(IdeResultSection.FunctionDefinitions, result);
 
-            Source.Add(InterpreterSessionSection.MemoryState, result);
+            Source.Add(IdeResultSection.MemoryState, result);
 
-            Source.Add(InterpreterSessionSection.Statistics, result);
+            Source.Add(IdeResultSection.Statistics, result);
         }
     }
 }
