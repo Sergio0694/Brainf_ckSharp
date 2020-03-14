@@ -10,6 +10,8 @@
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
     xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
     xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
+    xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
+    xmlns:views="using:Brainf_ckSharp.Uwp.Models.Ide.Views"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -21,6 +23,19 @@
             <core:InvokeCommandAction Command="{x:Bind ViewModel.LoadDataCommand}"/>
         </core:EventTriggerBehavior>
     </interactivity:Interaction.Behaviors>
+    <UserControl.Resources>
+
+        <!--Stdout-->
+        <DataTemplate
+            x:Key="StdoutTemplate"
+            x:DataType="views:IdeResultWithSectionInfo">
+            <TextBlock
+                Text="{x:Bind Result.Stdout}"
+                FontSize="16"
+                Foreground="Cornsilk"
+                TextWrapping="Wrap"/>
+        </DataTemplate>
+    </UserControl.Resources>
 
     <host:SubPageFrame
         Title="RUN"
@@ -57,6 +72,10 @@
                             </GroupStyle.HeaderTemplate>
                         </GroupStyle>
                     </ListView.GroupStyle>
+                    <ListView.ItemTemplateSelector>
+                        <templateSelectors:IdeResultSectionTemplateSelector
+                            StdoutTemplate="{StaticResource StdoutTemplate}"/>
+                    </ListView.ItemTemplateSelector>
                 </ListView>
             </SemanticZoom.ZoomedInView>
             <SemanticZoom.ZoomedOutView>

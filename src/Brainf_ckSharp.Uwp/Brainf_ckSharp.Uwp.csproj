@@ -279,6 +279,7 @@
     <Compile Include="Models\Ide\CodeLibraryEntry.cs" />
     <Compile Include="Models\Ide\CodeMetadata.cs" />
     <Compile Include="Models\Ide\SourceCode.cs" />
+    <Compile Include="Models\Ide\Views\IdeResultWithSectionInfo.cs" />
     <Compile Include="Models\UnicodeCharacter.cs" />
     <Compile Include="Models\UnicodeInterval.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

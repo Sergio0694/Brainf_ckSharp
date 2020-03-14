@@ -2,6 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Uwp.Enums;
+using Brainf_ckSharp.Uwp.Models.Ide.Views;
 
 #nullable enable
 
@@ -60,9 +61,9 @@ namespace Brainf_ckSharp.Uwp.TemplateSelectors
         /// <inheritdoc/>
         protected override DataTemplate? SelectTemplateCore(object item, DependencyObject container)
         {
-            var section = item as IdeResultSection ?? throw new ArgumentException($"Invalid item: {item}");
+            var model = item as IdeResultWithSectionInfo ?? throw new ArgumentException($"Invalid item: {item}");
 
-            return section.Value switch
+            return model.Section switch
             {
                 IdeResultSection.Entry.ExceptionType => ExceptionTypeTemplate,
                 IdeResultSection.Entry.ErrorLocation => ErrorLocationTemplate,
@@ -73,7 +74,7 @@ namespace Brainf_ckSharp.Uwp.TemplateSelectors
                 IdeResultSection.Entry.FunctionDefinitions => FunctionDefinitionsTemplate,
                 IdeResultSection.Entry.MemoryState => MemoryStateTemplate,
                 IdeResultSection.Entry.Statistics => StatisticsTemplate,
-                _ => throw new ArgumentOutOfRangeException($"Invalid section entry: {section.Value}")
+                _ => throw new ArgumentOutOfRangeException($"Invalid section entry: {model.Section}")
             };
         }
     }

@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Uwp.Enums;
+using Brainf_ckSharp.Uwp.Models.Ide.Views;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
 using GalaSoft.MvvmLight.Command;
 
@@ -12,7 +13,7 @@ using GalaSoft.MvvmLight.Command;
 
 namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
 {
-    public sealed class IdeSessionViewModel : GroupedItemsCollectionViewModelBase<IdeResultSection, InterpreterResult>
+    public sealed class IdeSessionViewModel : GroupedItemsCollectionViewModelBase<IdeResultSection, IdeResultWithSectionInfo>
     {
         /// <summary>
         /// Creates a new <see cref="IdeSessionViewModel"/> instance
@@ -45,6 +46,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             Guard.MustBeNotNull(Source, nameof(Source));
             Guard.MustBeNotNull(Stdin, nameof(Stdin));
 
+            // Run the code on a background thread
             InterpreterResult result = await Task.Run(() =>
             {
                 using InterpreterSession session = Brainf_ckInterpreter
@@ -60,6 +62,14 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             });
 
             Source.Clear();
+
+            // A function used to quickly add a specific section to the current collection
+            void AddToSource(IdeResultSection section)
+            {
+                var model = new IdeResultWithSectionInfo(section, result);
+
+                Source.Add(section, model);
+            }
 
             /* The order of items in the result view is as follows:
              * - (optional) Exception type
@@ -78,26 +88,26 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
              * available info for the current script execution.
              * Each template is responsible for extracting info from it
              * and display according to its own function and section type. */
-            if (!result.ExitCode.HasFlag(ExitCode.Success)) Source.Add(IdeResultSection.ExceptionType, result);
-            if (result.Stdout.Length > 0) Source.Add(IdeResultSection.Stdout, result);
+            if (!result.ExitCode.HasFlag(ExitCode.Success)) AddToSource(IdeResultSection.ExceptionType);
+            if (result.Stdout.Length > 0) AddToSource(IdeResultSection.Stdout);
             
-            if (result.ExitCode.HasFlag(ExitCode.ExceptionThrown)) Source.Add(IdeResultSection.ErrorLocation, result);
-            else if (result.ExitCode.HasFlag(ExitCode.BreakpointReached)) Source.Add(IdeResultSection.BreakpointReached, result);
+            if (result.ExitCode.HasFlag(ExitCode.ExceptionThrown)) AddToSource(IdeResultSection.ErrorLocation);
+            else if (result.ExitCode.HasFlag(ExitCode.BreakpointReached)) AddToSource(IdeResultSection.BreakpointReached);
 
             if (result.ExitCode.HasFlag(ExitCode.ExceptionThrown) ||
                 result.ExitCode.HasFlag(ExitCode.ThresholdExceeded) ||
                 result.ExitCode.HasFlag(ExitCode.BreakpointReached))
             {
-                Source.Add(IdeResultSection.StackTrace, result);
+                AddToSource(IdeResultSection.StackTrace);
             }
 
-            Source.Add(IdeResultSection.SourceCode, result);
+            AddToSource(IdeResultSection.SourceCode);
 
-            if (result.Functions.Count > 0) Source.Add(IdeResultSection.FunctionDefinitions, result);
+            if (result.Functions.Count > 0) AddToSource(IdeResultSection.FunctionDefinitions);
 
-            Source.Add(IdeResultSection.MemoryState, result);
+            AddToSource(IdeResultSection.MemoryState);
 
-            Source.Add(IdeResultSection.Statistics, result);
+            AddToSource(IdeResultSection.Statistics);
         }
     }
 }
