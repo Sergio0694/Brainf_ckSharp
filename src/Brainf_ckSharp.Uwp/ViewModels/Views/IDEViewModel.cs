@@ -21,6 +21,11 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
     public sealed class IdeViewModel : ReactiveViewModelBase
     {
         /// <summary>
+        /// Raised whenever a script is requested to be run
+        /// </summary>
+        public event EventHandler ScriptRunRequested;
+
+        /// <summary>
         /// Raised whenever a new character is requested to be added to the current text
         /// </summary>
         public event EventHandler<char>? CharacterAdded;
@@ -63,6 +68,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         protected override void OnActivate()
         {
             Messenger.Default.Register<OperatorKeyPressedNotificationMessage>(this, m => CharacterAdded?.Invoke(this, m));
+            Messenger.Default.Register<RunIdeScriptRequestMessage>(this, _ => ScriptRunRequested?.Invoke(this, EventArgs.Empty));
             Messenger.Default.Register<InsertNewLineRequestMessage>(this, _ => CharacterAdded?.Invoke(this, Characters.CarriageReturn));
             Messenger.Default.Register<DeleteCharacterRequestMessage>(this, _ => CharacterDeleted?.Invoke(this, EventArgs.Empty));
             Messenger.Default.Register<PickOpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync(m.Favorite));

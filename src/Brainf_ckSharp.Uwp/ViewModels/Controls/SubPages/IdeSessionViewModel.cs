@@ -1,9 +1,12 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Uwp.Enums;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
+using GalaSoft.MvvmLight.Command;
 
 #nullable enable
 
@@ -12,11 +15,49 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
     public sealed class IdeSessionViewModel : GroupedItemsCollectionViewModelBase<InterpreterSessionSection, InterpreterResult>
     {
         /// <summary>
+        /// Creates a new <see cref="IdeSessionViewModel"/> instance
+        /// </summary>
+        public IdeSessionViewModel()
+        {
+            LoadDataCommand = new RelayCommand(() => _ = LoadDataAsync());
+        }
+
+        /// <summary>
+        /// Gets or sets the script to execute
+        /// </summary>
+        public string? Script { get; set; }
+
+        /// <summary>
+        /// Gets or sets the stdin buffer to use
+        /// </summary>
+        public string? Stdin { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="ICommand"/> instance responsible for loading the available source codes
+        /// </summary>
+        public ICommand LoadDataCommand { get; }
+
+        /// <summary>
         /// Loads the currently available code samples and recently used files
         /// </summary>
-        public async Task LoadDataAsync(Task<InterpreterResult> task)
+        private async Task LoadDataAsync()
         {
-            InterpreterResult result = await task;
+            Guard.MustBeNotNull(Source, nameof(Source));
+            Guard.MustBeNotNull(Stdin, nameof(Stdin));
+
+            InterpreterResult result = await Task.Run(() =>
+            {
+                using InterpreterSession session = Brainf_ckInterpreter
+                    .CreateDebugConfiguration()
+                    .WithSource(Script!)
+                    .WithStdin(Stdin!)
+                    .TryRun()
+                    .Value!;
+
+                session.MoveNext();
+
+                return session.Current;
+            });
 
             Source.Clear();
 

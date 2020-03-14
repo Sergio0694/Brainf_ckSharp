@@ -129,6 +129,9 @@
     <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.cs" />
     <Compile Include="AttachedProperties\ReactiveViewModelHelper.cs" />
+    <Compile Include="Controls\SubPages\Views\IdeSessionView.xaml.cs">
+      <DependentUpon>IdeSessionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\SubPages\CodeLibraryCategoryConverter.cs" />
     <Compile Include="Converters\Console\SyntaxValidationResultConverter.cs" />
     <Compile Include="Converters\SubPages\CodeMetadataConverter.cs" />
@@ -252,6 +255,7 @@
     <Compile Include="Messages\Console\Commands\RunCommandRequestMessage.cs" />
     <Compile Include="Messages\Console\MemoryState\MemoryStateChangedNotificationMessage.cs" />
     <Compile Include="Messages\Console\MemoryState\MemoryStateRequestMessage.cs" />
+    <Compile Include="Messages\Ide\RunIdeScriptRequestMessage.cs" />
     <Compile Include="Messages\Ide\DeleteCharacterRequestMessage.cs" />
     <Compile Include="Messages\Ide\InsertNewLineRequestMessage.cs" />
     <Compile Include="Messages\Ide\LoadSourceCodeRequestMessage.cs" />
@@ -500,6 +504,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\SubPages\Shell\UserGuide\UserGuideSubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Views\IdeSessionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

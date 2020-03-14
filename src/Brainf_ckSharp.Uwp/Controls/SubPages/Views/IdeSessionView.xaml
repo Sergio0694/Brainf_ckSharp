@@ -1,0 +1,86 @@
+﻿<UserControl
+    x:Class="Brainf_ckSharp.Uwp.Controls.SubPages.Views.IdeSessionView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:subPages="using:Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
+    xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
+    xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.DataContext>
+        <subPages:IdeSessionViewModel x:Name="ViewModel"/>
+    </UserControl.DataContext>
+    <interactivity:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Loaded">
+            <core:InvokeCommandAction Command="{x:Bind ViewModel.LoadDataCommand}"/>
+        </core:EventTriggerBehavior>
+    </interactivity:Interaction.Behaviors>
+
+    <host:SubPageFrame
+        Title="RUN"
+        Background="#72000000">
+
+        <!--Semantic zoom-->
+        <SemanticZoom>
+            <SemanticZoom.ZoomedInView>
+
+                <!--ZoomedInView-->
+                <ListView
+                    ItemsSource="{x:Bind ViewModel.View, Mode=OneWay}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    IsItemClickEnabled="False"
+                    SelectionMode="None">
+                    <ListView.Resources>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Margin" Value="0,0,0,0"/>
+                            <Setter Property="Padding" Value="12,16,12,16"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Background" Value="#FF171717"/>
+                        </Style>
+                    </ListView.Resources>
+                    <ListView.GroupStyle>
+                        <GroupStyle HeaderContainerStyle="{StaticResource ExpandedListViewHeaderItemStyle}">
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate x:DataType="objectModel:IGroupedCollection">
+                                    <jumpList:SemanticZoomZoomedInViewHeaderTemplate
+                                        Title="{Binding Key}"
+                                        Margin="0,-8,0,0"/>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
+                </ListView>
+            </SemanticZoom.ZoomedInView>
+            <SemanticZoom.ZoomedOutView>
+
+                <!--ZoomedOutView-->
+                <ListView ItemsSource="{x:Bind ViewModel.CollectionGroups, Mode=OneWay}">
+                    <ListView.Resources>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Margin" Value="0,0,0,4"/>
+                            <Setter Property="Padding" Value="12,16,12,16"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Background" Value="#FF171717"/>
+                        </Style>
+                    </ListView.Resources>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="ICollectionViewGroup">
+                            <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
+                                Title="{Binding Group.Key}"
+                                Description="{Binding Group.Key}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </SemanticZoom.ZoomedOutView>
+        </SemanticZoom>
+    </host:SubPageFrame>
+</UserControl>
