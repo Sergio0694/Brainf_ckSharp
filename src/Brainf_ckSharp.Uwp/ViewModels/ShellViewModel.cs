@@ -1,7 +1,7 @@
 ﻿using Brainf_ckSharp.Uwp.Controls.SubPages.Shell;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
-using Brainf_ckSharp.Uwp.Controls.SubPages.Views.CodeLibraryMap;
+using Brainf_ckSharp.Uwp.Controls.SubPages.Views.UnicodeCharactersMap;
 using Brainf_ckSharp.Uwp.Messages.Console.Commands;
 using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Messages.Navigation;

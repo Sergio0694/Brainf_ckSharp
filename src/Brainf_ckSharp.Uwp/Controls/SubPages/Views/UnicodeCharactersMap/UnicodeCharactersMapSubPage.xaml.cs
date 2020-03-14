@@ -3,7 +3,7 @@ using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
 
 #nullable enable
 
-namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views.CodeLibraryMap
+namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views.UnicodeCharactersMap
 {
     public sealed partial class UnicodeCharactersMapSubPage : UserControl, IConstrainedSubPage
     {

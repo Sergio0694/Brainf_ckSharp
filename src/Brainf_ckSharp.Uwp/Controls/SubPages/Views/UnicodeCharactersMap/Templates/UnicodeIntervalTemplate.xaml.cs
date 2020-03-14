@@ -1,7 +1,7 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views.CodeLibraryMap.Templates
+namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views.UnicodeCharactersMap.Templates
 {
     public sealed partial class UnicodeIntervalTemplate : UserControl
     {

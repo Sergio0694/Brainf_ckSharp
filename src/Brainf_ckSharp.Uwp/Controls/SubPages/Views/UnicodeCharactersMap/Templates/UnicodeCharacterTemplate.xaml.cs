@@ -5,7 +5,7 @@ using Brainf_ckSharp.Uwp.Models;
 
 #nullable enable
 
-namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views.CodeLibraryMap.Templates
+namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views.UnicodeCharactersMap.Templates
 {
     public sealed partial class UnicodeCharacterTemplate : UserControl
     {
