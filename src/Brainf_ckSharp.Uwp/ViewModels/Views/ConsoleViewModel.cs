@@ -34,6 +34,10 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         {
             Source.Add(new ConsoleCommand());
 
+            /* This message is never unsubscribed, for two reasons:
+             *  - It's only received from this view model, so there's no risk of conflicts
+             *  - It is first received before the OnActivate method is called, so
+             *    registering it from there would cause a startup crash. */
             Messenger.Default.Register<MemoryStateRequestMessage>(this, m => m.ReportResult(MachineState));
         }
 
