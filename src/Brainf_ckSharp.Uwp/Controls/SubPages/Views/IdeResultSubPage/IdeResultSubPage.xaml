@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="Brainf_ckSharp.Uwp.Controls.SubPages.Views.IdeSessionView"
+    x:Class="Brainf_ckSharp.Uwp.Controls.SubPages.Views.IdeResultSubPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -13,14 +13,14 @@
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
     xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
     xmlns:enums="using:Brainf_ckSharp.Uwp.Enums"
-    xmlns:templates="using:Brainf_ckSharp.Uwp.Templates"
+    xmlns:views="using:Brainf_ckSharp.Uwp.Controls.SubPages.Views"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <templates:IdeResultViewTemplates/>
+                <views:IdeResultSubPageTemplates/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>

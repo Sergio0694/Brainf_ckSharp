@@ -8,14 +8,14 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views
     /// <summary>
     /// A sub page that displays the result of a script being executed from the IDE
     /// </summary>
-    public sealed partial class IdeSessionView : UserControl, IConstrainedSubPage
+    public sealed partial class IdeResultSubPage : UserControl, IConstrainedSubPage
     {
         /// <summary>
-        /// Creates a new <see cref="IdeSessionView"/> instance with the specified parameters
+        /// Creates a new <see cref="IdeResultSubPage"/> instance with the specified parameters
         /// </summary>
         /// <param name="script">The script to execute</param>
         /// <param name="stdin">The stdin buffer to use</param>
-        public IdeSessionView(string script, string stdin)
+        public IdeResultSubPage(string script, string stdin)
         {
             this.InitializeComponent();
 

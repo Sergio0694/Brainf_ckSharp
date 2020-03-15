@@ -1,5 +1,5 @@
 ﻿<ResourceDictionary
-    x:Class="Brainf_ckSharp.Uwp.Templates.IdeResultViewTemplates"
+    x:Class="Brainf_ckSharp.Uwp.Controls.SubPages.Views.IdeResultSubPageTemplates"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:views="using:Brainf_ckSharp.Uwp.Models.Ide.Views"

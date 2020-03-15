@@ -30,7 +30,7 @@ namespace Brainf_ckSharp.Uwp.Views
                 source = CodeEditor.GetText(),
                 stdin = string.Empty;
 
-            Messenger.Default.Send(SubPageNavigationRequestMessage.To(new IdeSessionView(source, stdin)));
+            Messenger.Default.Send(SubPageNavigationRequestMessage.To(new IdeResultSubPage(source, stdin)));
         }
 
         /// <summary>

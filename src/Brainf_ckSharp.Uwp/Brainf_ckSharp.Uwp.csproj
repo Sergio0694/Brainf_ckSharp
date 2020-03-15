@@ -128,11 +128,11 @@
     <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.cs" />
     <Compile Include="AttachedProperties\ReactiveViewModelHelper.cs" />
-    <Compile Include="Controls\SubPages\Views\IdeResultViewTemplates.xaml.cs">
-      <DependentUpon>IdeResultViewTemplates.xaml</DependentUpon>
+    <Compile Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPageTemplates.xaml.cs">
+      <DependentUpon>IdeResultSubPageTemplates.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SubPages\Views\IdeSessionView.xaml.cs">
-      <DependentUpon>IdeSessionView.xaml</DependentUpon>
+    <Compile Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPage.xaml.cs">
+      <DependentUpon>IdeResultSubPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\SubPages\IdeResultSectionConverter.cs" />
     <Compile Include="Converters\SubPages\CodeLibraryCategoryConverter.cs" />
@@ -512,11 +512,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\SubPages\Views\IdeResultViewTemplates.xaml">
+    <Page Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPageTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\SubPages\Views\IdeSessionView.xaml">
+    <Page Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
