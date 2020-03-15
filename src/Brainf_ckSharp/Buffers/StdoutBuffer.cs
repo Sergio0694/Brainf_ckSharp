@@ -70,7 +70,7 @@ namespace Brainf_ckSharp.Buffers
              * the rented array is null, otherwise return it and then override
              * the field to set it to null. If this method is ever called twice
              * by accident, this hack will make sure the unit tests will fail. */
-            Guard.MustBeNotNull(Buffer, nameof(Buffer));
+            Debug.Assert(Buffer != null, "The buffer can't be null");
 
             ArrayPool<char>.Shared.Return(Buffer);
 
