@@ -4,7 +4,30 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:views="using:Brainf_ckSharp.Uwp.Models.Ide.Views"
     xmlns:models="using:Brainf_ckSharp.Models"
-    xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties">
+    xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
+    xmlns:convertersConsole="using:Brainf_ckSharp.Uwp.Converters.Console">
+
+    <!--Exception type template-->
+    <DataTemplate
+        x:Key="ExceptionTypeTemplate"
+        x:DataType="views:IdeResultWithSectionInfo">
+        <TextBlock
+            FontSize="16"
+            TextWrapping="Wrap">
+            <Run 
+                Text="exception"
+                FontWeight="Bold"
+                Foreground="#FFA00000"/>
+            <Run 
+                Text="&gt;"
+                FontWeight="Bold"
+                Foreground="#FFA00000"/>
+            <Run 
+                Text="{x:Bind convertersConsole:ExitCodeConverter.Convert(Result.ExitCode)}"
+                FontWeight="SemiBold"
+                Foreground="#FF900000"/>
+        </TextBlock>
+    </DataTemplate>
 
     <!--Stdout-->
     <DataTemplate

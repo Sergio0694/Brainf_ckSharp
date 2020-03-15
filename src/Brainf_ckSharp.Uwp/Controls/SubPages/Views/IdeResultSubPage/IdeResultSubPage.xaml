@@ -70,6 +70,7 @@
                     </ListView.GroupStyle>
                     <ListView.ItemTemplateSelector>
                         <templateSelectors:IdeResultSectionTemplateSelector
+                            ExceptionTypeTemplate="{StaticResource ExceptionTypeTemplate}"
                             StdoutTemplate="{StaticResource StdoutTemplate}"
                             StackTraceTemplate="{StaticResource StackTraceTemplate}"
                             SourceCodeTemplate="{StaticResource SourceCodeTemplate}"

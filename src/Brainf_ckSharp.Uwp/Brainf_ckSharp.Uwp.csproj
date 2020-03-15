@@ -138,6 +138,7 @@
     <Compile Include="Controls\SubPages\Views\UnicodeCharactersMap\UnicodeCharactersMapSubPageTemplates.xaml.cs">
       <DependentUpon>UnicodeCharactersMapSubPageTemplates.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\Console\ExitCodeConverter.cs" />
     <Compile Include="Converters\SubPages\IdeResultSectionConverter.cs" />
     <Compile Include="Converters\SubPages\CodeLibraryCategoryConverter.cs" />
     <Compile Include="Converters\Console\SyntaxValidationResultConverter.cs" />
