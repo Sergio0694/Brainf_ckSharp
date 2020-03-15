@@ -25,9 +25,9 @@ namespace Brainf_ckSharp.Extensions.Types
         /// <param name="end"></param>
         public Range(int start, int end)
         {
-            DebugGuard.MustBeGreaterThanOrEqualTo(start, 0, nameof(start));
-            DebugGuard.MustBeGreaterThanOrEqualTo(end, 0, nameof(end));
-            DebugGuard.MustBeLessThanOrEqualTo(start, end, nameof(start));
+            Debug.Assert(start >= 0);
+            Debug.Assert(end >= 0);
+            Debug.Assert(start <= end);
 
             Start = start;
             End = end;

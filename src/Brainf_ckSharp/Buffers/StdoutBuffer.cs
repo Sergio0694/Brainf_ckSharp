@@ -48,11 +48,11 @@ namespace Brainf_ckSharp.Buffers
         {
             if (_Position == Specs.StdoutBufferSizeLimit) return false;
 
-            DebugGuard.MustBeNotNull(Buffer, nameof(Buffer));
-            DebugGuard.MustBeGreaterThanOrEqualTo(_Position, 0, nameof(_Position));
-            DebugGuard.MustBeLessThan(_Position, Buffer!.Length, nameof(Buffer));
+            Debug.Assert(Buffer != null);
+            Debug.Assert(_Position >= 0);
+            Debug.Assert(_Position < Specs.StdoutBufferSizeLimit);
 
-            Buffer.DangerousGetReferenceAt(_Position++) = c;
+            Buffer!.DangerousGetReferenceAt(_Position++) = c;
 
             return true;
         }
@@ -70,7 +70,7 @@ namespace Brainf_ckSharp.Buffers
              * the rented array is null, otherwise return it and then override
              * the field to set it to null. If this method is ever called twice
              * by accident, this hack will make sure the unit tests will fail. */
-            Debug.Assert(Buffer != null, "The buffer can't be null");
+            Debug.Assert(Buffer != null);
 
             ArrayPool<char>.Shared.Return(Buffer);
 

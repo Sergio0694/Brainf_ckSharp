@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Extensions.Types;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Opcodes.Interfaces;
+using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
 
@@ -22,7 +22,7 @@ namespace Brainf_ckSharp
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static MemoryOwner<ushort> LoadDefinitionsTable(int functionsCount)
         {
-            DebugGuard.MustBeGreaterThanOrEqualTo(functionsCount, 0, nameof(functionsCount));
+            System.Diagnostics.Debug.Assert(functionsCount >= 0);
 
             return functionsCount switch
             {
@@ -48,11 +48,11 @@ namespace Brainf_ckSharp
             int totalFunctions)
             where TOpcode : unmanaged, IOpcode
         {
-            DebugGuard.MustBeGreaterThanOrEqualTo(opcodes.Length, 0, nameof(opcodes));
-            DebugGuard.MustBeEqualTo(functions.Length, ushort.MaxValue, nameof(functions));
-            DebugGuard.MustBeGreaterThanOrEqualTo(definitions.Length, 0, nameof(definitions));
-            DebugGuard.MustBeLessThanOrEqualTo(definitions.Length, opcodes.Length / 3, nameof(definitions));
-            DebugGuard.MustBeGreaterThanOrEqualTo(totalFunctions, 0, nameof(totalFunctions));
+            System.Diagnostics.Debug.Assert(opcodes.Length >= 0);
+            System.Diagnostics.Debug.Assert(functions.Length == ushort.MaxValue);
+            System.Diagnostics.Debug.Assert(definitions.Length >= 0);
+            System.Diagnostics.Debug.Assert(definitions.Length <= opcodes.Length / 3);
+            System.Diagnostics.Debug.Assert(totalFunctions >= 0);
 
             // No declared functions
             if (totalFunctions == 0) return Array.Empty<FunctionDefinition>();
@@ -90,7 +90,7 @@ namespace Brainf_ckSharp
             out int functionsCount)
             where TOpcode : unmanaged, IOpcode
         {
-            DebugGuard.MustBeGreaterThanOrEqualTo(opcodes.Length, 0, nameof(opcodes));
+            System.Diagnostics.Debug.Assert(opcodes.Length >= 0);
 
             MemoryOwner<int> jumpTable = MemoryOwner<int>.Allocate(opcodes.Length);
             ref int jumpTableRef = ref jumpTable.DangerousGetReference();
@@ -170,9 +170,9 @@ namespace Brainf_ckSharp
             int depth)
             where TOpcode : unmanaged, IOpcode
         {
-            DebugGuard.MustBeTrue(opcodes.Length > 0, nameof(opcodes));
-            DebugGuard.MustBeEqualTo(stackFrames.Length, Specs.MaximumStackSize, nameof(stackFrames));
-            DebugGuard.MustBeGreaterThanOrEqualTo(depth, -1, nameof(depth));
+            System.Diagnostics.Debug.Assert(opcodes.Length > 0);
+            System.Diagnostics.Debug.Assert(stackFrames.Length == Specs.MaximumStackSize);
+            System.Diagnostics.Debug.Assert(depth >= -1);
 
             // No exception info for scripts completed successfully
             if (depth == -1) return null;
@@ -251,8 +251,8 @@ namespace Brainf_ckSharp
                 // Build the temporary table to store the indirect offsets of the breakpoints
                 foreach (int index in breakpoints)
                 {
-                    Guard.MustBeGreaterThan(index, 0, nameof(breakpoints));
-                    Guard.MustBeLessThan(index, source.Length, nameof(breakpoints));
+                    Guard.IsGreaterThanOrEqualTo(index, 0, nameof(breakpoints));
+                    Guard.IsLessThan(index, source.Length, nameof(breakpoints));
 
                     Unsafe.Add(ref temporaryBufferRef, index) = true;
                 }

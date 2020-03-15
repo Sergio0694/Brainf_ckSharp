@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -41,8 +40,8 @@ namespace Brainf_ckSharp
                 TuringMachineState machineState,
                 CancellationToken executionToken)
             {
-                DebugGuard.MustBeGreaterThanOrEqualTo(opcodes.Length, 0, nameof(opcodes));
-                DebugGuard.MustBeGreaterThanOrEqualTo(machineState.Size, 0, nameof(machineState));
+                System.Diagnostics.Debug.Assert(opcodes.Length >= 0);
+                System.Diagnostics.Debug.Assert(machineState.Size >= 0);
 
                 return machineState.Mode switch
                 {
@@ -180,9 +179,9 @@ namespace Brainf_ckSharp
                 CancellationToken executionToken)
                 where TExecutionContext : struct, IMachineStateExecutionContext
             {
-                DebugGuard.MustBeGreaterThanOrEqualTo(depth, 0, nameof(depth));
-                DebugGuard.MustBeGreaterThanOrEqualTo(totalOperations, 0, nameof(totalOperations));
-                DebugGuard.MustBeGreaterThanOrEqualTo(totalFunctions, 0, nameof(totalFunctions));
+                System.Diagnostics.Debug.Assert(depth >= 0);
+                System.Diagnostics.Debug.Assert(totalOperations >= 0);
+                System.Diagnostics.Debug.Assert(totalFunctions >= 0);
 
                 // Outer loop to go through the existing stack frames
                 StackFrame frame;

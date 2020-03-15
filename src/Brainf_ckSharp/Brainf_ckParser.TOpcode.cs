@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -68,7 +67,7 @@ namespace Brainf_ckSharp
         internal static string ExtractSource<TOpcode>(Span<TOpcode> opcodes)
             where TOpcode : unmanaged, IOpcode
         {
-            DebugGuard.MustBeGreaterThan(opcodes.Length, 0, nameof(opcodes));
+            System.Diagnostics.Debug.Assert(opcodes.Length > 0);
 
             if (typeof(TOpcode) == typeof(Brainf_ckOperator))
             {

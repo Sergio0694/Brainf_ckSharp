@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -7,6 +6,7 @@ using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Memory;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
+using Microsoft.Toolkit.Diagnostics;
 
 namespace Brainf_ckSharp.Configurations
 {
@@ -33,12 +33,12 @@ namespace Brainf_ckSharp.Configurations
         [MethodImpl(MethodImplOptions.NoInlining)]
         public Option<InterpreterSession> TryRun()
         {
-            Guard.MustBeNotNull(Source, nameof(Source));
+            Guard.IsNotNull(Source, nameof(Source));
 
             if (InitialState is TuringMachineState initialState)
             {
-                Guard.MustBeNull(MemorySize, nameof(MemorySize));
-                Guard.MustBeNull(OverflowMode, nameof(OverflowMode));
+                Guard.IsNull(MemorySize, nameof(MemorySize));
+                Guard.IsNull(OverflowMode, nameof(OverflowMode));
 
                 initialState = (TuringMachineState)initialState.Clone();
             }
@@ -46,8 +46,8 @@ namespace Brainf_ckSharp.Configurations
             {
                 int size = MemorySize ?? Specs.DefaultMemorySize;
 
-                Guard.MustBeGreaterThanOrEqualTo(size, Specs.MinimumMemorySize, nameof(MemorySize));
-                Guard.MustBeLessThanOrEqualTo(size, Specs.MaximumMemorySize, nameof(MemorySize));
+                Guard.IsGreaterThanOrEqualTo(size, Specs.MinimumMemorySize, nameof(MemorySize));
+                Guard.IsLessThanOrEqualTo(size, Specs.MaximumMemorySize, nameof(MemorySize));
 
                 initialState = new TuringMachineState(size, OverflowMode ?? Specs.DefaultOverflowMode);
             }

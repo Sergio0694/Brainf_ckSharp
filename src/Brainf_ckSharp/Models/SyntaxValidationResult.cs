@@ -17,9 +17,9 @@ namespace Brainf_ckSharp.Models
         /// <param name="operatorsCount">The total number of Brainf*ck/PBrain operators in the original source file</param>
         internal SyntaxValidationResult(SyntaxError error, int offset, int operatorsCount = -1)
         {
-            DebugGuard.MustBeGreaterThanOrEqualTo(offset, -1, nameof(offset));
-            DebugGuard.MustBeGreaterThanOrEqualTo(operatorsCount, -1, nameof(operatorsCount));
-            DebugGuard.MustBeTrue(operatorsCount >= 0 || error != SyntaxError.None, nameof(operatorsCount));
+            Debug.Assert(offset >= -1);
+            Debug.Assert(operatorsCount >= -1);
+            Debug.Assert(operatorsCount >= 0 || error != SyntaxError.None);
 
             ErrorType = error;
             ErrorOffset = offset;
