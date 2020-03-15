@@ -71,6 +71,7 @@
                     <ListView.ItemTemplateSelector>
                         <templateSelectors:IdeResultSectionTemplateSelector
                             StdoutTemplate="{StaticResource StdoutTemplate}"
+                            StackTraceTemplate="{StaticResource StackTraceTemplate}"
                             SourceCodeTemplate="{StaticResource SourceCodeTemplate}"
                             MemoryStateTemplate="{StaticResource MemoryStateTemploate}"/>
                     </ListView.ItemTemplateSelector>

@@ -10,7 +10,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
     /// <summary>
     /// A <see langword="class"/> with an attached XAML property to formatted Brainf*ck/PBrain code
     /// </summary>
-    public static class Brainf_ckInlineFormatterHelper
+    public static partial class Brainf_ckInlineFormatterHelper
     {
         /// <summary>
         /// Gets the zero width space character

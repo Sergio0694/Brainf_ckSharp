@@ -23,10 +23,20 @@
         x:DataType="views:IdeResultWithSectionInfo">
         <TextBlock
             FontSize="16"
-            Foreground="Cornsilk"
             TextWrapping="Wrap">
             <Span attachedProperties:Brainf_ckInlineFormatterHelper.Source="{x:Bind Result.SourceCode}"/>
         </TextBlock>
+    </DataTemplate>
+
+    <!--Stack trace-->
+    <DataTemplate
+        x:Key="StackTraceTemplate"
+        x:DataType="views:IdeResultWithSectionInfo">
+        <RichTextBlock
+            FontSize="16"
+            TextWrapping="Wrap">
+            <Paragraph attachedProperties:Brainf_ckInlineFormatterHelper.StackTrace="{x:Bind Result.ExceptionInfo.StackTrace}"/>
+        </RichTextBlock>
     </DataTemplate>
 
     <!--Memory state-->

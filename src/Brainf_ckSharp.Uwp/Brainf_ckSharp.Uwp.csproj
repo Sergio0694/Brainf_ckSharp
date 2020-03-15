@@ -122,11 +122,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.StackTrace.cs" />
     <Compile Include="AttachedProperties\CharacterRotationHelper.cs" />
     <Compile Include="AttachedProperties\ItemsWrapGridHelper.cs" />
     <Compile Include="AttachedProperties\ListViewBaseHelper.cs" />
     <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />
-    <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.cs" />
+    <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.Source.cs" />
     <Compile Include="AttachedProperties\ReactiveViewModelHelper.cs" />
     <Compile Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPageTemplates.xaml.cs">
       <DependentUpon>IdeResultSubPageTemplates.xaml</DependentUpon>
