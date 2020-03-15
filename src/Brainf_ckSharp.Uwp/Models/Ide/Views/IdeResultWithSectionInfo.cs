@@ -15,14 +15,14 @@ namespace Brainf_ckSharp.Uwp.Models.Ide.Views
         /// <param name="result">The <see cref="InterpreterResult"/> instance to wrap</param>
         public IdeResultWithSectionInfo(IdeResultSection section, InterpreterResult result)
         {
-            Section = section.Value;
+            Section = section;
             Result = result;
         }
 
         /// <summary>
         /// Gets the current section being targeted
         /// </summary>
-        public IdeResultSection.Entry Section { get; }
+        public IdeResultSection Section { get; }
 
         /// <summary>
         /// Gets the <see cref="InterpreterResult"/> instance currently wrapped

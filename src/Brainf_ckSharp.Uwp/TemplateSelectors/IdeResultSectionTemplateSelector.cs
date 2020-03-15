@@ -65,15 +65,15 @@ namespace Brainf_ckSharp.Uwp.TemplateSelectors
 
             return model.Section switch
             {
-                IdeResultSection.Entry.ExceptionType => ExceptionTypeTemplate,
-                IdeResultSection.Entry.ErrorLocation => ErrorLocationTemplate,
-                IdeResultSection.Entry.BreakpointReached => BreakpointReachedTemplate,
-                IdeResultSection.Entry.StackTrace => StackTraceTemplate,
-                IdeResultSection.Entry.Stdout => StdoutTemplate,
-                IdeResultSection.Entry.SourceCode => SourceCodeTemplate,
-                IdeResultSection.Entry.FunctionDefinitions => FunctionDefinitionsTemplate,
-                IdeResultSection.Entry.MemoryState => MemoryStateTemplate,
-                IdeResultSection.Entry.Statistics => StatisticsTemplate,
+                IdeResultSection.ExceptionType => ExceptionTypeTemplate,
+                IdeResultSection.ErrorLocation => ErrorLocationTemplate,
+                IdeResultSection.BreakpointReached => BreakpointReachedTemplate,
+                IdeResultSection.StackTrace => StackTraceTemplate,
+                IdeResultSection.Stdout => StdoutTemplate,
+                IdeResultSection.SourceCode => SourceCodeTemplate,
+                IdeResultSection.FunctionDefinitions => FunctionDefinitionsTemplate,
+                IdeResultSection.MemoryState => MemoryStateTemplate,
+                IdeResultSection.Statistics => StatisticsTemplate,
                 _ => throw new ArgumentOutOfRangeException($"Invalid section entry: {model.Section}")
             };
         }

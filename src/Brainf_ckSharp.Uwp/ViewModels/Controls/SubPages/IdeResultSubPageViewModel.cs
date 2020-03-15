@@ -13,12 +13,12 @@ using Microsoft.Toolkit.Diagnostics;
 
 namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
 {
-    public sealed class IdeSessionViewModel : GroupedItemsCollectionViewModelBase<IdeResultSection, IdeResultWithSectionInfo>
+    public sealed class IdeResultSubPageViewModel : GroupedItemsCollectionViewModelBase<IdeResultSection, IdeResultWithSectionInfo>
     {
         /// <summary>
-        /// Creates a new <see cref="IdeSessionViewModel"/> instance
+        /// Creates a new <see cref="IdeResultSubPageViewModel"/> instance
         /// </summary>
-        public IdeSessionViewModel()
+        public IdeResultSubPageViewModel()
         {
             LoadDataCommand = new RelayCommand(() => _ = LoadDataAsync());
         }

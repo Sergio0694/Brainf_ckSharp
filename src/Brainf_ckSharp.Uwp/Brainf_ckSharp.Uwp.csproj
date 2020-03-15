@@ -226,7 +226,6 @@
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Windows.UI.Xaml.Controls\LockedPivot.cs" />
-    <Compile Include="Enums\Abstract\Box{T}.cs" />
     <Compile Include="Enums\IdeResultSection.cs" />
     <Compile Include="Enums\CodeLibraryCategory.cs" />
     <Compile Include="Enums\UserGuideSection.cs" />
@@ -307,7 +306,7 @@
     <Compile Include="ViewModels\Abstract\Collections\ItemsCollectionViewModelBase{T}.cs" />
     <Compile Include="ViewModels\Abstract\ReactiveViewModelBase.cs" />
     <Compile Include="ViewModels\Controls\SubPages\CodeLibrarySubPageViewModel.cs" />
-    <Compile Include="ViewModels\Controls\SubPages\IdeSessionViewModel.cs" />
+    <Compile Include="ViewModels\Controls\SubPages\IdeResultSubPageViewModel.cs" />
     <Compile Include="ViewModels\Controls\SubPages\UnicodeCharactersMapSubPageViewModel.cs" />
     <Compile Include="ViewModels\Views\ConsoleViewModel.cs" />
     <Compile Include="ViewModels\Controls\CompactMemoryViewerViewModel.cs" />

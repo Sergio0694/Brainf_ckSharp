@@ -25,7 +25,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.DataContext>
-        <subPages:IdeSessionViewModel x:Name="ViewModel"/>
+        <subPages:IdeResultSubPageViewModel x:Name="ViewModel"/>
     </UserControl.DataContext>
     <interactivity:Interaction.Behaviors>
         <core:EventTriggerBehavior EventName="Loaded">
@@ -62,7 +62,7 @@
                             <GroupStyle.HeaderTemplate>
                                 <DataTemplate x:DataType="objectModel:IGroupedCollection">
                                     <jumpList:SemanticZoomZoomedInViewHeaderTemplate
-                                        Title="{x:Bind convertersSubPages:IdeResultSectionConverter.Convert(Key.(enums:IdeResultSection.Value))}"
+                                        Title="{x:Bind convertersSubPages:IdeResultSectionConverter.Convert((enums:IdeResultSection)Key)}"
                                         Margin="0,-8,0,0"/>
                                 </DataTemplate>
                             </GroupStyle.HeaderTemplate>
