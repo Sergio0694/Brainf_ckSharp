@@ -74,6 +74,7 @@
                             StdoutTemplate="{StaticResource StdoutTemplate}"
                             StackTraceTemplate="{StaticResource StackTraceTemplate}"
                             SourceCodeTemplate="{StaticResource SourceCodeTemplate}"
+                            FunctionDefinitionsTemplate="{StaticResource FunctionDefinitionsTemploate}"
                             MemoryStateTemplate="{StaticResource MemoryStateTemploate}"/>
                     </ListView.ItemTemplateSelector>
                 </ListView>
