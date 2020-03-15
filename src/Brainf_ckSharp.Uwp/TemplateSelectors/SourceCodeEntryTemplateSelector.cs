@@ -41,8 +41,8 @@ namespace Brainf_ckSharp.Uwp.TemplateSelectors
             {
                 CodeLibraryEntry entry when entry.File.IsFromPackageDirectory() => SampleTemplate,
                 CodeLibraryEntry _ => RecentItemTemplate,
-                CodeLibrarySection c when c == CodeLibrarySection.Favorites => FavoritePlaceholderTemplate,
-                CodeLibrarySection c when c == CodeLibrarySection.Recent => RecentPlaceholderTemplate,
+                CodeLibrarySection.Favorites => FavoritePlaceholderTemplate,
+                CodeLibrarySection.Recent => RecentPlaceholderTemplate,
                 null => throw new ArgumentNullException(nameof(item), "The input item can't be null"),
                 _ => throw new ArgumentException($"Unsupported item of type {item.GetType()}")
             } ?? throw new ArgumentException($"Missing template for item of type {item.GetType()}");
