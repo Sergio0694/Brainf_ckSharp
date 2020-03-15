@@ -11,13 +11,19 @@
     xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
     xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
-    xmlns:views="using:Brainf_ckSharp.Uwp.Models.Ide.Views"
     xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
     xmlns:enums="using:Brainf_ckSharp.Uwp.Enums"
-    xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
+    xmlns:templates="using:Brainf_ckSharp.Uwp.Templates"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <templates:IdeResultViewTemplates/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <UserControl.DataContext>
         <subPages:IdeSessionViewModel x:Name="ViewModel"/>
     </UserControl.DataContext>
@@ -26,31 +32,6 @@
             <core:InvokeCommandAction Command="{x:Bind ViewModel.LoadDataCommand}"/>
         </core:EventTriggerBehavior>
     </interactivity:Interaction.Behaviors>
-    <UserControl.Resources>
-
-        <!--Stdout-->
-        <DataTemplate
-            x:Key="StdoutTemplate"
-            x:DataType="views:IdeResultWithSectionInfo">
-            <TextBlock
-                Text="{x:Bind Result.Stdout}"
-                FontSize="16"
-                Foreground="Cornsilk"
-                TextWrapping="Wrap"/>
-        </DataTemplate>
-
-        <!--Source code-->
-        <DataTemplate
-            x:Key="SourceCodeTemplate"
-            x:DataType="views:IdeResultWithSectionInfo">
-            <TextBlock
-                FontSize="16"
-                Foreground="Cornsilk"
-                TextWrapping="Wrap">
-                <Span attachedProperties:Brainf_ckInlineFormatterHelper.Source="{x:Bind Result.SourceCode}"/>
-            </TextBlock>
-        </DataTemplate>
-    </UserControl.Resources>
 
     <host:SubPageFrame
         Title="RUN"
@@ -90,7 +71,8 @@
                     <ListView.ItemTemplateSelector>
                         <templateSelectors:IdeResultSectionTemplateSelector
                             StdoutTemplate="{StaticResource StdoutTemplate}"
-                            SourceCodeTemplate="{StaticResource SourceCodeTemplate}"/>
+                            SourceCodeTemplate="{StaticResource SourceCodeTemplate}"
+                            MemoryStateTemplate="{StaticResource MemoryStateTemploate}"/>
                     </ListView.ItemTemplateSelector>
                 </ListView>
             </SemanticZoom.ZoomedInView>
