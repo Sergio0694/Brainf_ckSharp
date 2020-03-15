@@ -134,6 +134,9 @@
     <Compile Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPage.xaml.cs">
       <DependentUpon>IdeResultSubPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SubPages\Views\UnicodeCharactersMap\UnicodeCharactersMapSubPageTemplates.xaml.cs">
+      <DependentUpon>UnicodeCharactersMapSubPageTemplates.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\SubPages\IdeResultSectionConverter.cs" />
     <Compile Include="Converters\SubPages\CodeLibraryCategoryConverter.cs" />
     <Compile Include="Converters\Console\SyntaxValidationResultConverter.cs" />
@@ -204,12 +207,6 @@
     </Compile>
     <Compile Include="Controls\SubPages\Shell\UserGuide\UserGuideSubPage.xaml.cs">
       <DependentUpon>UserGuideSubPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Views\UnicodeCharactersMap\Templates\UnicodeIntervalTemplate.xaml.cs">
-      <DependentUpon>UnicodeIntervalTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Views\UnicodeCharactersMap\Templates\UnicodeCharacterTemplate.xaml.cs">
-      <DependentUpon>UnicodeCharacterTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SubPages\Views\CodeLibrarySubPage.xaml.cs">
       <DependentUpon>CodeLibrarySubPage.xaml</DependentUpon>
@@ -520,19 +517,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\SubPages\Views\UnicodeCharactersMap\Templates\UnicodeIntervalTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Views\UnicodeCharactersMap\Templates\UnicodeCharacterTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\SubPages\Views\CodeLibrarySubPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\SubPages\Views\UnicodeCharactersMap\UnicodeCharactersMapSubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Views\UnicodeCharactersMap\UnicodeCharactersMapSubPageTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

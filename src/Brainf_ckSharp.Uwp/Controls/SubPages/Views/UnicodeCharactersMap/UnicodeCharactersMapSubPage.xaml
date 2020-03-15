@@ -6,16 +6,20 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
-    xmlns:models="using:Brainf_ckSharp.Uwp.Models"
     xmlns:subPages="using:Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
-    xmlns:convertersSubPage="using:Brainf_ckSharp.Uwp.Converters.SubPages"
-    xmlns:templates1="using:Brainf_ckSharp.Uwp.Controls.SubPages.Views.UnicodeCharactersMap.Templates"
+    xmlns:views="using:Brainf_ckSharp.Uwp.Controls.SubPages.Views"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <views:UnicodeCharactersMapSubPageTemplates/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <UserControl.DataContext>
         <subPages:UnicodeCharactersMapSubPageViewModel x:Name="ViewModel"/>
     </UserControl.DataContext>
@@ -31,7 +35,8 @@
             IsItemClickEnabled="False"
             SelectionMode="None"
             ItemsSource="{x:Bind ViewModel.View}"
-            Padding="12">
+            Padding="12"
+            ItemTemplate="{StaticResource UnicodeCharacterTemplate}">
             <ListView.Resources>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Margin" Value="4"/>
@@ -43,11 +48,12 @@
                 </Style>
             </ListView.Resources>
             <ListView.GroupStyle>
-                <GroupStyle>
+                <GroupStyle HeaderTemplate="{StaticResource UnicodeIntervalTemplate}">
                     <GroupStyle.HeaderContainerStyle>
 
                         <!--Group header container style-->
                         <Style TargetType="ListViewHeaderItem">
+                            <Setter Property="Height" Value="52"/>
                             <Setter Property="Margin" Value="4" />
                             <Setter Property="Padding" Value="0" />
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -68,25 +74,8 @@
                             </Setter>
                         </Style>
                     </GroupStyle.HeaderContainerStyle>
-                    <GroupStyle.HeaderTemplate>
-
-                        <!--Group header template-->
-                        <DataTemplate x:DataType="objectModel:IGroupedCollection">
-                            <templates1:UnicodeIntervalTemplate
-                                Height="52"
-                                Value="{x:Bind Key.ToString()}"
-                                Description="{x:Bind convertersSubPage:UnicodeIntervalConverter.ConvertDescription((models:UnicodeInterval)Key)}"/>
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
                 </GroupStyle>
             </ListView.GroupStyle>
-            <ListView.ItemTemplate>
-
-                <!--Character template-->
-                <DataTemplate x:DataType="models:UnicodeCharacter">
-                    <templates1:UnicodeCharacterTemplate Character="{x:Bind}"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ItemsWrapGrid

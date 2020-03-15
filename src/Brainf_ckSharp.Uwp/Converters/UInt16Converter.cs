@@ -11,6 +11,18 @@ namespace Brainf_ckSharp.Uwp.Converters
     public static class UInt16Converter
     {
         /// <summary>
+        /// Converts a given character into a <see cref="ushort"/> value
+        /// </summary>
+        /// <param name="c">The input character to convert</param>
+        /// <returns>A <see cref="ushort"/> value for the input character</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ushort Convert(char c)
+        {
+            return c;
+        }
+
+        /// <summary>
         /// Converts a given character into a visible <see cref="string"/> representing its value in a visible way
         /// </summary>
         /// <param name="c">The input character to convert</param>
