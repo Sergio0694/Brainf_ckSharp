@@ -40,7 +40,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers
         [Pure]
         public static unsafe string GetLineNumbersText(int n)
         {
-            DebugGuard.MustBeGreaterThanOrEqualTo(n, 1, nameof(n));
+            Debug.Assert(n >= 1);
 
             // Rent a new array and copy the previous results, if the cache is too small
             if (n >= _CachedStrings.Length)

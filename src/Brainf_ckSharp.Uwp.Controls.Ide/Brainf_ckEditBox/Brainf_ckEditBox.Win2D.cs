@@ -209,7 +209,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         [Pure]
         private bool TryUpdateBracketsList()
         {
-            DebugGuard.MustBeTrue(_SyntaxValidationResult.IsSuccessOrEmptyScript, nameof(_SyntaxValidationResult));
+            Debug.Assert(_SyntaxValidationResult.IsSuccessOrEmptyScript);
 
             // Prepare the current text
             ReadOnlySpan<char> text = PlainText.AsSpan();
@@ -248,7 +248,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                             : Unsafe.Add(ref functionTempIndicesRef, --f);
                         if (start.Y < y)
                         {
-                            DebugGuard.MustBeLessThan(jumps, tempBuffersLength, nameof(jumps));
+                            Debug.Assert(jumps < tempBuffersLength);
 
                             Unsafe.Add(ref jumpTableRef, jumps++) = new BracketsPairInfo(start.Index, i);
                         }
@@ -263,7 +263,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         f = -1;
                         if (functionTempIndicesRef.Y < y)
                         {
-                            DebugGuard.MustBeLessThan(jumps, tempBuffersLength, nameof(jumps));
+                            Debug.Assert(jumps < tempBuffersLength);
 
                             Unsafe.Add(ref jumpTableRef, jumps++) = new BracketsPairInfo(functionTempIndicesRef.Index, i);
                         }

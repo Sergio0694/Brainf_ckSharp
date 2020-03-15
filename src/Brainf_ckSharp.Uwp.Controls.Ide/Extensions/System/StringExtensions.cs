@@ -38,9 +38,9 @@ namespace System
         [Pure]
         public static int CalculateIndentationDepth(this string text, int end)
         {
-            DebugGuard.MustBeGreaterThan(text.Length, 0, nameof(text));
-            DebugGuard.MustBeGreaterThanOrEqualTo(end, 0, nameof(end));
-            DebugGuard.MustBeLessThan(end, text.Length, nameof(end));
+            Debug.Assert(text.Length > 0);
+            Debug.Assert(end >= 0);
+            Debug.Assert(end < text.Length);
 
             ref char r0 = ref MemoryMarshal.GetReference(text.AsSpan());
             int depth = 0;

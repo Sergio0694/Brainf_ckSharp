@@ -19,8 +19,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe void ToString(this uint n, char* p, int digits)
         {
-            DebugGuard.MustBeNotNull(p, nameof(p));
-            DebugGuard.MustBeEqualTo(n.CountDigits(), digits, nameof(digits));
+            Debug.Assert(p != null);
+            Debug.Assert(n.CountDigits() == digits);
 
             p += digits;
 

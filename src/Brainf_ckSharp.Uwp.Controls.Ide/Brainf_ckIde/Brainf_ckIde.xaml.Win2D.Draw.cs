@@ -154,8 +154,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             IndentationType indentationType,
             bool isWithinFunction)
         {
-            DebugGuard.MustBeGreaterThanOrEqualTo(offset, 0, nameof(offset));
-            DebugGuard.MustBeGreaterThanOrEqualTo(depth, 1, nameof(depth));
+            Debug.Assert(offset >= 0);
+            Debug.Assert(depth >= 1);
 
             // Indentation block
             if (isWithinFunction)

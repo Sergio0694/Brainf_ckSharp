@@ -19,7 +19,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers
         [Pure]
         public static unsafe string GetBracketAutocompleteText(BracketsFormattingStyle style, int depth)
         {
-            DebugGuard.MustBeGreaterThanOrEqualTo(depth, 0, nameof(depth));
+            Debug.Assert(depth >= 0);
 
             /* This is the maximum length for the newline style.
              * It contains a series of 3 indentations, plus the space
