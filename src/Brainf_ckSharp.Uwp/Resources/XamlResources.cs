@@ -1,8 +1,8 @@
-﻿using System.Diagnostics;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
+using Microsoft.Toolkit.Diagnostics;
 
 #nullable enable
 
@@ -23,7 +23,7 @@ namespace Brainf_ckSharp.Uwp.Resources
         {
             object value = Application.Current.Resources[key];
 
-            Guard.MustBeAssignableTo<T>(value, nameof(value));
+            Guard.IsAssignableToType<T>(value, nameof(value));
 
             return (T)value;
         }
@@ -51,7 +51,7 @@ namespace Brainf_ckSharp.Uwp.Resources
             [Pure]
             private static Brush Get([CallerMemberName] string? name = null)
             {
-                Guard.MustBeNotNull(name, nameof(name));
+                Guard.IsNotNull(name, nameof(name));
 
                 return Get<Brush>($"{name}Brush");
             }
@@ -72,7 +72,7 @@ namespace Brainf_ckSharp.Uwp.Resources
             [Pure]
             private static string Get([CallerMemberName] string? name = null)
             {
-                Guard.MustBeNotNull(name, nameof(name));
+                Guard.IsNotNull(name, nameof(name));
 
                 return Get<string>($"{name}Icon");
             }

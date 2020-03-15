@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Brainf_ckSharp.Enums;
@@ -8,6 +7,7 @@ using Brainf_ckSharp.Uwp.Enums;
 using Brainf_ckSharp.Uwp.Models.Ide.Views;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
 using GalaSoft.MvvmLight.Command;
+using Microsoft.Toolkit.Diagnostics;
 
 #nullable enable
 
@@ -43,8 +43,8 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// </summary>
         private async Task LoadDataAsync()
         {
-            Guard.MustBeNotNull(Source, nameof(Source));
-            Guard.MustBeNotNull(Stdin, nameof(Stdin));
+            Guard.IsNotNull(Source, nameof(Source));
+            Guard.IsNotNull(Stdin, nameof(Stdin));
 
             // Run the code on a background thread
             InterpreterResult result = await Task.Run(() =>

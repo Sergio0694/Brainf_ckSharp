@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Buffers;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -8,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
+using Microsoft.Toolkit.Diagnostics;
 
 #nullable enable
 
@@ -123,7 +123,7 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         [Pure]
         private static async Task<string> LoadCodePreviewAsync(StorageFile file, int length)
         {
-            Guard.MustBeGreaterThan(length, 0, nameof(length));
+            Guard.IsGreaterThan(length, 0, nameof(length));
 
             // Open the input file and a streama reader to decode the text
             using Stream stream = await file.OpenStreamForReadAsync();
@@ -171,8 +171,8 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static int ExtractOperators(ReadOnlySpan<char> source, Span<char> destination)
         {
-            DebugGuard.MustBeGreaterThan(source.Length, 0, nameof(source));
-            DebugGuard.MustBeGreaterThan(destination.Length, 0, nameof(destination));
+            Guard.IsGreaterThan(source.Length, 0, nameof(source));
+            Guard.IsGreaterThan(destination.Length, 0, nameof(destination));
 
             ref char sourceRef = ref MemoryMarshal.GetReference(source);
             ref char destinationRef = ref MemoryMarshal.GetReference(destination);

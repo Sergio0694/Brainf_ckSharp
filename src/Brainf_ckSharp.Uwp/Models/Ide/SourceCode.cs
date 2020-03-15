@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using GalaSoft.MvvmLight;
+using Microsoft.Toolkit.Diagnostics;
 
 #nullable enable
 
@@ -101,7 +101,7 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         /// <returns><see langword="true"/> if the data was saved successfully, <see langword="false"/> otherwise</returns>
         public async Task<bool> TrySaveAsync()
         {
-            Guard.MustBeNotNull(File, nameof(File));
+            Guard.IsNotNull(File, nameof(File));
 
             try
             {
