@@ -227,7 +227,7 @@
     </Compile>
     <Compile Include="Controls\Windows.UI.Xaml.Controls\LockedPivot.cs" />
     <Compile Include="Enums\IdeResultSection.cs" />
-    <Compile Include="Enums\CodeLibraryCategory.cs" />
+    <Compile Include="Enums\CodeLibrarySection.cs" />
     <Compile Include="Enums\UserGuideSection.cs" />
     <Compile Include="Extensions\GalaSoft.MvvmLight.Messaging\MessengerExtensions.cs" />
     <Compile Include="Extensions\Microsoft.Xaml.Interactions.Core\ItemClickBehavior.cs" />

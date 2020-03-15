@@ -247,7 +247,7 @@
                             <GroupStyle.HeaderTemplate>
                                 <DataTemplate x:DataType="objectModel:IGroupedCollection">
                                     <jumpList:SemanticZoomZoomedInViewHeaderTemplate
-                                        Title="{x:Bind convertersSubPages:CodeLibraryCategoryConverter.Convert((enums:CodeLibraryCategory)Key))}"
+                                        Title="{x:Bind convertersSubPages:CodeLibraryCategoryConverter.Convert((enums:CodeLibrarySection)Key))}"
                                         Margin="0,-8,0,0"/>
                                 </DataTemplate>
                             </GroupStyle.HeaderTemplate>
@@ -283,7 +283,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="ICollectionViewGroup">
                             <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
-                                Title="{x:Bind convertersSubPages:CodeLibraryCategoryConverter.Convert((enums:CodeLibraryCategory)Group.(objectModel:IGroupedCollection.Key))}"
+                                Title="{x:Bind convertersSubPages:CodeLibraryCategoryConverter.Convert((enums:CodeLibrarySection)Group.(objectModel:IGroupedCollection.Key))}"
                                 Description="{Binding Group.Key}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
