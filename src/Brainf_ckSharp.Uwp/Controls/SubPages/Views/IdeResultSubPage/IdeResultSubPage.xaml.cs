@@ -24,7 +24,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views
         }
 
         /// <inheritdoc/>
-        public double MaxExpandedWidth { get; } = 520;
+        public double MaxExpandedWidth { get; } = 540;
 
         /// <inheritdoc/>
         public double MaxExpandedHeight { get; } = double.PositiveInfinity;

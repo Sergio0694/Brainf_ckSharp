@@ -84,7 +84,7 @@
                 <DataTemplate x:DataType="models:Brainf_ckMemoryCell">
                     <Grid RowSpacing="4">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="48"/>
+                            <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
@@ -146,9 +146,9 @@
                     <ItemsWrapGrid
                         AreStickyGroupHeadersEnabled="False"
                         Orientation="Horizontal"
-                        ItemHeight="80"
-                        attachedProperties:ItemsWrapGridHelper.DesiredItemWidth="128"
-                        MaximumRowsOrColumns="4"/>
+                        ItemHeight="76"
+                        attachedProperties:ItemsWrapGridHelper.DesiredItemWidth="100"
+                        MaximumRowsOrColumns="5"/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
