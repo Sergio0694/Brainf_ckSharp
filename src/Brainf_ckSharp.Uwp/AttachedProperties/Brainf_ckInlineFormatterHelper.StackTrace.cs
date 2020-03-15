@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Text;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
@@ -55,22 +58,97 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
 
             @this.Inlines.Clear();
 
-            for (int i = 0; i < value.Count; i++)
-            {
-                if (i > 0) @this.Inlines.Add(new LineBreak());
+            if (value.Count == 0) return;
 
+            int i = 0;
+            foreach (var entry in CompressStackTrace(value))
+            {
+                if (i++ > 0) @this.Inlines.Add(new LineBreak());
+
+                // Insert the "at" separator if needed
                 @this.Inlines.Add(new Run
                 {
-                    Text = "at",
+                    Text = $"at{(entry.Occurrences > 1 ? $" [{entry.Occurrences * entry.Length} frames]" : string.Empty)}",
                     Foreground = new SolidColorBrush(Colors.DimGray),
                     FontSize = @this.FontSize - 1
                 });
                 @this.Inlines.Add(new LineBreak());
 
-                Span span = new Span();
-                SetSource(span, value[i]);
+                // Add the formatted call line
+                Span line = new Span();
+                SetSource(line, entry.Item);
+                @this.Inlines.Add(line);
+            }
+        }
 
-                @this.Inlines.Add(span);
+        /// <summary>
+        /// Compresses a stack trace by aggregating recursive calls
+        /// </summary>
+        /// <param name="frames">The input list of stack frames</param>
+        [Pure]
+        public static IEnumerable<(string Item, int Occurrences, int Length)> CompressStackTrace(IReadOnlyList<string> frames)
+        {
+            int i = 0;
+            List<(int Length, int Occurrences)> info = new List<(int, int)>();
+            while (i < frames.Count)
+            {
+                for (int step = 1; step < 5 && i + step * 2 - 1 < frames.Count; step++)
+                {
+                    // Find a valid sub-pattern of a given length
+                    bool valid = true;
+                    for (int j = 0; j < step; j++)
+                        if (!frames[i + j].Equals(frames[i + step + j]))
+                        {
+                            valid = false;
+                            break;
+                        }
+                    if (!valid) continue;
+
+                    // Check of many times the pattern repeats
+                    int occurrences = 2;
+                    for (int j = i + step * 2; j + step - 1 < frames.Count; j += step)
+                    {
+                        valid = true;
+                        for (int k = 0; k < step; k++)
+                            if (!frames[i + k].Equals(frames[j + k]))
+                            {
+                                valid = false;
+                                break;
+                            }
+                        if (valid) occurrences++;
+                    }
+
+                    // Store the current sub-sequence info
+                    info.Add((step, occurrences));
+                }
+
+                // Return the current compressed chunk
+                if (info.Count == 0)
+                {
+                    yield return (frames[i], 1, 1);
+                    i += 1;
+                }
+                else
+                {
+                    var best = info.OrderByDescending(item => item.Length * item.Occurrences).ThenBy(item => item.Length).First();
+                    StringBuilder builder = new StringBuilder();
+                    for (int j = 0; j < best.Length; j++)
+                        builder.Append(frames[i + j]);
+                    string call = builder.ToString();
+                    if (call.Contains(':'))
+                    {
+                        // Only aggregate recursive calls
+                        yield return (call, best.Occurrences, best.Length);
+                        i += best.Length * best.Occurrences;
+                    }
+                    else
+                    {
+                        // The repeated loops are just user code
+                        yield return (frames[i], 1, 1);
+                        i += 1;
+                    }
+                }
+                info.Clear();
             }
         }
     }
