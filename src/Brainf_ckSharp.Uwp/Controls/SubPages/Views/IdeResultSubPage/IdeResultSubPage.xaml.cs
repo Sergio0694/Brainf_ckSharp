@@ -14,13 +14,11 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views
         /// Creates a new <see cref="IdeResultSubPage"/> instance with the specified parameters
         /// </summary>
         /// <param name="script">The script to execute</param>
-        /// <param name="stdin">The stdin buffer to use</param>
-        public IdeResultSubPage(string script, string stdin)
+        public IdeResultSubPage(string script)
         {
             this.InitializeComponent();
 
             ViewModel.Script = script;
-            ViewModel.Stdin = stdin;
         }
 
         /// <inheritdoc/>

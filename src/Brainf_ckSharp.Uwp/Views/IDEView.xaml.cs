@@ -26,11 +26,9 @@ namespace Brainf_ckSharp.Uwp.Views
         /// <param name="e">The empty <see cref="EventArgs"/> instance for this event</param>
         private void IdeViewModel_OnScriptRunRequested(object sender, EventArgs e)
         {
-            string
-                source = CodeEditor.GetText(),
-                stdin = string.Empty;
+            string source = CodeEditor.GetText();
 
-            Messenger.Default.Send(SubPageNavigationRequestMessage.To(new IdeResultSubPage(source, stdin)));
+            Messenger.Default.Send(SubPageNavigationRequestMessage.To(new IdeResultSubPage(source)));
         }
 
         /// <summary>

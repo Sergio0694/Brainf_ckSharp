@@ -4,9 +4,11 @@ using System.Windows.Input;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Uwp.Enums;
+using Brainf_ckSharp.Uwp.Messages.InputPanel;
 using Brainf_ckSharp.Uwp.Models.Ide.Views;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.Diagnostics;
 
 #nullable enable
@@ -29,11 +31,6 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         public string? Script { get; set; }
 
         /// <summary>
-        /// Gets or sets the stdin buffer to use
-        /// </summary>
-        public string? Stdin { get; set; }
-
-        /// <summary>
         /// Gets the <see cref="ICommand"/> instance responsible for loading the available source codes
         /// </summary>
         public ICommand LoadDataCommand { get; }
@@ -44,7 +41,8 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         private async Task LoadDataAsync()
         {
             Guard.IsNotNull(Source, nameof(Source));
-            Guard.IsNotNull(Stdin, nameof(Stdin));
+
+            string stdin = Messenger.Default.Request<StdinRequestMessage, string>();
 
             // Run the code on a background thread
             InterpreterResult result = await Task.Run(() =>
@@ -52,7 +50,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
                 using InterpreterSession session = Brainf_ckInterpreter
                     .CreateDebugConfiguration()
                     .WithSource(Script!)
-                    .WithStdin(Stdin!)
+                    .WithStdin(stdin)
                     .TryRun()
                     .Value!;
 
