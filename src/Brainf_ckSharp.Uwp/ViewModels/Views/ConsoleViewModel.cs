@@ -171,10 +171,10 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         private async Task ExecuteCommandAsync(string command)
         {
             /* Handle the various possible commands:
-             *   Empty command: skip the execution and add a new line
-             *   Syntax errors and exceptions: each has its own template
-             *   Runs with no output: just add a new line
-             *   Runs with output: add the output line, then a new command line */
+             * - Empty command: skip the execution and add a new line
+             * - Syntax errors and exceptions: each has its own template
+             * - Runs with no output: just add a new line
+             * - Runs with output: add the output line, then a new command line */
             if (!string.IsNullOrEmpty(command))
             {
                 string stdin = Messenger.Default.Request<StdinRequestMessage, string>();

@@ -71,6 +71,7 @@
                     <ListView.ItemTemplateSelector>
                         <templateSelectors:IdeResultSectionTemplateSelector
                             ExceptionTypeTemplate="{StaticResource ExceptionTypeTemplate}"
+                            ErrorLocationTemplate="{StaticResource ErrorPositionTemplate}"
                             StdoutTemplate="{StaticResource StdoutTemplate}"
                             StackTraceTemplate="{StaticResource StackTraceTemplate}"
                             SourceCodeTemplate="{StaticResource SourceCodeTemplate}"

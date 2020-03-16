@@ -6,7 +6,8 @@
     xmlns:models="using:Brainf_ckSharp.Models"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     xmlns:convertersConsole="using:Brainf_ckSharp.Uwp.Converters.Console"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls">
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:system="using:System">
 
     <!--Exception type template-->
     <DataTemplate
@@ -28,6 +29,51 @@
                 FontWeight="SemiBold"
                 Foreground="#FF900000"/>
         </TextBlock>
+    </DataTemplate>
+
+    <!--Error position-->
+    <DataTemplate
+        x:Key="ErrorPositionTemplate"
+        x:DataType="views:IdeResultWithSectionInfo">
+        <Grid HorizontalAlignment="Left">
+
+            <!--Outer border-->
+            <Border
+                BorderThickness="2"
+                BorderBrush="#20FFFFFF"/>
+
+            <!--Value and body-->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Operator-->
+                <Canvas Background="#20000000"/>
+                <TextBlock
+                    Grid.Column="0"
+                    FontSize="20"
+                    Foreground="LightGray"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+                    <Span attachedProperties:Brainf_ckInlineFormatterHelper.Source="{x:Bind Result.ExceptionInfo.HaltingOperator.ToString()}"/>
+                </TextBlock>
+
+                <!--Offset-->
+                <Canvas
+                    Background="#06FFFFFF"
+                    Grid.Column="1"/>
+                <TextBlock
+                    Padding="12"
+                    Grid.Column="1"
+                    FontSize="16"
+                    TextWrapping="Wrap"
+                    FontWeight="SemiBold"
+                    Foreground="DarkRed"
+                    Text="{x:Bind system:String.Format('Position {0}', Result.ExceptionInfo.HaltingOffset)}"/>
+            </Grid>
+        </Grid>
     </DataTemplate>
 
     <!--Stdout-->
