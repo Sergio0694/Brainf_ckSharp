@@ -285,4 +285,49 @@
             </ListView.ItemsPanel>
         </ListView>
     </DataTemplate>
+
+    <!--Statistics-->
+    <DataTemplate
+        x:Key="StatisticsTemplate"
+        x:DataType="views:IdeResultWithSectionInfo">
+        <Grid HorizontalAlignment="Left">
+
+            <!--Outer border-->
+            <Border
+                BorderThickness="2"
+                BorderBrush="#20FFFFFF"/>
+
+            <!--Info-->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Timestamp-->
+                <Canvas Background="#20000000"/>
+                <TextBlock
+                    Padding="12"
+                    Grid.Column="0"
+                    FontSize="16"
+                    Foreground="DarkCyan"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Text="{x:Bind Result.ElapsedTime.ToString()}"/>
+
+                <!--Operators-->
+                <Canvas
+                    Background="#06FFFFFF"
+                    Grid.Column="1"/>
+                <TextBlock
+                    Padding="32,12,32,12"
+                    Grid.Column="1"
+                    FontSize="16"
+                    TextWrapping="Wrap"
+                    FontWeight="SemiBold"
+                    Foreground="#FFD0D0D0"
+                    Text="{x:Bind system:String.Format('{0} operator(s)', Result.TotalOperations)}"/>
+            </Grid>
+        </Grid>
+    </DataTemplate>
 </ResourceDictionary>

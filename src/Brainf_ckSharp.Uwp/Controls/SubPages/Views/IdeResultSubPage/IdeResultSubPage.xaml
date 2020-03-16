@@ -76,7 +76,8 @@
                             StackTraceTemplate="{StaticResource StackTraceTemplate}"
                             SourceCodeTemplate="{StaticResource SourceCodeTemplate}"
                             FunctionDefinitionsTemplate="{StaticResource FunctionDefinitionsTemploate}"
-                            MemoryStateTemplate="{StaticResource MemoryStateTemploate}"/>
+                            MemoryStateTemplate="{StaticResource MemoryStateTemploate}"
+                            StatisticsTemplate="{StaticResource StatisticsTemplate}"/>
                     </ListView.ItemTemplateSelector>
                 </ListView>
             </SemanticZoom.ZoomedInView>
