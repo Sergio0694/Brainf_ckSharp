@@ -124,6 +124,7 @@
     </Compile>
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.StackTrace.cs" />
     <Compile Include="AttachedProperties\CharacterRotationHelper.cs" />
+    <Compile Include="AttachedProperties\IdeResultSectionDescriptionHelper.cs" />
     <Compile Include="AttachedProperties\ItemsWrapGridHelper.cs" />
     <Compile Include="AttachedProperties\ListViewBaseHelper.cs" />
     <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />

@@ -23,6 +23,13 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList
 
             _DescriptionBlock = GetTemplateChild("DescriptionBlock") as TextBlock
                                 ?? throw new InvalidOperationException("Failed to find description block");
+
+            // Load the span explicitly, if present
+            if (DescriptionSpan is { } span)
+            {
+                _DescriptionBlock.Inlines.Clear();
+                _DescriptionBlock.Inlines.Add(span);
+            }
         }
 
         /// <summary>
@@ -77,7 +84,7 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList
             nameof(DescriptionSpan),
             typeof(Span),
             typeof(SemanticZoomZoomedOutViewHeaderTemplate),
-            new PropertyMetadata(DependencyProperty.UnsetValue, OnDescriptionSpanPropertyChanged));
+            new PropertyMetadata(null, OnDescriptionSpanPropertyChanged));
 
         /// <summary>
         /// Sets a new <see cref="Span"/> for the description when <see cref="DescriptionSpan"/> changes
@@ -89,6 +96,8 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList
             SemanticZoomZoomedOutViewHeaderTemplate @this = (SemanticZoomZoomedOutViewHeaderTemplate)d;
             Span span = e.NewValue as Span
                         ?? throw new ArgumentException($"Can't assign null to the {nameof(DescriptionSpan)} property");
+
+            if (@this._DescriptionBlock is null) return;
 
             @this._DescriptionBlock.Inlines.Clear();
             @this._DescriptionBlock.Inlines.Add(span);

@@ -13,7 +13,9 @@
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
     xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
     xmlns:enums="using:Brainf_ckSharp.Uwp.Enums"
+    xmlns:models="using:Brainf_ckSharp.Uwp.Models.Ide.Views"
     xmlns:views="using:Brainf_ckSharp.Uwp.Controls.SubPages.Views"
+    xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -97,8 +99,11 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="ICollectionViewGroup">
                             <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
-                                Title="{x:Bind convertersSubPages:IdeResultSectionConverter.Convert((enums:IdeResultSection)Group.(objectModel:IGroupedCollection.Key))}"
-                                DescriptionText="{Binding Group.Key}"/>
+                                Title="{x:Bind convertersSubPages:IdeResultSectionConverter.Convert((enums:IdeResultSection)Group.(objectModel:IGroupedCollection.Key))}">
+                                <jumpList:SemanticZoomZoomedOutViewHeaderTemplate.DescriptionSpan>
+                                    <Span attachedProperties:IdeResultSectionDescriptionHelper.Section="{x:Bind (models:IdeResultWithSectionInfo)GroupItems[0]}"/>
+                                </jumpList:SemanticZoomZoomedOutViewHeaderTemplate.DescriptionSpan>
+                            </jumpList:SemanticZoomZoomedOutViewHeaderTemplate>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
