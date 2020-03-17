@@ -92,7 +92,7 @@
                         <DataTemplate x:DataType="ICollectionViewGroup">
                             <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
                                 Title="{x:Bind convertersSubPages:UserGuideSectionConverter.ConvertTitle((enums:UserGuideSection)Group.(objectModel:IGroupedCollection.Key))}"
-                                Description="{x:Bind convertersSubPages:UserGuideSectionConverter.ConvertDescription((enums:UserGuideSection)Group.(objectModel:IGroupedCollection.Key))}"/>
+                                DescriptionText="{x:Bind convertersSubPages:UserGuideSectionConverter.ConvertDescription((enums:UserGuideSection)Group.(objectModel:IGroupedCollection.Key))}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

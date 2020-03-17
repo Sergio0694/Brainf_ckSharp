@@ -98,7 +98,7 @@
                         <DataTemplate x:DataType="ICollectionViewGroup">
                             <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
                                 Title="{x:Bind convertersSubPages:IdeResultSectionConverter.Convert((enums:IdeResultSection)Group.(objectModel:IGroupedCollection.Key))}"
-                                Description="{Binding Group.Key}"/>
+                                DescriptionText="{Binding Group.Key}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

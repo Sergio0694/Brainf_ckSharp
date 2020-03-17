@@ -284,7 +284,7 @@
                         <DataTemplate x:DataType="ICollectionViewGroup">
                             <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
                                 Title="{x:Bind convertersSubPages:CodeLibraryCategoryConverter.Convert((enums:CodeLibrarySection)Group.(objectModel:IGroupedCollection.Key))}"
-                                Description="{Binding Group.Key}"/>
+                                DescriptionText="{Binding Group.Key}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
