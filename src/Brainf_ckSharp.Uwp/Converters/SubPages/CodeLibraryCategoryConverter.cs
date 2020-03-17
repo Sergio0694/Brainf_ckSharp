@@ -5,23 +5,23 @@ using Brainf_ckSharp.Uwp.Enums;
 namespace Brainf_ckSharp.Uwp.Converters.SubPages
 {
     /// <summary>
-    /// A <see langword="class"/> with helper functions to format <see cref="CodeLibraryCategory"/> instances
+    /// A <see langword="class"/> with helper functions to format <see cref="CodeLibrarySection"/> instances
     /// </summary>
     public static class CodeLibraryCategoryConverter
     {
         /// <summary>
-        /// Converts a <see cref="CodeLibraryCategory"/> instance into its representation
+        /// Converts a <see cref="CodeLibrarySection"/> instance into its representation
         /// </summary>
-        /// <param name="category">The input <see cref="CodeLibraryCategory"/> instance</param>
-        /// <returns>A <see cref="string"/> representing the input <see cref="CodeLibraryCategory"/> instance</returns>
+        /// <param name="section">The input <see cref="CodeLibrarySection"/> instance</param>
+        /// <returns>A <see cref="string"/> representing the input <see cref="CodeLibrarySection"/> instance</returns>
         [Pure]
-        public static string Convert(CodeLibraryCategory category)
+        public static string Convert(CodeLibrarySection section)
         {
-            if (category == CodeLibraryCategory.Favorites) return "Favorites";
-            if (category == CodeLibraryCategory.Recent) return "Recent";
-            if (category == CodeLibraryCategory.Samples) return "Samples";
+            if (section == CodeLibrarySection.Favorites) return "Favorites";
+            if (section == CodeLibrarySection.Recent) return "Recent";
+            if (section == CodeLibrarySection.Samples) return "Samples";
 
-            throw new ArgumentException($"Invalid input value: {category}", nameof(category));
+            throw new ArgumentException($"Invalid input value: {section}", nameof(section));
         }
     }
 }

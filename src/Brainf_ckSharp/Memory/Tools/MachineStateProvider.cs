@@ -1,8 +1,8 @@
-﻿using System.Diagnostics;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
+using Microsoft.Toolkit.Diagnostics;
 
 namespace Brainf_ckSharp.Memory.Tools
 {
@@ -33,8 +33,8 @@ namespace Brainf_ckSharp.Memory.Tools
         [Pure]
         public static IReadOnlyMachineState Create(int size, OverflowMode overflowMode)
         {
-            Guard.MustBeGreaterThanOrEqualTo(size, 32, nameof(size));
-            Guard.MustBeLessThanOrEqualTo(size, 1024, nameof(size));
+            Guard.IsGreaterThanOrEqualTo(size, 32, nameof(size));
+            Guard.IsLessThanOrEqualTo(size, 1024, nameof(size));
 
             return new TuringMachineState(size, overflowMode);
         }

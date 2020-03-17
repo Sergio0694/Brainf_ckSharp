@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using Windows.UI.Text;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
@@ -9,6 +10,16 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// The reference text currently in use
         /// </summary>
         private string _ReferenceText = "\r";
+
+        /// <summary>
+        /// Gets the source code currently displayed in the control
+        /// </summary>
+        /// <returns></returns>
+        [Pure]
+        public string GetText()
+        {
+            return CodeEditBox.PlainText;
+        }
 
         /// <summary>
         /// Loads a given text file and starts using it as reference for the git diff indicators

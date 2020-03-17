@@ -24,7 +24,7 @@ using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
 {
-    public sealed class CodeLibrarySubPageViewModel : GroupedItemsCollectionViewModelBase<CodeLibraryCategory, object>
+    public sealed class CodeLibrarySubPageViewModel : GroupedItemsCollectionViewModelBase<CodeLibrarySection, object>
     {
         /// <summary>
         /// The path of folder that contains the sample files
@@ -148,12 +148,12 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
 
             // Add the favorites, if any
             IEnumerable<CodeLibraryEntry> favorited = sorted.Where(entry => entry?.Metadata.IsFavorited == true)!;
-            Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Favorites, favorited.Append<object>(CodeLibraryCategory.Favorites)));
+            Source.Add(CodeLibrarySection.Favorites, favorited.Append<object>(CodeLibrarySection.Favorites));
 
             // Add the recent and sample items
             IEnumerable<CodeLibraryEntry> unfavorited = sorted.Where(entry => entry?.Metadata.IsFavorited == false)!;
-            Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Recent, unfavorited.Append<object>(CodeLibraryCategory.Recent)));
-            Source.Add(new ObservableGroup<CodeLibraryCategory, object>(CodeLibraryCategory.Samples, samples));
+            Source.Add(CodeLibrarySection.Recent, unfavorited.Append<object>(CodeLibrarySection.Recent));
+            Source.Add(CodeLibrarySection.Samples, samples);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         public void ProcessItem(object item)
         {
             if (item is CodeLibraryEntry entry) _ = OpenFileAsync(entry);
-            else if (item is CodeLibraryCategory c) RequestOpenFile(c == CodeLibraryCategory.Favorites);
+            else if (item is CodeLibrarySection c) RequestOpenFile(c == CodeLibrarySection.Favorites);
             else throw new ArgumentException("The input item can't be null");
         }
 

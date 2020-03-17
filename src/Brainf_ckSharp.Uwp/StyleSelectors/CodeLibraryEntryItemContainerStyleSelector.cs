@@ -27,7 +27,7 @@ namespace Brainf_ckSharp.Uwp.StyleSelectors
             switch (item)
             {
                 case CodeLibraryEntry _: return DefaultContainerStyle;
-                case CodeLibraryCategory _: return PlaceholderContainerStyle;
+                case CodeLibrarySection _: return PlaceholderContainerStyle;
                 default: throw new ArgumentNullException(nameof(item), "The input item can't be null");
             }
         }

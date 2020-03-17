@@ -11,6 +11,7 @@
     d:DesignWidth="400">
     <UserControl.DataContext>
         <views:IdeViewModel
+            ScriptRunRequested="IdeViewModel_OnScriptRunRequested"
             CharacterAdded="ViewModelCharacterAdded"
             CharacterDeleted="ViewModel_CharacterDeleted"
             CodeLoaded="ViewModel_CodeLoaded"

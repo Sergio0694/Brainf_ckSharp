@@ -160,7 +160,8 @@
                     Label="Run"
                     Icon="{markupExtensions:FontIconExtension Glyph={StaticResource RunIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}"
-                    Foreground="{StaticResource RunBrush}">
+                    Foreground="{StaticResource RunBrush}"
+                    Click="{x:Bind ViewModel.RunIdeScript}">
                     <AppBarButton.Resources>
                         <SolidColorBrush x:Key="AppBarButtonForegroundPointerOver" Color="{StaticResource RunColor}"/>
                         <SolidColorBrush x:Key="AppBarButtonForegroundPressed" Color="{StaticResource RunColor}"/>

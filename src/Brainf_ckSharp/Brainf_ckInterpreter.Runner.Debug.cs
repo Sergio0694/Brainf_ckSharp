@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ckSharp.Buffers;
@@ -110,9 +109,9 @@ namespace Brainf_ckSharp
                 CancellationToken debugToken)
                 where TExecutionContext : struct, IMachineStateExecutionContext
             {
-                DebugGuard.MustBeGreaterThanOrEqualTo(depth, 0, nameof(depth));
-                DebugGuard.MustBeGreaterThanOrEqualTo(totalOperations, 0, nameof(totalOperations));
-                DebugGuard.MustBeGreaterThanOrEqualTo(totalFunctions, 0, nameof(totalFunctions));
+                System.Diagnostics.Debug.Assert(depth >= 0);
+                System.Diagnostics.Debug.Assert(totalOperations >= 0);
+                System.Diagnostics.Debug.Assert(totalFunctions >= 0);
 
                 // Outer loop to go through the existing stack frames
                 StackFrame frame;

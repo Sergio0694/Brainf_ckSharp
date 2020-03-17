@@ -1,9 +1,9 @@
-﻿using System.Diagnostics;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Shapes;
 using Microsoft.Graphics.Canvas.UI.Xaml;
+using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using UICompositionAnimations.Enums;
 
@@ -101,12 +101,12 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             ContentScroller = (ScrollViewer)GetTemplateChild(ContentScrollerName);
             ContentElement = (ContentPresenter)GetTemplateChild(ContentElementName);
 
-            Guard.MustBeNotNull(_BackgroundCanvas, nameof(BackgroundCanvasName));
-            Guard.MustBeNotNull(_TextOverlaysCanvas, nameof(TextOverlaysCanvasName));
-            Guard.MustBeNotNull(_SelectionHighlightBorder, nameof(SelectionHighlightBorderName));
-            Guard.MustBeNotNull(_CursorIndicatorRectangle, nameof(CursorIndicatorRectangleName));
-            Guard.MustBeNotNull(ContentScroller, ContentScrollerName);
-            Guard.MustBeNotNull(ContentElement, ContentElementName);
+            Guard.IsNotNull(_BackgroundCanvas, nameof(BackgroundCanvasName));
+            Guard.IsNotNull(_TextOverlaysCanvas, nameof(TextOverlaysCanvasName));
+            Guard.IsNotNull(_SelectionHighlightBorder, nameof(SelectionHighlightBorderName));
+            Guard.IsNotNull(_CursorIndicatorRectangle, nameof(CursorIndicatorRectangleName));
+            Guard.IsNotNull(ContentScroller, ContentScrollerName);
+            Guard.IsNotNull(ContentElement, ContentElementName);
 
             _BackgroundCanvas.SizeChanged += BackgroundCanvas_SizeChanged;
             _TextOverlaysCanvas.Draw += TextOverlaysCanvas_Draw;
@@ -139,7 +139,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         {
             _VerticalContentScrollBar = (ScrollBar)ContentScroller.FindDescendantByName(VerticalScrollBarName);
 
-            Guard.MustBeNotNull(_VerticalContentScrollBar, nameof(ContentScroller));
+            Guard.IsNotNull(_VerticalContentScrollBar, nameof(ContentScroller));
 
             _VerticalContentScrollBar.Margin = VerticalScrollBarMargin;
         }

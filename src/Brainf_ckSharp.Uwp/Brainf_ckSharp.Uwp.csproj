@@ -3,7 +3,6 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{45467BB7-1876-4182-B6B5-B0E5986CD96D}</ProjectGuid>
@@ -123,12 +122,25 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.StackTrace.cs" />
     <Compile Include="AttachedProperties\CharacterRotationHelper.cs" />
+    <Compile Include="AttachedProperties\IdeResultSectionDescriptionHelper.cs" />
     <Compile Include="AttachedProperties\ItemsWrapGridHelper.cs" />
     <Compile Include="AttachedProperties\ListViewBaseHelper.cs" />
     <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />
-    <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.cs" />
+    <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.Source.cs" />
     <Compile Include="AttachedProperties\ReactiveViewModelHelper.cs" />
+    <Compile Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPageTemplates.xaml.cs">
+      <DependentUpon>IdeResultSubPageTemplates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPage.xaml.cs">
+      <DependentUpon>IdeResultSubPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Views\UnicodeCharactersMap\UnicodeCharactersMapSubPageTemplates.xaml.cs">
+      <DependentUpon>UnicodeCharactersMapSubPageTemplates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\Console\ExitCodeConverter.cs" />
+    <Compile Include="Converters\SubPages\IdeResultSectionConverter.cs" />
     <Compile Include="Converters\SubPages\CodeLibraryCategoryConverter.cs" />
     <Compile Include="Converters\Console\SyntaxValidationResultConverter.cs" />
     <Compile Include="Converters\SubPages\CodeMetadataConverter.cs" />
@@ -199,12 +211,6 @@
     <Compile Include="Controls\SubPages\Shell\UserGuide\UserGuideSubPage.xaml.cs">
       <DependentUpon>UserGuideSubPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SubPages\Views\UnicodeCharactersMap\Templates\UnicodeIntervalTemplate.xaml.cs">
-      <DependentUpon>UnicodeIntervalTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Views\UnicodeCharactersMap\Templates\UnicodeCharacterTemplate.xaml.cs">
-      <DependentUpon>UnicodeCharacterTemplate.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\SubPages\Views\CodeLibrarySubPage.xaml.cs">
       <DependentUpon>CodeLibrarySubPage.xaml</DependentUpon>
     </Compile>
@@ -221,7 +227,8 @@
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Windows.UI.Xaml.Controls\LockedPivot.cs" />
-    <Compile Include="Enums\CodeLibraryCategory.cs" />
+    <Compile Include="Enums\IdeResultSection.cs" />
+    <Compile Include="Enums\CodeLibrarySection.cs" />
     <Compile Include="Enums\UserGuideSection.cs" />
     <Compile Include="Extensions\GalaSoft.MvvmLight.Messaging\MessengerExtensions.cs" />
     <Compile Include="Extensions\Microsoft.Xaml.Interactions.Core\ItemClickBehavior.cs" />
@@ -229,6 +236,7 @@
     <Compile Include="Extensions\System.Collections.Generic\IListExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IReadOnlyListExtensions.cs" />
     <Compile Include="Extensions\System.Collections.ObjectModel\IGroupedCollection.cs" />
+    <Compile Include="Extensions\System.Collections.ObjectModel\ObservableCollectionExtensions.cs" />
     <Compile Include="Extensions\System.Collections.ObjectModel\ObservableGroup{TKey,TElement}.cs" />
     <Compile Include="Extensions\System\BoolExtensions.cs" />
     <Compile Include="Extensions\System\Enum{T}.cs" />
@@ -250,6 +258,7 @@
     <Compile Include="Messages\Console\Commands\RunCommandRequestMessage.cs" />
     <Compile Include="Messages\Console\MemoryState\MemoryStateChangedNotificationMessage.cs" />
     <Compile Include="Messages\Console\MemoryState\MemoryStateRequestMessage.cs" />
+    <Compile Include="Messages\Ide\RunIdeScriptRequestMessage.cs" />
     <Compile Include="Messages\Ide\DeleteCharacterRequestMessage.cs" />
     <Compile Include="Messages\Ide\InsertNewLineRequestMessage.cs" />
     <Compile Include="Messages\Ide\LoadSourceCodeRequestMessage.cs" />
@@ -273,6 +282,7 @@
     <Compile Include="Models\Ide\CodeLibraryEntry.cs" />
     <Compile Include="Models\Ide\CodeMetadata.cs" />
     <Compile Include="Models\Ide\SourceCode.cs" />
+    <Compile Include="Models\Ide\Views\IdeResultWithSectionInfo.cs" />
     <Compile Include="Models\UnicodeCharacter.cs" />
     <Compile Include="Models\UnicodeInterval.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -290,12 +300,14 @@
     <Compile Include="Services\Share\ShareService.cs" />
     <Compile Include="StyleSelectors\CodeLibraryEntryItemContainerStyleSelector.cs" />
     <Compile Include="TemplateSelectors\ConsoleEntryTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\IdeResultSectionTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\SourceCodeEntryTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\UserGuideSectionTemplateSelector.cs" />
     <Compile Include="ViewModels\Abstract\Collections\GroupedItemsCollectionViewModelBase{TKey,TElement}.cs" />
     <Compile Include="ViewModels\Abstract\Collections\ItemsCollectionViewModelBase{T}.cs" />
     <Compile Include="ViewModels\Abstract\ReactiveViewModelBase.cs" />
     <Compile Include="ViewModels\Controls\SubPages\CodeLibrarySubPageViewModel.cs" />
+    <Compile Include="ViewModels\Controls\SubPages\IdeResultSubPageViewModel.cs" />
     <Compile Include="ViewModels\Controls\SubPages\UnicodeCharactersMapSubPageViewModel.cs" />
     <Compile Include="ViewModels\Views\ConsoleViewModel.cs" />
     <Compile Include="ViewModels\Controls\CompactMemoryViewerViewModel.cs" />
@@ -388,12 +400,11 @@
     <PackageReference Include="UICompositionAnimations">
       <Version>4.1.1</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit">
+      <Version>6.1.0-build.9</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Brainf_ckSharp.Diagnostics\Brainf_ckSharp.Diagnostics.csproj">
-      <Project>{a464d3e4-c6e0-48ec-a786-c2db610d9bd0}</Project>
-      <Name>Brainf_ckSharp.Diagnostics</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Brainf_ckSharp.Git\Brainf_ckSharp.Git.csproj">
       <Project>{8000d892-951c-49b3-ae95-db85d909c717}</Project>
       <Name>Brainf_ckSharp.Git</Name>
@@ -500,11 +511,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\SubPages\Views\UnicodeCharactersMap\Templates\UnicodeIntervalTemplate.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPageTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\SubPages\Views\UnicodeCharactersMap\Templates\UnicodeCharacterTemplate.xaml">
+    <Page Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -513,6 +524,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\SubPages\Views\UnicodeCharactersMap\UnicodeCharactersMapSubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Views\UnicodeCharactersMap\UnicodeCharactersMapSubPageTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

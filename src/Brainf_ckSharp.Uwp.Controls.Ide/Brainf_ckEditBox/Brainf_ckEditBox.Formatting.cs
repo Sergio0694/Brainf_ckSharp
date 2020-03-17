@@ -96,8 +96,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="start">The current index for the formatting operation</param>
         private void FormatSingleCharacter(ref string text, int start)
         {
-            DebugGuard.MustBeGreaterThan(start, 0, nameof(start));
-            DebugGuard.MustBeLessThan(start, text.Length, nameof(start));
+            Debug.Assert(start > 0);
+            Debug.Assert(start < text.Length);
 
             char c = text[start - 1];
 
@@ -156,11 +156,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="end">The final position to apply the highlight to</param>
         private void FormatRange(string text, int start, int end)
         {
-            DebugGuard.MustBeGreaterThanOrEqualTo(start, 0, nameof(start));
-            DebugGuard.MustBeGreaterThan(end, 0, nameof(end));
-            DebugGuard.MustBeLessThan(start, end, nameof(start));
-            DebugGuard.MustBeLessThan(start, text.Length, nameof(start));
-            DebugGuard.MustBeLessThanOrEqualTo(end, text.Length, nameof(end));
+            Debug.Assert(start >= 0);
+            Debug.Assert(end > 0);
+            Debug.Assert(start < end);
+            Debug.Assert(start < text.Length);
+            Debug.Assert(end <= text.Length);
 
             ref char r0 = ref MemoryMarshal.GetReference(text.AsSpan());
 
@@ -218,7 +218,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         private void ShiftForward()
         {
-            DebugGuard.MustBeGreaterThanOrEqualTo(Math.Abs(Document.Selection.Length), 2, nameof(Document.Selection));
+            Debug.Assert(Math.Abs(Document.Selection.Length) >= 2);
 
             using (FormattingLock.For(this))
             {
@@ -247,7 +247,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         private void ShiftBackward()
         {
-            DebugGuard.MustBeGreaterThanOrEqualTo(Math.Abs(Document.Selection.Length), 2, nameof(Document.Selection));
+            Debug.Assert(Math.Abs(Document.Selection.Length) >= 2);
 
             using (FormattingLock.For(this))
             {

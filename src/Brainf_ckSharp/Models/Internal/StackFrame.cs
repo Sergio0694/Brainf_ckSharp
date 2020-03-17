@@ -32,8 +32,8 @@ namespace Brainf_ckSharp.Models.Internal
         /// <param name="offset">The current offset during execution</param>
         public StackFrame(Range range, int offset)
         {
-            DebugGuard.MustBeGreaterThanOrEqualTo(offset, range.Start, nameof(offset));
-            DebugGuard.MustBeLessThanOrEqualTo(offset, range.End, nameof(offset));
+            Debug.Assert(offset >= range.Start);
+            Debug.Assert(offset <= range.End);
 
             Range = range;
             Offset = offset;

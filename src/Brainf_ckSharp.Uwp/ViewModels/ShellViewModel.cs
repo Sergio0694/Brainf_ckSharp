@@ -46,6 +46,11 @@ namespace Brainf_ckSharp.Uwp.ViewModels
         public void RestartConsole() => Messenger.Default.Send<RestartConsoleRequestMessage>();
 
         /// <summary>
+        /// Runs the current IDE script
+        /// </summary>
+        public void RunIdeScript() => Messenger.Default.Send<RunIdeScriptRequestMessage>();
+
+        /// <summary>
         /// Inserts a new line into the IDE
         /// </summary>
         public void InsertNewLine() => Messenger.Default.Send<InsertNewLineRequestMessage>();

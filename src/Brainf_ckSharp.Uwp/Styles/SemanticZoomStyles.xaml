@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList">
 
     <!--Header for the zoomed in view-->
@@ -81,11 +82,15 @@
                             VerticalAlignment="Center"
                             HorizontalTextAlignment="Left"/>
                         <TextBlock
-                            Text="{TemplateBinding Description}"
+                            x:Name="DescriptionBlock"
                             Foreground="LightGray"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            HorizontalTextAlignment="Left"/>
+                            HorizontalTextAlignment="Left">
+                            <Span>
+                                <Run Text="{TemplateBinding DescriptionText}"/>
+                            </Span>
+                        </TextBlock>
                     </StackPanel>
                 </ControlTemplate>
             </Setter.Value>

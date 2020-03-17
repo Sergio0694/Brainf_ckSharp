@@ -2,12 +2,12 @@
 using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
+using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.HighPerformance.Extensions;
 
 namespace Brainf_ckSharp.Memory
@@ -105,9 +105,10 @@ namespace Brainf_ckSharp.Memory
 
                 if (array is null) ThrowObjectDisposedException();
 
-                Guard.MustBeGreaterThanOrEqualTo(index, 0, nameof(index));
-                Guard.MustBeLessThan(index, Size, nameof(index));
-
+                /* Manually check the current size, as the buffer
+                 * is rented from the pool and its length might
+                 * actually be greater than the memory state.*/
+                Guard.IsInRange(index, 0, Size, nameof(index));
                 ushort value = array!.DangerousGetReferenceAt(index);
 
                 return new Brainf_ckMemoryCell(index, value, _Position == index);
