@@ -75,7 +75,7 @@ namespace Brainf_ckSharp.Uwp.TemplateSelectors
                 IdeResultSection.MemoryState => MemoryStateTemplate,
                 IdeResultSection.Statistics => StatisticsTemplate,
                 _ => throw new ArgumentOutOfRangeException($"Invalid section entry: {model.Section}")
-            };
+            } ?? throw new ArgumentException($"Missing template for item of type {model.Section}");
         }
     }
 }
