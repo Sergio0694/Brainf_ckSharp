@@ -86,7 +86,11 @@
                             Foreground="LightGray"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            HorizontalTextAlignment="Left">
+                            HorizontalTextAlignment="Left"
+                            TextWrapping="NoWrap"
+                            MaxLines="1"
+                            TextTrimming="CharacterEllipsis"
+                            FontSize="16">
                             <Span>
                                 <Run Text="{TemplateBinding DescriptionText}"/>
                             </Span>

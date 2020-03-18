@@ -4,6 +4,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 using Brainf_ckSharp.Uwp.Constants;
+using Brainf_ckSharp.Uwp.Converters.Console;
 using Brainf_ckSharp.Uwp.Enums;
 using Brainf_ckSharp.Uwp.Models.Ide.Views;
 
@@ -60,6 +61,13 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
 
             switch (value.Section)
             {
+                case IdeResultSection.ExceptionType:
+                    @this.Inlines.Add(new Run
+                    {
+                        Text = $"exception > {ExitCodeConverter.Convert(value.Result.ExitCode)}",
+                        Foreground = new SolidColorBrush(Colors.DarkRed)
+                    });
+                    break;
                 case IdeResultSection.Stdout:
                     @this.Inlines.Add(new Run
                     {
