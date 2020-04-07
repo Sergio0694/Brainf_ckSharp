@@ -33,7 +33,7 @@ namespace Brainf_ckSharp.Profiler
             Script = ScriptLoader.LoadScriptByName(Name!);
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public string Debug()
         {
             Option<InterpreterSession> result = Brainf_ckInterpreter
