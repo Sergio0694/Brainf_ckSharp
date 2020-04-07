@@ -13,20 +13,18 @@ foreach (var name in names)
 #>
     public partial class <#=name#>Test
     {
+<#
+    var scripts = new[] { "HelloWorld", "Sum", "Multiply", "Division", "Fibonacci", "Mandelbrot" };
+    foreach (var script in scripts)
+    {
+        if (script != scripts[0]) WriteLine("");
+#>
         [TestMethod]
-        public void HelloWorld() => ScriptTest.TestScript(Run);
+        public void <#=script#>() => ScriptTest.TestScript(Run);
+<#        
 
-        [TestMethod]
-        public void Sum() => ScriptTest.TestScript(Run);
-
-        [TestMethod]
-        public void Multiply() => ScriptTest.TestScript(Run);
-
-        [TestMethod]
-        public void Division() => ScriptTest.TestScript(Run);
-
-        [TestMethod]
-        public void Fibonacci() => ScriptTest.TestScript(Run);
+    }
+#>
     }
 <#
 }

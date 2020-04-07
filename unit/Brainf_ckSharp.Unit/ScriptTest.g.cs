@@ -18,6 +18,9 @@ namespace Brainf_ckSharp.Unit
 
         [TestMethod]
         public void Fibonacci() => ScriptTest.TestScript(Run);
+
+        [TestMethod]
+        public void Mandelbrot() => ScriptTest.TestScript(Run);
     }
 
     public partial class ReleaseTest
@@ -36,5 +39,8 @@ namespace Brainf_ckSharp.Unit
 
         [TestMethod]
         public void Fibonacci() => ScriptTest.TestScript(Run);
+
+        [TestMethod]
+        public void Mandelbrot() => ScriptTest.TestScript(Run);
     }
 }
