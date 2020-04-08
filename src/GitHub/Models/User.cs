@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace GitHub.Models
 {
@@ -10,25 +10,25 @@ namespace GitHub.Models
         /// <summary>
         /// Gets the name of the current contributor
         /// </summary>
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string? Name { get; internal set; }
 
         /// <summary>
         /// Gets the URL of the contributor profile image
         /// </summary>
-        [JsonProperty("avatar_url")]
+        [JsonPropertyName("avatar_url")]
         public string? ProfileImageUrl { get; internal set; }
 
         /// <summary>
         /// Gets the URL of the contributor profile page
         /// </summary>
-        [JsonProperty("html_url")]
+        [JsonPropertyName("html_url")]
         public string? ProfilePageUrl { get; internal set; }
 
         /// <summary>
         /// Gets the user bio
         /// </summary>
-        [JsonProperty("bio")]
+        [JsonPropertyName("bio")]
         public string? Bio { get; internal set; }
     }
 }
