@@ -17,20 +17,20 @@ namespace GitHub
         /// </summary>
         public const string BaseUrl = "https://api.github.com/";
 
-        // Helper method to return an authenticated client
-        private static HttpClient GetHttpClient(string userAgent)
-        {
-            return new HttpClient(new UnauthenticatedHttpClientHandler(userAgent))
-            {
-                BaseAddress = new Uri(BaseUrl)
-            };
-        }
-
         /// <summary>
         /// Gets a new instance of an unauthenticated GitHub service
         /// </summary>
         /// <param name="userAgent">The user agent to use to send web requests</param>
         [Pure]
-        public static IGitHubService GetGitHubService(string userAgent) => RestService.For<IGitHubService>(GetHttpClient(userAgent));
+        public static IGitHubService GetGitHubService(string userAgent)
+        {
+            HttpClient client = new HttpClient(new UnauthenticatedHttpClientHandler(userAgent))
+            {
+                BaseAddress = new Uri(BaseUrl)
+            };
+            RefitSettings settings = new RefitSettings(new SystemTextJsonContentSerializer());
+
+            return RestService.For<IGitHubService>(client, settings);
+        }
     }
 }

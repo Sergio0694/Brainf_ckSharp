@@ -392,7 +392,7 @@
       <Version>5.4.1.1</Version>
     </PackageReference>
     <PackageReference Include="System.Text.Json">
-      <Version>4.7.0</Version>
+      <Version>4.7.1</Version>
     </PackageReference>
     <PackageReference Include="System.Threading.Tasks.Extensions">
       <Version>4.5.3</Version>
