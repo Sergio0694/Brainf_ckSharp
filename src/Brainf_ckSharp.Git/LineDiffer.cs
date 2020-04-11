@@ -7,6 +7,7 @@ using Brainf_ckSharp.Git.Models;
 using Microsoft.Collections.Extensions;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 using Microsoft.Toolkit.HighPerformance.Extensions;
+using Microsoft.Toolkit.HighPerformance.Helpers;
 
 namespace Brainf_ckSharp.Git
 {
@@ -90,7 +91,7 @@ namespace Brainf_ckSharp.Git
                 int i = 0;
                 foreach (ReadOnlySpan<char> line in newText.Tokenize(separator))
                 {
-                    int hash = line.GetxxHash32Code();
+                    int hash = HashCode<char>.Combine(line);
                     ref DiffEntry entry = ref table.GetOrAddValueRef(hash);
 
                     if (entry is null)
@@ -118,7 +119,7 @@ namespace Brainf_ckSharp.Git
                 int j = 0;
                 foreach (ReadOnlySpan<char> line in oldText.Tokenize(separator))
                 {
-                    int hash = line.GetxxHash32Code();
+                    int hash = HashCode<char>.Combine(line);
                     ref DiffEntry entry = ref table.GetOrAddValueRef(hash);
 
                     if (entry is null)

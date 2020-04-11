@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.UI.Core;
@@ -9,6 +8,7 @@ using Windows.UI.Xaml.Input;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 #nullable enable
 

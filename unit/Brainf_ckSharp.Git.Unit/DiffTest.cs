@@ -124,7 +124,7 @@ namespace Brainf_ckSharp.Git.Unit
         /// </summary>
         /// <param name="expected">The expected results for the test</param>
         /// <param name="key">The key of the test resources to load</param>
-        private static void Test(LineModificationType[] expected, [CallerMemberName] string key = null)
+        private static void Test(LineModificationType[] expected, [CallerMemberName] string key = null!)
         {
             var data = ResourceLoader.LoadTestSample(key);
 

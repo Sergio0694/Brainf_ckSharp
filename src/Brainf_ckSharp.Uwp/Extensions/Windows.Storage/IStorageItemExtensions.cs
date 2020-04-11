@@ -2,6 +2,8 @@
 using System.Diagnostics.Contracts;
 using System.IO;
 using Windows.ApplicationModel;
+using Microsoft.Toolkit.Extensions;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 namespace Windows.Storage
 {
@@ -18,7 +20,7 @@ namespace Windows.Storage
         [Pure]
         public static string GetId(this IStorageItem item)
         {
-            return item.Path.GetDjb2HashCode().ToHex();
+            return item.Path.GetDjb2HashCode().ToHexString();
         }
 
         /// <summary>

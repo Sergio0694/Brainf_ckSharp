@@ -19,6 +19,8 @@ using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Extensions;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 #nullable enable
 
@@ -255,7 +257,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             if (group.Count == 1) Source.Remove(group);
             else group.Remove(entry);
 
-            StorageApplicationPermissions.MostRecentlyUsedList.Remove(entry.File.Path.GetDjb2HashCode().ToHex());
+            StorageApplicationPermissions.MostRecentlyUsedList.Remove(entry.File.Path.GetDjb2HashCode().ToHexString());
         }
 
         /// <summary>
