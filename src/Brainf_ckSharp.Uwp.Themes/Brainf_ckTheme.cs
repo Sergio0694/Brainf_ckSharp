@@ -21,6 +21,11 @@ namespace Brainf_ckSharp.Uwp.Themes
         private readonly Dictionary<char, SolidColorBrush> HighlightBrushMap;
 
         /// <summary>
+        /// Gets the syntax highlight colors map for the available operators
+        /// </summary>
+        private readonly Dictionary<char, Color> HighlightColorMap;
+
+        /// <summary>
         /// The brush of the comments in the code
         /// </summary>
         private readonly Brush CommentsBrush;
@@ -72,7 +77,7 @@ namespace Brainf_ckSharp.Uwp.Themes
             CommentsBrush = new SolidColorBrush(comments);
             LineHighlightStyle = lineStyle;
             LineHighlightColor = lineColor;
-            HighlightMap = new Dictionary<char, Color>
+            HighlightColorMap = new Dictionary<char, Color>
             {
                 [Characters.BackwardPtr] = arrows,
                 [Characters.ForwardPtr] = arrows,
@@ -86,18 +91,13 @@ namespace Brainf_ckSharp.Uwp.Themes
                 [Characters.FunctionEnd] = function,
                 [Characters.FunctionCall] = call
             };
-            HighlightBrushMap = HighlightMap.ToDictionary(p => p.Key, p => new SolidColorBrush(p.Value));
+            HighlightBrushMap = HighlightColorMap.ToDictionary(p => p.Key, p => new SolidColorBrush(p.Value));
         }
 
         /// <summary>
         /// Gets the name of the current theme
         /// </summary>
         public string Name { get; }
-
-        /// <summary>
-        /// Gets the syntax highlight colors map for the available operators
-        /// </summary>
-        public IReadOnlyDictionary<char, Color> HighlightMap { get; }
 
         /// <summary>
         /// Gets the color of the comments in the code
@@ -167,7 +167,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         /// <returns>The <see cref="Color"/> value for the input character</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Color GetColor(char c) => HighlightMap.TryGetValue(c, out Color color) ? color : CommentsColor;
+        public Color GetColor(char c) => HighlightColorMap.TryGetValue(c, out Color color) ? color : CommentsColor;
 
         /// <summary>
         /// Gets the corresponding <see cref="Brush"/> from a given character in a Brainf*ck/PBrain source code

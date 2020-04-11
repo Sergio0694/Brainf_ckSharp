@@ -238,9 +238,6 @@
     <Compile Include="Extensions\System.Collections.ObjectModel\IGroupedCollection.cs" />
     <Compile Include="Extensions\System.Collections.ObjectModel\ObservableCollectionExtensions.cs" />
     <Compile Include="Extensions\System.Collections.ObjectModel\ObservableGroup{TKey,TElement}.cs" />
-    <Compile Include="Extensions\System\BoolExtensions.cs" />
-    <Compile Include="Extensions\System\Enum{T}.cs" />
-    <Compile Include="Extensions\System\IntExtensions.cs" />
     <Compile Include="Extensions\System\StringExtensions.cs" />
     <Compile Include="Extensions\Windows.Storage\IStorageItemExtensions.cs" />
     <Compile Include="Extensions\Windows.Storage\StorageItemMostRecentlyUsedListExtensions.cs" />

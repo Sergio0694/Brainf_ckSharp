@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using JetBrains.Annotations;
 
+#nullable enable
+
 namespace Brainf_ckSharp.Uwp.Services.Clipboard
 {
     /// <summary>

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 namespace Brainf_ckSharp.Uwp.Converters
 {
