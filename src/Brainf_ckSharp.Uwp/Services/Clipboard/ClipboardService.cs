@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 
+#nullable enable
+
 namespace Brainf_ckSharp.Uwp.Services.Clipboard
 {
     /// <summary>
@@ -37,7 +39,7 @@ namespace Brainf_ckSharp.Uwp.Services.Clipboard
                 DataPackageView view = Windows.ApplicationModel.DataTransfer.Clipboard.GetContent();
 
                 // Try to extract the requested content
-                string item;
+                string? item;
                 if (view.Contains(StandardDataFormats.Text))
                 {
                     item = await view.GetTextAsync();

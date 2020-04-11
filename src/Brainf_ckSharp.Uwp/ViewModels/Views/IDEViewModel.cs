@@ -23,7 +23,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         /// <summary>
         /// Raised whenever a script is requested to be run
         /// </summary>
-        public event EventHandler ScriptRunRequested;
+        public event EventHandler? ScriptRunRequested;
 
         /// <summary>
         /// Raised whenever a new character is requested to be added to the current text
