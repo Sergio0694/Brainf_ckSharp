@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using Microsoft.Toolkit.HighPerformance.Buffers;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 namespace System
 {
@@ -25,7 +25,7 @@ namespace System
 
             using SpanOwner<char> buffer = SpanOwner<char>.Allocate(textLength * 2);
 
-            ref char textRef = ref MemoryMarshal.GetReference(text);
+            ref char textRef = ref text.DangerousGetReference();
             ref char bufferRef = ref buffer.DangerousGetReference();
 
             // Alternate source characters with the separator

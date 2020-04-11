@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using Windows.ApplicationModel;
 using Microsoft.Toolkit.Extensions;
+using Microsoft.Toolkit.HighPerformance.Buffers;
 using Microsoft.Toolkit.HighPerformance.Extensions;
 
 namespace Windows.Storage
@@ -52,26 +53,29 @@ namespace Windows.Storage
              * This is done to avoid having to check the current index in the
              * main loop, which would be needed to check whether or not
              * the current separator should be written or not to the buffer. */
-            char* p = stackalloc char[formattedLength];
+            using SpanOwner<char> buffer = SpanOwner<char>.Allocate(formattedLength);
 
-            // Write the path parts
-            int i = 0;
-            foreach (ReadOnlySpan<char> part in item.Path.Tokenize(Path.DirectorySeparatorChar))
+            fixed (char* p = &buffer.DangerousGetReference())
             {
-                part.CopyTo(new Span<char>(p + i, part.Length));
+                // Write the path parts
+                int i = 0;
+                foreach (ReadOnlySpan<char> part in item.Path.Tokenize(Path.DirectorySeparatorChar))
+                {
+                    part.CopyTo(new Span<char>(p + i, part.Length));
 
-                i += part.Length;
+                    i += part.Length;
 
-                // Write the characters manually to avoid another stackalloc
-                p[i] = ' ';
-                p[i + 1] = '»';
-                p[i + 2] = ' ';
+                    // Write the characters manually to avoid another stackalloc
+                    p[i] = ' ';
+                    p[i + 1] = '»';
+                    p[i + 2] = ' ';
 
-                i += 3;
+                    i += 3;
+                }
+
+                // Create a string from the buffer and skip the last separator
+                return new string(p, 0, formattedLength - 3);
             }
-
-            // Create a string from the buffer and skip the last separator
-            return new string(p, 0, formattedLength - 3);
         }
     }
 }
