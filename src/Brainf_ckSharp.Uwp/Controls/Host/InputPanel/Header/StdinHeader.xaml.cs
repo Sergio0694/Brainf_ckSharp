@@ -5,6 +5,7 @@ using Windows.UI.Xaml.Input;
 using Brainf_ckSharp.Uwp.Constants;
 using Brainf_ckSharp.Uwp.Messages.InputPanel;
 using Brainf_ckSharp.Uwp.Services.Settings;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
@@ -83,7 +84,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.Header
         /// <summary>
         /// The <see cref="ISettingsService"/> currently in use
         /// </summary>
-        private readonly ISettingsService SettingsService = Ioc.Default.GetInstance<ISettingsService>();
+        private readonly ISettingsService SettingsService = Ioc.Default.ServiceProvider.GetRequiredService<ISettingsService>();
 
         /// <summary>
         /// Handles a request for the current stdin buffer

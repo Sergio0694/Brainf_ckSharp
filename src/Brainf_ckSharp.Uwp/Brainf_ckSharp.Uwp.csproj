@@ -287,7 +287,6 @@
     <Compile Include="Services\Files\IFilesService.cs" />
     <Compile Include="Services\Keyboard\IKeyboardListenerService.cs" />
     <Compile Include="Services\Keyboard\KeyboardListenerService.cs" />
-    <Compile Include="Services\ServicesManager.cs" />
     <Compile Include="Services\Settings\ISettingsService.cs" />
     <Compile Include="Services\Settings\SettingsService.cs" />
     <Compile Include="Services\Share\IShareService.cs" />

@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Windows.ApplicationModel;
 using Windows.System;
 using GitHub.APIs;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Uwp.Helpers;
@@ -82,7 +83,7 @@ namespace Legere.ViewModels.SubPages.Shell
 
             try
             {
-                Developers = new[] { await Ioc.GetInstance<IGitHubService>().GetUserAsync("Sergio0694") };
+                Developers = new[] { await ServiceProvider.GetRequiredService<IGitHubService>().GetUserAsync("Sergio0694") };
                 DonationMockupSource = new[] { new object() };
             }
             catch

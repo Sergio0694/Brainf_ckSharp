@@ -14,6 +14,7 @@ using Brainf_ckSharp.Uwp.Models.Console;
 using Brainf_ckSharp.Uwp.Models.Console.Interfaces;
 using Brainf_ckSharp.Uwp.Services.Keyboard;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Uwp.ViewModels.Views
@@ -45,7 +46,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         /// <inheritdoc/>
         protected override void OnActivate()
         {
-            Ioc.GetInstance<IKeyboardListenerService>().CharacterReceived += TryAddOperator;
+            ServiceProvider.GetRequiredService<IKeyboardListenerService>().CharacterReceived += TryAddOperator;
 
             Messenger.Register<OperatorKeyPressedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m));
             Messenger.Register<RunCommandRequestMessage>(this, m => _ = ExecuteCommandAsync());
@@ -59,7 +60,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         /// <inheritdoc/>
         protected override void OnDeactivate()
         {
-            Ioc.GetInstance<IKeyboardListenerService>().CharacterReceived -= TryAddOperator;
+            ServiceProvider.GetRequiredService<IKeyboardListenerService>().CharacterReceived -= TryAddOperator;
 
             base.OnDeactivate();
         }

@@ -7,6 +7,7 @@ using Brainf_ckSharp.Uwp.Messages.InputPanel;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Brainf_ckSharp.Uwp.Models.Ide;
 using Brainf_ckSharp.Uwp.Services.Files;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 #nullable enable
@@ -81,7 +82,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         /// <param name="favorite">Whether to immediately mark the item as favorite</param>
         private async Task TryLoadTextFromFileAsync(bool favorite)
         {
-            if (!(await Ioc.GetInstance<IFilesService>().TryPickOpenFileAsync(".bfs") is StorageFile file)) return;
+            if (!(await ServiceProvider.GetRequiredService<IFilesService>().TryPickOpenFileAsync(".bfs") is StorageFile file)) return;
 
             if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
             {
@@ -113,7 +114,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         /// </summary>
         private async Task TrySaveTextAsAsync()
         {
-            IFilesService filesService = Ioc.GetInstance<IFilesService>();
+            IFilesService filesService = ServiceProvider.GetRequiredService<IFilesService>();
 
             if (!(await filesService.TryPickSaveFileAsync(string.Empty, (string.Empty, ".bfs")) is StorageFile file)) return;
 

@@ -16,6 +16,7 @@ using Brainf_ckSharp.Uwp.Models.Ide;
 using Brainf_ckSharp.Uwp.Services.Clipboard;
 using Brainf_ckSharp.Uwp.Services.Share;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Extensions;
 using Microsoft.Toolkit.HighPerformance.Extensions;
 using Microsoft.Toolkit.Mvvm.Input;
@@ -232,7 +233,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         {
             string text = await FileIO.ReadTextAsync(entry.File);
 
-            Ioc.GetInstance<IClipboardService>().TryCopy(text);
+            ServiceProvider.GetRequiredService<IClipboardService>().TryCopy(text);
         }
 
         /// <summary>
@@ -241,7 +242,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to share</param>
         public void Share(CodeLibraryEntry entry)
         {
-            Ioc.GetInstance<IShareService>().Share(entry.Title, entry.File);
+            ServiceProvider.GetRequiredService<IShareService>().Share(entry.Title, entry.File);
         }
 
         /// <summary>
