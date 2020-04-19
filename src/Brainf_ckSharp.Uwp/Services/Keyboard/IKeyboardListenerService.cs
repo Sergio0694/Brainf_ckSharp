@@ -1,4 +1,6 @@
-﻿namespace Brainf_ckSharp.Uwp.Services.Keyboard
+﻿using System;
+
+namespace Brainf_ckSharp.Uwp.Services.Keyboard
 {
     /// <summary>
     /// The default <see langword="interface"/> for the a service that listens for keyboard strokes and shortcuts
@@ -6,8 +8,8 @@
     public interface IKeyboardListenerService
     {
         /// <summary>
-        /// Gets or sets whether or not the current instance is monitoring the keyboard events
+        /// Raised whenever the keyboard receives a character as input
         /// </summary>
-        bool IsEnabled { get; set; }
+        event Action<char> CharacterReceived;
     }
 }

@@ -12,7 +12,9 @@ using Brainf_ckSharp.Uwp.Messages.Console.MemoryState;
 using Brainf_ckSharp.Uwp.Messages.InputPanel;
 using Brainf_ckSharp.Uwp.Models.Console;
 using Brainf_ckSharp.Uwp.Models.Console.Interfaces;
+using Brainf_ckSharp.Uwp.Services.Keyboard;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
+using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace Brainf_ckSharp.Uwp.ViewModels.Views
@@ -44,7 +46,8 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         /// <inheritdoc/>
         protected override void OnActivate()
         {
-            Messenger.Default.Register<CharacterReceivedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m));
+            SimpleIoc.Default.GetInstance<IKeyboardListenerService>().CharacterReceived += TryAddOperator;
+
             Messenger.Default.Register<OperatorKeyPressedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m));
             Messenger.Default.Register<RunCommandRequestMessage>(this, m => _ = ExecuteCommandAsync());
             Messenger.Default.Register<DeleteOperatorRequestMessage>(this, m => _ = DeleteLastOperatorAsync());
@@ -52,6 +55,14 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
             Messenger.Default.Register<RestartConsoleRequestMessage>(this, m => _ = RestartAsync());
             Messenger.Default.Register<ClearConsoleScreenRequestMessage>(this, m => _ = ClearScreenAsync());
             Messenger.Default.Register<RepeatCommandRequestMessage>(this, m => _ = RepeatLastScriptAsync());
+        }
+
+        /// <inheritdoc/>
+        protected override void OnDeactivate()
+        {
+            SimpleIoc.Default.GetInstance<IKeyboardListenerService>().CharacterReceived -= TryAddOperator;
+
+            base.OnDeactivate();
         }
 
         private IReadOnlyMachineState _MachineState = MachineStateProvider.Default;
@@ -68,6 +79,15 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
 
                 Messenger.Default.Send(new MemoryStateChangedNotificationMessage(value));
             }
+        }
+
+        /// <summary>
+        /// Adds a new operator to the last command in the console
+        /// </summary>
+        /// <param name="c">The current operator to add</param>
+        public void TryAddOperator(char c)
+        {
+            _ = TryAddOperatorAsync(c);
         }
 
         /// <summary>

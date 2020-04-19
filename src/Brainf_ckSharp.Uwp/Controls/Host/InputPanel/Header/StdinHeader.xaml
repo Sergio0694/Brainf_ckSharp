@@ -81,6 +81,7 @@
             VerticalAlignment="Stretch"
             VerticalContentAlignment="Center"
             x:Name="StdinBox"
+            CharacterReceived="StdinBox_OnCharacterReceived"
             GotFocus="StdinBox_OnGotFocus"
             LostFocus="StdinBox_OnLostFocus">
 

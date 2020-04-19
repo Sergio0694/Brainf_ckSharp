@@ -1,7 +1,8 @@
-﻿using Windows.UI.Xaml;
+﻿using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
-using Brainf_ckSharp.Uwp.Messages.InputPanel;
-using GalaSoft.MvvmLight.Messaging;
+
+#nullable enable
 
 namespace Brainf_ckSharp.Uwp.Services.Keyboard
 {
@@ -10,19 +11,41 @@ namespace Brainf_ckSharp.Uwp.Services.Keyboard
     /// </summary>
     public sealed class KeyboardListenerService : IKeyboardListenerService
     {
-        private bool _IsEnabled;
+        /// <summary>
+        /// Lock target for <see cref="IKeyboardListenerService.CharacterReceived"/>
+        /// </summary>
+        private readonly object Lock = new object();
+
+        /// <summary>
+        /// Private backing event for <see cref="IKeyboardListenerService.CharacterReceived"/>
+        /// </summary>
+        private event Action<char>? CharacterReceived;
 
         /// <inheritdoc/>
-        public bool IsEnabled
+        event Action<char> IKeyboardListenerService.CharacterReceived
         {
-            get => _IsEnabled;
-            set
+            add
             {
-                if (IsEnabled != value)
+                lock (Lock)
                 {
-                    if (value) Window.Current.Content.CharacterReceived += Content_CharacterReceived;
-                    else Window.Current.Content.CharacterReceived -= Content_CharacterReceived;
-                    _IsEnabled = value;
+                    if (CharacterReceived is null)
+                    {
+                        Window.Current.Content.CharacterReceived += Content_CharacterReceived;
+                    }
+
+                    CharacterReceived += value;
+                }
+            }
+            remove
+            {
+                lock (Lock)
+                {
+                    CharacterReceived -= value;
+
+                    if (CharacterReceived is null)
+                    {
+                        Window.Current.Content.CharacterReceived -= Content_CharacterReceived;
+                    }
                 }
             }
         }
@@ -34,7 +57,7 @@ namespace Brainf_ckSharp.Uwp.Services.Keyboard
         /// <param name="args">The <see cref="CharacterReceivedRoutedEventArgs"/> instance with the pressed character</param>
         private void Content_CharacterReceived(UIElement sender, CharacterReceivedRoutedEventArgs args)
         {
-            Messenger.Default.Send(new CharacterReceivedNotificationMessage(args.Character));
+            CharacterReceived?.Invoke(args.Character);
         }
     }
 }

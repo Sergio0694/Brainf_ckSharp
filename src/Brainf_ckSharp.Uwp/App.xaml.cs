@@ -4,7 +4,6 @@ using Windows.UI.Xaml;
 using Brainf_ckSharp.Uwp.Controls.Host;
 using Brainf_ckSharp.Uwp.Helpers.UI;
 using Brainf_ckSharp.Uwp.Services;
-using Brainf_ckSharp.Uwp.Services.Keyboard;
 using Brainf_ckSharp.Uwp.Services.Settings;
 using GalaSoft.MvvmLight.Ioc;
 
@@ -38,9 +37,6 @@ namespace Brainf_ckSharp.Uwp
                 TitleBarHelper.StyleTitleBar();
 
                 Window.Current.Content = new Shell();
-
-                // Initialize UI related services
-                SimpleIoc.Default.GetInstance<IKeyboardListenerService>().IsEnabled = true;
             }
 
             // Activate the window when launching the app

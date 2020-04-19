@@ -262,7 +262,6 @@
     <Compile Include="Messages\Ide\PickOpenFileRequestMessage.cs" />
     <Compile Include="Messages\Ide\SaveFileAsRequestMessage.cs" />
     <Compile Include="Messages\Ide\SaveFileRequestMessage.cs" />
-    <Compile Include="Messages\InputPanel\CharacterReceivedNotificationMessage.cs" />
     <Compile Include="Messages\InputPanel\OperatorKeyPressedNotificationMessage.cs" />
     <Compile Include="Messages\InputPanel\StdinRequestMessage.cs" />
     <Compile Include="Messages\Navigation\LoadingStateUpdateNotificationMessage.cs" />
