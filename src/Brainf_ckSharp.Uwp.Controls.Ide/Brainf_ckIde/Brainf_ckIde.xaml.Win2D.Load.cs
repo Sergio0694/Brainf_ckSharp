@@ -226,7 +226,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
                             Unsafe.Add(ref indicatorsRef, y) = indicator;
                         }
-                        else Unsafe.Add(ref indicatorsRef, y) = null;
+                        else Unsafe.Add(ref indicatorsRef, y) = null!;
 
                         // Update the persistent trackers across lines
                         y++;
