@@ -6,10 +6,10 @@ using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Uwp.Enums;
 using Brainf_ckSharp.Uwp.Messages.InputPanel;
 using Brainf_ckSharp.Uwp.Models.Ide.Views;
-using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+using Brainf_ckSharp.Uwp.ViewModels.Abstract;
 using Microsoft.Toolkit.Diagnostics;
+using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 #nullable enable
 
@@ -22,7 +22,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// </summary>
         public IdeResultSubPageViewModel()
         {
-            LoadDataCommand = new RelayCommand(() => _ = LoadDataAsync());
+            LoadDataCommand = new AsyncRelayCommand(LoadDataAsync);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         {
             Guard.IsNotNull(Source, nameof(Source));
 
-            string stdin = Messenger.Default.Request<StdinRequestMessage, string>();
+            string stdin = Messenger.Request<StdinRequestMessage, string>();
 
             // Run the code on a background thread
             InterpreterResult result = await Task.Run(() =>

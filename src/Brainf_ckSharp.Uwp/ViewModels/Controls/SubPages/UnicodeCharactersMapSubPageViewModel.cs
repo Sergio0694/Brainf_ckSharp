@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Brainf_ckSharp.Uwp.Models;
-using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
-using GalaSoft.MvvmLight.Command;
+using Brainf_ckSharp.Uwp.ViewModels.Abstract;
+using Microsoft.Toolkit.Mvvm.Input;
 
 namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
 {

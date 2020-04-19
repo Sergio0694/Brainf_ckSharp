@@ -129,7 +129,7 @@
     <Compile Include="AttachedProperties\ListViewBaseHelper.cs" />
     <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.Source.cs" />
-    <Compile Include="AttachedProperties\ReactiveViewModelHelper.cs" />
+    <Compile Include="AttachedProperties\ViewModelBaseHelper.cs" />
     <Compile Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPageTemplates.xaml.cs">
       <DependentUpon>IdeResultSubPageTemplates.xaml</DependentUpon>
     </Compile>
@@ -230,7 +230,6 @@
     <Compile Include="Enums\IdeResultSection.cs" />
     <Compile Include="Enums\CodeLibrarySection.cs" />
     <Compile Include="Enums\UserGuideSection.cs" />
-    <Compile Include="Extensions\GalaSoft.MvvmLight.Messaging\MessengerExtensions.cs" />
     <Compile Include="Extensions\Microsoft.Xaml.Interactions.Core\ItemClickBehavior.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IListExtensions.cs" />
@@ -245,7 +244,6 @@
     <Compile Include="Helpers\UI\TitleBarHelper.cs" />
     <Compile Include="MarkupExtensions\BooleanExtension.cs" />
     <Compile Include="MarkupExtensions\FontIconExtension.cs" />
-    <Compile Include="Messages\Abstract\RequestMessageBase{T}.cs" />
     <Compile Include="Messages\Abstract\ValueChangedMessageBase{T}.cs" />
     <Compile Include="Messages\Console\Commands\ClearCommandRequestMessage.cs" />
     <Compile Include="Messages\Console\Commands\ClearConsoleScreenRequestMessage.cs" />
@@ -299,9 +297,8 @@
     <Compile Include="TemplateSelectors\IdeResultSectionTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\SourceCodeEntryTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\UserGuideSectionTemplateSelector.cs" />
-    <Compile Include="ViewModels\Abstract\Collections\GroupedItemsCollectionViewModelBase{TKey,TElement}.cs" />
-    <Compile Include="ViewModels\Abstract\Collections\ItemsCollectionViewModelBase{T}.cs" />
-    <Compile Include="ViewModels\Abstract\ReactiveViewModelBase.cs" />
+    <Compile Include="ViewModels\Abstract\GroupedItemsCollectionViewModelBase{TKey,TElement}.cs" />
+    <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase{T}.cs" />
     <Compile Include="ViewModels\Controls\SubPages\CodeLibrarySubPageViewModel.cs" />
     <Compile Include="ViewModels\Controls\SubPages\IdeResultSubPageViewModel.cs" />
     <Compile Include="ViewModels\Controls\SubPages\UnicodeCharactersMapSubPageViewModel.cs" />
@@ -384,9 +381,6 @@
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.4.0-prerelease.200322001</Version>
     </PackageReference>
-    <PackageReference Include="MvvmLight">
-      <Version>5.4.1.1</Version>
-    </PackageReference>
     <PackageReference Include="System.Threading.Tasks.Extensions">
       <Version>4.5.4</Version>
     </PackageReference>
@@ -421,6 +415,10 @@
     <ProjectReference Include="..\Microsoft.Toolkit.HighPerformance\Microsoft.Toolkit.HighPerformance.csproj">
       <Project>{66fd6968-86b8-45d9-9b07-fed7dfc4bf0b}</Project>
       <Name>Microsoft.Toolkit.HighPerformance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Toolkit.Mvvm\Microsoft.Toolkit.Mvvm.csproj">
+      <Project>{7ecb8c9d-3d2b-4678-bdc1-f0d2aa4d2890}</Project>
+      <Name>Microsoft.Toolkit.Mvvm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,13 +1,13 @@
 ﻿using System;
 using Windows.UI.Xaml;
-using Brainf_ckSharp.Uwp.ViewModels.Abstract;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace Brainf_ckSharp.Uwp.AttachedProperties
 {
     /// <summary>
-    /// An attached property that sets the <see cref="ReactiveViewModelBase.IsActive"/> property for the data context of a given <see cref="FrameworkElement"/>
+    /// An attached property that sets the <see cref="ViewModelBase.IsActive"/> property for the data context of a given <see cref="FrameworkElement"/>
     /// </summary>
-    public static class ReactiveViewModelHelper
+    public static class ViewModelBaseHelper
     {
         /// <summary>
         /// Gets the value of <see cref="IsActiveProperty"/> for a given <see cref="FrameworkElement"/>
@@ -30,12 +30,12 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
         }
 
         /// <summary>
-        /// An attached property that controls the <see cref="ReactiveViewModelBase.IsActive"/> property for the data context of a given <see cref="FrameworkElement"/>
+        /// An attached property that controls the <see cref="ViewModelBase.IsActive"/> property for the data context of a given <see cref="FrameworkElement"/>
         /// </summary>
         public static readonly DependencyProperty IsActiveProperty = DependencyProperty.RegisterAttached(
-            "IsActive",
+            nameof(ViewModelBase.IsActive),
             typeof(bool),
-            typeof(ReactiveViewModelHelper),
+            typeof(ViewModelBaseHelper),
             new PropertyMetadata(DependencyProperty.UnsetValue, OnIsActivePropertyChanged));
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
             FrameworkElement @this = (FrameworkElement)d;
             bool value = (bool)e.NewValue;
 
-            if (@this.DataContext is ReactiveViewModelBase viewModel)
+            if (@this.DataContext is ViewModelBase viewModel)
             {
                 viewModel.IsActive = value;
             }

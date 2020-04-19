@@ -1,8 +1,8 @@
 ﻿using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Uwp.Messages.Console.MemoryState;
 using Brainf_ckSharp.Uwp.Models.Console.Controls;
-using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
-using GalaSoft.MvvmLight.Messaging;
+using Brainf_ckSharp.Uwp.ViewModels.Abstract;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 #nullable enable
 
@@ -18,9 +18,9 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls
         /// </summary>
         public CompactMemoryViewerViewModel()
         {
-            MachineState = Messenger.Default.Request<MemoryStateRequestMessage, IReadOnlyMachineState>();
+            MachineState = Messenger.Request<MemoryStateRequestMessage, IReadOnlyMachineState>();
 
-            Messenger.Default.Register<MemoryStateChangedNotificationMessage>(this, m => MachineState = m.Value);
+            Messenger.Register<MemoryStateChangedNotificationMessage>(this, m => MachineState = m.Value);
         }
 
         private IReadOnlyMachineState? _MachineState;
@@ -36,7 +36,8 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls
                 if (ReferenceEquals(_MachineState, value)) return;
 
                 _MachineState = value;
-                RaisePropertyChanged();
+
+                OnPropertyChanged();
 
                 UpdateFromState(value);
             }

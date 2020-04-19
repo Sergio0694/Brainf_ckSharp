@@ -1,7 +1,7 @@
 ﻿using System;
 using Brainf_ckSharp.Uwp.Services.Settings;
 using Brainf_ckSharp.Uwp.Themes;
-using GalaSoft.MvvmLight.Ioc;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
 namespace Brainf_ckSharp.Uwp.Constants
 {
@@ -15,7 +15,7 @@ namespace Brainf_ckSharp.Uwp.Constants
         /// </summary>
         public static readonly Brainf_ckTheme Brainf_ckTheme = new Func<Brainf_ckTheme>(() =>
         {
-            return SimpleIoc.Default.GetInstance<ISettingsService>().GetValue<int>(SettingsKeys.Theme) switch
+            return Ioc.Default.GetInstance<ISettingsService>().GetValue<int>(SettingsKeys.Theme) switch
             {
                 0 => Brainf_ckThemes.VisualStudio,
                 1 => Brainf_ckThemes.Monokai,

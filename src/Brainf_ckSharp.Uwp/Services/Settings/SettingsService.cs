@@ -4,7 +4,7 @@ using Windows.Foundation.Collections;
 using Windows.Storage;
 using Brainf_ckSharp.Uwp.Constants;
 using Brainf_ckSharp.Uwp.Messages.Services;
-using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Uwp.Services.Settings
 {

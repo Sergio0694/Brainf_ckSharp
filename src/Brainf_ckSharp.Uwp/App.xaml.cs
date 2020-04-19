@@ -5,7 +5,7 @@ using Brainf_ckSharp.Uwp.Controls.Host;
 using Brainf_ckSharp.Uwp.Helpers.UI;
 using Brainf_ckSharp.Uwp.Services;
 using Brainf_ckSharp.Uwp.Services.Settings;
-using GalaSoft.MvvmLight.Ioc;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
 namespace Brainf_ckSharp.Uwp
 {
@@ -30,7 +30,7 @@ namespace Brainf_ckSharp.Uwp
             {
                 // Initialize the necessary services
                 ServicesManager.InitializeServices();
-                SimpleIoc.Default.GetInstance<ISettingsService>().EnsureDefaults();
+                Ioc.Default.GetInstance<ISettingsService>().EnsureDefaults();
 
                 // Initial UI styling
                 TitleBarHelper.ExpandViewIntoTitleBar();

@@ -15,12 +15,10 @@ using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Models.Ide;
 using Brainf_ckSharp.Uwp.Services.Clipboard;
 using Brainf_ckSharp.Uwp.Services.Share;
-using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Ioc;
-using GalaSoft.MvvmLight.Messaging;
+using Brainf_ckSharp.Uwp.ViewModels.Abstract;
 using Microsoft.Toolkit.Extensions;
 using Microsoft.Toolkit.HighPerformance.Extensions;
+using Microsoft.Toolkit.Mvvm.Input;
 
 #nullable enable
 
@@ -74,10 +72,10 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// </summary>
         public CodeLibrarySubPageViewModel()
         {
-            LoadDataCommand = new RelayCommand(() => _ = LoadDataAsync());
+            LoadDataCommand = new AsyncRelayCommand(LoadDataAsync);
             ProcessItemCommand = new RelayCommand<object>(ProcessItem);
             ToggleFavoriteCommand = new RelayCommand<CodeLibraryEntry>(ToggleFavorite);
-            CopyToClipboardCommand = new RelayCommand<CodeLibraryEntry>(entry => _ = CopyToClipboardAsync(entry));
+            CopyToClipboardCommand = new AsyncRelayCommand<CodeLibraryEntry>(CopyToClipboardAsync);
             ShareCommand = new RelayCommand<CodeLibraryEntry>(Share);
             RemoveFromLibraryCommand = new RelayCommand<CodeLibraryEntry>(RemoveFromLibrary);
             DeleteCommand = new RelayCommand<CodeLibraryEntry>(Delete);
@@ -172,7 +170,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// <summary>
         /// Requests to pick and open a source code file
         /// </summary>
-        public void RequestOpenFile(bool favorite) => Messenger.Default.Send(new PickOpenFileRequestMessage(favorite));
+        public void RequestOpenFile(bool favorite) => Messenger.Send(new PickOpenFileRequestMessage(favorite));
 
         /// <summary>
         /// Sends a request to load a specified code entry
@@ -183,12 +181,12 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             if (entry.File.IsFromPackageDirectory())
             {
                 SourceCode code = await SourceCode.LoadFromReferenceFileAsync(entry.File);
-                Messenger.Default.Send(new LoadSourceCodeRequestMessage(code));
+                Messenger.Send(new LoadSourceCodeRequestMessage(code));
             }
             else
             {
                 if (!(await SourceCode.TryLoadFromEditableFileAsync(entry.File) is SourceCode sourceCode)) return;
-                Messenger.Default.Send(new LoadSourceCodeRequestMessage(sourceCode));
+                Messenger.Send(new LoadSourceCodeRequestMessage(sourceCode));
             }
         }
 
@@ -234,7 +232,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         {
             string text = await FileIO.ReadTextAsync(entry.File);
 
-            SimpleIoc.Default.GetInstance<IClipboardService>().TryCopy(text);
+            Ioc.GetInstance<IClipboardService>().TryCopy(text);
         }
 
         /// <summary>
@@ -243,7 +241,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to share</param>
         public void Share(CodeLibraryEntry entry)
         {
-            SimpleIoc.Default.GetInstance<IShareService>().Share(entry.Title, entry.File);
+            Ioc.GetInstance<IShareService>().Share(entry.Title, entry.File);
         }
 
         /// <summary>

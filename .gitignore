@@ -22,8 +22,8 @@ bld/
 [Oo]bj/
 [Ll]og/
 
-# Microsoft.Toolkit.HighPerformance preview
-src/Microsoft.Toolkit.HighPerformance
+# Microsoft.Toolkit preview packages
+src/Microsoft.Toolkit.*
 
 # Visual Studio 2015 cache/options directory
 .vs/

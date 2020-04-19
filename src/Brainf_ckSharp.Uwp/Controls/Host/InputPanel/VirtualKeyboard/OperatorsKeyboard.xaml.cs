@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Uwp.Messages.InputPanel;
-using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.VirtualKeyboard
 {

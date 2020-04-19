@@ -1,12 +1,12 @@
 ﻿using Brainf_ckSharp.Uwp.Models.Console.Interfaces;
-using GalaSoft.MvvmLight;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace Brainf_ckSharp.Uwp.Models.Console
 {
     /// <summary>
     /// A model for a console command being typed by the user
     /// </summary>
-    public sealed class ConsoleCommand : ViewModelBase, IConsoleEntry
+    public sealed class ConsoleCommand : ObservableObject, IConsoleEntry
     {
         private string _Command = string.Empty;
 

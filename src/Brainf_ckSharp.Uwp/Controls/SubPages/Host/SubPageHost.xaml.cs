@@ -7,8 +7,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
-using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.HighPerformance.Extensions;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 #nullable enable
 

@@ -1,15 +1,15 @@
 ﻿using System.Collections.ObjectModel;
-using GalaSoft.MvvmLight;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 #nullable enable
 
-namespace Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections
+namespace Brainf_ckSharp.Uwp.ViewModels.Abstract
 {
     /// <summary>
     /// A view model for a view that exposes a collection of items of a given type
     /// </summary>
     /// <typeparam name="T">The type of items in the exposed collection</typeparam>
-    public abstract class ItemsCollectionViewModelBase<T> : ReactiveViewModelBase
+    public abstract class ItemsCollectionViewModelBase<T> : ViewModelBase
     {
         private ObservableCollection<T> _Source = new ObservableCollection<T>();
 
@@ -24,7 +24,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections
                 // Update the source and the dependent properties
                 if (Set(ref _Source, value))
                 {
-                    RaisePropertyChanged(nameof(IsEmpty));
+                    OnPropertyChanged(nameof(IsEmpty));
                 }
             }
         }
@@ -44,15 +44,6 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections
 
             Source.Clear();
             return true;
-        }
-
-        /// <inheritdoc cref="ViewModelBase.Cleanup"/>
-        public override void Cleanup()
-        {
-            base.Cleanup();
-
-            Source.Clear();
-            Source = null!;
         }
     }
 }

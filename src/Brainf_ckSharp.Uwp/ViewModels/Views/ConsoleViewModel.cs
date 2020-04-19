@@ -13,9 +13,8 @@ using Brainf_ckSharp.Uwp.Messages.InputPanel;
 using Brainf_ckSharp.Uwp.Models.Console;
 using Brainf_ckSharp.Uwp.Models.Console.Interfaces;
 using Brainf_ckSharp.Uwp.Services.Keyboard;
-using Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections;
-using GalaSoft.MvvmLight.Ioc;
-using GalaSoft.MvvmLight.Messaging;
+using Brainf_ckSharp.Uwp.ViewModels.Abstract;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Uwp.ViewModels.Views
 {
@@ -40,27 +39,27 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
              * - It's only received from this view model, so there's no risk of conflicts
              * - It is first received before the OnActivate method is called, so
              *   registering it from there would cause a startup crash. */
-            Messenger.Default.Register<MemoryStateRequestMessage>(this, m => m.ReportResult(MachineState));
+            Messenger.Register<MemoryStateRequestMessage>(this, m => m.ReportResult(MachineState));
         }
 
         /// <inheritdoc/>
         protected override void OnActivate()
         {
-            SimpleIoc.Default.GetInstance<IKeyboardListenerService>().CharacterReceived += TryAddOperator;
+            Ioc.GetInstance<IKeyboardListenerService>().CharacterReceived += TryAddOperator;
 
-            Messenger.Default.Register<OperatorKeyPressedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m));
-            Messenger.Default.Register<RunCommandRequestMessage>(this, m => _ = ExecuteCommandAsync());
-            Messenger.Default.Register<DeleteOperatorRequestMessage>(this, m => _ = DeleteLastOperatorAsync());
-            Messenger.Default.Register<ClearCommandRequestMessage>(this, m => _ = ResetCommandAsync());
-            Messenger.Default.Register<RestartConsoleRequestMessage>(this, m => _ = RestartAsync());
-            Messenger.Default.Register<ClearConsoleScreenRequestMessage>(this, m => _ = ClearScreenAsync());
-            Messenger.Default.Register<RepeatCommandRequestMessage>(this, m => _ = RepeatLastScriptAsync());
+            Messenger.Register<OperatorKeyPressedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m));
+            Messenger.Register<RunCommandRequestMessage>(this, m => _ = ExecuteCommandAsync());
+            Messenger.Register<DeleteOperatorRequestMessage>(this, m => _ = DeleteLastOperatorAsync());
+            Messenger.Register<ClearCommandRequestMessage>(this, m => _ = ResetCommandAsync());
+            Messenger.Register<RestartConsoleRequestMessage>(this, m => _ = RestartAsync());
+            Messenger.Register<ClearConsoleScreenRequestMessage>(this, m => _ = ClearScreenAsync());
+            Messenger.Register<RepeatCommandRequestMessage>(this, m => _ = RepeatLastScriptAsync());
         }
 
         /// <inheritdoc/>
         protected override void OnDeactivate()
         {
-            SimpleIoc.Default.GetInstance<IKeyboardListenerService>().CharacterReceived -= TryAddOperator;
+            Ioc.GetInstance<IKeyboardListenerService>().CharacterReceived -= TryAddOperator;
 
             base.OnDeactivate();
         }
@@ -77,7 +76,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
             {
                 _MachineState = value;
 
-                Messenger.Default.Send(new MemoryStateChangedNotificationMessage(value));
+                Messenger.Send(new MemoryStateChangedNotificationMessage(value));
             }
         }
 
@@ -197,7 +196,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
              * - Runs with output: add the output line, then a new command line */
             if (!string.IsNullOrEmpty(command))
             {
-                string stdin = Messenger.Default.Request<StdinRequestMessage, string>();
+                string stdin = Messenger.Request<StdinRequestMessage, string>();
                 Option<InterpreterResult> result = await Task.Run(() =>
                 {
                     return Brainf_ckInterpreter

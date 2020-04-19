@@ -5,8 +5,8 @@ using Windows.UI.Xaml.Input;
 using Brainf_ckSharp.Uwp.Constants;
 using Brainf_ckSharp.Uwp.Messages.InputPanel;
 using Brainf_ckSharp.Uwp.Services.Settings;
-using GalaSoft.MvvmLight.Ioc;
-using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.Header
 {
@@ -83,7 +83,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.Header
         /// <summary>
         /// The <see cref="ISettingsService"/> currently in use
         /// </summary>
-        private readonly ISettingsService SettingsService = SimpleIoc.Default.GetInstance<ISettingsService>();
+        private readonly ISettingsService SettingsService = Ioc.Default.GetInstance<ISettingsService>();
 
         /// <summary>
         /// Handles a request for the current stdin buffer

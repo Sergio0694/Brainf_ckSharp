@@ -3,10 +3,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel;
 using Windows.System;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Ioc;
 using GitHub.APIs;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Uwp.Helpers;
 using User = GitHub.Models.User;
 
@@ -24,7 +23,7 @@ namespace Legere.ViewModels.SubPages.Shell
         /// </summary>
         public AboutSubPageViewModel()
         {
-            LoadDataCommand = new RelayCommand(() => _ = LoadDataAsync());
+            LoadDataCommand = new AsyncRelayCommand(LoadDataAsync);
         }
 
         /// <summary>
@@ -79,11 +78,11 @@ namespace Legere.ViewModels.SubPages.Shell
         /// </summary>
         public async Task LoadDataAsync()
         {
-            if (Developers is IEnumerable<User>) return;
+            if (Developers != null) return;
 
             try
             {
-                Developers = new[] { await SimpleIoc.Default.GetInstance<IGitHubService>().GetUserAsync("Sergio0694") };
+                Developers = new[] { await Ioc.GetInstance<IGitHubService>().GetUserAsync("Sergio0694") };
                 DonationMockupSource = new[] { new object() };
             }
             catch

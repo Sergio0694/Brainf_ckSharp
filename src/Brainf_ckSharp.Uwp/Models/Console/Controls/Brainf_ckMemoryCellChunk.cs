@@ -1,14 +1,14 @@
 ﻿using System;
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
-using GalaSoft.MvvmLight;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace Brainf_ckSharp.Uwp.Models.Console.Controls
 {
     /// <summary>
     /// A model that represents a group of 4 contiguous memory cells
     /// </summary>
-    public sealed class Brainf_ckMemoryCellChunk : ViewModelBase
+    public sealed class Brainf_ckMemoryCellChunk : ObservableObject
     {
         /// <summary>
         /// Creates a new <see cref="Brainf_ckMemoryCellChunk"/> instance with the specified parameters
@@ -105,8 +105,8 @@ namespace Brainf_ckSharp.Uwp.Models.Console.Controls
 
             _SelectedIndex = state.Position;
 
-            RaisePropertyChanged(nameof(IsChunkSelected));
-            RaisePropertyChanged(nameof(SelectedIndex));
+            OnPropertyChanged(nameof(IsChunkSelected));
+            OnPropertyChanged(nameof(SelectedIndex));
         }
     }
 }

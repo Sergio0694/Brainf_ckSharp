@@ -3,7 +3,7 @@ using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Brainf_ckSharp.Uwp.ViewModels.Views;
-using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 #nullable enable
 

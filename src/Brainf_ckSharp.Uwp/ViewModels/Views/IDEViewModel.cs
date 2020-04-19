@@ -7,9 +7,7 @@ using Brainf_ckSharp.Uwp.Messages.InputPanel;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Brainf_ckSharp.Uwp.Models.Ide;
 using Brainf_ckSharp.Uwp.Services.Files;
-using Brainf_ckSharp.Uwp.ViewModels.Abstract;
-using GalaSoft.MvvmLight.Ioc;
-using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 #nullable enable
 
@@ -18,7 +16,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
     /// <summary>
     /// A view model for a Brainf*ck/PBrain IDE
     /// </summary>
-    public sealed class IdeViewModel : ReactiveViewModelBase
+    public sealed class IdeViewModel : ViewModelBase
     {
         /// <summary>
         /// Raised whenever a script is requested to be run
@@ -59,7 +57,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
                 {
                     CodeLoaded?.Invoke(this, value.Content);
 
-                    Messenger.Default.Send<SubPageCloseRequestMessage>();
+                    Messenger.Send<SubPageCloseRequestMessage>();
                 }
             }
         }
@@ -67,14 +65,14 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         /// <inheritdoc/>
         protected override void OnActivate()
         {
-            Messenger.Default.Register<OperatorKeyPressedNotificationMessage>(this, m => CharacterAdded?.Invoke(this, m));
-            Messenger.Default.Register<RunIdeScriptRequestMessage>(this, _ => ScriptRunRequested?.Invoke(this, EventArgs.Empty));
-            Messenger.Default.Register<InsertNewLineRequestMessage>(this, _ => CharacterAdded?.Invoke(this, Characters.CarriageReturn));
-            Messenger.Default.Register<DeleteCharacterRequestMessage>(this, _ => CharacterDeleted?.Invoke(this, EventArgs.Empty));
-            Messenger.Default.Register<PickOpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync(m.Favorite));
-            Messenger.Default.Register<LoadSourceCodeRequestMessage>(this, m => Code = m);
-            Messenger.Default.Register<SaveFileRequestMessage>(this, m => _ = TrySaveTextAsync());
-            Messenger.Default.Register<SaveFileAsRequestMessage>(this, m => _ = TrySaveTextAsAsync());
+            Messenger.Register<OperatorKeyPressedNotificationMessage>(this, m => CharacterAdded?.Invoke(this, m));
+            Messenger.Register<RunIdeScriptRequestMessage>(this, _ => ScriptRunRequested?.Invoke(this, EventArgs.Empty));
+            Messenger.Register<InsertNewLineRequestMessage>(this, _ => CharacterAdded?.Invoke(this, Characters.CarriageReturn));
+            Messenger.Register<DeleteCharacterRequestMessage>(this, _ => CharacterDeleted?.Invoke(this, EventArgs.Empty));
+            Messenger.Register<PickOpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync(m.Favorite));
+            Messenger.Register<LoadSourceCodeRequestMessage>(this, m => Code = m);
+            Messenger.Register<SaveFileRequestMessage>(this, m => _ = TrySaveTextAsync());
+            Messenger.Register<SaveFileAsRequestMessage>(this, m => _ = TrySaveTextAsAsync());
         }
 
         /// <summary>
@@ -83,7 +81,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         /// <param name="favorite">Whether to immediately mark the item as favorite</param>
         private async Task TryLoadTextFromFileAsync(bool favorite)
         {
-            if (!(await SimpleIoc.Default.GetInstance<IFilesService>().TryPickOpenFileAsync(".bfs") is StorageFile file)) return;
+            if (!(await Ioc.GetInstance<IFilesService>().TryPickOpenFileAsync(".bfs") is StorageFile file)) return;
 
             if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
             {
@@ -115,7 +113,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         /// </summary>
         private async Task TrySaveTextAsAsync()
         {
-            IFilesService filesService = SimpleIoc.Default.GetInstance<IFilesService>();
+            IFilesService filesService = Ioc.GetInstance<IFilesService>();
 
             if (!(await filesService.TryPickSaveFileAsync(string.Empty, (string.Empty, ".bfs")) is StorageFile file)) return;
 

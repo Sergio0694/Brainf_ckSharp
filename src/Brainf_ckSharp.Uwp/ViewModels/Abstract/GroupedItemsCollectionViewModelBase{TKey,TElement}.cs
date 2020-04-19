@@ -1,14 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml.Data;
-using GalaSoft.MvvmLight;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 
-namespace Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections
+namespace Brainf_ckSharp.Uwp.ViewModels.Abstract
 {
     /// <summary>
     /// A view model for a view that exposes a grouped collection of items of a given type
     /// </summary>
-    public abstract class GroupedItemsCollectionViewModelBase<TKey, TValue> : ReactiveViewModelBase
+    public abstract class GroupedItemsCollectionViewModelBase<TKey, TValue> : ViewModelBase
     {
         /// <summary>
         /// Creates a new <see cref="GroupedItemsCollectionViewModelBase{TKey,TValue}"/> instance
@@ -71,15 +71,6 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Abstract.Collections
         {
             get => _CollectionGroups;
             private set => Set(ref _CollectionGroups, value);
-        }
-
-        /// <inheritdoc cref="ViewModelBase.Cleanup"/>
-        public override void Cleanup()
-        {
-            Source?.Clear();
-            Source = null;
-            View = null;
-            CollectionGroups = null;
         }
     }
 }

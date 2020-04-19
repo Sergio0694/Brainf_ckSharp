@@ -41,10 +41,10 @@
             Style="{StaticResource ExpandedPivotWithNoHeaderStyle}"
             SelectedIndex="{x:Bind RootHeader.SelectedIndex, Mode=OneWay}">
             <PivotItem>
-                <views:ConsoleView attachedProperties:ReactiveViewModelHelper.IsActive="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(RootHeader.SelectedIndex, 0), Mode=OneWay, FallbackValue=True}"/>
+                <views:ConsoleView attachedProperties:ViewModelBaseHelper.IsActive="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(RootHeader.SelectedIndex, 0), Mode=OneWay, FallbackValue=True}"/>
             </PivotItem>
             <PivotItem>
-                <views:IdeView attachedProperties:ReactiveViewModelHelper.IsActive="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(RootHeader.SelectedIndex, 1), Mode=OneWay, FallbackValue=False}"/>
+                <views:IdeView attachedProperties:ViewModelBaseHelper.IsActive="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(RootHeader.SelectedIndex, 1), Mode=OneWay, FallbackValue=False}"/>
             </PivotItem>
         </Pivot>
 

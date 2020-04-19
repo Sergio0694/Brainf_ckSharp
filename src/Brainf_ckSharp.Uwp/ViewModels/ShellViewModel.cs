@@ -5,15 +5,14 @@ using Brainf_ckSharp.Uwp.Controls.SubPages.Views.UnicodeCharactersMap;
 using Brainf_ckSharp.Uwp.Messages.Console.Commands;
 using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Uwp.ViewModels
 {
     /// <summary>
     /// A view model for the root shell control
     /// </summary>
-    public sealed class ShellViewModel : ViewModelBase
+    public sealed class ShellViewModel
     {
         /// <summary>
         /// Runs the current console script

@@ -4,8 +4,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
-using GalaSoft.MvvmLight;
 using Microsoft.Toolkit.Diagnostics;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 #nullable enable
 
@@ -14,7 +14,7 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
     /// <summary>
     /// A model that represents a source code
     /// </summary>
-    public sealed class SourceCode : ViewModelBase
+    public sealed class SourceCode : ObservableObject
     {
         /// <summary>
         /// Creates a new <see cref="SourceCode"/> instance with the specified parameters
