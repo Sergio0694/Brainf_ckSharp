@@ -6,6 +6,7 @@ using Windows.System;
 using GitHub.APIs;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Uwp.Helpers;
 using User = GitHub.Models.User;
@@ -83,7 +84,7 @@ namespace Legere.ViewModels.SubPages.Shell
 
             try
             {
-                Developers = new[] { await ServiceProvider.GetRequiredService<IGitHubService>().GetUserAsync("Sergio0694") };
+                Developers = new[] { await Ioc.Default.GetRequiredService<IGitHubService>().GetUserAsync("Sergio0694") };
                 DonationMockupSource = new[] { new object() };
             }
             catch

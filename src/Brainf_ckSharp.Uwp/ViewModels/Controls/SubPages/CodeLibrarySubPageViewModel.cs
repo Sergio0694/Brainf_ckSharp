@@ -19,6 +19,7 @@ using Brainf_ckSharp.Uwp.ViewModels.Abstract;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Extensions;
 using Microsoft.Toolkit.HighPerformance.Extensions;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 
 #nullable enable
@@ -233,7 +234,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         {
             string text = await FileIO.ReadTextAsync(entry.File);
 
-            ServiceProvider.GetRequiredService<IClipboardService>().TryCopy(text);
+            Ioc.Default.GetRequiredService<IClipboardService>().TryCopy(text);
         }
 
         /// <summary>
@@ -242,7 +243,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to share</param>
         public void Share(CodeLibraryEntry entry)
         {
-            ServiceProvider.GetRequiredService<IShareService>().Share(entry.Title, entry.File);
+            Ioc.Default.GetRequiredService<IShareService>().Share(entry.Title, entry.File);
         }
 
         /// <summary>

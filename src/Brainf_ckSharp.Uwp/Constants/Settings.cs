@@ -16,7 +16,7 @@ namespace Brainf_ckSharp.Uwp.Constants
         /// </summary>
         public static readonly Brainf_ckTheme Brainf_ckTheme = new Func<Brainf_ckTheme>(() =>
         {
-            return Ioc.Default.ServiceProvider.GetRequiredService<ISettingsService>().GetValue<int>(SettingsKeys.Theme) switch
+            return Ioc.Default.GetRequiredService<ISettingsService>().GetValue<int>(SettingsKeys.Theme) switch
             {
                 0 => Brainf_ckThemes.VisualStudio,
                 1 => Brainf_ckThemes.Monokai,

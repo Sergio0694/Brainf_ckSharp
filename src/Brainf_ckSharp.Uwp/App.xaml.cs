@@ -43,7 +43,7 @@ namespace Brainf_ckSharp.Uwp
                     services.AddSingleton<IShareService, ShareService>();
                     services.AddSingleton(_ => GitHubRestFactory.GetGitHubService("Brainf_ckSharp|Uwp"));
                 });
-                Ioc.Default.ServiceProvider.GetRequiredService<ISettingsService>().EnsureDefaults();
+                Ioc.Default.GetRequiredService<ISettingsService>().EnsureDefaults();
 
                 // Initial UI styling
                 TitleBarHelper.ExpandViewIntoTitleBar();

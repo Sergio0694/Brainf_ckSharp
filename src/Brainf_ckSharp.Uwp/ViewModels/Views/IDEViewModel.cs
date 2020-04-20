@@ -9,6 +9,7 @@ using Brainf_ckSharp.Uwp.Models.Ide;
 using Brainf_ckSharp.Uwp.Services.Files;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
 #nullable enable
 
@@ -64,7 +65,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         }
 
         /// <inheritdoc/>
-        protected override void OnActivate()
+        protected override void OnActivated()
         {
             Messenger.Register<OperatorKeyPressedNotificationMessage>(this, m => CharacterAdded?.Invoke(this, m));
             Messenger.Register<RunIdeScriptRequestMessage>(this, _ => ScriptRunRequested?.Invoke(this, EventArgs.Empty));
@@ -82,7 +83,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         /// <param name="favorite">Whether to immediately mark the item as favorite</param>
         private async Task TryLoadTextFromFileAsync(bool favorite)
         {
-            if (!(await ServiceProvider.GetRequiredService<IFilesService>().TryPickOpenFileAsync(".bfs") is StorageFile file)) return;
+            if (!(await Ioc.Default.GetRequiredService<IFilesService>().TryPickOpenFileAsync(".bfs") is StorageFile file)) return;
 
             if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
             {
@@ -114,7 +115,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
         /// </summary>
         private async Task TrySaveTextAsAsync()
         {
-            IFilesService filesService = ServiceProvider.GetRequiredService<IFilesService>();
+            IFilesService filesService = Ioc.Default.GetRequiredService<IFilesService>();
 
             if (!(await filesService.TryPickSaveFileAsync(string.Empty, (string.Empty, ".bfs")) is StorageFile file)) return;
 

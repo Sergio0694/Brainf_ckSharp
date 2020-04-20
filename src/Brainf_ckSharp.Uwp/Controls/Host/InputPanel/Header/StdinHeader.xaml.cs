@@ -84,7 +84,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.Header
         /// <summary>
         /// The <see cref="ISettingsService"/> currently in use
         /// </summary>
-        private readonly ISettingsService SettingsService = Ioc.Default.ServiceProvider.GetRequiredService<ISettingsService>();
+        private readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
 
         /// <summary>
         /// Handles a request for the current stdin buffer
