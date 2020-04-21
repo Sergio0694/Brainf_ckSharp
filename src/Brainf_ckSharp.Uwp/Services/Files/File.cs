@@ -1,7 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
+using Windows.Storage.FileProperties;
 
 namespace Brainf_ckSharp.Uwp.Services.Files
 {
@@ -29,6 +31,14 @@ namespace Brainf_ckSharp.Uwp.Services.Files
 
         /// <inheritdoc/>
         public bool IsReadOnly => file.IsFromPackageDirectory();
+
+        /// <inheritdoc/>
+        public async Task<(ulong, DateTimeOffset)> GetPropertiesAsync()
+        {
+            BasicProperties properties = await file.GetBasicPropertiesAsync();
+
+            return (properties.Size, properties.DateModified);
+        }
 
         /// <inheritdoc/>
         public Task<Stream> OpenStreamForReadAsync()

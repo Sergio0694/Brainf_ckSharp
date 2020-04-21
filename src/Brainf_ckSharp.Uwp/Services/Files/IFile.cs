@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Brainf_ckSharp.Uwp.Services.Files
@@ -17,6 +18,12 @@ namespace Brainf_ckSharp.Uwp.Services.Files
         /// Gets whether or not the file can only be read from
         /// </summary>
         bool IsReadOnly { get; }
+
+        /// <summary>
+        /// Loads the basic properties for the current file.
+        /// </summary>
+        /// <returns>The file size and the last edit time.</returns>
+        Task<(ulong Size, DateTimeOffset EditTime)> GetPropertiesAsync();
 
         /// <summary>
         /// Opens a <see cref="Stream"/> for reading from the file
