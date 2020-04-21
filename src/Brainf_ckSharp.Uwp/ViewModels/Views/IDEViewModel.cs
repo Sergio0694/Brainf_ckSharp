@@ -4,7 +4,6 @@ using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Messages.InputPanel;
-using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Brainf_ckSharp.Uwp.Models.Ide;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
@@ -57,8 +56,6 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
                 if (Set(ref _Code, value))
                 {
                     CodeLoaded?.Invoke(this, value.Content);
-
-                    Messenger.Send<SubPageCloseRequestMessage>();
                 }
             }
         }

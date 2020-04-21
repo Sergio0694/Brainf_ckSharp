@@ -59,6 +59,8 @@ namespace Brainf_ckSharp.Uwp.Views
         private void ViewModel_CodeLoaded(object sender, string e)
         {
             CodeEditor.LoadText(e);
+
+            Messenger.Default.Send<SubPageCloseRequestMessage>();
         }
 
         /// <summary>
