@@ -1,4 +1,4 @@
-﻿namespace Brainf_ckSharp.Uwp.Enums
+﻿namespace Brainf_ckSharp.Shared.Enums
 {
     /// <summary>
     /// An <see langword="enum"/> that indicates a section of the code library

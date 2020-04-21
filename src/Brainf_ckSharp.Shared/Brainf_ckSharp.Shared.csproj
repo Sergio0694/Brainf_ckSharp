@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
-    <RootNamespace>Brainf_ckSharp</RootNamespace>
+    <RootNamespace>Brainf_ckSharp.Shared</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

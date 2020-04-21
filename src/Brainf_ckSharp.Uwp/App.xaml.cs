@@ -1,8 +1,8 @@
 ﻿using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml;
-using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Uwp.Controls.Host;
 using Brainf_ckSharp.Uwp.Helpers.UI;
 using Brainf_ckSharp.Uwp.Services.Clipboard;

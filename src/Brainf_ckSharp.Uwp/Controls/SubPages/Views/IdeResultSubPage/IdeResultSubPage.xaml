@@ -12,7 +12,7 @@
     xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
     xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
-    xmlns:enums="using:Brainf_ckSharp.Uwp.Enums"
+    xmlns:enums="using:Brainf_ckSharp.Shared.Enums"
     xmlns:models="using:Brainf_ckSharp.Uwp.Models.Ide.Views"
     xmlns:views="using:Brainf_ckSharp.Uwp.Controls.SubPages.Views"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"

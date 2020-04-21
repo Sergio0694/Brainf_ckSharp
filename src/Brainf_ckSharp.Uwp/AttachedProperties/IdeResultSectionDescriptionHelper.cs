@@ -3,9 +3,9 @@ using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
+using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Uwp.Constants;
 using Brainf_ckSharp.Uwp.Converters.Console;
-using Brainf_ckSharp.Uwp.Enums;
 using Brainf_ckSharp.Uwp.Models.Ide.Views;
 
 namespace Brainf_ckSharp.Uwp.AttachedProperties

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel;
 using Brainf_ckSharp.Services;
-using Brainf_ckSharp.Uwp.Enums;
+using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Models.Ide;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract;

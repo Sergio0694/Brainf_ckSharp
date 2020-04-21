@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
-using Brainf_ckSharp.Uwp.Enums;
+using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Uwp.Messages.InputPanel;
 using Brainf_ckSharp.Uwp.Models.Ide.Views;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract;

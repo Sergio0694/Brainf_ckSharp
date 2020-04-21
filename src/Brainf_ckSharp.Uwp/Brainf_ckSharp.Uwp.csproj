@@ -227,9 +227,6 @@
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Windows.UI.Xaml.Controls\LockedPivot.cs" />
-    <Compile Include="Enums\IdeResultSection.cs" />
-    <Compile Include="Enums\CodeLibrarySection.cs" />
-    <Compile Include="Enums\UserGuideSection.cs" />
     <Compile Include="Extensions\Microsoft.Xaml.Interactions.Core\ItemClickBehavior.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IListExtensions.cs" />

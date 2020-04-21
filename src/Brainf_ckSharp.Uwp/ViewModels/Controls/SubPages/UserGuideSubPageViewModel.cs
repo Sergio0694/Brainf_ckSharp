@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using Brainf_ckSharp.Uwp.Enums;
+using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract;
 
 namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages

@@ -1,5 +1,5 @@
 ﻿using Brainf_ckSharp.Models;
-using Brainf_ckSharp.Uwp.Enums;
+using Brainf_ckSharp.Shared.Enums;
 
 namespace Brainf_ckSharp.Uwp.Models.Ide.Views
 {

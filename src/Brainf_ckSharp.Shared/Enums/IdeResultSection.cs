@@ -1,4 +1,4 @@
-﻿namespace Brainf_ckSharp.Uwp.Enums
+﻿namespace Brainf_ckSharp.Shared.Enums
 {
     /// <summary>
     /// An <see langword="enum"/> that indicates the kind of info to show about an interpreter session

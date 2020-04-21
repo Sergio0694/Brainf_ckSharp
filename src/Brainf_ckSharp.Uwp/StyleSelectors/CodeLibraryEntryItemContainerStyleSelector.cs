@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.Uwp.Enums;
+using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Uwp.Models.Ide;
 
 namespace Brainf_ckSharp.Uwp.StyleSelectors
