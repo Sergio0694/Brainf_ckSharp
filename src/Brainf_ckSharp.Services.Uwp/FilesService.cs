@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
@@ -17,6 +18,9 @@ namespace Brainf_ckSharp.Uwp.Services.Files
     /// </summary>
     public sealed class FilesService : IFilesService
     {
+        /// <inheritdoc/>
+        public string InstallationPath => Package.Current.InstalledLocation.Path;
+
         /// <inheritdoc/>
         public async Task<IFile> GetFileFromPathAsync(string path)
         {

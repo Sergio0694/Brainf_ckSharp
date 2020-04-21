@@ -11,6 +11,11 @@ namespace Brainf_ckSharp.Services
     public interface IFilesService
     {
         /// <summary>
+        /// Gets the path of the installation directory
+        /// </summary>
+        string InstallationPath { get; }
+
+        /// <summary>
         /// Gets a target file from a specified path
         /// </summary>
         /// <param name="path">The path of the file to retrieve</param>

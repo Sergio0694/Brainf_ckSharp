@@ -24,9 +24,9 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
     public sealed class CodeLibrarySubPageViewModel : ItemsCollectionViewModelBase<ObservableGroup<CodeLibrarySection, object>>
     {
         /// <summary>
-        /// The path of folder that contains the sample files
+        /// The relative path of folder that contains the sample files
         /// </summary>
-        private static readonly string SampleFilesPath = $@"Package.Current.InstalledLocation.Path\Assets\Samples\"; // TODO
+        private static readonly string SampleFilesRelativePath = @"Assets\Samples\";
 
         /// <summary>
         /// The ordered mapping of available source code files
@@ -56,7 +56,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         {
             return _SampleCodes ??= await Task.WhenAll(SampleFilesMapping.Select(async item =>
             {
-                string path = Path.Combine(SampleFilesPath, $"{item.Filename}.txt");
+                string installationPath = Ioc.Default.GetRequiredService<IFilesService>().InstallationPath;
+                string path = Path.Combine(installationPath, SampleFilesRelativePath, $"{item.Filename}.txt");
                 IFile file = await Ioc.Default.GetRequiredService<IFilesService>().GetFileFromPathAsync(path);
 
                 CodeLibraryEntry? entry = await CodeLibraryEntry.TryLoadFromFileAsync(file, item.Title);
