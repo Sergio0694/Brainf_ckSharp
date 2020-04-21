@@ -15,7 +15,7 @@ namespace Brainf_ckSharp.Uwp.Services.Files
         /// <summary>
         /// The underlying <see cref="StorageFile"/> instance in use.
         /// </summary>
-        private readonly StorageFile file;
+        public readonly StorageFile file;
 
         /// <summary>
         /// Creates a new <see cref="StorageFile"/> instance.
@@ -25,6 +25,9 @@ namespace Brainf_ckSharp.Uwp.Services.Files
         {
             this.file = file;
         }
+
+        /// <inheritdoc/>
+        public string DisplayName => file.DisplayName;
 
         /// <inheritdoc/>
         public string Path => file.Path;
@@ -50,6 +53,12 @@ namespace Brainf_ckSharp.Uwp.Services.Files
         public Task<Stream> OpenStreamForWriteAsync()
         {
             return file.OpenStreamForWriteAsync();
+        }
+
+        /// <inheritdoc/>
+        public Task DeleteAsync()
+        {
+            return file.DeleteAsync().AsTask();
         }
 
         /// <inheritdoc/>

@@ -10,6 +10,11 @@ namespace Brainf_ckSharp.Uwp.Services.Files
     public interface IFile
     {
         /// <summary>
+        /// Gets the name of the current file
+        /// </summary>
+        string DisplayName { get; }
+
+        /// <summary>
         /// Gets the path of the current file
         /// </summary>
         string Path { get; }
@@ -36,6 +41,12 @@ namespace Brainf_ckSharp.Uwp.Services.Files
         /// </summary>
         /// <returns>A <see cref="Task{TResult}"/> returning the requested <see cref="Stream"/></returns>
         Task<Stream> OpenStreamForWriteAsync();
+
+        /// <summary>
+        /// Deletes the current file
+        /// </summary>
+        /// <returns>A <see cref="Task"/> that completes when the file is deleted</returns>
+        Task DeleteAsync();
 
         /// <summary>
         /// Requests permission for access this file in the future without asking the user
