@@ -53,5 +53,10 @@ namespace Brainf_ckSharp.Uwp.Services.Files
         /// </summary>
         /// <param name="metadata">The optional metadata to associate with the file</param>
         void RequestFutureAccessPermission(string metadata);
+
+        /// <summary>
+        /// Removes the permission for access this file in the future without asking the user
+        /// </summary>
+        void RemoveFutureAccessPermission();
     }
 }

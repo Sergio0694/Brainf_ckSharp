@@ -238,8 +238,7 @@
     <Compile Include="Extensions\System.Collections.ObjectModel\ObservableCollectionExtensions.cs" />
     <Compile Include="Extensions\System.Collections.ObjectModel\ObservableGroup{TKey,TElement}.cs" />
     <Compile Include="Extensions\System\StringExtensions.cs" />
-    <Compile Include="Extensions\Windows.Storage\IStorageItemExtensions.cs" />
-    <Compile Include="Extensions\Windows.Storage\StorageItemMostRecentlyUsedListExtensions.cs" />
+    <Compile Include="Extensions\Windows.Storage\IFileExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Xaml\FrameworkElementExtensions.cs" />
     <Compile Include="Helpers\UI\TitleBarHelper.cs" />
     <Compile Include="MarkupExtensions\BooleanExtension.cs" />

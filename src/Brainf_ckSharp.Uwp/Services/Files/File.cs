@@ -1,9 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.FileProperties;
+using Microsoft.Toolkit.Extensions;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 namespace Brainf_ckSharp.Uwp.Services.Files
 {
@@ -33,7 +36,7 @@ namespace Brainf_ckSharp.Uwp.Services.Files
         public string Path => StorageFile.Path;
 
         /// <inheritdoc/>
-        public bool IsReadOnly => StorageFile.IsFromPackageDirectory();
+        public bool IsReadOnly => Path.StartsWith(Package.Current.InstalledLocation.Path);
 
         /// <inheritdoc/>
         public async Task<(ulong, DateTimeOffset)> GetPropertiesAsync()
@@ -64,9 +67,17 @@ namespace Brainf_ckSharp.Uwp.Services.Files
         /// <inheritdoc/>
         public void RequestFutureAccessPermission(string metadata)
         {
-            string token = StorageFile.GetId();
+            string token = Path.GetDjb2HashCode().ToHexString();
 
             StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(token, StorageFile, metadata);
+        }
+
+        /// <inheritdoc/>
+        public void RemoveFutureAccessPermission()
+        {
+            string token = Path.GetDjb2HashCode().ToHexString();
+
+            StorageApplicationPermissions.MostRecentlyUsedList.Remove(token);
         }
     }
 }

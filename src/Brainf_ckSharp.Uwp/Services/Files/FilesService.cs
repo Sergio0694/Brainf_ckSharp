@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -73,10 +74,14 @@ namespace Brainf_ckSharp.Uwp.Services.Files
 
             foreach (var entry in entries)
             {
-                // Try to get the target file
-                StorageFile? file = await StorageApplicationPermissions.MostRecentlyUsedList.TryGetFileAsync(entry.Token);
+                StorageFile file;
 
-                if (file is null)
+                // Try to get the target file
+                try
+                {
+                    file = await StorageApplicationPermissions.MostRecentlyUsedList.GetFileAsync(entry.Token);
+                }
+                catch (FileNotFoundException)
                 {
                     StorageApplicationPermissions.MostRecentlyUsedList.Remove(entry.Token);
 

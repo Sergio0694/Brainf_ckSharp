@@ -1,9 +1,7 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Windows.Storage;
-using Windows.Storage.AccessCache;
+using Brainf_ckSharp.Uwp.Services.Files;
 using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 
@@ -20,9 +18,9 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         /// Creates a new <see cref="SourceCode"/> instance with the specified parameters
         /// </summary>
         /// <param name="content">The content of the current source code</param>
-        /// <param name="file">The <see cref="StorageFile"/> instance for the current source code</param>
+        /// <param name="file">The <see cref="IFile"/> instance for the current source code</param>
         /// <param name="metadata">The metadata for the current file</param>
-        private SourceCode(string content, StorageFile? file, CodeMetadata metadata)
+        private SourceCode(string content, IFile? file, CodeMetadata metadata)
         {
             _Content = content;
             File = file;
@@ -41,9 +39,9 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="StorageFile"/> instance for the current source code
+        /// Gets or sets the <see cref="IFile"/> instance for the current source code
         /// </summary>
-        public StorageFile? File { get; private set; }
+        public IFile? File { get; private set; }
 
         /// <summary>
         /// Gets the associated <see cref="CodeMetadata"/> instance for the current entry
@@ -63,9 +61,9 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         /// <param name="file">The file to read the contents of the source code from</param>
         /// <returns>A new <see cref="SourceCode"/> instance with the contents of <paramref name="file"/></returns>
         [Pure]
-        public static async Task<SourceCode> LoadFromReferenceFileAsync(StorageFile file)
+        public static async Task<SourceCode> LoadFromReferenceFileAsync(IFile file)
         {
-            string text = await FileIO.ReadTextAsync(file);
+            string text = await file.ReadAllTextAsync();
 
             return new SourceCode(text, null, CodeMetadata.Default);
         }
@@ -74,18 +72,19 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         /// Creates a new <see cref="SourceCode"/> instance from the specified editable file
         /// </summary>
         /// <param name="file">The file to read the contents of the source code from</param>
-        /// <returns>A new <see cref="SourceCode"/> instance with the contents of <paramref name="file"/></returns>
+        /// <returns>A new <see cref="IFile"/> instance with the contents of <paramref name="file"/></returns>
         [Pure]
-        public static async Task<SourceCode?> TryLoadFromEditableFileAsync(StorageFile file)
+        public static async Task<SourceCode?> TryLoadFromEditableFileAsync(IFile file)
         {
             try
             {
-                string text = await FileIO.ReadTextAsync(file);
+                string text = await file.ReadAllTextAsync();
 
                 SourceCode code = new SourceCode(text, file, new CodeMetadata());
 
                 string metadata = JsonSerializer.Serialize(code.Metadata);
-                StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(file.GetId(), file, metadata);
+
+                file.RequestFutureAccessPermission(metadata);
 
                 return code;
             }
@@ -105,10 +104,11 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
 
             try
             {
-                await FileIO.WriteTextAsync(File, Content);
+                await File.WriteAllTextAsync(Content);
 
                 string metadata = JsonSerializer.Serialize(Metadata);
-                StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(File!.GetId(), File, metadata);
+
+                File!.RequestFutureAccessPermission(metadata);
 
                 return true;
             }
@@ -123,7 +123,7 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         /// </summary>
         /// <param name="file">The target file to use to save the data</param>
         /// <returns><see langword="true"/> if the data was saved successfully, <see langword="false"/> otherwise</returns>
-        public Task<bool> TrySaveAsAsync(StorageFile file)
+        public Task<bool> TrySaveAsAsync(IFile file)
         {
             File = file;
 

@@ -158,7 +158,7 @@
                     VerticalAlignment="Center"
                     HorizontalTextAlignment="Left"/>
                 <TextBlock
-                    Text="{x:Bind storage:IStorageItemExtensions.GetFormattedPath(File)}"
+                    Text="{x:Bind storage:IFileExtensions.GetFormattedPath(File)}"
                     FontWeight="Normal"
                     FontSize="13"
                     TextLineBounds="Tight"

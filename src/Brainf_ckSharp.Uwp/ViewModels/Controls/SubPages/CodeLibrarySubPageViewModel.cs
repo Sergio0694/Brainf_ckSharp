@@ -8,17 +8,14 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel;
-using Windows.Storage;
-using Windows.Storage.AccessCache;
 using Brainf_ckSharp.Uwp.Enums;
 using Brainf_ckSharp.Uwp.Messages.Ide;
 using Brainf_ckSharp.Uwp.Models.Ide;
 using Brainf_ckSharp.Uwp.Services.Clipboard;
+using Brainf_ckSharp.Uwp.Services.Files;
 using Brainf_ckSharp.Uwp.Services.Share;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Extensions;
-using Microsoft.Toolkit.HighPerformance.Extensions;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 
@@ -62,7 +59,8 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             return _SampleCodes ??= await Task.WhenAll(SampleFilesMapping.Select(async item =>
             {
                 string path = Path.Combine(SampleFilesPath, $"{item.Filename}.txt");
-                StorageFile file = await StorageFile.GetFileFromPathAsync(path);
+                IFile file = await Ioc.Default.GetRequiredService<IFilesService>().GetFileFromPathAsync(path);
+
                 CodeLibraryEntry? entry = await CodeLibraryEntry.TryLoadFromFileAsync(file, item.Title);
 
                 return entry ?? throw new InvalidOperationException($"Failed to load {item.Title} sample");
@@ -123,37 +121,31 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// </summary>
         public async Task LoadDataAsync()
         {
+            List<CodeLibraryEntry> recent = new List<CodeLibraryEntry>();
+
             // Load the recent files
-            IReadOnlyList<AccessListEntry> entries = StorageApplicationPermissions.MostRecentlyUsedList.Entries.ToArray();
-            IReadOnlyList<CodeLibraryEntry?> recent = await Task.WhenAll(entries.Select(async item =>
+            await foreach ((IFile file, string data) in Ioc.Default.GetRequiredService<IFilesService>().GetFutureAccessFilesAsync())
             {
-                // Try to get the target file
-                StorageFile? file = await StorageApplicationPermissions.MostRecentlyUsedList.TryGetFileAsync(item.Token);
-                if (file is null)
-                {
-                    StorageApplicationPermissions.MostRecentlyUsedList.Remove(item.Token);
-                    return null;
-                }
-
                 // Deserialize the metadata and prepare the model
-                CodeMetadata metadata = string.IsNullOrEmpty(item.Metadata) ? new CodeMetadata() : JsonSerializer.Deserialize<CodeMetadata>(item.Metadata);
-                CodeLibraryEntry? entry = await CodeLibraryEntry.TryLoadFromFileAsync(file, metadata);
+                CodeMetadata metadata = string.IsNullOrEmpty(data) ? new CodeMetadata() : JsonSerializer.Deserialize<CodeMetadata>(data);
+                CodeLibraryEntry entry = await CodeLibraryEntry.TryLoadFromFileAsync(file, metadata)
+                                         ?? throw new InvalidOperationException("Failed to load source code");
 
-                return entry ?? throw new InvalidOperationException($"Failed to load token {item.Token}");
-            }));
+                recent.Add(entry);
+            }
 
             // Sort chronologically
-            IReadOnlyList<CodeLibraryEntry?> sorted = recent.OrderByDescending(entry => entry?.EditTime).ToArray();
+            IReadOnlyList<CodeLibraryEntry> sorted = recent.OrderByDescending(entry => entry.EditTime).ToArray();
 
             // Load the code samples
             IReadOnlyList<CodeLibraryEntry> samples = await GetSampleCodesAsync();
 
             // Add the favorites, if any
-            IEnumerable<CodeLibraryEntry> favorited = sorted.Where(entry => entry?.Metadata.IsFavorited == true)!;
+            IEnumerable<CodeLibraryEntry> favorited = sorted.Where(entry => entry.Metadata.IsFavorited)!;
             Source.Add(CodeLibrarySection.Favorites, favorited.Append<object>(CodeLibrarySection.Favorites));
 
             // Add the recent and sample items
-            IEnumerable<CodeLibraryEntry> unfavorited = sorted.Where(entry => entry?.Metadata.IsFavorited == false)!;
+            IEnumerable<CodeLibraryEntry> unfavorited = sorted.Where(entry => !entry.Metadata.IsFavorited)!;
             Source.Add(CodeLibrarySection.Recent, unfavorited.Append<object>(CodeLibrarySection.Recent));
             Source.Add(CodeLibrarySection.Samples, samples);
         }
@@ -180,7 +172,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// <param name="entry">The selected <see cref="CodeLibraryEntry"/> model</param>
         public async Task OpenFileAsync(CodeLibraryEntry entry)
         {
-            if (entry.File.IsFromPackageDirectory())
+            if (entry.File.IsReadOnly)
             {
                 SourceCode code = await SourceCode.LoadFromReferenceFileAsync(entry.File);
                 Messenger.Send(new LoadSourceCodeRequestMessage(code));
@@ -223,7 +215,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
                 Source[0].InsertSorted(entry, Comparer);
             }
 
-            StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(entry.File.GetId(), entry.File, JsonSerializer.Serialize(entry.Metadata));
+            entry.File.RequestFutureAccessPermission(JsonSerializer.Serialize(entry.Metadata));
         }
 
         /// <summary>
@@ -232,7 +224,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
         /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to copy to the clipboard</param>
         public async Task CopyToClipboardAsync(CodeLibraryEntry entry)
         {
-            string text = await FileIO.ReadTextAsync(entry.File);
+            string text = await entry.File.ReadAllTextAsync();
 
             Ioc.Default.GetRequiredService<IClipboardService>().TryCopy(text);
         }
@@ -257,7 +249,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
             if (group.Count == 1) Source.Remove(group);
             else group.Remove(entry);
 
-            StorageApplicationPermissions.MostRecentlyUsedList.Remove(entry.File.Path.GetDjb2HashCode().ToHexString());
+            entry.File.RemoveFutureAccessPermission();
         }
 
         /// <summary>

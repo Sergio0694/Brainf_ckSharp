@@ -5,8 +5,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Windows.Storage;
-using Windows.Storage.FileProperties;
+using Brainf_ckSharp.Uwp.Services.Files;
 using Microsoft.Toolkit.Diagnostics;
 
 #nullable enable
@@ -26,12 +25,12 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         /// <summary>
         /// Creates a new <see cref="CodeLibraryEntry"/> instance with the specified parameters
         /// </summary>
-        /// <param name="file">The underlying <see cref="StorageFile"/> instance for the new entry</param>
+        /// <param name="file">The underlying <see cref="IFile"/> instance for the new entry</param>
         /// <param name="editTime">The edit time for <paramref name="file"/></param>
         /// <param name="metadata">The metadata for the current file</param>
         /// <param name="title">The title of the new entry</param>
         /// <param name="preview">The preview code for the new entry</param>
-        private CodeLibraryEntry(StorageFile file, DateTimeOffset editTime, CodeMetadata metadata, string title, string preview)
+        private CodeLibraryEntry(IFile file, DateTimeOffset editTime, CodeMetadata metadata, string title, string preview)
         {
             File = file;
             EditTime = editTime;
@@ -41,12 +40,12 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         }
 
         /// <summary>
-        /// Gets the underlying <see cref="StorageFile"/> instance for the current entry
+        /// Gets the underlying <see cref="IFile"/> instance for the current entry
         /// </summary>
-        public StorageFile File { get; }
+        public IFile File { get; }
 
         /// <summary>
-        /// Gets the edit time for the underlying <see cref="StorageFile"/> instance
+        /// Gets the edit time for the underlying <see cref="IFile"/> instance
         /// </summary>
         public DateTimeOffset EditTime { get; }
 
@@ -72,15 +71,15 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         /// <param name="metadata">The metadata for the current file</param>
         /// <returns>A new <see cref="CodeLibraryEntry"/> instance for <paramref name="file"/></returns>
         [Pure]
-        public static async Task<CodeLibraryEntry?> TryLoadFromFileAsync(StorageFile file, CodeMetadata metadata)
+        public static async Task<CodeLibraryEntry?> TryLoadFromFileAsync(IFile file, CodeMetadata metadata)
         {
             try
             {
                 string preview = await LoadCodePreviewAsync(file, CodePreviewLength);
 
-                BasicProperties props = await file.GetBasicPropertiesAsync();
+                (_, DateTimeOffset editTime) = await file.GetPropertiesAsync();
 
-                return new CodeLibraryEntry(file, props.DateModified, metadata, file.DisplayName, preview);
+                return new CodeLibraryEntry(file, editTime, metadata, file.DisplayName, preview);
             }
             catch
             {
@@ -95,7 +94,7 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         /// <param name="title">The name to use for the new <see cref="CodeLibraryEntry"/> instance</param>
         /// <returns>A new <see cref="CodeLibraryEntry"/> instance for <paramref name="file"/></returns>
         [Pure]
-        public static async Task<CodeLibraryEntry?> TryLoadFromFileAsync(StorageFile file, string title)
+        public static async Task<CodeLibraryEntry?> TryLoadFromFileAsync(IFile file, string title)
         {
             try
             {
@@ -117,11 +116,11 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
         /// <summary>
         /// Loads a code preview with a maximum specified length from a given file
         /// </summary>
-        /// <param name="file">The input <see cref="StorageFile"/> to read from</param>
+        /// <param name="file">The input <see cref="IFile"/> to read from</param>
         /// <param name="length">The maximum length of the preview to load</param>
         /// <returns>A <see cref="string"/> with a preview of the Brainf*ck/PBrain source code in <paramref name="file"/></returns>
         [Pure]
-        private static async Task<string> LoadCodePreviewAsync(StorageFile file, int length)
+        private static async Task<string> LoadCodePreviewAsync(IFile file, int length)
         {
             Guard.IsGreaterThan(length, 0, nameof(length));
 

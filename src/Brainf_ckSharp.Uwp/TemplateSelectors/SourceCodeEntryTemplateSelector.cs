@@ -39,7 +39,7 @@ namespace Brainf_ckSharp.Uwp.TemplateSelectors
         {
             return item switch
             {
-                CodeLibraryEntry entry when entry.File.IsFromPackageDirectory() => SampleTemplate,
+                CodeLibraryEntry entry when entry.File.IsReadOnly => SampleTemplate,
                 CodeLibraryEntry _ => RecentItemTemplate,
                 CodeLibrarySection.Favorites => FavoritePlaceholderTemplate,
                 CodeLibrarySection.Recent => RecentPlaceholderTemplate,
