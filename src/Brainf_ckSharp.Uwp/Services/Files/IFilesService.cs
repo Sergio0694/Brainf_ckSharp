@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Windows.Storage;
 
 #nullable enable
@@ -24,5 +25,11 @@ namespace Brainf_ckSharp.Uwp.Services.Files
         /// <param name="fileType">The info on the file type to save to</param>
         /// <returns>A <see cref="StorageFile"/> to use to save data to, if available</returns>
         Task<StorageFile?> TryPickSaveFileAsync(string filename, (string Name, string Extension) fileType);
+
+        /// <summary>
+        /// Enumerates all the available files from the future access list.
+        /// </summary>
+        /// <returns>An <see cref="IAsyncEnumerable{T}"/> sequence of available files.</returns>
+        IAsyncEnumerable<(IFile File, string Metadata)> GetFutureAccessFilesAsync();
     }
 }
