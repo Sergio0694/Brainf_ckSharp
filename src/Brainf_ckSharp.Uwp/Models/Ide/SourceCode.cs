@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Brainf_ckSharp.Uwp.Services.Files;
+using Brainf_ckSharp.Services;
 using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 
@@ -104,7 +104,7 @@ namespace Brainf_ckSharp.Uwp.Models.Ide
 
             try
             {
-                await File.WriteAllTextAsync(Content);
+                await File!.WriteAllTextAsync(Content);
 
                 string metadata = JsonSerializer.Serialize(Metadata);
 

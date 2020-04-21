@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.IO;
-using Brainf_ckSharp.Uwp.Services.Files;
+using Brainf_ckSharp.Services;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 using Microsoft.Toolkit.HighPerformance.Extensions;
 

@@ -7,12 +7,12 @@ using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Memory.Tools;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
+using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Uwp.Messages.Console.Commands;
 using Brainf_ckSharp.Uwp.Messages.Console.MemoryState;
 using Brainf_ckSharp.Uwp.Messages.InputPanel;
 using Brainf_ckSharp.Uwp.Models.Console;
 using Brainf_ckSharp.Uwp.Models.Console.Interfaces;
-using Brainf_ckSharp.Uwp.Services.Keyboard;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
@@ -213,7 +213,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
                 else
                 {
                     // In all cases, update the current memory state
-                    MachineState = result.Value.MachineState;
+                    MachineState = result.Value!.MachineState;
 
                     // Display textual results and exit codes
                     if (!string.IsNullOrEmpty(result.Value.Stdout)) Source.Add(new ConsoleResult(result.Value.Stdout));
