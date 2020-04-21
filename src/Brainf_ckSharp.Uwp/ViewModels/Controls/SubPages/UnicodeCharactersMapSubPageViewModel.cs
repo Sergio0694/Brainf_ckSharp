@@ -9,7 +9,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 
 namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
 {
-    public sealed class UnicodeCharactersMapSubPageViewModel : GroupedItemsCollectionViewModelBase<UnicodeInterval, UnicodeCharacter>
+    public sealed class UnicodeCharactersMapSubPageViewModel : ItemsCollectionViewModelBase<ObservableGroup<UnicodeInterval, UnicodeCharacter>>
     {
         /// <summary>
         /// A mutex to avoid race conditions when loading <see cref="_32To127"/> and <see cref="_160To255"/>

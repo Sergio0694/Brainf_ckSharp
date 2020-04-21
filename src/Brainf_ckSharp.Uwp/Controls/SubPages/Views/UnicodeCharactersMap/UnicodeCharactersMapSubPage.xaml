@@ -18,6 +18,12 @@
             <ResourceDictionary.MergedDictionaries>
                 <views:UnicodeCharactersMapSubPageTemplates/>
             </ResourceDictionary.MergedDictionaries>
+
+            <!--Grouped source-->
+            <CollectionViewSource
+                x:Name="GroupedSource"
+                IsSourceGrouped="True"
+                Source="{x:Bind ViewModel.Source, Mode=OneWay}"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.DataContext>
@@ -34,7 +40,7 @@
         <ListView
             IsItemClickEnabled="False"
             SelectionMode="None"
-            ItemsSource="{x:Bind ViewModel.View}"
+            ItemsSource="{x:Bind GroupedSource.View, Mode=OneWay}"
             Padding="12"
             ItemTemplate="{StaticResource UnicodeCharacterTemplate}">
             <ListView.Resources>

@@ -214,12 +214,11 @@
         Background="#72000000">
 
         <!--Semantic zoom-->
-        <SemanticZoom>
+        <SemanticZoom attachedProperties:SemanticZoomHelper.Source="{x:Bind ViewModel.Source, Mode=OneWay}">
             <SemanticZoom.ZoomedInView>
 
                 <!--ZoomedInView-->
                 <ListView
-                    ItemsSource="{x:Bind ViewModel.View, Mode=OneWay}"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     IsItemClickEnabled="True"
@@ -270,7 +269,7 @@
             <SemanticZoom.ZoomedOutView>
 
                 <!--ZoomedOutView-->
-                <ListView ItemsSource="{x:Bind ViewModel.CollectionGroups, Mode=OneWay}">
+                <ListView>
                     <ListView.Resources>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Margin" Value="0,0,0,4"/>

@@ -129,6 +129,7 @@
     <Compile Include="AttachedProperties\ListViewBaseHelper.cs" />
     <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.Source.cs" />
+    <Compile Include="AttachedProperties\SemanticZoomHelper.cs" />
     <Compile Include="AttachedProperties\ViewModelBaseHelper.cs" />
     <Compile Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPageTemplates.xaml.cs">
       <DependentUpon>IdeResultSubPageTemplates.xaml</DependentUpon>
@@ -285,7 +286,6 @@
     <Compile Include="TemplateSelectors\IdeResultSectionTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\SourceCodeEntryTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\UserGuideSectionTemplateSelector.cs" />
-    <Compile Include="ViewModels\Abstract\GroupedItemsCollectionViewModelBase{TKey,TElement}.cs" />
     <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase{T}.cs" />
     <Compile Include="ViewModels\Controls\SubPages\CodeLibrarySubPageViewModel.cs" />
     <Compile Include="ViewModels\Controls\SubPages\IdeResultSubPageViewModel.cs" />

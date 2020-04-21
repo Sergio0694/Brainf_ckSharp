@@ -15,7 +15,7 @@ using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
 {
-    public sealed class IdeResultSubPageViewModel : GroupedItemsCollectionViewModelBase<IdeResultSection, IdeResultWithSectionInfo>
+    public sealed class IdeResultSubPageViewModel : ItemsCollectionViewModelBase<ObservableGroup<IdeResultSection, IdeResultWithSectionInfo>>
     {
         /// <summary>
         /// Creates a new <see cref="IdeResultSubPageViewModel"/> instance

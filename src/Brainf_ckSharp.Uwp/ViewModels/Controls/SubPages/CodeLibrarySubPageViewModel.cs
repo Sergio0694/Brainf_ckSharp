@@ -21,7 +21,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 
 namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
 {
-    public sealed class CodeLibrarySubPageViewModel : GroupedItemsCollectionViewModelBase<CodeLibrarySection, object>
+    public sealed class CodeLibrarySubPageViewModel : ItemsCollectionViewModelBase<ObservableGroup<CodeLibrarySection, object>>
     {
         /// <summary>
         /// The path of folder that contains the sample files

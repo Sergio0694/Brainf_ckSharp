@@ -8,7 +8,7 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
     /// <summary>
     /// A view model for the user guide in the app
     /// </summary>
-    public sealed class UserGuideSubPageViewModel : GroupedItemsCollectionViewModelBase<UserGuideSection, UserGuideSection>
+    public sealed class UserGuideSubPageViewModel : ItemsCollectionViewModelBase<ObservableGroup<UserGuideSection, UserGuideSection>>
     {
         /// <summary>
         /// The collection of available user guide sections
