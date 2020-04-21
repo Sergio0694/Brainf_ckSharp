@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel;
 
-#nullable enable
-
-namespace System.Collections.ObjectModel
+namespace Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel
 {
     /// <summary>
     /// A <see laangword="class"/> that represents a group of elements backed by an observable collection
     /// </summary>
     /// <typeparam name="TKey">The type of the group key</typeparam>
     /// <typeparam name="TElement">The type of the elements in the group</typeparam>
-    public class ObservableGroup<TKey, TElement> : ObservableCollection<TElement>, IGroupedCollection where TKey : notnull
+    public class ObservableGroup<TKey, TElement> : ObservableCollection<TElement>, IGroupedCollection
+        where TKey : notnull
     {
         /// <summary>
         /// Creates a new <see cref="ObservableGroup{TKey,TElement}"/> instance with the specified parameters

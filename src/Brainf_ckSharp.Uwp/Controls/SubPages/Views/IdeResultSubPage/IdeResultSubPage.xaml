@@ -8,7 +8,6 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
-    xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
     xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
     xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
@@ -16,6 +15,7 @@
     xmlns:views="using:Brainf_ckSharp.Uwp.Controls.SubPages.Views"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     xmlns:models="using:Brainf_ckSharp.Shared.Models.Ide.Views"
+    xmlns:objectModel="using:Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">

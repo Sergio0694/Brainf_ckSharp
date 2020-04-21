@@ -1,4 +1,4 @@
-﻿namespace Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel
+﻿namespace Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel
 {
     /// <summary>
     /// An <see langword="interface"/> for a grouped collection of items

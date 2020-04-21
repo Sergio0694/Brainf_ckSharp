@@ -13,6 +13,7 @@ using Brainf_ckSharp.Shared.Messages.Console.MemoryState;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Models.Console;
 using Brainf_ckSharp.Shared.Models.Console.Interfaces;
+using Brainf_ckSharp.Uwp.Extensions.System.Collections.Generic;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;

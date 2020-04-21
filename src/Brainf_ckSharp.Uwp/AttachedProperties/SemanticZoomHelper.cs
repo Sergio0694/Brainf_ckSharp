@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
-using Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel;
+using Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel;
 
 #nullable enable
 

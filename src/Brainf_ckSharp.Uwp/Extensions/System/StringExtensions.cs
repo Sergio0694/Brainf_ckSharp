@@ -1,9 +1,10 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 using Microsoft.Toolkit.HighPerformance.Extensions;
 
-namespace System
+namespace Brainf_ckSharp.Uwp.Extensions.System
 {
     /// <summary>
     /// An extension <see langword="class"/> for the <see cref="string"/> type

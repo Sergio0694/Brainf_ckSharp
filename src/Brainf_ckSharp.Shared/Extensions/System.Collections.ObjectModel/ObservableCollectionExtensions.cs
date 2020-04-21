@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
 
-namespace System.Collections.ObjectModel
+namespace Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel
 {
     /// <summary>
     /// An extension <see langword="class"/> for <see cref="ObservableCollection{T}"/> type
@@ -21,6 +22,7 @@ namespace System.Collections.ObjectModel
             this ObservableCollection<ObservableGroup<TKey, TElement>> source,
             TKey key,
             TElement element)
+            where TKey : notnull
         {
             Add(source, key, new [] { element });
         }
@@ -38,6 +40,7 @@ namespace System.Collections.ObjectModel
             this ObservableCollection<ObservableGroup<TKey, TElement>> source,
             TKey key,
             IEnumerable<TElement> collection)
+            where TKey : notnull
         {
             source.Add(new ObservableGroup<TKey, TElement>(key, collection));
         }

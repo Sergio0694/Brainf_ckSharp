@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
@@ -10,6 +9,8 @@ using System.Windows.Input;
 using Windows.ApplicationModel;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Enums;
+using Brainf_ckSharp.Shared.Extensions.System.Collections.Generic;
+using Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Brainf_ckSharp.Shared.Models.Ide;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract;

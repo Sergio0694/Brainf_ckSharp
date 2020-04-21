@@ -2,7 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Linq;
 
-namespace Brainf_ckSharp.Uwp.Extensions.System.Collections.Generic
+namespace Brainf_ckSharp.Shared.Extensions.System.Collections.Generic
 {
     /// <summary>
     /// An extension <see langword="class"/> for <see cref="IReadOnlyList{T}"/> types

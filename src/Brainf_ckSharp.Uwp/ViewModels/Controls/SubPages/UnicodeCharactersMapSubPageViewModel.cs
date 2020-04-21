@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel;
 using Brainf_ckSharp.Shared.Models;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract;
 using Microsoft.Toolkit.Mvvm.Input;
