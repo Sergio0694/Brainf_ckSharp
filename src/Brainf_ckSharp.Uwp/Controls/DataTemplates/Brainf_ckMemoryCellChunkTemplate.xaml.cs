@@ -1,5 +1,5 @@
 ﻿using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.Uwp.Models.Console.Controls;
+using Brainf_ckSharp.Shared.Models.Console.Controls;
 
 #nullable enable
 

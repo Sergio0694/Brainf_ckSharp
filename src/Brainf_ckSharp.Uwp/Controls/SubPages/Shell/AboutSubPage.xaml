@@ -8,14 +8,16 @@
     xmlns:gitHub="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.GitHub"
     xmlns:misc="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.Misc"
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
-    xmlns:shell="using:Legere.ViewModels.SubPages.Shell"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:subPages="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages"
+    xmlns:appModel="using:Windows.ApplicationModel"
+    xmlns:helpers="using:Microsoft.Toolkit.Uwp.Helpers"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.DataContext>
-        <shell:AboutSubPageViewModel x:Name="ViewModel"/>
+        <subPages:AboutSubPageViewModel x:Name="ViewModel"/>
     </UserControl.DataContext>
     <interactivity:Interaction.Behaviors>
         <core:EventTriggerBehavior EventName="Loaded">
@@ -45,11 +47,11 @@
                     Margin="0,12,0,0">
                         <Run Text="Build:" FontWeight="SemiBold" FontSize="14"/>
                         <Run 
-                            Text="{x:Bind ViewModel.AppVersion}"
+                            Text="{x:Bind helpers:PackageVersionHelper.ToFormattedString(helpers:SystemInformation.ApplicationVersion)}"
                             FontSize="15" FontWeight="SemiBold" FontFamily="Consolas"/>
                         <Run Text="|"/>
                         <Run 
-                            Text="{x:Bind ViewModel.PackageArchitecture}"
+                            Text="{x:Bind appModel:Package.Current.Id.Architecture}"
                             FontSize="15" FontWeight="SemiBold" FontFamily="Consolas"/>
                 </TextBlock>
 

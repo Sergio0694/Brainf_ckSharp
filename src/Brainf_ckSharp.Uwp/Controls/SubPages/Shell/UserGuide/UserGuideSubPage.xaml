@@ -9,9 +9,10 @@
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
     xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
     xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
-    xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
-    xmlns:subPages="using:Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages"
-    xmlns:enums="using:Brainf_ckSharp.Uwp.Enums"
+    xmlns:enums="using:Brainf_ckSharp.Shared.Enums"
+    xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
+    xmlns:objectModel="using:Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel"
+    xmlns:subPages="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -44,12 +45,11 @@
     <host:SubPageFrame Title="USER GUIDE">
 
         <!--Semantic zoom-->
-        <SemanticZoom>
+        <SemanticZoom attachedProperties:SemanticZoomHelper.Source="{x:Bind ViewModel.Source, Mode=OneWay}">
             <SemanticZoom.ZoomedInView>
 
                 <!--ZoomedInView-->
                 <ListView
-                    ItemsSource="{x:Bind ViewModel.View, Mode=OneWay}"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     IsItemClickEnabled="False"
@@ -76,9 +76,7 @@
             <SemanticZoom.ZoomedOutView>
 
                 <!--ZoomedOutView-->
-                <ListView 
-                    ItemsSource="{x:Bind ViewModel.CollectionGroups, Mode=OneWay}"
-                    Background="#60000000">
+                <ListView Background="#60000000">
                     <ListView.Resources>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Margin" Value="0,0,0,4"/>

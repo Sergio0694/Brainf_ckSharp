@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ide="using:Brainf_ckSharp.Uwp.Controls.Ide"
-    xmlns:views="using:Brainf_ckSharp.Uwp.ViewModels.Views"
+    xmlns:views="using:Brainf_ckSharp.Shared.ViewModels.Views"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">

@@ -1,9 +1,8 @@
 ﻿using System;
-using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.Uwp.Enums;
-using Brainf_ckSharp.Uwp.Models.Ide;
+using Brainf_ckSharp.Shared.Enums;
+using Brainf_ckSharp.Shared.Models.Ide;
 
 #nullable enable
 
@@ -39,7 +38,7 @@ namespace Brainf_ckSharp.Uwp.TemplateSelectors
         {
             return item switch
             {
-                CodeLibraryEntry entry when entry.File.IsFromPackageDirectory() => SampleTemplate,
+                CodeLibraryEntry entry when entry.File.IsReadOnly => SampleTemplate,
                 CodeLibraryEntry _ => RecentItemTemplate,
                 CodeLibrarySection.Favorites => FavoritePlaceholderTemplate,
                 CodeLibrarySection.Recent => RecentPlaceholderTemplate,

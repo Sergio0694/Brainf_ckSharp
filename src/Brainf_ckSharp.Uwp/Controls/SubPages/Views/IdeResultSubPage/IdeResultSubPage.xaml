@@ -4,18 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:subPages="using:Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
-    xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
     xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
     xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
-    xmlns:enums="using:Brainf_ckSharp.Uwp.Enums"
-    xmlns:models="using:Brainf_ckSharp.Uwp.Models.Ide.Views"
+    xmlns:enums="using:Brainf_ckSharp.Shared.Enums"
     xmlns:views="using:Brainf_ckSharp.Uwp.Controls.SubPages.Views"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
+    xmlns:models="using:Brainf_ckSharp.Shared.Models.Ide.Views"
+    xmlns:objectModel="using:Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel"
+    xmlns:subPages="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -40,12 +40,11 @@
         Background="#72000000">
 
         <!--Semantic zoom-->
-        <SemanticZoom>
+        <SemanticZoom attachedProperties:SemanticZoomHelper.Source="{x:Bind ViewModel.Source, Mode=OneWay}">
             <SemanticZoom.ZoomedInView>
 
                 <!--ZoomedInView-->
                 <ListView
-                    ItemsSource="{x:Bind ViewModel.View, Mode=OneWay}"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     IsItemClickEnabled="False"
@@ -86,7 +85,7 @@
             <SemanticZoom.ZoomedOutView>
 
                 <!--ZoomedOutView-->
-                <ListView ItemsSource="{x:Bind ViewModel.CollectionGroups, Mode=OneWay}">
+                <ListView>
                     <ListView.Resources>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Margin" Value="0,0,0,4"/>

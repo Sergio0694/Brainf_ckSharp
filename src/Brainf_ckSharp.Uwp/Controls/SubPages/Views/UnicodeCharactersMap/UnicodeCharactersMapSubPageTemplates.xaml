@@ -2,11 +2,11 @@
     x:Class="Brainf_ckSharp.Uwp.Controls.SubPages.Views.UnicodeCharactersMapSubPageTemplates"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:models="using:Brainf_ckSharp.Uwp.Models"
-    xmlns:objectModel="using:Brainf_ckSharp.Uwp.Extensions.System.Collections.ObjectModel"
     xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:convertersSubPage="using:Brainf_ckSharp.Uwp.Converters.SubPages"
-    xmlns:system="using:System">
+    xmlns:system="using:System"
+    xmlns:models="using:Brainf_ckSharp.Shared.Models"
+    xmlns:objectModel="using:Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel">
 
     <!--Unicode character template-->
     <DataTemplate

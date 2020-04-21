@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.Uwp.Messages.InputPanel;
+using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.VirtualKeyboard

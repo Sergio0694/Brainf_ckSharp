@@ -1,12 +1,13 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
-namespace System.Collections.Generic
+namespace Brainf_ckSharp.Uwp.Extensions.System.Collections.Generic
 {
     /// <summary>
     /// An extension <see langword="class"/> for <see cref="IReadOnlyList{T}"/> types
     /// </summary>
-    internal static class IReadOnlyListExtensions
+    public static class IReadOnlyListExtensions
     {
         /// <summary>
         /// An implementation of <see cref="Enumerable.Reverse{T}(IEnumerable{T})"/> that avoids the initial enumeration

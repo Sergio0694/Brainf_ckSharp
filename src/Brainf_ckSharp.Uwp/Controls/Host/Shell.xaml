@@ -14,8 +14,8 @@
     xmlns:memoryViewer="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel.MemoryViewer"
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
-    xmlns:viewModels="using:Brainf_ckSharp.Uwp.ViewModels"
     xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
+    xmlns:viewModels="using:Brainf_ckSharp.Shared.ViewModels"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -238,7 +238,7 @@
                 <AppBarButton
                     Label="Show Unicode characters"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource ShowUnicodeMapIcon}}"
-                    Click="{x:Bind ViewModel.ShowUnicodeMap}">
+                    Click="{x:Bind ShowUnicodeMap}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator Key="U" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>
@@ -247,7 +247,7 @@
                     Label="Open code library"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource OpenFileIcon}}"
                     Visibility="{x:Bind converters:PivotSelectionConverter.ConvertIndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
-                    Click="{x:Bind ViewModel.ShowCodeLibrary}"/>
+                    Click="{x:Bind ShowCodeLibrary}"/>
                 <AppBarButton
                     Label="Open file"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource OpenFileIcon}}"
@@ -286,7 +286,7 @@
                 <AppBarButton
                     Label="About"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource AboutIcon}}"
-                    Click="{x:Bind ViewModel.ShowAppInfo}">
+                    Click="{x:Bind ShowAppInfo}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator Key="A" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>
@@ -294,7 +294,7 @@
                 <AppBarButton
                     Label="User guide"
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource UserGuideIcon}}"
-                    Click="{x:Bind ViewModel.ShowUserGuide}">
+                    Click="{x:Bind ShowUserGuide}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator Key="G" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>

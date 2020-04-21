@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
-using Brainf_ckSharp.Uwp.Models;
+using Brainf_ckSharp.Shared.Models;
 
 namespace Brainf_ckSharp.Uwp.Converters.SubPages
 {

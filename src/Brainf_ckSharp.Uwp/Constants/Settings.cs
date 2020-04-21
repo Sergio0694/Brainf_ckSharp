@@ -1,5 +1,6 @@
 ﻿using System;
-using Brainf_ckSharp.Uwp.Services.Settings;
+using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Uwp.Themes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
