@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Windows.Storage;
 
 #nullable enable
 
@@ -12,19 +11,26 @@ namespace Brainf_ckSharp.Uwp.Services.Files
     public interface IFilesService
     {
         /// <summary>
+        /// Gets a target file from a specified path
+        /// </summary>
+        /// <param name="path">The path of the file to retrieve</param>
+        /// <returns>The file retrieved from the specified path</returns>
+        Task<IFile> GetFileFromPathAsync(string path);
+
+        /// <summary>
         /// Tries to pick a file to open with a specified extension
         /// </summary>
         /// <param name="extension">The extension to use, in the format ".{extension}"</param>
-        /// <returns>A <see cref="StorageFile"/> to open, if available</returns>
-        Task<StorageFile?> TryPickOpenFileAsync(string extension);
+        /// <returns>A <see cref="IFile"/> to open, if available</returns>
+        Task<IFile?> TryPickOpenFileAsync(string extension);
 
         /// <summary>
         /// Tries to pick a file to save to with the specified parameters
         /// </summary>
         /// <param name="filename">The suggested filename to use</param>
         /// <param name="fileType">The info on the file type to save to</param>
-        /// <returns>A <see cref="StorageFile"/> to use to save data to, if available</returns>
-        Task<StorageFile?> TryPickSaveFileAsync(string filename, (string Name, string Extension) fileType);
+        /// <returns>A <see cref="IFile"/> to use to save data to, if available</returns>
+        Task<IFile?> TryPickSaveFileAsync(string filename, (string Name, string Extension) fileType);
 
         /// <summary>
         /// Enumerates all the available files from the future access list.

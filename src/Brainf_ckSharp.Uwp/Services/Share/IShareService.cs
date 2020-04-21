@@ -1,4 +1,4 @@
-﻿using Windows.Storage;
+﻿using Brainf_ckSharp.Uwp.Services.Files;
 
 namespace Brainf_ckSharp.Uwp.Services.Share
 {
@@ -12,6 +12,6 @@ namespace Brainf_ckSharp.Uwp.Services.Share
         /// </summary>
         /// <param name="title">The title of the file to share</param>
         /// <param name="file">The file to share</param>
-        void Share(string title, StorageFile file);
+        void Share(string title, IFile file);
     }
 }

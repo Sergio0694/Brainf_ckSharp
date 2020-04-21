@@ -13,32 +13,32 @@ namespace Brainf_ckSharp.Uwp.Services.Files
     public sealed class File : IFile
     {
         /// <summary>
-        /// The underlying <see cref="StorageFile"/> instance in use.
+        /// Creates a new <see cref="Windows.Storage.StorageFile"/> instance.
         /// </summary>
-        public readonly StorageFile file;
-
-        /// <summary>
-        /// Creates a new <see cref="StorageFile"/> instance.
-        /// </summary>
-        /// <param name="file">The input <see cref="StorageFile"/> instance to wrap.</param>
-        public File(StorageFile file)
+        /// <param name="storageFile">The input <see cref="Windows.Storage.StorageFile"/> instance to wrap.</param>
+        public File(StorageFile storageFile)
         {
-            this.file = file;
+            StorageFile = storageFile;
         }
 
-        /// <inheritdoc/>
-        public string DisplayName => file.DisplayName;
+        /// <summary>
+        /// The underlying <see cref="Windows.Storage.StorageFile"/> instance in use.
+        /// </summary>
+        internal StorageFile StorageFile { get; }
 
         /// <inheritdoc/>
-        public string Path => file.Path;
+        public string DisplayName => StorageFile.DisplayName;
 
         /// <inheritdoc/>
-        public bool IsReadOnly => file.IsFromPackageDirectory();
+        public string Path => StorageFile.Path;
+
+        /// <inheritdoc/>
+        public bool IsReadOnly => StorageFile.IsFromPackageDirectory();
 
         /// <inheritdoc/>
         public async Task<(ulong, DateTimeOffset)> GetPropertiesAsync()
         {
-            BasicProperties properties = await file.GetBasicPropertiesAsync();
+            BasicProperties properties = await StorageFile.GetBasicPropertiesAsync();
 
             return (properties.Size, properties.DateModified);
         }
@@ -46,27 +46,27 @@ namespace Brainf_ckSharp.Uwp.Services.Files
         /// <inheritdoc/>
         public Task<Stream> OpenStreamForReadAsync()
         {
-            return file.OpenStreamForReadAsync();
+            return StorageFile.OpenStreamForReadAsync();
         }
 
         /// <inheritdoc/>
         public Task<Stream> OpenStreamForWriteAsync()
         {
-            return file.OpenStreamForWriteAsync();
+            return StorageFile.OpenStreamForWriteAsync();
         }
 
         /// <inheritdoc/>
         public Task DeleteAsync()
         {
-            return file.DeleteAsync().AsTask();
+            return StorageFile.DeleteAsync().AsTask();
         }
 
         /// <inheritdoc/>
         public void RequestFutureAccessPermission(string metadata)
         {
-            string token = file.GetId();
+            string token = StorageFile.GetId();
 
-            StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(token, file, metadata);
+            StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(token, StorageFile, metadata);
         }
     }
 }

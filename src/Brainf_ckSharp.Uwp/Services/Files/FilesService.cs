@@ -16,7 +16,15 @@ namespace Brainf_ckSharp.Uwp.Services.Files
     public sealed class FilesService : IFilesService
     {
         /// <inheritdoc/>
-        public Task<StorageFile?> TryPickOpenFileAsync(string extension)
+        public async Task<IFile> GetFileFromPathAsync(string path)
+        {
+            StorageFile file = await StorageFile.GetFileFromPathAsync(path);
+
+            return new File(file);
+        }
+
+        /// <inheritdoc/>
+        public async Task<IFile?> TryPickOpenFileAsync(string extension)
         {
             // Create the file picker
             FileOpenPicker picker = new FileOpenPicker
@@ -28,11 +36,16 @@ namespace Brainf_ckSharp.Uwp.Services.Files
             // Add the given extensions to look for
             picker.FileTypeFilter.Add(extension);
 
-            return picker.PickSingleFileAsync().AsTask();
+            if (await picker.PickSingleFileAsync() is StorageFile file)
+            {
+                return new File(file);
+            }
+
+            return null;
         }
 
         /// <inheritdoc/>
-        public Task<StorageFile?> TryPickSaveFileAsync(string filename, (string Name, string Extension) fileType)
+        public async Task<IFile?> TryPickSaveFileAsync(string filename, (string Name, string Extension) fileType)
         {
             // Create the file picker
             FileSavePicker picker = new FileSavePicker
@@ -45,7 +58,12 @@ namespace Brainf_ckSharp.Uwp.Services.Files
             // Add the extensions and pick the file
             picker.FileTypeChoices.Add(fileType.Name, new[] { fileType.Extension });
 
-            return picker.PickSaveFileAsync().AsTask();
+            if (await picker.PickSaveFileAsync() is StorageFile file)
+            {
+                return new File(file);
+            }
+
+            return null;
         }
 
         /// <inheritdoc/>

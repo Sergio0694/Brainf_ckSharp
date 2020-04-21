@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
+using Brainf_ckSharp.Uwp.Services.Files;
 
 #nullable enable
 
@@ -58,11 +59,15 @@ namespace Brainf_ckSharp.Uwp.Services.Share
         }
 
         /// <inheritdoc/>
-        public void Share(string title, StorageFile file)
+        public void Share(string title, IFile file)
         {
+            // Resolve the platform specific file instance.
+            // If any other type is passed, this will just throw.
+            StorageFile storageFile = ((File)file).StorageFile;
+
             InitializeDataTransferManager();
 
-            _Info = new FileShareInfo(title, file);
+            _Info = new FileShareInfo(title, storageFile);
 
             try
             {
