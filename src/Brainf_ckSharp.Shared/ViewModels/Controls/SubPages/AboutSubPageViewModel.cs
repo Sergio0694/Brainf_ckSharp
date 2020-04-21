@@ -30,6 +30,16 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// </summary>
         public ICommand LoadDataCommand { get; }
 
+        /// <summary>
+        /// Forwards the <see cref="ThisAssembly.Git.Branch"/> property
+        /// </summary>
+        public string GitBranch => ThisAssembly.Git.Branch;
+
+        /// <summary>
+        /// Forwards the <see cref=" ThisAssembly.Git.Commit"/> property
+        /// </summary>
+        public string GitCommit => ThisAssembly.Git.Commit;
+
         private static IEnumerable<User>? _Developers;
 
         /// <summary>

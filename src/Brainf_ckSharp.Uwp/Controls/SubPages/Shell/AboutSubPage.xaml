@@ -72,11 +72,11 @@
                     StretchDirection="DownOnly">
                     <TextBlock>
                         <Run 
-                            Text="TODO"
+                            Text="{x:Bind ViewModel.GitBranch}"
                             FontSize="14" FontFamily="Consolas"/>
                         <Run Text="|"/>
                         <Run 
-                            Text="TODO"
+                            Text="{x:Bind ViewModel.GitCommit}"
                             FontSize="14" FontFamily="Consolas"/>
                     </TextBlock>
                 </Viewbox>
