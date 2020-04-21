@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.AccessCache;
 
 namespace Brainf_ckSharp.Uwp.Services.Files
 {
@@ -28,6 +28,9 @@ namespace Brainf_ckSharp.Uwp.Services.Files
         public string Path => file.Path;
 
         /// <inheritdoc/>
+        public bool IsReadOnly => file.IsFromPackageDirectory();
+
+        /// <inheritdoc/>
         public Task<Stream> OpenStreamForReadAsync()
         {
             return file.OpenStreamForReadAsync();
@@ -37,6 +40,14 @@ namespace Brainf_ckSharp.Uwp.Services.Files
         public Task<Stream> OpenStreamForWriteAsync()
         {
             return file.OpenStreamForWriteAsync();
+        }
+
+        /// <inheritdoc/>
+        public void RequestFutureAccessPermission(string metadata)
+        {
+            string token = file.GetId();
+
+            StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(token, file, metadata);
         }
     }
 }

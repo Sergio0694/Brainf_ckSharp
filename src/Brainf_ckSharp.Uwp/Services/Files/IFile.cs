@@ -14,6 +14,11 @@ namespace Brainf_ckSharp.Uwp.Services.Files
         string Path { get; }
 
         /// <summary>
+        /// Gets whether or not the file can only be read from
+        /// </summary>
+        bool IsReadOnly { get; }
+
+        /// <summary>
         /// Opens a <see cref="Stream"/> for reading from the file
         /// </summary>
         /// <returns>A <see cref="Task{TResult}"/> returning the requested <see cref="Stream"/></returns>
@@ -24,5 +29,11 @@ namespace Brainf_ckSharp.Uwp.Services.Files
         /// </summary>
         /// <returns>A <see cref="Task{TResult}"/> returning the requested <see cref="Stream"/></returns>
         Task<Stream> OpenStreamForWriteAsync();
+
+        /// <summary>
+        /// Requests permission for access this file in the future without asking the user
+        /// </summary>
+        /// <param name="metadata">The optional metadata to associate with the file</param>
+        void RequestFutureAccessPermission(string metadata);
     }
 }
