@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
-using Brainf_ckSharp.Uwp.Messages.InputPanel;
+using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;

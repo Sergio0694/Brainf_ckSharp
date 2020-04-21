@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Services;
-using Brainf_ckSharp.Uwp.Messages.Ide;
-using Brainf_ckSharp.Uwp.Messages.InputPanel;
-using Brainf_ckSharp.Uwp.Models.Ide;
+using Brainf_ckSharp.Shared.Messages.Ide;
+using Brainf_ckSharp.Shared.Messages.InputPanel;
+using Brainf_ckSharp.Shared.Models.Ide;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;

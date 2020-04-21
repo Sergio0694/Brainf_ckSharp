@@ -2,7 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.Enums;
-using Brainf_ckSharp.Uwp.Models.Ide.Views;
+using Brainf_ckSharp.Shared.Models.Ide.Views;
 
 #nullable enable
 

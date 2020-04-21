@@ -1,6 +1,6 @@
 ﻿using Brainf_ckSharp.Memory.Interfaces;
-using Brainf_ckSharp.Uwp.Messages.Console.MemoryState;
-using Brainf_ckSharp.Uwp.Models.Console.Controls;
+using Brainf_ckSharp.Shared.Messages.Console.MemoryState;
+using Brainf_ckSharp.Shared.Models.Console.Controls;
 using Brainf_ckSharp.Uwp.ViewModels.Abstract;
 using Microsoft.Toolkit.Mvvm.Messaging;
 

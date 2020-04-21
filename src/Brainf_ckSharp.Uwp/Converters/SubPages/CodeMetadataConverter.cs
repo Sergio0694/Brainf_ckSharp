@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.Contracts;
-using Brainf_ckSharp.Uwp.Models.Ide;
+using Brainf_ckSharp.Shared.Models.Ide;
 using Brainf_ckSharp.Uwp.Resources;
 
 namespace Brainf_ckSharp.Uwp.Converters.SubPages

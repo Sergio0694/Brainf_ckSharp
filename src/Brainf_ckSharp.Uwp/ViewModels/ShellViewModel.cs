@@ -1,5 +1,5 @@
-﻿using Brainf_ckSharp.Uwp.Messages.Console.Commands;
-using Brainf_ckSharp.Uwp.Messages.Ide;
+﻿using Brainf_ckSharp.Shared.Messages.Console.Commands;
+using Brainf_ckSharp.Shared.Messages.Ide;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Uwp.ViewModels
