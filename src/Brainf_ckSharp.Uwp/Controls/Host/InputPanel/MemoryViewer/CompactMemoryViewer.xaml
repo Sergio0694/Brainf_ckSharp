@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:dataTemplates="using:Brainf_ckSharp.Uwp.Controls.DataTemplates"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
-    xmlns:controls="using:Brainf_ckSharp.Uwp.ViewModels.Controls"
+    xmlns:controls="using:Brainf_ckSharp.Shared.ViewModels.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">

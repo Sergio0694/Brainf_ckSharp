@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
@@ -7,14 +6,14 @@ using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Models.Ide.Views;
-using Brainf_ckSharp.Uwp.ViewModels.Abstract;
+using Brainf_ckSharp.Shared.ViewModels.Abstract;
 using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
 #nullable enable
 
-namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
+namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 {
     public sealed class IdeResultSubPageViewModel : ItemsCollectionViewModelBase<ObservableGroup<IdeResultSection, IdeResultWithSectionInfo>>
     {

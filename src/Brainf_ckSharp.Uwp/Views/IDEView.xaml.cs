@@ -1,8 +1,8 @@
 ﻿using System;
 using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.Shared.ViewModels.Views;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
-using Brainf_ckSharp.Uwp.ViewModels.Views;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
 #nullable enable

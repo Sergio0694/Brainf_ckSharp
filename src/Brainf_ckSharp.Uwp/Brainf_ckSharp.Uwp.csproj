@@ -247,16 +247,6 @@
     <Compile Include="TemplateSelectors\IdeResultSectionTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\SourceCodeEntryTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\UserGuideSectionTemplateSelector.cs" />
-    <Compile Include="ViewModels\Abstract\ItemsCollectionViewModelBase{T}.cs" />
-    <Compile Include="ViewModels\Controls\SubPages\CodeLibrarySubPageViewModel.cs" />
-    <Compile Include="ViewModels\Controls\SubPages\IdeResultSubPageViewModel.cs" />
-    <Compile Include="ViewModels\Controls\SubPages\UnicodeCharactersMapSubPageViewModel.cs" />
-    <Compile Include="ViewModels\Views\ConsoleViewModel.cs" />
-    <Compile Include="ViewModels\Controls\CompactMemoryViewerViewModel.cs" />
-    <Compile Include="ViewModels\Controls\SubPages\AboutSubPageViewModel.cs" />
-    <Compile Include="ViewModels\Controls\SubPages\UserGuideSubPageViewModel.cs" />
-    <Compile Include="ViewModels\ShellViewModel.cs" />
-    <Compile Include="ViewModels\Views\IdeViewModel.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>

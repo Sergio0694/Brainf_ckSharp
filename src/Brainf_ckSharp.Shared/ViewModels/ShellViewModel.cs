@@ -2,7 +2,7 @@
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
-namespace Brainf_ckSharp.Uwp.ViewModels
+namespace Brainf_ckSharp.Shared.ViewModels
 {
     /// <summary>
     /// A view model for the root shell control

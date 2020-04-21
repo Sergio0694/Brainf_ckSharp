@@ -9,12 +9,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Toolkit" Version="6.1.0-build.60" />
+    <PackageReference Include="Nito.AsyncEx" Version="5.0.0" />
     <PackageReference Include="System.Text.Json" Version="4.7.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Brainf_ckSharp.Services\Brainf_ckSharp.Services.csproj" />
     <ProjectReference Include="..\Brainf_ckSharp\Brainf_ckSharp.csproj" />
+    <ProjectReference Include="..\GitHub\GitHub.csproj" />
     <ProjectReference Include="..\Microsoft.Toolkit.Mvvm\Microsoft.Toolkit.Mvvm.csproj" />
   </ItemGroup>
 

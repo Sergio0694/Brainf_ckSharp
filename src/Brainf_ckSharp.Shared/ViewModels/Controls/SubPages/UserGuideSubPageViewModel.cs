@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel;
-using Brainf_ckSharp.Uwp.ViewModels.Abstract;
+using Brainf_ckSharp.Shared.ViewModels.Abstract;
 
-namespace Brainf_ckSharp.Uwp.ViewModels.Controls.SubPages
+namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 {
     /// <summary>
     /// A view model for the user guide in the app

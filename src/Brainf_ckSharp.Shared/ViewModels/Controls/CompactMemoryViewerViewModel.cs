@@ -1,12 +1,12 @@
 ﻿using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Shared.Messages.Console.MemoryState;
 using Brainf_ckSharp.Shared.Models.Console.Controls;
-using Brainf_ckSharp.Uwp.ViewModels.Abstract;
+using Brainf_ckSharp.Shared.ViewModels.Abstract;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
 #nullable enable
 
-namespace Brainf_ckSharp.Uwp.ViewModels.Controls
+namespace Brainf_ckSharp.Shared.ViewModels.Controls
 {
     /// <summary>
     /// A view model for a compact memory viewer for the interactive REPL console

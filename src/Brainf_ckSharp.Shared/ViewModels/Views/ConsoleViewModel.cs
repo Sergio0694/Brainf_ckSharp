@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Enums;
@@ -13,13 +12,13 @@ using Brainf_ckSharp.Shared.Messages.Console.MemoryState;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Models.Console;
 using Brainf_ckSharp.Shared.Models.Console.Interfaces;
-using Brainf_ckSharp.Uwp.Extensions.System.Collections.Generic;
-using Brainf_ckSharp.Uwp.ViewModels.Abstract;
+using Brainf_ckSharp.Shared.ViewModels.Abstract;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using Nito.AsyncEx;
 
-namespace Brainf_ckSharp.Uwp.ViewModels.Views
+namespace Brainf_ckSharp.Shared.ViewModels.Views
 {
     /// <summary>
     /// A view model for an interactive REPL console for Brainf*ck/PBrain
@@ -27,9 +26,9 @@ namespace Brainf_ckSharp.Uwp.ViewModels.Views
     public sealed class ConsoleViewModel : ItemsCollectionViewModelBase<IConsoleEntry>
     {
         /// <summary>
-        /// An <see cref="AsyncMutex"/> instance to synchronize accesses to the console results
+        /// An <see cref="AsyncLock"/> instance to synchronize accesses to the console results
         /// </summary>
-        private readonly AsyncMutex ExecutionMutex = new AsyncMutex();
+        private readonly AsyncLock ExecutionMutex = new AsyncLock();
 
         /// <summary>
         /// Creates a new <see cref="ConsoleViewModel"/> instances with a new command ready to use

@@ -9,9 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
-#nullable enable
-
-namespace Brainf_ckSharp.Uwp.ViewModels.Views
+namespace Brainf_ckSharp.Shared.ViewModels.Views
 {
     /// <summary>
     /// A view model for a Brainf*ck/PBrain IDE

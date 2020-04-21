@@ -3,7 +3,7 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 #nullable enable
 
-namespace Brainf_ckSharp.Uwp.ViewModels.Abstract
+namespace Brainf_ckSharp.Shared.ViewModels.Abstract
 {
     /// <summary>
     /// A view model for a view that exposes a collection of items of a given type
