@@ -286,6 +286,7 @@
     <Compile Include="Services\Files\File.cs" />
     <Compile Include="Services\Files\FilesService.cs" />
     <Compile Include="Services\Files\IFile.cs" />
+    <Compile Include="Services\Files\IFileExtensions.cs" />
     <Compile Include="Services\Files\IFilesService.cs" />
     <Compile Include="Services\Keyboard\IKeyboardListenerService.cs" />
     <Compile Include="Services\Keyboard\KeyboardListenerService.cs" />
