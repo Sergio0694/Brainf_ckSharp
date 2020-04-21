@@ -1,4 +1,5 @@
 ﻿using System;
+using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Uwp.Themes;
 using Microsoft.Extensions.DependencyInjection;
