@@ -11,6 +11,7 @@
 
     <!--Operators pad-->
     <Grid
+        x:Name="RootGrid"
         Padding="4"
         RowSpacing="4"
         ColumnSpacing="4">
@@ -23,8 +24,28 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition x:Name="PBrainColumn" Width="*"/>
         </Grid.ColumnDefinitions>
+
+        <!--Visual states-->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="Minimal">
+                    <VisualState.Setters>
+                        <Setter Target="RootGrid.Padding" Value="4,4,0,4"/>
+                        <Setter Target="PBrainColumn.Width" Value="0"/>
+                        <Setter Target="PBrainGrid.Visibility" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Extended">
+                    <VisualState.Setters>
+                        <Setter Target="RootGrid.Padding" Value="4"/>
+                        <Setter Target="PBrainColumn.Width" Value="*"/>
+                        <Setter Target="PBrainGrid.Visibility" Value="Visible"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
         <!--First row (><+-)-->
         <virtualKeyboard1:OperatorButton
@@ -78,6 +99,7 @@
 
         <!--Border with the PBrain operators-->
         <Grid
+            x:Name="PBrainGrid"
             Grid.Row="0"
             Grid.RowSpan="2"
             Grid.Column="4"
