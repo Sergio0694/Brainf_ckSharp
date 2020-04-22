@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
@@ -15,7 +16,7 @@ using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 {
-    public sealed class IdeResultSubPageViewModel : ItemsCollectionViewModelBase<ObservableGroup<IdeResultSection, IdeResultWithSectionInfo>>
+    public sealed class IdeResultSubPageViewModel : ViewModelBase<ObservableCollection<ObservableGroup<IdeResultSection, IdeResultWithSectionInfo>>>
     {
         /// <summary>
         /// Creates a new <see cref="IdeResultSubPageViewModel"/> instance

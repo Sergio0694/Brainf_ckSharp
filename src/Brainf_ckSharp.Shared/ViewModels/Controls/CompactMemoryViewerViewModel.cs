@@ -1,4 +1,5 @@
-﻿using Brainf_ckSharp.Memory.Interfaces;
+﻿using System.Collections.ObjectModel;
+using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Shared.Messages.Console.MemoryState;
 using Brainf_ckSharp.Shared.Models.Console.Controls;
 using Brainf_ckSharp.Shared.ViewModels.Abstract;
@@ -11,7 +12,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
     /// <summary>
     /// A view model for a compact memory viewer for the interactive REPL console
     /// </summary>
-    public sealed class CompactMemoryViewerViewModel : ItemsCollectionViewModelBase<Brainf_ckMemoryCellChunk>
+    public sealed class CompactMemoryViewerViewModel : ViewModelBase<ObservableCollection<Brainf_ckMemoryCellChunk>>
     {
         /// <summary>
         /// Creates a new <see cref="CompactMemoryViewerViewModel"/> instance

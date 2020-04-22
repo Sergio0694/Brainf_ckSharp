@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
@@ -21,7 +22,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 {
-    public sealed class CodeLibrarySubPageViewModel : ItemsCollectionViewModelBase<ObservableGroup<CodeLibrarySection, object>>
+    public sealed class CodeLibrarySubPageViewModel : ViewModelBase<ObservableCollection<ObservableGroup<CodeLibrarySection, object>>>
     {
         /// <summary>
         /// The relative path of folder that contains the sample files

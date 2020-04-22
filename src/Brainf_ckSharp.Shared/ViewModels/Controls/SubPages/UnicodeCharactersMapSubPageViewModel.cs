@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -10,7 +11,7 @@ using Nito.AsyncEx;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 {
-    public sealed class UnicodeCharactersMapSubPageViewModel : ItemsCollectionViewModelBase<ObservableGroup<UnicodeInterval, UnicodeCharacter>>
+    public sealed class UnicodeCharactersMapSubPageViewModel : ViewModelBase<ObservableCollection<ObservableGroup<UnicodeInterval, UnicodeCharacter>>>
     {
         /// <summary>
         /// A mutex to avoid race conditions when loading <see cref="_32To127"/> and <see cref="_160To255"/>
