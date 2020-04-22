@@ -6,7 +6,7 @@
     xmlns:convertersSubPage="using:Brainf_ckSharp.Uwp.Converters.SubPages"
     xmlns:system="using:System"
     xmlns:models="using:Brainf_ckSharp.Shared.Models"
-    xmlns:objectModel="using:Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel">
+    xmlns:collections="using:Microsoft.Toolkit.Collections">
 
     <!--Unicode character template-->
     <DataTemplate
@@ -65,7 +65,7 @@
     <!--Unicode interval template-->
     <DataTemplate
         x:Key="UnicodeIntervalTemplate"
-        x:DataType="objectModel:IGroupedCollection">
+        x:DataType="collections:IReadOnlyObservableGroup">
 
         <Grid>
 

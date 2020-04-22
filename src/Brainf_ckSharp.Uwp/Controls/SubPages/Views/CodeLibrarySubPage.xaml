@@ -16,7 +16,7 @@
     xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
     xmlns:enums="using:Brainf_ckSharp.Shared.Enums"
     xmlns:ide="using:Brainf_ckSharp.Shared.Models.Ide"
-    xmlns:objectModel="using:Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel"
+    xmlns:collections="using:Microsoft.Toolkit.Collections"
     xmlns:subPages="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages"
     mc:Ignorable="d"
     d:DesignHeight="300"
@@ -244,7 +244,7 @@
                     <ListView.GroupStyle>
                         <GroupStyle HeaderContainerStyle="{StaticResource ExpandedListViewHeaderItemStyle}">
                             <GroupStyle.HeaderTemplate>
-                                <DataTemplate x:DataType="objectModel:IGroupedCollection">
+                                <DataTemplate x:DataType="collections:IReadOnlyObservableGroup">
                                     <jumpList:SemanticZoomZoomedInViewHeaderTemplate
                                         Title="{x:Bind convertersSubPages:CodeLibraryCategoryConverter.Convert((enums:CodeLibrarySection)Key))}"
                                         Margin="0,-8,0,0"/>
@@ -282,7 +282,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="ICollectionViewGroup">
                             <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
-                                Title="{x:Bind convertersSubPages:CodeLibraryCategoryConverter.Convert((enums:CodeLibrarySection)Group.(objectModel:IGroupedCollection.Key))}"
+                                Title="{x:Bind convertersSubPages:CodeLibraryCategoryConverter.Convert((enums:CodeLibrarySection)Group.(collections:IReadOnlyObservableGroup.Key))}"
                                 DescriptionText="{Binding Group.Key}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>

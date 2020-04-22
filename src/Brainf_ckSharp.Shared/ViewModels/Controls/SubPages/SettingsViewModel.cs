@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums;
-using Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel;
+using Brainf_ckSharp.Shared.Extensions.Microsoft.Toolkit.Collections;
 using Brainf_ckSharp.Shared.ViewModels.Abstract;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 {
-    public sealed class SettingsViewModel : ViewModelBase<ObservableCollection<ObservableGroup<SettingsSection, SettingsViewModel>>>
+    public sealed class SettingsViewModel : ViewModelBase<ObservableGroupedCollection<SettingsSection, SettingsViewModel>>
     {
         /// <summary>
         /// Creates a new <see cref="SettingsViewModel"/> instance

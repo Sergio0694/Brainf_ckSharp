@@ -322,7 +322,7 @@
       <Version>4.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit">
-      <Version>6.1.0-build.60</Version>
+      <Version>6.1.0-build.62</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

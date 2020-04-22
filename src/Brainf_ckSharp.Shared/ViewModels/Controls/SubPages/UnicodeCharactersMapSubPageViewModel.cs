@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel;
 using Brainf_ckSharp.Shared.Models;
 using Brainf_ckSharp.Shared.ViewModels.Abstract;
+using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Mvvm.Input;
 using Nito.AsyncEx;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 {
-    public sealed class UnicodeCharactersMapSubPageViewModel : ViewModelBase<ObservableCollection<ObservableGroup<UnicodeInterval, UnicodeCharacter>>>
+    public sealed class UnicodeCharactersMapSubPageViewModel : ViewModelBase<ObservableGroupedCollection<UnicodeInterval, UnicodeCharacter>>
     {
         /// <summary>
         /// A mutex to avoid race conditions when loading <see cref="_32To127"/> and <see cref="_160To255"/>
