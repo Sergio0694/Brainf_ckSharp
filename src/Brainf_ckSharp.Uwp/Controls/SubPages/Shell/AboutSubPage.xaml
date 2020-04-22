@@ -5,14 +5,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:gitHub="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.GitHub"
-    xmlns:misc="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.Misc"
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:subPages="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages"
     xmlns:appModel="using:Windows.ApplicationModel"
     xmlns:helpers="using:Microsoft.Toolkit.Uwp.Helpers"
+    xmlns:dataTemplates="using:Brainf_ckSharp.Uwp.Controls.DataTemplates"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -109,7 +108,7 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <gitHub:DeveloperTemplate/>
+                            <dataTemplates:DeveloperTemplate/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -141,7 +140,7 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <misc:FeaturedLinkTemplate
+                            <dataTemplates:FeaturedLinkTemplate
                                 Image="/Assets/Misc/donate.png"
                                 NavigationUri="https://www.paypal.me/sergiopedri"/>
                         </DataTemplate>
