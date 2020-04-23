@@ -45,6 +45,11 @@ namespace Brainf_ckSharp.Shared.ViewModels
         public void RunIdeScript() => Messenger.Default.Send<RunIdeScriptRequestMessage>();
 
         /// <summary>
+        /// Debugs the current IDE script
+        /// </summary>
+        public void DebugIdeScript() => Messenger.Default.Send<DebugIdeScriptRequestMessage>();
+
+        /// <summary>
         /// Inserts a new line into the IDE
         /// </summary>
         public void InsertNewLine() => Messenger.Default.Send<InsertNewLineRequestMessage>();
