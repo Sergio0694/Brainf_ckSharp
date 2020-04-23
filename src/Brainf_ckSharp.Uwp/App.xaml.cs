@@ -5,7 +5,7 @@ using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Uwp.Controls.Host;
-using Brainf_ckSharp.Uwp.Helpers.UI;
+using Brainf_ckSharp.Uwp.Helpers;
 using Brainf_ckSharp.Uwp.Services.Clipboard;
 using Brainf_ckSharp.Uwp.Services.Files;
 using Brainf_ckSharp.Uwp.Services.Keyboard;
