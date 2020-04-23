@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 #nullable enable
@@ -6,17 +6,18 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 namespace Brainf_ckSharp.Shared.ViewModels.Abstract
 {
     /// <summary>
-    /// A view model for a view that exposes a collection of items of a given type
+    /// A view model for a view that exposes a collection of a given type
     /// </summary>
-    /// <typeparam name="T">The type of items in the exposed collection</typeparam>
-    public abstract class ItemsCollectionViewModelBase<T> : ViewModelBase
+    /// <typeparam name="TCollection">The type of collection to use</typeparam>
+    public abstract class ViewModelBase<TCollection> : ViewModelBase
+        where TCollection : class, IList, new()
     {
-        private ObservableCollection<T> _Source = new ObservableCollection<T>();
+        private TCollection _Source = new TCollection();
 
         /// <summary>
         /// Gets the items collection for the current instance
         /// </summary>
-        public ObservableCollection<T> Source
+        public TCollection Source
         {
             get => _Source;
             protected set

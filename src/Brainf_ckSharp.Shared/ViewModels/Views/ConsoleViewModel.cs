@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Enums;
@@ -23,7 +24,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
     /// <summary>
     /// A view model for an interactive REPL console for Brainf*ck/PBrain
     /// </summary>
-    public sealed class ConsoleViewModel : ItemsCollectionViewModelBase<IConsoleEntry>
+    public sealed class ConsoleViewModel : ViewModelBase<ObservableCollection<IConsoleEntry>>
     {
         /// <summary>
         /// An <see cref="AsyncLock"/> instance to synchronize accesses to the console results

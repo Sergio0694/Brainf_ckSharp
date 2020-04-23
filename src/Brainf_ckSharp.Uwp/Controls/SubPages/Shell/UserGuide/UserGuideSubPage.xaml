@@ -11,7 +11,7 @@
     xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
     xmlns:enums="using:Brainf_ckSharp.Shared.Enums"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
-    xmlns:objectModel="using:Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel"
+    xmlns:collections="using:Microsoft.Toolkit.Collections"
     xmlns:subPages="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages"
     mc:Ignorable="d"
     d:DesignHeight="300"
@@ -65,7 +65,7 @@
                     <ListView.GroupStyle>
                         <GroupStyle HeaderContainerStyle="{StaticResource ExpandedListViewHeaderItemStyle}">
                             <GroupStyle.HeaderTemplate>
-                                <DataTemplate x:DataType="objectModel:IGroupedCollection">
+                                <DataTemplate x:DataType="collections:IReadOnlyObservableGroup">
                                     <jumpList:SemanticZoomZoomedInViewHeaderTemplate Title="{x:Bind convertersSubPages:UserGuideSectionConverter.ConvertTitle((enums:UserGuideSection)Key)}"/>
                                 </DataTemplate>
                             </GroupStyle.HeaderTemplate>
@@ -89,8 +89,8 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="ICollectionViewGroup">
                             <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
-                                Title="{x:Bind convertersSubPages:UserGuideSectionConverter.ConvertTitle((enums:UserGuideSection)Group.(objectModel:IGroupedCollection.Key))}"
-                                DescriptionText="{x:Bind convertersSubPages:UserGuideSectionConverter.ConvertDescription((enums:UserGuideSection)Group.(objectModel:IGroupedCollection.Key))}"/>
+                                Title="{x:Bind convertersSubPages:UserGuideSectionConverter.ConvertTitle((enums:UserGuideSection)Group.(collections:IReadOnlyObservableGroup.Key))}"
+                                DescriptionText="{x:Bind convertersSubPages:UserGuideSectionConverter.ConvertDescription((enums:UserGuideSection)Group.(collections:IReadOnlyObservableGroup.Key))}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

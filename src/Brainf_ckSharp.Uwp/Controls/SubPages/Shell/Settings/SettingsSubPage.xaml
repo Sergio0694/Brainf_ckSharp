@@ -1,0 +1,252 @@
+﻿<UserControl
+    x:Class="Brainf_ckSharp.Uwp.Controls.SubPages.Shell.Settings.SettingsSubPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
+    xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
+    xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
+    xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
+    xmlns:collections="using:Microsoft.Toolkit.Collections"
+    xmlns:subPages="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages"
+    xmlns:models="using:Brainf_ckSharp.Shared.Models"
+    xmlns:markupExtensions="using:Brainf_ckSharp.Uwp.MarkupExtensions"
+    xmlns:enums="using:Brainf_ckSharp.Shared.Enums.Settings"
+    xmlns:dataTemplates="using:Brainf_ckSharp.Uwp.Controls.DataTemplates"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.DataContext>
+        <subPages:SettingsSubPageViewModel x:Name="ViewModel"/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+
+        <!--IDE settings template-->
+        <DataTemplate
+            x:Name="IdeSettingsTemplate"
+            x:DataType="models:SettingsViewModelWithSectionInfo">
+            <StackPanel Spacing="4">
+
+                <!--Autosave documents-->
+                <TextBlock
+                    TextWrapping="Wrap"
+                    Text="Autosave documents"/>
+                <ToggleSwitch IsOn="{x:Bind Instance.AutosaveDocuments, Mode=TwoWay}"/>
+
+                <!--Protect unsaved changes-->
+                <TextBlock
+                    Margin="0,8,0,0"
+                    TextWrapping="Wrap"
+                    Text="Protect unsaved changes"/>
+                <ToggleSwitch IsOn="{x:Bind Instance.ProtectUnsavedChanges, Mode=TwoWay}"/>
+
+                <!--Theme-->
+                <TextBlock
+                    Margin="0,8,0,0"
+                    TextWrapping="Wrap"
+                    Text="Theme"/>
+                <ComboBox
+                    CornerRadius="0"
+                    Margin="0,4,0,0"
+                    MinWidth="220"
+                    ItemsSource="{markupExtensions:EnumValues Type=enums:IdeTheme}"
+                    SelectedItem="{x:Bind Instance.IdeTheme, Mode=OneWay}"
+                    SelectionChanged="IdeTheme_SelectedItemChanged">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="enums:IdeTheme">
+                            <dataTemplates:IdeThemePreviewTemplate Theme="{x:Bind}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <!--Brackets on new line-->
+                <TextBlock
+                    Margin="0,8,0,0"
+                    TextWrapping="Wrap"
+                    Text="Brackets on new line"/>
+                <ComboBox
+                    CornerRadius="0"
+                    Margin="0,4,0,0"
+                    MinWidth="140"
+                    ItemsSource="{markupExtensions:EnumValues Type=enums:BracketsFormattingStyle}"
+                    SelectedItem="{x:Bind Instance.BracketsFormattingStyle, Mode=OneWay}"
+                    SelectionChanged="BracketFormattingStyle_SelectedItemChanged"/>
+
+                <!--Tab length-->
+                <TextBlock
+                    Margin="0,8,0,0"
+                    TextWrapping="Wrap"
+                    Text="Brackets on new line"/>
+                <ComboBox
+                    CornerRadius="0"
+                    Margin="0,4,0,0"
+                    MinWidth="140"
+                    ItemsSource="{x:Bind Instance.TabLengthOptions}"
+                    SelectedItem="{x:Bind Instance.TabLength, Mode=OneWay}"
+                    SelectionChanged="TabLength_SelectedItemChanged"/>
+
+                <!--Render whitespaces-->
+                <TextBlock
+                    Margin="0,8,0,0"
+                    TextWrapping="Wrap"
+                    Text="Render whitespaces"/>
+                <ToggleSwitch IsOn="{x:Bind Instance.RenderWhitespaces, Mode=TwoWay}"/>
+
+                <!--Enable timeline-->
+                <TextBlock
+                    Margin="0,8,0,0"
+                    TextWrapping="Wrap"
+                    Text="Enable timeline"/>
+                <ToggleSwitch IsOn="{x:Bind Instance.EnableTimeline, Mode=TwoWay}"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <!--UI settings template-->
+        <DataTemplate
+            x:Name="UISettingsTemplate"
+            x:DataType="models:SettingsViewModelWithSectionInfo">
+            <StackPanel Spacing="4">
+
+                <!--Starting page-->
+                <TextBlock
+                    TextWrapping="Wrap"
+                    Text="Starting page"/>
+                <ComboBox
+                    CornerRadius="0"
+                    Margin="0,4,0,0"
+                    MinWidth="140"
+                    ItemsSource="{markupExtensions:EnumValues Type=enums:ViewType}"
+                    SelectedItem="{x:Bind Instance.StartingView, Mode=OneWay}"
+                    SelectionChanged="StartingView_SelectedItemChanged"/>
+
+                <!--Show PBrain operators-->
+                <TextBlock
+                    Margin="0,8,0,0"
+                    TextWrapping="Wrap"
+                    Text="Show PBrain operators"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <ToggleSwitch IsOn="{x:Bind Instance.ShowPBrainButtons, Mode=TwoWay}"/>
+                    <HyperlinkButton 
+                        Margin="0,0,20,0"
+                        HorizontalAlignment="Right"
+                        Grid.Column="1"
+                        Click="ShowPBrainButtonsInfo_Clicked">
+                        <TextBlock>
+                            <Run Text="&#xEC26;" FontFamily="Segoe MDL2 Assets"/>
+                            <Run Text="What's this?"/>
+                        </TextBlock>
+                    </HyperlinkButton>
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
+
+        <!--Interpreter settings template-->
+        <DataTemplate
+            x:Name="InterpreterSettingsTemplate"
+            x:DataType="models:SettingsViewModelWithSectionInfo">
+            <StackPanel Spacing="4">
+
+                <!--Memory size-->
+                <TextBlock
+                    TextWrapping="Wrap"
+                    Text="Memory size"/>
+                <ComboBox
+                    CornerRadius="0"
+                    Margin="0,4,0,0"
+                    MinWidth="140"
+                    ItemsSource="{x:Bind Instance.MemorySizeOptions}"
+                    SelectedItem="{x:Bind Instance.MemorySize, Mode=OneWay}"
+                    SelectionChanged="MemorySize_SelectedItemChanged"/>
+
+                <!--Clear stdin buffer on execution-->
+                <TextBlock
+                    Margin="0,8,0,0"
+                    TextWrapping="Wrap"
+                    Text="Clear stdin buffer on execution"/>
+                <ToggleSwitch IsOn="{x:Bind Instance.ClearStdinBufferOnRequest, Mode=TwoWay}"/>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <host:SubPageFrame
+        Title="SETTINGS"
+        Background="#72000000">
+
+        <!--Semantic zoom-->
+        <SemanticZoom attachedProperties:SemanticZoomHelper.Source="{x:Bind ViewModel.Source, Mode=OneWay}">
+            <SemanticZoom.ZoomedInView>
+
+                <!--ZoomedInView-->
+                <ListView
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    IsItemClickEnabled="False"
+                    SelectionMode="None">
+                    <ListView.Resources>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Margin" Value="0,0,0,0"/>
+                            <Setter Property="Padding" Value="12,16,12,16"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Background" Value="#FF171717"/>
+                        </Style>
+                    </ListView.Resources>
+                    <ListView.GroupStyle>
+                        <GroupStyle HeaderContainerStyle="{StaticResource ExpandedListViewHeaderItemStyle}">
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate x:DataType="collections:IReadOnlyObservableGroup">
+                                    <jumpList:SemanticZoomZoomedInViewHeaderTemplate
+                                        Title="{x:Bind Key.ToString()}"
+                                        Margin="0,-8,0,0"/>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
+                    <ListView.ItemTemplateSelector>
+                        <templateSelectors:SettingsSectionTemplateSelector
+                            IdeSettingsTemplate="{x:Bind IdeSettingsTemplate}"
+                            UISettingsTemplate="{x:Bind UISettingsTemplate}"
+                            InterpreterSettingsTemplate="{x:Bind InterpreterSettingsTemplate}"/>
+                    </ListView.ItemTemplateSelector>
+                </ListView>
+            </SemanticZoom.ZoomedInView>
+            <SemanticZoom.ZoomedOutView>
+
+                <!--ZoomedOutView-->
+                <ListView>
+                    <ListView.Resources>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Margin" Value="0,0,0,4"/>
+                            <Setter Property="Padding" Value="12,16,12,16"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Background" Value="#FF171717"/>
+                        </Style>
+                    </ListView.Resources>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="ICollectionViewGroup">
+                            <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
+                                Title="{x:Bind Group.(collections:IReadOnlyObservableGroup.Key).ToString()}"
+                                DescriptionText="{Binding Group}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </SemanticZoom.ZoomedOutView>
+        </SemanticZoom>
+    </host:SubPageFrame>
+</UserControl>

@@ -2,7 +2,7 @@
 using Windows.UI;
 using Windows.UI.ViewManagement;
 
-namespace Brainf_ckSharp.Uwp.Helpers.UI
+namespace Brainf_ckSharp.Uwp.Helpers
 {
     /// <summary>
     /// A <see langword="static"/> <see langword="class"/> with helper methods to manage the title bar

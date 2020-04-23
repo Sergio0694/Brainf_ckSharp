@@ -1,9 +1,9 @@
-﻿using System.Collections;
+﻿using Microsoft.Toolkit.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
-using Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel;
 
 #nullable enable
 
@@ -21,7 +21,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
         /// <returns>The value of the <see cref="SourceProperty"/> property for the input <see cref="SemanticZoom"/> instance</returns>
         public static IEnumerable GetSource(SemanticZoom element)
         {
-            return (IEnumerable<IGroupedCollection>)element.GetValue(SourceProperty);
+            return (IEnumerable<IReadOnlyObservableGroup>)element.GetValue(SourceProperty);
         }
 
         /// <summary>

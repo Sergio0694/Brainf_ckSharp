@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Enums;
+using Brainf_ckSharp.Shared.Extensions.Microsoft.Toolkit.Collections;
 using Brainf_ckSharp.Shared.Extensions.System.Collections.Generic;
-using Brainf_ckSharp.Shared.Extensions.System.Collections.ObjectModel;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Brainf_ckSharp.Shared.Models.Ide;
 using Brainf_ckSharp.Shared.ViewModels.Abstract;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 
@@ -21,7 +22,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 {
-    public sealed class CodeLibrarySubPageViewModel : ItemsCollectionViewModelBase<ObservableGroup<CodeLibrarySection, object>>
+    public sealed class CodeLibrarySubPageViewModel : ViewModelBase<ObservableGroupedCollection<CodeLibrarySection, object>>
     {
         /// <summary>
         /// The relative path of folder that contains the sample files

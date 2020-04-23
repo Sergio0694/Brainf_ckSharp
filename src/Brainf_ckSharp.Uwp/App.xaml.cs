@@ -1,10 +1,12 @@
 ﻿using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml;
+using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
+using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Uwp.Controls.Host;
-using Brainf_ckSharp.Uwp.Helpers.UI;
+using Brainf_ckSharp.Uwp.Helpers;
 using Brainf_ckSharp.Uwp.Services.Clipboard;
 using Brainf_ckSharp.Uwp.Services.Files;
 using Brainf_ckSharp.Uwp.Services.Keyboard;
@@ -72,8 +74,19 @@ namespace Brainf_ckSharp.Uwp
             ISettingsService settings = Ioc.Default.GetRequiredService<ISettingsService>();
 
             // Initialize default settings
-            settings.SetValue(SettingsKeys.Theme, 0, false);
-            settings.SetValue(SettingsKeys.ClearStdinBufferOnRequest, true, false);
+            settings.SetValue(SettingsKeys.AutosaveDocuments, false, false);
+            settings.SetValue(SettingsKeys.ProtectUnsavedChanges, false, false);
+            settings.SetValue(SettingsKeys.AutoindentBrackets, true, false);
+            settings.SetValue(SettingsKeys.BracketsFormattingStyle, BracketsFormattingStyle.NewLine, false);
+            settings.SetValue(SettingsKeys.TabLength, 4, false);
+            settings.SetValue(SettingsKeys.IdeTheme, IdeTheme.VisualStudio, false);
+            settings.SetValue(SettingsKeys.RenderWhitespaces, true, false);
+            settings.SetValue(SettingsKeys.EnableTimeline, false, false);
+            settings.SetValue(SettingsKeys.StartingView, ViewType.Console, false);
+            settings.SetValue(SettingsKeys.ClearStdinBufferOnRequest, false, false);
+            settings.SetValue(SettingsKeys.ShowPBrainButtons, true, false);
+            settings.SetValue(SettingsKeys.OverflowMode, OverflowMode.ByteWithOverflow, false);
+            settings.SetValue(SettingsKeys.MemorySize, 128, false);
         }
     }
 }
