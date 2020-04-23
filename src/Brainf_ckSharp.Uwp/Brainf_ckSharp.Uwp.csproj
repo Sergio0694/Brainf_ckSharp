@@ -131,6 +131,9 @@
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.Source.cs" />
     <Compile Include="AttachedProperties\SemanticZoomHelper.cs" />
     <Compile Include="AttachedProperties\ViewModelBaseHelper.cs" />
+    <Compile Include="Controls\SubPages\Shell\Settings\SettingsSubPage.xaml.cs">
+      <DependentUpon>SettingsSubPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPageTemplates.xaml.cs">
       <DependentUpon>IdeResultSubPageTemplates.xaml</DependentUpon>
     </Compile>
@@ -245,6 +248,7 @@
     <Compile Include="StyleSelectors\CodeLibraryEntryItemContainerStyleSelector.cs" />
     <Compile Include="TemplateSelectors\ConsoleEntryTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\IdeResultSectionTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\SettingsSectionTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\SourceCodeEntryTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\UserGuideSectionTemplateSelector.cs" />
     <Compile Include="Views\ConsoleView.xaml.cs">
@@ -405,6 +409,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\SubPages\Shell\AboutSubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\Settings\SettingsSubPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,5 +1,6 @@
 ﻿using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell;
+using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.Settings;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views.UnicodeCharactersMap;
@@ -39,5 +40,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         /// Shows the user guide
         /// </summary>
         public void ShowUserGuide() => Messenger.Default.Send(SubPageNavigationRequestMessage.To<UserGuideSubPage>());
+
+        /// <summary>
+        /// Shows the app settings
+        /// </summary>
+        private void ShowSettings() => Messenger.Default.Send(SubPageNavigationRequestMessage.To<SettingsSubPage>());
     }
 }

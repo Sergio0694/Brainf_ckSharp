@@ -278,7 +278,8 @@
                 <AppBarSeparator/>
                 <AppBarButton
                     Label="Settings"
-                    Icon="{markupExtensions:FontIcon Glyph={StaticResource SettingsIcon}}">
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource SettingsIcon}}"
+                    Click="{x:Bind ShowSettings}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator Key="I" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>
