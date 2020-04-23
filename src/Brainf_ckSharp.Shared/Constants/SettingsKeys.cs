@@ -21,9 +21,9 @@
         public const string AutoindentBrackets = nameof(AutoindentBrackets);
 
         /// <summary>
-        /// Indicates whether to place open brackets on a new line, uses a <see cref="bool"/>
+        /// Indicates whether to place open brackets on a new line, uses a <see cref="Shared.Enums.Settings.BracketsFormattingStyle"/>
         /// </summary>
-        public const string BracketsOnNewLine = nameof(BracketsOnNewLine);
+        public const string BracketsFormattingStyle = nameof(BracketsFormattingStyle);
 
         /// <summary>
         /// Indicates the tab length, uses an <see cref="int"/>

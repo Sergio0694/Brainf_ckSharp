@@ -89,15 +89,15 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             set => Set(ref _AutoindentBrackets, value);
         }
 
-        private bool _BracketsOnNewLine = Get<bool>(nameof(BracketsOnNewLine));
+        private BracketsFormattingStyle _BracketsFormattingStyle = Get<BracketsFormattingStyle>(nameof(BracketsFormattingStyle));
 
         /// <summary>
-        /// Exposes the <see cref="SettingsKeys.BracketsOnNewLine"/> setting
+        /// Exposes the <see cref="SettingsKeys.BracketsFormattingStyle"/> setting
         /// </summary>
-        public bool BracketsOnNewLine
+        public BracketsFormattingStyle BracketsFormattingStyle
         {
-            get => _BracketsOnNewLine;
-            set => Set(ref _BracketsOnNewLine, value);
+            get => _BracketsFormattingStyle;
+            set => Set(ref _BracketsFormattingStyle, value);
         }
 
         /// <summary>

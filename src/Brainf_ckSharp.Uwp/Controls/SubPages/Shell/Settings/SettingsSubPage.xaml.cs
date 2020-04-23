@@ -1,7 +1,6 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.Enums.Settings;
-using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
@@ -26,14 +25,14 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.Settings
         public double MaxExpandedHeight { get; } = 920;
 
         /// <summary>
-        /// Updates the <see cref="Shared.ViewModels.Controls.SubPages.SettingsSubPageViewModel.BracketsOnNewLine"/> property
+        /// Updates the <see cref="Shared.ViewModels.Controls.SubPages.SettingsSubPageViewModel.BracketsFormattingStyle"/> property
         /// </summary>
         /// <param name="sender">The <see cref="ComboBox"/> being used</param>
         /// <param name="e">The <see cref="SelectionChangedEventArgs"/> for the selection event</param>
         private void BracketFormattingStyle_SelectedItemChanged(object sender, SelectionChangedEventArgs e)
         {
             if (((ComboBox)sender).SelectedItem is BracketsFormattingStyle value)
-                ViewModel.BracketsOnNewLine = value == BracketsFormattingStyle.NewLine;
+                ViewModel.BracketsFormattingStyle = value;
         }
 
         /// <summary>

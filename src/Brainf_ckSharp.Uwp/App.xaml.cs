@@ -77,7 +77,7 @@ namespace Brainf_ckSharp.Uwp
             settings.SetValue(SettingsKeys.AutosaveDocuments, false, false);
             settings.SetValue(SettingsKeys.ProtectUnsavedChanges, false, false);
             settings.SetValue(SettingsKeys.AutoindentBrackets, true, false);
-            settings.SetValue(SettingsKeys.BracketsOnNewLine, true, false);
+            settings.SetValue(SettingsKeys.BracketsFormattingStyle, BracketsFormattingStyle.NewLine, false);
             settings.SetValue(SettingsKeys.TabLength, 4, false);
             settings.SetValue(SettingsKeys.Theme, 0, false);
             settings.SetValue(SettingsKeys.RenderWhitespaces, true, false);

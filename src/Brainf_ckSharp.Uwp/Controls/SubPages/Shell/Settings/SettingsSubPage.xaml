@@ -12,8 +12,7 @@
     xmlns:subPages="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages"
     xmlns:models="using:Brainf_ckSharp.Shared.Models"
     xmlns:markupExtensions="using:Brainf_ckSharp.Uwp.MarkupExtensions"
-    xmlns:enums="using:Brainf_ckSharp.Uwp.Controls.Ide.Enums"
-    xmlns:settings="using:Brainf_ckSharp.Shared.Enums.Settings"
+    xmlns:enums="using:Brainf_ckSharp.Shared.Enums.Settings"
     xmlns:converters="using:Brainf_ckSharp.Uwp.Converters.SubPages.Settings"
     mc:Ignorable="d"
     d:DesignHeight="300"
@@ -52,7 +51,7 @@
                     Margin="0,4,0,0"
                     MinWidth="140"
                     ItemsSource="{markupExtensions:EnumValues Type=enums:BracketsFormattingStyle}"
-                    SelectedItem="{x:Bind converters:BracketsFormattingStyleConverter.Convert(ViewModel.BracketsOnNewLine), Mode=OneWay}"
+                    SelectedItem="{x:Bind ViewModel.BracketsFormattingStyle, Mode=OneWay}"
                     SelectionChanged="BracketFormattingStyle_SelectedItemChanged"/>
 
                 <!--Tab length-->
@@ -98,7 +97,7 @@
                     CornerRadius="0"
                     Margin="0,4,0,0"
                     MinWidth="140"
-                    ItemsSource="{markupExtensions:EnumValues Type=settings:ViewType}"
+                    ItemsSource="{markupExtensions:EnumValues Type=enums:ViewType}"
                     SelectedItem="{x:Bind ViewModel.StartingView, Mode=OneWay}"
                     SelectionChanged="StartingView_SelectedItemChanged"/>
 
