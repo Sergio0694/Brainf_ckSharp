@@ -148,6 +148,7 @@
     <Compile Include="Converters\SubPages\CodeLibraryCategoryConverter.cs" />
     <Compile Include="Converters\Console\SyntaxValidationResultConverter.cs" />
     <Compile Include="Converters\SubPages\CodeMetadataConverter.cs" />
+    <Compile Include="Converters\SubPages\Settings\BracketsFormattingStyleConverter.cs" />
     <Compile Include="Converters\UInt16Converter.cs" />
     <Compile Include="Converters\PivotSelectionConverter.cs" />
     <Compile Include="Converters\SubPages\UnicodeIntervalConverter.cs" />
@@ -238,6 +239,7 @@
     <Compile Include="Extensions\Windows.Storage\IFileExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Xaml\FrameworkElementExtensions.cs" />
     <Compile Include="Helpers\TitleBarHelper.cs" />
+    <Compile Include="MarkupExtensions\EnumValuesExtension.cs" />
     <Compile Include="MarkupExtensions\BooleanExtension.cs" />
     <Compile Include="MarkupExtensions\FontIconExtension.cs" />
     <Compile Include="Messages\LoadingStateUpdateNotificationMessage.cs" />

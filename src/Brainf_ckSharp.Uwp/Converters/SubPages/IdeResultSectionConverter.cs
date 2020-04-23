@@ -5,15 +5,15 @@ using Brainf_ckSharp.Shared.Enums;
 namespace Brainf_ckSharp.Uwp.Converters.SubPages
 {
     /// <summary>
-    /// A <see langword="class"/> with helper functions to format <see cref="IdeResultSection"/> instances
+    /// A <see langword="class"/> with helper functions to format <see cref="IdeResultSection"/> values
     /// </summary>
     public static class IdeResultSectionConverter
     {
         /// <summary>
-        /// Converts an <see cref="IdeResultSection"/> instance into its representation
+        /// Converts an <see cref="IdeResultSection"/> value into its representation
         /// </summary>
-        /// <param name="section">The input <see cref="IdeResultSection"/> instance</param>
-        /// <returns>A <see cref="string"/> representing the input <see cref="IdeResultSection"/> instance</returns>
+        /// <param name="section">The input <see cref="IdeResultSection"/> value</param>
+        /// <returns>A <see cref="string"/> representing the input <see cref="IdeResultSection"/> value</returns>
         [Pure]
         public static string Convert(IdeResultSection section)
         {

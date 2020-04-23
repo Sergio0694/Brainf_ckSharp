@@ -11,6 +11,9 @@
     xmlns:collections="using:Microsoft.Toolkit.Collections"
     xmlns:subPages="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages"
     xmlns:models="using:Brainf_ckSharp.Shared.Models"
+    xmlns:markupExtensions="using:Brainf_ckSharp.Uwp.MarkupExtensions"
+    xmlns:enums="using:Brainf_ckSharp.Uwp.Controls.Ide.Enums"
+    xmlns:converters="using:Brainf_ckSharp.Uwp.Converters.SubPages.Settings"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -29,21 +32,27 @@
                 <TextBlock
                     TextWrapping="Wrap"
                     Text="Autosave documents"/>
-                <ToggleSwitch IsOn="{Binding ViewModel.AutosaveDocuments, Mode=TwoWay}"/>
+                <ToggleSwitch IsOn="{x:Bind ViewModel.AutosaveDocuments, Mode=TwoWay}"/>
 
                 <!--Protect unsaved changes-->
                 <TextBlock
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Protect unsaved changes"/>
-                <ToggleSwitch IsOn="{Binding ViewModel.ProtectUnsavedChanges, Mode=TwoWay}"/>
+                <ToggleSwitch IsOn="{x:Bind ViewModel.ProtectUnsavedChanges, Mode=TwoWay}"/>
 
                 <!--Brackets on new line-->
                 <TextBlock
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Brackets on new line"/>
-                <ToggleSwitch IsOn="{Binding ViewModel.BracketsOnNewLine, Mode=TwoWay}"/>
+                <ComboBox
+                    CornerRadius="0"
+                    Margin="0,4,0,0"
+                    MinWidth="140"
+                    ItemsSource="{markupExtensions:EnumValues Type=enums:BracketsFormattingStyle}"
+                    SelectedItem="{x:Bind converters:BracketsFormattingStyleConverter.Convert(ViewModel.BracketsOnNewLine), Mode=OneWay}"
+                    SelectionChanged="BracketFormattingStyle_SelectedItemChanged"/>
 
                 <!--Tab length-->
                 <TextBlock
@@ -51,6 +60,7 @@
                     TextWrapping="Wrap"
                     Text="Brackets on new line"/>
                 <ComboBox
+                    CornerRadius="0"
                     Margin="0,4,0,0"
                     MinWidth="140"
                     ItemsSource="{x:Bind ViewModel.TabLengthOptions}"
@@ -62,14 +72,14 @@
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Render whitespaces"/>
-                <ToggleSwitch IsOn="{Binding ViewModel.RenderWhitespaces, Mode=TwoWay}"/>
+                <ToggleSwitch IsOn="{x:Bind ViewModel.RenderWhitespaces, Mode=TwoWay}"/>
 
                 <!--Enable timeline-->
                 <TextBlock
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Enable timeline"/>
-                <ToggleSwitch IsOn="{Binding ViewModel.EnableTimeline, Mode=TwoWay}"/>
+                <ToggleSwitch IsOn="{x:Bind ViewModel.EnableTimeline, Mode=TwoWay}"/>
             </StackPanel>
         </DataTemplate>
 
