@@ -128,29 +128,30 @@
         </DataTemplate>
 
         <!--Interpreter settings template-->
-        <DataTemplate x:Name="InterpreterSettingsTemplate">
-            <Border Background="Transparent">
-                <Grid ColumnSpacing="12">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="48"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock
-                        Style="{StaticResource FontIconTextBlockStyle}"
-                        Text="{StaticResource RecentSectionIcon}"
-                        FontSize="20"
-                        Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"/>
-                    <TextBlock
-                        Grid.Column="1"
-                        TextWrapping="Wrap"
-                        FontSize="14"
-                        Foreground="#FFE0E0E0">
-                        <Run Text="Tap here to pick and open a file!"/>
-                    </TextBlock>
-                </Grid>
-            </Border>
+        <DataTemplate
+            x:Name="InterpreterSettingsTemplate"
+            x:DataType="models:SettingsViewModelWithSectionInfo">
+            <StackPanel Spacing="4">
+
+                <!--Memory size-->
+                <TextBlock
+                    TextWrapping="Wrap"
+                    Text="Memory size"/>
+                <ComboBox
+                    CornerRadius="0"
+                    Margin="0,4,0,0"
+                    MinWidth="140"
+                    ItemsSource="{x:Bind ViewModel.MemorySizeOptions}"
+                    SelectedItem="{x:Bind ViewModel.MemorySize, Mode=OneWay}"
+                    SelectionChanged="MemorySize_SelectedItemChanged"/>
+
+                <!--Clear stdin buffer on execution-->
+                <TextBlock
+                    Margin="0,8,0,0"
+                    TextWrapping="Wrap"
+                    Text="Clear stdin buffer on execution"/>
+                <ToggleSwitch IsOn="{x:Bind ViewModel.ClearStdinBufferOnRequest, Mode=TwoWay}"/>
+            </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
 
