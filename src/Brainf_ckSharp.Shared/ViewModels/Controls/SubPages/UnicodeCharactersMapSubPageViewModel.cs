@@ -32,7 +32,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// </summary>
         public UnicodeCharactersMapSubPageViewModel()
         {
-            LoadDataCommand = new RelayCommand(() => _ = LoadDataAsync());
+            LoadDataCommand = new AsyncRelayCommand(LoadDataAsync);
         }
 
         /// <summary>
