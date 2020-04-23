@@ -1,6 +1,7 @@
 ﻿using System;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
+using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Uwp.Themes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
@@ -17,15 +18,15 @@ namespace Brainf_ckSharp.Uwp.Constants
         /// </summary>
         public static readonly Brainf_ckTheme Brainf_ckTheme = new Func<Brainf_ckTheme>(() =>
         {
-            return Ioc.Default.GetRequiredService<ISettingsService>().GetValue<int>(SettingsKeys.Theme) switch
+            return Ioc.Default.GetRequiredService<ISettingsService>().GetValue<IdeTheme>(SettingsKeys.IdeTheme) switch
             {
-                0 => Brainf_ckThemes.VisualStudio,
-                1 => Brainf_ckThemes.Monokai,
-                2 => Brainf_ckThemes.Dracula,
-                3 => Brainf_ckThemes.Base16,
-                4 => Brainf_ckThemes.OneDark,
-                5 => Brainf_ckThemes.Vim,
-                6 => Brainf_ckThemes.VisualStudioCode,
+                IdeTheme.VisualStudio => Brainf_ckThemes.VisualStudio,
+                IdeTheme.VisualStudioCode => Brainf_ckThemes.VisualStudioCode,
+                IdeTheme.Monokai => Brainf_ckThemes.Monokai,
+                IdeTheme.Base16 => Brainf_ckThemes.Base16,
+                IdeTheme.Dracula => Brainf_ckThemes.Dracula,
+                IdeTheme.OneDark => Brainf_ckThemes.OneDark,
+                IdeTheme.Vim => Brainf_ckThemes.Vim,
                 { } i => throw new ArgumentOutOfRangeException($"Invalid theme index: {i}")
             };
         })();

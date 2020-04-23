@@ -21,7 +21,7 @@
         public const string AutoindentBrackets = nameof(AutoindentBrackets);
 
         /// <summary>
-        /// Indicates whether to place open brackets on a new line, uses a <see cref="Shared.Enums.Settings.BracketsFormattingStyle"/>
+        /// Indicates whether to place open brackets on a new line, uses a <see cref="Enums.Settings.BracketsFormattingStyle"/>
         /// </summary>
         public const string BracketsFormattingStyle = nameof(BracketsFormattingStyle);
 
@@ -31,9 +31,9 @@
         public const string TabLength = nameof(TabLength);
 
         /// <summary>
-        /// Indicates the index of the current syntax highlight theme, uses an <see cref="int"/>
+        /// Indicates the index of the current syntax highlight theme, uses an <see cref="Enums.Settings.IdeTheme"/>
         /// </summary>
-        public const string Theme = nameof(Theme);
+        public const string IdeTheme = nameof(IdeTheme);
 
         /// <summary>
         /// Indicates whether to render whitespace characters, uses a <see cref="bool"/>
@@ -46,7 +46,7 @@
         public const string EnableTimeline = nameof(EnableTimeline);
 
         /// <summary>
-        /// Indicates the index of the starting view, uses a <see cref="Shared.Enums.Settings.ViewType"/>
+        /// Indicates the index of the starting view, uses a <see cref="Enums.Settings.ViewType"/>
         /// </summary>
         public const string StartingView = nameof(StartingView);
 
