@@ -14,12 +14,12 @@ using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 {
-    public sealed class SettingsViewModel : ViewModelBase<ObservableGroupedCollection<SettingsSection, SettingsViewModelWithSectionInfo>>
+    public sealed class SettingsSubPageViewModel : ViewModelBase<ObservableGroupedCollection<SettingsSection, SettingsViewModelWithSectionInfo>>
     {
         /// <summary>
-        /// Creates a new <see cref="SettingsViewModel"/> instance
+        /// Creates a new <see cref="SettingsSubPageViewModel"/> instance
         /// </summary>
-        public SettingsViewModel()
+        public SettingsSubPageViewModel()
         {
             Source.Add(SettingsSection.Ide, new SettingsViewModelWithSectionInfo(SettingsSection.Ide, this));
             Source.Add(SettingsSection.UI, new SettingsViewModelWithSectionInfo(SettingsSection.UI, this));

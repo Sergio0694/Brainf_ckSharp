@@ -4,7 +4,7 @@ using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 namespace Brainf_ckSharp.Shared.Models
 {
     /// <summary>
-    /// A simple model that associates a specific section to a <see cref="SettingsViewModel"/> instance
+    /// A simple model that associates a specific section to a <see cref="SettingsSubPageViewModel"/> instance
     /// </summary>
     public sealed class SettingsViewModelWithSectionInfo
     {
@@ -12,8 +12,8 @@ namespace Brainf_ckSharp.Shared.Models
         /// Creates a new <see cref="SettingsViewModelWithSectionInfo"/> instance with the specified parameters
         /// </summary>
         /// <param name="section">The current section being targeted</param>
-        /// <param name="viewModel">The <see cref="SettingsViewModel"/> instance to wrap</param>
-        public SettingsViewModelWithSectionInfo(SettingsSection section, SettingsViewModel viewModel)
+        /// <param name="viewModel">The <see cref="SettingsSubPageViewModel"/> instance to wrap</param>
+        public SettingsViewModelWithSectionInfo(SettingsSection section, SettingsSubPageViewModel viewModel)
         {
             Section = section;
             ViewModel = viewModel;
@@ -25,8 +25,8 @@ namespace Brainf_ckSharp.Shared.Models
         public SettingsSection Section { get; }
 
         /// <summary>
-        /// Gets the <see cref="SettingsViewModel"/> instance currently wrapped
+        /// Gets the <see cref="SettingsSubPageViewModel"/> instance currently wrapped
         /// </summary>
-        public SettingsViewModel ViewModel { get; }
+        public SettingsSubPageViewModel ViewModel { get; }
     }
 }
