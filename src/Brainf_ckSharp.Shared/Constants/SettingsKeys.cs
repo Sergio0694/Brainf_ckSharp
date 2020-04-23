@@ -46,9 +46,9 @@
         public const string EnableTimeline = nameof(EnableTimeline);
 
         /// <summary>
-        /// Indicates the index of the starting page, uses an <see cref="int"/>
+        /// Indicates the index of the starting view, uses a <see cref="Shared.Enums.Settings.ViewType"/>
         /// </summary>
-        public const string StartingPage = nameof(StartingPage);
+        public const string StartingView = nameof(StartingView);
 
         /// <summary>
         /// Indicates whether or not to automatically clear the stdin buffer whenever it's requested, uses a <see cref="bool"/>

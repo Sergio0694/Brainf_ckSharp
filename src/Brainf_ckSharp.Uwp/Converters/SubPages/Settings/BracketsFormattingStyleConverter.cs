@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.Contracts;
-using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 
 namespace Brainf_ckSharp.Uwp.Converters.SubPages.Settings
@@ -10,10 +9,10 @@ namespace Brainf_ckSharp.Uwp.Converters.SubPages.Settings
     public static class BracketsFormattingStyleConverter
     {
         /// <summary>
-        /// Converts a <see cref="CodeLibrarySection"/> instance into its representation
+        /// Converts a <see cref="BracketsFormattingStyle"/> value into its representation
         /// </summary>
-        /// <param name="section">The input <see cref="CodeLibrarySection"/> instance</param>
-        /// <returns>A <see cref="string"/> representing the input <see cref="CodeLibrarySection"/> instance</returns>
+        /// <param name="value">The input <see cref="BracketsFormattingStyle"/> value</param>
+        /// <returns>A <see cref="string"/> representing the input <see cref="BracketsFormattingStyle"/> value</returns>
         [Pure]
         public static BracketsFormattingStyle Convert(bool value)
         {

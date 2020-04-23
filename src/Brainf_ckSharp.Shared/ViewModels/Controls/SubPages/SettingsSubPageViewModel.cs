@@ -5,6 +5,7 @@ using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums;
+using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.Extensions.Microsoft.Toolkit.Collections;
 using Brainf_ckSharp.Shared.Models;
 using Brainf_ckSharp.Shared.ViewModels.Abstract;
@@ -137,15 +138,15 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             set => Set(ref _EnableTimeline, value);
         }
 
-        private int _StartingPage = Get<int>(nameof(StartingPage));
+        private ViewType _StartingView = Get<ViewType>(nameof(StartingView));
 
         /// <summary>
-        /// Exposes the <see cref="SettingsKeys.StartingPage"/> setting
+        /// Exposes the <see cref="SettingsKeys.StartingView"/> setting
         /// </summary>
-        public int StartingPage
+        public ViewType StartingView
         {
-            get => _StartingPage;
-            set => Set(ref _StartingPage, value);
+            get => _StartingView;
+            set => Set(ref _StartingView, value);
         }
 
         private bool _ClearStdinBufferOnRequest = Get<bool>(nameof(ClearStdinBufferOnRequest));

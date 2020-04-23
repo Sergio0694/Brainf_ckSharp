@@ -4,6 +4,7 @@ using Windows.UI.Xaml;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
+using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Uwp.Controls.Host;
 using Brainf_ckSharp.Uwp.Helpers;
 using Brainf_ckSharp.Uwp.Services.Clipboard;
@@ -81,7 +82,7 @@ namespace Brainf_ckSharp.Uwp
             settings.SetValue(SettingsKeys.Theme, 0, false);
             settings.SetValue(SettingsKeys.RenderWhitespaces, true, false);
             settings.SetValue(SettingsKeys.EnableTimeline, false, false);
-            settings.SetValue(SettingsKeys.StartingPage, 0, false);
+            settings.SetValue(SettingsKeys.StartingView, ViewType.Console, false);
             settings.SetValue(SettingsKeys.ClearStdinBufferOnRequest, false, false);
             settings.SetValue(SettingsKeys.ShowPBrainButtons, true, false);
             settings.SetValue(SettingsKeys.OverflowMode, OverflowMode.ByteWithOverflow, false);
