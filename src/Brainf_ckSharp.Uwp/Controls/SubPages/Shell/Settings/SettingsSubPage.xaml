@@ -32,14 +32,14 @@
                 <TextBlock
                     TextWrapping="Wrap"
                     Text="Autosave documents"/>
-                <ToggleSwitch IsOn="{x:Bind ViewModel.AutosaveDocuments, Mode=TwoWay}"/>
+                <ToggleSwitch IsOn="{x:Bind Instance.AutosaveDocuments, Mode=TwoWay}"/>
 
                 <!--Protect unsaved changes-->
                 <TextBlock
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Protect unsaved changes"/>
-                <ToggleSwitch IsOn="{x:Bind ViewModel.ProtectUnsavedChanges, Mode=TwoWay}"/>
+                <ToggleSwitch IsOn="{x:Bind Instance.ProtectUnsavedChanges, Mode=TwoWay}"/>
 
                 <!--Theme-->
                 <TextBlock
@@ -51,7 +51,7 @@
                     Margin="0,4,0,0"
                     MinWidth="220"
                     ItemsSource="{markupExtensions:EnumValues Type=enums:IdeTheme}"
-                    SelectedItem="{x:Bind ViewModel.IdeTheme, Mode=OneWay}"
+                    SelectedItem="{x:Bind Instance.IdeTheme, Mode=OneWay}"
                     SelectionChanged="IdeTheme_SelectedItemChanged">
                     <ComboBox.ItemContainerStyle>
                         <Style TargetType="ComboBoxItem">
@@ -80,7 +80,7 @@
                     Margin="0,4,0,0"
                     MinWidth="140"
                     ItemsSource="{markupExtensions:EnumValues Type=enums:BracketsFormattingStyle}"
-                    SelectedItem="{x:Bind ViewModel.BracketsFormattingStyle, Mode=OneWay}"
+                    SelectedItem="{x:Bind Instance.BracketsFormattingStyle, Mode=OneWay}"
                     SelectionChanged="BracketFormattingStyle_SelectedItemChanged"/>
 
                 <!--Tab length-->
@@ -92,8 +92,8 @@
                     CornerRadius="0"
                     Margin="0,4,0,0"
                     MinWidth="140"
-                    ItemsSource="{x:Bind ViewModel.TabLengthOptions}"
-                    SelectedItem="{x:Bind ViewModel.TabLength, Mode=OneWay}"
+                    ItemsSource="{x:Bind Instance.TabLengthOptions}"
+                    SelectedItem="{x:Bind Instance.TabLength, Mode=OneWay}"
                     SelectionChanged="TabLength_SelectedItemChanged"/>
 
                 <!--Render whitespaces-->
@@ -101,14 +101,14 @@
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Render whitespaces"/>
-                <ToggleSwitch IsOn="{x:Bind ViewModel.RenderWhitespaces, Mode=TwoWay}"/>
+                <ToggleSwitch IsOn="{x:Bind Instance.RenderWhitespaces, Mode=TwoWay}"/>
 
                 <!--Enable timeline-->
                 <TextBlock
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Enable timeline"/>
-                <ToggleSwitch IsOn="{x:Bind ViewModel.EnableTimeline, Mode=TwoWay}"/>
+                <ToggleSwitch IsOn="{x:Bind Instance.EnableTimeline, Mode=TwoWay}"/>
             </StackPanel>
         </DataTemplate>
 
@@ -127,7 +127,7 @@
                     Margin="0,4,0,0"
                     MinWidth="140"
                     ItemsSource="{markupExtensions:EnumValues Type=enums:ViewType}"
-                    SelectedItem="{x:Bind ViewModel.StartingView, Mode=OneWay}"
+                    SelectedItem="{x:Bind Instance.StartingView, Mode=OneWay}"
                     SelectionChanged="StartingView_SelectedItemChanged"/>
 
                 <!--Show PBrain operators-->
@@ -140,7 +140,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <ToggleSwitch IsOn="{x:Bind ViewModel.ShowPBrainButtons, Mode=TwoWay}"/>
+                    <ToggleSwitch IsOn="{x:Bind Instance.ShowPBrainButtons, Mode=TwoWay}"/>
                     <HyperlinkButton 
                         Margin="0,0,20,0"
                         HorizontalAlignment="Right"
@@ -169,8 +169,8 @@
                     CornerRadius="0"
                     Margin="0,4,0,0"
                     MinWidth="140"
-                    ItemsSource="{x:Bind ViewModel.MemorySizeOptions}"
-                    SelectedItem="{x:Bind ViewModel.MemorySize, Mode=OneWay}"
+                    ItemsSource="{x:Bind Instance.MemorySizeOptions}"
+                    SelectedItem="{x:Bind Instance.MemorySize, Mode=OneWay}"
                     SelectionChanged="MemorySize_SelectedItemChanged"/>
 
                 <!--Clear stdin buffer on execution-->
@@ -178,7 +178,7 @@
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Clear stdin buffer on execution"/>
-                <ToggleSwitch IsOn="{x:Bind ViewModel.ClearStdinBufferOnRequest, Mode=TwoWay}"/>
+                <ToggleSwitch IsOn="{x:Bind Instance.ClearStdinBufferOnRequest, Mode=TwoWay}"/>
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>

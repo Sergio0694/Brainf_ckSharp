@@ -12,11 +12,11 @@ namespace Brainf_ckSharp.Shared.Models
         /// Creates a new <see cref="SettingsViewModelWithSectionInfo"/> instance with the specified parameters
         /// </summary>
         /// <param name="section">The current section being targeted</param>
-        /// <param name="viewModel">The <see cref="SettingsSubPageViewModel"/> instance to wrap</param>
-        public SettingsViewModelWithSectionInfo(SettingsSection section, SettingsSubPageViewModel viewModel)
+        /// <param name="instance">The <see cref="SettingsSubPageViewModel"/> instance to wrap</param>
+        public SettingsViewModelWithSectionInfo(SettingsSection section, SettingsSubPageViewModel instance)
         {
             Section = section;
-            ViewModel = viewModel;
+            Instance = instance;
         }
 
         /// <summary>
@@ -27,6 +27,6 @@ namespace Brainf_ckSharp.Shared.Models
         /// <summary>
         /// Gets the <see cref="SettingsSubPageViewModel"/> instance currently wrapped
         /// </summary>
-        public SettingsSubPageViewModel ViewModel { get; }
+        public SettingsSubPageViewModel Instance { get; }
     }
 }
