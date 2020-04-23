@@ -131,6 +131,9 @@
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.Source.cs" />
     <Compile Include="AttachedProperties\SemanticZoomHelper.cs" />
     <Compile Include="AttachedProperties\ViewModelBaseHelper.cs" />
+    <Compile Include="Controls\DataTemplates\IdeThemePreviewTemplate.xaml.cs">
+      <DependentUpon>IdeThemePreviewTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SubPages\Shell\Settings\SettingsSubPage.xaml.cs">
       <DependentUpon>SettingsSubPage.xaml</DependentUpon>
     </Compile>
@@ -382,6 +385,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\DataTemplates\FeaturedLinkTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DataTemplates\IdeThemePreviewTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
