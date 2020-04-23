@@ -18,5 +18,16 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.Settings
 
         /// <inheritdoc/>
         public double MaxExpandedHeight { get; } = double.PositiveInfinity;
+
+        /// <summary>
+        /// Updates the <see cref="Shared.ViewModels.Controls.SubPages.SettingsViewModel.TabLength"/> property
+        /// </summary>
+        /// <param name="sender">The <see cref="ComboBox"/> being used</param>
+        /// <param name="e">The <see cref="SelectionChangedEventArgs"/> for the selection event</param>
+        private void TabLength_SelectedItemChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (((ComboBox)sender).SelectedItem is int value)
+                ViewModel.TabLength = value;
+        }
     }
 }

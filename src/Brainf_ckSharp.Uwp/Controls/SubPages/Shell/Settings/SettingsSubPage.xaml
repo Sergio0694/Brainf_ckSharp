@@ -20,29 +20,57 @@
     <UserControl.Resources>
 
         <!--IDE settings template-->
-        <DataTemplate x:Name="IdeSettingsTemplate">
-            <Border Background="Transparent">
-                <Grid ColumnSpacing="12">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="48"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock
-                        Style="{StaticResource FontIconTextBlockStyle}"
-                        Text="{StaticResource RecentSectionIcon}"
-                        FontSize="20"
-                        Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"/>
-                    <TextBlock
-                        Grid.Column="1"
-                        TextWrapping="Wrap"
-                        FontSize="14"
-                        Foreground="#FFE0E0E0">
-                        <Run Text="Tap here to pick and open a file!"/>
-                    </TextBlock>
-                </Grid>
-            </Border>
+        <DataTemplate
+            x:Name="IdeSettingsTemplate"
+            x:DataType="models:SettingsViewModelWithSectionInfo">
+            <StackPanel Spacing="4">
+
+                <!--Autosave documents-->
+                <TextBlock
+                    TextWrapping="Wrap"
+                    Text="Autosave documents"/>
+                <ToggleSwitch IsOn="{Binding ViewModel.AutosaveDocuments, Mode=TwoWay}"/>
+
+                <!--Protect unsaved changes-->
+                <TextBlock
+                    Margin="0,8,0,0"
+                    TextWrapping="Wrap"
+                    Text="Protect unsaved changes"/>
+                <ToggleSwitch IsOn="{Binding ViewModel.ProtectUnsavedChanges, Mode=TwoWay}"/>
+
+                <!--Brackets on new line-->
+                <TextBlock
+                    Margin="0,8,0,0"
+                    TextWrapping="Wrap"
+                    Text="Brackets on new line"/>
+                <ToggleSwitch IsOn="{Binding ViewModel.BracketsOnNewLine, Mode=TwoWay}"/>
+
+                <!--Tab length-->
+                <TextBlock
+                    Margin="0,8,0,0"
+                    TextWrapping="Wrap"
+                    Text="Brackets on new line"/>
+                <ComboBox
+                    Margin="0,4,0,0"
+                    MinWidth="140"
+                    ItemsSource="{x:Bind ViewModel.TabLengthOptions}"
+                    SelectedItem="{x:Bind ViewModel.TabLength, Mode=OneWay}"
+                    SelectionChanged="TabLength_SelectedItemChanged"/>
+
+                <!--Render whitespaces-->
+                <TextBlock
+                    Margin="0,8,0,0"
+                    TextWrapping="Wrap"
+                    Text="Render whitespaces"/>
+                <ToggleSwitch IsOn="{Binding ViewModel.RenderWhitespaces, Mode=TwoWay}"/>
+
+                <!--Enable timeline-->
+                <TextBlock
+                    Margin="0,8,0,0"
+                    TextWrapping="Wrap"
+                    Text="Enable timeline"/>
+                <ToggleSwitch IsOn="{Binding ViewModel.EnableTimeline, Mode=TwoWay}"/>
+            </StackPanel>
         </DataTemplate>
 
         <!--UI settings template-->
