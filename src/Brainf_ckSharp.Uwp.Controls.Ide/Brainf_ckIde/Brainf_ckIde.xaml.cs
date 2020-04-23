@@ -1,5 +1,9 @@
-﻿using Windows.UI.Xaml;
+﻿using System;
+using Windows.Foundation;
+using Windows.UI.Text;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Controls.Ide.EventArgs;
 using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
@@ -75,6 +79,35 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private void UpdateLineIndicators(int numberOfLines)
         {
             LineBlock.Text = TextGenerator.GetLineNumbersText(numberOfLines);
+        }
+
+        /// <summary>
+        /// Sets up a breakpoint when the user taps on the breakpoints area
+        /// </summary>
+        /// <param name="sender">The <see cref="Canvas"/> instance in use</param>
+        /// <param name="e">The <see cref="TappedRoutedEventArgs"/> instance for the event</param>
+        private void BreakpointsCanvas_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            // Calculate the target vertical offset for the tap
+            double yOffset =
+                e.GetPosition((Border)sender).Y - 8 -         // Tap Y offset and adjustment
+                CodeEditBox.VerticalScrollBarMargin.Top +     // Top internal padding
+                CodeEditBox.ContentScroller!.VerticalOffset;  // Vertical scroll offset
+
+            // Get the range aligned to the left edge of the tapped line
+            ITextRange range = CodeEditBox.Document.GetRangeFromPoint(new Point(0, yOffset), PointOptions.ClientCoordinates);
+            range.GetRect(PointOptions.Transform, out Rect line, out _);
+
+            // Get the line number
+            int lineNumber = CodeEditBox.PlainText.AsSpan(0, range.StartPosition).Count(Characters.CarriageReturn) + 1;
+
+            if (lineNumber == 1) return;
+
+            // Store or remove the breakpoint
+            if (BreakpointIndicators.ContainsKey(lineNumber)) BreakpointIndicators.Remove(lineNumber);
+            else BreakpointIndicators.GetOrAddValueRef(lineNumber) = (float)(line.Top + BreakpointIndicatorTopMargin);
+
+            IdeOverlaysCanvas.Invalidate();
         }
     }
 }

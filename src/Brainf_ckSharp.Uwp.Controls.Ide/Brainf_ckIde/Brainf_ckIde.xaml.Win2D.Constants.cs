@@ -95,5 +95,30 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// The text format for text overlays
         /// </summary>
         private static readonly CanvasTextFormat TextFormat = new CanvasTextFormat { FontSize = 8 };
+
+        /// <summary>
+        /// The top padding for the start of the breakpoint indicators
+        /// </summary>
+        private const int BreakpointIndicatorTopMargin = 2;
+
+        /// <summary>
+        /// The left padding for the start of the breakpoint indicators
+        /// </summary>
+        private const int BreakpointIndicatorLeftMargin = 2;
+
+        /// <summary>
+        /// The height of each breakpoint indicator
+        /// </summary>
+        private const int BreakpointIndicatorElementSize = 16;
+
+        /// <summary>
+        /// The color used to draw the outline of a breakpoint indicator
+        /// </summary>
+        private static readonly Color BreakpointIndicatorBorderColor = "#FFF4DFDD".ToColor();
+
+        /// <summary>
+        /// The color used to fill the breakpoint indicators
+        /// </summary>
+        private static readonly Color BreakpointIndicatorFillColor = "#FFE51400".ToColor();
     }
 }
