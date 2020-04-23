@@ -36,6 +36,17 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.Settings
         }
 
         /// <summary>
+        /// Updates the <see cref="Shared.ViewModels.Controls.SubPages.SettingsSubPageViewModel.IdeTheme"/> property
+        /// </summary>
+        /// <param name="sender">The <see cref="ComboBox"/> being used</param>
+        /// <param name="e">The <see cref="SelectionChangedEventArgs"/> for the selection event</param>
+        private void IdeTheme_SelectedItemChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (((ComboBox)sender).SelectedItem is IdeTheme value)
+                ViewModel.IdeTheme = value;
+        }
+
+        /// <summary>
         /// Updates the <see cref="Shared.ViewModels.Controls.SubPages.SettingsSubPageViewModel.TabLength"/> property
         /// </summary>
         /// <param name="sender">The <see cref="ComboBox"/> being used</param>

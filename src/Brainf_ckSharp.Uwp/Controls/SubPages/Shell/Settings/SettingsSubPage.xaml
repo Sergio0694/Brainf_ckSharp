@@ -13,6 +13,7 @@
     xmlns:models="using:Brainf_ckSharp.Shared.Models"
     xmlns:markupExtensions="using:Brainf_ckSharp.Uwp.MarkupExtensions"
     xmlns:enums="using:Brainf_ckSharp.Shared.Enums.Settings"
+    xmlns:dataTemplates="using:Brainf_ckSharp.Uwp.Controls.DataTemplates"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -39,6 +40,35 @@
                     TextWrapping="Wrap"
                     Text="Protect unsaved changes"/>
                 <ToggleSwitch IsOn="{x:Bind ViewModel.ProtectUnsavedChanges, Mode=TwoWay}"/>
+
+                <!--Theme-->
+                <TextBlock
+                    Margin="0,8,0,0"
+                    TextWrapping="Wrap"
+                    Text="Theme"/>
+                <ComboBox
+                    CornerRadius="0"
+                    Margin="0,4,0,0"
+                    MinWidth="220"
+                    ItemsSource="{markupExtensions:EnumValues Type=enums:IdeTheme}"
+                    SelectedItem="{x:Bind ViewModel.IdeTheme, Mode=OneWay}"
+                    SelectionChanged="IdeTheme_SelectedItemChanged">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="enums:IdeTheme">
+                            <dataTemplates:IdeThemePreviewTemplate Theme="{x:Bind}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
 
                 <!--Brackets on new line-->
                 <TextBlock

@@ -27,7 +27,7 @@ namespace Brainf_ckSharp.Uwp.Constants
                 IdeTheme.Dracula => Brainf_ckThemes.Dracula,
                 IdeTheme.OneDark => Brainf_ckThemes.OneDark,
                 IdeTheme.Vim => Brainf_ckThemes.Vim,
-                { } i => throw new ArgumentOutOfRangeException($"Invalid theme index: {i}")
+                { } theme => throw new ArgumentOutOfRangeException($"Invalid theme: {theme}")
             };
         })();
     }

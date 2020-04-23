@@ -89,6 +89,17 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             set => Set(ref _AutoindentBrackets, value);
         }
 
+        private IdeTheme _IdeTheme = Get<IdeTheme>(nameof(IdeTheme));
+
+        /// <summary>
+        /// Exposes the <see cref="SettingsKeys.IdeTheme"/> setting
+        /// </summary>
+        public IdeTheme IdeTheme
+        {
+            get => _IdeTheme;
+            set => Set(ref _IdeTheme, value);
+        }
+
         private BracketsFormattingStyle _BracketsFormattingStyle = Get<BracketsFormattingStyle>(nameof(BracketsFormattingStyle));
 
         /// <summary>

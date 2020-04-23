@@ -1,8 +1,10 @@
-﻿using Windows.UI;
+﻿using System;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
+using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Uwp.Themes;
 using Brainf_ckSharp.Uwp.Themes.Enums;
 
@@ -16,11 +18,11 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates
         }
 
         /// <summary>
-        /// Gets or sets the current <see cref="Brainf_ckTheme"/> instance to display in the preview
+        /// Gets or sets the current <see cref="IdeTheme"/> instance to display in the preview
         /// </summary>
-        public Brainf_ckTheme Theme
+        public IdeTheme Theme
         {
-            get => (Brainf_ckTheme)GetValue(ThemeProperty);
+            get => (IdeTheme)GetValue(ThemeProperty);
             set => SetValue(ThemeProperty, value);
         }
 
@@ -29,7 +31,7 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates
         /// </summary>
         public static readonly DependencyProperty ThemeProperty = DependencyProperty.Register(
             nameof(Theme),
-            typeof(Brainf_ckTheme),
+            typeof(IdeTheme),
             typeof(IdeThemePreviewTemplate),
             new PropertyMetadata(DependencyProperty.UnsetValue, OnThemePropertyChanged));
 
@@ -42,7 +44,19 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates
         {
             IdeThemePreviewTemplate @this = (IdeThemePreviewTemplate)d;
 
-            if (!(e.NewValue is Brainf_ckTheme value)) return;
+            if (!(e.NewValue is IdeTheme theme)) return;
+
+            Brainf_ckTheme value = theme switch
+            {
+                IdeTheme.VisualStudio => Brainf_ckThemes.VisualStudio,
+                IdeTheme.VisualStudioCode => Brainf_ckThemes.VisualStudioCode,
+                IdeTheme.Monokai => Brainf_ckThemes.Monokai,
+                IdeTheme.Base16 => Brainf_ckThemes.Base16,
+                IdeTheme.Dracula => Brainf_ckThemes.Dracula,
+                IdeTheme.OneDark => Brainf_ckThemes.OneDark,
+                IdeTheme.Vim => Brainf_ckThemes.Vim,
+                _ => throw new ArgumentOutOfRangeException($"Invalid theme: {theme}")
+            };
 
             // General UI
             @this.TitleBlock.Text = value.Name;
@@ -93,14 +107,14 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates
                 @this.LineHighlightBorder.Background = new SolidColorBrush(Colors.Transparent);
                 Canvas.SetZIndex(@this.BracketsGuidePanel, 0);
                 Canvas.SetZIndex(@this.LineHighlightBorder, 1);
-                @this.LineHighlightTransform.Y = 16;
+                @this.LineHighlightTransform.Y = 22;
             }
             else
             {
                 @this.LineHighlightBorder.Background = new SolidColorBrush(value.LineHighlightColor);
                 Canvas.SetZIndex(@this.BracketsGuidePanel, 1);
                 Canvas.SetZIndex(@this.LineHighlightBorder, 0);
-                @this.LineHighlightTransform.Y = 32;
+                @this.LineHighlightTransform.Y = 42;
             }
 
             @this.LineHighlightBorder.BorderThickness = new Thickness(value.LineHighlightStyle == LineHighlightStyle.Outline ? 2 : 0);
