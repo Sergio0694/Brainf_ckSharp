@@ -30,10 +30,10 @@ namespace Brainf_ckSharp.Services
         /// <returns>A <see cref="Task"/> that completes when the text has been written</returns>
         public static async Task WriteAllTextAsync(this IFile file, string text)
         {
-            using Stream stream = await file.OpenStreamForReadAsync();
+            using Stream stream = await file.OpenStreamForWriteAsync();
 
             // Clear the current content
-            stream.SetLength(0);
+            if (stream.Length > 0) stream.SetLength(0);
 
             using StreamWriter writer = new StreamWriter(stream, Encoding.UTF8);
 
