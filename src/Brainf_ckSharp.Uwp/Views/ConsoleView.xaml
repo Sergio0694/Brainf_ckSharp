@@ -19,7 +19,7 @@
 
         <!--Command template-->
         <DataTemplate
-            x:Key="CommandTemplate"
+            x:Name="CommandTemplate"
             x:DataType="console:ConsoleCommand">
             <RichTextBlock
                 FontSize="16"
@@ -45,7 +45,7 @@
 
         <!--Result template-->
         <DataTemplate
-            x:Key="ResultTemplate"
+            x:Name="ResultTemplate"
             x:DataType="console:ConsoleResult">
             <TextBlock 
                 Foreground="Cornsilk"
@@ -56,7 +56,7 @@
 
         <!--Syntax error template-->
         <DataTemplate
-            x:Key="SyntaxErrorTemplate"
+            x:Name="SyntaxErrorTemplate"
             x:DataType="console:ConsoleSyntaxError">
             <TextBlock
                 FontSize="16"
@@ -74,7 +74,7 @@
 
         <!--Exception template-->
         <DataTemplate
-            x:Key="ExceptionResultTemplate"
+            x:Name="ExceptionResultTemplate"
             x:DataType="console:ConsoleException">
             <TextBlock
                 FontSize="16"
@@ -90,7 +90,7 @@
         </DataTemplate>
 
         <!--Restart template-->
-        <DataTemplate x:Key="RestartTemplate">
+        <DataTemplate x:Name="RestartTemplate">
             <TextBlock 
                 Foreground="DarkGray"
                 FontSize="16"
@@ -113,11 +113,11 @@
         IsHitTestVisible="False">
         <ListView.ItemTemplateSelector>
             <templateSelectors:ConsoleEntryTemplateSelector
-                CommandTemplate="{StaticResource CommandTemplate}"
-                ResultTemplate="{StaticResource ResultTemplate}"
-                SyntaxErrorTemplate="{StaticResource SyntaxErrorTemplate}"
-                ExceptionTemplate="{StaticResource ExceptionResultTemplate}"
-                RestartTemplate="{StaticResource RestartTemplate}"/>
+                CommandTemplate="{x:Bind CommandTemplate}"
+                ResultTemplate="{x:Bind ResultTemplate}"
+                SyntaxErrorTemplate="{x:Bind SyntaxErrorTemplate}"
+                ExceptionTemplate="{x:Bind ExceptionResultTemplate}"
+                RestartTemplate="{x:Bind RestartTemplate}"/>
         </ListView.ItemTemplateSelector>
         <ListView.Resources>
             <Style TargetType="ListViewItem">

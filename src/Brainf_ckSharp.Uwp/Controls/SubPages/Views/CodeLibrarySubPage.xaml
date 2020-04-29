@@ -57,7 +57,7 @@
             Command="{x:Bind ViewModel.RemoveFromLibraryCommand}"/>
 
         <!--Favorite placeholder-->
-        <DataTemplate x:Key="FavoritePlaceholder">
+        <DataTemplate x:Name="FavoritePlaceholder">
             <Border Background="Transparent">
                 <Grid ColumnSpacing="12">
                     <Grid.ColumnDefinitions>
@@ -83,7 +83,7 @@
         </DataTemplate>
 
         <!--History placeholder-->
-        <DataTemplate x:Key="HistoryPlaceholder">
+        <DataTemplate x:Name="HistoryPlaceholder">
             <Border Background="Transparent">
                 <Grid ColumnSpacing="12">
                     <Grid.ColumnDefinitions>
@@ -110,7 +110,7 @@
 
         <!--Recent file template-->
         <DataTemplate
-            x:Key="RecentFileTemplate"
+            x:Name="RecentFileTemplate"
             x:DataType="ide:CodeLibraryEntry">
             <StackPanel
                 Spacing="8"
@@ -183,7 +183,7 @@
 
         <!--Sample source code template-->
         <DataTemplate
-            x:Key="SampleCodeTemplate"
+            x:Name="SampleCodeTemplate"
             x:DataType="ide:CodeLibraryEntry">
             <StackPanel Spacing="8">
                 <TextBlock
@@ -227,7 +227,10 @@
                         <core:ItemClickBehavior Command="{x:Bind ViewModel.ProcessItemCommand}"/>
                     </interactivity:Interaction.Behaviors>
                     <ListView.Resources>
-                        <Style x:Key="BaseCodeLibraryEntryItemContainerStyle" TargetType="ListViewItem">
+                        <Style
+                            x:Name="BaseCodeLibraryEntryItemContainerStyle"
+                            x:Key="BaseCodeLibraryEntryItemContainerStyle"
+                            TargetType="ListViewItem">
                             <Setter Property="Margin" Value="0,0,0,0"/>
                             <Setter Property="Padding" Value="12,16,12,16"/>
                             <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -235,7 +238,7 @@
                             <Setter Property="Background" Value="#FF171717"/>
                         </Style>
                         <Style
-                            x:Key="CodeLibraryEntryItemContainerWithBottomMarginStyle"
+                            x:Name="CodeLibraryEntryItemContainerWithBottomMarginStyle"
                             TargetType="ListViewItem"
                             BasedOn="{StaticResource BaseCodeLibraryEntryItemContainerStyle}">
                             <Setter Property="Margin" Value="0,0,0,4"/>
@@ -254,15 +257,15 @@
                     </ListView.GroupStyle>
                     <ListView.ItemContainerStyleSelector>
                         <styleSelectors:CodeLibraryEntryItemContainerStyleSelector
-                            DefaultContainerStyle="{StaticResource CodeLibraryEntryItemContainerWithBottomMarginStyle}"
-                            PlaceholderContainerStyle="{StaticResource BaseCodeLibraryEntryItemContainerStyle}"/>
+                            DefaultContainerStyle="{x:Bind CodeLibraryEntryItemContainerWithBottomMarginStyle}"
+                            PlaceholderContainerStyle="{x:Bind BaseCodeLibraryEntryItemContainerStyle}"/>
                     </ListView.ItemContainerStyleSelector>
                     <ListView.ItemTemplateSelector>
                         <templateSelectors:SourceCodeEntryTemplateSelector
-                            FavoritePlaceholderTemplate="{StaticResource FavoritePlaceholder}"
-                            RecentPlaceholderTemplate="{StaticResource HistoryPlaceholder}"
-                            RecentItemTemplate="{StaticResource RecentFileTemplate}"
-                            SampleTemplate="{StaticResource SampleCodeTemplate}"/>
+                            FavoritePlaceholderTemplate="{x:Bind FavoritePlaceholder}"
+                            RecentPlaceholderTemplate="{x:Bind HistoryPlaceholder}"
+                            RecentItemTemplate="{x:Bind RecentFileTemplate}"
+                            SampleTemplate="{x:Bind SampleCodeTemplate}"/>
                     </ListView.ItemTemplateSelector>
                 </ListView>
             </SemanticZoom.ZoomedInView>
