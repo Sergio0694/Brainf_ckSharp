@@ -44,8 +44,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Git.Unit", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Cli", "src\Brainf_ckSharp.Cli\Brainf_ckSharp.Cli.csproj", "{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Toolkit.HighPerformance", "src\Microsoft.Toolkit.HighPerformance\Microsoft.Toolkit.HighPerformance.csproj", "{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Brainf_ckSharp.Unit.Shared", "unit\Brainf_ckSharp.Unit.Shared\Brainf_ckSharp.Unit.Shared.shproj", "{2C0EDAF2-B222-4F0F-B1A3-569508BB80E2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Profiler", "profiling\Brainf_ckSharp.Profiler\Brainf_ckSharp.Profiler.csproj", "{E96D1E2C-16D0-4490-B508-5EA1D94E42D6}"
@@ -60,7 +58,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Services", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.Services.Uwp", "src\Brainf_ckSharp.Services.Uwp\Brainf_ckSharp.Services.Uwp.csproj", "{978A84F1-EE57-4A0A-9793-C8404E2D5441}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.Shared", "src\Brainf_ckSharp.Shared\Brainf_ckSharp.Shared.csproj", "{A2B53303-9594-4975-91BD-0ECD83AD9CF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Shared", "src\Brainf_ckSharp.Shared\Brainf_ckSharp.Shared.csproj", "{A2B53303-9594-4975-91BD-0ECD83AD9CF1}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -373,26 +371,6 @@ Global
 		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Release|x64.Build.0 = Release|Any CPU
 		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Release|x86.ActiveCfg = Release|Any CPU
 		{6AD9AC42-29B0-45D9-81AA-87D7405A39E5}.Release|x86.Build.0 = Release|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Debug|ARM.Build.0 = Debug|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Debug|x64.Build.0 = Debug|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Debug|x86.Build.0 = Debug|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Release|ARM.ActiveCfg = Release|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Release|ARM.Build.0 = Release|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Release|ARM64.Build.0 = Release|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Release|x64.ActiveCfg = Release|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Release|x64.Build.0 = Release|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Release|x86.ActiveCfg = Release|Any CPU
-		{66FD6968-86B8-45D9-9B07-FED7DFC4BF0B}.Release|x86.Build.0 = Release|Any CPU
 		{E96D1E2C-16D0-4490-B508-5EA1D94E42D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E96D1E2C-16D0-4490-B508-5EA1D94E42D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E96D1E2C-16D0-4490-B508-5EA1D94E42D6}.Debug|ARM.ActiveCfg = Debug|Any CPU
