@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using System.Buffers;
+using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
 
 #nullable enable
@@ -14,12 +15,14 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views
         /// Creates a new <see cref="IdeResultSubPage"/> instance with the specified parameters
         /// </summary>
         /// <param name="script">The script to execute</param>
-        public IdeResultSubPage(string script)
+        /// <param name="breakpoints">The optional breakpoints to use</param>
+        public IdeResultSubPage(string script, IMemoryOwner<int>? breakpoints = null)
         {
             this.InitializeComponent();
             this.Unloaded += (s, e) => ViewModel.IsActive = false;
 
             ViewModel.Script = script;
+            ViewModel.Breakpoints = breakpoints;
         }
 
         /// <inheritdoc/>

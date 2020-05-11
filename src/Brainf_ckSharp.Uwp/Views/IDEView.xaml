@@ -12,6 +12,7 @@
     <UserControl.DataContext>
         <views:IdeViewModel
             ScriptRunRequested="IdeViewModel_OnScriptRunRequested"
+            ScriptDebugRequested="IdeViewModel_OnScriptDebugRequested"
             CharacterAdded="ViewModelCharacterAdded"
             CharacterDeleted="ViewModel_CharacterDeleted"
             CodeLoaded="ViewModel_CodeLoaded"
