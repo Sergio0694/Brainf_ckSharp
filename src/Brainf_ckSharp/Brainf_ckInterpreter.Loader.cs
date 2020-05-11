@@ -263,7 +263,7 @@ namespace Brainf_ckSharp
                 // Build the breakpoints table by going through the temporary table with the markers
                 for (int i = 0, j = 0; j < source.Length; j++)
                 {
-                    if (!Brainf_ckParser.IsOperator(source[i])) continue;
+                    if (!Brainf_ckParser.IsOperator(source[j])) continue;
 
                     Unsafe.Add(ref breakpointsBufferRef, i++) = Unsafe.Add(ref temporaryBufferRef, j);
                 }

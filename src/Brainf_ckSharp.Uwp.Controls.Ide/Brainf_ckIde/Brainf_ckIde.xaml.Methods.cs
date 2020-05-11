@@ -89,7 +89,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             // Copy the existing breakpoints
             foreach (var pair in BreakpointIndicators)
             {
-                Unsafe.Add(ref bufferRef, i++) = pair.Key;
+                Unsafe.Add(ref bufferRef, i++) = pair.Key - 1;
             }
 
             // Get the underlying array to sort in-place.

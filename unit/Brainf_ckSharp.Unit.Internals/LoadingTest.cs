@@ -24,7 +24,7 @@ namespace Brainf_ckSharp.Unit.Internals
 
             stackFrames.DangerousGetReference() = new StackFrame(new Range(0, operators!.Length), 10);
 
-            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo<Brainf_ckOperator>(operators.Span, stackFrames.Span, -1);
+            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo(operators.Span, stackFrames.Span, -1);
 
             Assert.IsNull(exceptionInfo);
         }
@@ -40,7 +40,7 @@ namespace Brainf_ckSharp.Unit.Internals
 
             stackFrames.DangerousGetReference() = new StackFrame(new Range(0, operators!.Length), 7);
 
-            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo<Brainf_ckOperator>(operators.Span, stackFrames.Span, 0);
+            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo(operators.Span, stackFrames.Span, 0);
 
             Assert.IsNotNull(exceptionInfo);
             Assert.AreEqual(exceptionInfo!.StackTrace.Count, 1);
@@ -61,7 +61,7 @@ namespace Brainf_ckSharp.Unit.Internals
             stackFrames.Span[0] = new StackFrame(new Range(0, operators!.Length), 5);
             stackFrames.Span[1] = new StackFrame(new Range(1, 3), 2);
 
-            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo<Brainf_ckOperator>(operators.Span, stackFrames.Span, 1);
+            HaltedExecutionInfo? exceptionInfo = Brainf_ckInterpreter.LoadDebugInfo(operators.Span, stackFrames.Span, 1);
 
             Assert.IsNotNull(exceptionInfo);
             Assert.AreEqual(exceptionInfo!.StackTrace.Count, 2);
