@@ -171,7 +171,8 @@
                     Label="Debug"
                     Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DebugIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}"
-                    Foreground="{StaticResource DebugBrush}">
+                    Foreground="{StaticResource DebugBrush}"
+                    Click="{x:Bind ViewModel.DebugIdeScript}">
                     <AppBarButton.Resources>
                         <SolidColorBrush x:Key="AppBarButtonForegroundPointerOver" Color="{StaticResource DebugColor}"/>
                         <SolidColorBrush x:Key="AppBarButtonForegroundPressed" Color="{StaticResource DebugColor}"/>

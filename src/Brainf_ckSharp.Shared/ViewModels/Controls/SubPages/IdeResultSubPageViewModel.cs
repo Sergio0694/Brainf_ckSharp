@@ -1,16 +1,24 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Buffers;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
+using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Extensions.Microsoft.Toolkit.Collections;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Models.Ide.Views;
 using Brainf_ckSharp.Shared.ViewModels.Abstract;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Diagnostics;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using Nito.AsyncEx;
 
 #nullable enable
 
@@ -18,6 +26,21 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 {
     public sealed class IdeResultSubPageViewModel : ViewModelBase<ObservableGroupedCollection<IdeResultSection, IdeResultWithSectionInfo>>
     {
+        /// <summary>
+        /// A mutex to avoid race conditions when handling executions and tokens
+        /// </summary>
+        private readonly AsyncLock LoadingMutex = new AsyncLock();
+
+        /// <summary>
+        /// The <see cref="CancellationTokenSource"/> to handle operations within <see cref="LoadDataAsync"/>
+        /// </summary>
+        private CancellationTokenSource? _CancellationTokenSource;
+
+        /// <summary>
+        /// The <see cref="InterpreterSession"/> to use, when in DEBUG mode
+        /// </summary>
+        private InterpreterSession? _DebugSession;
+
         /// <summary>
         /// Creates a new <see cref="IdeResultSubPageViewModel"/> instance
         /// </summary>
@@ -32,9 +55,26 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public string? Script { get; set; }
 
         /// <summary>
+        /// Gets or sets the breakpoints to use
+        /// </summary>
+        /// <remarks>If <see langword="null"/>, the RELEASE mode is used to run the code</remarks>
+        public IMemoryOwner<int>? Breakpoints { get; set; }
+
+        /// <summary>
         /// Gets the <see cref="ICommand"/> instance responsible for loading the available source codes
         /// </summary>
         public ICommand LoadDataCommand { get; }
+
+        /// <inheritdoc/>
+        protected override async void OnDeactivated()
+        {
+            _CancellationTokenSource?.Cancel();
+
+            using (await LoadingMutex.LockAsync())
+            {
+                _DebugSession?.Dispose();
+            }
+        }
 
         /// <summary>
         /// Loads the currently available code samples and recently used files
@@ -43,23 +83,65 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         {
             Guard.IsNotNull(Source, nameof(Source));
 
-            string stdin = Messenger.Request<StdinRequestMessage, string>();
-
-            // Run the code on a background thread
-            InterpreterResult result = await Task.Run(() =>
+            using (await LoadingMutex.LockAsync())
             {
-                using InterpreterSession session = Brainf_ckInterpreter
-                    .CreateDebugConfiguration()
-                    .WithSource(Script!)
-                    .WithStdin(stdin)
-                    .TryRun()
-                    .Value!;
+                _CancellationTokenSource?.Cancel();
+                _CancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
 
-                session.MoveNext();
+                // Execution arguments and options
+                string stdin = Messenger.Request<StdinRequestMessage, string>();
+                int memorySize = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<int>(SettingsKeys.MemorySize);
+                OverflowMode overflowMode = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<OverflowMode>(SettingsKeys.OverflowMode);
 
-                return session.Current;
-            });
+                // Run in RELEASE mode
+                if (Breakpoints is null)
+                {
+                    InterpreterResult result = await Task.Run(() =>
+                    {
+                        return Brainf_ckInterpreter
+                            .CreateReleaseConfiguration()
+                            .WithSource(Script!)
+                            .WithStdin(stdin)
+                            .WithMemorySize(memorySize)
+                            .WithOverflowMode(overflowMode)
+                            .WithExecutionToken(_CancellationTokenSource.Token)
+                            .TryRun()
+                            .Value!;
+                    });
 
+                    LoadResults(result);
+                }
+                else
+                {
+                    // Run in DEBUG mode
+                    _DebugSession = await Task.Run(() =>
+                    {
+                        
+                        return Brainf_ckInterpreter
+                            .CreateDebugConfiguration()
+                            .WithSource(Script!)
+                            .WithStdin(stdin)
+                            .WithBreakpoints(Breakpoints.Memory)
+                            .WithMemorySize(memorySize)
+                            .WithOverflowMode(overflowMode)
+                            .WithExecutionToken(_CancellationTokenSource.Token)
+                            .TryRun()
+                            .Value!;
+                    });
+
+                    _DebugSession.MoveNext();
+
+                    LoadResults(_DebugSession.Current);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Displays the result for an execution run
+        /// </summary>
+        /// <param name="result">The <see cref="InterpreterResult"/> instance to display the results for</param>
+        private void LoadResults(InterpreterResult result)
+        {
             Source.Clear();
 
             // A function used to quickly add a specific section to the current collection
@@ -89,7 +171,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
              * and display according to its own function and section type. */
             if (!result.ExitCode.HasFlag(ExitCode.Success)) AddToSource(IdeResultSection.ExceptionType);
             if (result.Stdout.Length > 0) AddToSource(IdeResultSection.Stdout);
-            
+
             if (result.ExitCode.HasFlag(ExitCode.ExceptionThrown)) AddToSource(IdeResultSection.ErrorLocation);
             else if (result.ExitCode.HasFlag(ExitCode.BreakpointReached)) AddToSource(IdeResultSection.BreakpointReached);
 
@@ -105,7 +187,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             if (result.Functions.Count > 0) AddToSource(IdeResultSection.FunctionDefinitions);
 
             AddToSource(IdeResultSection.MemoryState);
-
             AddToSource(IdeResultSection.Statistics);
         }
     }

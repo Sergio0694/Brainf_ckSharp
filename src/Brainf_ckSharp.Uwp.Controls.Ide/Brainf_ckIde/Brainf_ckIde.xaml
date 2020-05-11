@@ -68,6 +68,14 @@
             </xaml:CanvasControl>
         </Canvas>
 
+        <!--Breakpoints gesture receiver-->
+        <Border
+            Grid.Column="0"
+            Width="20"
+            HorizontalAlignment="Left"
+            Background="Transparent"
+            Tapped="BreakpointsCanvas_Tapped"/>
+
         <!--Edit box-->
         <ide:Brainf_ckEditBox
             x:Name="CodeEditBox"

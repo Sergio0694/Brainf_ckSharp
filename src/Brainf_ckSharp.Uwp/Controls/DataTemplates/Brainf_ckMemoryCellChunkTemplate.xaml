@@ -14,7 +14,7 @@
     <UserControl.Resources>
 
         <!--Common style-->
-        <Style TargetType="TextBlock" x:Key="ValueBlockStyle">
+        <Style TargetType="TextBlock" x:Name="ValueBlockStyle">
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="IsTextScaleFactorEnabled" Value="False"/>
@@ -63,7 +63,7 @@
                 Text="{x:Bind converters:UInt16Converter.ConvertToVisibleText(ViewModel.Zero.Value), Mode=OneWay, FallbackValue=0}"
                 Foreground="{x:Bind converters:UInt16Converter.ConvertPositiveValueToAccentBrushOrFallback(ViewModel.Zero.Value), Mode=OneWay}"
                 attachedProperties:CharacterRotationHelper.Character="{x:Bind ViewModel.Zero.Character, Mode=OneWay}"
-                Style="{StaticResource ValueBlockStyle}"/>
+                Style="{x:Bind ValueBlockStyle}"/>
         </Viewbox>
         <Viewbox 
             StretchDirection="DownOnly"
@@ -74,7 +74,7 @@
                 Text="{x:Bind converters:UInt16Converter.ConvertToVisibleText(ViewModel.One.Value), Mode=OneWay, FallbackValue=0}"
                 Foreground="{x:Bind converters:UInt16Converter.ConvertPositiveValueToAccentBrushOrFallback(ViewModel.One.Value), Mode=OneWay}"
                 attachedProperties:CharacterRotationHelper.Character="{x:Bind ViewModel.One.Character, Mode=OneWay}"
-                Style="{StaticResource ValueBlockStyle}"/>
+                Style="{x:Bind ValueBlockStyle}"/>
         </Viewbox>
         <Viewbox 
             StretchDirection="DownOnly"
@@ -85,7 +85,7 @@
                 Text="{x:Bind converters:UInt16Converter.ConvertToVisibleText(ViewModel.Two.Value), Mode=OneWay, FallbackValue=0}"
                 Foreground="{x:Bind converters:UInt16Converter.ConvertPositiveValueToAccentBrushOrFallback(ViewModel.Two.Value), Mode=OneWay}"
                 attachedProperties:CharacterRotationHelper.Character="{x:Bind ViewModel.Two.Character, Mode=OneWay}"
-                Style="{StaticResource ValueBlockStyle}"/>
+                Style="{x:Bind ValueBlockStyle}"/>
         </Viewbox>
         <Viewbox 
             StretchDirection="DownOnly"
@@ -96,7 +96,7 @@
                 Text="{x:Bind converters:UInt16Converter.ConvertToVisibleText(ViewModel.Three.Value), Mode=OneWay, FallbackValue=0}"
                 Foreground="{x:Bind converters:UInt16Converter.ConvertPositiveValueToAccentBrushOrFallback(ViewModel.Three.Value), Mode=OneWay}"
                 attachedProperties:CharacterRotationHelper.Character="{x:Bind ViewModel.Three.Character, Mode=OneWay}"
-                Style="{StaticResource ValueBlockStyle}"/>
+                Style="{x:Bind ValueBlockStyle}"/>
         </Viewbox>
 
         <!--Base offset-->

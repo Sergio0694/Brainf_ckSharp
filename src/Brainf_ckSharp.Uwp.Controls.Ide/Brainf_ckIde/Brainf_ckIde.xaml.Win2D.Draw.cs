@@ -7,6 +7,7 @@ using Brainf_ckSharp.Git.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models.Abstract;
+using Microsoft.Collections.Extensions;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Toolkit.HighPerformance.Buffers;
@@ -25,6 +26,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// The current array of <see cref="IndentationIndicatorBase"/> instances to render
         /// </summary>
         private MemoryOwner<IndentationIndicatorBase> _IndentationIndicators = MemoryOwner<IndentationIndicatorBase>.Allocate(0);
+
+        /// <summary>
+        /// The map of breakpoints in use
+        /// </summary>
+        private readonly DictionarySlim<int, float> BreakpointIndicators = new DictionarySlim<int, float>();
 
         /// <summary>
         /// Draws the IDE overlays when an update is requested
@@ -68,6 +74,12 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 }
 
                 i++;
+            }
+
+            // Breakpoints
+            foreach (var pair in BreakpointIndicators)
+            {
+                DrawBreakpointIndicator(args.DrawingSession, pair.Value);
             }
         }
 
@@ -223,6 +235,17 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     middleOffset = offset + (IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f + 0.5f;
                 session.DrawLine(horizontalOffset, middleOffset, IndentationIndicatorsRightMargin, middleOffset, OutlineColor);
             }
+        }
+
+        /// <summary>
+        /// Draws a breakpoint indicator
+        /// </summary>
+        /// <param name="session">The target <see cref="CanvasDrawingSession"/> instance</param>
+        /// <param name="offset">The current vertical offset to start drawing the breakpoint indicator from</param>
+        private static void DrawBreakpointIndicator(CanvasDrawingSession session, float offset)
+        {
+            session.FillRoundedRectangle(BreakpointIndicatorLeftMargin, offset, BreakpointIndicatorElementSize, BreakpointIndicatorElementSize, 9999, 9999, BreakpointIndicatorFillColor);
+            session.DrawRoundedRectangle(BreakpointIndicatorLeftMargin, offset, BreakpointIndicatorElementSize, BreakpointIndicatorElementSize, 9999, 9999, BreakpointIndicatorBorderColor);
         }
     }
 }

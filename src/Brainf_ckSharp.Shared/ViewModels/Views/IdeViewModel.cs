@@ -22,6 +22,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         public event EventHandler? ScriptRunRequested;
 
         /// <summary>
+        /// Raised whenever a script is requested to be debugged
+        /// </summary>
+        public event EventHandler? ScriptDebugRequested;
+
+        /// <summary>
         /// Raised whenever a new character is requested to be added to the current text
         /// </summary>
         public event EventHandler<char>? CharacterAdded;
@@ -63,6 +68,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         {
             Messenger.Register<OperatorKeyPressedNotificationMessage>(this, m => CharacterAdded?.Invoke(this, m));
             Messenger.Register<RunIdeScriptRequestMessage>(this, _ => ScriptRunRequested?.Invoke(this, EventArgs.Empty));
+            Messenger.Register<DebugIdeScriptRequestMessage>(this, _ => ScriptDebugRequested?.Invoke(this, EventArgs.Empty));
             Messenger.Register<InsertNewLineRequestMessage>(this, _ => CharacterAdded?.Invoke(this, Characters.CarriageReturn));
             Messenger.Register<DeleteCharacterRequestMessage>(this, _ => CharacterDeleted?.Invoke(this, EventArgs.Empty));
             Messenger.Register<PickOpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync(m.Favorite));

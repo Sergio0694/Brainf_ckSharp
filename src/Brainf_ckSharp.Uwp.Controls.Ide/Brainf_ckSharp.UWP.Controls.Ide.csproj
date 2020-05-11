@@ -188,10 +188,6 @@
       <Project>{aceea540-7a2c-4705-ac68-5a8c3a5c2a38}</Project>
       <Name>Brainf_ckSharp</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Toolkit.HighPerformance\Microsoft.Toolkit.HighPerformance.csproj">
-      <Project>{66fd6968-86b8-45d9-9b07-fed7dfc4bf0b}</Project>
-      <Name>Microsoft.Toolkit.HighPerformance</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Brainf_ckEditBox\Brainf_ckEditBox.xaml">

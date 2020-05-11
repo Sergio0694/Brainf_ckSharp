@@ -22,22 +22,22 @@
     <UserControl.Resources>
 
         <!--Introduction-->
-        <DataTemplate x:Key="LanguageIntroductionTemplate">
+        <DataTemplate x:Name="LanguageIntroductionTemplate">
             <sections:LanguageIntroductionGuidePanel Margin="0,12,0,12"/>
         </DataTemplate>
 
         <!--Code samples-->
-        <DataTemplate x:Key="CodeSamplesTemplate">
+        <DataTemplate x:Name="CodeSamplesTemplate">
             <sections:CodeSamplesGuidePanel Margin="0,12,0,12"/>
         </DataTemplate>
 
         <!--PBrain-->
-        <DataTemplate x:Key="PBraainExtensionTemplate">
+        <DataTemplate x:Name="PBraainExtensionTemplate">
             <sections:PBrainExtensionGuidePanel Margin="0,12,0,12"/>
         </DataTemplate>
 
         <!--Debugging-->
-        <DataTemplate x:Key="DebuggingTemplate">
+        <DataTemplate x:Name="DebuggingTemplate">
             <sections:BreakpointGuidePanel Margin="0,12,0,12"/>
         </DataTemplate>
     </UserControl.Resources>
@@ -57,10 +57,10 @@
                     Margin="0,-8,0,0">
                     <ListView.ItemTemplateSelector>
                         <templateSelectors:UserGuideSectionTemplateSelector
-                            IntroductionTemplate="{StaticResource LanguageIntroductionTemplate}"
-                            CodeSamplesTemplate="{StaticResource CodeSamplesTemplate}"
-                            PBrainTemplate="{StaticResource PBraainExtensionTemplate}"
-                            DebuggingTemplate="{StaticResource DebuggingTemplate}"/>
+                            IntroductionTemplate="{x:Bind LanguageIntroductionTemplate}"
+                            CodeSamplesTemplate="{x:Bind CodeSamplesTemplate}"
+                            PBrainTemplate="{x:Bind PBraainExtensionTemplate}"
+                            DebuggingTemplate="{x:Bind DebuggingTemplate}"/>
                     </ListView.ItemTemplateSelector>
                     <ListView.GroupStyle>
                         <GroupStyle HeaderContainerStyle="{StaticResource ExpandedListViewHeaderItemStyle}">

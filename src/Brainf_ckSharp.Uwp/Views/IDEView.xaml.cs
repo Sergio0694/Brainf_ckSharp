@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.ViewModels.Views;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
@@ -20,7 +21,7 @@ namespace Brainf_ckSharp.Uwp.Views
         }
 
         /// <summary>
-        /// Requests the execution of the currently displayed code
+        /// Requests the execution of the currently displayed code in RELEASE mode
         /// </summary>
         /// <param name="sender">The current <see cref="IdeViewModel"/> instance</param>
         /// <param name="e">The empty <see cref="EventArgs"/> instance for this event</param>
@@ -29,6 +30,19 @@ namespace Brainf_ckSharp.Uwp.Views
             string source = CodeEditor.GetText();
 
             Messenger.Default.Send(SubPageNavigationRequestMessage.To(new IdeResultSubPage(source)));
+        }
+
+        /// <summary>
+        /// Requests the execution of the currently displayed code in DEBUG mode
+        /// </summary>
+        /// <param name="sender">The current <see cref="IdeViewModel"/> instance</param>
+        /// <param name="e">The empty <see cref="EventArgs"/> instance for this event</param>
+        private void IdeViewModel_OnScriptDebugRequested(object sender, EventArgs e)
+        {
+            string source = CodeEditor.GetText();
+            IMemoryOwner<int> breakpoints = CodeEditor.GetBreakpoints();
+
+            Messenger.Default.Send(SubPageNavigationRequestMessage.To(new IdeResultSubPage(source, breakpoints)));
         }
 
         /// <summary>

@@ -132,20 +132,19 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.9</Version>
+      <Version>6.2.10</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit">
-      <Version>6.1.0-build.9</Version>
+      <Version>6.1.0-build.76</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.HighPerformance">
+      <Version>6.1.0-build.76</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Brainf_ckSharp.Services\Brainf_ckSharp.Services.csproj">
       <Project>{ea19c7cc-ab0b-48f0-9b3b-7289b57fb29d}</Project>
       <Name>Brainf_ckSharp.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Toolkit.HighPerformance\Microsoft.Toolkit.HighPerformance.csproj">
-      <Project>{66fd6968-86b8-45d9-9b07-fed7dfc4bf0b}</Project>
-      <Name>Microsoft.Toolkit.HighPerformance</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
