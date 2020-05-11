@@ -2,8 +2,11 @@
 using System.Buffers;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Windows.UI.Text;
+using Brainf_ckSharp.Constants;
 using Microsoft.Toolkit.HighPerformance.Buffers;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
@@ -80,13 +83,46 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             // Rent a buffer to copy the line numbers with a breakpoint
             MemoryOwner<int> buffer = MemoryOwner<int>.Allocate(count);
 
-            ref int r0 = ref buffer.DangerousGetReference();
+            ref int bufferRef = ref buffer.DangerousGetReference();
             int i = 0;
 
             // Copy the existing breakpoints
             foreach (var pair in BreakpointIndicators)
             {
-                Unsafe.Add(ref r0, i++) = pair.Key;
+                Unsafe.Add(ref bufferRef, i++) = pair.Key;
+            }
+
+            // Get the underlying array to sort in-place.
+            // This will no longer be needed on .NET 5, as there are APIs
+            // to sort items within a Span<T> directy, not yet on UWP though.
+            _ =MemoryMarshal.TryGetArray<int>(buffer.Memory, out var segment);
+
+            Array.Sort(segment.Array, segment.Offset, segment.Count);
+
+            // We're tracking the current position within the breakpoints buffer,
+            // the current line number and the absolute offset within the text.
+            i = 0;
+            int j = 0, k = 0;
+
+            foreach (var line in CodeEditBox.PlainText.Tokenize(Characters.CarriageReturn))
+            {
+                // If the current line is marked, do a linear search to find the first operator
+                if (Unsafe.Add(ref bufferRef, i) == j)
+                {
+                    foreach (var item in line.Enumerate())
+                    {
+                        if (Brainf_ckParser.IsOperator(item.Value))
+                        {
+                            Unsafe.Add(ref bufferRef, i++) = k + item.Index;
+
+                            break;
+                        }
+                    }
+                }
+
+                // Increment the line number and the absolute offset (line length and \r character)
+                j++;
+                k += line.Length + 1;
             }
 
             return buffer;
