@@ -17,6 +17,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views
         public IdeResultSubPage(string script)
         {
             this.InitializeComponent();
+            this.Unloaded += (s, e) => ViewModel.IsActive = false;
 
             ViewModel.Script = script;
         }
