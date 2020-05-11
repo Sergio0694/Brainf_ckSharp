@@ -79,18 +79,18 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
                 case IdeResultSection.BreakpointReached:
                     @this.Inlines.Add(new Run
                     {
-                        Text = value.Result.ExceptionInfo.HaltingOperator.ToString(),
-                        Foreground = Settings.Brainf_ckTheme.GetBrush(value.Result.ExceptionInfo.HaltingOperator)
+                        Text = value.Result.HaltingInfo!.HaltingOperator.ToString(),
+                        Foreground = Settings.Brainf_ckTheme.GetBrush(value.Result.HaltingInfo.HaltingOperator)
                     });
                     @this.Inlines.Add(new Run
                     {
-                        Text = $" at position {value.Result.ExceptionInfo.HaltingOffset}"
+                        Text = $" at position {value.Result.HaltingInfo.HaltingOffset}"
                     });
                     break;
                 case IdeResultSection.StackTrace:
                     @this.Inlines.Add(new Run
                     {
-                        Text = $"{value.Result.ExceptionInfo.StackTrace.Count} stack frame(s)"
+                        Text = $"{value.Result.HaltingInfo!.StackTrace.Count} stack frame(s)"
                     });
                     break;
                 case IdeResultSection.FunctionDefinitions:

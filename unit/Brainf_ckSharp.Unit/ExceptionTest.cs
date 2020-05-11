@@ -28,9 +28,9 @@ namespace Brainf_ckSharp.Unit
             Assert.AreEqual(result.Current.ExitCode, ExitCode.NegativeValue);
             Assert.AreEqual(result.Current.Stdout, string.Empty);
             Assert.AreEqual(result.Current.MachineState.Current.Value, 0);
-            Assert.IsNotNull(result.Current.ExceptionInfo);
-            Assert.AreEqual(result.Current.ExceptionInfo!.StackTrace.Count, 1);
-            Assert.AreEqual(result.Current.ExceptionInfo.StackTrace[0], "+++>>-");
+            Assert.IsNotNull(result.Current.HaltingInfo);
+            Assert.AreEqual(result.Current.HaltingInfo!.StackTrace.Count, 1);
+            Assert.AreEqual(result.Current.HaltingInfo.StackTrace[0], "+++>>-");
         }
 
         [TestMethod]
@@ -54,8 +54,8 @@ namespace Brainf_ckSharp.Unit
             Assert.IsNotNull(result.Current);
             Assert.AreEqual(result.Current!.ExitCode, ExitCode.ThresholdExceeded);
             Assert.AreEqual(result.Current.Stdout, string.Empty);
-            Assert.IsNotNull(result.Current.ExceptionInfo);
-            Assert.AreEqual(result.Current.ExceptionInfo!.StackTrace.Count, 1);
+            Assert.IsNotNull(result.Current.HaltingInfo);
+            Assert.AreEqual(result.Current.HaltingInfo!.StackTrace.Count, 1);
         }
 
         [TestMethod]
@@ -76,10 +76,10 @@ namespace Brainf_ckSharp.Unit
             Assert.IsNotNull(result.Current);
             Assert.AreEqual(result.Current!.ExitCode, ExitCode.StackLimitExceeded);
             Assert.AreEqual(result.Current.Stdout, string.Empty);
-            Assert.IsNotNull(result.Current.ExceptionInfo);
-            Assert.AreEqual(result.Current.ExceptionInfo!.StackTrace.Count, 512);
-            Assert.AreEqual(result.Current.ExceptionInfo.StackTrace.First(), ":");
-            Assert.AreEqual(result.Current.ExceptionInfo.StackTrace.Last(), "(:):");
+            Assert.IsNotNull(result.Current.HaltingInfo);
+            Assert.AreEqual(result.Current.HaltingInfo!.StackTrace.Count, 512);
+            Assert.AreEqual(result.Current.HaltingInfo.StackTrace.First(), ":");
+            Assert.AreEqual(result.Current.HaltingInfo.StackTrace.Last(), "(:):");
         }
 
         [TestMethod]
@@ -100,9 +100,9 @@ namespace Brainf_ckSharp.Unit
             Assert.IsNotNull(result.Current);
             Assert.AreEqual(result.Current!.ExitCode, ExitCode.StdinBufferExhausted);
             Assert.AreEqual(result.Current.Stdout, string.Empty);
-            Assert.IsNotNull(result.Current.ExceptionInfo);
-            Assert.AreEqual(result.Current.ExceptionInfo!.StackTrace.Count, 1);
-            Assert.AreEqual(result.Current.ExceptionInfo.StackTrace[0], ",");
+            Assert.IsNotNull(result.Current.HaltingInfo);
+            Assert.AreEqual(result.Current.HaltingInfo!.StackTrace.Count, 1);
+            Assert.AreEqual(result.Current.HaltingInfo.StackTrace[0], ",");
         }
 
         [TestMethod]
@@ -124,9 +124,9 @@ namespace Brainf_ckSharp.Unit
             Assert.IsNotNull(result.Current);
             Assert.AreEqual(result.Current!.ExitCode, ExitCode.StdoutBufferLimitExceeded);
             Assert.AreEqual(result.Current.Stdout, new string('a', 1024 * 8));
-            Assert.IsNotNull(result.Current.ExceptionInfo);
-            Assert.AreEqual(result.Current.ExceptionInfo!.StackTrace.Count, 1);
-            Assert.AreEqual(result.Current.ExceptionInfo.StackTrace[0], ",[.");
+            Assert.IsNotNull(result.Current.HaltingInfo);
+            Assert.AreEqual(result.Current.HaltingInfo!.StackTrace.Count, 1);
+            Assert.AreEqual(result.Current.HaltingInfo.StackTrace[0], ",[.");
         }
     }
 }

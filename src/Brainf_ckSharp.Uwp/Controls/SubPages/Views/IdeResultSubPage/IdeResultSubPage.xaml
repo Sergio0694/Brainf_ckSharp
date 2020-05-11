@@ -45,9 +45,6 @@
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState x:Name="ButtonsHiddenState">
-                    <VisualState.StateTriggers>
-                        <StateTrigger IsActive="{x:Bind ViewModel.IsActive}"/>
-                    </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ButtonsPanel.IsHitTestVisible" Value="False"/>
                     </VisualState.Setters>
@@ -66,6 +63,9 @@
                     </VisualState.Storyboard>
                 </VisualState>
                 <VisualState x:Name="ButtonsVisibleState">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{x:Bind ViewModel.IsAtBreakpoint, Mode=OneWay}"/>
+                    </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ButtonsPanel.IsHitTestVisible" Value="True"/>
                     </VisualState.Setters>
@@ -125,7 +125,7 @@
                         <ListView.ItemTemplateSelector>
                             <templateSelectors:IdeResultSectionTemplateSelector
                                 ExceptionTypeTemplate="{StaticResource ExceptionTypeTemplate}"
-                                ErrorLocationTemplate="{StaticResource ErrorPositionTemplate}"
+                                HaltingPositionTemplate="{StaticResource HaltingPositionTemplate}"
                                 StdoutTemplate="{StaticResource StdoutTemplate}"
                                 StackTraceTemplate="{StaticResource StackTraceTemplate}"
                                 SourceCodeTemplate="{StaticResource SourceCodeTemplate}"

@@ -65,6 +65,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// </summary>
         public ICommand LoadDataCommand { get; }
 
+        /// <summary>
+        /// Gets whether or not the debugger is currently stopped at a breakpoint
+        /// </summary>
+        public bool IsAtBreakpoint => _DebugSession?.Current.ExitCode.HasFlag(ExitCode.BreakpointReached) == true;
+
         /// <inheritdoc/>
         protected override async void OnDeactivated()
         {
@@ -132,6 +137,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
                     _DebugSession.MoveNext();
 
                     LoadResults(_DebugSession.Current);
+
+                    OnPropertyChanged(nameof(IsAtBreakpoint));
                 }
             }
         }

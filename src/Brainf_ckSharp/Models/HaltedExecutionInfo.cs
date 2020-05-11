@@ -3,7 +3,7 @@
 namespace Brainf_ckSharp.Models
 {
     /// <summary>
-    /// A <see langword="class"/> that exposes info to debug a faulted Brainf*ck/PBrain script
+    /// A <see langword="class"/> that exposes info to debug a halted Brainf*ck/PBrain script
     /// </summary>
     public sealed class HaltedExecutionInfo
     {

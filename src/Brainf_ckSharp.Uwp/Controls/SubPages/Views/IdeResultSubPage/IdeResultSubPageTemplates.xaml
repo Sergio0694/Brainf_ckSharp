@@ -32,9 +32,9 @@
         </TextBlock>
     </DataTemplate>
 
-    <!--Error position-->
+    <!--Halting position-->
     <DataTemplate
-        x:Key="ErrorPositionTemplate"
+        x:Key="HaltingPositionTemplate"
         x:DataType="views:IdeResultWithSectionInfo">
         <Grid HorizontalAlignment="Left">
 
@@ -58,7 +58,7 @@
                     Foreground="LightGray"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center">
-                    <Span attachedProperties:Brainf_ckInlineFormatterHelper.Source="{x:Bind Result.ExceptionInfo.HaltingOperator.ToString()}"/>
+                    <Span attachedProperties:Brainf_ckInlineFormatterHelper.Source="{x:Bind Result.HaltingInfo.HaltingOperator.ToString()}"/>
                 </TextBlock>
 
                 <!--Offset-->
@@ -72,7 +72,7 @@
                     TextWrapping="Wrap"
                     FontWeight="SemiBold"
                     Foreground="DarkRed"
-                    Text="{x:Bind system:String.Format('Position {0}', Result.ExceptionInfo.HaltingOffset)}"/>
+                    Text="{x:Bind system:String.Format('Position {0}', Result.HaltingInfo.HaltingOffset)}"/>
             </Grid>
         </Grid>
     </DataTemplate>
@@ -191,7 +191,7 @@
         <RichTextBlock
             FontSize="16"
             TextWrapping="Wrap">
-            <Paragraph attachedProperties:Brainf_ckInlineFormatterHelper.StackTrace="{x:Bind Result.ExceptionInfo.StackTrace}"/>
+            <Paragraph attachedProperties:Brainf_ckInlineFormatterHelper.StackTrace="{x:Bind Result.HaltingInfo.StackTrace}"/>
         </RichTextBlock>
     </DataTemplate>
 

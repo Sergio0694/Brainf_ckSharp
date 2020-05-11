@@ -15,7 +15,7 @@ namespace Brainf_ckSharp.Models
         /// </summary>
         /// <param name="sourceCode">The original source code for the interpreted script</param>
         /// <param name="exitCode">The exit code of the interpreter result</param>
-        /// <param name="exceptionInfo">The debug info for the current script, if available</param>
+        /// <param name="haltingInfo">The debug info for the current script, if available</param>
         /// <param name="machineState">The resulting memory state after running the script</param>
         /// <param name="functions">The sequence of functions that were defined when running the script</param>
         /// <param name="stdin">The stdin buffer used to run the script</param>
@@ -25,7 +25,7 @@ namespace Brainf_ckSharp.Models
         internal InterpreterResult(
             string sourceCode,
             ExitCode exitCode,
-            HaltedExecutionInfo? exceptionInfo,
+            HaltedExecutionInfo? haltingInfo,
             IReadOnlyMachineState machineState,
             IReadOnlyList<FunctionDefinition> functions,
             string stdin,
@@ -35,7 +35,7 @@ namespace Brainf_ckSharp.Models
         {
             SourceCode = sourceCode;
             ExitCode = exitCode;
-            ExceptionInfo = exceptionInfo;
+            HaltingInfo = haltingInfo;
             MachineState = machineState;
             Functions = functions;
             Stdin = stdin;
@@ -55,9 +55,9 @@ namespace Brainf_ckSharp.Models
         public ExitCode ExitCode { get; }
 
         /// <summary>
-        /// Gets the debug info for the current script, if an exception was thrown while executing it
+        /// Gets the debug info for the current script, if its exection was stopped
         /// </summary>
-        public HaltedExecutionInfo? ExceptionInfo { get; }
+        public HaltedExecutionInfo? HaltingInfo { get; }
 
         /// <summary>
         /// Gets the resulting memory state after running the script
