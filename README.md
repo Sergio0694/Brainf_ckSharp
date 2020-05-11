@@ -5,7 +5,7 @@ A complete, full-featured Brainf*ck IDE/console for Windows 10
 
 ## Overview
 
-![App preview](http://i.pi.gy/BqADJ.jpg)
+![preview](https://user-images.githubusercontent.com/10199417/81567807-26e65800-939d-11ea-9bf8-86d6a4034c0d.png)
 
 * IDE with syntax highlight and code autocompletion
 * Indentation depth indicators and column guides
