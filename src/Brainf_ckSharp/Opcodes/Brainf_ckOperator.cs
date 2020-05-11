@@ -8,7 +8,7 @@ namespace Brainf_ckSharp.Opcodes
     /// <summary>
     /// A model that represents a Brainf*ck/PBrain opcode
     /// </summary>
-    [DebuggerDisplay("'{Operator}')")]
+    [DebuggerDisplay("'{Operator}'")]
     [StructLayout(LayoutKind.Explicit, Size = 1)]
     public readonly struct Brainf_ckOperator : IOpcode
     {
