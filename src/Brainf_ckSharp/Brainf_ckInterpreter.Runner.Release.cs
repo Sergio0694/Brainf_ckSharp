@@ -69,11 +69,11 @@ namespace Brainf_ckSharp
                 CancellationToken executionToken)
                 where TExecutionContext : struct, IMachineStateExecutionContext
             {
-                /* Initialize the temporary buffers, using the SpanOwner<T> type when possible
-                 * to save the extra allocations here. This is possible because all these buffers are
-                 * only used within the scope of this method, and disposed as soon as the method completes.
-                 * Additionally, when this type is used, memory is pinned using a fixed statement instead
-                 * of the GCHandle, which has slightly less overhead for the runtime. */
+                // Initialize the temporary buffers, using the SpanOwner<T> type when possible
+                // to save the extra allocations here. This is possible because all these buffers are
+                // only used within the scope of this method, and disposed as soon as the method completes.
+                // Additionally, when this type is used, memory is pinned using a fixed statement instead
+                // of the GCHandle, which has slightly less overhead for the runtime.
                 using MemoryOwner<int> jumpTable = LoadJumpTable(opcodes, out int functionsCount);
                 using SpanOwner<Range> functions = SpanOwner<Range>.Allocate(ushort.MaxValue, AllocationMode.Clear);
                 using MemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
@@ -190,11 +190,11 @@ namespace Brainf_ckSharp
                 {
                     frame = Unsafe.Add(ref stackFrames, depth);
 
-                    /* This label is used when a function call is performed: a new stack frame
-                     * is pushed in the frames collection and then a goto is used to jump out
-                     * of both the switch case and the inner loop. This is faster than using
-                     * another variable to manually handle the two consecutive breaks to
-                     * reach the start of the inner loop from a switch case. */
+                    // This label is used when a function call is performed: a new stack frame
+                    // is pushed in the frames collection and then a goto is used to jump out
+                    // of both the switch case and the inner loop. This is faster than using
+                    // another variable to manually handle the two consecutive breaks to
+                    // reach the start of the inner loop from a switch case.
                     StackFrameLoop:
 
                     // Iterate over the current opcodes

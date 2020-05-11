@@ -197,9 +197,9 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
                 return -1;
             }
 
-            /* If the current item is favorited, set is as not favorited
-             * and move it back into the recent files section.
-             * If the favorites section becomes empty, remove it entirely. */
+            // If the current item is favorited, set is as not favorited
+            // and move it back into the recent files section.
+            // If the favorites section becomes empty, remove it entirely.
             if (entry.Metadata.IsFavorited)
             {
                 entry.Metadata.IsFavorited = false;

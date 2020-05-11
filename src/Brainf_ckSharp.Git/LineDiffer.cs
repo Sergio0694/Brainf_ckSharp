@@ -79,13 +79,13 @@ namespace Brainf_ckSharp.Git
 
             Pool<DiffEntry>.Reset();
 
-            /* ==============
-             * First pass
-             * ==============
-             * Iterate over all the lines in the new text file.
-             * For each line, create the table entry if not present,
-             * otherwise increment the line counter. Also set the
-             * values in the temporary arrays to the table entires. */
+            // ==============
+            // First pass
+            // ==============
+            // Iterate over all the lines in the new text file.
+            // For each line, create the table entry if not present,
+            // otherwise increment the line counter. Also set the
+            // values in the temporary arrays to the table entires.
             int i = 0;
             foreach (ReadOnlySpan<char> line in newText.Tokenize(separator))
             {
@@ -109,11 +109,11 @@ namespace Brainf_ckSharp.Git
                 i += 1;
             }
 
-            /* ==============
-             * Second pass
-             * ==============
-             * Same as the first pass, but acting on the old text,
-             * and the associated temporary values and table entry fields. */
+            // ==============
+            // Second pass
+            // ==============
+            // Same as the first pass, but acting on the old text,
+            // and the associated temporary values and table entry fields.
             int j = 0;
             foreach (ReadOnlySpan<char> line in oldText.Tokenize(separator))
             {
@@ -138,12 +138,12 @@ namespace Brainf_ckSharp.Git
                 j += 1;
             }
 
-            /* ==============
-             * Third pass
-             * ==============
-             * If a line exactly only once in both files, it means it's the same
-             * line, although it might have been moved to a different location.
-             * These are the only affected lines in this pass. */
+            // ==============
+            // Third pass
+            // ==============
+            // If a line exactly only once in both files, it means it's the same
+            // line, although it might have been moved to a different location.
+            // These are the only affected lines in this pass.
             i = 0;
             for (; i < newNumberOfLines; i++)
             {
@@ -157,13 +157,13 @@ namespace Brainf_ckSharp.Git
                 }
             }
 
-            /* ==============
-             * Fourth pass
-             * ==============
-             * If a line doesn't have any changes, and the lines immediately
-             * adjacent to it in both files are identical, this means the
-             * line is the same line as well. This can be used to find
-             * blocks of unchanged lines across the two text versions. */
+            // ==============
+            // Fourth pass
+            // ==============
+            // If a line doesn't have any changes, and the lines immediately
+            // adjacent to it in both files are identical, this means the
+            // line is the same line as well. This can be used to find
+            // blocks of unchanged lines across the two text versions.
             for (i = 0; i < newNumberOfLines - 1; i++)
             {
                 if (Unsafe.Add(ref newTemporaryValuesRef, i) is int k &&
@@ -180,10 +180,10 @@ namespace Brainf_ckSharp.Git
                 }
             }
 
-            /* ==============
-             * Fifth pass
-             * ==============
-             * Sames as the previous step, but acting in descending order. */
+            // ==============
+            // Fifth pass
+            // ==============
+            // Sames as the previous step, but acting in descending order.
             for (i = newNumberOfLines - 1; i > 0; i--)
             {
                 if (Unsafe.Add(ref newTemporaryValuesRef, i) is int k &&
@@ -205,14 +205,14 @@ namespace Brainf_ckSharp.Git
 
             ref LineModificationType resultRef = ref result.DangerousGetReference();
 
-            /* ==============
-             * Final pass
-             * ==============
-             * Each entry in the result array is set by reading data from the
-             * temporary values for the new text. If an entry is an int it
-             * means that that line was present in the old file too and in the
-             * same location. Otherwise, if a table entry is present,
-             * it means that the current line has been modified in some way. */
+            // ==============
+            // Final pass
+            // ==============
+            // Each entry in the result array is set by reading data from the
+            // temporary values for the new text. If an entry is an int it
+            // means that that line was present in the old file too and in the
+            // same location. Otherwise, if a table entry is present,
+            // it means that the current line has been modified in some way.
             for (i = 0; i < newNumberOfLines; i++)
             {
                 Unsafe.Add(ref resultRef, i) = Unsafe.Add(ref newTemporaryValuesRef, i) switch

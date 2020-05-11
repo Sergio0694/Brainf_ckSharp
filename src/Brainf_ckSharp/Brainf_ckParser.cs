@@ -88,16 +88,16 @@ namespace Brainf_ckSharp
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool TryParseOperator(char c, out byte op)
         {
-            /* Check whether the input character is a valid index.
-             * The result is reinterpreted as a byte, and then
-             * decremented with overflow. If the index was valid,
-             * the result will be 0, otherwise -1 (0xFFFFFFFF).
-             * This value is then negated, resulting in 0xFFFFFFFF
-             * for valid indices, or 0 otherwise. The generated mask
-             * is then combined with the original index. This leaves
-             * the index intact if it was valid, otherwise zeroes it.
-             * The computed offset is finally used to access the
-             * lookup table: it will never go out of bounds. */
+            // Check whether the input character is a valid index.
+            // The result is reinterpreted as a byte, and then
+            // decremented with overflow. If the index was valid,
+            // the result will be 0, otherwise -1 (0xFFFFFFFF).
+            // This value is then negated, resulting in 0xFFFFFFFF
+            // for valid indices, or 0 otherwise. The generated mask
+            // is then combined with the original index. This leaves
+            // the index intact if it was valid, otherwise zeroes it.
+            // The computed offset is finally used to access the
+            // lookup table: it will never go out of bounds.
             bool isInRange = c <= OperatorsLookupTableMaxIndex;
             byte rangeFlag = Unsafe.As<bool, byte>(ref isInRange);
             int
@@ -151,10 +151,10 @@ namespace Brainf_ckSharp
                     case Characters.ReadChar:
                     case Characters.FunctionCall:
 
-                        /* For action operators, simply increase the counter if the current
-                         * parser is inside a function definition. The counter is used to
-                         * validate function definition without having to iterate again
-                         * over the span of characters contained in the definition */
+                        // For action operators, simply increase the counter if the current
+                        // parser is inside a function definition. The counter is used to
+                        // validate function definition without having to iterate again
+                        // over the span of characters contained in the definition
                         totalOps++;
                         if (functionStart != -1) functionOps++;
                         break;
@@ -176,9 +176,9 @@ namespace Brainf_ckSharp
                         break;
                     case Characters.LoopEnd:
 
-                        /* Decrease the current depth level, either in the standard
-                         * code flow or inside a function definition. If the current
-                         * depth level is already 0, the source code is invalid */
+                        // Decrease the current depth level, either in the standard
+                        // code flow or inside a function definition. If the current
+                        // depth level is already 0, the source code is invalid
                         if (functionStart == -1)
                         {
                             if (rootDepth == 0) return new SyntaxValidationResult(SyntaxError.MismatchedSquareBracket, i);
@@ -216,10 +216,10 @@ namespace Brainf_ckSharp
                 }
             }
 
-            /* Handle the remaining failure cases:
-             *   - An incomplete function declaration, when the user missed the closing parenthesis
-             *   - A missing square bracket for one of the loops in the main script
-             *   - No operators present in the source file */
+            // Handle the remaining failure cases:
+            //   - An incomplete function declaration, when the user missed the closing parenthesis
+            //   - A missing square bracket for one of the loops in the main script
+            //   - No operators present in the source file
             if (functionStart != -1) return new SyntaxValidationResult(SyntaxError.IncompleteFunctionDeclaration, functionStart);
             if (rootDepth != 0) return new SyntaxValidationResult(SyntaxError.IncompleteLoop, outerLoopStart);
             if (totalOps == 0) return new SyntaxValidationResult(SyntaxError.MissingOperators, -1, 0);

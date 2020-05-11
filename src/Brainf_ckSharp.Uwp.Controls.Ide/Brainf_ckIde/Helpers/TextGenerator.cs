@@ -57,9 +57,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers
             // Compute and cache results if needed
             if (n >= _CacheLength)
             {
-                /* The temporary buffer is allocated outside of the loop
-                 * because otherwise it'd cause a temporary memory leak.
-                 * Using a stack buffer avoids an extra allocation. */
+                // The temporary buffer is allocated outside of the loop
+                // because otherwise it'd cause a temporary memory leak.
+                // Using a stack buffer avoids an extra allocation.
                 char* p0 = stackalloc char[10];
 
                 ref string r0 = ref _CachedStrings[0];

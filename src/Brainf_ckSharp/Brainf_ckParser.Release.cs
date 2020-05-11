@@ -60,21 +60,21 @@ namespace Brainf_ckSharp
                 // Find the index of the first operator
                 while (!IsOperator(Unsafe.Add(ref sourceRef, j))) j++;
 
-                /* Initialize the first found operator to optimize the second loop.
-                 * This makes it so that it's possible to skip checks on the running
-                 * variable to see whether a past operator has been found already.
-                 * The access to the operators table is safe at this point because
-                 * the previous while loop guarantees that the current character
-                 * is an operator, and therefore also a valid lookup index. */
+                // Initialize the first found operator to optimize the second loop.
+                // This makes it so that it's possible to skip checks on the running
+                // variable to see whether a past operator has been found already.
+                // The access to the operators table is safe at this point because
+                // the previous while loop guarantees that the current character
+                // is an operator, and therefore also a valid lookup index.
                 ref byte r0 = ref MemoryMarshal.GetReference(OperatorsLookupTable);
                 ref bool r1 = ref MemoryMarshal.GetReference(CompressableOperatorsLookupTable);
                 byte currentOperator = Unsafe.Add(ref r0, Unsafe.Add(ref sourceRef, j));
                 ushort currentCount = 1;
 
-                /* Extract all the operators from the input source code.
-                 * We increment j when the loop starts because that index will
-                 * be pointing to the first operator, which has already been tracked.
-                 * The search needs to start from the character right after that. */
+                // Extract all the operators from the input source code.
+                // We increment j when the loop starts because that index will
+                // be pointing to the first operator, which has already been tracked.
+                // The search needs to start from the character right after that.
                 for (j++; j < source.Length; j++)
                 {
                     char c = Unsafe.Add(ref sourceRef, j);
@@ -105,10 +105,10 @@ namespace Brainf_ckSharp
 
                 MemoryOwner<Brainf_ckOperation> operations = MemoryOwner<Brainf_ckOperation>.Allocate(i);
 
-                /* Copy the compressed operators to the trimmed buffer.
-                 * This is necessary because the source buffer was sized for
-                 * the worst case scenario where the source contained just operators
-                 * with no repeated pairs, and without any comments at all. */
+                // Copy the compressed operators to the trimmed buffer.
+                // This is necessary because the source buffer was sized for
+                // the worst case scenario where the source contained just operators
+                // with no repeated pairs, and without any comments at all.
                 buffer.Span.Slice(0, i).CopyTo(operations.Span);
 
                 return operations;

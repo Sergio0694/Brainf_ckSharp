@@ -34,9 +34,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             _DiffIndicators.Dispose();
 
-            /* The edit box always ends with a final \r that can't be removed by the user.
-             * Slicing out the last item prevents the modified marker from being displayed
-             * below the last line actually being typed by the user. */
+            // The edit box always ends with a final \r that can't be removed by the user.
+            // Slicing out the last item prevents the modified marker from being displayed
+            // below the last line actually being typed by the user.
             _DiffIndicators = diff.Slice(0, diff.Length - 1);
         }
 
@@ -109,8 +109,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             {
                 switch (Unsafe.Add(ref r0, i))
                 {
-                    /* For [ and ] operators, simply keep track of the current depth
-                        * level both in the root and in the scope of an open function */
+                    // For [ and ] operators, simply keep track of the current depth
+                    // level both in the root and in the scope of an open function
                     case Characters.LoopStart:
                         if (isWithinFunction)
                         {
@@ -130,10 +130,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         else endRootDepth--;
                         break;
 
-                    /* For ( and ) operators, all is needed is to update the variables to
-                        * keep track of whether or not a function declaration is currently open,
-                        * and whether or not at least a function declaration was open
-                        * while parsing the current line in the input source code */
+                    // For ( and ) operators, all is needed is to update the variables to
+                    // keep track of whether or not a function declaration is currently open,
+                    // and whether or not at least a function declaration was open
+                    // while parsing the current line in the input source code
                     case Characters.FunctionStart:
                         isWithinFunction = true;
                         hasFunctionStarted = true;
@@ -146,11 +146,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     // Process the line info at the end of each line
                     case Characters.CarriageReturn:
 
-                        /* If a function was declared on the current line, that takes precedence
-                         * over everything else, and the function definition indicator will
-                         * always be displayed in this case. Different visual modes depend
-                         * on whether the function is self contained, and whether or not
-                         * there is a nested self contained loop on the same line. */
+                        // If a function was declared on the current line, that takes precedence
+                        // over everything else, and the function definition indicator will
+                        // always be displayed in this case. Different visual modes depend
+                        // on whether the function is self contained, and whether or not
+                        // there is a nested self contained loop on the same line.
                         if (hasFunctionStarted)
                         {
                             IndentationType type;
@@ -205,10 +205,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                                  endRootDepth < startRootDepth ||
                                  endFunctionDepth < startFunctionDepth)
                         {
-                            /* This branch is taken when the current line only contains
-                             * at least a closed root or function loop. In this case, the
-                             * visual mode to use depends on whether or not there is an
-                             * additional external indentation scope still active at the end. */
+                            // This branch is taken when the current line only contains
+                            // at least a closed root or function loop. In this case, the
+                            // visual mode to use depends on whether or not there is an
+                            // additional external indentation scope still active at the end.
                             IndentationType type;
                             if (isWithinFunction || endRootDepth > 0) type = IndentationType.SelfContainedAndContinuing;
                             else type = IndentationType.SelfContained;

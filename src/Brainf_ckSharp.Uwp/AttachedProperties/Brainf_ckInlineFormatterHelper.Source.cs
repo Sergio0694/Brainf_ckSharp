@@ -68,16 +68,16 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
                 return;
             }
 
-            /* When the new value is a prefix of the previous value,
-             * it means that the user has deleted one or more characters
-             * from the previous string. In this case we just need to traverse
-             * the current inlines collection backwards and remove as many
-             * runs or characters as needed. This will avoid having to recompute
-             * the entire syntax highlight from scratch for the new text. */
+            // When the new value is a prefix of the previous value,
+            // it means that the user has deleted one or more characters
+            // from the previous string. In this case we just need to traverse
+            // the current inlines collection backwards and remove as many
+            // runs or characters as needed. This will avoid having to recompute
+            // the entire syntax highlight from scratch for the new text.
             if (oldValue.Length > newValue.Length && oldValue.StartsWith(newValue))
             {
-                /* The difference is doubled because each character has an additional
-                 * zero width space character next to it, for better line wrapping */
+                // The difference is doubled because each character has an additional
+                // zero width space character next to it, for better line wrapping
                 int difference = (oldValue.Length - newValue.Length) * 2;
 
                 do
@@ -104,8 +104,8 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
             int start = 0, end = newValue.Length;
             if (newValue.Length > oldValue.Length && newValue.StartsWith(oldValue))
             {
-                /* Move the initial offset ahead to skip the prefix characters.
-                 * Using a moving starting index saves an entire substring creation. */
+                // Move the initial offset ahead to skip the prefix characters.
+                // Using a moving starting index saves an entire substring creation.
                 start = oldValue.Length;
 
                 if (@this.Inlines.LastOrDefault() is Run run)

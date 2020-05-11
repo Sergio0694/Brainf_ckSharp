@@ -25,11 +25,11 @@ namespace Windows.Storage
                 numberOfSeparators = file.Path.Count(Path.DirectorySeparatorChar),
                 formattedLength = file.Path.Length + numberOfSeparators * (separatorLength - 1) + separatorLength;
 
-            /* The temporary buffer has space for one extra separator that is
-             * always initialized even if it's not used in the final string.
-             * This is done to avoid having to check the current index in the
-             * main loop, which would be needed to check whether or not
-             * the current separator should be written or not to the buffer. */
+            // The temporary buffer has space for one extra separator that is
+            // always initialized even if it's not used in the final string.
+            // This is done to avoid having to check the current index in the
+            // main loop, which would be needed to check whether or not
+            // the current separator should be written or not to the buffer.
             using SpanOwner<char> buffer = SpanOwner<char>.Allocate(formattedLength);
 
             fixed (char* p = &buffer.DangerousGetReference())

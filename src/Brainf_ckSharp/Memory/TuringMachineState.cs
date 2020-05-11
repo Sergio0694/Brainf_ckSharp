@@ -105,9 +105,9 @@ namespace Brainf_ckSharp.Memory
 
                 if (array is null) ThrowObjectDisposedException();
 
-                /* Manually check the current size, as the buffer
-                 * is rented from the pool and its length might
-                 * actually be greater than the memory state.*/
+                // Manually check the current size, as the buffer
+                // is rented from the pool and its length might
+                // actually be greater than the memory state.*/
                 Guard.IsInRange(index, 0, Size, nameof(index));
                 ushort value = array!.DangerousGetReferenceAt(index);
 

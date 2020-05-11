@@ -100,11 +100,11 @@ namespace Brainf_ckSharp.Shared.Models.Ide
             {
                 string preview = await LoadCodePreviewAsync(file, CodePreviewLength);
 
-                /* This overload is used to load reference sample files.
-                 * As such, these don't need to be sorted chronologically,
-                 * so the properties loading can be skipped entirely.
-                 * The edit time is just set to the minimum value in this case,
-                 * since that property will not actually be used. */
+                // This overload is used to load reference sample files.
+                // As such, these don't need to be sorted chronologically,
+                // so the properties loading can be skipped entirely.
+                // The edit time is just set to the minimum value in this case,
+                // since that property will not actually be used.
                 return new CodeLibraryEntry(file, DateTimeOffset.MinValue, CodeMetadata.Default, title, preview);
             }
             catch

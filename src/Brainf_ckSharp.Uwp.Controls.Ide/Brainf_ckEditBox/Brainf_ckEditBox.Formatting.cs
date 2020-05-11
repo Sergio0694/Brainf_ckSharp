@@ -51,18 +51,18 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     selectionLength = Document.Selection.Length,
                     selectionStart = Document.Selection.StartPosition;
 
-                /* Handle all the possible cases individually.
-                 *   - If the current selection has a length of 0 and is not the first position in
-                 *     the text, it means that the user might have typed a single character, or
-                 *     replaced a selection with a single character. A single character is typed
-                 *     if the previous selection had a length of 0 as well, and the current text
-                 *     has one more character than the previous one. Otherwise, check whether the
-                 *     previous selection had a length of at least a single character.
-                 *   - If CTRL + Z was pressed and it resulted in a single typed character being
-                 *     deleted, ignore this case to avoid formatting the entire text again.
-                 *   - If a deletion is requested, just skip the formatting entirely. If no new
-                 *     characters have been typed, there is no need to highlight anything.
-                 *   - As a last resort, just format the entire text from start to finish. */
+                // Handle all the possible cases individually.
+                //   - If the current selection has a length of 0 and is not the first position in
+                //     the text, it means that the user might have typed a single character, or
+                //     replaced a selection with a single character. A single character is typed
+                //     if the previous selection had a length of 0 as well, and the current text
+                //     has one more character than the previous one. Otherwise, check whether the
+                //     previous selection had a length of at least a single character.
+                //   - If CTRL + Z was pressed and it resulted in a single typed character being
+                //     deleted, ignore this case to avoid formatting the entire text again.
+                //   - If a deletion is requested, just skip the formatting entirely. If no new
+                //     characters have been typed, there is no need to highlight anything.
+                //   - As a last resort, just format the entire text from start to finish.
                 if (selectionLength == 0 &&
                     selectionStart > 0 &&
                     (_SelectionLength == 0 && textLength == oldText.Length + 1) ||
@@ -75,10 +75,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                          textLength == oldText.Length - 1 &&
                          selectionStart == _SelectionStart)
                 {
-                    /* This branch also captures single character deletions.
-                     * Set the property to false to make sure the formatting
-                     * isn't compromised in future runs by the property
-                     * remaining true because this branch took precedence. */
+                    // This branch also captures single character deletions.
+                    // Set the property to false to make sure the formatting
+                    // isn't compromised in future runs by the property
+                    // remaining true because this branch took precedence.
                     _IsDeleteRequested = false;
                 }
                 else if (_IsDeleteRequested) _IsDeleteRequested = false;
@@ -107,11 +107,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 ITextRange range = Document.GetRange(start - 1, start);
                 string autocomplete;
 
-                /* Handle the two possible bracket formatting options. If the bracket needs
-                 * to go on a new line, check for edge cases and then prepare the new text
-                 * with the leading new line. Otherwise, simply replace the open bracket
-                 * on the same line and insert the autocomplete text. Using a single replacement
-                 * improves performance, as the color can be applied in a single pass. */
+                // Handle the two possible bracket formatting options. If the bracket needs
+                // to go on a new line, check for edge cases and then prepare the new text
+                // with the leading new line. Otherwise, simply replace the open bracket
+                // on the same line and insert the autocomplete text. Using a single replacement
+                // improves performance, as the color can be applied in a single pass.
                 if (BracketsFormattingStyle == BracketsFormattingStyle.NewLine &&
                     start > 1 &&
                     text[start - 2] != Characters.CarriageReturn)
@@ -124,12 +124,12 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 range.SetText(TextSetOptions.None, autocomplete);
                 range.CharacterFormat.ForegroundColor = SyntaxHighlightTheme.GetColor(Characters.LoopStart);
 
-                /* Move the selection at the end of the added line between the brackets.
-                 * Start is the position right after the first inserted bracket, which was replaced.
-                 * It gets shifted ahead by the length of the replacement text, minus the number of
-                 * tabs before the closing bracket, and 3 which is the number of additional characters
-                 * that were inserted with respect to the end: the first replaced bracket,
-                 * the closing bracket, and the new line before the line with the last bracket. */
+                // Move the selection at the end of the added line between the brackets.
+                // Start is the position right after the first inserted bracket, which was replaced.
+                // It gets shifted ahead by the length of the replacement text, minus the number of
+                // tabs before the closing bracket, and 3 which is the number of additional characters
+                // that were inserted with respect to the end: the first replaced bracket,
+                // the closing bracket, and the new line before the line with the last bracket.
                 Document.Selection.StartPosition = Document.Selection.EndPosition = start + autocomplete.Length - (depth + 3);
 
                 text = Document.GetText();
@@ -164,11 +164,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             ref char r0 = ref MemoryMarshal.GetReference(text.AsSpan());
 
-            /* Iterate over the current range from the input text,
-             * applying the highlight to all the available characters.
-             * To improve performance, adjacent characters with the same
-             * color are aggregated into a single text range, to minimize
-             * the number of interactions with the RTF document. */
+            // Iterate over the current range from the input text,
+            // applying the highlight to all the available characters.
+            // To improve performance, adjacent characters with the same
+            // color are aggregated into a single text range, to minimize
+            // the number of interactions with the RTF document.
             for (int i = start, j = i; j < end; i = j)
             {
                 char c = Unsafe.Add(ref r0, i);

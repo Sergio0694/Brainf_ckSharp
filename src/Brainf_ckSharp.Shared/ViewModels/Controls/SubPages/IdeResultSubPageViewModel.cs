@@ -159,23 +159,23 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
                 Source.Add(section, model);
             }
 
-            /* The order of items in the result view is as follows:
-             * - (optional) Exception type
-             * - (optional) Stdout buffer
-             * - (optional) Error location
-             * - (optional) Breakpoint location
-             * - (optional) Stack trace
-             * - Source code
-             * - (optional) Function definitions
-             * - Memory state
-             * - Statistics
-             *
-             * Each group stores the type of section it represents, so that
-             * a template selector can be used in the view. The value of each
-             * group is the the whole session result, as it contains all the
-             * available info for the current script execution.
-             * Each template is responsible for extracting info from it
-             * and display according to its own function and section type. */
+            // The order of items in the result view is as follows:
+            // - (optional) Exception type
+            // - (optional) Stdout buffer
+            // - (optional) Error location
+            // - (optional) Breakpoint location
+            // - (optional) Stack trace
+            // - Source code
+            // - (optional) Function definitions
+            // - Memory state
+            // - Statistics
+            //
+            // Each group stores the type of section it represents, so that
+            // a template selector can be used in the view. The value of each
+            // group is the the whole session result, as it contains all the
+            // available info for the current script execution.
+            // Each template is responsible for extracting info from it
+            // and display according to its own function and section type.
             if (!result.ExitCode.HasFlag(ExitCode.Success)) AddToSource(IdeResultSection.ExceptionType);
             if (result.Stdout.Length > 0) AddToSource(IdeResultSection.Stdout);
 

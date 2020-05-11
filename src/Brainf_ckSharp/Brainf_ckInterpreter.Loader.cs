@@ -95,11 +95,11 @@ namespace Brainf_ckSharp
             MemoryOwner<int> jumpTable = MemoryOwner<int>.Allocate(opcodes.Length);
             ref int jumpTableRef = ref jumpTable.DangerousGetReference();
 
-            /* Temporarily allocate two buffers to store the indirect indices to build the jump table.
-             * The two temporary buffers are initialized with a size of half the length of the input
-             * executable, because that is the maximum number of open square brackets in a valid source file.
-             * The two temporary buffers are used to implement an indirect indexing system while building
-             * the table, which allows to reduce the complexity of the operation from O(N^2) to O(N). */
+            // Temporarily allocate two buffers to store the indirect indices to build the jump table.
+            // The two temporary buffers are initialized with a size of half the length of the input
+            // executable, because that is the maximum number of open square brackets in a valid source file.
+            // The two temporary buffers are used to implement an indirect indexing system while building
+            // the table, which allows to reduce the complexity of the operation from O(N^2) to O(N).
             int tempBuffersLength = opcodes.Length / 2 + 1;
             using SpanOwner<int> rootTempIndices = SpanOwner<int>.Allocate(tempBuffersLength);
             using SpanOwner<int> functionTempIndices = SpanOwner<int>.Allocate(tempBuffersLength);
@@ -112,20 +112,20 @@ namespace Brainf_ckSharp
             {
                 switch (opcodes[i].Operator)
                 {
-                    /* When a loop start, the current index is stored in the right
-                     * temporary buffer, depending on whether or not the current
-                     * part of the executable is within a function definition */
+                    // When a loop start, the current index is stored in the right
+                    // temporary buffer, depending on whether or not the current
+                    // part of the executable is within a function definition
                     case Operators.LoopStart:
                         if (f == -1) Unsafe.Add(ref rootTempIndicesRef, r++) = i;
                         else Unsafe.Add(ref functionTempIndicesRef, f++) = i;
                         break;
 
-                    /* When a loop ends, the index of the corresponding open square
-                     * bracket is retrieved from the right temporary buffer, and the
-                     * current index is stored at that location in the final jump table
-                     * being built. The inverse mapping is stored too, so that each
-                     * closing square bracket can reference the corresponding open
-                     * bracket at the start of the loop. */
+                    // When a loop ends, the index of the corresponding open square
+                    // bracket is retrieved from the right temporary buffer, and the
+                    // current index is stored at that location in the final jump table
+                    // being built. The inverse mapping is stored too, so that each
+                    // closing square bracket can reference the corresponding open
+                    // bracket at the start of the loop.
                     case Operators.LoopEnd:
                         int start = f == -1
                             ? Unsafe.Add(ref rootTempIndicesRef, --r)
@@ -134,11 +134,11 @@ namespace Brainf_ckSharp
                         Unsafe.Add(ref jumpTableRef, i) = start;
                         break;
 
-                    /* When a function definition starts, the offset into the
-                     * temporary buffer for the function indices is set to 1.
-                     * This is because in this case a 1-based indexing is used:
-                     * the first location in the temporary buffer is used to store
-                     * the index of the open parenthesis for the function definition. */
+                    // When a function definition starts, the offset into the
+                    // temporary buffer for the function indices is set to 1.
+                    // This is because in this case a 1-based indexing is used:
+                    // the first location in the temporary buffer is used to store
+                    // the index of the open parenthesis for the function definition.
                     case Operators.FunctionStart:
                         f = 1;
                         functionTempIndicesRef = i;
@@ -185,15 +185,15 @@ namespace Brainf_ckSharp
             {
                 StackFrame frame = stackFrames[j];
 
-                /* Adjust the offset and process the current range.
-                 * This is needed because in case of a partial execution, no matter
-                 * if it's a breakpoint or a crash, the stored offset in the top stack
-                 * frame will be the operator currently being executed, which needs to
-                 * be included in the processed string. For stack frames below that
-                 * instead, the offset already refers to the operator immediately after
-                 * the function call operator, so the offset doesn't need to be shifted
-                 * ahead before extracting the processed string. Doing this with a
-                 * reinterpret cast saves a conditional jump in the asm code. */
+                // Adjust the offset and process the current range.
+                // This is needed because in case of a partial execution, no matter
+                // if it's a breakpoint or a crash, the stored offset in the top stack
+                // frame will be the operator currently being executed, which needs to
+                // be included in the processed string. For stack frames below that
+                // instead, the offset already refers to the operator immediately after
+                // the function call operator, so the offset doesn't need to be shifted
+                // ahead before extracting the processed string. Doing this with a
+                // reinterpret cast saves a conditional jump in the asm code.
                 bool zero = i == 0;
                 int
                     start = frame.Range.Start,
@@ -240,11 +240,11 @@ namespace Brainf_ckSharp
                     return MemoryOwner<bool>.Allocate(operatorsCount, AllocationMode.Clear);
                 }
 
-                /* This temporary buffer is used to build a quick lookup table for the
-                 * valid indices from the input breakpoints collection. This table is
-                 * built in O(M), and then provides constant time checking for each
-                 * character from the input script. The result is an algorithm that
-                 * builds the final breakpoints table in O(M + N) instead of O(M * N). */
+                // This temporary buffer is used to build a quick lookup table for the
+                // valid indices from the input breakpoints collection. This table is
+                // built in O(M), and then provides constant time checking for each
+                // character from the input script. The result is an algorithm that
+                // builds the final breakpoints table in O(M + N) instead of O(M * N).
                 using SpanOwner<bool> temporaryBuffer = SpanOwner<bool>.Allocate(source.Length, AllocationMode.Clear);
                 ref bool temporaryBufferRef = ref temporaryBuffer.DangerousGetReference();
 

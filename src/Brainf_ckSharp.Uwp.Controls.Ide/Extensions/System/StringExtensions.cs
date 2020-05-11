@@ -45,10 +45,10 @@ namespace System
             ref char r0 = ref MemoryMarshal.GetReference(text.AsSpan());
             int depth = 0;
 
-            /* Only track open and closed brackets. This method assumes that
-             * the input script has a valid syntax, and functions can only
-             * be declared at the root level, so loops within functions
-             * won't interfere with the depth counting. */
+            // Only track open and closed brackets. This method assumes that
+            // the input script has a valid syntax, and functions can only
+            // be declared at the root level, so loops within functions
+            // won't interfere with the depth counting.
             for (int i = 0; i < end; i++)
             {
                 switch (Unsafe.Add(ref r0, i))

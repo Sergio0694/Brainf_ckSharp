@@ -85,10 +85,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             // Scroll to selection
             ContentScroller.ChangeView(horizontal, vertical, null, false);
 
-            /* Adjust the UI of the selected line highlight and the cursor indicator.
-             * Both elements are translated to the right position and made visible
-             * if the current selection is not collapsed to a single point, otherwise
-             * they're both hidden. This is the same behavior of Visual Studio. */
+            // Adjust the UI of the selected line highlight and the cursor indicator.
+            // Both elements are translated to the right position and made visible
+            // if the current selection is not collapsed to a single point, otherwise
+            // they're both hidden. This is the same behavior of Visual Studio.
             if (_SelectionLength > 0)
             {
                 _SelectionHighlightBorder!.Opacity = 0;
@@ -129,11 +129,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         {
             if (!args.IsContentChanging) return;
 
-            /* This is unnecessary in most situations, but it's needed in case the
-             * text is loaded from a stream, as in that case this event will be
-             * raised directly, without a previous pass from either OnKeyDown
-             * or the Paste handlers. Doing this makes sure that the formatting
-             * for the loaded text can't be undone with an undo request. */
+            // This is unnecessary in most situations, but it's needed in case the
+            // text is loaded from a stream, as in that case this event will be
+            // raised directly, without a previous pass from either OnKeyDown
+            // or the Paste handlers. Doing this makes sure that the formatting
+            // for the loaded text can't be undone with an undo request.
             IsUndoGroupingEnabled = true;
 
             ApplySyntaxHighlight();
@@ -203,11 +203,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             // Tab shortcuts
             if (e.Key == VirtualKey.Tab)
             {
-                /* There are three possible operations to perform when the
-                 * tab key is pressed. If the current selection is up to a
-                 * single character, a '\t' is typed. Otherwise, the current
-                 * selection is shifted forwards or backwards by adding and
-                 * removing tabs depending on whether the shift key is down. */
+                // There are three possible operations to perform when the
+                // tab key is pressed. If the current selection is up to a
+                // single character, a '\t' is typed. Otherwise, the current
+                // selection is shifted forwards or backwards by adding and
+                // removing tabs depending on whether the shift key is down.
                 if (Math.Abs(Document.Selection.Length) <= 1)
                 {
                     Document.Selection.TypeText("\t");

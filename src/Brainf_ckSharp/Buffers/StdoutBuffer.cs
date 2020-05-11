@@ -65,11 +65,11 @@ namespace Brainf_ckSharp.Buffers
         public void Dispose()
         {
 #if DEBUG
-            /* Avoid adding a field to indicate whether the instance has been disposed.
-             * As an additional check, when running in DEBUG mode just check whether
-             * the rented array is null, otherwise return it and then override
-             * the field to set it to null. If this method is ever called twice
-             * by accident, this hack will make sure the unit tests will fail. */
+            // Avoid adding a field to indicate whether the instance has been disposed.
+            // As an additional check, when running in DEBUG mode just check whether
+            // the rented array is null, otherwise return it and then override
+            // the field to set it to null. If this method is ever called twice
+            // by accident, this hack will make sure the unit tests will fail.
             Debug.Assert(Buffer != null);
 
             ArrayPool<char>.Shared.Return(Buffer);

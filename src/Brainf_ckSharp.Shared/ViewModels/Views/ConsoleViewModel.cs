@@ -38,10 +38,10 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         {
             Source.Add(new ConsoleCommand());
 
-            /* This message is never unsubscribed, for two reasons:
-             * - It's only received from this view model, so there's no risk of conflicts
-             * - It is first received before the OnActivate method is called, so
-             *   registering it from there would cause a startup crash. */
+            // This message is never unsubscribed, for two reasons:
+            // - It's only received from this view model, so there's no risk of conflicts
+            // - It is first received before the OnActivate method is called, so
+            //   registering it from there would cause a startup crash.
             Messenger.Register<MemoryStateRequestMessage>(this, m => m.ReportResult(MachineState));
         }
 
@@ -192,11 +192,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <param name="command">The source code of the command to execute</param>
         private async Task ExecuteCommandAsync(string command)
         {
-            /* Handle the various possible commands:
-             * - Empty command: skip the execution and add a new line
-             * - Syntax errors and exceptions: each has its own template
-             * - Runs with no output: just add a new line
-             * - Runs with output: add the output line, then a new command line */
+            // Handle the various possible commands:
+            // - Empty command: skip the execution and add a new line
+            // - Syntax errors and exceptions: each has its own template
+            // - Runs with no output: just add a new line
+            // - Runs with output: add the output line, then a new command line
             if (!string.IsNullOrEmpty(command))
             {
                 string stdin = Messenger.Request<StdinRequestMessage, string>();

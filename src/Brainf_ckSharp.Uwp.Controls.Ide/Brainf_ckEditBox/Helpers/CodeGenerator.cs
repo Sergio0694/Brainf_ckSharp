@@ -21,17 +21,17 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers
         {
             Debug.Assert(depth >= 0);
 
-            /* This is the maximum length for the newline style.
-             * It contains a series of 3 indentations, plus the space
-             * for the 2 brackets and the 3 newline characters. */
+            // This is the maximum length for the newline style.
+            // It contains a series of 3 indentations, plus the space
+            // for the 2 brackets and the 3 newline characters.
             int length = depth * 3 + 6;
             char*
                 p0 = stackalloc char[length],
                 p1 = p0;
 
-            /* If the style is with the open bracket on a new line,
-             * add the newline and the initial tab characters, or
-             * update the length offset for the rest of the method. */
+            // If the style is with the open bracket on a new line,
+            // add the newline and the initial tab characters, or
+            // update the length offset for the rest of the method.
             if (style == BracketsFormattingStyle.NewLine)
             {
                 *p0 = '\r';
