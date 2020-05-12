@@ -7,6 +7,7 @@
     xmlns:dataTemplates="using:Brainf_ckSharp.Uwp.Controls.DataTemplates"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     xmlns:controls="using:Brainf_ckSharp.Shared.ViewModels.Controls"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -19,7 +20,7 @@
         Padding="4,0,0,0"
         ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
         SelectionMode="None"
-        attachedProperties:ListViewBaseHelper.IsFluentRearrangingEnabled="True">
+        animations:ReorderGridAnimation.Duration="500">
         <GridView.Resources>
 
             <!--Expand the items to cover all the available space-->
