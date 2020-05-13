@@ -12,7 +12,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Toolkit" Version="6.1.0-build.62" />
+    <PackageReference Include="Microsoft.Toolkit" Version="6.1.0-build.81" />
     <PackageReference Include="Nito.AsyncEx" Version="5.0.0" />
     <PackageReference Include="System.Text.Json" Version="4.7.1" />
   </ItemGroup>

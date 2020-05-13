@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Opcodes;
 using Microsoft.Toolkit.HighPerformance.Buffers;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 namespace Brainf_ckSharp
 {
@@ -54,7 +54,7 @@ namespace Brainf_ckSharp
                 using SpanOwner<Brainf_ckOperation> buffer = SpanOwner<Brainf_ckOperation>.Allocate(validationResult.OperatorsCount);
                 ref Brainf_ckOperation bufferRef = ref buffer.DangerousGetReference();
 
-                ref char sourceRef = ref MemoryMarshal.GetReference(source.AsSpan());
+                ref char sourceRef = ref source.DangerousGetReference();
                 int i = 0, j = 0;
 
                 // Find the index of the first operator
@@ -66,8 +66,8 @@ namespace Brainf_ckSharp
                 // The access to the operators table is safe at this point because
                 // the previous while loop guarantees that the current character
                 // is an operator, and therefore also a valid lookup index.
-                ref byte r0 = ref MemoryMarshal.GetReference(OperatorsLookupTable);
-                ref bool r1 = ref MemoryMarshal.GetReference(CompressableOperatorsLookupTable);
+                ref byte r0 = ref OperatorsLookupTable.DangerousGetReference();
+                ref bool r1 = ref CompressableOperatorsLookupTable.DangerousGetReference();
                 byte currentOperator = Unsafe.Add(ref r0, Unsafe.Add(ref sourceRef, j));
                 ushort currentCount = 1;
 
@@ -134,8 +134,8 @@ namespace Brainf_ckSharp
                 using SpanOwner<char> characters = SpanOwner<char>.Allocate(size);
 
                 ref char targetRef = ref characters.DangerousGetReference();
-                ref byte lookupRef = ref MemoryMarshal.GetReference(OperatorsInverseLookupTable);
-                ref Brainf_ckOperation operationRef = ref MemoryMarshal.GetReference(operations);
+                ref byte lookupRef = ref OperatorsInverseLookupTable.DangerousGetReference();
+                ref Brainf_ckOperation operationRef = ref operations.DangerousGetReference();
 
                 // Build the source string with the inverse operators lookup table
                 for (int i = 0, j = 0; i < operations.Length; i++)

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Opcodes;
 using Microsoft.Toolkit.HighPerformance.Buffers;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 namespace Brainf_ckSharp
 {
@@ -35,9 +35,10 @@ namespace Brainf_ckSharp
                 // Allocate the buffer of binary items with the input operators
                 MemoryOwner<Brainf_ckOperator> operators = MemoryOwner<Brainf_ckOperator>.Allocate(validationResult.OperatorsCount);
 
-                // Extract all the operators from the input source code
-                ref char sourceRef = ref MemoryMarshal.GetReference(source.AsSpan());
+                ref char sourceRef = ref source.DangerousGetReference();
                 ref byte opsRef = ref Unsafe.As<Brainf_ckOperator, byte>(ref operators.DangerousGetReference());
+
+                // Extract all the operators from the input source code
                 for (int i = 0, j = 0; j < source.Length; j++)
                 {
                     char c = Unsafe.Add(ref sourceRef, j);
@@ -61,14 +62,16 @@ namespace Brainf_ckSharp
                 using SpanOwner<char> characters = SpanOwner<char>.Allocate(operators.Length);
 
                 ref char targetRef = ref characters.DangerousGetReference();
-                ref byte lookupRef = ref MemoryMarshal.GetReference(OperatorsInverseLookupTable);
-                ref Brainf_ckOperator operatorRef = ref MemoryMarshal.GetReference(operators);
+                ref byte lookupRef = ref OperatorsInverseLookupTable.DangerousGetReference();
+                ref Brainf_ckOperator operatorRef = ref operators.DangerousGetReference();
 
                 // Build the source string with the inverse operators lookup table
                 for (int i = 0; i < operators.Length; i++)
                 {
-                    byte op = Unsafe.Add(ref operatorRef, i).Operator;
-                    byte code = Unsafe.Add(ref lookupRef, op);
+                    byte
+                        op = Unsafe.Add(ref operatorRef, i).Operator,
+                        code = Unsafe.Add(ref lookupRef, op);
+
                     Unsafe.Add(ref targetRef, i) = (char)code;
                 }
 

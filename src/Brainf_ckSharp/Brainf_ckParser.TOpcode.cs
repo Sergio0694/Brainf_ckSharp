@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Opcodes;
 using Brainf_ckSharp.Opcodes.Interfaces;
 using Microsoft.Toolkit.HighPerformance.Buffers;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 namespace Brainf_ckSharp
 {
@@ -25,10 +25,7 @@ namespace Brainf_ckSharp
         internal static char GetCharacterFromOpcode<TOpcode>(in TOpcode opcode)
             where TOpcode : unmanaged, IOpcode
         {
-            ref byte r0 = ref MemoryMarshal.GetReference(OperatorsInverseLookupTable);
-            byte r1 = Unsafe.Add(ref r0, opcode.Operator);
-
-            return (char)r1;
+            return (char)OperatorsInverseLookupTable.DangerousGetReferenceAt(opcode.Operator);
         }
 
         /// <summary>
@@ -71,12 +68,12 @@ namespace Brainf_ckSharp
 
             if (typeof(TOpcode) == typeof(Brainf_ckOperator))
             {
-                return Debug.ExtractSource(MemoryMarshal.Cast<TOpcode, Brainf_ckOperator>(opcodes));
+                return Debug.ExtractSource(opcodes.Cast<TOpcode, Brainf_ckOperator>());
             }
             
             if (typeof(TOpcode) == typeof(Brainf_ckOperation))
             {
-                return Release.ExtractSource(MemoryMarshal.Cast<TOpcode, Brainf_ckOperation>(opcodes));
+                return Release.ExtractSource(opcodes.Cast<TOpcode, Brainf_ckOperation>());
             }
             
             throw new ArgumentException($"Invalid opcode type: {typeof(TOpcode)}", nameof(TOpcode));

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Threading;
 using Brainf_ckSharp.Buffers;
 using Brainf_ckSharp.Constants;
@@ -11,6 +10,7 @@ using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Opcodes;
 using Microsoft.Toolkit.HighPerformance.Buffers;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
 using Stopwatch = System.Diagnostics.Stopwatch;
 
@@ -102,7 +102,7 @@ namespace Brainf_ckSharp
                     // Start the interpreter
                     exitCode = Run(
                         ref Unsafe.AsRef(session.ExecutionContext),
-                        ref MemoryMarshal.GetReference(opcodes),
+                        ref opcodes.DangerousGetReference(),
                         ref jumpTable.DangerousGetReference(),
                         ref functions.DangerousGetReference(),
                         ref definitions.DangerousGetReference(),
