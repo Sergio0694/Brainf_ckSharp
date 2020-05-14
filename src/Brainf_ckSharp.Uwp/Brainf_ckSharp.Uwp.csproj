@@ -147,6 +147,7 @@
       <DependentUpon>UnicodeCharactersMapSubPageTemplates.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\Console\ExitCodeConverter.cs" />
+    <Compile Include="Converters\SubPages\BracketsFormattingStyleConverter.cs" />
     <Compile Include="Converters\SubPages\IdeResultSectionConverter.cs" />
     <Compile Include="Converters\SubPages\CodeLibraryCategoryConverter.cs" />
     <Compile Include="Converters\Console\SyntaxValidationResultConverter.cs" />
