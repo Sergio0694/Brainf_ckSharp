@@ -32,9 +32,14 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         private readonly AsyncLock LoadingMutex = new AsyncLock();
 
         /// <summary>
-        /// The <see cref="CancellationTokenSource"/> to handle operations within <see cref="LoadDataAsync"/>
+        /// The <see cref="CancellationTokenSource"/> to handle executions within <see cref="LoadDataAsync"/>
         /// </summary>
-        private CancellationTokenSource? _CancellationTokenSource;
+        private CancellationTokenSource? _ExecutionTokenSource;
+
+        /// <summary>
+        /// The <see cref="CancellationTokenSource"/> to handle debug breakpoints within <see cref="LoadDataAsync"/>
+        /// </summary>
+        private CancellationTokenSource? _DebugTokenSource;
 
         /// <summary>
         /// The <see cref="InterpreterSession"/> to use, when in DEBUG mode
@@ -73,7 +78,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <inheritdoc/>
         protected override async void OnDeactivated()
         {
-            _CancellationTokenSource?.Cancel();
+            _ExecutionTokenSource?.Cancel();
+            _DebugTokenSource?.Cancel();
 
             using (await LoadingMutex.LockAsync())
             {
@@ -90,8 +96,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 
             using (await LoadingMutex.LockAsync())
             {
-                _CancellationTokenSource?.Cancel();
-                _CancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+                _ExecutionTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
 
                 // Execution arguments and options
                 string stdin = Messenger.Request<StdinRequestMessage, string>();
@@ -109,7 +114,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
                             .WithStdin(stdin)
                             .WithMemorySize(memorySize)
                             .WithOverflowMode(overflowMode)
-                            .WithExecutionToken(_CancellationTokenSource.Token)
+                            .WithExecutionToken(_ExecutionTokenSource.Token)
                             .TryRun()
                             .Value!;
                     });
@@ -118,6 +123,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
                 }
                 else
                 {
+                    _DebugTokenSource = new CancellationTokenSource();
+
                     // Run in DEBUG mode
                     _DebugSession = await Task.Run(() =>
                     {
@@ -129,7 +136,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
                             .WithBreakpoints(Breakpoints.Memory)
                             .WithMemorySize(memorySize)
                             .WithOverflowMode(overflowMode)
-                            .WithExecutionToken(_CancellationTokenSource.Token)
+                            .WithExecutionToken(_ExecutionTokenSource.Token)
+                            .WithDebugToken(_DebugTokenSource.Token)
                             .TryRun()
                             .Value!;
                     });
