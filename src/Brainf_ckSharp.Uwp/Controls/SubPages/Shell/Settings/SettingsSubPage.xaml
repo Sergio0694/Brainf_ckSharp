@@ -50,14 +50,17 @@
                 <ComboBox
                     CornerRadius="0"
                     Margin="0,4,0,0"
-                    MinWidth="220"
+                    Padding="2,0,0,0"
+                    MinWidth="240"
+                    MinHeight="112"
                     ItemsSource="{markupExtensions:EnumValues Type=enums:IdeTheme}"
                     SelectedItem="{x:Bind Instance.IdeTheme, Mode=OneWay}"
                     SelectionChanged="IdeTheme_SelectedItemChanged">
                     <ComboBox.ItemContainerStyle>
                         <Style TargetType="ComboBoxItem">
-                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Margin" Value="0,2,0,2"/>
                             <Setter Property="Padding" Value="0"/>
+                            <Setter Property="BorderThickness" Value="0"/>
                             <Setter Property="HorizontalAlignment" Value="Stretch"/>
                             <Setter Property="VerticalAlignment" Value="Stretch"/>
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
