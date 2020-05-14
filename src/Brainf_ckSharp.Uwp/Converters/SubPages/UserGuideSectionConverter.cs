@@ -17,12 +17,14 @@ namespace Brainf_ckSharp.Uwp.Converters.SubPages
         [Pure]
         public static string ConvertTitle(UserGuideSection section)
         {
-            if (section == UserGuideSection.Introduction) return "Introduction";
-            if (section == UserGuideSection.PBrain) return "PBrain";
-            if (section == UserGuideSection.Debugging) return "Debugging";
-            if (section == UserGuideSection.Samples) return "Samples";
-
-            throw new ArgumentException($"Invalid input value: {section}", nameof(section));
+            return section switch
+            {
+                UserGuideSection.Introduction => "Introduction",
+                UserGuideSection.PBrain => "PBrain",
+                UserGuideSection.Debugging => "Debugging",
+                UserGuideSection.Samples => "Samples",
+                _ => throw new ArgumentException($"Invalid input value: {section}", nameof(section))
+            };
         }
 
         /// <summary>
@@ -33,12 +35,14 @@ namespace Brainf_ckSharp.Uwp.Converters.SubPages
         [Pure]
         public static string ConvertDescription(UserGuideSection section)
         {
-            if (section == UserGuideSection.Introduction) return "Learn how to use the Brainf*ck language";
-            if (section == UserGuideSection.PBrain) return "Do more by using the PBrain extension operators";
-            if (section == UserGuideSection.Debugging) return "Find errors more easily with debugging features";
-            if (section == UserGuideSection.Samples) return "Some code samples to learn the basics";
-
-            throw new ArgumentException($"Invalid input value: {section}", nameof(section));
+            return section switch
+            {
+                UserGuideSection.Introduction => "Learn how to use the Brainf*ck language",
+                UserGuideSection.PBrain => "Do more by using the PBrain extension operators",
+                UserGuideSection.Debugging => "Find errors more easily with debugging features",
+                UserGuideSection.Samples => "Some code samples to learn the basics",
+                _ => throw new ArgumentException($"Invalid input value: {section}", nameof(section))
+            };
         }
     }
 }

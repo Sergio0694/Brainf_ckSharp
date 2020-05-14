@@ -17,11 +17,13 @@ namespace Brainf_ckSharp.Uwp.Converters.SubPages
         [Pure]
         public static string Convert(CodeLibrarySection section)
         {
-            if (section == CodeLibrarySection.Favorites) return "Favorites";
-            if (section == CodeLibrarySection.Recent) return "Recent";
-            if (section == CodeLibrarySection.Samples) return "Samples";
-
-            throw new ArgumentException($"Invalid input value: {section}", nameof(section));
+            return section switch
+            {
+                CodeLibrarySection.Favorites => "Favorites",
+                CodeLibrarySection.Recent => "Recent",
+                CodeLibrarySection.Samples => "Samples",
+                _ => throw new ArgumentException($"Invalid input value: {section}", nameof(section))
+            };
         }
     }
 }
