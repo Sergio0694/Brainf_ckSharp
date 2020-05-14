@@ -180,7 +180,10 @@
                     </Grid.ColumnDefinitions>
 
                     <!--Continue-->
-                    <Button Background="#FF171717" Style="{StaticResource ExpandedSquareButtonRevealStyle}">
+                    <Button
+                        Style="{StaticResource ExpandedSquareButtonRevealStyle}"
+                        Background="#FF171717"
+                        Command="{x:Bind ViewModel.ContinueCommand}">
                         <StackPanel Orientation="Horizontal">
                             <Polygon 
                                 Points="0,0 0,18.75 15,9.375" 
@@ -194,9 +197,11 @@
                     </Button>
 
                     <!--Skip-->
-                    <Button Background="#FF171717"
-                            Grid.Column="1"
-                            Style="{StaticResource ExpandedSquareButtonRevealStyle}">
+                    <Button
+                        Grid.Column="1"
+                        Style="{StaticResource ExpandedSquareButtonRevealStyle}"
+                        Background="#FF171717"
+                        Command="{x:Bind ViewModel.SkipCommand}">
                         <StackPanel Orientation="Horizontal">
                             <Polygon 
                                 Points="0,0 0,18.75 12,9.375"

@@ -52,6 +52,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public IdeResultSubPageViewModel()
         {
             LoadDataCommand = new AsyncRelayCommand(LoadDataAsync);
+            ContinueCommand = new AsyncRelayCommand(ContinueAsync);
+            SkipCommand = new AsyncRelayCommand(SkipAsync);
         }
 
         /// <summary>
@@ -69,6 +71,16 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// Gets the <see cref="ICommand"/> instance responsible for loading the available source codes
         /// </summary>
         public ICommand LoadDataCommand { get; }
+
+        /// <summary>
+        /// Gets the <see cref="ICommand"/> instance responsible for continuing a DEBUG session
+        /// </summary>
+        public ICommand ContinueCommand { get; }
+
+        /// <summary>
+        /// Gets the <see cref="ICommand"/> instance responsible for completing a DEBUG session
+        /// </summary>
+        public ICommand SkipCommand { get; }
 
         /// <summary>
         /// Gets whether or not the debugger is currently stopped at a breakpoint
@@ -129,7 +141,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
                     _DebugSession = await Task.Run(() =>
                     {
                         
-                        return Brainf_ckInterpreter
+                        var session = Brainf_ckInterpreter
                             .CreateDebugConfiguration()
                             .WithSource(Script!)
                             .WithStdin(stdin)
@@ -140,14 +152,48 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
                             .WithDebugToken(_DebugTokenSource.Token)
                             .TryRun()
                             .Value!;
-                    });
 
-                    _DebugSession.MoveNext();
+                        session.MoveNext();
+
+                        return session;
+                    });
 
                     LoadResults(_DebugSession.Current);
 
                     OnPropertyChanged(nameof(IsAtBreakpoint));
                 }
+            }
+        }
+
+        /// <summary>
+        /// Continues the DEBUG session and moves ahead by one step
+        /// </summary>
+        private async Task ContinueAsync()
+        {
+            using (await LoadingMutex.LockAsync())
+            {
+                await Task.Run(() => _DebugSession!.MoveNext());
+
+                LoadResults(_DebugSession!.Current);
+
+                OnPropertyChanged(nameof(IsAtBreakpoint));
+            }
+        }
+
+        /// <summary>
+        /// Runs the current DEBUG session to completion, skipping remaining breakpoints
+        /// </summary>
+        private async Task SkipAsync()
+        {
+            using (await LoadingMutex.LockAsync())
+            {
+                _DebugTokenSource!.Cancel();
+
+                await Task.Run(() => _DebugSession!.MoveNext());
+
+                LoadResults(_DebugSession!.Current);
+
+                OnPropertyChanged(nameof(IsAtBreakpoint));
             }
         }
 
