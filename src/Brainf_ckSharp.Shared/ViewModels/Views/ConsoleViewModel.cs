@@ -50,7 +50,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         {
             Ioc.Default.GetRequiredService<IKeyboardListenerService>().CharacterReceived += TryAddOperator;
 
-            Messenger.Register<OperatorKeyPressedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m));
+            Messenger.Register<OperatorKeyPressedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m.Value));
             Messenger.Register<RunCommandRequestMessage>(this, m => _ = ExecuteCommandAsync());
             Messenger.Register<DeleteOperatorRequestMessage>(this, m => _ = DeleteLastOperatorAsync());
             Messenger.Register<ClearCommandRequestMessage>(this, m => _ = ResetCommandAsync());
