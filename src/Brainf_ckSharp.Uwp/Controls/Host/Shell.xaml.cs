@@ -1,11 +1,15 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using System.Windows.Input;
+using Windows.System;
+using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.Settings;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views.UnicodeCharactersMap;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
+using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
 #nullable enable
 
@@ -20,6 +24,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         {
             this.InitializeComponent();
         }
+
+        /// <summary>
+        /// Gets an <see cref="ICommand"/> instance responsible for requesting to move within the code editor
+        /// </summary>
+        public ICommand MoveCommand { get; } = new RelayCommand<VirtualKey>(key => Messenger.Default.Send(new ValueChangedMessage<VirtualKey>(key)));
 
         /// <summary>
         /// Shows the code library

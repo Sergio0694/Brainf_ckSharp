@@ -124,7 +124,7 @@
                 <!--Console buttons-->
                 <AppBarButton
                     Label="Run"
-                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource RunIcon}}"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource RunIcon}}"
                     Tag="{markupExtensions:Boolean Value=True}"
                     Foreground="{StaticResource RunBrush}"
                     Click="{x:Bind ViewModel.RunConsoleScript}">
@@ -138,7 +138,7 @@
                 </AppBarButton>
                 <AppBarButton
                     Label="Delete"
-                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DeleteKeyIcon}}"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource DeleteKeyIcon}}"
                     Tag="{markupExtensions:Boolean Value=True}"
                     Click="{x:Bind ViewModel.DeleteConsoleOperator}">
                     <AppBarButton.KeyboardAccelerators>
@@ -147,7 +147,7 @@
                 </AppBarButton>
                 <AppBarButton
                     Label="Clear"
-                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource ClearIcon}}"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource ClearIcon}}"
                     Tag="{markupExtensions:Boolean Value=True}"
                     Click="{x:Bind ViewModel.ClearConsoleCommand}">
                     <AppBarButton.KeyboardAccelerators>
@@ -158,7 +158,7 @@
                 <!--IDE buttons-->
                 <AppBarButton
                     Label="Run"
-                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource RunIcon}}"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource RunIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}"
                     Foreground="{StaticResource RunBrush}"
                     Click="{x:Bind ViewModel.RunIdeScript}">
@@ -169,7 +169,7 @@
                 </AppBarButton>
                 <AppBarButton
                     Label="Debug"
-                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DebugIcon}}"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource DebugIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}"
                     Foreground="{StaticResource DebugBrush}"
                     Click="{x:Bind ViewModel.DebugIdeScript}">
@@ -181,25 +181,66 @@
                 <AppBarSeparator Tag="{markupExtensions:Boolean Value=False}"/>
                 <AppBarButton
                     Label="Move"
-                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource MoveIcon}}"
-                    Tag="{markupExtensions:Boolean Value=False}"/>
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource MoveIcon}}"
+                    Tag="{markupExtensions:Boolean Value=False}">
+                    <AppBarButton.Flyout>
+                        <CommandBarFlyout xmlns:winSys="using:Windows.System">
+                            <AppBarButton
+                                Label="Up"
+                                ToolTipService.ToolTip="Up"
+                                Icon="{markupExtensions:FontIcon Glyph={StaticResource UpIcon}}"
+                                Command="{x:Bind MoveCommand}">
+                                <AppBarButton.CommandParameter>
+                                    <winSys:VirtualKey>Up</winSys:VirtualKey>
+                                </AppBarButton.CommandParameter>
+                            </AppBarButton>
+                            <AppBarButton
+                                Label="Down"
+                                ToolTipService.ToolTip="Down"
+                                Icon="{markupExtensions:FontIcon Glyph={StaticResource DownIcon}}"
+                                Command="{x:Bind MoveCommand}">
+                                <AppBarButton.CommandParameter>
+                                    <winSys:VirtualKey>Down</winSys:VirtualKey>
+                                </AppBarButton.CommandParameter>
+                            </AppBarButton>
+                            <AppBarButton
+                                Label="Left"
+                                ToolTipService.ToolTip="Left"
+                                Icon="{markupExtensions:FontIcon Glyph={StaticResource LeftIcon}}"
+                                Command="{x:Bind MoveCommand}">
+                                <AppBarButton.CommandParameter>
+                                    <winSys:VirtualKey>Left</winSys:VirtualKey>
+                                </AppBarButton.CommandParameter>
+                            </AppBarButton>
+                            <AppBarButton
+                                Label="Right"
+                                ToolTipService.ToolTip="Right"
+                                Icon="{markupExtensions:FontIcon Glyph={StaticResource RightIcon}}"
+                                Command="{x:Bind MoveCommand}">
+                                <AppBarButton.CommandParameter>
+                                    <winSys:VirtualKey>Right</winSys:VirtualKey>
+                                </AppBarButton.CommandParameter>
+                            </AppBarButton>
+                        </CommandBarFlyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
                 <AppBarButton
                     Label="New line"
-                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource NewLineIcon}}"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource NewLineIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}"
                     Click="{x:Bind ViewModel.InsertNewLine}"/>
                 <AppBarButton
                     Label="Delete"
-                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource DeleteKeyIcon}}"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource DeleteKeyIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}"
                     Click="{x:Bind ViewModel.DeleteIdeCharacter}"/>
                 <AppBarButton
                     Label="Undo"
-                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource UndoIcon}}"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource UndoIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}"/>
                 <AppBarButton
                     Label="Redo"
-                    Icon="{markupExtensions:FontIconExtension Glyph={StaticResource RedoIcon}}"
+                    Icon="{markupExtensions:FontIcon Glyph={StaticResource RedoIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}"/>
             </controls:AnimatedCommandBar.PrimaryCommands>
             <controls:AnimatedCommandBar.SecondaryCommands>

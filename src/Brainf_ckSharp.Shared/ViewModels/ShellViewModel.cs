@@ -1,4 +1,5 @@
-﻿using Brainf_ckSharp.Shared.Messages.Console.Commands;
+﻿using System.Windows.Input;
+using Brainf_ckSharp.Shared.Messages.Console.Commands;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Microsoft.Toolkit.Mvvm.Messaging;
 

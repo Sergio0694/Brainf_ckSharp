@@ -33,6 +33,12 @@
     <x:String x:Key="AboutIcon">&#xED15;</x:String>
     <x:String x:Key="UserGuideIcon">&#xE82D;</x:String>
 
+    <!--Directional arrows-->
+    <x:String x:Key="UpIcon">&#xE010;</x:String>
+    <x:String x:Key="DownIcon">&#xE011;</x:String>
+    <x:String x:Key="LeftIcon">&#xE012;</x:String>
+    <x:String x:Key="RightIcon">&#xE013;</x:String>
+
     <!--Code library-->
     <x:String x:Key="FavoriteSectionIcon">&#xE006;</x:String>
     <x:String x:Key="RecentSectionIcon">&#xE155;</x:String>
