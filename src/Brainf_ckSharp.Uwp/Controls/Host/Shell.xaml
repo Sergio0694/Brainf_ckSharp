@@ -184,43 +184,31 @@
                     Icon="{markupExtensions:FontIcon Glyph={StaticResource MoveIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}">
                     <AppBarButton.Flyout>
-                        <CommandBarFlyout xmlns:winSys="using:Windows.System">
+                        <CommandBarFlyout>
                             <AppBarButton
                                 Label="Up"
                                 ToolTipService.ToolTip="Up"
                                 Icon="{markupExtensions:FontIcon Glyph={StaticResource UpIcon}}"
-                                Command="{x:Bind MoveCommand}">
-                                <AppBarButton.CommandParameter>
-                                    <winSys:VirtualKey>Up</winSys:VirtualKey>
-                                </AppBarButton.CommandParameter>
-                            </AppBarButton>
+                                Command="{x:Bind MoveCommand}"
+                                CommandParameter="{markupExtensions:VirtualKey Value=Up}"/>
                             <AppBarButton
                                 Label="Down"
                                 ToolTipService.ToolTip="Down"
                                 Icon="{markupExtensions:FontIcon Glyph={StaticResource DownIcon}}"
-                                Command="{x:Bind MoveCommand}">
-                                <AppBarButton.CommandParameter>
-                                    <winSys:VirtualKey>Down</winSys:VirtualKey>
-                                </AppBarButton.CommandParameter>
-                            </AppBarButton>
+                                Command="{x:Bind MoveCommand}"
+                                CommandParameter="{markupExtensions:VirtualKey Value=Down}"/>
                             <AppBarButton
                                 Label="Left"
                                 ToolTipService.ToolTip="Left"
                                 Icon="{markupExtensions:FontIcon Glyph={StaticResource LeftIcon}}"
-                                Command="{x:Bind MoveCommand}">
-                                <AppBarButton.CommandParameter>
-                                    <winSys:VirtualKey>Left</winSys:VirtualKey>
-                                </AppBarButton.CommandParameter>
-                            </AppBarButton>
+                                Command="{x:Bind MoveCommand}"
+                                CommandParameter="{markupExtensions:VirtualKey Value=Left}"/>
                             <AppBarButton
                                 Label="Right"
                                 ToolTipService.ToolTip="Right"
                                 Icon="{markupExtensions:FontIcon Glyph={StaticResource RightIcon}}"
-                                Command="{x:Bind MoveCommand}">
-                                <AppBarButton.CommandParameter>
-                                    <winSys:VirtualKey>Right</winSys:VirtualKey>
-                                </AppBarButton.CommandParameter>
-                            </AppBarButton>
+                                Command="{x:Bind MoveCommand}"
+                                CommandParameter="{markupExtensions:VirtualKey Value=Right}"/>
                         </CommandBarFlyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
