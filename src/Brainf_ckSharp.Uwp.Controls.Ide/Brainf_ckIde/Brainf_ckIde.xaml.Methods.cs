@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Buffers;
 using System.Diagnostics.Contracts;
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Windows.System;
 using Windows.UI.Text;
 using Brainf_ckSharp.Constants;
 using Microsoft.Toolkit.HighPerformance.Buffers;
@@ -67,6 +69,30 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         public void DeleteCharacter()
         {
             CodeEditBox.DeleteSelectionOrCharacter();
+        }
+
+        /// <summary>
+        /// Moves the current cursor
+        /// </summary>
+        /// <param name="key">The <see cref="VirtualKey"/> value indicating the direction to move to</param>
+        public void Move(VirtualKey key)
+        {
+            switch (key)
+            {
+                case VirtualKey.Up:
+                    CodeEditBox.Document.Selection.MoveUp(TextRangeUnit.Line, 1, false);
+                    break;
+                case VirtualKey.Down:
+                    CodeEditBox.Document.Selection.MoveDown(TextRangeUnit.Line, 1, false);
+                    break;
+                case VirtualKey.Left:
+                    CodeEditBox.Document.Selection.MoveLeft(TextRangeUnit.Character, 1, false);
+                    break;
+                case VirtualKey.Right:
+                    CodeEditBox.Document.Selection.MoveRight(TextRangeUnit.Character, 1, false);
+                    break;
+                default: throw new ArgumentException($"Invalid key: {key}", nameof(key));
+            }
         }
 
         /// <summary>

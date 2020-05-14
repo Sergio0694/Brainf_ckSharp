@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Buffers;
+using Windows.System;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.ViewModels.Views;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
 #nullable enable
 
@@ -18,6 +20,8 @@ namespace Brainf_ckSharp.Uwp.Views
         public IdeView()
         {
             this.InitializeComponent();
+
+            Messenger.Default.Register<ValueChangedMessage<VirtualKey>>(this, m => CodeEditor.Move(m.Value));
         }
 
         /// <summary>
