@@ -48,12 +48,16 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <param name="oldValue">The previous setting value</param>
         /// <param name="value">The new value to set</param>
         /// <param name="name">The name of the setting that changed</param>
-        private new void Set<T>(ref T oldValue, T value, [CallerMemberName] string name = null!)
+        private new bool Set<T>(ref T oldValue, T value, [CallerMemberName] string name = null!)
         {
             if (base.Set(ref oldValue, value, name))
             {
                 Ioc.Default.GetRequiredService<ISettingsService>().SetValue(name, value);
+
+                return true;
             }
+
+            return false;
         }
 
         private bool _AutosaveDocuments = Get<bool>(nameof(AutosaveDocuments));
@@ -97,8 +101,22 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public IdeTheme IdeTheme
         {
             get => _IdeTheme;
-            set => Set(ref _IdeTheme, value);
+            set
+            {
+                if (Set(ref _IdeTheme, value) &&
+                    !IsThemeChangeScheduled)
+                {
+                    IsThemeChangeScheduled = true;
+
+                    OnPropertyChanged(nameof(IsThemeChangeScheduled));
+                }
+            }
         }
+
+        /// <summary>
+        /// Gets whether or not a theme change has been requested
+        /// </summary>
+        public bool IsThemeChangeScheduled { get; private set; }
 
         private BracketsFormattingStyle _BracketsFormattingStyle = Get<BracketsFormattingStyle>(nameof(BracketsFormattingStyle));
 
