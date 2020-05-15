@@ -15,7 +15,6 @@
     xmlns:enums="using:Brainf_ckSharp.Shared.Enums.Settings"
     xmlns:dataTemplates="using:Brainf_ckSharp.Uwp.Controls.DataTemplates"
     xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -49,7 +48,6 @@
                     TextWrapping="Wrap"
                     Text="Theme"/>
                 <ComboBox
-                    x:Name="ThemeComboBox"
                     CornerRadius="0"
                     Margin="0,4,0,0"
                     Padding="2,0,0,0"
@@ -74,19 +72,6 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <controls:TeachingTip
-                    x:Name="ThemeRestartToolTip"
-                    Target="{x:Bind ThemeComboBox}"
-                    Title="Restart required"
-                    Subtitle="The theme change has been registered, restart to app to apply the new setting!"
-                    ActionButtonContent="Restart now"
-                    ActionButtonClick="ThemeRestartToolTip_OnActionButtonClick"
-                    CloseButtonContent="Got it!"
-                    IsOpen="{x:Bind Instance.IsThemeChangeScheduled, Mode=OneWay}">
-                    <controls:TeachingTip.IconSource>
-                        <controls:SymbolIconSource Symbol="Refresh"/>
-                    </controls:TeachingTip.IconSource>
-                </controls:TeachingTip>
 
                 <!--Brackets on new line-->
                 <TextBlock

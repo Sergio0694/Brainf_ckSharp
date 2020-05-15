@@ -12,6 +12,7 @@ using Brainf_ckSharp.Shared.ViewModels.Abstract;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 {
@@ -103,20 +104,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             get => _IdeTheme;
             set
             {
-                if (Set(ref _IdeTheme, value) &&
-                    !IsThemeChangeScheduled)
+                if (Set(ref _IdeTheme, value))
                 {
-                    IsThemeChangeScheduled = true;
-
-                    OnPropertyChanged(nameof(IsThemeChangeScheduled));
+                    Messenger.Send(new ValueChangedMessage<IdeTheme>(value));
                 }
             }
         }
-
-        /// <summary>
-        /// Gets whether or not a theme change has been requested
-        /// </summary>
-        public bool IsThemeChangeScheduled { get; private set; }
 
         private BracketsFormattingStyle _BracketsFormattingStyle = Get<BracketsFormattingStyle>(nameof(BracketsFormattingStyle));
 

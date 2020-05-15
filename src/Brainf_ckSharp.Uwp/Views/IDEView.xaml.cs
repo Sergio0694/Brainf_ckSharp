@@ -2,7 +2,9 @@
 using System.Buffers;
 using Windows.System;
 using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.ViewModels.Views;
+using Brainf_ckSharp.Uwp.Constants;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Microsoft.Toolkit.Mvvm.Messaging;
@@ -21,7 +23,10 @@ namespace Brainf_ckSharp.Uwp.Views
         {
             this.InitializeComponent();
 
+            CodeEditor.SyntaxHighlightTheme = Settings.GetCurrentTheme();
+
             Messenger.Default.Register<ValueChangedMessage<VirtualKey>>(this, m => CodeEditor.Move(m.Value));
+            Messenger.Default.Register<ValueChangedMessage<IdeTheme>>(this, m => CodeEditor.SyntaxHighlightTheme = Settings.GetCurrentTheme());
         }
 
         /// <summary>
