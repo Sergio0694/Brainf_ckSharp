@@ -3,6 +3,7 @@ using Windows.UI.Xaml;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.EventArgs;
 using Brainf_ckSharp.Uwp.Themes;
+using Microsoft.Graphics.Canvas.Geometry;
 
 #nullable enable
 
@@ -117,7 +118,26 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 nameof(SyntaxHighlightTheme),
                 typeof(Brainf_ckTheme),
                 typeof(Brainf_ckEditBox),
-                new PropertyMetadata(Brainf_ckThemes.VisualStudio));
+                new PropertyMetadata(Brainf_ckThemes.VisualStudio, OnSyntaxHighlightThemePropertyChanged));
+
+        /// <summary>
+        /// Updates the Win2D properties when <see cref="SyntaxHighlightThemeProperty"/> changes
+        /// </summary>
+        /// <param name="d">The source <see cref="Brainf_ckEditBox"/> instance</param>
+        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance with the new <see cref="SyntaxHighlightTheme"/> value</param>
+        private static void OnSyntaxHighlightThemePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            Brainf_ckEditBox @this = (Brainf_ckEditBox)d;
+            Brainf_ckTheme theme = (Brainf_ckTheme)e.NewValue;
+
+            @this._DashStrokeColor = theme.BracketsGuideColor;
+
+            if (theme.BracketsGuideStrokesLength is int dashLength)
+            {
+                @this._DashStrokeStyle = new CanvasStrokeStyle { CustomDashStyle = new float[] { 2, 2 + dashLength } };
+            }
+            else @this._DashStrokeStyle = new CanvasStrokeStyle();
+        }
 
         /// <summary>
         /// Updates the <see cref="FrameworkElement.Margin"/> property for <see cref="_VerticalContentScrollBar"/> when <see cref="VerticalScrollBarMargin"/> changes

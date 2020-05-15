@@ -8,6 +8,7 @@ using Windows.UI;
 using Windows.UI.Text;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models;
+using Brainf_ckSharp.Uwp.Themes;
 using Microsoft.Graphics.Canvas.Geometry;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Toolkit.HighPerformance.Buffers;
@@ -20,9 +21,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     public sealed partial class Brainf_ckEditBox
     {
         /// <summary>
-        /// The <see cref="CanvasStrokeStyle"/> for the vertical dashed column guides
+        /// The <see cref="Color"/> for the vertical column guides
         /// </summary>
-        private static readonly CanvasStrokeStyle DashStrokeStyle = new CanvasStrokeStyle { CustomDashStyle = new float[] { 2, 4 } };
+        private Color _DashStrokeColor = Brainf_ckThemes.VisualStudio.BracketsGuideColor;
+
+        /// <summary>
+        /// The optional <see cref="CanvasStrokeStyle"/> for the vertical column guides
+        /// </summary>
+        /// <remarks>This field is updated from <see cref="OnSyntaxHighlightThemePropertyChanged"/></remarks>
+        private CanvasStrokeStyle _DashStrokeStyle = new CanvasStrokeStyle { CustomDashStyle = new float[] { 2, 5 } };
 
         /// <summary>
         /// The current sequence of bracket pairs being displayed in the text
@@ -113,9 +120,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     guideInfo.Y - 0.5f + offset,
                     guideInfo.X + 0.5f,
                     guideInfo.Y + guideInfo.Height + 0.5f + offset,
-                    Colors.Gray,
+                    _DashStrokeColor,
                     1,
-                    DashStrokeStyle);
+                    _DashStrokeStyle);
             }
         }
 
