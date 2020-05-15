@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums.Settings;
@@ -9,16 +10,19 @@ using Microsoft.Toolkit.Mvvm.DependencyInjection;
 namespace Brainf_ckSharp.Uwp.Constants
 {
     /// <summary>
-    /// A <see langword="class"/> with some readonly settings that are initialized during startup
+    /// A <see langword="class"/> that exposes some settings in use
     /// </summary>
     public static class Settings
     {
         /// <summary>
-        /// Gets whether or not the extended post thumbnails are enabled
+        /// Gets the current <see cref="Brainf_ckTheme"/> instance in use
         /// </summary>
-        public static readonly Brainf_ckTheme Brainf_ckTheme = new Func<Brainf_ckTheme>(() =>
+        [Pure]
+        public static Brainf_ckTheme GetCurrentTheme()
         {
-            return Ioc.Default.GetRequiredService<ISettingsService>().GetValue<IdeTheme>(SettingsKeys.IdeTheme) switch
+            IdeTheme theme = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<IdeTheme>(SettingsKeys.IdeTheme);
+
+            return theme switch
             {
                 IdeTheme.VisualStudio => Brainf_ckThemes.VisualStudio,
                 IdeTheme.VisualStudioCode => Brainf_ckThemes.VisualStudioCode,
@@ -27,8 +31,8 @@ namespace Brainf_ckSharp.Uwp.Constants
                 IdeTheme.Dracula => Brainf_ckThemes.Dracula,
                 IdeTheme.OneDark => Brainf_ckThemes.OneDark,
                 IdeTheme.Vim => Brainf_ckThemes.Vim,
-                { } theme => throw new ArgumentOutOfRangeException($"Invalid theme: {theme}")
+                _ => throw new ArgumentOutOfRangeException($"Invalid theme: {theme}")
             };
-        })();
+        }
     }
 }

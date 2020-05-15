@@ -80,7 +80,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
                     @this.Inlines.Add(new Run
                     {
                         Text = value.Result.HaltingInfo!.HaltingOperator.ToString(),
-                        Foreground = Settings.Brainf_ckTheme.GetBrush(value.Result.HaltingInfo.HaltingOperator)
+                        Foreground = Settings.GetCurrentTheme().GetBrush(value.Result.HaltingInfo.HaltingOperator)
                     });
                     @this.Inlines.Add(new Run
                     {

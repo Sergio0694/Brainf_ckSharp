@@ -133,6 +133,8 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
             }
             else @this.Inlines.Clear();
 
+            Brainf_ckTheme theme = Settings.GetCurrentTheme();
+
             // Parse and render the remaining text with new runs
             while (start < end)
             {
@@ -149,7 +151,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
                 @this.Inlines.Add(new Run
                 {
                     Text = newValue.AsSpan(start, i - start).InterleaveWithCharacter(ZeroWidthSpace),
-                    Foreground = Settings.Brainf_ckTheme.GetBrush(c)
+                    Foreground = theme.GetBrush(c)
                 });
 
                 start = i;
