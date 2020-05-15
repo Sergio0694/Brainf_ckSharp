@@ -48,14 +48,14 @@
                     TextWrapping="Wrap"
                     Text="Theme"/>
                 <ComboBox
+                    x:Name="ThemeComboBox"
                     CornerRadius="0"
                     Margin="0,4,0,0"
                     Padding="2,0,0,0"
                     MinWidth="240"
                     MinHeight="112"
                     ItemsSource="{markupExtensions:EnumValues Type=enums:IdeTheme}"
-                    SelectedItem="{x:Bind Instance.IdeTheme, Mode=OneWay}"
-                    SelectionChanged="IdeTheme_SelectedItemChanged">
+                    SelectedItem="{x:Bind Instance.IdeTheme, Mode=TwoWay}">
                     <ComboBox.ItemContainerStyle>
                         <Style TargetType="ComboBoxItem">
                             <Setter Property="Margin" Value="0,2,0,2"/>
@@ -84,8 +84,7 @@
                     Margin="0,4,0,0"
                     MinWidth="140"
                     ItemsSource="{markupExtensions:EnumValues Type=enums:BracketsFormattingStyle}"
-                    SelectedItem="{x:Bind Instance.BracketsFormattingStyle, Mode=OneWay}"
-                    SelectionChanged="BracketFormattingStyle_SelectedItemChanged">
+                    SelectedItem="{x:Bind Instance.BracketsFormattingStyle, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="enums:BracketsFormattingStyle">
                             <TextBlock Text="{x:Bind convertersSubPages:BracketsFormattingStyleConverter.Convert((enums:BracketsFormattingStyle))}"/>
@@ -103,8 +102,7 @@
                     Margin="0,4,0,0"
                     MinWidth="140"
                     ItemsSource="{x:Bind Instance.TabLengthOptions}"
-                    SelectedItem="{x:Bind Instance.TabLength, Mode=OneWay}"
-                    SelectionChanged="TabLength_SelectedItemChanged"/>
+                    SelectedItem="{x:Bind Instance.TabLength, Mode=TwoWay}"/>
 
                 <!--Render whitespaces-->
                 <TextBlock
@@ -137,8 +135,7 @@
                     Margin="0,4,0,0"
                     MinWidth="140"
                     ItemsSource="{markupExtensions:EnumValues Type=enums:ViewType}"
-                    SelectedItem="{x:Bind Instance.StartingView, Mode=OneWay}"
-                    SelectionChanged="StartingView_SelectedItemChanged"/>
+                    SelectedItem="{x:Bind Instance.StartingView, Mode=TwoWay}"/>
 
                 <!--Show PBrain operators-->
                 <TextBlock
@@ -180,8 +177,7 @@
                     Margin="0,4,0,0"
                     MinWidth="140"
                     ItemsSource="{x:Bind Instance.MemorySizeOptions}"
-                    SelectedItem="{x:Bind Instance.MemorySize, Mode=OneWay}"
-                    SelectionChanged="MemorySize_SelectedItemChanged"/>
+                    SelectedItem="{x:Bind Instance.MemorySize, Mode=TwoWay}"/>
 
                 <!--Clear stdin buffer on execution-->
                 <TextBlock
