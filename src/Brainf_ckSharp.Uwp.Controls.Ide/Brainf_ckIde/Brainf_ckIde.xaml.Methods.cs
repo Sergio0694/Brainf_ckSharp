@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Buffers;
 using System.Diagnostics.Contracts;
-using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Windows.System;

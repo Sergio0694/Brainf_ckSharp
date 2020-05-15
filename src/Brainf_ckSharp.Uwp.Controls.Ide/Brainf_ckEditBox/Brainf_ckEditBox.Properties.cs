@@ -1,8 +1,11 @@
-﻿using Windows.Foundation;
+﻿using System;
+using Windows.Foundation;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.EventArgs;
 using Brainf_ckSharp.Uwp.Themes;
+using Brainf_ckSharp.Uwp.Themes.Enums;
 using Microsoft.Graphics.Canvas.Geometry;
 
 #nullable enable
@@ -130,6 +133,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             Brainf_ckEditBox @this = (Brainf_ckEditBox)d;
             Brainf_ckTheme theme = (Brainf_ckTheme)e.NewValue;
 
+            // Column guides color and dash style
             @this._DashStrokeColor = theme.BracketsGuideColor;
 
             if (theme.BracketsGuideStrokesLength is int dashLength)
@@ -137,6 +141,25 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 @this._DashStrokeStyle = new CanvasStrokeStyle { CustomDashStyle = new float[] { 2, 2 + dashLength } };
             }
             else @this._DashStrokeStyle = new CanvasStrokeStyle();
+
+            // Line indicator style
+            switch (theme.LineHighlightStyle)
+            {
+                case LineHighlightStyle.Outline:
+                    @this._SelectionHighlightBorder!.BorderThickness = new Thickness(2);
+                    @this._SelectionHighlightBorder.BorderBrush = new SolidColorBrush(theme.LineHighlightColor);
+                    @this._SelectionHighlightBorder.Background = null;
+                    break;
+                case LineHighlightStyle.Fill:
+                    @this._SelectionHighlightBorder!.BorderThickness = default;
+                    @this._SelectionHighlightBorder.BorderBrush = null;
+                    @this._SelectionHighlightBorder.Background = new SolidColorBrush(theme.LineHighlightColor);
+                    break;
+                default: throw new ArgumentException($"Invalid line highlight style: {theme.LineHighlightStyle}");
+            }
+
+            // Refresh the syntax highlight
+            @this.ApplySyntaxHighlight();
         }
 
         /// <summary>

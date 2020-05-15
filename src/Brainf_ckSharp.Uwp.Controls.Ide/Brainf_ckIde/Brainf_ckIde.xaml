@@ -12,7 +12,10 @@
     d:DesignWidth="400">
 
     <!--Root-->
-    <Grid Background="#FF1E1E1E">
+    <Grid>
+        <Grid.Background>
+            <SolidColorBrush Color="{x:Bind SyntaxHighlightTheme.Background, Mode=OneWay}"/>
+        </Grid.Background>
         <Grid.ColumnDefinitions>
             
             <!--The first column leaves space for all the overlays on the left
@@ -32,8 +35,11 @@
         <Border
             Grid.Column="0"
             Width="20"
-            HorizontalAlignment="Left"
-            Background="#FF333333"/>
+            HorizontalAlignment="Left">
+            <Border.Background>
+                <SolidColorBrush Color="{x:Bind SyntaxHighlightTheme.BreakpointsPaneBackground, Mode=OneWay}"/>
+            </Border.Background>
+        </Border>
 
         <!--Canvas with the Win2D canvas used to render all the IDE overlays.
             Just like in the code editor, the Win2D canvas is hosted inside a
@@ -47,11 +53,13 @@
                 Width="28"
                 Text="1"
                 FontSize="{x:Bind CodeEditBox.FontSize, Mode=OneWay}"
-                Foreground="#FF237CAD"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Right"
                 TextAlignment="Right"
                 TextTrimming="CharacterEllipsis">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{x:Bind SyntaxHighlightTheme.LineNumberColor, Mode=OneWay}"/>
+                </TextBlock.Foreground>
                 <TextBlock.RenderTransform>
                     <TranslateTransform X="20" Y="108"/>
                 </TextBlock.RenderTransform>
@@ -83,6 +91,7 @@
             attachedProperties:ClipHelper.ClipToBounds="True"
             Padding="4,108,8,8"
             VerticalScrollBarMargin="0,100,0,0"
+            SyntaxHighlightTheme="{x:Bind SyntaxHighlightTheme, Mode=OneWay}"
             PlainTextChanged="CodeEditBox_OnPlainTextChanged"/>
     </Grid>
 </UserControl>
