@@ -4,6 +4,7 @@ using Brainf_ckSharp.Shared.Messages.Console.MemoryState;
 using Brainf_ckSharp.Shared.Models.Console.Controls;
 using Brainf_ckSharp.Shared.ViewModels.Abstract;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
 #nullable enable
 
@@ -21,7 +22,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         {
             MachineState = Messenger.Request<MemoryStateRequestMessage, IReadOnlyMachineState>();
 
-            Messenger.Register<MemoryStateChangedNotificationMessage>(this, m => MachineState = m.Value);
+            Messenger.Register<PropertyChangedMessage<IReadOnlyMachineState>>(this, m => MachineState = m.NewValue);
         }
 
         private IReadOnlyMachineState? _MachineState;

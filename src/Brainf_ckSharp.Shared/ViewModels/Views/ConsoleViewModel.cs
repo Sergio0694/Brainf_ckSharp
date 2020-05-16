@@ -75,12 +75,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         public IReadOnlyMachineState MachineState
         {
             get => _MachineState;
-            set
-            {
-                _MachineState = value;
-
-                Messenger.Send(new MemoryStateChangedNotificationMessage(value));
-            }
+            private set => Set(ref _MachineState, value, true);
         }
 
         private string _CurrentCommand = string.Empty;
