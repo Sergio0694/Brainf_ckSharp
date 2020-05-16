@@ -3,7 +3,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Services;
 using Microsoft.Toolkit.Diagnostics;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 #nullable enable
 
@@ -12,7 +11,7 @@ namespace Brainf_ckSharp.Shared.Models.Ide
     /// <summary>
     /// A model that represents a source code
     /// </summary>
-    public sealed class SourceCode : ObservableObject
+    public sealed class SourceCode
     {
         /// <summary>
         /// Creates a new <see cref="SourceCode"/> instance with the specified parameters
@@ -22,21 +21,15 @@ namespace Brainf_ckSharp.Shared.Models.Ide
         /// <param name="metadata">The metadata for the current file</param>
         private SourceCode(string content, IFile? file, CodeMetadata metadata)
         {
-            _Content = content;
+            Content = content;
             File = file;
             Metadata = metadata;
         }
 
-        private string _Content;
-
         /// <summary>
         /// Gets or sets the content of the current source code
         /// </summary>
-        public string Content
-        {
-            get => _Content;
-            set => Set(ref _Content, value);
-        }
+        public string Content { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="IFile"/> instance for the current source code
