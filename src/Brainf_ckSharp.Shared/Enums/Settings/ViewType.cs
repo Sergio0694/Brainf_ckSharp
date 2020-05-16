@@ -8,11 +8,11 @@
         /// <summary>
         /// The interactive REPL console
         /// </summary>
-        Console,
+        Console = 0,
 
         /// <summary>
         /// The IDE view
         /// </summary>
-        Ide
+        Ide = 1
     }
 }

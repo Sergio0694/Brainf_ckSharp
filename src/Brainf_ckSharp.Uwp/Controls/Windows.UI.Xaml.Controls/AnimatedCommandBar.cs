@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Uwp.Extensions.System.Collections.Generic;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 using UICompositionAnimations.Enums;
 
 namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
@@ -14,17 +15,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
     /// <remarks>The items in <see cref="CommandBar.PrimaryCommands"/> need to use the <see cref="FrameworkElement.Tag"/> with a <see cref="bool"/> value</remarks>
     public sealed class AnimatedCommandBar : CommandBar
     {
-        /// <inheritdoc/>
-        protected override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-
-            // Hide the non default buttons
-            foreach (FrameworkElement element in PrimaryCommands.Cast<FrameworkElement>())
-                if (element.Tag is bool flag && !flag)
-                    element.Visibility = Visibility.Collapsed;
-        }
-
         /// <summary>
         /// The duration of each button animation
         /// </summary>
@@ -45,8 +35,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
         /// </summary>
         public bool IsPrimaryContentDisplayed
         {
-            get => (bool)GetValue(IsPrimaryContentDisplayedProperty);
-            set => SetValue(IsPrimaryContentDisplayedProperty, value);
+            get => (bool)(bool?)GetValue(IsPrimaryContentDisplayedProperty);
+            set => SetValue(IsPrimaryContentDisplayedProperty, (bool?)value);
         }
 
         /// <summary>
@@ -54,9 +44,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
         /// </summary>
         public static readonly DependencyProperty IsPrimaryContentDisplayedProperty = DependencyProperty.Register(
             nameof(IsPrimaryContentDisplayed),
-            typeof(bool),
+            typeof(bool?),
             typeof(AnimatedCommandBar),
-            new PropertyMetadata(true, OnIsPrimaryContentDisplayedChanged));
+            new PropertyMetadata(null, OnIsPrimaryContentDisplayedChanged));
 
         /// <summary>
         /// The <see cref="AsyncMutex"/> instance used to avoid race conditions when switching buttons
@@ -72,6 +62,17 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
         {
             AnimatedCommandBar @this = (AnimatedCommandBar)d;
             bool primary = (bool)e.NewValue;
+
+            // If this is the initial setup, skip all animations
+            if (e.OldValue is null)
+            {
+                foreach (var item in @this.PrimaryCommands.Cast<FrameworkElement>())
+                {
+                    item.Visibility = (Visibility)((bool)item.Tag != primary).ToInt();
+                }
+
+                return;
+            }
 
             using (await @this.ContentSwitchMutex.LockAsync())
             {

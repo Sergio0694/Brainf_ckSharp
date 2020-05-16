@@ -23,7 +23,7 @@
                             Value="0"/>
                     </VisualState.Setters>
                 </VisualState>
-                <VisualState x:Name="IDESelected">
+                <VisualState x:Name="IdeSelected">
                     <VisualState.Setters>
                         <Setter
                             Target="SelectionRectangle.(Canvas.Left)"

@@ -1,18 +1,21 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Constants;
+using Brainf_ckSharp.Shared.Enums.Settings;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
 namespace Brainf_ckSharp.Uwp.Controls.Host.Header
 {
     public sealed partial class HeaderPanel : UserControl
     {
-        // Constants for the visual states
-        private const string ConsoleSelectedVisualStateName = "ConsoleSelected";
-        private const string IDESelectedVisualStateName = "IDESelected";
-
         public HeaderPanel()
         {
             this.InitializeComponent();
+
+            SelectedIndex = (int)Ioc.Default.GetRequiredService<ISettingsService>().GetValue<ViewType>(SettingsKeys.StartingView);
         }
 
         /// <summary>
@@ -42,7 +45,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.Header
         {
             HeaderPanel @this = (HeaderPanel)d;
             int index = (int)e.NewValue;
-            VisualStateManager.GoToState(@this, index == 0 ? ConsoleSelectedVisualStateName : IDESelectedVisualStateName, false);
+            VisualStateManager.GoToState(@this, index == 0 ? nameof(ConsoleSelected) : nameof(IdeSelected), false);
         }
 
         // Sets the selected index to 0 when the console button is clicked

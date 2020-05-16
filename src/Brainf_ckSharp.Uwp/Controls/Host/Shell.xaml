@@ -118,7 +118,7 @@
             Grid.Row="4"
             IsDynamicOverflowEnabled="False"
             Style="{StaticResource CommandBarRevealStyle}"
-            IsPrimaryContentDisplayed="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(RootHeader.SelectedIndex, 0), Mode=OneWay, FallbackValue=True}">
+            IsPrimaryContentDisplayed="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(RootHeader.SelectedIndex, 0), Mode=OneWay}">
             <controls:AnimatedCommandBar.PrimaryCommands>
 
                 <!--Console buttons-->
