@@ -16,6 +16,7 @@
     xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:viewModels="using:Brainf_ckSharp.Shared.ViewModels"
     xmlns:inputPanel="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel"
+    xmlns:local="using:Brainf_ckSharp.Uwp.Controls.Host"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400">
@@ -333,10 +334,8 @@
             </controls:AnimatedCommandBar.SecondaryCommands>
         </controls:AnimatedCommandBar>
 
-        <!--Background code status-->
-        <Canvas
-            Grid.Row="5"
-            Background="{StaticResource BackgroundInfoBrush}"/>
+        <!--Status bar-->
+        <local:StatusBar Grid.Row="5"/>
 
         <!--Sub page host-->
         <host:SubPageHost

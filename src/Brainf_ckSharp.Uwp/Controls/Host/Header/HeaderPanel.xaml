@@ -16,14 +16,14 @@
         <!--Visual states for the rectangle indicator-->
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
-                <VisualState x:Name="ConsoleSelected">
+                <VisualState x:Name="ConsoleSelectedState">
                     <VisualState.Setters>
                         <Setter
                             Target="SelectionRectangle.(Canvas.Left)"
                             Value="0"/>
                     </VisualState.Setters>
                 </VisualState>
-                <VisualState x:Name="IdeSelected">
+                <VisualState x:Name="IdeSelectedState">
                     <VisualState.Setters>
                         <Setter
                             Target="SelectionRectangle.(Canvas.Left)"

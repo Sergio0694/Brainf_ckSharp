@@ -45,7 +45,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.Header
         {
             HeaderPanel @this = (HeaderPanel)d;
             int index = (int)e.NewValue;
-            VisualStateManager.GoToState(@this, index == 0 ? nameof(ConsoleSelected) : nameof(IdeSelected), false);
+            VisualStateManager.GoToState(@this, index == 0 ? nameof(ConsoleSelectedState) : nameof(IdeSelectedState), false);
         }
 
         // Sets the selected index to 0 when the console button is clicked
