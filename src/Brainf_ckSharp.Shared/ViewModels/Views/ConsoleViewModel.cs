@@ -27,11 +27,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
     public sealed class ConsoleViewModel : ViewModelBase<ObservableCollection<IConsoleEntry>>
     {
         /// <summary>
-        /// Raised whenever the current command changes
-        /// </summary>
-        public event EventHandler<string>? CurrentCommandChanged; 
-
-        /// <summary>
         /// An <see cref="AsyncLock"/> instance to synchronize accesses to the console results
         /// </summary>
         private readonly AsyncLock ExecutionMutex = new AsyncLock();
@@ -88,6 +83,17 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             }
         }
 
+        private string _CurrentCommand = string.Empty;
+
+        /// <summary>
+        /// Gets the current command that can be executed
+        /// </summary>
+        public string CurrentCommand
+        {
+            get => _CurrentCommand;
+            private set => Set(ref _CurrentCommand, value, true);
+        }
+
         /// <summary>
         /// Adds a new operator to the last command in the console
         /// </summary>
@@ -110,7 +116,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                 {
                     command.Command += c;
 
-                    CurrentCommandChanged?.Invoke(this, command.Command);
+                    CurrentCommand = command.Command;
                 }
                 else throw new InvalidOperationException("Missing console command to modify");
             }
@@ -129,7 +135,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
                     command.Command = current.Substring(0, Math.Max(current.Length - 1, 0));
 
-                    CurrentCommandChanged?.Invoke(this, command.Command);
+                    CurrentCommand = command.Command;
                 }
                 else throw new InvalidOperationException("Missing console command to modify");
             }
@@ -146,7 +152,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                 {
                     command.Command = string.Empty;
 
-                    CurrentCommandChanged?.Invoke(this, string.Empty);
+                    CurrentCommand = string.Empty;
                 }
                 else throw new InvalidOperationException("Missing console command to modify");
             }
@@ -169,7 +175,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                 MachineState = MachineStateProvider.Default;
                 Source.Add(new ConsoleCommand());
 
-                CurrentCommandChanged?.Invoke(this, string.Empty);
+                CurrentCommand = string.Empty;
             }
         }
 
@@ -183,7 +189,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                 TryClearSource();
                 Source.Add(new ConsoleCommand());
 
-                CurrentCommandChanged?.Invoke(this, string.Empty);
+                CurrentCommand = string.Empty;
             }
         }
 
@@ -240,7 +246,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
             Source.Add(new ConsoleCommand());
 
-            CurrentCommandChanged?.Invoke(this, string.Empty);
+            CurrentCommand = string.Empty;
         }
 
         /// <summary>
