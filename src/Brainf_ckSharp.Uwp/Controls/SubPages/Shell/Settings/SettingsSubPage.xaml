@@ -10,9 +10,9 @@
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
     xmlns:collections="using:Microsoft.Toolkit.Collections"
     xmlns:subPages="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages"
-    xmlns:models="using:Brainf_ckSharp.Shared.Models"
     xmlns:markupExtensions="using:Brainf_ckSharp.Uwp.MarkupExtensions"
-    xmlns:enums="using:Brainf_ckSharp.Shared.Enums.Settings"
+    xmlns:enums="using:Brainf_ckSharp.Shared.Enums"
+    xmlns:enumsSettings="using:Brainf_ckSharp.Shared.Enums.Settings"
     xmlns:dataTemplates="using:Brainf_ckSharp.Uwp.Controls.DataTemplates"
     xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
     mc:Ignorable="d"
@@ -26,21 +26,21 @@
         <!--IDE settings template-->
         <DataTemplate
             x:Name="IdeSettingsTemplate"
-            x:DataType="models:SettingsViewModelWithSectionInfo">
+            x:DataType="enums:SettingsSection">
             <StackPanel Spacing="4">
 
                 <!--Autosave documents-->
                 <TextBlock
                     TextWrapping="Wrap"
                     Text="Autosave documents"/>
-                <ToggleSwitch IsOn="{x:Bind Instance.AutosaveDocuments, Mode=TwoWay}"/>
+                <ToggleSwitch IsOn="{x:Bind ViewModel.AutosaveDocuments, Mode=TwoWay}"/>
 
                 <!--Protect unsaved changes-->
                 <TextBlock
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Protect unsaved changes"/>
-                <ToggleSwitch IsOn="{x:Bind Instance.ProtectUnsavedChanges, Mode=TwoWay}"/>
+                <ToggleSwitch IsOn="{x:Bind ViewModel.ProtectUnsavedChanges, Mode=TwoWay}"/>
 
                 <!--Theme-->
                 <TextBlock
@@ -53,8 +53,8 @@
                     Padding="2,0,0,0"
                     MinWidth="240"
                     MinHeight="112"
-                    ItemsSource="{markupExtensions:EnumValues Type=enums:IdeTheme}"
-                    SelectedItem="{x:Bind Instance.IdeTheme, Mode=TwoWay}">
+                    ItemsSource="{markupExtensions:EnumValues Type=enumsSettings:IdeTheme}"
+                    SelectedItem="{x:Bind ViewModel.IdeTheme, Mode=TwoWay}">
                     <ComboBox.ItemContainerStyle>
                         <Style TargetType="ComboBoxItem">
                             <Setter Property="Margin" Value="0,2,0,2"/>
@@ -67,7 +67,7 @@
                         </Style>
                     </ComboBox.ItemContainerStyle>
                     <ComboBox.ItemTemplate>
-                        <DataTemplate x:DataType="enums:IdeTheme">
+                        <DataTemplate x:DataType="enumsSettings:IdeTheme">
                             <dataTemplates:IdeThemePreviewTemplate Theme="{x:Bind}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
@@ -82,11 +82,11 @@
                     CornerRadius="0"
                     Margin="0,4,0,0"
                     MinWidth="140"
-                    ItemsSource="{markupExtensions:EnumValues Type=enums:BracketsFormattingStyle}"
-                    SelectedItem="{x:Bind Instance.BracketsFormattingStyle, Mode=TwoWay}">
+                    ItemsSource="{markupExtensions:EnumValues Type=enumsSettings:BracketsFormattingStyle}"
+                    SelectedItem="{x:Bind ViewModel.BracketsFormattingStyle, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
-                        <DataTemplate x:DataType="enums:BracketsFormattingStyle">
-                            <TextBlock Text="{x:Bind convertersSubPages:BracketsFormattingStyleConverter.Convert((enums:BracketsFormattingStyle))}"/>
+                        <DataTemplate x:DataType="enumsSettings:BracketsFormattingStyle">
+                            <TextBlock Text="{x:Bind convertersSubPages:BracketsFormattingStyleConverter.Convert((enumsSettings:BracketsFormattingStyle))}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
@@ -100,29 +100,29 @@
                     CornerRadius="0"
                     Margin="0,4,0,0"
                     MinWidth="140"
-                    ItemsSource="{x:Bind Instance.TabLengthOptions}"
-                    SelectedItem="{x:Bind Instance.TabLength, Mode=TwoWay}"/>
+                    ItemsSource="{x:Bind ViewModel.TabLengthOptions}"
+                    SelectedItem="{x:Bind ViewModel.TabLength, Mode=TwoWay}"/>
 
                 <!--Render whitespaces-->
                 <TextBlock
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Render whitespaces"/>
-                <ToggleSwitch IsOn="{x:Bind Instance.RenderWhitespaces, Mode=TwoWay}"/>
+                <ToggleSwitch IsOn="{x:Bind ViewModel.RenderWhitespaces, Mode=TwoWay}"/>
 
                 <!--Enable timeline-->
                 <TextBlock
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Enable timeline"/>
-                <ToggleSwitch IsOn="{x:Bind Instance.EnableTimeline, Mode=TwoWay}"/>
+                <ToggleSwitch IsOn="{x:Bind ViewModel.EnableTimeline, Mode=TwoWay}"/>
             </StackPanel>
         </DataTemplate>
 
         <!--UI settings template-->
         <DataTemplate
             x:Name="UISettingsTemplate"
-            x:DataType="models:SettingsViewModelWithSectionInfo">
+            x:DataType="enums:SettingsSection">
             <StackPanel Spacing="4">
 
                 <!--Starting page-->
@@ -133,8 +133,8 @@
                     CornerRadius="0"
                     Margin="0,4,0,0"
                     MinWidth="140"
-                    ItemsSource="{markupExtensions:EnumValues Type=enums:ViewType}"
-                    SelectedItem="{x:Bind Instance.StartingView, Mode=TwoWay}"/>
+                    ItemsSource="{markupExtensions:EnumValues Type=enumsSettings:ViewType}"
+                    SelectedItem="{x:Bind ViewModel.StartingView, Mode=TwoWay}"/>
 
                 <!--Show PBrain operators-->
                 <TextBlock
@@ -146,7 +146,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <ToggleSwitch IsOn="{x:Bind Instance.ShowPBrainButtons, Mode=TwoWay}"/>
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.ShowPBrainButtons, Mode=TwoWay}"/>
                     <HyperlinkButton 
                         Margin="0,0,20,0"
                         HorizontalAlignment="Right"
@@ -164,7 +164,7 @@
         <!--Interpreter settings template-->
         <DataTemplate
             x:Name="InterpreterSettingsTemplate"
-            x:DataType="models:SettingsViewModelWithSectionInfo">
+            x:DataType="enums:SettingsSection">
             <StackPanel Spacing="4">
 
                 <!--Memory size-->
@@ -175,15 +175,15 @@
                     CornerRadius="0"
                     Margin="0,4,0,0"
                     MinWidth="140"
-                    ItemsSource="{x:Bind Instance.MemorySizeOptions}"
-                    SelectedItem="{x:Bind Instance.MemorySize, Mode=TwoWay}"/>
+                    ItemsSource="{x:Bind ViewModel.MemorySizeOptions}"
+                    SelectedItem="{x:Bind ViewModel.MemorySize, Mode=TwoWay}"/>
 
                 <!--Clear stdin buffer on execution-->
                 <TextBlock
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Clear stdin buffer on execution"/>
-                <ToggleSwitch IsOn="{x:Bind Instance.ClearStdinBufferOnRequest, Mode=TwoWay}"/>
+                <ToggleSwitch IsOn="{x:Bind ViewModel.ClearStdinBufferOnRequest, Mode=TwoWay}"/>
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>

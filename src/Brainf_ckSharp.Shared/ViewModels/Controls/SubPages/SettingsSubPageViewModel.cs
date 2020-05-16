@@ -7,7 +7,6 @@ using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.Extensions.Microsoft.Toolkit.Collections;
-using Brainf_ckSharp.Shared.Models;
 using Brainf_ckSharp.Shared.ViewModels.Abstract;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Collections;
@@ -16,16 +15,16 @@ using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 {
-    public sealed class SettingsSubPageViewModel : ViewModelBase<ObservableGroupedCollection<SettingsSection, SettingsViewModelWithSectionInfo>>
+    public sealed class SettingsSubPageViewModel : ViewModelBase<ObservableGroupedCollection<SettingsSection, SettingsSection>>
     {
         /// <summary>
         /// Creates a new <see cref="SettingsSubPageViewModel"/> instance
         /// </summary>
         public SettingsSubPageViewModel()
         {
-            Source.Add(SettingsSection.Ide, new SettingsViewModelWithSectionInfo(SettingsSection.Ide, this));
-            Source.Add(SettingsSection.UI, new SettingsViewModelWithSectionInfo(SettingsSection.UI, this));
-            Source.Add(SettingsSection.Interpreter, new SettingsViewModelWithSectionInfo(SettingsSection.Interpreter, this));
+            Source.Add(SettingsSection.Ide, SettingsSection.Ide);
+            Source.Add(SettingsSection.UI, SettingsSection.UI);
+            Source.Add(SettingsSection.Interpreter, SettingsSection.Interpreter);
         }
 
         /// <summary>

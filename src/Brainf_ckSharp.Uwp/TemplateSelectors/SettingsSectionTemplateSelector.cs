@@ -2,7 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.Enums;
-using Brainf_ckSharp.Shared.Models;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 #nullable enable
 
@@ -31,13 +31,17 @@ namespace Brainf_ckSharp.Uwp.TemplateSelectors
         /// <inheritdoc/>
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            return (item as SettingsViewModelWithSectionInfo)?.Section switch
+            if (item.TryUnbox(out SettingsSection section))
             {
-                SettingsSection.Ide => IdeSettingsTemplate,
-                SettingsSection.UI => UISettingsTemplate,
-                SettingsSection.Interpreter => InterpreterSettingsTemplate,
-                _ => throw new ArgumentException("The input item is null or of an invalid type")
-            } ?? throw new ArgumentException($"Missing template for item of type {((SettingsViewModelWithSectionInfo)item).Section}");
+                return section switch
+                {
+                    SettingsSection.Ide => IdeSettingsTemplate,
+                    SettingsSection.UI => UISettingsTemplate,
+                    SettingsSection.Interpreter => InterpreterSettingsTemplate,
+                    _ => throw new ArgumentException($"Invalid section: {section}")
+                } ?? throw new ArgumentException($"Missing template for section: {section}");
+            }
+            else throw new ArgumentException("The input item is null or of an invalid type");
         }
     }
 }
