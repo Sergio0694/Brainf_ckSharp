@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Experimental.Collections" Version="1.0.6-e190117-3" />
-    <PackageReference Include="Microsoft.Toolkit.HighPerformance" Version="6.1.0-build.81" />
+    <PackageReference Include="Microsoft.Toolkit.HighPerformance" Version="6.1.0-build.97" />
   </ItemGroup>
 
 </Project>

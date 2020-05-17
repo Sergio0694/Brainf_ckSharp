@@ -135,10 +135,10 @@
       <Version>6.2.10</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit">
-      <Version>6.1.0-build.81</Version>
+      <Version>6.1.0-build.97</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.HighPerformance">
-      <Version>6.1.0-build.81</Version>
+      <Version>6.1.0-build.97</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

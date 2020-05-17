@@ -251,8 +251,7 @@ namespace Brainf_ckSharp
                 // Build the temporary table to store the indirect offsets of the breakpoints
                 foreach (int index in breakpoints)
                 {
-                    Guard.IsGreaterThanOrEqualTo(index, 0, nameof(breakpoints));
-                    Guard.IsLessThan(index, source.Length, nameof(breakpoints));
+                    Guard.IsInRangeFor(index, source, nameof(breakpoints));
 
                     Unsafe.Add(ref temporaryBufferRef, index) = true;
                 }
