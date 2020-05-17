@@ -32,7 +32,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         private readonly AsyncLock ExecutionMutex = new AsyncLock();
 
         /// <summary>
-        /// Creates a new <see cref="ConsoleViewModel"/> instances with a new command ready to use
+        /// Creates a new <see cref="ConsoleViewModel"/> instance with a new command ready to use
         /// </summary>
         public ConsoleViewModel()
         {
@@ -86,7 +86,24 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         public string CurrentCommand
         {
             get => _CurrentCommand;
-            private set => Set(ref _CurrentCommand, value, true);
+            private set
+            {
+                if (Set(ref _CurrentCommand, value))
+                {
+                    CurrentCommandValidationResult = Brainf_ckParser.ValidateSyntax(value);
+                }
+            }
+        }
+
+        private SyntaxValidationResult _CurrentCommandValidationResult = Brainf_ckParser.ValidateSyntax(string.Empty);
+
+        /// <summary>
+        /// Gets the current <see cref="SyntaxValidationResult"/> value for <see cref="CurrentCommand"/>
+        /// </summary>
+        public SyntaxValidationResult CurrentCommandValidationResult
+        {
+            get => _CurrentCommandValidationResult;
+            private set => Set(ref _CurrentCommandValidationResult, value);
         }
 
         /// <summary>

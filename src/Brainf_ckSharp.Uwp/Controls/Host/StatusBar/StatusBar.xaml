@@ -4,10 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Brainf_ckSharp.Shared.ViewModels.Controls"
+    xmlns:system="using:System"
     mc:Ignorable="d"
     d:DesignHeight="48"
     d:DesignWidth="400">
-
+    <UserControl.DataContext>
+        <controls:StatusBarViewModel x:Name="ViewModel"/>
+    </UserControl.DataContext>
 
     <Grid
         x:Name="RootGrid"
@@ -24,6 +28,9 @@
             <!--General UI states-->
             <VisualStateGroup>
                 <VisualState x:Name="ConsoleState">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{x:Bind ViewModel.ConsoleViewModel.CurrentCommandValidationResult.IsSuccessOrEmptyScript, Mode=OneWay}"/>
+                    </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter 
                             Target="RootGrid.Background"
@@ -31,9 +38,15 @@
                         <Setter
                             Target="ErrorBlock.Visibility"
                             Value="Collapsed"/>
+                        <Setter
+                            Target="InfoBlock.Text"
+                            Value="Ready"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="ConsoleErrorState">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{x:Bind ViewModel.ConsoleViewModel.CurrentCommandValidationResult.IsError, Mode=OneWay}"/>
+                    </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter 
                             Target="RootGrid.Background"
@@ -41,6 +54,9 @@
                         <Setter
                             Target="ErrorBlock.Visibility"
                             Value="Visible"/>
+                        <Setter
+                            Target="InfoBlock.Text"
+                            Value="Invalid syntax"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -58,7 +74,7 @@
             TextTrimming="CharacterEllipsis"/>
 
         <!--Error-->
-        <TextBlock 
+        <TextBlock
             x:Name="ErrorBlock"
             Foreground="White"
             Margin="8,0,8,0"
@@ -66,15 +82,11 @@
             VerticalAlignment="Center"
             IsTextScaleFactorEnabled="False"
             FontWeight="Normal"
-            Grid.Column="1">
-            <Run Text="Error:"/>
-            <Run 
-                Text="0"
-                x:Name="ErrorRun"/>
-        </TextBlock>
+            Grid.Column="1"
+            Text="{x:Bind system:String.Format('Error: {0}', ViewModel.ConsoleViewModel.CurrentCommandValidationResult.ErrorOffset), Mode=OneWay}"/>
 
         <!--Operators-->
-        <TextBlock 
+        <TextBlock
             x:Name="OpsBlock"
             Foreground="White"
             Margin="8,0,8,0"
@@ -82,11 +94,7 @@
             VerticalAlignment="Center"
             IsTextScaleFactorEnabled="False"
             FontWeight="Normal"
-            Grid.Column="2">
-            <Run Text="Char:"/>
-            <Run 
-                Text="0"
-                x:Name="OpsRun"/>
-        </TextBlock>
+            Grid.Column="2"
+            Text="{x:Bind system:String.Format('Char: {0}', ViewModel.ConsoleViewModel.CurrentCommand.Length), Mode=OneWay}"/>
     </Grid>
 </UserControl>

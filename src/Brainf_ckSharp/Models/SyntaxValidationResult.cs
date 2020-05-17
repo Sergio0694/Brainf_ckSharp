@@ -38,6 +38,12 @@ namespace Brainf_ckSharp.Models
                                               ErrorType == SyntaxError.MissingOperators;
 
         /// <summary>
+        /// Gets whether or not the input source file has not been parsed successfully
+        /// </summary>
+        public bool IsError => ErrorType != SyntaxError.None &&
+                               ErrorType != SyntaxError.MissingOperators;
+
+        /// <summary>
         /// Gets the specific syntax error that caused the source file not to be parsed correctly, if any
         /// </summary>
         public SyntaxError ErrorType { get; }
