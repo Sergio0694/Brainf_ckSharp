@@ -11,6 +11,7 @@ using Brainf_ckSharp.Shared.ViewModels.Abstract;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages

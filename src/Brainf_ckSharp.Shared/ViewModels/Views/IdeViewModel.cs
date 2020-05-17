@@ -8,6 +8,7 @@ using Brainf_ckSharp.Shared.Models.Ide;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Views
 {
