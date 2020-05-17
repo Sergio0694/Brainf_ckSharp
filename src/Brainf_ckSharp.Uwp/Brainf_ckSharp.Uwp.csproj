@@ -248,7 +248,6 @@
     <Compile Include="MarkupExtensions\VirtualKeyExtension.cs" />
     <Compile Include="MarkupExtensions\EnumValuesExtension.cs" />
     <Compile Include="MarkupExtensions\BooleanExtension.cs" />
-    <Compile Include="MarkupExtensions\FontIconExtension.cs" />
     <Compile Include="Messages\LoadingStateUpdateNotificationMessage.cs" />
     <Compile Include="Messages\SubPageCloseRequestMessage.cs" />
     <Compile Include="Messages\SubPageNavigationRequestMessage.cs" />

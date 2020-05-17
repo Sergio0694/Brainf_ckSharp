@@ -12,7 +12,7 @@
     xmlns:storage="using:Windows.Storage"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:markupExtensions="using:Brainf_ckSharp.Uwp.MarkupExtensions"
+    xmlns:toolkitExtensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
     xmlns:enums="using:Brainf_ckSharp.Shared.Enums"
     xmlns:ide="using:Brainf_ckSharp.Shared.Models.Ide"
@@ -127,23 +127,23 @@
                         </MenuFlyoutItem>
                         <MenuFlyoutItem
                             Text="Copy to clipboard"
-                            Icon="{markupExtensions:FontIcon Glyph={StaticResource CopyToClipboardIcon}}"
+                            Icon="{toolkitExtensions:FontIcon Glyph={StaticResource CopyToClipboardIcon}}"
                             Command="{StaticResource CopyToClipboardCommand}"
                             CommandParameter="{x:Bind}"/>
                         <MenuFlyoutItem
                             Text="Share"
-                            Icon="{markupExtensions:FontIcon Glyph={StaticResource ShareIcon}}"
+                            Icon="{toolkitExtensions:FontIcon Glyph={StaticResource ShareIcon}}"
                             Command="{StaticResource ShareCommand}"
                             CommandParameter="{x:Bind}"/>
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem
                             Text="Remove from library"
-                            Icon="{markupExtensions:FontIcon Glyph={StaticResource RemoveFromLibraryIcon}}"
+                            Icon="{toolkitExtensions:FontIcon Glyph={StaticResource RemoveFromLibraryIcon}}"
                             Command="{StaticResource RemoveFromLibraryCommand}"
                             CommandParameter="{x:Bind}"/>
                         <MenuFlyoutItem
                             Text="Delete"
-                            Icon="{markupExtensions:FontIcon Glyph={StaticResource DeleteFileIcon}}"
+                            Icon="{toolkitExtensions:FontIcon Glyph={StaticResource DeleteFileIcon}}"
                             Command="{StaticResource DeleteCommand}"
                             CommandParameter="{x:Bind}"/>
                     </MenuFlyout>
