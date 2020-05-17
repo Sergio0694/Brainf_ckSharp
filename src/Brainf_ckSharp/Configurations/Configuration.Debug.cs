@@ -46,8 +46,7 @@ namespace Brainf_ckSharp.Configurations
             {
                 int size = MemorySize ?? Specs.DefaultMemorySize;
 
-                Guard.IsGreaterThanOrEqualTo(size, Specs.MinimumMemorySize, nameof(MemorySize));
-                Guard.IsLessThanOrEqualTo(size, Specs.MaximumMemorySize, nameof(MemorySize));
+                Guard.IsBetweenOrEqualTo(size, Specs.MinimumMemorySize, Specs.MaximumMemorySize, nameof(MemorySize));
 
                 initialState = new TuringMachineState(size, OverflowMode ?? Specs.DefaultOverflowMode);
             }

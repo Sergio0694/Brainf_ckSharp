@@ -107,8 +107,9 @@ namespace Brainf_ckSharp.Memory
 
                 // Manually check the current size, as the buffer
                 // is rented from the pool and its length might
-                // actually be greater than the memory state.*/
+                // actually be greater than the memory state.
                 Guard.IsInRange(index, 0, Size, nameof(index));
+
                 ushort value = array!.DangerousGetReferenceAt(index);
 
                 return new Brainf_ckMemoryCell(index, value, _Position == index);

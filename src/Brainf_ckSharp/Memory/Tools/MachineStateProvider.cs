@@ -33,8 +33,7 @@ namespace Brainf_ckSharp.Memory.Tools
         [Pure]
         public static IReadOnlyMachineState Create(int size, OverflowMode overflowMode)
         {
-            Guard.IsGreaterThanOrEqualTo(size, 32, nameof(size));
-            Guard.IsLessThanOrEqualTo(size, 1024, nameof(size));
+            Guard.IsBetweenOrEqualTo(size, 32, 1024, nameof(size));
 
             return new TuringMachineState(size, overflowMode);
         }
