@@ -164,7 +164,7 @@
       <Version>6.2.10</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI">
-      <Version>6.1.0-build.97</Version>
+      <Version>6.1.0-preview1.2</Version>
     </PackageReference>
     <PackageReference Include="UICompositionAnimations">
       <Version>4.1.1</Version>
