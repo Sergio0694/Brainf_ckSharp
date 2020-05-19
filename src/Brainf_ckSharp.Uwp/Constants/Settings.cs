@@ -7,7 +7,7 @@ using Brainf_ckSharp.Uwp.Themes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
-namespace Brainf_ckSharp.Uwp.Constants
+namespace Brainf_ckSharp.Uwp
 {
     /// <summary>
     /// A <see langword="class"/> that exposes some settings in use
