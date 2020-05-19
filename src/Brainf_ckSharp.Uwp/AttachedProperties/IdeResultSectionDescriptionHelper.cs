@@ -5,7 +5,6 @@ using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Models.Ide.Views;
-using Brainf_ckSharp.Uwp.Constants;
 using Brainf_ckSharp.Uwp.Converters.Console;
 
 namespace Brainf_ckSharp.Uwp.AttachedProperties

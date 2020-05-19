@@ -131,7 +131,6 @@
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.Source.cs" />
     <Compile Include="AttachedProperties\SemanticZoomHelper.cs" />
     <Compile Include="AttachedProperties\ViewModelBaseHelper.cs" />
-    <Compile Include="Constants\Constants.cs" />
     <Compile Include="Controls\DataTemplates\IdeThemePreviewTemplate.xaml.cs">
       <DependentUpon>IdeThemePreviewTemplate.xaml</DependentUpon>
     </Compile>

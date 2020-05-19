@@ -1,4 +1,4 @@
-﻿namespace Brainf_ckSharp.Shared.Constants
+﻿namespace Brainf_ckSharp.Shared
 {
     /// <summary>
     /// A <see langword="class"/> that holds the various setting keys used in the app

@@ -24,4 +24,6 @@
     <ProjectReference Include="..\Microsoft.Toolkit.Mvvm\Microsoft.Toolkit.Mvvm.csproj" />
   </ItemGroup>
 
+  <Import Project="..\Brainf_ckSharp.Shared.Constants\Brainf_ckSharp.Shared.Constants.projitems" Label="Shared" />
+
 </Project>

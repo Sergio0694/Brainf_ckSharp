@@ -3,7 +3,6 @@ using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Services;
-using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Uwp.Controls.Host;
 using Brainf_ckSharp.Uwp.Helpers;
@@ -16,6 +15,7 @@ using GitHub;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Brainf_ckSharp.Services.Uwp.Store;
+using Brainf_ckSharp.Shared;
 
 namespace Brainf_ckSharp.Uwp
 {

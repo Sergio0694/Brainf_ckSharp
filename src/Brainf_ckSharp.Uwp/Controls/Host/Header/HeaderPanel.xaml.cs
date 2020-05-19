@@ -2,7 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Services;
-using Brainf_ckSharp.Shared.Constants;
+using Brainf_ckSharp.Shared;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;

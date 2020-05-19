@@ -1,4 +1,4 @@
-﻿namespace Brainf_ckSharp.Uwp.Constants
+﻿namespace Brainf_ckSharp.Shared
 {
     /// <summary>
     /// A <see langword="class"/> that exposes some constants in use
@@ -43,7 +43,7 @@
                     /// <summary>
                     /// The Store Id of the IAP to unlock the themes
                     /// </summary>
-                    public const string UnlockThemesIap = "9P4Q63CCFPBM";
+                    public const string UnlockThemes = "9P4Q63CCFPBM";
                 }
             }
         }
