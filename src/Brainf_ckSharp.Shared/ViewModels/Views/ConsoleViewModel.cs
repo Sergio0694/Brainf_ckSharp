@@ -13,8 +13,8 @@ using Brainf_ckSharp.Shared.Messages.Console.MemoryState;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Models.Console;
 using Brainf_ckSharp.Shared.Models.Console.Interfaces;
-using Brainf_ckSharp.Shared.ViewModels.Abstract;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Nito.AsyncEx;
@@ -24,7 +24,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
     /// <summary>
     /// A view model for an interactive REPL console for Brainf*ck/PBrain
     /// </summary>
-    public sealed class ConsoleViewModel : ViewModelBase<ObservableCollection<IConsoleEntry>>
+    public sealed class ConsoleViewModel : ViewModelBase
     {
         /// <summary>
         /// An <see cref="AsyncLock"/> instance to synchronize accesses to the console results
@@ -36,7 +36,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// </summary>
         public ConsoleViewModel()
         {
-            Source.Add(new ConsoleCommand());
+            Source = new ObservableCollection<IConsoleEntry> { new ConsoleCommand() };
 
             // This message is never unsubscribed, for two reasons:
             // - It's only received from this view model, so there's no risk of conflicts
@@ -66,6 +66,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
             base.OnDeactivated();
         }
+
+        /// <summary>
+        /// Gets the collection of currently visible console lines
+        /// </summary>
+        public ObservableCollection<IConsoleEntry> Source { get; }
 
         private IReadOnlyMachineState _MachineState = MachineStateProvider.Default;
 
@@ -198,7 +203,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         {
             using (await ExecutionMutex.LockAsync())
             {
-                TryClearSource();
+                Source.Clear();
+
                 Source.Add(new ConsoleCommand());
 
                 CurrentCommand = string.Empty;
