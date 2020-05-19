@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Services;
-using Brainf_ckSharp.Shared.Constants;
+using Brainf_ckSharp.Shared;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Uwp.Themes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
-namespace Brainf_ckSharp.Uwp.Constants
+namespace Brainf_ckSharp.Uwp
 {
     /// <summary>
     /// A <see langword="class"/> that exposes some settings in use

@@ -2,7 +2,6 @@
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
-using Brainf_ckSharp.Uwp.Constants;
 using Brainf_ckSharp.Uwp.Extensions.System;
 using Brainf_ckSharp.Uwp.Extensions.System.Collections.Generic;
 using Brainf_ckSharp.Uwp.Themes;

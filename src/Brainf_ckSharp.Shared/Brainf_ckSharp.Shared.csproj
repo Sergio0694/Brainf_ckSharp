@@ -12,7 +12,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Toolkit" Version="6.1.0-build.97" />
+    <PackageReference Include="Microsoft.Toolkit" Version="6.1.0-preview1.2" />
     <PackageReference Include="Nito.AsyncEx" Version="5.0.0" />
     <PackageReference Include="System.Text.Json" Version="4.7.1" />
   </ItemGroup>
@@ -23,5 +23,7 @@
     <ProjectReference Include="..\GitHub\GitHub.csproj" />
     <ProjectReference Include="..\Microsoft.Toolkit.Mvvm\Microsoft.Toolkit.Mvvm.csproj" />
   </ItemGroup>
+
+  <Import Project="..\Brainf_ckSharp.Shared.Constants\Brainf_ckSharp.Shared.Constants.projitems" Label="Shared" />
 
 </Project>

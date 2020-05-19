@@ -3,7 +3,6 @@ using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Services;
-using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Uwp.Controls.Host;
 using Brainf_ckSharp.Uwp.Helpers;
@@ -15,6 +14,8 @@ using Brainf_ckSharp.Uwp.Services.Share;
 using GitHub;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
+using Brainf_ckSharp.Services.Uwp.Store;
+using Brainf_ckSharp.Shared;
 
 namespace Brainf_ckSharp.Uwp
 {
@@ -69,6 +70,11 @@ namespace Brainf_ckSharp.Uwp
                 services.AddSingleton<IClipboardService, ClipboardService>();
                 services.AddSingleton<IShareService, ShareService>();
                 services.AddSingleton(_ => GitHubRestFactory.GetGitHubService("Brainf_ckSharp|Uwp"));
+#if DEBUG
+                services.AddSingleton<IStoreService, TestStoreService>();
+#else
+                services.AddSingleton<IStoreService, ProductionStoreService>();
+#endif
             });
 
             ISettingsService settings = Ioc.Default.GetRequiredService<ISettingsService>();
