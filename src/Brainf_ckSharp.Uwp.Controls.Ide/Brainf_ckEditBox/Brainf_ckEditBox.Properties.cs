@@ -142,24 +142,12 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             }
             else @this._DashStrokeStyle = new CanvasStrokeStyle();
 
-            // Line indicator style
-            switch (theme.LineHighlightStyle)
+            // Try to update the theme
+            if (@this.TryUpdateVisualElementsOnThemeChanged(theme))
             {
-                case LineHighlightStyle.Outline:
-                    @this._SelectionHighlightBorder!.BorderThickness = new Thickness(2);
-                    @this._SelectionHighlightBorder.BorderBrush = new SolidColorBrush(theme.LineHighlightColor);
-                    @this._SelectionHighlightBorder.Background = null;
-                    break;
-                case LineHighlightStyle.Fill:
-                    @this._SelectionHighlightBorder!.BorderThickness = default;
-                    @this._SelectionHighlightBorder.BorderBrush = null;
-                    @this._SelectionHighlightBorder.Background = new SolidColorBrush(theme.LineHighlightColor);
-                    break;
-                default: throw new ArgumentException($"Invalid line highlight style: {theme.LineHighlightStyle}");
+                // Refresh the syntax highlight
+                @this.ApplySyntaxHighlight();
             }
-
-            // Refresh the syntax highlight
-            @this.ApplySyntaxHighlight();
         }
 
         /// <summary>

@@ -1,7 +1,11 @@
-﻿using Windows.UI.Xaml;
+﻿using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
+using Brainf_ckSharp.Uwp.Themes;
+using Brainf_ckSharp.Uwp.Themes.Enums;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
@@ -111,13 +115,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             _BackgroundCanvas.SizeChanged += BackgroundCanvas_SizeChanged;
             _TextOverlaysCanvas.Draw += TextOverlaysCanvas_Draw;
             ContentScroller.Loaded += ContentElement_Loaded;
-            ContentElement.SizeChanged += _ContentElement_SizeChanged;
+            ContentElement.SizeChanged += ContentElement_SizeChanged;
 
             ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.Y);
             ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.X);
             ContentScroller.StartExpressionAnimation(_SelectionHighlightBorder, Axis.Y);
             ContentScroller.StartExpressionAnimation(_CursorIndicatorRectangle, Axis.Y);
             ContentScroller.StartExpressionAnimation(_CursorIndicatorRectangle, Axis.Y);
+
+            UpdateVisualElementsOnThemeChanged(SyntaxHighlightTheme);
         }
 
         /// <summary>
@@ -149,7 +155,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         /// <param name="sender">The <see cref="ContentPresenter"/> that hosts the text renderer</param>
         /// <param name="e">The <see cref="SizeChangedEventArgs"/> for <see cref="FrameworkElement.SizeChanged"/></param>
-        private void _ContentElement_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void ContentElement_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             // This handler makes sure the Win2D canvas has enough space to render all of
             // its content. Since it's placed inside a canvas in the template, all its
@@ -160,6 +166,42 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             // plus 20 more DIPs just to be extra safe.
             _TextOverlaysCanvas!.Height = e.NewSize.Height + Padding.Top + 20;
             _TextOverlaysCanvas.Width = e.NewSize.Width;
+        }
+
+        /// <summary>
+        /// Tries to update the visual elements in the template when the current <see cref="Brainf_ckTheme"/> changes
+        /// </summary>
+        /// <param name="theme">The <see cref="Brainf_ckTheme"/> to use</param>
+        /// <returns>Whether or not the theme change was applied</returns>
+        private bool TryUpdateVisualElementsOnThemeChanged(Brainf_ckTheme theme)
+        {
+            if (_SelectionHighlightBorder is null) return false;
+
+            UpdateVisualElementsOnThemeChanged(theme);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Updates the visual elements in the template when the current <see cref="Brainf_ckTheme"/> changes
+        /// </summary>
+        /// <param name="theme">The <see cref="Brainf_ckTheme"/> to use</param>
+        private void UpdateVisualElementsOnThemeChanged(Brainf_ckTheme theme)
+        {
+            switch (theme.LineHighlightStyle)
+            {
+                case LineHighlightStyle.Outline:
+                    _SelectionHighlightBorder!.BorderThickness = new Thickness(2);
+                    _SelectionHighlightBorder.BorderBrush = new SolidColorBrush(theme.LineHighlightColor);
+                    _SelectionHighlightBorder.Background = null;
+                    break;
+                case LineHighlightStyle.Fill:
+                    _SelectionHighlightBorder!.BorderThickness = default;
+                    _SelectionHighlightBorder.BorderBrush = null;
+                    _SelectionHighlightBorder.Background = new SolidColorBrush(theme.LineHighlightColor);
+                    break;
+                default: throw new ArgumentException($"Invalid line highlight style: {theme.LineHighlightStyle}");
+            }
         }
     }
 }
