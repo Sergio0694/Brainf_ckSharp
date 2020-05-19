@@ -26,6 +26,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public SettingsSubPageViewModel()
         {
             InitializeCommand = new AsyncRelayCommand(InitializeAsync);
+            UnlockThemesSelectorCommand = new AsyncRelayCommand(TryUnlockThemesSelectorAsync);
 
             Source.Add(SettingsSection.Ide, SettingsSection.Ide);
             Source.Add(SettingsSection.UI, SettingsSection.UI);
@@ -35,7 +36,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Gets the <see cref="ICommand"/> instance responsible for initializing the view model
         /// </summary>
-        public IAsyncRelayCommand InitializeCommand { get; }
+        public ICommand InitializeCommand { get; }
+
+        /// <summary>
+        /// Gets the <see cref="ICommand"/> instance responsible for unlocking the themes selector
+        /// </summary>
+        public ICommand UnlockThemesSelectorCommand { get; }
 
         private bool _AutosaveDocuments = Get<bool>(nameof(AutosaveDocuments));
 
@@ -218,6 +224,16 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 
                 IsThemeSelectorAvailable = await Ioc.Default.GetRequiredService<IStoreService>().IsProductPurchasedAsync(id);
             }
+        }
+
+        /// <summary>
+        /// Prompts the user to unlock the themes selector
+        /// </summary>
+        private async Task TryUnlockThemesSelectorAsync()
+        {
+            const string id = Constants.Store.StoreIds.IAPs.UnlockThemes;
+
+            IsThemeSelectorAvailable = await Ioc.Default.GetRequiredService<IStoreService>().TryPurchaseProductAsync(id);
         }
 
         /// <summary>

@@ -98,7 +98,9 @@
                     <Border
                         Visibility="{Binding ElementName=ThemeSelectionComboBox, Path=IsEnabled, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                         Background="#C0000000">
-                        <Button Style="{StaticResource ExpandedSquareButtonRevealStyle}">
+                        <Button
+                            Style="{StaticResource ExpandedSquareButtonRevealStyle}"
+                            Command="{x:Bind ViewModel.UnlockThemesSelectorCommand}">
                             <StackPanel Spacing="8">
                                 <TextBlock
                                     HorizontalAlignment="Center"
