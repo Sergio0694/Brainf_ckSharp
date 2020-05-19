@@ -15,6 +15,7 @@ using Brainf_ckSharp.Uwp.Services.Share;
 using GitHub;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
+using Brainf_ckSharp.Services.Uwp.Store;
 
 namespace Brainf_ckSharp.Uwp
 {
@@ -69,6 +70,11 @@ namespace Brainf_ckSharp.Uwp
                 services.AddSingleton<IClipboardService, ClipboardService>();
                 services.AddSingleton<IShareService, ShareService>();
                 services.AddSingleton(_ => GitHubRestFactory.GetGitHubService("Brainf_ckSharp|Uwp"));
+#if DEBUG
+                services.AddSingleton<IStoreService, TestStoreService>();
+#else
+                services.AddSingleton<IStoreService, ProductionStoreService>();
+#endif
             });
 
             ISettingsService settings = Ioc.Default.GetRequiredService<ISettingsService>();

@@ -128,6 +128,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsService.cs" />
     <Compile Include="ShareService.cs" />
+    <Compile Include="Store\ProductionStoreService.cs" />
+    <Compile Include="Store\TestStoreService.cs" />
     <EmbeddedResource Include="Properties\Brainf_ckSharp.Services.Uwp.rd.xml" />
   </ItemGroup>
   <ItemGroup>
