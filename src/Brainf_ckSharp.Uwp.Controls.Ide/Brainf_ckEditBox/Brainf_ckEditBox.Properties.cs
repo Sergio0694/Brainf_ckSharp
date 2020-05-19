@@ -1,11 +1,8 @@
-﻿using System;
-using Windows.Foundation;
+﻿using Windows.Foundation;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Media;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.EventArgs;
 using Brainf_ckSharp.Uwp.Themes;
-using Brainf_ckSharp.Uwp.Themes.Enums;
 using Microsoft.Graphics.Canvas.Geometry;
 
 #nullable enable
