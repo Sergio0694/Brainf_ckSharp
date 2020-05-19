@@ -14,14 +14,26 @@
     xmlns:enums="using:Brainf_ckSharp.Shared.Enums"
     xmlns:enumsSettings="using:Brainf_ckSharp.Shared.Enums.Settings"
     xmlns:dataTemplates="using:Brainf_ckSharp.Uwp.Controls.DataTemplates"
+    xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
+    xmlns:convertersToolkit="using:Microsoft.Toolkit.Uwp.UI.Converters"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.DataContext>
         <subPages:SettingsSubPageViewModel x:Name="ViewModel"/>
     </UserControl.DataContext>
+    <interactivity:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Loaded">
+            <core:InvokeCommandAction Command="{x:Bind ViewModel.InitializeCommand}"/>
+        </core:EventTriggerBehavior>
+    </interactivity:Interaction.Behaviors>
     <UserControl.Resources>
+
+        <!--Converters-->
+        <convertersToolkit:BoolNegationConverter x:Key="BoolNegationConverter"/>
 
         <!--IDE settings template-->
         <DataTemplate
@@ -47,31 +59,69 @@
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Theme"/>
-                <ComboBox
-                    CornerRadius="0"
+                <Grid
                     Margin="0,4,0,0"
-                    Padding="2,0,0,0"
                     MinWidth="240"
                     MinHeight="112"
-                    ItemsSource="{markupExtensions:EnumValues Type=enumsSettings:IdeTheme}"
-                    SelectedItem="{x:Bind ViewModel.IdeTheme, Mode=TwoWay}">
-                    <ComboBox.ItemContainerStyle>
-                        <Style TargetType="ComboBoxItem">
-                            <Setter Property="Margin" Value="0,2,0,2"/>
-                            <Setter Property="Padding" Value="0"/>
-                            <Setter Property="BorderThickness" Value="0"/>
-                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                            <Setter Property="VerticalAlignment" Value="Stretch"/>
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                        </Style>
-                    </ComboBox.ItemContainerStyle>
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate x:DataType="enumsSettings:IdeTheme">
-                            <dataTemplates:IdeThemePreviewTemplate Theme="{x:Bind}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
+                    HorizontalAlignment="Left">
+
+                    <!--Selector-->
+                    <ComboBox
+                        x:Name="ThemeSelectionComboBox"
+                        IsEnabled="{x:Bind ViewModel.IsThemeSelectorAvailable, Mode=OneWay}"
+                        CornerRadius="0"
+                        Padding="2,0,0,0"
+                        MinWidth="240"
+                        MinHeight="112"
+                        ItemsSource="{markupExtensions:EnumValues Type=enumsSettings:IdeTheme}"
+                        SelectedItem="{x:Bind ViewModel.IdeTheme, Mode=TwoWay}">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Margin" Value="0,2,0,2"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                <Setter Property="VerticalAlignment" Value="Stretch"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="enumsSettings:IdeTheme">
+                                <dataTemplates:IdeThemePreviewTemplate Theme="{x:Bind}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <!--This control has a layout issue that causes it not to be properly aligned
+                        horizontally. The workaround is to align it to the left and manually offset it.-->
+                    <Border
+                        Visibility="{Binding ElementName=ThemeSelectionComboBox, Path=IsEnabled, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
+                        Background="#C0000000">
+                        <Button Style="{StaticResource ExpandedSquareButtonRevealStyle}">
+                            <StackPanel Spacing="8">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    TextAlignment="Center"
+                                    IsTextScaleFactorEnabled="False"
+                                    Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                                    Text="{StaticResource UnlockIcon}"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="32"/>
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    TextAlignment="Center"
+                                    IsTextScaleFactorEnabled="False"
+                                    Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                                    Text="Tap to unlock"
+                                    FontSize="14"
+                                    FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Button>
+                    </Border>
+                </Grid>
 
                 <!--Brackets on new line-->
                 <TextBlock
