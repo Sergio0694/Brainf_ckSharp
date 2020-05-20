@@ -43,7 +43,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             using (FormattingLock.For(this))
             {
                 string
-                    oldText = PlainText,
+                    oldText = Text,
                     newText = Document.GetText();
 
                 int
@@ -85,7 +85,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 else FormatRange(newText, 0, textLength);
 
                 _SyntaxValidationResult = Brainf_ckParser.ValidateSyntax(newText);
-                PlainText = newText;
+                Text = newText;
             }
         }
 
@@ -209,7 +209,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 string text = Document.GetText();
 
                 _SyntaxValidationResult = Brainf_ckParser.ValidateSyntax(text);
-                PlainText = text;
+                Text = text;
             }
         }
 
@@ -238,7 +238,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     if (Unsafe.Add(ref r0, i) == Characters.CarriageReturn)
                         Document.GetRangeAt(bounds.Start + i + count++).Text = "\t";
 
-                PlainText = Document.GetText();
+                Text = Document.GetText();
             }
         }
 
@@ -275,7 +275,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         i++;
                 }
 
-                PlainText = Document.GetText();
+                Text = Document.GetText();
             }
         }
 
@@ -298,7 +298,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 string text = Document.GetText();
 
                 _SyntaxValidationResult = Brainf_ckParser.ValidateSyntax(text);
-                PlainText = text;
+                Text = text;
 
                 int
                     sourceLength = source.Length,

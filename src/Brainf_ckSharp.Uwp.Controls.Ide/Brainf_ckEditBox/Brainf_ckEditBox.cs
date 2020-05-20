@@ -26,7 +26,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             SelectionChanging += Brainf_ckEditBox_SelectionChanging;
             SelectionChanged += Brainf_ckEditBox_SelectionChanged;
             TextChanging += MarkdownRichEditBox_TextChanging;
-            TextChanged += MarkdownRichEditBox_TextChanged;
+            base.TextChanged += MarkdownRichEditBox_TextChanged;
             Paste += Brainf_ckEditBox_Paste;
         }
 

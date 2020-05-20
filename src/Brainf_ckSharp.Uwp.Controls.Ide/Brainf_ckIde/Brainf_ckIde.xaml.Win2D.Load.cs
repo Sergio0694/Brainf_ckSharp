@@ -20,7 +20,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="text">The current source code being displayed</param>
         private void UpdateDiffInfo(string text)
         {
-            MemoryOwner<LineModificationType> diff = LineDiffer.ComputeDiff(_ReferenceText, text, Characters.CarriageReturn);
+            MemoryOwner<LineModificationType> diff = LineDiffer.ComputeDiff(_LoadedText, text, Characters.CarriageReturn);
 
             ref LineModificationType oldRef = ref _DiffIndicators.DangerousGetReference();
             ref LineModificationType newRef = ref diff.DangerousGetReference();

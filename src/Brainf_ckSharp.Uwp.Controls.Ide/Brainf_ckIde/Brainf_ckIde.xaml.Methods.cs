@@ -14,19 +14,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     public sealed partial class Brainf_ckIde
     {
         /// <summary>
-        /// The reference text currently in use
+        /// The loaded text currently in use (used as a reference for changes)
         /// </summary>
-        private string _ReferenceText = "\r";
-
-        /// <summary>
-        /// Gets the source code currently displayed in the control
-        /// </summary>
-        /// <returns></returns>
-        [Pure]
-        public string GetText()
-        {
-            return CodeEditBox.PlainText;
-        }
+        private string _LoadedText = "\r";
 
         /// <summary>
         /// Loads a given text file and starts using it as reference for the git diff indicators
@@ -34,7 +24,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="text"></param>
         public void LoadText(string text)
         {
-            _ReferenceText = text.WithCarriageReturnLineEndings();
+            _LoadedText = text.WithCarriageReturnLineEndings();
 
             _DiffIndicators.Span.Clear();
 
@@ -46,7 +36,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         public void MarkTextAsSaved()
         {
-            _ReferenceText = CodeEditBox.PlainText;
+            _LoadedText = CodeEditBox.Text;
 
             UpdateDiffInfo();
 
@@ -129,7 +119,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             i = 0;
             int j = 0, k = 0;
 
-            foreach (var line in CodeEditBox.PlainText.Tokenize(Characters.CarriageReturn))
+            foreach (var line in CodeEditBox.Text.Tokenize(Characters.CarriageReturn))
             {
                 // If the current line is marked, do a linear search to find the first operator
                 if (Unsafe.Add(ref bufferRef, i) == j)

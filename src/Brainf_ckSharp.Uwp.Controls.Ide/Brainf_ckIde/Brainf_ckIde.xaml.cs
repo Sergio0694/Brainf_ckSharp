@@ -61,8 +61,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         /// <param name="sender">The <see cref="Brainf_ckEditBox"/> instance in use</param>
         /// <param name="args">The arguments for the new Brainf*ck/Pbrain source code being displayed</param>
-        private void CodeEditBox_OnPlainTextChanged(Brainf_ckEditBox sender, PlainTextChangedEventArgs args)
+        private void CodeEditBox_TextChanged(Brainf_ckEditBox sender, PlainTextChangedEventArgs args)
         {
+            Text = args.PlainText;
+
             int numberOfLines = args.PlainText.Count(Characters.CarriageReturn);
 
             UpdateLineIndicators(numberOfLines);
@@ -99,7 +101,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             range.GetRect(PointOptions.Transform, out Rect line, out _);
 
             // Get the line number
-            int lineNumber = CodeEditBox.PlainText.AsSpan(0, range.StartPosition).Count(Characters.CarriageReturn) + 1;
+            int lineNumber = CodeEditBox.Text.AsSpan(0, range.StartPosition).Count(Characters.CarriageReturn) + 1;
 
             if (lineNumber == 1) return;
 

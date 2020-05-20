@@ -12,24 +12,24 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     public sealed partial class Brainf_ckEditBox
     {
         /// <summary>
-        /// Raised whenever the <see cref="PlainText"/> property changes
+        /// Raised whenever the <see cref="Text"/> property changes
         /// </summary>
-        public event TypedEventHandler<Brainf_ckEditBox, PlainTextChangedEventArgs>? PlainTextChanged;
+        public new event TypedEventHandler<Brainf_ckEditBox, PlainTextChangedEventArgs>? TextChanged;
 
         /// <summary>
         /// Gets the plain text currently displayed in the control
         /// </summary>
-        public string PlainText
+        public string Text
         {
-            get => (string)GetValue(PlainTextProperty);
+            get => (string)GetValue(TextProperty);
             private set
             {
-                SetValue(PlainTextProperty, value);
+                SetValue(TextProperty, value);
 
-                if (PlainTextChanged != null)
+                if (TextChanged != null)
                 {
                     PlainTextChangedEventArgs args = new PlainTextChangedEventArgs(value, _SyntaxValidationResult);
-                    PlainTextChanged(this, args);
+                    TextChanged(this, args);
                 }
             }
         }
@@ -71,11 +71,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
-        /// Gets the dependency property for <see cref="PlainText"/>.
+        /// Gets the dependency property for <see cref="Text"/>.
         /// </summary>
-        public static readonly DependencyProperty PlainTextProperty =
+        public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register(
-                nameof(PlainText),
+                nameof(Text),
                 typeof(string),
                 typeof(Brainf_ckEditBox),
                 new PropertyMetadata("\r"));

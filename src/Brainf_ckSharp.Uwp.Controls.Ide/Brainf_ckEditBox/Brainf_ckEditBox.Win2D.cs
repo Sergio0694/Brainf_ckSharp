@@ -134,7 +134,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private bool TryUpdateWhitespaceCharactersList()
         {
             // Prepare the current text
-            ReadOnlySpan<char> text = PlainText.AsSpan();
+            ReadOnlySpan<char> text = Text.AsSpan();
             ref char r0 = ref MemoryMarshal.GetReference(text);
             int length = text.Length;
 
@@ -219,7 +219,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             Debug.Assert(_SyntaxValidationResult.IsSuccessOrEmptyScript);
 
             // Prepare the current text
-            ReadOnlySpan<char> text = PlainText.AsSpan();
+            ReadOnlySpan<char> text = Text.AsSpan();
             ref char r0 = ref MemoryMarshal.GetReference(text);
             int length = text.Length;
 
