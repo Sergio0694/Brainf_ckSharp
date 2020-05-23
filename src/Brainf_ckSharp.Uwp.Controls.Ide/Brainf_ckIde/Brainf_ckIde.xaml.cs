@@ -65,6 +65,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         {
             Text = args.PlainText;
 
+            TextChanged?.Invoke(this, args);
+
             int numberOfLines = args.PlainText.Count(Characters.CarriageReturn);
 
             UpdateLineIndicators(numberOfLines);
