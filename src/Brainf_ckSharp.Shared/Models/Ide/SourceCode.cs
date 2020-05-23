@@ -14,6 +14,11 @@ namespace Brainf_ckSharp.Shared.Models.Ide
     public sealed class SourceCode
     {
         /// <summary>
+        /// Gets the empty content for a new source code
+        /// </summary>
+        public const string EmptyContent = "\r";
+
+        /// <summary>
         /// Creates a new <see cref="SourceCode"/> instance with the specified parameters
         /// </summary>
         /// <param name="content">The content of the current source code</param>
@@ -46,7 +51,7 @@ namespace Brainf_ckSharp.Shared.Models.Ide
         /// </summary>
         /// <returns>A new, empty <see cref="SourceCode"/> instance</returns>
         [Pure]
-        public static SourceCode CreateEmpty() => new SourceCode("\r", null, new CodeMetadata());
+        public static SourceCode CreateEmpty() => new SourceCode(EmptyContent, null, new CodeMetadata());
 
         /// <summary>
         /// Creates a new <see cref="SourceCode"/> instance from the specified reference file

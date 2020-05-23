@@ -64,6 +64,34 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             }
         }
 
+        private string _CurrentText = SourceCode.EmptyContent;
+
+        /// <summary>
+        /// Gets or sets the currently displayed text
+        /// </summary>
+        public string CurrentText
+        {
+            get => _CurrentText;
+            set
+            {
+                if (Set(ref _CurrentText, value))
+                {
+                    IsUnsavedEditPending = value != Code.Content;
+                }
+            }
+        }
+
+        private bool _IsUnsavedEditPending;
+
+        /// <summary>
+        /// Gets whether or not there are pending unsaved changes to the current file
+        /// </summary>
+        public bool IsUnsavedEditPending
+        {
+            get => _IsUnsavedEditPending;
+            private set => Set(ref _IsUnsavedEditPending, value);
+        }
+
         /// <inheritdoc/>
         protected override void OnActivated()
         {
