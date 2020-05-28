@@ -11,7 +11,6 @@ using Brainf_ckSharp.Unit.Shared.Models;
 namespace Brainf_ckSharp.Profiler
 {
     [MemoryDiagnoser]
-    [SimpleJob(RuntimeMoniker.NetCoreApp21)]
     [SimpleJob(RuntimeMoniker.NetCoreApp31)]
     [SimpleJob(RuntimeMoniker.NetCoreApp50)]
     [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByParams)]
