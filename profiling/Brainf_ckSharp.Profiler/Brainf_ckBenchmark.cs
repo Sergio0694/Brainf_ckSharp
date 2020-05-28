@@ -13,13 +13,14 @@ namespace Brainf_ckSharp.Profiler
     [MemoryDiagnoser]
     [SimpleJob(RuntimeMoniker.NetCoreApp21)]
     [SimpleJob(RuntimeMoniker.NetCoreApp31)]
+    [SimpleJob(RuntimeMoniker.NetCoreApp50)]
     [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByParams)]
     public class Brainf_ckBenchmark
     {
         /// <summary>
         /// The name of the script to benchmark
         /// </summary>
-        [Params("HelloWorld", "Sum", "Multiply", "Division", "Fibonacci", "Mandelbrot")]
+        [Params("Division", "Fibonacci", "Mandelbrot")]
         public string? Name;
 
         /// <summary>
@@ -31,23 +32,6 @@ namespace Brainf_ckSharp.Profiler
         public void Setup()
         {
             Script = ScriptLoader.LoadScriptByName(Name!);
-        }
-
-        [Benchmark(Baseline = true)]
-        public string Debug()
-        {
-            Option<InterpreterSession> result = Brainf_ckInterpreter
-                .CreateDebugConfiguration()
-                .WithSource(Script!.Source)
-                .WithStdin(Script.Stdin)
-                .WithMemorySize(Script.MemorySize)
-                .WithOverflowMode(Script.OverflowMode)
-                .TryRun();
-
-            using InterpreterSession enumerator = result.Value!;
-
-            enumerator.MoveNext();
-            return enumerator.Current.Stdout;
         }
 
         [Benchmark]
@@ -63,7 +47,7 @@ namespace Brainf_ckSharp.Profiler
 
             result.Value!.MachineState.Dispose();
 
-            return result.Value.Stdout;
+            return result.Value!.Stdout;
         }
     }
 }
