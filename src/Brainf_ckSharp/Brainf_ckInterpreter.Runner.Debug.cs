@@ -120,11 +120,6 @@ namespace Brainf_ckSharp
                 {
                     frame = Unsafe.Add(ref stackFrames, depth);
 
-                    // This label is used when a function call is performed: a new stack frame
-                    // is pushed in the frames collection and then a goto is used to jump out
-                    // of both the switch case and the inner loop. This is faster than using
-                    // another variable to manually handle the two consecutive breaks to
-                    // reach the start of the inner loop from a switch case.
                     StackFrameLoop:
 
                     // Iterate over the current opcodes
@@ -246,18 +241,11 @@ namespace Brainf_ckSharp
                     }
                 } while (--depth >= 0);
 
-                return ExitCode.Success;
+                ExitCode exitCode = ExitCode.Success;
+                goto Exit;
 
-                // Exit paths for all failures or partial executions in the interpreter.
-                // Whenever an executable completes its execution and the current stack
-                // frame needs to be updated with the current position, it is done from
-                // one of these labels: each of them sets the right exit flag and then
-                // jumps to the exit label, which updates the current stack frame and
-                // returns. Having all these exit paths here makes the code more compact
-                // into the inner loop, and the two jumps don't produce overhead since
-                // one of them would only be triggered when the inner loop has terminated.
                 BreakpointReached:
-                ExitCode exitCode = ExitCode.BreakpointReached;
+                exitCode = ExitCode.BreakpointReached;
                 goto UpdateStackFrameAndExit;
 
                 UpperBoundExceeded:
@@ -301,6 +289,8 @@ namespace Brainf_ckSharp
 
                 UpdateStackFrameAndExit:
                 Unsafe.Add(ref stackFrames, depth) = frame.WithOffset(i);
+
+                Exit:
                 return exitCode;
             }
         }

@@ -317,11 +317,23 @@ namespace Brainf_ckSharp
                     }
                 } while (--depth >= 0);
 
-                return ExitCode.Success;
+                // We still use a goto in the success path to be able to reuse
+                // the same epilogue in the generated code for all exit conditions.
+                // This is because this method needs to push quite a few registers to
+                // the stack, so having a single exit point helps to reduce the code size.
+                ExitCode exitCode = ExitCode.Success;
+                goto Exit;
 
-                // Same exit handling of the DEBUG configuration, minus breakpoints
+                // Exit paths for all failures or partial executions in the interpreter.
+                // Whenever an executable completes its execution and the current stack
+                // frame needs to be updated with the current position, it is done from
+                // one of these labels: each of them sets the right exit flag and then
+                // jumps to the exit label, which updates the current stack frame and
+                // returns. Having all these exit paths here makes the code more compact
+                // into the inner loop, and the two jumps don't produce overhead since
+                // one of them would only be triggered when the inner loop has terminated.
                 UpperBoundExceeded:
-                ExitCode exitCode = ExitCode.UpperBoundExceeded;
+                exitCode = ExitCode.UpperBoundExceeded;
                 goto UpdateStackFrameAndExit;
 
                 LowerBoundExceeded:
@@ -361,6 +373,8 @@ namespace Brainf_ckSharp
 
                 UpdateStackFrameAndExit:
                 Unsafe.Add(ref stackFrames, depth) = frame.WithOffset(i);
+
+                Exit:
                 return exitCode;
             }
         }
