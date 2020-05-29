@@ -3,7 +3,6 @@ using System.Buffers;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
-using Microsoft.Toolkit.HighPerformance.Extensions;
 
 #nullable enable
 
@@ -46,15 +45,25 @@ namespace Brainf_ckSharp.Buffers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryWrite(char c)
         {
-            if (_Position == Specs.StdoutBufferSizeLimit) return false;
-
             Debug.Assert(Buffer != null);
             Debug.Assert(_Position >= 0);
-            Debug.Assert(_Position < Specs.StdoutBufferSizeLimit);
+            Debug.Assert(_Position <= Specs.StdoutBufferSizeLimit);
 
-            Buffer!.DangerousGetReferenceAt(_Position++) = c;
+            char[] buffer = Buffer!;
+            int position = _Position;
 
-            return true;
+            // Like in the other buffer, manually check for bounds to remove the
+            // automatic bounds check added by the JIT compiler in the array access.
+            if ((uint)position < (uint)buffer.Length)
+            {
+                buffer[position] = c;
+
+                _Position++;
+
+                return true;
+            }
+
+            return false;
         }
 
         /// <inheritdoc/>

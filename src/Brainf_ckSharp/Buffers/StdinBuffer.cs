@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using Brainf_ckSharp.Constants;
 
 namespace Brainf_ckSharp.Buffers
 {
@@ -35,9 +37,20 @@ namespace Brainf_ckSharp.Buffers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryRead(out char c)
         {
-            if (_Position < Data.Length)
+            Debug.Assert(_Position >= 0);
+            Debug.Assert(_Position <= Data.Length);
+
+            string data = Data;
+            int position = _Position;
+
+            // Make local copies of the variables and manually check the length
+            // to skip the automatic bounds check added by the JIT compiler.
+            // Doing so also greatly reduces the code size for this specific method.
+            if ((uint)position < (uint)data.Length)
             {
-                c = Data[_Position++];
+                c = data[position];
+
+                _Position++;
 
                 return true;
             }
