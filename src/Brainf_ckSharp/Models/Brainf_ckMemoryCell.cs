@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Memory.Interfaces;
 
@@ -16,6 +15,7 @@ namespace Brainf_ckSharp.Models
         /// <param name="index">The index for the memory cell</param>
         /// <param name="value">The value for the memory cell</param>
         /// <param name="isSelected">Gets whether the cell is selected</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal Brainf_ckMemoryCell(int index, ushort value, bool isSelected)
         {
             Index = index;
@@ -38,7 +38,6 @@ namespace Brainf_ckSharp.Models
         /// </summary>
         public char Character
         {
-            [Pure]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => (char)Value;
         }
@@ -74,7 +73,12 @@ namespace Brainf_ckSharp.Models
         }
 
         /// <inheritdoc/>
-        public override bool Equals(object obj) => obj is Brainf_ckMemoryCell cell && Equals(cell);
+        public override bool Equals(object obj)
+        {
+            return
+                obj is Brainf_ckMemoryCell cell &&
+                Equals(cell);
+        }
 
         /// <inheritdoc/>
         public override int GetHashCode()
