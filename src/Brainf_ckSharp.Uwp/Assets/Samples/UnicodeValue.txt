@@ -1,76 +1,1 @@
-[
-	Simply add one character in the Stdin buffer, 
-	and this program will prints its Unicode value
-]
->>,. read and print char
->++
-[
-	>++++++
-	[
-		>+++ 36
-		>++++ 48
-		>+++++ 60
-		<<<-
-	]
-	<-
-]
->>----. print a space
->---...[-] print three lines and reset
->++. [-] major symbol
-<<.[-] space
-<<< return to the char value
-[
-	>+++
-	[
-		>+++<- 10 in 3rd cell
-	]
-	>+<<
-	[
-		>+>>+ copy the value
-		<<<-
-	]
-	>>>
-	[
-		<<<+ move the copy
-		>>>- 
-	]
-	<< return to 1st cell
-	[
-		->->+ sub 1 to 10
-		< return to previous
-		[
-			>>> if != 0 skip
-		]
-		>
-		[
-			<++++++++++
-			>----------
-			>>>>+<
-		]
-		<<<<<
-	]
-	>[-] reset temp cell
-	>
-	[
-		<<+ move first value
-		>>-
-	]
-	>>>>
-	[
-		<<<<<+ move value
-		>>>>>-
-	]
-	<<<<<<<
-	[-]+ set previous temp cell to 1
-	>>
-]
-<< start from the last number
-[
-	+++++
-	[
-		>++++++++<-
-	]
-	>. sum 48 and print it
-	[-] restore value
-	<<< go to previous number
-]
+[	Simply add one character in the Stdin buffer, 	and this program will prints its Unicode value]>>,. read and print char>++[	>++++++	[		>+++ 36		>++++ 48		>+++++ 60		<<<-	]	<-]>>----. print a space>---...[-] print three lines and reset>++. [-] major symbol<<.[-] space<<< return to the char value[	>+++	[		>+++<- 10 in 3rd cell	]	>+<<	[		>+>>+ copy the value		<<<-	]	>>>	[		<<<+ move the copy		>>>- 	]	<< return to 1st cell	[		->->+ sub 1 to 10		< return to previous		[			>>> if != 0 skip		]		>		[			<++++++++++			>----------			>>>>+<		]		<<<<<	]	>[-] reset temp cell	>	[		<<+ move first value		>>-	]	>>>>	[		<<<<<+ move value		>>>>>-	]	<<<<<<<	[-]+ set previous temp cell to 1	>>]<< start from the last number[	+++++	[		>++++++++<-	]	>. sum 48 and print it	[-] restore value	<<< go to previous number]

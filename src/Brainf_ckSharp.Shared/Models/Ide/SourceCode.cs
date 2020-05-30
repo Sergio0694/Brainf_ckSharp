@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Services;
@@ -78,7 +79,7 @@ namespace Brainf_ckSharp.Shared.Models.Ide
             {
                 string text = await file.ReadAllTextAsync();
 
-                text = text.Replace("\r\n", "\r");
+                text = text.Replace(Environment.NewLine, "\r");
 
                 SourceCode code = new SourceCode(text, file, new CodeMetadata());
 
