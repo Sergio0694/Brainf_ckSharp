@@ -76,6 +76,16 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
+        /// Raises the <see cref="CursorPositionChanged"/> event
+        /// </summary>
+        /// <param name="sender">The <see cref="Brainf_ckEditBox"/> instance in use</param>
+        /// <param name="args">The arguments for the cursor movement</param>
+        private void CodeEditBox_CursorPositionChanged(Brainf_ckEditBox sender, CursorPositionChangedEventArgs args)
+        {
+            CursorPositionChanged?.Invoke(this, args);
+        }
+
+        /// <summary>
         /// Updates the <see cref="TextBlock"/> that displays the line number next to each line
         /// </summary>
         /// <param name="numberOfLines">The current number of lines being displayed</param>

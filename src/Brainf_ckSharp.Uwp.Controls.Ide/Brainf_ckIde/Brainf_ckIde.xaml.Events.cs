@@ -10,5 +10,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// Raised whenever the <see cref="Text"/> property changes
         /// </summary>
         public event TypedEventHandler<Brainf_ckIde, TextChangedEventArgs>? TextChanged;
+
+        /// <summary>
+        /// Rasised when the cursor position changes
+        /// </summary>
+        public event TypedEventHandler<Brainf_ckIde, CursorPositionChangedEventArgs>? CursorPositionChanged;
     }
 }

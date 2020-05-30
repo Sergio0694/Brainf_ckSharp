@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Brainf_ckSharp.Constants;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 #nullable enable
 
@@ -59,6 +60,31 @@ namespace System
             }
 
             return depth;
+        }
+
+        /// <summary>
+        /// Calculates the 2D coordinates for a text position
+        /// </summary>
+        /// <param name="text">The input script to parse</param>
+        /// <param name="offset">The offset within <paramref name="text"/></param>
+        /// <returns>The 2D coordinates within <paramref name="text"/></returns>
+        [Pure]
+        public static (int Row, int Column) CalculateCoordinates(this string text, int offset)
+        {
+            Debug.Assert(offset >= 0);
+            Debug.Assert(offset <= text.Length);
+
+            int row = text.AsSpan().Slice(0, offset).Count('\r');
+
+            if (row == 0) return (0, offset);
+
+            ref char r0 = ref text.DangerousGetReference();
+
+            int column = 0;
+
+            while (--offset >= 0 && Unsafe.Add(ref r0, offset) != '\r') column++;
+
+            return (row, column);
         }
     }
 }

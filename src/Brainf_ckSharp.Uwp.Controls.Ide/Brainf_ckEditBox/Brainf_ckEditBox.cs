@@ -106,6 +106,12 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 cursorTransform.X = rect.X + Padding.Left;
                 cursorTransform.Y = rect.Y + Padding.Top;
             }
+
+            var position = Text.CalculateCoordinates(Document.Selection.EndPosition);
+            var args = new CursorPositionChangedEventArgs(position.Row + 1, position.Column + 1);
+
+            // Signal the cursor movement
+            CursorPositionChanged?.Invoke(this, args);
         }
 
         /// <summary>
