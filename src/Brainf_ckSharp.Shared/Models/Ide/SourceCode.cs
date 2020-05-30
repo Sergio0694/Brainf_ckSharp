@@ -78,6 +78,8 @@ namespace Brainf_ckSharp.Shared.Models.Ide
             {
                 string text = await file.ReadAllTextAsync();
 
+                text = text.Replace("\r\n", "\r");
+
                 SourceCode code = new SourceCode(text, file, new CodeMetadata());
 
                 string metadata = JsonSerializer.Serialize(code.Metadata);

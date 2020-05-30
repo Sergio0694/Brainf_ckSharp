@@ -5,7 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Brainf_ckSharp.Shared.ViewModels.Controls"
+    xmlns:viewModels="using:Brainf_ckSharp.Shared.ViewModels.Views"
     xmlns:system="using:System"
+    xmlns:convertersUI="using:Brainf_ckSharp.Uwp.Converters.UI"
     mc:Ignorable="d"
     d:DesignHeight="48"
     d:DesignWidth="400">
@@ -19,7 +21,9 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/> <!--State-->
             <ColumnDefinition Width="Auto"/> <!--Error-->
-            <ColumnDefinition Width="Auto"/> <!--Operators-->
+            <ColumnDefinition Width="Auto"/> <!--Row-->
+            <ColumnDefinition Width="Auto"/> <!--Column-->
+            <ColumnDefinition Width="Auto"/> <!--File-->
         </Grid.ColumnDefinitions>
 
         <!--Visual states-->
@@ -94,7 +98,35 @@
             VerticalAlignment="Center"
             IsTextScaleFactorEnabled="False"
             FontWeight="Normal"
-            Grid.Column="2"
+            Grid.Column="3"
             Text="{x:Bind system:String.Format('Char: {0}', ViewModel.WorkspaceViewModel.Text.Length), Mode=OneWay}"/>
+
+        <!--File-->
+        <Grid
+            Grid.Column="4"
+            Visibility="{x:Bind convertersUI:ObjectNotNullToVisibilityConverter.Convert(ViewModel.WorkspaceViewModel.(viewModels:IdeViewModel.Code).File), Mode=OneWay, FallbackValue=Collapsed}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock 
+                Text="&#xE70B;"
+                Style="{StaticResource FontIconTextBlockStyle}"
+                VerticalAlignment="Center"
+                FontSize="16"
+                Margin="0,2,0,0"/>
+            <TextBlock 
+                Foreground="White"
+                Margin="4,0,0,0"
+                FontSize="12"
+                Text="{x:Bind ViewModel.WorkspaceViewModel.(viewModels:IdeViewModel.Code).File.DisplayName, Mode=OneWay}"
+                VerticalAlignment="Center"
+                IsTextScaleFactorEnabled="False"
+                Grid.Column="1"
+                TextWrapping="NoWrap"
+                TextTrimming="CharacterEllipsis"
+                FontWeight="{x:Bind convertersUI:BoolToFontWeightConverter.Convert(ViewModel.WorkspaceViewModel.IsUnsavedEditPending), Mode=OneWay}"
+                MaxLines="1"/>
+        </Grid>
     </Grid>
 </UserControl>
