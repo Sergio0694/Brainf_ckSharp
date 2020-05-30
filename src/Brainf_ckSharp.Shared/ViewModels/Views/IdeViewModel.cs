@@ -64,19 +64,19 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             }
         }
 
-        private string _Text = SourceCode.EmptyContent;
+        private ReadOnlyMemory<char> _Text = SourceCode.EmptyContent.AsMemory();
 
         /// <summary>
         /// Gets or sets the currently displayed text
         /// </summary>
-        public override string Text
+        public override ReadOnlyMemory<char> Text
         {
             get => _Text;
             set
             {
                 if (Set(ref _Text, value))
                 {
-                    IsUnsavedEditPending = value != Code.Content;
+                    IsUnsavedEditPending = !value.Span.SequenceEqual(Code.Content.AsSpan());
                 }
             }
         }

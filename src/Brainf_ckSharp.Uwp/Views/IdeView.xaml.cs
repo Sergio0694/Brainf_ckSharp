@@ -102,7 +102,7 @@ namespace Brainf_ckSharp.Uwp.Views
         /// <param name="args">The <see cref="TextChangedEventArgs"/> instance for the current event</param>
         private void CodeEditor_OnTextChanged(Brainf_ckIde sender, TextChangedEventArgs args)
         {
-            ViewModel.Text = args.PlainText.Substring(0, args.PlainText.Length - 1);
+            ViewModel.Text = args.PlainText.AsMemory(0, args.PlainText.Length - 1);
             ViewModel.ValidationResult = args.ValidationResult;
         }
 

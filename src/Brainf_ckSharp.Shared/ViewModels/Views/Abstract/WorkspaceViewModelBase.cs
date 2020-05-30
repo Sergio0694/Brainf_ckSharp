@@ -1,4 +1,5 @@
-﻿using Brainf_ckSharp.Models;
+﻿using System;
+using Brainf_ckSharp.Models;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Views.Abstract
@@ -11,7 +12,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views.Abstract
         /// <summary>
         /// Gets or sets the currently displayed text
         /// </summary>
-        public abstract string Text { get; set; }
+        public abstract ReadOnlyMemory<char> Text { get; set; }
 
         private SyntaxValidationResult _ValidationResult = Brainf_ckParser.ValidateSyntax(string.Empty);
 

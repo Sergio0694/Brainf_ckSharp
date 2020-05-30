@@ -89,19 +89,19 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             private set => Set(ref _MachineState, value, true);
         }
 
-        private string _Text = string.Empty;
+        private ReadOnlyMemory<char> _Text;
 
         /// <summary>
         /// Gets the current command that can be executed
         /// </summary>
-        public override string Text
+        public override ReadOnlyMemory<char> Text
         {
             get => _Text;
             set
             {
                 if (Set(ref _Text, value))
                 {
-                    ValidationResult = Brainf_ckParser.ValidateSyntax(value);
+                    ValidationResult = Brainf_ckParser.ValidateSyntax(value.Span);
                     Column = value.Length + 1;
                 }
             }
@@ -129,7 +129,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                 {
                     command.Command += c;
 
-                    Text = command.Command;
+                    Text = command.Command.AsMemory();
                 }
                 else throw new InvalidOperationException("Missing console command to modify");
             }
@@ -148,7 +148,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
                     command.Command = current.Substring(0, Math.Max(current.Length - 1, 0));
 
-                    Text = command.Command;
+                    Text = command.Command.AsMemory();
                 }
                 else throw new InvalidOperationException("Missing console command to modify");
             }
@@ -165,7 +165,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                 {
                     command.Command = string.Empty;
 
-                    Text = string.Empty;
+                    Text = Memory<char>.Empty;
                 }
                 else throw new InvalidOperationException("Missing console command to modify");
             }
@@ -188,7 +188,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                 MachineState = MachineStateProvider.Default;
                 Source.Add(new ConsoleCommand());
 
-                Text = string.Empty;
+                Text = Memory<char>.Empty;
             }
         }
 
@@ -203,7 +203,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
                 Source.Add(new ConsoleCommand());
 
-                Text = string.Empty;
+                Text = Memory<char>.Empty;
             }
         }
 
@@ -260,7 +260,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
             Source.Add(new ConsoleCommand());
 
-            Text = string.Empty;
+            Text = Memory<char>.Empty;
         }
 
         /// <summary>
