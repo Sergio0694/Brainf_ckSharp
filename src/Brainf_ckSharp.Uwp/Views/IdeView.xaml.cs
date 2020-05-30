@@ -5,11 +5,11 @@ using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.ViewModels.Views;
 using Brainf_ckSharp.Uwp.Controls.Ide;
-using Brainf_ckSharp.Uwp.Controls.Ide.EventArgs;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Mvvm.Messaging.Messages;
+using TextChangedEventArgs = Brainf_ckSharp.Uwp.Controls.Ide.EventArgs.TextChangedEventArgs;
 
 #nullable enable
 
@@ -99,8 +99,8 @@ namespace Brainf_ckSharp.Uwp.Views
         /// Updates the currently displayed text
         /// </summary>
         /// <param name="sender">The sender <see cref="Brainf_ckIde"/> control</param>
-        /// <param name="args">The <see cref="PlainTextChangedEventArgs"/> instance for the current event</param>
-        private void CodeEditor_OnTextChanged(Brainf_ckIde sender, PlainTextChangedEventArgs args)
+        /// <param name="args">The <see cref="TextChangedEventArgs"/> instance for the current event</param>
+        private void CodeEditor_OnTextChanged(Brainf_ckIde sender, TextChangedEventArgs args)
         {
             ViewModel.CurrentText = args.PlainText;
         }

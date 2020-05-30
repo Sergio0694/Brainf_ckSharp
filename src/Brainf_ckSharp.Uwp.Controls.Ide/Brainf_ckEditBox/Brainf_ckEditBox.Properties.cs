@@ -14,7 +14,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// Raised whenever the <see cref="Text"/> property changes
         /// </summary>
-        public new event TypedEventHandler<Brainf_ckEditBox, PlainTextChangedEventArgs>? TextChanged;
+        public new event TypedEventHandler<Brainf_ckEditBox, TextChangedEventArgs>? TextChanged;
 
         /// <summary>
         /// Gets the plain text currently displayed in the control
@@ -26,11 +26,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             {
                 SetValue(TextProperty, value);
 
-                if (TextChanged != null)
-                {
-                    PlainTextChangedEventArgs args = new PlainTextChangedEventArgs(value, _SyntaxValidationResult);
-                    TextChanged(this, args);
-                }
+                TextChanged?.Invoke(this, new TextChangedEventArgs(value, _SyntaxValidationResult));
             }
         }
 

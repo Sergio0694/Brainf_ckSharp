@@ -9,6 +9,7 @@ using Brainf_ckSharp.Uwp.Controls.Ide.EventArgs;
 using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
 using Microsoft.Toolkit.HighPerformance.Extensions;
 using UICompositionAnimations.Enums;
+using TextChangedEventArgs = Brainf_ckSharp.Uwp.Controls.Ide.EventArgs.TextChangedEventArgs;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
@@ -61,7 +62,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         /// <param name="sender">The <see cref="Brainf_ckEditBox"/> instance in use</param>
         /// <param name="args">The arguments for the new Brainf*ck/Pbrain source code being displayed</param>
-        private void CodeEditBox_TextChanged(Brainf_ckEditBox sender, PlainTextChangedEventArgs args)
+        private void CodeEditBox_TextChanged(Brainf_ckEditBox sender, TextChangedEventArgs args)
         {
             Text = args.PlainText;
 
