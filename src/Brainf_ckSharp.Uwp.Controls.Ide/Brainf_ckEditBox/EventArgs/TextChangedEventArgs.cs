@@ -1,11 +1,12 @@
-﻿using Brainf_ckSharp.Models;
+﻿using System;
+using Brainf_ckSharp.Models;
 
-namespace Brainf_ckSharp.Uwp.Controls.Ide.EventArgs
+namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
     /// <summary>
     /// A <see langword="class"/> that contains info to signal plain text changes
     /// </summary>
-    public sealed class TextChangedEventArgs
+    public sealed class TextChangedEventArgs : EventArgs
     {
         /// <summary>
         /// Gets the currently displayed plain text

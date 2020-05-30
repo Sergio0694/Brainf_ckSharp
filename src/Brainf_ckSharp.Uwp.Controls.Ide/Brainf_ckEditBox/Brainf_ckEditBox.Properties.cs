@@ -1,7 +1,5 @@
-﻿using Windows.Foundation;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
-using Brainf_ckSharp.Uwp.Controls.Ide.EventArgs;
 using Brainf_ckSharp.Uwp.Themes;
 using Microsoft.Graphics.Canvas.Geometry;
 
@@ -11,11 +9,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
     public sealed partial class Brainf_ckEditBox
     {
-        /// <summary>
-        /// Raised whenever the <see cref="Text"/> property changes
-        /// </summary>
-        public new event TypedEventHandler<Brainf_ckEditBox, TextChangedEventArgs>? TextChanged;
-
         /// <summary>
         /// Gets the plain text currently displayed in the control
         /// </summary>

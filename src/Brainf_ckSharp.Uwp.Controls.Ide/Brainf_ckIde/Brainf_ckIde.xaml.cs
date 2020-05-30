@@ -5,11 +5,9 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Brainf_ckSharp.Constants;
-using Brainf_ckSharp.Uwp.Controls.Ide.EventArgs;
 using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
 using Microsoft.Toolkit.HighPerformance.Extensions;
 using UICompositionAnimations.Enums;
-using TextChangedEventArgs = Brainf_ckSharp.Uwp.Controls.Ide.EventArgs.TextChangedEventArgs;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {

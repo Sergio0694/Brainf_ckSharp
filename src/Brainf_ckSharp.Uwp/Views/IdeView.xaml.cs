@@ -9,7 +9,7 @@ using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Mvvm.Messaging.Messages;
-using TextChangedEventArgs = Brainf_ckSharp.Uwp.Controls.Ide.EventArgs.TextChangedEventArgs;
+using TextChangedEventArgs = Brainf_ckSharp.Uwp.Controls.Ide.TextChangedEventArgs;
 
 #nullable enable
 
