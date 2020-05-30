@@ -102,7 +102,19 @@ namespace Brainf_ckSharp.Uwp.Views
         /// <param name="args">The <see cref="TextChangedEventArgs"/> instance for the current event</param>
         private void CodeEditor_OnTextChanged(Brainf_ckIde sender, TextChangedEventArgs args)
         {
-            ViewModel.CurrentText = args.PlainText;
+            ViewModel.Text = args.PlainText;
+            ViewModel.ValidationResult = args.ValidationResult;
+        }
+
+        /// <summary>
+        /// Updates the current cursor position
+        /// </summary>
+        /// <param name="sender">The sender <see cref="Brainf_ckIde"/> control</param>
+        /// <param name="args">The <see cref="CursorPositionChangedEventArgs"/> instance for the current event</param>
+        private void CodeEditor_OnCursorPositionChanged(Brainf_ckIde sender, CursorPositionChangedEventArgs args)
+        {
+            ViewModel.Row = args.Row;
+            ViewModel.Column = args.Column;
         }
     }
 }

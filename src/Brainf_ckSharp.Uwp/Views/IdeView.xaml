@@ -23,5 +23,6 @@
     <!--IDE-->
     <ide:Brainf_ckIde
         x:Name="CodeEditor"
-        TextChanged="CodeEditor_OnTextChanged"/>
+        TextChanged="CodeEditor_OnTextChanged"
+        CursorPositionChanged="CodeEditor_OnCursorPositionChanged"/>
 </UserControl>

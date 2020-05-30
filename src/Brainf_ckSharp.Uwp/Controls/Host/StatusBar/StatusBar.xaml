@@ -29,7 +29,7 @@
             <VisualStateGroup>
                 <VisualState x:Name="ConsoleState">
                     <VisualState.StateTriggers>
-                        <StateTrigger IsActive="{x:Bind ViewModel.ConsoleViewModel.CurrentCommandValidationResult.IsSuccessOrEmptyScript, Mode=OneWay}"/>
+                        <StateTrigger IsActive="{x:Bind ViewModel.ConsoleViewModel.ValidationResult.IsSuccessOrEmptyScript, Mode=OneWay}"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter 
@@ -45,7 +45,7 @@
                 </VisualState>
                 <VisualState x:Name="ConsoleErrorState">
                     <VisualState.StateTriggers>
-                        <StateTrigger IsActive="{x:Bind ViewModel.ConsoleViewModel.CurrentCommandValidationResult.IsError, Mode=OneWay}"/>
+                        <StateTrigger IsActive="{x:Bind ViewModel.ConsoleViewModel.ValidationResult.IsError, Mode=OneWay}"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter 
@@ -83,7 +83,7 @@
             IsTextScaleFactorEnabled="False"
             FontWeight="Normal"
             Grid.Column="1"
-            Text="{x:Bind system:String.Format('Error: {0}', ViewModel.ConsoleViewModel.CurrentCommandValidationResult.ErrorOffset), Mode=OneWay}"/>
+            Text="{x:Bind system:String.Format('Error: {0}', ViewModel.ConsoleViewModel.ValidationResult.ErrorOffset), Mode=OneWay}"/>
 
         <!--Operators-->
         <TextBlock
@@ -95,6 +95,6 @@
             IsTextScaleFactorEnabled="False"
             FontWeight="Normal"
             Grid.Column="2"
-            Text="{x:Bind system:String.Format('Char: {0}', ViewModel.ConsoleViewModel.CurrentCommand.Length), Mode=OneWay}"/>
+            Text="{x:Bind system:String.Format('Char: {0}', ViewModel.ConsoleViewModel.Text.Length), Mode=OneWay}"/>
     </Grid>
 </UserControl>

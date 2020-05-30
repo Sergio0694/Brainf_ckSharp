@@ -13,8 +13,8 @@ using Brainf_ckSharp.Shared.Messages.Console.MemoryState;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Models.Console;
 using Brainf_ckSharp.Shared.Models.Console.Interfaces;
+using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Nito.AsyncEx;
@@ -24,7 +24,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
     /// <summary>
     /// A view model for an interactive REPL console for Brainf*ck/PBrain
     /// </summary>
-    public sealed class ConsoleViewModel : ViewModelBase
+    public sealed class ConsoleViewModel : WorkspaceViewModelBase
     {
         /// <summary>
         /// An <see cref="AsyncLock"/> instance to synchronize accesses to the console results
@@ -36,6 +36,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// </summary>
         public ConsoleViewModel()
         {
+            // The row is always set to 1, as commands are one line each
+            Row = 1;
+
+            // This does not apply to this workspace view model
+            IsUnsavedEditPending = false;
+
             Source = new ObservableCollection<IConsoleEntry> { new ConsoleCommand() };
 
             // This message is never unsubscribed, for two reasons:
@@ -83,32 +89,22 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             private set => Set(ref _MachineState, value, true);
         }
 
-        private string _CurrentCommand = string.Empty;
+        private string _Text = string.Empty;
 
         /// <summary>
         /// Gets the current command that can be executed
         /// </summary>
-        public string CurrentCommand
+        public override string Text
         {
-            get => _CurrentCommand;
-            private set
+            get => _Text;
+            set
             {
-                if (Set(ref _CurrentCommand, value))
+                if (Set(ref _Text, value))
                 {
-                    CurrentCommandValidationResult = Brainf_ckParser.ValidateSyntax(value);
+                    ValidationResult = Brainf_ckParser.ValidateSyntax(value);
+                    Column = value.Length + 1;
                 }
             }
-        }
-
-        private SyntaxValidationResult _CurrentCommandValidationResult = Brainf_ckParser.ValidateSyntax(string.Empty);
-
-        /// <summary>
-        /// Gets the current <see cref="SyntaxValidationResult"/> value for <see cref="CurrentCommand"/>
-        /// </summary>
-        public SyntaxValidationResult CurrentCommandValidationResult
-        {
-            get => _CurrentCommandValidationResult;
-            private set => Set(ref _CurrentCommandValidationResult, value);
         }
 
         /// <summary>
@@ -133,7 +129,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                 {
                     command.Command += c;
 
-                    CurrentCommand = command.Command;
+                    Text = command.Command;
                 }
                 else throw new InvalidOperationException("Missing console command to modify");
             }
@@ -152,7 +148,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
                     command.Command = current.Substring(0, Math.Max(current.Length - 1, 0));
 
-                    CurrentCommand = command.Command;
+                    Text = command.Command;
                 }
                 else throw new InvalidOperationException("Missing console command to modify");
             }
@@ -169,7 +165,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                 {
                     command.Command = string.Empty;
 
-                    CurrentCommand = string.Empty;
+                    Text = string.Empty;
                 }
                 else throw new InvalidOperationException("Missing console command to modify");
             }
@@ -192,7 +188,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                 MachineState = MachineStateProvider.Default;
                 Source.Add(new ConsoleCommand());
 
-                CurrentCommand = string.Empty;
+                Text = string.Empty;
             }
         }
 
@@ -207,7 +203,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
                 Source.Add(new ConsoleCommand());
 
-                CurrentCommand = string.Empty;
+                Text = string.Empty;
             }
         }
 
@@ -264,7 +260,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
             Source.Add(new ConsoleCommand());
 
-            CurrentCommand = string.Empty;
+            Text = string.Empty;
         }
 
         /// <summary>

@@ -5,8 +5,8 @@ using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Models.Ide;
+using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
@@ -15,7 +15,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
     /// <summary>
     /// A view model for a Brainf*ck/PBrain IDE
     /// </summary>
-    public sealed class IdeViewModel : ViewModelBase
+    public sealed class IdeViewModel : WorkspaceViewModelBase
     {
         /// <summary>
         /// Raised whenever a script is requested to be run
@@ -64,32 +64,21 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             }
         }
 
-        private string _CurrentText = SourceCode.EmptyContent;
+        private string _Text = SourceCode.EmptyContent;
 
         /// <summary>
         /// Gets or sets the currently displayed text
         /// </summary>
-        public string CurrentText
+        public override string Text
         {
-            get => _CurrentText;
+            get => _Text;
             set
             {
-                if (Set(ref _CurrentText, value))
+                if (Set(ref _Text, value))
                 {
                     IsUnsavedEditPending = value != Code.Content;
                 }
             }
-        }
-
-        private bool _IsUnsavedEditPending;
-
-        /// <summary>
-        /// Gets whether or not there are pending unsaved changes to the current file
-        /// </summary>
-        public bool IsUnsavedEditPending
-        {
-            get => _IsUnsavedEditPending;
-            private set => Set(ref _IsUnsavedEditPending, value);
         }
 
         /// <inheritdoc/>
