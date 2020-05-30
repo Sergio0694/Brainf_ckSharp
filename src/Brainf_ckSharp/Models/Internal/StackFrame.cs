@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
-using Brainf_ckSharp.Extensions.Types;
 
 namespace Brainf_ckSharp.Models.Internal
 {
@@ -23,6 +23,7 @@ namespace Brainf_ckSharp.Models.Internal
         /// Creates a new <see cref="StackFrame"/> instance with the specified parameters
         /// </summary>
         /// <param name="range">The range of operators to execute</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public StackFrame(Range range) : this(range, range.Start) { }
 
         /// <summary>
@@ -30,6 +31,7 @@ namespace Brainf_ckSharp.Models.Internal
         /// </summary>
         /// <param name="range">The range of operators to execute</param>
         /// <param name="offset">The current offset during execution</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public StackFrame(Range range, int offset)
         {
             Debug.Assert(offset >= range.Start);
@@ -44,6 +46,7 @@ namespace Brainf_ckSharp.Models.Internal
         /// </summary>
         /// <param name="offset">The current offset during execution</param>
         /// <returns>A <see cref="StackFrame"/> instance like the current one, but with a different offset</returns>
+        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public StackFrame WithOffset(int offset) => new StackFrame(Range, offset);
     }

@@ -2,8 +2,8 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
-using Brainf_ckSharp.Extensions.Types;
 using Brainf_ckSharp.Models;
+using Brainf_ckSharp.Models.Internal;
 using Brainf_ckSharp.Opcodes.Interfaces;
 using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.HighPerformance.Buffers;

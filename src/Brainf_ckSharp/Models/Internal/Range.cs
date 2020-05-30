@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace Brainf_ckSharp.Extensions.Types
+namespace Brainf_ckSharp.Models.Internal
 {
     /// <summary>
     /// A <see langword="struct"/> that represents an interval of indices in a given sequence
@@ -23,6 +23,7 @@ namespace Brainf_ckSharp.Extensions.Types
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Range(int start, int end)
         {
             Debug.Assert(start >= 0);

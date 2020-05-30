@@ -1,5 +1,4 @@
-﻿using Brainf_ckSharp.Extensions.Types;
-using Brainf_ckSharp.Models;
+﻿using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Internal;
 using Brainf_ckSharp.Opcodes;
 using Microsoft.Toolkit.HighPerformance.Buffers;
