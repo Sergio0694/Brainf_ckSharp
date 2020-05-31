@@ -121,6 +121,8 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Analytics\AppCenterService.cs" />
+    <Compile Include="Analytics\TestAnalyticsService.cs" />
     <Compile Include="ClipboardService.cs" />
     <Compile Include="Abstractions\File.cs" />
     <Compile Include="FilesService.cs" />
@@ -133,6 +135,12 @@
     <EmbeddedResource Include="Properties\Brainf_ckSharp.Services.Uwp.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.AppCenter.Analytics">
+      <Version>3.2.2</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AppCenter.Crashes">
+      <Version>3.2.2</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
     </PackageReference>
