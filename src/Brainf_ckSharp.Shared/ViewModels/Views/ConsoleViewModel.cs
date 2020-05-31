@@ -238,7 +238,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
                     // Display textual results and exit codes
                     if (!string.IsNullOrEmpty(result.Value!.Stdout)) Source.Add(new ConsoleResult(result.Value!.Stdout));
-                    if (!result.Value!.ExitCode.HasFlag(ExitCode.Success)) Source.Add(new ConsoleException(result.Value!.ExitCode));
+                    if (!result.Value!.ExitCode.HasFlag(ExitCode.Success)) Source.Add(new ConsoleException(result.Value!.ExitCode, result.Value!.HaltingInfo!));
                 }
             }
 

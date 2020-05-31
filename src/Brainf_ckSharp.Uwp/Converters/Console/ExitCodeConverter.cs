@@ -22,7 +22,7 @@ namespace Brainf_ckSharp.Uwp.Converters.Console
 
             if (code.HasFlag(ExitCode.ThresholdExceeded)) return "Threshold exceeded";
             if (code.HasFlag(ExitCode.UpperBoundExceeded)) return "Upper bound exceeded";
-            if (code.HasFlag(ExitCode.LowerBoundExceeded)) return "Lower exceeded";
+            if (code.HasFlag(ExitCode.LowerBoundExceeded)) return "Lower bound exceeded";
             if (code.HasFlag(ExitCode.NegativeValue)) return "Negative value";
             if (code.HasFlag(ExitCode.MaxValueExceeded)) return "Maximum value exceeded";
             if (code.HasFlag(ExitCode.StdinBufferExhausted)) return "Stdin buffer exhausted";

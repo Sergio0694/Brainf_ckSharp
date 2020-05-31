@@ -76,17 +76,21 @@
         <DataTemplate
             x:Name="ExceptionResultTemplate"
             x:DataType="console:ConsoleException">
-            <TextBlock
-                FontSize="16"
-                TextWrapping="Wrap"
-                FontWeight="Bold"
-                Foreground="#FFA00000">
-                <Run Text="{x:Bind ExitCode}"/><Run Text=":"/>
-                <Run 
-                    Text="{x:Bind ExitCode}"
+            <RichTextBlock TextWrapping="Wrap">
+                <Paragraph
+                    FontSize="16"
                     FontWeight="Bold"
-                    Foreground="#FFA00000"/>
-            </TextBlock>
+                    Foreground="#FFA00000">
+                    <Run Text="exception:"/>
+                    <Run 
+                        Text="{x:Bind convertersConsole:ExitCodeConverter.Convert(ExitCode)}"
+                        FontWeight="Bold"
+                        Foreground="#FFA00000"/>
+                </Paragraph>
+                <Paragraph
+                    FontSize="14"
+                    attachedProperties:Brainf_ckInlineFormatterHelper.StackTrace="{x:Bind HaltingInfo.StackTrace}"/>
+            </RichTextBlock>
         </DataTemplate>
 
         <!--Restart template-->
