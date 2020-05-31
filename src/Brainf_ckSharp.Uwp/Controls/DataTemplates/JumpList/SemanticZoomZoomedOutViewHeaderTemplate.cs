@@ -66,7 +66,19 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList
             nameof(DescriptionText),
             typeof(string),
             typeof(SemanticZoomZoomedOutViewHeaderTemplate),
-            new PropertyMetadata(DependencyProperty.UnsetValue));
+            new PropertyMetadata(null, OnDescriptionTextPropertyChanged));
+
+        /// <summary>
+        /// Sets a new <see cref="Span"/> for the description when <see cref="DescriptionText"/> changes
+        /// </summary>
+        /// <param name="d">The source <see cref="DependencyObject"/> instance</param>
+        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> info for the current update</param>
+        private static void OnDescriptionTextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            SemanticZoomZoomedOutViewHeaderTemplate @this = (SemanticZoomZoomedOutViewHeaderTemplate)d;
+
+            @this.DescriptionSpan = new Span { Inlines = { new Run { Text = (string)e.NewValue ?? string.Empty } } };
+        }
 
         /// <summary>
         /// Gets or sets the <see cref="Span"/> for the current control's description

@@ -90,11 +90,7 @@
                             TextWrapping="NoWrap"
                             MaxLines="1"
                             TextTrimming="CharacterEllipsis"
-                            FontSize="16">
-                            <Span>
-                                <Run Text="{TemplateBinding DescriptionText}"/>
-                            </Span>
-                        </TextBlock>
+                            FontSize="16"/>
                     </StackPanel>
                 </ControlTemplate>
             </Setter.Value>
