@@ -94,6 +94,7 @@ namespace Brainf_ckSharp
         /// <param name="source">The input script to validate</param>
         /// <returns>A <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static SyntaxValidationResult ValidateSyntax(string source) => ValidateSyntax(source.AsSpan());
 
         /// <summary>

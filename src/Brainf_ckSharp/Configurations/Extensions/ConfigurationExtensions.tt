@@ -1,5 +1,6 @@
 ﻿<#@ template language="C#"
 #><#@ assembly name="System.Core" #>
+using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -31,6 +32,21 @@ foreach (var name in names)
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly <#=name#>Configuration WithSource(in this <#=name#>Configuration configuration, string source)
+        {
+            Unsafe.AsRef(configuration.Source) = source.AsMemory();
+            
+            return ref configuration;
+        }
+
+        /// <summary>
+        /// Sets the source code to parse and execute for a given configuration
+        /// </summary>
+        /// <param name="configuration">The input <see cref="<#=name#>Configuration"/> instance</param>
+        /// <param name="source">The source code to parse and execute</param>
+        /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ref readonly <#=name#>Configuration WithSource(in this <#=name#>Configuration configuration, ReadOnlyMemory<char> source)
         {
             Unsafe.AsRef(configuration.Source) = source;
             

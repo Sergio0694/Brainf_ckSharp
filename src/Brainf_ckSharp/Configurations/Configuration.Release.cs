@@ -25,7 +25,7 @@ namespace Brainf_ckSharp.Configurations
         {
             Guard.IsNotNull(Source, nameof(Source));
 
-            using MemoryOwner<Brainf_ckOperation>? operations = Brainf_ckParser.TryParse<Brainf_ckOperation>(Source!, out SyntaxValidationResult validationResult);
+            using MemoryOwner<Brainf_ckOperation>? operations = Brainf_ckParser.TryParse<Brainf_ckOperation>(Source.Value.Span, out SyntaxValidationResult validationResult);
 
             if (!validationResult.IsSuccess) return Option<InterpreterResult>.From(validationResult);
 

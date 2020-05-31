@@ -37,7 +37,7 @@ namespace Brainf_ckSharp
         /// <returns>The resulting buffer of opcodes for the parsed script</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static MemoryOwner<TOpcode>? TryParse<TOpcode>(string source, out SyntaxValidationResult validationResult)
+        internal static MemoryOwner<TOpcode>? TryParse<TOpcode>(ReadOnlySpan<char> source, out SyntaxValidationResult validationResult)
             where TOpcode : unmanaged, IOpcode
         {
             if (typeof(TOpcode) == typeof(Brainf_ckOperator))

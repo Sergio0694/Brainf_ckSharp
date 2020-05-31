@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
 
@@ -14,7 +15,7 @@ namespace Brainf_ckSharp.Configurations
         /// <summary>
         /// The source code to parse and execute
         /// </summary>
-        public readonly string? Source;
+        public readonly ReadOnlyMemory<char>? Source;
 
         /// <summary>
         /// The (optional) stdin buffer to use to run the script
@@ -50,7 +51,7 @@ namespace Brainf_ckSharp.Configurations
         /// <summary>
         /// The source code to parse and execute
         /// </summary>
-        public readonly string? Source;
+        public readonly ReadOnlyMemory<char>? Source;
 
         /// <summary>
         /// The (optional) stdin buffer to use to run the script

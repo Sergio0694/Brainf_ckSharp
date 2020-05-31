@@ -230,7 +230,7 @@ namespace Brainf_ckSharp
             /// <returns>The resulting precomputed breakpoints table for the input executable</returns>
             [Pure]
             public static MemoryOwner<bool> LoadBreakpointsTable(
-                string source,
+                ReadOnlySpan<char> source,
                 int operatorsCount,
                 ReadOnlySpan<int> breakpoints)
             {

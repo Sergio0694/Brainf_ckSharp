@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ckSharp.Configurations;
@@ -23,6 +24,21 @@ namespace Brainf_ckSharp
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly DebugConfiguration WithSource(in this DebugConfiguration configuration, string source)
+        {
+            Unsafe.AsRef(configuration.Source) = source.AsMemory();
+            
+            return ref configuration;
+        }
+
+        /// <summary>
+        /// Sets the source code to parse and execute for a given configuration
+        /// </summary>
+        /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
+        /// <param name="source">The source code to parse and execute</param>
+        /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ref readonly DebugConfiguration WithSource(in this DebugConfiguration configuration, ReadOnlyMemory<char> source)
         {
             Unsafe.AsRef(configuration.Source) = source;
             
@@ -120,6 +136,21 @@ namespace Brainf_ckSharp
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly ReleaseConfiguration WithSource(in this ReleaseConfiguration configuration, string source)
+        {
+            Unsafe.AsRef(configuration.Source) = source.AsMemory();
+            
+            return ref configuration;
+        }
+
+        /// <summary>
+        /// Sets the source code to parse and execute for a given configuration
+        /// </summary>
+        /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
+        /// <param name="source">The source code to parse and execute</param>
+        /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ref readonly ReleaseConfiguration WithSource(in this ReleaseConfiguration configuration, ReadOnlyMemory<char> source)
         {
             Unsafe.AsRef(configuration.Source) = source;
             
