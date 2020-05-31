@@ -144,10 +144,11 @@ namespace Brainf_ckSharp
                     char op = (char)Unsafe.Add(ref lookupRef, operation.Operator);
 
                     // Copy the repeated operator
-                    for (int k = 0; k < operation.Count; k++)
+                    int k = 0;
+                    do
                     {
                         Unsafe.Add(ref targetRef, j + k) = op;
-                    }
+                    } while (++k < operation.Count);
 
                     j += operation.Count;
                 }
