@@ -36,8 +36,9 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         {
             request.ReportResult(Text);
 
-            // Clear the buffer if requested
-            if (Ioc.Default.GetRequiredService<ISettingsService>().GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest))
+            // Clear the buffer if requested, and if not from a background execution
+            if (!request.IsFromBackgroundExecution &&
+                Ioc.Default.GetRequiredService<ISettingsService>().GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest))
             {
                 Text = string.Empty;
             }

@@ -110,7 +110,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
                 _ExecutionTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
 
                 // Execution arguments and options
-                string stdin = Messenger.Request<StdinRequestMessage, string>();
+                string stdin = Messenger.Request<StdinRequestMessage, string>(new StdinRequestMessage(false));
                 int memorySize = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<int>(SettingsKeys.MemorySize);
                 OverflowMode overflowMode = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<OverflowMode>(SettingsKeys.OverflowMode);
 
