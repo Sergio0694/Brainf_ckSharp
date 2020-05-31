@@ -249,7 +249,7 @@
                             <GroupStyle.HeaderTemplate>
                                 <DataTemplate x:DataType="collections:IReadOnlyObservableGroup">
                                     <jumpList:SemanticZoomZoomedInViewHeaderTemplate
-                                        Title="{x:Bind convertersSubPages:CodeLibraryCategoryConverter.Convert((enums:CodeLibrarySection)Key))}"
+                                        Title="{x:Bind convertersSubPages:CodeLibraryCategoryConverter.ConvertSectionName((enums:CodeLibrarySection)Key))}"
                                         Margin="0,-8,0,0"/>
                                 </DataTemplate>
                             </GroupStyle.HeaderTemplate>
@@ -285,8 +285,8 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="ICollectionViewGroup">
                             <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
-                                Title="{x:Bind convertersSubPages:CodeLibraryCategoryConverter.Convert((enums:CodeLibrarySection)Group.(collections:IReadOnlyObservableGroup.Key))}"
-                                DescriptionText="{Binding Group.Key}"/>
+                                Title="{x:Bind convertersSubPages:CodeLibraryCategoryConverter.ConvertSectionName((enums:CodeLibrarySection)Group.(collections:IReadOnlyObservableGroup.Key))}"
+                                DescriptionText="{x:Bind convertersSubPages:CodeLibraryCategoryConverter.ConvertSectionDescription((collections:IReadOnlyObservableGroup)Group)}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
