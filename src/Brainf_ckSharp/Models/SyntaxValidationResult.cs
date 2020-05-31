@@ -32,6 +32,11 @@ namespace Brainf_ckSharp.Models
         public bool IsSuccess => ErrorType == SyntaxError.None;
 
         /// <summary>
+        /// Gets whether or not the input source file has been parsed successfully
+        /// </summary>
+        public bool IsEmptyScript => ErrorType == SyntaxError.MissingOperators;
+
+        /// <summary>
         /// Gets whether the input source file was either valid, or with no operators to execute
         /// </summary>
         public bool IsSuccessOrEmptyScript => ErrorType == SyntaxError.None ||

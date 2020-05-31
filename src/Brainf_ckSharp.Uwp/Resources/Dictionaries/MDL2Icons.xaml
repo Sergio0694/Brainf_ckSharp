@@ -6,6 +6,12 @@
     <x:String x:Key="ConsoleIcon">&#xF157;</x:String>
     <x:String x:Key="IDEIcon">&#xF158;</x:String>
 
+    <!--Status bar-->
+    <x:String x:Key="SuccessfulBackgroundExecutionIcon">&#xEC61;</x:String>
+    <x:String x:Key="FailedBackgroundExecutionIcon">&#xEB90;</x:String>
+    <x:String x:Key="InvalidBackgroundExecutionIcon">&#xF167;</x:String>
+    <x:String x:Key="PlaceholderBackgroundExecutionIcon">&#xEC14;</x:String>
+
     <!--Settings-->
     <x:String x:Key="UnlockIcon">&#xE1F7;</x:String>
 
@@ -51,5 +57,4 @@
     <x:String x:Key="CopyToClipboardIcon">&#xE8C8;</x:String>
     <x:String x:Key="RemoveFromLibraryIcon">&#xE295;</x:String>
     <x:String x:Key="DeleteFileIcon">&#xE107;</x:String>
-    
 </ResourceDictionary>
