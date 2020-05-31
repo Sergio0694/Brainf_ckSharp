@@ -2,26 +2,14 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Brainf_ckSharp.Services;
-using Brainf_ckSharp.Shared;
-using Brainf_ckSharp.Shared.Messages.InputPanel;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.Header
 {
     public sealed partial class StdinHeader : UserControl
     {
-        // Constants for the visual states
-        private const string KeyboardSelectedVisualStateName = "KeyboardSelected";
-        private const string MemoryViewerSelectedVisualStateName = "MemoryViewerSelected";
-
         public StdinHeader()
         {
             this.InitializeComponent();
-
-            Messenger.Default.Register<StdinRequestMessage>(this, ExtractStdinBuffer);
         }
 
         /// <summary>
@@ -69,7 +57,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.Header
         {
             StdinHeader @this = (StdinHeader)d;
             int index = (int)e.NewValue;
-            VisualStateManager.GoToState(@this, index == 0 ? KeyboardSelectedVisualStateName : MemoryViewerSelectedVisualStateName, false);
+            VisualStateManager.GoToState(@this, index == 0 ? nameof(KeyboardSelectedState) : nameof(MemoryViewerSelectedState), false);
         }
 
         // Sets the selected index to 0 when the keyboard button is clicked
@@ -80,26 +68,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.Header
 
         // Sets the selected index to 0 when the memory viewer button is deselected
         private void MemoryViewerHeaderDeselected(object sender, EventArgs e) => StdinSelectedIndex = 0;
-
-        /// <summary>
-        /// The <see cref="ISettingsService"/> currently in use
-        /// </summary>
-        private readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
-
-        /// <summary>
-        /// Handles a request for the current stdin buffer
-        /// </summary>
-        /// <param name="request">The input request message for the stdin buffer</param>
-        private void ExtractStdinBuffer(StdinRequestMessage request)
-        {
-            request.ReportResult(StdinBox.Text);
-
-            // Clear the buffer if requested
-            if (SettingsService.GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest))
-            {
-                StdinBox.Text = string.Empty;
-            }
-        }
 
         // Prevents the event from bubbling up the UI stack
         private void StdinBox_OnCharacterReceived(UIElement sender, CharacterReceivedRoutedEventArgs args)

@@ -7,9 +7,13 @@
     xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:header="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel.Header"
+    xmlns:controls="using:Brainf_ckSharp.Shared.ViewModels.Controls"
     mc:Ignorable="d"
     d:DesignHeight="48"
     d:DesignWidth="400">
+    <UserControl.DataContext>
+        <controls:StdinHeaderViewModel x:Name="ViewModel"/>
+    </UserControl.DataContext>
 
     <Grid
         Background="#44000000"
@@ -23,14 +27,14 @@
         <!--Visual states for the rectangle indicator-->
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
-                <VisualState x:Name="KeyboardSelected">
+                <VisualState x:Name="KeyboardSelectedState">
                     <VisualState.Setters>
                         <Setter
                             Target="SelectionRectangle.Margin"
                             Value="0"/>
                     </VisualState.Setters>
                 </VisualState>
-                <VisualState x:Name="MemoryViewerSelected">
+                <VisualState x:Name="MemoryViewerSelectedState">
                     <VisualState.Setters>
                         <Setter
                             Target="SelectionRectangle.Margin"
@@ -80,7 +84,7 @@
             FontSize="15"
             VerticalAlignment="Stretch"
             VerticalContentAlignment="Center"
-            x:Name="StdinBox"
+            Text="{x:Bind ViewModel.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             CharacterReceived="StdinBox_OnCharacterReceived">
 
             <!--Default brushes overrides-->
