@@ -36,12 +36,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// </summary>
         public ConsoleViewModel()
         {
-            // The row is always set to 1, as commands are one line each
-            Row = 1;
-
-            // This does not apply to this workspace view model
-            IsUnsavedEditPending = false;
-
             Source = new ObservableCollection<IConsoleEntry> { new ConsoleCommand() };
 
             // This message is never unsubscribed, for two reasons:
@@ -73,6 +67,13 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             base.OnDeactivated();
         }
 
+        /// <inheritdoc/>
+        protected override void OnTextChanged()
+        {
+            ValidationResult = Brainf_ckParser.ValidateSyntax(Text.Span);
+            Column = Text.Length + 1;
+        }
+
         /// <summary>
         /// Gets the collection of currently visible console lines
         /// </summary>
@@ -87,24 +88,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         {
             get => _MachineState;
             private set => Set(ref _MachineState, value, true);
-        }
-
-        private ReadOnlyMemory<char> _Text;
-
-        /// <summary>
-        /// Gets the current command that can be executed
-        /// </summary>
-        public override ReadOnlyMemory<char> Text
-        {
-            get => _Text;
-            set
-            {
-                if (Set(ref _Text, value))
-                {
-                    ValidationResult = Brainf_ckParser.ValidateSyntax(value.Span);
-                    Column = value.Length + 1;
-                }
-            }
         }
 
         /// <summary>
@@ -253,8 +236,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                     MachineState = result.Value!.MachineState;
 
                     // Display textual results and exit codes
-                    if (!string.IsNullOrEmpty(result.Value.Stdout)) Source.Add(new ConsoleResult(result.Value.Stdout));
-                    if (!result.Value.ExitCode.HasFlag(ExitCode.Success)) Source.Add(new ConsoleException(result.Value.ExitCode));
+                    if (!string.IsNullOrEmpty(result.Value!.Stdout)) Source.Add(new ConsoleResult(result.Value!.Stdout));
+                    if (!result.Value!.ExitCode.HasFlag(ExitCode.Success)) Source.Add(new ConsoleException(result.Value!.ExitCode));
                 }
             }
 

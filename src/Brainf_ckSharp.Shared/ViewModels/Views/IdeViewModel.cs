@@ -47,40 +47,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// </summary>
         public event EventHandler? CodeSaved;
 
-        private SourceCode _Code = SourceCode.CreateEmpty();
-
-        /// <summary>
-        /// Gets or sets the loaded source code
-        /// </summary>
-        public SourceCode Code
-        {
-            get => _Code;
-            private set
-            {
-                if (Set(ref _Code, value))
-                {
-                    CodeLoaded?.Invoke(this, value.Content);
-                }
-            }
-        }
-
-        private ReadOnlyMemory<char> _Text = SourceCode.EmptyContent.AsMemory();
-
-        /// <summary>
-        /// Gets or sets the currently displayed text
-        /// </summary>
-        public override ReadOnlyMemory<char> Text
-        {
-            get => _Text;
-            set
-            {
-                if (Set(ref _Text, value))
-                {
-                    IsUnsavedEditPending = !value.Span.SequenceEqual(Code.Content.AsSpan());
-                }
-            }
-        }
-
         /// <inheritdoc/>
         protected override void OnActivated()
         {
@@ -93,6 +59,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             Messenger.Register<LoadSourceCodeRequestMessage>(this, m => Code = m.Value);
             Messenger.Register<SaveFileRequestMessage>(this, m => _ = TrySaveTextAsync());
             Messenger.Register<SaveFileAsRequestMessage>(this, m => _ = TrySaveTextAsAsync());
+        }
+
+        /// <inheritdoc/>
+        protected override void OnCodeChanged()
+        {
+            CodeLoaded?.Invoke(this, Code.Content);
         }
 
         /// <summary>
