@@ -117,7 +117,7 @@ namespace Brainf_ckSharp.Memory
         }
 
         /// <inheritdoc/>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return
                 ReferenceEquals(this, obj) ||
@@ -125,7 +125,7 @@ namespace Brainf_ckSharp.Memory
         }
 
         /// <inheritdoc/>
-        public bool Equals(IReadOnlyMachineState other)
+        public bool Equals(IReadOnlyMachineState? other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;

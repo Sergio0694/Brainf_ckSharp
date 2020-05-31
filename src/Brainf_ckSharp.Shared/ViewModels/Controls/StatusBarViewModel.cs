@@ -1,6 +1,16 @@
-﻿using Brainf_ckSharp.Shared.ViewModels.Views;
+﻿using System;
+using System.Threading;
+using Brainf_ckSharp.Enums;
+using Brainf_ckSharp.Memory.Interfaces;
+using Brainf_ckSharp.Models;
+using Brainf_ckSharp.Models.Base;
+using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Messages.InputPanel;
+using Brainf_ckSharp.Shared.ViewModels.Views;
 using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
@@ -9,11 +19,67 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
     public sealed class StatusBarViewModel : ViewModelBase
     {
         /// <summary>
+        /// The <see cref="SynchronizationContext"/> in use when <see cref="StatusBarViewModel"/> is instantiated
+        /// </summary>
+        private readonly SynchronizationContext Context;
+
+        /// <summary>
+        /// The <see cref="Timer"/> instance used to perodically invoke <see cref="RunBackgroundCode"/>
+        /// </summary>
+        private readonly Timer Timer;
+
+        /// <summary>
+        /// The last source code that was used
+        /// </summary>
+        private ReadOnlyMemory<char> _Source;
+
+        /// <summary>
+        /// The last stdin that was used
+        /// </summary>
+        private string _Stdin = string.Empty;
+
+        /// <summary>
+        /// The last memory size setting that was used
+        /// </summary>
+        private int _MemorySize;
+
+        /// <summary>
+        /// The last overflow mode that was used
+        /// </summary>
+        private OverflowMode _OverflowMode;
+
+        /// <summary>
+        /// The last machine state that was used, if available
+        /// </summary>
+        private IReadOnlyMachineState? _MachineState;
+
+        /// <summary>
         /// Creates a new <see cref="StatusBarViewModel"/> instance
         /// </summary>
         public StatusBarViewModel()
         {
+            Context = SynchronizationContext.Current;
+            Timer = new Timer(_ => RunBackgroundCode(), null, default, TimeSpan.FromSeconds(2));
+
             Messenger.Register<PropertyChangedMessage<bool>>(this, SetupActiveViewModel);
+        }
+
+        private Option<InterpreterResult>? _BackgroundExecutionResult;
+
+        /// <summary>
+        /// Gets the current <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance
+        /// </summary>
+        public Option<InterpreterResult>? BackgroundExecutionResult
+        {
+            get => _BackgroundExecutionResult;
+            private set
+            {
+                _BackgroundExecutionResult.Value?.MachineState.Dispose();
+
+                _BackgroundExecutionResult = value;
+
+                OnPropertyChanged();
+            }
         }
 
         private WorkspaceViewModelBase? _WorkspaceViewModel;
@@ -41,6 +107,53 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
             }
 
             WorkspaceViewModel = (WorkspaceViewModelBase)message.Sender;
+        }
+
+        /// <summary>
+        /// Runs the current code in the background, if needed
+        /// </summary>
+        private void RunBackgroundCode()
+        {
+            if (!(WorkspaceViewModel is WorkspaceViewModelBase viewModel)) return;
+
+            // Load all the new arguments and data for the new execution.
+            // Before actually executing the code, also check with the previously
+            // stored arguments to be able to skip the execution if there were no changes.
+            ReadOnlyMemory<char> source = viewModel.Text;
+            string stdin = Messenger.Request<StdinRequestMessage, string>(new StdinRequestMessage(true));
+            int memorySize = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<int>(SettingsKeys.MemorySize);
+            OverflowMode overflowMode = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<OverflowMode>(SettingsKeys.OverflowMode);
+            IReadOnlyMachineState? machineState = (viewModel as ConsoleViewModel)?.MachineState;
+
+            if (source.Span.SequenceEqual(_Source.Span) &&
+                stdin.Equals(_Stdin) &&
+                memorySize == _MemorySize &&
+                overflowMode == _OverflowMode &&
+                (machineState is null && _MachineState is null ||
+                 machineState?.Equals(_MachineState!) == true))
+            {
+                return;
+            }
+
+            _Source = source;
+            _Stdin = stdin;
+            _MemorySize = memorySize;
+            _OverflowMode = overflowMode;
+            _MachineState = machineState;
+
+            CancellationTokenSource tokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(2));
+
+            Option<InterpreterResult> result = Brainf_ckInterpreter
+                .CreateReleaseConfiguration()
+                .WithSource(WorkspaceViewModel.Text)
+                .WithStdin(stdin)
+                .WithMemorySize(memorySize)
+                .WithOverflowMode(overflowMode)
+                .WithExecutionToken(tokenSource.Token)
+                .TryRun();
+
+            // Update the property from the original synchronization context
+            Context.Post(_ => BackgroundExecutionResult = result, null);
         }
     }
 }
