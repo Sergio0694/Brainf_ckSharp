@@ -1,8 +1,10 @@
-﻿using Windows.ApplicationModel.Activation;
+﻿using System.Reflection;
+using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Services.Uwp.Analytics;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Uwp.Controls.Host;
 using Brainf_ckSharp.Uwp.Helpers;
@@ -16,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Brainf_ckSharp.Services.Uwp.Store;
 using Brainf_ckSharp.Shared;
+using Brainf_ckSharp.Shared.Extensions.System.Reflection;
 
 namespace Brainf_ckSharp.Uwp
 {
@@ -72,10 +75,17 @@ namespace Brainf_ckSharp.Uwp
                 services.AddSingleton(_ => GitHubRestFactory.GetGitHubService("Brainf_ckSharp|Uwp"));
 #if DEBUG
                 services.AddSingleton<IStoreService, TestStoreService>();
+                services.AddSingleton<IAnalyticsService, TestAnalyticsService>();
 #else
                 services.AddSingleton<IStoreService, ProductionStoreService>();
+                services.AddSingleton<IAnalyticsService, AppCenterService>();
 #endif
             });
+
+            // Initialize the analytics service
+            string appCenterSecret = Assembly.GetExecutingAssembly().ReadTextFromEmbeddedResourceFile("AppCenter.txt");
+
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Initialize(appCenterSecret);
 
             ISettingsService settings = Ioc.Default.GetRequiredService<ISettingsService>();
 
