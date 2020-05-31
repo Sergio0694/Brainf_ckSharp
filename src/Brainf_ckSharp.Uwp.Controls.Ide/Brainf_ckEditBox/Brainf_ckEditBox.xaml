@@ -33,6 +33,30 @@
         <Setter Property="IsSpellCheckEnabled" Value="False"/>
         <Setter Property="IsTextPredictionEnabled" Value="False"/>
         <Setter Property="ClipboardCopyFormat" Value="PlainText"/>
+        <Setter Property="SelectionFlyout" Value="{x:Null}"/>
+        <Setter Property="ContextFlyout">
+            <Setter.Value>
+                <CommandBarFlyout>
+
+                    <!--To avoid having to restyle the whole template, we just add two hidden buttons
+                        that can be displayed or collapsed when we need the secondary content to be
+                        wider. The visibility of these buttons, as well as the secondary button,
+                        are set from a property that lets users assign the content externally.-->
+                    <AppBarButton x:Name="SpacerButton1" IsHitTestVisible="False" IsTabStop="False" Visibility="Collapsed"/>
+                    <AppBarButton x:Name="SpacerButton2" IsHitTestVisible="False" IsTabStop="False" Visibility="Collapsed"/>
+                    <AppBarButton Label="Share" Icon="Share" ToolTipService.ToolTip="Share" />
+                    <AppBarButton Label="Save" Icon="Save" ToolTipService.ToolTip="Save"  />
+                    <AppBarButton Label="Delete" Icon="Delete" ToolTipService.ToolTip="Delete" />
+                    <CommandBarFlyout.SecondaryCommands>
+                        <AppBarElementContainer
+                            x:Name="SecondaryContentContainer"
+                            Visibility="Collapsed"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"/>
+                    </CommandBarFlyout.SecondaryCommands>
+                </CommandBarFlyout>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RichEditBox">
