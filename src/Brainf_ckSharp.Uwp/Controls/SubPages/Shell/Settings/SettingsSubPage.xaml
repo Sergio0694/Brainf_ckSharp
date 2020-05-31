@@ -268,7 +268,7 @@
                             <GroupStyle.HeaderTemplate>
                                 <DataTemplate x:DataType="collections:IReadOnlyObservableGroup">
                                     <jumpList:SemanticZoomZoomedInViewHeaderTemplate
-                                        Title="{x:Bind Key.ToString()}"
+                                        Title="{x:Bind convertersSubPages:SettingsSectionConverters.ConvertSectionName((enums:SettingsSection)Key)}"
                                         Margin="0,-8,0,0"/>
                                 </DataTemplate>
                             </GroupStyle.HeaderTemplate>
@@ -298,8 +298,8 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="ICollectionViewGroup">
                             <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
-                                Title="{x:Bind Group.(collections:IReadOnlyObservableGroup.Key).ToString()}"
-                                DescriptionText="{Binding Group}"/>
+                                Title="{x:Bind convertersSubPages:SettingsSectionConverters.ConvertSectionName((enums:SettingsSection)Group.(collections:IReadOnlyObservableGroup.Key))}"
+                                DescriptionText="{x:Bind convertersSubPages:SettingsSectionConverters.ConvertSectionDescription((enums:SettingsSection)Group.(collections:IReadOnlyObservableGroup.Key))}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
