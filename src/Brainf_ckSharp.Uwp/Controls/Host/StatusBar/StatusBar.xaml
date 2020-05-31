@@ -9,7 +9,6 @@
     xmlns:system="using:System"
     xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:convertersUI="using:Brainf_ckSharp.Uwp.Converters.UI"
-    xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:enums="using:Brainf_ckSharp.Enums"
     mc:Ignorable="d"
     d:DesignHeight="48"
@@ -25,8 +24,7 @@
 
     <Grid
         x:Name="RootGrid"
-        Background="{StaticResource SystemControlHighlightAccentBrush}"
-        Padding="16,0,16,0">
+        Background="{StaticResource SystemControlHighlightAccentBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/> <!--State-->
             <ColumnDefinition Width="Auto"/> <!--Info-->
@@ -83,6 +81,7 @@
 
         <!--State info-->
         <TextBlock
+            Margin="8,0,8,0"
             x:Name="InfoBlock"
             Text="Ready"
             Foreground="White"
@@ -91,17 +90,14 @@
             VerticalAlignment="Center"
             TextTrimming="CharacterEllipsis"/>
 
-        <!--Using a WrapPanel here as it ignores the horizontal spacing for collapsed
-            items, whereas a StackPanel would still accumulate the spacing when not needed-->
-        <toolkit:WrapPanel
+        <StackPanel
             Grid.Column="1"
-            Orientation="Horizontal"
-            HorizontalSpacing="16"
-            VerticalAlignment="Center">
+            Orientation="Horizontal">
 
             <!--Error-->
             <TextBlock
                 x:Name="ErrorBlock"
+                Margin="8,0,8,0"
                 Foreground="White"
                 FontSize="12"
                 VerticalAlignment="Center"
@@ -111,6 +107,7 @@
 
             <!--Row-->
             <TextBlock
+                Margin="8,0,8,0"
                 Foreground="White"
                 FontSize="12"
                 VerticalAlignment="Center"
@@ -121,6 +118,7 @@
 
             <!--Column-->
             <TextBlock
+                Margin="8,0,8,0"
                 Foreground="White"
                 FontSize="12"
                 VerticalAlignment="Center"
@@ -129,7 +127,9 @@
                 Text="{x:Bind system:String.Format('Col: {0}', ViewModel.WorkspaceViewModel.Column), Mode=OneWay}"/>
 
             <!--File-->
-            <Grid Visibility="{x:Bind convertersUI:ObjectNotNullToVisibilityConverter.Convert(ViewModel.WorkspaceViewModel.Code.File), Mode=OneWay, FallbackValue=Collapsed}">
+            <Grid
+                Margin="8,0,8,0"
+                Visibility="{x:Bind convertersUI:ObjectNotNullToVisibilityConverter.Convert(ViewModel.WorkspaceViewModel.Code.File), Mode=OneWay, FallbackValue=Collapsed}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -155,6 +155,7 @@
 
             <!--Background execution result-->
             <Grid
+                Margin="8,0,8,0"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch">
                 <Border
@@ -189,6 +190,6 @@
                     x:Name="BackgroundExecutionToolTipBorder"
                     Background="Transparent"/>
             </Grid>
-        </toolkit:WrapPanel>
+        </StackPanel>
     </Grid>
 </UserControl>
