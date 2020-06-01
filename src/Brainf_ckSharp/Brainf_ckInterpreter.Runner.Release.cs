@@ -12,7 +12,6 @@ using Brainf_ckSharp.Opcodes;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 using Microsoft.Toolkit.HighPerformance.Extensions;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
-using Stopwatch = System.Diagnostics.Stopwatch;
 
 namespace Brainf_ckSharp
 {
@@ -94,7 +93,7 @@ namespace Brainf_ckSharp
                 // Create the execution session
                 using (TuringMachineState.ExecutionSession<TExecutionContext> session = machineState.CreateExecutionSession<TExecutionContext>())
                 {
-                    Stopwatch stopwatch = Stopwatch.StartNew();
+                    Timestamp timestamp = Timestamp.Now;
 
                     // Start the interpreter
                     exitCode = Run(
@@ -111,8 +110,7 @@ namespace Brainf_ckSharp
                         ref Unsafe.AsRef(stdout),
                         executionToken);
 
-                    stopwatch.Stop();
-                    elapsed = stopwatch.Elapsed;
+                    elapsed = TimeSpan.FromTicks(timestamp.Ticks);
                 }
 
                 // Rebuild the compacted source code
