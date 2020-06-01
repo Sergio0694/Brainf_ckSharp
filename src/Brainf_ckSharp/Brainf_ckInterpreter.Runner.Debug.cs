@@ -104,7 +104,7 @@ namespace Brainf_ckSharp
                 ref int totalOperations,
                 ref int totalFunctions,
                 ref StdinBuffer stdin,
-                StdoutBuffer stdout,
+                ref StdoutBuffer stdout,
                 CancellationToken executionToken,
                 CancellationToken debugToken)
                 where TExecutionContext : struct, IMachineStateExecutionContext

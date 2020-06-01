@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Buffers;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
-
-#nullable enable
 
 namespace Brainf_ckSharp.Buffers
 {
     /// <summary>
     /// A <see langword="class"/> that represents a memory area to be used as stdout buffer
     /// </summary>
-    internal sealed class StdoutBuffer : IDisposable
+    internal struct StdoutBuffer : IDisposable
     {
         /// <summary>
         /// The underlying <see cref="char"/> buffer
@@ -22,7 +21,7 @@ namespace Brainf_ckSharp.Buffers
         /// a third indirect reference to access any individual value in the buffer.
         /// Storing the buffer directly in this type exchanges some verbosity for speed.
         /// </remarks>
-        private readonly char[]? Buffer;
+        private readonly char[] Buffer;
 
         /// <summary>
         /// The current position in the underlying buffer to write to
@@ -32,9 +31,22 @@ namespace Brainf_ckSharp.Buffers
         /// <summary>
         /// Creates a new <see cref="StdoutBuffer"/> instance
         /// </summary>
-        public StdoutBuffer()
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private StdoutBuffer(char[] buffer)
         {
-            Buffer = ArrayPool<char>.Shared.Rent(Specs.StdoutBufferSizeLimit);
+            Buffer = buffer;
+            _Position = 0;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="StdoutBuffer"/> with an empty underlying buffer
+        /// </summary>
+        /// <returns>A new <see cref="StdoutBuffer"/> value ready to use</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static StdoutBuffer Allocate()
+        {
+            return new StdoutBuffer(ArrayPool<char>.Shared.Rent(Specs.StdoutBufferSizeLimit));
         }
 
         /// <summary>
@@ -45,7 +57,6 @@ namespace Brainf_ckSharp.Buffers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryWrite(char c)
         {
-            Debug.Assert(Buffer != null);
             Debug.Assert(_Position >= 0);
             Debug.Assert(_Position <= Specs.StdoutBufferSizeLimit);
 
@@ -68,25 +79,12 @@ namespace Brainf_ckSharp.Buffers
 
         /// <inheritdoc/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override string ToString() => new string(Buffer, 0, _Position);
+        public override readonly string ToString() => new string(Buffer, 0, _Position);
 
         /// <inheritdoc/>
-        public void Dispose()
+        public readonly void Dispose()
         {
-#if DEBUG
-            // Avoid adding a field to indicate whether the instance has been disposed.
-            // As an additional check, when running in DEBUG mode just check whether
-            // the rented array is null, otherwise return it and then override
-            // the field to set it to null. If this method is ever called twice
-            // by accident, this hack will make sure the unit tests will fail.
-            Debug.Assert(Buffer != null);
-
             ArrayPool<char>.Shared.Return(Buffer);
-
-            Unsafe.AsRef(Buffer) = null;
-#else
-            ArrayPool<char>.Shared.Return(Buffer);
-#endif
         }
     }
 }

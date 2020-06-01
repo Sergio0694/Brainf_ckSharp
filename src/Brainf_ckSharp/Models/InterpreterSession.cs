@@ -137,7 +137,7 @@ namespace Brainf_ckSharp.Models
             Definitions = definitions;
             StackFrames = stackFrames;
             StdinBuffer = new StdinBuffer(stdin);
-            StdoutBuffer = new StdoutBuffer();
+            StdoutBuffer = StdoutBuffer.Allocate();
             MachineState = machineState;
             ExecutionToken = executionToken;
             DebugToken = debugToken;
@@ -203,7 +203,7 @@ namespace Brainf_ckSharp.Models
                     ref _TotalOperations,
                     ref _TotalFunctions,
                     ref Unsafe.AsRef(StdinBuffer),
-                    StdoutBuffer,
+                    ref Unsafe.AsRef(StdoutBuffer),
                     ExecutionToken,
                     DebugToken);
 

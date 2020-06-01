@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using Brainf_ckSharp.Constants;
 
 namespace Brainf_ckSharp.Buffers
 {
@@ -61,6 +60,6 @@ namespace Brainf_ckSharp.Buffers
         }
 
         /// <inheritdoc/>
-        public override string ToString() => Data;
+        public override readonly string ToString() => Data;
     }
 }

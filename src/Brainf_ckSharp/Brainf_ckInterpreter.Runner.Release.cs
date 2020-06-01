@@ -78,7 +78,7 @@ namespace Brainf_ckSharp
                 using SpanOwner<Range> functions = SpanOwner<Range>.Allocate(ushort.MaxValue, AllocationMode.Clear);
                 using MemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
                 using SpanOwner<StackFrame> stackFrames = SpanOwner<StackFrame>.Allocate(Specs.MaximumStackSize);
-                using StdoutBuffer stdout = new StdoutBuffer();
+                using StdoutBuffer stdout = StdoutBuffer.Allocate();
 
                 // Shared counters
                 int
@@ -111,7 +111,7 @@ namespace Brainf_ckSharp
                         ref totalOperations,
                         ref totalFunctions,
                         ref stdinBuffer,
-                        stdout,
+                        ref Unsafe.AsRef(stdout),
                         executionToken);
 
                     stopwatch.Stop();
@@ -175,7 +175,7 @@ namespace Brainf_ckSharp
                 ref int totalOperations,
                 ref int totalFunctions,
                 ref StdinBuffer stdin,
-                StdoutBuffer stdout,
+                ref StdoutBuffer stdout,
                 CancellationToken executionToken)
                 where TExecutionContext : struct, IMachineStateExecutionContext
             {
