@@ -35,6 +35,24 @@ namespace Brainf_ckSharp
             }
 
             /// <summary>
+            /// Loads the function definitions table for a script to execute
+            /// </summary>
+            /// <param name="functionsCount">The total number of declared functions in the script to execute</param>
+            /// <returns>The resulting buffer to store keys for the declared functions</returns>
+            [Pure]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            private static MemoryOwner<ushort> LoadDefinitionsTable(int functionsCount)
+            {
+                System.Diagnostics.Debug.Assert(functionsCount >= 0);
+
+                return functionsCount switch
+                {
+                    0 => MemoryOwner<ushort>.Empty,
+                    _ => MemoryOwner<ushort>.Allocate(functionsCount)
+                };
+            }
+
+            /// <summary>
             /// Loads the breakpoints table for a given source code and collection of breakpoints
             /// </summary>
             /// <param name="source">The source code to parse and execute</param>

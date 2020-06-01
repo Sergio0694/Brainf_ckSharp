@@ -14,24 +14,6 @@ namespace Brainf_ckSharp
     public static partial class Brainf_ckInterpreter
     {
         /// <summary>
-        /// Loads the function definitions table for a script to execute
-        /// </summary>
-        /// <param name="functionsCount">The total number of declared functions in the script to execute</param>
-        /// <returns>The resulting buffer to store keys for the declared functions</returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static MemoryOwner<ushort> LoadDefinitionsTable(int functionsCount)
-        {
-            System.Diagnostics.Debug.Assert(functionsCount >= 0);
-
-            return functionsCount switch
-            {
-                0 => MemoryOwner<ushort>.Empty,
-                _ => MemoryOwner<ushort>.Allocate(functionsCount)
-            };
-        }
-
-        /// <summary>
         /// Loads the function definitions with the given executable and parameters
         /// </summary>
         /// <typeparam name="TOpcode">The type of opcode to process</typeparam>

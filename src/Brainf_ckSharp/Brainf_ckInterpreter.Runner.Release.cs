@@ -73,7 +73,7 @@ namespace Brainf_ckSharp
                 // This is possible because all these buffers are only used within the scope of this method.
                 using SpanOwner<int> jumpTable = LoadJumpTable(opcodes, out int functionsCount);
                 using SpanOwner<Range> functions = SpanOwner<Range>.Allocate(ushort.MaxValue, AllocationMode.Clear);
-                using MemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
+                using SpanOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
                 using SpanOwner<StackFrame> stackFrames = SpanOwner<StackFrame>.Allocate(Specs.MaximumStackSize);
                 using StdoutBuffer stdout = StdoutBuffer.Allocate();
 

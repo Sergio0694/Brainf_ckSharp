@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Opcodes.Interfaces;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 
@@ -30,6 +31,24 @@ namespace Brainf_ckSharp
                 Brainf_ckInterpreter.LoadJumpTable(opcodes, jumpTable.Span, out functionsCount);
 
                 return jumpTable;
+            }
+
+            /// <summary>
+            /// Loads the function definitions table for a script to execute
+            /// </summary>
+            /// <param name="functionsCount">The total number of declared functions in the script to execute</param>
+            /// <returns>The resulting buffer to store keys for the declared functions</returns>
+            [Pure]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            private static SpanOwner<ushort> LoadDefinitionsTable(int functionsCount)
+            {
+                System.Diagnostics.Debug.Assert(functionsCount >= 0);
+
+                return functionsCount switch
+                {
+                    0 => SpanOwner<ushort>.Empty,
+                    _ => SpanOwner<ushort>.Allocate(functionsCount)
+                };
             }
         }
     }
