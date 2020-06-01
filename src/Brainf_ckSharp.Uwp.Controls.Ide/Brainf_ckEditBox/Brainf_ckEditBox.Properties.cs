@@ -183,7 +183,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             Visibility visibility = content is null ? Visibility.Collapsed : Visibility.Visible;
 
             ((AppBarButton)flyout.PrimaryCommands[0]).Visibility = visibility;
-            ((AppBarButton)flyout.PrimaryCommands[1]).Visibility = visibility;
             ((AppBarElementContainer)flyout.SecondaryCommands[0]).Visibility = visibility;
             ((AppBarElementContainer)flyout.SecondaryCommands[0]).Content = content;
         }

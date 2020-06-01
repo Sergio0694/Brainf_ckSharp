@@ -1,5 +1,4 @@
-﻿using Windows.Foundation;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Brainf_ckSharp.Uwp.Themes;
 
 #nullable enable
@@ -27,6 +26,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
+        /// Gets or sets the syntax highlight theme to use
+        /// </summary>
+        public FrameworkElement ContextMenuSecondaryContent
+        {
+            get => (FrameworkElement)GetValue(ContextMenuSecondaryContentProperty);
+            set => SetValue(ContextMenuSecondaryContentProperty, value);
+        }
+
+        /// <summary>
         /// Gets the dependency property for <see cref="Text"/>.
         /// </summary>
         public static readonly DependencyProperty TextProperty =
@@ -45,5 +53,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 typeof(Brainf_ckTheme),
                 typeof(Brainf_ckIde),
                 new PropertyMetadata(Brainf_ckThemes.VisualStudio));
+
+        /// <summary>
+        /// Gets the dependency property for <see cref="ContextMenuSecondaryContent"/>.
+        /// </summary>
+        public static readonly DependencyProperty ContextMenuSecondaryContentProperty =
+            DependencyProperty.Register(
+                nameof(ContextMenuSecondaryContent),
+                typeof(FrameworkElement),
+                typeof(Brainf_ckEditBox),
+                new PropertyMetadata(null));
     }
 }

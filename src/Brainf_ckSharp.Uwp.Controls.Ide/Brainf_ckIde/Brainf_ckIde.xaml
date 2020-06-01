@@ -92,6 +92,7 @@
             Padding="4,108,8,8"
             VerticalScrollBarMargin="0,100,0,0"
             SyntaxHighlightTheme="{x:Bind SyntaxHighlightTheme, Mode=OneWay}"
+            ContextMenuSecondaryContent="{x:Bind ContextMenuSecondaryContent, Mode=OneWay}"
             TextChanged="CodeEditBox_TextChanged"
             CursorPositionChanged="CodeEditBox_CursorPositionChanged"/>
     </Grid>

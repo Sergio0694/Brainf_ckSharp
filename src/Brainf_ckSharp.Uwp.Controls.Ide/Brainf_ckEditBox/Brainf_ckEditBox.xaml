@@ -38,12 +38,11 @@
             <Setter.Value>
                 <CommandBarFlyout>
 
-                    <!--To avoid having to restyle the whole template, we just add two hidden buttons
+                    <!--To avoid having to restyle the whole template, we just add an hidden button
                         that can be displayed or collapsed when we need the secondary content to be
-                        wider. The visibility of these buttons, as well as the secondary button,
-                        are set from a property that lets users assign the content externally.-->
-                    <AppBarButton x:Name="SpacerButton1" IsHitTestVisible="False" IsTabStop="False" Visibility="Collapsed"/>
-                    <AppBarButton x:Name="SpacerButton2" IsHitTestVisible="False" IsTabStop="False" Visibility="Collapsed"/>
+                        wider. The visibility of this button, as well as the secondary button,
+                        is set from a property that lets users assign the content externally.-->
+                    <AppBarButton IsHitTestVisible="False" IsTabStop="False" Visibility="Collapsed"/>
                     <AppBarButton
                         Label="Cut"
                         Icon="Cut"
@@ -64,7 +63,6 @@
                         ide:RoutedEventHandlerHelper.ClickHandlerName="Brainf_ckEditBox_Paste"/>
                     <CommandBarFlyout.SecondaryCommands>
                         <AppBarElementContainer
-                            x:Name="SecondaryContentContainer"
                             Visibility="Collapsed"
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Stretch"/>
