@@ -21,6 +21,44 @@
             CodeLoaded="ViewModel_CodeLoaded"
             CodeSaved="ViewModel_CodeSaved"/>
     </UserControl.DataContext>
+    <UserControl.Resources>
+
+        <!--Code snippet template-->
+        <DataTemplate
+            x:Name="CodeSnippetTemplate"
+            x:DataType="models:CodeSnippet">
+            <Button
+                Style="{StaticResource ExpandedSquareButtonRevealStyle}"
+                HorizontalContentAlignment="Stretch"
+                Padding="8"
+                Click="CodeSnippet_Clicked">
+                <StackPanel Spacing="2">
+
+                    <!--Title name-->
+                    <TextBlock 
+                        Text="{x:Bind Title}"
+                        Foreground="DarkGray"
+                        FontWeight="Normal"
+                        TextLineBounds="Tight"
+                        IsTextScaleFactorEnabled="False"
+                        MaxLines="1"
+                        TextWrapping="NoWrap"
+                        TextTrimming="CharacterEllipsis"
+                        FontSize="15"/>
+
+                    <!--Code-->
+                    <TextBlock
+                        MaxLines="1"
+                        TextWrapping="NoWrap"
+                        TextTrimming="CharacterEllipsis"
+                        IsTextScaleFactorEnabled="False"
+                        FontSize="14">
+                        <Span attachedProperties:Brainf_ckInlineFormatterHelper.Source="{x:Bind Code}"/>
+                    </TextBlock>
+                </StackPanel>
+            </Button>
+        </DataTemplate>
+    </UserControl.Resources>
 
     <!--IDE-->
     <ide:Brainf_ckIde
@@ -28,45 +66,14 @@
         TextChanged="CodeEditor_OnTextChanged"
         CursorPositionChanged="CodeEditor_OnCursorPositionChanged">
         <ide:Brainf_ckIde.ContextMenuSecondaryContent>
-            <ItemsControl ItemsSource="{x:Bind ViewModel.CodeSnippets}">
+            <ItemsControl
+                ItemsSource="{x:Bind ViewModel.CodeSnippets}"
+                ItemTemplate="{x:Bind CodeSnippetTemplate}">
                 <ItemsControl.ItemContainerStyle>
                     <Style TargetType="ItemsPresenter">
                         <Setter Property="HorizontalAlignment" Value="Stretch"/>
                     </Style>
                 </ItemsControl.ItemContainerStyle>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="models:CodeSnippet">
-                        <Button
-                            Style="{StaticResource ExpandedSquareButtonRevealStyle}"
-                            HorizontalContentAlignment="Stretch"
-                            Padding="8">
-                            <StackPanel Spacing="2">
-
-                                <!--Title name-->
-                                <TextBlock 
-                                    Text="{x:Bind Title}"
-                                    Foreground="DarkGray"
-                                    FontWeight="Normal"
-                                    TextLineBounds="Tight"
-                                    IsTextScaleFactorEnabled="False"
-                                    MaxLines="1"
-                                    TextWrapping="NoWrap"
-                                    TextTrimming="CharacterEllipsis"
-                                    FontSize="15"/>
-
-                                <!--Code-->
-                                <TextBlock
-                                    MaxLines="1"
-                                    TextWrapping="Wrap"
-                                    TextTrimming="CharacterEllipsis"
-                                    IsTextScaleFactorEnabled="False"
-                                    FontSize="14">
-                                    <Span attachedProperties:Brainf_ckInlineFormatterHelper.Source="{x:Bind Code}"/>
-                                </TextBlock>
-                            </StackPanel>
-                        </Button>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ide:Brainf_ckIde.ContextMenuSecondaryContent>
     </ide:Brainf_ckIde>

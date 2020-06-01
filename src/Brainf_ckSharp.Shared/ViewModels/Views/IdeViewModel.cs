@@ -27,8 +27,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             {
                 new CodeSnippet("Reset cell", "[-]"),
                 new CodeSnippet("Duplicate value", "[>+>+<<-]>>[<<+>>-]<<"),
-                new CodeSnippet("if (x == 0) then { }", ">+<[>-]>\r[\r->\r\r[-]\r]<<"),
-                new CodeSnippet("if (x > 0) then { } else { }", ">+<\r[\r>\r\r[-]\r]>\r[\r->\r\r[-]\r]<<")
+                new CodeSnippet("if (x == 0) then { }", ">+<[>-]>[->[-]]<<"),
+                new CodeSnippet("if (x > 0) then { } else { }", ">+<[>[-]]>[->[-]]<<")
             };
         }
 

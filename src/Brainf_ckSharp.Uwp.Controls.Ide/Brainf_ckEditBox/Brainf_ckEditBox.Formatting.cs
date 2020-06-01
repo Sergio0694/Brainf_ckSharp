@@ -283,9 +283,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// Inserts a given source <see cref="string"/> into the current selection
         /// </summary>
         /// <param name="source">The source text to insert</param>
-        private void InsertText(string source)
+        public void InsertText(string source)
         {
             if (source.Length == 0) return;
+
+            ContextFlyout?.Hide();
 
             // Adjust the line endings
             source = source.WithCarriageReturnLineEndings();
