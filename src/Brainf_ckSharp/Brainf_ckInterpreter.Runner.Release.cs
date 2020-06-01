@@ -24,7 +24,7 @@ namespace Brainf_ckSharp
         /// <summary>
         /// A <see langword="class"/> implementing interpreter methods for the RELEASE configuration
         /// </summary>
-        internal static class Release
+        internal static partial class Release
         {
             /// <summary>
             /// Runs a given Brainf*ck/PBrain executable with the given parameters
@@ -69,12 +69,9 @@ namespace Brainf_ckSharp
                 CancellationToken executionToken)
                 where TExecutionContext : struct, IMachineStateExecutionContext
             {
-                // Initialize the temporary buffers, using the SpanOwner<T> type when possible
-                // to save the extra allocations here. This is possible because all these buffers are
-                // only used within the scope of this method, and disposed as soon as the method completes.
-                // Additionally, when this type is used, memory is pinned using a fixed statement instead
-                // of the GCHandle, which has slightly less overhead for the runtime.
-                using MemoryOwner<int> jumpTable = LoadJumpTable(opcodes, out int functionsCount);
+                // Initialize the temporary buffers, using the SpanOwner<T> to save the extra allocations.
+                // This is possible because all these buffers are only used within the scope of this method.
+                using SpanOwner<int> jumpTable = LoadJumpTable(opcodes, out int functionsCount);
                 using SpanOwner<Range> functions = SpanOwner<Range>.Allocate(ushort.MaxValue, AllocationMode.Clear);
                 using MemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
                 using SpanOwner<StackFrame> stackFrames = SpanOwner<StackFrame>.Allocate(Specs.MaximumStackSize);
