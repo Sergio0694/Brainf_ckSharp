@@ -160,7 +160,7 @@
     <Compile Include="Extensions\Windows.UI.Text\ITextDocumentExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Text\ITextRangeExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\Brainf_ckSharp.UWP.Controls.IDE.rd.xml" />
+    <EmbeddedResource Include="Properties\Brainf_ckSharp.Uwp.Controls.Ide.rd.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
