@@ -20,6 +20,41 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers
         private static readonly RichEditBox EditBox = new RichEditBox();
 
         /// <summary>
+        /// Tries to copy some text to the clipboard
+        /// </summary>
+        /// <param name="text">The text to copy</param>
+        public static void TryCopy(string text)
+        {
+            try
+            {
+                DataPackage package = new DataPackage { RequestedOperation = DataPackageOperation.Copy };
+
+                package.SetText(text);
+
+                Clipboard.SetContent(package);
+                Clipboard.Flush();
+            }
+            catch
+            {
+                // Ignore errors
+            }
+        }
+
+        /// <summary>
+        /// Checks whether or not there is some text available in the clipboard
+        /// </summary>
+        /// <returns>Whether or not there is text available to copy</returns>
+        [Pure]
+        public static bool IsTextAvailable()
+        {
+            DataPackageView view = Clipboard.GetContent();
+
+            return
+                view.Contains(StandardDataFormats.Text) ||
+                view.Contains(StandardDataFormats.Rtf);
+        }
+
+        /// <summary>
         /// Tries to get plain text content from the clipboard
         /// </summary>
         /// <returns>The plain text content from the clipboard, or <see langword="null"/></returns>

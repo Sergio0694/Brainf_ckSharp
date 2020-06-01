@@ -28,6 +28,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             TextChanging += MarkdownRichEditBox_TextChanging;
             base.TextChanged += MarkdownRichEditBox_TextChanged;
             Paste += Brainf_ckEditBox_Paste;
+            Loaded += (s, e) => EnableClipboardMonitoring(true);
+            Unloaded += (s, e) => EnableClipboardMonitoring(false);
         }
 
         /// <summary>
@@ -39,6 +41,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         {
             _SelectionStart = args.SelectionStart;
             _SelectionLength = args.SelectionLength;
+
+            IsTextSelected = args.SelectionLength > 0;
         }
 
         /// <summary>
