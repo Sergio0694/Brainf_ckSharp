@@ -62,6 +62,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 @this.Click += (_, __) =>
                 {
                     Brainf_ckEditBox editBox = (Brainf_ckEditBox)((Button)sender).DataContext;
+
+                    editBox.ContextFlyout?.Hide();
+
                     MethodInfo methodInfo = (
                         from m in typeof(Brainf_ckEditBox).GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
                         where m.Name == name &&

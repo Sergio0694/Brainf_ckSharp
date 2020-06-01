@@ -33,12 +33,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         private void Brainf_ckEditBox_Cut()
         {
-            string text = Document.Selection.Text;
-
-            if (ClipboardHelper.TryCopy(text))
-            {
-                Document.Selection.Text = string.Empty;
-            }
+            Brainf_ckEditBox_CutOrCopy(true);
         }
 
         /// <summary>
@@ -46,9 +41,34 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         private void Brainf_ckEditBox_Copy()
         {
+            Brainf_ckEditBox_CutOrCopy(false);
+        }
+
+        /// <summary>
+        /// Tries to cut or copy the current selection
+        /// </summary>
+        /// <param name="cut">Indicates whether the operation is a cut</param>
+        private void Brainf_ckEditBox_CutOrCopy(bool cut)
+        {
             string text = Document.Selection.Text;
 
-            ClipboardHelper.TryCopy(text);
+            if (text.Length == 0) return;
+
+            bool isTrimmed = false;
+
+            if (text[text.Length - 1] == '\r')
+            {
+                text = text.Substring(0, text.Length - 1);
+
+                isTrimmed = true;
+            }
+
+            if (ClipboardHelper.TryCopy(text) && cut)
+            {
+                if (isTrimmed) Document.Selection.EndPosition--;
+
+                Document.Selection.Text = string.Empty;
+            }
         }
 
         /// <summary>
