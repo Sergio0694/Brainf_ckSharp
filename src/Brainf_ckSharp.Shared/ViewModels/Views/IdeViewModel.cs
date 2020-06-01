@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Services;
@@ -17,6 +18,20 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
     /// </summary>
     public sealed class IdeViewModel : WorkspaceViewModelBase
     {
+        /// <summary>
+        /// Creates a new <see cref="IdeViewModel"/> instance
+        /// </summary>
+        public IdeViewModel()
+        {
+            CodeSnippets = new[]
+            {
+                new CodeSnippet("Reset cell", "[-]"),
+                new CodeSnippet("Duplicate value", "[>+>+<<-]>>[<<+>>-]<<"),
+                new CodeSnippet("if (x == 0) then { }", ">+<[>-]>[->[-]]<<"),
+                new CodeSnippet("if (x > 0) then { } else { }", ">+<[>[-]]>[->[-]]<<")
+            };
+        }
+
         /// <summary>
         /// Raised whenever a script is requested to be run
         /// </summary>
@@ -66,6 +81,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         {
             CodeLoaded?.Invoke(this, Code.Content);
         }
+
+        /// <summary>
+        /// Gets the collection of available code snippets
+        /// </summary>
+        public IReadOnlyList<CodeSnippet> CodeSnippets { get; }
 
         /// <summary>
         /// Tries to open and load a source code file

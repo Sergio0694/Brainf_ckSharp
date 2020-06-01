@@ -33,6 +33,43 @@
         <Setter Property="IsSpellCheckEnabled" Value="False"/>
         <Setter Property="IsTextPredictionEnabled" Value="False"/>
         <Setter Property="ClipboardCopyFormat" Value="PlainText"/>
+        <Setter Property="SelectionFlyout" Value="{x:Null}"/>
+        <Setter Property="ContextFlyout">
+            <Setter.Value>
+                <CommandBarFlyout>
+
+                    <!--To avoid having to restyle the whole template, we just add an hidden button
+                        that can be displayed or collapsed when we need the secondary content to be
+                        wider. The visibility of this button, as well as the secondary button,
+                        is set from a property that lets users assign the content externally.-->
+                    <AppBarButton IsHitTestVisible="False" IsTabStop="False" Visibility="Collapsed"/>
+                    <AppBarButton
+                        Label="Cut"
+                        Icon="Cut"
+                        ToolTipService.ToolTip="Cut"
+                        IsEnabled="{Binding IsTextSelected}"
+                        ide:RoutedEventHandlerHelper.ClickHandlerName="Brainf_ckEditBox_Cut"/>
+                    <AppBarButton
+                        Label="Copy"
+                        Icon="Copy"
+                        ToolTipService.ToolTip="Copy"
+                        IsEnabled="{Binding IsTextSelected}"
+                        ide:RoutedEventHandlerHelper.ClickHandlerName="Brainf_ckEditBox_Copy"/>
+                    <AppBarButton
+                        Label="Paste"
+                        Icon="Paste"
+                        ToolTipService.ToolTip="Paste"
+                        IsEnabled="{Binding IsTextInClipboard}"
+                        ide:RoutedEventHandlerHelper.ClickHandlerName="Brainf_ckEditBox_Paste"/>
+                    <CommandBarFlyout.SecondaryCommands>
+                        <AppBarElementContainer
+                            Visibility="Collapsed"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"/>
+                    </CommandBarFlyout.SecondaryCommands>
+                </CommandBarFlyout>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RichEditBox">

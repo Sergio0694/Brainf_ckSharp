@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Buffers;
 using Windows.System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.Enums.Settings;
+using Brainf_ckSharp.Shared.Models.Ide;
 using Brainf_ckSharp.Shared.ViewModels.Views;
 using Brainf_ckSharp.Uwp.Controls.Ide;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
@@ -115,6 +117,19 @@ namespace Brainf_ckSharp.Uwp.Views
         {
             ViewModel.Row = args.Row;
             ViewModel.Column = args.Column;
+        }
+
+        /// <summary>
+        /// Inserts the text of a selected code snippet
+        /// </summary>
+        /// <param name="sender">The sender <see cref="Button"/> for the snippet</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> for the current event</param>
+        private void CodeSnippet_Clicked(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is CodeSnippet snippet)
+            {
+                CodeEditor.InsertText(snippet.Code);
+            }
         }
     }
 }

@@ -23,11 +23,19 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         public Brainf_ckEditBox()
         {
+            // The data context is set to self to enable bindings from the context
+            // menu buttons. This is a workaround for the fact that template bindings
+            // can't be used there, as the flyout is not part of the control template.
+            // Having self as the data context allows standard bindings to work instead.
+            DataContext = this;
+
             SelectionChanging += Brainf_ckEditBox_SelectionChanging;
             SelectionChanged += Brainf_ckEditBox_SelectionChanged;
             TextChanging += MarkdownRichEditBox_TextChanging;
             base.TextChanged += MarkdownRichEditBox_TextChanged;
             Paste += Brainf_ckEditBox_Paste;
+            Loaded += (s, e) => EnableClipboardMonitoring(true);
+            Unloaded += (s, e) => EnableClipboardMonitoring(false);
         }
 
         /// <summary>
@@ -39,6 +47,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         {
             _SelectionStart = args.SelectionStart;
             _SelectionLength = args.SelectionLength;
+
+            IsTextSelected = args.SelectionLength > 0;
         }
 
         /// <summary>

@@ -53,6 +53,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
+        /// Inserts a given source <see cref="string"/> into the current selection
+        /// </summary>
+        /// <param name="source">The source text to insert</param>
+        public void InsertText(string source)
+        {
+            CodeEditBox.InsertText(source);
+        }
+
+        /// <summary>
         /// Deletes the last character as if the delete key had been pressed
         /// </summary>
         public void DeleteCharacter()

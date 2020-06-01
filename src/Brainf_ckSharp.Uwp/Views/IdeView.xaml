@@ -6,6 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ide="using:Brainf_ckSharp.Uwp.Controls.Ide"
     xmlns:views="using:Brainf_ckSharp.Shared.ViewModels.Views"
+    xmlns:models="using:Brainf_ckSharp.Shared.Models.Ide"
+    xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -19,10 +21,60 @@
             CodeLoaded="ViewModel_CodeLoaded"
             CodeSaved="ViewModel_CodeSaved"/>
     </UserControl.DataContext>
+    <UserControl.Resources>
+
+        <!--Code snippet template-->
+        <DataTemplate
+            x:Name="CodeSnippetTemplate"
+            x:DataType="models:CodeSnippet">
+            <Button
+                Style="{StaticResource ExpandedSquareButtonRevealStyle}"
+                HorizontalContentAlignment="Stretch"
+                Padding="8"
+                Click="CodeSnippet_Clicked">
+                <StackPanel Spacing="2">
+
+                    <!--Title name-->
+                    <TextBlock 
+                        Text="{x:Bind Title}"
+                        Foreground="DarkGray"
+                        FontWeight="Normal"
+                        TextLineBounds="Tight"
+                        IsTextScaleFactorEnabled="False"
+                        MaxLines="1"
+                        TextWrapping="NoWrap"
+                        TextTrimming="CharacterEllipsis"
+                        FontSize="15"/>
+
+                    <!--Code-->
+                    <TextBlock
+                        MaxLines="1"
+                        TextWrapping="NoWrap"
+                        TextTrimming="CharacterEllipsis"
+                        IsTextScaleFactorEnabled="False"
+                        FontSize="14">
+                        <Span attachedProperties:Brainf_ckInlineFormatterHelper.Source="{x:Bind Code}"/>
+                    </TextBlock>
+                </StackPanel>
+            </Button>
+        </DataTemplate>
+    </UserControl.Resources>
 
     <!--IDE-->
     <ide:Brainf_ckIde
         x:Name="CodeEditor"
         TextChanged="CodeEditor_OnTextChanged"
-        CursorPositionChanged="CodeEditor_OnCursorPositionChanged"/>
+        CursorPositionChanged="CodeEditor_OnCursorPositionChanged">
+        <ide:Brainf_ckIde.ContextMenuSecondaryContent>
+            <ItemsControl
+                ItemsSource="{x:Bind ViewModel.CodeSnippets}"
+                ItemTemplate="{x:Bind CodeSnippetTemplate}">
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ItemsPresenter">
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+            </ItemsControl>
+        </ide:Brainf_ckIde.ContextMenuSecondaryContent>
+    </ide:Brainf_ckIde>
 </UserControl>
