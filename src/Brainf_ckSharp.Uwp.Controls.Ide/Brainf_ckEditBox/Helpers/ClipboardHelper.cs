@@ -50,11 +50,18 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers
         [Pure]
         public static bool IsTextAvailable()
         {
-            DataPackageView view = Clipboard.GetContent();
+            try
+            {
+                DataPackageView view = Clipboard.GetContent();
 
-            return
-                view.Contains(StandardDataFormats.Text) ||
-                view.Contains(StandardDataFormats.Rtf);
+                return
+                    view.Contains(StandardDataFormats.Text) ||
+                    view.Contains(StandardDataFormats.Rtf);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -64,7 +71,16 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers
         [Pure]
         public static async Task<string?> TryGetTextAsync()
         {
-            DataPackageView view = Clipboard.GetContent();
+            DataPackageView view;
+
+            try
+            {
+                view = Clipboard.GetContent();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return null;
+            }
 
             // If the content is plain text, return it directly
             if (view.Contains(StandardDataFormats.Text))
