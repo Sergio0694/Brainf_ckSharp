@@ -23,7 +23,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers
         /// Tries to copy some text to the clipboard
         /// </summary>
         /// <param name="text">The text to copy</param>
-        public static void TryCopy(string text)
+        /// <returns>Whether or not the operation was successful</returns>
+        public static bool TryCopy(string text)
         {
             try
             {
@@ -33,10 +34,12 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers
 
                 Clipboard.SetContent(package);
                 Clipboard.Flush();
+
+                return true;
             }
             catch
             {
-                // Ignore errors
+                return false;
             }
         }
 

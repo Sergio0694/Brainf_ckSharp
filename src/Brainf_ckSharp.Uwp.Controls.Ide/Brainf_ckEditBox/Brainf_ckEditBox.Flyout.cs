@@ -29,6 +29,40 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
+        /// Tries to cut the current selection
+        /// </summary>
+        private void Brainf_ckEditBox_Cut()
+        {
+            string text = Document.Selection.Text;
+
+            if (ClipboardHelper.TryCopy(text))
+            {
+                Document.Selection.Text = string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Tries to copy the current selection
+        /// </summary>
+        private void Brainf_ckEditBox_Copy()
+        {
+            string text = Document.Selection.Text;
+
+            ClipboardHelper.TryCopy(text);
+        }
+
+        /// <summary>
+        /// Tries to paste the current selection
+        /// </summary>
+        private async void Brainf_ckEditBox_Paste()
+        {
+            if (await ClipboardHelper.TryGetTextAsync() is string text)
+            {
+                InsertText(text);
+            }
+        }
+
+        /// <summary>
         /// Gets whether or not some text is selected
         /// </summary>
         public bool IsTextSelected

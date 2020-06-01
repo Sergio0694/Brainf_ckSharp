@@ -44,9 +44,24 @@
                         are set from a property that lets users assign the content externally.-->
                     <AppBarButton x:Name="SpacerButton1" IsHitTestVisible="False" IsTabStop="False" Visibility="Collapsed"/>
                     <AppBarButton x:Name="SpacerButton2" IsHitTestVisible="False" IsTabStop="False" Visibility="Collapsed"/>
-                    <AppBarButton Label="Cut" Icon="Cut" ToolTipService.ToolTip="Cut" IsEnabled="{Binding IsTextSelected}"/>
-                    <AppBarButton Label="Copy" Icon="Copy" ToolTipService.ToolTip="Copy" IsEnabled="{Binding IsTextSelected}"/>
-                    <AppBarButton Label="Paste" Icon="Paste" ToolTipService.ToolTip="Paste" IsEnabled="{Binding IsTextInClipboard}"/>
+                    <AppBarButton
+                        Label="Cut"
+                        Icon="Cut"
+                        ToolTipService.ToolTip="Cut"
+                        IsEnabled="{Binding IsTextSelected}"
+                        ide:RoutedEventHandlerHelper.ClickHandlerName="Brainf_ckEditBox_Cut"/>
+                    <AppBarButton
+                        Label="Copy"
+                        Icon="Copy"
+                        ToolTipService.ToolTip="Copy"
+                        IsEnabled="{Binding IsTextSelected}"
+                        ide:RoutedEventHandlerHelper.ClickHandlerName="Brainf_ckEditBox_Copy"/>
+                    <AppBarButton
+                        Label="Paste"
+                        Icon="Paste"
+                        ToolTipService.ToolTip="Paste"
+                        IsEnabled="{Binding IsTextInClipboard}"
+                        ide:RoutedEventHandlerHelper.ClickHandlerName="Brainf_ckEditBox_Paste"/>
                     <CommandBarFlyout.SecondaryCommands>
                         <AppBarElementContainer
                             x:Name="SecondaryContentContainer"

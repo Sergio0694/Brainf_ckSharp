@@ -125,6 +125,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Brainf_ckEditBox\AttachedProperties\RoutedEventHandlerHelper.cs" />
     <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.Flyout.cs" />
     <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.Events.cs" />
     <Compile Include="Brainf_ckEditBox\Brainf_ckEditBox.Template.cs" />
