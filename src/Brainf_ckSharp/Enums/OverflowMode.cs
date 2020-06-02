@@ -6,14 +6,9 @@
     public enum OverflowMode
     {
         /// <summary>
-        /// Each cell must be in the [0..65535] value, with overflow not allowed
+        /// Each cell must be in the [0..255] range, with overflow allowed
         /// </summary>
-        UshortWithNoOverflow,
-
-        /// <summary>
-        /// Each cell must be in the [0..65535] value, with overflow allowed
-        /// </summary>
-        UshortWithOverflow,
+        ByteWithOverflow,
 
         /// <summary>
         /// Each cell must be in the [0..255] value, with overflow not allowed
@@ -21,8 +16,13 @@
         ByteWithNoOverflow,
 
         /// <summary>
-        /// Each cell must be in the [0..255] range, with overflow allowed
+        /// Each cell must be in the [0..65535] value, with overflow allowed
         /// </summary>
-        ByteWithOverflow
+        UshortWithOverflow,
+
+        /// <summary>
+        /// Each cell must be in the [0..65535] value, with overflow not allowed
+        /// </summary>
+        UshortWithNoOverflow
     }
 }
