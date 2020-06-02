@@ -96,7 +96,7 @@ namespace Brainf_ckSharp.Memory
         }
 
         /// <inheritdoc/>
-        Brainf_ckMemoryCell IReadOnlyList<Brainf_ckMemoryCell>.this[int index]
+        public Brainf_ckMemoryCell this[int index]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
@@ -165,10 +165,13 @@ namespace Brainf_ckSharp.Memory
         }
 
         /// <inheritdoc/>
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<Brainf_ckMemoryCell>)this).GetEnumerator();
+        }
 
         /// <inheritdoc/>
-        public IEnumerator<Brainf_ckMemoryCell> GetEnumerator()
+        IEnumerator<Brainf_ckMemoryCell> IEnumerable<Brainf_ckMemoryCell>.GetEnumerator()
         {
             ushort[]? array = Buffer;
 
@@ -180,6 +183,12 @@ namespace Brainf_ckSharp.Memory
 
                 yield return new Brainf_ckMemoryCell(i, value, _Position == i);
             }
+        }
+
+        /// <inheritdoc/>
+        public IReadOnlyMachineStateEnumerator GetEnumerator()
+        {
+            return new IReadOnlyMachineStateEnumerator(this);
         }
 
         /// <inheritdoc/>
