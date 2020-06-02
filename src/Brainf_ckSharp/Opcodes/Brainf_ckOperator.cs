@@ -10,7 +10,7 @@ namespace Brainf_ckSharp.Opcodes
     /// </summary>
     [DebuggerDisplay("'{Operator}'")]
     [StructLayout(LayoutKind.Explicit, Size = 1)]
-    public readonly struct Brainf_ckOperator : IOpcode
+    internal readonly struct Brainf_ckOperator : IOpcode
     {
         /// <summary>
         /// Creates a new <see cref="Brainf_ckOperator"/> instance with the specified values
