@@ -149,6 +149,7 @@
       <DependentUpon>UnicodeCharactersMapSubPageTemplates.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\Console\ExitCodeConverter.cs" />
+    <Compile Include="Converters\SubPages\OverflowModeConverter.cs" />
     <Compile Include="Converters\SubPages\BracketsFormattingStyleConverter.cs" />
     <Compile Include="Converters\SubPages\SettingsSectionConverters.cs" />
     <Compile Include="Converters\SubPages\IdeResultSectionConverter.cs" />
