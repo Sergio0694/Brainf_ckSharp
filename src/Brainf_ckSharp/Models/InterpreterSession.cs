@@ -171,7 +171,7 @@ namespace Brainf_ckSharp.Models
                 case OverflowMode.ByteWithNoOverflow: MoveNext<TuringMachineState.ByteWithNoOverflowExecutionContext>(); break;
                 case OverflowMode.UshortWithOverflow: MoveNext<TuringMachineState.UshortWithOverflowExecutionContext>(); break;
                 case OverflowMode.UshortWithNoOverflow: MoveNext<TuringMachineState.UshortWithNoOverflowExecutionContext>(); break;
-                default: throw new ArgumentOutOfRangeException(nameof(MachineState.Mode), $"Invalid execution mode: {MachineState.Mode}");
+                default: ThrowArgumentOutOfRangeForOverflowMode(); break;
             };
 
             return true;
@@ -257,6 +257,15 @@ namespace Brainf_ckSharp.Models
             StackFrames.Dispose();
             StdoutBuffer.Dispose();
             Stopwatch.Stop();
+        }
+
+        /// <summary>
+        /// Throws an <see cref="ArgumentOutOfRangeException"/> when the current <see cref="OverflowMode"/> setting is invalid
+        /// </summary>
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private void ThrowArgumentOutOfRangeForOverflowMode()
+        {
+            throw new ArgumentOutOfRangeException(nameof(MachineState.Mode), $"Invalid execution mode: {MachineState.Mode}");
         }
     }
 }
