@@ -18,7 +18,7 @@ namespace Brainf_ckSharp.Memory
     internal sealed partial class TuringMachineState : IReadOnlyMachineState
     {
         /// <summary>
-        /// The size of the usable buffer within <see cref="Buffer"/>
+        /// The size of the usable buffer within <see cref="_Buffer"/>
         /// </summary>
         public readonly int Size;
 
@@ -34,7 +34,7 @@ namespace Brainf_ckSharp.Memory
         /// Similarly to <see cref="Buffers.StdoutBuffer"/>, the buffer is rented directly
         /// from this type to reduce the overhead when accessing individual items.
         /// </remarks>
-        private ushort[]? Buffer;
+        private ushort[]? _Buffer;
 
         /// <summary>
         /// The current position within the underlying buffer
@@ -58,13 +58,13 @@ namespace Brainf_ckSharp.Memory
         /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
         private TuringMachineState(int size, OverflowMode mode, bool clear)
         {
-            Buffer = ArrayPool<ushort>.Shared.Rent(size);
+            _Buffer = ArrayPool<ushort>.Shared.Rent(size);
             Size = size;
             Mode = mode;
 
             if (clear)
             {
-                Buffer.AsSpan(0, size).Clear();
+                _Buffer.AsSpan(0, size).Clear();
             }
         }
 
@@ -85,7 +85,7 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
-                ushort[]? array = Buffer;
+                ushort[]? array = _Buffer;
 
                 if (array is null) ThrowObjectDisposedException();
 
@@ -101,7 +101,7 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
-                ushort[]? array = Buffer;
+                ushort[]? array = _Buffer;
 
                 if (array is null) ThrowObjectDisposedException();
 
@@ -128,40 +128,36 @@ namespace Brainf_ckSharp.Memory
         public bool Equals(IReadOnlyMachineState? other)
         {
             if (other is null) return false;
+
             if (ReferenceEquals(this, other)) return true;
 
-            if (Buffer is null) ThrowObjectDisposedException();
+            if (_Buffer is null) ThrowObjectDisposedException();
 
-            if (!(other is TuringMachineState state)) return false;
+            TuringMachineState state = (TuringMachineState)other;
 
-            if (state.Buffer is null) ThrowObjectDisposedException();
+            if (state._Buffer is null) ThrowObjectDisposedException();
 
             return
                 Size == state.Size &&
                 Mode == state.Mode &&
                 _Position == state._Position &&
-                Buffer.AsSpan(0, Size).SequenceEqual(state.Buffer.AsSpan(0, Size));
+                _Buffer.AsSpan(0, Size).SequenceEqual(state._Buffer.AsSpan(0, Size));
         }
 
         /// <inheritdoc/>
         [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")] // Non immutable instance, hash code is allowed to change
         public override int GetHashCode()
         {
-            if (Buffer is null) ThrowObjectDisposedException();
+            if (_Buffer is null) ThrowObjectDisposedException();
 
-            unchecked
-            {
-                int hashCode = Size;
-                hashCode = (hashCode * 397) ^ _Position;
-                hashCode = (hashCode * 397) ^ (int)Mode;
+            HashCode hashCode = default;
 
-                foreach (ushort value in Buffer.AsSpan())
-                {
-                    hashCode = (hashCode * 397) ^ value;
-                }
+            hashCode.Add(Size);
+            hashCode.Add(_Position);
+            hashCode.Add(Mode);
+            hashCode.Add(new ReadOnlySpan<ushort>(_Buffer, 0, Size));
 
-                return hashCode;
-            }
+            return hashCode.ToHashCode();
         }
 
         /// <inheritdoc/>
@@ -173,15 +169,9 @@ namespace Brainf_ckSharp.Memory
         /// <inheritdoc/>
         IEnumerator<Brainf_ckMemoryCell> IEnumerable<Brainf_ckMemoryCell>.GetEnumerator()
         {
-            ushort[]? array = Buffer;
-
-            if (array is null) ThrowObjectDisposedException();
-
             for (int i = 0; i < Size; i++)
             {
-                ushort value = array!.DangerousGetReferenceAt(i);
-
-                yield return new Brainf_ckMemoryCell(i, value, _Position == i);
+                yield return this[i];
             }
         }
 
@@ -194,11 +184,11 @@ namespace Brainf_ckSharp.Memory
         /// <inheritdoc/>
         public object Clone()
         {
-            if (Buffer is null) ThrowObjectDisposedException();
+            if (_Buffer is null) ThrowObjectDisposedException();
 
             TuringMachineState clone = new TuringMachineState(Size, Mode, false) { _Position = _Position };
 
-            Buffer.AsSpan(0, Size).CopyTo(clone.Buffer.AsSpan(0, Size));
+            _Buffer.AsSpan(0, Size).CopyTo(clone._Buffer.AsSpan(0, Size));
 
             return clone;
         }
@@ -206,17 +196,17 @@ namespace Brainf_ckSharp.Memory
         /// <inheritdoc/>
         public void Dispose()
         {
-            ushort[]? array = Buffer;
+            ushort[]? array = _Buffer;
 
             if (array is null) return;
 
-            Buffer = null;
+            _Buffer = null;
 
             ArrayPool<ushort>.Shared.Return(array);
         }
 
         /// <summary>
-        /// Throws an <see cref="ObjectDisposedException"/> when <see cref="Buffer"/> is <see langword="null"/>.
+        /// Throws an <see cref="ObjectDisposedException"/> when <see cref="_Buffer"/> is <see langword="null"/>.
         /// </summary>
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void ThrowObjectDisposedException()

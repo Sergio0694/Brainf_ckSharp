@@ -24,7 +24,7 @@ namespace Brainf_ckSharp.Memory
             where TExecutionContext : struct, IMachineStateExecutionContext
         {
             // The underlying buffer is guaranteed not to be null or unpinned here
-            ushort* ptr = (ushort*)Unsafe.AsPointer(ref Buffer.DangerousGetReference());
+            ushort* ptr = (ushort*)Unsafe.AsPointer(ref _Buffer.DangerousGetReference());
 
             if (typeof(TExecutionContext) == typeof(ByteWithOverflowExecutionContext))
             {

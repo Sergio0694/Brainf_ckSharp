@@ -65,9 +65,9 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public ExecutionSession(TuringMachineState state)
             {
-                Debug.Assert(state.Buffer != null);
+                Debug.Assert(state._Buffer != null);
 
-                Handle = GCHandle.Alloc(state.Buffer);
+                Handle = GCHandle.Alloc(state._Buffer);
                 MachineState = state;
                 ExecutionContext = state.GetExecutionContext<TExecutionContext>();
             }
