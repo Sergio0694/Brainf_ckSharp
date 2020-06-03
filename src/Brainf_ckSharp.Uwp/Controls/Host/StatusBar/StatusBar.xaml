@@ -46,6 +46,9 @@
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{x:Bind ViewModel.WorkspaceViewModel.ValidationResult.IsError, Mode=OneWay}"/>
+                    </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="RootGrid.Background" Value="#FFCA5100"/>
                         <Setter Target="ErrorBlock.Visibility" Value="Visible"/>
