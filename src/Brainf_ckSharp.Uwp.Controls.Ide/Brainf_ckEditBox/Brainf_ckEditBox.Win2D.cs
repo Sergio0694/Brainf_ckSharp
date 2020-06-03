@@ -130,8 +130,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// Tries to update the current sequences of spaces and tabs in the text
         /// </summary>
         /// <returns><see langword="true"/> if the sequences were updated, <see langword="false"/> otherwise</returns>
-        [Pure]
-        private bool TryUpdateWhitespaceCharactersList()
+        private void TryUpdateWhitespaceCharactersList()
         {
             // Prepare the current text
             ReadOnlySpan<char> text = Text.AsSpan();
@@ -162,25 +161,18 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 }
             }
 
-            // Update the current data
+            // Dispose the previous buffers
             _SpaceIndices.Dispose();
-            _SpaceIndices = spaces.Slice(0, spacesCount);
             _TabIndices.Dispose();
-            _TabIndices = tabs.Slice(0, tabsCount);
-
-            return true;
-        }
-
-        /// <summary>
-        /// Processes the current whitespace info and updates <see cref="_SpaceAreas"/> and <see cref="_TabAreas"/>
-        /// </summary>
-        private void ProcessWhitespaceData()
-        {
             _SpaceAreas.Dispose();
             _TabAreas.Dispose();
 
-            ProcessCharacterData(ref _SpaceIndices, out _SpaceAreas);
-            ProcessCharacterData(ref _TabIndices, out _TabAreas);
+            // Update the current data
+            _SpaceIndices = spaces.Slice(0, spacesCount);
+            _TabIndices = tabs.Slice(0, tabsCount);
+
+            ProcessWhitespaceCharactersList(ref _SpaceIndices, out _SpaceAreas);
+            ProcessWhitespaceCharactersList(ref _TabIndices, out _TabAreas);
         }
 
         /// <summary>
@@ -188,7 +180,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         /// <param name="indices">The input sequence of indices for characters to inspect</param>
         /// <param name="areas">The resulting sequence of areas for the targeted characters</param>
-        private void ProcessCharacterData(ref MemoryOwner<int> indices, out MemoryOwner<Rect> areas)
+        private void ProcessWhitespaceCharactersList(ref MemoryOwner<int> indices, out MemoryOwner<Rect> areas)
         {
             areas = MemoryOwner<Rect>.Allocate(indices.Length);
 
@@ -213,8 +205,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// Tries to update the current sequence of brackets displayed in the text
         /// </summary>
         /// <returns><see langword="true"/> if the sequence was updated, <see langword="false"/> otherwise</returns>
-        [Pure]
-        private bool TryUpdateBracketsList()
+        private void TryUpdateBracketsList()
         {
             Debug.Assert(_SyntaxValidationResult.IsSuccessOrEmptyScript);
 
@@ -287,20 +278,22 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             if (_BracketPairs.Span.AsBytes().SequenceEqual(jumpTable.Span.AsBytes()))
             {
                 jumpTable.Dispose();
-                return false;
+
+                return;
             }
 
             // Update the current brackets sequence
             _BracketPairs.Dispose();
             _BracketPairs = jumpTable.Slice(0, jumps);
 
-            return true;
+            // Processes the computed data
+            ProcessBracketsList();
         }
 
         /// <summary>
         /// Processes the current column guides info and updates <see cref="_ColumnGuides"/>
         /// </summary>
-        private void ProcessColumnGuides()
+        private void ProcessBracketsList()
         {
             _ColumnGuides.Dispose();
 
