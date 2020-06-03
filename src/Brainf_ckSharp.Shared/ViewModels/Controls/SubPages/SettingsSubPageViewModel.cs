@@ -250,18 +250,22 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         }
 
         /// <summary>
-        /// A proxy for <see cref="Microsoft.Toolkit.Mvvm.ComponentModel.ObservableObject.Set{T}"/> that
+        /// A proxy for <see cref="Microsoft.Toolkit.Mvvm.ComponentModel.ObservableObject.Set{T}(ref T, T, string)"/> that
         /// also overwrites the value stored in the local settings when a property changes
         /// </summary>
         /// <typeparam name="T">The type of setting to set</typeparam>
-        /// <param name="oldValue">The previous setting value</param>
+        /// <param name="field">The previous setting value</param>
         /// <param name="value">The new value to set</param>
         /// <param name="name">The name of the setting that changed</param>
-        private new bool Set<T>(ref T oldValue, T value, [CallerMemberName] string name = null!)
+        private new bool Set<T>(ref T field, T value, [CallerMemberName] string name = null!)
         {
-            if (base.Set(ref oldValue, value, name))
+            T oldValue = field;
+
+            if (base.Set(ref field, value, name))
             {
                 Ioc.Default.GetRequiredService<ISettingsService>().SetValue(name, value);
+
+                Broadcast(oldValue, value, name);
 
                 return true;
             }
