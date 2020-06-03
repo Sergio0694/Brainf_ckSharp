@@ -144,18 +144,6 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
 
-                <!--Tab length-->
-                <TextBlock
-                    Margin="0,8,0,0"
-                    TextWrapping="Wrap"
-                    Text="Brackets on new line"/>
-                <ComboBox
-                    CornerRadius="0"
-                    Margin="0,4,0,0"
-                    MinWidth="140"
-                    ItemsSource="{x:Bind ViewModel.TabLengthOptions}"
-                    SelectedItem="{x:Bind ViewModel.TabLength, Mode=TwoWay}"/>
-
                 <!--Render whitespaces-->
                 <TextBlock
                     Margin="0,8,0,0"

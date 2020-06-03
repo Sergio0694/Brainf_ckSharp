@@ -115,22 +115,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             set => Set(ref _BracketsFormattingStyle, value);
         }
 
-        /// <summary>
-        /// Gets the collection of the available tab lengths
-        /// </summary>
-        public IReadOnlyCollection<int> TabLengthOptions { get; } = new[] { 4, 6, 8, 10, 12 };
-
-        private int _TabLength = Get<int>(nameof(TabLength));
-
-        /// <summary>
-        /// Exposes the <see cref="SettingsKeys.TabLength"/> setting
-        /// </summary>
-        public int TabLength
-        {
-            get => _TabLength;
-            set => Set(ref _TabLength, value);
-        }
-
         private bool _RenderWhitespaces = Get<bool>(nameof(RenderWhitespaces));
 
         /// <summary>

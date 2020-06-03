@@ -26,11 +26,6 @@
         public const string BracketsFormattingStyle = nameof(BracketsFormattingStyle);
 
         /// <summary>
-        /// Indicates the tab length, uses an <see cref="int"/>
-        /// </summary>
-        public const string TabLength = nameof(TabLength);
-
-        /// <summary>
         /// Indicates the index of the current syntax highlight theme, uses an <see cref="Enums.Settings.IdeTheme"/>
         /// </summary>
         public const string IdeTheme = nameof(IdeTheme);
