@@ -246,6 +246,7 @@
     <Compile Include="Extensions\System.Collections.Generic\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IListExtensions.cs" />
     <Compile Include="Extensions\System.Collections.Generic\IReadOnlyListExtensions.cs" />
+    <Compile Include="Extensions\System.Reflection\AssemblyExtensions.cs" />
     <Compile Include="Extensions\System\StringExtensions.cs" />
     <Compile Include="Extensions\Windows.Storage\IFileExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Xaml\FrameworkElementExtensions.cs" />

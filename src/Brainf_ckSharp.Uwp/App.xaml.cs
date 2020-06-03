@@ -18,7 +18,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Brainf_ckSharp.Services.Uwp.Store;
 using Brainf_ckSharp.Shared;
-using Brainf_ckSharp.Shared.Extensions.System.Reflection;
 
 namespace Brainf_ckSharp.Uwp
 {

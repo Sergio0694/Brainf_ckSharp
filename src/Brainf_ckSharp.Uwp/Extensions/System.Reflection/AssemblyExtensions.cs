@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 
-namespace Brainf_ckSharp.Shared.Extensions.System.Reflection
+#nullable enable
+
+namespace System.Reflection
 {
     /// <summary>
     /// An extension <see langword="class"/> for the <see cref="Assembly"/> type
