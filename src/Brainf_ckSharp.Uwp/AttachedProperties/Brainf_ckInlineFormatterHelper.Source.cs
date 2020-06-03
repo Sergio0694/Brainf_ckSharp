@@ -2,9 +2,14 @@
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
+using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared;
+using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Uwp.Extensions.System;
 using Brainf_ckSharp.Uwp.Extensions.System.Collections.Generic;
 using Brainf_ckSharp.Uwp.Themes;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
 namespace Brainf_ckSharp.Uwp.AttachedProperties
 {
@@ -13,6 +18,11 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
     /// </summary>
     public static partial class Brainf_ckInlineFormatterHelper
     {
+        /// <summary>
+        /// The <see cref="ISettingsService"/> instance currently in use
+        /// </summary>
+        private static readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+
         /// <summary>
         /// Gets the zero width space character
         /// </summary>
@@ -132,7 +142,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
             }
             else @this.Inlines.Clear();
 
-            Brainf_ckTheme theme = Settings.GetCurrentTheme();
+            Brainf_ckTheme theme = SettingsService.GetValue<IdeTheme>(SettingsKeys.IdeTheme).AsBrainf_ckTheme();
 
             // Parse and render the remaining text with new runs
             while (start < end)

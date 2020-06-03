@@ -3,9 +3,15 @@ using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
+using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared;
 using Brainf_ckSharp.Shared.Enums;
+using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.Models.Ide.Views;
 using Brainf_ckSharp.Uwp.Converters.Console;
+using Brainf_ckSharp.Uwp.Themes;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
 namespace Brainf_ckSharp.Uwp.AttachedProperties
 {
@@ -14,6 +20,11 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
     /// </summary>
     public static class IdeResultSectionDescriptionHelper
     {
+        /// <summary>
+        /// The <see cref="ISettingsService"/> instance currently in use
+        /// </summary>
+        private static readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+
         /// <summary>
         /// Gets the value of <see cref="SectionProperty"/> for a given <see cref="Span"/>
         /// </summary>
@@ -79,7 +90,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
                     @this.Inlines.Add(new Run
                     {
                         Text = value.Result.HaltingInfo!.HaltingOperator.ToString(),
-                        Foreground = Settings.GetCurrentTheme().GetBrush(value.Result.HaltingInfo.HaltingOperator)
+                        Foreground = SettingsService.GetValue<IdeTheme>(SettingsKeys.IdeTheme).AsBrainf_ckTheme().GetBrush(value.Result.HaltingInfo.HaltingOperator)
                     });
                     @this.Inlines.Add(new Run
                     {

@@ -3,12 +3,17 @@ using System.Buffers;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.Models.Ide;
 using Brainf_ckSharp.Shared.ViewModels.Views;
 using Brainf_ckSharp.Uwp.Controls.Ide;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
+using Brainf_ckSharp.Uwp.Themes;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 using TextChangedEventArgs = Brainf_ckSharp.Uwp.Controls.Ide.TextChangedEventArgs;
@@ -26,10 +31,10 @@ namespace Brainf_ckSharp.Uwp.Views
         {
             this.InitializeComponent();
 
-            CodeEditor.SyntaxHighlightTheme = Settings.GetCurrentTheme();
+            CodeEditor.SyntaxHighlightTheme = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<IdeTheme>(SettingsKeys.IdeTheme).AsBrainf_ckTheme();
 
             Messenger.Default.Register<ValueChangedMessage<VirtualKey>>(this, m => CodeEditor.Move(m.Value));
-            Messenger.Default.Register<ValueChangedMessage<IdeTheme>>(this, m => CodeEditor.SyntaxHighlightTheme = Settings.GetCurrentTheme());
+            Messenger.Default.Register<ValueChangedMessage<IdeTheme>>(this, m => CodeEditor.SyntaxHighlightTheme = m.Value.AsBrainf_ckTheme());
         }
 
         /// <summary>

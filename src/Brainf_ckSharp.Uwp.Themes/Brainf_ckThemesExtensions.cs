@@ -1,27 +1,20 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
-using Brainf_ckSharp.Services;
-using Brainf_ckSharp.Shared;
 using Brainf_ckSharp.Shared.Enums.Settings;
-using Brainf_ckSharp.Uwp.Themes;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
-namespace Brainf_ckSharp.Uwp
+namespace Brainf_ckSharp.Uwp.Themes
 {
     /// <summary>
-    /// A <see langword="class"/> that exposes some settings in use
+    /// An extension class to interop with <see cref="Brainf_ckThemes"/>
     /// </summary>
-    public static class Settings
+    public static class Brainf_ckThemesExtensions
     {
         /// <summary>
         /// Gets the current <see cref="Brainf_ckTheme"/> instance in use
         /// </summary>
         [Pure]
-        public static Brainf_ckTheme GetCurrentTheme()
+        public static Brainf_ckTheme AsBrainf_ckTheme(this IdeTheme theme)
         {
-            IdeTheme theme = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<IdeTheme>(SettingsKeys.IdeTheme);
-
             return theme switch
             {
                 IdeTheme.VisualStudio => Brainf_ckThemes.VisualStudio,
