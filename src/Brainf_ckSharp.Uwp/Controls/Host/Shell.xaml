@@ -10,13 +10,11 @@
     xmlns:telerik="using:Brainf_ckSharp.Uwp.Controls.Telerik.UI.Controls"
     xmlns:views="using:Brainf_ckSharp.Uwp.Views"
     xmlns:shellHeader="using:Brainf_ckSharp.Uwp.Controls.Host.Header"
-    xmlns:inputPanelHeader="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel.Header"
-    xmlns:virtualKeyboard="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel.VirtualKeyboard"
+    xmlns:inputPanel="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel"
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:viewModels="using:Brainf_ckSharp.Shared.ViewModels"
-    xmlns:inputPanel="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel"
     xmlns:local="using:Brainf_ckSharp.Uwp.Controls.Host"
     mc:Ignorable="d"
     d:DesignHeight="600"
@@ -96,7 +94,7 @@
                 HeaderHeight="48"
                 ExpandableContentHeight="180">
                 <telerik:ExpanderControl.Header>
-                    <inputPanelHeader:StdinHeader
+                    <inputPanel:StdinHeader
                         x:Name="StdinHeader"
                         ShellSelectedIndex="{x:Bind RootHeader.SelectedIndex, Mode=OneWay, FallbackValue=0}"/>
                 </telerik:ExpanderControl.Header>
@@ -105,7 +103,7 @@
                         Style="{StaticResource ExpandedPivotWithNoHeaderStyle}"
                         SelectedIndex="{x:Bind StdinHeader.StdinSelectedIndex, Mode=OneWay, FallbackValue=0}">
                         <PivotItem>
-                            <virtualKeyboard:OperatorsKeyboard/>
+                            <inputPanel:VirtualKeyboard/>
                         </PivotItem>
                         <PivotItem>
                             <inputPanel:CompactMemoryViewer/>

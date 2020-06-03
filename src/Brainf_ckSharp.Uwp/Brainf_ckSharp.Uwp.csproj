@@ -182,8 +182,8 @@
       <DependentUpon>CompactMemoryViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Host\InputPanel\VirtualKeyboard\OperatorButton.cs" />
-    <Compile Include="Controls\Host\InputPanel\VirtualKeyboard\OperatorsKeyboard.xaml.cs">
-      <DependentUpon>OperatorsKeyboard.xaml</DependentUpon>
+    <Compile Include="Controls\Host\InputPanel\VirtualKeyboard\VirtualKeyboard.xaml.cs">
+      <DependentUpon>VirtualKeyboard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SubPages\Host\SubPageFrame.cs" />
     <Compile Include="Controls\SubPages\Host\SubPageHost.xaml.cs">
@@ -452,7 +452,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Host\InputPanel\VirtualKeyboard\OperatorsKeyboard.xaml">
+    <Page Include="Controls\Host\InputPanel\VirtualKeyboard\VirtualKeyboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

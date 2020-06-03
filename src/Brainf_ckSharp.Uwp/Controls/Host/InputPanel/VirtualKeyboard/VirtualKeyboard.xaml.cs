@@ -8,14 +8,14 @@ using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
-namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.VirtualKeyboard
+namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel
 {
     /// <summary>
     /// A virtual keyboard with the Brainf*ck/PBrain operators
     /// </summary>
-    public sealed partial class OperatorsKeyboard : UserControl
+    public sealed partial class VirtualKeyboard : UserControl
     {
-        public OperatorsKeyboard()
+        public VirtualKeyboard()
         {
             this.InitializeComponent();
 
