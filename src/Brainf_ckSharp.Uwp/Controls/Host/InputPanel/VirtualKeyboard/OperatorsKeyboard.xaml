@@ -4,10 +4,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:virtualKeyboard1="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel.VirtualKeyboard"
+    xmlns:local="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel.VirtualKeyboard"
+    xmlns:constants="using:Brainf_ckSharp.Constants"
+    xmlns:controls="using:Brainf_ckSharp.Shared.ViewModels.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.DataContext>
+        <controls:VirtualKeyboardViewModel x:Name="ViewModel"/>
+    </UserControl.DataContext>
 
     <!--Operators pad-->
     <Grid
@@ -48,54 +53,54 @@
         </VisualStateManager.VisualStateGroups>
 
         <!--First row (><+-)-->
-        <virtualKeyboard1:OperatorButton
-            Operator="{StaticResource ForwardPtr}"
+        <local:OperatorButton
+            Operator="{x:Bind constants:Characters.ForwardPtr}"
             Description="++ptr"
-            Click="OperatorButton_OnClick"/>
-        <virtualKeyboard1:OperatorButton
-            Operator="{StaticResource BackwardPtr}"
+            Command="{x:Bind ViewModel.InsertOperatorCommand}"/>
+        <local:OperatorButton
+            Operator="{x:Bind constants:Characters.BackwardPtr}"
             Description="--ptr"
             Grid.Row="0"
             Grid.Column="1"
-            Click="OperatorButton_OnClick"/>
-        <virtualKeyboard1:OperatorButton
-            Operator="{StaticResource Plus}"
+            Command="{x:Bind ViewModel.InsertOperatorCommand}"/>
+        <local:OperatorButton
+            Operator="{x:Bind constants:Characters.Plus}"
             Description="(*ptr)++"
             Grid.Row="0"
             Grid.Column="2"
-            Click="OperatorButton_OnClick"/>
-        <virtualKeyboard1:OperatorButton
-            Operator="{StaticResource Minus}"
+            Command="{x:Bind ViewModel.InsertOperatorCommand}"/>
+        <local:OperatorButton
+            Operator="{x:Bind constants:Characters.Minus}"
             Description="(*ptr)--"
             Grid.Row="0"
             Grid.Column="3"
-            Click="OperatorButton_OnClick"/>
+            Command="{x:Bind ViewModel.InsertOperatorCommand}"/>
 
         <!--Second row ([].,)-->
-        <virtualKeyboard1:OperatorButton
-            Operator="{StaticResource LoopStart}"
+        <local:OperatorButton
+            Operator="{x:Bind constants:Characters.LoopStart}"
             Description="while (*ptr) {"
             Grid.Row="1"
             Grid.Column="0"
-            Click="OperatorButton_OnClick"/>
-        <virtualKeyboard1:OperatorButton
-            Operator="{StaticResource LoopEnd}"
+            Command="{x:Bind ViewModel.InsertOperatorCommand}"/>
+        <local:OperatorButton
+            Operator="{x:Bind constants:Characters.LoopEnd}"
             Description="}"
             Grid.Row="1"
             Grid.Column="1"
-            Click="OperatorButton_OnClick"/>
-        <virtualKeyboard1:OperatorButton
-            Operator="{StaticResource PrintChar}"
+            Command="{x:Bind ViewModel.InsertOperatorCommand}"/>
+        <local:OperatorButton
+            Operator="{x:Bind constants:Characters.PrintChar}"
             Description="putchar(*ptr)"
             Grid.Row="1"
             Grid.Column="2"
-            Click="OperatorButton_OnClick"/>
-        <virtualKeyboard1:OperatorButton
-            Operator="{StaticResource ReadChar}"
+            Command="{x:Bind ViewModel.InsertOperatorCommand}"/>
+        <local:OperatorButton
+            Operator="{x:Bind constants:Characters.ReadChar}"
             Description="*ptr = getchar()"
             Grid.Row="1"
             Grid.Column="3"
-            Click="OperatorButton_OnClick"/>
+            Command="{x:Bind ViewModel.InsertOperatorCommand}"/>
 
         <!--Border with the PBrain operators-->
         <Grid
@@ -113,23 +118,23 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <virtualKeyboard1:OperatorButton
-                Operator="{StaticResource FunctionStart}"
+            <local:OperatorButton
+                Operator="{x:Bind constants:Characters.FunctionStart}"
                 Description="f ("
-                Click="OperatorButton_OnClick"/>
-            <virtualKeyboard1:OperatorButton
-                Operator="{StaticResource FunctionEnd}"
+                Command="{x:Bind ViewModel.InsertOperatorCommand}"/>
+            <local:OperatorButton
+                Operator="{x:Bind constants:Characters.FunctionEnd}"
                 Description=")"
                 Grid.Row="0"
                 Grid.Column="1"
-                Click="OperatorButton_OnClick"/>
-            <virtualKeyboard1:OperatorButton
-                Operator="{StaticResource FunctionCall}"
+                Command="{x:Bind ViewModel.InsertOperatorCommand}"/>
+            <local:OperatorButton
+                Operator="{x:Bind constants:Characters.FunctionCall}"
                 Description="call"
                 Grid.Row="1"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
-                Click="OperatorButton_OnClick"/>
+                Command="{x:Bind ViewModel.InsertOperatorCommand}"/>
         </Grid>
     </Grid>
 </UserControl>

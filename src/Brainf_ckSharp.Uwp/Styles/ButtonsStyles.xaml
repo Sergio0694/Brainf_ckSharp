@@ -237,9 +237,10 @@
             <Setter.Value>
                 <ControlTemplate TargetType="virtualKeyboard:OperatorButton">
                     <Button
-                        x:Name="RootButton"
                         Style="{StaticResource ExpandedSquareButtonRevealStyle}"
-                        Background="#32000000">
+                        Background="#32000000"
+                        Command="{TemplateBinding Command}"
+                        CommandParameter="{TemplateBinding Operator}">
 
                         <!--Icon and title-->
                         <StackPanel
@@ -247,13 +248,11 @@
                             VerticalAlignment="Center"
                             Spacing="8">
                             <TextBlock
-                                x:Name="OperatorBlock"
-                                Text="{TemplateBinding Operator}"
+                                Text="{Binding Operator, RelativeSource={RelativeSource TemplatedParent}}"
                                 HorizontalAlignment="Center"
                                 FontSize="24"
                                 FontWeight="SemiBold"/>
                             <TextBlock
-                                x:Name="DescriptionBlock"
                                 Text="{TemplateBinding Description}"
                                 HorizontalAlignment="Center"
                                 MaxLines="1"

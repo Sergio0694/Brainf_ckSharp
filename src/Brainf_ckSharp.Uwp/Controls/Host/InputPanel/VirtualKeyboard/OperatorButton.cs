@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -9,32 +9,14 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.VirtualKeyboard
     /// <summary>
     /// A templated <see cref="Control"/> for a Brainf*ck/PBrain operator
     /// </summary>
-    [TemplatePart(Name = RootButtonName, Type = typeof(Button))]
     public sealed class OperatorButton : Control
     {
-        // Constants for the template
-        private const string RootButtonName = "RootButton";
-
-        /// <summary>
-        /// The root <see cref="Button"/> control
-        /// </summary>
-        private Button? _RootButton;
-
-        /// <inheritdoc/>
-        protected override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-
-            _RootButton = (Button)GetTemplateChild(RootButtonName) ?? throw new InvalidOperationException($"Can't find {RootButtonName}");
-            _RootButton.Click += RootButton_Click;
-        }
-
         /// <summary>
         /// Gets or sets the operator for the current control
         /// </summary>
-        public string Operator
+        public char Operator
         {
-            get => (string)GetValue(OperatorProperty);
+            get => (char)GetValue(OperatorProperty);
             set => SetValue(OperatorProperty, value);
         }
 
@@ -43,9 +25,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.VirtualKeyboard
         /// </summary>
         public static readonly DependencyProperty OperatorProperty = DependencyProperty.Register(
             nameof(Operator),
-            typeof(string),
+            typeof(char),
             typeof(OperatorButton),
-            new PropertyMetadata(string.Empty));
+            new PropertyMetadata(default(char)));
 
         /// <summary>
         /// Gets or sets the description for the current control
@@ -65,12 +47,20 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel.VirtualKeyboard
             typeof(OperatorButton),
             new PropertyMetadata(string.Empty));
 
-        /// <summary>
-        /// Relays the <see cref="Button.Click"/> event for the root <see cref="Button"/>
-        /// </summary>
-        public event EventHandler? Click;
+        /// <inheritdoc cref="Button.Command"/>
+        public ICommand Command
+        {
+            get => (ICommand)GetValue(CommandProperty);
+            set => SetValue(CommandProperty, value);
+        }
 
-        // Updates the UI when the control is selected
-        private void RootButton_Click(object sender, RoutedEventArgs e) => Click?.Invoke(this, EventArgs.Empty);
+        /// <summary>
+        /// The dependency property for <see cref="Command"/>
+        /// </summary>
+        public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(
+            nameof(Command),
+            typeof(ICommand),
+            typeof(OperatorButton),
+            new PropertyMetadata(null));
     }
 }
