@@ -30,6 +30,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 @this.TextChanging -= @this.MarkdownRichEditBox_TextChanging;
                 ((RichEditBox)@this).TextChanged -= @this.MarkdownRichEditBox_TextChanged;
                 @this.Document.BatchDisplayUpdates();
+                @this.IsUndoGroupingEnabled = true;
             }
 
             /// <summary>
