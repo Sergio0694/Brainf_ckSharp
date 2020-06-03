@@ -30,14 +30,14 @@
         <!--Visual states-->
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
-                <VisualState x:Name="Minimal">
+                <VisualState x:Name="MinimalState">
                     <VisualState.Setters>
                         <Setter Target="RootGrid.Padding" Value="4,4,0,4"/>
                         <Setter Target="PBrainColumn.Width" Value="0"/>
                         <Setter Target="PBrainGrid.Visibility" Value="Collapsed"/>
                     </VisualState.Setters>
                 </VisualState>
-                <VisualState x:Name="Extended">
+                <VisualState x:Name="ExtendedState">
                     <VisualState.Setters>
                         <Setter Target="RootGrid.Padding" Value="4"/>
                         <Setter Target="PBrainColumn.Width" Value="*"/>
