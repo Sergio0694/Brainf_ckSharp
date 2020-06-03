@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
@@ -260,6 +261,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                         .WithSource(command)
                         .WithStdin(stdin)
                         .WithInitialState(MachineState)
+                        .WithExecutionToken(new CancellationTokenSource(TimeSpan.FromSeconds(2)).Token)
                         .TryRun();
                 });
 
