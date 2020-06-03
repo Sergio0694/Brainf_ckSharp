@@ -107,6 +107,10 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
             }
 
             WorkspaceViewModel = (WorkspaceViewModelBase)message.Sender;
+
+            // Restart the time to make sure to update the background
+            // execution result immediately when the workspace changes.
+            Timer.Change(default, TimeSpan.FromSeconds(2));
         }
 
         /// <summary>
