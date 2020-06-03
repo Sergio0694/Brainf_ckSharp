@@ -7,6 +7,7 @@
     xmlns:local="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel"
     xmlns:constants="using:Brainf_ckSharp.Constants"
     xmlns:controls="using:Brainf_ckSharp.Shared.ViewModels.Controls"
+    xmlns:convertersUI="using:Brainf_ckSharp.Uwp.Converters.UI"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -35,14 +36,20 @@
         <!--Visual states-->
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
-                <VisualState x:Name="MinimalState">
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{x:Bind convertersUI:BoolToNotBoolConverter.Convert(ViewModel.IsPBrainModeEnabled), Mode=OneWay}"/>
+                    </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="RootGrid.Padding" Value="4,4,0,4"/>
                         <Setter Target="PBrainColumn.Width" Value="0"/>
                         <Setter Target="PBrainGrid.Visibility" Value="Collapsed"/>
                     </VisualState.Setters>
                 </VisualState>
-                <VisualState x:Name="ExtendedState">
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{x:Bind ViewModel.IsPBrainModeEnabled, Mode=OneWay}"/>
+                    </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="RootGrid.Padding" Value="4"/>
                         <Setter Target="PBrainColumn.Width" Value="*"/>

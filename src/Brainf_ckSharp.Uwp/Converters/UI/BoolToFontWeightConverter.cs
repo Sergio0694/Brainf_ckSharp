@@ -7,14 +7,14 @@ using Windows.UI.Text;
 namespace Brainf_ckSharp.Uwp.Converters.UI
 {
     /// <summary>
-    /// A <see langword="class"/> that converts <see cref="bool"/> instances to <see cref="FontWeight"/> values
+    /// A <see langword="class"/> that converts <see cref="bool"/> values to <see cref="FontWeight"/> values
     /// </summary>
     public static class BoolToFontWeightConverter
     {
         /// <summary>
         /// Checks whether the input <see cref="bool"/> is <see langword="true"/>
         /// </summary>
-        /// <param name="value">The input <see cref="bool"/> instance</param>
+        /// <param name="value">The input <see cref="bool"/> value</param>
         /// <returns><see cref="FontWeights.Bold"/> if <paramref name="value"/> is <see langword="true"/></returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -240,6 +240,7 @@
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Windows.UI.Xaml.Controls\LockedPivot.cs" />
+    <Compile Include="Converters\UI\BoolToNotBoolConverter.cs" />
     <Compile Include="Converters\UI\BoolToFontWeightConverter.cs" />
     <Compile Include="Converters\UI\ObjectNotNullToVisibilityConverter.cs" />
     <Compile Include="Extensions\Microsoft.Xaml.Interactions.Core\ItemClickBehavior.cs" />
