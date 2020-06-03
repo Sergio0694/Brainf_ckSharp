@@ -190,8 +190,8 @@
                     </Grid>
                 </Border>
                 <Border
-                    x:Name="BackgroundExecutionToolTipBorder"
-                    Background="Transparent"/>
+                    Background="Transparent"
+                    ToolTipService.ToolTip="{x:Bind converters:ExecutionResultConverter.StdoutOrExitCodeDescription(ViewModel.BackgroundExecutionResult), Mode=OneWay}"/>
             </Grid>
         </StackPanel>
     </Grid>
