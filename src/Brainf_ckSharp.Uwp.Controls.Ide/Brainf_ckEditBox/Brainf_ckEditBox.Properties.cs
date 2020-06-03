@@ -34,15 +34,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
-        /// Gets or sets whether or not to automatically indent brackets and parentheses
-        /// </summary>
-        public bool IsAutomaticBracketsIndentationEnabled
-        {
-            get => (bool)GetValue(IsAutomaticBracketsIndentationEnabledProperty);
-            set => SetValue(IsAutomaticBracketsIndentationEnabledProperty, value);
-        }
-
-        /// <summary>
         /// Gets or sets the formatting style for brackets
         /// </summary>
         public BracketsFormattingStyle BracketsFormattingStyle
@@ -88,16 +79,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 typeof(Thickness),
                 typeof(Brainf_ckEditBox),
                 new PropertyMetadata(default(Thickness), OnVerticalScrollBarMarginPropertyChanged));
-
-        /// <summary>
-        /// Gets the dependency property for <see cref="IsAutomaticBracketsIndentationEnabled"/>.
-        /// </summary>
-        public static readonly DependencyProperty IsAutomaticBracketsIndentationEnabledProperty =
-            DependencyProperty.Register(
-                nameof(IsAutomaticBracketsIndentationEnabled),
-                typeof(bool),
-                typeof(Brainf_ckEditBox),
-                new PropertyMetadata(default(bool)));
 
         /// <summary>
         /// Gets the dependency property for <see cref="BracketsFormattingStyle"/>.

@@ -62,8 +62,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="args">The arguments for the new Brainf*ck/Pbrain source code being displayed</param>
         private void CodeEditBox_TextChanged(Brainf_ckEditBox sender, TextChangedEventArgs args)
         {
-            Text = args.PlainText;
-
             TextChanged?.Invoke(this, args);
 
             int numberOfLines = args.PlainText.Count(Characters.CarriageReturn);

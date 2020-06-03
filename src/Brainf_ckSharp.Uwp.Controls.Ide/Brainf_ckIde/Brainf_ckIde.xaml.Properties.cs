@@ -10,10 +10,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// Gets the text currently displayed
         /// </summary>
-        public string Text
+        public string Text => CodeEditBox.Text;
+
+        /// <summary>
+        /// Gets or sets the syntax highlight theme to use
+        /// </summary>
+        public FrameworkElement ContextMenuSecondaryContent
         {
-            get => (string)GetValue(TextProperty);
-            private set => SetValue(TextProperty, value);
+            get => CodeEditBox.ContextMenuSecondaryContent;
+            set => CodeEditBox.ContextMenuSecondaryContent = value;
         }
 
         /// <summary>
@@ -26,25 +31,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
-        /// Gets or sets the syntax highlight theme to use
-        /// </summary>
-        public FrameworkElement ContextMenuSecondaryContent
-        {
-            get => (FrameworkElement)GetValue(ContextMenuSecondaryContentProperty);
-            set => SetValue(ContextMenuSecondaryContentProperty, value);
-        }
-
-        /// <summary>
-        /// Gets the dependency property for <see cref="Text"/>.
-        /// </summary>
-        public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register(
-                nameof(Text),
-                typeof(string),
-                typeof(Brainf_ckIde),
-                new PropertyMetadata("\r"));
-
-        /// <summary>
         /// Gets the dependency property for <see cref="SyntaxHighlightTheme"/>.
         /// </summary>
         public static readonly DependencyProperty SyntaxHighlightThemeProperty =
@@ -53,15 +39,5 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 typeof(Brainf_ckTheme),
                 typeof(Brainf_ckIde),
                 new PropertyMetadata(Brainf_ckThemes.VisualStudio));
-
-        /// <summary>
-        /// Gets the dependency property for <see cref="ContextMenuSecondaryContent"/>.
-        /// </summary>
-        public static readonly DependencyProperty ContextMenuSecondaryContentProperty =
-            DependencyProperty.Register(
-                nameof(ContextMenuSecondaryContent),
-                typeof(FrameworkElement),
-                typeof(Brainf_ckEditBox),
-                new PropertyMetadata(null));
     }
 }
