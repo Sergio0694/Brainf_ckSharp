@@ -1,13 +1,12 @@
 ﻿using System.Windows.Input;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
-using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
+using Brainf_ckSharp.Shared.Messages.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls
 {
@@ -22,7 +21,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
 
             InsertOperatorCommand = new RelayCommand<char>(InsertOperator);
 
-            Messenger.Register<PropertyChangedMessage<bool>>(this, UpdateIsPBrainModeEnabled);
+            Messenger.Register<ShowPBrainButtonsSettingsChangedMessage>(this, m => IsPBrainModeEnabled = m.Value);
         }
 
         /// <summary>
@@ -48,19 +47,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         private void InsertOperator(char op)
         {
             Messenger.Send(new OperatorKeyPressedNotificationMessage(op));
-        }
-
-        /// <summary>
-        /// Updates <see cref="IsPBrainModeEnabled"/> if the relative setting is changed
-        /// </summary>
-        /// <param name="message">The <see cref="PropertyChangedMessage{T}"/> instance to receive</param>
-        private void UpdateIsPBrainModeEnabled(PropertyChangedMessage<bool> message)
-        {
-            if (message.Sender.GetType() == typeof(SettingsSubPageViewModel) &&
-                message.PropertyName == nameof(SettingsKeys.ShowPBrainButtons))
-            {
-                IsPBrainModeEnabled = message.NewValue;
-            }
         }
     }
 }
