@@ -12,14 +12,13 @@ using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Messages.Console.Commands;
 using Brainf_ckSharp.Shared.Messages.Console.MemoryState;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
+using Brainf_ckSharp.Shared.Messages.Settings;
 using Brainf_ckSharp.Shared.Models.Console;
 using Brainf_ckSharp.Shared.Models.Console.Interfaces;
-using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 using Nito.AsyncEx;
 
 #nullable enable
@@ -67,8 +66,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             Messenger.Register<RestartConsoleRequestMessage>(this, m => _ = RestartAsync());
             Messenger.Register<ClearConsoleScreenRequestMessage>(this, m => _ = ClearScreenAsync());
             Messenger.Register<RepeatCommandRequestMessage>(this, m => _ = RepeatLastScriptAsync());
-            Messenger.Register<PropertyChangedMessage<OverflowMode>>(this, m => _ = UpdateMachineStateAsync(m));
-            Messenger.Register<PropertyChangedMessage<int>>(this, m => _ = UpdateMachineStateAsync(m));
+            Messenger.Register<OverflowModeSettingChangedMessage>(this, m => _ = RestartAsync());
+            Messenger.Register<MemorySizeSettingChangedMessage>(this, m => _ = RestartAsync());
         }
 
         /// <inheritdoc/>
@@ -100,24 +99,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         {
             get => _MachineState;
             private set => Set(ref _MachineState, value, true);
-        }
-
-        /// <summary>
-        /// Updates the <see cref="MachineState"/> property when needed
-        /// </summary>
-        /// <param name="message">The <see cref="PropertyChangedMessage{T}"/> instance to check</param>
-        private Task UpdateMachineStateAsync<T>(PropertyChangedMessage<T> message)
-        {
-            if (message.Sender.GetType() != typeof(SettingsSubPageViewModel)) return Task.CompletedTask;
-
-            // Only refresh the machine state when either the memory size or overflow mode change
-            if (message.PropertyName != nameof(SettingsKeys.MemorySize) &&
-                message.PropertyName != nameof(SettingsKeys.OverflowMode))
-            {
-                return Task.CompletedTask;
-            }
-
-            return RestartAsync();
         }
 
         /// <summary>

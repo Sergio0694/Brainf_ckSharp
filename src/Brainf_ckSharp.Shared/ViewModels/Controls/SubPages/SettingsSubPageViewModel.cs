@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.Extensions.Microsoft.Toolkit.Collections;
+using Brainf_ckSharp.Shared.Messages.Settings;
 using Brainf_ckSharp.Shared.ViewModels.Abstract;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Collections;
@@ -15,6 +17,8 @@ using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Mvvm.Messaging.Messages;
+
+#nullable enable
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 {
@@ -84,13 +88,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public IdeTheme IdeTheme
         {
             get => _IdeTheme;
-            set
-            {
-                if (Set(ref _IdeTheme, value))
-                {
-                    Messenger.Send(new ValueChangedMessage<IdeTheme>(value));
-                }
-            }
+            set => Set<IdeTheme, IdeThemeSettingChangedMessage>(ref _IdeTheme, value);
         }
 
         private static bool _IsThemeSelectorAvailable;
@@ -112,7 +110,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public BracketsFormattingStyle BracketsFormattingStyle
         {
             get => _BracketsFormattingStyle;
-            set => Set(ref _BracketsFormattingStyle, value);
+            set => Set<BracketsFormattingStyle, BracketsFormattingStyleSettingsChangedMessage>(ref _BracketsFormattingStyle, value);
         }
 
         private bool _RenderWhitespaces = Get<bool>(nameof(RenderWhitespaces));
@@ -123,7 +121,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public bool RenderWhitespaces
         {
             get => _RenderWhitespaces;
-            set => Set(ref _RenderWhitespaces, value);
+            set => Set<bool, RenderWhitespacesSettingChangedMessage>(ref _RenderWhitespaces, value);
         }
 
         private bool _EnableTimeline = Get<bool>(nameof(EnableTimeline));
@@ -167,7 +165,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public bool ShowPBrainButtons
         {
             get => _ShowPBrainButtons;
-            set => Set(ref _ShowPBrainButtons, value);
+            set => Set<bool, ShowPBrainButtonsSettingsChangedMessage>(ref _ShowPBrainButtons, value);
         }
 
         private OverflowMode _OverflowMode = Get<OverflowMode>(nameof(OverflowMode));
@@ -178,7 +176,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public OverflowMode OverflowMode
         {
             get => _OverflowMode;
-            set => Set(ref _OverflowMode, value);
+            set => Set<OverflowMode, OverflowModeSettingChangedMessage>(ref _OverflowMode, value);
         }
 
         /// <summary>
@@ -194,7 +192,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public int MemorySize
         {
             get => _MemorySize;
-            set => Set(ref _MemorySize, value);
+            set => Set<int, MemorySizeSettingChangedMessage>(ref _MemorySize, value);
         }
 
         /// <summary>
@@ -241,20 +239,34 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <param name="field">The previous setting value</param>
         /// <param name="value">The new value to set</param>
         /// <param name="name">The name of the setting that changed</param>
-        private new bool Set<T>(ref T field, T value, [CallerMemberName] string name = null!)
+        private new void Set<T>(ref T field, T value, [CallerMemberName] string name = null!)
         {
-            T oldValue = field;
+            if (base.Set(ref field, value, name))
+            {
+                Ioc.Default.GetRequiredService<ISettingsService>().SetValue(name, value);
+            }
+        }
 
+        /// <summary>
+        /// A proxy for <see cref="Microsoft.Toolkit.Mvvm.ComponentModel.ObservableObject.Set{T}(ref T, T, string)"/> that
+        /// also overwrites the value stored in the local settings when a property changes and broadcasts a message
+        /// </summary>
+        /// <typeparam name="T">The type of setting to set</typeparam>
+        /// <typeparam name="TMessage">The type of message to broadcast</typeparam>
+        /// <param name="field">The previous setting value</param>
+        /// <param name="value">The new value to set</param>
+        /// <param name="name">The name of the setting that changed</param>
+        private void Set<T, TMessage>(ref T field, T value, [CallerMemberName] string name = null!)
+            where TMessage : ValueChangedMessage<T>
+        {
             if (base.Set(ref field, value, name))
             {
                 Ioc.Default.GetRequiredService<ISettingsService>().SetValue(name, value);
 
-                Broadcast(oldValue, value, name);
+                TMessage message = (TMessage)Activator.CreateInstance(typeof(TMessage), value);
 
-                return true;
+                Messenger.Send(message);
             }
-
-            return false;
         }
     }
 }
