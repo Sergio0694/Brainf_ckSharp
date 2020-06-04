@@ -71,21 +71,26 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             Messenger.Register<InsertNewLineRequestMessage>(this, _ => CharacterAdded?.Invoke(this, Characters.CarriageReturn));
             Messenger.Register<DeleteCharacterRequestMessage>(this, _ => CharacterDeleted?.Invoke(this, EventArgs.Empty));
             Messenger.Register<PickOpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync(m.Favorite));
-            Messenger.Register<LoadSourceCodeRequestMessage>(this, m => Code = m.Value);
+            Messenger.Register<LoadSourceCodeRequestMessage>(this, m => LoadSourceCode(m.Value));
             Messenger.Register<SaveFileRequestMessage>(this, m => _ = TrySaveTextAsync());
             Messenger.Register<SaveFileAsRequestMessage>(this, m => _ = TrySaveTextAsAsync());
-        }
-
-        /// <inheritdoc/>
-        protected override void OnCodeChanged()
-        {
-            CodeLoaded?.Invoke(this, Code.Content);
         }
 
         /// <summary>
         /// Gets the collection of available code snippets
         /// </summary>
         public IReadOnlyList<CodeSnippet> CodeSnippets { get; }
+
+        /// <summary>
+        /// Loads a specific <see cref="SourceCode"/> instance
+        /// </summary>
+        /// <param name="code">The source code to load</param>
+        private void LoadSourceCode(SourceCode code)
+        {
+            Code = code;
+
+            CodeLoaded?.Invoke(this, Code.Content);
+        }
 
         /// <summary>
         /// Tries to open and load a source code file
@@ -97,15 +102,15 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
             if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
             {
-                Code = code;
-
                 // Set the favorite state, if requested
                 if (favorite)
                 {
-                    Code.Metadata.IsFavorited = true;
+                    code.Metadata.IsFavorited = true;
 
-                    await Code.TrySaveAsync();
+                    await code.TrySaveAsync();
                 }
+
+                LoadSourceCode(code);
             }
         }
 

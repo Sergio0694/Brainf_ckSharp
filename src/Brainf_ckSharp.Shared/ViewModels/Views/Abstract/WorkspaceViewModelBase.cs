@@ -19,13 +19,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views.Abstract
         public SourceCode Code
         {
             get => _Code;
-            protected set
-            {
-                if (Set(ref _Code, value))
-                {
-                    OnCodeChanged();
-                }
-            }
+            protected set => Set(ref _Code, value);
         }
 
         private ReadOnlyMemory<char> _Text = SourceCode.EmptyContent.AsMemory();
@@ -103,11 +97,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views.Abstract
                 Set(ref _Column, value);
             }
         }
-
-        /// <summary>
-        /// Raised whenever <see cref="Code"/> changes
-        /// </summary>
-        protected virtual void OnCodeChanged() { }
 
         /// <summary>
         /// Raised whenever <see cref="Text"/> changes
