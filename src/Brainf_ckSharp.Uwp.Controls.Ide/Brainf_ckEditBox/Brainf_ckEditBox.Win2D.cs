@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Text;
@@ -127,14 +125,24 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
+        /// Resets the current whitespace characters
+        /// </summary>
+        private void ResetWhitespaceCharactersList()
+        {
+            _SpaceIndices = MemoryOwner<int>.Empty;
+            _SpaceAreas = MemoryOwner<Rect>.Empty;
+            _TabIndices = MemoryOwner<int>.Empty;
+            _TabAreas = MemoryOwner<Rect>.Empty;
+        }
+
+        /// <summary>
         /// Tries to update the current sequences of spaces and tabs in the text
         /// </summary>
-        /// <returns><see langword="true"/> if the sequences were updated, <see langword="false"/> otherwise</returns>
         private void TryUpdateWhitespaceCharactersList()
         {
             // Prepare the current text
-            ReadOnlySpan<char> text = Text.AsSpan();
-            ref char r0 = ref MemoryMarshal.GetReference(text);
+            string text = Text;
+            ref char r0 = ref text.DangerousGetReference();
             int length = text.Length;
 
             // Target buffers
@@ -204,14 +212,13 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// Tries to update the current sequence of brackets displayed in the text
         /// </summary>
-        /// <returns><see langword="true"/> if the sequence was updated, <see langword="false"/> otherwise</returns>
         private void TryUpdateBracketsList()
         {
             Debug.Assert(_SyntaxValidationResult.IsSuccessOrEmptyScript);
 
             // Prepare the current text
-            ReadOnlySpan<char> text = Text.AsSpan();
-            ref char r0 = ref MemoryMarshal.GetReference(text);
+            string text = Text;
+            ref char r0 = ref text.DangerousGetReference();
             int length = text.Length;
 
             // Temporary buffers, just in the original method in the core library

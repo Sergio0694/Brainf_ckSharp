@@ -43,6 +43,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
+        /// Gets or sets whether or not whitespace characters should be rendered
+        /// </summary>
+        public bool RenderWhitespaceCharacters
+        {
+            get => (bool)GetValue(RenderWhitespaceCharactersProperty);
+            set => SetValue(RenderWhitespaceCharactersProperty, value);
+        }
+
+        /// <summary>
         /// Gets or sets the syntax highlight theme to use
         /// </summary>
         public Brainf_ckTheme SyntaxHighlightTheme
@@ -91,6 +100,16 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 new PropertyMetadata(default(BracketsFormattingStyle)));
 
         /// <summary>
+        /// Gets the dependency property for <see cref="RenderWhitespaceCharacters"/>.
+        /// </summary>
+        public static readonly DependencyProperty RenderWhitespaceCharactersProperty =
+            DependencyProperty.Register(
+                nameof(RenderWhitespaceCharacters),
+                typeof(bool),
+                typeof(Brainf_ckEditBox),
+                new PropertyMetadata(true, OnRenderWhitespaceCharactersPropertyChanged));
+
+        /// <summary>
         /// Gets the dependency property for <see cref="SyntaxHighlightTheme"/>.
         /// </summary>
         public static readonly DependencyProperty SyntaxHighlightThemeProperty =
@@ -122,6 +141,24 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             if (@this._VerticalContentScrollBar == null) return;
 
             @this._VerticalContentScrollBar.Margin = (Thickness)e.NewValue;
+        }
+
+        /// <summary>
+        /// Updates the UI when <see cref="RenderWhitespaceCharacters"/> changes
+        /// </summary>
+        /// <param name="d">The source <see cref="Brainf_ckEditBox"/> instance</param>
+        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance with the new <see cref="RenderWhitespaceCharacters"/> value</param>
+        private static void OnRenderWhitespaceCharactersPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            Brainf_ckEditBox @this = (Brainf_ckEditBox)d;
+            bool value = (bool)e.NewValue;
+
+            if (@this._TextOverlaysCanvas is null) return;
+
+            if (value) @this.TryUpdateWhitespaceCharactersList();
+            else @this.ResetWhitespaceCharactersList();
+
+            @this._TextOverlaysCanvas.Invalidate();
         }
 
         /// <summary>
