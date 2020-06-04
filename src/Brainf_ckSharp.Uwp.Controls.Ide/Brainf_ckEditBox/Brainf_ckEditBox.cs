@@ -29,6 +29,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             // Having self as the data context allows standard bindings to work instead.
             DataContext = this;
 
+            // Set the tab length to align with Visual Studio
+            Document.SetTabLength(8);
+
             SelectionChanging += Brainf_ckEditBox_SelectionChanging;
             SelectionChanged += Brainf_ckEditBox_SelectionChanged;
             TextChanging += MarkdownRichEditBox_TextChanging;

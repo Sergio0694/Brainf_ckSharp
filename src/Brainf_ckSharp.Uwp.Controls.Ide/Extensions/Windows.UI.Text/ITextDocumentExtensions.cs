@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.Contracts;
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 
 #nullable enable
@@ -46,6 +47,22 @@ namespace Windows.UI.Text
         {
             ITextRange range = document.GetRange(start, end);
             range.CharacterFormat.ForegroundColor = color;
+        }
+
+        /// <summary>
+        /// Sets the tab length for the input <see cref="ITextDocument"/> instance
+        /// </summary>
+        /// <param name="document">The input <see cref="ITextDocument"/> instance to modify</param>
+        /// <param name="length">The tab length value to set</param>
+        public static void SetTabLength(this ITextDocument document, int length)
+        {
+            document.DefaultTabStop = length * 3; // Each space has an approximate width of 3 points
+
+            ITextParagraphFormat format = document.GetDefaultParagraphFormat();
+
+            format.ClearAllTabs();
+
+            document.SetDefaultParagraphFormat(format);
         }
 
         /// <summary>
