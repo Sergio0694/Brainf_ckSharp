@@ -22,6 +22,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
+        /// Gets or sets whether or not whitespace characters should be rendered
+        /// </summary>
+        public bool RenderWhitespaceCharacters
+        {
+            get => CodeEditBox.RenderWhitespaceCharacters;
+            set => CodeEditBox.RenderWhitespaceCharacters = value;
+        }
+
+        /// <summary>
         /// Gets or sets the syntax highlight theme to use
         /// </summary>
         public Brainf_ckTheme SyntaxHighlightTheme

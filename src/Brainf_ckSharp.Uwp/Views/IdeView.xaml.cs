@@ -6,6 +6,7 @@ using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared;
 using Brainf_ckSharp.Shared.Enums.Settings;
+using Brainf_ckSharp.Shared.Messages.Settings;
 using Brainf_ckSharp.Shared.Models.Ide;
 using Brainf_ckSharp.Shared.ViewModels.Views;
 using Brainf_ckSharp.Uwp.Controls.Ide;
@@ -31,10 +32,12 @@ namespace Brainf_ckSharp.Uwp.Views
         {
             this.InitializeComponent();
 
+            CodeEditor.RenderWhitespaceCharacters = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<bool>(SettingsKeys.RenderWhitespaces);
             CodeEditor.SyntaxHighlightTheme = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<IdeTheme>(SettingsKeys.IdeTheme).AsBrainf_ckTheme();
 
             Messenger.Default.Register<ValueChangedMessage<VirtualKey>>(this, m => CodeEditor.Move(m.Value));
-            Messenger.Default.Register<ValueChangedMessage<IdeTheme>>(this, m => CodeEditor.SyntaxHighlightTheme = m.Value.AsBrainf_ckTheme());
+            Messenger.Default.Register<IdeThemeSettingChangedMessage>(this, m => CodeEditor.SyntaxHighlightTheme = m.Value.AsBrainf_ckTheme());
+            Messenger.Default.Register<RenderWhitespacesSettingChangedMessage>(this, m => CodeEditor.RenderWhitespaceCharacters = m.Value);
         }
 
         /// <summary>
