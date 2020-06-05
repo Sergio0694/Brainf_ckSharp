@@ -47,26 +47,15 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// </summary>
         public ICommand UnlockThemesSelectorCommand { get; }
 
-        private bool _AutosaveDocuments = Get<bool>(nameof(AutosaveDocuments));
+        private bool _ResumeIdeState = Get<bool>(nameof(ResumeIdeState));
 
         /// <summary>
-        /// Exposes the <see cref="SettingsKeys.AutosaveDocuments"/> setting
+        /// Exposes the <see cref="SettingsKeys.ResumeIdeState"/> setting
         /// </summary>
-        public bool AutosaveDocuments
+        public bool ResumeIdeState
         {
-            get => _AutosaveDocuments;
-            set => Set(ref _AutosaveDocuments, value);
-        }
-
-        private bool _ProtectUnsavedChanges = Get<bool>(nameof(ProtectUnsavedChanges));
-
-        /// <summary>
-        /// Exposes the <see cref="SettingsKeys.ProtectUnsavedChanges"/> setting
-        /// </summary>
-        public bool ProtectUnsavedChanges
-        {
-            get => _ProtectUnsavedChanges;
-            set => Set(ref _ProtectUnsavedChanges, value);
+            get => _ResumeIdeState;
+            set => Set(ref _ResumeIdeState, value);
         }
 
         private bool _AutoindentBrackets = Get<bool>(nameof(AutoindentBrackets));

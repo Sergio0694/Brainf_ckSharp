@@ -6,14 +6,9 @@
     public static class SettingsKeys
     {
         /// <summary>
-        /// Indicates whether or not to autosave documents, uses a <see cref="bool"/>
+        /// Indicates whether or not to automatically resume the IDE state, uses a <see cref="bool"/>
         /// </summary>
-        public const string AutosaveDocuments = nameof(AutosaveDocuments);
-
-        /// <summary>
-        /// Indicates whether to protect from closing the app with unsaved changes, uses a <see cref="bool"/>
-        /// </summary>
-        public const string ProtectUnsavedChanges = nameof(ProtectUnsavedChanges);
+        public const string ResumeIdeState = nameof(ResumeIdeState);
 
         /// <summary>
         /// Indicates whether or not to automatically indent brackets in the IDE, uses a <see cref="bool"/>
