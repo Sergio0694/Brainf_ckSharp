@@ -16,7 +16,6 @@
     xmlns:enumsSettings="using:Brainf_ckSharp.Shared.Enums.Settings"
     xmlns:dataTemplates="using:Brainf_ckSharp.Uwp.Controls.DataTemplates"
     xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
-    xmlns:convertersUI="using:Brainf_ckSharp.Uwp.Converters.UI"
     xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
     xmlns:convertersToolkit="using:Microsoft.Toolkit.Uwp.UI.Converters"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
@@ -43,15 +42,8 @@
             x:DataType="enums:SettingsSection">
             <StackPanel Spacing="4">
 
-                <!--Resume where I left off-->
-                <TextBlock
-                    TextWrapping="Wrap"
-                    Text="Resume where I left off"/>
-                <ToggleSwitch IsOn="{x:Bind ViewModel.ResumeIdeState, Mode=TwoWay}"/>
-
                 <!--Theme-->
                 <TextBlock
-                    Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Theme"/>
                 <Grid

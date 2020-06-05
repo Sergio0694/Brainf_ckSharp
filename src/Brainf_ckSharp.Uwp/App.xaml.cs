@@ -1,6 +1,9 @@
 ﻿using System.Reflection;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
+using Windows.Foundation;
+using Windows.UI.Core.Preview;
 using Windows.UI.Xaml;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Services;
@@ -18,6 +21,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Brainf_ckSharp.Services.Uwp.Store;
 using Brainf_ckSharp.Shared;
+using Brainf_ckSharp.Shared.Messages.Ide;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Uwp
 {
@@ -54,8 +59,24 @@ namespace Brainf_ckSharp.Uwp
             {
                 CoreApplication.EnablePrelaunch(true);
 
+                SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += OnCloseRequested;
+
                 Window.Current.Activate();
             }
+        }
+
+        /// <summary>
+        /// Handles the closure of the current app
+        /// </summary>
+        /// <param name="sender">The current application</param>
+        /// <param name="e">The <see cref="SystemNavigationCloseRequestedPreviewEventArgs"/> instance for the current event</param>
+        private async void OnCloseRequested(object sender, SystemNavigationCloseRequestedPreviewEventArgs e)
+        {
+            Deferral deferral = e.GetDeferral();
+
+            await Messenger.Default.Request<SaveIdeStateRequestMessage, Task>();
+
+            deferral.Complete();
         }
 
         /// <summary>
@@ -89,7 +110,6 @@ namespace Brainf_ckSharp.Uwp
             ISettingsService settings = Ioc.Default.GetRequiredService<ISettingsService>();
 
             // Initialize default settings
-            settings.SetValue(SettingsKeys.ResumeIdeState, true, false);
             settings.SetValue(SettingsKeys.AutoindentBrackets, true, false);
             settings.SetValue(SettingsKeys.BracketsFormattingStyle, BracketsFormattingStyle.NewLine, false);
             settings.SetValue(SettingsKeys.IdeTheme, IdeTheme.VisualStudio, false);

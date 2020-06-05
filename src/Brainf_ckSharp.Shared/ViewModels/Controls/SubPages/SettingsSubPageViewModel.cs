@@ -47,17 +47,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// </summary>
         public ICommand UnlockThemesSelectorCommand { get; }
 
-        private bool _ResumeIdeState = Get<bool>(nameof(ResumeIdeState));
-
-        /// <summary>
-        /// Exposes the <see cref="SettingsKeys.ResumeIdeState"/> setting
-        /// </summary>
-        public bool ResumeIdeState
-        {
-            get => _ResumeIdeState;
-            set => Set(ref _ResumeIdeState, value);
-        }
-
         private bool _AutoindentBrackets = Get<bool>(nameof(AutoindentBrackets));
 
         /// <summary>

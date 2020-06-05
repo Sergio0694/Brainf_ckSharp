@@ -8,6 +8,8 @@
     xmlns:views="using:Brainf_ckSharp.Shared.ViewModels.Views"
     xmlns:models="using:Brainf_ckSharp.Shared.Models.Ide"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -19,8 +21,14 @@
             CharacterAdded="ViewModelCharacterAdded"
             CharacterDeleted="ViewModel_CharacterDeleted"
             CodeLoaded="ViewModel_CodeLoaded"
-            CodeSaved="ViewModel_CodeSaved"/>
+            CodeSaved="ViewModel_CodeSaved"
+            StateRestored="ViewModel_OnStateRestored"/>
     </UserControl.DataContext>
+    <interactivity:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Loaded">
+            <core:InvokeCommandAction Command="{x:Bind ViewModel.RestoreStateCommand}"/>
+        </core:EventTriggerBehavior>
+    </interactivity:Interaction.Behaviors>
     <UserControl.Resources>
 
         <!--Code snippet template-->

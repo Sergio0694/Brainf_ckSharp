@@ -49,7 +49,7 @@ namespace Brainf_ckSharp.Uwp.Services.Files
         public async Task<IFile> CreateOrOpenFileFromPathAsync(string path)
         {
             string
-                folderPath = Path.GetPathRoot(path),
+                folderPath = Path.GetDirectoryName(path),
                 filename = Path.GetFileName(path);
 
             StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(folderPath);

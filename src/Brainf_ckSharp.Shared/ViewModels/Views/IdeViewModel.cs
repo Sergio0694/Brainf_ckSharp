@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Messages.Ide;
@@ -11,6 +12,7 @@ using Brainf_ckSharp.Shared.Models.Ide;
 using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Views
@@ -25,6 +27,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// </summary>
         public IdeViewModel()
         {
+            RestoreStateCommand = new AsyncRelayCommand(RestoreStateAsync);
             CodeSnippets = new[]
             {
                 new CodeSnippet("Reset cell", "[-]"),
@@ -64,6 +67,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// </summary>
         public event EventHandler? CodeSaved;
 
+        /// <summary>
+        /// Raised whenever the state is restored from a serialized one
+        /// </summary>
+        public event EventHandler<IdeState>? StateRestored;
+
         /// <inheritdoc/>
         protected override void OnActivated()
         {
@@ -76,7 +84,13 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             Messenger.Register<LoadSourceCodeRequestMessage>(this, m => LoadSourceCode(m.Value));
             Messenger.Register<SaveFileRequestMessage>(this, m => _ = TrySaveTextAsync());
             Messenger.Register<SaveFileAsRequestMessage>(this, m => _ = TrySaveTextAsAsync());
+            Messenger.Register<SaveIdeStateRequestMessage>(this, m => m.ReportResult(SaveStateAsync()));
         }
+
+        /// <summary>
+        /// Gets the <see cref="ICommand"/> instance for restoring the current state
+        /// </summary>
+        public ICommand RestoreStateCommand { get; }
 
         /// <summary>
         /// Gets the collection of available code snippets
@@ -201,6 +215,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             Text = state.Text.AsMemory();
             Row = state.Row;
             Column = state.Column;
+
+            StateRestored?.Invoke(this, state);
         }
     }
 }

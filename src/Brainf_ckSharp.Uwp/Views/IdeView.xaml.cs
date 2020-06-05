@@ -106,6 +106,16 @@ namespace Brainf_ckSharp.Uwp.Views
         }
 
         /// <summary>
+        /// Updates the UI when the state is restored
+        /// </summary>
+        /// <param name="sender">The current <see cref="IdeViewModel"/> instance</param>
+        /// <param name="e">The empty <see cref="EventArgs"/> instance for the event</param>
+        private void ViewModel_OnStateRestored(object sender, IdeState e)
+        {
+            CodeEditor.LoadText(e.Text);
+        }
+
+        /// <summary>
         /// Updates the currently displayed text
         /// </summary>
         /// <param name="sender">The sender <see cref="Brainf_ckIde"/> control</param>
