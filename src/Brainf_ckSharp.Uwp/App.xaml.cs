@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
@@ -112,7 +111,7 @@ namespace Brainf_ckSharp.Uwp
         {
             Deferral deferral = e.GetDeferral();
 
-            await Messenger.Default.Request<SaveIdeStateRequestMessage, Task>();
+            await Messenger.Default.Send<SaveIdeStateRequestMessage>().Result;
 
             deferral.Complete();
         }

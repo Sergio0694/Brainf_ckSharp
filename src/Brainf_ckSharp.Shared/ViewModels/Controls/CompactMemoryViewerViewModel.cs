@@ -20,7 +20,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         /// </summary>
         public CompactMemoryViewerViewModel()
         {
-            MachineState = Messenger.Request<MemoryStateRequestMessage, IReadOnlyMachineState>();
+            MachineState = Messenger.Send<MemoryStateRequestMessage>().Result;
 
             Messenger.Register<PropertyChangedMessage<IReadOnlyMachineState>>(this, m => MachineState = m.NewValue);
         }

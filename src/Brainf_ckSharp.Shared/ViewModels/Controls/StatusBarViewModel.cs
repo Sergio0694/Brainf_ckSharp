@@ -124,7 +124,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
             // Before actually executing the code, also check with the previously
             // stored arguments to be able to skip the execution if there were no changes.
             ReadOnlyMemory<char> source = viewModel.Text;
-            string stdin = Messenger.Request<StdinRequestMessage, string>(new StdinRequestMessage(true));
+            string stdin = Messenger.Send(new StdinRequestMessage(true));
             int memorySize = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<int>(SettingsKeys.MemorySize);
             OverflowMode overflowMode = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<OverflowMode>(SettingsKeys.OverflowMode);
             IReadOnlyMachineState? machineState = (viewModel as ConsoleViewModel)?.MachineState;

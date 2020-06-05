@@ -233,7 +233,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             // - Runs with output: add the output line, then a new command line
             if (!string.IsNullOrEmpty(command))
             {
-                string stdin = Messenger.Request<StdinRequestMessage, string>(new StdinRequestMessage(false));
+                string stdin = Messenger.Send(new StdinRequestMessage(false));
 
                 Option<InterpreterResult> result = await Task.Run(() =>
                 {
