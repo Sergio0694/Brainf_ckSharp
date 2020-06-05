@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.Contracts;
-using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 
 #nullable enable
