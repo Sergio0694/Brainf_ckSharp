@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Reflection;
 using Brainf_ckSharp.Shared.Enums;
+using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 
 namespace Brainf_ckSharp.Uwp.Converters.SubPages
 {
@@ -34,11 +37,17 @@ namespace Brainf_ckSharp.Uwp.Converters.SubPages
         [Pure]
         public static string ConvertSectionDescription(SettingsSection section)
         {
+            int numberOfProperties = (
+                from property in typeof(SettingsSubPageViewModel).GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                let attribute = property.GetCustomAttribute<SettingsSubPageViewModel.SettingPropertyAttribute>()
+                where attribute?.Section == section
+                select property).Count();
+
             return section switch
             {
-                SettingsSection.Ide => "7 settings available",
-                SettingsSection.UI => "2 settings available",
-                SettingsSection.Interpreter => "2 settings available",
+                SettingsSection.Ide => $"{numberOfProperties} settings available",
+                SettingsSection.UI => $"{numberOfProperties} settings available",
+                SettingsSection.Interpreter => $"{numberOfProperties} settings available",
                 _ => throw new ArgumentException($"Invalid settings section: {section}", nameof(section))
             };
         }

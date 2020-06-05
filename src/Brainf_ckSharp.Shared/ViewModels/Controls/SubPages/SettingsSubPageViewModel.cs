@@ -52,6 +52,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Exposes the <see cref="SettingsKeys.AutoindentBrackets"/> setting
         /// </summary>
+        [SettingProperty(SettingsSection.Ide)]
         public bool AutoindentBrackets
         {
             get => _AutoindentBrackets;
@@ -63,6 +64,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Exposes the <see cref="SettingsKeys.IdeTheme"/> setting
         /// </summary>
+        [SettingProperty(SettingsSection.Ide)]
         public IdeTheme IdeTheme
         {
             get => _IdeTheme;
@@ -85,6 +87,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Exposes the <see cref="SettingsKeys.BracketsFormattingStyle"/> setting
         /// </summary>
+        [SettingProperty(SettingsSection.Ide)]
         public BracketsFormattingStyle BracketsFormattingStyle
         {
             get => _BracketsFormattingStyle;
@@ -96,6 +99,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Exposes the <see cref="SettingsKeys.RenderWhitespaces"/> setting
         /// </summary>
+        [SettingProperty(SettingsSection.Ide)]
         public bool RenderWhitespaces
         {
             get => _RenderWhitespaces;
@@ -118,6 +122,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Exposes the <see cref="SettingsKeys.StartingView"/> setting
         /// </summary>
+        [SettingProperty(SettingsSection.UI)]
         public ViewType StartingView
         {
             get => _StartingView;
@@ -129,6 +134,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Exposes the <see cref="SettingsKeys.ClearStdinBufferOnRequest"/> setting
         /// </summary>
+        [SettingProperty(SettingsSection.UI)]
         public bool ClearStdinBufferOnRequest
         {
             get => _ClearStdinBufferOnRequest;
@@ -140,6 +146,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Exposes the <see cref="SettingsKeys.ShowPBrainButtons"/> setting
         /// </summary>
+        [SettingProperty(SettingsSection.UI)]
         public bool ShowPBrainButtons
         {
             get => _ShowPBrainButtons;
@@ -151,6 +158,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Exposes the <see cref="SettingsKeys.OverflowMode"/> setting
         /// </summary>
+        [SettingProperty(SettingsSection.Interpreter)]
         public OverflowMode OverflowMode
         {
             get => _OverflowMode;
@@ -167,6 +175,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Exposes the <see cref="SettingsKeys.MemorySize"/> setting
         /// </summary>
+        [SettingProperty(SettingsSection.Interpreter)]
         public int MemorySize
         {
             get => _MemorySize;
@@ -245,6 +254,27 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 
                 Messenger.Send(message);
             }
+        }
+
+        /// <summary>
+        /// A custom attribute that indicates a setting property
+        /// </summary>
+        [AttributeUsage(AttributeTargets.Property)]
+        public sealed class SettingPropertyAttribute : Attribute
+        {
+            /// <summary>
+            /// Creates a new <see cref="SettingPropertyAttribute"/> instance with the specified parameters
+            /// </summary>
+            /// <param name="section">The setting section this setting belongs to</param>
+            public SettingPropertyAttribute(SettingsSection section)
+            {
+                Section = section;
+            }
+
+            /// <summary>
+            /// Gets the current setting section in use
+            /// </summary>
+            public SettingsSection Section { get; }
         }
     }
 }
