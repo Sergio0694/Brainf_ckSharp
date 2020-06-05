@@ -266,16 +266,14 @@
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
-                    Label="Show Unicode characters"
-                    Icon="{toolkitExtensions:FontIcon Glyph={StaticResource ShowUnicodeMapIcon}}"
-                    Click="{x:Bind ShowUnicodeMap}">
-                    <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="U" Modifiers="Control"/>
-                    </AppBarButton.KeyboardAccelerators>
-                </AppBarButton>
+                    Label="New file"
+                    Icon="{toolkitExtensions:FontIcon Glyph={StaticResource NewFileIcon}}"
+                    Visibility="{x:Bind converters:PivotSelectionConverter.ConvertIndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
+                    Click="{x:Bind ViewModel.NewIdeFile}"/>
+                <AppBarSeparator Visibility="{x:Bind converters:PivotSelectionConverter.ConvertIndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"/>
                 <AppBarButton
                     Label="Open code library"
-                    Icon="{toolkitExtensions:FontIcon Glyph={StaticResource OpenFileIcon}}"
+                    Icon="{toolkitExtensions:FontIcon Glyph={StaticResource OpenCodeLibraryIcon}}"
                     Visibility="{x:Bind converters:PivotSelectionConverter.ConvertIndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
                     Click="{x:Bind ShowCodeLibrary}"/>
                 <AppBarButton
@@ -283,6 +281,7 @@
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource OpenFileIcon}}"
                     Visibility="{x:Bind converters:PivotSelectionConverter.ConvertIndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
                     Click="{x:Bind ViewModel.OpenFile}"/>
+                <AppBarSeparator Visibility="{x:Bind converters:PivotSelectionConverter.ConvertIndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"/>
                 <AppBarButton
                     Label="Save"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource SaveIcon}}"
@@ -328,6 +327,14 @@
                     Click="{x:Bind ShowUserGuide}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator Key="G" Modifiers="Control"/>
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
+                <AppBarButton
+                    Label="Show Unicode characters"
+                    Icon="{toolkitExtensions:FontIcon Glyph={StaticResource ShowUnicodeMapIcon}}"
+                    Click="{x:Bind ShowUnicodeMap}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="U" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
             </controls:AnimatedCommandBar.SecondaryCommands>

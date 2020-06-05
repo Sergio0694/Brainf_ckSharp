@@ -35,7 +35,9 @@
     <x:String x:Key="RestartIcon">&#xE9F3;</x:String>
     <x:String x:Key="ClearScreen">&#xEA99;</x:String>
     <x:String x:Key="ShowUnicodeMapIcon">&#xEBDB;</x:String>
+    <x:String x:Key="NewFileIcon">&#xF56E;</x:String>
     <x:String x:Key="OpenFileIcon">&#xED25;</x:String>
+    <x:String x:Key="OpenCodeLibraryIcon">&#xF5ED;</x:String>
     <x:String x:Key="SaveIcon">&#xE105;</x:String>
     <x:String x:Key="SaveAsIcon">&#xEA35;</x:String>
     <x:String x:Key="SettingsIcon">&#xE115;</x:String>

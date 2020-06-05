@@ -84,7 +84,9 @@ namespace Windows.UI.Text
         /// <param name="text">The plain text to load</param>
         public static void LoadFromString(this ITextDocument document, string text)
         {
-            document.SetText(TextSetOptions.None, text);
+            string trimmed = text.Equals("\r") ? string.Empty : text;
+
+            document.SetText(TextSetOptions.None, trimmed);
 
             document.ClearUndoHistory();
         }
