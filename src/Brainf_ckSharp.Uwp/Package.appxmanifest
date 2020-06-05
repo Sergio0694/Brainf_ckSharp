@@ -48,6 +48,20 @@
         </uap:DefaultTile >
         <uap:SplashScreen Image="Assets\SplashScreen.png" uap5:Optional="true" BackgroundColor="#404040"/>
       </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="brainf_ck">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain">.bf</uap:FileType>
+              <uap:FileType ContentType="text/plain">.bfs</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:Logo>Assets\FileIcons\bf.png</uap:Logo>
+            <uap:InfoTip>Brainf*ck# source</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+            <uap:DisplayName>Brainf*ck source</uap:DisplayName>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+      </Extensions>
     </Application>
   </Applications>
 

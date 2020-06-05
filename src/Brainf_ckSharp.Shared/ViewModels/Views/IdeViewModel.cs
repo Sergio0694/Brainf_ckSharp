@@ -81,6 +81,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             Messenger.Register<InsertNewLineRequestMessage>(this, _ => CharacterAdded?.Invoke(this, Characters.CarriageReturn));
             Messenger.Register<DeleteCharacterRequestMessage>(this, _ => CharacterDeleted?.Invoke(this, EventArgs.Empty));
             Messenger.Register<PickOpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync(m.Favorite));
+            Messenger.Register<OpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync(m.Value));
             Messenger.Register<LoadSourceCodeRequestMessage>(this, m => LoadSourceCode(m.Value));
             Messenger.Register<SaveFileRequestMessage>(this, m => _ = TrySaveTextAsync());
             Messenger.Register<SaveFileAsRequestMessage>(this, m => _ = TrySaveTextAsAsync());
@@ -126,6 +127,18 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                     await code.TrySaveAsync();
                 }
 
+                LoadSourceCode(code);
+            }
+        }
+
+        /// <summary>
+        /// Tries to open and load a source code file
+        /// </summary>
+        /// <param name="file">The file to open</param>
+        private async Task TryLoadTextFromFileAsync(IFile file)
+        {
+            if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
+            {
                 LoadSourceCode(code);
             }
         }

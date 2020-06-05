@@ -1,8 +1,10 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
+using Windows.Storage;
 using Windows.UI.Core.Preview;
 using Windows.UI.Xaml;
 using Brainf_ckSharp.Enums;
@@ -42,6 +44,30 @@ namespace Brainf_ckSharp.Uwp
         /// <inheritdoc/>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            OnActivated(e.PrelaunchActivated);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnFileActivated(FileActivatedEventArgs args)
+        {
+            OnActivated(false);
+
+            if (args.Files.FirstOrDefault() is StorageFile storageFile)
+            {
+                IFile file = new File(storageFile);
+
+                Messenger.Default.Send(new OpenFileRequestMessage(file));
+            }
+
+            base.OnFileActivated(args);
+        }
+
+        /// <summary>
+        /// Initilizes and activates the app
+        /// </summary>
+        /// <param name="prelaunchActivated">Whether or not the prelaunch is enabled for the current activation</param>
+        private void OnActivated(bool prelaunchActivated)
+        {
             // Initialize the UI if needed
             if (!(Window.Current.Content is Shell))
             {
@@ -52,14 +78,14 @@ namespace Brainf_ckSharp.Uwp
                 TitleBarHelper.StyleTitleBar();
 
                 Window.Current.Content = new Shell();
+
+                SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += OnCloseRequested;
             }
 
             // Activate the window when launching the app
-            if (e.PrelaunchActivated == false)
+            if (prelaunchActivated == false)
             {
                 CoreApplication.EnablePrelaunch(true);
-
-                SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += OnCloseRequested;
 
                 Window.Current.Activate();
             }

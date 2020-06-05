@@ -278,6 +278,12 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\FileIcons\bf.png" />
+    <Content Include="Assets\FileIcons\bf.targetsize-16.png" />
+    <Content Include="Assets\FileIcons\bf.targetsize-256.png" />
+    <Content Include="Assets\FileIcons\bf.targetsize-32.png" />
+    <Content Include="Assets\FileIcons\bf.targetsize-48.png" />
+    <Content Include="Assets\FileIcons\bf.targetsize-512.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
