@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Services;
@@ -137,6 +139,68 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             await Code.TrySaveAsAsync(file);
 
             CodeSaved?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Serializes and saves the state of the current instance
+        /// </summary>
+        private async Task SaveStateAsync()
+        {
+            IdeState state = new IdeState
+            {
+                FilePath = Code.File?.Path,
+                Text = Text.ToString(),
+                Row = Row,
+                Column = Column
+            };
+
+            string
+                json = JsonSerializer.Serialize(state),
+                temporaryPath = Ioc.Default.GetRequiredService<IFilesService>().TemporaryFilesPath,
+                statePath = Path.Combine(temporaryPath, "state.json");
+
+            IFile file = await Ioc.Default.GetRequiredService<IFilesService>().CreateOrOpenFileFromPathAsync(statePath);
+
+            using Stream stream = await file.OpenStreamForWriteAsync();
+
+            stream.SetLength(0);
+
+            using StreamWriter writer = new StreamWriter(stream);
+
+            await writer.WriteAsync(json);
+        }
+
+        /// <summary>
+        /// Loads and restores the serialized state of the current instance, if available
+        /// </summary>
+        private async Task RestoreStateAsync()
+        {
+            string
+                temporaryPath = Ioc.Default.GetRequiredService<IFilesService>().TemporaryFilesPath,
+                statePath = Path.Combine(temporaryPath, "state.json");
+
+            if (!(await Ioc.Default.GetRequiredService<IFilesService>().GetFileFromPathAsync(statePath) is IFile jsonFile))
+                return;
+
+            using Stream stream = await jsonFile.OpenStreamForReadAsync();
+            using StreamReader reader = new StreamReader(stream);
+
+            string json = await reader.ReadToEndAsync();
+
+            IdeState state = JsonSerializer.Deserialize<IdeState>(json);
+
+            if (state.FilePath is null) Code = SourceCode.CreateEmpty();
+            else
+            {
+                IFile? sourceFile = await Ioc.Default.GetRequiredService<IFilesService>().TryGetFileFromPathAsync(state.FilePath);
+
+                if (sourceFile is null) Code = SourceCode.CreateEmpty();
+                else Code = await SourceCode.TryLoadFromEditableFileAsync(sourceFile) ?? SourceCode.CreateEmpty();
+            }
+
+            Text = state.Text.AsMemory();
+            Row = state.Row;
+            Column = state.Column;
         }
     }
 }
