@@ -16,11 +16,30 @@ namespace Brainf_ckSharp.Services
         string InstallationPath { get; }
 
         /// <summary>
+        /// Gets the path of the local temporary files folder
+        /// </summary>
+        string TemporaryFilesPath { get; }
+
+        /// <summary>
         /// Gets a target file from a specified path
         /// </summary>
         /// <param name="path">The path of the file to retrieve</param>
         /// <returns>The file retrieved from the specified path</returns>
         Task<IFile> GetFileFromPathAsync(string path);
+
+        /// <summary>
+        /// Tries to get a target file from a specified path
+        /// </summary>
+        /// <param name="path">The path of the file to retrieve</param>
+        /// <returns>The file retrieved from the specified path, if existing</returns>
+        Task<IFile?> TryGetFileFromPathAsync(string path);
+
+        /// <summary>
+        /// Tries to open or create a file from a specified path
+        /// </summary>
+        /// <param name="path">The path of the file to create or open</param>
+        /// <returns>The file created or opened from the specified path</returns>
+        Task<IFile> CreateOrOpenFileFromPathAsync(string path);
 
         /// <summary>
         /// Tries to pick a file to open with a specified extension

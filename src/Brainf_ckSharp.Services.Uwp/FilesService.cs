@@ -22,9 +22,39 @@ namespace Brainf_ckSharp.Uwp.Services.Files
         public string InstallationPath => Package.Current.InstalledLocation.Path;
 
         /// <inheritdoc/>
+        public string TemporaryFilesPath => ApplicationData.Current.TemporaryFolder.Path;
+
+        /// <inheritdoc/>
         public async Task<IFile> GetFileFromPathAsync(string path)
         {
             StorageFile file = await StorageFile.GetFileFromPathAsync(path);
+
+            return new File(file);
+        }
+
+        /// <inheritdoc/>
+        public async Task<IFile?> TryGetFileFromPathAsync(string path)
+        {
+            try
+            {
+                return await GetFileFromPathAsync(path);
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<IFile> CreateOrOpenFileFromPathAsync(string path)
+        {
+            string
+                folderPath = Path.GetPathRoot(path),
+                filename = Path.GetFileName(path);
+
+            StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(folderPath);
+
+            StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.OpenIfExists);
 
             return new File(file);
         }
