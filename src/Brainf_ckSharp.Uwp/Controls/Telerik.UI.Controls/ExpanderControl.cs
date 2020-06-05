@@ -17,18 +17,16 @@ namespace Brainf_ckSharp.Uwp.Controls.Telerik.UI.Controls
         private const string CollapsedVisualStateName = "Collapsed";
         private const string ExpandedVisualStateName = "Expanded";
 
-        /// <summary>
-        /// The root expander <see cref="Button"/> control
-        /// </summary>
-        private Button? _ExpanderButton;
-
         /// <inheritdoc/>
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
-            _ExpanderButton = (Button)GetTemplateChild(ExpanderButtonName) ?? throw new InvalidOperationException($"Can't find {ExpanderButtonName}");
-            _ExpanderButton.Click += _ExpanderButton_Click;
+            Button expanderButton = (Button)GetTemplateChild(ExpanderButtonName) ?? throw new InvalidOperationException($"Can't find {ExpanderButtonName}");
+            expanderButton.Click += (s, e) => IsExpanded = !IsExpanded; ;
+
+            if (IsExpanded) VisualStateManager.GoToState(this, ExpandedVisualStateName, false);
+            else VisualStateManager.GoToState(this, CollapsedVisualStateName, false);
         }
 
         /// <summary>
@@ -129,11 +127,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Telerik.UI.Controls
         private static void OnIsExpandedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ExpanderControl @this = (ExpanderControl)d;
-            if (e.NewValue is bool value && value) VisualStateManager.GoToState(@this, ExpandedVisualStateName, false);
-            else VisualStateManager.GoToState(@this, CollapsedVisualStateName, false);
+            if (e.NewValue is bool value && value) VisualStateManager.GoToState(@this, ExpandedVisualStateName, true);
+            else VisualStateManager.GoToState(@this, CollapsedVisualStateName, true);
         }
-
-        // Updates the UI when the expander button is selected
-        private void _ExpanderButton_Click(object sender, RoutedEventArgs e) => IsExpanded = !IsExpanded;
     }
 }
