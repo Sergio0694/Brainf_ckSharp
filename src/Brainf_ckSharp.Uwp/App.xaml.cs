@@ -26,6 +26,8 @@ using Brainf_ckSharp.Shared;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
+#nullable enable
+
 namespace Brainf_ckSharp.Uwp
 {
     /// <summary>
@@ -41,6 +43,16 @@ namespace Brainf_ckSharp.Uwp
             this.InitializeComponent();
         }
 
+        /// <summary>
+        /// Gets or sets the currently requested file to open
+        /// </summary>
+        public IFile? RequestedFile { get; set; }
+
+        /// <summary>
+        /// Gets the current <see cref="App"/> instance in use
+        /// </summary>
+        public new static App Current => (App)Application.Current;
+
         /// <inheritdoc/>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
@@ -50,14 +62,14 @@ namespace Brainf_ckSharp.Uwp
         /// <inheritdoc/>
         protected override void OnFileActivated(FileActivatedEventArgs args)
         {
-            OnActivated(false);
-
             if (args.Files.FirstOrDefault() is StorageFile storageFile)
             {
-                IFile file = new File(storageFile);
+                IFile file = RequestedFile = new File(storageFile);
 
                 Messenger.Default.Send(new OpenFileRequestMessage(file));
             }
+
+            OnActivated(false);
 
             base.OnFileActivated(args);
         }

@@ -15,7 +15,12 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.Header
         {
             this.InitializeComponent();
 
-            SelectedIndex = (int)Ioc.Default.GetRequiredService<ISettingsService>().GetValue<ViewType>(SettingsKeys.StartingView);
+            // Either select the preferred view, or switch to the IDE if a file is requested
+            if (App.Current.RequestedFile is null)
+            {
+                SelectedIndex = (int)Ioc.Default.GetRequiredService<ISettingsService>().GetValue<ViewType>(SettingsKeys.StartingView);
+            }
+            else SelectedIndex = (int)ViewType.Ide;
         }
 
         /// <summary>

@@ -41,6 +41,20 @@ namespace Brainf_ckSharp.Uwp.Views
         }
 
         /// <summary>
+        /// Restores the IDE state when it is loaded
+        /// </summary>
+        /// <param name="sender">The current <see cref="IdeViewModel"/> instance</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance for this event</param>
+        private void IdeView_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            IFile? requestedFile = App.Current.RequestedFile;
+
+            App.Current.RequestedFile = null;
+
+            _ = ViewModel.RestoreStateAsync(requestedFile);
+        }
+
+        /// <summary>
         /// Requests the execution of the currently displayed code in RELEASE mode
         /// </summary>
         /// <param name="sender">The current <see cref="IdeViewModel"/> instance</param>
