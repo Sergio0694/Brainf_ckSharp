@@ -86,5 +86,34 @@ namespace System
 
             return (row, column);
         }
+
+        /// <summary>
+        /// Calculates the 2D coordinates for a text position
+        /// </summary>
+        /// <param name="text">The input script to parse</param>
+        /// <param name="row">The target row</param>
+        /// <param name="column">The target column</param>
+        /// <returns>The index for <paramref name="row"/> and <paramref name="column"/></returns>
+        [Pure]
+        public static int CalculateIndex(this string text, int row, int column)
+        {
+            Debug.Assert(row >= 1);
+            Debug.Assert(column >= 1);
+
+            if (row == 1) return column - 1;
+
+            int index = -1;
+
+            // Count the distance in the rows
+            foreach (var line in text.Tokenize('\r'))
+            {
+                if (--row > 0) index += line.Length + 1;
+                else break;
+            }
+
+            if (column == 1) return index;
+
+            return index + column;
+        }
     }
 }

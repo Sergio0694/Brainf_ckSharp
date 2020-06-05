@@ -113,6 +113,7 @@ namespace Brainf_ckSharp.Uwp.Views
         private void ViewModel_OnStateRestored(object sender, IdeState e)
         {
             CodeEditor.LoadText(e.Text);
+            CodeEditor.Move(e.Row, e.Column);
         }
 
         /// <summary>

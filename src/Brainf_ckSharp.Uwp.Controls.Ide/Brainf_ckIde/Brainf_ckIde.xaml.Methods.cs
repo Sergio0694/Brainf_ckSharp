@@ -94,6 +94,18 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
+        /// Moves the current cursor to a specified position
+        /// </summary>
+        /// <param name="row">The target row</param>
+        /// <param name="column">The target column</param>
+        public void Move(int row, int column)
+        {
+            int index = Text.CalculateIndex(row, column);
+
+            CodeEditBox.Document.Selection.SetRange(index, index);
+        }
+
+        /// <summary>
         /// Gets a buffer with the existing breakpoints (their line numbers)
         /// </summary>
         /// <returns>A <see cref="MemoryOwner{T}"/> instance with the line numbers with a breakpoint.</returns>
