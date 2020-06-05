@@ -25,13 +25,16 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// </summary>
         public IdeViewModel()
         {
-            CodeSnippets = new[]
-            {
-                new CodeSnippet("Reset cell", "[-]"),
-                new CodeSnippet("Duplicate value", "[>+>+<<-]>>[<<+>>-]<<"),
-                new CodeSnippet("if (x == 0) then { }", ">+<[>-]>[->[-]]<<"),
-                new CodeSnippet("if (x > 0) then { } else { }", ">+<[>[-]]>[->[-]]<<")
-            };
+            Messenger.Register<RunIdeScriptRequestMessage>(this, _ => ScriptRunRequested?.Invoke(this, EventArgs.Empty));
+            Messenger.Register<DebugIdeScriptRequestMessage>(this, _ => ScriptDebugRequested?.Invoke(this, EventArgs.Empty));
+            Messenger.Register<InsertNewLineRequestMessage>(this, _ => CharacterAdded?.Invoke(this, Characters.CarriageReturn));
+            Messenger.Register<DeleteCharacterRequestMessage>(this, _ => CharacterDeleted?.Invoke(this, EventArgs.Empty));
+            Messenger.Register<PickOpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync(m.Favorite));
+            Messenger.Register<OpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync(m.Value));
+            Messenger.Register<LoadSourceCodeRequestMessage>(this, m => LoadSourceCode(m.Value));
+            Messenger.Register<SaveFileRequestMessage>(this, m => _ = TrySaveTextAsync());
+            Messenger.Register<SaveFileAsRequestMessage>(this, m => _ = TrySaveTextAsAsync());
+            Messenger.Register<SaveIdeStateRequestMessage>(this, m => m.ReportResult(SaveStateAsync()));
         }
 
         /// <summary>
@@ -73,22 +76,24 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         protected override void OnActivated()
         {
             Messenger.Register<OperatorKeyPressedNotificationMessage>(this, m => CharacterAdded?.Invoke(this, m.Value));
-            Messenger.Register<RunIdeScriptRequestMessage>(this, _ => ScriptRunRequested?.Invoke(this, EventArgs.Empty));
-            Messenger.Register<DebugIdeScriptRequestMessage>(this, _ => ScriptDebugRequested?.Invoke(this, EventArgs.Empty));
-            Messenger.Register<InsertNewLineRequestMessage>(this, _ => CharacterAdded?.Invoke(this, Characters.CarriageReturn));
-            Messenger.Register<DeleteCharacterRequestMessage>(this, _ => CharacterDeleted?.Invoke(this, EventArgs.Empty));
-            Messenger.Register<PickOpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync(m.Favorite));
-            Messenger.Register<OpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync(m.Value));
-            Messenger.Register<LoadSourceCodeRequestMessage>(this, m => LoadSourceCode(m.Value));
-            Messenger.Register<SaveFileRequestMessage>(this, m => _ = TrySaveTextAsync());
-            Messenger.Register<SaveFileAsRequestMessage>(this, m => _ = TrySaveTextAsAsync());
-            Messenger.Register<SaveIdeStateRequestMessage>(this, m => m.ReportResult(SaveStateAsync()));
+        }
+
+        /// <inheritdoc/>
+        protected override void OnDeactivated()
+        {
+            Messenger.Unregister<OperatorKeyPressedNotificationMessage>(this);
         }
 
         /// <summary>
         /// Gets the collection of available code snippets
         /// </summary>
-        public IReadOnlyList<CodeSnippet> CodeSnippets { get; }
+        public IReadOnlyList<CodeSnippet> CodeSnippets { get; } = new[]
+        {
+            new CodeSnippet("Reset cell", "[-]"),
+            new CodeSnippet("Duplicate value", "[>+>+<<-]>>[<<+>>-]<<"),
+            new CodeSnippet("if (x == 0) then { }", ">+<[>-]>[->[-]]<<"),
+            new CodeSnippet("if (x > 0) then { } else { }", ">+<[>[-]]>[->[-]]<<")
+        };
 
         /// <summary>
         /// Loads a specific <see cref="SourceCode"/> instance

@@ -40,26 +40,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// </summary>
         public ConsoleViewModel()
         {
-            Source = new ObservableCollection<IConsoleEntry> { new ConsoleCommand() };
-
             // Initialize the machine state with the current user settings
             _MachineState = MachineStateProvider.Create(
                 Ioc.Default.GetRequiredService<ISettingsService>().GetValue<int>(SettingsKeys.MemorySize),
                 Ioc.Default.GetRequiredService<ISettingsService>().GetValue<OverflowMode>(SettingsKeys.OverflowMode));
 
-            // This message is never unsubscribed, for two reasons:
-            // - It's only received from this view model, so there's no risk of conflicts
-            // - It is first received before the OnActivate method is called, so
-            //   registering it from there would cause a startup crash.
             Messenger.Register<MemoryStateRequestMessage>(this, m => m.ReportResult(MachineState));
-        }
-
-        /// <inheritdoc/>
-        protected override void OnActivated()
-        {
-            Ioc.Default.GetRequiredService<IKeyboardListenerService>().CharacterReceived += TryAddOperator;
-
-            Messenger.Register<OperatorKeyPressedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m.Value));
             Messenger.Register<RunCommandRequestMessage>(this, m => _ = ExecuteCommandAsync());
             Messenger.Register<DeleteOperatorRequestMessage>(this, m => _ = DeleteLastOperatorAsync());
             Messenger.Register<ClearCommandRequestMessage>(this, m => _ = ResetCommandAsync());
@@ -71,11 +57,19 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         }
 
         /// <inheritdoc/>
+        protected override void OnActivated()
+        {
+            Ioc.Default.GetRequiredService<IKeyboardListenerService>().CharacterReceived += TryAddOperator;
+
+            Messenger.Register<OperatorKeyPressedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m.Value));
+        }
+
+        /// <inheritdoc/>
         protected override void OnDeactivated()
         {
             Ioc.Default.GetRequiredService<IKeyboardListenerService>().CharacterReceived -= TryAddOperator;
 
-            base.OnDeactivated();
+            Messenger.Unregister<OperatorKeyPressedNotificationMessage>(this);
         }
 
         /// <inheritdoc/>
@@ -88,7 +82,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <summary>
         /// Gets the collection of currently visible console lines
         /// </summary>
-        public ObservableCollection<IConsoleEntry> Source { get; }
+        public ObservableCollection<IConsoleEntry> Source { get; } = new ObservableCollection<IConsoleEntry> { new ConsoleCommand() };
 
         private IReadOnlyMachineState _MachineState;
 
