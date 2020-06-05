@@ -17,7 +17,6 @@
                 <ResourceDictionary Source="Styles/MiscStyles.xaml"/>
                 <ResourceDictionary Source="Styles/SemanticZoomStyles.xaml"/>
                 <ResourceDictionary Source="Styles/SubPageStyles.xaml"/>
-                <ResourceDictionary Source="Styles/TelerikStyles.xaml"/>
                 <ResourceDictionary Source="Styles/TextStyles.xaml"/>
                 <ResourceDictionary Source="ms-appx:///Brainf_ckSharp.Uwp.Controls.Ide/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>

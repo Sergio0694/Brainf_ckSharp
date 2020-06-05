@@ -7,7 +7,6 @@
     xmlns:markupExtensions="using:Brainf_ckSharp.Uwp.MarkupExtensions"
     xmlns:toolkitExtensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     xmlns:controls="using:Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls"
-    xmlns:telerik="using:Brainf_ckSharp.Uwp.Controls.Telerik.UI.Controls"
     xmlns:views="using:Brainf_ckSharp.Uwp.Views"
     xmlns:shellHeader="using:Brainf_ckSharp.Uwp.Controls.Host.Header"
     xmlns:inputPanel="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel"
@@ -90,15 +89,15 @@
             BorderThickness="0,1,0,0"
             BorderBrush="#FF323232"
             Background="{StaticResource VirtualKeyboardBackgroundBrush}">
-            <telerik:ExpanderControl
+            <controls:ExpanderControl
                 HeaderHeight="48"
                 ExpandableContentHeight="180">
-                <telerik:ExpanderControl.Header>
+                <controls:ExpanderControl.Header>
                     <inputPanel:StdinHeader
                         x:Name="StdinHeader"
                         ShellSelectedIndex="{x:Bind RootHeader.SelectedIndex, Mode=OneWay, FallbackValue=0}"/>
-                </telerik:ExpanderControl.Header>
-                <telerik:ExpanderControl.ExpandableContent>
+                </controls:ExpanderControl.Header>
+                <controls:ExpanderControl.ExpandableContent>
                     <controls:LockedPivot
                         Style="{StaticResource ExpandedPivotWithNoHeaderStyle}"
                         SelectedIndex="{x:Bind StdinHeader.StdinSelectedIndex, Mode=OneWay, FallbackValue=0}">
@@ -109,8 +108,8 @@
                             <inputPanel:CompactMemoryViewer/>
                         </PivotItem>
                     </controls:LockedPivot>
-                </telerik:ExpanderControl.ExpandableContent>
-            </telerik:ExpanderControl>
+                </controls:ExpanderControl.ExpandableContent>
+            </controls:ExpanderControl>
         </Border>
 
         <!--Command bar-->

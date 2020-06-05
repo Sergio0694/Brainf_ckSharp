@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Controls;
 
 #nullable enable
 
-namespace Brainf_ckSharp.Uwp.Controls.Telerik.UI.Controls
+namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
 {
     /// <summary>
     /// A custom <see cref="Control"/> that displays a header and an expandable content
@@ -23,7 +23,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Telerik.UI.Controls
             base.OnApplyTemplate();
 
             Button expanderButton = (Button)GetTemplateChild(ExpanderButtonName) ?? throw new InvalidOperationException($"Can't find {ExpanderButtonName}");
-            expanderButton.Click += (s, e) => IsExpanded = !IsExpanded; ;
+            expanderButton.Click += (s, e) => IsExpanded = !IsExpanded;
 
             if (IsExpanded) VisualStateManager.GoToState(this, ExpandedVisualStateName, false);
             else VisualStateManager.GoToState(this, CollapsedVisualStateName, false);
@@ -127,7 +127,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Telerik.UI.Controls
         private static void OnIsExpandedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ExpanderControl @this = (ExpanderControl)d;
-            if (e.NewValue is bool value && value) VisualStateManager.GoToState(@this, ExpandedVisualStateName, true);
+            bool value = (bool)e.NewValue;
+
+            if (value) VisualStateManager.GoToState(@this, ExpandedVisualStateName, true);
             else VisualStateManager.GoToState(@this, CollapsedVisualStateName, true);
         }
     }

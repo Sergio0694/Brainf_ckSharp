@@ -229,7 +229,7 @@
     <Compile Include="Controls\SubPages\Views\UnicodeCharactersMap\UnicodeCharactersMapSubPage.xaml.cs">
       <DependentUpon>UnicodeCharactersMapSubPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Telerik.UI.Controls\ExpanderControl.cs" />
+    <Compile Include="Controls\Windows.UI.Xaml.Controls\ExpanderControl.cs" />
     <Compile Include="Controls\Windows.UI.Xaml.Controls\AnimatedCommandBar.cs" />
     <Compile Include="Controls\Host\Header\HeaderButton.cs" />
     <Compile Include="Controls\Host\Header\HeaderPanel.xaml.cs">
@@ -565,10 +565,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\SubPageStyles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\TelerikStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
