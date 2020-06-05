@@ -91,7 +91,8 @@
             Background="{StaticResource VirtualKeyboardBackgroundBrush}">
             <controls:ExpanderControl
                 HeaderHeight="48"
-                ExpandableContentHeight="180">
+                ExpandableContentHeight="180"
+                IsExpanded="{x:Bind ViewModel.IsVirtualKeyboardEnabled, Mode=TwoWay}">
                 <controls:ExpanderControl.Header>
                     <inputPanel:StdinHeader
                         x:Name="StdinHeader"

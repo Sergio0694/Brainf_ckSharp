@@ -110,6 +110,7 @@ namespace Brainf_ckSharp.Uwp
             ISettingsService settings = Ioc.Default.GetRequiredService<ISettingsService>();
 
             // Initialize default settings
+            settings.SetValue(SettingsKeys.IsVirtualKeyboardEnabled, true, false);
             settings.SetValue(SettingsKeys.AutoindentBrackets, true, false);
             settings.SetValue(SettingsKeys.BracketsFormattingStyle, BracketsFormattingStyle.NewLine, false);
             settings.SetValue(SettingsKeys.IdeTheme, IdeTheme.VisualStudio, false);

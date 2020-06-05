@@ -6,6 +6,11 @@
     public static class SettingsKeys
     {
         /// <summary>
+        /// Gets whether or not the virtual Brainf*ck/PBrain keyboard is enabled, uses a <see cref="bool"/>
+        /// </summary>
+        public const string IsVirtualKeyboardEnabled = nameof(IsVirtualKeyboardEnabled);
+
+        /// <summary>
         /// Indicates whether or not to automatically indent brackets in the IDE, uses a <see cref="bool"/>
         /// </summary>
         public const string AutoindentBrackets = nameof(AutoindentBrackets);
