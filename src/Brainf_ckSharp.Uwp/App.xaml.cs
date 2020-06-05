@@ -115,7 +115,6 @@ namespace Brainf_ckSharp.Uwp
             settings.SetValue(SettingsKeys.BracketsFormattingStyle, BracketsFormattingStyle.NewLine, false);
             settings.SetValue(SettingsKeys.IdeTheme, IdeTheme.VisualStudio, false);
             settings.SetValue(SettingsKeys.RenderWhitespaces, true, false);
-            settings.SetValue(SettingsKeys.EnableTimeline, false, false);
             settings.SetValue(SettingsKeys.StartingView, ViewType.Console, false);
             settings.SetValue(SettingsKeys.ClearStdinBufferOnRequest, false, false);
             settings.SetValue(SettingsKeys.ShowPBrainButtons, true, false);

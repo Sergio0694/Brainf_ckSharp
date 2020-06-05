@@ -136,13 +136,6 @@
                     TextWrapping="Wrap"
                     Text="Render whitespaces"/>
                 <ToggleSwitch IsOn="{x:Bind ViewModel.RenderWhitespaces, Mode=TwoWay}"/>
-
-                <!--Enable timeline-->
-                <TextBlock
-                    Margin="0,8,0,0"
-                    TextWrapping="Wrap"
-                    Text="Enable timeline"/>
-                <ToggleSwitch IsOn="{x:Bind ViewModel.EnableTimeline, Mode=TwoWay}"/>
             </StackPanel>
         </DataTemplate>
 
@@ -185,6 +178,13 @@
                         </TextBlock>
                     </HyperlinkButton>
                 </Grid>
+
+                <!--Clear stdin buffer on execution-->
+                <TextBlock
+                    Margin="0,8,0,0"
+                    TextWrapping="Wrap"
+                    Text="Clear stdin buffer on execution"/>
+                <ToggleSwitch IsOn="{x:Bind ViewModel.ClearStdinBufferOnRequest, Mode=TwoWay}"/>
             </StackPanel>
         </DataTemplate>
 
@@ -222,13 +222,6 @@
                     MinWidth="140"
                     ItemsSource="{x:Bind ViewModel.MemorySizeOptions}"
                     SelectedItem="{x:Bind ViewModel.MemorySize, Mode=TwoWay}"/>
-
-                <!--Clear stdin buffer on execution-->
-                <TextBlock
-                    Margin="0,8,0,0"
-                    TextWrapping="Wrap"
-                    Text="Clear stdin buffer on execution"/>
-                <ToggleSwitch IsOn="{x:Bind ViewModel.ClearStdinBufferOnRequest, Mode=TwoWay}"/>
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>

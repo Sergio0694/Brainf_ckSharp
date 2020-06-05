@@ -106,17 +106,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             set => Set<bool, RenderWhitespacesSettingChangedMessage>(ref _RenderWhitespaces, value);
         }
 
-        private bool _EnableTimeline = Get<bool>(nameof(EnableTimeline));
-
-        /// <summary>
-        /// Exposes the <see cref="SettingsKeys.EnableTimeline"/> setting
-        /// </summary>
-        public bool EnableTimeline
-        {
-            get => _EnableTimeline;
-            set => Set(ref _EnableTimeline, value);
-        }
-
         private ViewType _StartingView = Get<ViewType>(nameof(StartingView));
 
         /// <summary>

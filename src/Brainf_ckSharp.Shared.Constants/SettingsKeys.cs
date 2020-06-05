@@ -31,11 +31,6 @@
         public const string RenderWhitespaces = nameof(RenderWhitespaces);
 
         /// <summary>
-        /// Indicates whether to enable the Windows timeline, uses a <see cref="bool"/>
-        /// </summary>
-        public const string EnableTimeline = nameof(EnableTimeline);
-
-        /// <summary>
         /// Indicates the index of the starting view, uses a <see cref="Enums.Settings.ViewType"/>
         /// </summary>
         public const string StartingView = nameof(StartingView);
