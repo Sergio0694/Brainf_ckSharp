@@ -7,6 +7,7 @@
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:interactionsMedia="using:Microsoft.Xaml.Interactions.Media"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:media="using:Microsoft.UI.Xaml.Media"
     mc:Ignorable="d"
@@ -139,10 +140,14 @@
         <!--Animation triggers-->
         <interactivity:Interaction.Behaviors>
             <core:EventTriggerBehavior EventName="PointerEntered">
-                <core:CallMethodAction TargetObject="{x:Bind StoryboardZoomIn}" MethodName="Begin"/>
+                <interactionsMedia:ControlStoryboardAction
+                    Storyboard="{x:Bind StoryboardZoomIn}"
+                    ControlStoryboardOption="Play"/>
             </core:EventTriggerBehavior>
             <core:EventTriggerBehavior EventName="PointerExited">
-                <core:CallMethodAction TargetObject="{x:Bind StoryboardZoomOut}" MethodName="Begin"/>
+                <interactionsMedia:ControlStoryboardAction
+                    Storyboard="{x:Bind StoryboardZoomOut}"
+                    ControlStoryboardOption="Play"/>
             </core:EventTriggerBehavior>
         </interactivity:Interaction.Behaviors>
 
