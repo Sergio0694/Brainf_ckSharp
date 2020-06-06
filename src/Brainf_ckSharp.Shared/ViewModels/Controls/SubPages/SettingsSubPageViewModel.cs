@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Services.Enums;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.Extensions.Microsoft.Toolkit.Collections;
@@ -191,7 +192,10 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         {
             const string id = Constants.Store.StoreIds.IAPs.UnlockThemes;
 
-            IsThemeSelectorAvailable = await Ioc.Default.GetRequiredService<IStoreService>().TryPurchaseProductAsync(id);
+            var result = await Ioc.Default.GetRequiredService<IStoreService>().TryPurchaseProductAsync(id);
+
+            IsThemeSelectorAvailable = result == StorePurchaseResult.Success ||
+                                       result == StorePurchaseResult.AlreadyPurchased;
         }
 
         /// <summary>

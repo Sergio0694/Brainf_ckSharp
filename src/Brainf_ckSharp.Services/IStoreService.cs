@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
+using Brainf_ckSharp.Services.Enums;
 
 namespace Brainf_ckSharp.Services
 {
@@ -20,6 +21,6 @@ namespace Brainf_ckSharp.Services
         /// </summary>
         /// <param name="id">The id of the product to purchase</param>
         /// <returns>Whether the purchase was successful</returns>
-        Task<bool> TryPurchaseProductAsync(string id);
+        Task<StorePurchaseResult> TryPurchaseProductAsync(string id);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Brainf_ckSharp.Services.Enums;
 
 namespace Brainf_ckSharp.Services.Uwp.Store
 {
@@ -12,11 +13,11 @@ namespace Brainf_ckSharp.Services.Uwp.Store
         public Task<bool> IsProductPurchasedAsync(string id) => Task.FromResult(true);
 
         /// <inheritdoc/>
-        public Task<bool> TryPurchaseProductAsync(string id)
+        public Task<StorePurchaseResult> TryPurchaseProductAsync(string id)
         {
             bool success = new Random().Next(0, 2) == 1;
 
-            return Task.FromResult(success);
+            return Task.FromResult(StorePurchaseResult.Success);
         }
     }
 }

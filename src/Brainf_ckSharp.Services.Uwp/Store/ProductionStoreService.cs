@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Services.Store;
+using StorePurchaseResult = Brainf_ckSharp.Services.Enums.StorePurchaseResult;
 
 namespace Brainf_ckSharp.Services.Uwp.Store
 {
@@ -26,19 +27,27 @@ namespace Brainf_ckSharp.Services.Uwp.Store
         }
 
         /// <inheritdoc/>
-        public async Task<bool> TryPurchaseProductAsync(string id)
+        public async Task<StorePurchaseResult> TryPurchaseProductAsync(string id)
         {
             try
             {
-                StorePurchaseResult result = await StoreContext.RequestPurchaseAsync(id);
 
-                return result.Status == StorePurchaseStatus.Succeeded ||
-                       result.Status == StorePurchaseStatus.AlreadyPurchased;
+                var result = await StoreContext.RequestPurchaseAsync(id);
+
+                return result.Status switch
+                {
+                    StorePurchaseStatus.Succeeded => StorePurchaseResult.Success,
+                    StorePurchaseStatus.AlreadyPurchased => StorePurchaseResult.AlreadyPurchased,
+                    StorePurchaseStatus.NotPurchased => StorePurchaseResult.NotPurchased,
+                    StorePurchaseStatus.NetworkError => StorePurchaseResult.NetworkError,
+                    StorePurchaseStatus.ServerError => StorePurchaseResult.ServerError,
+                    _ => StorePurchaseResult.UnknownError
+                };
             }
             catch
             {
                 // Something went wrong
-                return false;
+                return StorePurchaseResult.UnknownError;
             }
         }
     }
