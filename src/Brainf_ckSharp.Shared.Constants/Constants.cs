@@ -73,6 +73,11 @@
             public const string LoadProtocolFile = "[IDE] Load protocol file";
             public const string LoadLibrarySourceCode = "[IDE] Load library source code";
             public const string IdeDebug = "[IDE] Debug";
+            public const string ShareSourceCode = "[LIBRARY] Share source code";
+            public const string CopySourceCode = "[LIBRARY] Copy source code";
+            public const string ToggleFavoriteSourceCode = "[LIBRARY] Toggle favorite";
+            public const string RemoveFromLibrary = "[LIBRARY] Remove source code";
+            public const string DeleteSourceCode = "[LIBRARY] Delete source code";
             public const string ThemesUnlockRequest = "[SETTINGS] Themes unlock request";
             public const string GitHubProfileOpened = "[ABOUT] GitHub profile opened";
             public const string PayPalDonationOpened = "[ABOUT] PayPal donation opened";

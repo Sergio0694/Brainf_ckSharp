@@ -26,6 +26,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
     public sealed class CodeLibrarySubPageViewModel : ViewModelBase<ObservableGroupedCollection<CodeLibrarySection, object>>
     {
         /// <summary>
+        /// The <see cref="IAnalyticsService"/> instance currently in use
+        /// </summary>
+        private readonly IAnalyticsService AnalyticsService = Ioc.Default.GetRequiredService<IAnalyticsService>();
+
+        /// <summary>
         /// The <see cref="IFilesService"/> instance currently in use
         /// </summary>
         private readonly IFilesService FilesService = Ioc.Default.GetRequiredService<IFilesService>();
@@ -94,7 +99,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             CopyToClipboardCommand = new AsyncRelayCommand<CodeLibraryEntry>(CopyToClipboardAsync);
             ShareCommand = new RelayCommand<CodeLibraryEntry>(Share);
             RemoveFromLibraryCommand = new RelayCommand<CodeLibraryEntry>(RemoveFromLibrary);
-            DeleteCommand = new RelayCommand<CodeLibraryEntry>(Delete);
+            DeleteCommand = new AsyncRelayCommand<CodeLibraryEntry>(DeleteAsync);
         }
 
         /// <summary>
@@ -135,7 +140,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Loads the currently available code samples and recently used files
         /// </summary>
-        public async Task LoadDataAsync()
+        private async Task LoadDataAsync()
         {
             List<CodeLibraryEntry> recent = new List<CodeLibraryEntry>();
 
@@ -170,7 +175,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// Processes a given item
         /// </summary>
         /// <param name="item">The target item to process</param>
-        public void ProcessItem(object item)
+        private void ProcessItem(object item)
         {
             if (item is CodeLibraryEntry entry) _ = OpenFileAsync(entry);
             else if (item is CodeLibrarySection c) RequestOpenFile(c == CodeLibrarySection.Favorites);
@@ -180,13 +185,13 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Requests to pick and open a source code file
         /// </summary>
-        public void RequestOpenFile(bool favorite) => Messenger.Send(new PickOpenFileRequestMessage(favorite));
+        private void RequestOpenFile(bool favorite) => Messenger.Send(new PickOpenFileRequestMessage(favorite));
 
         /// <summary>
         /// Sends a request to load a specified code entry
         /// </summary>
         /// <param name="entry">The selected <see cref="CodeLibraryEntry"/> model</param>
-        public async Task OpenFileAsync(CodeLibraryEntry entry)
+        private async Task OpenFileAsync(CodeLibraryEntry entry)
         {
             if (entry.File.IsReadOnly)
             {
@@ -204,8 +209,10 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// Toggles the favorite state of a given <see cref="CodeLibraryEntry"/> instance
         /// </summary>
         /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to toggle</param>
-        public void ToggleFavorite(CodeLibraryEntry entry)
+        private void ToggleFavorite(CodeLibraryEntry entry)
         {
+            AnalyticsService.Log(Constants.Events.ToggleFavoriteSourceCode, (nameof(CodeMetadata.IsFavorited), entry.Metadata.IsFavorited.ToString()));
+
             // Shared comparison function to insert items in a target group
             static int Comparer(object a, object b)
             {
@@ -238,8 +245,10 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// Copies the content of a specified entry to the clipboard
         /// </summary>
         /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to copy to the clipboard</param>
-        public async Task CopyToClipboardAsync(CodeLibraryEntry entry)
+        private async Task CopyToClipboardAsync(CodeLibraryEntry entry)
         {
+            AnalyticsService.Log(Constants.Events.CopySourceCode);
+
             string text = await entry.File.ReadAllTextAsync();
 
             ClipboardService.TryCopy(text);
@@ -249,16 +258,18 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// Shares a specified entry
         /// </summary>
         /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to share</param>
-        public void Share(CodeLibraryEntry entry)
+        private void Share(CodeLibraryEntry entry)
         {
+            AnalyticsService.Log(Constants.Events.ShareSourceCode);
+
             ShareService.Share(entry.Title, entry.File);
         }
 
         /// <summary>
-        /// Removes a specific <see cref="CodeLibraryEntry"/> instance from the code library
+        /// Removes a source code from the library and removes the relative permissions
         /// </summary>
         /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to remove</param>
-        public void RemoveFromLibrary(CodeLibraryEntry entry)
+        private void RemoveTrackedSourceCode(CodeLibraryEntry entry)
         {
             var group = Source.First(g => g.Contains(entry));
 
@@ -269,14 +280,27 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         }
 
         /// <summary>
+        /// Removes a specific <see cref="CodeLibraryEntry"/> instance from the code library
+        /// </summary>
+        /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to remove</param>
+        private void RemoveFromLibrary(CodeLibraryEntry entry)
+        {
+            AnalyticsService.Log(Constants.Events.RemoveFromLibrary, (nameof(CodeMetadata.IsFavorited), entry.Metadata.IsFavorited.ToString()));
+
+            RemoveTrackedSourceCode(entry);
+        }
+
+        /// <summary>
         /// Deletes a specific <see cref="CodeLibraryEntry"/> instance in the code library
         /// </summary>
         /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to delete</param>
-        public void Delete(CodeLibraryEntry entry)
+        private Task DeleteAsync(CodeLibraryEntry entry)
         {
-            RemoveFromLibrary(entry);
+            AnalyticsService.Log(Constants.Events.DeleteSourceCode, (nameof(CodeMetadata.IsFavorited), entry.Metadata.IsFavorited.ToString()));
 
-            _ = entry.File.DeleteAsync();
+            RemoveTrackedSourceCode(entry);
+
+            return entry.File.DeleteAsync();
         }
     }
 }
