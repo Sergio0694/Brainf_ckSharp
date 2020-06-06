@@ -1,4 +1,5 @@
-﻿using Windows.ApplicationModel.DataTransfer;
+﻿using System.Windows.Input;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
 using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
 
@@ -8,6 +9,21 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
     public sealed partial class Brainf_ckEditBox
     {
+        /// <summary>
+        /// The <see cref="ICommand"/> instance responsible for cutting the selected text
+        /// </summary>
+        public ICommand CutCommand => new Command(CutSelectedText);
+
+        /// <summary>
+        /// The <see cref="ICommand"/> instance responsible for copying the selected text
+        /// </summary>
+        public ICommand CopyCommand => new Command(CopySelectedText);
+
+        /// <summary>
+        /// The <see cref="ICommand"/> instance responsible for pasting text from the clipboard
+        /// </summary>
+        public ICommand PasteCommand => new Command(PasteFromClipboard);
+
         /// <summary>
         /// Enables the monitoring of clipboard contents
         /// </summary>
@@ -31,25 +47,27 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// Tries to cut the current selection
         /// </summary>
-        private void Brainf_ckEditBox_Cut()
+        private void CutSelectedText()
         {
-            Brainf_ckEditBox_CutOrCopy(true);
+            CutOrCopySelectedText(true);
         }
 
         /// <summary>
         /// Tries to copy the current selection
         /// </summary>
-        private void Brainf_ckEditBox_Copy()
+        private void CopySelectedText()
         {
-            Brainf_ckEditBox_CutOrCopy(false);
+            CutOrCopySelectedText(false);
         }
 
         /// <summary>
         /// Tries to cut or copy the current selection
         /// </summary>
         /// <param name="cut">Indicates whether the operation is a cut</param>
-        private void Brainf_ckEditBox_CutOrCopy(bool cut)
+        private void CutOrCopySelectedText(bool cut)
         {
+            ContextFlyout.Hide();
+
             string text = Document.Selection.Text;
 
             if (text.Length == 0) return;
@@ -74,8 +92,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// Tries to paste the current selection
         /// </summary>
-        private async void Brainf_ckEditBox_Paste()
+        private async void PasteFromClipboard()
         {
+            ContextFlyout.Hide();
+
             if (await ClipboardHelper.TryGetTextAsync() is string text)
             {
                 InsertText(text);

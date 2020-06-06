@@ -47,17 +47,20 @@
                         Label="Cut"
                         Icon="Cut"
                         ToolTipService.ToolTip="Cut"
-                        IsEnabled="{Binding IsTextSelected}"/>
+                        IsEnabled="{Binding IsTextSelected}"
+                        Command="{Binding CutCommand}"/>
                     <AppBarButton
                         Label="Copy"
                         Icon="Copy"
                         ToolTipService.ToolTip="Copy"
-                        IsEnabled="{Binding IsTextSelected}"/>
+                        IsEnabled="{Binding IsTextSelected}"
+                        Command="{Binding CopyCommand}"/>
                     <AppBarButton
                         Label="Paste"
                         Icon="Paste"
                         ToolTipService.ToolTip="Paste"
-                        IsEnabled="{Binding IsTextInClipboard}"/>
+                        IsEnabled="{Binding IsTextInClipboard}"
+                        Command="{Binding PasteCommand}"/>
                     <CommandBarFlyout.SecondaryCommands>
                         <AppBarElementContainer
                             Visibility="Collapsed"

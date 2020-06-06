@@ -130,9 +130,6 @@
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.Source.cs" />
     <Compile Include="AttachedProperties\SemanticZoomHelper.cs" />
     <Compile Include="AttachedProperties\ViewModelBaseHelper.cs" />
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\AttachedProperties\RoutedEventHandlerHelper.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\AttachedProperties\RoutedEventHandlerHelper.cs</Link>
-    </Compile>
     <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.cs">
       <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.cs</Link>
     </Compile>
@@ -141,6 +138,9 @@
     </Compile>
     <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Flyout.cs">
       <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Flyout.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Flyout.ICommand.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Flyout.ICommand.cs</Link>
     </Compile>
     <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Formatting.cs">
       <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Formatting.cs</Link>
