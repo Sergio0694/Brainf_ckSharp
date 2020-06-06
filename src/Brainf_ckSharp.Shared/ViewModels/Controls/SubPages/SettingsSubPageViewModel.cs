@@ -26,6 +26,21 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
     public sealed class SettingsSubPageViewModel : ViewModelBase<ObservableGroupedCollection<SettingsSection, SettingsSection>>
     {
         /// <summary>
+        /// The <see cref="IAnalyticsService"/> instance currently in use
+        /// </summary>
+        private readonly IAnalyticsService AnalyticsService = Ioc.Default.GetRequiredService<IAnalyticsService>();
+
+        /// <summary>
+        /// The <see cref="IStoreService"/> instance currently in use
+        /// </summary>
+        private readonly IStoreService StoreService = Ioc.Default.GetRequiredService<IStoreService>();
+
+        /// <summary>
+        /// The <see cref="ISettingsService"/> instance currently in use
+        /// </summary>
+        private static readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+
+        /// <summary>
         /// Creates a new <see cref="SettingsSubPageViewModel"/> instance
         /// </summary>
         public SettingsSubPageViewModel()
@@ -181,7 +196,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             {
                 const string id = Constants.Store.StoreIds.IAPs.UnlockThemes;
 
-                IsThemeSelectorAvailable = await Ioc.Default.GetRequiredService<IStoreService>().IsProductPurchasedAsync(id);
+                IsThemeSelectorAvailable = await StoreService.IsProductPurchasedAsync(id);
             }
         }
 
@@ -192,14 +207,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         {
             const string id = Constants.Store.StoreIds.IAPs.UnlockThemes;
 
-            var result = await Ioc.Default.GetRequiredService<IStoreService>().TryPurchaseProductAsync(id);
+            var result = await StoreService.TryPurchaseProductAsync(id);
 
             IsThemeSelectorAvailable = result == StorePurchaseResult.Success ||
                                        result == StorePurchaseResult.AlreadyPurchased;
 
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(
-                Constants.Events.ThemesUnlockRequest,
-                (nameof(StorePurchaseResult), result.ToString()));
+            AnalyticsService.Log(Constants.Events.ThemesUnlockRequest, (nameof(StorePurchaseResult), result.ToString()));
         }
 
         /// <summary>
@@ -212,7 +225,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static T Get<T>(string name)
         {
-            return Ioc.Default.GetRequiredService<ISettingsService>().GetValue<T>(name);
+            return SettingsService.GetValue<T>(name);
         }
 
         /// <summary>
@@ -227,7 +240,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         {
             if (base.Set(ref field, value, name))
             {
-                Ioc.Default.GetRequiredService<ISettingsService>().SetValue(name, value);
+                SettingsService.SetValue(name, value);
             }
         }
 
@@ -245,7 +258,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         {
             if (base.Set(ref field, value, name))
             {
-                Ioc.Default.GetRequiredService<ISettingsService>().SetValue(name, value);
+                SettingsService.SetValue(name, value);
 
                 TMessage message = (TMessage)Activator.CreateInstance(typeof(TMessage), value);
 

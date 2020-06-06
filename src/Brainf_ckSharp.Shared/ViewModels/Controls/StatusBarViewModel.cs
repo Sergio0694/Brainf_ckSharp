@@ -19,6 +19,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
     public sealed class StatusBarViewModel : ViewModelBase
     {
         /// <summary>
+        /// The <see cref="ISettingsService"/> instance currently in use
+        /// </summary>
+        private readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+
+        /// <summary>
         /// The <see cref="SynchronizationContext"/> in use when <see cref="StatusBarViewModel"/> is instantiated
         /// </summary>
         private readonly SynchronizationContext Context;
@@ -125,8 +130,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
             // stored arguments to be able to skip the execution if there were no changes.
             ReadOnlyMemory<char> source = viewModel.Text;
             string stdin = Messenger.Send(new StdinRequestMessage(true));
-            int memorySize = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<int>(SettingsKeys.MemorySize);
-            OverflowMode overflowMode = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<OverflowMode>(SettingsKeys.OverflowMode);
+            int memorySize = SettingsService.GetValue<int>(SettingsKeys.MemorySize);
+            OverflowMode overflowMode = SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
             IReadOnlyMachineState? machineState = (viewModel as ConsoleViewModel)?.MachineState;
 
             if (source.Span.SequenceEqual(_Source.Span) &&

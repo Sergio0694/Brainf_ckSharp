@@ -18,6 +18,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
     public sealed class AboutSubPageViewModel : ViewModelBase
     {
         /// <summary>
+        /// The <see cref="IGitHubService"/> instance currently in use
+        /// </summary>
+        private readonly IGitHubService GitHubService = Ioc.Default.GetRequiredService<IGitHubService>();
+
+        /// <summary>
         /// Creates a new <see cref="AboutSubPageViewModel"/> instance
         /// </summary>
         public AboutSubPageViewModel()
@@ -71,7 +76,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 
             try
             {
-                Developers = new[] { await Ioc.Default.GetRequiredService<IGitHubService>().GetUserAsync("Sergio0694") };
+                Developers = new[] { await GitHubService.GetUserAsync("Sergio0694") };
                 DonationMockupSource = new[] { new object() };
             }
             catch

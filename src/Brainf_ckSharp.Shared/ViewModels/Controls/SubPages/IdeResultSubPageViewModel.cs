@@ -26,6 +26,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
     public sealed class IdeResultSubPageViewModel : ViewModelBase<ObservableGroupedCollection<IdeResultSection, IdeResultWithSectionInfo>>
     {
         /// <summary>
+        /// The <see cref="ISettingsService"/> instance currently in use
+        /// </summary>
+        private readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+
+        /// <summary>
         /// A mutex to avoid race conditions when handling executions and tokens
         /// </summary>
         private readonly AsyncLock LoadingMutex = new AsyncLock();
@@ -111,8 +116,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 
                 // Execution arguments and options
                 string stdin = Messenger.Send(new StdinRequestMessage(false));
-                int memorySize = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<int>(SettingsKeys.MemorySize);
-                OverflowMode overflowMode = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<OverflowMode>(SettingsKeys.OverflowMode);
+                int memorySize = SettingsService.GetValue<int>(SettingsKeys.MemorySize);
+                OverflowMode overflowMode = SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
 
                 // Run in RELEASE mode
                 if (Breakpoints is null)

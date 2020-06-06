@@ -21,6 +21,16 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
     public sealed class IdeViewModel : WorkspaceViewModelBase
     {
         /// <summary>
+        /// The <see cref="IAnalyticsService"/> instance currently in use
+        /// </summary>
+        private readonly IAnalyticsService AnalyticsService = Ioc.Default.GetRequiredService<IAnalyticsService>();
+
+        /// <summary>
+        /// The <see cref="IFilesService"/> instance currently in use
+        /// </summary>
+        private readonly IFilesService FilesService = Ioc.Default.GetRequiredService<IFilesService>();
+
+        /// <summary>
         /// Creates a new <see cref="IdeViewModel"/> instance
         /// </summary>
         public IdeViewModel()
@@ -102,7 +112,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <param name="code">The source code to load</param>
         private void LoadSourceCode(SourceCode code)
         {
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Events.LoadLibrarySourceCode);
+            AnalyticsService.Log(Constants.Events.LoadLibrarySourceCode);
 
             Code = code;
 
@@ -125,13 +135,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <param name="favorite">Whether to immediately mark the item as favorite</param>
         private async Task TryLoadTextFromFileAsync(bool favorite)
         {
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Events.PickFileRequest);
+            AnalyticsService.Log(Constants.Events.PickFileRequest);
 
-            if (!(await Ioc.Default.GetRequiredService<IFilesService>().TryPickOpenFileAsync(".bfs") is IFile file)) return;
+            if (!(await FilesService.TryPickOpenFileAsync(".bfs") is IFile file)) return;
 
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(
-                Constants.Events.LoadPickedFile,
-                (nameof(CodeMetadata.IsFavorited), favorite.ToString()));
+            AnalyticsService.Log(Constants.Events.LoadPickedFile, (nameof(CodeMetadata.IsFavorited), favorite.ToString()));
 
             if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
             {
@@ -155,7 +163,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <param name="file">The file to open</param>
         private async Task TryLoadTextFromFileAsync(IFile file)
         {
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Events.LoadProtocolFile);
+            AnalyticsService.Log(Constants.Events.LoadProtocolFile);
 
             if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
             {
@@ -181,9 +189,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// </summary>
         private async Task TrySaveTextAsAsync()
         {
-            IFilesService filesService = Ioc.Default.GetRequiredService<IFilesService>();
-
-            if (!(await filesService.TryPickSaveFileAsync(string.Empty, (string.Empty, ".bfs")) is IFile file)) return;
+            if (!(await FilesService.TryPickSaveFileAsync(string.Empty, (string.Empty, ".bfs")) is IFile file)) return;
 
             await Code.TrySaveAsAsync(file);
 
@@ -205,10 +211,10 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
             string
                 json = JsonSerializer.Serialize(state),
-                temporaryPath = Ioc.Default.GetRequiredService<IFilesService>().TemporaryFilesPath,
+                temporaryPath = FilesService.TemporaryFilesPath,
                 statePath = Path.Combine(temporaryPath, "state.json");
 
-            IFile file = await Ioc.Default.GetRequiredService<IFilesService>().CreateOrOpenFileFromPathAsync(statePath);
+            IFile file = await FilesService.CreateOrOpenFileFromPathAsync(statePath);
 
             using Stream stream = await file.OpenStreamForWriteAsync();
 
@@ -228,10 +234,10 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             if (file is null)
             {
                 string
-                    temporaryPath = Ioc.Default.GetRequiredService<IFilesService>().TemporaryFilesPath,
+                    temporaryPath = FilesService.TemporaryFilesPath,
                     statePath = Path.Combine(temporaryPath, "state.json");
 
-                if (!(await Ioc.Default.GetRequiredService<IFilesService>().GetFileFromPathAsync(statePath) is IFile jsonFile))
+                if (!(await FilesService.GetFileFromPathAsync(statePath) is IFile jsonFile))
                     return;
 
                 using Stream stream = await jsonFile.OpenStreamForReadAsync();
@@ -244,7 +250,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                 if (state.FilePath is null) Code = SourceCode.CreateEmpty();
                 else
                 {
-                    IFile? sourceFile = await Ioc.Default.GetRequiredService<IFilesService>().TryGetFileFromPathAsync(state.FilePath);
+                    IFile? sourceFile = await FilesService.TryGetFileFromPathAsync(state.FilePath);
 
                     if (sourceFile is null) Code = SourceCode.CreateEmpty();
                     else Code = await SourceCode.TryLoadFromEditableFileAsync(sourceFile) ?? SourceCode.CreateEmpty();

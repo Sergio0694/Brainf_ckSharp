@@ -26,6 +26,21 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
     public sealed class CodeLibrarySubPageViewModel : ViewModelBase<ObservableGroupedCollection<CodeLibrarySection, object>>
     {
         /// <summary>
+        /// The <see cref="IFilesService"/> instance currently in use
+        /// </summary>
+        private readonly IFilesService FilesService = Ioc.Default.GetRequiredService<IFilesService>();
+
+        /// <summary>
+        /// The <see cref="IClipboardService"/> instance currently in use
+        /// </summary>
+        private readonly IClipboardService ClipboardService = Ioc.Default.GetRequiredService<IClipboardService>();
+
+        /// <summary>
+        /// The <see cref="IShareService"/> instance currently in use
+        /// </summary>
+        private readonly IShareService ShareService = Ioc.Default.GetRequiredService<IShareService>();
+
+        /// <summary>
         /// The relative path of folder that contains the sample files
         /// </summary>
         private static readonly string SampleFilesRelativePath = @"Assets\Samples\";
@@ -54,13 +69,13 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// </summary>
         /// <returns>A <see cref="IReadOnlyList{T}"/> instance with the loaded code samples</returns>
         [Pure]
-        private static async ValueTask<IReadOnlyList<CodeLibraryEntry>> GetSampleCodesAsync()
+        private async ValueTask<IReadOnlyList<CodeLibraryEntry>> GetSampleCodesAsync()
         {
             return _SampleCodes ??= await Task.WhenAll(SampleFilesMapping.Select(async item =>
             {
-                string installationPath = Ioc.Default.GetRequiredService<IFilesService>().InstallationPath;
+                string installationPath = FilesService.InstallationPath;
                 string path = Path.Combine(installationPath, SampleFilesRelativePath, $"{item.Filename}.txt");
-                IFile file = await Ioc.Default.GetRequiredService<IFilesService>().GetFileFromPathAsync(path);
+                IFile file = await FilesService.GetFileFromPathAsync(path);
 
                 CodeLibraryEntry? entry = await CodeLibraryEntry.TryLoadFromFileAsync(file, item.Title);
 
@@ -125,7 +140,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             List<CodeLibraryEntry> recent = new List<CodeLibraryEntry>();
 
             // Load the recent files
-            await foreach ((IFile file, string data) in Ioc.Default.GetRequiredService<IFilesService>().GetFutureAccessFilesAsync())
+            await foreach ((IFile file, string data) in FilesService.GetFutureAccessFilesAsync())
             {
                 // Deserialize the metadata and prepare the model
                 CodeMetadata metadata = string.IsNullOrEmpty(data) ? new CodeMetadata() : JsonSerializer.Deserialize<CodeMetadata>(data);
@@ -227,7 +242,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         {
             string text = await entry.File.ReadAllTextAsync();
 
-            Ioc.Default.GetRequiredService<IClipboardService>().TryCopy(text);
+            ClipboardService.TryCopy(text);
         }
 
         /// <summary>
@@ -236,7 +251,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to share</param>
         public void Share(CodeLibraryEntry entry)
         {
-            Ioc.Default.GetRequiredService<IShareService>().Share(entry.Title, entry.File);
+            ShareService.Share(entry.Title, entry.File);
         }
 
         /// <summary>

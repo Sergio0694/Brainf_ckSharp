@@ -10,6 +10,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
     public sealed class StdinHeaderViewModel : ViewModelBase
     {
         /// <summary>
+        /// The <see cref="ISettingsService"/> instance currently in use
+        /// </summary>
+        private readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+
+        /// <summary>
         /// Creates a new <see cref="StdinHeaderViewModel"/> instance
         /// </summary>
         public StdinHeaderViewModel()
@@ -38,7 +43,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
 
             // Clear the buffer if requested, and if not from a background execution
             if (!request.IsFromBackgroundExecution &&
-                Ioc.Default.GetRequiredService<ISettingsService>().GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest))
+                SettingsService.GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest))
             {
                 Text = string.Empty;
             }

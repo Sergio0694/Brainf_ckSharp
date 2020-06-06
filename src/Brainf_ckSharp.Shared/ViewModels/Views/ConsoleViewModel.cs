@@ -31,6 +31,16 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
     public sealed class ConsoleViewModel : WorkspaceViewModelBase
     {
         /// <summary>
+        /// The <see cref="ISettingsService"/> instance currently in use
+        /// </summary>
+        private readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+
+        /// <summary>
+        /// The <see cref="IKeyboardListenerService"/> instance currently in use
+        /// </summary>
+        private readonly IKeyboardListenerService KeyboardListenerService = Ioc.Default.GetRequiredService<IKeyboardListenerService>();
+
+        /// <summary>
         /// An <see cref="AsyncLock"/> instance to synchronize accesses to the console results
         /// </summary>
         private readonly AsyncLock ExecutionMutex = new AsyncLock();
@@ -42,8 +52,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         {
             // Initialize the machine state with the current user settings
             _MachineState = MachineStateProvider.Create(
-                Ioc.Default.GetRequiredService<ISettingsService>().GetValue<int>(SettingsKeys.MemorySize),
-                Ioc.Default.GetRequiredService<ISettingsService>().GetValue<OverflowMode>(SettingsKeys.OverflowMode));
+                SettingsService.GetValue<int>(SettingsKeys.MemorySize),
+                SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode));
 
             Messenger.Register<MemoryStateRequestMessage>(this, m => m.ReportResult(MachineState));
             Messenger.Register<RunCommandRequestMessage>(this, m => _ = ExecuteCommandAsync());
@@ -59,7 +69,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <inheritdoc/>
         protected override void OnActivated()
         {
-            Ioc.Default.GetRequiredService<IKeyboardListenerService>().CharacterReceived += TryAddOperator;
+            KeyboardListenerService.CharacterReceived += TryAddOperator;
 
             Messenger.Register<OperatorKeyPressedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m.Value));
         }
@@ -67,7 +77,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <inheritdoc/>
         protected override void OnDeactivated()
         {
-            Ioc.Default.GetRequiredService<IKeyboardListenerService>().CharacterReceived -= TryAddOperator;
+            KeyboardListenerService.CharacterReceived -= TryAddOperator;
 
             Messenger.Unregister<OperatorKeyPressedNotificationMessage>(this);
         }
@@ -175,8 +185,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                 Source.Add(new ConsoleRestart());
 
                 MachineState = MachineStateProvider.Create(
-                    Ioc.Default.GetRequiredService<ISettingsService>().GetValue<int>(SettingsKeys.MemorySize),
-                    Ioc.Default.GetRequiredService<ISettingsService>().GetValue<OverflowMode>(SettingsKeys.OverflowMode));
+                    SettingsService.GetValue<int>(SettingsKeys.MemorySize),
+                    SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode));
 
                 Source.Add(new ConsoleCommand());
 

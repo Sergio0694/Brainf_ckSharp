@@ -186,7 +186,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void RequestUnicodeMap()
         {
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Events.UnicodeCharactersMapOpened);
+            AnalyticsService.Log(Constants.Events.UnicodeCharactersMapOpened);
 
             UnicodeMapRequested?.Invoke(this, EventArgs.Empty);
         }
@@ -196,7 +196,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void RequestAboutInfo()
         {
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Events.AboutPageOpened);
+            AnalyticsService.Log(Constants.Events.AboutPageOpened);
 
             AboutInfoRequested?.Invoke(this, EventArgs.Empty);
         }
@@ -206,7 +206,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void RequestUserGuide()
         {
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Events.UserGuideOpened);
+            AnalyticsService.Log(Constants.Events.UserGuideOpened);
 
             UserGuideRequested?.Invoke(this, EventArgs.Empty);
         }
@@ -216,7 +216,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void RequestSettings()
         {
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Events.SettingsOpened);
+            AnalyticsService.Log(Constants.Events.SettingsOpened);
 
             SettingsRequested?.Invoke(this, EventArgs.Empty);
         }
@@ -226,7 +226,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void RequestCodeLibrary()
         {
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Events.OpenCodeLibrary);
+            AnalyticsService.Log(Constants.Events.OpenCodeLibrary);
 
             CodeLibraryRequested?.Invoke(this, EventArgs.Empty);
         }
