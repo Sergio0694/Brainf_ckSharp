@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -38,13 +37,23 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
         /// </summary>
-        private static readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+        private readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
 
         /// <summary>
         /// Creates a new <see cref="SettingsSubPageViewModel"/> instance
         /// </summary>
         public SettingsSubPageViewModel()
         {
+            _AutoindentBrackets = SettingsService.GetValue<bool>(SettingsKeys.AutoindentBrackets);
+            _IdeTheme = SettingsService.GetValue<IdeTheme>(SettingsKeys.IdeTheme);
+            _BracketsFormattingStyle = SettingsService.GetValue<BracketsFormattingStyle>(SettingsKeys.BracketsFormattingStyle);
+            _RenderWhitespaces = SettingsService.GetValue<bool>(SettingsKeys.RenderWhitespaces);
+            _StartingView = SettingsService.GetValue<ViewType>(SettingsKeys.StartingView);
+            _ClearStdinBufferOnRequest = SettingsService.GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest);
+            _ShowPBrainButtons = SettingsService.GetValue<bool>(SettingsKeys.ShowPBrainButtons);
+            _OverflowMode = SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
+            _MemorySize = SettingsService.GetValue<int>(SettingsKeys.MemorySize);
+
             InitializeCommand = new AsyncRelayCommand(InitializeAsync);
             UnlockThemesSelectorCommand = new AsyncRelayCommand(TryUnlockThemesSelectorAsync);
 
@@ -63,7 +72,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// </summary>
         public ICommand UnlockThemesSelectorCommand { get; }
 
-        private bool _AutoindentBrackets = Get<bool>(nameof(AutoindentBrackets));
+        private bool _AutoindentBrackets;
 
         /// <summary>
         /// Exposes the <see cref="SettingsKeys.AutoindentBrackets"/> setting
@@ -75,7 +84,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             set => Set(ref _AutoindentBrackets, value);
         }
 
-        private IdeTheme _IdeTheme = Get<IdeTheme>(nameof(IdeTheme));
+        private IdeTheme _IdeTheme;
 
         /// <summary>
         /// Exposes the <see cref="SettingsKeys.IdeTheme"/> setting
@@ -98,7 +107,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             private set => Set(ref _IsThemeSelectorAvailable, value);
         }
 
-        private BracketsFormattingStyle _BracketsFormattingStyle = Get<BracketsFormattingStyle>(nameof(BracketsFormattingStyle));
+        private BracketsFormattingStyle _BracketsFormattingStyle;
 
         /// <summary>
         /// Exposes the <see cref="SettingsKeys.BracketsFormattingStyle"/> setting
@@ -110,7 +119,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             set => Set<BracketsFormattingStyle, BracketsFormattingStyleSettingsChangedMessage>(ref _BracketsFormattingStyle, value);
         }
 
-        private bool _RenderWhitespaces = Get<bool>(nameof(RenderWhitespaces));
+        private bool _RenderWhitespaces;
 
         /// <summary>
         /// Exposes the <see cref="SettingsKeys.RenderWhitespaces"/> setting
@@ -122,7 +131,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             set => Set<bool, RenderWhitespacesSettingChangedMessage>(ref _RenderWhitespaces, value);
         }
 
-        private ViewType _StartingView = Get<ViewType>(nameof(StartingView));
+        private ViewType _StartingView;
 
         /// <summary>
         /// Exposes the <see cref="SettingsKeys.StartingView"/> setting
@@ -134,7 +143,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             set => Set(ref _StartingView, value);
         }
 
-        private bool _ClearStdinBufferOnRequest = Get<bool>(nameof(ClearStdinBufferOnRequest));
+        private bool _ClearStdinBufferOnRequest;
 
         /// <summary>
         /// Exposes the <see cref="SettingsKeys.ClearStdinBufferOnRequest"/> setting
@@ -146,7 +155,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             set => Set(ref _ClearStdinBufferOnRequest, value);
         }
 
-        private bool _ShowPBrainButtons = Get<bool>(nameof(ShowPBrainButtons));
+        private bool _ShowPBrainButtons;
 
         /// <summary>
         /// Exposes the <see cref="SettingsKeys.ShowPBrainButtons"/> setting
@@ -158,7 +167,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             set => Set<bool, ShowPBrainButtonsSettingsChangedMessage>(ref _ShowPBrainButtons, value);
         }
 
-        private OverflowMode _OverflowMode = Get<OverflowMode>(nameof(OverflowMode));
+        private OverflowMode _OverflowMode;
 
         /// <summary>
         /// Exposes the <see cref="SettingsKeys.OverflowMode"/> setting
@@ -175,7 +184,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// </summary>
         public IReadOnlyCollection<int> MemorySizeOptions { get; } = new[] { 32, 64, 128, 256 };
 
-        private int _MemorySize = Get<int>(nameof(MemorySize));
+        private int _MemorySize;
 
         /// <summary>
         /// Exposes the <see cref="SettingsKeys.MemorySize"/> setting
@@ -213,19 +222,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
                                        result == StorePurchaseResult.AlreadyPurchased;
 
             AnalyticsService.Log(Constants.Events.ThemesUnlockRequest, (nameof(StorePurchaseResult), result.ToString()));
-        }
-
-        /// <summary>
-        /// Gets a setting with the specified name
-        /// </summary>
-        /// <typeparam name="T">The type of setting value to retrieve</typeparam>
-        /// <param name="name">The setting key to retrieve</param>
-        /// <returns>The value of the setting with the specified name</returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static T Get<T>(string name)
-        {
-            return SettingsService.GetValue<T>(name);
         }
 
         /// <summary>
