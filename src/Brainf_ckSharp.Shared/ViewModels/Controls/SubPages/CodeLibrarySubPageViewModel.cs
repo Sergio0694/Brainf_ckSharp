@@ -195,12 +195,16 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         {
             if (entry.File.IsReadOnly)
             {
+                AnalyticsService.Log(Constants.Events.SampleCodeSelected, (nameof(SourceCode.File), entry.File.DisplayName));
+
                 SourceCode code = await SourceCode.LoadFromReferenceFileAsync(entry.File);
+
                 Messenger.Send(new LoadSourceCodeRequestMessage(code));
             }
             else
             {
                 if (!(await SourceCode.TryLoadFromEditableFileAsync(entry.File) is SourceCode sourceCode)) return;
+
                 Messenger.Send(new LoadSourceCodeRequestMessage(sourceCode));
             }
         }
