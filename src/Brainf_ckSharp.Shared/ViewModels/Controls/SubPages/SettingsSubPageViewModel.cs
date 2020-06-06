@@ -93,7 +93,13 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public IdeTheme IdeTheme
         {
             get => _IdeTheme;
-            set => Set<IdeTheme, IdeThemeSettingChangedMessage>(ref _IdeTheme, value);
+            set
+            {
+                if (Set<IdeTheme, IdeThemeSettingChangedMessage>(ref _IdeTheme, value))
+                {
+                    AnalyticsService.Log(Constants.Events.ThemeChanged, (nameof(Enums.Settings.IdeTheme), value.ToString()));
+                }
+            }
         }
 
         private static bool _IsThemeSelectorAvailable;
@@ -249,7 +255,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <param name="field">The previous setting value</param>
         /// <param name="value">The new value to set</param>
         /// <param name="name">The name of the setting that changed</param>
-        private void Set<T, TMessage>(ref T field, T value, [CallerMemberName] string name = null!)
+        private bool Set<T, TMessage>(ref T field, T value, [CallerMemberName] string name = null!)
             where TMessage : ValueChangedMessage<T>
         {
             if (base.Set(ref field, value, name))
@@ -259,7 +265,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
                 TMessage message = (TMessage)Activator.CreateInstance(typeof(TMessage), value);
 
                 Messenger.Send(message);
+
+                return true;
             }
+
+            return false;
         }
 
         /// <summary>

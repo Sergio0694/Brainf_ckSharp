@@ -80,6 +80,7 @@
             public const string DeleteSourceCode = "[LIBRARY] Delete source code";
             public const string SampleCodeSelected = "[LIBRARY] Sample code selected";
             public const string ThemesUnlockRequest = "[SETTINGS] Themes unlock request";
+            public const string ThemeChanged = "[SETTINGS] Theme changed";
             public const string GitHubProfileOpened = "[ABOUT] GitHub profile opened";
             public const string PayPalDonationOpened = "[ABOUT] PayPal donation opened";
         }
