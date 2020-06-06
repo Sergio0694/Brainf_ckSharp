@@ -47,20 +47,17 @@
                         Label="Cut"
                         Icon="Cut"
                         ToolTipService.ToolTip="Cut"
-                        IsEnabled="{Binding IsTextSelected}"
-                        ide:RoutedEventHandlerHelper.ClickHandlerName="Brainf_ckEditBox_Cut"/>
+                        IsEnabled="{Binding IsTextSelected}"/>
                     <AppBarButton
                         Label="Copy"
                         Icon="Copy"
                         ToolTipService.ToolTip="Copy"
-                        IsEnabled="{Binding IsTextSelected}"
-                        ide:RoutedEventHandlerHelper.ClickHandlerName="Brainf_ckEditBox_Copy"/>
+                        IsEnabled="{Binding IsTextSelected}"/>
                     <AppBarButton
                         Label="Paste"
                         Icon="Paste"
                         ToolTipService.ToolTip="Paste"
-                        IsEnabled="{Binding IsTextInClipboard}"
-                        ide:RoutedEventHandlerHelper.ClickHandlerName="Brainf_ckEditBox_Paste"/>
+                        IsEnabled="{Binding IsTextInClipboard}"/>
                     <CommandBarFlyout.SecondaryCommands>
                         <AppBarElementContainer
                             Visibility="Collapsed"
