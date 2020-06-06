@@ -1,10 +1,10 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using Windows.System;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.Settings;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide;
-using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views.UnicodeCharactersMap;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Microsoft.Toolkit.Mvvm.Input;
@@ -31,28 +31,35 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         public ICommand MoveCommand { get; } = new RelayCommand<VirtualKey>(key => Messenger.Default.Send(new ValueChangedMessage<VirtualKey>(key)));
 
         /// <summary>
-        /// Shows the code library
+        /// Shows the user guide
         /// </summary>
-        public void ShowCodeLibrary() => Messenger.Default.Send(SubPageNavigationRequestMessage.To<CodeLibrarySubPage>());
+        private void ViewModel_OnUserGuideRequested(object sender, EventArgs e)
+        {
+            Messenger.Default.Send(SubPageNavigationRequestMessage.To<UserGuideSubPage>());
+        }
 
         /// <summary>
         /// Shows the unicode map
         /// </summary>
-        public void ShowUnicodeMap() => Messenger.Default.Send(SubPageNavigationRequestMessage.To<UnicodeCharactersMapSubPage>());
-
-        /// <summary>
-        /// Shows the info about the current app
-        /// </summary>
-        public void ShowAppInfo() => Messenger.Default.Send(SubPageNavigationRequestMessage.To<AboutSubPage>());
-
-        /// <summary>
-        /// Shows the user guide
-        /// </summary>
-        public void ShowUserGuide() => Messenger.Default.Send(SubPageNavigationRequestMessage.To<UserGuideSubPage>());
+        private void ViewModel_OnUnicodeMapRequested(object sender, EventArgs e)
+        {
+            Messenger.Default.Send(SubPageNavigationRequestMessage.To<UnicodeCharactersMapSubPage>());
+        }
 
         /// <summary>
         /// Shows the app settings
         /// </summary>
-        private void ShowSettings() => Messenger.Default.Send(SubPageNavigationRequestMessage.To<SettingsSubPage>());
+        private void ViewModel_OnSettingsRequested(object sender, EventArgs e)
+        {
+            Messenger.Default.Send(SubPageNavigationRequestMessage.To<SettingsSubPage>());
+        }
+
+        /// <summary>
+        /// Shows the info about the current app
+        /// </summary>
+        private void ViewModel_OnAboutInfoRequested(object sender, EventArgs e)
+        {
+            Messenger.Default.Send(SubPageNavigationRequestMessage.To<AboutSubPage>());
+        }
     }
 }

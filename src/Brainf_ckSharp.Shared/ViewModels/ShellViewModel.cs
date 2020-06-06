@@ -1,4 +1,5 @@
-﻿using Brainf_ckSharp.Services;
+﻿using System;
+using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Messages.Console.Commands;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,31 @@ namespace Brainf_ckSharp.Shared.ViewModels
     /// </summary>
     public sealed class ShellViewModel : ViewModelBase
     {
+        /// <summary>
+        /// The <see cref="IAnalyticsService"/> instance currently in use
+        /// </summary>
+        private readonly IAnalyticsService AnalyticsService = Ioc.Default.GetRequiredService<IAnalyticsService>();
+
+        /// <summary>
+        /// Raised whenever the user guide is requested
+        /// </summary>
+        public event EventHandler? UserGuideRequested;
+
+        /// <summary>
+        /// Raised whenever the unicode map is requested
+        /// </summary>
+        public event EventHandler? UnicodeMapRequested;
+
+        /// <summary>
+        /// Raised whenever the settings are requested
+        /// </summary>
+        public event EventHandler? SettingsRequested;
+
+        /// <summary>
+        /// Raised whenever the about info are requested
+        /// </summary>
+        public event EventHandler? AboutInfoRequested;
+
         private bool _IsVirtualKeyboardEnabled = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<bool>(SettingsKeys.IsVirtualKeyboardEnabled);
 
         /// <summary>
@@ -33,7 +59,12 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// <summary>
         /// Runs the current console script
         /// </summary>
-        public void RunConsoleScript() => Messenger.Send<RunCommandRequestMessage>();
+        public void RunConsoleScript()
+        {
+            AnalyticsService.Log(Constants.Analytics.Events.ConsoleRun);
+
+            Messenger.Send<RunCommandRequestMessage>();
+        }
 
         /// <summary>
         /// Deletes the last operator in the current console script
@@ -48,32 +79,62 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// <summary>
         /// Clears the current console screen
         /// </summary>
-        public void ClearConsoleScreen() => Messenger.Send<ClearConsoleScreenRequestMessage>();
+        public void ClearConsoleScreen()
+        {
+            AnalyticsService.Log(Constants.Analytics.Events.ClearScreen);
+
+            Messenger.Send<ClearConsoleScreenRequestMessage>();
+        }
 
         /// <summary>
         /// Repeats the last console script
         /// </summary>
-        public void RepeatLastConsoleScript() => Messenger.Send<RepeatCommandRequestMessage>();
+        public void RepeatLastConsoleScript()
+        {
+            AnalyticsService.Log(Constants.Analytics.Events.RepeatLastScript);
+
+            Messenger.Send<RepeatCommandRequestMessage>();
+        }
 
         /// <summary>
         /// Restarts the console and resets its state
         /// </summary>
-        public void RestartConsole() => Messenger.Send<RestartConsoleRequestMessage>();
+        public void RestartConsole()
+        {
+            AnalyticsService.Log(Constants.Analytics.Events.Restart);
+
+            Messenger.Send<RestartConsoleRequestMessage>();
+        }
 
         /// <summary>
         /// Runs the current IDE script
         /// </summary>
-        public void RunIdeScript() => Messenger.Send<RunIdeScriptRequestMessage>();
+        public void RunIdeScript()
+        {
+            AnalyticsService.Log(Constants.Analytics.Events.IdeRun);
+
+            Messenger.Send<RunIdeScriptRequestMessage>();
+        }
 
         /// <summary>
         /// Debugs the current IDE script
         /// </summary>
-        public void DebugIdeScript() => Messenger.Send<DebugIdeScriptRequestMessage>();
+        public void DebugIdeScript()
+        {
+            AnalyticsService.Log(Constants.Analytics.Events.IdeDebug);
+
+            Messenger.Send<DebugIdeScriptRequestMessage>();
+        }
 
         /// <summary>
         /// Creates a new file in the IDE
         /// </summary>
-        public void NewIdeFile() => Messenger.Send<NewFileRequestMessage>();
+        public void NewIdeFile()
+        {
+            AnalyticsService.Log(Constants.Analytics.Events.NewFile);
+
+            Messenger.Send<NewFileRequestMessage>();
+        }
 
         /// <summary>
         /// Inserts a new line into the IDE
@@ -88,16 +149,71 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// <summary>
         /// Opens a new file in the IDE
         /// </summary>
-        public void OpenFile() => Messenger.Send(new PickOpenFileRequestMessage(false));
+        public void OpenFile()
+        {
+            AnalyticsService.Log(Constants.Analytics.Events.OpenFile);
+
+            Messenger.Send(new PickOpenFileRequestMessage(false));
+        }
 
         /// <summary>
         /// Saves the current source code in the IDE to a file
         /// </summary>
-        public void SaveFile() => Messenger.Send<SaveFileRequestMessage>();
+        public void SaveFile()
+        {
+            AnalyticsService.Log(Constants.Analytics.Events.Save);
+
+            Messenger.Send<SaveFileRequestMessage>();
+        }
 
         /// <summary>
         /// Saves the current source code in the IDE to a new file
         /// </summary>
-        public void SaveFileAs() => Messenger.Send<SaveFileAsRequestMessage>();
+        public void SaveFileAs()
+        {
+            AnalyticsService.Log(Constants.Analytics.Events.SaveAs);
+
+            Messenger.Send<SaveFileAsRequestMessage>();
+        }
+
+        /// <summary>
+        /// Requests the unicode map
+        /// </summary>
+        public void RequestUnicodeMap()
+        {
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Analytics.Events.UnicodeCharactersMapOpened);
+
+            UnicodeMapRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Requests the info about the current app
+        /// </summary>
+        public void RequestAboutInfo()
+        {
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Analytics.Events.AboutPageOpened);
+
+            AboutInfoRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Requests the user guide
+        /// </summary>
+        public void RequestUserGuide()
+        {
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Analytics.Events.UserGuideOpened);
+
+            UserGuideRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Requests the app settings
+        /// </summary>
+        public void RequestSettings()
+        {
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Analytics.Events.SettingsOpened);
+
+            SettingsRequested?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

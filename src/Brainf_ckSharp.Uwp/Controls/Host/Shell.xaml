@@ -19,7 +19,12 @@
     d:DesignHeight="600"
     d:DesignWidth="400">
     <UserControl.DataContext>
-        <viewModels:ShellViewModel x:Name="ViewModel"/>
+        <viewModels:ShellViewModel
+            x:Name="ViewModel"
+            UserGuideRequested="ViewModel_OnUserGuideRequested"
+            UnicodeMapRequested="ViewModel_OnUnicodeMapRequested"
+            SettingsRequested="ViewModel_OnSettingsRequested"
+            AboutInfoRequested="ViewModel_OnAboutInfoRequested"/>
     </UserControl.DataContext>
 
     <!--Main app UI-->
@@ -235,7 +240,7 @@
                 <AppBarButton
                     Label="User guide"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource UserGuideIcon}}"
-                    Click="{x:Bind ShowUserGuide}">
+                    Click="{x:Bind ViewModel.RequestUserGuide}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator Key="G" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>
@@ -243,7 +248,7 @@
                 <AppBarButton
                     Label="Unicode characters"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource ShowUnicodeMapIcon}}"
-                    Click="{x:Bind ShowUnicodeMap}">
+                    Click="{x:Bind ViewModel.RequestUnicodeMap}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator Key="U" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>
@@ -325,7 +330,7 @@
                 <AppBarButton
                     Label="Settings"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource SettingsIcon}}"
-                    Click="{x:Bind ShowSettings}">
+                    Click="{x:Bind ViewModel.RequestSettings}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator Key="I" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>
@@ -333,7 +338,7 @@
                 <AppBarButton
                     Label="About"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource AboutIcon}}"
-                    Click="{x:Bind ShowAppInfo}">
+                    Click="{x:Bind ViewModel.RequestAboutInfo}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator Key="A" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>
