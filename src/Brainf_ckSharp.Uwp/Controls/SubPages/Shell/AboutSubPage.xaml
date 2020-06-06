@@ -90,9 +90,11 @@
                     RelativePanel.Below="GitBranchIcon"/>
                 <ListView
                     x:Name="DevelopersList"
-                    Margin="-8,2,-8,-8" Padding="8"
+                    Margin="-8,2,-8,-8"
+                    Padding="8"
                     ItemsSource="{x:Bind ViewModel.Developers, Mode=OneWay}"
-                    SelectionMode="None" IsItemClickEnabled="False"
+                    SelectionMode="None"
+                    IsItemClickEnabled="False"
                     ScrollViewer.VerticalScrollBarVisibility="Hidden"
                     RelativePanel.Below="UwpBlock"
                     RelativePanel.AlignLeftWithPanel="True"
@@ -122,9 +124,11 @@
                     x:Name="SupportBlock"
                     RelativePanel.Below="DevelopersList"/>
                 <ListView 
-                    Margin="-8,2,-8,-8" Padding="8"
+                    Margin="-8,2,-8,-8"
+                    Padding="8"
                     ItemsSource="{x:Bind ViewModel.DonationMockupSource, Mode=OneWay}"
-                    SelectionMode="None" IsItemClickEnabled="False"
+                    SelectionMode="None"
+                    IsItemClickEnabled="False"
                     ScrollViewer.VerticalScrollBarVisibility="Hidden"
                     RelativePanel.Below="SupportBlock"
                     RelativePanel.AlignLeftWithPanel="True"

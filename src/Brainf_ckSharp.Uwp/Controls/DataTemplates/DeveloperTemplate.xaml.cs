@@ -1,7 +1,10 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.Services;
 using GitHub.Models;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Launcher = Windows.System.Launcher;
 
@@ -32,7 +35,11 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates
         private void Contributor_Clicked(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrEmpty(ViewModel?.ProfilePageUrl))
+            {
                 _ = Launcher.LaunchUriAsync(new Uri(ViewModel!.ProfilePageUrl, UriKind.Absolute));
+
+                Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Analytics.Events.GitHubProfileOpened);
+            }
         }
     }
 }

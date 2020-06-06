@@ -32,7 +32,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             Messenger.Register<PickOpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync(m.Favorite));
             Messenger.Register<OpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync(m.Value));
             Messenger.Register<LoadSourceCodeRequestMessage>(this, m => LoadSourceCode(m.Value));
-            Messenger.Register<NewFileRequestMessage>(this, _ => LoadSourceCode(SourceCode.CreateEmpty()));
+            Messenger.Register<NewFileRequestMessage>(this, _ => LoadNewFile());
             Messenger.Register<SaveFileRequestMessage>(this, m => _ = TrySaveTextAsync());
             Messenger.Register<SaveFileAsRequestMessage>(this, m => _ = TrySaveTextAsAsync());
             Messenger.Register<SaveIdeStateRequestMessage>(this, m => m.ReportResult(SaveStateAsync()));
@@ -102,7 +102,19 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <param name="code">The source code to load</param>
         private void LoadSourceCode(SourceCode code)
         {
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Analytics.Events.LoadLibrarySourceCode);
+
             Code = code;
+
+            CodeLoaded?.Invoke(this, Code.Content);
+        }
+
+        /// <summary>
+        /// Loads an empty source code
+        /// </summary>
+        private void LoadNewFile()
+        {
+            Code = SourceCode.CreateEmpty();
 
             CodeLoaded?.Invoke(this, Code.Content);
         }
@@ -113,7 +125,13 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <param name="favorite">Whether to immediately mark the item as favorite</param>
         private async Task TryLoadTextFromFileAsync(bool favorite)
         {
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Analytics.Events.PickFileRequest);
+
             if (!(await Ioc.Default.GetRequiredService<IFilesService>().TryPickOpenFileAsync(".bfs") is IFile file)) return;
+
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(
+                Constants.Analytics.Events.LoadPickedFile,
+                (nameof(CodeMetadata.IsFavorited), favorite.ToString()));
 
             if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
             {
@@ -125,7 +143,9 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                     await code.TrySaveAsync();
                 }
 
-                LoadSourceCode(code);
+                Code = code;
+
+                CodeLoaded?.Invoke(this, Code.Content);
             }
         }
 
@@ -135,9 +155,13 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <param name="file">The file to open</param>
         private async Task TryLoadTextFromFileAsync(IFile file)
         {
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Analytics.Events.LoadProtocolFile);
+
             if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
             {
-                LoadSourceCode(code);
+                Code = code;
+
+                CodeLoaded?.Invoke(this, Code.Content);
             }
         }
 

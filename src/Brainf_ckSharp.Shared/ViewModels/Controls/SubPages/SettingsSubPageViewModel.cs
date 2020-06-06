@@ -196,6 +196,10 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 
             IsThemeSelectorAvailable = result == StorePurchaseResult.Success ||
                                        result == StorePurchaseResult.AlreadyPurchased;
+
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(
+                Constants.Analytics.Events.ThemesUnlockRequest,
+                (nameof(StorePurchaseResult), result.ToString()));
         }
 
         /// <summary>
