@@ -18,7 +18,7 @@
                 <ResourceDictionary Source="Styles/SemanticZoomStyles.xaml"/>
                 <ResourceDictionary Source="Styles/SubPageStyles.xaml"/>
                 <ResourceDictionary Source="Styles/TextStyles.xaml"/>
-                <ResourceDictionary Source="ms-appx:///Brainf_ckSharp.Uwp.Controls.Ide/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="Brainf_ckSharp.Uwp.Controls.Ide/Brainf_ckEditBox/Brainf_ckEditBox.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
