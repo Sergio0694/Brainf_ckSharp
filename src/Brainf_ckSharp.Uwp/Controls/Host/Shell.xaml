@@ -24,7 +24,8 @@
             UserGuideRequested="ViewModel_OnUserGuideRequested"
             UnicodeMapRequested="ViewModel_OnUnicodeMapRequested"
             SettingsRequested="ViewModel_OnSettingsRequested"
-            AboutInfoRequested="ViewModel_OnAboutInfoRequested"/>
+            AboutInfoRequested="ViewModel_OnAboutInfoRequested"
+            CodeLibraryRequested="ViewModel_OnCodeLibraryRequested"/>
     </UserControl.DataContext>
 
     <!--Main app UI-->
@@ -106,7 +107,8 @@
                 <controls:ExpanderControl.ExpandableContent>
                     <controls:LockedPivot
                         Style="{StaticResource ExpandedPivotWithNoHeaderStyle}"
-                        SelectedIndex="{x:Bind StdinHeader.StdinSelectedIndex, Mode=OneWay, FallbackValue=0}">
+                        SelectedIndex="{x:Bind StdinHeader.StdinSelectedIndex, Mode=OneWay, FallbackValue=0}"
+                        SelectionChanged="Pivot_OnSelectionChanged">
                         <PivotItem>
                             <inputPanel:VirtualKeyboard/>
                         </PivotItem>
@@ -297,7 +299,7 @@
                     Label="Open code library"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource OpenCodeLibraryIcon}}"
                     Visibility="{x:Bind converters:PivotSelectionConverter.ConvertIndexToVisibility(RootHeader.SelectedIndex, 1), Mode=OneWay}"
-                    Click="{x:Bind ShowCodeLibrary}"/>
+                    Click="{x:Bind ViewModel.RequestCodeLibrary}"/>
                 <AppBarButton
                     Label="Open file"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource OpenFileIcon}}"

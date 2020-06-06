@@ -2,11 +2,15 @@
 using System.Windows.Input;
 using Windows.System;
 using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.Settings;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide;
+using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views.UnicodeCharactersMap;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Mvvm.Messaging.Messages;
@@ -60,6 +64,25 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         private void ViewModel_OnAboutInfoRequested(object sender, EventArgs e)
         {
             Messenger.Default.Send(SubPageNavigationRequestMessage.To<AboutSubPage>());
+        }
+
+        /// <summary>
+        /// Shows the code library
+        /// </summary>
+        private void ViewModel_OnCodeLibraryRequested(object sender, EventArgs e)
+        {
+            Messenger.Default.Send(SubPageNavigationRequestMessage.To<CodeLibrarySubPage>());
+        }
+
+        /// <summary>
+        /// Logs when the compact memory viewer is opened
+        /// </summary>
+        private void Pivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (((Pivot)sender).SelectedIndex == 1)
+            {
+                Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Analytics.Events.CompactMemoryViewerOpened);
+            }
         }
     }
 }

@@ -39,6 +39,11 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public event EventHandler? AboutInfoRequested;
 
+        /// <summary>
+        /// Raised whenever the code library is requested
+        /// </summary>
+        public event EventHandler? CodeLibraryRequested; 
+
         private bool _IsVirtualKeyboardEnabled = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<bool>(SettingsKeys.IsVirtualKeyboardEnabled);
 
         /// <summary>
@@ -214,6 +219,16 @@ namespace Brainf_ckSharp.Shared.ViewModels
             Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Analytics.Events.SettingsOpened);
 
             SettingsRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Requests the code library
+        /// </summary>
+        public void RequestCodeLibrary()
+        {
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Analytics.Events.OpenCodeLibrary);
+
+            CodeLibraryRequested?.Invoke(this, EventArgs.Empty);
         }
     }
 }
