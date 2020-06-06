@@ -233,6 +233,23 @@
             </controls:AnimatedCommandBar.PrimaryCommands>
             <controls:AnimatedCommandBar.SecondaryCommands>
                 <AppBarButton
+                    Label="User guide"
+                    Icon="{toolkitExtensions:FontIcon Glyph={StaticResource UserGuideIcon}}"
+                    Click="{x:Bind ShowUserGuide}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="G" Modifiers="Control"/>
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
+                <AppBarButton
+                    Label="Unicode characters"
+                    Icon="{toolkitExtensions:FontIcon Glyph={StaticResource ShowUnicodeMapIcon}}"
+                    Click="{x:Bind ShowUnicodeMap}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="U" Modifiers="Control"/>
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
+                <AppBarSeparator/>
+                <AppBarButton
                     Label="Repeat last script"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource RepeatScriptIcon}}"
                     Click="{x:Bind ViewModel.RepeatLastConsoleScript}"
@@ -319,22 +336,6 @@
                     Click="{x:Bind ShowAppInfo}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator Key="A" Modifiers="Control"/>
-                    </AppBarButton.KeyboardAccelerators>
-                </AppBarButton>
-                <AppBarButton
-                    Label="User guide"
-                    Icon="{toolkitExtensions:FontIcon Glyph={StaticResource UserGuideIcon}}"
-                    Click="{x:Bind ShowUserGuide}">
-                    <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="G" Modifiers="Control"/>
-                    </AppBarButton.KeyboardAccelerators>
-                </AppBarButton>
-                <AppBarButton
-                    Label="Show Unicode characters"
-                    Icon="{toolkitExtensions:FontIcon Glyph={StaticResource ShowUnicodeMapIcon}}"
-                    Click="{x:Bind ShowUnicodeMap}">
-                    <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="U" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
             </controls:AnimatedCommandBar.SecondaryCommands>
