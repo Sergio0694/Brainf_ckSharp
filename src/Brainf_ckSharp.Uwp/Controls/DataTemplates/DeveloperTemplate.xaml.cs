@@ -38,7 +38,7 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates
             {
                 _ = Launcher.LaunchUriAsync(new Uri(ViewModel!.ProfilePageUrl, UriKind.Absolute));
 
-                Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Analytics.Events.GitHubProfileOpened);
+                Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Events.GitHubProfileOpened);
             }
         }
     }

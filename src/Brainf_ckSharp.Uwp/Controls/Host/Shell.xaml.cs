@@ -81,7 +81,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         {
             if (((Pivot)sender).SelectedIndex == 1)
             {
-                Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Analytics.Events.CompactMemoryViewerOpened);
+                Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Events.CompactMemoryViewerOpened);
             }
         }
     }

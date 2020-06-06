@@ -49,39 +49,33 @@
         }
 
         /// <summary>
-        /// A <see langword="class"/> with some commonly used values for the analytics service
+        /// A <see langword="class"/> with the collection of tracked events for analytics
         /// </summary>
-        public static class Analytics
+        public static class Events
         {
-            /// <summary>
-            /// A <see langword="class"/> with the collection of tracked events
-            /// </summary>
-            public static class Events
-            {
-                public const string UserGuideOpened = "[SHELL] User guide opened";
-                public const string UnicodeCharactersMapOpened = "[SHELL] Unicode characters map opened";
-                public const string SettingsOpened = "[SHELL] Settings opened";
-                public const string AboutPageOpened = "[SHELL] About page opened";
-                public const string RepeatLastScript = "[CONSOLE] Repeat last script";
-                public const string Restart = "[CONSOLE] Restart";
-                public const string ConsoleRun = "[CONSOLE] Run";
-                public const string ClearScreen = "[CONSOLE] Clear screen";
-                public const string CompactMemoryViewerOpened = "[CONSOLE] Compact memory viewer opened";
-                public const string NewFile = "[IDE] New file";
-                public const string OpenCodeLibrary = "[IDE] Open code library";
-                public const string OpenFile = "[IDE] Open file";
-                public const string SaveAs = "[IDE] Save as";
-                public const string Save = "[IDE] Save";
-                public const string IdeRun = "[IDE] Run";
-                public const string PickFileRequest = "[IDE] Pick file request";
-                public const string LoadPickedFile = "[IDE] Load picked file";
-                public const string LoadProtocolFile = "[IDE] Load protocol file";
-                public const string LoadLibrarySourceCode = "[IDE] Load library source code";
-                public const string IdeDebug = "[IDE] Debug";
-                public const string ThemesUnlockRequest = "[SETTINGS] Themes unlock request";
-                public const string GitHubProfileOpened = "[ABOUT] GitHub profile opened";
-                public const string PayPalDonationOpened = "[ABOUT] PayPal donation opened";
-            }
+            public const string UserGuideOpened = "[SHELL] User guide opened";
+            public const string UnicodeCharactersMapOpened = "[SHELL] Unicode characters map opened";
+            public const string SettingsOpened = "[SHELL] Settings opened";
+            public const string AboutPageOpened = "[SHELL] About page opened";
+            public const string RepeatLastScript = "[CONSOLE] Repeat last script";
+            public const string Restart = "[CONSOLE] Restart";
+            public const string ConsoleRun = "[CONSOLE] Run";
+            public const string ClearScreen = "[CONSOLE] Clear screen";
+            public const string CompactMemoryViewerOpened = "[CONSOLE] Compact memory viewer opened";
+            public const string NewFile = "[IDE] New file";
+            public const string OpenCodeLibrary = "[IDE] Open code library";
+            public const string OpenFile = "[IDE] Open file";
+            public const string SaveAs = "[IDE] Save as";
+            public const string Save = "[IDE] Save";
+            public const string IdeRun = "[IDE] Run";
+            public const string PickFileRequest = "[IDE] Pick file request";
+            public const string LoadPickedFile = "[IDE] Load picked file";
+            public const string LoadProtocolFile = "[IDE] Load protocol file";
+            public const string LoadLibrarySourceCode = "[IDE] Load library source code";
+            public const string IdeDebug = "[IDE] Debug";
+            public const string ThemesUnlockRequest = "[SETTINGS] Themes unlock request";
+            public const string GitHubProfileOpened = "[ABOUT] GitHub profile opened";
+            public const string PayPalDonationOpened = "[ABOUT] PayPal donation opened";
         }
     }
 }

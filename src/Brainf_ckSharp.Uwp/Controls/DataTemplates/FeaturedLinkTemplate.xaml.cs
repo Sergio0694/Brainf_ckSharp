@@ -46,7 +46,7 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates
         {
             _ = Launcher.LaunchUriAsync(NavigationUri ?? throw new InvalidOperationException("No valid uri available"));
 
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Analytics.Events.PayPalDonationOpened);
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Events.PayPalDonationOpened);
         }
     }
 }

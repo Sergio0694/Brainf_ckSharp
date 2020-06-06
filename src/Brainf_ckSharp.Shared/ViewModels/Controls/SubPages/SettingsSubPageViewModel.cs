@@ -198,7 +198,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
                                        result == StorePurchaseResult.AlreadyPurchased;
 
             Ioc.Default.GetRequiredService<IAnalyticsService>().Log(
-                Constants.Analytics.Events.ThemesUnlockRequest,
+                Constants.Events.ThemesUnlockRequest,
                 (nameof(StorePurchaseResult), result.ToString()));
         }
 

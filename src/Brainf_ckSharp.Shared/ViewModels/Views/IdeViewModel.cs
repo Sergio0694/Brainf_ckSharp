@@ -102,7 +102,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <param name="code">The source code to load</param>
         private void LoadSourceCode(SourceCode code)
         {
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Analytics.Events.LoadLibrarySourceCode);
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Events.LoadLibrarySourceCode);
 
             Code = code;
 
@@ -125,12 +125,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <param name="favorite">Whether to immediately mark the item as favorite</param>
         private async Task TryLoadTextFromFileAsync(bool favorite)
         {
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Analytics.Events.PickFileRequest);
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Events.PickFileRequest);
 
             if (!(await Ioc.Default.GetRequiredService<IFilesService>().TryPickOpenFileAsync(".bfs") is IFile file)) return;
 
             Ioc.Default.GetRequiredService<IAnalyticsService>().Log(
-                Constants.Analytics.Events.LoadPickedFile,
+                Constants.Events.LoadPickedFile,
                 (nameof(CodeMetadata.IsFavorited), favorite.ToString()));
 
             if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
@@ -155,7 +155,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <param name="file">The file to open</param>
         private async Task TryLoadTextFromFileAsync(IFile file)
         {
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Analytics.Events.LoadProtocolFile);
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Constants.Events.LoadProtocolFile);
 
             if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
             {
