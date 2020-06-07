@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Buffers;
+using System.Linq;
+using System.Reflection;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -161,6 +163,14 @@ namespace Brainf_ckSharp.Uwp.Views
         {
             if ((sender as FrameworkElement)?.DataContext is string snippet)
             {
+                string name = (
+                    from fieldInfo in typeof(CodeSnippets).GetFields(BindingFlags.Public | BindingFlags.Static)
+                    let fieldValue = (string)fieldInfo.GetRawConstantValue()
+                    where fieldValue == snippet
+                    select fieldInfo.Name).First();
+
+                Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Events.InsertCodeSnippet, (nameof(CodeSnippets), name));
+
                 CodeEditor.InsertText(snippet);
             }
         }

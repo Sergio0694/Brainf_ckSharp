@@ -68,11 +68,12 @@
             public const string SaveAs = "[IDE] Save as";
             public const string Save = "[IDE] Save";
             public const string IdeRun = "[IDE] Run";
+            public const string IdeDebug = "[IDE] Debug";
             public const string PickFileRequest = "[IDE] Pick file request";
             public const string LoadPickedFile = "[IDE] Load picked file";
             public const string LoadProtocolFile = "[IDE] Load protocol file";
             public const string LoadLibrarySourceCode = "[IDE] Load library source code";
-            public const string IdeDebug = "[IDE] Debug";
+            public const string InsertCodeSnippet = "[IDE] Insert code snippet";
             public const string ShareSourceCode = "[LIBRARY] Share source code";
             public const string CopySourceCode = "[LIBRARY] Copy source code";
             public const string ToggleFavoriteSourceCode = "[LIBRARY] Toggle favorite";
