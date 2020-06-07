@@ -31,9 +31,9 @@
         public const string RenderWhitespaces = nameof(RenderWhitespaces);
 
         /// <summary>
-        /// Indicates the index of the starting view, uses a <see cref="Enums.Settings.ViewType"/>
+        /// Indicates the index of the selected view, uses a <see cref="Enums.Settings.ViewType"/>
         /// </summary>
-        public const string StartingView = nameof(StartingView);
+        public const string SelectedView = nameof(SelectedView);
 
         /// <summary>
         /// Indicates whether or not to automatically clear the stdin buffer whenever it's requested, uses a <see cref="bool"/>

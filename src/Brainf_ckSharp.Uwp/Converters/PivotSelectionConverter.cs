@@ -1,6 +1,9 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Data;
+using Brainf_ckSharp.Shared.Enums.Settings;
 using Microsoft.Toolkit.HighPerformance.Extensions;
 
 namespace Brainf_ckSharp.Uwp.Converters
@@ -8,8 +11,30 @@ namespace Brainf_ckSharp.Uwp.Converters
     /// <summary>
     /// A <see langword="class"/> with a collection of helper functions for bindings with a <see cref="Windows.UI.Xaml.Controls.Pivot"/> control
     /// </summary>
-    public static class PivotSelectionConverter
+    public sealed class PivotSelectionConverter : IValueConverter
     {
+        /// <summary>
+        /// Converts a given <see cref="ViewType"/> value into its corresponding index
+        /// </summary>
+        /// <param name="viewType">The input <see cref="ViewType"/> value</param>
+        /// <returns>The <see cref="int"/> value representing <paramref name="viewType"/></returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int ConvertToIndex(ViewType viewType) => (int)viewType;
+
+        /// <summary>
+        /// Returns a <see cref="Visibility"/> value if the two arguments match
+        /// </summary>
+        /// <param name="viewType">The input <see cref="ViewType"/> value</param>
+        /// <param name="target">The target <see cref="ViewType"/> value</param>
+        /// <returns><see cref="Visibility.Visible"/> if the input values match, <see cref="Visibility.Collapsed"/> otherwise</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Visibility ConvertToVisibility(ViewType viewType, ViewType target)
+        {
+            return (Visibility)(viewType != target).ToInt();
+        }
+
         /// <summary>
         /// Checks whether the input index matches a target value
         /// </summary>
@@ -20,14 +45,16 @@ namespace Brainf_ckSharp.Uwp.Converters
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool ConvertIndexToBool(int index, int target) => index == target;
 
-        /// <summary>
-        /// Checks whether the input index matches a target value
-        /// </summary>
-        /// <param name="index">The input index to match</param>
-        /// <param name="target">The target value to match</param>
-        /// <returns><see cref="Visibility.Visible"/> if the input values match, <see cref="Visibility.Collapsed"/> otherwise</returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Visibility ConvertIndexToVisibility(int index, int target) => (Visibility)(index != target).ToInt();
+        /// <inheritdoc/>
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            return ConvertToIndex((ViewType)value);
+        }
+
+        /// <inheritdoc/>
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return (ViewType)(int)value;
+        }
     }
 }

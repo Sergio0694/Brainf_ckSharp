@@ -145,17 +145,6 @@
             x:DataType="enums:SettingsSection">
             <StackPanel Spacing="4">
 
-                <!--Starting page-->
-                <TextBlock
-                    TextWrapping="Wrap"
-                    Text="Starting page"/>
-                <ComboBox
-                    CornerRadius="0"
-                    Margin="0,4,0,0"
-                    MinWidth="140"
-                    ItemsSource="{markupExtensions:EnumValues Type=enumsSettings:ViewType}"
-                    SelectedItem="{x:Bind ViewModel.StartingView, Mode=TwoWay}"/>
-
                 <!--Show PBrain operators-->
                 <TextBlock
                     Margin="0,8,0,0"

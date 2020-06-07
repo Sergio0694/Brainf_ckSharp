@@ -1,11 +1,6 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.Services;
-using Brainf_ckSharp.Shared;
-using Brainf_ckSharp.Shared.Enums.Settings;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
 namespace Brainf_ckSharp.Uwp.Controls.Host.Header
 {
@@ -14,13 +9,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.Header
         public HeaderPanel()
         {
             this.InitializeComponent();
-
-            // Either select the preferred view, or switch to the IDE if a file is requested
-            if (App.Current.RequestedFile is null)
-            {
-                SelectedIndex = (int)Ioc.Default.GetRequiredService<ISettingsService>().GetValue<ViewType>(SettingsKeys.StartingView);
-            }
-            else SelectedIndex = (int)ViewType.Ide;
         }
 
         /// <summary>
@@ -50,6 +38,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.Header
         {
             HeaderPanel @this = (HeaderPanel)d;
             int index = (int)e.NewValue;
+
             VisualStateManager.GoToState(@this, index == 0 ? nameof(ConsoleSelectedState) : nameof(IdeSelectedState), false);
         }
 

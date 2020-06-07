@@ -1,5 +1,6 @@
 ﻿using System;
 using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.Messages.Console.Commands;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,11 @@ namespace Brainf_ckSharp.Shared.ViewModels
     /// </summary>
     public sealed class ShellViewModel : ViewModelBase
     {
+        /// <summary>
+        /// The <see cref="ISettingsService"/> instance currently in use
+        /// </summary>
+        private static readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+
         /// <summary>
         /// The <see cref="IAnalyticsService"/> instance currently in use
         /// </summary>
@@ -42,9 +48,26 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// <summary>
         /// Raised whenever the code library is requested
         /// </summary>
-        public event EventHandler? CodeLibraryRequested; 
+        public event EventHandler? CodeLibraryRequested;
 
-        private bool _IsVirtualKeyboardEnabled = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<bool>(SettingsKeys.IsVirtualKeyboardEnabled);
+        private ViewType _SelectedView = SettingsService.GetValue<ViewType>(SettingsKeys.SelectedView);
+
+        /// <summary>
+        /// Gets or sets the currently selected view
+        /// </summary>
+        public ViewType SelectedView
+        {
+            get => _SelectedView;
+            set
+            {
+                if (Set(ref _SelectedView, value))
+                {
+                    SettingsService.SetValue(SettingsKeys.SelectedView, value);
+                }
+            }
+        }
+
+        private bool _IsVirtualKeyboardEnabled = SettingsService.GetValue<bool>(SettingsKeys.IsVirtualKeyboardEnabled);
 
         /// <summary>
         /// Gets or sets whether or not the virtual keyboard is currently enabled
@@ -56,7 +79,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
             {
                 if (Set(ref _IsVirtualKeyboardEnabled, value))
                 {
-                    Ioc.Default.GetRequiredService<ISettingsService>().SetValue(SettingsKeys.IsVirtualKeyboardEnabled, value);
+                    SettingsService.SetValue(SettingsKeys.IsVirtualKeyboardEnabled, value);
                 }
             }
         }
