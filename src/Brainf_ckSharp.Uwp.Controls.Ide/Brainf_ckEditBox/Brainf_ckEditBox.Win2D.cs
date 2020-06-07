@@ -8,6 +8,7 @@ using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models;
 using Brainf_ckSharp.Uwp.Themes;
 using Microsoft.Graphics.Canvas.Geometry;
+using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 using Microsoft.Toolkit.HighPerformance.Extensions;
@@ -18,6 +19,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
     public sealed partial class Brainf_ckEditBox
     {
+        /// <summary>
+        /// The <see cref="CanvasCachedGeometry"/> instance for the squiggly line
+        /// </summary>
+        private CanvasCachedGeometry? _SquigglyLineGeometry;
+
         /// <summary>
         /// The <see cref="Color"/> for the vertical column guides
         /// </summary>
@@ -58,6 +64,32 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// The current sequence of areas for the tab characters to render
         /// </summary>
         private MemoryOwner<Rect> _TabAreas = MemoryOwner<Rect>.Empty;
+
+        /// <summary>
+        /// Creates the resources for the Win2D canvas
+        /// </summary>
+        /// <param name="sender">The sender <see cref="CanvasControl"/> instance</param>
+        /// <param name="args">The <see cref="CanvasCreateResourcesEventArgs"/> for the current instance</param>
+        private void _TextOverlaysCanvas_CreateResources(CanvasControl sender, CanvasCreateResourcesEventArgs args)
+        {
+            CanvasPathBuilder pathBuilder = new CanvasPathBuilder(sender);
+
+            pathBuilder.BeginFigure(0, 2.5f);
+            pathBuilder.AddLine(2, 0);
+            pathBuilder.AddLine(6, 4);
+            pathBuilder.AddLine(10, 0);
+            pathBuilder.AddLine(14, 4);
+            pathBuilder.AddLine(18, 0);
+            pathBuilder.AddLine(22, 4);
+            pathBuilder.AddLine(26, 0);
+            pathBuilder.AddLine(30, 4);
+            pathBuilder.AddLine(32, 1.5f);
+            pathBuilder.EndFigure(CanvasFigureLoop.Open);
+
+            CanvasGeometry canvasGeometry = CanvasGeometry.CreatePath(pathBuilder);
+
+            _SquigglyLineGeometry = CanvasCachedGeometry.CreateStroke(canvasGeometry, 1);
+        }
 
         /// <summary>
         /// Draws the text overlays when an update is requested
