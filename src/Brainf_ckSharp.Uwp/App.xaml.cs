@@ -153,6 +153,7 @@ namespace Brainf_ckSharp.Uwp
             settings.SetValue(SettingsKeys.IdeTheme, IdeTheme.VisualStudio, false);
             settings.SetValue(SettingsKeys.RenderWhitespaces, true, false);
             settings.SetValue(SettingsKeys.StartingView, ViewType.Console, false);
+            settings.SetValue(SettingsKeys.SelectedView, ViewType.Console, false);
             settings.SetValue(SettingsKeys.ClearStdinBufferOnRequest, false, false);
             settings.SetValue(SettingsKeys.ShowPBrainButtons, true, false);
             settings.SetValue(SettingsKeys.OverflowMode, OverflowMode.ByteWithOverflow, false);
