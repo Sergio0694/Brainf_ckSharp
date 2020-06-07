@@ -48,7 +48,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             _IdeTheme = SettingsService.GetValue<IdeTheme>(SettingsKeys.IdeTheme);
             _BracketsFormattingStyle = SettingsService.GetValue<BracketsFormattingStyle>(SettingsKeys.BracketsFormattingStyle);
             _RenderWhitespaces = SettingsService.GetValue<bool>(SettingsKeys.RenderWhitespaces);
-            _StartingView = SettingsService.GetValue<ViewType>(SettingsKeys.StartingView);
             _ClearStdinBufferOnRequest = SettingsService.GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest);
             _ShowPBrainButtons = SettingsService.GetValue<bool>(SettingsKeys.ShowPBrainButtons);
             _OverflowMode = SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
@@ -135,18 +134,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         {
             get => _RenderWhitespaces;
             set => Set<bool, RenderWhitespacesSettingChangedMessage>(ref _RenderWhitespaces, value);
-        }
-
-        private ViewType _StartingView;
-
-        /// <summary>
-        /// Exposes the <see cref="SettingsKeys.StartingView"/> setting
-        /// </summary>
-        [SettingProperty(SettingsSection.UI)]
-        public ViewType StartingView
-        {
-            get => _StartingView;
-            set => Set(ref _StartingView, value);
         }
 
         private bool _ClearStdinBufferOnRequest;

@@ -31,11 +31,6 @@
         public const string RenderWhitespaces = nameof(RenderWhitespaces);
 
         /// <summary>
-        /// Indicates the index of the starting view, uses a <see cref="Enums.Settings.ViewType"/>
-        /// </summary>
-        public const string StartingView = nameof(StartingView);
-
-        /// <summary>
         /// Indicates the index of the selected view, uses a <see cref="Enums.Settings.ViewType"/>
         /// </summary>
         public const string SelectedView = nameof(SelectedView);
