@@ -24,7 +24,7 @@
         <GridView.Resources>
 
             <!--Expand the items to cover all the available space-->
-            <Style TargetType="GridViewItem">
+            <Style TargetType="GridViewItem" BasedOn="{StaticResource GridViewItemExpanded}">
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 <Setter Property="VerticalContentAlignment" Value="Stretch"/>
             </Style>
