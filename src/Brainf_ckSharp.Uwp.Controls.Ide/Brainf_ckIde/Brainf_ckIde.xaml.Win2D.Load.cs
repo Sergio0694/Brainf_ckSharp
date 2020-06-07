@@ -70,7 +70,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             // Skip if the current syntax is not valid
             if (!isSyntaxValid)
             {
-                _IndentationIndicators = MemoryOwner<IndentationIndicatorBase>.Allocate(0);
+                _IndentationIndicators = MemoryOwner<IndentationIndicatorBase>.Empty;
+
                 return;
             }
 

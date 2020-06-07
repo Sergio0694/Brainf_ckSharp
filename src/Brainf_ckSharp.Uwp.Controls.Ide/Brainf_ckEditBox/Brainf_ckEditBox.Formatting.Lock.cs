@@ -51,7 +51,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 This.IsUndoGroupingEnabled = false;
 
                 // Redraw the overlays, if needed
-                if (This._SyntaxValidationResult.IsSuccessOrEmptyScript) This.TryUpdateBracketsList();
+                This.TryUpdateBracketsList();
                 if (This.RenderWhitespaceCharacters) This.TryUpdateWhitespaceCharactersList();
 
                 This._TextOverlaysCanvas!.Invalidate();

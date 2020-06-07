@@ -125,20 +125,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
-        /// Resets all the currently visible overlays
-        /// </summary>
-        public void ResetAllOverlays()
-        {
-            _BracketPairs = MemoryOwner<BracketsPairInfo>.Empty;
-            _ColumnGuides = MemoryOwner<ColumnGuideInfo>.Empty;
-
-            ResetWhitespaceCharactersList();
-        }
-
-        /// <summary>
         /// Resets the current whitespace characters
         /// </summary>
-        private void ResetWhitespaceCharactersList()
+        public void ResetWhitespaceCharactersList()
         {
             _SpaceIndices = MemoryOwner<int>.Empty;
             _SpaceAreas = MemoryOwner<Rect>.Empty;
@@ -225,7 +214,13 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         private void TryUpdateBracketsList()
         {
-            Debug.Assert(_SyntaxValidationResult.IsSuccessOrEmptyScript);
+            if (!_SyntaxValidationResult.IsSuccessOrEmptyScript)
+            {
+                _BracketPairs = MemoryOwner<BracketsPairInfo>.Empty;
+                _ColumnGuides = MemoryOwner<ColumnGuideInfo>.Empty;
+
+                return;
+            }
 
             // Prepare the current text
             string text = Text;

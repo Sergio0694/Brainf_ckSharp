@@ -25,7 +25,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// The current array of <see cref="IndentationIndicatorBase"/> instances to render
         /// </summary>
-        private MemoryOwner<IndentationIndicatorBase> _IndentationIndicators = MemoryOwner<IndentationIndicatorBase>.Allocate(0);
+        private MemoryOwner<IndentationIndicatorBase> _IndentationIndicators = MemoryOwner<IndentationIndicatorBase>.Empty;
 
         /// <summary>
         /// The map of breakpoints in use
