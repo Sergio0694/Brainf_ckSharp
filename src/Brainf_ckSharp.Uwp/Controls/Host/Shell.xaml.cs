@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Windows.System;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.Settings;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide;
@@ -27,6 +28,12 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         public Shell()
         {
             this.InitializeComponent();
+
+            // Override the starting view if there is a file request pending
+            if (!(App.Current.RequestedFile is null))
+            {
+                ViewModel.SelectedView = ViewType.Ide;
+            }
         }
 
         /// <summary>
