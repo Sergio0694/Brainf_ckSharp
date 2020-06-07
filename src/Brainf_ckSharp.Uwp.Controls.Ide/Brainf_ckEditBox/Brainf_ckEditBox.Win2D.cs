@@ -125,6 +125,17 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
+        /// Resets all the currently visible overlays
+        /// </summary>
+        public void ResetAllOverlays()
+        {
+            _BracketPairs = MemoryOwner<BracketsPairInfo>.Empty;
+            _ColumnGuides = MemoryOwner<ColumnGuideInfo>.Empty;
+
+            ResetWhitespaceCharactersList();
+        }
+
+        /// <summary>
         /// Resets the current whitespace characters
         /// </summary>
         private void ResetWhitespaceCharactersList()

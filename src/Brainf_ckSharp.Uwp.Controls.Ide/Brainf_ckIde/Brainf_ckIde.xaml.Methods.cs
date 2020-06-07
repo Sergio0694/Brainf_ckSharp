@@ -28,6 +28,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             _DiffIndicators.Span.Clear();
 
+            CodeEditBox.ResetAllOverlays();
+
             CodeEditBox.Document.LoadFromString(text);
         }
 
