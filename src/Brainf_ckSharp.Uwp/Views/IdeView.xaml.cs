@@ -159,9 +159,9 @@ namespace Brainf_ckSharp.Uwp.Views
         /// <param name="e">The <see cref="RoutedEventArgs"/> for the current event</param>
         private void CodeSnippet_Clicked(object sender, RoutedEventArgs e)
         {
-            if ((sender as FrameworkElement)?.DataContext is CodeSnippet snippet)
+            if ((sender as FrameworkElement)?.DataContext is string snippet)
             {
-                CodeEditor.InsertText(snippet.Code);
+                CodeEditor.InsertText(snippet);
             }
         }
     }

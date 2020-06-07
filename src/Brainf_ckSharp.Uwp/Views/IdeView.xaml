@@ -6,8 +6,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ide="using:Brainf_ckSharp.Uwp.Controls.Ide"
     xmlns:views="using:Brainf_ckSharp.Shared.ViewModels.Views"
-    xmlns:models="using:Brainf_ckSharp.Shared.Models.Ide"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
+    xmlns:constants="using:Brainf_ckSharp.Shared"
+    xmlns:convertersIde="using:Brainf_ckSharp.Uwp.Converters.Ide"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
@@ -28,7 +29,7 @@
         <!--Code snippet template-->
         <DataTemplate
             x:Name="CodeSnippetTemplate"
-            x:DataType="models:CodeSnippet">
+            x:DataType="x:String">
             <Button
                 Style="{StaticResource ExpandedSquareButtonRevealStyle}"
                 HorizontalContentAlignment="Stretch"
@@ -38,7 +39,7 @@
 
                     <!--Title name-->
                     <TextBlock 
-                        Text="{x:Bind Title}"
+                        Text="{x:Bind convertersIde:CodeSnippetTitleConverter.Convert((x:String))}"
                         Foreground="DarkGray"
                         FontWeight="Normal"
                         TextLineBounds="Tight"
@@ -55,7 +56,7 @@
                         TextTrimming="CharacterEllipsis"
                         IsTextScaleFactorEnabled="False"
                         FontSize="14">
-                        <Span attachedProperties:Brainf_ckInlineFormatterHelper.Source="{x:Bind Code}"/>
+                        <Span attachedProperties:Brainf_ckInlineFormatterHelper.Source="{x:Bind}"/>
                     </TextBlock>
                 </StackPanel>
             </Button>
@@ -69,7 +70,7 @@
         CursorPositionChanged="CodeEditor_OnCursorPositionChanged">
         <ide:Brainf_ckIde.ContextMenuSecondaryContent>
             <ItemsControl
-                ItemsSource="{x:Bind ViewModel.CodeSnippets}"
+                ItemsSource="{x:Bind constants:CodeSnippets.All}"
                 ItemTemplate="{x:Bind CodeSnippetTemplate}">
                 <ItemsControl.ItemContainerStyle>
                     <Style TargetType="ItemsPresenter">

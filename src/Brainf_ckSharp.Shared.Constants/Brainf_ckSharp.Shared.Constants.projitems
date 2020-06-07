@@ -9,6 +9,7 @@
     <Import_RootNamespace>Brainf_ckSharp.Shared.Constants</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CodeSnippets.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SettingsKeys.cs" />
   </ItemGroup>

@@ -252,6 +252,7 @@
       <DependentUpon>UnicodeCharactersMapSubPageTemplates.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\Console\ExitCodeConverter.cs" />
+    <Compile Include="Converters\Ide\CodeSnippetTitleConverter.cs" />
     <Compile Include="Converters\SubPages\OverflowModeConverter.cs" />
     <Compile Include="Converters\SubPages\BracketsFormattingStyleConverter.cs" />
     <Compile Include="Converters\SubPages\SettingsSectionConverters.cs" />
@@ -696,6 +697,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

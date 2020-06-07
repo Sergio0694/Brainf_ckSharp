@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -94,17 +93,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         {
             Messenger.Unregister<OperatorKeyPressedNotificationMessage>(this);
         }
-
-        /// <summary>
-        /// Gets the collection of available code snippets
-        /// </summary>
-        public IReadOnlyList<CodeSnippet> CodeSnippets { get; } = new[]
-        {
-            new CodeSnippet("Reset cell", "[-]"),
-            new CodeSnippet("Duplicate value", "[>+>+<<-]>>[<<+>>-]<<"),
-            new CodeSnippet("if (x == 0) then { }", ">+<[>-]>[->[-]]<<"),
-            new CodeSnippet("if (x > 0) then { } else { }", ">+<[>[-]]>[->[-]]<<")
-        };
 
         /// <summary>
         /// Loads a specific <see cref="SourceCode"/> instance
