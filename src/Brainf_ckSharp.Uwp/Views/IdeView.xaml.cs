@@ -63,6 +63,13 @@ namespace Brainf_ckSharp.Uwp.Views
         /// <param name="e">The empty <see cref="EventArgs"/> instance for this event</param>
         private void IdeViewModel_OnScriptRunRequested(object sender, EventArgs e)
         {
+            if (!ViewModel.ValidationResult.IsSuccessOrEmptyScript)
+            {
+                CodeEditor.TryShowSyntaxErrorToolTip();
+
+                return;
+            }
+
             Messenger.Default.Send(SubPageNavigationRequestMessage.To(new IdeResultSubPage(CodeEditor.Text)));
         }
 
@@ -73,6 +80,13 @@ namespace Brainf_ckSharp.Uwp.Views
         /// <param name="e">The empty <see cref="EventArgs"/> instance for this event</param>
         private void IdeViewModel_OnScriptDebugRequested(object sender, EventArgs e)
         {
+            if (!ViewModel.ValidationResult.IsSuccessOrEmptyScript)
+            {
+                CodeEditor.TryShowSyntaxErrorToolTip();
+
+                return;
+            }
+
             string source = CodeEditor.Text;
             IMemoryOwner<int> breakpoints = CodeEditor.GetBreakpoints();
 

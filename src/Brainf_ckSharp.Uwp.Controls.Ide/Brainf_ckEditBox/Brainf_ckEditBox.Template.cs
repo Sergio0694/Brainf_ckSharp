@@ -123,7 +123,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             Guard.IsNotNull(ContentScroller, ContentScrollerName);
             Guard.IsNotNull(ContentElement, ContentElementName);
 
-            _SyntaxErrorToolTip.Target = _CursorIndicatorRectangle;
             _SyntaxErrorToolTip.Title = "Syntax error";
             _SyntaxErrorToolTip.Subtitle = "Maybe learn how to code?";
 
