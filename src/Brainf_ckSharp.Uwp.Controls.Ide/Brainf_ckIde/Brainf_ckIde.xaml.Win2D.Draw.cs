@@ -62,17 +62,28 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             i = 0;
             foreach (var indicator in _IndentationIndicators.Span)
             {
-                switch (indicator)
+                if (!(indicator is null))
                 {
-                    case FunctionIndicator function:
+                    // Manually perform the type checks and unsafe casts to skip
+                    // the multiple null and type checking produced by the C# compiler
+                    if (indicator.GetType() == typeof(FunctionIndicator))
+                    {
+                        FunctionIndicator function = Unsafe.As<FunctionIndicator>(indicator);
+
                         DrawFunctionDeclaration(args.DrawingSession, GetOffsetAt(i) + IndentationIndicatorsVerticalOffsetMargin, function.Type);
-                        break;
-                    case BlockIndicator block:
+                    }
+                    else if (indicator.GetType() == typeof(BlockIndicator))
+                    {
+                        BlockIndicator block = Unsafe.As<BlockIndicator>(indicator);
+
                         DrawIndentationBlock(args.DrawingSession, GetOffsetAt(i) + IndentationIndicatorsVerticalOffsetMargin, block.Depth, block.Type, block.IsWithinFunction);
-                        break;
-                    case LineIndicator line:
+                    }
+                    else if (indicator.GetType() == typeof(LineIndicator))
+                    {
+                        LineIndicator line = Unsafe.As<LineIndicator>(indicator);
+
                         DrawLine(args.DrawingSession, GetOffsetAt(i) + IndentationIndicatorsVerticalOffsetMargin, line.Type);
-                        break;
+                    }
                 }
 
                 i++;
