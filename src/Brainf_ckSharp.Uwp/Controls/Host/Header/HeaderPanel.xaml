@@ -11,7 +11,14 @@
     d:DesignHeight="68"
     d:DesignWidth="320">
 
-    <Canvas>
+    <Grid
+        Background="{StaticResource ShellHeaderBackgroundBrush}"
+        ColumnSpacing="2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         
         <!--Visual states for the rectangle indicator-->
         <VisualStateManager.VisualStateGroups>
@@ -19,15 +26,15 @@
                 <VisualState x:Name="ConsoleSelectedState">
                     <VisualState.Setters>
                         <Setter
-                            Target="SelectionRectangle.(Canvas.Left)"
+                            Target="SelectionRectangle.(Grid.Column)"
                             Value="0"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="IdeSelectedState">
                     <VisualState.Setters>
                         <Setter
-                            Target="SelectionRectangle.(Canvas.Left)"
-                            Value="82"/>
+                            Target="SelectionRectangle.(Grid.Column)"
+                            Value="1"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -37,7 +44,8 @@
         <header:HeaderButton
             Icon="{StaticResource ConsoleIcon}"
             Text="Console"
-            Height="68" Width="80"
+            Height="68"
+            Width="80"
             IsSelected="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(SelectedIndex, 0), Mode=OneWay, FallbackValue=True}"
             Selected="ConsoleHeaderSelected"/>
 
@@ -45,20 +53,30 @@
         <header:HeaderButton
             Icon="{StaticResource IDEIcon}"
             Text="IDE"
-            Height="68" Width="80"
-            Canvas.Left="82"
+            Height="68"
+            Width="80"
+            Grid.Column="1"
             IsSelected="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(SelectedIndex, 1), Mode=OneWay}"
             Selected="IDEHeaderSelected"/>
 
         <!--Selection rectangle-->
         <Rectangle
             x:Name="SelectionRectangle"
-            Height="2" Width="80"
-            Canvas.Top="66"
+            Height="2"
+            Width="80"
+            Grid.Column="0"
+            VerticalAlignment="Bottom"
             Fill="{ThemeResource SystemControlHighlightAccentBrush}">
             <animations:Implicit.Animations>
                 <animations:Vector3Animation Target="Offset" Duration="0:0:0.4"/>
             </animations:Implicit.Animations>
         </Rectangle>
-    </Canvas>
+
+        <!--Drag area-->
+        <Border
+            Grid.Column="2"
+            Background="Transparent"
+            HorizontalAlignment="Stretch"
+            Loaded="DragBorder_OnLoaded"/>
+    </Grid>
 </UserControl>
