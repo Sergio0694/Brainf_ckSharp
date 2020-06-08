@@ -53,6 +53,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 // Redraw the overlays, if needed
                 This.TryUpdateBracketsList();
                 if (This.RenderWhitespaceCharacters) This.TryUpdateWhitespaceCharactersList();
+                This.TryProcessErrorCoordinate();
 
                 This._TextOverlaysCanvas!.Invalidate();
             }

@@ -113,6 +113,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             Guard.IsNotNull(ContentElement, ContentElementName);
 
             _BackgroundCanvas.SizeChanged += BackgroundCanvas_SizeChanged;
+            _TextOverlaysCanvas.CreateResources += _TextOverlaysCanvas_CreateResources;
             _TextOverlaysCanvas.Draw += TextOverlaysCanvas_Draw;
             ContentScroller.Loaded += ContentElement_Loaded;
             ContentElement.SizeChanged += ContentElement_SizeChanged;
