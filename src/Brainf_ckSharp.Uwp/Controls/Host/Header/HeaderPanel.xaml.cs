@@ -47,5 +47,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.Header
 
         // Sets the selected index to 1 when the IDE button is clicked
         private void IDEHeaderSelected(object sender, EventArgs e) => SelectedIndex = 1;
+
+        /// <summary>
+        /// Sets the loaded control as the draggable region for the title bar
+        /// </summary>
+        /// <param name="sender">The <see cref="UIElement"/> to assign as the draggable area of the title bar</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance for the current event</param>
+        private void DragBorder_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            Window.Current.SetTitleBar((UIElement)sender);
+        }
     }
 }
