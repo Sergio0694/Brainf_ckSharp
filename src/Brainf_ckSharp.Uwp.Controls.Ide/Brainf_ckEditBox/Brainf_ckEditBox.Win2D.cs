@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using Windows.Foundation;
 using Windows.UI;
@@ -23,6 +24,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// The <see cref="CanvasCachedGeometry"/> instance for the squiggly line
         /// </summary>
         private CanvasCachedGeometry? _SquigglyLineGeometry;
+
+        /// <summary>
+        /// The position of the current error, if present
+        /// </summary>
+        private Vector2? _ErrorPosition;
 
         /// <summary>
         /// The <see cref="Color"/> for the vertical column guides
@@ -99,6 +105,17 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private void TextOverlaysCanvas_Draw(CanvasControl sender, CanvasDrawEventArgs args)
         {
             float offset = (float)Padding.Top;
+
+            // Error
+            if (_ErrorPosition is Vector2 errorPosition)
+            {
+                // Center the line indicator and move it below the referenced text
+                float
+                    x = errorPosition.X - 4,
+                    y = errorPosition.Y + offset + 20;
+
+                args.DrawingSession.DrawCachedGeometry(_SquigglyLineGeometry, x, y, Colors.Red);
+            }
 
             // Spaces
             foreach (Rect spaceArea in _SpaceAreas.Span)
@@ -370,6 +387,24 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
                 Unsafe.Add(ref columnGuidesRef, i) = guideInfo;
             }
+        }
+
+        /// <summary>
+        /// Tries to update the coordinates of the error position
+        /// </summary>
+        private void TryProcessErrorCoordinate()
+        {
+            if (_SyntaxValidationResult.IsSuccessOrEmptyScript)
+            {
+                _ErrorPosition = null;
+
+                return;
+            }
+
+            // Get the range for the current error
+            Document.GetRangeAt(_SyntaxValidationResult.ErrorOffset).GetRect(PointOptions.Transform, out Rect rect, out _);
+
+            _ErrorPosition = new Vector2((float)rect.Left, (float)rect.Top);
         }
     }
 }
