@@ -119,14 +119,30 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             {
                 BreakpointIndicators.Remove(lineNumber);
 
+                if (BreakpointIndicators.Count == 0) BreakpointsBorder.ContextFlyout = null;
+
                 BreakpointRemoved?.Invoke(this, lineNumber);
             }
             else
             {
+                if (BreakpointIndicators.Count == 0) BreakpointsBorder.ContextFlyout = BreakpointsMenuFlyout;
+
                 BreakpointIndicators.GetOrAddValueRef(lineNumber) = (float)(line.Top + BreakpointIndicatorTopMargin);
 
                 BreakpointAdded?.Invoke(this, lineNumber);
             }
+
+            IdeOverlaysCanvas.Invalidate();
+        }
+
+        /// <summary>
+        /// Clears all the existing breakpoints
+        /// </summary>
+        /// <param name="sender">The <see cref="MenuFlyoutItem"/> that was clicked</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> for the current event</param>
+        private void RemoveAllBreakpointsButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            BreakpointIndicators.Clear();
 
             IdeOverlaysCanvas.Invalidate();
         }

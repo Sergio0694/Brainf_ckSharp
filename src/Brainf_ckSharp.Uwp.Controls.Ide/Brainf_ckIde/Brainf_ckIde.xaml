@@ -10,6 +10,19 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.Resources>
+
+        <!--Breakpoints menu flyout-->
+        <MenuFlyout x:Name="BreakpointsMenuFlyout">
+            <MenuFlyoutItem
+                Text="Remove all breakpoints"
+                Click="RemoveAllBreakpointsButton_Clicked">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon Glyph="&#xED60;" FontFamily="Segoe MDL2 Assets"/>
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+    </UserControl.Resources>
 
     <!--Root-->
     <Grid>
@@ -78,6 +91,7 @@
 
         <!--Breakpoints gesture receiver-->
         <Border
+            x:Name="BreakpointsBorder"
             Grid.Column="0"
             Width="20"
             HorizontalAlignment="Left"
