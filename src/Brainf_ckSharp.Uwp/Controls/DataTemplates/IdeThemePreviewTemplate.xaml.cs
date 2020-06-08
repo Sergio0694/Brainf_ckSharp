@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.UI;
+﻿using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -46,17 +45,7 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates
 
             if (!(e.NewValue is IdeTheme theme)) return;
 
-            Brainf_ckTheme value = theme switch
-            {
-                IdeTheme.VisualStudio => Brainf_ckThemes.VisualStudio,
-                IdeTheme.VisualStudioCode => Brainf_ckThemes.VisualStudioCode,
-                IdeTheme.Monokai => Brainf_ckThemes.Monokai,
-                IdeTheme.Base16 => Brainf_ckThemes.Base16,
-                IdeTheme.Dracula => Brainf_ckThemes.Dracula,
-                IdeTheme.OneDark => Brainf_ckThemes.OneDark,
-                IdeTheme.Vim => Brainf_ckThemes.Vim,
-                _ => throw new ArgumentOutOfRangeException($"Invalid theme: {theme}")
-            };
+            Brainf_ckTheme value = theme.AsBrainf_ckTheme();
 
             // General UI
             @this.TitleBlock.Text = value.Name;
