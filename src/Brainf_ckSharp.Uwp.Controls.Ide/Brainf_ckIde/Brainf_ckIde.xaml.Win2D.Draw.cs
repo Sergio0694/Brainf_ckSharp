@@ -12,6 +12,8 @@ using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 
+#nullable enable
+
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
     public sealed partial class Brainf_ckIde
@@ -25,7 +27,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// The current array of <see cref="IndentationIndicatorBase"/> instances to render
         /// </summary>
-        private MemoryOwner<IndentationIndicatorBase> _IndentationIndicators = MemoryOwner<IndentationIndicatorBase>.Empty;
+        private MemoryOwner<IndentationIndicatorBase?> _IndentationIndicators = MemoryOwner<IndentationIndicatorBase?>.Empty;
 
         /// <summary>
         /// The map of breakpoints in use

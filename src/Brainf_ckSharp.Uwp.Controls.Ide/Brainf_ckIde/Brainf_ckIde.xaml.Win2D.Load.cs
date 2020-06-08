@@ -10,6 +10,8 @@ using Brainf_ckSharp.Uwp.Controls.Ide.Models;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models.Abstract;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 
+#nullable enable
+
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
     public sealed partial class Brainf_ckIde
@@ -70,14 +72,14 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             // Skip if the current syntax is not valid
             if (!isSyntaxValid)
             {
-                _IndentationIndicators = MemoryOwner<IndentationIndicatorBase>.Empty;
+                _IndentationIndicators = MemoryOwner<IndentationIndicatorBase?>.Empty;
 
                 return;
             }
 
             // Allocate the new buffer
-            MemoryOwner<IndentationIndicatorBase> indicators = _IndentationIndicators = MemoryOwner<IndentationIndicatorBase>.Allocate(numberOfLines);
-            ref IndentationIndicatorBase indicatorsRef = ref indicators.DangerousGetReference(); // There's always at least one line
+            MemoryOwner<IndentationIndicatorBase?> indicators = _IndentationIndicators = MemoryOwner<IndentationIndicatorBase?>.Allocate(numberOfLines);
+            ref IndentationIndicatorBase? indicatorsRef = ref indicators.DangerousGetReference(); // There's always at least one line
 
             // Reset the pools
             Pool<LineIndicator>.Reset();
@@ -227,7 +229,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
                             Unsafe.Add(ref indicatorsRef, y) = indicator;
                         }
-                        else Unsafe.Add(ref indicatorsRef, y) = null!;
+                        else Unsafe.Add(ref indicatorsRef, y) = null;
 
                         // Update the persistent trackers across lines
                         y++;
