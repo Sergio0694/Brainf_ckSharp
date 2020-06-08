@@ -123,9 +123,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             Guard.IsNotNull(ContentScroller, ContentScrollerName);
             Guard.IsNotNull(ContentElement, ContentElementName);
 
-            _SyntaxErrorToolTip.Title = "Syntax error";
-            _SyntaxErrorToolTip.Subtitle = "Maybe learn how to code?";
-
             _BackgroundCanvas.SizeChanged += BackgroundCanvas_SizeChanged;
             _TextOverlaysCanvas.CreateResources += _TextOverlaysCanvas_CreateResources;
             _TextOverlaysCanvas.Draw += TextOverlaysCanvas_Draw;

@@ -73,7 +73,7 @@
         </Setter>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="RichEditBox">
+                <ControlTemplate TargetType="ide:Brainf_ckEditBox">
                     <Grid>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
@@ -150,7 +150,9 @@
                         <!--Syntax error tooltip-->
                         <muxc:TeachingTip
                             x:Name="SyntaxErrorToolTip"
-                            IsLightDismissEnabled="True">
+                            IsLightDismissEnabled="True"
+                            Title="{TemplateBinding SyntaxErrorToolTipTitle}"
+                            Subtitle="{TemplateBinding SyntaxErrorToolTipSubtitle}">
                             <muxc:TeachingTip.IconSource>
                                 <muxc:SymbolIconSource Symbol="Important" />
                             </muxc:TeachingTip.IconSource>
