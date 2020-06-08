@@ -21,6 +21,11 @@
         Monokai,
 
         /// <summary>
+        /// The XCode Dark theme
+        /// </summary>
+        XCodeDark,
+
+        /// <summary>
         /// The Dracula theme, ispired to the same theme available for Atom and Sublime Text
         /// </summary>
         Dracula,

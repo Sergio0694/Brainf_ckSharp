@@ -197,6 +197,37 @@ namespace Brainf_ckSharp.Uwp.Themes
             }
         }
 
+        private static Brainf_ckTheme? _XCodeDark;
+
+        /// <summary>
+        /// Gets the XCode Dark theme
+        /// </summary>
+        public static Brainf_ckTheme XCodeDark
+        {
+            get
+            {
+                _XCodeDark ??= new Brainf_ckTheme(
+                    "#FF292A30".ToColor(),
+                    "#FF383E49".ToColor(),
+                    "#FF5C5F62".ToColor(),
+                    "#FF393A3B".ToColor(),
+                    null,
+                    "#FF7F8C99".ToColor(),
+                    "#FF49B0CE".ToColor(),
+                    "#FFFCFCFC".ToColor(),
+                    "#FFFB79B0".ToColor(),
+                    "#FFCD9764".ToColor(),
+                    "#FFFF806C".ToColor(),
+                    "#FFB37EEE".ToColor(),
+                    "#FF855EB2".ToColor(),
+                    LineHighlightStyle.Fill,
+                    "#FF2F3239".ToColor(),
+                    "XCode Dark");
+
+                return _XCodeDark;
+            }
+        }
+
         private static Brainf_ckTheme? _Base16;
 
         /// <summary>

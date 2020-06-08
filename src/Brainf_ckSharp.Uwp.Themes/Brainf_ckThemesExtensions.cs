@@ -21,6 +21,7 @@ namespace Brainf_ckSharp.Uwp.Themes
                 IdeTheme.VisualStudioCode => Brainf_ckThemes.VisualStudioCode,
                 IdeTheme.Monokai => Brainf_ckThemes.Monokai,
                 IdeTheme.Base16 => Brainf_ckThemes.Base16,
+                IdeTheme.XCodeDark => Brainf_ckThemes.XCodeDark,
                 IdeTheme.Dracula => Brainf_ckThemes.Dracula,
                 IdeTheme.OneDark => Brainf_ckThemes.OneDark,
                 IdeTheme.Vim => Brainf_ckThemes.Vim,
