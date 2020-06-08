@@ -129,7 +129,7 @@
             </Style>
         </ListView.Resources>
         <ListView.Header>
-            <Border Height="100"/>
+            <Border Height="68"/>
         </ListView.Header>
         <ListView.Footer>
             <Border Height="12"/>
