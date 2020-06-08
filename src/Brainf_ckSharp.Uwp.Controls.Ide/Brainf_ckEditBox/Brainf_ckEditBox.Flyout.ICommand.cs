@@ -43,7 +43,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             }
 
             /// <inheritdoc/>
-            public event EventHandler? CanExecuteChanged;
+            event EventHandler? ICommand.CanExecuteChanged
+            {
+                add { }
+                remove { }
+            }
         }
     }
 }
