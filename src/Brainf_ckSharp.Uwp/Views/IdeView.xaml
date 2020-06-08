@@ -9,6 +9,7 @@
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     xmlns:constants="using:Brainf_ckSharp.Shared"
     xmlns:convertersIde="using:Brainf_ckSharp.Uwp.Converters.Ide"
+    xmlns:convertersConsole="using:Brainf_ckSharp.Uwp.Converters.Console"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
@@ -66,6 +67,8 @@
     <!--IDE-->
     <ide:Brainf_ckIde
         x:Name="CodeEditor"
+        SyntaxErrorToolTipTitle="Syntax error"
+        SyntaxErrorToolTipSubtitle="{x:Bind convertersConsole:SyntaxErrorConverter.Convert(ViewModel.ValidationResult.ErrorType), Mode=OneWay}"
         TextChanged="CodeEditor_OnTextChanged"
         CursorPositionChanged="CodeEditor_OnCursorPositionChanged">
         <ide:Brainf_ckIde.ContextMenuSecondaryContent>
