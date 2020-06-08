@@ -20,6 +20,7 @@
     xmlns:convertersToolkit="using:Microsoft.Toolkit.Uwp.UI.Converters"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:controls="using:Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -53,7 +54,7 @@
                     HorizontalAlignment="Left">
 
                     <!--Selector-->
-                    <ComboBox
+                    <controls:ComboBoxWithNoScrollWheelSupport
                         x:Name="ThemeSelectionComboBox"
                         IsEnabled="{x:Bind ViewModel.IsThemeSelectorAvailable, Mode=OneWay}"
                         CornerRadius="0"
@@ -78,7 +79,7 @@
                                 <dataTemplates:IdeThemePreviewTemplate Theme="{x:Bind}"/>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
-                    </ComboBox>
+                    </controls:ComboBoxWithNoScrollWheelSupport>
 
                     <!--This control has a layout issue that causes it not to be properly aligned
                         horizontally. The workaround is to align it to the left and manually offset it.-->
@@ -117,7 +118,7 @@
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Brackets on new line"/>
-                <ComboBox
+                <controls:ComboBoxWithNoScrollWheelSupport
                     CornerRadius="0"
                     Margin="0,4,0,0"
                     MinWidth="140"
@@ -128,7 +129,7 @@
                             <TextBlock Text="{x:Bind convertersSubPages:BracketsFormattingStyleConverter.Convert((enumsSettings:BracketsFormattingStyle))}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
-                </ComboBox>
+                </controls:ComboBoxWithNoScrollWheelSupport>
 
                 <!--Render whitespaces-->
                 <TextBlock
@@ -187,7 +188,7 @@
                 <TextBlock
                     TextWrapping="Wrap"
                     Text="Overflow mode"/>
-                <ComboBox
+                <controls:ComboBoxWithNoScrollWheelSupport
                     CornerRadius="0"
                     Margin="0,4,0,0"
                     MinWidth="140"
@@ -198,14 +199,14 @@
                             <TextBlock Text="{x:Bind convertersSubPages:OverflowModeConverter.Convert((interpreterEnums:OverflowMode))}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
-                </ComboBox>
+                </controls:ComboBoxWithNoScrollWheelSupport>
 
                 <!--Memory size-->
                 <TextBlock
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Memory size"/>
-                <ComboBox
+                <controls:ComboBoxWithNoScrollWheelSupport
                     CornerRadius="0"
                     Margin="0,4,0,0"
                     MinWidth="140"

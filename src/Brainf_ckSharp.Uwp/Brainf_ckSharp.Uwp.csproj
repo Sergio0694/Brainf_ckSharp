@@ -251,6 +251,7 @@
     <Compile Include="Controls\SubPages\Views\UnicodeCharactersMap\UnicodeCharactersMapSubPageTemplates.xaml.cs">
       <DependentUpon>UnicodeCharactersMapSubPageTemplates.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Windows.UI.Xaml.Controls\ComboBoxWithNoScrollWheelSupport.cs" />
     <Compile Include="Converters\Console\ExitCodeConverter.cs" />
     <Compile Include="Converters\Ide\CodeSnippetTitleConverter.cs" />
     <Compile Include="Converters\SubPages\OverflowModeConverter.cs" />
