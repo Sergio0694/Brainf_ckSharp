@@ -87,9 +87,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             pathBuilder.AddLine(14, 4);
             pathBuilder.AddLine(18, 0);
             pathBuilder.AddLine(22, 4);
-            pathBuilder.AddLine(26, 0);
-            pathBuilder.AddLine(30, 4);
-            pathBuilder.AddLine(32, 1.5f);
+            pathBuilder.AddLine(24, 1.5f);
             pathBuilder.EndFigure(CanvasFigureLoop.Open);
 
             CanvasGeometry canvasGeometry = CanvasGeometry.CreatePath(pathBuilder);
@@ -111,7 +109,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             {
                 // Center the line indicator and move it below the referenced text
                 float
-                    x = errorPosition.X - 4,
+                    x = MathF.Max(errorPosition.X, 4),
                     y = errorPosition.Y + offset + 20;
 
                 args.DrawingSession.DrawCachedGeometry(_SquigglyLineGeometry, x, y, Colors.Red);
