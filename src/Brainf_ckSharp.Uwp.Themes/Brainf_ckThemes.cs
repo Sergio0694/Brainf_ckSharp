@@ -20,7 +20,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         {
             get
             {
-                _VisualStudio ??= new Brainf_ckTheme(
+                return _VisualStudio ??= new Brainf_ckTheme(
                     "#FF1E1E1E".ToColor(),
                     "#FF333333".ToColor(),
                     "#FF237CAD".ToColor(),
@@ -37,8 +37,6 @@ namespace Brainf_ckSharp.Uwp.Themes
                     LineHighlightStyle.Outline,
                     "#30FFFFFF".ToColor(),
                     "Visual Studio");
-
-                return _VisualStudio;
             }
         }
 
@@ -51,7 +49,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         {
             get
             {
-                _VisualStudioCode ??= new Brainf_ckTheme(
+                return _VisualStudioCode ??= new Brainf_ckTheme(
                     "#FF1E1E1E".ToColor(),
                     "#FF252526".ToColor(),
                     "#FF4B4B4B".ToColor(),
@@ -68,8 +66,6 @@ namespace Brainf_ckSharp.Uwp.Themes
                     LineHighlightStyle.Outline,
                     "#20FFFFFF".ToColor(),
                     "Visual Studio Code");
-
-                return _VisualStudioCode;
             }
         }
 
@@ -82,7 +78,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         {
             get
             {
-                _Monokai ??= new Brainf_ckTheme(
+                return _Monokai ??= new Brainf_ckTheme(
                     "#FF272822".ToColor(),
                     "#FF49483E".ToColor(),
                     "#FFA4A59E".ToColor(),
@@ -99,8 +95,6 @@ namespace Brainf_ckSharp.Uwp.Themes
                     LineHighlightStyle.Fill,
                     "#FF515151".ToColor(),
                     nameof(Monokai));
-
-                return _Monokai;
             }
         }
 
@@ -113,7 +107,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         {
             get
             {
-                _Dracula ??= new Brainf_ckTheme(
+                return _Dracula ??= new Brainf_ckTheme(
                     "#FF282A36".ToColor(),
                     "#FF414456".ToColor(),
                     "#FFA5A5A6".ToColor(),
@@ -130,8 +124,6 @@ namespace Brainf_ckSharp.Uwp.Themes
                     LineHighlightStyle.Fill,
                     "#FF353746".ToColor(),
                     nameof(Dracula));
-
-                return _Dracula;
             }
         }
 
@@ -144,7 +136,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         {
             get
             {
-                _Vim ??= new Brainf_ckTheme(
+                return _Vim ??= new Brainf_ckTheme(
                     "#FF171717".ToColor(),
                     "#FF252525".ToColor(),
                     "#FF727272".ToColor(),
@@ -161,8 +153,6 @@ namespace Brainf_ckSharp.Uwp.Themes
                     LineHighlightStyle.Fill,
                     "#FF222222".ToColor(),
                     nameof(Vim));
-
-                return _Vim;
             }
         }
 
@@ -175,7 +165,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         {
             get
             {
-                _OneDark ??= new Brainf_ckTheme(
+                return _OneDark ??= new Brainf_ckTheme(
                     "#FF282C34".ToColor(),
                     "#FF383E49".ToColor(),
                     "#FF5A5A5A".ToColor(),
@@ -192,8 +182,6 @@ namespace Brainf_ckSharp.Uwp.Themes
                     LineHighlightStyle.Fill,
                     "#FF363A4F".ToColor(),
                     "One Dark");
-
-                return _OneDark;
             }
         }
 
@@ -206,7 +194,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         {
             get
             {
-                _XCodeDark ??= new Brainf_ckTheme(
+                return _XCodeDark ??= new Brainf_ckTheme(
                     "#FF292A30".ToColor(),
                     "#FF383E49".ToColor(),
                     "#FF5C5F62".ToColor(),
@@ -223,8 +211,6 @@ namespace Brainf_ckSharp.Uwp.Themes
                     LineHighlightStyle.Fill,
                     "#FF2F3239".ToColor(),
                     "XCode Dark");
-
-                return _XCodeDark;
             }
         }
 
@@ -237,7 +223,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         {
             get
             {
-                _Base16 ??= new Brainf_ckTheme(
+                return _Base16 ??= new Brainf_ckTheme(
                     "#FF1D1F21".ToColor(),
                     "#FF373B41".ToColor(),
                     "#FF656767".ToColor(),
@@ -254,8 +240,6 @@ namespace Brainf_ckSharp.Uwp.Themes
                     LineHighlightStyle.Fill,
                     "#FF2E3032".ToColor(),
                     "Base 16");
-
-                return _Base16;
             }
         }
     }
