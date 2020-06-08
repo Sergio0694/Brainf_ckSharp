@@ -129,6 +129,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             _BackgroundCanvas.SizeChanged += BackgroundCanvas_SizeChanged;
             _TextOverlaysCanvas.CreateResources += _TextOverlaysCanvas_CreateResources;
             _TextOverlaysCanvas.Draw += TextOverlaysCanvas_Draw;
+            _SyntaxErrorToolTip.Closed += delegate { ContentScroller.IsHitTestVisible = true; };
             ContentScroller.Loaded += ContentElement_Loaded;
             ContentElement.SizeChanged += ContentElement_SizeChanged;
 

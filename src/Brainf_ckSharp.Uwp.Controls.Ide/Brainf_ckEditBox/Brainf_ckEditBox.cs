@@ -146,6 +146,26 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             int errorPosition = _SyntaxValidationResult.ErrorOffset;
 
+            TaskCompletionSource<object?> tcs = new TaskCompletionSource<object?>();
+
+            bool hasViewChanged = false;
+
+            // Register the events to track the change view request
+            ContentScroller!.ViewChanged += NotifyViewChanged;
+            ContentScroller.ViewChanging += NotifyViewChanging;
+
+            // Sets the task to monitor the view change
+            void NotifyViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+            {
+                tcs.TrySetResult(null);
+            }
+
+            // Sets the tracking for the view changing
+            void NotifyViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
+            {
+                hasViewChanged = true;
+            }
+
             // Set the selection to the error position, otherwise just scroll there
             if (Document.Selection.StartPosition == errorPosition &&
                 Document.Selection.Length == 0)
@@ -154,8 +174,25 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             }
             else Document.Selection.SetRange(errorPosition, errorPosition);
 
-            // Let the animation play out
+            // Wait a minimum delay
             await Task.Delay(100);
+
+            if (hasViewChanged)
+            {
+                // If we are here, it means the view has at least started to change.
+                // This means that we can safely wait for the view change to be completed.
+                // This is necessary to avoid a situation where the scroller was already
+                // in the right spot, and the view changed event wouldn't have ever been raised.
+                await tcs.Task;
+                await Task.Delay(250); // This is needed to ensure the tooltip aligns properly
+            }
+
+            // Remove the one-shot handler
+            ContentScroller!.ViewChanged -= NotifyViewChanged;
+            ContentScroller.ViewChanging -= NotifyViewChanging;
+
+            // Disable the scrolling while the tooltip is opened
+            ContentScroller!.IsHitTestVisible = false;
 
             // Reset the target to ensure the right target coordinates are used
             _SyntaxErrorToolTip!.IsOpen = false;
