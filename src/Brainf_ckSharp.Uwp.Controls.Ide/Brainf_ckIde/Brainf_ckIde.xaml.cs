@@ -115,8 +115,18 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             if (lineNumber == 1) return;
 
             // Store or remove the breakpoint
-            if (BreakpointIndicators.ContainsKey(lineNumber)) BreakpointIndicators.Remove(lineNumber);
-            else BreakpointIndicators.GetOrAddValueRef(lineNumber) = (float)(line.Top + BreakpointIndicatorTopMargin);
+            if (BreakpointIndicators.ContainsKey(lineNumber))
+            {
+                BreakpointIndicators.Remove(lineNumber);
+
+                BreakpointRemoved?.Invoke(this, lineNumber);
+            }
+            else
+            {
+                BreakpointIndicators.GetOrAddValueRef(lineNumber) = (float)(line.Top + BreakpointIndicatorTopMargin);
+
+                BreakpointAdded?.Invoke(this, lineNumber);
+            }
 
             IdeOverlaysCanvas.Invalidate();
         }

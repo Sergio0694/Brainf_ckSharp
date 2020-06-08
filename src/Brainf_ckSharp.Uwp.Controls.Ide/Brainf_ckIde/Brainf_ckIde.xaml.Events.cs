@@ -15,5 +15,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// Rasised when the cursor position changes
         /// </summary>
         public event TypedEventHandler<Brainf_ckIde, CursorPositionChangedEventArgs>? CursorPositionChanged;
+
+        /// <summary>
+        /// Raised whenever a new breakpoint is added
+        /// </summary>
+        public event TypedEventHandler<Brainf_ckIde, int>? BreakpointAdded;
+
+        /// <summary>
+        /// Raised whenever a breakpoint is removed
+        /// </summary>
+        public event TypedEventHandler<Brainf_ckIde, int>? BreakpointRemoved;
     }
 }
