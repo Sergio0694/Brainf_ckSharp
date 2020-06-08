@@ -118,10 +118,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             ContentScroller.Loaded += ContentElement_Loaded;
             ContentElement.SizeChanged += ContentElement_SizeChanged;
 
-            ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.Y);
             ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.X);
+            ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.Y);
             ContentScroller.StartExpressionAnimation(_SelectionHighlightBorder, Axis.Y);
-            ContentScroller.StartExpressionAnimation(_CursorIndicatorRectangle, Axis.Y);
+            ContentScroller.StartExpressionAnimation(_CursorIndicatorRectangle, Axis.X);
             ContentScroller.StartExpressionAnimation(_CursorIndicatorRectangle, Axis.Y);
 
             UpdateVisualElementsOnThemeChanged(SyntaxHighlightTheme);
