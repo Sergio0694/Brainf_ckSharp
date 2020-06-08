@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Text;
@@ -61,7 +62,44 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance for the <see cref="RichEditBox.SelectionChanged"/> event</param>
         private void Brainf_ckEditBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            Document.Selection.GetRect(PointOptions.Transform, out Rect rect, out _);
+            ScrollToSelection(out Rect rect);
+
+            // Adjust the UI of the selected line highlight and the cursor indicator.
+            // Both elements are translated to the right position and made visible
+            // if the current selection is not collapsed to a single point, otherwise
+            // they're both hidden. This is the same behavior of Visual Studio.
+            if (_SelectionLength > 0)
+            {
+                _SelectionHighlightBorder!.Opacity = 0;
+                _CursorIndicatorRectangle!.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                // Line highlight
+                _SelectionHighlightBorder!.Opacity = 1;
+                ((TranslateTransform)_SelectionHighlightBorder.RenderTransform).Y = rect.Top + Padding.Top;
+
+                // Cursor indicator
+                _CursorIndicatorRectangle!.Visibility = Visibility.Visible;
+                TranslateTransform cursorTransform = (TranslateTransform)_CursorIndicatorRectangle.RenderTransform;
+                cursorTransform.X = rect.X + Padding.Left;
+                cursorTransform.Y = rect.Y + Padding.Top;
+            }
+
+            var position = Text.CalculateCoordinates(Document.Selection.EndPosition);
+            var args = new CursorPositionChangedEventArgs(position.Row + 1, position.Column + 1);
+
+            // Signal the cursor movement
+            CursorPositionChanged?.Invoke(this, args);
+        }
+
+        /// <summary>
+        /// Tries to scroll to the current selection
+        /// </summary>
+        /// <param name="rect">The resulting selection coordinates</param>
+        private void ScrollToSelection(out Rect rect)
+        {
+            Document.Selection.GetRect(PointOptions.Transform, out rect, out _);
 
             double
                 verticalOffset = ContentScroller!.VerticalOffset,
@@ -97,34 +135,70 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             // Scroll to selection
             ContentScroller.ChangeView(horizontal, vertical, null, false);
+        }
 
-            // Adjust the UI of the selected line highlight and the cursor indicator.
-            // Both elements are translated to the right position and made visible
-            // if the current selection is not collapsed to a single point, otherwise
-            // they're both hidden. This is the same behavior of Visual Studio.
-            if (_SelectionLength > 0)
+        /// <summary>
+        /// Shows the syntax error tooltip, if an error is present
+        /// </summary>
+        public async void TryShowSyntaxErrorToolTip()
+        {
+            if (_SyntaxValidationResult.IsSuccessOrEmptyScript) return;
+
+            int errorPosition = _SyntaxValidationResult.ErrorOffset;
+
+            TaskCompletionSource<object?> tcs = new TaskCompletionSource<object?>();
+
+            bool hasViewChanged = false;
+
+            // Register the events to track the change view request
+            ContentScroller!.ViewChanged += NotifyViewChanged;
+            ContentScroller.ViewChanging += NotifyViewChanging;
+
+            // Sets the task to monitor the view change
+            void NotifyViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
             {
-                _SelectionHighlightBorder!.Opacity = 0;
-                _CursorIndicatorRectangle!.Visibility = Visibility.Collapsed;
+                tcs.TrySetResult(null);
             }
-            else
+
+            // Sets the tracking for the view changing
+            void NotifyViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
             {
-                // Line highlight
-                _SelectionHighlightBorder!.Opacity = 1;
-                ((TranslateTransform)_SelectionHighlightBorder.RenderTransform).Y = rect.Top + Padding.Top;
-
-                // Cursor indicator
-                _CursorIndicatorRectangle!.Visibility = Visibility.Visible;
-                TranslateTransform cursorTransform = (TranslateTransform)_CursorIndicatorRectangle.RenderTransform;
-                cursorTransform.X = rect.X + Padding.Left;
-                cursorTransform.Y = rect.Y + Padding.Top;
+                hasViewChanged = true;
             }
 
-            var position = Text.CalculateCoordinates(Document.Selection.EndPosition);
-            var args = new CursorPositionChangedEventArgs(position.Row + 1, position.Column + 1);
+            // Set the selection to the error position, otherwise just scroll there
+            if (Document.Selection.StartPosition == errorPosition &&
+                Document.Selection.Length == 0)
+            {
+                ScrollToSelection(out _);
+            }
+            else Document.Selection.SetRange(errorPosition, errorPosition);
 
-            // Signal the cursor movement
-            CursorPositionChanged?.Invoke(this, args);
+            // Wait a minimum delay
+            await Task.Delay(100);
+
+            if (hasViewChanged)
+            {
+                // If we are here, it means the view has at least started to change.
+                // This means that we can safely wait for the view change to be completed.
+                // This is necessary to avoid a situation where the scroller was already
+                // in the right spot, and the view changed event wouldn't have ever been raised.
+                await tcs.Task;
+                await Task.Delay(250); // This is needed to ensure the tooltip aligns properly
+            }
+
+            // Remove the one-shot handler
+            ContentScroller!.ViewChanged -= NotifyViewChanged;
+            ContentScroller.ViewChanging -= NotifyViewChanging;
+
+            // Disable the scrolling while the tooltip is opened
+            ContentScroller!.IsHitTestVisible = false;
+
+            // Reset the target to ensure the right target coordinates are used
+            _SyntaxErrorToolTip!.IsOpen = false;
+            _SyntaxErrorToolTip.Target = null;
+            _SyntaxErrorToolTip.Target = _CursorIndicatorRectangle!;
+            _SyntaxErrorToolTip!.IsOpen = true;
         }
 
         /// <summary>

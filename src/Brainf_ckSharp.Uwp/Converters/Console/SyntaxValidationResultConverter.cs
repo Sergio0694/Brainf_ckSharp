@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics.Contracts;
-using Brainf_ckSharp.Enums;
+﻿using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Models;
 
 namespace Brainf_ckSharp.Uwp.Converters.Console
@@ -18,18 +16,7 @@ namespace Brainf_ckSharp.Uwp.Converters.Console
         [Pure]
         public static string Convert(SyntaxValidationResult result)
         {
-            string message = result.ErrorType switch
-            {
-                SyntaxError.MismatchedSquareBracket => "Mismatched square bracket",
-                SyntaxError.IncompleteLoop => "Incomplete loop",
-                SyntaxError.MismatchedParenthesis => "Mismatched parenthesis",
-                SyntaxError.InvalidFunctionDeclaration => "Invalid function declaration",
-                SyntaxError.NestedFunctionDeclaration => "Nested function declaration",
-                SyntaxError.EmptyFunctionDeclaration => "Empty function declaration",
-                SyntaxError.IncompleteFunctionDeclaration => "Incomplete function declaration",
-                SyntaxError.MissingOperators => "Missing operators",
-                { } error => throw new ArgumentOutOfRangeException($"Invalid syntax error: {error}")
-            };
+            string message = SyntaxErrorConverter.Convert(result.ErrorType);
 
             return $"{message}, operator {result.ErrorOffset}";
         }

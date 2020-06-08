@@ -253,6 +253,7 @@
     </Compile>
     <Compile Include="Controls\Windows.UI.Xaml.Controls\ComboBoxWithNoScrollWheelSupport.cs" />
     <Compile Include="Converters\Console\ExitCodeConverter.cs" />
+    <Compile Include="Converters\Console\SyntaxErrorConverter.cs" />
     <Compile Include="Converters\Ide\CodeSnippetTitleConverter.cs" />
     <Compile Include="Converters\SubPages\OverflowModeConverter.cs" />
     <Compile Include="Converters\SubPages\BracketsFormattingStyleConverter.cs" />
@@ -484,7 +485,7 @@
       <Version>6.1.0-preview1.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.4.0</Version>
+      <Version>2.4.2</Version>
     </PackageReference>
     <PackageReference Include="System.Threading.Tasks.Extensions">
       <Version>4.5.4</Version>

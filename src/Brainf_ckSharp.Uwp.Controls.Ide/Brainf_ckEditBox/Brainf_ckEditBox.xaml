@@ -2,7 +2,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ide="using:Brainf_ckSharp.Uwp.Controls.Ide"
-    xmlns:win2d="using:Microsoft.Graphics.Canvas.UI.Xaml">
+    xmlns:win2d="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls">
 
     <!--IDE RichEditBox style-->
     <Style TargetType="ide:Brainf_ckEditBox">
@@ -72,7 +73,7 @@
         </Setter>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="RichEditBox">
+                <ControlTemplate TargetType="ide:Brainf_ckEditBox">
                     <Grid>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
@@ -145,6 +146,17 @@
                                 </Rectangle.RenderTransform>
                             </Rectangle>
                         </Canvas>
+
+                        <!--Syntax error tooltip-->
+                        <muxc:TeachingTip
+                            x:Name="SyntaxErrorToolTip"
+                            IsLightDismissEnabled="True"
+                            Title="{TemplateBinding SyntaxErrorToolTipTitle}"
+                            Subtitle="{TemplateBinding SyntaxErrorToolTipSubtitle}">
+                            <muxc:TeachingTip.IconSource>
+                                <muxc:SymbolIconSource Symbol="Important" />
+                            </muxc:TeachingTip.IconSource>
+                        </muxc:TeachingTip>
 
                         <!--Scroller with a presenter for the text renderer. This is done so that
                             the text renderer can have a padding, which is used to simulate a

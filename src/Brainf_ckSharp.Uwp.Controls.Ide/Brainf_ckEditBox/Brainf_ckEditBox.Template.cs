@@ -9,6 +9,7 @@ using Brainf_ckSharp.Uwp.Themes.Enums;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Microsoft.UI.Xaml.Controls;
 using UICompositionAnimations.Enums;
 
 #nullable enable
@@ -19,6 +20,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     [TemplatePart(Name = TextOverlaysCanvasName, Type = typeof(CanvasControl))]
     [TemplatePart(Name = SelectionHighlightBorderName, Type = typeof(Border))]
     [TemplatePart(Name = CursorIndicatorRectangleName, Type = typeof(Rectangle))]
+    [TemplatePart(Name = SyntaxErrorToolTipName, Type = typeof(TeachingTip))]
     [TemplatePart(Name = ContentScrollerName, Type = typeof(ContentPresenter))]
     [TemplatePart(Name = ContentElementName, Type = typeof(ScrollViewer))]
     public sealed partial class Brainf_ckEditBox
@@ -42,6 +44,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// The name of the <see cref="Rectangle"/> that indicates the position of the cursor
         /// </summary>
         private const string CursorIndicatorRectangleName = "CursorIndicatorRectangle";
+
+        /// <summary>
+        /// The name of the <see cref="TeachingTip"/> that indicates syntax errors
+        /// </summary>
+        private const string SyntaxErrorToolTipName = "SyntaxErrorToolTip";
 
         /// <summary>
         /// The name of the <see cref="ScrollViewer"/> instance for the main content
@@ -78,6 +85,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         private Rectangle? _CursorIndicatorRectangle;
 
+        private TeachingTip? _SyntaxErrorToolTip;
+
         /// <summary>
         /// The vertical <see cref="ScrollBar"/> instance for the main content
         /// </summary>
@@ -102,6 +111,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             _TextOverlaysCanvas = (CanvasControl)GetTemplateChild(TextOverlaysCanvasName);
             _SelectionHighlightBorder = (Border)GetTemplateChild(SelectionHighlightBorderName);
             _CursorIndicatorRectangle = (Rectangle)GetTemplateChild(CursorIndicatorRectangleName);
+            _SyntaxErrorToolTip = (TeachingTip)GetTemplateChild(SyntaxErrorToolTipName);
             ContentScroller = (ScrollViewer)GetTemplateChild(ContentScrollerName);
             ContentElement = (ContentPresenter)GetTemplateChild(ContentElementName);
 
@@ -109,12 +119,14 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             Guard.IsNotNull(_TextOverlaysCanvas, nameof(TextOverlaysCanvasName));
             Guard.IsNotNull(_SelectionHighlightBorder, nameof(SelectionHighlightBorderName));
             Guard.IsNotNull(_CursorIndicatorRectangle, nameof(CursorIndicatorRectangleName));
+            Guard.IsNotNull(_SyntaxErrorToolTip, SyntaxErrorToolTipName);
             Guard.IsNotNull(ContentScroller, ContentScrollerName);
             Guard.IsNotNull(ContentElement, ContentElementName);
 
             _BackgroundCanvas.SizeChanged += BackgroundCanvas_SizeChanged;
             _TextOverlaysCanvas.CreateResources += _TextOverlaysCanvas_CreateResources;
             _TextOverlaysCanvas.Draw += TextOverlaysCanvas_Draw;
+            _SyntaxErrorToolTip.Closed += delegate { ContentScroller.IsHitTestVisible = true; };
             ContentScroller.Loaded += ContentElement_Loaded;
             ContentElement.SizeChanged += ContentElement_SizeChanged;
 

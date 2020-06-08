@@ -130,10 +130,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             // Get the underlying array to sort in-place.
             // This will no longer be needed on .NET 5, as there are APIs
-            // to sort items within a Span<T> directy, not yet on UWP though.
-            _ =MemoryMarshal.TryGetArray<int>(buffer.Memory, out var segment);
+            // to sort items within a Span<T> directly, not yet on UWP though.
+            _ = MemoryMarshal.TryGetArray<int>(buffer.Memory, out var segment);
 
-            Array.Sort(segment.Array, segment.Offset, segment.Count);
+            Array.Sort(segment.Array!, segment.Offset, segment.Count);
 
             // We're tracking the current position within the breakpoints buffer,
             // the current line number and the absolute offset within the text.
@@ -162,6 +162,14 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             }
 
             return buffer;
+        }
+
+        /// <summary>
+        /// Shows the syntax error tooltip, if an error is present
+        /// </summary>
+        public void TryShowSyntaxErrorToolTip()
+        {
+            CodeEditBox.TryShowSyntaxErrorToolTip();
         }
     }
 }
