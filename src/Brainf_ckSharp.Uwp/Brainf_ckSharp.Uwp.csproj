@@ -122,22 +122,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.Source.cs" />
-    <Compile Include="Converters\Console\ExitCodeConverter.cs" />
-    <Compile Include="Converters\Console\SyntaxErrorConverter.cs" />
     <Compile Include="Converters\Ide\CodeSnippetTitleConverter.cs" />
-    <Compile Include="Converters\SubPages\OverflowModeConverter.cs" />
-    <Compile Include="Converters\SubPages\BracketsFormattingStyleConverter.cs" />
-    <Compile Include="Converters\SubPages\SettingsSectionConverters.cs" />
-    <Compile Include="Converters\SubPages\IdeResultSectionConverter.cs" />
-    <Compile Include="Converters\SubPages\CodeLibraryCategoryConverter.cs" />
-    <Compile Include="Converters\Console\SyntaxValidationResultConverter.cs" />
-    <Compile Include="Converters\SubPages\CodeMetadataConverter.cs" />
-    <Compile Include="Converters\TypeToVisibilityConverter.cs" />
-    <Compile Include="Converters\ExecutionResultConverter.cs" />
     <Compile Include="Converters\UInt16Converter.cs" />
-    <Compile Include="Converters\PivotSelectionConverter.cs" />
-    <Compile Include="Converters\SubPages\UnicodeIntervalConverter.cs" />
-    <Compile Include="Converters\SubPages\UserGuideSectionConverter.cs" />
     <Compile Include="Controls\Host\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
@@ -150,12 +136,12 @@
     <Compile Include="Extensions\System.Collections.Generic\IReadOnlyListExtensions.cs" />
     <Compile Include="Extensions\System.Reflection\AssemblyExtensions.cs" />
     <Compile Include="Extensions\System\StringExtensions.cs" />
-    <Compile Include="Extensions\Windows.Storage\IFileExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Xaml\FrameworkElementExtensions.cs" />
     <Compile Include="Helpers\TitleBarHelper.cs" />
     <Compile Include="MarkupExtensions\VirtualKeyExtension.cs" />
     <Compile Include="MarkupExtensions\EnumValuesExtension.cs" />
     <Compile Include="MarkupExtensions\BooleanExtension.cs" />
+    <Compile Include="Models\CodeSnippets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\XamlResources.cs" />
     <Compile Include="Views\IdeView.xaml.cs">
@@ -286,33 +272,9 @@
       <Project>{8000d892-951c-49b3-ae95-db85d909c717}</Project>
       <Name>Brainf_ckSharp.Git</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Brainf_ckSharp.Services.Uwp\Brainf_ckSharp.Services.Uwp.csproj">
-      <Project>{978a84f1-ee57-4a0a-9793-c8404e2d5441}</Project>
-      <Name>Brainf_ckSharp.Services.Uwp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Brainf_ckSharp.Services\Brainf_ckSharp.Services.csproj">
-      <Project>{ea19c7cc-ab0b-48f0-9b3b-7289b57fb29d}</Project>
-      <Name>Brainf_ckSharp.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Brainf_ckSharp.Shared\Brainf_ckSharp.Shared.csproj">
-      <Project>{a2b53303-9594-4975-91bd-0ecd83ad9cf1}</Project>
-      <Name>Brainf_ckSharp.Shared</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckSharp.Uwp.Controls.Ide.csproj">
       <Project>{473069aa-080a-493e-b7a8-0bee7b0b00f1}</Project>
       <Name>Brainf_ckSharp.Uwp.Controls.Ide</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Brainf_ckSharp.Uwp.Themes\Brainf_ckSharp.Uwp.Themes.csproj">
-      <Project>{bd6f7b87-b1aa-46a7-b03a-9d299ea6f636}</Project>
-      <Name>Brainf_ckSharp.Uwp.Themes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Brainf_ckSharp\Brainf_ckSharp.csproj">
-      <Project>{aceea540-7a2c-4705-ac68-5a8c3a5c2a38}</Project>
-      <Name>Brainf_ckSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Toolkit.Mvvm\Microsoft.Toolkit.Mvvm.csproj">
-      <Project>{7ecb8c9d-3d2b-4678-bdc1-f0d2aa4d2890}</Project>
-      <Name>Microsoft.Toolkit.Mvvm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

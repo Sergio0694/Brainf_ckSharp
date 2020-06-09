@@ -2,10 +2,7 @@
 using System.Reflection;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
 #nullable enable
 
@@ -35,8 +32,6 @@ namespace Brainf_ckSharp.Uwp.Views
                     let fieldValue = (string)fieldInfo.GetRawConstantValue()
                     where fieldValue == snippet
                     select fieldInfo.Name).First();
-
-                Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Events.InsertCodeSnippet, (nameof(CodeSnippets), name));
 
                 CodeEditor.InsertText(snippet);
             }
