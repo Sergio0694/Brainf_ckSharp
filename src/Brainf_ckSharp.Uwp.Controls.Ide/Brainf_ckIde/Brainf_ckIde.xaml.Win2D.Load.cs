@@ -311,7 +311,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     {
                         if (Brainf_ckParser.IsOperator(line[i]))
                         {
-                            firstOperatorOffset = i;
+                            firstOperatorOffset = lastOperatorOffset = i;
 
                             for (int j = i + 1; j < line.Length; j++)
                             {
