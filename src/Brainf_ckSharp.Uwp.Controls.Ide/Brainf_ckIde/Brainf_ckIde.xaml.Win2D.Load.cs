@@ -259,7 +259,12 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             // If there are no breakpoints, do nothing
             if (totalBreakpoints == 0)
             {
-                if (_BreakpointAreas.Length != 0) _BreakpointAreas = MemoryOwner<Rect>.Empty;
+                if (_BreakpointAreas.Length != 0)
+                {
+                    _BreakpointAreas.Dispose();
+
+                    _BreakpointAreas = MemoryOwner<Rect>.Empty;
+                }
 
                 return;
             }
@@ -351,7 +356,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 currentTextIndex += line.Length + 1;
             }
 
-            _BreakpointAreas = breakpointAreas.Slice(0, currentBreakpointIndex);
+            _BreakpointAreas.Dispose();
+
+            _BreakpointAreas = breakpointAreas.Slice(0, validatedBreakpoints);
         }
     }
 }
