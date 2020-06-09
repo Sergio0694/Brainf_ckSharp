@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using Windows.Foundation;
 using Windows.UI;
 using Brainf_ckSharp.Git.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
@@ -19,6 +20,16 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     public sealed partial class Brainf_ckIde
     {
         /// <summary>
+        /// The map of breakpoints in use
+        /// </summary>
+        private readonly DictionarySlim<int, float> BreakpointIndicators = new DictionarySlim<int, float>();
+
+        /// <summary>
+        /// The precomputed areas of breakpoints to display
+        /// </summary>
+        private MemoryOwner<Rect> _BreakpointAreas = MemoryOwner<Rect>.Empty;
+
+        /// <summary>
         /// The current buffer of line diff indicators
         /// </summary>
         /// <remarks>The initial size is 1 since it corresponds to the default '\r' character in the control</remarks>
@@ -28,11 +39,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// The current array of <see cref="IndentationIndicatorBase"/> instances to render
         /// </summary>
         private MemoryOwner<IndentationIndicatorBase?> _IndentationIndicators = MemoryOwner<IndentationIndicatorBase?>.Empty;
-
-        /// <summary>
-        /// The map of breakpoints in use
-        /// </summary>
-        private readonly DictionarySlim<int, float> BreakpointIndicators = new DictionarySlim<int, float>();
 
         /// <summary>
         /// Draws the IDE overlays when an update is requested
@@ -89,10 +95,24 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 i++;
             }
 
-            // Breakpoints
+            // Breakpoints markers
             foreach (var pair in BreakpointIndicators)
             {
                 DrawBreakpointIndicator(args.DrawingSession, pair.Value);
+            }
+        }
+
+        /// <summary>
+        /// Draws the text overlays when an update is requested
+        /// </summary>
+        /// <param name="sender">The sender <see cref="CanvasControl"/> instance</param>
+        /// <param name="args">The <see cref="CanvasDrawEventArgs"/> for the current instance</param>
+        private void CodeEditBox_OnDrawOverlays(CanvasControl sender, CanvasDrawEventArgs args)
+        {
+            // Breakpoints areas
+            foreach (var rect in _BreakpointAreas.Span)
+            {
+                DrawBreakpointArea(args.DrawingSession, rect);
             }
         }
 
@@ -257,8 +277,27 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="offset">The current vertical offset to start drawing the breakpoint indicator from</param>
         private static void DrawBreakpointIndicator(CanvasDrawingSession session, float offset)
         {
+            offset += BreakpointIndicatorTopMargin;
+
             session.FillRoundedRectangle(BreakpointIndicatorLeftMargin, offset, BreakpointIndicatorElementSize, BreakpointIndicatorElementSize, 9999, 9999, BreakpointIndicatorFillColor);
             session.DrawRoundedRectangle(BreakpointIndicatorLeftMargin, offset, BreakpointIndicatorElementSize, BreakpointIndicatorElementSize, 9999, 9999, BreakpointIndicatorBorderColor);
+        }
+
+        /// <summary>
+        /// Draws a breakpoint area
+        /// </summary>
+        /// <param name="session">The target <see cref="CanvasDrawingSession"/> instance</param>
+        /// <param name="rect">The target area to draw over</param>
+        private static void DrawBreakpointArea(CanvasDrawingSession session, Rect rect)
+        {
+            float
+                x = (float)rect.Left + 8,
+                y = (float)rect.Top + 78,
+                width = (float)rect.Width + 2,
+                height = (float)rect.Height;
+
+            session.FillRoundedRectangle(x, y, width, height, BreakpointAreaCornerRadius, BreakpointAreaCornerRadius, BreakpointAreaBorderColor);
+            session.FillRoundedRectangle(x + 1, y + 1, width - 2, height - 2, BreakpointAreaCornerRadius, BreakpointAreaCornerRadius, BreakpointAreaFillColor);
         }
     }
 }

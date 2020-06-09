@@ -120,5 +120,20 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// The color used to fill the breakpoint indicators
         /// </summary>
         private static readonly Color BreakpointIndicatorFillColor = "#FFE51400".ToColor();
+
+        /// <summary>
+        /// The radius of breakpoint areas
+        /// </summary>
+        private const int BreakpointAreaCornerRadius = 2;
+
+        /// <summary>
+        /// The color used for the borders of breakpoint areas
+        /// </summary>
+        private static readonly Color BreakpointAreaBorderColor = Colors.DimGray;
+
+        /// <summary>
+        /// The color used to fill breakpoint areas
+        /// </summary>
+        private static readonly Color BreakpointAreaFillColor = "#FF91272C".ToColor();
     }
 }

@@ -93,6 +93,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             CanvasGeometry canvasGeometry = CanvasGeometry.CreatePath(pathBuilder);
 
             _SquigglyLineGeometry = CanvasCachedGeometry.CreateStroke(canvasGeometry, 1);
+
+            CreateOverlayResources?.Invoke(sender, args);
         }
 
         /// <summary>
@@ -169,6 +171,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     1,
                     _DashStrokeStyle);
             }
+
+            DrawOverlays?.Invoke(sender, args);
         }
 
         /// <summary>

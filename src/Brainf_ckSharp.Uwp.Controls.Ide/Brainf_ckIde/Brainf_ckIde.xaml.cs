@@ -56,6 +56,16 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
+        /// Updates the UI when the source code displayed into the <see cref="Brainf_ckEditBox"/> instance has finished formatting
+        /// </summary>
+        /// <param name="sender">The <see cref="Brainf_ckEditBox"/> instance in use</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance for the current event</param>
+        private void CodeEditBox_OnFormattingCompleted(object sender, EventArgs e)
+        {
+            UpdateBreakpointsInfo();
+        }
+
+        /// <summary>
         /// Updates the UI when the source code displayed into the <see cref="Brainf_ckEditBox"/> instance changes
         /// </summary>
         /// <param name="sender">The <see cref="Brainf_ckEditBox"/> instance in use</param>
@@ -127,12 +137,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             {
                 if (BreakpointIndicators.Count == 0) BreakpointsBorder.ContextFlyout = BreakpointsMenuFlyout;
 
-                BreakpointIndicators.GetOrAddValueRef(lineNumber) = (float)(line.Top + BreakpointIndicatorTopMargin);
+                BreakpointIndicators.GetOrAddValueRef(lineNumber) = (float)line.Top;
 
                 BreakpointAdded?.Invoke(this, lineNumber);
             }
 
+            UpdateBreakpointsInfo();
+
             IdeOverlaysCanvas.Invalidate();
+            CodeEditBox.InvalidateOverlays();
         }
 
         /// <summary>
