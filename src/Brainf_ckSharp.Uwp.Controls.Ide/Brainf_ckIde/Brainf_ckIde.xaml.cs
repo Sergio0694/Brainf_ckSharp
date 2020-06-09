@@ -157,7 +157,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         {
             BreakpointIndicators.Clear();
 
+            UpdateBreakpointsInfo();
+
             IdeOverlaysCanvas.Invalidate();
+            CodeEditBox.InvalidateOverlays();
         }
     }
 }
