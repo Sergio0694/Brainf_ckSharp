@@ -10,7 +10,6 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Microsoft.UI.Xaml.Controls;
-using UICompositionAnimations.Enums;
 
 #nullable enable
 
@@ -130,11 +129,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             ContentScroller.Loaded += ContentElement_Loaded;
             ContentElement.SizeChanged += ContentElement_SizeChanged;
 
-            ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.X);
-            ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.Y);
-            ContentScroller.StartExpressionAnimation(_SelectionHighlightBorder, Axis.Y);
-            ContentScroller.StartExpressionAnimation(_CursorIndicatorRectangle, Axis.X);
-            ContentScroller.StartExpressionAnimation(_CursorIndicatorRectangle, Axis.Y);
+            ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.X, VisualProperty.Offset);
+            ContentScroller.StartExpressionAnimation(_TextOverlaysCanvas, Axis.Y, VisualProperty.Offset);
+            ContentScroller.StartExpressionAnimation(_SelectionHighlightBorder, Axis.Y, VisualProperty.Offset);
+            ContentScroller.StartExpressionAnimation(_CursorIndicatorRectangle, Axis.X, VisualProperty.Offset);
+            ContentScroller.StartExpressionAnimation(_CursorIndicatorRectangle, Axis.Y, VisualProperty.Offset);
 
             UpdateVisualElementsOnThemeChanged(SyntaxHighlightTheme);
         }

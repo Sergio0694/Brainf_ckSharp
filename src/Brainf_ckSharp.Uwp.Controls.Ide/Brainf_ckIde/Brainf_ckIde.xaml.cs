@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Input;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
 using Microsoft.Toolkit.HighPerformance.Extensions;
-using UICompositionAnimations.Enums;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
@@ -32,8 +32,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance for the <see cref="FrameworkElement.Loaded"/> event</param>
         private void Brainf_ckIde_Loaded(object sender, RoutedEventArgs e)
         {
-            CodeEditBox.ContentScroller!.StartExpressionAnimation(LineBlock, Axis.Y);
-            CodeEditBox.ContentScroller.StartExpressionAnimation(IdeOverlaysCanvas, Axis.Y);
+            CodeEditBox.ContentScroller!.StartExpressionAnimation(LineBlock, Axis.Y, VisualProperty.Offset);
+            CodeEditBox.ContentScroller.StartExpressionAnimation(IdeOverlaysCanvas, Axis.Y, VisualProperty.Offset);
             CodeEditBox.ContentElement!.SizeChanged += Brainf_ckIde_SizeChanged;
 
             // Manually adjust the Win2D canvas size here, since when this handler runs
