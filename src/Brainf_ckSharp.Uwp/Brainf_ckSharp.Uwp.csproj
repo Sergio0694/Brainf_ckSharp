@@ -168,9 +168,6 @@
     <Compile Include="Controls\DataTemplates\Brainf_ckMemoryCellChunkTemplate.xaml.cs">
       <DependentUpon>Brainf_ckMemoryCellChunkTemplate.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DataTemplates\DeveloperTemplate.xaml.cs">
-      <DependentUpon>DeveloperTemplate.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\DataTemplates\JumpList\SemanticZoomZoomedOutViewHeaderTemplate.cs" />
     <Compile Include="Controls\DataTemplates\JumpList\SemanticZoomZoomedInViewHeaderTemplate.cs" />
     <Compile Include="Controls\DataTemplates\FeaturedLinkTemplate.xaml.cs">
@@ -423,10 +420,6 @@
       <Project>{aceea540-7a2c-4705-ac68-5a8c3a5c2a38}</Project>
       <Name>Brainf_ckSharp</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GitHub\GitHub.csproj">
-      <Project>{9122f0d6-af88-46a6-b91f-ebafe7f59672}</Project>
-      <Name>GitHub</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Microsoft.Toolkit.Mvvm\Microsoft.Toolkit.Mvvm.csproj">
       <Project>{7ecb8c9d-3d2b-4678-bdc1-f0d2aa4d2890}</Project>
       <Name>Microsoft.Toolkit.Mvvm</Name>
@@ -434,10 +427,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\DataTemplates\Brainf_ckMemoryCellChunkTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\DataTemplates\DeveloperTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

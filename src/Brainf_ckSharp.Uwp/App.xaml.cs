@@ -17,7 +17,6 @@ using Brainf_ckSharp.Uwp.Services.Files;
 using Brainf_ckSharp.Uwp.Services.Keyboard;
 using Brainf_ckSharp.Uwp.Services.Settings;
 using Brainf_ckSharp.Uwp.Services.Share;
-using GitHub;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Brainf_ckSharp.Services.Uwp.Store;
@@ -129,7 +128,6 @@ namespace Brainf_ckSharp.Uwp
                 services.AddSingleton<IKeyboardListenerService, KeyboardListenerService>();
                 services.AddSingleton<IClipboardService, ClipboardService>();
                 services.AddSingleton<IShareService, ShareService>();
-                services.AddSingleton(_ => GitHubRestFactory.GetGitHubService("Brainf_ckSharp|Uwp"));
 #if DEBUG
                 services.AddSingleton<IStoreService, TestStoreService>();
                 services.AddSingleton<IAnalyticsService, TestAnalyticsService>();

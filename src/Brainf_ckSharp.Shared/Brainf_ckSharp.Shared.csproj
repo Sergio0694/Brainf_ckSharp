@@ -20,7 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Brainf_ckSharp.Services\Brainf_ckSharp.Services.csproj" />
     <ProjectReference Include="..\Brainf_ckSharp\Brainf_ckSharp.csproj" />
-    <ProjectReference Include="..\GitHub\GitHub.csproj" />
     <ProjectReference Include="..\Microsoft.Toolkit.Mvvm\Microsoft.Toolkit.Mvvm.csproj" />
   </ItemGroup>
 

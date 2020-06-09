@@ -6,8 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
-    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:subPages="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages"
     xmlns:appModel="using:Windows.ApplicationModel"
     xmlns:helpers="using:Microsoft.Toolkit.Uwp.Helpers"
@@ -18,11 +16,6 @@
     <UserControl.DataContext>
         <subPages:AboutSubPageViewModel x:Name="ViewModel"/>
     </UserControl.DataContext>
-    <interactivity:Interaction.Behaviors>
-        <core:EventTriggerBehavior EventName="Loaded">
-            <core:InvokeCommandAction Command="{x:Bind ViewModel.LoadDataCommand}"/>
-        </core:EventTriggerBehavior>
-    </interactivity:Interaction.Behaviors>
 
     <!--Root-->
     <host:SubPageFrame Title="ABOUT">
@@ -79,41 +72,6 @@
                             FontSize="14" FontFamily="Consolas"/>
                     </TextBlock>
                 </Viewbox>
-
-                <!--Developers-->
-                <TextBlock
-                    x:Uid="About/Developers"
-                    Text="Developed by" 
-                    FontWeight="SemiBold" FontSize="14"
-                    Margin="0,16,0,0"
-                    x:Name="UwpBlock"
-                    RelativePanel.Below="GitBranchIcon"/>
-                <ListView
-                    x:Name="DevelopersList"
-                    Margin="-8,2,-8,-8"
-                    Padding="8"
-                    ItemsSource="{x:Bind ViewModel.Developers, Mode=OneWay}"
-                    SelectionMode="None"
-                    IsItemClickEnabled="False"
-                    ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                    RelativePanel.Below="UwpBlock"
-                    RelativePanel.AlignLeftWithPanel="True"
-                    RelativePanel.AlignRightWithPanel="True">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="Padding" Value="0,0,0,8"/>
-                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Setter Property="VerticalAlignment" Value="Stretch"/>
-                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <dataTemplates:DeveloperTemplate/>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
 
                 <!--Contacts-->
                 <TextBlock

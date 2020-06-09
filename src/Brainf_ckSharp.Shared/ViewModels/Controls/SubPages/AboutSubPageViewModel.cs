@@ -1,12 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using GitHub.APIs;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.Input;
-using User = GitHub.Models.User;
 
 #nullable enable
 
@@ -18,24 +11,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
     public sealed class AboutSubPageViewModel : ViewModelBase
     {
         /// <summary>
-        /// The <see cref="IGitHubService"/> instance currently in use
-        /// </summary>
-        private readonly IGitHubService GitHubService = Ioc.Default.GetRequiredService<IGitHubService>();
-
-        /// <summary>
-        /// Creates a new <see cref="AboutSubPageViewModel"/> instance
-        /// </summary>
-        public AboutSubPageViewModel()
-        {
-            LoadDataCommand = new AsyncRelayCommand(LoadDataAsync);
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ICommand"/> instance responsible for loading the available source codes
-        /// </summary>
-        public ICommand LoadDataCommand { get; }
-
-        /// <summary>
         /// Forwards the <see cref="ThisAssembly.Git.Branch"/> property
         /// </summary>
         public string GitBranch => ThisAssembly.Git.Branch;
@@ -44,17 +19,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// Forwards the <see cref=" ThisAssembly.Git.Commit"/> property
         /// </summary>
         public string GitCommit => ThisAssembly.Git.Commit;
-
-        private static IEnumerable<User>? _Developers;
-
-        /// <summary>
-        /// Gets the list of lead developers to the Legere repository
-        /// </summary>
-        public IEnumerable<User>? Developers
-        {
-            get => _Developers;
-            private set => Set(ref _Developers, value);
-        }
 
         private static IEnumerable<object>? _DonationMockupSource;
 
@@ -65,24 +29,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         {
             get => _DonationMockupSource;
             private set => Set(ref _DonationMockupSource, value);
-        }
-
-        /// <summary>
-        /// Loads all the necessary data for the view model
-        /// </summary>
-        public async Task LoadDataAsync()
-        {
-            if (Developers != null) return;
-
-            try
-            {
-                Developers = new[] { await GitHubService.GetUserAsync("Sergio0694") };
-                DonationMockupSource = new[] { new object() };
-            }
-            catch
-            {
-                // Whoops!
-            }
         }
     }
 }
