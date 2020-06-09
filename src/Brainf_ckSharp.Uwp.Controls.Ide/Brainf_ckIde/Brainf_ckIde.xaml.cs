@@ -56,6 +56,18 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
+        /// Updates the UI when the source code displayed into the <see cref="Brainf_ckEditBox"/> instance is about to change
+        /// </summary>
+        /// <param name="sender">The <see cref="Brainf_ckEditBox"/> instance in use</param>
+        /// <param name="args">The <see cref="RichEditBoxTextChangingEventArgs"/> instance for the current event</param>
+        private void CodeEditBox_OnTextChanging(RichEditBox sender, RichEditBoxTextChangingEventArgs args)
+        {
+            // This needs to be invoked before the text changes, to avoid
+            // synchronization issues leading to crashes in the text control
+            UpdateBreakpointsInfo();
+        }
+
+        /// <summary>
         /// Updates the UI when the source code displayed into the <see cref="Brainf_ckEditBox"/> instance changes
         /// </summary>
         /// <param name="sender">The <see cref="Brainf_ckEditBox"/> instance in use</param>
@@ -69,7 +81,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             UpdateLineIndicators(numberOfLines);
             UpdateDiffInfo(args.PlainText);
             UpdateIndentationInfo(args.PlainText, args.ValidationResult.IsSuccessOrEmptyScript, numberOfLines);
-            UpdateBreakpointsInfo();
 
             IdeOverlaysCanvas.Invalidate();
         }
@@ -133,7 +144,10 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 BreakpointAdded?.Invoke(this, lineNumber);
             }
 
+            UpdateBreakpointsInfo();
+
             IdeOverlaysCanvas.Invalidate();
+            CodeEditBox.InvalidateOverlays();
         }
 
         /// <summary>

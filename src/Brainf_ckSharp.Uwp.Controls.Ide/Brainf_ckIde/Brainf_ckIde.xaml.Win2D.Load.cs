@@ -257,7 +257,12 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             int totalBreakpoints = BreakpointIndicators.Count;
 
             // If there are no breakpoints, do nothing
-            if (totalBreakpoints == 0) return;
+            if (totalBreakpoints == 0)
+            {
+                if (_BreakpointAreas.Length != 0) _BreakpointAreas = MemoryOwner<Rect>.Empty;
+
+                return;
+            }
 
             // Rent a buffer to track the current line numbers
             using MemoryOwner<int> lineNumbers = MemoryOwner<int>.Allocate(totalBreakpoints);
@@ -282,7 +287,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             int
                 currentBreakpointIndex = 0,
                 currentTargetLineNumber = Unsafe.Add(ref lineNumbersRef, 0),
-                currentTextIndex = 0;
+                currentTextIndex = 0,
+                validatedBreakpoints = 0;
             currentLineNumber = 1; // The line count starts at 1
 
             // Go through all the available lines of text
@@ -315,7 +321,12 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     ProcessLineAnalysisResults:
 
                     // If there are no operators left, remove the breakpoint
-                    if (firstOperatorOffset == -1) BreakpointIndicators.Remove(currentTargetLineNumber);
+                    if (firstOperatorOffset == -1)
+                    {
+                        BreakpointIndicators.Remove(currentTargetLineNumber);
+
+                        totalBreakpoints--;
+                    }
                     else
                     {
                         // Get the text range for the first operators interval
@@ -326,11 +337,14 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         // Extract the target coordinates for the text range
                         range.GetRect(
                             PointOptions.Transform,
-                            out _,
+                            out Unsafe.Add(ref breakpointAreasRef, validatedBreakpoints++),
                             out _);
-
-                        if (currentBreakpointIndex++ == totalBreakpoints) break;
                     }
+
+                    if (currentBreakpointIndex++ == totalBreakpoints) break;
+
+                    // Update the target breakpoint line number
+                    currentTargetLineNumber = Unsafe.Add(ref lineNumbersRef, currentBreakpointIndex);
                 }
 
                 currentLineNumber++;

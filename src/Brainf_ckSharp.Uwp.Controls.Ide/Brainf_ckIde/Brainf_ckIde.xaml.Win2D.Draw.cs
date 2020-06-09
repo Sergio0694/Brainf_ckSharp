@@ -100,7 +100,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             {
                 DrawBreakpointIndicator(args.DrawingSession, pair.Value);
             }
+        }
 
+        /// <summary>
+        /// Draws the text overlays when an update is requested
+        /// </summary>
+        /// <param name="sender">The sender <see cref="CanvasControl"/> instance</param>
+        /// <param name="args">The <see cref="CanvasDrawEventArgs"/> for the current instance</param>
+        private void CodeEditBox_OnDrawOverlays(CanvasControl sender, CanvasDrawEventArgs args)
+        {
             // Breakpoints areas
             foreach (var rect in _BreakpointAreas.Span)
             {
@@ -283,11 +291,13 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private static void DrawBreakpointArea(CanvasDrawingSession session, Rect rect)
         {
             float
-                x = (float)rect.Left + 70,
-                y = (float)rect.Top + BreakpointIndicatorTopMargin;
+                x = (float)rect.Left + 8,
+                y = (float)rect.Top + 78,
+                width = (float)rect.Width + 2,
+                height = (float)rect.Height;
 
-            session.FillRoundedRectangle(x - 2, y - 2, (float)rect.Width + 2, (float)rect.Height + 2, 4, 4, Colors.Gray);
-            session.FillRoundedRectangle(x, y, (float)rect.Width, (float)rect.Height, 4, 4, Colors.Gray);
+            session.FillRoundedRectangle(x, y, width, height, BreakpointAreaCornerRadius, BreakpointAreaCornerRadius, BreakpointAreaBorderColor);
+            session.FillRoundedRectangle(x + 1, y + 1, width - 2, height - 2, BreakpointAreaCornerRadius, BreakpointAreaCornerRadius, BreakpointAreaFillColor);
         }
     }
 }
