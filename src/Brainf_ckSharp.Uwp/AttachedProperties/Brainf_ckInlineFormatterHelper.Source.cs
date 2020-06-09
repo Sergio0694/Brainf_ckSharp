@@ -35,7 +35,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
         /// <returns>The value of the <see cref="SourceProperty"/> property for the input <see cref="Span"/> instance</returns>
         public static string GetSource(Span element)
         {
-            return element.GetValue(SourceProperty).To<string>();
+            return (string)element.GetValue(SourceProperty);
         }
 
         /// <summary>

@@ -17,7 +17,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// Raised before the overlays canvas is invalidated
         /// </summary>
-        public event EventHandler FormattingCompleted;
+        public event EventHandler? FormattingCompleted;
 
         /// <summary>
         /// Rasised when the cursor position changes
