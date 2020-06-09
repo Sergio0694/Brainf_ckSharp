@@ -121,34 +121,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.StackTrace.cs" />
-    <Compile Include="AttachedProperties\CharacterRotationHelper.cs" />
-    <Compile Include="AttachedProperties\IdeResultSectionDescriptionHelper.cs" />
-    <Compile Include="AttachedProperties\ItemsWrapGridHelper.cs" />
-    <Compile Include="AttachedProperties\ListViewBaseHelper.cs" />
-    <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.Source.cs" />
-    <Compile Include="AttachedProperties\SemanticZoomHelper.cs" />
-    <Compile Include="AttachedProperties\ViewModelBaseHelper.cs" />
-    <Compile Include="Controls\DataTemplates\IdeThemePreviewTemplate.xaml.cs">
-      <DependentUpon>IdeThemePreviewTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Host\StatusBar\StatusBar.xaml.cs">
-      <DependentUpon>StatusBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Shell\Settings\SettingsSubPage.xaml.cs">
-      <DependentUpon>SettingsSubPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPageTemplates.xaml.cs">
-      <DependentUpon>IdeResultSubPageTemplates.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPage.xaml.cs">
-      <DependentUpon>IdeResultSubPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Views\UnicodeCharactersMap\UnicodeCharactersMapSubPageTemplates.xaml.cs">
-      <DependentUpon>UnicodeCharactersMapSubPageTemplates.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Windows.UI.Xaml.Controls\ComboBoxWithNoScrollWheelSupport.cs" />
     <Compile Include="Converters\Console\ExitCodeConverter.cs" />
     <Compile Include="Converters\Console\SyntaxErrorConverter.cs" />
     <Compile Include="Converters\Ide\CodeSnippetTitleConverter.cs" />
@@ -165,80 +138,9 @@
     <Compile Include="Converters\PivotSelectionConverter.cs" />
     <Compile Include="Converters\SubPages\UnicodeIntervalConverter.cs" />
     <Compile Include="Converters\SubPages\UserGuideSectionConverter.cs" />
-    <Compile Include="Controls\DataTemplates\Brainf_ckMemoryCellChunkTemplate.xaml.cs">
-      <DependentUpon>Brainf_ckMemoryCellChunkTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\DataTemplates\JumpList\SemanticZoomZoomedOutViewHeaderTemplate.cs" />
-    <Compile Include="Controls\DataTemplates\JumpList\SemanticZoomZoomedInViewHeaderTemplate.cs" />
-    <Compile Include="Controls\DataTemplates\FeaturedLinkTemplate.xaml.cs">
-      <DependentUpon>FeaturedLinkTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Host\InputPanel\Header\MinimalHeaderButton.cs" />
-    <Compile Include="Controls\Host\InputPanel\Header\StdinHeader.xaml.cs">
-      <DependentUpon>StdinHeader.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Host\InputPanel\CompactMemoryViewer.xaml.cs">
-      <DependentUpon>CompactMemoryViewer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Host\InputPanel\VirtualKeyboard\OperatorButton.cs" />
-    <Compile Include="Controls\Host\InputPanel\VirtualKeyboard\VirtualKeyboard.xaml.cs">
-      <DependentUpon>VirtualKeyboard.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Host\SubPageFrame.cs" />
-    <Compile Include="Controls\SubPages\Host\SubPageHost.xaml.cs">
-      <DependentUpon>SubPageHost.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Interfaces\IAdaptiveSubPage.cs" />
-    <Compile Include="Controls\SubPages\Interfaces\IConstrainedSubPage.cs" />
-    <Compile Include="Controls\SubPages\Shell\AboutSubPage.xaml.cs">
-      <DependentUpon>AboutSubPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\BreakpointCodePreview.xaml.cs">
-      <DependentUpon>BreakpointCodePreview.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\PrintHelloCodeSample.xaml.cs">
-      <DependentUpon>PrintHelloCodeSample.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\ResetLoopCodePreview.xaml.cs">
-      <DependentUpon>ResetLoopCodePreview.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\SimpleLoopCodePreview.xaml.cs">
-      <DependentUpon>SimpleLoopCodePreview.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\BreakpointGuidePanel.xaml.cs">
-      <DependentUpon>BreakpointGuidePanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\CodeSamplesGuidePanel.xaml.cs">
-      <DependentUpon>CodeSamplesGuidePanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\LanguageIntroductionGuidePanel.xaml.cs">
-      <DependentUpon>LanguageIntroductionGuidePanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\PBrainExtensionGuidePanel.xaml.cs">
-      <DependentUpon>PBrainExtensionGuidePanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Shell\UserGuide\Templates\OperatorInfoTemplate.xaml.cs">
-      <DependentUpon>OperatorInfoTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Shell\UserGuide\UserGuideSubPage.xaml.cs">
-      <DependentUpon>UserGuideSubPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Views\CodeLibrarySubPage.xaml.cs">
-      <DependentUpon>CodeLibrarySubPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Views\UnicodeCharactersMap\UnicodeCharactersMapSubPage.xaml.cs">
-      <DependentUpon>UnicodeCharactersMapSubPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Windows.UI.Xaml.Controls\ExpanderControl.cs" />
-    <Compile Include="Controls\Windows.UI.Xaml.Controls\AnimatedCommandBar.cs" />
-    <Compile Include="Controls\Host\Header\HeaderButton.cs" />
-    <Compile Include="Controls\Host\Header\HeaderPanel.xaml.cs">
-      <DependentUpon>HeaderPanel.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Host\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Windows.UI.Xaml.Controls\LockedPivot.cs" />
     <Compile Include="Converters\UI\BoolToNotBoolConverter.cs" />
     <Compile Include="Converters\UI\BoolToFontWeightConverter.cs" />
     <Compile Include="Converters\UI\ObjectNotNullToVisibilityConverter.cs" />
@@ -254,20 +156,8 @@
     <Compile Include="MarkupExtensions\VirtualKeyExtension.cs" />
     <Compile Include="MarkupExtensions\EnumValuesExtension.cs" />
     <Compile Include="MarkupExtensions\BooleanExtension.cs" />
-    <Compile Include="Messages\LoadingStateUpdateNotificationMessage.cs" />
-    <Compile Include="Messages\SubPageCloseRequestMessage.cs" />
-    <Compile Include="Messages\SubPageNavigationRequestMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\XamlResources.cs" />
-    <Compile Include="StyleSelectors\CodeLibraryEntryItemContainerStyleSelector.cs" />
-    <Compile Include="TemplateSelectors\ConsoleEntryTemplateSelector.cs" />
-    <Compile Include="TemplateSelectors\IdeResultSectionTemplateSelector.cs" />
-    <Compile Include="TemplateSelectors\SettingsSectionTemplateSelector.cs" />
-    <Compile Include="TemplateSelectors\SourceCodeEntryTemplateSelector.cs" />
-    <Compile Include="TemplateSelectors\UserGuideSectionTemplateSelector.cs" />
-    <Compile Include="Views\ConsoleView.xaml.cs">
-      <DependentUpon>ConsoleView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\IdeView.xaml.cs">
       <DependentUpon>IdeView.xaml</DependentUpon>
     </Compile>
@@ -426,111 +316,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\DataTemplates\Brainf_ckMemoryCellChunkTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\DataTemplates\FeaturedLinkTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\DataTemplates\IdeThemePreviewTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Host\Header\HeaderPanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Host\InputPanel\Header\StdinHeader.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Host\InputPanel\CompactMemoryViewer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Host\InputPanel\VirtualKeyboard\VirtualKeyboard.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\Host\Shell.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Host\StatusBar\StatusBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Host\SubPageHost.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Shell\AboutSubPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Shell\Settings\SettingsSubPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\BreakpointCodePreview.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\PrintHelloCodeSample.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\ResetLoopCodePreview.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\SimpleLoopCodePreview.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Shell\UserGuide\Sections\BreakpointGuidePanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Shell\UserGuide\Sections\CodeSamplesGuidePanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Shell\UserGuide\Sections\LanguageIntroductionGuidePanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Shell\UserGuide\Sections\PBrainExtensionGuidePanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Shell\UserGuide\Templates\OperatorInfoTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Shell\UserGuide\UserGuideSubPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPageTemplates.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Views\CodeLibrarySubPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Views\UnicodeCharactersMap\UnicodeCharactersMapSubPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Views\UnicodeCharactersMap\UnicodeCharactersMapSubPageTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -554,23 +340,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\SemanticZoomStyles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Styles\MiscStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\SubPageStyles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Styles\TextStyles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ConsoleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

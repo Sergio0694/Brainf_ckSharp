@@ -2,9 +2,7 @@
 using System.Reflection;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
-using Windows.Foundation;
 using Windows.Storage;
-using Windows.UI.Core.Preview;
 using Windows.UI.Xaml;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Services;
@@ -88,8 +86,6 @@ namespace Brainf_ckSharp.Uwp
                 TitleBarHelper.StyleTitleBar();
 
                 Window.Current.Content = new Shell();
-
-                SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += OnCloseRequested;
             }
 
             // Activate the window when launching the app
@@ -99,20 +95,6 @@ namespace Brainf_ckSharp.Uwp
 
                 Window.Current.Activate();
             }
-        }
-
-        /// <summary>
-        /// Handles the closure of the current app
-        /// </summary>
-        /// <param name="sender">The current application</param>
-        /// <param name="e">The <see cref="SystemNavigationCloseRequestedPreviewEventArgs"/> instance for the current event</param>
-        private async void OnCloseRequested(object sender, SystemNavigationCloseRequestedPreviewEventArgs e)
-        {
-            Deferral deferral = e.GetDeferral();
-
-            await Messenger.Default.Send<SaveIdeStateRequestMessage>().Result;
-
-            deferral.Complete();
         }
 
         /// <summary>

@@ -5,26 +5,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ide="using:Brainf_ckSharp.Uwp.Controls.Ide"
-    xmlns:views="using:Brainf_ckSharp.Shared.ViewModels.Views"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     xmlns:constants="using:Brainf_ckSharp.Shared"
     xmlns:convertersIde="using:Brainf_ckSharp.Uwp.Converters.Ide"
-    xmlns:convertersConsole="using:Brainf_ckSharp.Uwp.Converters.Console"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400"
-    Loaded="IdeView_OnLoaded">
-    <UserControl.DataContext>
-        <views:IdeViewModel
-            x:Name="ViewModel"
-            ScriptRunRequested="IdeViewModel_OnScriptRunRequested"
-            ScriptDebugRequested="IdeViewModel_OnScriptDebugRequested"
-            CharacterAdded="ViewModelCharacterAdded"
-            CharacterDeleted="ViewModel_CharacterDeleted"
-            CodeLoaded="ViewModel_CodeLoaded"
-            CodeSaved="ViewModel_CodeSaved"
-            StateRestored="ViewModel_OnStateRestored"/>
-    </UserControl.DataContext>
+    d:DesignWidth="400">
     <UserControl.Resources>
 
         <!--Code snippet template-->
@@ -65,15 +51,7 @@
     </UserControl.Resources>
 
     <!--IDE-->
-    <ide:Brainf_ckIde
-        x:Name="CodeEditor"
-        SyntaxErrorToolTipTitle="Syntax error"
-        SyntaxErrorToolTipSubtitle="{x:Bind convertersConsole:SyntaxErrorConverter.Convert(ViewModel.ValidationResult.ErrorType), Mode=OneWay}"
-        TextChanged="CodeEditor_OnTextChanged"
-        CursorPositionChanged="CodeEditor_OnCursorPositionChanged"
-        BreakpointAdded="CodeEditor_OnBreakpointAdded"
-        BreakpointRemoved="CodeEditor_OnBreakpointRemoved"
-        BreakpointsCleared="CodeEditor_OnBreakpointsCleared">
+    <ide:Brainf_ckIde x:Name="CodeEditor">
         <ide:Brainf_ckIde.ContextMenuSecondaryContent>
             <ItemsControl
                 ItemsSource="{x:Bind constants:CodeSnippets.All}"

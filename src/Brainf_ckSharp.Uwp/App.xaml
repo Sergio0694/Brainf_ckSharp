@@ -15,8 +15,6 @@
                 <ResourceDictionary Source="Styles/ButtonsStyles.xaml"/>
                 <ResourceDictionary Source="Styles/ClassicStyles.xaml"/>
                 <ResourceDictionary Source="Styles/MiscStyles.xaml"/>
-                <ResourceDictionary Source="Styles/SemanticZoomStyles.xaml"/>
-                <ResourceDictionary Source="Styles/SubPageStyles.xaml"/>
                 <ResourceDictionary Source="Styles/TextStyles.xaml"/>
                 <ResourceDictionary Source="Brainf_ckSharp.Uwp.Controls.Ide/Brainf_ckEditBox/Brainf_ckEditBox.xaml"/>
             </ResourceDictionary.MergedDictionaries>
