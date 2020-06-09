@@ -346,6 +346,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                             out _);
                     }
 
+                    if (validatedBreakpoints == totalBreakpoints) break;
                     if (currentBreakpointIndex++ == totalBreakpoints) break;
 
                     // Update the target breakpoint line number
