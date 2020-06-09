@@ -200,6 +200,9 @@
     <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Load.cs">
       <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Load.cs</Link>
     </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\EventArgs\BreakpointToggleEventArgs.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\EventArgs\BreakpointToggleEventArgs.cs</Link>
+    </Compile>
     <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Enums\IndentationType.cs">
       <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Enums\IndentationType.cs</Link>
     </Compile>

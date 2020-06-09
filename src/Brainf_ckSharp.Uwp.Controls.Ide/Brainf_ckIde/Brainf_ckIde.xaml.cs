@@ -131,7 +131,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
                 if (BreakpointIndicators.Count == 0) BreakpointsBorder.ContextFlyout = null;
 
-                BreakpointRemoved?.Invoke(this, lineNumber);
+                BreakpointRemoved?.Invoke(this, new BreakpointToggleEventArgs(lineNumber, BreakpointIndicators.Count));
             }
             else
             {
@@ -139,7 +139,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
                 BreakpointIndicators.GetOrAddValueRef(lineNumber) = (float)line.Top;
 
-                BreakpointAdded?.Invoke(this, lineNumber);
+                BreakpointAdded?.Invoke(this, new BreakpointToggleEventArgs(lineNumber, BreakpointIndicators.Count));
             }
 
             UpdateBreakpointsInfo();
@@ -155,6 +155,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="e">The <see cref="RoutedEventArgs"/> for the current event</param>
         private void RemoveAllBreakpointsButton_Clicked(object sender, RoutedEventArgs e)
         {
+            BreakpointsCleared?.Invoke(this, BreakpointIndicators.Count);
+
             BreakpointIndicators.Clear();
 
             UpdateBreakpointsInfo();

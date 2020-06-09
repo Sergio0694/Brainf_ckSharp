@@ -70,7 +70,10 @@
         SyntaxErrorToolTipTitle="Syntax error"
         SyntaxErrorToolTipSubtitle="{x:Bind convertersConsole:SyntaxErrorConverter.Convert(ViewModel.ValidationResult.ErrorType), Mode=OneWay}"
         TextChanged="CodeEditor_OnTextChanged"
-        CursorPositionChanged="CodeEditor_OnCursorPositionChanged">
+        CursorPositionChanged="CodeEditor_OnCursorPositionChanged"
+        BreakpointAdded="CodeEditor_OnBreakpointAdded"
+        BreakpointRemoved="CodeEditor_OnBreakpointRemoved"
+        BreakpointsCleared="CodeEditor_OnBreakpointsCleared">
         <ide:Brainf_ckIde.ContextMenuSecondaryContent>
             <ItemsControl
                 ItemsSource="{x:Bind constants:CodeSnippets.All}"

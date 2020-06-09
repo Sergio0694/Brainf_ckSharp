@@ -9,16 +9,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     public sealed class TextChangedEventArgs : EventArgs
     {
         /// <summary>
-        /// Gets the currently displayed plain text
-        /// </summary>
-        public string PlainText { get; }
-
-        /// <summary>
-        /// Gets the <see cref="SyntaxValidationResult"/> instance for the currently displayed text
-        /// </summary>
-        public SyntaxValidationResult ValidationResult { get; }
-
-        /// <summary>
         /// Creates a new <see cref="TextChangedEventArgs"/> instance with the specified parameters
         /// </summary>
         /// <param name="plainText">The currently displayed plain text</param>
@@ -28,5 +18,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             PlainText = plainText;
             ValidationResult = validationResult;
         }
+
+        /// <summary>
+        /// Gets the currently displayed plain text
+        /// </summary>
+        public string PlainText { get; }
+
+        /// <summary>
+        /// Gets the <see cref="SyntaxValidationResult"/> instance for the currently displayed text
+        /// </summary>
+        public SyntaxValidationResult ValidationResult { get; }
     }
 }

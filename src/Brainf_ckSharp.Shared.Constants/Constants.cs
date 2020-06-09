@@ -74,6 +74,9 @@
             public const string LoadProtocolFile = "[IDE] Load protocol file";
             public const string LoadLibrarySourceCode = "[IDE] Load library source code";
             public const string InsertCodeSnippet = "[IDE] Insert code snippet";
+            public const string BreakpointAdded = "[IDE] Breakpoint added";
+            public const string BreakpointRemoved = "[IDE] Breakpoint removed";
+            public const string BreakpointsCleared = "[IDE] Breakpoints cleared";
             public const string ShareSourceCode = "[LIBRARY] Share source code";
             public const string CopySourceCode = "[LIBRARY] Copy source code";
             public const string ToggleFavoriteSourceCode = "[LIBRARY] Toggle favorite";

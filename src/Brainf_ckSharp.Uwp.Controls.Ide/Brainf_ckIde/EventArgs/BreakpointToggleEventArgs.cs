@@ -5,17 +5,17 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     /// <summary>
     /// A <see langword="class"/> that contains info to signal when the cursor position changes
     /// </summary>
-    public sealed class CursorPositionChangedEventArgs : EventArgs
+    public sealed class BreakpointToggleEventArgs : EventArgs
     {
         /// <summary>
-        /// Creates a new <see cref="CursorPositionChangedEventArgs"/> instance with the specified parameters
+        /// Creates a new <see cref="BreakpointToggleEventArgs"/> instance with the specified parameters
         /// </summary>
-        /// <param name="row">The current row position</param>
-        /// <param name="column">The current column position</param>
-        internal CursorPositionChangedEventArgs(int row, int column)
+        /// <param name="row">The row where the breakpoint was added or removed</param>
+        /// <param name="count">The updated count of existing breakpoints</param>
+        internal BreakpointToggleEventArgs(int row, int count)
         {
             Row = row;
-            Column = column;
+            Count = count;
         }
 
         /// <summary>
@@ -26,6 +26,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// Gets the current column position (1-based)
         /// </summary>
-        public int Column { get; }
+        public int Count { get; }
     }
 }

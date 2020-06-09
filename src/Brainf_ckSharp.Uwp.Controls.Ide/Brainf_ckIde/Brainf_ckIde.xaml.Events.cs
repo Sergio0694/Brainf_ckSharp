@@ -19,11 +19,16 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// Raised whenever a new breakpoint is added
         /// </summary>
-        public event TypedEventHandler<Brainf_ckIde, int>? BreakpointAdded;
+        public event TypedEventHandler<Brainf_ckIde, BreakpointToggleEventArgs>? BreakpointAdded;
 
         /// <summary>
         /// Raised whenever a breakpoint is removed
         /// </summary>
-        public event TypedEventHandler<Brainf_ckIde, int>? BreakpointRemoved;
+        public event TypedEventHandler<Brainf_ckIde, BreakpointToggleEventArgs>? BreakpointRemoved;
+
+        /// <summary>
+        /// Raised whenever all breakpoints are removed
+        /// </summary>
+        public event TypedEventHandler<Brainf_ckIde, int>? BreakpointsCleared;
     }
 }

@@ -188,5 +188,41 @@ namespace Brainf_ckSharp.Uwp.Views
                 CodeEditor.InsertText(snippet);
             }
         }
+
+        /// <summary>
+        /// Notifies whenever a breakpoint is added to the IDE
+        /// </summary>
+        /// <param name="sender">The sender <see cref="Brainf_ckIde"/> control</param>
+        /// <param name="args">The <see cref="BreakpointToggleEventArgs"/> instance for the event</param>
+        private void CodeEditor_OnBreakpointAdded(Brainf_ckIde sender, BreakpointToggleEventArgs args)
+        {
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(
+                Shared.Constants.Events.BreakpointAdded,
+                (nameof(BreakpointToggleEventArgs.Row), args.Row.ToString()),
+                (nameof(BreakpointToggleEventArgs.Count), args.Count.ToString()));
+        }
+
+        /// <summary>
+        /// Notifies whenever a breakpoint is removed from the IDE
+        /// </summary>
+        /// <param name="sender">The sender <see cref="Brainf_ckIde"/> control</param>
+        /// <param name="args">The <see cref="BreakpointToggleEventArgs"/> instance for the event</param>
+        private void CodeEditor_OnBreakpointRemoved(Brainf_ckIde sender, BreakpointToggleEventArgs args)
+        {
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(
+                Shared.Constants.Events.BreakpointRemoved,
+                (nameof(BreakpointToggleEventArgs.Row), args.Row.ToString()),
+                (nameof(BreakpointToggleEventArgs.Count), args.Count.ToString()));
+        }
+
+        /// <summary>
+        /// Notifies whenever all breakpoints are removed from the IDE
+        /// </summary>
+        /// <param name="sender">The sender <see cref="Brainf_ckIde"/> control</param>
+        /// <param name="args">The number of removed breakpoints</param>
+        private void CodeEditor_OnBreakpointsCleared(Brainf_ckIde sender, int args)
+        {
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Events.BreakpointsCleared, (nameof(ItemCollection.Count), args.ToString()));
+        }
     }
 }
