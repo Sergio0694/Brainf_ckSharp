@@ -55,6 +55,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 if (This.RenderWhitespaceCharacters) This.TryUpdateWhitespaceCharactersList();
                 This.TryProcessErrorCoordinate();
 
+                // Notify external subscribers
+                This.FormattingCompleted?.Invoke(This, EventArgs.Empty);
+
                 This._TextOverlaysCanvas!.Invalidate();
             }
         }

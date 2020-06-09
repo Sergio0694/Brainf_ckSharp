@@ -56,14 +56,12 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
-        /// Updates the UI when the source code displayed into the <see cref="Brainf_ckEditBox"/> instance is about to change
+        /// Updates the UI when the source code displayed into the <see cref="Brainf_ckEditBox"/> instance has finished formatting
         /// </summary>
         /// <param name="sender">The <see cref="Brainf_ckEditBox"/> instance in use</param>
-        /// <param name="args">The <see cref="RichEditBoxTextChangingEventArgs"/> instance for the current event</param>
-        private void CodeEditBox_OnTextChanging(RichEditBox sender, RichEditBoxTextChangingEventArgs args)
+        /// <param name="e">The <see cref="EventArgs"/> instance for the current event</param>
+        private void CodeEditBox_OnFormattingCompleted(object sender, EventArgs e)
         {
-            // This needs to be invoked before the text changes, to avoid
-            // synchronization issues leading to crashes in the text control
             UpdateBreakpointsInfo();
         }
 

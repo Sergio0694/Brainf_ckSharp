@@ -108,7 +108,7 @@
             SyntaxErrorToolTipTitle="{x:Bind SyntaxErrorToolTipTitle, Mode=OneWay}"
             SyntaxErrorToolTipSubtitle="{x:Bind SyntaxErrorToolTipSubtitle, Mode=OneWay}"
             SyntaxHighlightTheme="{x:Bind SyntaxHighlightTheme, Mode=OneWay}"
-            TextChanging="CodeEditBox_OnTextChanging"
+            FormattingCompleted="CodeEditBox_OnFormattingCompleted"
             TextChanged="CodeEditBox_TextChanged"
             DrawOverlays="CodeEditBox_OnDrawOverlays"
             CursorPositionChanged="CodeEditBox_CursorPositionChanged"/>

@@ -1,4 +1,5 @@
-﻿using Windows.Foundation;
+﻿using System;
+using Windows.Foundation;
 using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 
@@ -12,6 +13,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// Raised whenever the <see cref="Text"/> property changes
         /// </summary>
         public new event TypedEventHandler<Brainf_ckEditBox, TextChangedEventArgs>? TextChanged;
+
+        /// <summary>
+        /// Raised before the overlays canvas is invalidated
+        /// </summary>
+        public event EventHandler FormattingCompleted;
 
         /// <summary>
         /// Rasised when the cursor position changes
