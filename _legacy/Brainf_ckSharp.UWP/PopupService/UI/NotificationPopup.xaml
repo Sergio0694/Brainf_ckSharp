@@ -1,0 +1,92 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp.Legacy.UWP.PopupService.UI.NotificationPopup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="150"
+    d:DesignWidth="300"
+    Width="300">
+
+    <!--Root-->
+    <Grid x:Name="Root">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!--Header-->
+        <Grid 
+            Grid.Row="0"
+            Margin="12,12,12,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Icon-->
+            <TextBlock x:Name="SymbolBlock"
+                       Style="{StaticResource FontIconTextBlockStyle}"
+                       Text="&#xEB50;"
+                       FontSize="19"
+                       TextTrimming="CharacterEllipsis"
+                       VerticalAlignment="Center"/>
+
+            <!--Title-->
+            <TextBlock Text="Notification title"
+                       VerticalAlignment="Center"
+                       x:Name="TitleBlock"
+                       Margin="12,-1,12,0"
+                       Style="{StaticResource TitleTextBlockStyle}"
+                       Grid.Column="1"
+                       TextTrimming="CharacterEllipsis"
+                       FontSize="17"/>
+
+            <!--Close button-->
+            <Button 
+                Grid.Column="2"
+                Width="28"
+                Height="28"
+                Click="{x:Bind RequestCloseNotification}"
+                Style="{StaticResource WideButtonWithNoBackgroundAndBorderStyle}"
+                x:Name="CloseButton">
+                <Grid>
+
+                    <!--Wide light border-->
+                    <Border
+                        x:Name="BackgroundBorder"
+                        Opacity="0"
+                        Background="{StaticResource ElementsWideLightBrush}"/>
+
+                    <!--Light border-->
+                    <Border
+                        Opacity="0.2"
+                        x:Name="LightBorder"
+                        BorderThickness="1"
+                        BorderBrush="{StaticResource BorderLightBrush}"
+                        Margin="-1"/>
+
+                    <!--Close icon-->
+                    <TextBlock
+                        Text="&#xE106;"
+                        Style="{StaticResource FontIconTextBlockStyle}"
+                        FontSize="10"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"/>
+                </Grid>
+            </Button>
+        </Grid>
+
+        <!--Content-->
+        <TextBlock Text="This is a random text. It's not so important, it's just for testing purposes, don't think about it"
+                   Margin="12,4,12,12"
+                   Foreground="White"
+                   FontWeight="SemiLight"
+                   FontSize="14"
+                   TextWrapping="Wrap"
+                   x:Name="ContentBlock"
+                   Grid.Row="1"/>
+    </Grid>
+</UserControl>

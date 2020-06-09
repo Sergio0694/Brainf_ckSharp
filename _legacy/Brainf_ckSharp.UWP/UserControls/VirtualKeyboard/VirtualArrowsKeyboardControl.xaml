@@ -1,0 +1,81 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp.Legacy.UWP.UserControls.VirtualKeyboard.VirtualArrowsKeyboardControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Brainf_ck_sharp.Legacy.UWP.UserControls.VirtualKeyboard.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="96"
+    d:DesignWidth="144">
+
+    <!--Root-->
+    <Grid
+        BorderThickness="1"
+        BorderBrush="{StaticResource CustomContextMenuBorderBrush}"
+        Background="{StaticResource InAppGrayAcrylicBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="48"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="48"/>
+            <ColumnDefinition Width="48"/>
+            <ColumnDefinition Width="48"/>
+        </Grid.ColumnDefinitions>
+        
+        <!--Up-->
+        <controls:VirtualArrowKeyboardButton
+            Icon="&#xE010;"
+            Grid.Row="0"
+            Grid.Column="1"
+            Click="{x:Bind SendKeyUpMessage}"/>
+        
+        <!--Left-->
+        <controls:VirtualArrowKeyboardButton
+            Icon="&#xE00E;"
+            Grid.Row="1"
+            Grid.Column="0"
+            Click="{x:Bind SendKeyLeftMessage}"/>
+        
+        <!--Down-->
+        <controls:VirtualArrowKeyboardButton
+            Icon="&#xE011;"
+            Grid.Row="1"
+            Grid.Column="1"
+            Click="{x:Bind SendKeyDownMessage}"/>
+        
+        <!--Right-->
+        <controls:VirtualArrowKeyboardButton
+            Icon="&#xE00F;"
+            Grid.Row="1"
+            Grid.Column="2"
+            Click="{x:Bind SendKeyRightMessage}"/>
+        
+        <!--Light borders-->
+        <Rectangle
+            Height="1"
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            VerticalAlignment="Top"
+            Fill="{StaticResource BorderLightBrush}"
+            Opacity="0.6"/>
+        <Rectangle
+            Width="1"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="1"
+            HorizontalAlignment="Left"
+            Fill="{StaticResource BorderLightBrush}"
+            Opacity="0.6"/>
+        <Rectangle
+            Width="1"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="1"
+            HorizontalAlignment="Right"
+            Fill="{StaticResource BorderLightBrush}"
+            Opacity="0.6"/>
+    </Grid>
+</UserControl>

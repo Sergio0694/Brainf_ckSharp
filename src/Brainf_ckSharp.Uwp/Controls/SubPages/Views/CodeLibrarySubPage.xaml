@@ -1,0 +1,296 @@
+﻿<UserControl
+    x:Class="Brainf_ckSharp.Uwp.Controls.SubPages.Views.CodeLibrarySubPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
+    xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
+    xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
+    xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
+    xmlns:styleSelectors="using:Brainf_ckSharp.Uwp.StyleSelectors"
+    xmlns:storage="using:Windows.Storage"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:toolkitExtensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
+    xmlns:enums="using:Brainf_ckSharp.Shared.Enums"
+    xmlns:ide="using:Brainf_ckSharp.Shared.Models.Ide"
+    xmlns:collections="using:Microsoft.Toolkit.Collections"
+    xmlns:subPages="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.DataContext>
+        <subPages:CodeLibrarySubPageViewModel x:Name="ViewModel"/>
+    </UserControl.DataContext>
+    <interactivity:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Loaded">
+            <core:InvokeCommandAction Command="{x:Bind ViewModel.LoadDataCommand}"/>
+        </core:EventTriggerBehavior>
+    </interactivity:Interaction.Behaviors>
+    <UserControl.Resources>
+
+        <!--Toggle favorite command-->
+        <XamlUICommand
+            x:Key="ToggleFavoriteCommand"
+            Command="{x:Bind ViewModel.ToggleFavoriteCommand}"/>
+
+        <!--Copy to clipboard command-->
+        <XamlUICommand
+            x:Key="CopyToClipboardCommand"
+            Command="{x:Bind ViewModel.CopyToClipboardCommand}"/>
+
+        <!--Share command-->
+        <XamlUICommand
+            x:Key="ShareCommand"
+            Command="{x:Bind ViewModel.ShareCommand}"/>
+
+        <!--Remove from library command-->
+        <XamlUICommand
+            x:Key="RemoveFromLibraryCommand"
+            Command="{x:Bind ViewModel.RemoveFromLibraryCommand}"/>
+
+        <!--Delete command-->
+        <XamlUICommand
+            x:Key="DeleteCommand"
+            Command="{x:Bind ViewModel.RemoveFromLibraryCommand}"/>
+
+        <!--Favorite placeholder-->
+        <DataTemplate x:Name="FavoritePlaceholder">
+            <Border Background="Transparent">
+                <Grid ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="48"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Style="{StaticResource FontIconTextBlockStyle}"
+                        Text="{StaticResource FavoriteSectionIcon}"
+                        FontSize="20"
+                        Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
+                    <TextBlock
+                        Grid.Column="1"
+                        TextWrapping="Wrap"
+                        FontSize="14"
+                        Foreground="#FFE0E0E0">
+                        <Run Text="Tap here to pick, open a file and favorite it!"/>
+                    </TextBlock>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <!--History placeholder-->
+        <DataTemplate x:Name="HistoryPlaceholder">
+            <Border Background="Transparent">
+                <Grid ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="48"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Style="{StaticResource FontIconTextBlockStyle}"
+                        Text="{StaticResource RecentSectionIcon}"
+                        FontSize="20"
+                        Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
+                    <TextBlock
+                        Grid.Column="1"
+                        TextWrapping="Wrap"
+                        FontSize="14"
+                        Foreground="#FFE0E0E0">
+                        <Run Text="Tap here to pick and open a file!"/>
+                    </TextBlock>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <!--Recent file template-->
+        <DataTemplate
+            x:Name="RecentFileTemplate"
+            x:DataType="ide:CodeLibraryEntry">
+            <StackPanel
+                Spacing="8"
+                Background="Transparent"> <!--Hit target for the context menu-->
+                <StackPanel.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem
+                            Text="{x:Bind convertersSubPages:CodeMetadataConverter.ConvertFavoriteLabel(Metadata)}"
+                            Command="{StaticResource ToggleFavoriteCommand}"
+                            CommandParameter="{x:Bind}">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph="{x:Bind convertersSubPages:CodeMetadataConverter.ConvertFavoriteIcon(Metadata)}"/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem
+                            Text="Copy to clipboard"
+                            Icon="{toolkitExtensions:FontIcon Glyph={StaticResource CopyToClipboardIcon}}"
+                            Command="{StaticResource CopyToClipboardCommand}"
+                            CommandParameter="{x:Bind}"/>
+                        <MenuFlyoutItem
+                            Text="Share"
+                            Icon="{toolkitExtensions:FontIcon Glyph={StaticResource ShareIcon}}"
+                            Command="{StaticResource ShareCommand}"
+                            CommandParameter="{x:Bind}"/>
+                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutItem
+                            Text="Remove from library"
+                            Icon="{toolkitExtensions:FontIcon Glyph={StaticResource RemoveFromLibraryIcon}}"
+                            Command="{StaticResource RemoveFromLibraryCommand}"
+                            CommandParameter="{x:Bind}"/>
+                        <MenuFlyoutItem
+                            Text="Delete"
+                            Icon="{toolkitExtensions:FontIcon Glyph={StaticResource DeleteFileIcon}}"
+                            Command="{StaticResource DeleteCommand}"
+                            CommandParameter="{x:Bind}"/>
+                    </MenuFlyout>
+                </StackPanel.ContextFlyout>
+                <TextBlock
+                    Text="{x:Bind Title}"
+                    FontWeight="Normal"
+                    FontSize="18"
+                    TextLineBounds="TrimToCapHeight"
+                    Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalTextAlignment="Left"/>
+                <TextBlock
+                    Text="{x:Bind storage:IFileExtensions.GetFormattedPath(File)}"
+                    FontWeight="Normal"
+                    FontSize="13"
+                    TextLineBounds="Tight"
+                    Foreground="#FFA0A0A0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalTextAlignment="Left"
+                    MaxLines="1"
+                    TextTrimming="CharacterEllipsis"/>
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalTextAlignment="Left"
+                    TextWrapping="Wrap"
+                    TextTrimming="CharacterEllipsis"
+                    MaxLines="2"
+                    FontSize="14">
+                    <Span attachedProperties:Brainf_ckInlineFormatterHelper.Source="{x:Bind Preview}"/>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+
+        <!--Sample source code template-->
+        <DataTemplate
+            x:Name="SampleCodeTemplate"
+            x:DataType="ide:CodeLibraryEntry">
+            <StackPanel Spacing="8">
+                <TextBlock
+                    Text="{x:Bind Title}"
+                    FontWeight="Normal"
+                    FontSize="18"
+                    TextLineBounds="Tight"
+                    Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalTextAlignment="Left"/>
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalTextAlignment="Left"
+                    TextWrapping="Wrap"
+                    TextTrimming="CharacterEllipsis"
+                    MaxLines="2"
+                    FontSize="14">
+                    <Span attachedProperties:Brainf_ckInlineFormatterHelper.Source="{x:Bind Preview}"/>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <host:SubPageFrame
+        Title="CODE LIBRARY"
+        Background="#72000000">
+
+        <!--Semantic zoom-->
+        <SemanticZoom attachedProperties:SemanticZoomHelper.Source="{x:Bind ViewModel.Source, Mode=OneWay}">
+            <SemanticZoom.ZoomedInView>
+
+                <!--ZoomedInView-->
+                <ListView
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    IsItemClickEnabled="True"
+                    SelectionMode="None">
+                    <interactivity:Interaction.Behaviors>
+                        <core:ItemClickBehavior Command="{x:Bind ViewModel.ProcessItemCommand}"/>
+                    </interactivity:Interaction.Behaviors>
+                    <ListView.Resources>
+                        <Style
+                            x:Name="BaseCodeLibraryEntryItemContainerStyle"
+                            x:Key="BaseCodeLibraryEntryItemContainerStyle"
+                            TargetType="ListViewItem">
+                            <Setter Property="Margin" Value="0,0,0,0"/>
+                            <Setter Property="Padding" Value="12,16,12,16"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Background" Value="#FF171717"/>
+                        </Style>
+                        <Style
+                            x:Name="CodeLibraryEntryItemContainerWithBottomMarginStyle"
+                            TargetType="ListViewItem"
+                            BasedOn="{StaticResource BaseCodeLibraryEntryItemContainerStyle}">
+                            <Setter Property="Margin" Value="0,0,0,4"/>
+                        </Style>
+                    </ListView.Resources>
+                    <ListView.GroupStyle>
+                        <GroupStyle HeaderContainerStyle="{StaticResource ExpandedListViewHeaderItemStyle}">
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate x:DataType="collections:IReadOnlyObservableGroup">
+                                    <jumpList:SemanticZoomZoomedInViewHeaderTemplate
+                                        Title="{x:Bind convertersSubPages:CodeLibraryCategoryConverter.ConvertSectionName((enums:CodeLibrarySection)Key))}"
+                                        Margin="0,-8,0,0"/>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
+                    <ListView.ItemContainerStyleSelector>
+                        <styleSelectors:CodeLibraryEntryItemContainerStyleSelector
+                            DefaultContainerStyle="{x:Bind CodeLibraryEntryItemContainerWithBottomMarginStyle}"
+                            PlaceholderContainerStyle="{x:Bind BaseCodeLibraryEntryItemContainerStyle}"/>
+                    </ListView.ItemContainerStyleSelector>
+                    <ListView.ItemTemplateSelector>
+                        <templateSelectors:SourceCodeEntryTemplateSelector
+                            FavoritePlaceholderTemplate="{x:Bind FavoritePlaceholder}"
+                            RecentPlaceholderTemplate="{x:Bind HistoryPlaceholder}"
+                            RecentItemTemplate="{x:Bind RecentFileTemplate}"
+                            SampleTemplate="{x:Bind SampleCodeTemplate}"/>
+                    </ListView.ItemTemplateSelector>
+                </ListView>
+            </SemanticZoom.ZoomedInView>
+            <SemanticZoom.ZoomedOutView>
+
+                <!--ZoomedOutView-->
+                <ListView>
+                    <ListView.Resources>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Margin" Value="0,0,0,4"/>
+                            <Setter Property="Padding" Value="12,16,12,16"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Background" Value="#FF171717"/>
+                        </Style>
+                    </ListView.Resources>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="ICollectionViewGroup">
+                            <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
+                                Title="{x:Bind convertersSubPages:CodeLibraryCategoryConverter.ConvertSectionName((enums:CodeLibrarySection)Group.(collections:IReadOnlyObservableGroup.Key))}"
+                                DescriptionText="{x:Bind convertersSubPages:CodeLibraryCategoryConverter.ConvertSectionDescription((collections:IReadOnlyObservableGroup)Group)}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </SemanticZoom.ZoomedOutView>
+        </SemanticZoom>
+    </host:SubPageFrame>
+</UserControl>

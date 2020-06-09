@@ -1,0 +1,40 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.Settings.Sections.InterpreterSettingsSection"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <StackPanel>
+        
+        <!--Memory size-->
+        <TextBlock
+            Text="Memory size"
+            x:Uid="MemorySize"/>
+        <ComboBox
+            Margin="0,8,0,0"
+            BorderThickness="1"
+            ItemsSource="{Binding ViewModel.MemorySizeOptions}"
+            SelectedIndex="{Binding ViewModel.MemorySizeSelectedIndex, Mode=TwoWay}"
+            MinWidth="180"/>
+        
+        <!--Stdin buffer cleanup-->
+        <TextBlock
+            Margin="0,16,0,0"
+            x:Uid="ClearStdinBuffer"
+            Text="Clear Stdin buffer on execution"/>
+        <ToggleSwitch
+            IsOn="{Binding ViewModel.ClearStdinBufferOnExecution, Mode=TwoWay}"/>
+
+        <!--Background code execution-->
+        <TextBlock
+            Margin="0,8,0,0"
+            x:Uid="AutorunCodeInBackground"
+            Text="Autorun code in the background"/>
+        <ToggleSwitch
+            IsOn="{Binding ViewModel.AutorunCodeInBackground, Mode=TwoWay}"/>
+    </StackPanel>
+</UserControl>

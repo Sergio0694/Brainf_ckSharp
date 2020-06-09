@@ -1,0 +1,25 @@
+﻿<Application
+    x:Class="Brainf_ckSharp.Uwp.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    RequestedTheme="Dark">
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <!--Resource dictionaries-->
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls"/>
+                <ResourceDictionary Source="Resources/Dictionaries/Brushes.xaml"/>
+                <ResourceDictionary Source="Resources/Dictionaries/IconPaths.xaml"/>
+                <ResourceDictionary Source="Resources/Dictionaries/MDL2Icons.xaml"/>
+                <ResourceDictionary Source="Styles/ButtonsStyles.xaml"/>
+                <ResourceDictionary Source="Styles/ClassicStyles.xaml"/>
+                <ResourceDictionary Source="Styles/MiscStyles.xaml"/>
+                <ResourceDictionary Source="Styles/SemanticZoomStyles.xaml"/>
+                <ResourceDictionary Source="Styles/SubPageStyles.xaml"/>
+                <ResourceDictionary Source="Styles/TextStyles.xaml"/>
+                <ResourceDictionary Source="Brainf_ckSharp.Uwp.Controls.Ide/Brainf_ckEditBox/Brainf_ckEditBox.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

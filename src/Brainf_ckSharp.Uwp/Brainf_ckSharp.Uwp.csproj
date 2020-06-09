@@ -1,0 +1,720 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <LangVersion>8.0</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{45467BB7-1876-4182-B6B5-B0E5986CD96D}</ProjectGuid>
+    <OutputType>AppContainerExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Brainf_ckSharp.Uwp</RootNamespace>
+    <AssemblyName>Brainf_ckSharp.Uwp</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
+    <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM64'">
+    <OutputPath>bin\ARM64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.StackTrace.cs" />
+    <Compile Include="AttachedProperties\CharacterRotationHelper.cs" />
+    <Compile Include="AttachedProperties\IdeResultSectionDescriptionHelper.cs" />
+    <Compile Include="AttachedProperties\ItemsWrapGridHelper.cs" />
+    <Compile Include="AttachedProperties\ListViewBaseHelper.cs" />
+    <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />
+    <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.Source.cs" />
+    <Compile Include="AttachedProperties\SemanticZoomHelper.cs" />
+    <Compile Include="AttachedProperties\ViewModelBaseHelper.cs" />
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Events.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Events.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Flyout.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Flyout.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Flyout.ICommand.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Flyout.ICommand.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Formatting.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Formatting.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Formatting.Lock.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Formatting.Lock.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Properties.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Properties.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Template.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Template.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Win2D.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Win2D.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Enums\BracketsFormattingStyle.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Enums\BracketsFormattingStyle.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\EventArgs\CursorPositionChangedEventArgs.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\EventArgs\CursorPositionChangedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\EventArgs\TextChangedEventArgs.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\EventArgs\TextChangedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Helpers\ClipboardHelper.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Helpers\ClipboardHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Helpers\CodeGenerator.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Helpers\CodeGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Models\BracketsPairInfo.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Models\BracketsPairInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Models\ColumnGuideInfo.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Models\ColumnGuideInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.cs</Link>
+      <DependentUpon>Brainf_ckIde.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Events.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Events.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Methods.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Methods.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Properties.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Properties.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Constants.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Constants.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Draw.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Draw.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Load.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Load.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\EventArgs\BreakpointToggleEventArgs.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\EventArgs\BreakpointToggleEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Enums\IndentationType.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Enums\IndentationType.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Helpers\TextGenerator.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Helpers\TextGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Models\Abstract\IndentationIndicatorBase.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Models\Abstract\IndentationIndicatorBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Models\BlockIndicator.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Models\BlockIndicator.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Models\FunctionIndicator.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Models\FunctionIndicator.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Models\LineIndicator.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Models\LineIndicator.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Extensions\System\StringExtensions.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Extensions\System\StringExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Extensions\System\UInt32Extensions.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Extensions\System\UInt32Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Extensions\Windows.System\VirtualKeyExtensions.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Extensions\Windows.System\VirtualKeyExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Extensions\Windows.UI.Text\ITextDocumentExtensions.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Extensions\Windows.UI.Text\ITextDocumentExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Extensions\Windows.UI.Text\ITextRangeExtensions.cs">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Extensions\Windows.UI.Text\ITextRangeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="Controls\DataTemplates\IdeThemePreviewTemplate.xaml.cs">
+      <DependentUpon>IdeThemePreviewTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Host\StatusBar\StatusBar.xaml.cs">
+      <DependentUpon>StatusBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\Settings\SettingsSubPage.xaml.cs">
+      <DependentUpon>SettingsSubPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPageTemplates.xaml.cs">
+      <DependentUpon>IdeResultSubPageTemplates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPage.xaml.cs">
+      <DependentUpon>IdeResultSubPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Views\UnicodeCharactersMap\UnicodeCharactersMapSubPageTemplates.xaml.cs">
+      <DependentUpon>UnicodeCharactersMapSubPageTemplates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Windows.UI.Xaml.Controls\ComboBoxWithNoScrollWheelSupport.cs" />
+    <Compile Include="Converters\Console\ExitCodeConverter.cs" />
+    <Compile Include="Converters\Console\SyntaxErrorConverter.cs" />
+    <Compile Include="Converters\Ide\CodeSnippetTitleConverter.cs" />
+    <Compile Include="Converters\SubPages\OverflowModeConverter.cs" />
+    <Compile Include="Converters\SubPages\BracketsFormattingStyleConverter.cs" />
+    <Compile Include="Converters\SubPages\SettingsSectionConverters.cs" />
+    <Compile Include="Converters\SubPages\IdeResultSectionConverter.cs" />
+    <Compile Include="Converters\SubPages\CodeLibraryCategoryConverter.cs" />
+    <Compile Include="Converters\Console\SyntaxValidationResultConverter.cs" />
+    <Compile Include="Converters\SubPages\CodeMetadataConverter.cs" />
+    <Compile Include="Converters\TypeToVisibilityConverter.cs" />
+    <Compile Include="Converters\ExecutionResultConverter.cs" />
+    <Compile Include="Converters\UInt16Converter.cs" />
+    <Compile Include="Converters\PivotSelectionConverter.cs" />
+    <Compile Include="Converters\SubPages\UnicodeIntervalConverter.cs" />
+    <Compile Include="Converters\SubPages\UserGuideSectionConverter.cs" />
+    <Compile Include="Controls\DataTemplates\Brainf_ckMemoryCellChunkTemplate.xaml.cs">
+      <DependentUpon>Brainf_ckMemoryCellChunkTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataTemplates\DeveloperTemplate.xaml.cs">
+      <DependentUpon>DeveloperTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataTemplates\JumpList\SemanticZoomZoomedOutViewHeaderTemplate.cs" />
+    <Compile Include="Controls\DataTemplates\JumpList\SemanticZoomZoomedInViewHeaderTemplate.cs" />
+    <Compile Include="Controls\DataTemplates\FeaturedLinkTemplate.xaml.cs">
+      <DependentUpon>FeaturedLinkTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Host\InputPanel\Header\MinimalHeaderButton.cs" />
+    <Compile Include="Controls\Host\InputPanel\Header\StdinHeader.xaml.cs">
+      <DependentUpon>StdinHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Host\InputPanel\CompactMemoryViewer.xaml.cs">
+      <DependentUpon>CompactMemoryViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Host\InputPanel\VirtualKeyboard\OperatorButton.cs" />
+    <Compile Include="Controls\Host\InputPanel\VirtualKeyboard\VirtualKeyboard.xaml.cs">
+      <DependentUpon>VirtualKeyboard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Host\SubPageFrame.cs" />
+    <Compile Include="Controls\SubPages\Host\SubPageHost.xaml.cs">
+      <DependentUpon>SubPageHost.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Interfaces\IAdaptiveSubPage.cs" />
+    <Compile Include="Controls\SubPages\Interfaces\IConstrainedSubPage.cs" />
+    <Compile Include="Controls\SubPages\Shell\AboutSubPage.xaml.cs">
+      <DependentUpon>AboutSubPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\BreakpointCodePreview.xaml.cs">
+      <DependentUpon>BreakpointCodePreview.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\PrintHelloCodeSample.xaml.cs">
+      <DependentUpon>PrintHelloCodeSample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\ResetLoopCodePreview.xaml.cs">
+      <DependentUpon>ResetLoopCodePreview.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\SimpleLoopCodePreview.xaml.cs">
+      <DependentUpon>SimpleLoopCodePreview.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\BreakpointGuidePanel.xaml.cs">
+      <DependentUpon>BreakpointGuidePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\CodeSamplesGuidePanel.xaml.cs">
+      <DependentUpon>CodeSamplesGuidePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\LanguageIntroductionGuidePanel.xaml.cs">
+      <DependentUpon>LanguageIntroductionGuidePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\PBrainExtensionGuidePanel.xaml.cs">
+      <DependentUpon>PBrainExtensionGuidePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\Templates\OperatorInfoTemplate.xaml.cs">
+      <DependentUpon>OperatorInfoTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\UserGuideSubPage.xaml.cs">
+      <DependentUpon>UserGuideSubPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Views\CodeLibrarySubPage.xaml.cs">
+      <DependentUpon>CodeLibrarySubPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubPages\Views\UnicodeCharactersMap\UnicodeCharactersMapSubPage.xaml.cs">
+      <DependentUpon>UnicodeCharactersMapSubPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Windows.UI.Xaml.Controls\ExpanderControl.cs" />
+    <Compile Include="Controls\Windows.UI.Xaml.Controls\AnimatedCommandBar.cs" />
+    <Compile Include="Controls\Host\Header\HeaderButton.cs" />
+    <Compile Include="Controls\Host\Header\HeaderPanel.xaml.cs">
+      <DependentUpon>HeaderPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Host\Shell.xaml.cs">
+      <DependentUpon>Shell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Windows.UI.Xaml.Controls\LockedPivot.cs" />
+    <Compile Include="Converters\UI\BoolToNotBoolConverter.cs" />
+    <Compile Include="Converters\UI\BoolToFontWeightConverter.cs" />
+    <Compile Include="Converters\UI\ObjectNotNullToVisibilityConverter.cs" />
+    <Compile Include="Extensions\Microsoft.Xaml.Interactions.Core\ItemClickBehavior.cs" />
+    <Compile Include="Extensions\System.Collections.Generic\IEnumerableExtensions.cs" />
+    <Compile Include="Extensions\System.Collections.Generic\IListExtensions.cs" />
+    <Compile Include="Extensions\System.Collections.Generic\IReadOnlyListExtensions.cs" />
+    <Compile Include="Extensions\System.Reflection\AssemblyExtensions.cs" />
+    <Compile Include="Extensions\System\StringExtensions.cs" />
+    <Compile Include="Extensions\Windows.Storage\IFileExtensions.cs" />
+    <Compile Include="Extensions\Windows.UI.Xaml\FrameworkElementExtensions.cs" />
+    <Compile Include="Helpers\TitleBarHelper.cs" />
+    <Compile Include="MarkupExtensions\VirtualKeyExtension.cs" />
+    <Compile Include="MarkupExtensions\EnumValuesExtension.cs" />
+    <Compile Include="MarkupExtensions\BooleanExtension.cs" />
+    <Compile Include="Messages\LoadingStateUpdateNotificationMessage.cs" />
+    <Compile Include="Messages\SubPageCloseRequestMessage.cs" />
+    <Compile Include="Messages\SubPageNavigationRequestMessage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\XamlResources.cs" />
+    <Compile Include="StyleSelectors\CodeLibraryEntryItemContainerStyleSelector.cs" />
+    <Compile Include="TemplateSelectors\ConsoleEntryTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\IdeResultSectionTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\SettingsSectionTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\SourceCodeEntryTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\UserGuideSectionTemplateSelector.cs" />
+    <Compile Include="Views\ConsoleView.xaml.cs">
+      <DependentUpon>ConsoleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\IdeView.xaml.cs">
+      <DependentUpon>IdeView.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\FileIcons\bf.png" />
+    <Content Include="Assets\FileIcons\bf.targetsize-16.png" />
+    <Content Include="Assets\FileIcons\bf.targetsize-256.png" />
+    <Content Include="Assets\FileIcons\bf.targetsize-32.png" />
+    <Content Include="Assets\FileIcons\bf.targetsize-48.png" />
+    <Content Include="Assets\FileIcons\bf.targetsize-512.png" />
+    <Content Include="Assets\LargeTile.scale-100.png" />
+    <Content Include="Assets\LargeTile.scale-125.png" />
+    <Content Include="Assets\LargeTile.scale-150.png" />
+    <Content Include="Assets\LargeTile.scale-200.png" />
+    <Content Include="Assets\LargeTile.scale-400.png" />
+    <Content Include="Assets\Misc\donate.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Misc\noise_low.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\Fibonacci.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\HeaderComment.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\HelloWorld.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\IntegerDivision.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\IntegerSum.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\UnicodeSum.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Samples\UnicodeValue.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Assets\ServiceTokens\AppCenter.txt" />
+    <Content Include="Assets\SmallTile.scale-100.png" />
+    <Content Include="Assets\SmallTile.scale-125.png" />
+    <Content Include="Assets\SmallTile.scale-150.png" />
+    <Content Include="Assets\SmallTile.scale-200.png" />
+    <Content Include="Assets\SmallTile.scale-400.png" />
+    <Content Include="Assets\SplashScreen.scale-100.png" />
+    <Content Include="Assets\SplashScreen.scale-125.png" />
+    <Content Include="Assets\SplashScreen.scale-150.png" />
+    <Content Include="Assets\SplashScreen.scale-400.png" />
+    <Content Include="Assets\Square150x150Logo.scale-100.png" />
+    <Content Include="Assets\Square150x150Logo.scale-125.png" />
+    <Content Include="Assets\Square150x150Logo.scale-150.png" />
+    <Content Include="Assets\Square150x150Logo.scale-400.png" />
+    <Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-16.png" />
+    <Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-24.png" />
+    <Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-256.png" />
+    <Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-32.png" />
+    <Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-48.png" />
+    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-16.png" />
+    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-256.png" />
+    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-32.png" />
+    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-48.png" />
+    <Content Include="Assets\Square44x44Logo.scale-100.png" />
+    <Content Include="Assets\Square44x44Logo.scale-125.png" />
+    <Content Include="Assets\Square44x44Logo.scale-150.png" />
+    <Content Include="Assets\Square44x44Logo.scale-400.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-16.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-256.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-32.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-48.png" />
+    <Content Include="Assets\StoreLogo.scale-100.png" />
+    <Content Include="Assets\StoreLogo.scale-125.png" />
+    <Content Include="Assets\StoreLogo.scale-150.png" />
+    <Content Include="Assets\StoreLogo.scale-200.png" />
+    <Content Include="Assets\StoreLogo.scale-400.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-100.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-125.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-150.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="Properties\Default.rd.xml" />
+    <Content Include="Assets\LockScreenLogo.scale-200.png" />
+    <Content Include="Assets\SplashScreen.scale-200.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>6.2.10</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
+      <Version>6.1.0-rc1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Media">
+      <Version>6.1.0-preview1.2</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.UI.Xaml">
+      <Version>2.4.2</Version>
+    </PackageReference>
+    <PackageReference Include="System.Threading.Tasks.Extensions">
+      <Version>4.5.4</Version>
+    </PackageReference>
+    <PackageReference Include="UICompositionAnimations">
+      <Version>6.1.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Brainf_ckSharp.Git\Brainf_ckSharp.Git.csproj">
+      <Project>{8000d892-951c-49b3-ae95-db85d909c717}</Project>
+      <Name>Brainf_ckSharp.Git</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Brainf_ckSharp.Services.Uwp\Brainf_ckSharp.Services.Uwp.csproj">
+      <Project>{978a84f1-ee57-4a0a-9793-c8404e2d5441}</Project>
+      <Name>Brainf_ckSharp.Services.Uwp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Brainf_ckSharp.Services\Brainf_ckSharp.Services.csproj">
+      <Project>{ea19c7cc-ab0b-48f0-9b3b-7289b57fb29d}</Project>
+      <Name>Brainf_ckSharp.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Brainf_ckSharp.Shared\Brainf_ckSharp.Shared.csproj">
+      <Project>{a2b53303-9594-4975-91bd-0ecd83ad9cf1}</Project>
+      <Name>Brainf_ckSharp.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Brainf_ckSharp.Uwp.Themes\Brainf_ckSharp.Uwp.Themes.csproj">
+      <Project>{bd6f7b87-b1aa-46a7-b03a-9d299ea6f636}</Project>
+      <Name>Brainf_ckSharp.Uwp.Themes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Brainf_ckSharp\Brainf_ckSharp.csproj">
+      <Project>{aceea540-7a2c-4705-ac68-5a8c3a5c2a38}</Project>
+      <Name>Brainf_ckSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GitHub\GitHub.csproj">
+      <Project>{9122f0d6-af88-46a6-b91f-ebafe7f59672}</Project>
+      <Name>GitHub</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Toolkit.Mvvm\Microsoft.Toolkit.Mvvm.csproj">
+      <Project>{7ecb8c9d-3d2b-4678-bdc1-f0d2aa4d2890}</Project>
+      <Name>Microsoft.Toolkit.Mvvm</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.xaml">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml">
+      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\DataTemplates\Brainf_ckMemoryCellChunkTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DataTemplates\DeveloperTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DataTemplates\FeaturedLinkTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DataTemplates\IdeThemePreviewTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Host\Header\HeaderPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Host\InputPanel\Header\StdinHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Host\InputPanel\CompactMemoryViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Host\InputPanel\VirtualKeyboard\VirtualKeyboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Host\Shell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Host\StatusBar\StatusBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Host\SubPageHost.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\AboutSubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\Settings\SettingsSubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\BreakpointCodePreview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\PrintHelloCodeSample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\ResetLoopCodePreview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\SimpleLoopCodePreview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\Sections\BreakpointGuidePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\Sections\CodeSamplesGuidePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\Sections\LanguageIntroductionGuidePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\Sections\PBrainExtensionGuidePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\Templates\OperatorInfoTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\UserGuideSubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPageTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Views\CodeLibrarySubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Views\UnicodeCharactersMap\UnicodeCharactersMapSubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Views\UnicodeCharactersMap\UnicodeCharactersMapSubPageTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Dictionaries\Brushes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Dictionaries\IconPaths.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Dictionaries\MDL2Icons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\ButtonsStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\ClassicStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\SemanticZoomStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\MiscStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\SubPageStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\TextStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConsoleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\IdeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File $(SolutionDir)\build\CreateBlankTokens.ps1</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

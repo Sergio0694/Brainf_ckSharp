@@ -1,0 +1,349 @@
+﻿<#@ template language="C#"
+#><#@ assembly name="System.Core"
+#><#@ assembly name="$(TargetDir)Brainf_ckSharp.dll"
+#><#@ assembly name="NetStandard"
+#><#@ import namespace="Brainf_ckSharp.Enums"
+#><#@ output extension=".g.cs" #>
+using System;
+using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
+using Brainf_ckSharp.Enums;
+using Brainf_ckSharp.Memory.Interfaces;
+using Microsoft.Toolkit.HighPerformance.Extensions;
+
+#pragma warning disable IDE0032
+
+namespace Brainf_ckSharp.Memory
+{
+    /// <summary>
+    /// A <see langword="class"/> that represents the state of a Turing machine
+    /// </summary>
+    internal sealed partial class TuringMachineState
+    {
+        /// <summary>
+        /// Gets an execution context of the specified type
+        /// </summary>
+        /// <typeparam name="TExecutionContext">The type of execution context to retrieve</typeparam>
+        /// <returns>An execution context of the specified type</returns>
+        [Pure]
+        private unsafe TExecutionContext GetExecutionContext<TExecutionContext>()
+            where TExecutionContext : struct, IMachineStateExecutionContext
+        {
+            // The underlying buffer is guaranteed not to be null or unpinned here
+            ushort* ptr = (ushort*)Unsafe.AsPointer(ref Buffer.DangerousGetReference());
+
+<#
+foreach (var mode in Enum.GetValues(typeof(OverflowMode)))
+{
+#>
+            if (typeof(TExecutionContext) == typeof(<#=mode#>ExecutionContext))
+            {
+                var executionContext = new <#=mode#>ExecutionContext(ptr, Size - 1, _Position);
+
+                return Unsafe.As<<#=mode#>ExecutionContext, TExecutionContext>(ref executionContext);
+            }
+
+<#
+}
+#>
+            throw new ArgumentException($"Invalid context type: {typeof(TExecutionContext)}", nameof(TExecutionContext));
+        }
+<#
+foreach (var mode in (OverflowMode[])Enum.GetValues(typeof(OverflowMode)))
+{
+    WriteLine("");
+
+    // Get the current cell type, for later use
+    string cellType;
+    switch (mode)
+    {
+        case OverflowMode.UshortWithNoOverflow:
+        case OverflowMode.UshortWithOverflow:
+            cellType = "ushort";
+            break;
+        case OverflowMode.ByteWithNoOverflow:
+        case OverflowMode.ByteWithOverflow:
+            cellType = "byte";
+            break;
+        default: throw new ArgumentException($"Invalid overflow mode: {mode}", nameof(mode));
+    }
+#>
+        /// <summary>
+        /// A <see langword="struct"/> implementing <see cref="IMachineStateExecutionContext"/> for <see cref="OverflowMode.<#=mode#>"/>
+        /// </summary>
+        public unsafe struct <#=mode#>ExecutionContext : IMachineStateExecutionContext
+        {
+            private readonly ushort* Ptr;
+            private readonly int MaxIndex;
+            private int _Position;
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public <#=mode#>ExecutionContext(ushort* ptr, int maxIndex, int position)
+            {
+                Ptr = ptr;
+                MaxIndex = maxIndex;
+                _Position = position;
+            }
+
+            /// <inheritdoc/>
+            public int Position
+            {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                get => _Position;
+            }
+
+            /// <inheritdoc/>
+            public ushort Current
+            {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                get => Ptr[_Position];
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool TryMoveNext()
+            {
+                if (_Position == MaxIndex) return false;
+
+                _Position++;
+
+                return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool TryMoveNext(int count, ref int totalOperations)
+            {
+                if (_Position + count > MaxIndex)
+                {
+                    totalOperations += MaxIndex - _Position;
+
+                    _Position = MaxIndex;
+
+                    return false;
+                }
+
+                totalOperations += count;
+
+                _Position += count;
+
+                return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool TryMoveBack()
+            {
+                if (_Position == 0) return false;
+
+                _Position--;
+
+                return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool TryMoveBack(int count, ref int totalOperations)
+            {
+                if (_Position - count < 0)
+                {
+                    totalOperations += _Position;
+
+                    _Position = 0;
+
+                    return false;
+                }
+
+                totalOperations += count;
+
+                _Position -= count;
+
+                return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool TryIncrement()
+            {
+                ushort* current = Ptr + _Position;
+
+<#
+// Setup the correct increment code
+switch (mode)
+{
+    case OverflowMode.UshortWithNoOverflow:
+    case OverflowMode.ByteWithNoOverflow:
+#>
+                if (*current == <#=cellType#>.MaxValue) return false;
+
+                *current = unchecked((<#=cellType#>)(*current + 1));
+<#
+        break;
+    case OverflowMode.UshortWithOverflow:
+    case OverflowMode.ByteWithOverflow:
+#>
+                *current = unchecked((<#=cellType#>)(*current + 1));
+<# 
+        break;
+    default: throw new ArgumentException($"Invalid overflow mode: {mode}", nameof(mode));
+}
+#>
+
+                return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool TryIncrement(int count, ref int totalOperations)
+            {
+                ushort* current = Ptr + _Position;
+
+<#
+// Setup the correct increment code
+switch (mode)
+{
+    case OverflowMode.UshortWithNoOverflow:
+    case OverflowMode.ByteWithNoOverflow:
+#>
+                if (*current + count > <#=cellType#>.MaxValue)
+                {
+                    totalOperations += <#=cellType#>.MaxValue - *current;
+
+                    *current = <#=cellType#>.MaxValue;
+
+                    return false;
+                }
+
+                *current = unchecked((<#=cellType#>)(*current + count));
+<#
+        break;
+    case OverflowMode.UshortWithOverflow:
+    case OverflowMode.ByteWithOverflow:
+#>
+                *current = unchecked((<#=cellType#>)(*current + count));
+<# 
+        break;
+    default: throw new ArgumentException($"Invalid overflow mode: {mode}", nameof(mode));
+}
+#>
+
+                totalOperations += count;
+
+                return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool TryDecrement()
+            {
+                ushort* current = Ptr + _Position;
+
+<#
+// Setup the correct decrement code
+switch (mode)
+{
+    case OverflowMode.UshortWithNoOverflow:
+    case OverflowMode.ByteWithNoOverflow:
+#>
+                if (*current == 0) return false;
+
+                *current = (ushort)(*current - 1);
+<#
+        break;
+    case OverflowMode.UshortWithOverflow:
+    case OverflowMode.ByteWithOverflow:
+#>
+                *current = unchecked((<#=cellType#>)(*current - 1));
+<#
+        break;
+    default: throw new ArgumentException($"Invalid overflow mode: {mode}", nameof(mode));
+}
+#>
+
+                return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool TryDecrement(int count, ref int totalOperations)
+            {
+                ushort* current = Ptr + _Position;
+
+<#
+// Setup the correct decrement code
+switch (mode)
+{
+    case OverflowMode.UshortWithNoOverflow:
+    case OverflowMode.ByteWithNoOverflow:
+#>
+                if (*current < count)
+                {
+                    totalOperations += *current;
+
+                    *current = 0;
+
+                    return false;
+                }
+
+                *current = (ushort)(*current - count);
+<#
+        break;
+    case OverflowMode.UshortWithOverflow:
+    case OverflowMode.ByteWithOverflow:
+#>
+                *current = unchecked((<#=cellType#>)(*current - count));
+<#
+        break;
+    default: throw new ArgumentException($"Invalid overflow mode: {mode}", nameof(mode));
+}
+#>
+
+                totalOperations += count;
+
+                return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool TryInput(char c)
+            {
+                ushort* current = Ptr + _Position;
+
+<#
+// Setup the correct input code
+switch (mode)
+{
+    case OverflowMode.UshortWithNoOverflow:
+    case OverflowMode.UshortWithOverflow:
+#>
+                *current = c;
+<#
+        break;
+    case OverflowMode.ByteWithNoOverflow:
+#>
+                if (c > byte.MaxValue) return false;
+
+                *current = c;
+<#
+        break;
+    case OverflowMode.ByteWithOverflow:
+#>
+                *current = unchecked((byte)c);
+<#
+        break;
+    default: throw new ArgumentException($"Invalid overflow mode: {mode}", nameof(mode));
+}
+#>
+
+                return true;
+            }
+
+            /// <inheritdoc/>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void ResetCell() => Ptr[_Position] = 0;
+        }
+<#    
+}
+#>
+    }
+}

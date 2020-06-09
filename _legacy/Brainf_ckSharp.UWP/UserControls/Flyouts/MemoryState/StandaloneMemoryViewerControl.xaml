@@ -1,0 +1,35 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.MemoryState.StandaloneMemoryViewerControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:dataTemplates="using:Brainf_ck_sharp.Legacy.UWP.UserControls.DataTemplates"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    x:Name="This">
+
+    <!--Memory cells list-->
+    <ListView ItemContainerStyle="{StaticResource ListViewItemWithoutPointerVisualStates}"
+              x:Name="MemoryList"
+              IsHitTestVisible="False"
+              CanDrag="False">
+        <ListView.Header>
+            <Grid Height="8"/>
+        </ListView.Header>
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <dataTemplates:MemoryCellTemplate Margin="0,0,16,8"/>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+        <ListView.ItemsPanel>
+            <ItemsPanelTemplate>
+                <ItemsWrapGrid Orientation="Horizontal"
+                               ItemHeight="{Binding ElementName=This, Path=ItemsHeight, FallbackValue=76}"
+                               ItemWidth="{Binding ElementName=This, Path=ItemsWidth, FallbackValue=100}"
+                               MaximumRowsOrColumns="5"/>
+            </ItemsPanelTemplate>
+        </ListView.ItemsPanel>
+    </ListView>
+</UserControl>

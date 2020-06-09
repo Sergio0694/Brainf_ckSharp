@@ -1,0 +1,84 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp.Legacy.UWP.UserControls.Flyouts.DevInfo.ReviewPromptFlyout"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:inheritedControls="using:Brainf_ck_sharp.Legacy.UWP.UserControls.InheritedControls"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        
+        <!--Emoji style-->
+        <Style TargetType="TextBlock" x:Key="EmojyBlockStyle">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="IsTextScaleFactorEnabled" Value="False"/>
+            <Setter Property="FontSize" Value="80"/>
+        </Style>
+    </UserControl.Resources>
+
+    <!--Content-->
+    <StackPanel>
+        
+        <!--Text-->
+        <TextBlock
+            Margin="12,0,16,0"
+            x:Uid="ReviewPromotBlock"
+            TextWrapping="Wrap"
+            FontSize="14">
+            <Run 
+                Text="Thank you for downloading"
+                x:Uid="ThankYouBlock1"/>
+            <Run 
+                Text="Brainf*ck#"
+                FontWeight="SemiBold"/><Run Text="!"/>
+            <LineBreak/>
+            <Run 
+                Text="Are you enjoying it so far?"
+                x:Uid="ThankYouBlock2"/>
+        </TextBlock>
+
+        <!--Emojis-->
+        <Grid
+            Margin="0,12,0,0"
+            Height="140">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button
+                Style="{StaticResource WideButtonWithNoBackgroundAndInlineBorder}"
+                Click="SadButton_Click"
+                x:Name="SadButton">
+                <inheritedControls:LightBorderAndBackgroundOverlay
+                    LightBorderThickness="2"
+                    LightBorderBrush="{StaticResource BorderLightBrush}"
+                    LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
+                    
+                    <!--Sad-->
+                    <TextBlock
+                        Text="😣"
+                        Style="{StaticResource EmojyBlockStyle}"/>
+                </inheritedControls:LightBorderAndBackgroundOverlay>
+            </Button>
+            <Button
+                Grid.Column="1"
+                Style="{StaticResource WideButtonWithNoBackgroundAndInlineBorder}"
+                Click="HappyButton_Click"
+                x:Name="HappyButton">
+                <inheritedControls:LightBorderAndBackgroundOverlay
+                    LightBorderThickness="2"
+                    LightBorderBrush="{StaticResource BorderLightBrush}"
+                    LightBackgroundBrush="{StaticResource ElementsWideLightBrush}">
+                    
+                    <!--Happy-->
+                    <TextBlock
+                        Text="😄"
+                        Style="{StaticResource EmojyBlockStyle}"/>
+                </inheritedControls:LightBorderAndBackgroundOverlay>
+            </Button>
+        </Grid>
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,135 @@
+﻿<#@ template language="C#"
+#><#@ assembly name="System.Core" #>
+using System;
+using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using Brainf_ckSharp.Configurations;
+using Brainf_ckSharp.Enums;
+using Brainf_ckSharp.Memory.Interfaces;
+
+#pragma warning disable CS0282
+
+namespace Brainf_ckSharp
+{
+<#
+var names = new[] {"Debug", "Release"};
+foreach (var name in names)
+{
+    if (name != names[0]) WriteLine("");
+#>
+    /// <summary>
+    /// Extensions for building <#=name.ToUpper()#> configurations
+    /// </summary>
+    public static <#=name == "Release" ? "class" : "partial class"#> <#=name#>ConfigurationExtensions
+    {
+        /// <summary>
+        /// Sets the source code to parse and execute for a given configuration
+        /// </summary>
+        /// <param name="configuration">The input <see cref="<#=name#>Configuration"/> instance</param>
+        /// <param name="source">The source code to parse and execute</param>
+        /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ref readonly <#=name#>Configuration WithSource(in this <#=name#>Configuration configuration, string source)
+        {
+            Unsafe.AsRef(configuration.Source) = source.AsMemory();
+            
+            return ref configuration;
+        }
+
+        /// <summary>
+        /// Sets the source code to parse and execute for a given configuration
+        /// </summary>
+        /// <param name="configuration">The input <see cref="<#=name#>Configuration"/> instance</param>
+        /// <param name="source">The source code to parse and execute</param>
+        /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ref readonly <#=name#>Configuration WithSource(in this <#=name#>Configuration configuration, ReadOnlyMemory<char> source)
+        {
+            Unsafe.AsRef(configuration.Source) = source;
+            
+            return ref configuration;
+        }
+
+        /// <summary>
+        /// Sets the stdin buffer to read for a given configuration
+        /// </summary>
+        /// <param name="configuration">The input <see cref="<#=name#>Configuration"/> instance</param>
+        /// <param name="stdin">The input buffer to read data from</param>
+        /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ref readonly <#=name#>Configuration WithStdin(in this <#=name#>Configuration configuration, string stdin)
+        {
+            Unsafe.AsRef(configuration.Stdin) = stdin;
+            
+            return ref configuration;
+        }
+
+        /// <summary>
+        /// Sets the initial machine state for a given configuration
+        /// </summary>
+        /// <param name="configuration">The input <see cref="<#=name#>Configuration"/> instance</param>
+        /// <param name="initialState">The initial state machine to use to start running the script from</param>
+        /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
+        /// <remarks>This property will override the values of <see cref="<#=name#>Configuration.MemorySize"/> and <see cref="<#=name#>Configuration.OverflowMode"/></remarks>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ref readonly <#=name#>Configuration WithInitialState(in this <#=name#>Configuration configuration, IReadOnlyMachineState initialState)
+        {
+            Unsafe.AsRef(configuration.InitialState) = initialState;
+            
+            return ref configuration;
+        }
+
+        /// <summary>
+        /// Sets the memory size for a given configuration
+        /// </summary>
+        /// <param name="configuration">The input <see cref="<#=name#>Configuration"/> instance</param>
+        /// <param name="memorySize">The size of the state machine to create to run the script</param>
+        /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ref readonly <#=name#>Configuration WithMemorySize(in this <#=name#>Configuration configuration, int memorySize)
+        {
+            Unsafe.AsRef(configuration.MemorySize) = memorySize;
+            
+            return ref configuration;
+        }
+
+        /// <summary>
+        /// Sets the overflow mode for a given configuration
+        /// </summary>
+        /// <param name="configuration">The input <see cref="<#=name#>Configuration"/> instance</param>
+        /// <param name="overflowMode">The overflow mode to use in the state machine used to run the script</param>
+        /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ref readonly <#=name#>Configuration WithOverflowMode(in this <#=name#>Configuration configuration, OverflowMode overflowMode)
+        {
+            Unsafe.AsRef(configuration.OverflowMode) = overflowMode;
+            
+            return ref configuration;
+        }
+
+        /// <summary>
+        /// Sets the execution token for a given configuration
+        /// </summary>
+        /// <param name="configuration">The input <see cref="<#=name#>Configuration"/> instance</param>
+        /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution of long running scripts</param>
+        /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ref readonly <#=name#>Configuration WithExecutionToken(in this <#=name#>Configuration configuration, CancellationToken executionToken)
+        {
+            Unsafe.AsRef(configuration.ExecutionToken) = executionToken;
+            
+            return ref configuration;
+        }
+    }
+<#
+}
+#>
+}

@@ -1,0 +1,34 @@
+[
+    This is a simple script
+    that just prints "Hello world!" to the Stdout buffer
+]
++++++ first loop
+[
+    <- return to 1st cell
+    
+    >+++++ 25 in 2nd cell
+    [
+        >+++ 75 in 3rd
+        >++++ 100 in 4th foo
+        [
+        ]
+        >+ 25 in 8th
+        <<<<<<- loop end
+    ]
+    <- return to 1st cell
+]
+>>---. Heee
+>>+. e
+>++++++++.. ll
++++. oe
+>>+++++++. spaceeeeeee
+<------. W
+<. o
++++. r
++++. r
+------. l
+foo
+bar
+baz blah blah
+<-. d
+>>>+. !

@@ -1,0 +1,121 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp.Legacy.UWP.UserControls.VirtualKeyboard.StdinHeader.KeyboardHeaderControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:stdinHeader="using:Brainf_ck_sharp.Legacy.UWP.UserControls.VirtualKeyboard.StdinHeader"
+    mc:Ignorable="d"
+    d:DesignHeight="48"
+    d:DesignWidth="400">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="48"/>
+            <ColumnDefinition Width="48"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="48"/>
+        </Grid.ColumnDefinitions>
+        
+        <!--Decorator on the top left-->
+        <Rectangle
+            Grid.ColumnSpan="2"
+            Fill="{ThemeResource ShellSeparatorLineFillBrush}"
+            VerticalAlignment="Top"
+            Height="1"
+            Canvas.ZIndex="1"/>
+        
+        <!--Sections-->
+        <stdinHeader:KeyboardSectionHeaderButton
+            Grid.Column="0"
+            IconText="&#xE92E;"
+            x:Name="KeyboardButton"
+            IsSelected="True"
+            HeaderSelected="{x:Bind SelectKeyboard}"
+            x:Uid="VirtualKeyboardButton"
+            ToolTipService.ToolTip="Brainf*ck# operators keyboard"/>
+        <stdinHeader:KeyboardSectionHeaderButton
+            IconText="&#xE96A;"
+            Grid.Column="1"
+            x:Name="MemoryMapButton"
+            HeaderSelected="{x:Bind SelectMemoryView}"
+            x:Uid="QuickMemoryViewerButton"
+            ToolTipService.ToolTip="Quick memory view"/>
+        
+        <!--Sliding indicator-->
+        <Canvas 
+            x:Name="SelectedRectangle"
+            Height="1"
+            Width="48"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Background="{ThemeResource SystemControlHighlightAccentBrush}"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            IsHitTestVisible="False"/>
+        
+        <!--Stdin-->
+        <TextBox 
+            Grid.Column="2"
+            Canvas.ZIndex="2"
+            Style="{StaticResource DarkTextBox}"
+            PlaceholderText="Stdin buffer"
+            x:Name="StdinBox"/>
+        
+        <!--Overflow selector-->
+        <Grid Grid.Column="3">
+
+            <!--Wide light border-->
+            <Border
+                x:Name="BackgroundBorder"
+                Background="{StaticResource ElementsWideLightBrush}"
+                Opacity="0"/>
+
+            <!--Custom border-->
+            <Rectangle
+                Fill="{ThemeResource ShellSeparatorLineFillBrush}"
+                VerticalAlignment="Top"
+                Canvas.ZIndex="2"
+                Height="1"/>
+            <Rectangle
+                Fill="{ThemeResource ShellSeparatorLineFillBrush}"
+                HorizontalAlignment="Right"
+                Canvas.ZIndex="1"
+                Width="1"/>
+            <Rectangle
+                Fill="{ThemeResource ShellSeparatorLineFillBrush}"
+                VerticalAlignment="Bottom"
+                Canvas.ZIndex="1"
+                Height="1"/>
+
+            <!--Light-->
+            <Border
+                x:Name="OverflowLightBorder"
+                Margin="0,0,1,0"
+                BorderThickness="1"
+                Canvas.ZIndex="1"
+                BorderBrush="{StaticResource BorderLightBrush}"/>
+
+            <!--Toggle button-->
+            <ToggleButton
+                x:Name="OverflowSwitchButton"
+                x:Uid="OverflowSwitchButton"
+                ToolTipService.ToolTip="Toggle overflow mode"
+                Margin="-1,0,0,0"
+                Padding="1,0,0,0"
+                Checked="{x:Bind ToggleOverflowMode}"
+                Unchecked="{x:Bind ToggleOverflowMode}"
+                Style="{StaticResource WideToggleButtonWithAccentColor}">
+
+                <!--Icon-->
+                <TextBlock
+                    FontFamily="Segoe MDL2 Assets"
+                    FontSize="{StaticResource FontIconTextBlockSize}"
+                    IsTextScaleFactorEnabled="False"
+                    Text="&#xE1CA;"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+            </ToggleButton>
+        </Grid>
+    </Grid>
+</UserControl>

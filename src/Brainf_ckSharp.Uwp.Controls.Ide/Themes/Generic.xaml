@@ -1,0 +1,5 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ms-appx:///Brainf_ckSharp.UWP.Controls.IDE/Brainf_ckEditBox/Brainf_ckEditBox.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

@@ -1,0 +1,13 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--Font icon-->
+    <x:Double x:Key="FontIconTextBlockSize">16</x:Double>
+    <Style TargetType="TextBlock" x:Key="FontIconTextBlockStyle">
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+        <Setter Property="IsTextScaleFactorEnabled" Value="False"/>
+        <Setter Property="FontSize" Value="{StaticResource FontIconTextBlockSize}"/>
+    </Style>
+    
+</ResourceDictionary>

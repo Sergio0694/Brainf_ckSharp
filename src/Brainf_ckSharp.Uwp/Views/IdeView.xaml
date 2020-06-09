@@ -1,0 +1,89 @@
+﻿<UserControl
+    x:Class="Brainf_ckSharp.Uwp.Views.IdeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ide="using:Brainf_ckSharp.Uwp.Controls.Ide"
+    xmlns:views="using:Brainf_ckSharp.Shared.ViewModels.Views"
+    xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
+    xmlns:constants="using:Brainf_ckSharp.Shared"
+    xmlns:convertersIde="using:Brainf_ckSharp.Uwp.Converters.Ide"
+    xmlns:convertersConsole="using:Brainf_ckSharp.Uwp.Converters.Console"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    Loaded="IdeView_OnLoaded">
+    <UserControl.DataContext>
+        <views:IdeViewModel
+            x:Name="ViewModel"
+            ScriptRunRequested="IdeViewModel_OnScriptRunRequested"
+            ScriptDebugRequested="IdeViewModel_OnScriptDebugRequested"
+            CharacterAdded="ViewModelCharacterAdded"
+            CharacterDeleted="ViewModel_CharacterDeleted"
+            CodeLoaded="ViewModel_CodeLoaded"
+            CodeSaved="ViewModel_CodeSaved"
+            StateRestored="ViewModel_OnStateRestored"/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+
+        <!--Code snippet template-->
+        <DataTemplate
+            x:Name="CodeSnippetTemplate"
+            x:DataType="x:String">
+            <Button
+                Style="{StaticResource ExpandedSquareButtonRevealStyle}"
+                HorizontalContentAlignment="Stretch"
+                Padding="8"
+                Click="CodeSnippet_Clicked">
+                <StackPanel Spacing="2">
+
+                    <!--Title name-->
+                    <TextBlock 
+                        Text="{x:Bind convertersIde:CodeSnippetTitleConverter.Convert((x:String))}"
+                        Foreground="DarkGray"
+                        FontWeight="Normal"
+                        TextLineBounds="Tight"
+                        IsTextScaleFactorEnabled="False"
+                        MaxLines="1"
+                        TextWrapping="NoWrap"
+                        TextTrimming="CharacterEllipsis"
+                        FontSize="15"/>
+
+                    <!--Code-->
+                    <TextBlock
+                        MaxLines="1"
+                        TextWrapping="NoWrap"
+                        TextTrimming="CharacterEllipsis"
+                        IsTextScaleFactorEnabled="False"
+                        FontSize="14">
+                        <Span attachedProperties:Brainf_ckInlineFormatterHelper.Source="{x:Bind}"/>
+                    </TextBlock>
+                </StackPanel>
+            </Button>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <!--IDE-->
+    <ide:Brainf_ckIde
+        x:Name="CodeEditor"
+        SyntaxErrorToolTipTitle="Syntax error"
+        SyntaxErrorToolTipSubtitle="{x:Bind convertersConsole:SyntaxErrorConverter.Convert(ViewModel.ValidationResult.ErrorType), Mode=OneWay}"
+        TextChanged="CodeEditor_OnTextChanged"
+        CursorPositionChanged="CodeEditor_OnCursorPositionChanged"
+        BreakpointAdded="CodeEditor_OnBreakpointAdded"
+        BreakpointRemoved="CodeEditor_OnBreakpointRemoved"
+        BreakpointsCleared="CodeEditor_OnBreakpointsCleared">
+        <ide:Brainf_ckIde.ContextMenuSecondaryContent>
+            <ItemsControl
+                ItemsSource="{x:Bind constants:CodeSnippets.All}"
+                ItemTemplate="{x:Bind CodeSnippetTemplate}">
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ItemsPresenter">
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+            </ItemsControl>
+        </ide:Brainf_ckIde.ContextMenuSecondaryContent>
+    </ide:Brainf_ckIde>
+</UserControl>

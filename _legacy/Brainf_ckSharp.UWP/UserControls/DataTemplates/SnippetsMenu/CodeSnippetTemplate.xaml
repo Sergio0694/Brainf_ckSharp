@@ -1,0 +1,83 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp.Legacy.UWP.UserControls.DataTemplates.SnippetsMenu.CodeSnippetTemplate"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="48"
+    d:DesignWidth="400"
+    Height="48">
+
+    <!--Root-->
+    <Grid x:Name="RootGrid"
+          Background="#04000000">
+
+        <!--Visual states-->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="Default">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="RootGrid.Background"
+                            Value="#04000000"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Highlight">
+                    <VisualState.Setters>
+                        <Setter 
+                            Target="RootGrid.Background"
+                            Value="#04FFFFFF"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <!--Wide light border-->
+        <Border
+            x:Name="LightBackground"
+            Opacity="0"
+            Background="{StaticResource ElementsWideLightBrush}"/>
+
+        <!--Light border-->
+        <Border
+            x:Name="LightBorder"
+            Opacity="0.6"
+            BorderThickness="1"
+            Margin="0,0,0,1"
+            BorderBrush="{StaticResource BorderLightBrush}"/>
+
+        <!--Content-->
+        <StackPanel VerticalAlignment="Center"
+                    Margin="12,0,16,0">
+
+            <!--Title name-->
+            <TextBlock x:Name="TitleBlock"
+                       Text="Sample_title"
+                       Foreground="DarkGray"
+                       FontWeight="Normal"
+                       TextLineBounds="Tight"
+                       IsTextScaleFactorEnabled="False"
+                       MaxLines="1"
+                       TextWrapping="NoWrap"
+                       TextTrimming="CharacterEllipsis"/>
+
+            <!--Code-->
+            <TextBlock Text="..."
+                       x:Name="CodeBlock"
+                       MaxLines="1"
+                       TextWrapping="Wrap"
+                       TextTrimming="CharacterEllipsis"
+                       IsTextScaleFactorEnabled="False"
+                       Foreground="LightGray"
+                       FontSize="14"/>
+        </StackPanel>
+
+        <!--Bottom separator-->
+        <Rectangle Grid.Column="0"
+                   VerticalAlignment="Bottom"
+                   Height="1"
+                   Fill="#90000000"
+                   x:Name="BottomSeparator"/>
+    </Grid>
+</UserControl>

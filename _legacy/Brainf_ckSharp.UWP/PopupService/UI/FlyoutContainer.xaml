@@ -1,0 +1,194 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp.Legacy.UWP.PopupService.UI.FlyoutContainer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <!--Root-->
+    <Grid 
+        x:Name="RootGrid"
+        Background="{StaticResource PopupInAppAcrylicBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="52"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!--Visual states-->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="Default">
+                    <VisualState.Setters>
+                        <Setter
+                            x:Name="DefaultSetter"
+                            Target="ButtonContentGrid.Background"
+                            Value="{StaticResource AccentBrushLowFade}"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Highlight">
+                    <VisualState.Setters>
+                        <Setter
+                            x:Name="HighlightSetter"
+                            Target="ButtonContentGrid.Background"
+                            Value="{StaticResource AccentBrushMediumFade}"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        
+        <!--Border around the control-->
+        <Border
+            BorderThickness="1"
+            Grid.RowSpan="3"
+            BorderBrush="#40FFFFFF"
+            IsHitTestVisible="False"
+            Canvas.ZIndex="1"/>
+        
+        <!--Header-->
+        <Grid Grid.Row="0"
+              Background="#40000000">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Title-->
+            <TextBlock Text="Title"
+                       x:Name="TitleBlock"
+                       VerticalAlignment="Center"
+                       IsColorFontEnabled="True"
+                       Style="{StaticResource TrimmedTextStyle}"
+                       Margin="12,0,8,0"
+                       FontWeight="SemiLight"
+                       FontSize="20"/>
+
+            <!--Close button-->
+            <Button Style="{ThemeResource WideButtonWithNoBackgroundAndInlineBorder}"
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    Width="52"
+                    Click="CloseButton_Click"
+                    x:Name="CloseButton"
+                    Margin="0,1,1,0">
+                <Grid>
+
+                    <!--Wide light border-->
+                    <Border
+                        x:Name="BackgroundBorder"
+                        Opacity="0"
+                        Background="{StaticResource ElementsWideLightBrush}"/>
+                    
+                    <!--Light border-->
+                    <Border
+                        Opacity="0.4"
+                        BorderThickness="2"
+                        BorderBrush="{StaticResource BorderLightBrush}"/>
+                    
+                    <!--Close icon-->
+                    <TextBlock Text="&#xE10A;"
+                               Style="{StaticResource FontIconTextBlockStyle}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+                </Grid>
+            </Button>
+        </Grid>
+        
+        <!--Scroller for fixed content-->
+        <ScrollViewer 
+            Grid.Row="1"
+            Visibility="Collapsed"
+            VerticalScrollBarVisibility="Hidden"
+            x:Name="ContentScroller"/>
+        
+        <!--Confirm button-->
+        <Button 
+            Style="{StaticResource WideButtonWithNoBackgroundAndInlineBorder}"
+            Grid.Row="2"
+            Height="60"
+            Click="ConfirmButton_Click"
+            x:Name="ConfirmButton"
+            IsEnabled="False"
+            Visibility="Collapsed"
+            Margin="1,0,1,1">
+            <Grid 
+                x:Name="ButtonContentGrid"
+                Background="{StaticResource AccentBrushLowFade}">
+                <Canvas
+                    Background="#10000000"/>
+                
+                <!--Wide light border-->
+                <Border
+                    x:Name="ConfirmBackgroundBorder"
+                    Opacity="0"
+                    Background="{StaticResource ElementsWideLightBrush}"/>
+
+                <!--Light border-->
+                <Border
+                    Opacity="0.4"
+                    BorderThickness="2"
+                    BorderBrush="{StaticResource BorderLightBrush}"/>
+                
+                <!--Confirm text-->
+                <TextBlock 
+                    Text="Confirm"
+                    x:Uid="ConfirmBlock"
+                    x:Name="ConfirmBlock"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    FontSize="18"
+                    FontWeight="SemiBold"/>
+            </Grid>
+        </Button>
+        
+        <!--Initial loading indicator-->
+        <Grid
+            x:Name="InitialLoadingGrid"
+            Background="#28000000"
+            Visibility="Collapsed"
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Margin="1,0,1,1">
+            <ProgressRing
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Width="24"
+                Height="24"
+                Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                IsActive="True"
+                x:Name="InitialProgressRing"/>
+        </Grid>
+        
+        <!--Loading indicator-->
+        <Grid
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Canvas.ZIndex="10"
+            IsHitTestVisible="False"
+            Margin="1,0,1,1"
+            x:Name="LoadingGrid"
+            Visibility="Collapsed">
+            <Border x:Name="LoadingBorder"/>
+            <ProgressRing
+                x:Name="LoadingRing"
+                IsActive="False"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Width="24"
+                Height="24"
+                Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+        </Grid>
+        
+        <!--Fade canvas-->
+        <Canvas
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Background="#60000000"
+            x:Name="FadeCanvas"
+            Opacity="0"
+            IsHitTestVisible="False"/>
+    </Grid>
+</UserControl>

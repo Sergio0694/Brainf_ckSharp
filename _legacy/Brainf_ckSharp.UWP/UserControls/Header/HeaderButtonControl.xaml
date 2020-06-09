@@ -1,0 +1,75 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp.Legacy.UWP.UserControls.Header.HeaderButtonControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="68"
+    d:DesignWidth="80">
+
+    <!--Visual tree-->
+    <Button
+        x:Name="RootButton"
+        Style="{StaticResource ButtonFullSizeRevealStyle}"
+        Tapped="Header_Tapped">
+
+        <!--Visual states-->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="Default">
+                    <VisualState.Setters>
+                        <Setter
+                            Target="IconBlock.Foreground"
+                            Value="White"/>
+                        <Setter
+                            Target="TitleBlock.Foreground"
+                            Value="White"/>
+                        <Setter
+                            Target="RootButton.Background"
+                            Value="Transparent"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Selected">
+                    <VisualState.Setters>
+                        <Setter
+                            Target="IconBlock.Foreground"
+                            Value="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                        <Setter
+                            Target="TitleBlock.Foreground"
+                            Value="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                        <Setter
+                            Target="RootButton.Background"
+                            Value="#40000000"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <!--Icon and title-->
+        <RelativePanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <TextBlock
+                Style="{StaticResource FontIconTextBlockStyle}"
+                Text="&#xEC4E;"
+                x:Name="IconBlock"
+                HorizontalAlignment="Center"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"/>
+            <TextBlock
+                Text="Title"
+                x:Name="TitleBlock"
+                RelativePanel.Below="IconBlock"
+                HorizontalAlignment="Center"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"
+                MaxLines="1"
+                TextWrapping="NoWrap"
+                TextTrimming="CharacterEllipsis"
+                FontSize="12"
+                Margin="0,4,0,0"
+                Foreground="#E0FFFFFF"/>
+        </RelativePanel>
+    </Button>
+</UserControl>

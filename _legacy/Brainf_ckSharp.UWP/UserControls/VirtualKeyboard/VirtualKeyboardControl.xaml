@@ -1,0 +1,130 @@
+﻿<UserControl
+    x:Class="Brainf_ck_sharp.Legacy.UWP.UserControls.VirtualKeyboard.VirtualKeyboardControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Brainf_ck_sharp.Legacy.UWP.UserControls.VirtualKeyboard.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <!--Operators pad-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition 
+                x:Name="PBrainColumn"
+                Width="0"/>
+        </Grid.ColumnDefinitions>
+        
+        <!--First row (><+-)-->
+        <controls:KeyboardButton
+            Text=">"
+            Description="++ptr"
+            Click="NextButton_Tapped"/>
+        <controls:KeyboardButton
+            Text="&lt;"
+            Description="--ptr"
+            Grid.Row="0"
+            Grid.Column="1"
+            Click="BackButton_Tapped"/>
+        <controls:KeyboardButton
+            Text="+"
+            Description="(*ptr)++"
+            Grid.Row="0"
+            Grid.Column="2"
+            Click="PlusButton_Tapped"/>
+        <controls:KeyboardButton
+            Text="-"
+            Description="(*ptr)--"
+            Grid.Row="0"
+            Grid.Column="3"
+            Click="MinusButton_Tapped"/>
+        
+        <!--Second row ([].,)-->
+        <controls:KeyboardButton
+            Text="["
+            Description="while (*ptr) {"
+            Grid.Row="1"
+            Grid.Column="0"
+            Click="OpenBracketButton_Tapped"
+            Holding="OpenSquareBracket_Holding"/>
+        <controls:KeyboardButton
+            Text="]"
+            Description="}"
+            Grid.Row="1"
+            Grid.Column="1"
+            Click="CloseBracketButton_Tapped"/>
+        <controls:KeyboardButton
+            Text="."
+            Description="putchar(*ptr)"
+            Grid.Row="1"
+            Grid.Column="2"
+            Click="PointButton_Tapped"/>
+        <controls:KeyboardButton
+            Text=","
+            Description="*ptr = getchar()"
+            Grid.Row="1"
+            Grid.Column="3"
+            Click="CommaButton_Tapped"/>
+
+        <!--Border with the PBrain operators-->
+        <Border
+            x:Name="PBrainBorder"
+            Grid.Column="4"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            BorderThickness="4,0,0,0"
+            BorderBrush="#24000000">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="4"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <controls:KeyboardButton
+                    Text="("
+                    Description="f ("
+                    Click="FunctionOpenButton_Tapped"
+                    ContentMargin="0,2,0,0"/>
+                <Canvas 
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Background="#24000000"/>
+                <controls:KeyboardButton
+                    Text=")"
+                    Description=")"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    ContentMargin="0,2,0,0"
+                    Click="FunctionCloseButton_Tapped"/>
+                <Canvas 
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Background="#24000000"/>
+                <controls:KeyboardButton
+                    Text=":"
+                    Description="call"
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    ContentMargin="0,-2,0,0"
+                    Click="CallButton_Tapped"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

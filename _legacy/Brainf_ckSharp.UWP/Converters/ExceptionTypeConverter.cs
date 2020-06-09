@@ -1,0 +1,41 @@
+﻿using System;
+using Windows.UI.Xaml.Data;
+using Brainf_ck_sharp.Legacy.UWP.DataModels.Misc;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.Extensions;
+using Brainf_ck_sharp.Legacy.UWP.Helpers.UI;
+
+namespace Brainf_ck_sharp.Legacy.UWP.Converters
+{
+    /// <summary>
+    /// A converter that returns a text representiation of a <see cref="ScriptExceptionType"/> value
+    /// </summary>
+    public class ExceptionTypeConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            return Convert(value.To<ScriptExceptionType>());
+        }
+
+        /// <summary>
+        /// Converts the given type into its representation
+        /// </summary>
+        /// <param name="type">The input type</param>
+        public static string Convert(ScriptExceptionType type)
+        {
+            switch (type)
+            {
+                case ScriptExceptionType.RuntimeError:
+                    return LocalizationManager.GetResource("Exception");
+                case ScriptExceptionType.ThresholdExceeded:
+                    return LocalizationManager.GetResource("Threshold");
+                default:
+                    return LocalizationManager.GetResource("InternalError");
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
