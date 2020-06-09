@@ -69,6 +69,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             UpdateLineIndicators(numberOfLines);
             UpdateDiffInfo(args.PlainText);
             UpdateIndentationInfo(args.PlainText, args.ValidationResult.IsSuccessOrEmptyScript, numberOfLines);
+            UpdateBreakpointsInfo();
 
             IdeOverlaysCanvas.Invalidate();
         }
@@ -127,7 +128,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             {
                 if (BreakpointIndicators.Count == 0) BreakpointsBorder.ContextFlyout = BreakpointsMenuFlyout;
 
-                BreakpointIndicators.GetOrAddValueRef(lineNumber) = (float)(line.Top + BreakpointIndicatorTopMargin);
+                BreakpointIndicators.GetOrAddValueRef(lineNumber) = (float)line.Top;
 
                 BreakpointAdded?.Invoke(this, lineNumber);
             }

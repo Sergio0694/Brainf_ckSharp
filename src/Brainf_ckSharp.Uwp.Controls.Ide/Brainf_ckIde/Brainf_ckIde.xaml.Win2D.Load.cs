@@ -2,6 +2,8 @@
 using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Windows.Foundation;
+using Windows.UI.Text;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Git;
 using Brainf_ckSharp.Git.Enums;
@@ -9,6 +11,7 @@ using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models.Abstract;
 using Microsoft.Toolkit.HighPerformance.Buffers;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 #nullable enable
 
@@ -244,6 +247,97 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Updates the info for the breakpoints to display
+        /// </summary>
+        private void UpdateBreakpointsInfo()
+        {
+            int totalBreakpoints = BreakpointIndicators.Count;
+
+            // If there are no breakpoints, do nothing
+            if (totalBreakpoints == 0) return;
+
+            // Rent a buffer to track the current line numbers
+            using MemoryOwner<int> lineNumbers = MemoryOwner<int>.Allocate(totalBreakpoints);
+            ref int lineNumbersRef = ref lineNumbers.DangerousGetReference();
+            int currentLineNumber = 0;
+
+            // Copy the current line numbers to a buffer
+            foreach (var entry in BreakpointIndicators)
+            {
+                Unsafe.Add(ref lineNumbersRef, currentLineNumber++) = entry.Key;
+            }
+
+            // Get the underlying array (no Span<T>.Sort API available on UWP)
+            _ = MemoryMarshal.TryGetArray(lineNumbers.Memory, out ArraySegment<int> segment);
+
+            // Sort the current line numbers (they might have been added not sequentially)
+            Array.Sort(segment.Array, 0, totalBreakpoints);
+
+            // Create an oversized buffer for the computer areas, and tracking variables
+            MemoryOwner<Rect> breakpointAreas = MemoryOwner<Rect>.Allocate(totalBreakpoints);
+            ref Rect breakpointAreasRef = ref breakpointAreas.DangerousGetReference();
+            int
+                currentBreakpointIndex = 0,
+                currentTargetLineNumber = Unsafe.Add(ref lineNumbersRef, 0),
+                currentTextIndex = 0;
+            currentLineNumber = 1; // The line count starts at 1
+
+            // Go through all the available lines of text
+            foreach (var line in Text.Tokenize(Characters.CarriageReturn))
+            {
+                if (currentTargetLineNumber == currentLineNumber)
+                {
+                    int
+                        firstOperatorOffset = -1,
+                        lastOperatorOffset = 0;
+
+                    // If the current line is marked as containing a breakpoint,
+                    // validate it to make sure there is still at least one operator
+                    for (int i = 0; i < line.Length; i++)
+                    {
+                        if (Brainf_ckParser.IsOperator(line[i]))
+                        {
+                            firstOperatorOffset = i;
+
+                            for (int j = i + 1; j < line.Length; j++)
+                            {
+                                if (Brainf_ckParser.IsOperator(line[j])) lastOperatorOffset = j;
+                                else goto ProcessLineAnalysisResults;
+                            }
+
+                            goto ProcessLineAnalysisResults;
+                        }
+                    }
+
+                    ProcessLineAnalysisResults:
+
+                    // If there are no operators left, remove the breakpoint
+                    if (firstOperatorOffset == -1) BreakpointIndicators.Remove(currentTargetLineNumber);
+                    else
+                    {
+                        // Get the text range for the first operators interval
+                        ITextRange range = CodeEditBox.Document.GetRange(
+                            currentTextIndex + firstOperatorOffset,
+                            currentTextIndex + lastOperatorOffset + 1);
+
+                        // Extract the target coordinates for the text range
+                        range.GetRect(
+                            PointOptions.Transform,
+                            out _,
+                            out _);
+
+                        if (currentBreakpointIndex++ == totalBreakpoints) break;
+                    }
+                }
+
+                currentLineNumber++;
+                currentTextIndex += line.Length + 1;
+            }
+
+            _BreakpointAreas = breakpointAreas.Slice(0, currentBreakpointIndex);
         }
     }
 }
