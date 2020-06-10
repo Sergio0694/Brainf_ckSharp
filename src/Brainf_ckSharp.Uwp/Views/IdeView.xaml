@@ -57,7 +57,7 @@
                 ItemsSource="{x:Bind constants:CodeSnippets.All}"
                 ItemTemplate="{x:Bind CodeSnippetTemplate}">
                 <ItemsControl.ItemContainerStyle>
-                    <Style TargetType="ItemsPresenter">
+                    <Style TargetType="ContentPresenter">
                         <Setter Property="HorizontalAlignment" Value="Stretch"/>
                     </Style>
                 </ItemsControl.ItemContainerStyle>
