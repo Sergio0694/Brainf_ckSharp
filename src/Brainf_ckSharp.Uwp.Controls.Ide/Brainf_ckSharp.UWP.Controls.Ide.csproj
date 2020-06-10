@@ -148,8 +148,11 @@
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Properties.cs" />
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Constants.cs" />
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Methods.cs" />
+    <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Draw.cs" />
+    <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Load.cs" />
     <Compile Include="Brainf_ckIde\Enums\IndentationType.cs" />
     <Compile Include="Brainf_ckIde\EventArgs\BreakpointToggleEventArgs.cs" />
+    <Compile Include="Brainf_ckIde\Helpers\Pool{T}.cs" />
     <Compile Include="Brainf_ckIde\Helpers\TextGenerator.cs" />
     <Compile Include="Brainf_ckIde\Models\Abstract\IndentationIndicatorBase.cs" />
     <Compile Include="Brainf_ckIde\Models\BlockIndicator.cs" />
@@ -172,6 +175,9 @@
     <EmbeddedResource Include="Properties\Brainf_ckSharp.Uwp.Controls.Ide.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Experimental.Collections">
+      <Version>1.0.6-e190117-3</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
     </PackageReference>

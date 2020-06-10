@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ide="using:Brainf_ckSharp.Uwp.Controls.Ide"
+    xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
     xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     mc:Ignorable="d"
     d:DesignHeight="300"
@@ -76,6 +77,16 @@
                     <TranslateTransform X="20" Y="76"/>
                 </TextBlock.RenderTransform>
             </TextBlock>
+
+            <!--Win2D canvas-->
+            <xaml:CanvasControl
+                x:Name="IdeOverlaysCanvas"
+                Draw="IdeOverlaysCanvas_Draw"
+                Background="Black">
+                <xaml:CanvasControl.RenderTransform>
+                    <TranslateTransform Y="78"/>
+                </xaml:CanvasControl.RenderTransform>
+            </xaml:CanvasControl>
         </Canvas>
 
         <!--Breakpoints gesture receiver-->
@@ -99,6 +110,7 @@
             SyntaxHighlightTheme="{x:Bind SyntaxHighlightTheme, Mode=OneWay}"
             FormattingCompleted="CodeEditBox_OnFormattingCompleted"
             TextChanged="CodeEditBox_TextChanged"
+            DrawOverlays="CodeEditBox_OnDrawOverlays"
             CursorPositionChanged="CodeEditBox_CursorPositionChanged"/>
     </Grid>
 </UserControl>
