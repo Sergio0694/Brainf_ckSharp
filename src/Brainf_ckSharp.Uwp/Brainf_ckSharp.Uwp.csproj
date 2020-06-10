@@ -122,25 +122,13 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.Source.cs" />
-    <Compile Include="Converters\Ide\CodeSnippetTitleConverter.cs" />
-    <Compile Include="Converters\UInt16Converter.cs" />
+    <Compile Include="Converters\CodeSnippetTitleConverter.cs" />
     <Compile Include="Controls\Host\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\UI\BoolToNotBoolConverter.cs" />
-    <Compile Include="Converters\UI\BoolToFontWeightConverter.cs" />
-    <Compile Include="Converters\UI\ObjectNotNullToVisibilityConverter.cs" />
-    <Compile Include="Extensions\Microsoft.Xaml.Interactions.Core\ItemClickBehavior.cs" />
-    <Compile Include="Extensions\System.Collections.Generic\IEnumerableExtensions.cs" />
-    <Compile Include="Extensions\System.Collections.Generic\IListExtensions.cs" />
-    <Compile Include="Extensions\System.Collections.Generic\IReadOnlyListExtensions.cs" />
-    <Compile Include="Extensions\System.Reflection\AssemblyExtensions.cs" />
-    <Compile Include="Extensions\System\StringExtensions.cs" />
-    <Compile Include="Extensions\Windows.UI.Xaml\FrameworkElementExtensions.cs" />
+    <Compile Include="Extensions\IListExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\TitleBarHelper.cs" />
-    <Compile Include="MarkupExtensions\VirtualKeyExtension.cs" />
-    <Compile Include="MarkupExtensions\EnumValuesExtension.cs" />
-    <Compile Include="MarkupExtensions\BooleanExtension.cs" />
     <Compile Include="Models\CodeSnippets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\XamlResources.cs" />
