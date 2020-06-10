@@ -2,26 +2,11 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp3.1;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     <RootNamespace>Brainf_ckSharp.Profiler</RootNamespace>
     <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Scripts\Division.txt" />
-    <None Remove="Scripts\Fibonacci.txt" />
-    <None Remove="Scripts\HelloWorld.txt" />
-    <None Remove="Scripts\Multiply.txt" />
-    <None Remove="Scripts\Sum.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Scripts\Division.txt" />
-    <EmbeddedResource Include="Scripts\Fibonacci.txt" />
-    <EmbeddedResource Include="Scripts\HelloWorld.txt" />
-    <EmbeddedResource Include="Scripts\Sum.txt" />
-    <EmbeddedResource Include="Scripts\Multiply.txt" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.12.0" />
@@ -31,5 +16,7 @@
     <ProjectReference Include="..\..\..\src\Brainf_ckSharp\Brainf_ckSharp.csproj" />
     <ProjectReference Include="..\..\Brainf_ckSharp\Brainf_ckSharp.Legacy.csproj" />
   </ItemGroup>
+
+  <Import Project="..\..\..\unit\Brainf_ckSharp.Unit.Shared\Brainf_ckSharp.Unit.Shared.projitems" Label="Shared" />
 
 </Project>

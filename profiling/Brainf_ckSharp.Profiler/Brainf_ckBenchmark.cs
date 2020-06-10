@@ -46,7 +46,8 @@ namespace Brainf_ckSharp.Profiler
 
             using InterpreterSession enumerator = result.Value!;
 
-            enumerator.MoveNext();
+            enumerator!.MoveNext();
+
             return enumerator.Current.Stdout;
         }
 
@@ -63,7 +64,7 @@ namespace Brainf_ckSharp.Profiler
 
             result.Value!.MachineState.Dispose();
 
-            return result.Value.Stdout;
+            return result.Value!.Stdout;
         }
     }
 }

@@ -70,6 +70,7 @@ Global
 		unit\Brainf_ckSharp.Unit.Shared\Brainf_ckSharp.Unit.Shared.projitems*{2f386a53-b0e4-4aec-8e3b-3963d3618af4}*SharedItemsImports = 5
 		src\Brainf_ckSharp.Shared.Constants\Brainf_ckSharp.Shared.Constants.projitems*{7fe6e0f0-dfb4-4dfc-939f-186ecfe3425e}*SharedItemsImports = 13
 		src\Brainf_ckSharp.Shared.Constants\Brainf_ckSharp.Shared.Constants.projitems*{a2b53303-9594-4975-91bd-0ecd83ad9cf1}*SharedItemsImports = 5
+		unit\Brainf_ckSharp.Unit.Shared\Brainf_ckSharp.Unit.Shared.projitems*{e8a6de4f-8b0b-4bb4-89f2-fedd0d15695d}*SharedItemsImports = 5
 		unit\Brainf_ckSharp.Unit.Shared\Brainf_ckSharp.Unit.Shared.projitems*{e96d1e2c-16d0-4490-b508-5ea1d94e42d6}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

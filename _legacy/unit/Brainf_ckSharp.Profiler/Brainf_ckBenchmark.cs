@@ -1,54 +1,64 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Jobs;
 using Brainf_ckSharp;
-using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
+using Brainf_ckSharp.Unit.Shared;
+using Brainf_ckSharp.Unit.Shared.Models;
 using Brainf_ckInterpreterOld = Brainf_ckSharp.Legacy.Brainf_ckInterpreter;
 using Brainf_ckInterpreterNew = Brainf_ckSharp.Brainf_ckInterpreter;
+using LegacyInterpreterResult = Brainf_ckSharp.Legacy.ReturnTypes.InterpreterResult;
+using OverflowModeOld = Brainf_ckSharp.Legacy.Enums.OverflowMode;
+using OverflowModeNew = Brainf_ckSharp.Enums.OverflowMode;
 
 namespace Brainf_ck_sharp.Profiler
 {
     [MemoryDiagnoser]
-    [SimpleJob(RuntimeMoniker.NetCoreApp21)]
-    [SimpleJob(RuntimeMoniker.NetCoreApp31)]
     public class Brainf_ckBenchmark
     {
-        [Params("HelloWorld", "Sum", "Multiply", "Division", "Fibonacci")]
-        public string Test;
+        /// <summary>
+        /// The name of the script to benchmark
+        /// </summary>
+        [Params("HelloWorld", "Sum", "Multiply", "Division", "Fibonacci", "Mandelbrot")]
+        public string? Name;
 
-        private string Script;
-        private string Stdin;
+        /// <summary>
+        /// The currently loaded script to test
+        /// </summary>
+        private Script? Script;
+
+        /// <summary>
+        /// The overflow mode for the legacy interpreter
+        /// </summary>
+        private OverflowModeOld LegacyOverflowMode;
 
         [GlobalSetup]
         public void Setup()
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            string filename = assembly.GetManifestResourceNames().First(name => name.EndsWith($"{Test}.txt"));
+            Script = ScriptLoader.LoadScriptByName(Name!);
 
-            using Stream stream = assembly.GetManifestResourceStream(filename);
-            using StreamReader reader = new StreamReader(stream);
+            LegacyOverflowMode = Script.OverflowMode switch
+            {
+                OverflowModeNew.UshortWithNoOverflow => OverflowModeOld.ShortNoOverflow,
+                OverflowModeNew.ByteWithOverflow => OverflowModeOld.ByteOverflow,
+                _ => throw new ArgumentOutOfRangeException(nameof(Script.OverflowMode), Script.OverflowMode.ToString())
+            };
 
-            Stdin = Regex.Match(reader.ReadLine(), @$"\[([^]]+)\]").Groups[1].Value;
-
-            string expected = Regex.Match(reader.ReadLine(), @$"\[([^]]+)\]").Groups[1].Value;
-
-            Script = reader.ReadToEnd();
-
-            if (!expected.Equals(Legacy())) throw new InvalidOperationException("Legacy test failed");
-            if (!expected.Equals(Debug())) throw new InvalidOperationException("Debug test failed");
-            if (!expected.Equals(Release())) throw new InvalidOperationException("Release test failed");
+            if (!Script.Stdout.Equals(Legacy())) throw new InvalidOperationException("Legacy test failed");
+            if (!Script.Stdout.Equals(Debug())) throw new InvalidOperationException("Debug test failed");
+            if (!Script.Stdout.Equals(Release())) throw new InvalidOperationException("Release test failed");
         }
 
         [Benchmark(Baseline = true)]
         public string Legacy()
         {
-            return Brainf_ckInterpreterOld.Run(Script, Stdin).Output;
+            LegacyInterpreterResult result = Brainf_ckInterpreterOld.Run(
+                Script!.Source,
+                Script.Stdin,
+                LegacyOverflowMode,
+                Script.MemorySize);
+
+            return result.Output;
         }
 
         [Benchmark]
@@ -56,15 +66,16 @@ namespace Brainf_ck_sharp.Profiler
         {
             Option<InterpreterSession> result = Brainf_ckInterpreterNew
                 .CreateDebugConfiguration()
-                .WithSource(Script)
-                .WithStdin(Stdin)
-                .WithMemorySize(64)
-                .WithOverflowMode(OverflowMode.UshortWithNoOverflow)
+                .WithSource(Script!.Source)
+                .WithStdin(Script.Stdin)
+                .WithMemorySize(Script.MemorySize)
+                .WithOverflowMode(Script.OverflowMode)
                 .TryRun();
 
             using InterpreterSession enumerator = result.Value!;
 
-            enumerator.MoveNext();
+            enumerator!.MoveNext();
+
             return enumerator.Current.Stdout;
         }
 
@@ -73,15 +84,15 @@ namespace Brainf_ck_sharp.Profiler
         {
             Option<InterpreterResult> result = Brainf_ckInterpreterNew
                 .CreateReleaseConfiguration()
-                .WithSource(Script)
-                .WithStdin(Stdin)
-                .WithMemorySize(64)
-                .WithOverflowMode(OverflowMode.UshortWithNoOverflow)
+                .WithSource(Script!.Source)
+                .WithStdin(Script.Stdin)
+                .WithMemorySize(Script.MemorySize)
+                .WithOverflowMode(Script.OverflowMode)
                 .TryRun();
 
             result.Value!.MachineState.Dispose();
 
-            return result.Value.Stdout;
+            return result.Value!.Stdout;
         }
     }
 }

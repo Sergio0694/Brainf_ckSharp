@@ -33,7 +33,7 @@ namespace Brainf_ckSharp.Legacy
         /// <summary>
         /// Gets the maximum allowed size for the output buffer
         /// </summary>
-        public const int StdoutBufferSizeLimit = 1024;
+        public const int StdoutBufferSizeLimit = 20000;
 
         /// <summary>
         /// Gets the maximum number of functions that can be defined in a single script

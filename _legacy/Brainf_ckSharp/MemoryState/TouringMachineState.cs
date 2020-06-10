@@ -30,7 +30,7 @@ namespace Brainf_ckSharp.Legacy.MemoryState
         public TouringMachineState(int size)
         {
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size), "The size must be a positive number");
-            if (size > 4096) throw new ArgumentOutOfRangeException(nameof(size), "The size can't be greater than 4096");
+            if (size > 40000) throw new ArgumentOutOfRangeException(nameof(size), "The size can't be greater than 40.000");
             Count = size;
             Memory = new ushort[size];
         }
