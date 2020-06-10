@@ -160,15 +160,15 @@
     <Compile Include="Extensions\Windows.System\VirtualKeyExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Text\ITextDocumentExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Text\ITextRangeExtensions.cs" />
-    <Compile Include="Lib\Brainf_ckParser.cs" />
-    <Compile Include="Lib\Characters.cs" />
-    <Compile Include="Lib\Operators.cs" />
-    <Compile Include="Lib\SyntaxError.cs" />
-    <Compile Include="Lib\SyntaxValidationResult.cs" />
+    <Compile Include="Misc\Brainf_ckParser.cs" />
+    <Compile Include="Misc\Characters.cs" />
+    <Compile Include="Misc\Operators.cs" />
+    <Compile Include="Misc\SyntaxError.cs" />
+    <Compile Include="Misc\SyntaxValidationResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Themes\Brainf_ckTheme.cs" />
-    <Compile Include="Themes\Brainf_ckThemes.cs" />
-    <Compile Include="Themes\Enums\LineHighlightStyle.cs" />
+    <Compile Include="Misc\Brainf_ckTheme.cs" />
+    <Compile Include="Misc\Brainf_ckThemes.cs" />
+    <Compile Include="Misc\Enums\LineHighlightStyle.cs" />
     <EmbeddedResource Include="Properties\Brainf_ckSharp.Uwp.Controls.Ide.rd.xml" />
   </ItemGroup>
   <ItemGroup>
