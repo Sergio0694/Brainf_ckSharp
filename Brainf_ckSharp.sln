@@ -16,8 +16,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.Uwp", "src\B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainf_ckSharp.Uwp.Controls.Ide", "src\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckSharp.Uwp.Controls.Ide.csproj", "{473069AA-080A-493E-B7A8-0BEE7B0B00F1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainf_ckSharp.Git", "src\Brainf_ckSharp.Git\Brainf_ckSharp.Git.csproj", "{8000D892-951C-49B3-AE95-DB85D909C717}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,26 +76,6 @@ Global
 		{473069AA-080A-493E-B7A8-0BEE7B0B00F1}.Release|x64.Build.0 = Release|x64
 		{473069AA-080A-493E-B7A8-0BEE7B0B00F1}.Release|x86.ActiveCfg = Release|x86
 		{473069AA-080A-493E-B7A8-0BEE7B0B00F1}.Release|x86.Build.0 = Release|x86
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|ARM.Build.0 = Debug|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|x64.Build.0 = Debug|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Debug|x86.Build.0 = Debug|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|ARM.ActiveCfg = Release|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|ARM.Build.0 = Release|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|ARM64.Build.0 = Release|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|x64.ActiveCfg = Release|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|x64.Build.0 = Release|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|x86.ActiveCfg = Release|Any CPU
-		{8000D892-951C-49B3-AE95-DB85D909C717}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

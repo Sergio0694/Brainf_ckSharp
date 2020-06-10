@@ -1,6 +1,4 @@
 ﻿using System;
-using Windows.Foundation;
-using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -33,15 +31,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         private void Brainf_ckIde_Loaded(object sender, RoutedEventArgs e)
         {
             CodeEditBox.ContentScroller!.StartExpressionAnimation(LineBlock, Axis.Y, VisualProperty.Offset);
-            CodeEditBox.ContentScroller.StartExpressionAnimation(IdeOverlaysCanvas, Axis.Y, VisualProperty.Offset);
             CodeEditBox.ContentElement!.SizeChanged += Brainf_ckIde_SizeChanged;
-
-            // Manually adjust the Win2D canvas size here, since when this handler runs
-            // for the code editor, the first size changed event for the inner content
-            // element has already been raised. Doing this fixes the Win2D canvas
-            // size without the user having to first manually resize the app window.
-            IdeOverlaysCanvas.Height = CodeEditBox.ContentElement.ActualHeight;
-            IdeOverlaysCanvas.Width = CodeEditBox.ContentElement.ActualWidth + 72;
         }
 
         /// <summary>
@@ -51,8 +41,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="e">The <see cref="SizeChangedEventArgs"/> for <see cref="FrameworkElement.SizeChanged"/></param>
         private void Brainf_ckIde_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            IdeOverlaysCanvas.Height = e.NewSize.Height + 20;
-            IdeOverlaysCanvas.Width = e.NewSize.Width + 72;
         }
 
         /// <summary>
@@ -62,7 +50,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="e">The <see cref="EventArgs"/> instance for the current event</param>
         private void CodeEditBox_OnFormattingCompleted(object sender, EventArgs e)
         {
-            UpdateBreakpointsInfo();
         }
 
         /// <summary>
@@ -77,10 +64,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             int numberOfLines = args.PlainText.Count(Characters.CarriageReturn);
 
             UpdateLineIndicators(numberOfLines);
-            UpdateDiffInfo(args.PlainText);
-            UpdateIndentationInfo(args.PlainText, args.ValidationResult.IsSuccessOrEmptyScript, numberOfLines);
-
-            IdeOverlaysCanvas.Invalidate();
         }
 
         /// <summary>
@@ -109,43 +92,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="e">The <see cref="TappedRoutedEventArgs"/> instance for the event</param>
         private void BreakpointsCanvas_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            // Calculate the target vertical offset for the tap
-            double yOffset =
-                e.GetPosition((Border)sender).Y - 8 -         // Tap Y offset and adjustment
-                CodeEditBox.VerticalScrollBarMargin.Top +     // Top internal padding
-                CodeEditBox.ContentScroller!.VerticalOffset;  // Vertical scroll offset
-
-            // Get the range aligned to the left edge of the tapped line
-            ITextRange range = CodeEditBox.Document.GetRangeFromPoint(new Point(0, yOffset), PointOptions.ClientCoordinates);
-            range.GetRect(PointOptions.Transform, out Rect line, out _);
-
-            // Get the line number
-            int lineNumber = CodeEditBox.Text.AsSpan(0, range.StartPosition).Count(Characters.CarriageReturn) + 1;
-
-            if (lineNumber == 1) return;
-
-            // Store or remove the breakpoint
-            if (BreakpointIndicators.ContainsKey(lineNumber))
-            {
-                BreakpointIndicators.Remove(lineNumber);
-
-                if (BreakpointIndicators.Count == 0) BreakpointsBorder.ContextFlyout = null;
-
-                BreakpointRemoved?.Invoke(this, new BreakpointToggleEventArgs(lineNumber, BreakpointIndicators.Count));
-            }
-            else
-            {
-                if (BreakpointIndicators.Count == 0) BreakpointsBorder.ContextFlyout = BreakpointsMenuFlyout;
-
-                BreakpointIndicators.GetOrAddValueRef(lineNumber) = (float)line.Top;
-
-                BreakpointAdded?.Invoke(this, new BreakpointToggleEventArgs(lineNumber, BreakpointIndicators.Count));
-            }
-
-            UpdateBreakpointsInfo();
-
-            IdeOverlaysCanvas.Invalidate();
-            CodeEditBox.InvalidateOverlays();
         }
 
         /// <summary>
@@ -155,13 +101,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="e">The <see cref="RoutedEventArgs"/> for the current event</param>
         private void RemoveAllBreakpointsButton_Clicked(object sender, RoutedEventArgs e)
         {
-            BreakpointsCleared?.Invoke(this, BreakpointIndicators.Count);
-
-            BreakpointIndicators.Clear();
-
-            UpdateBreakpointsInfo();
-
-            IdeOverlaysCanvas.Invalidate();
             CodeEditBox.InvalidateOverlays();
         }
     }

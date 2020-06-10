@@ -268,10 +268,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Brainf_ckSharp.Git\Brainf_ckSharp.Git.csproj">
-      <Project>{8000d892-951c-49b3-ae95-db85d909c717}</Project>
-      <Name>Brainf_ckSharp.Git</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckSharp.Uwp.Controls.Ide.csproj">
       <Project>{473069aa-080a-493e-b7a8-0bee7b0b00f1}</Project>
       <Name>Brainf_ckSharp.Uwp.Controls.Ide</Name>

@@ -147,8 +147,6 @@
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Events.cs" />
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Properties.cs" />
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Constants.cs" />
-    <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Load.cs" />
-    <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Draw.cs" />
     <Compile Include="Brainf_ckIde\Brainf_ckIde.xaml.Methods.cs" />
     <Compile Include="Brainf_ckIde\Enums\IndentationType.cs" />
     <Compile Include="Brainf_ckIde\EventArgs\BreakpointToggleEventArgs.cs" />
@@ -177,6 +175,9 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.HighPerformance">
+      <Version>6.1.0-rc1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI">
       <Version>6.1.0-rc1</Version>
     </PackageReference>
@@ -189,12 +190,6 @@
     <PackageReference Include="Win2D.uwp">
       <Version>1.25.0</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Brainf_ckSharp.Git\Brainf_ckSharp.Git.csproj">
-      <Project>{8000d892-951c-49b3-ae95-db85d909c717}</Project>
-      <Name>Brainf_ckSharp.Git</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Brainf_ckEditBox\Brainf_ckEditBox.xaml">
