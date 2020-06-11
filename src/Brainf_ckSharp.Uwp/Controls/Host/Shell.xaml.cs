@@ -43,8 +43,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         /// </summary>
         private void Shell_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Send(SubPageNavigationRequestMessage.To<ReviewPromptSubPage>());
-
             if (SystemInformation.LaunchCount == 4)
             {
                 Messenger.Default.Send(SubPageNavigationRequestMessage.To<ReviewPromptSubPage>());
