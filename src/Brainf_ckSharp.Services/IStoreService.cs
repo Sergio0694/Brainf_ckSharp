@@ -10,6 +10,11 @@ namespace Brainf_ckSharp.Services
     public interface IStoreService
     {
         /// <summary>
+        /// Requests a review in the Store for the current application
+        /// </summary>
+        Task RequestReviewAsync();
+
+        /// <summary>
         /// Checks if a product with a given id has already been purchased by the current user
         /// </summary>
         /// <param name="id">The id of the product to check</param>

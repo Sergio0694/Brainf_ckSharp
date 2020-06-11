@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Services.Store;
@@ -15,6 +16,15 @@ namespace Brainf_ckSharp.Services.Uwp.Store
         /// The <see cref="Windows.Services.Store.StoreContext"/> instance to use for the current application
         /// </summary>
         private readonly StoreContext StoreContext = StoreContext.GetDefault();
+
+        /// <inheritdoc/>
+        public Task RequestReviewAsync()
+        {
+            if (Debugger.IsAttached) Debug.WriteLine("[STORE] Review requested");
+            else Console.WriteLine("[STORE] Review requested");
+
+            return Task.CompletedTask;
+        }
 
         /// <inheritdoc/>
         public async Task<bool> IsProductPurchasedAsync(string id)
