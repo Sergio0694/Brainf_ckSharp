@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Services.Enums;
-using Microsoft.Toolkit.Uwp.Helpers;
 
 namespace Brainf_ckSharp.Services.Uwp.Store
 {
@@ -13,7 +12,7 @@ namespace Brainf_ckSharp.Services.Uwp.Store
         /// <inheritdoc/>
         public Task RequestReviewAsync()
         {
-            return SystemInformation.LaunchStoreForReviewAsync();
+            return Microsoft.Toolkit.Uwp.Helpers.SystemInformation.LaunchStoreForReviewAsync();
         }
 
         /// <inheritdoc/>

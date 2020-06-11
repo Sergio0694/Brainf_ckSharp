@@ -18,7 +18,8 @@
     xmlns:settings="using:Brainf_ckSharp.Shared.Enums.Settings"
     mc:Ignorable="d"
     d:DesignHeight="600"
-    d:DesignWidth="400">
+    d:DesignWidth="400"
+    Loaded="Shell_OnLoaded">
     <UserControl.DataContext>
         <viewModels:ShellViewModel
             x:Name="ViewModel"

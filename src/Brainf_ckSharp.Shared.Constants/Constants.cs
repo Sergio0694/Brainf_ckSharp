@@ -6,6 +6,11 @@
     public static class Constants
     {
         /// <summary>
+        /// Developer feedback email
+        /// </summary>
+        public const string FeedbackEmail = "apps.sergiopedri@outlook.com";
+
+        /// <summary>
         /// The URL to make donations on PayPal
         /// </summary>
         public const string GitHubUsername = "sergio0694";

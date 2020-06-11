@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 using Windows.System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Enums.Settings;
@@ -15,6 +16,7 @@ using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Mvvm.Messaging.Messages;
+using Microsoft.Toolkit.Uwp.Helpers;
 
 #nullable enable
 
@@ -33,6 +35,19 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
             if (!(App.Current.RequestedFile is null))
             {
                 ViewModel.SelectedView = ViewType.Ide;
+            }
+        }
+
+        /// <summary>
+        /// Displays the review prompt, if needed
+        /// </summary>
+        private void Shell_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            Messenger.Default.Send(SubPageNavigationRequestMessage.To<ReviewPromptSubPage>());
+
+            if (SystemInformation.LaunchCount == 4)
+            {
+                Messenger.Default.Send(SubPageNavigationRequestMessage.To<ReviewPromptSubPage>());
             }
         }
 

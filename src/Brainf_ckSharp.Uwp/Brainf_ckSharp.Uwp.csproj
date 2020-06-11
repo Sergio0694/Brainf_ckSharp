@@ -242,6 +242,9 @@
     <Compile Include="Controls\Host\StatusBar\StatusBar.xaml.cs">
       <DependentUpon>StatusBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SubPages\Shell\ReviewPromptSubPage.xaml.cs">
+      <DependentUpon>ReviewPromptSubPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SubPages\Shell\Settings\SettingsSubPage.xaml.cs">
       <DependentUpon>SettingsSubPage.xaml</DependentUpon>
     </Compile>
@@ -590,6 +593,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\SubPages\Shell\AboutSubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\ReviewPromptSubPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
