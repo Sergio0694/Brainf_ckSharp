@@ -130,112 +130,6 @@
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.Source.cs" />
     <Compile Include="AttachedProperties\SemanticZoomHelper.cs" />
     <Compile Include="AttachedProperties\ViewModelBaseHelper.cs" />
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Events.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Events.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Flyout.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Flyout.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Flyout.ICommand.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Flyout.ICommand.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Formatting.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Formatting.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Formatting.Lock.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Formatting.Lock.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Properties.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Properties.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Template.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Template.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Win2D.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.Win2D.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Enums\BracketsFormattingStyle.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Enums\BracketsFormattingStyle.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\EventArgs\CursorPositionChangedEventArgs.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\EventArgs\CursorPositionChangedEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\EventArgs\TextChangedEventArgs.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\EventArgs\TextChangedEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Helpers\ClipboardHelper.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Helpers\ClipboardHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Helpers\CodeGenerator.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Helpers\CodeGenerator.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Models\BracketsPairInfo.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Models\BracketsPairInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Models\ColumnGuideInfo.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Models\ColumnGuideInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.cs</Link>
-      <DependentUpon>Brainf_ckIde.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Events.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Events.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Methods.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Methods.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Properties.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Properties.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Constants.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Constants.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Draw.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Draw.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Load.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml.Win2D.Load.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\EventArgs\BreakpointToggleEventArgs.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\EventArgs\BreakpointToggleEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Enums\IndentationType.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Enums\IndentationType.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Helpers\TextGenerator.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Helpers\TextGenerator.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Models\Abstract\IndentationIndicatorBase.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Models\Abstract\IndentationIndicatorBase.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Models\BlockIndicator.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Models\BlockIndicator.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Models\FunctionIndicator.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Models\FunctionIndicator.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Models\LineIndicator.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Models\LineIndicator.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Extensions\System\StringExtensions.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Extensions\System\StringExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Extensions\System\UInt32Extensions.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Extensions\System\UInt32Extensions.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Extensions\Windows.System\VirtualKeyExtensions.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Extensions\Windows.System\VirtualKeyExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Extensions\Windows.UI.Text\ITextDocumentExtensions.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Extensions\Windows.UI.Text\ITextDocumentExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Extensions\Windows.UI.Text\ITextRangeExtensions.cs">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Extensions\Windows.UI.Text\ITextRangeExtensions.cs</Link>
-    </Compile>
     <Compile Include="Controls\DataTemplates\IdeThemePreviewTemplate.xaml.cs">
       <DependentUpon>IdeThemePreviewTemplate.xaml</DependentUpon>
     </Compile>
@@ -520,6 +414,10 @@
       <Project>{a2b53303-9594-4975-91bd-0ecd83ad9cf1}</Project>
       <Name>Brainf_ckSharp.Shared</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckSharp.Uwp.Controls.Ide.csproj">
+      <Project>{473069aa-080a-493e-b7a8-0bee7b0b00f1}</Project>
+      <Name>Brainf_ckSharp.Uwp.Controls.Ide</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Brainf_ckSharp.Uwp.Themes\Brainf_ckSharp.Uwp.Themes.csproj">
       <Project>{bd6f7b87-b1aa-46a7-b03a-9d299ea6f636}</Project>
       <Name>Brainf_ckSharp.Uwp.Themes</Name>
@@ -538,16 +436,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.xaml">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckEditBox\Brainf_ckEditBox.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="..\Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml">
-      <Link>Brainf_ckSharp.Uwp.Controls.Ide\Brainf_ckIde\Brainf_ckIde.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\DataTemplates\Brainf_ckMemoryCellChunkTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
