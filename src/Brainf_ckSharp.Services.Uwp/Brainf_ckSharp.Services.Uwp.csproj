@@ -125,6 +125,7 @@
     <Compile Include="Analytics\TestAnalyticsService.cs" />
     <Compile Include="ClipboardService.cs" />
     <Compile Include="Abstractions\File.cs" />
+    <Compile Include="EmailService.cs" />
     <Compile Include="FilesService.cs" />
     <Compile Include="KeyboardListenerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -149,6 +150,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.HighPerformance">
       <Version>6.1.0-preview1.2</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp">
+      <Version>6.1.0-rc1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
