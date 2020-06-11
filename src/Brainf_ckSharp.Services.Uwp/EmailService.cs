@@ -4,7 +4,7 @@ using Windows.ApplicationModel.Email;
 
 #nullable enable
 
-namespace Brainf_ckSharp.Services.Uwp
+namespace Brainf_ckSharp.Services.Uwp.Email
 {
     /// <summary>
     /// A <see langword="class"/> that handles emails

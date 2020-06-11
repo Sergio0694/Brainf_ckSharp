@@ -9,6 +9,7 @@ using Windows.UI.Xaml;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Services.Uwp.Analytics;
+using Brainf_ckSharp.Services.Uwp.Email;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Uwp.Controls.Host;
 using Brainf_ckSharp.Uwp.Helpers;
@@ -21,9 +22,11 @@ using GitHub;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Brainf_ckSharp.Services.Uwp.Store;
+using Brainf_ckSharp.Services.Uwp.SystemInformation;
 using Brainf_ckSharp.Shared;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using Microsoft.Toolkit.Uwp.Helpers;
 
 #nullable enable
 
@@ -55,6 +58,8 @@ namespace Brainf_ckSharp.Uwp
         /// <inheritdoc/>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            SystemInformation.TrackAppUse(e);
+
             OnActivated(e.PrelaunchActivated);
         }
 
@@ -129,6 +134,8 @@ namespace Brainf_ckSharp.Uwp
                 services.AddSingleton<IKeyboardListenerService, KeyboardListenerService>();
                 services.AddSingleton<IClipboardService, ClipboardService>();
                 services.AddSingleton<IShareService, ShareService>();
+                services.AddSingleton<IEmailService, EmailService>();
+                services.AddSingleton<ISystemInformationService, SystemInformationService>();
                 services.AddSingleton(_ => GitHubRestFactory.GetGitHubService("Brainf_ckSharp|Uwp"));
 #if DEBUG
                 services.AddSingleton<IStoreService, TestStoreService>();
