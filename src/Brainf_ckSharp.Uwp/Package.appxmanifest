@@ -5,8 +5,10 @@
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
+  xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4"
+  xmlns:iot2="http://schemas.microsoft.com/appx/manifest/iot/windows10/2"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  IgnorableNamespaces="uap mp rescap">
+  IgnorableNamespaces="uap uap5 mp desktop4 iot2 rescap">
 
   <Identity
     Name="77cee5e8-8481-4e69-92bc-31cfb2a6bc2b"
@@ -30,9 +32,12 @@
   </Resources>
 
   <Applications>
-    <Application Id="App"
+    <Application
+      Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="Brainf_ckSharp.Uwp.App">
+      EntryPoint="Brainf_ckSharp.Uwp.App"
+      desktop4:SupportsMultipleInstances="true"
+      iot2:SupportsMultipleInstances="true">
       <uap:VisualElements
         DisplayName="Brainf*ck# (Preview)"
         Square150x150Logo="Assets\Square150x150Logo.png"

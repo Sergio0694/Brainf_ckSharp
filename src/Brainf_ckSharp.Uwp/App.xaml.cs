@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.Reflection;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
@@ -27,6 +30,8 @@ using Brainf_ckSharp.Shared;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Uwp.Helpers;
+using File = Brainf_ckSharp.Uwp.Services.Files.File;
+using FileIO = System.IO.File;
 
 #nullable enable
 
@@ -35,15 +40,81 @@ namespace Brainf_ckSharp.Uwp
     /// <summary>
     /// Provides application-specific behavior to supplement the default <see cref="Application"/> class
     /// </summary>
-    sealed partial class App : Application
+    public sealed partial class App : Application
     {
+        /// <summary>
+        /// The entry point for the whole application
+        /// </summary>
+        public static void Main(string[] args)
+        {
+            // Check if this invocation already has a target instance (from the shell)
+            if (AppInstance.RecommendedInstance is null)
+            {
+                string key = Guid.NewGuid().ToString("N");
+
+                // If the activation requests a file, check if it is already in use
+                if (AppInstance.GetActivatedEventArgs() is FileActivatedEventArgs fileArgs &&
+                    fileArgs.Files.FirstOrDefault() is StorageFile storageFile)
+                {
+                    string temporaryPath = ApplicationData.Current.TemporaryFolder.Path;
+
+                    foreach (AppInstance instance in AppInstance.GetInstances())
+                    {
+                        // Read the file with the same key as the current instance
+                        string keyPath = Path.Combine(temporaryPath, instance.Key);
+
+                        if (!FileIO.Exists(keyPath)) continue;
+
+                        string currentPath = FileIO.ReadAllText(keyPath);
+
+                        // If an active instance is find, just switch to it
+                        if (storageFile.Path.Equals(currentPath))
+                        {
+                            instance.RedirectActivationTo();
+
+                            return;
+                        }
+                    }
+                }
+
+                // This will be a new app instance, which needs to be registered
+                _ = AppInstance.FindOrRegisterInstanceForKey(key);
+
+                // Start the app as usual, passing the current key
+                Start(_ => new App(key));
+            }
+            else AppInstance.RecommendedInstance.RedirectActivationTo();
+        }
+
+        /// <summary>
+        /// Registers the currently opened file for the current application instance
+        /// </summary>
+        /// <param name="file">The file currently opened, if present</param>
+        public void RegisterCurrentFilePath(IFile? file)
+        {
+            string
+                temporaryPath = ApplicationData.Current.TemporaryFolder.Path,
+                keyPath = Path.Combine(temporaryPath, Id);
+
+            if (file is null) FileIO.Delete(keyPath);
+            else FileIO.WriteAllText(keyPath, file.Path);
+        }
+
         /// <summary>
         /// Creates a new <see cref="App"/> instance
         /// </summary>
-        public App()
+        /// <param name="id">The unique id associated with this app instance</param>
+        public App(string id)
         {
+            Id = id;
+
             this.InitializeComponent();
         }
+
+        /// <summary>
+        /// Gets the unique id associated with this app instance
+        /// </summary>
+        public string Id { get; }
 
         /// <summary>
         /// Gets or sets the currently requested file to open
@@ -117,6 +188,8 @@ namespace Brainf_ckSharp.Uwp
             Deferral deferral = e.GetDeferral();
 
             await Messenger.Default.Send<SaveIdeStateRequestMessage>().Result;
+
+            RegisterCurrentFilePath(null);
 
             deferral.Complete();
         }
