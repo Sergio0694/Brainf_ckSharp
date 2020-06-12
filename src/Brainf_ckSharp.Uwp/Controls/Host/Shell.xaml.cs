@@ -32,7 +32,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
             this.InitializeComponent();
 
             // Override the starting view if there is a file request pending
-            if (!(App.Current.RequestedFile is null))
+            if (App.Current.IsFileRequestPending)
             {
                 ViewModel.SelectedView = ViewType.Ide;
             }

@@ -35,6 +35,30 @@ namespace Brainf_ckSharp.Uwp
     /// </summary>
     public sealed partial class App : Application
     {
+        /// <summary>
+        /// The currently requested file to open
+        /// </summary>
+        private IFile? _RequestedFile;
+
+        /// <summary>
+        /// Gets whether or not there is a file request pending
+        /// </summary>
+        public bool IsFileRequestPending => !(_RequestedFile is null);
+
+        /// <summary>
+        /// Extracts the current file request, if present
+        /// </summary>
+        /// <param name="file">The resulting requested file, if available</param>
+        /// <returns>Whether or not a requested file was present</returns>
+        public bool TryExtractRequestedFile(out IFile? file)
+        {
+            file = _RequestedFile;
+
+            _RequestedFile = null;
+
+            return !(file is null);
+        }
+
         /// <inheritdoc/>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {

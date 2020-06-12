@@ -33,11 +33,6 @@ namespace Brainf_ckSharp.Uwp
         public string Id { get; }
 
         /// <summary>
-        /// Gets or sets the currently requested file to open
-        /// </summary>
-        public IFile? RequestedFile { get; set; }
-
-        /// <summary>
         /// Gets the current <see cref="App"/> instance in use
         /// </summary>
         public new static App Current => (App)Application.Current;
