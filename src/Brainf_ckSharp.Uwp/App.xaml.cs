@@ -123,7 +123,7 @@ namespace Brainf_ckSharp.Uwp
 
             await Messenger.Default.Send<SaveIdeStateRequestMessage>().Result;
 
-            RegisterFilePath(null);
+            RegisterFile(null);
 
             deferral.Complete();
         }
@@ -131,12 +131,13 @@ namespace Brainf_ckSharp.Uwp
         /// <summary>
         /// Performs additional settings configuration and other startup initialization
         /// </summary>
-        private static void ConfigureServices()
+        private void ConfigureServices()
         {
             // Default services
             Ioc.Default.ConfigureServices(services =>
             {
                 services.AddSingleton<IFilesService, FilesService>();
+                services.AddSingleton<IFilesManagerService>(this);
                 services.AddSingleton<ISettingsService, SettingsService>();
                 services.AddSingleton<IKeyboardListenerService, KeyboardListenerService>();
                 services.AddSingleton<IClipboardService, ClipboardService>();

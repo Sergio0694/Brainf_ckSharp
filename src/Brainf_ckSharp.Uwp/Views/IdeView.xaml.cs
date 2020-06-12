@@ -118,8 +118,6 @@ namespace Brainf_ckSharp.Uwp.Views
         /// <param name="e">The <see cref="string"/> with the code to load</param>
         private void ViewModel_CodeLoaded(object sender, string e)
         {
-            App.Current.RegisterFilePath(ViewModel.Code.File);
-
             CodeEditor.LoadText(e);
 
             Messenger.Default.Send<SubPageCloseRequestMessage>();
@@ -142,8 +140,6 @@ namespace Brainf_ckSharp.Uwp.Views
         /// <param name="e">The empty <see cref="EventArgs"/> instance for the event</param>
         private void ViewModel_OnStateRestored(object sender, IdeState e)
         {
-            App.Current.RegisterFilePath(ViewModel.Code.File);
-
             CodeEditor.LoadText(e.Text);
             CodeEditor.Move(e.Row, e.Column);
         }

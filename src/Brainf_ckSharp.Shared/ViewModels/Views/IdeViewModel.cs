@@ -30,6 +30,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         private readonly IFilesService FilesService = Ioc.Default.GetRequiredService<IFilesService>();
 
         /// <summary>
+        /// The <see cref="IFilesManagerService"/> instance currently in use
+        /// </summary>
+        private readonly IFilesManagerService FilesManagerService = Ioc.Default.GetRequiredService<IFilesManagerService>();
+
+        /// <summary>
         /// Creates a new <see cref="IdeViewModel"/> instance
         /// </summary>
         public IdeViewModel()
@@ -91,6 +96,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         protected override void OnDeactivated()
         {
             Messenger.Unregister<OperatorKeyPressedNotificationMessage>(this);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnCodeChanged(SourceCode code)
+        {
+            FilesManagerService.RegisterFile(code.File);
         }
 
         /// <summary>

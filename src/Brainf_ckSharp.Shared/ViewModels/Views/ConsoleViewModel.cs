@@ -83,10 +83,10 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         }
 
         /// <inheritdoc/>
-        protected override void OnTextChanged()
+        protected override void OnTextChanged(ReadOnlyMemory<char> text)
         {
-            ValidationResult = Brainf_ckParser.ValidateSyntax(Text.Span);
-            Column = Text.Length + 1;
+            ValidationResult = Brainf_ckParser.ValidateSyntax(text.Span);
+            Column = text.Length + 1;
         }
 
         /// <summary>
