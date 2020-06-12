@@ -114,7 +114,8 @@
         attachedProperties:ListViewBaseHelper.IsAutoScrollEnabled="{x:Bind ViewModel.Source}"
         SelectionMode="None"
         Padding="0,4,0,0"
-        IsHitTestVisible="False">
+        IsHitTestVisible="False"
+        IsTabStop="False">
         <ListView.ItemTemplateSelector>
             <templateSelectors:ConsoleEntryTemplateSelector
                 CommandTemplate="{x:Bind CommandTemplate}"
@@ -126,6 +127,8 @@
         <ListView.Resources>
             <Style TargetType="ListViewItem">
                 <Setter Property="MinHeight" Value="0"/>
+                <Setter Property="IsHitTestVisible" Value="False"/>
+                <Setter Property="IsTabStop" Value="False"/>
             </Style>
         </ListView.Resources>
         <ListView.Header>

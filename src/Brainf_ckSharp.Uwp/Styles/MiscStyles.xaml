@@ -13,6 +13,7 @@
 
     <!--Expander control-->
     <Style TargetType="controls:ExpanderControl">
+        <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:ExpanderControl">
