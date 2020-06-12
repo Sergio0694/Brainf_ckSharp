@@ -67,6 +67,8 @@ namespace Brainf_ckSharp.Uwp
             SystemInformation.TrackAppUse(e);
 
             OnActivated(e.PrelaunchActivated);
+
+            base.OnLaunched(e);
         }
 
         /// <inheritdoc/>
@@ -81,6 +83,17 @@ namespace Brainf_ckSharp.Uwp
             OnActivated(false);
 
             base.OnFileActivated(args);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            if (args is ProtocolActivatedEventArgs)
+            {
+                ((Shell)Window.Current.Content).BringIdeIntoView();
+            }
+
+            base.OnActivated(args);
         }
 
         /// <summary>

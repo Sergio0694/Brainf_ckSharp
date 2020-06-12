@@ -55,6 +55,14 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         public ICommand MoveCommand { get; } = new RelayCommand<VirtualKey>(key => Messenger.Default.Send(new ValueChangedMessage<VirtualKey>(key)));
 
         /// <summary>
+        /// Brings the IDE into view, if necessary
+        /// </summary>
+        public void BringIdeIntoView()
+        {
+            ViewModel.SelectedView = ViewType.Ide;
+        }
+
+        /// <summary>
         /// Shows the user guide
         /// </summary>
         private void ViewModel_OnUserGuideRequested(object sender, EventArgs e)
