@@ -39,7 +39,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             Messenger.Register<InsertNewLineRequestMessage>(this, _ => CharacterAdded?.Invoke(this, Characters.CarriageReturn));
             Messenger.Register<DeleteCharacterRequestMessage>(this, _ => CharacterDeleted?.Invoke(this, EventArgs.Empty));
             Messenger.Register<PickOpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync(m.Favorite));
-            Messenger.Register<OpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync(m.Value));
             Messenger.Register<LoadSourceCodeRequestMessage>(this, m => LoadSourceCode(m.Value));
             Messenger.Register<NewFileRequestMessage>(this, _ => LoadNewFile());
             Messenger.Register<SaveFileRequestMessage>(this, m => _ = TrySaveTextAsync());

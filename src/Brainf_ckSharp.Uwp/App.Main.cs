@@ -90,7 +90,7 @@ namespace Brainf_ckSharp.Uwp
         /// Registers the currently opened file for the current application instance
         /// </summary>
         /// <param name="file">The file currently opened, if present</param>
-        public void RegisterCurrentFilePath(IFile? file)
+        public void RegisterFilePath(IFile? file)
         {
             string
                 temporaryPath = ApplicationData.Current.TemporaryFolder.Path,

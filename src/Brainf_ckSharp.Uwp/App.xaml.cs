@@ -1,9 +1,7 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
-using Windows.Storage;
 using Windows.UI.Core.Preview;
 using Windows.UI.Xaml;
 using Brainf_ckSharp.Enums;
@@ -48,13 +46,6 @@ namespace Brainf_ckSharp.Uwp
         /// <inheritdoc/>
         protected override void OnFileActivated(FileActivatedEventArgs args)
         {
-            if (args.Files.FirstOrDefault() is StorageFile storageFile)
-            {
-                IFile file = RequestedFile = new File(storageFile);
-
-                Messenger.Default.Send(new OpenFileRequestMessage(file));
-            }
-
             OnActivated(false);
 
             base.OnFileActivated(args);
@@ -100,7 +91,7 @@ namespace Brainf_ckSharp.Uwp
 
             await Messenger.Default.Send<SaveIdeStateRequestMessage>().Result;
 
-            RegisterCurrentFilePath(null);
+            RegisterFilePath(null);
 
             deferral.Complete();
         }
