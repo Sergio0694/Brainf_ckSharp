@@ -112,6 +112,14 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         {
             AnalyticsService.Log(Constants.Events.LoadLibrarySourceCode);
 
+            if (!(code.File is null) &&
+                FilesManagerService.TrySwitchTo(code.File))
+            {
+                AnalyticsService.Log(Constants.Events.SwitchToFile);
+
+                return;
+            }
+
             Code = code;
 
             CodeLoaded?.Invoke(this, Code.Content);
@@ -136,6 +144,13 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             AnalyticsService.Log(Constants.Events.PickFileRequest);
 
             if (!(await FilesService.TryPickOpenFileAsync(".bfs") is IFile file)) return;
+
+            if (FilesManagerService.TrySwitchTo(file))
+            {
+                AnalyticsService.Log(Constants.Events.SwitchToFile);
+
+                return;
+            }
 
             AnalyticsService.Log(Constants.Events.LoadPickedFile, (nameof(CodeMetadata.IsFavorited), favorite.ToString()));
 

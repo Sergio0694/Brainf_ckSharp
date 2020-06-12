@@ -76,6 +76,7 @@
             public const string IdeDebug = "[IDE] Debug";
             public const string PickFileRequest = "[IDE] Pick file request";
             public const string LoadPickedFile = "[IDE] Load picked file";
+            public const string SwitchToFile = "[IDE] Switch to file";
             public const string LoadProtocolFile = "[IDE] Load protocol file";
             public const string LoadLibrarySourceCode = "[IDE] Load library source code";
             public const string InsertCodeSnippet = "[IDE] Insert code snippet";

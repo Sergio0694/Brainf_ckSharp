@@ -66,6 +66,11 @@
             <uap:DisplayName>Brainf*ck source</uap:DisplayName>
           </uap:FileTypeAssociation>
         </uap:Extension>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="brainfck">
+            <uap:DisplayName>Brainf*ck#</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
       </Extensions>
     </Application>
   </Applications>

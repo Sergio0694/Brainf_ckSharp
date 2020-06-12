@@ -4,6 +4,7 @@ using System.Linq;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Storage;
+using Windows.System;
 using Windows.UI.Xaml;
 using Brainf_ckSharp.Services;
 
@@ -47,12 +48,20 @@ namespace Brainf_ckSharp.Uwp
             {
                 string key = Guid.NewGuid().ToString("N");
 
+                IActivatedEventArgs activatedEventArgs = AppInstance.GetActivatedEventArgs();
+
                 // If the activation requests a file, check if it is already in use
-                if (AppInstance.GetActivatedEventArgs() is FileActivatedEventArgs fileArgs &&
+                if (activatedEventArgs is FileActivatedEventArgs fileArgs &&
                     fileArgs.Files.FirstOrDefault() is StorageFile storageFile &&
                     TryGetInstanceForFilePath(storageFile.Path, out AppInstance? instance))
                 {
                     instance!.RedirectActivationTo();
+                }
+                else if (activatedEventArgs is ProtocolActivatedEventArgs protocolArgs)
+                {
+                    string targetKey = protocolArgs.Uri.LocalPath.TrimStart('/');
+
+                    AppInstance.FindOrRegisterInstanceForKey(targetKey).RedirectActivationTo();
                 }
                 else
                 {
@@ -78,14 +87,14 @@ namespace Brainf_ckSharp.Uwp
 
             foreach (AppInstance entry in AppInstance.GetInstances())
             {
-                // Read the file with the same key as the current instance
+                // Get the filename associated to the current instance
                 string keyPath = Path.Combine(temporaryPath, entry.Key);
 
                 if (!File.Exists(keyPath)) continue;
 
                 string currentPath = File.ReadAllText(keyPath);
 
-                // If an active instance is find, just switch to it
+                // If the path matches, track the target instance
                 if (path.Equals(currentPath))
                 {
                     instance = entry;
@@ -119,7 +128,13 @@ namespace Brainf_ckSharp.Uwp
         /// <inheritdoc/>
         public bool TrySwitchTo(IFile file)
         {
-            throw new NotImplementedException();
+            if (!TryGetInstanceForFilePath(file.Path, out AppInstance? instance)) return false;
+
+            Uri uri = new Uri($"brainfck:///{instance!.Key}");
+
+            _ = Launcher.LaunchUriAsync(uri);
+
+            return true;
         }
     }
 }
