@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Services.Enums;
 
@@ -12,7 +13,10 @@ namespace Brainf_ckSharp.Services.Uwp.Store
         /// <inheritdoc/>
         public Task RequestReviewAsync()
         {
-            return Microsoft.Toolkit.Uwp.Helpers.SystemInformation.LaunchStoreForReviewAsync();
+            if (Debugger.IsAttached) Debug.WriteLine("[STORE] Review requested");
+            else Console.WriteLine("[STORE] Review requested");
+
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc/>
