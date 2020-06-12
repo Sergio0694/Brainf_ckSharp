@@ -1,7 +1,9 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
+using Windows.Storage;
 using Windows.UI.Core.Preview;
 using Windows.UI.Xaml;
 using Brainf_ckSharp.Enums;
@@ -70,6 +72,12 @@ namespace Brainf_ckSharp.Uwp
         /// <inheritdoc/>
         protected override void OnFileActivated(FileActivatedEventArgs args)
         {
+            if (args.Files.FirstOrDefault() is StorageFile file)
+            {
+                _RequestedFile = new File(file);
+            }
+            else _RequestedFile = null;
+
             OnActivated(false);
 
             base.OnFileActivated(args);
