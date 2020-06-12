@@ -204,6 +204,13 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         {
             if (!(await FilesService.TryPickSaveFileAsync(string.Empty, (string.Empty, ".bfs")) is IFile file)) return;
 
+            if (FilesManagerService.TrySwitchTo(file))
+            {
+                AnalyticsService.Log(Constants.Events.SwitchToFile);
+
+                return;
+            }
+
             await Code.TrySaveAsAsync(file);
 
             CodeSaved?.Invoke(this, EventArgs.Empty);
