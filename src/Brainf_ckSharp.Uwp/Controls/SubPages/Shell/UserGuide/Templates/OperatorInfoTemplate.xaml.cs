@@ -1,5 +1,4 @@
 ﻿using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 
 namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.Templates
@@ -15,15 +14,6 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.Templates
         public OperatorInfoTemplate()
         {
             this.InitializeComponent();
-        }
-
-        /// <summary>
-        /// Gets or sets the font size for the item name
-        /// </summary>
-        public double ItemNameFontSize
-        {
-            get => ItemNameBlock.FontSize;
-            set => ItemNameBlock.FontSize = value;
         }
 
         /// <summary>
@@ -51,25 +41,6 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.Templates
         {
             get => DescriptionBlock.Text;
             set => DescriptionBlock.Text = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the collection of <see cref="Inline"/> elements to display in the current control
-        /// </summary>
-        public InlineCollection DescriptionInlines
-        {
-            get => DescriptionBlock.Inlines;
-            set
-            {
-                if (DescriptionInlines != value)
-                {
-                    DescriptionBlock.Inlines.Clear();
-                    foreach (Inline inline in value)
-                    {
-                        DescriptionBlock.Inlines.Add(inline);
-                    }
-                }
-            }
         }
     }
 }

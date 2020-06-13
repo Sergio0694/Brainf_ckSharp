@@ -17,12 +17,12 @@
         <TextBlock 
             TextWrapping="WrapWholeWords"
             FontSize="14">
-            <Run 
-                Text="Do you wonder what's the point of that additional gray bar on the left? You can tap it to add a breakpoint at the corresponding line in your code. This makes it easier to work on larger scripts, as a breakpoint will cause the execution to halt and will let you inspect the current memory state at that location."
-                x:Uid="GuideDebugging1"/>
+            <Run
+                x:Uid="UserGuide/BreakpointIntroduction1"
+                Text="Do you wonder..."/>
             <LineBreak/><Run 
-                Text="Here's a simple example:"
-                x:Uid="GuideDebugging2"/>
+                x:Uid="UserGuide/BreakpointIntroduction2"
+                Text="Here's a simple example:"/>
         </TextBlock>
 
         <!--Reset loop-->
@@ -40,9 +40,9 @@
             Margin="0,16,0,0"
             TextWrapping="WrapWholeWords"
             FontSize="14">
-            <Run 
-                Text="When you execute a script in debugging mode and hit a breakpoint, the app will show two options to control how to execute the rest of the script:"
-                x:Uid="GuideDebugging3"/>
+            <Run
+                x:Uid="UserGuide/BreakpointIntroduction3"
+                Text="When you execute a script..."/>
         </TextBlock>
 
         <!--Continue-->
@@ -76,7 +76,7 @@
                 FontSize="14"
                 Margin="12,10,12,10"
                 TextWrapping="WrapWholeWords"
-                x:Uid="GuideDebuggingContinueDescription"
+                x:Uid="UserGuide/BreakpointContinue"
                 Text="Continue the execution in debugging mode"
                 Grid.Column="1"
                 VerticalAlignment="Center"
@@ -126,7 +126,7 @@
                 FontSize="14"
                 Margin="12,10,12,10"
                 TextWrapping="WrapWholeWords"
-                x:Uid="GuideDebuggingSkipDescription"
+                x:Uid="UserGuide/BreakpointSkip"
                 Text="Run the rest of the script without breakpoints"
                 Grid.Column="1"
                 VerticalAlignment="Center"
@@ -138,12 +138,12 @@
             Margin="0,16,0,0"
             TextWrapping="WrapWholeWords"
             FontSize="14">
-            <Run 
-                Text="Keep in mind that the script execution is only halted when the control flow manages to reach a breakpoint, so it's possible to see code with even multiple breakpoints being run straight to the end. This can indicate that one or more loop conditions are not met, so part of the script is effectively being skipped."
-                x:Uid="GuideDebugging4"/>
+            <Run
+                x:Uid="UserGuide/BreakpointIntroduction4"
+                Text="Keep in mind that..."/>
             <LineBreak/><Run
-                Text="As it turns out, breakpoints can help identify bugs even when they're not reached at all."
-                x:Uid="GuideDebugging5"/>
+                x:Uid="UserGuide/BreakpointIntroduction5"
+                Text="As it turns out..."/>
         </TextBlock>
     </StackPanel>
 </UserControl>

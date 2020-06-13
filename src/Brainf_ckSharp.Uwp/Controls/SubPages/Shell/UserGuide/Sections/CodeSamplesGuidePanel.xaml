@@ -27,15 +27,15 @@
         <TextBlock 
             TextWrapping="WrapWholeWords"
             FontSize="14">
-            <Run 
-                Text="A good strategy to learn how to code in Brainf*ck, as with everything else, is to start from simpler and smaller programs and to make them more complex along the way."
-                x:Uid="GuideSamples1"/>
-            <LineBreak/><Run 
-                Text="For example, a common operation is to reset the value of the current cell, whatever it may be."
-                x:Uid="GuideSamples2"/>
-            <LineBreak/><Run 
-                Text="A simple loop can be used in this case:"
-                x:Uid="GuideSamples3"/>
+            <Run
+                x:Uid="UserGuide/SamplesIntroduction1"
+                Text="A good strategy to learn..."/>
+            <LineBreak/><Run
+                x:Uid="UserGuide/SamplesIntroduction2"
+                Text="For example, a common operation..."/>
+            <LineBreak/><Run
+                x:Uid="UserGuide/SamplesIntroduction3"
+                Text="A simple loop can be used in this case:"/>
         </TextBlock>
 
         <!--Reset loop-->
@@ -50,12 +50,12 @@
             Margin="0,16,0,0"
             TextWrapping="WrapWholeWords"
             FontSize="14">
-            <Run 
-                Text="In many situations it is useful to make a copy of the current cell, to be able to perform some operations with its value, without losing track of the initial state of the memory cell."
-                x:Uid="GuideSamples4"/>
-            <LineBreak/><Run 
-                Text="To achieve this, it is possible to create two copies of the current value, resetting the current cell, and then move the second copy back to the first cell, to end up with the original value plus a copy in the following cell:"
-                x:Uid="GuideSamples5"/>
+            <Run
+                x:Uid="UserGuide/SamplesIntroduction4"
+                Text="In many situations it is useful..."/>
+            <LineBreak/><Run
+                x:Uid="UserGuide/SamplesIntroduction5"
+                Text="To achieve this, it is possible to..."/>
         </TextBlock>
 
         <!--Copy value loop-->
@@ -70,12 +70,12 @@
             Margin="0,16,0,0"
             TextWrapping="WrapWholeWords"
             FontSize="14">
-            <Run 
-                Text="All these techniques can be combined to write more complex programs. A good idea is to try to optimize the script in order to perform as few operations as possible — generally this also means that the final code will be shorter and easier to read."
-                x:Uid="GuideSamples6"/>
-            <LineBreak/><Run 
-                Text="In this example, to print the word &quot;Hello&quot; two loops will be used to set two cells to values closer to the letters that will be printed. It's definitely better to use a similar approach than to repeating the + operator 72 times to print the &quot;H&quot; character:"
-                x:Uid="GuideSamples7"/>
+            <Run
+                x:Uid="UserGuide/SamplesIntroduction6"
+                Text="All these techniques can be..."/>
+            <LineBreak/><Run
+                x:Uid="UserGuide/SamplesIntroduction7"
+                Text="In this example, to print the word..."/>
         </TextBlock>
 
         <!--Advanced loop sample-->
@@ -90,9 +90,9 @@
             Margin="0,16,0,0"
             TextWrapping="WrapWholeWords"
             FontSize="14">
-            <Run 
-                Text="This script will set the cells #2 and #3 to values closer to the characters that will be printed by the program, so that less operations will be needed to get to the actual values the code wants to display to the user."
-                x:Uid="GuideSamples8"/>
+            <Run
+                x:Uid="UserGuide/SamplesIntroduction8"
+                Text="This script will set..."/>
         </TextBlock>
     </StackPanel>
 </UserControl>

@@ -16,68 +16,59 @@
         <TextBlock 
             FontSize="14"
             TextWrapping="WrapWholeWords">
-            <Run 
-                Text="Brainf*ck is an esoteric programming language invented in 1993 by Urban Müller."
-                x:Uid="GuideIntroduction1"/>
+            <Run
+                x:Uid="UserGuide/Introduction1"
+                Text="Brainf*ck is an esoteric programming language invented in 1993 by Urban Müller."/>
             <LineBreak/>
-            <Run 
-                Text="The language replicates a Turing machine, as the state of the interpreter is only described of a memory array and a memory pointer than can move back and forth and change values of the memory cells, as it passes over them."
-                x:Uid="GuideIntroduction2"/>
+            <Run
+                x:Uid="UserGuide/Introduction2"
+                Text="The language replicates a..."/>
             <LineBreak/>
-            <Run 
-                Text="A Brainf*ck program is made up of only 8 operators:"
-                x:Uid="GuideIntroduction3"/>
+            <Run
+                x:Uid="UserGuide/Introduction3"
+                Text="A Brainf*ck program is made up of only 8 operators:"/>
         </TextBlock>
 
         <templates:OperatorInfoTemplate
+            x:Uid="UserGuide/Operator1"
             Margin="0,4,0,0"
             ItemName=">"
             Description="Moves the memory pointer to the next cell"
-            x:Uid="GuideOperator1"
             ItemNameForegroundBrush="#FFDDDDDD"/>
         <templates:OperatorInfoTemplate
+            x:Uid="UserGuide/Operator2"
             ItemName="&lt;"
             Description="Moves the memory pointer back"
-            x:Uid="GuideOperator2"
             ItemNameForegroundBrush="#FFDDDDDD"/>
         <templates:OperatorInfoTemplate
+            x:Uid="UserGuide/Operator3"
             ItemName="+"
             Description="Increments the value of the current cell"
-            x:Uid="GuideOperator3"
             ItemNameForegroundBrush="White"/>
         <templates:OperatorInfoTemplate
+            x:Uid="UserGuide/Operator4"
             ItemName="-"
             Description="Decrements the value of the current cell"
-            x:Uid="GuideOperator4"
             ItemNameForegroundBrush="White"/>
         <templates:OperatorInfoTemplate
+            x:Uid="UserGuide/Operator5"
             ItemName="["
-            Description="Starts a loop on the current cell, only if its value is greater than 0"
-            x:Uid="GuideOperator5"
+            Description="Starts a loop on the current cell..."
             ItemNameForegroundBrush="#FF569CD6"/>
         <templates:OperatorInfoTemplate
+            x:Uid="UserGuide/Operator6"
             ItemName="]"
-            Description="Loops and executes the current operators sequence if the value of the current cell is greater than 0"
-            x:Uid="GuideOperator6"
+            Description="Loops and executes the current operators sequence..."
             ItemNameForegroundBrush="#FF569CD6"/>
         <templates:OperatorInfoTemplate
+            x:Uid="UserGuide/Operator8"
             ItemName="."
-            ItemNameForegroundBrush="IndianRed">
-            <templates:OperatorInfoTemplate.DescriptionInlines>
-                <Run 
-                    Text="Prints the Unicode character corresponding to the value of the current memory cell. The Unicode table is available in the app, under the"
-                    x:Uid="GuideOperators7Part1"/>
-                <Run Text="&#xE10C;"
-                     FontFamily="Segoe MDL2 Assets"/>
-                <Run 
-                    Text="menu"
-                    x:Uid="GuideOperators7Part2"/>
-            </templates:OperatorInfoTemplate.DescriptionInlines>
-        </templates:OperatorInfoTemplate>
+            ItemNameForegroundBrush="IndianRed"
+            Description="Prints the Unicode character corresponding..."/>
         <templates:OperatorInfoTemplate
+            x:Uid="UserGuide/Operator8"
             ItemName=","
-            Description="Reads a Unicode character from the Stdin buffer and stores its value in the current memory cell"
-            x:Uid="GuideOperator8"
+            Description="Reads a Unicode character from the Stdin buffer..."
             ItemNameForegroundBrush="DarkKhaki"/>
     </StackPanel>
 </UserControl>

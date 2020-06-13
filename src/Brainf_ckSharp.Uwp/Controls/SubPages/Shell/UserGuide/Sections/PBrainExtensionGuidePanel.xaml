@@ -13,28 +13,28 @@
     <StackPanel Spacing="12">
 
         <!--Description-->
-        <TextBlock 
+        <TextBlock
+            x:Uid="UserGuide/PBrainIntroduction"
             TextWrapping="WrapWholeWords"
             FontSize="14"
-            Text="PBrain is an extension of the Brainf*ck language, created by Paul M. Parks. It adds support for functions, with the addition of the following operators:"
-            x:Uid="GuidePBrain"/>
+            Text="PBrain is an extension of the Brainf*ck language..."/>
 
         <!--Operators-->
         <templates:OperatorInfoTemplate
+            x:Uid="UserGuide/PBrainOperator1.Description"
             Margin="0,4,0,0"
             ItemName="("
-            Description="Defines a function and binds it to the value of the current memory cell"
-            x:Uid="GuidePBrainOperator1"
+            Description="Defines a function and binds..."
             ItemNameForegroundBrush="#FF009191"/>
         <templates:OperatorInfoTemplate
+            x:Uid="UserGuide/PBrainOperator2.Description"
             ItemName=")"
             Description="Ends the current function definition"
-            x:Uid="GuidePBrainOperator2"
             ItemNameForegroundBrush="#FF009191"/>
         <templates:OperatorInfoTemplate
+            x:Uid="UserGuide/PBrainOperator3.Description"
             ItemName=":"
-            Description="Calls the function associated with the value of the current memory cell"
-            x:Uid="GuidePBrainOperator3"
+            Description="Calls the function associated..."
             ItemNameForegroundBrush="#FF1E7499"/>
 
         <!--Warning-->
@@ -46,9 +46,9 @@
                 FontFamily="Segoe MDL2 Assets"
                 Text="&#xE7BA;"
                 Foreground="OrangeRed"/>
-            <Run 
-                Text="A function definition must contain at least a Brainf*ck operator and its body can't be empty. Moreover, it is not possible to define nested functions."
-                x:Uid="GuidePBrainWarning"/>
+            <Run
+                x:Uid="UserGuide/PBrainWarning"
+                Text="A function definition must contain at least..."/>
         </TextBlock>
     </StackPanel>
 </UserControl>
