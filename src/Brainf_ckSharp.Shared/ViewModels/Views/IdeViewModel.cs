@@ -192,7 +192,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         private async Task TrySaveTextAsync()
         {
             if (Code.File == null) await TrySaveTextAsAsync();
-            else await Code.TrySaveAsync();
+            else
+            {
+                Code.Content = Text.ToString();
+
+                await Code.TrySaveAsync();
+            }
 
             CodeSaved?.Invoke(this, EventArgs.Empty);
         }
@@ -210,6 +215,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
                 return;
             }
+
+            Code.Content = Text.ToString();
 
             await Code.TrySaveAsAsync(file);
 
