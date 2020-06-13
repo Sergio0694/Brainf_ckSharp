@@ -32,5 +32,30 @@ namespace Brainf_ckSharp.Uwp.Converters
         {
             return $"{typeof(T).Name}/{value}".GetLocalized();
         }
+
+        /// <summary>
+        /// Returns a localized version of the input <see cref="Enum"/> value
+        /// </summary>
+        /// <param name="value">The input value to localize</param>
+        /// <param name="scope">The scope to use to retrieve the localized text</param>
+        /// <returns>A localized representation for <paramref name="value"/></returns>
+        [Pure]
+        public static string Convert(object value, string scope)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Returns a localized version of the input <see cref="Enum"/> value
+        /// </summary>
+        /// <typeparam name="T">The input<see cref="Enum"/> value to localize</typeparam>
+        /// <param name="value">The input value to localize</param>
+        /// <param name="scope">The scope to use to retrieve the localized text</param>
+        /// <returns>A localized representation for <paramref name="value"/></returns>
+        [Pure]
+        public static string Convert<T>(T value, string scope) where T : struct, Enum
+        {
+            return $"{typeof(T).Name}/{value}/{scope}".GetLocalized();
+        }
     }
 }

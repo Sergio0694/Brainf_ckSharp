@@ -165,7 +165,6 @@
     <Compile Include="Converters\UInt16Converter.cs" />
     <Compile Include="Converters\PivotSelectionConverter.cs" />
     <Compile Include="Converters\SubPages\UnicodeIntervalConverter.cs" />
-    <Compile Include="Converters\SubPages\UserGuideSectionConverter.cs" />
     <Compile Include="Controls\DataTemplates\Brainf_ckMemoryCellChunkTemplate.xaml.cs">
       <DependentUpon>Brainf_ckMemoryCellChunkTemplate.xaml</DependentUpon>
     </Compile>

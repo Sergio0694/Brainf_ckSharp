@@ -275,6 +275,10 @@ Are you enjoying it so far?</value>
   <data name="Settings/RenderWhitespaces.Text" xml:space="preserve">
     <value>Render whitespaces</value>
   </data>
+  <data name="Settings/SettingsAvailable" xml:space="preserve">
+    <value>{0} settings available</value>
+    <comment>The {0} will be a number, move it if needed</comment>
+  </data>
   <data name="Settings/ShowPBrainOperators.Text" xml:space="preserve">
     <value>Show PBrain operators</value>
   </data>
@@ -286,6 +290,15 @@ Are you enjoying it so far?</value>
   </data>
   <data name="Settings/WhatsThis.Text" xml:space="preserve">
     <value>What's this?</value>
+  </data>
+  <data name="SettingsSection/Ide" xml:space="preserve">
+    <value>IDE</value>
+  </data>
+  <data name="SettingsSection/Interpreter" xml:space="preserve">
+    <value>Interpreter</value>
+  </data>
+  <data name="SettingsSection/UI" xml:space="preserve">
+    <value>UI</value>
   </data>
   <data name="Shell/About.Label" xml:space="preserve">
     <value>About</value>
@@ -391,5 +404,29 @@ Are you enjoying it so far?</value>
   <data name="SyntaxValidationResult/Operator" xml:space="preserve">
     <value>operator</value>
     <comment>This means "operator" or "position", and it will be followed by a number. Keep the initial lowercase.</comment>
+  </data>
+  <data name="UserGuideSection/Debugging/Description" xml:space="preserve">
+    <value>Find errors more easily with debugging features</value>
+  </data>
+  <data name="UserGuideSection/Debugging/Title" xml:space="preserve">
+    <value>Debugging</value>
+  </data>
+  <data name="UserGuideSection/Introduction/Description" xml:space="preserve">
+    <value>Learn how to use the Brainf*ck language</value>
+  </data>
+  <data name="UserGuideSection/Introduction/Title" xml:space="preserve">
+    <value>Introduction</value>
+  </data>
+  <data name="UserGuideSection/PBrain/Description" xml:space="preserve">
+    <value>Do more by using the PBrain extension operators</value>
+  </data>
+  <data name="UserGuideSection/PBrain/Title" xml:space="preserve">
+    <value>PBrain</value>
+  </data>
+  <data name="UserGuideSection/Samples/Description" xml:space="preserve">
+    <value>Some code samples to learn the basics</value>
+  </data>
+  <data name="UserGuideSection/Samples/Title" xml:space="preserve">
+    <value>Samples</value>
   </data>
 </root>
