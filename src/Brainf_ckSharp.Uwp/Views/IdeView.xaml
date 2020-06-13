@@ -67,6 +67,7 @@
     <!--IDE-->
     <ide:Brainf_ckIde
         x:Name="CodeEditor"
+        HeaderSpacing="68"
         TextChanged="CodeEditor_OnTextChanged"
         CursorPositionChanged="CodeEditor_OnCursorPositionChanged"
         BreakpointAdded="CodeEditor_OnBreakpointAdded"

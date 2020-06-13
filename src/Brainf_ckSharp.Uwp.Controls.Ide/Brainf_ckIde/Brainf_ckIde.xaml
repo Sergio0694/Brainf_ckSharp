@@ -74,7 +74,7 @@
                     <SolidColorBrush Color="{x:Bind SyntaxHighlightTheme.LineNumberColor, Mode=OneWay}"/>
                 </TextBlock.Foreground>
                 <TextBlock.RenderTransform>
-                    <TranslateTransform X="20" Y="76"/>
+                    <TranslateTransform x:Name="LineBlockTransform" X="20" Y="8"/>
                 </TextBlock.RenderTransform>
             </TextBlock>
 
@@ -84,7 +84,7 @@
                 Draw="IdeOverlaysCanvas_Draw"
                 Background="Black">
                 <xaml:CanvasControl.RenderTransform>
-                    <TranslateTransform Y="78"/>
+                    <TranslateTransform x:Name="IdeOverlaysCanvasTransform" Y="10"/>
                 </xaml:CanvasControl.RenderTransform>
             </xaml:CanvasControl>
         </Canvas>
@@ -103,8 +103,7 @@
             x:Name="CodeEditBox"
             Grid.Column="1"
             extensions:UIElementExtensions.ClipToBounds="True"
-            Padding="4,76,8,8"
-            VerticalScrollBarMargin="0,68,0,0"
+            Padding="4,8,8,8"
             SyntaxHighlightTheme="{x:Bind SyntaxHighlightTheme, Mode=OneWay}"
             FormattingCompleted="CodeEditBox_OnFormattingCompleted"
             TextChanged="CodeEditBox_TextChanged"
