@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Services.Store;
@@ -20,10 +19,7 @@ namespace Brainf_ckSharp.Services.Uwp.Store
         /// <inheritdoc/>
         public Task RequestReviewAsync()
         {
-            if (Debugger.IsAttached) Debug.WriteLine("[STORE] Review requested");
-            else Console.WriteLine("[STORE] Review requested");
-
-            return Task.CompletedTask;
+            return Microsoft.Toolkit.Uwp.Helpers.SystemInformation.LaunchStoreForReviewAsync();
         }
 
         /// <inheritdoc/>

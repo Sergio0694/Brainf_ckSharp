@@ -30,6 +30,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         private readonly IFilesService FilesService = Ioc.Default.GetRequiredService<IFilesService>();
 
         /// <summary>
+        /// The <see cref="IFilesManagerService"/> instance currently in use
+        /// </summary>
+        private readonly IFilesManagerService FilesManagerService = Ioc.Default.GetRequiredService<IFilesManagerService>();
+
+        /// <summary>
         /// Creates a new <see cref="IdeViewModel"/> instance
         /// </summary>
         public IdeViewModel()
@@ -39,7 +44,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             Messenger.Register<InsertNewLineRequestMessage>(this, _ => CharacterAdded?.Invoke(this, Characters.CarriageReturn));
             Messenger.Register<DeleteCharacterRequestMessage>(this, _ => CharacterDeleted?.Invoke(this, EventArgs.Empty));
             Messenger.Register<PickOpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync(m.Favorite));
-            Messenger.Register<OpenFileRequestMessage>(this, m => _ = TryLoadTextFromFileAsync(m.Value));
             Messenger.Register<LoadSourceCodeRequestMessage>(this, m => LoadSourceCode(m.Value));
             Messenger.Register<NewFileRequestMessage>(this, _ => LoadNewFile());
             Messenger.Register<SaveFileRequestMessage>(this, m => _ = TrySaveTextAsync());
@@ -94,6 +98,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             Messenger.Unregister<OperatorKeyPressedNotificationMessage>(this);
         }
 
+        /// <inheritdoc/>
+        protected override void OnCodeChanged(SourceCode code)
+        {
+            FilesManagerService.RegisterFile(code.File);
+        }
+
         /// <summary>
         /// Loads a specific <see cref="SourceCode"/> instance
         /// </summary>
@@ -101,6 +111,14 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         private void LoadSourceCode(SourceCode code)
         {
             AnalyticsService.Log(Constants.Events.LoadLibrarySourceCode);
+
+            if (!(code.File is null) &&
+                FilesManagerService.TrySwitchTo(code.File))
+            {
+                AnalyticsService.Log(Constants.Events.SwitchToFile);
+
+                return;
+            }
 
             Code = code;
 
@@ -126,6 +144,13 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             AnalyticsService.Log(Constants.Events.PickFileRequest);
 
             if (!(await FilesService.TryPickOpenFileAsync(".bfs") is IFile file)) return;
+
+            if (FilesManagerService.TrySwitchTo(file))
+            {
+                AnalyticsService.Log(Constants.Events.SwitchToFile);
+
+                return;
+            }
 
             AnalyticsService.Log(Constants.Events.LoadPickedFile, (nameof(CodeMetadata.IsFavorited), favorite.ToString()));
 
@@ -167,9 +192,16 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         private async Task TrySaveTextAsync()
         {
             if (Code.File == null) await TrySaveTextAsAsync();
-            else await Code.TrySaveAsync();
+            else
+            {
+                Code.Content = Text.ToString();
 
-            CodeSaved?.Invoke(this, EventArgs.Empty);
+                await Code.TrySaveAsync();
+
+                CodeSaved?.Invoke(this, EventArgs.Empty);
+
+                ReportCodeSaved();
+            }
         }
 
         /// <summary>
@@ -179,9 +211,20 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         {
             if (!(await FilesService.TryPickSaveFileAsync(string.Empty, (string.Empty, ".bfs")) is IFile file)) return;
 
+            if (FilesManagerService.TrySwitchTo(file))
+            {
+                AnalyticsService.Log(Constants.Events.SwitchToFile);
+
+                return;
+            }
+
+            Code.Content = Text.ToString();
+
             await Code.TrySaveAsAsync(file);
 
             CodeSaved?.Invoke(this, EventArgs.Empty);
+
+            ReportCodeSaved();
         }
 
         /// <summary>

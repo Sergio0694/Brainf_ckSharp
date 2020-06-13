@@ -49,11 +49,9 @@ namespace Brainf_ckSharp.Uwp.Views
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance for this event</param>
         private void IdeView_OnLoaded(object sender, RoutedEventArgs e)
         {
-            IFile? requestedFile = App.Current.RequestedFile;
+            _ = App.Current.TryExtractRequestedFile(out IFile? file);
 
-            App.Current.RequestedFile = null;
-
-            _ = ViewModel.RestoreStateAsync(requestedFile);
+            _ = ViewModel.RestoreStateAsync(file);
         }
 
         /// <summary>

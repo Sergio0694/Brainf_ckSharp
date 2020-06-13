@@ -35,25 +35,31 @@ namespace Brainf_ckSharp.Uwp
     /// <summary>
     /// Provides application-specific behavior to supplement the default <see cref="Application"/> class
     /// </summary>
-    sealed partial class App : Application
+    public sealed partial class App : Application
     {
         /// <summary>
-        /// Creates a new <see cref="App"/> instance
+        /// The currently requested file to open
         /// </summary>
-        public App()
+        private IFile? _RequestedFile;
+
+        /// <summary>
+        /// Gets whether or not there is a file request pending
+        /// </summary>
+        public bool IsFileRequestPending => !(_RequestedFile is null);
+
+        /// <summary>
+        /// Extracts the current file request, if present
+        /// </summary>
+        /// <param name="file">The resulting requested file, if available</param>
+        /// <returns>Whether or not a requested file was present</returns>
+        public bool TryExtractRequestedFile(out IFile? file)
         {
-            this.InitializeComponent();
+            file = _RequestedFile;
+
+            _RequestedFile = null;
+
+            return !(file is null);
         }
-
-        /// <summary>
-        /// Gets or sets the currently requested file to open
-        /// </summary>
-        public IFile? RequestedFile { get; set; }
-
-        /// <summary>
-        /// Gets the current <see cref="App"/> instance in use
-        /// </summary>
-        public new static App Current => (App)Application.Current;
 
         /// <inheritdoc/>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
@@ -61,21 +67,33 @@ namespace Brainf_ckSharp.Uwp
             SystemInformation.TrackAppUse(e);
 
             OnActivated(e.PrelaunchActivated);
+
+            base.OnLaunched(e);
         }
 
         /// <inheritdoc/>
         protected override void OnFileActivated(FileActivatedEventArgs args)
         {
-            if (args.Files.FirstOrDefault() is StorageFile storageFile)
+            if (args.Files.FirstOrDefault() is StorageFile file)
             {
-                IFile file = RequestedFile = new File(storageFile);
-
-                Messenger.Default.Send(new OpenFileRequestMessage(file));
+                _RequestedFile = new File(file);
             }
+            else _RequestedFile = null;
 
             OnActivated(false);
 
             base.OnFileActivated(args);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            if (args is ProtocolActivatedEventArgs)
+            {
+                ((Shell)Window.Current.Content).BringIdeIntoView();
+            }
+
+            base.OnActivated(args);
         }
 
         /// <summary>
@@ -118,18 +136,21 @@ namespace Brainf_ckSharp.Uwp
 
             await Messenger.Default.Send<SaveIdeStateRequestMessage>().Result;
 
+            RegisterFile(null);
+
             deferral.Complete();
         }
 
         /// <summary>
         /// Performs additional settings configuration and other startup initialization
         /// </summary>
-        private static void ConfigureServices()
+        private void ConfigureServices()
         {
             // Default services
             Ioc.Default.ConfigureServices(services =>
             {
                 services.AddSingleton<IFilesService, FilesService>();
+                services.AddSingleton<IFilesManagerService>(this);
                 services.AddSingleton<ISettingsService, SettingsService>();
                 services.AddSingleton<IKeyboardListenerService, KeyboardListenerService>();
                 services.AddSingleton<IClipboardService, ClipboardService>();

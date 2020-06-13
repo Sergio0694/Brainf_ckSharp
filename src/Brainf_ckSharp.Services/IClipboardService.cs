@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 
-#nullable enable
-
 namespace Brainf_ckSharp.Services
 {
     /// <summary>

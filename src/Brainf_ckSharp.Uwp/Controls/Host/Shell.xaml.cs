@@ -32,7 +32,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
             this.InitializeComponent();
 
             // Override the starting view if there is a file request pending
-            if (!(App.Current.RequestedFile is null))
+            if (App.Current.IsFileRequestPending)
             {
                 ViewModel.SelectedView = ViewType.Ide;
             }
@@ -53,6 +53,14 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         /// Gets an <see cref="ICommand"/> instance responsible for requesting to move within the code editor
         /// </summary>
         public ICommand MoveCommand { get; } = new RelayCommand<VirtualKey>(key => Messenger.Default.Send(new ValueChangedMessage<VirtualKey>(key)));
+
+        /// <summary>
+        /// Brings the IDE into view, if necessary
+        /// </summary>
+        public void BringIdeIntoView()
+        {
+            ViewModel.SelectedView = ViewType.Ide;
+        }
 
         /// <summary>
         /// Shows the user guide

@@ -19,7 +19,13 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views.Abstract
         public SourceCode Code
         {
             get => _Code;
-            protected set => Set(ref _Code, value);
+            protected set
+            {
+                if (Set(ref _Code, value))
+                {
+                    OnCodeChanged(value);
+                }
+            }
         }
 
         private ReadOnlyMemory<char> _Text = SourceCode.EmptyContent.AsMemory();
@@ -40,7 +46,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views.Abstract
 
                 IsUnsavedEditPending = !value.Span.SequenceEqual(Code.Content.AsSpan());
 
-                OnTextChanged();
+                OnTextChanged(value);
             }
         }
 
@@ -99,8 +105,23 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views.Abstract
         }
 
         /// <summary>
+        /// Raised whenever <see cref="Code"/> changes
+        /// </summary>
+        /// <param name="code">Thew value for <see cref="Code"/></param>
+        protected virtual void OnCodeChanged(SourceCode code) { }
+
+        /// <summary>
         /// Raised whenever <see cref="Text"/> changes
         /// </summary>
-        protected virtual void OnTextChanged() { }
+        /// <param name="text">The new value for <see cref="Text"/></param>
+        protected virtual void OnTextChanged(ReadOnlyMemory<char> text) { }
+
+        /// <summary>
+        /// Reports that <see cref="Code"/> has been saved, and updates <see cref="IsUnsavedEditPending"/>
+        /// </summary>
+        protected void ReportCodeSaved()
+        {
+            IsUnsavedEditPending = !Text.Span.SequenceEqual(Code.Content.AsSpan());
+        }
     }
 }

@@ -107,6 +107,7 @@
 
     <!--Header button-->
     <Style TargetType="hostHeader:HeaderButton">
+        <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="hostHeader:HeaderButton">
@@ -173,6 +174,7 @@
 
     <!--Minimal header button-->
     <Style TargetType="inputPanel:MinimalHeaderButton">
+        <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="inputPanel:MinimalHeaderButton">
@@ -232,6 +234,7 @@
 
     <!--Operator button-->
     <Style TargetType="inputPanel:OperatorButton">
+        <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="inputPanel:OperatorButton">
