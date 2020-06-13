@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
+using Windows.ApplicationModel.Resources;
+using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 
 namespace Brainf_ckSharp.Uwp.Converters.Console
@@ -9,6 +11,14 @@ namespace Brainf_ckSharp.Uwp.Converters.Console
     public static class SyntaxValidationResultConverter
     {
         /// <summary>
+        /// The <see cref="Windows.ApplicationModel.Resources.ResourceLoader"/> instance to retrieve localized text from
+        /// </summary>
+        /// <remarks>
+        /// The controls project already includes the strings for <see cref="SyntaxError"/>, as they're displayed in the IDE
+        /// </remarks>
+        private static readonly ResourceLoader ResourceLoader = ResourceLoader.GetForViewIndependentUse("Brainf_ckSharp.Uwp.Controls.Ide/Resources");
+
+        /// <summary>
         /// Converts a given <see cref="SyntaxValidationResult"/> instance to its representation
         /// </summary>
         /// <param name="result">The input <see cref="SyntaxValidationResult"/> instance to format</param>
@@ -16,7 +26,7 @@ namespace Brainf_ckSharp.Uwp.Converters.Console
         [Pure]
         public static string Convert(SyntaxValidationResult result)
         {
-            string message = SyntaxErrorConverter.Convert(result.ErrorType);
+            string message = ResourceLoader.GetString($"{nameof(SyntaxError)}/{result.ErrorType}");
 
             return $"{message}, operator {result.ErrorOffset}";
         }

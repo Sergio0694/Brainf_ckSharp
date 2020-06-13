@@ -27,7 +27,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// The <see cref="Windows.ApplicationModel.Resources.ResourceLoader"/> instance to retrieve localized text for the control
         /// </summary>
-        private readonly ResourceLoader ResourceLoader = ResourceLoader.GetForViewIndependentUse($"Brainf_ckSharp.Uwp.Controls.Ide/Resources");
+        private readonly ResourceLoader ResourceLoader = ResourceLoader.GetForViewIndependentUse("Brainf_ckSharp.Uwp.Controls.Ide/Resources");
 
         /// <summary>
         /// Creates a new <see cref="Brainf_ckEditBox"/> instance
