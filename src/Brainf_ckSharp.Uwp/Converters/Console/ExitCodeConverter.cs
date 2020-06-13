@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Enums;
+using Microsoft.Toolkit.Uwp.Extensions;
 
 namespace Brainf_ckSharp.Uwp.Converters.Console
 {
@@ -20,16 +21,23 @@ namespace Brainf_ckSharp.Uwp.Converters.Console
         {
             Debug.Assert(code.HasFlag(ExitCode.Failure));
 
-            if (code.HasFlag(ExitCode.ThresholdExceeded)) return "Threshold exceeded";
-            if (code.HasFlag(ExitCode.UpperBoundExceeded)) return "Upper bound exceeded";
-            if (code.HasFlag(ExitCode.LowerBoundExceeded)) return "Lower bound exceeded";
-            if (code.HasFlag(ExitCode.NegativeValue)) return "Negative value";
-            if (code.HasFlag(ExitCode.MaxValueExceeded)) return "Maximum value exceeded";
-            if (code.HasFlag(ExitCode.StdinBufferExhausted)) return "Stdin buffer exhausted";
-            if (code.HasFlag(ExitCode.StdoutBufferLimitExceeded)) return "Stdout buffer limit exceeded";
-            if (code.HasFlag(ExitCode.UndefinedFunctionCalled)) return "Undefined function called";
-            if (code.HasFlag(ExitCode.DuplicateFunctionDefinition)) return "Duplicate function definition";
-            if (code.HasFlag(ExitCode.StackLimitExceeded)) return "Stack limit exceeded";
+            Span<ExitCode> span = stackalloc[]
+            {
+                ExitCode.ThresholdExceeded,
+                ExitCode.UpperBoundExceeded,
+                ExitCode.LowerBoundExceeded,
+                ExitCode.NegativeValue,
+                ExitCode.MaxValueExceeded,
+                ExitCode.StdinBufferExhausted,
+                ExitCode.StdoutBufferLimitExceeded,
+                ExitCode.UndefinedFunctionCalled,
+                ExitCode.DuplicateFunctionDefinition,
+                ExitCode.StackLimitExceeded,
+            };
+
+            foreach (ExitCode entry in span)
+                if (code.HasFlag(entry))
+                    return $"{nameof(ExitCode)}/{entry}".GetLocalized();
 
             throw new ArgumentException($"Invalid exit code: {code}", nameof(code));
         }
