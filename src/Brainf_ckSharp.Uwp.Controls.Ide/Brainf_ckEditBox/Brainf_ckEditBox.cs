@@ -22,7 +22,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     /// <summary>
     /// A custom <see cref="RichEditBox"/> that formats Brainf*ck/PBrain code
     /// </summary>
-    public sealed partial class Brainf_ckEditBox : RichEditBox
+    internal sealed partial class Brainf_ckEditBox : RichEditBox
     {
         /// <summary>
         /// The <see cref="Windows.ApplicationModel.Resources.ResourceLoader"/> instance to retrieve localized text for the control

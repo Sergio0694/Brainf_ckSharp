@@ -19,7 +19,7 @@ using Microsoft.Toolkit.HighPerformance.Extensions;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
-    public sealed partial class Brainf_ckEditBox
+    internal sealed partial class Brainf_ckEditBox
     {
         /// <summary>
         /// The <see cref="CanvasCachedGeometry"/> instance for the squiggly line

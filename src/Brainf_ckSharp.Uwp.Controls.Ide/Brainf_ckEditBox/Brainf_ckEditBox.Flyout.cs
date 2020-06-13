@@ -7,22 +7,22 @@ using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
-    public sealed partial class Brainf_ckEditBox
+    internal sealed partial class Brainf_ckEditBox
     {
         /// <summary>
         /// The <see cref="ICommand"/> instance responsible for cutting the selected text
         /// </summary>
-        internal ICommand CutCommand => new Command(CutSelectedText);
+        public ICommand CutCommand => new Command(CutSelectedText);
 
         /// <summary>
         /// The <see cref="ICommand"/> instance responsible for copying the selected text
         /// </summary>
-        internal ICommand CopyCommand => new Command(CopySelectedText);
+        public ICommand CopyCommand => new Command(CopySelectedText);
 
         /// <summary>
         /// The <see cref="ICommand"/> instance responsible for pasting text from the clipboard
         /// </summary>
-        internal ICommand PasteCommand => new Command(PasteFromClipboard);
+        public ICommand PasteCommand => new Command(PasteFromClipboard);
 
         /// <summary>
         /// Enables the monitoring of clipboard contents
@@ -114,7 +114,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// Gets whether or not there is some text in the clipboard that can be pasted
         /// </summary>
-        internal bool IsTextInClipboard
+        public bool IsTextInClipboard
         {
             get => (bool)GetValue(IsTextInClipboardProperty);
             private set => SetValue(IsTextInClipboardProperty, value);
@@ -133,7 +133,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// Gets the dependency property for <see cref="IsTextInClipboard"/>.
         /// </summary>
-        internal static readonly DependencyProperty IsTextInClipboardProperty =
+        public static readonly DependencyProperty IsTextInClipboardProperty =
             DependencyProperty.Register(
                 nameof(IsTextInClipboard),
                 typeof(bool),

@@ -77,7 +77,12 @@
                     <Grid>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Disabled"/>
+                                <VisualState x:Name="Disabled">
+                                    <VisualState.Setters>
+                                        <Setter Target="CursorIndicatorRectangle.Visibility" Value="Collapsed"/>
+                                        <Setter Target="SelectionHighlightBorder.Visibility" Value="Collapsed"/>
+                                    </VisualState.Setters>
+                                </VisualState>
                                 <VisualState x:Name="Normal">
 
                                     <!--Blinking cursor animation when text is not focused-->

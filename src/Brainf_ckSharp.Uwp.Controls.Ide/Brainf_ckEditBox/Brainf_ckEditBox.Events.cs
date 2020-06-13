@@ -7,7 +7,7 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
-    public sealed partial class Brainf_ckEditBox
+    internal sealed partial class Brainf_ckEditBox
     {
         /// <summary>
         /// Raised whenever the <see cref="Text"/> property changes

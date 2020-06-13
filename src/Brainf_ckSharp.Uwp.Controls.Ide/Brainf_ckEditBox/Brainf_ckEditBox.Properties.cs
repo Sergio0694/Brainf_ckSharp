@@ -8,7 +8,7 @@ using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
-    public sealed partial class Brainf_ckEditBox
+    internal sealed partial class Brainf_ckEditBox
     {
         /// <summary>
         /// Gets the plain text currently displayed in the control

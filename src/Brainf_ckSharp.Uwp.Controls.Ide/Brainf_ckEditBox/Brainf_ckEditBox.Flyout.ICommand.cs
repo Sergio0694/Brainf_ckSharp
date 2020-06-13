@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
-    public sealed partial class Brainf_ckEditBox
+    internal sealed partial class Brainf_ckEditBox
     {
         /// <summary>
         /// A simple <see cref="ICommand"/> implementation wrapping a <see cref="System.Action"/> instance

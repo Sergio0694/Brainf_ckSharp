@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
-    public sealed partial class Brainf_ckEditBox
+    internal sealed partial class Brainf_ckEditBox
     {
         /// <summary>
         /// A helper <see langword="ref"/> <see langword="struct"/> that pauses UI updates when text formatting is performed

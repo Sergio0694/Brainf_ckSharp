@@ -15,7 +15,7 @@ using Brainf_ckSharp.Uwp.Themes;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
-    public sealed partial class Brainf_ckEditBox
+    internal sealed partial class Brainf_ckEditBox
     {
         /// <summary>
         /// The syntax validation result for the currently displayed text

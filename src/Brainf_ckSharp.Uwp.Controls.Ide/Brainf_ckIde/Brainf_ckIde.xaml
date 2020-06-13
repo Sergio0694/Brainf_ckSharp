@@ -25,7 +25,7 @@
     </UserControl.Resources>
 
     <!--Root-->
-    <Grid>
+    <Grid AllowFocusWhenDisabled="False">
         <Grid.Background>
             <SolidColorBrush Color="{x:Bind SyntaxHighlightTheme.Background, Mode=OneWay}"/>
         </Grid.Background>
@@ -102,6 +102,7 @@
         <ide:Brainf_ckEditBox
             x:Name="CodeEditBox"
             Grid.Column="1"
+            AllowFocusOnInteraction="False"
             extensions:UIElementExtensions.ClipToBounds="True"
             Padding="4,8,8,8"
             SyntaxHighlightTheme="{x:Bind SyntaxHighlightTheme, Mode=OneWay}"

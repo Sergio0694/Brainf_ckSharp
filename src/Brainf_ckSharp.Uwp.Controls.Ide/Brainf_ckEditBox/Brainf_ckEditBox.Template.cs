@@ -22,7 +22,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     [TemplatePart(Name = SyntaxErrorToolTipName, Type = typeof(TeachingTip))]
     [TemplatePart(Name = ContentScrollerName, Type = typeof(ContentPresenter))]
     [TemplatePart(Name = ContentElementName, Type = typeof(ScrollViewer))]
-    public sealed partial class Brainf_ckEditBox
+    internal sealed partial class Brainf_ckEditBox
     {
         /// <summary>
         /// The name of the <see cref="Canvas"/> instance that holds the background controls
@@ -94,12 +94,12 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// Gets the <see cref="ContentPresenter"/> instance for the main content
         /// </summary>
-        internal ContentPresenter? ContentElement { get; private set; }
+        public ContentPresenter? ContentElement { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="ScrollViewer"/> instance for the main content
         /// </summary>
-        internal ScrollViewer? ContentScroller { get; private set; }
+        public ScrollViewer? ContentScroller { get; private set; }
 
         /// <inheritdoc/>
         protected override void OnApplyTemplate()
