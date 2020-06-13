@@ -19,24 +19,6 @@ namespace Brainf_ckSharp
         private static class Release
         {
             /// <summary>
-            /// A lookup table to quickly check whether an operator can be compressed
-            /// </summary>
-            private static ReadOnlySpan<bool> CompressableOperatorsLookupTable => new[]
-            {
-                false,  // [
-                false,  // ]
-                false,  // (
-                false,  // )
-                true,   // +
-                true,   // -
-                true,   // >
-                true,   // <
-                false,  // .
-                false,  // ,
-                false,  // :
-            };
-
-            /// <summary>
             /// Tries to parse the input source script, if possible
             /// </summary>
             /// <param name="source">The input script to validate</param>
@@ -66,7 +48,6 @@ namespace Brainf_ckSharp
                 // The access to the operators table is safe at this point because
                 // the previous while loop guarantees that the current character
                 // is an operator, and therefore also a valid lookup index.
-                ref bool r1 = ref CompressableOperatorsLookupTable.DangerousGetReference();
                 byte currentOperator = OperatorsLookupTable.DangerousGetReferenceAt(Unsafe.Add(ref sourceRef, j));
                 ushort currentCount = 1;
 
@@ -81,9 +62,14 @@ namespace Brainf_ckSharp
                     // Check if the character is an operator
                     if (!TryParseOperator(c, out byte op)) continue;
 
-                    // Accumulate the current operator or finalize the operation
+                    // Accumulate the current operator or finalize the operation.
+                    // To check whether an operator is compressable, it is possible to
+                    // use a bitmap and just perform a bit shift with the current operator
+                    // value. Each bit in the bitmap represents one of the 11 operators, in
+                    // ascending order. The only compressable operators are "><+-", which
+                    // have a value in the [4, 7] range after the conversion to byte format.
                     if (op == currentOperator &&
-                        Unsafe.Add(ref r1, op) &&
+                        0b000_1111_0000 >> op == 1 &&
                         currentCount < ushort.MaxValue)
                     {
                         // This is only allowed for ><+-
