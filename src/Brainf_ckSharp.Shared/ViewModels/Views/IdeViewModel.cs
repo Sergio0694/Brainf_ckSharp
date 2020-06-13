@@ -197,9 +197,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                 Code.Content = Text.ToString();
 
                 await Code.TrySaveAsync();
-            }
 
-            CodeSaved?.Invoke(this, EventArgs.Empty);
+                CodeSaved?.Invoke(this, EventArgs.Empty);
+
+                ReportCodeSaved();
+            }
         }
 
         /// <summary>
@@ -221,6 +223,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             await Code.TrySaveAsAsync(file);
 
             CodeSaved?.Invoke(this, EventArgs.Empty);
+
+            ReportCodeSaved();
         }
 
         /// <summary>

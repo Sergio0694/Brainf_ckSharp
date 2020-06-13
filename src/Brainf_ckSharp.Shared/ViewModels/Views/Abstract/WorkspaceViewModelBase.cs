@@ -115,5 +115,13 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views.Abstract
         /// </summary>
         /// <param name="text">The new value for <see cref="Text"/></param>
         protected virtual void OnTextChanged(ReadOnlyMemory<char> text) { }
+
+        /// <summary>
+        /// Reports that <see cref="Code"/> has been saved, and updates <see cref="IsUnsavedEditPending"/>
+        /// </summary>
+        protected void ReportCodeSaved()
+        {
+            IsUnsavedEditPending = !Text.Span.SequenceEqual(Code.Content.AsSpan());
+        }
     }
 }
