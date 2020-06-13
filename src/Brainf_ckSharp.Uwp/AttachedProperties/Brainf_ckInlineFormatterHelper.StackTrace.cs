@@ -8,6 +8,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 using Brainf_ckSharp.Models;
+using Microsoft.Toolkit.Uwp.Extensions;
 
 namespace Brainf_ckSharp.Uwp.AttachedProperties
 {
@@ -45,6 +46,10 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
             typeof(Brainf_ckInlineFormatterHelper),
             new PropertyMetadata(Array.Empty<FunctionDefinition>(), OnStackTracePropertyChanged));
 
+        // Localized resources
+        private static readonly string At = "StackTrace/At".GetLocalized();
+        private static readonly string Frames = "StackTrace/Frames".GetLocalized();
+
         /// <summary>
         /// Updates the UI when <see cref="StackTraceProperty"/> changes
         /// </summary>
@@ -68,7 +73,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
                 // Insert the "at" separator if needed
                 @this.Inlines.Add(new Run
                 {
-                    Text = $"at{(entry.Occurrences > 1 ? $" [{entry.Occurrences * entry.Length} frames]" : string.Empty)}",
+                    Text = $"{At}{(entry.Occurrences > 1 ? $" [{entry.Occurrences * entry.Length} {Frames}]" : string.Empty)}",
                     Foreground = new SolidColorBrush(Colors.DimGray),
                     FontSize = @this.FontSize - 1
                 });

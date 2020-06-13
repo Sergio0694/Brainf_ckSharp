@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Shared;
+using Microsoft.Toolkit.Uwp.Extensions;
 
 namespace Brainf_ckSharp.Uwp.Converters.Ide
 {
@@ -19,8 +20,8 @@ namespace Brainf_ckSharp.Uwp.Converters.Ide
         {
             return snippet switch
             {
-                CodeSnippets.ResetCell => "Reset cell",
-                CodeSnippets.DuplicateValue => "Duplicate value",
+                CodeSnippets.ResetCell => "CodeSnippets/ResetCell".GetLocalized(),
+                CodeSnippets.DuplicateValue => "CodeSnippets/DuplicateValue".GetLocalized(),
                 CodeSnippets.IfZeroThen => "if (x == 0) { }",
                 CodeSnippets.IfGreaterThanZeroThenElse => "if (x > 0) { } else { }",
                 _ => throw new ArgumentException($"Invalid snippet: \"{snippet}\"", nameof(snippet))

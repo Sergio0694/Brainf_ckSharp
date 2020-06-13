@@ -27,6 +27,7 @@
                 IsTextSelectionEnabled="False">
                 <Paragraph>
                     <Run
+                        x:Uid="Console/Run"
                         Text="run:"
                         FontWeight="SemiBold"
                         Foreground="DarkRed"/>
@@ -62,6 +63,7 @@
                 FontSize="16"
                 TextWrapping="Wrap">
                 <Run
+                    x:Uid="Console/SyntaxError"
                     Text="syntax error:"
                     FontWeight="Bold"
                     Foreground="#FFC40030"/>
@@ -81,7 +83,9 @@
                     FontSize="16"
                     FontWeight="Bold"
                     Foreground="#FFA00000">
-                    <Run Text="exception:"/>
+                    <Run
+                        x:Uid="Console/Exception"
+                        Text="exception:"/>
                     <Run 
                         Text="{x:Bind convertersConsole:ExitCodeConverter.Convert(ExitCode)}"
                         FontWeight="Bold"
@@ -100,9 +104,9 @@
                 FontSize="16"
                 TextWrapping="Wrap">
                 <Run Text="==========="/>
-                <Run 
-                    Text="RESTART"
-                    x:Uid="RestartRun"/>
+                <Run
+                    x:Uid="Console/Restart"
+                    Text="RESTART"/>
                 <Run Text="==========="/>
             </TextBlock>
         </DataTemplate>

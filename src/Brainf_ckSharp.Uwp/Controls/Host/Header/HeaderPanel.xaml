@@ -42,6 +42,7 @@
 
         <!--Console button-->
         <header:HeaderButton
+            x:Uid="HeaderPanel/Console"
             Icon="{StaticResource ConsoleIcon}"
             Text="Console"
             Height="68"
@@ -51,6 +52,7 @@
 
         <!--IDE button-->
         <header:HeaderButton
+            x:Uid="HeaderPanel/IDE"
             Icon="{StaticResource IDEIcon}"
             Text="IDE"
             Height="68"

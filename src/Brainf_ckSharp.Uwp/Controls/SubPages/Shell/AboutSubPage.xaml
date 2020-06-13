@@ -25,16 +25,18 @@
     </interactivity:Interaction.Behaviors>
 
     <!--Root-->
-    <host:SubPageFrame Title="ABOUT">
+    <host:SubPageFrame
+        x:Uid="About/Frame"
+        Title="ABOUT">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <RelativePanel Padding="12,0,12,12">
 
                 <!--App description-->
                 <controls:MarkdownTextBlock
-                    x:Uid="About/AppDescription"
+                    x:Uid="About/Description"
                     FontSize="13"
                     IsTextSelectionEnabled="False"
-                    Text="**Brainf*ck#** is a console and IDE for **Brainf*ck/PBrain**.&#x0a;&#x0a;Thanks to **Andrea Salvati** for his help with the original interpreter algorithm that we designed back in 2015, **Camil Demetrescu** for the idea to port **Brainf*ck#** to Windows 10 and **Christopher Blackman** for his help during the app development."
+                    Text="**Brainf*ck#** is..."
                     Background="Transparent"
                     x:Name="DescriptionBlock"
                     Margin="0,12,0,0"/>
@@ -44,14 +46,22 @@
                     x:Name="AppVersionBlock"
                     RelativePanel.Below="DescriptionBlock"
                     Margin="0,12,0,0">
-                        <Run Text="Build:" FontWeight="SemiBold" FontSize="14"/>
+                        <Run
+                            x:Uid="About/Build"
+                            Text="Build:"
+                            FontWeight="SemiBold"
+                            FontSize="14"/>
                         <Run 
                             Text="{x:Bind helpers:PackageVersionHelper.ToFormattedString(helpers:SystemInformation.ApplicationVersion)}"
-                            FontSize="15" FontWeight="SemiBold" FontFamily="Consolas"/>
+                            FontSize="15"
+                            FontWeight="SemiBold"
+                            FontFamily="Consolas"/>
                         <Run Text="|"/>
                         <Run 
                             Text="{x:Bind appModel:Package.Current.Id.Architecture}"
-                            FontSize="15" FontWeight="SemiBold" FontFamily="Consolas"/>
+                            FontSize="15"
+                            FontWeight="SemiBold"
+                            FontFamily="Consolas"/>
                 </TextBlock>
 
                 <!--Git branch-->
@@ -82,7 +92,7 @@
 
                 <!--Developers-->
                 <TextBlock
-                    x:Uid="About/Developers"
+                    x:Uid="About/DevelopedBy"
                     Text="Developed by" 
                     FontWeight="SemiBold" FontSize="14"
                     Margin="0,16,0,0"
@@ -117,7 +127,7 @@
 
                 <!--Contacts-->
                 <TextBlock
-                    x:Uid="About/Support"
+                    x:Uid="About/SupportUs"
                     Text="Support us" 
                     FontWeight="SemiBold" FontSize="14"
                     Margin="0,8,0,0"

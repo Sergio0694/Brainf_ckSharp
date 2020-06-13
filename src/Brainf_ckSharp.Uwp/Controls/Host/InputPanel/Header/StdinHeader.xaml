@@ -46,11 +46,15 @@
 
         <!--Sections-->
         <local:MinimalHeaderButton
+            x:Uid="StdinHeader/KeyboardHeader"
+            ToolTipService.ToolTip="Virtual keyboard"
             Grid.Column="0"
             Icon="{StaticResource OperatorsKeyboardIcon}"
             IsSelected="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(StdinSelectedIndex, 0), Mode=OneWay}"
             Selected="VirtualKeyboardHeaderSelected"/>
         <local:MinimalHeaderButton
+            x:Uid="StdinHeader/MemoryViewer"
+            ToolTipService.ToolTip="Memory viewer"
             Icon="{StaticResource QuickMemoryViewerIcon}"
             Grid.Column="1"
             IsSelected="{x:Bind converters:PivotSelectionConverter.ConvertIndexToBool(StdinSelectedIndex, 1), Mode=OneWay}"
@@ -74,7 +78,8 @@
         </Rectangle>
 
         <!--Stdin-->
-        <TextBox 
+        <TextBox
+            x:Uid="StdinHeader/Stdin"
             Grid.Column="2"
             CornerRadius="0"
             BorderThickness="1,0,1,1"

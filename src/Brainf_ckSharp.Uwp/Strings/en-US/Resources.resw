@@ -117,6 +117,54 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About/Build.Text" xml:space="preserve">
+    <value>Build:</value>
+    <comment>Keep the initial uppercase and trailing :</comment>
+  </data>
+  <data name="About/Description.Text" xml:space="preserve">
+    <value>**Brainf*ck#** is a console and IDE for **Brainf*ck/PBrain**.
+
+Thanks to **Andrea Salvati** for his help with the original interpreter algorithm that we designed back in 2015, **Camil Demetrescu** for the idea to port **Brainf*ck#** to Windows 10 and **Christopher Blackman** for his help during the app development.</value>
+    <comment>Keep the markdown styntax, and the two newlines after the first sentence.</comment>
+  </data>
+  <data name="About/DevelopedBy.Text" xml:space="preserve">
+    <value>Developed by</value>
+  </data>
+  <data name="About/Frame.Title" xml:space="preserve">
+    <value>ABOUT</value>
+    <comment>Keep the text uppercase</comment>
+  </data>
+  <data name="About/SupportUs.Text" xml:space="preserve">
+    <value>Support us</value>
+  </data>
+  <data name="BracketsFormattingStyle/NewLine" xml:space="preserve">
+    <value>New line</value>
+  </data>
+  <data name="BracketsFormattingStyle/SameLine" xml:space="preserve">
+    <value>Same line</value>
+  </data>
+  <data name="CodeSnippets/DuplicateValue" xml:space="preserve">
+    <value>DuplicateValue</value>
+  </data>
+  <data name="CodeSnippets/ResetCell" xml:space="preserve">
+    <value>Reset cell</value>
+  </data>
+  <data name="Console/Exception.Text" xml:space="preserve">
+    <value>exception:</value>
+    <comment>Keep the initial lowercase and the trailing :</comment>
+  </data>
+  <data name="Console/Restart.Text" xml:space="preserve">
+    <value>RESTART</value>
+    <comment>Keep the text uppercase</comment>
+  </data>
+  <data name="Console/Run.Text" xml:space="preserve">
+    <value>run:</value>
+    <comment>Keep the initial lowercase and the trailing :</comment>
+  </data>
+  <data name="Console/SyntaxError.Text" xml:space="preserve">
+    <value>syntax error:</value>
+    <comment>Keep the initial lowercase and the trailing :</comment>
+  </data>
   <data name="ExitCode/DuplicateFunctionDefinition" xml:space="preserve">
     <value>Duplicate function definition</value>
   </data>
@@ -146,5 +194,202 @@
   </data>
   <data name="ExitCode/UpperBoundExceeded" xml:space="preserve">
     <value>Upper bound exceeded</value>
+  </data>
+  <data name="HeaderPanel/Console.Text" xml:space="preserve">
+    <value>Console</value>
+  </data>
+  <data name="HeaderPanel/IDE.Text" xml:space="preserve">
+    <value>IDE</value>
+  </data>
+  <data name="IdeResultSection/BreakpointReached" xml:space="preserve">
+    <value>Breakpoint reached</value>
+  </data>
+  <data name="IdeResultSection/ErrorLocation" xml:space="preserve">
+    <value>Error location</value>
+  </data>
+  <data name="IdeResultSection/ExceptionType" xml:space="preserve">
+    <value>Exception type</value>
+  </data>
+  <data name="IdeResultSection/FunctionDefinitions" xml:space="preserve">
+    <value>Function definitions</value>
+  </data>
+  <data name="IdeResultSection/MemoryState" xml:space="preserve">
+    <value>Memory state</value>
+  </data>
+  <data name="IdeResultSection/SourceCode" xml:space="preserve">
+    <value>Source code</value>
+  </data>
+  <data name="IdeResultSection/StackTrace" xml:space="preserve">
+    <value>Stack trace</value>
+  </data>
+  <data name="IdeResultSection/Statistics" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="IdeResultSection/Stdout" xml:space="preserve">
+    <value>Stdout</value>
+  </data>
+  <data name="OverflowMode/ByteWithNoOverflow" xml:space="preserve">
+    <value>Byte, no overflow</value>
+  </data>
+  <data name="OverflowMode/ByteWithOverflow" xml:space="preserve">
+    <value>Byte [0, 255]</value>
+  </data>
+  <data name="OverflowMode/UshortWithNoOverflow" xml:space="preserve">
+    <value>Signed short, no overflow</value>
+  </data>
+  <data name="OverflowMode/UshortWithOverflow" xml:space="preserve">
+    <value>Signed short [0, 65535]</value>
+  </data>
+  <data name="ReviewPrompt/Body.Text" xml:space="preserve">
+    <value>Thank you for downloading **Brainf\*ck#**!
+
+Are you enjoying it so far?</value>
+    <comment>Keep the markdown styntax, and the two newlines after the first sentence.</comment>
+  </data>
+  <data name="ReviewPrompt/Contact.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Contact the developer</value>
+  </data>
+  <data name="ReviewPrompt/Frame.Title" xml:space="preserve">
+    <value>ENJOYING THE APP?</value>
+    <comment>Keep the text uppercase</comment>
+  </data>
+  <data name="ReviewPrompt/Review.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Leave a review in the Store</value>
+  </data>
+  <data name="Settings/BracketsOnNewLine.Text" xml:space="preserve">
+    <value>Brackets on new line</value>
+  </data>
+  <data name="Settings/ClearStdinBufferOnExecution.Text" xml:space="preserve">
+    <value>Clear stdin buffer on execution</value>
+  </data>
+  <data name="Settings/Frame.Title" xml:space="preserve">
+    <value>SETTINGS</value>
+    <comment>Keep the text uppercase</comment>
+  </data>
+  <data name="Settings/MemorySize.Text" xml:space="preserve">
+    <value>Memory size</value>
+  </data>
+  <data name="Settings/OverflowMode.Text" xml:space="preserve">
+    <value>Overflow mode</value>
+  </data>
+  <data name="Settings/RenderWhitespaces.Text" xml:space="preserve">
+    <value>Render whitespaces</value>
+  </data>
+  <data name="Settings/ShowPBrainOperators.Text" xml:space="preserve">
+    <value>Show PBrain operators</value>
+  </data>
+  <data name="Settings/Theme.Text" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="Settings/UnlockTheme.Text" xml:space="preserve">
+    <value>Tap to unlock</value>
+  </data>
+  <data name="Settings/WhatsThis.Text" xml:space="preserve">
+    <value>What's this?</value>
+  </data>
+  <data name="Shell/About.Label" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="Shell/Clear.Label" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="Shell/ClearScreen.Label" xml:space="preserve">
+    <value>Clear screen</value>
+  </data>
+  <data name="Shell/Debug.Label" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="Shell/Delete.Label" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Shell/Down.Label" xml:space="preserve">
+    <value>Down</value>
+  </data>
+  <data name="Shell/Down.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Down</value>
+  </data>
+  <data name="Shell/Left.Label" xml:space="preserve">
+    <value>Left</value>
+  </data>
+  <data name="Shell/Left.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Left</value>
+  </data>
+  <data name="Shell/Move.Label" xml:space="preserve">
+    <value>Move</value>
+  </data>
+  <data name="Shell/NewFile.Label" xml:space="preserve">
+    <value>New file</value>
+  </data>
+  <data name="Shell/NewLine.Label" xml:space="preserve">
+    <value>New line</value>
+  </data>
+  <data name="Shell/OpenCodeLibrary.Label" xml:space="preserve">
+    <value>Open code library</value>
+  </data>
+  <data name="Shell/OpenFile.Label" xml:space="preserve">
+    <value>Open file</value>
+  </data>
+  <data name="Shell/Redo.Label" xml:space="preserve">
+    <value>Redo</value>
+  </data>
+  <data name="Shell/RepeatLastScript.Label" xml:space="preserve">
+    <value>Repeat last script</value>
+  </data>
+  <data name="Shell/Restart.Label" xml:space="preserve">
+    <value>Restart</value>
+  </data>
+  <data name="Shell/Right.Label" xml:space="preserve">
+    <value>Right</value>
+  </data>
+  <data name="Shell/Right.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Right</value>
+  </data>
+  <data name="Shell/Run.Label" xml:space="preserve">
+    <value>Run</value>
+  </data>
+  <data name="Shell/Save.Label" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Shell/SaveAs.Label" xml:space="preserve">
+    <value>Save as</value>
+  </data>
+  <data name="Shell/Settings.Label" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Shell/Undo.Label" xml:space="preserve">
+    <value>Undo</value>
+  </data>
+  <data name="Shell/UnicodeCharacters.Label" xml:space="preserve">
+    <value>Unicode characters</value>
+  </data>
+  <data name="Shell/Up.Label" xml:space="preserve">
+    <value>Up</value>
+  </data>
+  <data name="Shell/Up.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Up</value>
+  </data>
+  <data name="Shell/UserGuide.Label" xml:space="preserve">
+    <value>User guide</value>
+  </data>
+  <data name="StackTrace/At" xml:space="preserve">
+    <value>at</value>
+    <comment>Keep the initial lowercase</comment>
+  </data>
+  <data name="StackTrace/Frames" xml:space="preserve">
+    <value>frames</value>
+    <comment>Keep the initial lowercase</comment>
+  </data>
+  <data name="StdinHeader/KeyboardHeader.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Virtual keyboard</value>
+  </data>
+  <data name="StdinHeader/MemoryViewer.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Memory viewer</value>
+  </data>
+  <data name="StdinHeader/Stdin.PlaceholderText" xml:space="preserve">
+    <value>Stdin buffer</value>
+  </data>
+  <data name="SyntaxValidationResult/Operator" xml:space="preserve">
+    <value>operator</value>
+    <comment>This means "operator" or "position", and it will be followed by a number. Keep the initial lowercase.</comment>
   </data>
 </root>

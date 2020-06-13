@@ -45,6 +45,7 @@
 
                 <!--Theme-->
                 <TextBlock
+                    x:Uid="Settings/Theme"
                     TextWrapping="Wrap"
                     Text="Theme"/>
                 <Grid
@@ -100,6 +101,7 @@
                                     FontFamily="Segoe MDL2 Assets"
                                     FontSize="32"/>
                                 <TextBlock
+                                    x:Uid="Settings/UnlockTheme"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     TextAlignment="Center"
@@ -115,6 +117,7 @@
 
                 <!--Brackets on new line-->
                 <TextBlock
+                    x:Uid="Settings/BracketsOnNewLine"
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Brackets on new line"/>
@@ -126,13 +129,14 @@
                     SelectedItem="{x:Bind ViewModel.BracketsFormattingStyle, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="enumsSettings:BracketsFormattingStyle">
-                            <TextBlock Text="{x:Bind convertersSubPages:BracketsFormattingStyleConverter.Convert((enumsSettings:BracketsFormattingStyle))}"/>
+                            <TextBlock Text="{x:Bind converters:EnumConverter.Convert((enumsSettings:BracketsFormattingStyle))}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </controls:ComboBoxWithNoScrollWheelSupport>
 
                 <!--Render whitespaces-->
                 <TextBlock
+                    x:Uid="Settings/RenderWhitespaces"
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Render whitespaces"/>
@@ -148,6 +152,7 @@
 
                 <!--Show PBrain operators-->
                 <TextBlock
+                    x:Uid="Settings/ShowPBrainOperators"
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Show PBrain operators"/>
@@ -163,14 +168,19 @@
                         Grid.Column="1"
                         Click="ShowPBrainButtonsInfo_Clicked">
                         <TextBlock>
-                            <Run Text="&#xEC26;" FontFamily="Segoe MDL2 Assets"/>
-                            <Run Text="What's this?"/>
+                            <Run
+                                Text="&#xEC26;"
+                                FontFamily="Segoe MDL2 Assets"/>
+                            <Run
+                                x:Uid="Settings/WhatsThis"
+                                Text="What's this?"/>
                         </TextBlock>
                     </HyperlinkButton>
                 </Grid>
 
                 <!--Clear stdin buffer on execution-->
                 <TextBlock
+                    x:Uid="Settings/ClearStdinBufferOnExecution"
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Clear stdin buffer on execution"/>
@@ -186,6 +196,7 @@
 
                 <!--Overflow mode-->
                 <TextBlock
+                    x:Uid="Settings/OverflowMode"
                     TextWrapping="Wrap"
                     Text="Overflow mode"/>
                 <controls:ComboBoxWithNoScrollWheelSupport
@@ -196,13 +207,14 @@
                     SelectedItem="{x:Bind ViewModel.OverflowMode, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="interpreterEnums:OverflowMode">
-                            <TextBlock Text="{x:Bind convertersSubPages:OverflowModeConverter.Convert((interpreterEnums:OverflowMode))}"/>
+                            <TextBlock Text="{x:Bind converters:EnumConverter.Convert((interpreterEnums:OverflowMode))}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </controls:ComboBoxWithNoScrollWheelSupport>
 
                 <!--Memory size-->
                 <TextBlock
+                    x:Uid="Settings/MemorySize"
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Memory size"/>
@@ -217,6 +229,7 @@
     </UserControl.Resources>
 
     <host:SubPageFrame
+        x:Uid="Settings/Frame"
         Title="SETTINGS"
         Background="#72000000">
 

@@ -9,7 +9,7 @@
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
     xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
-    xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
+    xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:enums="using:Brainf_ckSharp.Shared.Enums"
     xmlns:views="using:Brainf_ckSharp.Uwp.Controls.SubPages.Views"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
@@ -128,7 +128,7 @@
                                 <GroupStyle.HeaderTemplate>
                                     <DataTemplate x:DataType="collections:IReadOnlyObservableGroup">
                                         <jumpList:SemanticZoomZoomedInViewHeaderTemplate
-                                            Title="{x:Bind convertersSubPages:IdeResultSectionConverter.Convert((enums:IdeResultSection)Key)}"
+                                            Title="{x:Bind converters:EnumConverter.Convert((enums:IdeResultSection)Key)}"
                                             Margin="0,-8,0,0"/>
                                     </DataTemplate>
                                 </GroupStyle.HeaderTemplate>
@@ -163,7 +163,7 @@
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="ICollectionViewGroup">
                                 <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
-                                    Title="{x:Bind convertersSubPages:IdeResultSectionConverter.Convert((enums:IdeResultSection)Group.(collections:IReadOnlyObservableGroup.Key))}">
+                                    Title="{x:Bind converters:EnumConverter.Convert((enums:IdeResultSection)Group.(collections:IReadOnlyObservableGroup.Key))}">
                                     <jumpList:SemanticZoomZoomedOutViewHeaderTemplate.DescriptionSpan>
                                         <Span attachedProperties:IdeResultSectionDescriptionHelper.Section="{x:Bind (models:IdeResultWithSectionInfo)GroupItems[0]}"/>
                                     </jumpList:SemanticZoomZoomedOutViewHeaderTemplate.DescriptionSpan>

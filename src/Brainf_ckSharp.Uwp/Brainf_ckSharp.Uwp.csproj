@@ -155,15 +155,13 @@
     <Compile Include="Controls\Windows.UI.Xaml.Controls\ComboBoxWithNoScrollWheelSupport.cs" />
     <Compile Include="Converters\Console\ExitCodeConverter.cs" />
     <Compile Include="Converters\Ide\CodeSnippetTitleConverter.cs" />
-    <Compile Include="Converters\SubPages\OverflowModeConverter.cs" />
-    <Compile Include="Converters\SubPages\BracketsFormattingStyleConverter.cs" />
     <Compile Include="Converters\SubPages\SettingsSectionConverters.cs" />
-    <Compile Include="Converters\SubPages\IdeResultSectionConverter.cs" />
     <Compile Include="Converters\SubPages\CodeLibraryCategoryConverter.cs" />
     <Compile Include="Converters\Console\SyntaxValidationResultConverter.cs" />
     <Compile Include="Converters\SubPages\CodeMetadataConverter.cs" />
     <Compile Include="Converters\TypeToVisibilityConverter.cs" />
     <Compile Include="Converters\ExecutionResultConverter.cs" />
+    <Compile Include="Converters\EnumConverter.cs" />
     <Compile Include="Converters\UInt16Converter.cs" />
     <Compile Include="Converters\PivotSelectionConverter.cs" />
     <Compile Include="Converters\SubPages\UnicodeIntervalConverter.cs" />

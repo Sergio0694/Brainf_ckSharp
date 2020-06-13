@@ -2,6 +2,7 @@
 using Windows.ApplicationModel.Resources;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
+using Microsoft.Toolkit.Uwp.Extensions;
 
 namespace Brainf_ckSharp.Uwp.Converters.Console
 {
@@ -19,6 +20,11 @@ namespace Brainf_ckSharp.Uwp.Converters.Console
         private static readonly ResourceLoader ResourceLoader = ResourceLoader.GetForViewIndependentUse("Brainf_ckSharp.Uwp.Controls.Ide/Resources");
 
         /// <summary>
+        /// The "operator" localized text
+        /// </summary>
+        private static readonly string Operator = "SyntaxValidationResult/Operator".GetLocalized();
+
+        /// <summary>
         /// Converts a given <see cref="SyntaxValidationResult"/> instance to its representation
         /// </summary>
         /// <param name="result">The input <see cref="SyntaxValidationResult"/> instance to format</param>
@@ -28,7 +34,7 @@ namespace Brainf_ckSharp.Uwp.Converters.Console
         {
             string message = ResourceLoader.GetString($"{nameof(SyntaxError)}/{result.ErrorType}");
 
-            return $"{message}, operator {result.ErrorOffset}";
+            return $"{message}, {Operator} {result.ErrorOffset}";
         }
     }
 }

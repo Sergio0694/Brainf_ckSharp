@@ -121,6 +121,7 @@
 
                 <!--Console buttons-->
                 <AppBarButton
+                    x:Uid="Shell/Run"
                     Label="Run"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource RunIcon}}"
                     Tag="{markupExtensions:Boolean Value=True}"
@@ -135,6 +136,7 @@
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
+                    x:Uid="Shell/Delete"
                     Label="Delete"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource DeleteKeyIcon}}"
                     Tag="{markupExtensions:Boolean Value=True}"
@@ -144,6 +146,7 @@
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
+                    x:Uid="Shell/Clear"
                     Label="Clear"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource ClearIcon}}"
                     Tag="{markupExtensions:Boolean Value=True}"
@@ -155,6 +158,7 @@
 
                 <!--IDE buttons-->
                 <AppBarButton
+                    x:Uid="Shell/Run"
                     Label="Run"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource RunIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}"
@@ -166,6 +170,7 @@
                     </AppBarButton.Resources>
                 </AppBarButton>
                 <AppBarButton
+                    x:Uid="Shell/Debug"
                     Label="Debug"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource DebugIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}"
@@ -178,30 +183,35 @@
                 </AppBarButton>
                 <AppBarSeparator Tag="{markupExtensions:Boolean Value=False}"/>
                 <AppBarButton
+                    x:Uid="Shell/Move"
                     Label="Move"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource MoveIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}">
                     <AppBarButton.Flyout>
                         <CommandBarFlyout>
                             <AppBarButton
+                                x:Uid="Shell/Up"
                                 Label="Up"
                                 ToolTipService.ToolTip="Up"
                                 Icon="{toolkitExtensions:FontIcon Glyph={StaticResource UpIcon}}"
                                 Command="{x:Bind MoveCommand}"
                                 CommandParameter="{markupExtensions:VirtualKey Value=Up}"/>
                             <AppBarButton
+                                x:Uid="Shell/Down"
                                 Label="Down"
                                 ToolTipService.ToolTip="Down"
                                 Icon="{toolkitExtensions:FontIcon Glyph={StaticResource DownIcon}}"
                                 Command="{x:Bind MoveCommand}"
                                 CommandParameter="{markupExtensions:VirtualKey Value=Down}"/>
                             <AppBarButton
+                                x:Uid="Shell/Left"
                                 Label="Left"
                                 ToolTipService.ToolTip="Left"
                                 Icon="{toolkitExtensions:FontIcon Glyph={StaticResource LeftIcon}}"
                                 Command="{x:Bind MoveCommand}"
                                 CommandParameter="{markupExtensions:VirtualKey Value=Left}"/>
                             <AppBarButton
+                                x:Uid="Shell/Right"
                                 Label="Right"
                                 ToolTipService.ToolTip="Right"
                                 Icon="{toolkitExtensions:FontIcon Glyph={StaticResource RightIcon}}"
@@ -211,26 +221,31 @@
                     </AppBarButton.Flyout>
                 </AppBarButton>
                 <AppBarButton
+                    x:Uid="Shell/NewLine"
                     Label="New line"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource NewLineIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}"
                     Click="{x:Bind ViewModel.InsertNewLine}"/>
                 <AppBarButton
+                    x:Uid="Shell/Delete"
                     Label="Delete"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource DeleteKeyIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}"
                     Click="{x:Bind ViewModel.DeleteIdeCharacter}"/>
                 <AppBarButton
+                    x:Uid="Shell/Undo"
                     Label="Undo"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource UndoIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}"/>
                 <AppBarButton
+                    x:Uid="Shell/Redo"
                     Label="Redo"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource RedoIcon}}"
                     Tag="{markupExtensions:Boolean Value=False}"/>
             </controls:AnimatedCommandBar.PrimaryCommands>
             <controls:AnimatedCommandBar.SecondaryCommands>
                 <AppBarButton
+                    x:Uid="Shell/UserGuide"
                     Label="User guide"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource UserGuideIcon}}"
                     Click="{x:Bind ViewModel.RequestUserGuide}">
@@ -239,6 +254,7 @@
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
+                    x:Uid="Shell/UnicodeCharacters"
                     Label="Unicode characters"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource ShowUnicodeMapIcon}}"
                     Click="{x:Bind ViewModel.RequestUnicodeMap}">
@@ -248,6 +264,7 @@
                 </AppBarButton>
                 <AppBarSeparator/>
                 <AppBarButton
+                    x:Uid="Shell/RepeatLastScript"
                     Label="Repeat last script"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource RepeatScriptIcon}}"
                     Click="{x:Bind ViewModel.RepeatLastConsoleScript}"
@@ -259,6 +276,7 @@
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
+                    x:Uid="Shell/Restart"
                     Label="Restart"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource RestartIcon}}"
                     Click="{x:Bind ViewModel.RestartConsole}"
@@ -270,6 +288,7 @@
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
+                    x:Uid="Shell/ClearScreen"
                     Label="Clear screen"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource ClearScreen}}"
                     Click="{x:Bind ViewModel.ClearConsoleScreen}"
@@ -281,23 +300,27 @@
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
+                    x:Uid="Shell/NewFile"
                     Label="New file"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource NewFileIcon}}"
                     Visibility="{x:Bind converters:PivotSelectionConverter.ConvertToVisibility(ViewModel.SelectedView, settings:ViewType.Ide), Mode=OneWay}"
                     Click="{x:Bind ViewModel.NewIdeFile}"/>
                 <AppBarSeparator Visibility="{x:Bind converters:PivotSelectionConverter.ConvertToVisibility(ViewModel.SelectedView, settings:ViewType.Ide), Mode=OneWay}"/>
                 <AppBarButton
+                    x:Uid="Shell/OpenCodeLibrary"
                     Label="Open code library"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource OpenCodeLibraryIcon}}"
                     Visibility="{x:Bind converters:PivotSelectionConverter.ConvertToVisibility(ViewModel.SelectedView, settings:ViewType.Ide), Mode=OneWay}"
                     Click="{x:Bind ViewModel.RequestCodeLibrary}"/>
                 <AppBarButton
+                    x:Uid="Shell/OpenFile"
                     Label="Open file"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource OpenFileIcon}}"
                     Visibility="{x:Bind converters:PivotSelectionConverter.ConvertToVisibility(ViewModel.SelectedView, settings:ViewType.Ide), Mode=OneWay}"
                     Click="{x:Bind ViewModel.OpenFile}"/>
                 <AppBarSeparator Visibility="{x:Bind converters:PivotSelectionConverter.ConvertToVisibility(ViewModel.SelectedView, settings:ViewType.Ide), Mode=OneWay}"/>
                 <AppBarButton
+                    x:Uid="Shell/Save"
                     Label="Save"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource SaveIcon}}"
                     Visibility="{x:Bind converters:PivotSelectionConverter.ConvertToVisibility(ViewModel.SelectedView, settings:ViewType.Ide), Mode=OneWay}"
@@ -309,6 +332,7 @@
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
+                    x:Uid="Shell/SaveAs"
                     Label="Save as"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource SaveAsIcon}}"
                     Visibility="{x:Bind converters:PivotSelectionConverter.ConvertToVisibility(ViewModel.SelectedView, settings:ViewType.Ide), Mode=OneWay}"
@@ -321,6 +345,7 @@
                 </AppBarButton>
                 <AppBarSeparator/>
                 <AppBarButton
+                    x:Uid="Shell/Settings"
                     Label="Settings"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource SettingsIcon}}"
                     Click="{x:Bind ViewModel.RequestSettings}">
@@ -329,6 +354,7 @@
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarButton
+                    x:Uid="Shell/About"
                     Label="About"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource AboutIcon}}"
                     Click="{x:Bind ViewModel.RequestAboutInfo}">
