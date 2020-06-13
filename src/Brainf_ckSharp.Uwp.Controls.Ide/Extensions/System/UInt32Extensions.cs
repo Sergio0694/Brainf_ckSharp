@@ -7,7 +7,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System
     /// <summary>
     /// A <see langword="class"/> with some extension methods for the <see cref="uint"/> type
     /// </summary>
-    public static class UInt32Extensions
+    internal static class UInt32Extensions
     {
         /// <summary>
         /// Writes a given <see cref="uint"/> value to a target buffer

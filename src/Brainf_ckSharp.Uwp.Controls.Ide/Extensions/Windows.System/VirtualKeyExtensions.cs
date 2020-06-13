@@ -1,11 +1,12 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 
 #nullable enable
 
-namespace Windows.System
+namespace Brainf_ckSharp.Uwp.Controls.Ide.Extensions.Windows.System
 {
     /// <summary>
     /// A <see langword="class"/> with some extension methods for the <see cref="VirtualKey"/> type
@@ -22,6 +23,7 @@ namespace Windows.System
         public static bool IsDown(this VirtualKey key)
         {
             CoreVirtualKeyStates state = Window.Current.CoreWindow.GetKeyState(key);
+
             return (state & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down;
         }
     }

@@ -6,6 +6,8 @@ using System.Runtime.InteropServices;
 using Windows.System;
 using Windows.UI.Text;
 using Brainf_ckSharp.Constants;
+using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System;
+using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.Windows.UI.Text;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 using Microsoft.Toolkit.HighPerformance.Extensions;
 

@@ -8,6 +8,9 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System;
+using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.Windows.System;
+using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.Windows.UI.Text;
 using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
 
 #nullable enable

@@ -15,14 +15,14 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         public new event TypedEventHandler<Brainf_ckEditBox, TextChangedEventArgs>? TextChanged;
 
         /// <summary>
-        /// Raised before the overlays canvas is invalidated
-        /// </summary>
-        public event EventHandler? FormattingCompleted;
-
-        /// <summary>
         /// Rasised when the cursor position changes
         /// </summary>
         public event TypedEventHandler<Brainf_ckEditBox, CursorPositionChangedEventArgs>? CursorPositionChanged;
+
+        /// <summary>
+        /// Raised before the overlays canvas is invalidated
+        /// </summary>
+        public event EventHandler? FormattingCompleted;
 
         /// <summary>
         /// Raised whenever the resources for the overlays are being created.

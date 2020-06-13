@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using Windows.UI;
+using Windows.UI.Text;
 
 #nullable enable
 
-namespace Windows.UI.Text
+namespace Brainf_ckSharp.Uwp.Controls.Ide.Extensions.Windows.UI.Text
 {
     /// <summary>
     /// A <see langword="class"/> with some extension methods for the <see cref="ITextDocument"/> type
@@ -19,6 +21,7 @@ namespace Windows.UI.Text
         public static string GetText(this ITextDocument document)
         {
             document.GetText(TextGetOptions.None, out string text);
+
             return text;
         }
 
@@ -45,6 +48,7 @@ namespace Windows.UI.Text
         public static void SetRangeColor(this ITextDocument document, int start, int end, Color color)
         {
             ITextRange range = document.GetRange(start, end);
+
             range.CharacterFormat.ForegroundColor = color;
         }
 
@@ -72,6 +76,7 @@ namespace Windows.UI.Text
         public static void ClearUndoHistory(this ITextDocument document)
         {
             uint limit = document.UndoLimit;
+
             document.UndoLimit = 0;
             document.UndoLimit = limit;
         }

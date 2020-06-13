@@ -12,17 +12,17 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// The <see cref="ICommand"/> instance responsible for cutting the selected text
         /// </summary>
-        public ICommand CutCommand => new Command(CutSelectedText);
+        internal ICommand CutCommand => new Command(CutSelectedText);
 
         /// <summary>
         /// The <see cref="ICommand"/> instance responsible for copying the selected text
         /// </summary>
-        public ICommand CopyCommand => new Command(CopySelectedText);
+        internal ICommand CopyCommand => new Command(CopySelectedText);
 
         /// <summary>
         /// The <see cref="ICommand"/> instance responsible for pasting text from the clipboard
         /// </summary>
-        public ICommand PasteCommand => new Command(PasteFromClipboard);
+        internal ICommand PasteCommand => new Command(PasteFromClipboard);
 
         /// <summary>
         /// Enables the monitoring of clipboard contents
@@ -114,7 +114,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// Gets whether or not there is some text in the clipboard that can be pasted
         /// </summary>
-        public bool IsTextInClipboard
+        internal bool IsTextInClipboard
         {
             get => (bool)GetValue(IsTextInClipboardProperty);
             private set => SetValue(IsTextInClipboardProperty, value);
@@ -133,7 +133,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// Gets the dependency property for <see cref="IsTextInClipboard"/>.
         /// </summary>
-        public static readonly DependencyProperty IsTextInClipboardProperty =
+        internal static readonly DependencyProperty IsTextInClipboardProperty =
             DependencyProperty.Register(
                 nameof(IsTextInClipboard),
                 typeof(bool),

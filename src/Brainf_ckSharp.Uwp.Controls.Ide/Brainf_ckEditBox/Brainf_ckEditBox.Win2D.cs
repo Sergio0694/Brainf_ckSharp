@@ -6,6 +6,7 @@ using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Text;
 using Brainf_ckSharp.Constants;
+using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.Windows.UI.Text;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models;
 using Brainf_ckSharp.Uwp.Themes;
 using Microsoft.Graphics.Canvas.Geometry;
@@ -178,7 +179,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// Resets the current whitespace characters
         /// </summary>
-        public void ResetWhitespaceCharactersList()
+        private void ResetWhitespaceCharactersList()
         {
             _SpaceIndices = MemoryOwner<int>.Empty;
             _SpaceAreas = MemoryOwner<Rect>.Empty;

@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using Windows.UI.Text;
 
 #nullable enable
 
-namespace Windows.UI.Text
+namespace Brainf_ckSharp.Uwp.Controls.Ide.Extensions.Windows.UI.Text
 {
     /// <summary>
     /// A <see langword="class"/> with some extension methods for the <see cref="ITextRange"/> type
@@ -19,6 +20,7 @@ namespace Windows.UI.Text
         public static string GetText(this ITextRange range)
         {
             range.GetText(TextGetOptions.None, out string text);
+
             return text;
         }
 
@@ -31,6 +33,7 @@ namespace Windows.UI.Text
         public static (int Start, int End) GetBounds(this ITextRange range)
         {
             int start = range.StartPosition, end = range.EndPosition;
+
             return start <= end ? (start, end) : (end, start);
         }
     }

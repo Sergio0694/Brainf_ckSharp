@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Text;
 using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.Windows.UI.Text;
 
 #nullable enable
 
