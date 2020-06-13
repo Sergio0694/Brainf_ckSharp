@@ -1,4 +1,5 @@
-﻿using Brainf_ckSharp.Constants;
+﻿using System;
+using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Opcodes;
@@ -16,21 +17,22 @@ namespace Brainf_ckSharp.Unit.Internals
         [TestMethod]
         public void ExtractSource()
         {
-            using MemoryOwner<Brainf_ckOperator> operators = MemoryOwner<Brainf_ckOperator>.Allocate(11);
+            Span<Brainf_ckOperator> operators = stackalloc Brainf_ckOperator[]
+            {
+                Operators.Plus,
+                Operators.Minus,
+                Operators.ForwardPtr,
+                Operators.BackwardPtr,
+                Operators.PrintChar,
+                Operators.ReadChar,
+                Operators.LoopStart,
+                Operators.LoopEnd,
+                Operators.FunctionStart,
+                Operators.FunctionEnd,
+                Operators.FunctionCall
+            };
 
-            operators.Span[0] = Operators.Plus;
-            operators.Span[1] = Operators.Minus;
-            operators.Span[2] = Operators.ForwardPtr;
-            operators.Span[3] = Operators.BackwardPtr;
-            operators.Span[4] = Operators.PrintChar;
-            operators.Span[5] = Operators.ReadChar;
-            operators.Span[6] = Operators.LoopStart;
-            operators.Span[7] = Operators.LoopEnd;
-            operators.Span[8] = Operators.FunctionStart;
-            operators.Span[9] = Operators.FunctionEnd;
-            operators.Span[10] = Operators.FunctionCall;
-
-            string source = Brainf_ckParser.ExtractSource<Brainf_ckOperator>(operators.Span);
+            string source = Brainf_ckParser.ExtractSource(operators);
 
             Assert.IsNotNull(source);
             Assert.AreEqual(source, "+-><.,[]():");
@@ -51,7 +53,7 @@ namespace Brainf_ckSharp.Unit.Internals
             Assert.IsNotNull(operators);
             Assert.AreEqual(operators!.Length, 15);
 
-            string source = Brainf_ckParser.ExtractSource<Brainf_ckOperator>(operators.Span);
+            string source = Brainf_ckParser.ExtractSource(operators.Span);
 
             Assert.IsNotNull(source);
             Assert.AreEqual(source, "[]+++++[>++<-]>");
@@ -72,10 +74,57 @@ namespace Brainf_ckSharp.Unit.Internals
             Assert.IsNotNull(operations);
             Assert.AreEqual(operations!.Length, 10);
 
-            string source = Brainf_ckParser.ExtractSource<Brainf_ckOperation>(operations.Span);
+            string source = Brainf_ckParser.ExtractSource(operations.Span);
 
             Assert.IsNotNull(source);
             Assert.AreEqual(source, "[]+++++[>++<-]>");
+        }
+
+        [TestMethod]
+        public void ValidateReleaseCompression()
+        {
+            Span<Brainf_ckOperation> operations = stackalloc[]
+            {
+                new Brainf_ckOperation(Operators.Plus, 5),
+                new Brainf_ckOperation(Operators.Minus, 4),
+                new Brainf_ckOperation(Operators.ForwardPtr, 7),
+                new Brainf_ckOperation(Operators.BackwardPtr, 3),
+                new Brainf_ckOperation(Operators.ForwardPtr, 1),
+                new Brainf_ckOperation(Operators.BackwardPtr, 1),
+                new Brainf_ckOperation(Operators.ForwardPtr, 2),
+                new Brainf_ckOperation(Operators.FunctionStart, 1),
+                new Brainf_ckOperation(Operators.Plus, 5),
+                new Brainf_ckOperation(Operators.FunctionEnd, 1),
+                new Brainf_ckOperation(Operators.FunctionCall, 1),
+                new Brainf_ckOperation(Operators.FunctionCall, 1),
+                new Brainf_ckOperation(Operators.FunctionCall, 1),
+                new Brainf_ckOperation(Operators.FunctionCall, 1),
+                new Brainf_ckOperation(Operators.FunctionCall, 1),
+                new Brainf_ckOperation(Operators.FunctionCall, 1),
+                new Brainf_ckOperation(Operators.LoopStart, 1),
+                new Brainf_ckOperation(Operators.LoopStart, 1),
+                new Brainf_ckOperation(Operators.Plus, 5),
+                new Brainf_ckOperation(Operators.LoopEnd, 1),
+                new Brainf_ckOperation(Operators.LoopEnd, 1),
+                new Brainf_ckOperation(Operators.FunctionCall, 1),
+                new Brainf_ckOperation(Operators.Plus, 15),
+                new Brainf_ckOperation(Operators.Minus, 15),
+                new Brainf_ckOperation(Operators.PrintChar, 1),
+                new Brainf_ckOperation(Operators.PrintChar, 1),
+                new Brainf_ckOperation(Operators.ReadChar, 1),
+                new Brainf_ckOperation(Operators.ReadChar, 1),
+            };
+
+            string script = Brainf_ckParser.ExtractSource(operations);
+
+            using MemoryOwner<Brainf_ckOperation>? buffer = Brainf_ckParser.TryParse<Brainf_ckOperation>(script, out SyntaxValidationResult result);
+
+            Assert.IsTrue(result.IsSuccess);
+            Assert.AreEqual(result.ErrorType, SyntaxError.None);
+            Assert.AreEqual(result.ErrorOffset, -1);
+            Assert.AreEqual(result.OperatorsCount, script.Length);
+
+            CollectionAssert.AreEqual(operations.ToArray(), buffer!.Span.ToArray());
         }
     }
 }
