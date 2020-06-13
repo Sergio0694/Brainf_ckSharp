@@ -91,6 +91,17 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// </summary>
         public bool IsAtBreakpoint => _DebugSession?.Current.ExitCode.HasFlag(ExitCode.BreakpointReached) == true;
 
+        private bool _IsRunning;
+
+        /// <summary>
+        /// Gets whether or not a script is currently being executed
+        /// </summary>
+        public bool IsRunning
+        {
+            get => _IsRunning;
+            private set => Set(ref _IsRunning, value);
+        }
+
         /// <inheritdoc/>
         protected override async void OnDeactivated()
         {
@@ -112,6 +123,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 
             using (await LoadingMutex.LockAsync())
             {
+                IsRunning = true;
+
                 _ExecutionTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
 
                 // Execution arguments and options
@@ -144,7 +157,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
                     // Run in DEBUG mode
                     _DebugSession = await Task.Run(() =>
                     {
-                        
                         var session = Brainf_ckInterpreter
                             .CreateDebugConfiguration()
                             .WithSource(Script!)
@@ -166,6 +178,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 
                     OnPropertyChanged(nameof(IsAtBreakpoint));
                 }
+
+                IsRunning = false;
             }
         }
 
@@ -176,11 +190,15 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         {
             using (await LoadingMutex.LockAsync())
             {
+                IsRunning = true;
+
                 await Task.Run(() => _DebugSession!.MoveNext());
 
                 LoadResults(_DebugSession!.Current);
 
                 OnPropertyChanged(nameof(IsAtBreakpoint));
+
+                IsRunning = false;
             }
         }
 
@@ -191,6 +209,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         {
             using (await LoadingMutex.LockAsync())
             {
+                IsRunning = true;
+
                 _DebugTokenSource!.Cancel();
 
                 await Task.Run(() => _DebugSession!.MoveNext());
@@ -198,6 +218,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
                 LoadResults(_DebugSession!.Current);
 
                 OnPropertyChanged(nameof(IsAtBreakpoint));
+
+                IsRunning = false;
             }
         }
 

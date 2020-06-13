@@ -18,6 +18,7 @@
     xmlns:subPages="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -37,6 +38,7 @@
         </core:EventTriggerBehavior>
     </interactivity:Interaction.Behaviors>
 
+    <!--Root-->
     <host:SubPageFrame
         Title="RUN"
         Background="#72000000">
@@ -86,14 +88,24 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
+        <!--Results content-->
         <Grid extensions:UIElementExtensions.ClipToBounds="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
+            <!--Loading bar-->
+            <muxc:ProgressBar
+                VerticalAlignment="Top"
+                Height="8"
+                Background="Transparent"
+                IsIndeterminate="{x:Bind ViewModel.IsRunning, Mode=OneWay}"/>
+
             <!--Semantic zoom-->
-            <SemanticZoom attachedProperties:SemanticZoomHelper.Source="{x:Bind ViewModel.Source, Mode=OneWay}">
+            <SemanticZoom
+                Grid.Row="0"
+                attachedProperties:SemanticZoomHelper.Source="{x:Bind ViewModel.Source, Mode=OneWay}">
                 <SemanticZoom.ZoomedInView>
 
                     <!--ZoomedInView-->
