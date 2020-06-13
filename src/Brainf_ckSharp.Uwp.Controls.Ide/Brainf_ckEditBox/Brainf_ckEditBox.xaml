@@ -149,12 +149,12 @@
 
                         <!--Syntax error tooltip-->
                         <muxc:TeachingTip
+                            x:Uid="Brainf_ckEditBox/SyntaxErrorToolTip"
                             x:Name="SyntaxErrorToolTip"
                             IsLightDismissEnabled="True"
-                            Title="{TemplateBinding SyntaxErrorToolTipTitle}"
-                            Subtitle="{TemplateBinding SyntaxErrorToolTipSubtitle}">
+                            Title="Syntax error">
                             <muxc:TeachingTip.IconSource>
-                                <muxc:SymbolIconSource Symbol="Important" />
+                                <muxc:SymbolIconSource Symbol="Important"/>
                             </muxc:TeachingTip.IconSource>
                         </muxc:TeachingTip>
 

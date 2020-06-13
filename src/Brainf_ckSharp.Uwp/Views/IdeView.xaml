@@ -67,8 +67,6 @@
     <!--IDE-->
     <ide:Brainf_ckIde
         x:Name="CodeEditor"
-        SyntaxErrorToolTipTitle="Syntax error"
-        SyntaxErrorToolTipSubtitle="{x:Bind convertersConsole:SyntaxErrorConverter.Convert(ViewModel.ValidationResult.ErrorType), Mode=OneWay}"
         TextChanged="CodeEditor_OnTextChanged"
         CursorPositionChanged="CodeEditor_OnCursorPositionChanged"
         BreakpointAdded="CodeEditor_OnBreakpointAdded"

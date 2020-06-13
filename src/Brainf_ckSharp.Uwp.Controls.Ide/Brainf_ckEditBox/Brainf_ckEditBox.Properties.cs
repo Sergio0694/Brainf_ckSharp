@@ -25,24 +25,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         }
 
         /// <summary>
-        /// Gets or sets the title of the tooltip displayed over a syntax error
-        /// </summary>
-        public string SyntaxErrorToolTipTitle
-        {
-            get => (string)GetValue(SyntaxErrorToolTipTitleProperty);
-            set => SetValue(SyntaxErrorToolTipTitleProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the subtitle of the tooltip displayed over a syntax error
-        /// </summary>
-        public string SyntaxErrorToolTipSubtitle
-        {
-            get => (string)GetValue(SyntaxErrorToolTipSubtitleProperty);
-            set => SetValue(SyntaxErrorToolTipSubtitleProperty, value);
-        }
-
-        /// <summary>
         /// Gets or sets the margin of the vertical scrolling bar for the control
         /// </summary>
         public Thickness VerticalScrollBarMargin
@@ -96,26 +78,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 typeof(string),
                 typeof(Brainf_ckEditBox),
                 new PropertyMetadata("\r"));
-
-        /// <summary>
-        /// Gets the dependency property for <see cref="SyntaxErrorToolTipTitle"/>.
-        /// </summary>
-        public static readonly DependencyProperty SyntaxErrorToolTipTitleProperty =
-            DependencyProperty.Register(
-                nameof(SyntaxErrorToolTipTitle),
-                typeof(string),
-                typeof(Brainf_ckEditBox),
-                new PropertyMetadata(string.Empty));
-
-        /// <summary>
-        /// Gets the dependency property for <see cref="SyntaxErrorToolTipSubtitle"/>.
-        /// </summary>
-        public static readonly DependencyProperty SyntaxErrorToolTipSubtitleProperty =
-            DependencyProperty.Register(
-                nameof(SyntaxErrorToolTipSubtitle),
-                typeof(string),
-                typeof(Brainf_ckEditBox),
-                new PropertyMetadata(string.Empty));
 
         /// <summary>
         /// Gets the dependency property for <see cref="VerticalScrollBarMargin"/>.

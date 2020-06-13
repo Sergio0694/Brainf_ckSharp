@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Text;
@@ -8,6 +9,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System;
 using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.Windows.System;
 using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.Windows.UI.Text;
@@ -22,6 +24,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     /// </summary>
     public sealed partial class Brainf_ckEditBox : RichEditBox
     {
+        /// <summary>
+        /// The <see cref="Windows.ApplicationModel.Resources.ResourceLoader"/> instance to retrieve localized text for the control
+        /// </summary>
+        private readonly ResourceLoader ResourceLoader = ResourceLoader.GetForViewIndependentUse($"Brainf_ckSharp.Uwp.Controls.Ide/Resources");
+
         /// <summary>
         /// Creates a new <see cref="Brainf_ckEditBox"/> instance
         /// </summary>
@@ -200,6 +207,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             // Reset the target to ensure the right target coordinates are used
             _SyntaxErrorToolTip!.IsOpen = false;
             _SyntaxErrorToolTip.Target = null;
+
+            // Setup and display the tooltip
+            _SyntaxErrorToolTip.Subtitle = ResourceLoader.GetString($"{nameof(SyntaxError)}/{_SyntaxValidationResult.ErrorType}");
             _SyntaxErrorToolTip.Target = _CursorIndicatorRectangle!;
             _SyntaxErrorToolTip!.IsOpen = true;
         }

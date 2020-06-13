@@ -47,7 +47,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 string
                     oldText = Text,
                     newText = Document.GetText();
-
                 int
                     textLength = newText.Length,
                     selectionLength = Document.Selection.Length,

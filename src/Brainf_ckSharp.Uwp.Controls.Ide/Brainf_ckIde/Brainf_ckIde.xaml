@@ -105,8 +105,6 @@
             extensions:UIElementExtensions.ClipToBounds="True"
             Padding="4,76,8,8"
             VerticalScrollBarMargin="0,68,0,0"
-            SyntaxErrorToolTipTitle="{x:Bind SyntaxErrorToolTipTitle, Mode=OneWay}"
-            SyntaxErrorToolTipSubtitle="{x:Bind SyntaxErrorToolTipSubtitle, Mode=OneWay}"
             SyntaxHighlightTheme="{x:Bind SyntaxHighlightTheme, Mode=OneWay}"
             FormattingCompleted="CodeEditBox_OnFormattingCompleted"
             TextChanged="CodeEditBox_TextChanged"
