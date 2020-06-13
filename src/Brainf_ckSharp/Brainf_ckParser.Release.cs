@@ -69,7 +69,7 @@ namespace Brainf_ckSharp
                     // ascending order. The only compressable operators are "><+-", which
                     // have a value in the [4, 7] range after the conversion to byte format.
                     if (op == currentOperator &&
-                        0b000_1111_0000 >> op == 1 &&
+                        ((0b000_1111_0000 >> op) & 1) == 1 &&
                         currentCount < ushort.MaxValue)
                     {
                         // This is only allowed for ><+-
