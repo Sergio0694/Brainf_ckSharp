@@ -66,9 +66,8 @@ namespace Brainf_ckSharp
                 // The access to the operators table is safe at this point because
                 // the previous while loop guarantees that the current character
                 // is an operator, and therefore also a valid lookup index.
-                ref byte r0 = ref OperatorsLookupTable.DangerousGetReference();
                 ref bool r1 = ref CompressableOperatorsLookupTable.DangerousGetReference();
-                byte currentOperator = Unsafe.Add(ref r0, Unsafe.Add(ref sourceRef, j));
+                byte currentOperator = OperatorsLookupTable.DangerousGetReferenceAt(Unsafe.Add(ref sourceRef, j));
                 ushort currentCount = 1;
 
                 // Extract all the operators from the input source code.
