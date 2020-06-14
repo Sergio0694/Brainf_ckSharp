@@ -102,7 +102,7 @@
         <ide:Brainf_ckEditBox
             x:Name="CodeEditBox"
             Grid.Column="1"
-            AllowFocusOnInteraction="False"
+            AllowFocusWhenDisabled="False"
             extensions:UIElementExtensions.ClipToBounds="True"
             Padding="4,8,8,8"
             SyntaxHighlightTheme="{x:Bind SyntaxHighlightTheme, Mode=OneWay}"
