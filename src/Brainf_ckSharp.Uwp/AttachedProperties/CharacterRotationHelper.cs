@@ -31,7 +31,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
         }
 
         /// <summary>
-        /// An attached property that controls the render transform of a <see cref="TextBlock"/> baased on a given character
+        /// An attached property that controls the render transform of a <see cref="TextBlock"/> based on a given character
         /// </summary>
         public static readonly DependencyProperty CharacterProperty = DependencyProperty.RegisterAttached(
             "Character",

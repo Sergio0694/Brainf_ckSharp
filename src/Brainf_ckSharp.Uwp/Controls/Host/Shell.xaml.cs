@@ -23,7 +23,7 @@ using Microsoft.Toolkit.Uwp.Helpers;
 namespace Brainf_ckSharp.Uwp.Controls.Host
 {
     /// <summary>
-    /// The shell that aacts as root visual element for the application
+    /// The shell that acts as root visual element for the application
     /// </summary>
     public sealed partial class Shell : UserControl
     {

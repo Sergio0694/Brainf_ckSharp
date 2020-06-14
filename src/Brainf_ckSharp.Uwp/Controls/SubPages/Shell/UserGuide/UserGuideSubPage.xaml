@@ -32,7 +32,7 @@
         </DataTemplate>
 
         <!--PBrain-->
-        <DataTemplate x:Name="PBraainExtensionTemplate">
+        <DataTemplate x:Name="PBrainExtensionTemplate">
             <sections:PBrainExtensionGuidePanel Margin="0,12,0,12"/>
         </DataTemplate>
 
@@ -59,7 +59,7 @@
                         <templateSelectors:UserGuideSectionTemplateSelector
                             IntroductionTemplate="{x:Bind LanguageIntroductionTemplate}"
                             CodeSamplesTemplate="{x:Bind CodeSamplesTemplate}"
-                            PBrainTemplate="{x:Bind PBraainExtensionTemplate}"
+                            PBrainTemplate="{x:Bind PBrainExtensionTemplate}"
                             DebuggingTemplate="{x:Bind DebuggingTemplate}"/>
                     </ListView.ItemTemplateSelector>
                     <ListView.GroupStyle>
