@@ -21,18 +21,18 @@
 
         <!--Operators-->
         <templates:OperatorInfoTemplate
-            x:Uid="UserGuide/PBrainOperator1.Description"
+            x:Uid="UserGuide/PBrainOperator1"
             Margin="0,4,0,0"
             ItemName="("
-            Description="Defines a function and binds..."
+            Description="Defines a function bound..."
             ItemNameForegroundBrush="#FF009191"/>
         <templates:OperatorInfoTemplate
-            x:Uid="UserGuide/PBrainOperator2.Description"
+            x:Uid="UserGuide/PBrainOperator2"
             ItemName=")"
             Description="Ends the current function definition"
             ItemNameForegroundBrush="#FF009191"/>
         <templates:OperatorInfoTemplate
-            x:Uid="UserGuide/PBrainOperator3.Description"
+            x:Uid="UserGuide/PBrainOperator3"
             ItemName=":"
             Description="Calls the function associated..."
             ItemNameForegroundBrush="#FF1E7499"/>

@@ -22,10 +22,6 @@
             <LineBreak/>
             <Run
                 x:Uid="UserGuide/Introduction2"
-                Text="The language replicates a..."/>
-            <LineBreak/>
-            <Run
-                x:Uid="UserGuide/Introduction3"
                 Text="A Brainf*ck program is made up of only 8 operators:"/>
         </TextBlock>
 
