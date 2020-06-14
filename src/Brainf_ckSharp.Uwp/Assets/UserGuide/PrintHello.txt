@@ -1,0 +1,1 @@
++++++++ 7 in cell #0[	>+++++ 7 * 5 = 35 in cell #1	[		>++ 35 * 2 in cell #2		>+++ 35 * 3 in cell #3		<<- Back to start, decrement	]<-]>>++. H>----. e+++++++.. ll+++. o

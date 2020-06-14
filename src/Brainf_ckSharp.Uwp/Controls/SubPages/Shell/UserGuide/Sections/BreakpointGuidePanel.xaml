@@ -4,14 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:codeSamples="using:Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.CodeSamples"
+    xmlns:templates="using:Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.Templates"
     mc:Ignorable="d"
     d:DesignHeight="800"
     d:DesignWidth="400">
 
     <!--Root-->
-    <StackPanel>
+    <StackPanel Spacing="16">
 
         <!--Introduction-->
         <TextBlock 
@@ -26,18 +25,12 @@
         </TextBlock>
 
         <!--Reset loop-->
-        <toolkit:DropShadowPanel
-            Margin="0,16,0,0"
-            BlurRadius="8"
-            ShadowOpacity="0.5"
-            OffsetX="2"
-            OffsetY="2">
-            <codeSamples:BreakpointCodePreview HorizontalAlignment="Left"/>
-        </toolkit:DropShadowPanel>
+        <templates:CodeSampleTemplate
+            Title="Break inside a loop"
+            SampleUri="/Assets/UserGuide/BreakWithinLoop.txt"/>
 
         <!--Second description-->
         <TextBlock 
-            Margin="0,16,0,0"
             TextWrapping="WrapWholeWords"
             FontSize="14">
             <Run
@@ -49,8 +42,7 @@
         <Grid
             HorizontalAlignment="Left"
             BorderThickness="2"
-            BorderBrush="#20FFFFFF"
-            Margin="0,16,0,0">
+            BorderBrush="#20FFFFFF">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"
                                   MinWidth="54"/>
@@ -85,7 +77,7 @@
 
         <!--Skip-->
         <Grid
-            Margin="0,12,0,0"
+            Margin="0,-4,0,0"
             HorizontalAlignment="Left"
             BorderThickness="2"
             BorderBrush="#20FFFFFF">
@@ -134,8 +126,7 @@
         </Grid>
 
         <!--Third description-->
-        <TextBlock 
-            Margin="0,16,0,0"
+        <TextBlock
             TextWrapping="WrapWholeWords"
             FontSize="14">
             <Run

@@ -143,6 +143,9 @@
     <Compile Include="Controls\SubPages\Shell\Settings\SettingsSubPage.xaml.cs">
       <DependentUpon>SettingsSubPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SubPages\Shell\UserGuide\Templates\CodeSampleTemplate.xaml.cs">
+      <DependentUpon>CodeSampleTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SubPages\Views\IdeResultSubPage\IdeResultSubPageTemplates.xaml.cs">
       <DependentUpon>IdeResultSubPageTemplates.xaml</DependentUpon>
     </Compile>
@@ -195,18 +198,6 @@
     <Compile Include="Controls\SubPages\Interfaces\IConstrainedSubPage.cs" />
     <Compile Include="Controls\SubPages\Shell\AboutSubPage.xaml.cs">
       <DependentUpon>AboutSubPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\BreakpointCodePreview.xaml.cs">
-      <DependentUpon>BreakpointCodePreview.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\PrintHelloCodeSample.xaml.cs">
-      <DependentUpon>PrintHelloCodeSample.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\ResetLoopCodePreview.xaml.cs">
-      <DependentUpon>ResetLoopCodePreview.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SubPages\Shell\UserGuide\CodeSamples\SimpleLoopCodePreview.xaml.cs">
-      <DependentUpon>SimpleLoopCodePreview.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SubPages\Shell\UserGuide\Sections\BreakpointGuidePanel.xaml.cs">
       <DependentUpon>BreakpointGuidePanel.xaml</DependentUpon>
@@ -356,6 +347,18 @@
     <Content Include="Assets\StoreLogo.scale-150.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
+    <Content Include="Assets\UserGuide\ResetCell.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\UserGuide\BreakWithinLoop.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\UserGuide\PrintHello.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\UserGuide\CopyValue.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
@@ -489,22 +492,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\BreakpointCodePreview.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\PrintHelloCodeSample.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\ResetLoopCodePreview.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SubPages\Shell\UserGuide\CodeSamples\SimpleLoopCodePreview.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\SubPages\Shell\UserGuide\Sections\BreakpointGuidePanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -518,6 +505,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\SubPages\Shell\UserGuide\Sections\PBrainExtensionGuidePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SubPages\Shell\UserGuide\Templates\CodeSampleTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

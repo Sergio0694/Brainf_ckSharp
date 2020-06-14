@@ -4,24 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:codeSamples="using:Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.CodeSamples"
+    xmlns:templates="using:Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.Templates"
     mc:Ignorable="d"
     d:DesignHeight="1200"
     d:DesignWidth="480">
-    <UserControl.Resources>
-
-        <!--Drop shadow style-->
-        <Style TargetType="toolkit:DropShadowPanel" x:Key="DropShadowContainerStyle">
-            <Setter Property="BlurRadius" Value="8"/>
-            <Setter Property="ShadowOpacity" Value="0.5"/>
-            <Setter Property="OffsetX" Value="2"/>
-            <Setter Property="OffsetY" Value="2"/>
-        </Style>
-    </UserControl.Resources>
 
     <!--Root-->
-    <StackPanel>
+    <StackPanel Spacing="16">
 
         <!--Introduction-->
         <TextBlock 
@@ -39,15 +28,12 @@
         </TextBlock>
 
         <!--Reset loop-->
-        <toolkit:DropShadowPanel 
-            Style="{StaticResource DropShadowContainerStyle}"
-            Margin="0,16,0,0">
-            <codeSamples:ResetLoopCodePreview HorizontalAlignment="Left"/>
-        </toolkit:DropShadowPanel>
+        <templates:CodeSampleTemplate
+            Title="Reset the current cell"
+            SampleUri="/Assets/UserGuide/ResetCell.txt"/>
 
         <!--Second description-->
         <TextBlock 
-            Margin="0,16,0,0"
             TextWrapping="WrapWholeWords"
             FontSize="14">
             <Run
@@ -59,15 +45,12 @@
         </TextBlock>
 
         <!--Copy value loop-->
-        <toolkit:DropShadowPanel 
-            Style="{StaticResource DropShadowContainerStyle}"
-            Margin="0,16,0,0">
-            <codeSamples:SimpleLoopCodePreview HorizontalAlignment="Left"/>
-        </toolkit:DropShadowPanel>
+        <templates:CodeSampleTemplate
+            Title="Copy the current value"
+            SampleUri="/Assets/UserGuide/CopyValue.txt"/>
 
         <!--Advanced sample description-->
-        <TextBlock 
-            Margin="0,16,0,0"
+        <TextBlock
             TextWrapping="WrapWholeWords"
             FontSize="14">
             <Run
@@ -79,15 +62,12 @@
         </TextBlock>
 
         <!--Advanced loop sample-->
-        <toolkit:DropShadowPanel 
-            Style="{StaticResource DropShadowContainerStyle}"
-            Margin="0,16,0,0">
-            <codeSamples:PrintHelloCodeSample HorizontalAlignment="Left"/>
-        </toolkit:DropShadowPanel>
+        <templates:CodeSampleTemplate
+            Title="Print hello"
+            SampleUri="/Assets/UserGuide/PrintHello.txt"/>
 
         <!--Advanced loop description-->
         <TextBlock
-            Margin="0,16,0,0"
             TextWrapping="WrapWholeWords"
             FontSize="14">
             <Run
