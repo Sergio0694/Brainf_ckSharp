@@ -30,6 +30,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
             _DiffIndicators.Span.Clear();
 
+            BreakpointIndicators.Clear();
+
             CodeEditBox.Document.LoadFromString(text);
         }
 

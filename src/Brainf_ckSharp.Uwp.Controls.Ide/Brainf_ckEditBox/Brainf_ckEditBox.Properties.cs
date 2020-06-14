@@ -1,5 +1,6 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Themes;
 using Microsoft.Graphics.Canvas.Geometry;
@@ -11,6 +12,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
     internal sealed partial class Brainf_ckEditBox
     {
         /// <summary>
+        /// The syntax validation result for the currently displayed text
+        /// </summary>
+        private SyntaxValidationResult _SyntaxValidationResult = Brainf_ckParser.ValidateSyntax("\r");
+
+        /// <summary>
         /// Gets the plain text currently displayed in the control
         /// </summary>
         public string Text
@@ -19,6 +25,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             private set
             {
                 SetValue(TextProperty, value);
+
+                _SyntaxValidationResult = Brainf_ckParser.ValidateSyntax(value);
 
                 TextChanged?.Invoke(this, new TextChangedEventArgs(value, _SyntaxValidationResult));
             }

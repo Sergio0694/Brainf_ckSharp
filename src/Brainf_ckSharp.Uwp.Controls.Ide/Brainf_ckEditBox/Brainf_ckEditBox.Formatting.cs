@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Windows.UI.Text;
 using Brainf_ckSharp.Constants;
-using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System;
 using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.Windows.UI.Text;
@@ -17,11 +16,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 {
     internal sealed partial class Brainf_ckEditBox
     {
-        /// <summary>
-        /// The syntax validation result for the currently displayed text
-        /// </summary>
-        private SyntaxValidationResult _SyntaxValidationResult = Brainf_ckParser.ValidateSyntax(string.Empty);
-
         /// <summary>
         /// The start position of the current selection
         /// </summary>
@@ -85,7 +79,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 else if (_IsDeleteRequested) _IsDeleteRequested = false;
                 else FormatRange(newText, 0, textLength);
 
-                _SyntaxValidationResult = Brainf_ckParser.ValidateSyntax(newText);
                 Text = newText;
             }
         }
@@ -206,11 +199,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     Document.Selection.StartPosition = Document.Selection.EndPosition = selectionEnd - 1;
                 }
 
-                // Update the current syntax validation
-                string text = Document.GetText();
-
-                _SyntaxValidationResult = Brainf_ckParser.ValidateSyntax(text);
-                Text = text;
+                // Update the current text
+                Text = Document.GetText();
             }
         }
 
@@ -299,10 +289,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
                 // Update the current syntax validation
                 string text = Document.GetText();
-
-                _SyntaxValidationResult = Brainf_ckParser.ValidateSyntax(text);
-                Text = text;
-
                 int
                     sourceLength = source.Length,
                     selectionStart = Document.Selection.StartPosition,
@@ -313,6 +299,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
 
                 // Set the selection after the pasted text
                 Document.Selection.StartPosition = Document.Selection.EndPosition;
+
+                Text = text;
             }
         }
     }
