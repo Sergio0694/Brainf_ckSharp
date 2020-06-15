@@ -20,6 +20,7 @@ namespace Brainf_ckSharp.Memory
         /// <typeparam name="TExecutionContext">The type of execution context to retrieve</typeparam>
         /// <returns>An execution context of the specified type</returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private unsafe TExecutionContext GetExecutionContext<TExecutionContext>()
             where TExecutionContext : struct, IMachineStateExecutionContext
         {

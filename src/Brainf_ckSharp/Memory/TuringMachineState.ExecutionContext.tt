@@ -26,11 +26,12 @@ namespace Brainf_ckSharp.Memory
         /// <typeparam name="TExecutionContext">The type of execution context to retrieve</typeparam>
         /// <returns>An execution context of the specified type</returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private unsafe TExecutionContext GetExecutionContext<TExecutionContext>()
             where TExecutionContext : struct, IMachineStateExecutionContext
         {
             // The underlying buffer is guaranteed not to be null or unpinned here
-            ushort* ptr = (ushort*)Unsafe.AsPointer(ref Buffer.DangerousGetReference());
+            ushort* ptr = (ushort*)Unsafe.AsPointer(ref _Buffer.DangerousGetReference());
 
 <#
 foreach (var mode in Enum.GetValues(typeof(OverflowMode)))
