@@ -6,29 +6,29 @@
     <!--Shell header background brush-->
     <media:AcrylicBrush
         x:Key="ShellHeaderBackgroundBrush"
-        Source="Backdrop"
+        BackgroundSource="Backdrop"
         BlurAmount="8"
-        Tint="#FF1E1E1E"
-        TintMix="0.6"
+        TintColor="#FF1E1E1E"
+        TintOpacity="0.6"
         TextureUri="/Assets/Misc/noise_low.png"/>
 
     <!--Virtual keyboard brush-->
     <media:AcrylicBrush
         x:Key="VirtualKeyboardBackgroundBrush"
-        Source="HostBackdrop"
+        BackgroundSource="HostBackdrop"
         FallbackColor="#FF141414"
-        Tint="#FF101010"
-        TintMix="0.9"
+        TintColor="#FF101010"
+        TintOpacity="0.9"
         TextureUri="/Assets/Misc/noise_low.png"/>
 
     <!--Sub page brushes-->
     <media:AcrylicBrush
         x:Key="SubFrameHostBackgroundBrush"
-        Source="Backdrop"
+        BackgroundSource="Backdrop"
         FallbackColor="#C0080808"
         BlurAmount="8"
-        Tint="#FF080808"
-        TintMix="0.4"
+        TintColor="#FF080808"
+        TintOpacity="0.4"
         TextureUri="/Assets/Misc/noise_low.png"/>
     <Color x:Key="SubFrameBackgroundColor">#C0202020</Color>
     <SolidColorBrush x:Key="SubFrameBackgroundBrush" Color="{StaticResource SubFrameBackgroundColor}"/>
