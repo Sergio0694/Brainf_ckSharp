@@ -3,10 +3,10 @@ using System.Buffers;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Services;
 using Microsoft.Toolkit.Diagnostics;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 
 #nullable enable
 
@@ -21,6 +21,11 @@ namespace Brainf_ckSharp.Shared.Models.Ide
         /// The desired length of each loaded code preview
         /// </summary>
         private const int CodePreviewLength = 160;
+
+        /// <summary>
+        /// The length of a block to read at a time from a file
+        /// </summary>
+        private const int ReadBlockLength = 256;
 
         /// <summary>
         /// Creates a new <see cref="CodeLibraryEntry"/> instance with the specified parameters
@@ -139,7 +144,7 @@ namespace Brainf_ckSharp.Shared.Models.Ide
                 while (previewLength < length)
                 {
                     // Read a new block of characters from the input stream
-                    int maxCharactersToRead = length - previewLength;
+                    int maxCharactersToRead = ReadBlockLength;
                     int read = await reader.ReadAsync(tempBuffer, 0, maxCharactersToRead);
 
                     if (read == 0) break;
@@ -170,14 +175,15 @@ namespace Brainf_ckSharp.Shared.Models.Ide
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static int ExtractOperators(ReadOnlySpan<char> source, Span<char> destination)
         {
-            Guard.IsGreaterThan(source.Length, 0, nameof(source));
-            Guard.IsGreaterThan(destination.Length, 0, nameof(destination));
+            Guard.IsNotEmpty(source, nameof(source));
+            Guard.IsNotEmpty(destination, nameof(destination));
 
-            ref char sourceRef = ref MemoryMarshal.GetReference(source);
-            ref char destinationRef = ref MemoryMarshal.GetReference(destination);
-            int sourceLength = source.Length;
-            int destinationLength = destination.Length;
-            int j = 0;
+            ref char sourceRef = ref source.DangerousGetReference();
+            ref char destinationRef = ref destination.DangerousGetReference();
+            int
+                sourceLength = source.Length,
+                destinationLength = destination.Length,
+                j = 0;
 
             for (int i = 0; i < sourceLength; i++)
             {
