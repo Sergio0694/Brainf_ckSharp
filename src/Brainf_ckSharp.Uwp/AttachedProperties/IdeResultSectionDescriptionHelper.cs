@@ -12,6 +12,7 @@ using Brainf_ckSharp.Uwp.Converters.Console;
 using Brainf_ckSharp.Uwp.Themes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
+using Microsoft.Toolkit.Uwp.Extensions;
 
 namespace Brainf_ckSharp.Uwp.AttachedProperties
 {
@@ -54,6 +55,14 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
             typeof(Brainf_ckInlineFormatterHelper),
             new PropertyMetadata(DependencyProperty.UnsetValue, OnSectionPropertyChanged));
 
+        // Localized resources
+        private static readonly string AtPosition = "IdeResults/AtPosition".GetLocalized();
+        private static readonly string StackFrames = "IdeResults/StackFrames".GetLocalized();
+        private static readonly string DefinedFunctions = "IdeResults/DefinedFunctions".GetLocalized();
+        private static readonly string Operators = "IdeResults/Operators".GetLocalized();
+        private static readonly string MemoryCells = "IdeResults/MemoryCells".GetLocalized();
+        private static readonly string OperatorsInTime = "IdeResults/OperatorsInTime".GetLocalized();
+
         /// <summary>
         /// Updates the UI when <see cref="SectionProperty"/> changes
         /// </summary>
@@ -74,7 +83,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
                 case IdeResultSection.ExceptionType:
                     @this.Inlines.Add(new Run
                     {
-                        Text = $"exception > {ExitCodeConverter.Convert(value.Result.ExitCode)}",
+                        Text = ExitCodeConverter.Convert(value.Result.ExitCode),
                         Foreground = new SolidColorBrush(Colors.DarkRed)
                     });
                     break;
@@ -85,7 +94,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
                         Foreground = new SolidColorBrush(Colors.Cornsilk)
                     });
                     break;
-                case IdeResultSection.ErrorLocation:
+                case IdeResultSection.FaultingOperator:
                 case IdeResultSection.BreakpointReached:
                     @this.Inlines.Add(new Run
                     {
@@ -94,37 +103,37 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
                     });
                     @this.Inlines.Add(new Run
                     {
-                        Text = $" at position {value.Result.HaltingInfo.HaltingOffset}"
+                        Text = $" {string.Format(AtPosition, value.Result.HaltingInfo.HaltingOffset)}"
                     });
                     break;
                 case IdeResultSection.StackTrace:
                     @this.Inlines.Add(new Run
                     {
-                        Text = $"{value.Result.HaltingInfo!.StackTrace.Count} stack frame(s)"
+                        Text = string.Format(StackFrames, value.Result.HaltingInfo!.StackTrace.Count)
                     });
                     break;
                 case IdeResultSection.FunctionDefinitions:
                     @this.Inlines.Add(new Run
                     {
-                        Text = $"{value.Result.Functions.Count} defined function(s)"
+                        Text = string.Format(DefinedFunctions, value.Result.Functions.Count)
                     });
                     break;
                 case IdeResultSection.SourceCode:
                     @this.Inlines.Add(new Run
                     {
-                        Text = $"{value.Result.SourceCode.Length} operator(s)"
+                        Text = string.Format(Operators, value.Result.SourceCode.Length)
                     });
                     break;
                 case IdeResultSection.MemoryState:
                     @this.Inlines.Add(new Run
                     {
-                        Text = $"{value.Result.MachineState.Count} memory cells"
+                        Text = string.Format(MemoryCells, value.Result.MachineState.Count)
                     });
                     break;
                 case IdeResultSection.Statistics:
                     @this.Inlines.Add(new Run
                     {
-                        Text = $"{value.Result.TotalOperations} operator(s) in {value.Result.ElapsedTime}"
+                        Text = string.Format(OperatorsInTime, value.Result.TotalOperations, value.Result.ElapsedTime)
                     });
                     break;
                 default: throw new ArgumentException($"Invalid section: {value.Section}");

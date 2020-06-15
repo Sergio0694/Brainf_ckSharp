@@ -158,6 +158,7 @@
     <Compile Include="Controls\Windows.UI.Xaml.Controls\ComboBoxWithNoScrollWheelSupport.cs" />
     <Compile Include="Converters\Console\ExitCodeConverter.cs" />
     <Compile Include="Converters\Ide\CodeSnippetTitleConverter.cs" />
+    <Compile Include="Converters\LocalizationConverter.cs" />
     <Compile Include="Converters\SubPages\SettingsSectionConverters.cs" />
     <Compile Include="Converters\SubPages\CodeLibraryCategoryConverter.cs" />
     <Compile Include="Converters\Console\SyntaxValidationResultConverter.cs" />

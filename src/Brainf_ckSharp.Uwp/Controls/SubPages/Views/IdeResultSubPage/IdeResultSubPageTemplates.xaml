@@ -6,7 +6,7 @@
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     xmlns:convertersConsole="using:Brainf_ckSharp.Uwp.Converters.Console"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:system="using:System"
+    xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:views="using:Brainf_ckSharp.Shared.Models.Ide.Views"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls">
 
@@ -16,20 +16,10 @@
         x:DataType="views:IdeResultWithSectionInfo">
         <TextBlock
             FontSize="16"
-            TextWrapping="Wrap">
-            <Run 
-                Text="exception"
-                FontWeight="Bold"
-                Foreground="#FFA00000"/>
-            <Run 
-                Text="&gt;"
-                FontWeight="Bold"
-                Foreground="#FFA00000"/>
-            <Run 
-                Text="{x:Bind convertersConsole:ExitCodeConverter.Convert(Result.ExitCode)}"
-                FontWeight="SemiBold"
-                Foreground="#FF900000"/>
-        </TextBlock>
+            TextWrapping="Wrap"
+            Text="{x:Bind convertersConsole:ExitCodeConverter.Convert(Result.ExitCode)}"
+            FontWeight="SemiBold"
+            Foreground="#FF900000"/>
     </DataTemplate>
 
     <!--Halting position-->
@@ -72,7 +62,7 @@
                     TextWrapping="Wrap"
                     FontWeight="SemiBold"
                     Foreground="DarkRed"
-                    Text="{x:Bind system:String.Format('Position {0}', Result.HaltingInfo.HaltingOffset)}"/>
+                    Text="{x:Bind converters:LocalizationConverter.Convert('IdeResults/UppercaseAtPosition', Result.HaltingInfo.HaltingOffset)}"/>
             </Grid>
         </Grid>
     </DataTemplate>
@@ -314,7 +304,7 @@
                     TextWrapping="Wrap"
                     FontWeight="SemiBold"
                     Foreground="#FFD0D0D0"
-                    Text="{x:Bind system:String.Format('{0} operator(s)', Result.TotalOperations)}"/>
+                    Text="{x:Bind converters:LocalizationConverter.Convert('IdeResults/Operators', Result.TotalOperations)}"/>
             </Grid>
         </Grid>
     </DataTemplate>

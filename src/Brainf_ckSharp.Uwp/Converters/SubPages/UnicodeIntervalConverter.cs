@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Shared.Models;
+using Microsoft.Toolkit.Uwp.Extensions;
 
 namespace Brainf_ckSharp.Uwp.Converters.SubPages
 {
@@ -9,6 +10,10 @@ namespace Brainf_ckSharp.Uwp.Converters.SubPages
     /// </summary>
     public static class UnicodeIntervalConverter
     {
+        // Localized resources
+        private static readonly string ControlCharacters = "UnicodeInterval/ControlCharacters".GetLocalized();
+        private static readonly string NonVisible = "UnicodeInterval/NonVisible".GetLocalized();
+
         /// <summary>
         /// Converts a <see cref="UnicodeInterval"/> instance into its description representation
         /// </summary>
@@ -19,8 +24,8 @@ namespace Brainf_ckSharp.Uwp.Converters.SubPages
         {
             return (interval.Start, interval.End) switch
             {
-                (0, 31) => "Control characters",
-                (128, 159) => "Non visible",
+                (0, 31) => ControlCharacters,
+                (128, 159) => NonVisible,
                 _ => throw new ArgumentOutOfRangeException(nameof(interval), $"Invalid unicode interval: {interval}")
             };
         }

@@ -259,7 +259,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             if (!result.ExitCode.HasFlag(ExitCode.Success)) AddToSource(IdeResultSection.ExceptionType);
             if (result.Stdout.Length > 0) AddToSource(IdeResultSection.Stdout);
 
-            if (result.ExitCode.HasFlag(ExitCode.ExceptionThrown)) AddToSource(IdeResultSection.ErrorLocation);
+            if (result.ExitCode.HasFlag(ExitCode.ExceptionThrown)) AddToSource(IdeResultSection.FaultingOperator);
             else if (result.ExitCode.HasFlag(ExitCode.BreakpointReached)) AddToSource(IdeResultSection.BreakpointReached);
 
             if (result.ExitCode.HasFlag(ExitCode.ExceptionThrown) ||

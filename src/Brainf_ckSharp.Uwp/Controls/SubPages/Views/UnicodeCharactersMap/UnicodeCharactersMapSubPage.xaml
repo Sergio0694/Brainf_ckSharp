@@ -36,7 +36,9 @@
     </interactivity:Interaction.Behaviors>
 
     <!--Root-->
-    <host:SubPageFrame Title="UNICODE MAP">
+    <host:SubPageFrame
+        x:Uid="UnicodeMap/Frame"
+        Title="UNICODE MAP">
         <ListView
             IsItemClickEnabled="False"
             SelectionMode="None"

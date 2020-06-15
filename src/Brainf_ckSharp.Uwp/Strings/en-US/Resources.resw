@@ -143,6 +143,28 @@ Thanks to **Andrea Salvati** for his help with the original interpreter algorith
   <data name="BracketsFormattingStyle/SameLine" xml:space="preserve">
     <value>Same line</value>
   </data>
+  <data name="CodeLibrary/CopyToClipboard.Text" xml:space="preserve">
+    <value>Copy to clipboard</value>
+  </data>
+  <data name="CodeLibrary/Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="CodeLibrary/FavoritePlaceholder.Text" xml:space="preserve">
+    <value>Tap here to pick, open a file and favorite it!</value>
+  </data>
+  <data name="CodeLibrary/Frame.Title" xml:space="preserve">
+    <value>CODE LIBRARY</value>
+    <comment>Keep the text uppercase</comment>
+  </data>
+  <data name="CodeLibrary/HistoryPlaceholder.Text" xml:space="preserve">
+    <value>Tap here to pick and open a file!</value>
+  </data>
+  <data name="CodeLibrary/RemoveFromLibrary.Text" xml:space="preserve">
+    <value>Remove from library</value>
+  </data>
+  <data name="CodeLibrary/Share.Text" xml:space="preserve">
+    <value>Share</value>
+  </data>
   <data name="CodeSnippets/DuplicateValue" xml:space="preserve">
     <value>DuplicateValue</value>
   </data>
@@ -201,14 +223,46 @@ Thanks to **Andrea Salvati** for his help with the original interpreter algorith
   <data name="HeaderPanel/IDE.Text" xml:space="preserve">
     <value>IDE</value>
   </data>
+  <data name="IdeResults/AtPosition" xml:space="preserve">
+    <value>at position {0}</value>
+    <comment>The {0} will be a number, move it if needed. Leave the initial lowercase, as there's other text before that (specifically, the operator it's referring to).</comment>
+  </data>
+  <data name="IdeResults/DefinedFunctions" xml:space="preserve">
+    <value>{0} defined function(s)</value>
+    <comment>The {0} will be a number, move it if needed.</comment>
+  </data>
+  <data name="IdeResults/Frame.Title" xml:space="preserve">
+    <value>RUN</value>
+    <comment>Keep the text uppercase. This is the title of the page with results of executing a script in the IDE.</comment>
+  </data>
+  <data name="IdeResults/MemoryCells" xml:space="preserve">
+    <value>{0} memory cells</value>
+    <comment>The {0} will be a number, move it if needed. The number will always be at least 16.</comment>
+  </data>
+  <data name="IdeResults/Operators" xml:space="preserve">
+    <value>{0} operator(s)</value>
+    <comment>The {0} will be a number, move it if needed.</comment>
+  </data>
+  <data name="IdeResults/OperatorsInTime" xml:space="preserve">
+    <value>{0} operator(s) in {1}</value>
+    <comment>The {0} will be a number, the {1} will be a time period in the hh:mm:ss.ffff format. Move both if needed.</comment>
+  </data>
+  <data name="IdeResults/StackFrames" xml:space="preserve">
+    <value>{0} stack frame(s)</value>
+    <comment>The {0} will be a number, move it if needed.</comment>
+  </data>
+  <data name="IdeResults/UppercaseAtPosition" xml:space="preserve">
+    <value>At position {0}</value>
+    <comment>The {0} will be a number, move it if needed.</comment>
+  </data>
   <data name="IdeResultSection/BreakpointReached" xml:space="preserve">
     <value>Breakpoint reached</value>
   </data>
-  <data name="IdeResultSection/ErrorLocation" xml:space="preserve">
-    <value>Error location</value>
-  </data>
   <data name="IdeResultSection/ExceptionType" xml:space="preserve">
     <value>Exception type</value>
+  </data>
+  <data name="IdeResultSection/FaultingOperator" xml:space="preserve">
+    <value>Error</value>
   </data>
   <data name="IdeResultSection/FunctionDefinitions" xml:space="preserve">
     <value>Function definitions</value>
@@ -404,6 +458,16 @@ Are you enjoying it so far?</value>
   <data name="SyntaxValidationResult/Operator" xml:space="preserve">
     <value>operator</value>
     <comment>This means "operator" or "position", and it will be followed by a number. Keep the initial lowercase.</comment>
+  </data>
+  <data name="UnicodeInterval/ControlCharacters" xml:space="preserve">
+    <value>Control characters</value>
+  </data>
+  <data name="UnicodeInterval/NonVisible" xml:space="preserve">
+    <value>Non visible</value>
+  </data>
+  <data name="UnicodeMap/Frame.Title" xml:space="preserve">
+    <value>UNICODE MAP</value>
+    <comment>Keep the text uppercase</comment>
   </data>
   <data name="UserGuide/BreakpointContinue.Text" xml:space="preserve">
     <value>Continue the execution in debugging mode</value>

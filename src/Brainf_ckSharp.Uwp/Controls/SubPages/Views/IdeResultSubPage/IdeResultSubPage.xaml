@@ -40,6 +40,7 @@
 
     <!--Root-->
     <host:SubPageFrame
+        x:Uid="IdeResults/Frame"
         Title="RUN"
         Background="#72000000">
 

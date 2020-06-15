@@ -11,9 +11,9 @@
         ExceptionType,
 
         /// <summary>
-        /// The error location
+        /// The faulting operator
         /// </summary>
-        ErrorLocation,
+        FaultingOperator,
 
         /// <summary>
         /// The currently hit breakpoint

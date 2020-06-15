@@ -76,7 +76,9 @@
                         TextWrapping="Wrap"
                         FontSize="14"
                         Foreground="#FFE0E0E0">
-                        <Run Text="Tap here to pick, open a file and favorite it!"/>
+                        <Run
+                            x:Uid="CodeLibrary/FavoritePlaceholder"
+                            Text="Tap here to pick, open a file and favorite it!"/>
                     </TextBlock>
                 </Grid>
             </Border>
@@ -102,7 +104,9 @@
                         TextWrapping="Wrap"
                         FontSize="14"
                         Foreground="#FFE0E0E0">
-                        <Run Text="Tap here to pick and open a file!"/>
+                        <Run
+                            x:Uid="CodeLibrary/HistoryPlaceholder"
+                            Text="Tap here to pick and open a file!"/>
                     </TextBlock>
                 </Grid>
             </Border>
@@ -126,22 +130,26 @@
                             </MenuFlyoutItem.Icon>
                         </MenuFlyoutItem>
                         <MenuFlyoutItem
+                            x:Uid="CodeLibrary/CopyToClipboard"
                             Text="Copy to clipboard"
                             Icon="{toolkitExtensions:FontIcon Glyph={StaticResource CopyToClipboardIcon}}"
                             Command="{StaticResource CopyToClipboardCommand}"
                             CommandParameter="{x:Bind}"/>
                         <MenuFlyoutItem
+                            x:Uid="CodeLibrary/Share"
                             Text="Share"
                             Icon="{toolkitExtensions:FontIcon Glyph={StaticResource ShareIcon}}"
                             Command="{StaticResource ShareCommand}"
                             CommandParameter="{x:Bind}"/>
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem
+                            x:Uid="CodeLibrary/RemoveFromLibrary"
                             Text="Remove from library"
                             Icon="{toolkitExtensions:FontIcon Glyph={StaticResource RemoveFromLibraryIcon}}"
                             Command="{StaticResource RemoveFromLibraryCommand}"
                             CommandParameter="{x:Bind}"/>
                         <MenuFlyoutItem
+                            x:Uid="CodeLibrary/Delete"
                             Text="Delete"
                             Icon="{toolkitExtensions:FontIcon Glyph={StaticResource DeleteFileIcon}}"
                             Command="{StaticResource DeleteCommand}"
@@ -210,6 +218,7 @@
     </UserControl.Resources>
 
     <host:SubPageFrame
+        x:Uid="CodeLibrary/Frame"
         Title="CODE LIBRARY"
         Background="#72000000">
 

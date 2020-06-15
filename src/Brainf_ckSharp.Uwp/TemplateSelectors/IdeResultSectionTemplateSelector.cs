@@ -61,7 +61,7 @@ namespace Brainf_ckSharp.Uwp.TemplateSelectors
             return model.Section switch
             {
                 IdeResultSection.ExceptionType => ExceptionTypeTemplate,
-                IdeResultSection.ErrorLocation => HaltingPositionTemplate,
+                IdeResultSection.FaultingOperator => HaltingPositionTemplate,
                 IdeResultSection.BreakpointReached => HaltingPositionTemplate,
                 IdeResultSection.StackTrace => StackTraceTemplate,
                 IdeResultSection.Stdout => StdoutTemplate,
