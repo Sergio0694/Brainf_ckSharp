@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Brainf_ckSharp.Uwp.Extensions.System.Collections.Generic;
 using Microsoft.Toolkit.HighPerformance.Extensions;
-using UICompositionAnimations.Enums;
+using Nito.AsyncEx;
 
 namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
 {
@@ -15,6 +18,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
     /// <remarks>The items in <see cref="CommandBar.PrimaryCommands"/> need to use the <see cref="FrameworkElement.Tag"/> with a <see cref="bool"/> value</remarks>
     public sealed class AnimatedCommandBar : CommandBar
     {
+        /// <summary>
+        /// The <see cref="AsyncLock"/> instance used to avoid race conditions when switching buttons
+        /// </summary>
+        private readonly AsyncLock ContentSwitchLock = new AsyncLock();
+
         /// <summary>
         /// The duration of each button animation
         /// </summary>
@@ -49,11 +57,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
             new PropertyMetadata(null, OnIsPrimaryContentDisplayedChanged));
 
         /// <summary>
-        /// The <see cref="AsyncMutex"/> instance used to avoid race conditions when switching buttons
-        /// </summary>
-        private readonly AsyncMutex ContentSwitchMutex = new AsyncMutex();
-
-        /// <summary>
         /// Updates the UI when <see cref="IsPrimaryContentDisplayed"/> changes
         /// </summary>
         /// <param name="d">The source <see cref="DependencyObject"/> instance</param>
@@ -74,7 +77,48 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
                 return;
             }
 
-            using (await @this.ContentSwitchMutex.LockAsync())
+            // Creates and starts a storyboard animation for the specified transition
+            static void StartButtonAnimation(FrameworkElement button, int delay, int startX, int endX, double startOpacity, double endOpacity)
+            {
+                DoubleAnimation translationAnimation = new DoubleAnimation
+                {
+                    From = startX,
+                    To = endX,
+                    EasingFunction = new CircleEase { EasingMode = EasingMode.EaseInOut },
+                    Duration = new Duration(TimeSpan.FromMilliseconds(ContentAnimationDuration))
+                };
+
+                if (!(button.RenderTransform is TranslateTransform))
+                    button.RenderTransform = new TranslateTransform();
+
+                Storyboard.SetTarget(translationAnimation, button.RenderTransform);
+                Storyboard.SetTargetProperty(translationAnimation, nameof(TranslateTransform.X));
+
+                DoubleAnimation opacityAnimation = new DoubleAnimation
+                {
+                    From = startOpacity,
+                    To = endOpacity,
+                    EasingFunction = new CircleEase { EasingMode = EasingMode.EaseInOut },
+                    Duration = new Duration(TimeSpan.FromMilliseconds(ContentAnimationDuration))
+                };
+
+                Storyboard.SetTarget(opacityAnimation, button);
+                Storyboard.SetTargetProperty(opacityAnimation, nameof(Opacity));
+
+                Storyboard storyboard = new Storyboard
+                {
+                    BeginTime = TimeSpan.FromMilliseconds(delay),
+                    Children =
+                    {
+                        translationAnimation,
+                        opacityAnimation
+                    }
+                };
+
+                storyboard.Begin();
+            }
+
+            using (await @this.ContentSwitchLock.LockAsync())
             {
                 @this.IsHitTestVisible = false;
 
@@ -87,13 +131,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
                 // Fade the visible buttons out
                 foreach (var item in pendingElements.Enumerate())
                 {
-                    item.Value
-                        .Animation(FrameworkLayer.Xaml)
-                        .Delay(ButtonsFadeDelayBetweenAnimations * item.Index)
-                        .Translation(Axis.X, 0, -ButtonsAnimationOffset, Easing.CircleEaseInOut)
-                        .Opacity(1, 0, Easing.CircleEaseInOut)
-                        .Duration(ContentAnimationDuration)
-                        .Start();
+                    int delay = ButtonsFadeDelayBetweenAnimations * item.Index;
+
+                    StartButtonAnimation(item.Value, delay, 0, -ButtonsAnimationOffset, 1, 0);
                 }
 
                 // Wait for the initial animations to finish
@@ -119,13 +159,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
                 // Fade the target buttons in
                 foreach (var item in targetElements.Reverse().Enumerate())
                 {
-                    item.Value
-                        .Animation(FrameworkLayer.Xaml)
-                        .Delay(ButtonsFadeDelayBetweenAnimations * item.Index)
-                        .Translation(Axis.X, -ButtonsAnimationOffset, 0, Easing.CircleEaseInOut)
-                        .Opacity(0, 1, Easing.CircleEaseInOut)
-                        .Duration(ContentAnimationDuration)
-                        .Start();
+                    int delay = ButtonsFadeDelayBetweenAnimations * item.Index;
+
+                    StartButtonAnimation(item.Value, delay, -ButtonsAnimationOffset, 0, 0, 1);
                 }
 
                 // Wait for the second animations to finish

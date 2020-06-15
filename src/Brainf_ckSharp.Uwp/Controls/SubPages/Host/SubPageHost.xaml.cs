@@ -9,6 +9,7 @@ using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Microsoft.Toolkit.HighPerformance.Extensions;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using Nito.AsyncEx;
 
 #nullable enable
 
@@ -19,6 +20,31 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
     /// </summary>
     public sealed partial class SubPageHost : UserControl
     {
+        /// <summary>
+        /// Synchronization lock to avoid race conditions for user requests
+        /// </summary>
+        private readonly AsyncLock SubFrameLock = new AsyncLock();
+
+        /// <summary>
+        /// The minimum window width for the expanded state
+        /// </summary>
+        private const double ExpandedStateMinimumWidth = 880;
+
+        /// <summary>
+        /// The minimum window height for the expanded state
+        /// </summary>
+        private const double ExpandedStateMinimumHeight = 720;
+
+        /// <summary>
+        /// The margin distance allowed for constrained content to be extended over its desired size
+        /// </summary>
+        private const double MinimumConstrainedMarginThreshold = 48;
+
+        /// <summary>
+        /// Indicates whether or not the title bar in the current application is visible or collapsed (when in tablet mode)
+        /// </summary>
+        private bool _IsTitleBarVisible;
+
         /// <summary>
         /// Creates a new <see cref="SubPageHost"/> instance
         /// </summary>
@@ -43,15 +69,26 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
             };
         }
 
-        #region Sub page navigation
-
-        // Synchronization mutex to avoid race conditions for user requests
-        private readonly AsyncMutex SubFrameMutex = new AsyncMutex();
+        /// <summary>
+        /// Gets or sets the content of this sub frame page host
+        /// </summary>
+        private object? SubPage
+        {
+            get => HostControl.Content;
+            set
+            {
+                if (value == null && HostControl.Content != null) SizeChanged -= SubFrameHost_SizeChanged;
+                else if (value != null && HostControl.Content == null) SizeChanged += SubFrameHost_SizeChanged;
+                HostControl.Content = value;
+                UpdateLayout(new Size(ActualWidth, ActualHeight));
+                SizeChanged += SubFrameHost_SizeChanged;
+            }
+        }
 
         // Displays a page in the popup frame
         private async void DisplaySubFramePage(UserControl subPage)
         {
-            using (await SubFrameMutex.LockAsync())
+            using (await SubFrameLock.LockAsync())
             {
                 // Fade out the current content, if present
                 if (SubPage is UserControl page)
@@ -78,7 +115,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
         // Fades away the currently displayed sub page
         private async void CloseSubFramePage()
         {
-            using (await SubFrameMutex.LockAsync())
+            using (await SubFrameLock.LockAsync())
             {
                 if (!(SubPage is UserControl page)) return;
 
@@ -99,7 +136,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
         // Updates the UI when the app loading state changes
         private async void HandleLoadingUI(bool loading)
         {
-            using (await SubFrameMutex.LockAsync())
+            using (await SubFrameLock.LockAsync())
             {
                 LoadingRing.Visibility = (Visibility)(!loading).ToInt();
                 if (SubPage is UserControl page)
@@ -112,46 +149,6 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
                 else RootGrid.Visibility = (Visibility)(!loading).ToInt();
             }
         }
-
-        #endregion
-
-        /// <summary>
-        /// Gets or sets the content of this sub frame page host
-        /// </summary>
-        public object? SubPage
-        {
-            get => HostControl.Content;
-            set
-            {
-                if (value == null && HostControl.Content != null) SizeChanged -= SubFrameHost_SizeChanged;
-                else if (value != null && HostControl.Content == null) SizeChanged += SubFrameHost_SizeChanged;
-                HostControl.Content = value;
-                UpdateLayout(new Size(ActualWidth, ActualHeight));
-                SizeChanged += SubFrameHost_SizeChanged;
-            }
-        }
-
-        #region Host UI management
-
-        /// <summary>
-        /// The minimum window width for the expanded state
-        /// </summary>
-        private const double ExpandedStateMinimumWidth = 880;
-
-        /// <summary>
-        /// The minimum window height for the expanded state
-        /// </summary>
-        private const double ExpandedStateMinimumHeight = 720;
-
-        /// <summary>
-        /// The margin distance allowed for constrained content to be extended over its desired size
-        /// </summary>
-        private const double MinimumConstrainedMarginThreshold = 48;
-
-        /// <summary>
-        /// Indicates whether or not the title bar in the current application is visible or collapsed (when in tablet mode)
-        /// </summary>
-        private bool _IsTitleBarVisible;
 
         // Executes a UI refresh when the root size changes
         private void SubFrameHost_SizeChanged(object sender, SizeChangedEventArgs e) => UpdateLayout(e.NewSize);
@@ -262,7 +259,5 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
         /// Sends a request to close the current sub frame page
         /// </summary>
         private void SendCloseRequest() => Messenger.Default.Send(new SubPageCloseRequestMessage());
-
-        #endregion
     }
 }
