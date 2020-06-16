@@ -80,7 +80,7 @@ namespace Brainf_ckSharp.Shared.Models.Ide
         {
             try
             {
-                string preview = await LoadCodePreviewAsync(file, CodePreviewLength);
+                string preview = await LoadCodePreviewAsync(file);
 
                 (_, DateTimeOffset editTime) = await file.GetPropertiesAsync();
 
@@ -103,7 +103,7 @@ namespace Brainf_ckSharp.Shared.Models.Ide
         {
             try
             {
-                string preview = await LoadCodePreviewAsync(file, CodePreviewLength);
+                string preview = await LoadCodePreviewAsync(file);
 
                 // This overload is used to load reference sample files.
                 // As such, these don't need to be sorted chronologically,
@@ -122,26 +122,23 @@ namespace Brainf_ckSharp.Shared.Models.Ide
         /// Loads a code preview with a maximum specified length from a given file
         /// </summary>
         /// <param name="file">The input <see cref="IFile"/> to read from</param>
-        /// <param name="length">The maximum length of the preview to load</param>
         /// <returns>A <see cref="string"/> with a preview of the Brainf*ck/PBrain source code in <paramref name="file"/></returns>
         [Pure]
-        private static async Task<string> LoadCodePreviewAsync(IFile file, int length)
+        public static async Task<string> LoadCodePreviewAsync(IFile file)
         {
-            Guard.IsGreaterThan(length, 0, nameof(length));
-
             // Open the input file and a streama reader to decode the text
             using Stream stream = await file.OpenStreamForReadAsync();
             using StreamReader reader = new StreamReader(stream);
 
             // Allocate a temporary buffer for the resulting characters and one for the blocks to read
-            char[] charBuffer = ArrayPool<char>.Shared.Rent(length);
-            char[] tempBuffer = ArrayPool<char>.Shared.Rent(length);
+            char[] charBuffer = ArrayPool<char>.Shared.Rent(CodePreviewLength);
+            char[] tempBuffer = ArrayPool<char>.Shared.Rent(CodePreviewLength);
 
             int previewLength = 0;
 
             try
             {
-                while (previewLength < length)
+                while (previewLength < CodePreviewLength)
                 {
                     // Read a new block of characters from the input stream
                     int maxCharactersToRead = ReadBlockLength;
