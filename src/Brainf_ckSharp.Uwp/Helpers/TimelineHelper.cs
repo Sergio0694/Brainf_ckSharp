@@ -106,6 +106,31 @@ namespace Brainf_ckSharp.Uwp.Helpers
         }
 
         /// <summary>
+        /// Removes an existing activity, if existing
+        /// </summary>
+        /// <param name="file">The <see cref="IFile"/> instance to remove</param>
+        public Task RemoveActivityAsync(IFile file)
+        {
+            return RemoveActivityAsync(file.Path);
+        }
+
+        /// <summary>
+        /// Removes an existing activity, if existing
+        /// </summary>
+        /// <param name="path">The path of the file to remove the activity for</param>
+        public async Task RemoveActivityAsync(string path)
+        {
+            using (await TimelineMutex.LockAsync())
+            {
+                // Get a unique id for the file
+                string id = ((uint)HashCode<char>.Combine(path.AsSpan())).ToString();
+
+                // Remove the target activity
+                await UserActivityChannel.GetDefault().DeleteActivityAsync(id);
+            }
+        }
+
+        /// <summary>
         /// A model for an adaptive card for a recent file
         /// </summary>
         private sealed class AdaptiveCard
