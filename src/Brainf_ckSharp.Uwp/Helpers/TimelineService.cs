@@ -17,7 +17,7 @@ namespace Brainf_ckSharp.Uwp.Helpers
     /// <summary>
     /// A <see langword="class"/> that saves and manages user activities for the app
     /// </summary>
-    public sealed class TimelineHelper
+    public sealed class TimelineService : IFilesHistoryService
     {
         /// <summary>
         /// The <see cref="Uri"/> for the template file
@@ -42,18 +42,6 @@ namespace Brainf_ckSharp.Uwp.Helpers
         };
 
         /// <summary>
-        /// Creates a new <see cref="TimelineHelper"/> instance
-        /// </summary>
-        private TimelineHelper()
-        {
-        }
-
-        /// <summary>
-        /// Gets the singleton <see cref="TimelineHelper"/> instance to use
-        /// </summary>
-        public static TimelineHelper Instance { get; } = new TimelineHelper();
-
-        /// <summary>
         /// The synchronization mutex to create and manage user activities
         /// </summary>
         private readonly AsyncLock TimelineMutex = new AsyncLock();
@@ -68,11 +56,8 @@ namespace Brainf_ckSharp.Uwp.Helpers
         /// </summary>
         private UserActivitySession? _Session;
 
-        /// <summary>
-        /// Logs a new activity, or updates the existing one, for the input saved code
-        /// </summary>
-        /// <param name="file">The <see cref="IFile"/> instance the user is currently working on</param>
-        public async Task LogActivityAsync(IFile file)
+        /// <inheritdoc/>
+        public async Task LogOrUpdateActivityAsync(IFile file)
         {
             using (await TimelineMutex.LockAsync())
             {
@@ -115,9 +100,7 @@ namespace Brainf_ckSharp.Uwp.Helpers
             }
         }
 
-        /// <summary>
-        /// Dismisses the currently activity, if present
-        /// </summary>
+        /// <inheritdoc/>
         public async Task DismissCurrentActivityAsync()
         {
             using (await TimelineMutex.LockAsync())
@@ -127,25 +110,13 @@ namespace Brainf_ckSharp.Uwp.Helpers
             }
         }
 
-        /// <summary>
-        /// Removes an existing activity, if existing
-        /// </summary>
-        /// <param name="file">The <see cref="IFile"/> instance to remove</param>
-        public Task RemoveActivityAsync(IFile file)
-        {
-            return RemoveActivityAsync(file.Path);
-        }
-
-        /// <summary>
-        /// Removes an existing activity, if existing
-        /// </summary>
-        /// <param name="path">The path of the file to remove the activity for</param>
-        public async Task RemoveActivityAsync(string path)
+        /// <inheritdoc/>
+        public async Task RemoveActivityAsync(IFile file)
         {
             using (await TimelineMutex.LockAsync())
             {
                 // Get a unique id for the file
-                string id = ((uint)HashCode<char>.Combine(path.AsSpan())).ToString();
+                string id = ((uint)HashCode<char>.Combine(file.Path.AsSpan())).ToString();
 
                 // Remove the target activity
                 await UserActivityChannel.GetDefault().DeleteActivityAsync(id);

@@ -35,6 +35,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         private readonly IFilesManagerService FilesManagerService = Ioc.Default.GetRequiredService<IFilesManagerService>();
 
         /// <summary>
+        /// The <see cref="IFilesHistoryService"/> instance currently in use
+        /// </summary>
+        private readonly IFilesHistoryService FilesHistoryService = Ioc.Default.GetRequiredService<IFilesHistoryService>();
+
+        /// <summary>
         /// Creates a new <see cref="IdeViewModel"/> instance
         /// </summary>
         public IdeViewModel()
@@ -122,6 +127,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
             Code = code;
 
+            if (!(code.File is null))
+            {
+                _ = FilesHistoryService.LogOrUpdateActivityAsync(code.File);
+            }
+
             CodeLoaded?.Invoke(this, Code.Content);
         }
 
@@ -131,6 +141,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         private void LoadNewFile()
         {
             Code = SourceCode.CreateEmpty();
+
+            _ = FilesHistoryService.DismissCurrentActivityAsync();
 
             CodeLoaded?.Invoke(this, Code.Content);
         }
@@ -166,6 +178,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
                 Code = code;
 
+                _ = FilesHistoryService.LogOrUpdateActivityAsync(code.File!);
+
                 CodeLoaded?.Invoke(this, Code.Content);
             }
         }
@@ -182,6 +196,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             {
                 Code = code;
 
+                _ = FilesHistoryService.LogOrUpdateActivityAsync(code.File!);
+
                 CodeLoaded?.Invoke(this, Code.Content);
             }
         }
@@ -197,6 +213,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                 Code.Content = Text.ToString();
 
                 await Code.TrySaveAsync();
+
+                _ = FilesHistoryService.LogOrUpdateActivityAsync(Code.File!);
 
                 CodeSaved?.Invoke(this, EventArgs.Empty);
 
@@ -221,6 +239,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             Code.Content = Text.ToString();
 
             await Code.TrySaveAsAsync(file);
+
+            _ = FilesHistoryService.LogOrUpdateActivityAsync(Code.File!);
 
             CodeSaved?.Invoke(this, EventArgs.Empty);
 
@@ -290,6 +310,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                 Text = state.Text.AsMemory();
                 Row = state.Row;
                 Column = state.Column;
+
+                if (!(Code.File is null))
+                {
+                    _ = FilesHistoryService.LogOrUpdateActivityAsync(Code.File);
+                }
 
                 StateRestored?.Invoke(this, state);
             }

@@ -245,7 +245,7 @@
     <Compile Include="Extensions\System\StringExtensions.cs" />
     <Compile Include="Extensions\Windows.Storage\IFileExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Xaml\FrameworkElementExtensions.cs" />
-    <Compile Include="Helpers\TimelineHelper.cs" />
+    <Compile Include="Helpers\TimelineService.cs" />
     <Compile Include="Helpers\TitleBarHelper.cs" />
     <Compile Include="MarkupExtensions\VirtualKeyExtension.cs" />
     <Compile Include="MarkupExtensions\EnumValuesExtension.cs" />

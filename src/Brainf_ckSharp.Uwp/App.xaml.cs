@@ -178,6 +178,7 @@ namespace Brainf_ckSharp.Uwp
             {
                 services.AddSingleton<IFilesService, FilesService>();
                 services.AddSingleton<IFilesManagerService>(this);
+                services.AddSingleton<IFilesHistoryService, TimelineService>();
                 services.AddSingleton<ISettingsService, SettingsService>();
                 services.AddSingleton<IKeyboardListenerService, KeyboardListenerService>();
                 services.AddSingleton<IClipboardService, ClipboardService>();

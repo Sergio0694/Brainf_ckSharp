@@ -36,6 +36,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         private readonly IFilesService FilesService = Ioc.Default.GetRequiredService<IFilesService>();
 
         /// <summary>
+        /// The <see cref="IFilesHistoryService"/> instance currently in use
+        /// </summary>
+        private readonly IFilesHistoryService FilesHistoryService = Ioc.Default.GetRequiredService<IFilesHistoryService>();
+
+        /// <summary>
         /// The <see cref="IClipboardService"/> instance currently in use
         /// </summary>
         private readonly IClipboardService ClipboardService = Ioc.Default.GetRequiredService<IClipboardService>();
@@ -98,7 +103,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             ToggleFavoriteCommand = new RelayCommand<CodeLibraryEntry>(ToggleFavorite);
             CopyToClipboardCommand = new AsyncRelayCommand<CodeLibraryEntry>(CopyToClipboardAsync);
             ShareCommand = new RelayCommand<CodeLibraryEntry>(Share);
-            RemoveFromLibraryCommand = new RelayCommand<CodeLibraryEntry>(RemoveFromLibrary);
+            RemoveFromLibraryCommand = new AsyncRelayCommand<CodeLibraryEntry>(RemoveFromLibraryAsync);
             DeleteCommand = new AsyncRelayCommand<CodeLibraryEntry>(DeleteAsync);
         }
 
@@ -287,11 +292,13 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// Removes a specific <see cref="CodeLibraryEntry"/> instance from the code library
         /// </summary>
         /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to remove</param>
-        private void RemoveFromLibrary(CodeLibraryEntry entry)
+        private Task RemoveFromLibraryAsync(CodeLibraryEntry entry)
         {
             AnalyticsService.Log(Constants.Events.RemoveFromLibrary, (nameof(CodeMetadata.IsFavorited), entry.Metadata.IsFavorited.ToString()));
 
             RemoveTrackedSourceCode(entry);
+
+            return FilesHistoryService.RemoveActivityAsync(entry.File);
         }
 
         /// <summary>
@@ -304,7 +311,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 
             RemoveTrackedSourceCode(entry);
 
-            return entry.File.DeleteAsync();
+            // We can remove the item from history and delete the file in parallel,
+            // since removing a tracked item from history requires no file access.
+            return Task.WhenAll(
+                FilesHistoryService.RemoveActivityAsync(entry.File),
+                entry.File.DeleteAsync());
         }
     }
 }
