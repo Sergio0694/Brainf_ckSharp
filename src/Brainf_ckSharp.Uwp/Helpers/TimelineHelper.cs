@@ -22,7 +22,7 @@ namespace Brainf_ckSharp.Uwp.Helpers
         /// <summary>
         /// The <see cref="Uri"/> for the template file
         /// </summary>
-        private static readonly Uri TemplateUri = new Uri("ms-appx:///Assets/Mist/SourceCodeAdaptiveCard.mustache");
+        private static readonly Uri TemplateUri = new Uri("ms-appx:///Assets/Misc/SourceCodeAdaptiveCard.mustache");
 
         /// <summary>
         /// Gets the collection of background images to use for the adaptive cards
@@ -64,6 +64,11 @@ namespace Brainf_ckSharp.Uwp.Helpers
         private static string? _Template;
 
         /// <summary>
+        /// The current <see cref="UserActivitySession"/> in use, if any
+        /// </summary>
+        private UserActivitySession? _Session;
+
+        /// <summary>
         /// Logs a new activity, or updates the existing one, for the input saved code
         /// </summary>
         /// <param name="file">The <see cref="IFile"/> instance the user is currently working on</param>
@@ -96,12 +101,29 @@ namespace Brainf_ckSharp.Uwp.Helpers
                 UserActivity activity = await UserActivityChannel.GetDefault().GetOrCreateUserActivityAsync(textId);
 
                 // Set the deep-link and the title
-                activity.ActivationUri = new Uri($"brainfck:///file?path={file.Path}");
+                activity.ActivationUri = new Uri($"brainf-ck:///file?path={file.Path}");
                 activity.VisualElements.DisplayText = file.DisplayName;
                 activity.VisualElements.Content = AdaptiveCardBuilder.CreateAdaptiveCardFromJson(adaptiveCard);
+                activity.IsRoamable = false;
 
                 // Save to activity feed.
                 await activity.SaveAsync();
+
+                // Update the activity currently in use
+                _Session?.Dispose();
+                _Session = activity.CreateSession();
+            }
+        }
+
+        /// <summary>
+        /// Dismisses the currently activity, if present
+        /// </summary>
+        public async Task DismissCurrentActivityAsync()
+        {
+            using (await TimelineMutex.LockAsync())
+            {
+                _Session?.Dispose();
+                _Session = null;
             }
         }
 

@@ -2,7 +2,7 @@
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
   "version": "1.0",
-  "backgroundImage": "{{BACKGROUND}}",
+  "backgroundImage": "{{{Background}}}",
   "body": [
     {
       "type": "Container",
@@ -10,7 +10,7 @@
       "items": [
         {
           "type": "TextBlock",
-          "text": "{{TITLE}}",
+          "text": "{{{Title}}}",
           "weight": "bolder",
           "size": "large",
           "wrap": true,
@@ -18,10 +18,10 @@
         },
         {
           "type": "TextBlock",
-          "text": "{{PREVIEW}}",
+          "text": "{{{Preview}}}",
           "size": "default",
           "wrap": true,
-          "maxLines": 3
+          "maxLines": 6
         }
       ]
     }
