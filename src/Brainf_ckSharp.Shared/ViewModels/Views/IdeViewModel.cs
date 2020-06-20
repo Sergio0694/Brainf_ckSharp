@@ -190,8 +190,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <param name="file">The file to open</param>
         private async Task TryLoadTextFromFileAsync(IFile file)
         {
-            AnalyticsService.Log(Constants.Events.LoadProtocolFile);
-
             if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
             {
                 Code = code;

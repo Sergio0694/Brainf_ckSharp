@@ -83,13 +83,17 @@ namespace Brainf_ckSharp.Uwp
 
             OnActivated(false);
 
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Events.OnFileActivated);
+
             base.OnFileActivated(args);
         }
 
         /// <inheritdoc/>
         protected override async void OnActivated(IActivatedEventArgs args)
         {
-            if (args is ProtocolActivatedEventArgs protocolArgs)
+            Uri? uri = (args as ProtocolActivatedEventArgs)?.Uri;
+
+            if (!(uri is null))
             {
                 // The app is activated only in two cases: either from a /switch protocol
                 // to focus an instance with a requested file already loaded from the IDE, or
@@ -100,10 +104,10 @@ namespace Brainf_ckSharp.Uwp
                 //     when trying to activate on a target file that is already open, we just
                 //     retrieve that instance and redirect the activation to it.
                 // First try to get the target file, if present
-                if (protocolArgs.Uri.LocalPath.Equals("/file"))
+                if (uri.LocalPath.Equals("/file"))
                 {
                     string
-                        escapedPath = protocolArgs.Uri.Query.Substring("?path=".Length),
+                        escapedPath = uri.Query.Substring("?path=".Length),
                         unescapedPath = Uri.UnescapeDataString(escapedPath);
 
                     StorageFile file = await StorageFile.GetFileFromPathAsync(unescapedPath);
@@ -119,6 +123,10 @@ namespace Brainf_ckSharp.Uwp
             }
 
             OnActivated(false);
+
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(
+                Shared.Constants.Events.OnActivated,
+                (nameof(Uri.LocalPath), uri?.LocalPath ?? "<NULL>"));
 
             base.OnActivated(args);
         }
