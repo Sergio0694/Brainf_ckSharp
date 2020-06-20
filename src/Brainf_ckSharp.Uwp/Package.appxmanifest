@@ -67,7 +67,7 @@
           </uap:FileTypeAssociation>
         </uap:Extension>
         <uap:Extension Category="windows.protocol">
-          <uap:Protocol Name="brainfck">
+          <uap:Protocol Name="brainf-ck">
             <uap:DisplayName>Brainf*ck#</uap:DisplayName>
           </uap:Protocol>
         </uap:Extension>

@@ -13,6 +13,7 @@ using Brainf_ckSharp.Shared.Models.Ide;
 using Brainf_ckSharp.Shared.ViewModels.Views;
 using Brainf_ckSharp.Uwp.Controls.Ide;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
+using Brainf_ckSharp.Uwp.Helpers;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Brainf_ckSharp.Uwp.Themes;
 using Microsoft.Extensions.DependencyInjection;
@@ -121,6 +122,8 @@ namespace Brainf_ckSharp.Uwp.Views
             CodeEditor.LoadText(e);
 
             Messenger.Default.Send<SubPageCloseRequestMessage>();
+
+            _ = TimelineHelper.Instance.LogActivityAsync(ViewModel.Code.File!);
         }
 
         /// <summary>
@@ -131,6 +134,8 @@ namespace Brainf_ckSharp.Uwp.Views
         private void ViewModel_CodeSaved(object sender, EventArgs e)
         {
             CodeEditor.MarkTextAsSaved();
+
+            _ = TimelineHelper.Instance.LogActivityAsync(ViewModel.Code.File!);
         }
 
         /// <summary>
