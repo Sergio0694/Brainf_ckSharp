@@ -53,24 +53,58 @@ namespace Brainf_ckSharp.Uwp
                 // If the activation requests a file, check if it is already in use
                 if (activatedEventArgs is FileActivatedEventArgs fileArgs &&
                     fileArgs.Files.FirstOrDefault() is StorageFile storageFile &&
-                    TryGetInstanceForFilePath(storageFile.Path, out AppInstance? instance))
+                    TryGetInstanceForFilePath(storageFile.Path, out AppInstance? fileInstance))
                 {
-                    instance!.RedirectActivationTo();
-                }
-                else if (activatedEventArgs is ProtocolActivatedEventArgs protocolArgs)
-                {
-                    string targetKey = protocolArgs.Uri.LocalPath.TrimStart('/');
+                    fileInstance!.RedirectActivationTo();
 
-                    AppInstance.FindOrRegisterInstanceForKey(targetKey).RedirectActivationTo();
+                    return;
                 }
-                else
+                
+                // If the activation uses a protocol, handle the possible cases.
+                // Currently there are two possible protocols being used:
+                //   - [/switch?key=...] is used to request a direct switch to an existing instance.
+                //     When this protocol is used, the target instance is always assumed to exist.
+                //     In this case, we just retrieve the target instance by key and redirect.
+                //   - [/file?path=...] is used to request a file activation from a timeline item.
+                //     In this case we don't have a file instance, but only the target path.
+                //     The activation is similar as the cases above: we first try to look for an
+                //     existing instance working on that file, and in that case we just switch there.
+                //     Otherwise we proceed with the usual registration, and the activation override
+                //     will take care of trying to retrieve the target file, and open it if possible.
+                if (activatedEventArgs is ProtocolActivatedEventArgs protocolArgs)
                 {
-                    // This will be a new app instance, which needs to be registered
-                    _ = AppInstance.FindOrRegisterInstanceForKey(key);
+                    // Direct switch requested to a target instance
+                    if (protocolArgs.Uri.LocalPath.Equals("/switch"))
+                    {
+                        string targetKey = protocolArgs.Uri.Query.Substring("?key=".Length);
 
-                    // Start the app as usual, passing the current key
-                    Start(_ => new App(key));
+                        AppInstance.FindOrRegisterInstanceForKey(targetKey).RedirectActivationTo();
+
+                        return;
+                    }
+                    
+                    // File request by path from a timeline item
+                    if (protocolArgs.Uri.LocalPath.Equals("/file"))
+                    {
+                        string
+                            escapedPath = protocolArgs.Uri.Query.Substring("?path=".Length),
+                            unescapedPath = Uri.UnescapeDataString(escapedPath);
+
+                        // Activate the target instance as above, if one exists
+                        if (TryGetInstanceForFilePath(unescapedPath, out AppInstance? pathInstance))
+                        {
+                            pathInstance!.RedirectActivationTo();
+
+                            return;
+                        }
+                    }
                 }
+
+                // This will be a new app instance, which needs to be registered
+                _ = AppInstance.FindOrRegisterInstanceForKey(key);
+
+                // Start the app as usual, passing the current key
+                Start(_ => new App(key));
             }
             else AppInstance.RecommendedInstance.RedirectActivationTo();
         }
@@ -130,7 +164,7 @@ namespace Brainf_ckSharp.Uwp
         {
             if (!TryGetInstanceForFilePath(file.Path, out AppInstance? instance)) return false;
 
-            Uri uri = new Uri($"brainfck:///{instance!.Key}");
+            Uri uri = new Uri($"brainf-ck:///switch?key={instance!.Key}");
 
             _ = Launcher.LaunchUriAsync(uri);
 

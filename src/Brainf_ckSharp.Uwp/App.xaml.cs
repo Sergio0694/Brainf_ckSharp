@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Reflection;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
@@ -82,16 +83,50 @@ namespace Brainf_ckSharp.Uwp
 
             OnActivated(false);
 
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Events.OnFileActivated);
+
             base.OnFileActivated(args);
         }
 
         /// <inheritdoc/>
-        protected override void OnActivated(IActivatedEventArgs args)
+        protected override async void OnActivated(IActivatedEventArgs args)
         {
-            if (args is ProtocolActivatedEventArgs)
+            Uri? uri = (args as ProtocolActivatedEventArgs)?.Uri;
+
+            if (!(uri is null))
             {
-                ((Shell)Window.Current.Content).BringIdeIntoView();
+                // The app is activated only in two cases: either from a /switch protocol
+                // to focus an instance with a requested file already loaded from the IDE, or
+                // from a /file protocol to open a file in a new instance. We have the following:
+                //   - [/switch] is guaranteed to have the UI already loaded and the target file
+                //     already displayed. In this case we just need to focus the IDE page.
+                //   - [/file] is guaranteed to only be used for a new instance. This is because
+                //     when trying to activate on a target file that is already open, we just
+                //     retrieve that instance and redirect the activation to it.
+                // First try to get the target file, if present
+                if (uri.LocalPath.Equals("/file"))
+                {
+                    string
+                        escapedPath = uri.Query.Substring("?path=".Length),
+                        unescapedPath = Uri.UnescapeDataString(escapedPath);
+
+                    StorageFile file = await StorageFile.GetFileFromPathAsync(unescapedPath);
+
+                    _RequestedFile = new File(file);
+                }
+
+                // Then only if this is not a new app instance, focus the IDE
+                if (Window.Current.Content is Shell shell)
+                {
+                    shell.BringIdeIntoView();
+                }
             }
+
+            OnActivated(false);
+
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(
+                Shared.Constants.Events.OnActivated,
+                (nameof(Uri.LocalPath), uri?.LocalPath ?? "<NULL>"));
 
             base.OnActivated(args);
         }
@@ -151,6 +186,7 @@ namespace Brainf_ckSharp.Uwp
             {
                 services.AddSingleton<IFilesService, FilesService>();
                 services.AddSingleton<IFilesManagerService>(this);
+                services.AddSingleton<IFilesHistoryService, TimelineService>();
                 services.AddSingleton<ISettingsService, SettingsService>();
                 services.AddSingleton<IKeyboardListenerService, KeyboardListenerService>();
                 services.AddSingleton<IClipboardService, ClipboardService>();

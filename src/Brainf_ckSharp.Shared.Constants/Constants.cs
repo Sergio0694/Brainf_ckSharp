@@ -58,6 +58,8 @@
         /// </summary>
         public static class Events
         {
+            public const string OnFileActivated = "[STARTUP] OnFileActivated";
+            public const string OnActivated = "[STARTUP] OnActivated";
             public const string UserGuideOpened = "[SHELL] User guide opened";
             public const string UnicodeCharactersMapOpened = "[SHELL] Unicode characters map opened";
             public const string SettingsOpened = "[SHELL] Settings opened";
@@ -77,7 +79,6 @@
             public const string PickFileRequest = "[IDE] Pick file request";
             public const string LoadPickedFile = "[IDE] Load picked file";
             public const string SwitchToFile = "[IDE] Switch to file";
-            public const string LoadProtocolFile = "[IDE] Load protocol file";
             public const string LoadLibrarySourceCode = "[IDE] Load library source code";
             public const string InsertCodeSnippet = "[IDE] Insert code snippet";
             public const string BreakpointAdded = "[IDE] Breakpoint added";

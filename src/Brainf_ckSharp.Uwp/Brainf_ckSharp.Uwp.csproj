@@ -245,6 +245,7 @@
     <Compile Include="Extensions\System\StringExtensions.cs" />
     <Compile Include="Extensions\Windows.Storage\IFileExtensions.cs" />
     <Compile Include="Extensions\Windows.UI.Xaml\FrameworkElementExtensions.cs" />
+    <Compile Include="Helpers\TimelineService.cs" />
     <Compile Include="Helpers\TitleBarHelper.cs" />
     <Compile Include="MarkupExtensions\VirtualKeyExtension.cs" />
     <Compile Include="MarkupExtensions\EnumValuesExtension.cs" />
@@ -390,6 +391,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.4.2</Version>
+    </PackageReference>
+    <PackageReference Include="Stubble.Core">
+      <Version>1.9.3</Version>
     </PackageReference>
     <PackageReference Include="System.Threading.Tasks.Extensions">
       <Version>4.5.4</Version>
@@ -583,7 +587,11 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Assets\Misc\SourceCodeAdaptiveCard.mustache">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\en-US\Resources.resw" />
   </ItemGroup>
