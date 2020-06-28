@@ -12,6 +12,7 @@ using Brainf_ckSharp.Opcodes;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 using Microsoft.Toolkit.HighPerformance.Extensions;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
+using Range = Brainf_ckSharp.Models.Internal.Range;
 
 namespace Brainf_ckSharp
 {

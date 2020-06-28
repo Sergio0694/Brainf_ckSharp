@@ -8,10 +8,10 @@ using Brainf_ckSharp.Memory;
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
-using Brainf_ckSharp.Models.Internal;
 using Brainf_ckSharp.Opcodes;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
+using Range = Brainf_ckSharp.Models.Internal.Range;
 
 namespace Brainf_ckSharp
 {

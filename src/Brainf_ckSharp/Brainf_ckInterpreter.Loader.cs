@@ -3,11 +3,11 @@ using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Models;
-using Brainf_ckSharp.Models.Internal;
 using Brainf_ckSharp.Opcodes.Interfaces;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 using Microsoft.Toolkit.HighPerformance.Extensions;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
+using Range = Brainf_ckSharp.Models.Internal.Range;
 
 namespace Brainf_ckSharp
 {
@@ -173,14 +173,13 @@ namespace Brainf_ckSharp
                 // the function call operator, so the offset doesn't need to be shifted
                 // ahead before extracting the processed string. Doing this with a
                 // reinterpret cast saves a conditional jump in the asm code.
-                bool zero = i == 0;
                 int
                     start = frame.Range.Start,
-                    offset = frame.Offset + Unsafe.As<bool, byte>(ref zero),
+                    offset = frame.Offset + (i == 0).ToInt(),
                     length = offset - start;
-                Span<TOpcode> memory = opcodes.Slice(start, length);
+                Span<TOpcode> span = opcodes.Slice(start, length);
 
-                string body = Brainf_ckParser.ExtractSource(memory);
+                string body = Brainf_ckParser.ExtractSource(span);
 
                 Unsafe.Add(ref r0, i) = body;
             }
