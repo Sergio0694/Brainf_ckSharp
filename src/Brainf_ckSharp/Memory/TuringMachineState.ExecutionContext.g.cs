@@ -93,62 +93,68 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveNext()
             {
-                if (_Position == MaxIndex) return false;
+                if (_Position != MaxIndex)
+                {
+                    _Position++;
 
-                _Position++;
+                    return true;
+                }
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveNext(int count, ref int totalOperations)
             {
-                if (_Position + count > MaxIndex)
+                if (_Position + count <= MaxIndex)
                 {
-                    totalOperations += MaxIndex - _Position;
+                    totalOperations += count;
 
-                    _Position = MaxIndex;
+                    _Position += count;
 
-                    return false;
+                    return true;
                 }
 
-                totalOperations += count;
+                totalOperations += MaxIndex - _Position;
 
-                _Position += count;
+                _Position = MaxIndex;
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveBack()
             {
-                if (_Position == 0) return false;
+                if (_Position != 0) 
+                {
+                    _Position--;
 
-                _Position--;
+                    return true;
+                }
 
-                return true;
+                return false;                
             }
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveBack(int count, ref int totalOperations)
             {
-                if (_Position - count < 0)
+                if (_Position - count >= 0)
                 {
-                    totalOperations += _Position;
+                    totalOperations += count;
 
-                    _Position = 0;
+                    _Position -= count;
 
-                    return false;
+                    return true;
                 }
 
-                totalOperations += count;
+                totalOperations += _Position;
 
-                _Position -= count;
+                _Position = 0;
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
@@ -250,62 +256,68 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveNext()
             {
-                if (_Position == MaxIndex) return false;
+                if (_Position != MaxIndex)
+                {
+                    _Position++;
 
-                _Position++;
+                    return true;
+                }
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveNext(int count, ref int totalOperations)
             {
-                if (_Position + count > MaxIndex)
+                if (_Position + count <= MaxIndex)
                 {
-                    totalOperations += MaxIndex - _Position;
+                    totalOperations += count;
 
-                    _Position = MaxIndex;
+                    _Position += count;
 
-                    return false;
+                    return true;
                 }
 
-                totalOperations += count;
+                totalOperations += MaxIndex - _Position;
 
-                _Position += count;
+                _Position = MaxIndex;
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveBack()
             {
-                if (_Position == 0) return false;
+                if (_Position != 0) 
+                {
+                    _Position--;
 
-                _Position--;
+                    return true;
+                }
 
-                return true;
+                return false;                
             }
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveBack(int count, ref int totalOperations)
             {
-                if (_Position - count < 0)
+                if (_Position - count >= 0)
                 {
-                    totalOperations += _Position;
+                    totalOperations += count;
 
-                    _Position = 0;
+                    _Position -= count;
 
-                    return false;
+                    return true;
                 }
 
-                totalOperations += count;
+                totalOperations += _Position;
 
-                _Position -= count;
+                _Position = 0;
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
@@ -314,11 +326,14 @@ namespace Brainf_ckSharp.Memory
             {
                 ushort* current = Ptr + _Position;
 
-                if (*current == byte.MaxValue) return false;
+                if (*current != byte.MaxValue)
+                {
+                    *current = unchecked((byte)(*current + 1));
 
-                *current = unchecked((byte)(*current + 1));
-
-                return true;
+                    return true;
+                }
+                
+                return false;
             }
 
             /// <inheritdoc/>
@@ -327,20 +342,20 @@ namespace Brainf_ckSharp.Memory
             {
                 ushort* current = Ptr + _Position;
 
-                if (*current + count > byte.MaxValue)
+                if (*current + count <= byte.MaxValue)
                 {
-                    totalOperations += byte.MaxValue - *current;
+                    *current = unchecked((byte)(*current + count));
 
-                    *current = byte.MaxValue;
+                    totalOperations += count;
 
-                    return false;
+                    return true;
                 }
 
-                *current = unchecked((byte)(*current + count));
+                totalOperations += byte.MaxValue - *current;
 
-                totalOperations += count;
+                *current = byte.MaxValue;
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
@@ -349,11 +364,14 @@ namespace Brainf_ckSharp.Memory
             {
                 ushort* current = Ptr + _Position;
 
-                if (*current == 0) return false;
+                if (*current != 0)
+                {
+                    *current = (ushort)(*current - 1);
 
-                *current = (ushort)(*current - 1);
+                    return true;
+                }
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
@@ -362,20 +380,20 @@ namespace Brainf_ckSharp.Memory
             {
                 ushort* current = Ptr + _Position;
 
-                if (*current < count)
+                if (*current >= count)
                 {
-                    totalOperations += *current;
+                    *current = (ushort)(*current - count);
 
-                    *current = 0;
+                    totalOperations += count;
 
-                    return false;
+                    return true;
                 }
 
-                *current = (ushort)(*current - count);
+                totalOperations += *current;
 
-                totalOperations += count;
+                *current = 0;
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
@@ -384,11 +402,14 @@ namespace Brainf_ckSharp.Memory
             {
                 ushort* current = Ptr + _Position;
 
-                if (c > byte.MaxValue) return false;
+                if (c <= byte.MaxValue)
+                {
+                    *current = c;
 
-                *current = c;
+                    return true;
+                }
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
@@ -431,62 +452,68 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveNext()
             {
-                if (_Position == MaxIndex) return false;
+                if (_Position != MaxIndex)
+                {
+                    _Position++;
 
-                _Position++;
+                    return true;
+                }
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveNext(int count, ref int totalOperations)
             {
-                if (_Position + count > MaxIndex)
+                if (_Position + count <= MaxIndex)
                 {
-                    totalOperations += MaxIndex - _Position;
+                    totalOperations += count;
 
-                    _Position = MaxIndex;
+                    _Position += count;
 
-                    return false;
+                    return true;
                 }
 
-                totalOperations += count;
+                totalOperations += MaxIndex - _Position;
 
-                _Position += count;
+                _Position = MaxIndex;
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveBack()
             {
-                if (_Position == 0) return false;
+                if (_Position != 0) 
+                {
+                    _Position--;
 
-                _Position--;
+                    return true;
+                }
 
-                return true;
+                return false;                
             }
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveBack(int count, ref int totalOperations)
             {
-                if (_Position - count < 0)
+                if (_Position - count >= 0)
                 {
-                    totalOperations += _Position;
+                    totalOperations += count;
 
-                    _Position = 0;
+                    _Position -= count;
 
-                    return false;
+                    return true;
                 }
 
-                totalOperations += count;
+                totalOperations += _Position;
 
-                _Position -= count;
+                _Position = 0;
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
@@ -588,62 +615,68 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveNext()
             {
-                if (_Position == MaxIndex) return false;
+                if (_Position != MaxIndex)
+                {
+                    _Position++;
 
-                _Position++;
+                    return true;
+                }
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveNext(int count, ref int totalOperations)
             {
-                if (_Position + count > MaxIndex)
+                if (_Position + count <= MaxIndex)
                 {
-                    totalOperations += MaxIndex - _Position;
+                    totalOperations += count;
 
-                    _Position = MaxIndex;
+                    _Position += count;
 
-                    return false;
+                    return true;
                 }
 
-                totalOperations += count;
+                totalOperations += MaxIndex - _Position;
 
-                _Position += count;
+                _Position = MaxIndex;
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveBack()
             {
-                if (_Position == 0) return false;
+                if (_Position != 0) 
+                {
+                    _Position--;
 
-                _Position--;
+                    return true;
+                }
 
-                return true;
+                return false;                
             }
 
             /// <inheritdoc/>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryMoveBack(int count, ref int totalOperations)
             {
-                if (_Position - count < 0)
+                if (_Position - count >= 0)
                 {
-                    totalOperations += _Position;
+                    totalOperations += count;
 
-                    _Position = 0;
+                    _Position -= count;
 
-                    return false;
+                    return true;
                 }
 
-                totalOperations += count;
+                totalOperations += _Position;
 
-                _Position -= count;
+                _Position = 0;
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
@@ -652,11 +685,14 @@ namespace Brainf_ckSharp.Memory
             {
                 ushort* current = Ptr + _Position;
 
-                if (*current == ushort.MaxValue) return false;
+                if (*current != ushort.MaxValue)
+                {
+                    *current = unchecked((ushort)(*current + 1));
 
-                *current = unchecked((ushort)(*current + 1));
-
-                return true;
+                    return true;
+                }
+                
+                return false;
             }
 
             /// <inheritdoc/>
@@ -665,20 +701,20 @@ namespace Brainf_ckSharp.Memory
             {
                 ushort* current = Ptr + _Position;
 
-                if (*current + count > ushort.MaxValue)
+                if (*current + count <= ushort.MaxValue)
                 {
-                    totalOperations += ushort.MaxValue - *current;
+                    *current = unchecked((ushort)(*current + count));
 
-                    *current = ushort.MaxValue;
+                    totalOperations += count;
 
-                    return false;
+                    return true;
                 }
 
-                *current = unchecked((ushort)(*current + count));
+                totalOperations += ushort.MaxValue - *current;
 
-                totalOperations += count;
+                *current = ushort.MaxValue;
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
@@ -687,11 +723,14 @@ namespace Brainf_ckSharp.Memory
             {
                 ushort* current = Ptr + _Position;
 
-                if (*current == 0) return false;
+                if (*current != 0)
+                {
+                    *current = (ushort)(*current - 1);
 
-                *current = (ushort)(*current - 1);
+                    return true;
+                }
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
@@ -700,20 +739,20 @@ namespace Brainf_ckSharp.Memory
             {
                 ushort* current = Ptr + _Position;
 
-                if (*current < count)
+                if (*current >= count)
                 {
-                    totalOperations += *current;
+                    *current = (ushort)(*current - count);
 
-                    *current = 0;
+                    totalOperations += count;
 
-                    return false;
+                    return true;
                 }
 
-                *current = (ushort)(*current - count);
+                totalOperations += *current;
 
-                totalOperations += count;
+                *current = 0;
 
-                return true;
+                return false;
             }
 
             /// <inheritdoc/>
