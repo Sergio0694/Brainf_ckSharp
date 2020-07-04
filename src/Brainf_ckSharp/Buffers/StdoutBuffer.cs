@@ -69,7 +69,7 @@ namespace Brainf_ckSharp.Buffers
             {
                 buffer[position] = c;
 
-                _Position++;
+                _Position = position + 1;
 
                 return true;
             }
