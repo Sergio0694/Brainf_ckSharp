@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.Contracts;
 using System.IO;
-using System.Linq;
 
 #nullable enable
 
@@ -15,14 +14,12 @@ namespace System.Reflection
         /// Returns the contents of a specified manifest file, as a <see cref="string"/>
         /// </summary>
         /// <param name="assembly">The target <see cref="Assembly"/> instance</param>
-        /// <param name="filename">The name of the file to read</param>
+        /// <param name="path">The path of the file to read</param>
         /// <returns>The text contents of the specified manifest file</returns>
         [Pure]
-        public static string ReadTextFromEmbeddedResourceFile(this Assembly assembly, string filename)
+        public static string GetManifestResourceString(this Assembly assembly, string path)
         {
-            string manifestFilename = assembly.GetManifestResourceNames().First(name => name.EndsWith(filename));
-
-            using Stream stream = assembly.GetManifestResourceStream(manifestFilename);
+            using Stream stream = assembly.GetManifestResourceStream(path);
             using StreamReader reader = new StreamReader(stream);
 
             return reader.ReadToEnd().Trim();

@@ -204,7 +204,7 @@ namespace Brainf_ckSharp.Uwp
             });
 
             // Initialize the analytics service
-            string appCenterSecret = Assembly.GetExecutingAssembly().ReadTextFromEmbeddedResourceFile("AppCenter.txt");
+            string appCenterSecret = Assembly.GetExecutingAssembly().GetManifestResourceString("Brainf_ckSharp.Uwp.Assets.ServiceTokens.AppCenter.txt");
 
             Ioc.Default.GetRequiredService<IAnalyticsService>().Initialize(appCenterSecret);
 
