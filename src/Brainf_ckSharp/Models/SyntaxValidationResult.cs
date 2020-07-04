@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using Brainf_ckSharp.Enums;
+using static System.Diagnostics.Debug;
 
 namespace Brainf_ckSharp.Models
 {
@@ -17,9 +17,9 @@ namespace Brainf_ckSharp.Models
         /// <param name="operatorsCount">The total number of Brainf*ck/PBrain operators in the original source file</param>
         internal SyntaxValidationResult(SyntaxError error, int offset, int operatorsCount = -1)
         {
-            Debug.Assert(offset >= -1);
-            Debug.Assert(operatorsCount >= -1);
-            Debug.Assert(operatorsCount >= 0 || error != SyntaxError.None);
+            Assert(offset >= -1);
+            Assert(operatorsCount >= -1);
+            Assert(operatorsCount >= 0 || error != SyntaxError.None);
 
             ErrorType = error;
             ErrorOffset = offset;

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Brainf_ckSharp.Memory.Interfaces;
+using static System.Diagnostics.Debug;
 
 #pragma warning disable IDE0032
 
@@ -65,7 +65,7 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public ExecutionSession(TuringMachineState state)
             {
-                Debug.Assert(state._Buffer != null);
+                Assert(state._Buffer != null);
 
                 Handle = GCHandle.Alloc(state._Buffer);
                 MachineState = state;

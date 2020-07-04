@@ -1,6 +1,6 @@
-﻿using System.Diagnostics;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using static System.Diagnostics.Debug;
 
 namespace Brainf_ckSharp.Models.Internal
 {
@@ -34,8 +34,8 @@ namespace Brainf_ckSharp.Models.Internal
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public StackFrame(Range range, int offset)
         {
-            Debug.Assert(offset >= range.Start);
-            Debug.Assert(offset <= range.End);
+            Assert(offset >= range.Start);
+            Assert(offset <= range.End);
 
             Range = range;
             Offset = offset;

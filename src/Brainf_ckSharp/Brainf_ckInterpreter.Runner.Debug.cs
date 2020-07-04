@@ -12,6 +12,7 @@ using Brainf_ckSharp.Opcodes;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
 using Range = Brainf_ckSharp.Models.Internal.Range;
+using static System.Diagnostics.Debug;
 
 namespace Brainf_ckSharp
 {
@@ -109,9 +110,9 @@ namespace Brainf_ckSharp
                 CancellationToken debugToken)
                 where TExecutionContext : struct, IMachineStateExecutionContext
             {
-                System.Diagnostics.Debug.Assert(depth >= 0);
-                System.Diagnostics.Debug.Assert(totalOperations >= 0);
-                System.Diagnostics.Debug.Assert(totalFunctions >= 0);
+                Assert(depth >= 0);
+                Assert(totalOperations >= 0);
+                Assert(totalFunctions >= 0);
 
                 // Outer loop to go through the existing stack frames
                 StackFrame frame;

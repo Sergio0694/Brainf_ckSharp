@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Opcodes.Interfaces;
 using Microsoft.Toolkit.HighPerformance.Buffers;
+using static System.Diagnostics.Debug;
 
 namespace Brainf_ckSharp
 {
@@ -42,7 +43,7 @@ namespace Brainf_ckSharp
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private static SpanOwner<ushort> LoadDefinitionsTable(int functionsCount)
             {
-                System.Diagnostics.Debug.Assert(functionsCount >= 0);
+                Assert(functionsCount >= 0);
 
                 return functionsCount switch
                 {

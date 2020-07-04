@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Buffers;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
+using static System.Diagnostics.Debug;
 
 namespace Brainf_ckSharp.Buffers
 {
@@ -57,8 +57,8 @@ namespace Brainf_ckSharp.Buffers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryWrite(char c)
         {
-            Debug.Assert(_Position >= 0);
-            Debug.Assert(_Position <= Specs.StdoutBufferSizeLimit);
+            Assert(_Position >= 0);
+            Assert(_Position <= Specs.StdoutBufferSizeLimit);
 
             char[] buffer = Buffer!;
             int position = _Position;

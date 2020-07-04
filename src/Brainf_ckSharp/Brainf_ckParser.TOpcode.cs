@@ -6,6 +6,7 @@ using Brainf_ckSharp.Opcodes;
 using Brainf_ckSharp.Opcodes.Interfaces;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 using Microsoft.Toolkit.HighPerformance.Extensions;
+using static System.Diagnostics.Debug;
 
 namespace Brainf_ckSharp
 {
@@ -25,6 +26,8 @@ namespace Brainf_ckSharp
         internal static char GetCharacterFromOpcode<TOpcode>(in TOpcode opcode)
             where TOpcode : unmanaged, IOpcode
         {
+            Assert(opcode.Operator < OperatorsInverseLookupTable.Length);
+
             return (char)OperatorsInverseLookupTable.DangerousGetReferenceAt(opcode.Operator);
         }
 
@@ -64,7 +67,7 @@ namespace Brainf_ckSharp
         internal static string ExtractSource<TOpcode>(Span<TOpcode> opcodes)
             where TOpcode : unmanaged, IOpcode
         {
-            System.Diagnostics.Debug.Assert(opcodes.Length > 0);
+            Assert(opcodes.Length > 0);
 
             if (typeof(TOpcode) == typeof(Brainf_ckOperator))
             {

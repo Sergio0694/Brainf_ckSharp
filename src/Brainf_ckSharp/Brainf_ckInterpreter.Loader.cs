@@ -8,6 +8,7 @@ using Microsoft.Toolkit.HighPerformance.Buffers;
 using Microsoft.Toolkit.HighPerformance.Extensions;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
 using Range = Brainf_ckSharp.Models.Internal.Range;
+using static System.Diagnostics.Debug;
 
 namespace Brainf_ckSharp
 {
@@ -30,11 +31,11 @@ namespace Brainf_ckSharp
             int totalFunctions)
             where TOpcode : unmanaged, IOpcode
         {
-            System.Diagnostics.Debug.Assert(opcodes.Length >= 0);
-            System.Diagnostics.Debug.Assert(functions.Length == ushort.MaxValue);
-            System.Diagnostics.Debug.Assert(definitions.Length >= 0);
-            System.Diagnostics.Debug.Assert(definitions.Length <= opcodes.Length / 3);
-            System.Diagnostics.Debug.Assert(totalFunctions >= 0);
+            Assert(opcodes.Length >= 0);
+            Assert(functions.Length == ushort.MaxValue);
+            Assert(definitions.Length >= 0);
+            Assert(definitions.Length <= opcodes.Length / 3);
+            Assert(totalFunctions >= 0);
 
             // No declared functions
             if (totalFunctions == 0) return Array.Empty<FunctionDefinition>();
@@ -72,9 +73,7 @@ namespace Brainf_ckSharp
             out int functionsCount)
             where TOpcode : unmanaged, IOpcode
         {
-            System.Diagnostics.Debug.Assert(opcodes.Length >= 0);
-
-            ref int jumpTableRef = ref jumpTable.DangerousGetReference();
+            Assert(opcodes.Length >= 0);
 
             // Temporarily allocate two buffers to store the indirect indices to build the jump table.
             // The two temporary buffers are initialized with a size of half the length of the input
@@ -86,6 +85,7 @@ namespace Brainf_ckSharp
             using SpanOwner<int> functionTempIndices = SpanOwner<int>.Allocate(tempBuffersLength);
             ref int rootTempIndicesRef = ref rootTempIndices.DangerousGetReference();
             ref int functionTempIndicesRef = ref functionTempIndices.DangerousGetReference();
+            ref int jumpTableRef = ref jumpTable.DangerousGetReference();
             functionsCount = 0;
 
             // Go through the executable to build the jump table for each open parenthesis or square bracket
@@ -149,9 +149,9 @@ namespace Brainf_ckSharp
             int depth)
             where TOpcode : unmanaged, IOpcode
         {
-            System.Diagnostics.Debug.Assert(opcodes.Length > 0);
-            System.Diagnostics.Debug.Assert(stackFrames.Length == Specs.MaximumStackSize);
-            System.Diagnostics.Debug.Assert(depth >= -1);
+            Assert(opcodes.Length > 0);
+            Assert(stackFrames.Length == Specs.MaximumStackSize);
+            Assert(depth >= -1);
 
             // No exception info for scripts completed successfully
             if (depth == -1) return null;

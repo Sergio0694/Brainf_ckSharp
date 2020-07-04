@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
+using static System.Diagnostics.Debug;
 
 namespace Brainf_ckSharp.Buffers
 {
@@ -36,8 +36,8 @@ namespace Brainf_ckSharp.Buffers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryRead(out char c)
         {
-            Debug.Assert(_Position >= 0);
-            Debug.Assert(_Position <= Data.Length);
+            Assert(_Position >= 0);
+            Assert(_Position <= Data.Length);
 
             string data = Data;
             int position = _Position;

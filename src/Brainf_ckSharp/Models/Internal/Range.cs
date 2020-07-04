@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
+using static System.Diagnostics.Debug;
 
 namespace Brainf_ckSharp.Models.Internal
 {
@@ -26,9 +26,9 @@ namespace Brainf_ckSharp.Models.Internal
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Range(int start, int end)
         {
-            Debug.Assert(start >= 0);
-            Debug.Assert(end >= 0);
-            Debug.Assert(start <= end);
+            Assert(start >= 0);
+            Assert(end >= 0);
+            Assert(start <= end);
 
             Start = start;
             End = end;
