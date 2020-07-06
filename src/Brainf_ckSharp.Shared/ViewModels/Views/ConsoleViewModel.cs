@@ -55,7 +55,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                 SettingsService.GetValue<int>(SettingsKeys.MemorySize),
                 SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode));
 
-            Messenger.Register<MemoryStateRequestMessage>(this, m => m.ReportResult(MachineState));
+            Messenger.Register<MemoryStateRequestMessage>(this, m => m.Reply(MachineState));
             Messenger.Register<RunCommandRequestMessage>(this, m => _ = ExecuteCommandAsync());
             Messenger.Register<DeleteOperatorRequestMessage>(this, m => _ = DeleteLastOperatorAsync());
             Messenger.Register<ClearCommandRequestMessage>(this, m => _ = ResetCommandAsync());

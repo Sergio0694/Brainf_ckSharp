@@ -20,14 +20,14 @@ using Brainf_ckSharp.Uwp.Services.Keyboard;
 using Brainf_ckSharp.Uwp.Services.Settings;
 using Brainf_ckSharp.Uwp.Services.Share;
 using GitHub;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Brainf_ckSharp.Services.Uwp.Store;
 using Brainf_ckSharp.Services.Uwp.SystemInformation;
 using Brainf_ckSharp.Shared;
 using Brainf_ckSharp.Shared.Messages.Ide;
-using Microsoft.Toolkit.Mvvm.Messaging;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Uwp.Helpers;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 #nullable enable
 
@@ -169,7 +169,7 @@ namespace Brainf_ckSharp.Uwp
         {
             Deferral deferral = e.GetDeferral();
 
-            await Messenger.Default.Send<SaveIdeStateRequestMessage>().Result;
+            await Messenger.Default.Send<SaveIdeStateRequestMessage>().Response;
 
             RegisterFile(null);
 

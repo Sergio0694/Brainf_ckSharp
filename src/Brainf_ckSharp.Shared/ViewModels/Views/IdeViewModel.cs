@@ -53,7 +53,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             Messenger.Register<NewFileRequestMessage>(this, _ => LoadNewFile());
             Messenger.Register<SaveFileRequestMessage>(this, m => _ = TrySaveTextAsync());
             Messenger.Register<SaveFileAsRequestMessage>(this, m => _ = TrySaveTextAsAsync());
-            Messenger.Register<SaveIdeStateRequestMessage>(this, m => m.ReportResult(SaveStateAsync()));
+            Messenger.Register<SaveIdeStateRequestMessage>(this, m => m.Reply(SaveStateAsync()));
         }
 
         /// <summary>

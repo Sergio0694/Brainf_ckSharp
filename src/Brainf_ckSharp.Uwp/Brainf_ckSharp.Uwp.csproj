@@ -383,6 +383,9 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Mvvm">
+      <Version>7.0.0-build.99.ge68de8fb31</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>6.1.0</Version>
     </PackageReference>
@@ -431,10 +434,6 @@
     <ProjectReference Include="..\GitHub\GitHub.csproj">
       <Project>{9122f0d6-af88-46a6-b91f-ebafe7f59672}</Project>
       <Name>GitHub</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Toolkit.Mvvm\Microsoft.Toolkit.Mvvm.csproj">
-      <Project>{7ecb8c9d-3d2b-4678-bdc1-f0d2aa4d2890}</Project>
-      <Name>Microsoft.Toolkit.Mvvm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

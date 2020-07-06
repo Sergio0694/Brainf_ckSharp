@@ -39,7 +39,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         /// <param name="request">The input request message for the stdin buffer</param>
         private void ExtractStdinBuffer(StdinRequestMessage request)
         {
-            request.ReportResult(Text);
+            request.Reply(Text);
 
             // Clear the buffer if requested, and if not from a background execution
             if (!request.IsFromBackgroundExecution &&
