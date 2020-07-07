@@ -189,7 +189,10 @@
     <DataTemplate
         x:Key="MemoryStateTemploate"
         x:DataType="views:IdeResultWithSectionInfo">
-        <winui:ItemsRepeater ItemsSource="{x:Bind Result.MachineState}">
+        <winui:ItemsRepeater
+            ItemsSource="{x:Bind Result.MachineState}"
+            HorizontalCacheLength="0"
+            VerticalCacheLength="160">
             <winui:ItemsRepeater.ItemTemplate>
                 <DataTemplate x:DataType="models:Brainf_ckMemoryCell">
                     <Grid RowSpacing="4">
