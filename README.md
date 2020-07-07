@@ -14,7 +14,7 @@ A complete, full-featured Brainf*ck IDE/console for Windows 10
 * Full featured console to test your scripts and improve your coding level
 * Real time memory state with the all the info about every cell and the pointer actual position
 * Exceptions handler, infinite loops auto suppression
-* Complete 8 bit Unicode char table to help you code text prints and see the values of the characters in the Stdin buffer
+* Complete 8 bit Unicode char lookup table to see the values of the characters in the Stdin buffer
 * Touch friendly UI with on screen custom keyboard and dedicated text navigation buttons
 * Undo/redo features to help you write your code more easily
 * An interpreter debugger that shows the position of the operator that caused the exception and the stack trace
