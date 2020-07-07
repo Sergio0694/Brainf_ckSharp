@@ -262,7 +262,6 @@ namespace Brainf_ckSharp.Models
         /// <summary>
         /// Throws an <see cref="ArgumentOutOfRangeException"/> when the current <see cref="OverflowMode"/> setting is invalid
         /// </summary>
-        [MethodImpl(MethodImplOptions.NoInlining)]
         private void ThrowArgumentOutOfRangeForOverflowMode()
         {
             throw new ArgumentOutOfRangeException(nameof(MachineState.Mode), $"Invalid execution mode: {MachineState.Mode}");

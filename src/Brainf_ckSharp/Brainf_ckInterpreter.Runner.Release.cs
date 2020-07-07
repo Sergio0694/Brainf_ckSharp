@@ -378,7 +378,6 @@ namespace Brainf_ckSharp
             /// <summary>
             /// Throws an <see cref="ArgumentOutOfRangeException"/> when the current <see cref="OverflowMode"/> setting is invalid
             /// </summary>
-            [MethodImpl(MethodImplOptions.NoInlining)]
             private static InterpreterResult ThrowArgumentOutOfRangeForOverflowMode(TuringMachineState machineState)
             {
                 throw new ArgumentOutOfRangeException(nameof(TuringMachineState.Mode), $"Invalid execution mode: {machineState.Mode}");

@@ -208,7 +208,6 @@ namespace Brainf_ckSharp.Memory
         /// <summary>
         /// Throws an <see cref="ObjectDisposedException"/> when <see cref="_Buffer"/> is <see langword="null"/>.
         /// </summary>
-        [MethodImpl(MethodImplOptions.NoInlining)]
         private static void ThrowObjectDisposedException()
         {
             throw new ObjectDisposedException("The current machine state has been disposed");
