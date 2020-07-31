@@ -7,7 +7,7 @@ using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls
 {
-    public sealed class StdinHeaderViewModel : ViewModelBase
+    public sealed class StdinHeaderViewModel : ObservableRecipient
     {
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
@@ -30,7 +30,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         public string Text
         {
             get => _Text;
-            set => Set(ref _Text, value);
+            set => SetProperty(ref _Text, value);
         }
 
         /// <summary>

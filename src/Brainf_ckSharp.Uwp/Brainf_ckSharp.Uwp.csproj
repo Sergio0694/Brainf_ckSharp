@@ -130,7 +130,7 @@
     <Compile Include="AttachedProperties\BlinkingAnimationHelper.cs" />
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.Source.cs" />
     <Compile Include="AttachedProperties\SemanticZoomHelper.cs" />
-    <Compile Include="AttachedProperties\ViewModelBaseHelper.cs" />
+    <Compile Include="AttachedProperties\ObservableRecipientHelper.cs" />
     <Compile Include="Controls\DataTemplates\IdeThemePreviewTemplate.xaml.cs">
       <DependentUpon>IdeThemePreviewTemplate.xaml</DependentUpon>
     </Compile>
@@ -382,9 +382,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Toolkit.Mvvm">
-      <Version>7.0.0-build.99.ge68de8fb31</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>6.1.0</Version>

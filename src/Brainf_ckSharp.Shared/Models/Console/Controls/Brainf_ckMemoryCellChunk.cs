@@ -33,7 +33,7 @@ namespace Brainf_ckSharp.Shared.Models.Console.Controls
         public Brainf_ckMemoryCell Zero
         {
             get => _Zero;
-            set => Set(ref _Zero, value);
+            set => SetProperty(ref _Zero, value);
         }
 
         private Brainf_ckMemoryCell _One;
@@ -44,7 +44,7 @@ namespace Brainf_ckSharp.Shared.Models.Console.Controls
         public Brainf_ckMemoryCell One
         {
             get => _One;
-            set => Set(ref _One, value);
+            set => SetProperty(ref _One, value);
         }
 
         private Brainf_ckMemoryCell _Two;
@@ -55,7 +55,7 @@ namespace Brainf_ckSharp.Shared.Models.Console.Controls
         public Brainf_ckMemoryCell Two
         {
             get => _Two;
-            set => Set(ref _Two, value);
+            set => SetProperty(ref _Two, value);
         }
 
         private Brainf_ckMemoryCell _Three;
@@ -66,7 +66,7 @@ namespace Brainf_ckSharp.Shared.Models.Console.Controls
         public Brainf_ckMemoryCell Three
         {
             get => _Three;
-            set => Set(ref _Three, value);
+            set => SetProperty(ref _Three, value);
         }
 
         /// <summary>

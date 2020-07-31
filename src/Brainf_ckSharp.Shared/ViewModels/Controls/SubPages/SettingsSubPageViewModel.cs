@@ -80,7 +80,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public bool AutoindentBrackets
         {
             get => _AutoindentBrackets;
-            set => Set(ref _AutoindentBrackets, value);
+            set => SetProperty(ref _AutoindentBrackets, value);
         }
 
         private IdeTheme _IdeTheme;
@@ -94,7 +94,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             get => _IdeTheme;
             set
             {
-                if (Set<IdeTheme, IdeThemeSettingChangedMessage>(ref _IdeTheme, value))
+                if (SetProperty<IdeTheme, IdeThemeSettingChangedMessage>(ref _IdeTheme, value))
                 {
                     AnalyticsService.Log(Constants.Events.ThemeChanged, (nameof(Enums.Settings.IdeTheme), value.ToString()));
                 }
@@ -109,7 +109,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public bool IsThemeSelectorAvailable
         {
             get => _IsThemeSelectorAvailable;
-            private set => Set(ref _IsThemeSelectorAvailable, value);
+            private set => SetProperty(ref _IsThemeSelectorAvailable, value);
         }
 
         private BracketsFormattingStyle _BracketsFormattingStyle;
@@ -121,7 +121,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public BracketsFormattingStyle BracketsFormattingStyle
         {
             get => _BracketsFormattingStyle;
-            set => Set<BracketsFormattingStyle, BracketsFormattingStyleSettingsChangedMessage>(ref _BracketsFormattingStyle, value);
+            set => SetProperty<BracketsFormattingStyle, BracketsFormattingStyleSettingsChangedMessage>(ref _BracketsFormattingStyle, value);
         }
 
         private bool _RenderWhitespaces;
@@ -133,7 +133,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public bool RenderWhitespaces
         {
             get => _RenderWhitespaces;
-            set => Set<bool, RenderWhitespacesSettingChangedMessage>(ref _RenderWhitespaces, value);
+            set => SetProperty<bool, RenderWhitespacesSettingChangedMessage>(ref _RenderWhitespaces, value);
         }
 
         private bool _ClearStdinBufferOnRequest;
@@ -145,7 +145,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public bool ClearStdinBufferOnRequest
         {
             get => _ClearStdinBufferOnRequest;
-            set => Set(ref _ClearStdinBufferOnRequest, value);
+            set => SetProperty(ref _ClearStdinBufferOnRequest, value);
         }
 
         private bool _ShowPBrainButtons;
@@ -157,7 +157,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public bool ShowPBrainButtons
         {
             get => _ShowPBrainButtons;
-            set => Set<bool, ShowPBrainButtonsSettingsChangedMessage>(ref _ShowPBrainButtons, value);
+            set => SetProperty<bool, ShowPBrainButtonsSettingsChangedMessage>(ref _ShowPBrainButtons, value);
         }
 
         private OverflowMode _OverflowMode;
@@ -169,7 +169,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public OverflowMode OverflowMode
         {
             get => _OverflowMode;
-            set => Set<OverflowMode, OverflowModeSettingChangedMessage>(ref _OverflowMode, value);
+            set => SetProperty<OverflowMode, OverflowModeSettingChangedMessage>(ref _OverflowMode, value);
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public int MemorySize
         {
             get => _MemorySize;
-            set => Set<int, MemorySizeSettingChangedMessage>(ref _MemorySize, value);
+            set => SetProperty<int, MemorySizeSettingChangedMessage>(ref _MemorySize, value);
         }
 
         /// <summary>
@@ -218,23 +218,23 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         }
 
         /// <summary>
-        /// A proxy for <see cref="Microsoft.Toolkit.Mvvm.ComponentModel.ObservableObject.Set{T}(ref T, T, string)"/> that
+        /// A proxy for <see cref="Microsoft.Toolkit.Mvvm.ComponentModel.ObservableObject.SetProperty{T}(ref T, T, string)"/> that
         /// also overwrites the value stored in the local settings when a property changes
         /// </summary>
         /// <typeparam name="T">The type of setting to set</typeparam>
         /// <param name="field">The previous setting value</param>
         /// <param name="value">The new value to set</param>
         /// <param name="name">The name of the setting that changed</param>
-        private new void Set<T>(ref T field, T value, [CallerMemberName] string name = null!)
+        private new void SetProperty<T>(ref T field, T value, [CallerMemberName] string? name = null)
         {
-            if (base.Set(ref field, value, name))
+            if (base.SetProperty(ref field, value, name))
             {
-                SettingsService.SetValue(name, value);
+                SettingsService.SetValue(name!, value);
             }
         }
 
         /// <summary>
-        /// A proxy for <see cref="Microsoft.Toolkit.Mvvm.ComponentModel.ObservableObject.Set{T}(ref T, T, string)"/> that
+        /// A proxy for <see cref="Microsoft.Toolkit.Mvvm.ComponentModel.ObservableObject.SetProperty{T}(ref T, T, string)"/> that
         /// also overwrites the value stored in the local settings when a property changes and broadcasts a message
         /// </summary>
         /// <typeparam name="T">The type of setting to set</typeparam>
@@ -242,12 +242,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <param name="field">The previous setting value</param>
         /// <param name="value">The new value to set</param>
         /// <param name="name">The name of the setting that changed</param>
-        private bool Set<T, TMessage>(ref T field, T value, [CallerMemberName] string name = null!)
+        private bool SetProperty<T, TMessage>(ref T field, T value, [CallerMemberName] string? name = null)
             where TMessage : ValueChangedMessage<T>
         {
-            if (base.Set(ref field, value, name))
+            if (base.SetProperty(ref field, value, name))
             {
-                SettingsService.SetValue(name, value);
+                SettingsService.SetValue(name!, value);
 
                 TMessage message = (TMessage)Activator.CreateInstance(typeof(TMessage), value);
 

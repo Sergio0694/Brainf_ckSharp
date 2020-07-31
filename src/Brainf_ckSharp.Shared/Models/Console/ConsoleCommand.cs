@@ -16,7 +16,7 @@ namespace Brainf_ckSharp.Shared.Models.Console
         public string Command
         {
             get => _Command;
-            set => Set(ref _Command, value);
+            set => SetProperty(ref _Command, value);
         }
 
         private bool _IsActive = true;
@@ -27,7 +27,7 @@ namespace Brainf_ckSharp.Shared.Models.Console
         public bool IsActive
         {
             get => _IsActive;
-            set => Set(ref _IsActive, value);
+            set => SetProperty(ref _IsActive, value);
         }
     }
 }

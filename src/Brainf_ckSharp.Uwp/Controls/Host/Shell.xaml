@@ -54,10 +54,10 @@
             Style="{StaticResource ExpandedPivotWithNoHeaderStyle}"
             SelectedIndex="{x:Bind converters:PivotSelectionConverter.ConvertToIndex(ViewModel.SelectedView), Mode=OneWay}">
             <PivotItem>
-                <views:ConsoleView attachedProperties:ViewModelBaseHelper.IsActive="{x:Bind ViewModel.SelectedView.Equals(settings:ViewType.Console), Mode=OneWay}"/>
+                <views:ConsoleView attachedProperties:ObservableRecipientHelper.IsActive="{x:Bind ViewModel.SelectedView.Equals(settings:ViewType.Console), Mode=OneWay}"/>
             </PivotItem>
             <PivotItem>
-                <views:IdeView attachedProperties:ViewModelBaseHelper.IsActive="{x:Bind ViewModel.SelectedView.Equals(settings:ViewType.Ide), Mode=OneWay}"/>
+                <views:IdeView attachedProperties:ObservableRecipientHelper.IsActive="{x:Bind ViewModel.SelectedView.Equals(settings:ViewType.Ide), Mode=OneWay}"/>
             </PivotItem>
         </Pivot>
 

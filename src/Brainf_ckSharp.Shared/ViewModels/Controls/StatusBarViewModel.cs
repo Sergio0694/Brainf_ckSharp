@@ -16,7 +16,7 @@ using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls
 {
-    public sealed class StatusBarViewModel : ViewModelBase
+    public sealed class StatusBarViewModel : ObservableRecipient
     {
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
@@ -95,7 +95,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         public WorkspaceViewModelBase? WorkspaceViewModel
         {
             get => _WorkspaceViewModel;
-            private set => Set(ref _WorkspaceViewModel, value);
+            private set => SetProperty(ref _WorkspaceViewModel, value);
         }
 
         /// <summary>

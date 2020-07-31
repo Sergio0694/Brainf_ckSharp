@@ -7,9 +7,9 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 namespace Brainf_ckSharp.Shared.ViewModels.Views.Abstract
 {
     /// <summary>
-    /// A <see cref="ViewModelBase"/> implementation for workspaces
+    /// An <see cref="ObservableRecipient"/> implementation for workspaces
     /// </summary>
-    public abstract class WorkspaceViewModelBase : ViewModelBase
+    public abstract class WorkspaceViewModelBase : ObservableRecipient
     {
         private SourceCode _Code = SourceCode.CreateEmpty();
 
@@ -21,7 +21,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views.Abstract
             get => _Code;
             protected set
             {
-                if (Set(ref _Code, value))
+                if (SetProperty(ref _Code, value))
                 {
                     OnCodeChanged(value);
                 }
@@ -58,7 +58,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views.Abstract
         public bool IsUnsavedEditPending
         {
             get => _IsUnsavedEditPending;
-            private set => Set(ref _IsUnsavedEditPending, value);
+            private set => SetProperty(ref _IsUnsavedEditPending, value);
         }
 
         private SyntaxValidationResult _ValidationResult;
@@ -69,7 +69,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views.Abstract
         public SyntaxValidationResult ValidationResult
         {
             get => _ValidationResult;
-            set => Set(ref _ValidationResult, value);
+            set => SetProperty(ref _ValidationResult, value);
         }
 
         private int _Row = 1;
@@ -84,7 +84,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views.Abstract
             {
                 Guard.IsGreaterThan(value, 0, nameof(Row));
 
-                Set(ref _Row, value);
+                SetProperty(ref _Row, value);
             }
         }
 
@@ -100,7 +100,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views.Abstract
             {
                 Guard.IsGreaterThan(value, 0, nameof(Column));
 
-                Set(ref _Column, value);
+                SetProperty(ref _Column, value);
             }
         }
 

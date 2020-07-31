@@ -12,7 +12,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
     /// <summary>
     /// A view model for the review prompt in the app
     /// </summary>
-    public sealed class ReviewPromptSubPageViewModel : ViewModelBase
+    public sealed class ReviewPromptSubPageViewModel : ObservableObject
     {
         /// <summary>
         /// The <see cref="IEmailService"/> instance currently in use

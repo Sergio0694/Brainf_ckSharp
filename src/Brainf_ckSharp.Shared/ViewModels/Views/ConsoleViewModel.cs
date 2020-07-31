@@ -102,7 +102,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         public IReadOnlyMachineState MachineState
         {
             get => _MachineState;
-            private set => Set(ref _MachineState, value, true);
+            private set => SetProperty(ref _MachineState, value, true);
         }
 
         /// <summary>

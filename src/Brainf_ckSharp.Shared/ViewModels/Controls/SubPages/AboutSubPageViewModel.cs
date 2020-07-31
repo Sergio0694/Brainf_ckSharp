@@ -15,7 +15,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
     /// <summary>
     /// A view model for the about page in the app
     /// </summary>
-    public sealed class AboutSubPageViewModel : ViewModelBase
+    public sealed class AboutSubPageViewModel : ObservableObject
     {
         /// <summary>
         /// The <see cref="IGitHubService"/> instance currently in use
@@ -53,7 +53,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public IEnumerable<User>? Developers
         {
             get => _Developers;
-            private set => Set(ref _Developers, value);
+            private set => SetProperty(ref _Developers, value);
         }
 
         private static IEnumerable<object>? _DonationMockupSource;
@@ -64,7 +64,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public IEnumerable<object>? DonationMockupSource
         {
             get => _DonationMockupSource;
-            private set => Set(ref _DonationMockupSource, value);
+            private set => SetProperty(ref _DonationMockupSource, value);
         }
 
         /// <summary>

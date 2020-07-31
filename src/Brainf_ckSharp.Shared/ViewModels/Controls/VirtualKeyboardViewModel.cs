@@ -10,7 +10,7 @@ using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls
 {
-    public sealed class VirtualKeyboardViewModel : ViewModelBase
+    public sealed class VirtualKeyboardViewModel : ObservableRecipient
     {
         /// <summary>
         /// Creates a new <see cref="VirtualKeyboardViewModel"/> instance
@@ -37,7 +37,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         public bool IsPBrainModeEnabled
         {
             get => _IsPBrainModeEnabled;
-            private set => Set(ref _IsPBrainModeEnabled, value);
+            private set => SetProperty(ref _IsPBrainModeEnabled, value);
         }
 
         /// <summary>

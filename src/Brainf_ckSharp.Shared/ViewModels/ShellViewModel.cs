@@ -13,7 +13,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
     /// <summary>
     /// A view model for the root shell control
     /// </summary>
-    public sealed class ShellViewModel : ViewModelBase
+    public sealed class ShellViewModel : ObservableRecipient
     {
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
@@ -60,7 +60,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
             get => _SelectedView;
             set
             {
-                if (Set(ref _SelectedView, value))
+                if (SetProperty(ref _SelectedView, value))
                 {
                     SettingsService.SetValue(SettingsKeys.SelectedView, value);
                 }
@@ -77,7 +77,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
             get => _IsVirtualKeyboardEnabled;
             set
             {
-                if (Set(ref _IsVirtualKeyboardEnabled, value))
+                if (SetProperty(ref _IsVirtualKeyboardEnabled, value))
                 {
                     SettingsService.SetValue(SettingsKeys.IsVirtualKeyboardEnabled, value);
                 }

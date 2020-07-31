@@ -9,7 +9,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Abstract
     /// A view model for a view that exposes a collection of a given type
     /// </summary>
     /// <typeparam name="TCollection">The type of collection to use</typeparam>
-    public abstract class ViewModelBase<TCollection> : ViewModelBase
+    public abstract class ViewModelBase<TCollection> : ObservableRecipient
         where TCollection : class, IList, new()
     {
         private TCollection _Source = new TCollection();
@@ -23,7 +23,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Abstract
             protected set
             {
                 // Update the source and the dependent properties
-                if (Set(ref _Source, value))
+                if (SetProperty(ref _Source, value))
                 {
                     OnPropertyChanged(nameof(IsEmpty));
                 }

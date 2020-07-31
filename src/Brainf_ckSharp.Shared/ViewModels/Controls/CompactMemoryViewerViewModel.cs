@@ -35,7 +35,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
             get => _MachineState;
             set
             {
-                if (Set(ref _MachineState, value))
+                if (SetProperty(ref _MachineState, value))
                 {
                     UpdateFromState(value);
                 }

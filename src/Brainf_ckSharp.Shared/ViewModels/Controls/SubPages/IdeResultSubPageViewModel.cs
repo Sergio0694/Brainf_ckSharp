@@ -99,7 +99,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         public bool IsRunning
         {
             get => _IsRunning;
-            private set => Set(ref _IsRunning, value);
+            private set => SetProperty(ref _IsRunning, value);
         }
 
         /// <inheritdoc/>
