@@ -1,5 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Jobs;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
@@ -11,8 +12,8 @@ using Brainf_ckSharp.Unit.Shared.Models;
 namespace Brainf_ckSharp.Profiler
 {
     [MemoryDiagnoser]
-    [SimpleJob(RuntimeMoniker.NetCoreApp21)]
-    [SimpleJob(RuntimeMoniker.NetCoreApp31)]
+    [SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.NetCoreApp21)]
+    [SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.NetCoreApp31)]
     [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByParams)]
     public class Brainf_ckBenchmark
     {
