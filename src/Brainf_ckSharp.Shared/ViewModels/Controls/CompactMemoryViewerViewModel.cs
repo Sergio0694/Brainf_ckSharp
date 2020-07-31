@@ -2,7 +2,7 @@
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Shared.Messages.Console.MemoryState;
 using Brainf_ckSharp.Shared.Models.Console.Controls;
-using Brainf_ckSharp.Shared.ViewModels.Abstract;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
@@ -13,7 +13,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
     /// <summary>
     /// A view model for a compact memory viewer for the interactive REPL console
     /// </summary>
-    public sealed class CompactMemoryViewerViewModel : ViewModelBase<ObservableCollection<Brainf_ckMemoryCellChunk>>
+    public sealed class CompactMemoryViewerViewModel : ObservableRecipient
     {
         /// <summary>
         /// Creates a new <see cref="CompactMemoryViewerViewModel"/> instance
@@ -24,6 +24,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
 
             Messenger.Register<PropertyChangedMessage<IReadOnlyMachineState>>(this, m => MachineState = m.NewValue);
         }
+
+        /// <summary>
+        /// Gets the current collection of <see cref="Brainf_ckMemoryCellChunk"/> instances
+        /// </summary>
+        public ObservableCollection<Brainf_ckMemoryCellChunk> Source { get; } = new ObservableCollection<Brainf_ckMemoryCellChunk>();
 
         private IReadOnlyMachineState? _MachineState;
 

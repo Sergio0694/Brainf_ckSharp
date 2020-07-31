@@ -1,14 +1,14 @@
 ﻿using System;
 using Brainf_ckSharp.Shared.Enums;
-using Brainf_ckSharp.Shared.ViewModels.Abstract;
 using Microsoft.Toolkit.Collections;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 {
     /// <summary>
     /// A view model for the user guide in the app
     /// </summary>
-    public sealed class UserGuideSubPageViewModel : ViewModelBase<ObservableGroupedCollection<UserGuideSection, UserGuideSection>>
+    public sealed class UserGuideSubPageViewModel : ObservableObject
     {
         /// <summary>
         /// The collection of available user guide sections
@@ -31,5 +31,10 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
                 Source.Add(new ObservableGroup<UserGuideSection, UserGuideSection>(section, new[] { section }));
             }
         }
+
+        /// <summary>
+        /// Gets the current collection of sections to display
+        /// </summary>
+        public ObservableGroupedCollection<UserGuideSection, UserGuideSection> Source { get; } = new ObservableGroupedCollection<UserGuideSection, UserGuideSection>();
     }
 }

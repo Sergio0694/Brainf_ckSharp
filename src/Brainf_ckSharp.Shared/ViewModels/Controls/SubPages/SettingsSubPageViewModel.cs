@@ -10,9 +10,9 @@ using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.Extensions.Microsoft.Toolkit.Collections;
 using Brainf_ckSharp.Shared.Messages.Settings;
-using Brainf_ckSharp.Shared.ViewModels.Abstract;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Collections;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
@@ -22,7 +22,7 @@ using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 {
-    public sealed class SettingsSubPageViewModel : ViewModelBase<ObservableGroupedCollection<SettingsSection, SettingsSection>>
+    public sealed class SettingsSubPageViewModel : ObservableRecipient
     {
         /// <summary>
         /// The <see cref="IAnalyticsService"/> instance currently in use
@@ -70,6 +70,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// Gets the <see cref="ICommand"/> instance responsible for unlocking the themes selector
         /// </summary>
         public ICommand UnlockThemesSelectorCommand { get; }
+
+        /// <summary>
+        /// Gets the current collection of sections to display
+        /// </summary>
+        public ObservableGroupedCollection<SettingsSection, SettingsSection> Source { get; } = new ObservableGroupedCollection<SettingsSection, SettingsSection>();
 
         private bool _AutoindentBrackets;
 

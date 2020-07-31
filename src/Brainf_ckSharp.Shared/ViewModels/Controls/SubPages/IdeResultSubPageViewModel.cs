@@ -10,10 +10,10 @@ using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Extensions.Microsoft.Toolkit.Collections;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Models.Ide.Views;
-using Brainf_ckSharp.Shared.ViewModels.Abstract;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Diagnostics;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
@@ -23,7 +23,7 @@ using Nito.AsyncEx;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 {
-    public sealed class IdeResultSubPageViewModel : ViewModelBase<ObservableGroupedCollection<IdeResultSection, IdeResultWithSectionInfo>>
+    public sealed class IdeResultSubPageViewModel : ObservableRecipient
     {
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
@@ -59,6 +59,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             ContinueCommand = new AsyncRelayCommand(ContinueAsync);
             SkipCommand = new AsyncRelayCommand(SkipAsync);
         }
+
+        /// <summary>
+        /// Gets the current collection of sections to display
+        /// </summary>
+        public ObservableGroupedCollection<IdeResultSection, IdeResultWithSectionInfo> Source { get; } = new ObservableGroupedCollection<IdeResultSection, IdeResultWithSectionInfo>();
 
         /// <summary>
         /// Gets or sets the script to execute

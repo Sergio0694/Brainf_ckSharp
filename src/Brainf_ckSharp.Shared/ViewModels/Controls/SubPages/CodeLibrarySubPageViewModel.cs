@@ -12,9 +12,9 @@ using Brainf_ckSharp.Shared.Extensions.Microsoft.Toolkit.Collections;
 using Brainf_ckSharp.Shared.Extensions.System.Collections.Generic;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Brainf_ckSharp.Shared.Models.Ide;
-using Brainf_ckSharp.Shared.ViewModels.Abstract;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Collections;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
@@ -23,7 +23,7 @@ using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 {
-    public sealed class CodeLibrarySubPageViewModel : ViewModelBase<ObservableGroupedCollection<CodeLibrarySection, object>>
+    public sealed class CodeLibrarySubPageViewModel : ObservableRecipient
     {
         /// <summary>
         /// The <see cref="IAnalyticsService"/> instance currently in use
@@ -141,6 +141,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// Gets the <see cref="ICommand"/> instance responsible for deleting an item in the library
         /// </summary>
         public ICommand DeleteCommand { get; }
+
+        /// <summary>
+        /// Gets the current collection of sections to display
+        /// </summary>
+        public ObservableGroupedCollection<CodeLibrarySection, object> Source { get; } = new ObservableGroupedCollection<CodeLibrarySection, object>();
 
         /// <summary>
         /// Loads the currently available code samples and recently used files

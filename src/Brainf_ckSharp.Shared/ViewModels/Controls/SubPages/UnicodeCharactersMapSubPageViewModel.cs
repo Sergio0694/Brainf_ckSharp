@@ -3,14 +3,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Brainf_ckSharp.Shared.Models;
-using Brainf_ckSharp.Shared.ViewModels.Abstract;
 using Microsoft.Toolkit.Collections;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Nito.AsyncEx;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 {
-    public sealed class UnicodeCharactersMapSubPageViewModel : ViewModelBase<ObservableGroupedCollection<UnicodeInterval, UnicodeCharacter>>
+    public sealed class UnicodeCharactersMapSubPageViewModel : ObservableObject
     {
         /// <summary>
         /// A mutex to avoid race conditions when loading <see cref="_32To127"/> and <see cref="_160To255"/>
@@ -39,6 +39,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// Gets the <see cref="ICommand"/> instance responsible for loading the available source codes
         /// </summary>
         public ICommand LoadDataCommand { get; }
+
+        /// <summary>
+        /// Gets the current collection of intervals to display
+        /// </summary>
+        public ObservableGroupedCollection<UnicodeInterval, UnicodeCharacter> Source { get; } = new ObservableGroupedCollection<UnicodeInterval, UnicodeCharacter>();
 
         /// <summary>
         /// Loads the grouped characters to display
