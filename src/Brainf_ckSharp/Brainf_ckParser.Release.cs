@@ -105,7 +105,7 @@ namespace Brainf_ckSharp
             /// <param name="operations">The input sequence of parsed operations to read</param>
             /// <returns>A <see cref="string"/> representing the input sequence of operations</returns>
             [Pure]
-            public static unsafe string ExtractSource(Span<Brainf_ckOperation> operations)
+            public static string ExtractSource(Span<Brainf_ckOperation> operations)
             {
                 int size = 0;
 
@@ -138,11 +138,7 @@ namespace Brainf_ckSharp
                     j += operation.Count;
                 }
 
-                // Allocate the new string from the rented buffer
-                fixed (char* p = &targetRef)
-                {
-                    return new string(p, 0, size);
-                }
+                return StringPool.Shared.GetOrAdd(characters.Span);
             }
         }
     }

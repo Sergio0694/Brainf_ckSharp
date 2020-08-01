@@ -3,6 +3,7 @@ using System.Buffers;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
+using Microsoft.Toolkit.HighPerformance.Buffers;
 using static System.Diagnostics.Debug;
 
 namespace Brainf_ckSharp.Buffers
@@ -79,7 +80,10 @@ namespace Brainf_ckSharp.Buffers
 
         /// <inheritdoc/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override readonly string ToString() => new string(Buffer, 0, _Position);
+        public override readonly string ToString()
+        {
+            return StringPool.Shared.GetOrAdd(new ReadOnlySpan<char>(Buffer, 0, _Position));
+        }
 
         /// <inheritdoc/>
         public readonly void Dispose()

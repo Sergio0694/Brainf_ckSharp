@@ -147,7 +147,7 @@
       <Version>6.2.10</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.HighPerformance">
-      <Version>6.1.0</Version>
+      <Version>7.0.0-build.96.g23f56f3fc9</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp">
       <Version>6.1.0</Version>

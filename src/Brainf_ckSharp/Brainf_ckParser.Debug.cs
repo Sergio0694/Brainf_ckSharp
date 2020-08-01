@@ -56,7 +56,7 @@ namespace Brainf_ckSharp
             /// <param name="operators">The input sequence of parsed operators to read</param>
             /// <returns>A <see cref="string"/> representing the input sequence of operators</returns>
             [Pure]
-            public static unsafe string ExtractSource(Span<Brainf_ckOperator> operators)
+            public static string ExtractSource(Span<Brainf_ckOperator> operators)
             {
                 // Rent a buffer to use to build the final string
                 using SpanOwner<char> characters = SpanOwner<char>.Allocate(operators.Length);
@@ -75,11 +75,7 @@ namespace Brainf_ckSharp
                     Unsafe.Add(ref targetRef, i) = (char)code;
                 }
 
-                // Allocate the new string from the rented buffer
-                fixed (char* p = &targetRef)
-                {
-                    return new string(p, 0, operators.Length);
-                }
+                return StringPool.Shared.GetOrAdd(characters.Span);
             }
         }
     }
