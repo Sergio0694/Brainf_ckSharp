@@ -136,7 +136,7 @@
                 <ListView 
                     Margin="-8,2,-8,-8"
                     Padding="8"
-                    ItemsSource="{x:Bind ViewModel.DonationMockupSource, Mode=OneWay}"
+                    ItemsSource="{x:Bind ViewModel.FeaturedLinks, Mode=OneWay}"
                     SelectionMode="None"
                     IsItemClickEnabled="False"
                     ScrollViewer.VerticalScrollBarVisibility="Hidden"
@@ -153,10 +153,10 @@
                         </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="x:String">
                             <dataTemplates:FeaturedLinkTemplate
                                 Image="/Assets/Misc/donate.png"
-                                NavigationUri="https://www.paypal.me/sergiopedri"/>
+                                NavigationUrl="{x:Bind}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

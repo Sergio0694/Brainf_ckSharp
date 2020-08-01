@@ -37,14 +37,27 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates
             new PropertyMetadata(default(ImageSource)));
 
         /// <summary>
-        /// Gets or sets the <see cref="Uri"/> for the featured link
+        /// Gets or sets the <see cref="string"/> with the URL to navigate to
         /// </summary>
-        public Uri? NavigationUri { get; set; }
+        public string? NavigationUrl
+        {
+            get => (string?)GetValue(NavigationUrlProperty);
+            set => SetValue(NavigationUrlProperty, value);
+        }
+
+        /// <summary>
+        /// The dependency property for <see cref="Image"/>
+        /// </summary>
+        public static readonly DependencyProperty NavigationUrlProperty = DependencyProperty.Register(
+            nameof(NavigationUrl),
+            typeof(string),
+            typeof(FeaturedLinkTemplate),
+            new PropertyMetadata(default(string)));
 
         // Opens the featured link
         private void RootButton_Clicked(object sender, RoutedEventArgs e)
         {
-            _ = Launcher.LaunchUriAsync(NavigationUri ?? throw new InvalidOperationException("No valid uri available"));
+            _ = Launcher.LaunchUriAsync(new Uri(NavigationUrl ?? throw new InvalidOperationException("No valid uri available")));
 
             Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Events.PayPalDonationOpened);
         }

@@ -56,15 +56,15 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             private set => SetProperty(ref _Developers, value);
         }
 
-        private static IEnumerable<object>? _DonationMockupSource;
+        private static IEnumerable<string>? _FeaturedLinks;
 
         /// <summary>
-        /// Gets the mockup list to load the donation placeholder
+        /// Gets the list of featured links to use
         /// </summary>
-        public IEnumerable<object>? DonationMockupSource
+        public IEnumerable<string>? FeaturedLinks
         {
-            get => _DonationMockupSource;
-            private set => SetProperty(ref _DonationMockupSource, value);
+            get => _FeaturedLinks;
+            private set => SetProperty(ref _FeaturedLinks, value);
         }
 
         /// <summary>
@@ -76,8 +76,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 
             try
             {
-                Developers = new[] { await GitHubService.GetUserAsync("Sergio0694") };
-                DonationMockupSource = new[] { new object() };
+                Developers = new[] { await GitHubService.GetUserAsync(Constants.GitHubUsername) };
+                FeaturedLinks = new[] { Constants.PayPalMeUrl };
             }
             catch
             {
