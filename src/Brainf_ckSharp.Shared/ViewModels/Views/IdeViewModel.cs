@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Models.Ide;
@@ -115,12 +116,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <param name="code">The source code to load</param>
         private void LoadSourceCode(SourceCode code)
         {
-            AnalyticsService.Log(Constants.Events.LoadLibrarySourceCode);
+            AnalyticsService.Log(EventNames.LoadLibrarySourceCode);
 
             if (!(code.File is null) &&
                 FilesManagerService.TrySwitchTo(code.File))
             {
-                AnalyticsService.Log(Constants.Events.SwitchToFile);
+                AnalyticsService.Log(EventNames.SwitchToFile);
 
                 return;
             }
@@ -153,18 +154,18 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <param name="favorite">Whether to immediately mark the item as favorite</param>
         private async Task TryLoadTextFromFileAsync(bool favorite)
         {
-            AnalyticsService.Log(Constants.Events.PickFileRequest);
+            AnalyticsService.Log(EventNames.PickFileRequest);
 
             if (!(await FilesService.TryPickOpenFileAsync(".bfs") is IFile file)) return;
 
             if (FilesManagerService.TrySwitchTo(file))
             {
-                AnalyticsService.Log(Constants.Events.SwitchToFile);
+                AnalyticsService.Log(EventNames.SwitchToFile);
 
                 return;
             }
 
-            AnalyticsService.Log(Constants.Events.LoadPickedFile, (nameof(CodeMetadata.IsFavorited), favorite.ToString()));
+            AnalyticsService.Log(EventNames.LoadPickedFile, (nameof(CodeMetadata.IsFavorited), favorite.ToString()));
 
             if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
             {
@@ -229,7 +230,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
             if (FilesManagerService.TrySwitchTo(file))
             {
-                AnalyticsService.Log(Constants.Events.SwitchToFile);
+                AnalyticsService.Log(EventNames.SwitchToFile);
 
                 return;
             }

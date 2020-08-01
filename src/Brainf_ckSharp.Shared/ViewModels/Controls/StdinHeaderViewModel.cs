@@ -1,4 +1,5 @@
 ﻿using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;

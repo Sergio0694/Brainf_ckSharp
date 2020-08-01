@@ -6,7 +6,7 @@ using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Services;
-using Brainf_ckSharp.Shared;
+using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.Messages.Settings;
 using Brainf_ckSharp.Shared.Models.Ide;
@@ -181,7 +181,7 @@ namespace Brainf_ckSharp.Uwp.Views
                     where fieldValue == snippet
                     select fieldInfo.Name).First();
 
-                Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Events.InsertCodeSnippet, (nameof(CodeSnippets), name));
+                Ioc.Default.GetRequiredService<IAnalyticsService>().Log(EventNames.InsertCodeSnippet, (nameof(CodeSnippets), name));
 
                 CodeEditor.InsertText(snippet);
             }
@@ -195,7 +195,7 @@ namespace Brainf_ckSharp.Uwp.Views
         private void CodeEditor_OnBreakpointAdded(Brainf_ckIde sender, BreakpointToggleEventArgs args)
         {
             Ioc.Default.GetRequiredService<IAnalyticsService>().Log(
-                Shared.Constants.Events.BreakpointAdded,
+                EventNames.BreakpointAdded,
                 (nameof(BreakpointToggleEventArgs.Row), args.Row.ToString()),
                 (nameof(BreakpointToggleEventArgs.Count), args.Count.ToString()));
         }
@@ -208,7 +208,7 @@ namespace Brainf_ckSharp.Uwp.Views
         private void CodeEditor_OnBreakpointRemoved(Brainf_ckIde sender, BreakpointToggleEventArgs args)
         {
             Ioc.Default.GetRequiredService<IAnalyticsService>().Log(
-                Shared.Constants.Events.BreakpointRemoved,
+                EventNames.BreakpointRemoved,
                 (nameof(BreakpointToggleEventArgs.Row), args.Row.ToString()),
                 (nameof(BreakpointToggleEventArgs.Count), args.Count.ToString()));
         }
@@ -220,7 +220,7 @@ namespace Brainf_ckSharp.Uwp.Views
         /// <param name="args">The number of removed breakpoints</param>
         private void CodeEditor_OnBreakpointsCleared(Brainf_ckIde sender, int args)
         {
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Events.BreakpointsCleared, (nameof(ItemCollection.Count), args.ToString()));
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(EventNames.BreakpointsCleared, (nameof(ItemCollection.Count), args.ToString()));
         }
     }
 }

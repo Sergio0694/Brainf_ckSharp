@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
-using Brainf_ckSharp.Shared;
+using Brainf_ckSharp.Shared.Constants;
 using Microsoft.Toolkit.Uwp.Extensions;
 
 namespace Brainf_ckSharp.Uwp.Converters.Ide

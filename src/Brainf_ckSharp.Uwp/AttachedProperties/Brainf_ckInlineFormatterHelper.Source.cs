@@ -3,7 +3,7 @@ using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Brainf_ckSharp.Services;
-using Brainf_ckSharp.Shared;
+using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Uwp.Extensions.System;
 using Brainf_ckSharp.Uwp.Extensions.System.Collections.Generic;

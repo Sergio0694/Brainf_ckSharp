@@ -4,7 +4,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 using Brainf_ckSharp.Services;
-using Brainf_ckSharp.Shared;
+using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.Models.Ide.Views;

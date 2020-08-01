@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)CodeSnippets.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeveloperInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SettingsKeys.cs" />
   </ItemGroup>
 </Project>

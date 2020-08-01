@@ -4,6 +4,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Constants;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
@@ -59,7 +60,7 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates
         {
             _ = Launcher.LaunchUriAsync(new Uri(NavigationUrl ?? throw new InvalidOperationException("No valid uri available")));
 
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Events.PayPalDonationOpened);
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(EventNames.PayPalDonationOpened);
         }
     }
 }

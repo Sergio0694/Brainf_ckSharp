@@ -7,7 +7,7 @@
     xmlns:ide="using:Brainf_ckSharp.Uwp.Controls.Ide"
     xmlns:views="using:Brainf_ckSharp.Shared.ViewModels.Views"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
-    xmlns:constants="using:Brainf_ckSharp.Shared"
+    xmlns:constants="using:Brainf_ckSharp.Shared.Constants"
     xmlns:convertersIde="using:Brainf_ckSharp.Uwp.Converters.Ide"
     xmlns:convertersConsole="using:Brainf_ckSharp.Uwp.Converters.Console"
     mc:Ignorable="d"

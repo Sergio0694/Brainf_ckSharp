@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Mvvm.Messaging.Messages;
+﻿using Brainf_ckSharp.Shared.Constants;
+using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
 namespace Brainf_ckSharp.Shared.Messages.Settings
 {

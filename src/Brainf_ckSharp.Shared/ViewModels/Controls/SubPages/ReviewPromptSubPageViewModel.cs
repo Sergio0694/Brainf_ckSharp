@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Constants;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
@@ -65,7 +66,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 
             string body = builder.ToString();
 
-            return EmailService.TryComposeEmailAsync(Constants.FeedbackEmail, "Brainf*ck# feedback", body);
+            return EmailService.TryComposeEmailAsync(DeveloperInfo.FeedbackEmail, "Brainf*ck# feedback", body);
         }
     }
 }

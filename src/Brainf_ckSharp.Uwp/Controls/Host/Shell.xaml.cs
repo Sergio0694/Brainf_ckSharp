@@ -4,6 +4,7 @@ using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.Settings;
@@ -109,7 +110,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         {
             if (((Pivot)sender).SelectedIndex == 1)
             {
-                Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Events.CompactMemoryViewerOpened);
+                Ioc.Default.GetRequiredService<IAnalyticsService>().Log(EventNames.CompactMemoryViewerOpened);
             }
         }
     }

@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Services.Enums;
+using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.Extensions.Microsoft.Toolkit.Collections;
@@ -101,7 +102,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             {
                 if (SetProperty<IdeTheme, IdeThemeSettingChangedMessage>(ref _IdeTheme, value))
                 {
-                    AnalyticsService.Log(Constants.Events.ThemeChanged, (nameof(Enums.Settings.IdeTheme), value.ToString()));
+                    AnalyticsService.Log(EventNames.ThemeChanged, (nameof(Enums.Settings.IdeTheme), value.ToString()));
                 }
             }
         }
@@ -201,7 +202,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         {
             if (!IsThemeSelectorAvailable)
             {
-                const string id = Constants.Store.StoreIds.IAPs.UnlockThemes;
+                const string id = DeveloperInfo.Store.StoreIds.IAPs.UnlockThemes;
 
                 IsThemeSelectorAvailable = await StoreService.IsProductPurchasedAsync(id);
             }
@@ -212,14 +213,14 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// </summary>
         private async Task TryUnlockThemesSelectorAsync()
         {
-            const string id = Constants.Store.StoreIds.IAPs.UnlockThemes;
+            const string id = DeveloperInfo.Store.StoreIds.IAPs.UnlockThemes;
 
             var result = await StoreService.TryPurchaseProductAsync(id);
 
             IsThemeSelectorAvailable = result == StorePurchaseResult.Success ||
                                        result == StorePurchaseResult.AlreadyPurchased;
 
-            AnalyticsService.Log(Constants.Events.ThemesUnlockRequest, (nameof(StorePurchaseResult), result.ToString()));
+            AnalyticsService.Log(EventNames.ThemesUnlockRequest, (nameof(StorePurchaseResult), result.ToString()));
         }
 
         /// <summary>

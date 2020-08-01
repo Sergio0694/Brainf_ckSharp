@@ -2,6 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Constants;
 using GitHub.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
@@ -38,7 +39,7 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates
             {
                 _ = Launcher.LaunchUriAsync(new Uri(ViewModel!.ProfilePageUrl, UriKind.Absolute));
 
-                Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Events.GitHubProfileOpened);
+                Ioc.Default.GetRequiredService<IAnalyticsService>().Log(EventNames.GitHubProfileOpened);
             }
         }
     }

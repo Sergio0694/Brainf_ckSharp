@@ -1,5 +1,6 @@
 ﻿using System;
 using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.Messages.Console.Commands;
 using Brainf_ckSharp.Shared.Messages.Ide;
@@ -89,7 +90,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void RunConsoleScript()
         {
-            AnalyticsService.Log(Constants.Events.ConsoleRun);
+            AnalyticsService.Log(EventNames.ConsoleRun);
 
             Messenger.Send<RunCommandRequestMessage>();
         }
@@ -109,7 +110,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void ClearConsoleScreen()
         {
-            AnalyticsService.Log(Constants.Events.ClearScreen);
+            AnalyticsService.Log(EventNames.ClearScreen);
 
             Messenger.Send<ClearConsoleScreenRequestMessage>();
         }
@@ -119,7 +120,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void RepeatLastConsoleScript()
         {
-            AnalyticsService.Log(Constants.Events.RepeatLastScript);
+            AnalyticsService.Log(EventNames.RepeatLastScript);
 
             Messenger.Send<RepeatCommandRequestMessage>();
         }
@@ -129,7 +130,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void RestartConsole()
         {
-            AnalyticsService.Log(Constants.Events.Restart);
+            AnalyticsService.Log(EventNames.Restart);
 
             Messenger.Send<RestartConsoleRequestMessage>();
         }
@@ -139,7 +140,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void RunIdeScript()
         {
-            AnalyticsService.Log(Constants.Events.IdeRun);
+            AnalyticsService.Log(EventNames.IdeRun);
 
             Messenger.Send<RunIdeScriptRequestMessage>();
         }
@@ -149,7 +150,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void DebugIdeScript()
         {
-            AnalyticsService.Log(Constants.Events.IdeDebug);
+            AnalyticsService.Log(EventNames.IdeDebug);
 
             Messenger.Send<DebugIdeScriptRequestMessage>();
         }
@@ -159,7 +160,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void NewIdeFile()
         {
-            AnalyticsService.Log(Constants.Events.NewFile);
+            AnalyticsService.Log(EventNames.NewFile);
 
             Messenger.Send<NewFileRequestMessage>();
         }
@@ -179,7 +180,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void OpenFile()
         {
-            AnalyticsService.Log(Constants.Events.OpenFile);
+            AnalyticsService.Log(EventNames.OpenFile);
 
             Messenger.Send(new PickOpenFileRequestMessage(false));
         }
@@ -189,7 +190,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void SaveFile()
         {
-            AnalyticsService.Log(Constants.Events.Save);
+            AnalyticsService.Log(EventNames.Save);
 
             Messenger.Send<SaveFileRequestMessage>();
         }
@@ -199,7 +200,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void SaveFileAs()
         {
-            AnalyticsService.Log(Constants.Events.SaveAs);
+            AnalyticsService.Log(EventNames.SaveAs);
 
             Messenger.Send<SaveFileAsRequestMessage>();
         }
@@ -209,7 +210,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void RequestUnicodeMap()
         {
-            AnalyticsService.Log(Constants.Events.UnicodeCharactersMapOpened);
+            AnalyticsService.Log(EventNames.UnicodeCharactersMapOpened);
 
             UnicodeMapRequested?.Invoke(this, EventArgs.Empty);
         }
@@ -219,7 +220,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void RequestAboutInfo()
         {
-            AnalyticsService.Log(Constants.Events.AboutPageOpened);
+            AnalyticsService.Log(EventNames.AboutPageOpened);
 
             AboutInfoRequested?.Invoke(this, EventArgs.Empty);
         }
@@ -229,7 +230,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void RequestUserGuide()
         {
-            AnalyticsService.Log(Constants.Events.UserGuideOpened);
+            AnalyticsService.Log(EventNames.UserGuideOpened);
 
             UserGuideRequested?.Invoke(this, EventArgs.Empty);
         }
@@ -239,7 +240,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void RequestSettings()
         {
-            AnalyticsService.Log(Constants.Events.SettingsOpened);
+            AnalyticsService.Log(EventNames.SettingsOpened);
 
             SettingsRequested?.Invoke(this, EventArgs.Empty);
         }
@@ -249,7 +250,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public void RequestCodeLibrary()
         {
-            AnalyticsService.Log(Constants.Events.OpenCodeLibrary);
+            AnalyticsService.Log(EventNames.OpenCodeLibrary);
 
             CodeLibraryRequested?.Invoke(this, EventArgs.Empty);
         }

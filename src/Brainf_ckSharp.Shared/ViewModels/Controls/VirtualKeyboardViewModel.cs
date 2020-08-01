@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Messages.Settings;
 using Microsoft.Extensions.DependencyInjection;

@@ -22,7 +22,7 @@ using Brainf_ckSharp.Uwp.Services.Share;
 using GitHub;
 using Brainf_ckSharp.Services.Uwp.Store;
 using Brainf_ckSharp.Services.Uwp.SystemInformation;
-using Brainf_ckSharp.Shared;
+using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Uwp.Helpers;
@@ -83,7 +83,7 @@ namespace Brainf_ckSharp.Uwp
 
             OnActivated(false);
 
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(Shared.Constants.Events.OnFileActivated);
+            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(EventNames.OnFileActivated);
 
             base.OnFileActivated(args);
         }
@@ -125,7 +125,7 @@ namespace Brainf_ckSharp.Uwp
             OnActivated(false);
 
             Ioc.Default.GetRequiredService<IAnalyticsService>().Log(
-                Shared.Constants.Events.OnActivated,
+                EventNames.OnActivated,
                 (nameof(Uri.LocalPath), uri?.LocalPath ?? "<NULL>"));
 
             base.OnActivated(args);

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Brainf_ckSharp.Shared.Constants;
 using GitHub.APIs;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
@@ -76,8 +77,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 
             try
             {
-                Developers = new[] { await GitHubService.GetUserAsync(Constants.GitHubUsername) };
-                FeaturedLinks = new[] { Constants.PayPalMeUrl };
+                Developers = new[] { await GitHubService.GetUserAsync(DeveloperInfo.GitHubUsername) };
+                FeaturedLinks = new[] { DeveloperInfo.PayPalMeUrl };
             }
             catch
             {

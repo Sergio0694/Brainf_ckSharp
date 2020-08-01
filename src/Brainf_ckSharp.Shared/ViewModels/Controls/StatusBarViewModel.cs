@@ -5,6 +5,7 @@ using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.ViewModels.Views;
 using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;

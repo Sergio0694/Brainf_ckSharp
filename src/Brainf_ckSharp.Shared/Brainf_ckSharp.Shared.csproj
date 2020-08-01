@@ -24,6 +24,4 @@
     <ProjectReference Include="..\GitHub\GitHub.csproj" />
   </ItemGroup>
 
-  <Import Project="..\Brainf_ckSharp.Shared.Constants\Brainf_ckSharp.Shared.Constants.projitems" Label="Shared" />
-
 </Project>

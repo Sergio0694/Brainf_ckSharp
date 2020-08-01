@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Extensions.Microsoft.Toolkit.Collections;
 using Brainf_ckSharp.Shared.Messages.InputPanel;

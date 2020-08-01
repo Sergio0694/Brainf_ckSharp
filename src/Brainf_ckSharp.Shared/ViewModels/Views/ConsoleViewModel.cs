@@ -9,6 +9,7 @@ using Brainf_ckSharp.Memory.Tools;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.Console.Commands;
 using Brainf_ckSharp.Shared.Messages.Console.MemoryState;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
