@@ -196,8 +196,9 @@
                     <!--Image-->
                     <controls:ImageEx
                         Height="56" Width="56"
-                        VerticalAlignment="Center" HorizontalAlignment="Center"
-                        IsCacheEnabled="True"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        IsCacheEnabled="False"
                         Source="{x:Bind ViewModel.ProfileImageUrl}"
                         Stretch="UniformToFill"
                         ImageExOpened="ImageExBase_OnImageExOpened"
