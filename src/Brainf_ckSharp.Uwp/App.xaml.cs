@@ -184,6 +184,10 @@ namespace Brainf_ckSharp.Uwp
             // Default services
             Ioc.Default.ConfigureServices(services =>
             {
+                // Platform specific options
+                services.AddOptions<AppConfiguration>().Configure(options => options.UnlockThemesIapId = "9P4Q63CCFPBM");
+
+                // Services
                 services.AddSingleton<IFilesService, FilesService>();
                 services.AddSingleton<IFilesManagerService>(this);
                 services.AddSingleton<IFilesHistoryService, TimelineService>();

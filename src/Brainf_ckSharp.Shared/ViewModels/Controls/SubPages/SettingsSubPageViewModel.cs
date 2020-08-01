@@ -12,7 +12,9 @@ using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.Extensions.Microsoft.Toolkit.Collections;
 using Brainf_ckSharp.Shared.Messages.Settings;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.Toolkit.Collections;
+using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
@@ -39,6 +41,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// The <see cref="ISettingsService"/> instance currently in use
         /// </summary>
         private readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+
+        /// <summary>
+        /// The <see cref="AppConfiguration"/> instance currently in use
+        /// </summary>
+        private readonly AppConfiguration Configuration = Ioc.Default.GetRequiredService<IOptions<AppConfiguration>>().Value;
 
         /// <summary>
         /// Creates a new <see cref="SettingsSubPageViewModel"/> instance
@@ -202,9 +209,9 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         {
             if (!IsThemeSelectorAvailable)
             {
-                const string id = DeveloperInfo.Store.StoreIds.IAPs.UnlockThemes;
+                Guard.IsNotNull(Configuration.UnlockThemesIapId, nameof(AppConfiguration.UnlockThemesIapId));
 
-                IsThemeSelectorAvailable = await StoreService.IsProductPurchasedAsync(id);
+                IsThemeSelectorAvailable = await StoreService.IsProductPurchasedAsync(Configuration.UnlockThemesIapId);
             }
         }
 
@@ -213,9 +220,9 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// </summary>
         private async Task TryUnlockThemesSelectorAsync()
         {
-            const string id = DeveloperInfo.Store.StoreIds.IAPs.UnlockThemes;
+            Guard.IsNotNull(Configuration.UnlockThemesIapId, nameof(AppConfiguration.UnlockThemesIapId));
 
-            var result = await StoreService.TryPurchaseProductAsync(id);
+            var result = await StoreService.TryPurchaseProductAsync(Configuration.UnlockThemesIapId);
 
             IsThemeSelectorAvailable = result == StorePurchaseResult.Success ||
                                        result == StorePurchaseResult.AlreadyPurchased;

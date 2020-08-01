@@ -19,28 +19,5 @@
         /// The URL to make donations on PayPal
         /// </summary>
         public const string PayPalMeUrl = "https://www.paypal.me/sergiopedri";
-
-        /// <summary>
-        /// A <see langword="class"/> with Store-related constants (eg. for IAPs)
-        /// </summary>
-        public static class Store
-        {
-            /// <summary>
-            /// A <see langword="class"/> with data about the Store Ids for the available IAP
-            /// </summary>
-            public static class StoreIds
-            {
-                /// <summary>
-                /// A <see langword="class"/> with data about the available IAPs for the app
-                /// </summary>
-                public static class IAPs
-                {
-                    /// <summary>
-                    /// The Store Id of the IAP to unlock the themes
-                    /// </summary>
-                    public const string UnlockThemes = "9P4Q63CCFPBM";
-                }
-            }
-        }
     }
 }
