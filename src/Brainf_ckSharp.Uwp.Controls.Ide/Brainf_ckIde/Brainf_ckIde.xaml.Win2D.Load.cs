@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Windows.Foundation;
 using Windows.UI.Text;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Git;
+using Brainf_ckSharp.Git.Buffers;
 using Brainf_ckSharp.Git.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 using Brainf_ckSharp.Uwp.Controls.Ide.Models;
@@ -85,9 +85,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             ref IndentationIndicatorBase? indicatorsRef = ref indicators.DangerousGetReference(); // There's always at least one line
 
             // Reset the pools
-            Pool<LineIndicator>.Reset();
-            Pool<BlockIndicator>.Reset();
-            Pool<FunctionIndicator>.Reset();
+            Pool<LineIndicator>.Shared.Reset();
+            Pool<BlockIndicator>.Shared.Reset();
+            Pool<FunctionIndicator>.Shared.Reset();
 
             // Prepare the input text
             ReadOnlySpan<char> span = text.AsSpan();
@@ -167,7 +167,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                             }
                             else type = IndentationType.Open;
 
-                            FunctionIndicator indicator = Pool<FunctionIndicator>.Rent();
+                            FunctionIndicator indicator = Pool<FunctionIndicator>.Shared.Rent();
                             indicator.Type = type;
 
                             Unsafe.Add(ref indicatorsRef, y) = indicator;
@@ -182,7 +182,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                             }
                             else type = IndentationType.Open;
 
-                            BlockIndicator indicator = Pool<BlockIndicator>.Rent();
+                            BlockIndicator indicator = Pool<BlockIndicator>.Shared.Rent();
                             indicator.Type = type;
                             indicator.Depth = maxRootDepth;
                             indicator.IsWithinFunction = false;
@@ -200,7 +200,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                             }
                             else type = IndentationType.Open;
 
-                            BlockIndicator indicator = Pool<BlockIndicator>.Rent();
+                            BlockIndicator indicator = Pool<BlockIndicator>.Shared.Rent();
                             indicator.Type = type;
                             indicator.Depth = maxFunctionDepth;
                             indicator.IsWithinFunction = true;
@@ -219,7 +219,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                             if (isWithinFunction || endRootDepth > 0) type = IndentationType.SelfContainedAndContinuing;
                             else type = IndentationType.SelfContained;
 
-                            LineIndicator indicator = Pool<LineIndicator>.Rent();
+                            LineIndicator indicator = Pool<LineIndicator>.Shared.Rent();
                             indicator.Type = type;
 
                             Unsafe.Add(ref indicatorsRef, y) = indicator;
@@ -227,7 +227,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                         else if (isWithinFunction || endRootDepth > 0)
                         {
                             // Active indentation level with no changes
-                            LineIndicator indicator = Pool<LineIndicator>.Rent();
+                            LineIndicator indicator = Pool<LineIndicator>.Shared.Rent();
                             indicator.Type = IndentationType.Open;
 
                             Unsafe.Add(ref indicatorsRef, y) = indicator;

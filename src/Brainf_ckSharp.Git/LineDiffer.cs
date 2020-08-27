@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Buffers;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using Brainf_ckSharp.Git.Buffers;
 using Brainf_ckSharp.Git.Enums;
 using Brainf_ckSharp.Git.Models;
 using Microsoft.Collections.Extensions;
@@ -77,7 +77,7 @@ namespace Brainf_ckSharp.Git
             DictionarySlim<int, DiffEntry> table = LinesMap;
             table.Clear();
 
-            Pool<DiffEntry>.Reset();
+            Pool<DiffEntry>.Shared.Reset();
 
             // ==============
             // First pass
@@ -94,7 +94,7 @@ namespace Brainf_ckSharp.Git
 
                 if (entry is null)
                 {
-                    entry = Pool<DiffEntry>.Rent();
+                    entry = Pool<DiffEntry>.Shared.Rent();
                     entry.NumberOfOccurrencesInNewText = 1;
                     entry.NumberOfOccurrencesInOldText = 0;
                     entry.LineNumberInOldText = 0;
@@ -122,7 +122,7 @@ namespace Brainf_ckSharp.Git
 
                 if (entry is null)
                 {
-                    entry = Pool<DiffEntry>.Rent();
+                    entry = Pool<DiffEntry>.Shared.Rent();
                     entry.NumberOfOccurrencesInNewText = 0;
                     entry.NumberOfOccurrencesInOldText = 1;
                     entry.LineNumberInOldText = 0;
