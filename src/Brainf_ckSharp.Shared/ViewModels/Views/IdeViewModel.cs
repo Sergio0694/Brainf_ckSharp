@@ -287,7 +287,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                     temporaryPath = FilesService.TemporaryFilesPath,
                     statePath = Path.Combine(temporaryPath, "state.json");
 
-                if (!(await FilesService.GetFileFromPathAsync(statePath) is IFile jsonFile))
+                if (!(await FilesService.TryGetFileFromPathAsync(statePath) is IFile jsonFile))
                     return;
 
                 using Stream stream = await jsonFile.OpenStreamForReadAsync();
