@@ -1,8 +1,10 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.Settings
@@ -15,7 +17,13 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.Settings
         public SettingsSubPage()
         {
             this.InitializeComponent();
+            this.DataContext = App.Current.Services.GetRequiredService<SettingsSubPageViewModel>();
         }
+
+        /// <summary>
+        /// Gets the <see cref="SettingsSubPageViewModel"/> instance currently in use
+        /// </summary>
+        public SettingsSubPageViewModel ViewModel => (SettingsSubPageViewModel)DataContext;
 
         /// <inheritdoc/>
         public double MaxExpandedWidth { get; } = 520;

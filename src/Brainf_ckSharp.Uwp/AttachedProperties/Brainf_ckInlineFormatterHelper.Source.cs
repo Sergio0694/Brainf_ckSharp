@@ -9,7 +9,6 @@ using Brainf_ckSharp.Uwp.Extensions.System;
 using Brainf_ckSharp.Uwp.Extensions.System.Collections.Generic;
 using Brainf_ckSharp.Uwp.Themes;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
 namespace Brainf_ckSharp.Uwp.AttachedProperties
 {
@@ -21,7 +20,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
         /// </summary>
-        private static readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+        private static readonly ISettingsService SettingsService = App.Current.Services.GetRequiredService<ISettingsService>();
 
         /// <summary>
         /// Gets the zero width space character

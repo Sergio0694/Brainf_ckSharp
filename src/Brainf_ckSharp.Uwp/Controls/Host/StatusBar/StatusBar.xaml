@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Brainf_ckSharp.Shared.ViewModels.Controls"
     xmlns:viewModels="using:Brainf_ckSharp.Shared.ViewModels.Views"
     xmlns:system="using:System"
     xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
@@ -13,9 +12,6 @@
     mc:Ignorable="d"
     d:DesignHeight="48"
     d:DesignWidth="400">
-    <UserControl.DataContext>
-        <controls:StatusBarViewModel x:Name="ViewModel"/>
-    </UserControl.DataContext>
     <UserControl.Resources>
 
         <!--Console/Ide converter-->

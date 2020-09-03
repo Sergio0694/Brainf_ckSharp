@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Services;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
@@ -17,7 +15,16 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections.A
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
         /// </summary>
-        protected readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+        protected readonly ISettingsService SettingsService;
+
+        /// <summary>
+        /// Creates a new <see cref="SettingsSubPageViewModel"/> instance
+        /// </summary>
+        /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
+        protected SettingsSectionViewModelBase(ISettingsService settingsService)
+        {
+            SettingsService = settingsService;
+        }
 
         /// <summary>
         /// A proxy for <see cref="ObservableObject.SetProperty{T}(ref T, T, string)"/> that

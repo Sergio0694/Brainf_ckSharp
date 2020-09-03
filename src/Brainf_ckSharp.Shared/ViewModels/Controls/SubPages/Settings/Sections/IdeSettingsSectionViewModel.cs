@@ -6,10 +6,8 @@ using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.Messages.Settings;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections.Abstract;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Toolkit.Diagnostics;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections
@@ -19,23 +17,32 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections
         /// <summary>
         /// The <see cref="IAnalyticsService"/> instance currently in use
         /// </summary>
-        private readonly IAnalyticsService AnalyticsService = Ioc.Default.GetRequiredService<IAnalyticsService>();
+        private readonly IAnalyticsService AnalyticsService;
 
         /// <summary>
         /// The <see cref="IStoreService"/> instance currently in use
         /// </summary>
-        private readonly IStoreService StoreService = Ioc.Default.GetRequiredService<IStoreService>();
+        private readonly IStoreService StoreService;
 
         /// <summary>
         /// The <see cref="AppConfiguration"/> instance currently in use
         /// </summary>
-        private readonly AppConfiguration Configuration = Ioc.Default.GetRequiredService<IOptions<AppConfiguration>>().Value;
+        private readonly AppConfiguration Configuration;
 
         /// <summary>
         /// Creates a new <see cref="IdeSettingsSectionViewModel"/> instance
         /// </summary>
-        public IdeSettingsSectionViewModel()
+        /// <param name="analyticsService">The <see cref="IAnalyticsService"/> instance to use</param>
+        /// <param name="storeService">The <see cref="IStoreService"/> instance to use</param>
+        /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
+        /// <param name="configuration">The <see cref="IOptions{T}"/> instance to use</param>
+        public IdeSettingsSectionViewModel(IAnalyticsService analyticsService, IStoreService storeService, ISettingsService settingsService, IOptions<AppConfiguration> configuration)
+            : base(settingsService)
         {
+            AnalyticsService = analyticsService;
+            StoreService = storeService;
+            Configuration = configuration.Value;
+
             _AutoindentBrackets = SettingsService.GetValue<bool>(SettingsKeys.AutoindentBrackets);
             _IdeTheme = SettingsService.GetValue<IdeTheme>(SettingsKeys.IdeTheme);
             _BracketsFormattingStyle = SettingsService.GetValue<BracketsFormattingStyle>(SettingsKeys.BracketsFormattingStyle);

@@ -1,9 +1,7 @@
 ﻿using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls
@@ -13,13 +11,16 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
         /// </summary>
-        private readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+        private readonly ISettingsService SettingsService;
 
         /// <summary>
         /// Creates a new <see cref="StdinHeaderViewModel"/> instance
         /// </summary>
-        public StdinHeaderViewModel()
+        /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
+        public StdinHeaderViewModel(ISettingsService settingsService)
         {
+            SettingsService = settingsService;
+
             Messenger.Register<StdinRequestMessage>(this, ExtractStdinBuffer);
         }
 

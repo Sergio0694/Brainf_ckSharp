@@ -1,4 +1,5 @@
-﻿using Brainf_ckSharp.Shared.Constants;
+﻿using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.Settings;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections.Abstract;
 
@@ -9,7 +10,8 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections
         /// <summary>
         /// Creates a new <see cref="UISettingsSectionViewModel"/> instance
         /// </summary>
-        public UISettingsSectionViewModel()
+        /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
+        public UISettingsSectionViewModel(ISettingsService settingsService) : base(settingsService)
         {
             _ClearStdinBufferOnRequest = SettingsService.GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest);
             _ShowPBrainButtons = SettingsService.GetValue<bool>(SettingsKeys.ShowPBrainButtons);

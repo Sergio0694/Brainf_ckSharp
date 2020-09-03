@@ -1,7 +1,9 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell
@@ -11,7 +13,13 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell
         public ReviewPromptSubPage()
         {
             this.InitializeComponent();
+            this.DataContext = App.Current.Services.GetRequiredService<ReviewPromptSubPageViewModel>();
         }
+
+        /// <summary>
+        /// Gets the <see cref="ReviewPromptSubPageViewModel"/> instance currently in use
+        /// </summary>
+        public ReviewPromptSubPageViewModel ViewModel => (ReviewPromptSubPageViewModel)DataContext;
 
         /// <inheritdoc/>
         public double MaxExpandedWidth { get; } = 400;

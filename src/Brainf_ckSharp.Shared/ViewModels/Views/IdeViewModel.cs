@@ -9,8 +9,6 @@ using Brainf_ckSharp.Shared.Messages.Ide;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Models.Ide;
 using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Views
@@ -23,28 +21,37 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <summary>
         /// The <see cref="IAnalyticsService"/> instance currently in use
         /// </summary>
-        private readonly IAnalyticsService AnalyticsService = Ioc.Default.GetRequiredService<IAnalyticsService>();
+        private readonly IAnalyticsService AnalyticsService;
 
         /// <summary>
         /// The <see cref="IFilesService"/> instance currently in use
         /// </summary>
-        private readonly IFilesService FilesService = Ioc.Default.GetRequiredService<IFilesService>();
+        private readonly IFilesService FilesService;
 
         /// <summary>
         /// The <see cref="IFilesManagerService"/> instance currently in use
         /// </summary>
-        private readonly IFilesManagerService FilesManagerService = Ioc.Default.GetRequiredService<IFilesManagerService>();
+        private readonly IFilesManagerService FilesManagerService;
 
         /// <summary>
         /// The <see cref="IFilesHistoryService"/> instance currently in use
         /// </summary>
-        private readonly IFilesHistoryService FilesHistoryService = Ioc.Default.GetRequiredService<IFilesHistoryService>();
+        private readonly IFilesHistoryService FilesHistoryService;
 
         /// <summary>
         /// Creates a new <see cref="IdeViewModel"/> instance
         /// </summary>
-        public IdeViewModel()
+        /// <param name="analyticsService">The <see cref="IAnalyticsService"/> instance to use</param>
+        /// <param name="filesService">The <see cref="IFilesService"/> instance to use</param>
+        /// <param name="filesManagerService">The <see cref="IFilesManagerService"/> instance to use</param>
+        /// <param name="filesHistoryService">The <see cref="IFilesHistoryService"/> instance to use</param>
+        public IdeViewModel(IAnalyticsService analyticsService, IFilesService filesService, IFilesManagerService filesManagerService, IFilesHistoryService filesHistoryService)
         {
+            AnalyticsService = analyticsService;
+            FilesService = filesService;
+            FilesManagerService = filesManagerService;
+            FilesHistoryService = filesHistoryService;
+
             Messenger.Register<RunIdeScriptRequestMessage>(this, _ => ScriptRunRequested?.Invoke(this, EventArgs.Empty));
             Messenger.Register<DebugIdeScriptRequestMessage>(this, _ => ScriptDebugRequested?.Invoke(this, EventArgs.Empty));
             Messenger.Register<InsertNewLineRequestMessage>(this, _ => CharacterAdded?.Invoke(this, Characters.CarriageReturn));

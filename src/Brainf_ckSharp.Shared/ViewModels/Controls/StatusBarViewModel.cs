@@ -9,9 +9,7 @@ using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.ViewModels.Views;
 using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
@@ -22,7 +20,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
         /// </summary>
-        private readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+        private readonly ISettingsService SettingsService;
 
         /// <summary>
         /// The <see cref="SynchronizationContext"/> in use when <see cref="StatusBarViewModel"/> is instantiated
@@ -62,8 +60,10 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         /// <summary>
         /// Creates a new <see cref="StatusBarViewModel"/> instance
         /// </summary>
-        public StatusBarViewModel()
+        /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
+        public StatusBarViewModel(ISettingsService settingsService)
         {
+            SettingsService = settingsService;
             Context = SynchronizationContext.Current;
             Timer = new Timer(_ => RunBackgroundCode(), null, default, TimeSpan.FromSeconds(2));
 

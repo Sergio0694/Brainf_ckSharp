@@ -20,14 +20,10 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:controls="using:Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls"
-    xmlns:settings="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings"
     xmlns:sections="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
-    <UserControl.DataContext>
-        <settings:SettingsSubPageViewModel x:Name="ViewModel"/>
-    </UserControl.DataContext>
     <UserControl.Resources>
 
         <!--Converters-->

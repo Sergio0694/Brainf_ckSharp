@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using Windows.ApplicationModel.Activation;
@@ -24,9 +25,13 @@ using Brainf_ckSharp.Services.Uwp.Store;
 using Brainf_ckSharp.Services.Uwp.SystemInformation;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.Ide;
+using Brainf_ckSharp.Shared.ViewModels;
+using Brainf_ckSharp.Shared.ViewModels.Controls;
+using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
+using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings;
+using Brainf_ckSharp.Shared.ViewModels.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Uwp.Helpers;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
 #nullable enable
@@ -83,7 +88,7 @@ namespace Brainf_ckSharp.Uwp
 
             OnActivated(false);
 
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(EventNames.OnFileActivated);
+            Services.GetRequiredService<IAnalyticsService>().Log(EventNames.OnFileActivated);
 
             base.OnFileActivated(args);
         }
@@ -124,7 +129,7 @@ namespace Brainf_ckSharp.Uwp
 
             OnActivated(false);
 
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(
+            Services.GetRequiredService<IAnalyticsService>().Log(
                 EventNames.OnActivated,
                 (nameof(Uri.LocalPath), uri?.LocalPath ?? "<NULL>"));
 
@@ -140,7 +145,7 @@ namespace Brainf_ckSharp.Uwp
             // Initialize the UI if needed
             if (!(Window.Current.Content is Shell))
             {
-                ConfigureServices();
+                InitializeServices();
 
                 // Initial UI styling
                 TitleBarHelper.ExpandViewIntoTitleBar();
@@ -177,42 +182,62 @@ namespace Brainf_ckSharp.Uwp
         }
 
         /// <summary>
+        /// Configures the services to use in the app
+        /// </summary>
+        /// <returns>An <see cref="IServiceProvider"/> instance with the app services.</returns>
+        [Pure]
+        private IServiceProvider ConfigureServices()
+        {
+            var services = new ServiceCollection();
+
+            // Platform specific options
+            services.AddOptions<AppConfiguration>().Configure(options => options.UnlockThemesIapId = "9P4Q63CCFPBM");
+
+            // Services
+            services.AddSingleton<IFilesService, FilesService>();
+            services.AddSingleton<IFilesManagerService>(this);
+            services.AddSingleton<IFilesHistoryService, TimelineService>();
+            services.AddSingleton<ISettingsService, SettingsService>();
+            services.AddSingleton<IKeyboardListenerService, KeyboardListenerService>();
+            services.AddSingleton<IClipboardService, ClipboardService>();
+            services.AddSingleton<IShareService, ShareService>();
+            services.AddSingleton<IEmailService, EmailService>();
+            services.AddSingleton<ISystemInformationService, SystemInformationService>();
+            services.AddSingleton(_ => GitHubRestFactory.GetGitHubService("Brainf_ckSharp|Uwp"));
+#if DEBUG
+            services.AddSingleton<IStoreService, TestStoreService>();
+            services.AddSingleton<IAnalyticsService, TestAnalyticsService>();
+#else
+            services.AddSingleton<IStoreService, ProductionStoreService>();
+            services.AddSingleton<IAnalyticsService, AppCenterService>();
+#endif
+            // Viewmodels
+            services.AddTransient<VirtualKeyboardViewModel>();
+            services.AddTransient<StdinHeaderViewModel>();
+            services.AddTransient<StatusBarViewModel>();
+            services.AddTransient<ShellViewModel>();
+            services.AddTransient<SettingsSubPageViewModel>();
+            services.AddTransient<ReviewPromptSubPageViewModel>();
+            services.AddTransient<IdeViewModel>();
+            services.AddTransient<IdeResultSubPageViewModel>();
+            services.AddTransient<ConsoleViewModel>();
+            services.AddTransient<CodeLibrarySubPageViewModel>();
+            services.AddTransient<AboutSubPageViewModel>();
+
+            return services.BuildServiceProvider();
+        }
+
+        /// <summary>
         /// Performs additional settings configuration and other startup initialization
         /// </summary>
-        private void ConfigureServices()
+        private void InitializeServices()
         {
-            // Default services
-            Ioc.Default.ConfigureServices(services =>
-            {
-                // Platform specific options
-                services.AddOptions<AppConfiguration>().Configure(options => options.UnlockThemesIapId = "9P4Q63CCFPBM");
-
-                // Services
-                services.AddSingleton<IFilesService, FilesService>();
-                services.AddSingleton<IFilesManagerService>(this);
-                services.AddSingleton<IFilesHistoryService, TimelineService>();
-                services.AddSingleton<ISettingsService, SettingsService>();
-                services.AddSingleton<IKeyboardListenerService, KeyboardListenerService>();
-                services.AddSingleton<IClipboardService, ClipboardService>();
-                services.AddSingleton<IShareService, ShareService>();
-                services.AddSingleton<IEmailService, EmailService>();
-                services.AddSingleton<ISystemInformationService, SystemInformationService>();
-                services.AddSingleton(_ => GitHubRestFactory.GetGitHubService("Brainf_ckSharp|Uwp"));
-#if DEBUG
-                services.AddSingleton<IStoreService, TestStoreService>();
-                services.AddSingleton<IAnalyticsService, TestAnalyticsService>();
-#else
-                services.AddSingleton<IStoreService, ProductionStoreService>();
-                services.AddSingleton<IAnalyticsService, AppCenterService>();
-#endif
-            });
-
             // Initialize the analytics service
             string appCenterSecret = Assembly.GetExecutingAssembly().GetManifestResourceString("Brainf_ckSharp.Uwp.Assets.ServiceTokens.AppCenter.txt");
 
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Initialize(appCenterSecret);
+            Services.GetRequiredService<IAnalyticsService>().Initialize(appCenterSecret);
 
-            ISettingsService settings = Ioc.Default.GetRequiredService<ISettingsService>();
+            ISettingsService settings = Services.GetRequiredService<ISettingsService>();
 
             // Initialize default settings
             settings.SetValue(SettingsKeys.IsVirtualKeyboardEnabled, true, false);

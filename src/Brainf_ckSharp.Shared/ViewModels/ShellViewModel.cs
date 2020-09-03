@@ -4,9 +4,7 @@ using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.Messages.Console.Commands;
 using Brainf_ckSharp.Shared.Messages.Ide;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels
@@ -19,12 +17,12 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
         /// </summary>
-        private static readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+        private readonly ISettingsService SettingsService;
 
         /// <summary>
         /// The <see cref="IAnalyticsService"/> instance currently in use
         /// </summary>
-        private readonly IAnalyticsService AnalyticsService = Ioc.Default.GetRequiredService<IAnalyticsService>();
+        private readonly IAnalyticsService AnalyticsService;
 
         /// <summary>
         /// Raised whenever the user guide is requested
@@ -51,7 +49,21 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// </summary>
         public event EventHandler? CodeLibraryRequested;
 
-        private ViewType _SelectedView = SettingsService.GetValue<ViewType>(SettingsKeys.SelectedView);
+        /// <summary>
+        /// Creates a new <see cref="ShellViewModel"/> instance
+        /// </summary>
+        /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
+        /// <param name="analyticsService">The <see cref="IAnalyticsService"/> instance to use</param>
+        public ShellViewModel(ISettingsService settingsService, IAnalyticsService analyticsService)
+        {
+            SettingsService = settingsService;
+            AnalyticsService = analyticsService;
+
+            _SelectedView = SettingsService.GetValue<ViewType>(SettingsKeys.SelectedView);
+            _IsVirtualKeyboardEnabled = SettingsService.GetValue<bool>(SettingsKeys.IsVirtualKeyboardEnabled);
+        }
+
+        private ViewType _SelectedView;
 
         /// <summary>
         /// Gets or sets the currently selected view
@@ -68,7 +80,7 @@ namespace Brainf_ckSharp.Shared.ViewModels
             }
         }
 
-        private bool _IsVirtualKeyboardEnabled = SettingsService.GetValue<bool>(SettingsKeys.IsVirtualKeyboardEnabled);
+        private bool _IsVirtualKeyboardEnabled;
 
         /// <summary>
         /// Gets or sets whether or not the virtual keyboard is currently enabled

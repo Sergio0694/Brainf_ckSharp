@@ -17,8 +17,6 @@ using Brainf_ckSharp.Shared.Messages.Settings;
 using Brainf_ckSharp.Shared.Models.Console;
 using Brainf_ckSharp.Shared.Models.Console.Interfaces;
 using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Nito.AsyncEx;
 
@@ -34,12 +32,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
         /// </summary>
-        private readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+        private readonly ISettingsService SettingsService;
 
         /// <summary>
         /// The <see cref="IKeyboardListenerService"/> instance currently in use
         /// </summary>
-        private readonly IKeyboardListenerService KeyboardListenerService = Ioc.Default.GetRequiredService<IKeyboardListenerService>();
+        private readonly IKeyboardListenerService KeyboardListenerService;
 
         /// <summary>
         /// An <see cref="AsyncLock"/> instance to synchronize accesses to the console results
@@ -49,8 +47,13 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <summary>
         /// Creates a new <see cref="ConsoleViewModel"/> instance with a new command ready to use
         /// </summary>
-        public ConsoleViewModel()
+        /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
+        /// <param name="keyboardListenerService">The <see cref="IKeyboardListenerService"/> instance to use</param>
+        public ConsoleViewModel(ISettingsService settingsService, IKeyboardListenerService keyboardListenerService)
         {
+            SettingsService = settingsService;
+            KeyboardListenerService = keyboardListenerService;
+
             // Initialize the machine state with the current user settings
             _MachineState = MachineStateProvider.Create(
                 SettingsService.GetValue<int>(SettingsKeys.MemorySize),
