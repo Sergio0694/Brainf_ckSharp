@@ -9,7 +9,6 @@
     xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
     xmlns:collections="using:Microsoft.Toolkit.Collections"
-    xmlns:subPages="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages"
     xmlns:markupExtensions="using:Brainf_ckSharp.Uwp.MarkupExtensions"
     xmlns:interpreterEnums="using:Brainf_ckSharp.Enums"
     xmlns:enums="using:Brainf_ckSharp.Shared.Enums"
@@ -21,17 +20,14 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:controls="using:Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls"
+    xmlns:settings="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings"
+    xmlns:sections="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.DataContext>
-        <subPages:SettingsSubPageViewModel x:Name="ViewModel"/>
+        <settings:SettingsSubPageViewModel x:Name="ViewModel"/>
     </UserControl.DataContext>
-    <interactivity:Interaction.Behaviors>
-        <core:EventTriggerBehavior EventName="Loaded">
-            <core:InvokeCommandAction Command="{x:Bind ViewModel.InitializeCommand}"/>
-        </core:EventTriggerBehavior>
-    </interactivity:Interaction.Behaviors>
     <UserControl.Resources>
 
         <!--Converters-->
@@ -40,8 +36,13 @@
         <!--IDE settings template-->
         <DataTemplate
             x:Name="IdeSettingsTemplate"
-            x:DataType="enums:SettingsSection">
+            x:DataType="sections:IdeSettingsSectionViewModel">
             <StackPanel Spacing="4">
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="Loaded">
+                        <core:InvokeCommandAction Command="{x:Bind InitializeCommand}"/>
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
 
                 <!--Theme-->
                 <TextBlock
@@ -57,13 +58,13 @@
                     <!--Selector-->
                     <controls:ComboBoxWithNoScrollWheelSupport
                         x:Name="ThemeSelectionComboBox"
-                        IsEnabled="{x:Bind ViewModel.IsThemeSelectorAvailable, Mode=OneWay}"
+                        IsEnabled="{x:Bind IsThemeSelectorAvailable, Mode=OneWay}"
                         CornerRadius="0"
                         Padding="2,0,0,0"
                         MinWidth="240"
                         MinHeight="112"
                         ItemsSource="{markupExtensions:EnumValues Type=enumsSettings:IdeTheme}"
-                        SelectedItem="{x:Bind ViewModel.IdeTheme, Mode=TwoWay}">
+                        SelectedItem="{x:Bind IdeTheme, Mode=TwoWay}">
                         <ComboBox.ItemContainerStyle>
                             <Style TargetType="ComboBoxItem">
                                 <Setter Property="Margin" Value="0,2,0,2"/>
@@ -89,7 +90,7 @@
                         Background="#C0000000">
                         <Button
                             Style="{StaticResource ExpandedSquareButtonRevealStyle}"
-                            Command="{x:Bind ViewModel.UnlockThemesSelectorCommand}">
+                            Command="{x:Bind UnlockThemesSelectorCommand}">
                             <StackPanel Spacing="8">
                                 <TextBlock
                                     HorizontalAlignment="Center"
@@ -126,7 +127,7 @@
                     Margin="0,4,0,0"
                     MinWidth="140"
                     ItemsSource="{markupExtensions:EnumValues Type=enumsSettings:BracketsFormattingStyle}"
-                    SelectedItem="{x:Bind ViewModel.BracketsFormattingStyle, Mode=TwoWay}">
+                    SelectedItem="{x:Bind BracketsFormattingStyle, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="enumsSettings:BracketsFormattingStyle">
                             <TextBlock Text="{x:Bind converters:EnumConverter.Convert((enumsSettings:BracketsFormattingStyle))}"/>
@@ -140,14 +141,14 @@
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Render whitespaces"/>
-                <ToggleSwitch IsOn="{x:Bind ViewModel.RenderWhitespaces, Mode=TwoWay}"/>
+                <ToggleSwitch IsOn="{x:Bind RenderWhitespaces, Mode=TwoWay}"/>
             </StackPanel>
         </DataTemplate>
 
         <!--UI settings template-->
         <DataTemplate
             x:Name="UISettingsTemplate"
-            x:DataType="enums:SettingsSection">
+            x:DataType="sections:UISettingsSectionViewModel">
             <StackPanel Spacing="4">
 
                 <!--Show PBrain operators-->
@@ -161,7 +162,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <ToggleSwitch IsOn="{x:Bind ViewModel.ShowPBrainButtons, Mode=TwoWay}"/>
+                    <ToggleSwitch IsOn="{x:Bind ShowPBrainButtons, Mode=TwoWay}"/>
                     <HyperlinkButton 
                         Margin="0,0,20,0"
                         HorizontalAlignment="Right"
@@ -184,14 +185,14 @@
                     Margin="0,8,0,0"
                     TextWrapping="Wrap"
                     Text="Clear stdin buffer on execution"/>
-                <ToggleSwitch IsOn="{x:Bind ViewModel.ClearStdinBufferOnRequest, Mode=TwoWay}"/>
+                <ToggleSwitch IsOn="{x:Bind ClearStdinBufferOnRequest, Mode=TwoWay}"/>
             </StackPanel>
         </DataTemplate>
 
         <!--Interpreter settings template-->
         <DataTemplate
             x:Name="InterpreterSettingsTemplate"
-            x:DataType="enums:SettingsSection">
+            x:DataType="sections:InterpreterSettingsSectionViewModel">
             <StackPanel Spacing="4">
 
                 <!--Overflow mode-->
@@ -204,7 +205,7 @@
                     Margin="0,4,0,0"
                     MinWidth="140"
                     ItemsSource="{markupExtensions:EnumValues Type=interpreterEnums:OverflowMode}"
-                    SelectedItem="{x:Bind ViewModel.OverflowMode, Mode=TwoWay}">
+                    SelectedItem="{x:Bind OverflowMode, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="interpreterEnums:OverflowMode">
                             <TextBlock Text="{x:Bind converters:EnumConverter.Convert((interpreterEnums:OverflowMode))}"/>
@@ -222,8 +223,8 @@
                     CornerRadius="0"
                     Margin="0,4,0,0"
                     MinWidth="140"
-                    ItemsSource="{x:Bind ViewModel.MemorySizeOptions}"
-                    SelectedItem="{x:Bind ViewModel.MemorySize, Mode=TwoWay}"/>
+                    ItemsSource="{x:Bind MemorySizeOptions}"
+                    SelectedItem="{x:Bind MemorySize, Mode=TwoWay}"/>
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
@@ -288,7 +289,7 @@
                         <DataTemplate x:DataType="ICollectionViewGroup">
                             <jumpList:SemanticZoomZoomedOutViewHeaderTemplate
                                 Title="{x:Bind converters:EnumConverter.Convert((enums:SettingsSection)Group.(collections:IReadOnlyObservableGroup.Key))}"
-                                DescriptionText="{x:Bind convertersSubPages:SettingsSectionConverters.ConvertSectionDescription((enums:SettingsSection)Group.(collections:IReadOnlyObservableGroup.Key))}"/>
+                                DescriptionText="{x:Bind convertersSubPages:SettingsSectionConverters.ConvertSectionDescription((collections:IReadOnlyObservableGroup)Group)}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

@@ -1,8 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Brainf_ckSharp.Shared.Enums;
-using Microsoft.Toolkit.HighPerformance.Extensions;
+using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections;
 
 #nullable enable
 
@@ -31,17 +30,14 @@ namespace Brainf_ckSharp.Uwp.TemplateSelectors
         /// <inheritdoc/>
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            if (item.TryUnbox(out SettingsSection section))
+            return item switch
             {
-                return section switch
-                {
-                    SettingsSection.Ide => IdeSettingsTemplate,
-                    SettingsSection.UI => UISettingsTemplate,
-                    SettingsSection.Interpreter => InterpreterSettingsTemplate,
-                    _ => throw new ArgumentException($"Invalid section: {section}")
-                } ?? throw new ArgumentException($"Missing template for section: {section}");
-            }
-            else throw new ArgumentException("The input item is null or of an invalid type");
+                IdeSettingsSectionViewModel _ => IdeSettingsTemplate,
+                UISettingsSectionViewModel _ => UISettingsTemplate,
+                InterpreterSettingsSectionViewModel _ => InterpreterSettingsTemplate,
+                null => throw new ArgumentNullException(nameof(item), "The input item can't be null"),
+                _ => throw new ArgumentException($"Invalid section: {item}", nameof(item))
+            } ?? throw new ArgumentException($"Missing template for section: {item}", nameof(item));
         }
     }
 }
