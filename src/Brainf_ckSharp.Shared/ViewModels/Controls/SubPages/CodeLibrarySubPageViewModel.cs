@@ -9,7 +9,6 @@ using System.Windows.Input;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums;
-using Brainf_ckSharp.Shared.Extensions.Microsoft.Toolkit.Collections;
 using Brainf_ckSharp.Shared.Extensions.System.Collections.Generic;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Brainf_ckSharp.Shared.Models.Ide;
@@ -174,12 +173,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 
             // Add the favorites, if any
             IEnumerable<CodeLibraryEntry> favorited = sorted.Where(entry => entry.Metadata.IsFavorited)!;
-            Source.Add(CodeLibrarySection.Favorites, favorited.Append<object>(CodeLibrarySection.Favorites));
+            Source.AddGroup(CodeLibrarySection.Favorites, favorited.Append<object>(CodeLibrarySection.Favorites));
 
             // Add the recent and sample items
             IEnumerable<CodeLibraryEntry> unfavorited = sorted.Where(entry => !entry.Metadata.IsFavorited)!;
-            Source.Add(CodeLibrarySection.Recent, unfavorited.Append<object>(CodeLibrarySection.Recent));
-            Source.Add(CodeLibrarySection.Samples, samples);
+            Source.AddGroup(CodeLibrarySection.Recent, unfavorited.Append<object>(CodeLibrarySection.Recent));
+            Source.AddGroup(CodeLibrarySection.Samples, samples);
         }
 
         /// <summary>

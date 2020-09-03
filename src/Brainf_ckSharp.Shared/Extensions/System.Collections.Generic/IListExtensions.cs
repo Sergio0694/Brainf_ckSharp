@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace Brainf_ckSharp.Shared.Extensions.System.Collections.Generic
 {
@@ -11,24 +8,6 @@ namespace Brainf_ckSharp.Shared.Extensions.System.Collections.Generic
     /// </summary>
     public static class IListExtensions
     {
-        /// <summary>
-        /// An implementation of <see cref="Enumerable.LastOrDefault{T}(IEnumerable{T})"/> that works in O(1) on <see cref="IList{T}"/> instances
-        /// </summary>
-        /// <typeparam name="T">The type of items in the input list</typeparam>
-        /// <param name="items">The input list of <typeparamref name="T"/> items</param>
-        /// <returns>Either the last item in <paramref name="items"/>, or the default <typeparamref name="T"/> value</returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T? LastOrDefault<T>(this IList<T> items)
-            where T : class
-        {
-            return items.Count switch
-            {
-                0 => default,
-                { } n => items[n - 1]
-            };
-        }
-
         /// <summary>
         /// Inserts an item into a target list in order to keep the list sorted
         /// </summary>

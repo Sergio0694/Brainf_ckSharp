@@ -8,7 +8,6 @@ using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums;
-using Brainf_ckSharp.Shared.Extensions.Microsoft.Toolkit.Collections;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Models.Ide.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -242,7 +241,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             {
                 var model = new IdeResultWithSectionInfo(section, result);
 
-                Source.Add(section, model);
+                Source.AddGroup(section, model);
             }
 
             // The order of items in the result view is as follows:
