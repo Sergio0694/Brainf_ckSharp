@@ -23,6 +23,8 @@ namespace Brainf_ckSharp.Shared.Models.Console.Controls
             _One = state[BaseOffset + 1];
             _Two = state[BaseOffset + 2];
             _Three = state[BaseOffset + 3];
+
+            _SelectedIndex = state.Position;
         }
 
         private Brainf_ckMemoryCell _Zero;
