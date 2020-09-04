@@ -210,15 +210,15 @@ namespace Brainf_ckSharp.Uwp
             services.AddSingleton<IAnalyticsService, AppCenterService>();
 #endif
             // Viewmodels
-            services.AddTransient<VirtualKeyboardViewModel>();
-            services.AddTransient<StdinHeaderViewModel>();
-            services.AddTransient<StatusBarViewModel>();
-            services.AddTransient<ShellViewModel>();
+            services.AddSingleton<ShellViewModel>();
+            services.AddSingleton<ConsoleViewModel>();
+            services.AddSingleton<IdeViewModel>();
+            services.AddSingleton<VirtualKeyboardViewModel>();
+            services.AddSingleton<StdinHeaderViewModel>();
+            services.AddSingleton<StatusBarViewModel>();
             services.AddTransient<SettingsSubPageViewModel>();
             services.AddTransient<ReviewPromptSubPageViewModel>();
-            services.AddTransient<IdeViewModel>();
             services.AddTransient<IdeResultSubPageViewModel>();
-            services.AddTransient<ConsoleViewModel>();
             services.AddTransient<CodeLibrarySubPageViewModel>();
             services.AddTransient<AboutSubPageViewModel>();
 
