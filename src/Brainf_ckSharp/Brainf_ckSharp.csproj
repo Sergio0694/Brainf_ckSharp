@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Toolkit" Version="7.0.0-build.194" />
-    <PackageReference Include="Microsoft.Toolkit.HighPerformance" Version="7.0.0-build.96.g23f56f3fc9" />
+    <PackageReference Include="Microsoft.Toolkit.HighPerformance" Version="7.0.0-build.173.gfb29007caa" />
   </ItemGroup>
 
   <ItemGroup>
