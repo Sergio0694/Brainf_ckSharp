@@ -15,7 +15,7 @@ using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls
 {
-    public sealed class StatusBarViewModel : ObservableRecipient
+    public sealed class StatusBarViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<bool>>
     {
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
@@ -65,9 +65,18 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         {
             SettingsService = settingsService;
             Context = SynchronizationContext.Current;
-            Timer = new Timer(_ => RunBackgroundCode(), null, default, TimeSpan.FromSeconds(2));
+            Timer = new Timer(vm => ((StatusBarViewModel)vm).RunBackgroundCode(), this, default, TimeSpan.FromSeconds(2));
+        }
 
-            Messenger.Register<PropertyChangedMessage<bool>>(this, SetupActiveViewModel);
+        /// <inheritdoc/>
+        public void Receive(PropertyChangedMessage<bool> message)
+        {
+            if (message.PropertyName == nameof(IsActive) &&
+                message.NewValue &&
+                message.Sender is WorkspaceViewModelBase viewModel)
+            {
+                SetupActiveViewModel(viewModel);
+            }
         }
 
         private Option<InterpreterResult>? _BackgroundExecutionResult;
@@ -102,17 +111,10 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         /// <summary>
         /// Assigns <see cref="WorkspaceViewModel"/> and <see cref="IdeViewModel"/> when the current view model changes
         /// </summary>
-        /// <param name="message">The input <see cref="PropertyChangedMessage{T}"/> message to check</param>
-        private void SetupActiveViewModel(PropertyChangedMessage<bool> message)
+        /// <param name="viewModel">The input <see cref="WorkspaceViewModelBase"/> to track</param>
+        private void SetupActiveViewModel(WorkspaceViewModelBase viewModel)
         {
-            if (message.PropertyName != nameof(IsActive) ||
-                !message.NewValue ||
-                !(message.Sender is WorkspaceViewModelBase))
-            {
-                return;
-            }
-
-            WorkspaceViewModel = (WorkspaceViewModelBase)message.Sender;
+            WorkspaceViewModel = viewModel;
 
             // Restart the time to make sure to update the background
             // execution result immediately when the workspace changes.

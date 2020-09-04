@@ -21,7 +21,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         public CompactMemoryViewerViewModel()
         {
             MachineState = Messenger.Send<MemoryStateRequestMessage>().Response;
+        }
 
+        /// <inheritdoc/>
+        protected override void OnActivated()
+        {
             Messenger.Register<PropertyChangedMessage<IReadOnlyMachineState>>(this, m => MachineState = m.NewValue);
         }
 

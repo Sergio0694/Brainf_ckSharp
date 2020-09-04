@@ -10,6 +10,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         {
             this.InitializeComponent();
             this.DataContext = App.Current.Services.GetRequiredService<StatusBarViewModel>();
+
+            ViewModel.IsActive = true;
         }
 
         /// <summary>

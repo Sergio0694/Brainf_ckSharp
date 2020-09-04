@@ -10,6 +10,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel
         public CompactMemoryViewer()
         {
             this.InitializeComponent();
+
+            ViewModel.IsActive = true;
         }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls
 {
-    public sealed class StdinHeaderViewModel : ObservableRecipient
+    public sealed class StdinHeaderViewModel : ObservableRecipient, IRecipient<StdinRequestMessage>
     {
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
@@ -20,8 +20,19 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         public StdinHeaderViewModel(ISettingsService settingsService)
         {
             SettingsService = settingsService;
+        }
 
-            Messenger.Register<StdinRequestMessage>(this, ExtractStdinBuffer);
+        /// <inheritdoc/>
+        public void Receive(StdinRequestMessage request)
+        {
+            request.Reply(Text);
+
+            // Clear the buffer if requested, and if not from a background execution
+            if (!request.IsFromBackgroundExecution &&
+                SettingsService.GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest))
+            {
+                Text = string.Empty;
+            }
         }
 
         private string _Text = string.Empty;
@@ -33,22 +44,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         {
             get => _Text;
             set => SetProperty(ref _Text, value);
-        }
-
-        /// <summary>
-        /// Handles a request for the current stdin buffer
-        /// </summary>
-        /// <param name="request">The input request message for the stdin buffer</param>
-        private void ExtractStdinBuffer(StdinRequestMessage request)
-        {
-            request.Reply(Text);
-
-            // Clear the buffer if requested, and if not from a background execution
-            if (!request.IsFromBackgroundExecution &&
-                SettingsService.GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest))
-            {
-                Text = string.Empty;
-            }
         }
     }
 }

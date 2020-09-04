@@ -9,7 +9,7 @@ using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls
 {
-    public sealed class VirtualKeyboardViewModel : ObservableRecipient
+    public sealed class VirtualKeyboardViewModel : ObservableRecipient, IRecipient<ShowPBrainButtonsSettingsChangedMessage>
     {
         /// <summary>
         /// Creates a new <see cref="VirtualKeyboardViewModel"/> instance
@@ -20,8 +20,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
             _IsPBrainModeEnabled = settingsService.GetValue<bool>(SettingsKeys.ShowPBrainButtons);
 
             InsertOperatorCommand = new RelayCommand<char>(InsertOperator);
+        }
 
-            Messenger.Register<ShowPBrainButtonsSettingsChangedMessage>(this, m => IsPBrainModeEnabled = m.Value);
+        /// <inheritdoc/>
+        public void Receive(ShowPBrainButtonsSettingsChangedMessage message)
+        {
+            IsPBrainModeEnabled = message.Value;
         }
 
         /// <summary>

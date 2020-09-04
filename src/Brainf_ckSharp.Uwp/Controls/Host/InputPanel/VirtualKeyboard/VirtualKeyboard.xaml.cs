@@ -13,6 +13,8 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel
         {
             this.InitializeComponent();
             this.DataContext = App.Current.Services.GetRequiredService<VirtualKeyboardViewModel>();
+
+            ViewModel.IsActive = true;
         }
 
         /// <summary>
