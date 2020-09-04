@@ -94,7 +94,7 @@
                             <inputPanel:VirtualKeyboard/>
                         </PivotItem>
                         <PivotItem>
-                            <inputPanel:CompactMemoryViewer/>
+                            <inputPanel:CompactMemoryViewer attachedProperties:ObservableRecipientHelper.IsActive="{x:Bind StdinHeader.StdinSelectedIndex.Equals(1), Mode=OneWay}"/>
                         </PivotItem>
                     </controls:LockedPivot>
                 </controls:ExpanderControl.ExpandableContent>

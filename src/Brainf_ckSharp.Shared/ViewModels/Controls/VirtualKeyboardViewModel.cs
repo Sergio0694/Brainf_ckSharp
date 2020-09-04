@@ -48,7 +48,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         }
 
         /// <inheritdoc/>
-        public void Receive(ShowPBrainButtonsSettingsChangedMessage message)
+        void IRecipient<ShowPBrainButtonsSettingsChangedMessage>.Receive(ShowPBrainButtonsSettingsChangedMessage message)
         {
             IsPBrainModeEnabled = message.Value;
         }

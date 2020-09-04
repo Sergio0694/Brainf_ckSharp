@@ -34,7 +34,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         }
 
         /// <inheritdoc/>
-        public void Receive(StdinRequestMessage request)
+        void IRecipient<StdinRequestMessage>.Receive(StdinRequestMessage request)
         {
             request.Reply(Text);
 

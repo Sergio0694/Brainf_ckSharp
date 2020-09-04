@@ -76,7 +76,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         }
 
         /// <inheritdoc/>
-        public void Receive(PropertyChangedMessage<IReadOnlyMachineState> message)
+        void IRecipient<PropertyChangedMessage<IReadOnlyMachineState>>.Receive(PropertyChangedMessage<IReadOnlyMachineState> message)
         {
             MachineState = message.NewValue;
         }

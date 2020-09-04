@@ -158,7 +158,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         }
 
         /// <inheritdoc/>
-        public void Receive(PropertyChangedMessage<bool> message)
+        void IRecipient<PropertyChangedMessage<bool>>.Receive(PropertyChangedMessage<bool> message)
         {
             if (message.PropertyName == nameof(IsActive) &&
                 message.NewValue &&
