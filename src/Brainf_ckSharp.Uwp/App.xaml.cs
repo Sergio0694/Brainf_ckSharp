@@ -24,7 +24,6 @@ using GitHub;
 using Brainf_ckSharp.Services.Uwp.Store;
 using Brainf_ckSharp.Services.Uwp.SystemInformation;
 using Brainf_ckSharp.Shared.Constants;
-using Brainf_ckSharp.Shared.Messages.Ide;
 using Brainf_ckSharp.Shared.ViewModels;
 using Brainf_ckSharp.Shared.ViewModels.Controls;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
@@ -32,7 +31,6 @@ using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings;
 using Brainf_ckSharp.Shared.ViewModels.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Uwp.Helpers;
-using Microsoft.Toolkit.Mvvm.Messaging;
 
 #nullable enable
 
@@ -174,7 +172,7 @@ namespace Brainf_ckSharp.Uwp
         {
             Deferral deferral = e.GetDeferral();
 
-            await Messenger.Default.Send<SaveIdeStateRequestMessage>().Response;
+            await Services.GetRequiredService<IdeViewModel>().SaveStateAsync();
 
             RegisterFile(null);
 

@@ -61,7 +61,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             Messenger.Register<NewFileRequestMessage>(this, _ => LoadNewFile());
             Messenger.Register<SaveFileRequestMessage>(this, m => _ = TrySaveTextAsync());
             Messenger.Register<SaveFileAsRequestMessage>(this, m => _ = TrySaveTextAsAsync());
-            Messenger.Register<SaveIdeStateRequestMessage>(this, m => m.Reply(SaveStateAsync()));
         }
 
         /// <summary>
@@ -256,7 +255,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <summary>
         /// Serializes and saves the state of the current instance
         /// </summary>
-        private async Task SaveStateAsync()
+        public async Task SaveStateAsync()
         {
             IdeState state = new IdeState
             {
