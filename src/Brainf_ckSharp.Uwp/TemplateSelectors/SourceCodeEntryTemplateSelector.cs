@@ -1,8 +1,8 @@
-﻿using System;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Models.Ide;
+using Microsoft.Toolkit.Diagnostics;
 
 #nullable enable
 
@@ -36,15 +36,23 @@ namespace Brainf_ckSharp.Uwp.TemplateSelectors
         /// <inheritdoc/>
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            return item switch
+            Guard.IsNotNull(item, nameof(item));
+
+            DataTemplate? template = item switch
             {
                 CodeLibraryEntry entry when entry.File.IsReadOnly => SampleTemplate,
                 CodeLibraryEntry _ => RecentItemTemplate,
                 CodeLibrarySection.Favorites => FavoritePlaceholderTemplate,
                 CodeLibrarySection.Recent => RecentPlaceholderTemplate,
-                null => throw new ArgumentNullException(nameof(item), "The input item can't be null"),
-                _ => throw new ArgumentException($"Unsupported item of type {item.GetType()}")
-            } ?? throw new ArgumentException($"Missing template for item of type {item.GetType()}");
+                _ => ThrowHelper.ThrowArgumentException<DataTemplate>("Invalid item type")
+            };
+
+            if (template is null)
+            {
+                ThrowHelper.ThrowInvalidOperationException("The requested template is null");
+            }
+
+            return template;
         }
     }
 }

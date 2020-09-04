@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
+using Microsoft.Toolkit.Diagnostics;
 
 namespace Brainf_ckSharp.Services.Uwp.Analytics
 {
@@ -22,7 +22,7 @@ namespace Brainf_ckSharp.Services.Uwp.Analytics
         {
             if (Interlocked.CompareExchange(ref _IsInitialized, 1, 0) != 0)
             {
-                throw new InvalidOperationException("The service has already been initialized");
+                ThrowHelper.ThrowInvalidOperationException("The service has already been initialized");
             }
 
             AppCenter.Start(secret, typeof(Crashes), typeof(Microsoft.AppCenter.Analytics.Analytics));

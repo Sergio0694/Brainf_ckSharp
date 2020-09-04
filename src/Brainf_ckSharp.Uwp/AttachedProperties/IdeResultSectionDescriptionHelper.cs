@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.UI;
+﻿using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
@@ -12,6 +11,7 @@ using Brainf_ckSharp.Uwp.Converters.Console;
 using Brainf_ckSharp.Uwp.Themes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Uwp.Extensions;
+using Microsoft.Toolkit.Diagnostics;
 
 namespace Brainf_ckSharp.Uwp.AttachedProperties
 {
@@ -135,7 +135,9 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
                         Text = string.Format(OperatorsInTime, value.Result.TotalOperations, value.Result.ElapsedTime)
                     });
                     break;
-                default: throw new ArgumentException($"Invalid section: {value.Section}");
+                default:
+                    ThrowHelper.ThrowArgumentException("Invalid section type");
+                    break;
             }
         }
     }

@@ -68,7 +68,7 @@ namespace Brainf_ckSharp.Uwp
         /// <inheritdoc/>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            SystemInformation.TrackAppUse(e);
+            SystemInformation.Instance.TrackAppUse(e);
 
             OnActivated(e.PrelaunchActivated);
 

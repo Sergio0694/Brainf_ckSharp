@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 using Brainf_ckSharp.Services;
+using Microsoft.Toolkit.Diagnostics;
 
 namespace Brainf_ckSharp.Uwp.Services.Settings
 {
@@ -34,7 +35,12 @@ namespace Brainf_ckSharp.Uwp.Services.Settings
             {
                 serializable = Unsafe.As<T, DateTime>(ref value).ToBinary();
             }
-            else throw new ArgumentException($"Invalid setting of type {typeof(T)}", nameof(value));
+            else
+            {
+                ThrowHelper.ThrowArgumentException("Invalid setting type");
+
+                return;
+            }
 
             // Store the new value
             if (!SettingsStorage.ContainsKey(key)) SettingsStorage.Add(key, serializable);
@@ -48,11 +54,13 @@ namespace Brainf_ckSharp.Uwp.Services.Settings
             if (!SettingsStorage.TryGetValue(key, out object value))
             {
                 if (fallback) return default;
-                throw new InvalidOperationException($"The setting {key} doesn't exist");
+
+                ThrowHelper.ThrowArgumentException("The setting with the given key does not exist");
             }
 
             // Cast and return the retrieved setting
             if (typeof(T) == typeof(DateTime)) value = DateTime.FromBinary((long)value);
+
             return (T)value;
         }
 

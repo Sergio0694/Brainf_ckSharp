@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Microsoft.Toolkit.Diagnostics;
 
 #nullable enable
 
@@ -85,7 +85,10 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
         {
             if (e.Action != NotifyCollectionChangedAction.Add) return;
 
-            if (!ControlsMap.TryGetValue((INotifyCollectionChanged)sender, out ListViewBase control)) throw new InvalidOperationException("Can't find target control");
+            if (!ControlsMap.TryGetValue((INotifyCollectionChanged)sender, out ListViewBase control))
+            {
+                ThrowHelper.ThrowInvalidOperationException("Can't find target control");
+            }
 
             // Wait for the new item to be displayed, then scroll down
             await Task.Delay(250);

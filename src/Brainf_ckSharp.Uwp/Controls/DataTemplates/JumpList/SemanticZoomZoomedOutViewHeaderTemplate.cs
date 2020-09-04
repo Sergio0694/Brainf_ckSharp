@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
@@ -22,7 +22,7 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList
             base.OnApplyTemplate();
 
             _DescriptionBlock = GetTemplateChild("DescriptionBlock") as TextBlock
-                                ?? throw new InvalidOperationException("Failed to find description block");
+                                ?? ThrowHelper.ThrowInvalidOperationException<TextBlock>("Failed to find description block");
 
             // Load the span explicitly, if present
             if (DescriptionSpan is { } span)
@@ -107,7 +107,7 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList
         {
             SemanticZoomZoomedOutViewHeaderTemplate @this = (SemanticZoomZoomedOutViewHeaderTemplate)d;
             Span span = e.NewValue as Span
-                        ?? throw new ArgumentException($"Can't assign null to the {nameof(DescriptionSpan)} property");
+                        ?? ThrowHelper.ThrowArgumentException<Span>("Can't assign null to the " + nameof(DescriptionSpan) + " property");
 
             if (@this._DescriptionBlock is null) return;
 

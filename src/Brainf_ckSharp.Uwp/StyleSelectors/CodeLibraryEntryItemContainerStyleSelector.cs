@@ -1,8 +1,8 @@
-﻿using System;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Models.Ide;
+using Microsoft.Toolkit.Diagnostics;
 
 namespace Brainf_ckSharp.Uwp.StyleSelectors
 {
@@ -24,12 +24,12 @@ namespace Brainf_ckSharp.Uwp.StyleSelectors
         /// <inheritdoc/>
         protected override Style SelectStyleCore(object item, DependencyObject container)
         {
-            switch (item)
+            return item switch
             {
-                case CodeLibraryEntry _: return DefaultContainerStyle;
-                case CodeLibrarySection _: return PlaceholderContainerStyle;
-                default: throw new ArgumentNullException(nameof(item), "The input item can't be null");
-            }
+                CodeLibraryEntry _ => DefaultContainerStyle,
+                CodeLibrarySection _ => PlaceholderContainerStyle,
+                _ => ThrowHelper.ThrowArgumentNullException<Style>(nameof(item), "The input item can't be null")
+            };
         }
     }
 }

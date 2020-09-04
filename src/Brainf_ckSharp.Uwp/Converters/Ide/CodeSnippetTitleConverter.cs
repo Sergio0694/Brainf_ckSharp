@@ -1,6 +1,6 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Shared.Constants;
+using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Uwp.Extensions;
 
 namespace Brainf_ckSharp.Uwp.Converters.Ide
@@ -24,7 +24,7 @@ namespace Brainf_ckSharp.Uwp.Converters.Ide
                 CodeSnippets.DuplicateValue => "CodeSnippets/DuplicateValue".GetLocalized(),
                 CodeSnippets.IfZeroThen => "if (x == 0) { }",
                 CodeSnippets.IfGreaterThanZeroThenElse => "if (x > 0) { } else { }",
-                _ => throw new ArgumentException($"Invalid snippet: \"{snippet}\"", nameof(snippet))
+                _ => ThrowHelper.ThrowArgumentException<string>(nameof(snippet), "Invalid target code snippet")
             };
         }
     }

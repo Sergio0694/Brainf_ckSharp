@@ -1,6 +1,6 @@
-﻿using System;
-using Brainf_ckSharp.Memory.Interfaces;
+﻿using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
+using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace Brainf_ckSharp.Shared.Models.Console.Controls
@@ -107,7 +107,10 @@ namespace Brainf_ckSharp.Shared.Models.Console.Controls
         /// <param name="state">The input <see cref="IReadOnlyMachineState"/> instance to read data from</param>
         public void UpdateFromState(IReadOnlyMachineState state)
         {
-            if (state.Count < BaseOffset + 3) throw new ArgumentException($"The input state is too short: size of {state.Count} for an offset of {BaseOffset}", nameof(state));
+            if (state.Count < BaseOffset + 3)
+            {
+                ThrowHelper.ThrowArgumentException(nameof(state), "The input state is too short for the current offset");
+            }
 
             Zero = state[BaseOffset];
             One = state[BaseOffset + 1];

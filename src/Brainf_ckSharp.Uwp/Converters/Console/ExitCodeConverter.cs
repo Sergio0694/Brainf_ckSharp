@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Enums;
+using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Uwp.Extensions;
 
 namespace Brainf_ckSharp.Uwp.Converters.Console
@@ -39,7 +40,7 @@ namespace Brainf_ckSharp.Uwp.Converters.Console
                 if (code.HasFlag(entry))
                     return $"{nameof(ExitCode)}/{entry}".GetLocalized();
 
-            throw new ArgumentException($"Invalid exit code: {code}", nameof(code));
+            return ThrowHelper.ThrowArgumentException<string>(nameof(code), "Invalid exit code");
         }
     }
 }

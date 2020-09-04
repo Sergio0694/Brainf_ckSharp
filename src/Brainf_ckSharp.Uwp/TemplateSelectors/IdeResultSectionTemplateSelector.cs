@@ -1,8 +1,8 @@
-﻿using System;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Models.Ide.Views;
+using Microsoft.Toolkit.Diagnostics;
 
 #nullable enable
 
@@ -54,11 +54,14 @@ namespace Brainf_ckSharp.Uwp.TemplateSelectors
         public DataTemplate? StatisticsTemplate { get; set; }
 
         /// <inheritdoc/>
-        protected override DataTemplate? SelectTemplateCore(object item, DependencyObject container)
+        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            var model = item as IdeResultWithSectionInfo ?? throw new ArgumentException($"Invalid item: {item}");
+            Guard.IsNotNull(item, nameof(item));
+            Guard.IsOfType<IdeResultWithSectionInfo>(item, nameof(item));
 
-            return model.Section switch
+            var model = (IdeResultWithSectionInfo)item;
+
+            DataTemplate? template = model.Section switch
             {
                 IdeResultSection.ExceptionType => ExceptionTypeTemplate,
                 IdeResultSection.FaultingOperator => HaltingPositionTemplate,
@@ -69,8 +72,15 @@ namespace Brainf_ckSharp.Uwp.TemplateSelectors
                 IdeResultSection.FunctionDefinitions => FunctionDefinitionsTemplate,
                 IdeResultSection.MemoryState => MemoryStateTemplate,
                 IdeResultSection.Statistics => StatisticsTemplate,
-                _ => throw new ArgumentOutOfRangeException($"Invalid section entry: {model.Section}")
-            } ?? throw new ArgumentException($"Missing template for item of type {model.Section}");
+                _ => ThrowHelper.ThrowArgumentException<DataTemplate>("Invalid requested section")
+            };
+
+            if (template is null)
+            {
+                ThrowHelper.ThrowInvalidOperationException("The requested template is null");
+            }
+
+            return template;
         }
     }
 }

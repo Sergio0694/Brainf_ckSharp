@@ -1,9 +1,9 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Uwp.Services.Files;
+using Microsoft.Toolkit.Diagnostics;
 
 #nullable enable
 
@@ -40,19 +40,22 @@ namespace Brainf_ckSharp.Uwp.Services.Share
         private void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
         {
             // Make sure there is some content to share
-            if (_Info == null) throw new InvalidOperationException("There isn't a valid content to share");
+            if (_Info == null) ThrowHelper.ThrowInvalidOperationException("There isn't a valid content to share");
 
             DataRequest request = args.Request;
 
             // Set the data to share
             request.Data.Properties.Title = _Info.Title;
             request.Data.Properties.Description = "Shared from Brainf*ck#";
+
             switch (_Info)
             {
                 case FileShareInfo fileShare:
                     request.Data.SetStorageItems(new [] { fileShare.File }, true);
                     break;
-                default: throw new ArgumentException($"Invalid share info of type {_Info.GetType()}", nameof(_Info));
+                default:
+                    ThrowHelper.ThrowArgumentException(nameof(_Info), "Invalid share info type");
+                    break;
             }
 
             _Info = null;

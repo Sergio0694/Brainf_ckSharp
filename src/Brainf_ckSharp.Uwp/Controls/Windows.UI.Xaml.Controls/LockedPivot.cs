@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Diagnostics;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 
@@ -21,10 +21,16 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
         {
             base.OnApplyTemplate();
 
-            if (!(GetTemplateChild("ScrollViewer") is ScrollViewer scroller)) throw new InvalidOperationException("Can't find parent scroller");
+            if (!(GetTemplateChild("ScrollViewer") is ScrollViewer scroller))
+            {
+                ThrowHelper.ThrowInvalidOperationException("Can't find parent scroller");
+
+                return;
+            }
+
+            _Scroller = scroller;
 
             // Add the handlers to disable the swipe gestures
-            _Scroller = scroller;
             scroller.PointerEntered += Scroller_PointerIn;
             scroller.PointerMoved += Scroller_PointerIn;
             scroller.PointerExited += Scroller_PointerOut;
