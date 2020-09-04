@@ -9,6 +9,7 @@ using Brainf_ckSharp.Memory;
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models.Internal;
 using Brainf_ckSharp.Opcodes;
+using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 using Range = Brainf_ckSharp.Models.Internal.Range;
 using Stopwatch = System.Diagnostics.Stopwatch;
@@ -148,7 +149,11 @@ namespace Brainf_ckSharp.Models
         private InterpreterResult? _Current;
 
         /// <inheritdoc/>
-        public InterpreterResult Current => _Current ?? throw new InvalidOperationException("The session has not been initialized yet");
+        public InterpreterResult Current
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _Current ?? ThrowHelper.ThrowInvalidOperationException<InterpreterResult>("The session has not been initialized yet");
+        }
 
         /// <inheritdoc/>
         object IEnumerator.Current => Current;
@@ -171,7 +176,7 @@ namespace Brainf_ckSharp.Models
                 case OverflowMode.ByteWithNoOverflow: MoveNext<TuringMachineState.ByteWithNoOverflowExecutionContext>(); break;
                 case OverflowMode.UshortWithOverflow: MoveNext<TuringMachineState.UshortWithOverflowExecutionContext>(); break;
                 case OverflowMode.UshortWithNoOverflow: MoveNext<TuringMachineState.UshortWithNoOverflowExecutionContext>(); break;
-                default: ThrowArgumentOutOfRangeForOverflowMode(); break;
+                default: ThrowHelper.ThrowArgumentOutOfRangeException(nameof(MachineState.Mode), $"Invalid execution mode: {MachineState.Mode}"); break;
             };
 
             return true;
@@ -257,14 +262,6 @@ namespace Brainf_ckSharp.Models
             StackFrames.Dispose();
             StdoutBuffer.Dispose();
             Stopwatch.Stop();
-        }
-
-        /// <summary>
-        /// Throws an <see cref="ArgumentOutOfRangeException"/> when the current <see cref="OverflowMode"/> setting is invalid
-        /// </summary>
-        private void ThrowArgumentOutOfRangeForOverflowMode()
-        {
-            throw new ArgumentOutOfRangeException(nameof(MachineState.Mode), $"Invalid execution mode: {MachineState.Mode}");
         }
     }
 }

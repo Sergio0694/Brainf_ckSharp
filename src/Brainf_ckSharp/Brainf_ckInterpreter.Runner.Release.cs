@@ -9,6 +9,7 @@ using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Internal;
 using Brainf_ckSharp.Opcodes;
+using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 using Microsoft.Toolkit.HighPerformance.Extensions;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
@@ -50,7 +51,7 @@ namespace Brainf_ckSharp
                     OverflowMode.ByteWithNoOverflow => Run<TuringMachineState.ByteWithNoOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
                     OverflowMode.UshortWithOverflow => Run<TuringMachineState.UshortWithOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
                     OverflowMode.UshortWithNoOverflow => Run<TuringMachineState.UshortWithNoOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
-                    _ => ThrowArgumentOutOfRangeForOverflowMode(machineState)
+                    _ => ThrowHelper.ThrowArgumentOutOfRangeException<InterpreterResult>(nameof(TuringMachineState.Mode), "Invalid execution mode")
                 };
             }
 
@@ -373,14 +374,6 @@ namespace Brainf_ckSharp
 
                 Exit:
                 return exitCode;
-            }
-
-            /// <summary>
-            /// Throws an <see cref="ArgumentOutOfRangeException"/> when the current <see cref="OverflowMode"/> setting is invalid
-            /// </summary>
-            private static InterpreterResult ThrowArgumentOutOfRangeForOverflowMode(TuringMachineState machineState)
-            {
-                throw new ArgumentOutOfRangeException(nameof(TuringMachineState.Mode), $"Invalid execution mode: {machineState.Mode}");
             }
         }
     }
