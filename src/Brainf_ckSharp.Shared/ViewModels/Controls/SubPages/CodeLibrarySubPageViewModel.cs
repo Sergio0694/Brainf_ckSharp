@@ -9,14 +9,11 @@ using System.Windows.Input;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums;
-using Brainf_ckSharp.Shared.Extensions.Microsoft.Toolkit.Collections;
 using Brainf_ckSharp.Shared.Extensions.System.Collections.Generic;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Brainf_ckSharp.Shared.Models.Ide;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
@@ -29,27 +26,27 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// The <see cref="IAnalyticsService"/> instance currently in use
         /// </summary>
-        private readonly IAnalyticsService AnalyticsService = Ioc.Default.GetRequiredService<IAnalyticsService>();
+        private readonly IAnalyticsService AnalyticsService;
 
         /// <summary>
         /// The <see cref="IFilesService"/> instance currently in use
         /// </summary>
-        private readonly IFilesService FilesService = Ioc.Default.GetRequiredService<IFilesService>();
+        private readonly IFilesService FilesService;
 
         /// <summary>
         /// The <see cref="IFilesHistoryService"/> instance currently in use
         /// </summary>
-        private readonly IFilesHistoryService FilesHistoryService = Ioc.Default.GetRequiredService<IFilesHistoryService>();
+        private readonly IFilesHistoryService FilesHistoryService;
 
         /// <summary>
         /// The <see cref="IClipboardService"/> instance currently in use
         /// </summary>
-        private readonly IClipboardService ClipboardService = Ioc.Default.GetRequiredService<IClipboardService>();
+        private readonly IClipboardService ClipboardService;
 
         /// <summary>
         /// The <see cref="IShareService"/> instance currently in use
         /// </summary>
-        private readonly IShareService ShareService = Ioc.Default.GetRequiredService<IShareService>();
+        private readonly IShareService ShareService;
 
         /// <summary>
         /// The relative path of folder that contains the sample files
@@ -97,8 +94,19 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Creates a new <see cref="CodeLibrarySubPageViewModel"/> instance
         /// </summary>
-        public CodeLibrarySubPageViewModel()
+        /// <param name="analyticsService">The <see cref="IAnalyticsService"/> instance to use</param>
+        /// <param name="filesService">The <see cref="IFilesService"/> instance to use</param>
+        /// <param name="filesHistoryService">The <see cref="IFilesHistoryService"/> instance to use</param>
+        /// <param name="clipboardService">The <see cref="IClipboardService"/> instance to use</param>
+        /// <param name="shareService">The <see cref="IShareService"/> instance to use</param>
+        public CodeLibrarySubPageViewModel(IAnalyticsService analyticsService, IFilesService filesService, IFilesHistoryService filesHistoryService, IClipboardService clipboardService, IShareService shareService)
         {
+            AnalyticsService = analyticsService;
+            FilesService = filesService;
+            FilesHistoryService = filesHistoryService;
+            ClipboardService = clipboardService;
+            ShareService = shareService;
+
             LoadDataCommand = new AsyncRelayCommand(LoadDataAsync);
             ProcessItemCommand = new RelayCommand<object>(ProcessItem);
             ToggleFavoriteCommand = new RelayCommand<CodeLibraryEntry>(ToggleFavorite);
@@ -174,12 +182,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 
             // Add the favorites, if any
             IEnumerable<CodeLibraryEntry> favorited = sorted.Where(entry => entry.Metadata.IsFavorited)!;
-            Source.Add(CodeLibrarySection.Favorites, favorited.Append<object>(CodeLibrarySection.Favorites));
+            Source.AddGroup(CodeLibrarySection.Favorites, favorited.Append<object>(CodeLibrarySection.Favorites));
 
             // Add the recent and sample items
             IEnumerable<CodeLibraryEntry> unfavorited = sorted.Where(entry => !entry.Metadata.IsFavorited)!;
-            Source.Add(CodeLibrarySection.Recent, unfavorited.Append<object>(CodeLibrarySection.Recent));
-            Source.Add(CodeLibrarySection.Samples, samples);
+            Source.AddGroup(CodeLibrarySection.Recent, unfavorited.Append<object>(CodeLibrarySection.Recent));
+            Source.AddGroup(CodeLibrarySection.Samples, samples);
         }
 
         /// <summary>

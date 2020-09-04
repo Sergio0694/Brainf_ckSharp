@@ -9,20 +9,18 @@ using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.ViewModels.Views;
 using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls
 {
-    public sealed class StatusBarViewModel : ObservableRecipient
+    public sealed class StatusBarViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<bool>>
     {
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
         /// </summary>
-        private readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+        private readonly ISettingsService SettingsService;
 
         /// <summary>
         /// The <see cref="SynchronizationContext"/> in use when <see cref="StatusBarViewModel"/> is instantiated
@@ -62,12 +60,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         /// <summary>
         /// Creates a new <see cref="StatusBarViewModel"/> instance
         /// </summary>
-        public StatusBarViewModel()
+        /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
+        public StatusBarViewModel(ISettingsService settingsService)
         {
+            SettingsService = settingsService;
             Context = SynchronizationContext.Current;
-            Timer = new Timer(_ => RunBackgroundCode(), null, default, TimeSpan.FromSeconds(2));
-
-            Messenger.Register<PropertyChangedMessage<bool>>(this, SetupActiveViewModel);
+            Timer = new Timer(vm => ((StatusBarViewModel)vm).RunBackgroundCode(), this, default, TimeSpan.FromSeconds(2));
         }
 
         private Option<InterpreterResult>? _BackgroundExecutionResult;
@@ -102,17 +100,10 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         /// <summary>
         /// Assigns <see cref="WorkspaceViewModel"/> and <see cref="IdeViewModel"/> when the current view model changes
         /// </summary>
-        /// <param name="message">The input <see cref="PropertyChangedMessage{T}"/> message to check</param>
-        private void SetupActiveViewModel(PropertyChangedMessage<bool> message)
+        /// <param name="viewModel">The input <see cref="WorkspaceViewModelBase"/> to track</param>
+        private void SetupActiveViewModel(WorkspaceViewModelBase viewModel)
         {
-            if (message.PropertyName != nameof(IsActive) ||
-                !message.NewValue ||
-                !(message.Sender is WorkspaceViewModelBase))
-            {
-                return;
-            }
-
-            WorkspaceViewModel = (WorkspaceViewModelBase)message.Sender;
+            WorkspaceViewModel = viewModel;
 
             // Restart the time to make sure to update the background
             // execution result immediately when the workspace changes.
@@ -164,6 +155,17 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
 
             // Update the property from the original synchronization context
             Context.Post(_ => BackgroundExecutionResult = result, null);
+        }
+
+        /// <inheritdoc/>
+        void IRecipient<PropertyChangedMessage<bool>>.Receive(PropertyChangedMessage<bool> message)
+        {
+            if (message.PropertyName == nameof(IsActive) &&
+                message.NewValue &&
+                message.Sender is WorkspaceViewModelBase viewModel)
+            {
+                SetupActiveViewModel(viewModel);
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 #nullable enable
 
@@ -13,7 +15,13 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views
         public CodeLibrarySubPage()
         {
             this.InitializeComponent();
+            this.DataContext = App.Current.Services.GetRequiredService<CodeLibrarySubPageViewModel>();
         }
+
+        /// <summary>
+        /// Gets the <see cref="CodeLibrarySubPageViewModel"/> instance currently in use
+        /// </summary>
+        public CodeLibrarySubPageViewModel ViewModel => (CodeLibrarySubPageViewModel)DataContext;
 
         /// <inheritdoc/>
         public double MaxExpandedWidth { get; } = 520;

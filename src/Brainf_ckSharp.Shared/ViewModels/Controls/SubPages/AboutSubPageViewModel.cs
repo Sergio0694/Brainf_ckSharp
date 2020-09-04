@@ -3,9 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Brainf_ckSharp.Shared.Constants;
 using GitHub.APIs;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using User = GitHub.Models.User;
 
@@ -21,13 +19,16 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// The <see cref="IGitHubService"/> instance currently in use
         /// </summary>
-        private readonly IGitHubService GitHubService = Ioc.Default.GetRequiredService<IGitHubService>();
+        private readonly IGitHubService GitHubService;
 
         /// <summary>
         /// Creates a new <see cref="AboutSubPageViewModel"/> instance
         /// </summary>
-        public AboutSubPageViewModel()
+        /// <param name="gitHubService">The <see cref="IGitHubService"/> instance to use</param>
+        public AboutSubPageViewModel(IGitHubService gitHubService)
         {
+            GitHubService = gitHubService;
+
             LoadDataCommand = new AsyncRelayCommand(LoadDataAsync);
         }
 

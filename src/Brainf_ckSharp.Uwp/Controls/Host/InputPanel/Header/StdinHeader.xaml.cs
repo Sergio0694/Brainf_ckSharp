@@ -2,6 +2,8 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Brainf_ckSharp.Shared.ViewModels.Controls;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel
 {
@@ -10,7 +12,15 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel
         public StdinHeader()
         {
             this.InitializeComponent();
+            this.DataContext = App.Current.Services.GetRequiredService<StdinHeaderViewModel>();
+
+            ViewModel.IsActive = true;
         }
+
+        /// <summary>
+        /// Gets the <see cref="StdinHeaderViewModel"/> instance currently in use
+        /// </summary>
+        public StdinHeaderViewModel ViewModel => (StdinHeaderViewModel)DataContext;
 
         /// <summary>
         /// Gets or sets the currently selected index for the shell

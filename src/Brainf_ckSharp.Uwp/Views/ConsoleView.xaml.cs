@@ -2,6 +2,8 @@
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.Messages.Settings;
 using Brainf_ckSharp.Shared.Models.Console;
+using Brainf_ckSharp.Shared.ViewModels.Views;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
 #nullable enable
@@ -16,9 +18,15 @@ namespace Brainf_ckSharp.Uwp.Views
         public ConsoleView()
         {
             this.InitializeComponent();
+            this.DataContext = App.Current.Services.GetRequiredService<ConsoleViewModel>();
 
             Messenger.Default.Register<IdeThemeSettingChangedMessage>(this, _ => RefreshDisplayedCommands());
         }
+
+        /// <summary>
+        /// Gets the <see cref="ConsoleViewModel"/> instance currently in use
+        /// </summary>
+        public ConsoleViewModel ViewModel => (ConsoleViewModel)DataContext;
 
         /// <summary>
         /// Forces all the displayed commands to be rendered again with updated settings

@@ -3,9 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
@@ -18,23 +16,30 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// The <see cref="IEmailService"/> instance currently in use
         /// </summary>
-        private readonly IEmailService EmailService = Ioc.Default.GetRequiredService<IEmailService>();
+        private readonly IEmailService EmailService;
 
         /// <summary>
         /// The <see cref="IStoreService"/> instance currently in use
         /// </summary>
-        private readonly IStoreService StoreService = Ioc.Default.GetRequiredService<IStoreService>();
+        private readonly IStoreService StoreService;
 
         /// <summary>
         /// The <see cref="ISystemInformationService"/> instance currently in use
         /// </summary>
-        private readonly ISystemInformationService SystemInformationService = Ioc.Default.GetRequiredService<ISystemInformationService>();
+        private readonly ISystemInformationService SystemInformationService;
 
         /// <summary>
         /// Creates a new <see cref="ReviewPromptSubPageViewModel"/> instance
         /// </summary>
-        public ReviewPromptSubPageViewModel()
+        /// <param name="emailService">The <see cref="IEmailService"/> instance to use</param>
+        /// <param name="storeService">The <see cref="IStoreService"/> instance to use</param>
+        /// <param name="systemInformationService">The <see cref="ISystemInformationService"/> instance to use</param>
+        public ReviewPromptSubPageViewModel(IEmailService emailService, IStoreService storeService, ISystemInformationService systemInformationService)
         {
+            EmailService = emailService;
+            StoreService = storeService;
+            SystemInformationService = systemInformationService;
+
             ReviewCommand = new AsyncRelayCommand(StoreService.RequestReviewAsync);
             FeedbackEmailCommand = new AsyncRelayCommand(SendFeedbackEmailAsync);
         }

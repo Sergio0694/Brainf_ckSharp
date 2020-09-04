@@ -1,4 +1,6 @@
 ﻿using Windows.UI.Xaml.Controls;
+using Brainf_ckSharp.Shared.ViewModels.Controls;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel
 {
@@ -10,6 +12,14 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel
         public VirtualKeyboard()
         {
             this.InitializeComponent();
+            this.DataContext = App.Current.Services.GetRequiredService<VirtualKeyboardViewModel>();
+
+            ViewModel.IsActive = true;
         }
+
+        /// <summary>
+        /// Gets the <see cref="VirtualKeyboardViewModel"/> instance currently in use
+        /// </summary>
+        public VirtualKeyboardViewModel ViewModel => (VirtualKeyboardViewModel)DataContext;
     }
 }

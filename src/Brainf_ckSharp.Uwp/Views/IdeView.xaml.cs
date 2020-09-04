@@ -16,7 +16,6 @@ using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Brainf_ckSharp.Uwp.Themes;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 using TextChangedEventArgs = Brainf_ckSharp.Uwp.Controls.Ide.TextChangedEventArgs;
@@ -33,14 +32,28 @@ namespace Brainf_ckSharp.Uwp.Views
         public IdeView()
         {
             this.InitializeComponent();
+            this.DataContext = App.Current.Services.GetRequiredService<IdeViewModel>();
 
-            CodeEditor.RenderWhitespaceCharacters = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<bool>(SettingsKeys.RenderWhitespaces);
-            CodeEditor.SyntaxHighlightTheme = Ioc.Default.GetRequiredService<ISettingsService>().GetValue<IdeTheme>(SettingsKeys.IdeTheme).AsBrainf_ckTheme();
+            ViewModel.ScriptRunRequested += IdeViewModel_OnScriptRunRequested;
+            ViewModel.ScriptDebugRequested += IdeViewModel_OnScriptDebugRequested;
+            ViewModel.CharacterAdded += ViewModel_CharacterAdded;
+            ViewModel.CharacterDeleted += ViewModel_CharacterDeleted;
+            ViewModel.CodeLoaded += ViewModel_CodeLoaded;
+            ViewModel.CodeSaved += ViewModel_CodeSaved;
+            ViewModel.StateRestored += ViewModel_OnStateRestored;
+
+            CodeEditor.RenderWhitespaceCharacters = App.Current.Services.GetRequiredService<ISettingsService>().GetValue<bool>(SettingsKeys.RenderWhitespaces);
+            CodeEditor.SyntaxHighlightTheme = App.Current.Services.GetRequiredService<ISettingsService>().GetValue<IdeTheme>(SettingsKeys.IdeTheme).AsBrainf_ckTheme();
 
             Messenger.Default.Register<ValueChangedMessage<VirtualKey>>(this, m => CodeEditor.Move(m.Value));
             Messenger.Default.Register<IdeThemeSettingChangedMessage>(this, m => CodeEditor.SyntaxHighlightTheme = m.Value.AsBrainf_ckTheme());
             Messenger.Default.Register<RenderWhitespacesSettingChangedMessage>(this, m => CodeEditor.RenderWhitespaceCharacters = m.Value);
         }
+
+        /// <summary>
+        /// Gets the <see cref="IdeViewModel"/> instance currently in use
+        /// </summary>
+        public IdeViewModel ViewModel => (IdeViewModel)DataContext;
 
         /// <summary>
         /// Restores the IDE state when it is loaded
@@ -96,7 +109,7 @@ namespace Brainf_ckSharp.Uwp.Views
         /// </summary>
         /// <param name="sender">The current <see cref="IdeViewModel"/> instance</param>
         /// <param name="e">The operator character to add to the text</param>
-        private void ViewModelCharacterAdded(object sender, char e)
+        private void ViewModel_CharacterAdded(object sender, char e)
         {
             CodeEditor.TypeCharacter(e);
         }
@@ -181,7 +194,7 @@ namespace Brainf_ckSharp.Uwp.Views
                     where fieldValue == snippet
                     select fieldInfo.Name).First();
 
-                Ioc.Default.GetRequiredService<IAnalyticsService>().Log(EventNames.InsertCodeSnippet, (nameof(CodeSnippets), name));
+                App.Current.Services.GetRequiredService<IAnalyticsService>().Log(EventNames.InsertCodeSnippet, (nameof(CodeSnippets), name));
 
                 CodeEditor.InsertText(snippet);
             }
@@ -194,7 +207,7 @@ namespace Brainf_ckSharp.Uwp.Views
         /// <param name="args">The <see cref="BreakpointToggleEventArgs"/> instance for the event</param>
         private void CodeEditor_OnBreakpointAdded(Brainf_ckIde sender, BreakpointToggleEventArgs args)
         {
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(
+            App.Current.Services.GetRequiredService<IAnalyticsService>().Log(
                 EventNames.BreakpointAdded,
                 (nameof(BreakpointToggleEventArgs.Row), args.Row.ToString()),
                 (nameof(BreakpointToggleEventArgs.Count), args.Count.ToString()));
@@ -207,7 +220,7 @@ namespace Brainf_ckSharp.Uwp.Views
         /// <param name="args">The <see cref="BreakpointToggleEventArgs"/> instance for the event</param>
         private void CodeEditor_OnBreakpointRemoved(Brainf_ckIde sender, BreakpointToggleEventArgs args)
         {
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(
+            App.Current.Services.GetRequiredService<IAnalyticsService>().Log(
                 EventNames.BreakpointRemoved,
                 (nameof(BreakpointToggleEventArgs.Row), args.Row.ToString()),
                 (nameof(BreakpointToggleEventArgs.Count), args.Count.ToString()));
@@ -220,7 +233,7 @@ namespace Brainf_ckSharp.Uwp.Views
         /// <param name="args">The number of removed breakpoints</param>
         private void CodeEditor_OnBreakpointsCleared(Brainf_ckIde sender, int args)
         {
-            Ioc.Default.GetRequiredService<IAnalyticsService>().Log(EventNames.BreakpointsCleared, (nameof(ItemCollection.Count), args.ToString()));
+            App.Current.Services.GetRequiredService<IAnalyticsService>().Log(EventNames.BreakpointsCleared, (nameof(ItemCollection.Count), args.ToString()));
         }
     }
 }

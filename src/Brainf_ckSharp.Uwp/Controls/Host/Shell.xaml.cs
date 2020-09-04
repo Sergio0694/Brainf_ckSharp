@@ -6,6 +6,7 @@ using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums.Settings;
+using Brainf_ckSharp.Shared.ViewModels;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.Settings;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide;
@@ -13,7 +14,6 @@ using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views.UnicodeCharactersMap;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Mvvm.Messaging.Messages;
@@ -31,6 +31,13 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         public Shell()
         {
             this.InitializeComponent();
+            this.DataContext = App.Current.Services.GetRequiredService<ShellViewModel>();
+
+            ViewModel.UserGuideRequested += ViewModel_OnUserGuideRequested;
+            ViewModel.UnicodeMapRequested += ViewModel_OnUnicodeMapRequested;
+            ViewModel.SettingsRequested += ViewModel_OnSettingsRequested;
+            ViewModel.AboutInfoRequested += ViewModel_OnAboutInfoRequested;
+            ViewModel.CodeLibraryRequested += ViewModel_OnCodeLibraryRequested;
 
             // Override the starting view if there is a file request pending
             if (App.Current.IsFileRequestPending)
@@ -38,6 +45,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
                 ViewModel.SelectedView = ViewType.Ide;
             }
         }
+
+        /// <summary>
+        /// Gets the <see cref="ShellViewModel"/> instance currently in use
+        /// </summary>
+        public ShellViewModel ViewModel => (ShellViewModel)DataContext;
 
         /// <summary>
         /// Displays the review prompt, if needed
@@ -110,7 +122,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         {
             if (((Pivot)sender).SelectedIndex == 1)
             {
-                Ioc.Default.GetRequiredService<IAnalyticsService>().Log(EventNames.CompactMemoryViewerOpened);
+                App.Current.Services.GetRequiredService<IAnalyticsService>().Log(EventNames.CompactMemoryViewerOpened);
             }
         }
     }

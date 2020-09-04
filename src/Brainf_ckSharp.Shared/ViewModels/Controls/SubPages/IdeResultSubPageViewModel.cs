@@ -8,14 +8,11 @@ using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums;
-using Brainf_ckSharp.Shared.Extensions.Microsoft.Toolkit.Collections;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Models.Ide.Views;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Nito.AsyncEx;
@@ -29,7 +26,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
         /// </summary>
-        private readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+        private readonly ISettingsService SettingsService;
 
         /// <summary>
         /// A mutex to avoid race conditions when handling executions and tokens
@@ -54,8 +51,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Creates a new <see cref="IdeResultSubPageViewModel"/> instance
         /// </summary>
-        public IdeResultSubPageViewModel()
+        /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
+        public IdeResultSubPageViewModel(ISettingsService settingsService)
         {
+            SettingsService = settingsService;
+
             LoadDataCommand = new AsyncRelayCommand(LoadDataAsync);
             ContinueCommand = new AsyncRelayCommand(ContinueAsync);
             SkipCommand = new AsyncRelayCommand(SkipAsync);
@@ -242,7 +242,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             {
                 var model = new IdeResultWithSectionInfo(section, result);
 
-                Source.Add(section, model);
+                Source.AddGroup(section, model);
             }
 
             // The order of items in the result view is as follows:

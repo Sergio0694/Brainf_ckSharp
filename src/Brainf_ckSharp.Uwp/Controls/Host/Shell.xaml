@@ -13,22 +13,12 @@
     xmlns:host="using:Brainf_ckSharp.Uwp.Controls.SubPages.Host"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
-    xmlns:viewModels="using:Brainf_ckSharp.Shared.ViewModels"
     xmlns:local="using:Brainf_ckSharp.Uwp.Controls.Host"
     xmlns:settings="using:Brainf_ckSharp.Shared.Enums.Settings"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400"
     Loaded="Shell_OnLoaded">
-    <UserControl.DataContext>
-        <viewModels:ShellViewModel
-            x:Name="ViewModel"
-            UserGuideRequested="ViewModel_OnUserGuideRequested"
-            UnicodeMapRequested="ViewModel_OnUnicodeMapRequested"
-            SettingsRequested="ViewModel_OnSettingsRequested"
-            AboutInfoRequested="ViewModel_OnAboutInfoRequested"
-            CodeLibraryRequested="ViewModel_OnCodeLibraryRequested"/>
-    </UserControl.DataContext>
     <UserControl.Resources>
 
         <!--Converter for the two way binding. This is needed because x:Bind
@@ -104,7 +94,7 @@
                             <inputPanel:VirtualKeyboard/>
                         </PivotItem>
                         <PivotItem>
-                            <inputPanel:CompactMemoryViewer/>
+                            <inputPanel:CompactMemoryViewer attachedProperties:ObservableRecipientHelper.IsActive="{x:Bind StdinHeader.StdinSelectedIndex.Equals(1), Mode=OneWay}"/>
                         </PivotItem>
                     </controls:LockedPivot>
                 </controls:ExpanderControl.ExpandableContent>

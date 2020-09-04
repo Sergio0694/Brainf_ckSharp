@@ -24,9 +24,15 @@ namespace Brainf_ckSharp.Uwp
         public App(string id)
         {
             Id = id;
+            Services = ConfigureServices();
 
             this.InitializeComponent();
         }
+
+        /// <summary>
+        /// Gets the current <see cref="App"/> instance in use
+        /// </summary>
+        public new static App Current => (App)Application.Current;
 
         /// <summary>
         /// Gets the unique id associated with this app instance
@@ -34,9 +40,9 @@ namespace Brainf_ckSharp.Uwp
         public string Id { get; }
 
         /// <summary>
-        /// Gets the current <see cref="App"/> instance in use
+        /// Gets the <see cref="IServiceProvider"/> instance to resolve application services
         /// </summary>
-        public new static App Current => (App)Application.Current;
+        public IServiceProvider Services { get; }
 
         /// <summary>
         /// The entry point for the whole application

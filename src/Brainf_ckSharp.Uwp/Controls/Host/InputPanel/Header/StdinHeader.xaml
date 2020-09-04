@@ -7,13 +7,9 @@
     xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:local="using:Brainf_ckSharp.Uwp.Controls.Host.InputPanel"
-    xmlns:controls="using:Brainf_ckSharp.Shared.ViewModels.Controls"
     mc:Ignorable="d"
     d:DesignHeight="48"
     d:DesignWidth="400">
-    <UserControl.DataContext>
-        <controls:StdinHeaderViewModel x:Name="ViewModel"/>
-    </UserControl.DataContext>
 
     <Grid
         Background="#44000000"

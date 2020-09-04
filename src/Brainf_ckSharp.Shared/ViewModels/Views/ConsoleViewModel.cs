@@ -17,8 +17,6 @@ using Brainf_ckSharp.Shared.Messages.Settings;
 using Brainf_ckSharp.Shared.Models.Console;
 using Brainf_ckSharp.Shared.Models.Console.Interfaces;
 using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Nito.AsyncEx;
 
@@ -29,17 +27,27 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
     /// <summary>
     /// A view model for an interactive REPL console for Brainf*ck/PBrain
     /// </summary>
-    public sealed class ConsoleViewModel : WorkspaceViewModelBase
+    public sealed class ConsoleViewModel : WorkspaceViewModelBase,
+        IRecipient<MemoryStateRequestMessage>,
+        IRecipient<RunCommandRequestMessage>,
+        IRecipient<DeleteOperatorRequestMessage>,
+        IRecipient<ClearCommandRequestMessage>,
+        IRecipient<RestartConsoleRequestMessage>,
+        IRecipient<ClearConsoleScreenRequestMessage>,
+        IRecipient<RepeatCommandRequestMessage>,
+        IRecipient<OverflowModeSettingChangedMessage>,
+        IRecipient<MemorySizeSettingChangedMessage>,
+        IRecipient<OperatorKeyPressedNotificationMessage>
     {
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
         /// </summary>
-        private readonly ISettingsService SettingsService = Ioc.Default.GetRequiredService<ISettingsService>();
+        private readonly ISettingsService SettingsService;
 
         /// <summary>
         /// The <see cref="IKeyboardListenerService"/> instance currently in use
         /// </summary>
-        private readonly IKeyboardListenerService KeyboardListenerService = Ioc.Default.GetRequiredService<IKeyboardListenerService>();
+        private readonly IKeyboardListenerService KeyboardListenerService;
 
         /// <summary>
         /// An <see cref="AsyncLock"/> instance to synchronize accesses to the console results
@@ -49,38 +57,33 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <summary>
         /// Creates a new <see cref="ConsoleViewModel"/> instance with a new command ready to use
         /// </summary>
-        public ConsoleViewModel()
+        /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
+        /// <param name="keyboardListenerService">The <see cref="IKeyboardListenerService"/> instance to use</param>
+        public ConsoleViewModel(ISettingsService settingsService, IKeyboardListenerService keyboardListenerService)
         {
+            SettingsService = settingsService;
+            KeyboardListenerService = keyboardListenerService;
+
             // Initialize the machine state with the current user settings
             _MachineState = MachineStateProvider.Create(
                 SettingsService.GetValue<int>(SettingsKeys.MemorySize),
                 SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode));
-
-            Messenger.Register<MemoryStateRequestMessage>(this, m => m.Reply(MachineState));
-            Messenger.Register<RunCommandRequestMessage>(this, m => _ = ExecuteCommandAsync());
-            Messenger.Register<DeleteOperatorRequestMessage>(this, m => _ = DeleteLastOperatorAsync());
-            Messenger.Register<ClearCommandRequestMessage>(this, m => _ = ResetCommandAsync());
-            Messenger.Register<RestartConsoleRequestMessage>(this, m => _ = RestartAsync());
-            Messenger.Register<ClearConsoleScreenRequestMessage>(this, m => _ = ClearScreenAsync());
-            Messenger.Register<RepeatCommandRequestMessage>(this, m => _ = RepeatLastScriptAsync());
-            Messenger.Register<OverflowModeSettingChangedMessage>(this, m => _ = RestartAsync());
-            Messenger.Register<MemorySizeSettingChangedMessage>(this, m => _ = RestartAsync());
         }
 
         /// <inheritdoc/>
         protected override void OnActivated()
         {
-            KeyboardListenerService.CharacterReceived += TryAddOperator;
+            base.OnActivated();
 
-            Messenger.Register<OperatorKeyPressedNotificationMessage>(this, m => _ = TryAddOperatorAsync(m.Value));
+            KeyboardListenerService.CharacterReceived += TryAddOperator;
         }
 
         /// <inheritdoc/>
         protected override void OnDeactivated()
         {
-            KeyboardListenerService.CharacterReceived -= TryAddOperator;
+            base.OnDeactivated();
 
-            Messenger.Unregister<OperatorKeyPressedNotificationMessage>(this);
+            KeyboardListenerService.CharacterReceived -= TryAddOperator;
         }
 
         /// <inheritdoc/>
@@ -110,7 +113,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// Adds a new operator to the last command in the console
         /// </summary>
         /// <param name="c">The current operator to add</param>
-        public void TryAddOperator(char c)
+        private void TryAddOperator(char c)
         {
             _ = TryAddOperatorAsync(c);
         }
@@ -119,7 +122,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// Adds a new operator to the last command in the console
         /// </summary>
         /// <param name="c">The current operator to add</param>
-        public async Task TryAddOperatorAsync(char c)
+        private async Task TryAddOperatorAsync(char c)
         {
             using (await ExecutionMutex.LockAsync())
             {
@@ -137,7 +140,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <summary>
         /// Deletes the last operator in the last command in the console
         /// </summary>
-        public async Task DeleteLastOperatorAsync()
+        private async Task DeleteLastOperatorAsync()
         {
             using (await ExecutionMutex.LockAsync())
             {
@@ -156,7 +159,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <summary>
         /// Resets the currently active console command
         /// </summary>
-        public async Task ResetCommandAsync()
+        private async Task ResetCommandAsync()
         {
             using (await ExecutionMutex.LockAsync())
             {
@@ -173,7 +176,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <summary>
         /// Restarts the current console memory state
         /// </summary>
-        public async Task RestartAsync()
+        private async Task RestartAsync()
         {
             using (await ExecutionMutex.LockAsync())
             {
@@ -198,7 +201,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <summary>
         /// Clears the current console output
         /// </summary>
-        public async Task ClearScreenAsync()
+        private async Task ClearScreenAsync()
         {
             using (await ExecutionMutex.LockAsync())
             {
@@ -213,7 +216,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <summary>
         /// Executes the current console command
         /// </summary>
-        public async Task ExecuteCommandAsync()
+        private async Task ExecuteCommandAsync()
         {
             using (await ExecutionMutex.LockAsync())
             {
@@ -271,7 +274,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <summary>
         /// Repeats the last executed script
         /// </summary>
-        public async Task RepeatLastScriptAsync()
+        private async Task RepeatLastScriptAsync()
         {
             using (await ExecutionMutex.LockAsync())
             {
@@ -285,6 +288,66 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                     await ExecuteCommandAsync(previous.Command);
                 }
             }
+        }
+
+        /// <inheritdoc/>
+        void IRecipient<MemoryStateRequestMessage>.Receive(MemoryStateRequestMessage message)
+        {
+            message.Reply(MachineState);
+        }
+
+        /// <inheritdoc/>
+        void IRecipient<RunCommandRequestMessage>.Receive(RunCommandRequestMessage message)
+        {
+            _ = ExecuteCommandAsync();
+        }
+
+        /// <inheritdoc/>
+        void IRecipient<DeleteOperatorRequestMessage>.Receive(DeleteOperatorRequestMessage message)
+        {
+            _ = DeleteLastOperatorAsync();
+        }
+
+        /// <inheritdoc/>
+        void IRecipient<ClearCommandRequestMessage>.Receive(ClearCommandRequestMessage message)
+        {
+            _ = ResetCommandAsync();
+        }
+
+        /// <inheritdoc/>
+        void IRecipient<RestartConsoleRequestMessage>.Receive(RestartConsoleRequestMessage message)
+        {
+            _ = RestartAsync();
+        }
+
+        /// <inheritdoc/>
+        void IRecipient<ClearConsoleScreenRequestMessage>.Receive(ClearConsoleScreenRequestMessage message)
+        {
+            _ = ClearScreenAsync();
+        }
+
+        /// <inheritdoc/>
+        void IRecipient<RepeatCommandRequestMessage>.Receive(RepeatCommandRequestMessage message)
+        {
+            _ = RepeatLastScriptAsync();
+        }
+
+        /// <inheritdoc/>
+        void IRecipient<OverflowModeSettingChangedMessage>.Receive(OverflowModeSettingChangedMessage message)
+        {
+            _ = RestartAsync();
+        }
+
+        /// <inheritdoc/>
+        void IRecipient<MemorySizeSettingChangedMessage>.Receive(MemorySizeSettingChangedMessage message)
+        {
+            _ = RestartAsync();
+        }
+
+        /// <inheritdoc/>
+        void IRecipient<OperatorKeyPressedNotificationMessage>.Receive(OperatorKeyPressedNotificationMessage message)
+        {
+            _ = TryAddOperatorAsync(message.Value);
         }
     }
 }

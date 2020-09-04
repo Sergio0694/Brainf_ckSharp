@@ -11,9 +11,6 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
-    <UserControl.DataContext>
-        <controls:VirtualKeyboardViewModel x:Name="ViewModel"/>
-    </UserControl.DataContext>
 
     <!--Operators pad-->
     <Grid

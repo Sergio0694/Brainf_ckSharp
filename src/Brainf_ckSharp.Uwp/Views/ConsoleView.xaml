@@ -8,13 +8,9 @@
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     xmlns:convertersConsole="using:Brainf_ckSharp.Uwp.Converters.Console"
     xmlns:console="using:Brainf_ckSharp.Shared.Models.Console"
-    xmlns:views="using:Brainf_ckSharp.Shared.ViewModels.Views"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
-    <UserControl.DataContext>
-        <views:ConsoleViewModel x:Name="ViewModel"/>
-    </UserControl.DataContext>
     <UserControl.Resources>
 
         <!--Command template-->

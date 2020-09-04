@@ -15,7 +15,6 @@
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     xmlns:models="using:Brainf_ckSharp.Shared.Models.Ide.Views"
     xmlns:collections="using:Microsoft.Toolkit.Collections"
-    xmlns:subPages="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
@@ -29,9 +28,6 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <UserControl.DataContext>
-        <subPages:IdeResultSubPageViewModel x:Name="ViewModel"/>
-    </UserControl.DataContext>
     <interactivity:Interaction.Behaviors>
         <core:EventTriggerBehavior EventName="Loaded">
             <core:InvokeCommandAction Command="{x:Bind ViewModel.LoadDataCommand}"/>
