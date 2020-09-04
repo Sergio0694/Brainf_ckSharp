@@ -22,12 +22,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
             InsertOperatorCommand = new RelayCommand<char>(InsertOperator);
         }
 
-        /// <inheritdoc/>
-        public void Receive(ShowPBrainButtonsSettingsChangedMessage message)
-        {
-            IsPBrainModeEnabled = message.Value;
-        }
-
         /// <summary>
         /// Gets the <see cref="ICommand"/> instance responsible for inserting a new Brainf*ck/PBrain operator
         /// </summary>
@@ -51,6 +45,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         private void InsertOperator(char op)
         {
             Messenger.Send(new OperatorKeyPressedNotificationMessage(op));
+        }
+
+        /// <inheritdoc/>
+        public void Receive(ShowPBrainButtonsSettingsChangedMessage message)
+        {
+            IsPBrainModeEnabled = message.Value;
         }
     }
 }

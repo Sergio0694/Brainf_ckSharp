@@ -23,12 +23,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
             MachineState = Messenger.Send<MemoryStateRequestMessage>().Response;
         }
 
-        /// <inheritdoc/>
-        public void Receive(PropertyChangedMessage<IReadOnlyMachineState> message)
-        {
-            MachineState = message.NewValue;
-        }
-
         /// <summary>
         /// Gets the current collection of <see cref="Brainf_ckMemoryCellChunk"/> instances
         /// </summary>
@@ -78,8 +72,13 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
                         Source.Add(new Brainf_ckMemoryCellChunk(state, i));
                     }
                 }
-                
             }
+        }
+
+        /// <inheritdoc/>
+        public void Receive(PropertyChangedMessage<IReadOnlyMachineState> message)
+        {
+            MachineState = message.NewValue;
         }
     }
 }

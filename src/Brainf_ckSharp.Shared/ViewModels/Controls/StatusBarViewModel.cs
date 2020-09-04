@@ -68,17 +68,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
             Timer = new Timer(vm => ((StatusBarViewModel)vm).RunBackgroundCode(), this, default, TimeSpan.FromSeconds(2));
         }
 
-        /// <inheritdoc/>
-        public void Receive(PropertyChangedMessage<bool> message)
-        {
-            if (message.PropertyName == nameof(IsActive) &&
-                message.NewValue &&
-                message.Sender is WorkspaceViewModelBase viewModel)
-            {
-                SetupActiveViewModel(viewModel);
-            }
-        }
-
         private Option<InterpreterResult>? _BackgroundExecutionResult;
 
         /// <summary>
@@ -166,6 +155,17 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
 
             // Update the property from the original synchronization context
             Context.Post(_ => BackgroundExecutionResult = result, null);
+        }
+
+        /// <inheritdoc/>
+        public void Receive(PropertyChangedMessage<bool> message)
+        {
+            if (message.PropertyName == nameof(IsActive) &&
+                message.NewValue &&
+                message.Sender is WorkspaceViewModelBase viewModel)
+            {
+                SetupActiveViewModel(viewModel);
+            }
         }
     }
 }

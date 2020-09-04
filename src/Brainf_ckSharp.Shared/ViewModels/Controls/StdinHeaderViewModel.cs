@@ -22,6 +22,17 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
             SettingsService = settingsService;
         }
 
+        private string _Text = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the current text in the stdin buffer
+        /// </summary>
+        public string Text
+        {
+            get => _Text;
+            set => SetProperty(ref _Text, value);
+        }
+
         /// <inheritdoc/>
         public void Receive(StdinRequestMessage request)
         {
@@ -33,17 +44,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
             {
                 Text = string.Empty;
             }
-        }
-
-        private string _Text = string.Empty;
-
-        /// <summary>
-        /// Gets or sets the current text in the stdin buffer
-        /// </summary>
-        public string Text
-        {
-            get => _Text;
-            set => SetProperty(ref _Text, value);
         }
     }
 }
