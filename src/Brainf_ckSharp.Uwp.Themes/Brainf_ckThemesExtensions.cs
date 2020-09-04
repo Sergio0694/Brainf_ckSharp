@@ -1,6 +1,6 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Shared.Enums.Settings;
+using Microsoft.Toolkit.Diagnostics;
 
 namespace Brainf_ckSharp.Uwp.Themes
 {
@@ -25,7 +25,7 @@ namespace Brainf_ckSharp.Uwp.Themes
                 IdeTheme.Dracula => Brainf_ckThemes.Dracula,
                 IdeTheme.OneDark => Brainf_ckThemes.OneDark,
                 IdeTheme.Vim => Brainf_ckThemes.Vim,
-                _ => throw new ArgumentOutOfRangeException($"Invalid theme: {theme}")
+                _ => ThrowHelper.ThrowArgumentOutOfRangeException<Brainf_ckTheme>("Invalid requested theme")
             };
         }
     }

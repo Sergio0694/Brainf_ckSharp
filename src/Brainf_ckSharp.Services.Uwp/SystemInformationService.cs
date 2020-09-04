@@ -17,8 +17,8 @@ namespace Brainf_ckSharp.Services.Uwp.SystemInformation
         /// </summary>
         public SystemInformationService()
         {
-            ApplicationVersion = UwpInfo.ApplicationVersion.ToFormattedString();
-            CpuArchitecture = UwpInfo.OperatingSystemArchitecture switch
+            ApplicationVersion = UwpInfo.Instance.ApplicationVersion.ToFormattedString();
+            CpuArchitecture = UwpInfo.Instance.OperatingSystemArchitecture switch
             {
                 ProcessorArchitecture.X86 => CpuArchitecture.X86,
                 ProcessorArchitecture.X64 => CpuArchitecture.X64,
@@ -26,8 +26,8 @@ namespace Brainf_ckSharp.Services.Uwp.SystemInformation
                 ProcessorArchitecture.Arm64 => CpuArchitecture.Arm64,
                 _ => CpuArchitecture.Unknown
             };
-            OperatingSystem = UwpInfo.OperatingSystem;
-            OperatingSystemVersion = UwpInfo.OperatingSystemVersion.ToString();
+            OperatingSystem = UwpInfo.Instance.OperatingSystem;
+            OperatingSystemVersion = UwpInfo.Instance.OperatingSystemVersion.ToString();
         }
 
         /// <inheritdoc/>

@@ -6,6 +6,7 @@ using Windows.UI.Xaml.Media;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Diagnostics;
 
 #nullable enable
 
@@ -57,7 +58,9 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates
         // Opens the featured link
         private void RootButton_Clicked(object sender, RoutedEventArgs e)
         {
-            _ = Launcher.LaunchUriAsync(new Uri(NavigationUrl ?? throw new InvalidOperationException("No valid uri available")));
+            Guard.IsNotNull(NavigationUrl, nameof(NavigationUrl));
+
+            _ = Launcher.LaunchUriAsync(new Uri(NavigationUrl));
 
             App.Current.Services.GetRequiredService<IAnalyticsService>().Log(EventNames.PayPalDonationOpened);
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
@@ -212,7 +211,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     _SelectionHighlightBorder.BorderBrush = null;
                     _SelectionHighlightBorder.Background = new SolidColorBrush(theme.LineHighlightColor);
                     break;
-                default: throw new ArgumentException($"Invalid line highlight style: {theme.LineHighlightStyle}");
+                default:
+                    ThrowHelper.ThrowArgumentException("Invalid line highlight style");
+                    break;
             }
         }
     }

@@ -1,6 +1,6 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Shared.Models;
+using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Uwp.Extensions;
 
 namespace Brainf_ckSharp.Uwp.Converters.SubPages
@@ -26,7 +26,7 @@ namespace Brainf_ckSharp.Uwp.Converters.SubPages
             {
                 (0, 31) => ControlCharacters,
                 (128, 159) => NonVisible,
-                _ => throw new ArgumentOutOfRangeException(nameof(interval), $"Invalid unicode interval: {interval}")
+                _ => ThrowHelper.ThrowArgumentOutOfRangeException<string>(nameof(interval), "Invalid unicode interval")
             };
         }
     }

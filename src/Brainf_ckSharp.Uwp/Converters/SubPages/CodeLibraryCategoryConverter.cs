@@ -1,7 +1,7 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Shared.Enums;
 using Microsoft.Toolkit.Collections;
+using Microsoft.Toolkit.Diagnostics;
 
 namespace Brainf_ckSharp.Uwp.Converters.SubPages
 {
@@ -23,7 +23,7 @@ namespace Brainf_ckSharp.Uwp.Converters.SubPages
                 CodeLibrarySection.Favorites => "Favorites",
                 CodeLibrarySection.Recent => "Recent",
                 CodeLibrarySection.Samples => "Samples",
-                _ => throw new ArgumentException($"Invalid input value: {section}", nameof(section))
+                _ => ThrowHelper.ThrowArgumentException<string>(nameof(section), "Invalid target section")
             };
         }
 
@@ -46,7 +46,7 @@ namespace Brainf_ckSharp.Uwp.Converters.SubPages
                 CodeLibrarySection.Samples => group.Count > 0
                     ? $"{group.Count} sample script{(group.Count > 1 ? "s" : string.Empty)}"
                     : "No sample scripts",
-                _ => throw new ArgumentException($"Invalid group value: {group.Key}", nameof(group))
+                _ => ThrowHelper.ThrowArgumentException<string>(nameof(group), "Invalid group value")
             };
         }
     }

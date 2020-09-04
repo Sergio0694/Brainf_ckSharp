@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Toolkit.Diagnostics;
 
 namespace Brainf_ckSharp.Shared.Extensions.System.Collections.Generic
 {
@@ -22,6 +23,7 @@ namespace Brainf_ckSharp.Shared.Extensions.System.Collections.Generic
             if (list.Count == 0)
             {
                 list.Add(item);
+
                 return;
             }
 
@@ -29,6 +31,7 @@ namespace Brainf_ckSharp.Shared.Extensions.System.Collections.Generic
             if (comparer(list[0], item) <= 0)
             {
                 list.Insert(0, item);
+
                 return;
             }
 
@@ -36,6 +39,7 @@ namespace Brainf_ckSharp.Shared.Extensions.System.Collections.Generic
             if (comparer(list[list.Count - 1], item) >= 0)
             {
                 list.Add(item);
+
                 return;
             }
 
@@ -45,11 +49,12 @@ namespace Brainf_ckSharp.Shared.Extensions.System.Collections.Generic
                 if (comparer(list[i], item) <= 0)
                 {
                     list.Insert(i, item);
+
                     return;
                 }
             }
 
-            throw new InvalidOperationException("Error inserting the input item");
+            ThrowHelper.ThrowInvalidOperationException("Error inserting the input item");
         }
     }
 }

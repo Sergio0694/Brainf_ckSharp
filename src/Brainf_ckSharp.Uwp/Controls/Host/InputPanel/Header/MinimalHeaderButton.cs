@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Diagnostics;
+using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -36,7 +37,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel
         {
             base.OnApplyTemplate();
 
-            _RootButton = (Button)GetTemplateChild(RootButtonName) ?? throw new InvalidOperationException($"Can't find {RootButtonName}");
+            _RootButton = (Button?)GetTemplateChild(RootButtonName)
+                          ?? ThrowHelper.ThrowInvalidOperationException<Button>("Can't find " + RootButtonName);
+
             _RootButton.Click += RootButton_Click;
 
             UpdateVisualState();

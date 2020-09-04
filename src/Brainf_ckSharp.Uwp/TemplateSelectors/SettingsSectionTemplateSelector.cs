@@ -1,7 +1,7 @@
-﻿using System;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections;
+using Microsoft.Toolkit.Diagnostics;
 
 #nullable enable
 
@@ -30,14 +30,22 @@ namespace Brainf_ckSharp.Uwp.TemplateSelectors
         /// <inheritdoc/>
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            return item switch
+            Guard.IsNotNull(item, nameof(item));
+
+            DataTemplate? template = item switch
             {
                 IdeSettingsSectionViewModel _ => IdeSettingsTemplate,
                 UISettingsSectionViewModel _ => UISettingsTemplate,
                 InterpreterSettingsSectionViewModel _ => InterpreterSettingsTemplate,
-                null => throw new ArgumentNullException(nameof(item), "The input item can't be null"),
-                _ => throw new ArgumentException($"Invalid section: {item}", nameof(item))
-            } ?? throw new ArgumentException($"Missing template for section: {item}", nameof(item));
+                _ => ThrowHelper.ThrowArgumentException<DataTemplate>("Invalid requested section")
+            };
+
+            if (template is null)
+            {
+                ThrowHelper.ThrowInvalidOperationException("The requested template is null");
+            }
+
+            return template;
         }
     }
 }

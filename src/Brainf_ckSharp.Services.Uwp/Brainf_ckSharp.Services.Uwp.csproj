@@ -150,7 +150,7 @@
       <Version>7.0.0-build.96.g23f56f3fc9</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp">
-      <Version>6.1.0</Version>
+      <Version>7.0.0-build.194</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

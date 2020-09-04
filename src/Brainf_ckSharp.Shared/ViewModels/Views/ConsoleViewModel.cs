@@ -17,6 +17,7 @@ using Brainf_ckSharp.Shared.Messages.Settings;
 using Brainf_ckSharp.Shared.Models.Console;
 using Brainf_ckSharp.Shared.Models.Console.Interfaces;
 using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
+using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Nito.AsyncEx;
 
@@ -133,7 +134,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
                     Text = command.Command.AsMemory();
                 }
-                else throw new InvalidOperationException("Missing console command to modify");
+                else ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
             }
         }
 
@@ -152,7 +153,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
                     Text = command.Command.AsMemory();
                 }
-                else throw new InvalidOperationException("Missing console command to modify");
+                else ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
             }
         }
 
@@ -169,7 +170,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
                     Text = Memory<char>.Empty;
                 }
-                else throw new InvalidOperationException("Missing console command to modify");
+                else ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
             }
         }
 
@@ -184,7 +185,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                 {
                     command.IsActive = false;
                 }
-                else throw new InvalidOperationException("Missing console command to modify");
+                else ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
 
                 Source.Add(new ConsoleRestart());
 
@@ -220,7 +221,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         {
             using (await ExecutionMutex.LockAsync())
             {
-                if (!(Source.LastOrDefault() is ConsoleCommand command)) throw new InvalidOperationException("Missing console command to run");
+                if (!(Source.LastOrDefault() is ConsoleCommand command))
+                {
+                    ThrowHelper.ThrowInvalidOperationException("Missing console command to run");
+
+                    return;
+                }
 
                 command.IsActive = false;
 
@@ -280,7 +286,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
             {
                 if (Source.Reverse().OfType<ConsoleCommand>().Skip(1).FirstOrDefault() is ConsoleCommand previous)
                 {
-                    if (!(Source.LastOrDefault() is ConsoleCommand current)) throw new InvalidOperationException("Missing console command to run");
+                    if (!(Source.LastOrDefault() is ConsoleCommand current))
+                    {
+                        ThrowHelper.ThrowInvalidOperationException("Missing console command to run");
+
+                        return;
+                    }
 
                     current.IsActive = false;
                     current.Command = previous.Command;

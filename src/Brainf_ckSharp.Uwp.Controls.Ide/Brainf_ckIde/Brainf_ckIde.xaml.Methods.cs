@@ -8,6 +8,7 @@ using Windows.UI.Text;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System;
 using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.Windows.UI.Text;
+using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 using Microsoft.Toolkit.HighPerformance.Extensions;
 
@@ -93,7 +94,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 case VirtualKey.Right:
                     CodeEditBox.Document.Selection.MoveRight(TextRangeUnit.Character, 1, false);
                     break;
-                default: throw new ArgumentException($"Invalid key: {key}", nameof(key));
+                default:
+                    ThrowHelper.ThrowArgumentException(nameof(key), "Invalid virtual key");
+                    break;
             }
         }
 

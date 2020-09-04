@@ -1,6 +1,6 @@
-﻿using System;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Diagnostics;
 
 namespace Brainf_ckSharp.Uwp.AttachedProperties
 {
@@ -52,7 +52,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
             {
                 viewModel.IsActive = value;
             }
-            else throw new InvalidOperationException($"Invalid view model type: {@this.DataContext.GetType()}");
+            else ThrowHelper.ThrowInvalidOperationException("Invalid view model type");
         }
     }
 }

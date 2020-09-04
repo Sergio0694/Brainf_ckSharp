@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
@@ -13,6 +12,7 @@ using Brainf_ckSharp.Shared.Extensions.System.Collections.Generic;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Brainf_ckSharp.Shared.Models.Ide;
 using Microsoft.Toolkit.Collections;
+using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
@@ -87,7 +87,9 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
 
                 CodeLibraryEntry? entry = await CodeLibraryEntry.TryLoadFromFileAsync(file, item.Title);
 
-                return entry ?? throw new InvalidOperationException($"Failed to load {item.Title} sample");
+                if (entry is null) ThrowHelper.ThrowInvalidOperationException("Failed to load the requested sample");
+
+                return entry;
             }));
         }
 
@@ -168,8 +170,9 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
             {
                 // Deserialize the metadata and prepare the model
                 CodeMetadata metadata = string.IsNullOrEmpty(data) ? new CodeMetadata() : JsonSerializer.Deserialize<CodeMetadata>(data);
-                CodeLibraryEntry entry = await CodeLibraryEntry.TryLoadFromFileAsync(file, metadata)
-                                         ?? throw new InvalidOperationException("Failed to load source code");
+                CodeLibraryEntry? entry = await CodeLibraryEntry.TryLoadFromFileAsync(file, metadata);
+
+                if (entry is null) ThrowHelper.ThrowInvalidOperationException("Failed to load the source code");
 
                 recent.Add(entry);
             }
@@ -198,7 +201,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         {
             if (item is CodeLibraryEntry entry) _ = OpenFileAsync(entry);
             else if (item is CodeLibrarySection c) RequestOpenFile(c == CodeLibrarySection.Favorites);
-            else throw new ArgumentException("The input item can't be null");
+            else ThrowHelper.ThrowArgumentException("The input item is not valid");
         }
 
         /// <summary>

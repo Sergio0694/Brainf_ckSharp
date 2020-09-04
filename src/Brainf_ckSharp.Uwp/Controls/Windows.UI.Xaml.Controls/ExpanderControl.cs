@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -22,7 +22,9 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
         {
             base.OnApplyTemplate();
 
-            Button expanderButton = (Button)GetTemplateChild(ExpanderButtonName) ?? throw new InvalidOperationException($"Can't find {ExpanderButtonName}");
+            Button expanderButton = (Button?)GetTemplateChild(ExpanderButtonName)
+                                    ?? ThrowHelper.ThrowInvalidOperationException<Button>("Can't find " + ExpanderButtonName);
+
             expanderButton.Click += (s, e) => IsExpanded = !IsExpanded;
 
             if (IsExpanded) VisualStateManager.GoToState(this, ExpandedVisualStateName, false);

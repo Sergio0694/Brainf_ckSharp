@@ -2,7 +2,6 @@
 using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
@@ -119,9 +118,7 @@ namespace Brainf_ckSharp.Memory
         /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
-            return
-                ReferenceEquals(this, obj) ||
-                obj is TuringMachineState other && Equals(other);
+            return Equals(obj as IReadOnlyMachineState);
         }
 
         /// <inheritdoc/>
@@ -133,7 +130,7 @@ namespace Brainf_ckSharp.Memory
 
             if (_Buffer is null) ThrowObjectDisposedException();
 
-            TuringMachineState state = (TuringMachineState)other;
+            if (!(other is TuringMachineState state)) return false;
 
             if (state._Buffer is null) ThrowObjectDisposedException();
 
@@ -145,7 +142,6 @@ namespace Brainf_ckSharp.Memory
         }
 
         /// <inheritdoc/>
-        [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")] // Non immutable instance, hash code is allowed to change
         public override int GetHashCode()
         {
             if (_Buffer is null) ThrowObjectDisposedException();
@@ -153,9 +149,9 @@ namespace Brainf_ckSharp.Memory
             HashCode hashCode = default;
 
             hashCode.Add(Size);
-            hashCode.Add(_Position);
             hashCode.Add(Mode);
-            hashCode.Add(new ReadOnlySpan<ushort>(_Buffer, 0, Size));
+            hashCode.Add(_Position);
+            hashCode.Add<ushort>(_Buffer.AsSpan(0, Size));
 
             return hashCode.ToHashCode();
         }
@@ -210,7 +206,7 @@ namespace Brainf_ckSharp.Memory
         /// </summary>
         private static void ThrowObjectDisposedException()
         {
-            throw new ObjectDisposedException("The current machine state has been disposed");
+            throw new ObjectDisposedException(nameof(IReadOnlyMachineState), "The current machine state has been disposed");
         }
     }
 }
