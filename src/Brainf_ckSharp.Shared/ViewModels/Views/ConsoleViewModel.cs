@@ -28,17 +28,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
     /// <summary>
     /// A view model for an interactive REPL console for Brainf*ck/PBrain
     /// </summary>
-    public sealed class ConsoleViewModel : WorkspaceViewModelBase,
-        IRecipient<MemoryStateRequestMessage>,
-        IRecipient<RunCommandRequestMessage>,
-        IRecipient<DeleteOperatorRequestMessage>,
-        IRecipient<ClearCommandRequestMessage>,
-        IRecipient<RestartConsoleRequestMessage>,
-        IRecipient<ClearConsoleScreenRequestMessage>,
-        IRecipient<RepeatCommandRequestMessage>,
-        IRecipient<OverflowModeSettingChangedMessage>,
-        IRecipient<MemorySizeSettingChangedMessage>,
-        IRecipient<OperatorKeyPressedNotificationMessage>
+    public sealed class ConsoleViewModel : WorkspaceViewModelBase
     {
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
@@ -74,7 +64,16 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <inheritdoc/>
         protected override void OnActivated()
         {
-            base.OnActivated();
+            Messenger.Register<ConsoleViewModel, MemoryStateRequestMessage>(this, (r, m) => m.Reply(r.MachineState));
+            Messenger.Register<ConsoleViewModel, RunCommandRequestMessage>(this, (r, m) => _ = r.ExecuteCommandAsync());
+            Messenger.Register<ConsoleViewModel, DeleteOperatorRequestMessage>(this, (r, m) => _ = r.DeleteLastOperatorAsync());
+            Messenger.Register<ConsoleViewModel, ClearCommandRequestMessage>(this, (r, m) => _ = r.ResetCommandAsync());
+            Messenger.Register<ConsoleViewModel, RestartConsoleRequestMessage>(this, (r, m) => _ = r.RestartAsync());
+            Messenger.Register<ConsoleViewModel, ClearConsoleScreenRequestMessage>(this, (r, m) => _ = r.ClearScreenAsync());
+            Messenger.Register<ConsoleViewModel, RepeatCommandRequestMessage>(this, (r, m) => _ = r.RepeatLastScriptAsync());
+            Messenger.Register<ConsoleViewModel, OverflowModeSettingChangedMessage>(this, (r, m) => _ = r.RestartAsync());
+            Messenger.Register<ConsoleViewModel, MemorySizeSettingChangedMessage>(this, (r, m) => _ = r.RestartAsync());
+            Messenger.Register<ConsoleViewModel, OperatorKeyPressedNotificationMessage>(this, (r, m) => _ = r.TryAddOperatorAsync(m.Value));
 
             KeyboardListenerService.CharacterReceived += TryAddOperator;
         }
@@ -299,66 +298,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                     await ExecuteCommandAsync(previous.Command);
                 }
             }
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<MemoryStateRequestMessage>.Receive(MemoryStateRequestMessage message)
-        {
-            message.Reply(MachineState);
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<RunCommandRequestMessage>.Receive(RunCommandRequestMessage message)
-        {
-            _ = ExecuteCommandAsync();
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<DeleteOperatorRequestMessage>.Receive(DeleteOperatorRequestMessage message)
-        {
-            _ = DeleteLastOperatorAsync();
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<ClearCommandRequestMessage>.Receive(ClearCommandRequestMessage message)
-        {
-            _ = ResetCommandAsync();
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<RestartConsoleRequestMessage>.Receive(RestartConsoleRequestMessage message)
-        {
-            _ = RestartAsync();
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<ClearConsoleScreenRequestMessage>.Receive(ClearConsoleScreenRequestMessage message)
-        {
-            _ = ClearScreenAsync();
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<RepeatCommandRequestMessage>.Receive(RepeatCommandRequestMessage message)
-        {
-            _ = RepeatLastScriptAsync();
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<OverflowModeSettingChangedMessage>.Receive(OverflowModeSettingChangedMessage message)
-        {
-            _ = RestartAsync();
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<MemorySizeSettingChangedMessage>.Receive(MemorySizeSettingChangedMessage message)
-        {
-            _ = RestartAsync();
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<OperatorKeyPressedNotificationMessage>.Receive(OperatorKeyPressedNotificationMessage message)
-        {
-            _ = TryAddOperatorAsync(message.Value);
         }
     }
 }

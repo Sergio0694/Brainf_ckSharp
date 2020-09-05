@@ -54,10 +54,11 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
             this.RootGrid.Visibility = Visibility.Collapsed;
 
             // Navigation
-            Messenger.Default.Register<SubPageNavigationRequestMessage>(this, m => DisplaySubFramePage(m.SubPage));
-            Messenger.Default.Register<SubPageCloseRequestMessage>(this, _ => CloseSubFramePage());
+            Messenger.Default.Register<SubPageHost, SubPageNavigationRequestMessage>(this, (r, m) => r.DisplaySubFramePage(m.SubPage));
+            Messenger.Default.Register<SubPageHost, SubPageCloseRequestMessage>(this, (r, _) => r.CloseSubFramePage());
+            Messenger.Default.Register<SubPageHost, LoadingStateUpdateNotificationMessage>(this, (r, m) => r.HandleLoadingUI(m.Value));
+
             SystemNavigationManager.GetForCurrentView().BackRequested += SubFrameControl_BackRequested;
-            Messenger.Default.Register<LoadingStateUpdateNotificationMessage>(this, m => HandleLoadingUI(m.Value));
 
             // Other sub page settings
             CoreApplicationViewTitleBar titleBar = CoreApplication.GetCurrentView().TitleBar;

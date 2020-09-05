@@ -20,7 +20,7 @@ namespace Brainf_ckSharp.Uwp.Views
             this.InitializeComponent();
             this.DataContext = App.Current.Services.GetRequiredService<ConsoleViewModel>();
 
-            Messenger.Default.Register<IdeThemeSettingChangedMessage>(this, _ => RefreshDisplayedCommands());
+            Messenger.Default.Register<ConsoleView, IdeThemeSettingChangedMessage>(this, (r, _) => r.RefreshDisplayedCommands());
         }
 
         /// <summary>

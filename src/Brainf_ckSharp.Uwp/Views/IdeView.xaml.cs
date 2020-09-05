@@ -45,9 +45,9 @@ namespace Brainf_ckSharp.Uwp.Views
             CodeEditor.RenderWhitespaceCharacters = App.Current.Services.GetRequiredService<ISettingsService>().GetValue<bool>(SettingsKeys.RenderWhitespaces);
             CodeEditor.SyntaxHighlightTheme = App.Current.Services.GetRequiredService<ISettingsService>().GetValue<IdeTheme>(SettingsKeys.IdeTheme).AsBrainf_ckTheme();
 
-            Messenger.Default.Register<ValueChangedMessage<VirtualKey>>(this, m => CodeEditor.Move(m.Value));
-            Messenger.Default.Register<IdeThemeSettingChangedMessage>(this, m => CodeEditor.SyntaxHighlightTheme = m.Value.AsBrainf_ckTheme());
-            Messenger.Default.Register<RenderWhitespacesSettingChangedMessage>(this, m => CodeEditor.RenderWhitespaceCharacters = m.Value);
+            Messenger.Default.Register<IdeView, ValueChangedMessage<VirtualKey>>(this, (r, m) => r.CodeEditor.Move(m.Value));
+            Messenger.Default.Register<IdeView, IdeThemeSettingChangedMessage>(this, (r, m) => r.CodeEditor.SyntaxHighlightTheme = m.Value.AsBrainf_ckTheme());
+            Messenger.Default.Register<IdeView, RenderWhitespacesSettingChangedMessage>(this, (r, m) => r.CodeEditor.RenderWhitespaceCharacters = m.Value);
         }
 
         /// <summary>

@@ -16,17 +16,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
     /// <summary>
     /// A view model for a Brainf*ck/PBrain IDE
     /// </summary>
-    public sealed class IdeViewModel : WorkspaceViewModelBase,
-        IRecipient<RunIdeScriptRequestMessage>,
-        IRecipient<DebugIdeScriptRequestMessage>,
-        IRecipient<InsertNewLineRequestMessage>,
-        IRecipient<OperatorKeyPressedNotificationMessage>,
-        IRecipient<DeleteCharacterRequestMessage>,
-        IRecipient<PickOpenFileRequestMessage>,
-        IRecipient<LoadSourceCodeRequestMessage>,
-        IRecipient<NewFileRequestMessage>,
-        IRecipient<SaveFileRequestMessage>,
-        IRecipient<SaveFileAsRequestMessage>
+    public sealed class IdeViewModel : WorkspaceViewModelBase
     {
         /// <summary>
         /// The <see cref="IAnalyticsService"/> instance currently in use
@@ -47,21 +37,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// The <see cref="IFilesHistoryService"/> instance currently in use
         /// </summary>
         private readonly IFilesHistoryService FilesHistoryService;
-
-        /// <summary>
-        /// Creates a new <see cref="IdeViewModel"/> instance
-        /// </summary>
-        /// <param name="analyticsService">The <see cref="IAnalyticsService"/> instance to use</param>
-        /// <param name="filesService">The <see cref="IFilesService"/> instance to use</param>
-        /// <param name="filesManagerService">The <see cref="IFilesManagerService"/> instance to use</param>
-        /// <param name="filesHistoryService">The <see cref="IFilesHistoryService"/> instance to use</param>
-        public IdeViewModel(IAnalyticsService analyticsService, IFilesService filesService, IFilesManagerService filesManagerService, IFilesHistoryService filesHistoryService)
-        {
-            AnalyticsService = analyticsService;
-            FilesService = filesService;
-            FilesManagerService = filesManagerService;
-            FilesHistoryService = filesHistoryService;
-        }
 
         /// <summary>
         /// Raised whenever a script is requested to be run
@@ -97,6 +72,36 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// Raised whenever the state is restored from a serialized one
         /// </summary>
         public event EventHandler<IdeState>? StateRestored;
+
+        /// <summary>
+        /// Creates a new <see cref="IdeViewModel"/> instance
+        /// </summary>
+        /// <param name="analyticsService">The <see cref="IAnalyticsService"/> instance to use</param>
+        /// <param name="filesService">The <see cref="IFilesService"/> instance to use</param>
+        /// <param name="filesManagerService">The <see cref="IFilesManagerService"/> instance to use</param>
+        /// <param name="filesHistoryService">The <see cref="IFilesHistoryService"/> instance to use</param>
+        public IdeViewModel(IAnalyticsService analyticsService, IFilesService filesService, IFilesManagerService filesManagerService, IFilesHistoryService filesHistoryService)
+        {
+            AnalyticsService = analyticsService;
+            FilesService = filesService;
+            FilesManagerService = filesManagerService;
+            FilesHistoryService = filesHistoryService;
+        }
+
+        /// <inheritdoc/>
+        protected override void OnActivated()
+        {
+            Messenger.Register<IdeViewModel, RunIdeScriptRequestMessage>(this, (r, m) => r.ScriptRunRequested?.Invoke(r, EventArgs.Empty));
+            Messenger.Register<IdeViewModel, DebugIdeScriptRequestMessage>(this, (r, m) => r.ScriptDebugRequested?.Invoke(r, EventArgs.Empty));
+            Messenger.Register<IdeViewModel, InsertNewLineRequestMessage>(this, (r, m) => r.CharacterAdded?.Invoke(r, Characters.CarriageReturn));
+            Messenger.Register<IdeViewModel, OperatorKeyPressedNotificationMessage>(this, (r, m) => r.CharacterAdded?.Invoke(r, m.Value));
+            Messenger.Register<IdeViewModel, DeleteCharacterRequestMessage>(this, (r, m) => r.CharacterDeleted?.Invoke(r, EventArgs.Empty));
+            Messenger.Register<IdeViewModel, PickOpenFileRequestMessage>(this, (r, m) => _ = r.TryLoadTextFromFileAsync(m.Favorite));
+            Messenger.Register<IdeViewModel, LoadSourceCodeRequestMessage>(this, (r, m) => r.LoadSourceCode(m.Value));
+            Messenger.Register<IdeViewModel, NewFileRequestMessage>(this, (r, m) => r.LoadNewFile());
+            Messenger.Register<IdeViewModel, SaveFileRequestMessage>(this, (r, m) => _ = r.TrySaveTextAsync());
+            Messenger.Register<IdeViewModel, SaveFileAsRequestMessage>(this, (r, m) => _ = r.TrySaveTextAsAsync());
+        }
 
         /// <inheritdoc/>
         protected override void OnCodeChanged(SourceCode code)
@@ -312,66 +317,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                 StateRestored?.Invoke(this, state);
             }
             else await TryLoadTextFromFileAsync(file);
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<RunIdeScriptRequestMessage>.Receive(RunIdeScriptRequestMessage message)
-        {
-            ScriptRunRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<DebugIdeScriptRequestMessage>.Receive(DebugIdeScriptRequestMessage message)
-        {
-            ScriptDebugRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<InsertNewLineRequestMessage>.Receive(InsertNewLineRequestMessage message)
-        {
-            CharacterAdded?.Invoke(this, Characters.CarriageReturn);
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<OperatorKeyPressedNotificationMessage>.Receive(OperatorKeyPressedNotificationMessage message)
-        {
-            CharacterAdded?.Invoke(this, message.Value);
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<DeleteCharacterRequestMessage>.Receive(DeleteCharacterRequestMessage message)
-        {
-            CharacterDeleted?.Invoke(this, EventArgs.Empty);
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<PickOpenFileRequestMessage>.Receive(PickOpenFileRequestMessage message)
-        {
-            _ = TryLoadTextFromFileAsync(message.Favorite);
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<LoadSourceCodeRequestMessage>.Receive(LoadSourceCodeRequestMessage message)
-        {
-            LoadSourceCode(message.Value);
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<NewFileRequestMessage>.Receive(NewFileRequestMessage message)
-        {
-            LoadNewFile();
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<SaveFileRequestMessage>.Receive(SaveFileRequestMessage message)
-        {
-            _ = TrySaveTextAsync();
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<SaveFileAsRequestMessage>.Receive(SaveFileAsRequestMessage message)
-        {
-            _ = TrySaveTextAsAsync();
         }
     }
 }
