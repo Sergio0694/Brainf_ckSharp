@@ -284,7 +284,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             _ = MemoryMarshal.TryGetArray(lineNumbers.Memory, out ArraySegment<int> segment);
 
             // Sort the current line numbers (they might have been added not sequentially)
-            Array.Sort(segment.Array, 0, totalBreakpoints);
+            Array.Sort(segment.Array!, 0, totalBreakpoints);
 
             // Create an oversized buffer for the computer areas, and tracking variables
             MemoryOwner<Rect> breakpointAreas = MemoryOwner<Rect>.Allocate(totalBreakpoints);
