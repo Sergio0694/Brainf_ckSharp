@@ -209,6 +209,7 @@ namespace Brainf_ckSharp.Uwp
             services.AddSingleton<IStoreService, ProductionStoreService>();
             services.AddSingleton<IAnalyticsService, AppCenterService>();
 #endif
+
             // Viewmodels
             services.AddSingleton<ShellViewModel>();
             services.AddSingleton<ConsoleViewModel>();
