@@ -43,7 +43,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections
             StoreService = storeService;
             Configuration = configuration.Value;
 
-            _AutoindentBrackets = SettingsService.GetValue<bool>(SettingsKeys.AutoindentBrackets);
             _IdeTheme = SettingsService.GetValue<IdeTheme>(SettingsKeys.IdeTheme);
             _BracketsFormattingStyle = SettingsService.GetValue<BracketsFormattingStyle>(SettingsKeys.BracketsFormattingStyle);
             _RenderWhitespaces = SettingsService.GetValue<bool>(SettingsKeys.RenderWhitespaces);
@@ -61,17 +60,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections
         /// Gets the <see cref="ICommand"/> instance responsible for unlocking the themes selector
         /// </summary>
         public ICommand UnlockThemesSelectorCommand { get; }
-
-        private bool _AutoindentBrackets;
-
-        /// <summary>
-        /// Exposes the <see cref="SettingsKeys.AutoindentBrackets"/> setting
-        /// </summary>
-        public bool AutoindentBrackets
-        {
-            get => _AutoindentBrackets;
-            set => SetProperty(ref _AutoindentBrackets, value);
-        }
 
         private IdeTheme _IdeTheme;
 
