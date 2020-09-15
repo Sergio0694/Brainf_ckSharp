@@ -311,7 +311,7 @@ Are you enjoying it so far?</value>
     <value>Leave a review in the Store</value>
   </data>
   <data name="Settings/BracketsOnNewLine.Text" xml:space="preserve">
-    <value>Brackets on new line</value>
+    <value>Brackets position</value>
   </data>
   <data name="Settings/ClearStdinBufferOnExecution.Text" xml:space="preserve">
     <value>Clear stdin buffer on execution</value>
