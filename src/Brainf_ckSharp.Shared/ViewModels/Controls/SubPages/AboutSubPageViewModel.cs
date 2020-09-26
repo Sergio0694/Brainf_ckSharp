@@ -47,6 +47,21 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// </summary>
         public string GitCommit => ThisAssembly.Git.Commit;
 
+        /// <summary>
+        /// Gets the name of the current build configuration
+        /// </summary>
+        public string BuildConfiguration
+        {
+            get
+            {
+#if DEBUG
+                return "DEBUG";
+#else
+                return "RELEASE";
+#endif
+            }
+        }
+
         private static IEnumerable<User>? _Developers;
 
         /// <summary>

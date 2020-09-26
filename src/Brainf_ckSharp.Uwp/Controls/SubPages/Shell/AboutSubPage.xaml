@@ -58,6 +58,12 @@
                             FontSize="15"
                             FontWeight="SemiBold"
                             FontFamily="Consolas"/>
+                        <Run Text="|"/>
+                        <Run 
+                            Text="{x:Bind ViewModel.BuildConfiguration}"
+                            FontSize="15"
+                            FontWeight="SemiBold"
+                            FontFamily="Consolas"/>
                 </TextBlock>
 
                 <!--Git branch-->
