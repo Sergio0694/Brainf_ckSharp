@@ -48,9 +48,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <summary>
         /// Creates a new <see cref="ConsoleViewModel"/> instance with a new command ready to use
         /// </summary>
+        /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
         /// <param name="keyboardListenerService">The <see cref="IKeyboardListenerService"/> instance to use</param>
-        public ConsoleViewModel(ISettingsService settingsService, IKeyboardListenerService keyboardListenerService)
+        public ConsoleViewModel(IMessenger messenger, ISettingsService settingsService, IKeyboardListenerService keyboardListenerService)
+            : base(messenger)
         {
             SettingsService = settingsService;
             KeyboardListenerService = keyboardListenerService;

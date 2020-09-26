@@ -51,8 +51,10 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Creates a new <see cref="IdeResultSubPageViewModel"/> instance
         /// </summary>
+        /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
-        public IdeResultSubPageViewModel(ISettingsService settingsService)
+        public IdeResultSubPageViewModel(IMessenger messenger, ISettingsService settingsService)
+            : base(messenger)
         {
             SettingsService = settingsService;
 

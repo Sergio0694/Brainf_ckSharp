@@ -34,7 +34,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell
         /// <param name="e">The empty <see cref="RoutedEventArgs"/> instance for the current event</param>
         private void ActionButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Send<SubPageCloseRequestMessage>();
+            App.Current.Services.GetRequiredService<IMessenger>().Send<SubPageCloseRequestMessage>();
         }
     }
 }

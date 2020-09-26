@@ -7,6 +7,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.HighPerformance.Extensions;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Nito.AsyncEx;
@@ -54,9 +55,9 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
             this.RootGrid.Visibility = Visibility.Collapsed;
 
             // Navigation
-            Messenger.Default.Register<SubPageHost, SubPageNavigationRequestMessage>(this, (r, m) => r.DisplaySubFramePage(m.SubPage));
-            Messenger.Default.Register<SubPageHost, SubPageCloseRequestMessage>(this, (r, _) => r.CloseSubFramePage());
-            Messenger.Default.Register<SubPageHost, LoadingStateUpdateNotificationMessage>(this, (r, m) => r.HandleLoadingUI(m.Value));
+            App.Current.Services.GetRequiredService<IMessenger>().Register<SubPageHost, SubPageNavigationRequestMessage>(this, (r, m) => r.DisplaySubFramePage(m.SubPage));
+            App.Current.Services.GetRequiredService<IMessenger>().Register<SubPageHost, SubPageCloseRequestMessage>(this, (r, _) => r.CloseSubFramePage());
+            App.Current.Services.GetRequiredService<IMessenger>().Register<SubPageHost, LoadingStateUpdateNotificationMessage>(this, (r, m) => r.HandleLoadingUI(m.Value));
 
             SystemNavigationManager.GetForCurrentView().BackRequested += SubFrameControl_BackRequested;
 
@@ -253,12 +254,16 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
         private void SubFrameContentHost_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (ContentBorder.GetRelativeBounds(this).Contains(e.GetPosition(this))) return;
-            Messenger.Default.Send(new SubPageCloseRequestMessage());
+
+            App.Current.Services.GetRequiredService<IMessenger>().Send<SubPageCloseRequestMessage>();
         }
 
         /// <summary>
         /// Sends a request to close the current sub frame page
         /// </summary>
-        private void SendCloseRequest() => Messenger.Default.Send(new SubPageCloseRequestMessage());
+        private void SendCloseRequest()
+        {
+            App.Current.Services.GetRequiredService<IMessenger>().Send<SubPageCloseRequestMessage>();
+        }
     }
 }

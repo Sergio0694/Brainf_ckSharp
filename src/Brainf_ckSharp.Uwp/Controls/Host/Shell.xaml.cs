@@ -58,14 +58,14 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         {
             if (SystemInformation.Instance.LaunchCount == 4)
             {
-                Messenger.Default.Send(SubPageNavigationRequestMessage.To<ReviewPromptSubPage>());
+                App.Current.Services.GetRequiredService<IMessenger>().Send(SubPageNavigationRequestMessage.To<ReviewPromptSubPage>());
             }
         }
 
         /// <summary>
         /// Gets an <see cref="ICommand"/> instance responsible for requesting to move within the code editor
         /// </summary>
-        public ICommand MoveCommand { get; } = new RelayCommand<VirtualKey>(key => Messenger.Default.Send(new ValueChangedMessage<VirtualKey>(key)));
+        public ICommand MoveCommand { get; } = new RelayCommand<VirtualKey>(key => App.Current.Services.GetRequiredService<IMessenger>().Send(new ValueChangedMessage<VirtualKey>(key)));
 
         /// <summary>
         /// Brings the IDE into view, if necessary
@@ -80,7 +80,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         /// </summary>
         private void ViewModel_OnUserGuideRequested(object sender, EventArgs e)
         {
-            Messenger.Default.Send(SubPageNavigationRequestMessage.To<UserGuideSubPage>());
+            App.Current.Services.GetRequiredService<IMessenger>().Send(SubPageNavigationRequestMessage.To<UserGuideSubPage>());
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         /// </summary>
         private void ViewModel_OnUnicodeMapRequested(object sender, EventArgs e)
         {
-            Messenger.Default.Send(SubPageNavigationRequestMessage.To<UnicodeCharactersMapSubPage>());
+            App.Current.Services.GetRequiredService<IMessenger>().Send(SubPageNavigationRequestMessage.To<UnicodeCharactersMapSubPage>());
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         /// </summary>
         private void ViewModel_OnSettingsRequested(object sender, EventArgs e)
         {
-            Messenger.Default.Send(SubPageNavigationRequestMessage.To<SettingsSubPage>());
+            App.Current.Services.GetRequiredService<IMessenger>().Send(SubPageNavigationRequestMessage.To<SettingsSubPage>());
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         /// </summary>
         private void ViewModel_OnAboutInfoRequested(object sender, EventArgs e)
         {
-            Messenger.Default.Send(SubPageNavigationRequestMessage.To<AboutSubPage>());
+            App.Current.Services.GetRequiredService<IMessenger>().Send(SubPageNavigationRequestMessage.To<AboutSubPage>());
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         /// </summary>
         private void ViewModel_OnCodeLibraryRequested(object sender, EventArgs e)
         {
-            Messenger.Default.Send(SubPageNavigationRequestMessage.To<CodeLibrarySubPage>());
+            App.Current.Services.GetRequiredService<IMessenger>().Send(SubPageNavigationRequestMessage.To<CodeLibrarySubPage>());
         }
 
         /// <summary>

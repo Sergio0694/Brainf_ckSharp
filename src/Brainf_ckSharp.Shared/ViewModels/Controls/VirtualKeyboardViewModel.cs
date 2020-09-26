@@ -14,8 +14,10 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         /// <summary>
         /// Creates a new <see cref="VirtualKeyboardViewModel"/> instance
         /// </summary>
+        /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
-        public VirtualKeyboardViewModel(ISettingsService settingsService)
+        public VirtualKeyboardViewModel(IMessenger messenger, ISettingsService settingsService)
+            : base(messenger)
         {
             _IsPBrainModeEnabled = settingsService.GetValue<bool>(SettingsKeys.ShowPBrainButtons);
 

@@ -52,9 +52,11 @@ namespace Brainf_ckSharp.Shared.ViewModels
         /// <summary>
         /// Creates a new <see cref="ShellViewModel"/> instance
         /// </summary>
+        /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
         /// <param name="analyticsService">The <see cref="IAnalyticsService"/> instance to use</param>
-        public ShellViewModel(ISettingsService settingsService, IAnalyticsService analyticsService)
+        public ShellViewModel(IMessenger messenger, ISettingsService settingsService, IAnalyticsService analyticsService)
+            : base(messenger)
         {
             SettingsService = settingsService;
             AnalyticsService = analyticsService;

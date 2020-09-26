@@ -16,8 +16,10 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         /// <summary>
         /// Creates a new <see cref="StdinHeaderViewModel"/> instance
         /// </summary>
+        /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
-        public StdinHeaderViewModel(ISettingsService settingsService)
+        public StdinHeaderViewModel(IMessenger messenger, ISettingsService settingsService)
+            : base(messenger)
         {
             SettingsService = settingsService;
         }

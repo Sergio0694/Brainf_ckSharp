@@ -45,9 +45,9 @@ namespace Brainf_ckSharp.Uwp.Views
             CodeEditor.RenderWhitespaceCharacters = App.Current.Services.GetRequiredService<ISettingsService>().GetValue<bool>(SettingsKeys.RenderWhitespaces);
             CodeEditor.SyntaxHighlightTheme = App.Current.Services.GetRequiredService<ISettingsService>().GetValue<IdeTheme>(SettingsKeys.IdeTheme).AsBrainf_ckTheme();
 
-            Messenger.Default.Register<IdeView, ValueChangedMessage<VirtualKey>>(this, (r, m) => r.CodeEditor.Move(m.Value));
-            Messenger.Default.Register<IdeView, IdeThemeSettingChangedMessage>(this, (r, m) => r.CodeEditor.SyntaxHighlightTheme = m.Value.AsBrainf_ckTheme());
-            Messenger.Default.Register<IdeView, RenderWhitespacesSettingChangedMessage>(this, (r, m) => r.CodeEditor.RenderWhitespaceCharacters = m.Value);
+            App.Current.Services.GetRequiredService<IMessenger>().Register<IdeView, ValueChangedMessage<VirtualKey>>(this, (r, m) => r.CodeEditor.Move(m.Value));
+            App.Current.Services.GetRequiredService<IMessenger>().Register<IdeView, IdeThemeSettingChangedMessage>(this, (r, m) => r.CodeEditor.SyntaxHighlightTheme = m.Value.AsBrainf_ckTheme());
+            App.Current.Services.GetRequiredService<IMessenger>().Register<IdeView, RenderWhitespacesSettingChangedMessage>(this, (r, m) => r.CodeEditor.RenderWhitespaceCharacters = m.Value);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Brainf_ckSharp.Uwp.Views
                 return;
             }
 
-            Messenger.Default.Send(SubPageNavigationRequestMessage.To(new IdeResultSubPage(CodeEditor.Text)));
+            App.Current.Services.GetRequiredService<IMessenger>().Send(SubPageNavigationRequestMessage.To(new IdeResultSubPage(CodeEditor.Text)));
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Brainf_ckSharp.Uwp.Views
             string source = CodeEditor.Text;
             IMemoryOwner<int> breakpoints = CodeEditor.GetBreakpoints();
 
-            Messenger.Default.Send(SubPageNavigationRequestMessage.To(new IdeResultSubPage(source, breakpoints)));
+            App.Current.Services.GetRequiredService<IMessenger>().Send(SubPageNavigationRequestMessage.To(new IdeResultSubPage(source, breakpoints)));
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace Brainf_ckSharp.Uwp.Views
         {
             CodeEditor.LoadText(e);
 
-            Messenger.Default.Send<SubPageCloseRequestMessage>();
+            App.Current.Services.GetRequiredService<IMessenger>().Send<SubPageCloseRequestMessage>();
         }
 
         /// <summary>

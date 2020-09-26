@@ -30,6 +30,7 @@ using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings;
 using Brainf_ckSharp.Shared.ViewModels.Views;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Uwp.Helpers;
 
 #nullable enable
@@ -192,6 +193,7 @@ namespace Brainf_ckSharp.Uwp
             services.AddOptions<AppConfiguration>().Configure(options => options.UnlockThemesIapId = "9P4Q63CCFPBM");
 
             // Services
+            services.AddSingleton<IMessenger, StrongReferenceMessenger>();
             services.AddSingleton<IFilesService, FilesService>();
             services.AddSingleton<IFilesManagerService>(this);
             services.AddSingleton<IFilesHistoryService, TimelineService>();
@@ -212,6 +214,7 @@ namespace Brainf_ckSharp.Uwp
 
             // Viewmodels
             services.AddSingleton<ShellViewModel>();
+            services.AddSingleton<CompactMemoryViewerViewModel>();
             services.AddSingleton<ConsoleViewModel>();
             services.AddSingleton<IdeViewModel>();
             services.AddSingleton<VirtualKeyboardViewModel>();

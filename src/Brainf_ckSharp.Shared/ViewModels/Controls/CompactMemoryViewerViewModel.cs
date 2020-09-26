@@ -15,6 +15,14 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
     /// </summary>
     public sealed class CompactMemoryViewerViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<IReadOnlyMachineState>>
     {
+        /// <summary>
+        /// Creates a new <see cref="CompactMemoryViewerViewModel"/> instance
+        /// </summary>
+        /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
+        public CompactMemoryViewerViewModel(IMessenger messenger) : base(messenger)
+        {
+        }
+
         /// <inheritdoc/>
         protected override void OnActivated()
         {

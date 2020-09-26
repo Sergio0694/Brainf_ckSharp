@@ -3,6 +3,7 @@ using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Shared.Models.Ide;
 using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Views.Abstract
 {
@@ -11,6 +12,14 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views.Abstract
     /// </summary>
     public abstract class WorkspaceViewModelBase : ObservableRecipient
     {
+        /// <summary>
+        /// Creates a new <see cref="WorkspaceViewModelBase"/> instance
+        /// </summary>
+        /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
+        protected WorkspaceViewModelBase(IMessenger messenger) : base(messenger)
+        {
+        }
+
         private SourceCode _Code = SourceCode.CreateEmpty();
 
         /// <summary>

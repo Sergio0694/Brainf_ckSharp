@@ -76,11 +76,13 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <summary>
         /// Creates a new <see cref="IdeViewModel"/> instance
         /// </summary>
+        /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
         /// <param name="analyticsService">The <see cref="IAnalyticsService"/> instance to use</param>
         /// <param name="filesService">The <see cref="IFilesService"/> instance to use</param>
         /// <param name="filesManagerService">The <see cref="IFilesManagerService"/> instance to use</param>
         /// <param name="filesHistoryService">The <see cref="IFilesHistoryService"/> instance to use</param>
-        public IdeViewModel(IAnalyticsService analyticsService, IFilesService filesService, IFilesManagerService filesManagerService, IFilesHistoryService filesHistoryService)
+        public IdeViewModel(IMessenger messenger, IAnalyticsService analyticsService, IFilesService filesService, IFilesManagerService filesManagerService, IFilesHistoryService filesHistoryService)
+            : base(messenger)
         {
             AnalyticsService = analyticsService;
             FilesService = filesService;

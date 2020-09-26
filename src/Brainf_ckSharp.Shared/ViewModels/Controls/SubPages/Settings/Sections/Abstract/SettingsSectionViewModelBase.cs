@@ -20,8 +20,10 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections.A
         /// <summary>
         /// Creates a new <see cref="SettingsSubPageViewModel"/> instance
         /// </summary>
+        /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
-        protected SettingsSectionViewModelBase(ISettingsService settingsService)
+        protected SettingsSectionViewModelBase(IMessenger messenger, ISettingsService settingsService)
+            : base(messenger)
         {
             SettingsService = settingsService;
         }

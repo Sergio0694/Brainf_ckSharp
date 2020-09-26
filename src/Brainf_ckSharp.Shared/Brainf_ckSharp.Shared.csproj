@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -14,7 +14,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.6" />
     <PackageReference Include="Microsoft.Toolkit" Version="7.0.0-build.194" />
-    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.0.0-build.195.gaa13217fd3" />
+    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.0.0-build.227" />
     <PackageReference Include="Nito.AsyncEx" Version="5.0.0" />
     <PackageReference Include="System.Text.Json" Version="4.7.2" />
   </ItemGroup>

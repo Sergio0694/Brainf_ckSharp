@@ -9,6 +9,7 @@ using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections.Abstr
 using Microsoft.Extensions.Options;
 using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections
 {
@@ -32,12 +33,13 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections
         /// <summary>
         /// Creates a new <see cref="IdeSettingsSectionViewModel"/> instance
         /// </summary>
+        /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
         /// <param name="analyticsService">The <see cref="IAnalyticsService"/> instance to use</param>
         /// <param name="storeService">The <see cref="IStoreService"/> instance to use</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
         /// <param name="configuration">The <see cref="IOptions{T}"/> instance to use</param>
-        public IdeSettingsSectionViewModel(IAnalyticsService analyticsService, IStoreService storeService, ISettingsService settingsService, IOptions<AppConfiguration> configuration)
-            : base(settingsService)
+        public IdeSettingsSectionViewModel(IMessenger messenger, IAnalyticsService analyticsService, IStoreService storeService, ISettingsService settingsService, IOptions<AppConfiguration> configuration)
+            : base(messenger, settingsService)
         {
             AnalyticsService = analyticsService;
             StoreService = storeService;

@@ -36,7 +36,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.Settings
         /// </summary>
         private void ShowPBrainButtonsInfo_Clicked(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Send(SubPageNavigationRequestMessage.To<UserGuideSubPage>());
+            App.Current.Services.GetRequiredService<IMessenger>().Send(SubPageNavigationRequestMessage.To<UserGuideSubPage>());
         }
     }
 }

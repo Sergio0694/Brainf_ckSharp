@@ -96,12 +96,14 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Creates a new <see cref="CodeLibrarySubPageViewModel"/> instance
         /// </summary>
+        /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
         /// <param name="analyticsService">The <see cref="IAnalyticsService"/> instance to use</param>
         /// <param name="filesService">The <see cref="IFilesService"/> instance to use</param>
         /// <param name="filesHistoryService">The <see cref="IFilesHistoryService"/> instance to use</param>
         /// <param name="clipboardService">The <see cref="IClipboardService"/> instance to use</param>
         /// <param name="shareService">The <see cref="IShareService"/> instance to use</param>
-        public CodeLibrarySubPageViewModel(IAnalyticsService analyticsService, IFilesService filesService, IFilesHistoryService filesHistoryService, IClipboardService clipboardService, IShareService shareService)
+        public CodeLibrarySubPageViewModel(IMessenger messenger, IAnalyticsService analyticsService, IFilesService filesService, IFilesHistoryService filesHistoryService, IClipboardService clipboardService, IShareService shareService)
+            : base(messenger)
         {
             AnalyticsService = analyticsService;
             FilesService = filesService;

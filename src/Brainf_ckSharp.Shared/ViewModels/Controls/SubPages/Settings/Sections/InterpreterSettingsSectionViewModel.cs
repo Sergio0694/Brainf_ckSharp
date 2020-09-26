@@ -4,6 +4,7 @@ using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.Settings;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections.Abstract;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections
 {
@@ -12,8 +13,10 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections
         /// <summary>
         /// Creates a new <see cref="InterpreterSettingsSectionViewModel"/> instance
         /// </summary>
+        /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
-        public InterpreterSettingsSectionViewModel(ISettingsService settingsService) : base(settingsService)
+        public InterpreterSettingsSectionViewModel(IMessenger messenger, ISettingsService settingsService)
+            : base(messenger, settingsService)
         {
             _OverflowMode = SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
             _MemorySize = SettingsService.GetValue<int>(SettingsKeys.MemorySize);
