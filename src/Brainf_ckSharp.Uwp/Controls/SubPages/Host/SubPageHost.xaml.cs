@@ -4,11 +4,9 @@ using Windows.Foundation;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
 using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.HighPerformance.Extensions;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Nito.AsyncEx;
 
@@ -57,7 +55,6 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
             // Navigation
             App.Current.Services.GetRequiredService<IMessenger>().Register<SubPageHost, SubPageNavigationRequestMessage>(this, (r, m) => r.DisplaySubFramePage(m.SubPage));
             App.Current.Services.GetRequiredService<IMessenger>().Register<SubPageHost, SubPageCloseRequestMessage>(this, (r, _) => r.CloseSubFramePage());
-            App.Current.Services.GetRequiredService<IMessenger>().Register<SubPageHost, LoadingStateUpdateNotificationMessage>(this, (r, m) => r.HandleLoadingUI(m.Value));
 
             SystemNavigationManager.GetForCurrentView().BackRequested += SubFrameControl_BackRequested;
 
@@ -132,24 +129,8 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
         private void SubFrameControl_BackRequested(object sender, BackRequestedEventArgs e)
         {
             if (SubPage != null) e.Handled = true; // This needs to be synchronous
-            CloseSubFramePage();
-        }
 
-        // Updates the UI when the app loading state changes
-        private async void HandleLoadingUI(bool loading)
-        {
-            using (await SubFrameLock.LockAsync())
-            {
-                LoadingRing.Visibility = (Visibility)(!loading).ToInt();
-                if (SubPage is UserControl page)
-                {
-                    page.IsHitTestVisible = false;
-                    SubFrameContentHost.Visibility = Visibility.Collapsed;
-                    await Task.Delay(600);
-                    SubPage = null;
-                }
-                else RootGrid.Visibility = (Visibility)(!loading).ToInt();
-            }
+            CloseSubFramePage();
         }
 
         // Executes a UI refresh when the root size changes
@@ -248,14 +229,6 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
             {
                 adaptive.IsFullHeight = double.IsPositiveInfinity(ContentGrid.MaxHeight) && _IsTitleBarVisible;
             }
-        }
-
-        // Closes the popup when the user taps outside it
-        private void SubFrameContentHost_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            if (ContentBorder.GetRelativeBounds(this).Contains(e.GetPosition(this))) return;
-
-            App.Current.Services.GetRequiredService<IMessenger>().Send<SubPageCloseRequestMessage>();
         }
 
         /// <summary>
