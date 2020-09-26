@@ -24,10 +24,7 @@ namespace GitHub
         [Pure]
         public static IGitHubService GetGitHubService(string userAgent)
         {
-            HttpClient client = new HttpClient(new UnauthenticatedHttpClientHandler(userAgent))
-            {
-                BaseAddress = new Uri(BaseUrl)
-            };
+            HttpClient client = new HttpClient(new UnauthenticatedHttpClientHandler(userAgent)) { BaseAddress = new Uri(BaseUrl) };
             RefitSettings settings = new RefitSettings(new SystemTextJsonContentSerializer());
 
             return RestService.For<IGitHubService>(client, settings);
