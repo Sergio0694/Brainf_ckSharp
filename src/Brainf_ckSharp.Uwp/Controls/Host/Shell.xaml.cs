@@ -12,7 +12,6 @@ using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.Settings;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views.UnicodeCharactersMap;
-using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
@@ -58,7 +57,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         {
             if (SystemInformation.Instance.LaunchCount == 4)
             {
-                App.Current.Services.GetRequiredService<IMessenger>().Send(SubPageNavigationRequestMessage.To<ReviewPromptSubPage>());
+                App.Current.SubPageHost.DisplaySubFramePage(new ReviewPromptSubPage());
             }
         }
 
@@ -80,7 +79,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         /// </summary>
         private void ViewModel_OnUserGuideRequested(object sender, EventArgs e)
         {
-            App.Current.Services.GetRequiredService<IMessenger>().Send(SubPageNavigationRequestMessage.To<UserGuideSubPage>());
+            App.Current.SubPageHost.DisplaySubFramePage(new UserGuideSubPage());
         }
 
         /// <summary>
@@ -88,7 +87,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         /// </summary>
         private void ViewModel_OnUnicodeMapRequested(object sender, EventArgs e)
         {
-            App.Current.Services.GetRequiredService<IMessenger>().Send(SubPageNavigationRequestMessage.To<UnicodeCharactersMapSubPage>());
+            App.Current.SubPageHost.DisplaySubFramePage(new UnicodeCharactersMapSubPage());
         }
 
         /// <summary>
@@ -96,7 +95,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         /// </summary>
         private void ViewModel_OnSettingsRequested(object sender, EventArgs e)
         {
-            App.Current.Services.GetRequiredService<IMessenger>().Send(SubPageNavigationRequestMessage.To<SettingsSubPage>());
+            App.Current.SubPageHost.DisplaySubFramePage(new SettingsSubPage());
         }
 
         /// <summary>
@@ -104,7 +103,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         /// </summary>
         private void ViewModel_OnAboutInfoRequested(object sender, EventArgs e)
         {
-            App.Current.Services.GetRequiredService<IMessenger>().Send(SubPageNavigationRequestMessage.To<AboutSubPage>());
+            App.Current.SubPageHost.DisplaySubFramePage(new AboutSubPage());
         }
 
         /// <summary>
@@ -112,7 +111,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
         /// </summary>
         private void ViewModel_OnCodeLibraryRequested(object sender, EventArgs e)
         {
-            App.Current.Services.GetRequiredService<IMessenger>().Send(SubPageNavigationRequestMessage.To<CodeLibrarySubPage>());
+            App.Current.SubPageHost.DisplaySubFramePage(new CodeLibrarySubPage());
         }
 
         /// <summary>

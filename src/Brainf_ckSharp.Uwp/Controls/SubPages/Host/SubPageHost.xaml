@@ -16,7 +16,7 @@
         <Grid.KeyboardAccelerators>
             <KeyboardAccelerator
                 Key="Escape"
-                Invoked="{x:Bind SendCloseRequest}"/>
+                Invoked="{x:Bind CloseSubFramePage}"/>
         </Grid.KeyboardAccelerators>
 
         <!--Visual states-->
@@ -117,7 +117,7 @@
                     VerticalAlignment="Top"
                     Height="48" Width="48"
                     Style="{StaticResource ExpandedSquareButtonRevealStyle}"
-                    Click="{x:Bind SendCloseRequest}"
+                    Click="{x:Bind CloseSubFramePage}"
                     ToolTipService.ToolTip="Esc">
                     <SymbolIcon Symbol="Back" Foreground="White"/>
                 </Button>

@@ -3,9 +3,7 @@ using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide;
-using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.Settings
 {
@@ -36,7 +34,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.Settings
         /// </summary>
         private void ShowPBrainButtonsInfo_Clicked(object sender, RoutedEventArgs e)
         {
-            App.Current.Services.GetRequiredService<IMessenger>().Send(SubPageNavigationRequestMessage.To<UserGuideSubPage>());
+            App.Current.SubPageHost.DisplaySubFramePage(new UserGuideSubPage());
         }
     }
 }

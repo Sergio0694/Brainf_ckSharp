@@ -29,9 +29,11 @@ using Brainf_ckSharp.Shared.ViewModels.Controls;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings;
 using Brainf_ckSharp.Shared.ViewModels.Views;
+using Brainf_ckSharp.Uwp.Controls.SubPages.Host;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Uwp.Helpers;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 
 #nullable enable
 
@@ -51,6 +53,13 @@ namespace Brainf_ckSharp.Uwp
         /// Gets whether or not there is a file request pending
         /// </summary>
         public bool IsFileRequestPending => !(_RequestedFile is null);
+
+        public SubPageHost? _SubPageHost;
+
+        /// <summary>
+        /// Gets the <see cref="Controls.SubPages.Host.SubPageHost"/> instance used to display popups in the app
+        /// </summary>
+        public SubPageHost SubPageHost => _SubPageHost ??= Window.Current.Content.FindDescendant<SubPageHost>();
 
         /// <summary>
         /// Extracts the current file request, if present

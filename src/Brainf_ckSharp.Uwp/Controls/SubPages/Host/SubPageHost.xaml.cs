@@ -5,9 +5,6 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
-using Brainf_ckSharp.Uwp.Messages.Navigation;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.Messaging;
 using Nito.AsyncEx;
 
 #nullable enable
@@ -52,10 +49,6 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
             this.InitializeComponent();
             this.RootGrid.Visibility = Visibility.Collapsed;
 
-            // Navigation
-            App.Current.Services.GetRequiredService<IMessenger>().Register<SubPageHost, SubPageNavigationRequestMessage>(this, (r, m) => r.DisplaySubFramePage(m.SubPage));
-            App.Current.Services.GetRequiredService<IMessenger>().Register<SubPageHost, SubPageCloseRequestMessage>(this, (r, _) => r.CloseSubFramePage());
-
             SystemNavigationManager.GetForCurrentView().BackRequested += SubFrameControl_BackRequested;
 
             // Other sub page settings
@@ -84,8 +77,11 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
             }
         }
 
-        // Displays a page in the popup frame
-        private async void DisplaySubFramePage(UserControl subPage)
+        /// <summary>
+        /// Displays a page in the popup frame
+        /// </summary>
+        /// <param name="subPage">The page to display</param>
+        public async void DisplaySubFramePage(UserControl subPage)
         {
             using (await SubFrameLock.LockAsync())
             {
@@ -111,8 +107,10 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
             }
         }
 
-        // Fades away the currently displayed sub page
-        private async void CloseSubFramePage()
+        /// <summary>
+        /// Fades away the currently displayed sub page
+        /// </summary>
+        public async void CloseSubFramePage()
         {
             using (await SubFrameLock.LockAsync())
             {
@@ -229,14 +227,6 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
             {
                 adaptive.IsFullHeight = double.IsPositiveInfinity(ContentGrid.MaxHeight) && _IsTitleBarVisible;
             }
-        }
-
-        /// <summary>
-        /// Sends a request to close the current sub frame page
-        /// </summary>
-        private void SendCloseRequest()
-        {
-            App.Current.Services.GetRequiredService<IMessenger>().Send<SubPageCloseRequestMessage>();
         }
     }
 }

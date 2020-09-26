@@ -250,8 +250,6 @@
     <Compile Include="MarkupExtensions\VirtualKeyExtension.cs" />
     <Compile Include="MarkupExtensions\EnumValuesExtension.cs" />
     <Compile Include="MarkupExtensions\BooleanExtension.cs" />
-    <Compile Include="Messages\SubPageCloseRequestMessage.cs" />
-    <Compile Include="Messages\SubPageNavigationRequestMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\XamlResources.cs" />
     <Compile Include="StyleSelectors\CodeLibraryEntryItemContainerStyleSelector.cs" />

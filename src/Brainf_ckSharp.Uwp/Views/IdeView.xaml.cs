@@ -13,7 +13,6 @@ using Brainf_ckSharp.Shared.Models.Ide;
 using Brainf_ckSharp.Shared.ViewModels.Views;
 using Brainf_ckSharp.Uwp.Controls.Ide;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
-using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Brainf_ckSharp.Uwp.Themes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
@@ -81,7 +80,7 @@ namespace Brainf_ckSharp.Uwp.Views
                 return;
             }
 
-            App.Current.Services.GetRequiredService<IMessenger>().Send(SubPageNavigationRequestMessage.To(new IdeResultSubPage(CodeEditor.Text)));
+            App.Current.SubPageHost.DisplaySubFramePage(new IdeResultSubPage(CodeEditor.Text));
         }
 
         /// <summary>
@@ -101,7 +100,7 @@ namespace Brainf_ckSharp.Uwp.Views
             string source = CodeEditor.Text;
             IMemoryOwner<int> breakpoints = CodeEditor.GetBreakpoints();
 
-            App.Current.Services.GetRequiredService<IMessenger>().Send(SubPageNavigationRequestMessage.To(new IdeResultSubPage(source, breakpoints)));
+            App.Current.SubPageHost.DisplaySubFramePage(new IdeResultSubPage(source, breakpoints));
         }
 
         /// <summary>
@@ -133,7 +132,7 @@ namespace Brainf_ckSharp.Uwp.Views
         {
             CodeEditor.LoadText(e);
 
-            App.Current.Services.GetRequiredService<IMessenger>().Send<SubPageCloseRequestMessage>();
+            App.Current.SubPageHost.CloseSubFramePage();
         }
 
         /// <summary>

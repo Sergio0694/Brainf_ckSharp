@@ -2,9 +2,7 @@
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
-using Brainf_ckSharp.Uwp.Messages.Navigation;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell
 {
@@ -34,7 +32,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell
         /// <param name="e">The empty <see cref="RoutedEventArgs"/> instance for the current event</param>
         private void ActionButton_OnClick(object sender, RoutedEventArgs e)
         {
-            App.Current.Services.GetRequiredService<IMessenger>().Send<SubPageCloseRequestMessage>();
+            App.Current.SubPageHost.CloseSubFramePage();
         }
     }
 }
