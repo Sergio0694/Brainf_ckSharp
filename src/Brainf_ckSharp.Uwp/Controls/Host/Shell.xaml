@@ -114,7 +114,6 @@
                     x:Uid="Shell/Run"
                     Label="Run"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource RunIcon}}"
-                    Tag="{markupExtensions:Boolean Value=True}"
                     Foreground="{StaticResource RunBrush}"
                     Click="{x:Bind ViewModel.RunConsoleScript}">
                     <AppBarButton.Resources>
@@ -124,26 +123,33 @@
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator Key="F5"/>
                     </AppBarButton.KeyboardAccelerators>
+                    <AppBarButton.Tag>
+                        <x:Boolean>True</x:Boolean>
+                    </AppBarButton.Tag>
                 </AppBarButton>
                 <AppBarButton
                     x:Uid="Shell/Delete"
                     Label="Delete"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource DeleteKeyIcon}}"
-                    Tag="{markupExtensions:Boolean Value=True}"
                     Click="{x:Bind ViewModel.DeleteConsoleOperator}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator Key="Back"/>
                     </AppBarButton.KeyboardAccelerators>
+                    <AppBarButton.Tag>
+                        <x:Boolean>True</x:Boolean>
+                    </AppBarButton.Tag>
                 </AppBarButton>
                 <AppBarButton
                     x:Uid="Shell/Clear"
                     Label="Clear"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource ClearIcon}}"
-                    Tag="{markupExtensions:Boolean Value=True}"
                     Click="{x:Bind ViewModel.ClearConsoleCommand}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator Key="Delete" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>
+                    <AppBarButton.Tag>
+                        <x:Boolean>True</x:Boolean>
+                    </AppBarButton.Tag>
                 </AppBarButton>
 
                 <!--IDE buttons-->
@@ -151,32 +157,42 @@
                     x:Uid="Shell/Run"
                     Label="Run"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource RunIcon}}"
-                    Tag="{markupExtensions:Boolean Value=False}"
                     Foreground="{StaticResource RunBrush}"
                     Click="{x:Bind ViewModel.RunIdeScript}">
                     <AppBarButton.Resources>
                         <SolidColorBrush x:Key="AppBarButtonForegroundPointerOver" Color="{StaticResource RunColor}"/>
                         <SolidColorBrush x:Key="AppBarButtonForegroundPressed" Color="{StaticResource RunColor}"/>
                     </AppBarButton.Resources>
+                    <AppBarButton.Tag>
+                        <x:Boolean>False</x:Boolean>
+                    </AppBarButton.Tag>
                 </AppBarButton>
                 <AppBarButton
                     x:Uid="Shell/Debug"
                     Label="Debug"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource DebugIcon}}"
-                    Tag="{markupExtensions:Boolean Value=False}"
                     Foreground="{StaticResource DebugBrush}"
                     Click="{x:Bind ViewModel.DebugIdeScript}">
                     <AppBarButton.Resources>
                         <SolidColorBrush x:Key="AppBarButtonForegroundPointerOver" Color="{StaticResource DebugColor}"/>
                         <SolidColorBrush x:Key="AppBarButtonForegroundPressed" Color="{StaticResource DebugColor}"/>
                     </AppBarButton.Resources>
+                    <AppBarButton.Tag>
+                        <x:Boolean>False</x:Boolean>
+                    </AppBarButton.Tag>
                 </AppBarButton>
-                <AppBarSeparator Tag="{markupExtensions:Boolean Value=False}"/>
+                <AppBarSeparator>
+                    <AppBarSeparator.Tag>
+                        <x:Boolean>False</x:Boolean>
+                    </AppBarSeparator.Tag>
+                </AppBarSeparator>
                 <AppBarButton
                     x:Uid="Shell/Move"
                     Label="Move"
-                    Icon="{toolkitExtensions:FontIcon Glyph={StaticResource MoveIcon}}"
-                    Tag="{markupExtensions:Boolean Value=False}">
+                    Icon="{toolkitExtensions:FontIcon Glyph={StaticResource MoveIcon}}">
+                    <AppBarButton.Tag>
+                        <x:Boolean>False</x:Boolean>
+                    </AppBarButton.Tag>
                     <AppBarButton.Flyout>
                         <CommandBarFlyout>
                             <AppBarButton
@@ -214,24 +230,36 @@
                     x:Uid="Shell/NewLine"
                     Label="New line"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource NewLineIcon}}"
-                    Tag="{markupExtensions:Boolean Value=False}"
-                    Click="{x:Bind ViewModel.InsertNewLine}"/>
+                    Click="{x:Bind ViewModel.InsertNewLine}">
+                    <AppBarButton.Tag>
+                        <x:Boolean>False</x:Boolean>
+                    </AppBarButton.Tag>
+                </AppBarButton>
                 <AppBarButton
                     x:Uid="Shell/Delete"
                     Label="Delete"
                     Icon="{toolkitExtensions:FontIcon Glyph={StaticResource DeleteKeyIcon}}"
-                    Tag="{markupExtensions:Boolean Value=False}"
-                    Click="{x:Bind ViewModel.DeleteIdeCharacter}"/>
+                    Click="{x:Bind ViewModel.DeleteIdeCharacter}">
+                    <AppBarButton.Tag>
+                        <x:Boolean>False</x:Boolean>
+                    </AppBarButton.Tag>
+                </AppBarButton>
                 <AppBarButton
                     x:Uid="Shell/Undo"
                     Label="Undo"
-                    Icon="{toolkitExtensions:FontIcon Glyph={StaticResource UndoIcon}}"
-                    Tag="{markupExtensions:Boolean Value=False}"/>
+                    Icon="{toolkitExtensions:FontIcon Glyph={StaticResource UndoIcon}}">
+                    <AppBarButton.Tag>
+                        <x:Boolean>False</x:Boolean>
+                    </AppBarButton.Tag>
+                </AppBarButton>
                 <AppBarButton
                     x:Uid="Shell/Redo"
                     Label="Redo"
-                    Icon="{toolkitExtensions:FontIcon Glyph={StaticResource RedoIcon}}"
-                    Tag="{markupExtensions:Boolean Value=False}"/>
+                    Icon="{toolkitExtensions:FontIcon Glyph={StaticResource RedoIcon}}">
+                    <AppBarButton.Tag>
+                        <x:Boolean>False</x:Boolean>
+                    </AppBarButton.Tag>
+                </AppBarButton>
             </controls:AnimatedCommandBar.PrimaryCommands>
             <controls:AnimatedCommandBar.SecondaryCommands>
                 <AppBarButton
