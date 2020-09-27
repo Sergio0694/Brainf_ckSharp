@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Toolkit" Version="7.0.0-build.194" />
+    <PackageReference Include="Microsoft.Toolkit" Version="7.0.0-build.227" />
     <PackageReference Include="Microsoft.Toolkit.HighPerformance" Version="7.0.0-build.173.gfb29007caa" />
   </ItemGroup>
 
