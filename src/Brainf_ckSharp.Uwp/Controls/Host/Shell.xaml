@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:markupExtensions="using:Brainf_ckSharp.Uwp.MarkupExtensions"
     xmlns:toolkitExtensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     xmlns:controls="using:Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls"
     xmlns:views="using:Brainf_ckSharp.Uwp.Views"
@@ -15,6 +14,7 @@
     xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:local="using:Brainf_ckSharp.Uwp.Controls.Host"
     xmlns:settings="using:Brainf_ckSharp.Shared.Enums.Settings"
+    xmlns:windows="using:Windows.System"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400"
@@ -200,29 +200,41 @@
                                 Label="Up"
                                 ToolTipService.ToolTip="Up"
                                 Icon="{toolkitExtensions:FontIcon Glyph={StaticResource UpIcon}}"
-                                Command="{x:Bind MoveCommand}"
-                                CommandParameter="{markupExtensions:VirtualKey Value=Up}"/>
+                                Command="{x:Bind MoveCommand}">
+                                <AppBarButton.CommandParameter>
+                                    <windows:VirtualKey>Up</windows:VirtualKey>
+                                </AppBarButton.CommandParameter>
+                            </AppBarButton>
                             <AppBarButton
                                 x:Uid="Shell/Down"
                                 Label="Down"
                                 ToolTipService.ToolTip="Down"
                                 Icon="{toolkitExtensions:FontIcon Glyph={StaticResource DownIcon}}"
-                                Command="{x:Bind MoveCommand}"
-                                CommandParameter="{markupExtensions:VirtualKey Value=Down}"/>
+                                Command="{x:Bind MoveCommand}">
+                                <AppBarButton.CommandParameter>
+                                    <windows:VirtualKey>Down</windows:VirtualKey>
+                                </AppBarButton.CommandParameter>
+                            </AppBarButton>
                             <AppBarButton
                                 x:Uid="Shell/Left"
                                 Label="Left"
                                 ToolTipService.ToolTip="Left"
                                 Icon="{toolkitExtensions:FontIcon Glyph={StaticResource LeftIcon}}"
-                                Command="{x:Bind MoveCommand}"
-                                CommandParameter="{markupExtensions:VirtualKey Value=Left}"/>
+                                Command="{x:Bind MoveCommand}">
+                                <AppBarButton.CommandParameter>
+                                    <windows:VirtualKey>Left</windows:VirtualKey>
+                                </AppBarButton.CommandParameter>
+                            </AppBarButton>
                             <AppBarButton
                                 x:Uid="Shell/Right"
                                 Label="Right"
                                 ToolTipService.ToolTip="Right"
                                 Icon="{toolkitExtensions:FontIcon Glyph={StaticResource RightIcon}}"
-                                Command="{x:Bind MoveCommand}"
-                                CommandParameter="{markupExtensions:VirtualKey Value=Right}"/>
+                                Command="{x:Bind MoveCommand}">
+                                <AppBarButton.CommandParameter>
+                                    <windows:VirtualKey>Right</windows:VirtualKey>
+                                </AppBarButton.CommandParameter>
+                            </AppBarButton>
                         </CommandBarFlyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
