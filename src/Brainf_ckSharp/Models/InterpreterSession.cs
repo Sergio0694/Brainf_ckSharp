@@ -19,7 +19,8 @@ namespace Brainf_ckSharp.Models
     /// <summary>
     /// A <see langword="class"/> that represents an interpreter session executing on a given script
     /// </summary>
-    public sealed class InterpreterSession : IEnumerator<InterpreterResult>
+    public sealed class InterpreterSession<T> : IEnumerator<InterpreterResult>
+        where T : unmanaged, IEquatable<T>
     {
         /// <summary>
         /// The sequence of parsed opcodes to execute
@@ -62,9 +63,9 @@ namespace Brainf_ckSharp.Models
         private readonly StdoutBuffer StdoutBuffer;
 
         /// <summary>
-        /// The target <see cref="TuringMachineState"/> instance to execute the code on
+        /// The target <see cref="TuringMachineState{T}"/> instance to execute the code on
         /// </summary>
-        private readonly TuringMachineState MachineState;
+        private readonly TuringMachineState<T> MachineState;
 
         /// <summary>
         /// The current stack depth
@@ -107,7 +108,7 @@ namespace Brainf_ckSharp.Models
         private bool _Disposed;
 
         /// <summary>
-        /// Creates a new <see cref="InterpreterSession"/> with the specified parameters
+        /// Creates a new <see cref="InterpreterSession{T}"/> with the specified parameters
         /// </summary>
         /// <param name="opcodes">The sequence of parsed opcodes to execute</param>
         /// <param name="breakpoints">The table of breakpoints for the current executable</param>
@@ -127,7 +128,7 @@ namespace Brainf_ckSharp.Models
             MemoryOwner<ushort> definitions,
             MemoryOwner<StackFrame> stackFrames,
             string stdin,
-            TuringMachineState machineState,
+            TuringMachineState<T> machineState,
             CancellationToken executionToken,
             CancellationToken debugToken)
         {
@@ -172,10 +173,10 @@ namespace Brainf_ckSharp.Models
             // Execute the mode specific implementation
             switch (MachineState.Mode)
             {
-                case OverflowMode.ByteWithOverflow: MoveNext<TuringMachineState.ByteWithOverflowExecutionContext>(); break;
-                case OverflowMode.ByteWithNoOverflow: MoveNext<TuringMachineState.ByteWithNoOverflowExecutionContext>(); break;
-                case OverflowMode.UshortWithOverflow: MoveNext<TuringMachineState.UshortWithOverflowExecutionContext>(); break;
-                case OverflowMode.UshortWithNoOverflow: MoveNext<TuringMachineState.UshortWithNoOverflowExecutionContext>(); break;
+                case OverflowMode.ByteWithOverflow: MoveNext<TuringMachineState<T>.ByteWithOverflowExecutionContext>(); break;
+                case OverflowMode.ByteWithNoOverflow: MoveNext<TuringMachineState<T>.ByteWithNoOverflowExecutionContext>(); break;
+                case OverflowMode.UshortWithOverflow: MoveNext<TuringMachineState<T>.UshortWithOverflowExecutionContext>(); break;
+                case OverflowMode.UshortWithNoOverflow: MoveNext<TuringMachineState<T>.UshortWithNoOverflowExecutionContext>(); break;
                 default: ThrowHelper.ThrowArgumentOutOfRangeException(nameof(MachineState.Mode), $"Invalid execution mode: {MachineState.Mode}"); break;
             };
 
@@ -191,7 +192,7 @@ namespace Brainf_ckSharp.Models
         {
             ExitCode exitCode;
 
-            using (TuringMachineState.ExecutionSession<TExecutionContext> session = MachineState.CreateExecutionSession<TExecutionContext>())
+            using (TuringMachineState<T>.ExecutionSession<TExecutionContext> session = MachineState.CreateExecutionSession<TExecutionContext>())
             {
                 Stopwatch.Start();
 
@@ -233,7 +234,7 @@ namespace Brainf_ckSharp.Models
                 SourceCode,
                 exitCode,
                 debugInfo,
-                (TuringMachineState)MachineState.Clone(),
+                (TuringMachineState<T>)MachineState.Clone(),
                 functionDefinitions,
                 StdinBuffer.ToString(),
                 StdoutBuffer.ToString(),

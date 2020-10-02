@@ -1,9 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading;
+using Brainf_ckSharp.Constants;
+using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
+using Brainf_ckSharp.Models;
+using Brainf_ckSharp.Models.Base;
+using Brainf_ckSharp.Models.Internal;
+using Brainf_ckSharp.Opcodes;
+using Microsoft.Toolkit.Diagnostics;
+using Microsoft.Toolkit.HighPerformance.Buffers;
 using static System.Diagnostics.Debug;
 
 #pragma warning disable IDE0032
@@ -13,8 +23,64 @@ namespace Brainf_ckSharp.Memory
     /// <summary>
     /// A <see langword="class"/> that represents the state of a Turing machine
     /// </summary>
-    internal sealed partial class TuringMachineState
+    internal sealed partial class TuringMachineState<T>
     {
+        /// <inheritdoc/>
+        public InterpreterResult Run(Span<Brainf_ckOperation> opcodes, string stdin, CancellationToken executionToken)
+        {
+            Assert(opcodes.Length >= 0);
+
+            return Mode switch
+            {
+                OverflowMode.ByteWithOverflow => Brainf_ckInterpreter.Release.Run<T, ByteWithOverflowExecutionContext>(opcodes, stdin, this, executionToken),
+                OverflowMode.ByteWithNoOverflow => Brainf_ckInterpreter.Release.Run<T, ByteWithNoOverflowExecutionContext>(opcodes, stdin, this, executionToken),
+                OverflowMode.UshortWithOverflow => Brainf_ckInterpreter.Release.Run<T, UshortWithOverflowExecutionContext>(opcodes, stdin, this, executionToken),
+                OverflowMode.UshortWithNoOverflow => Brainf_ckInterpreter.Release.Run<T, UshortWithNoOverflowExecutionContext>(opcodes, stdin, this, executionToken),
+                _ => ThrowHelper.ThrowArgumentOutOfRangeException<InterpreterResult>(nameof(Mode), "Invalid execution mode")
+            };
+        }
+
+        /// <inheritdoc/>
+        public Option<IEnumerator<InterpreterResult>> TryCreateSession(
+            ReadOnlySpan<char> source,
+            ReadOnlySpan<int> breakpoints,
+            string stdin,
+            CancellationToken executionToken,
+            CancellationToken debugToken)
+        {
+            MemoryOwner<Brainf_ckOperator> opcodes = Brainf_ckParser.TryParse<Brainf_ckOperator>(source, out SyntaxValidationResult validationResult)!;
+
+            if (!validationResult.IsSuccess)
+            {
+                return Option<IEnumerator<InterpreterResult>>.From(validationResult);
+            }
+
+            // Initialize the temporary buffers
+            MemoryOwner<bool> breakpointsTable = Brainf_ckInterpreter.Debug.LoadBreakpointsTable(source, validationResult.OperatorsCount, breakpoints);
+            MemoryOwner<int> jumpTable = Brainf_ckInterpreter.Debug.LoadJumpTable(opcodes.Span, out int functionsCount);
+            MemoryOwner<Range> functions = MemoryOwner<Range>.Allocate(ushort.MaxValue, AllocationMode.Clear);
+            MemoryOwner<ushort> definitions = Brainf_ckInterpreter.Debug.LoadDefinitionsTable(functionsCount);
+            MemoryOwner<StackFrame> stackFrames = MemoryOwner<StackFrame>.Allocate(Specs.MaximumStackSize);
+
+            // Initialize the root stack frame
+            stackFrames.DangerousGetReference() = new StackFrame(new Range(0, opcodes.Length), 0);
+
+            // Create the interpreter session
+            InterpreterSession<T> session = new InterpreterSession<T>(
+                opcodes,
+                breakpointsTable,
+                jumpTable,
+                functions,
+                definitions,
+                stackFrames,
+                stdin,
+                this,
+                executionToken,
+                debugToken);
+
+            return Option<IEnumerator<InterpreterResult>>.From(validationResult, session);
+        }
+
         /// <summary>
         /// Gets an execution session of the specified type
         /// </summary>
@@ -48,9 +114,9 @@ namespace Brainf_ckSharp.Memory
             private readonly GCHandle Handle;
 
             /// <summary>
-            /// The <see cref="TuringMachineState"/> instance in use
+            /// The <see cref="TuringMachineState{T}"/> instance in use
             /// </summary>
-            private readonly TuringMachineState MachineState;
+            private readonly TuringMachineState<T> MachineState;
 
             /// <summary>
             /// The <typeparamref name="TExecutionContext"/> instance for the current session
@@ -60,10 +126,10 @@ namespace Brainf_ckSharp.Memory
             /// <summary>
             /// Creates a new <see cref="ExecutionSession{TExecutionContext}"/> instance with the specified value
             /// </summary>
-            /// <param name="state">The <see cref="TuringMachineState"/> instance to use</param>
+            /// <param name="state">The <see cref="TuringMachineState{T}"/> instance to use</param>
             [EditorBrowsable(EditorBrowsableState.Never)]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public ExecutionSession(TuringMachineState state)
+            public ExecutionSession(TuringMachineState<T> state)
             {
                 Assert(state._Buffer != null);
 

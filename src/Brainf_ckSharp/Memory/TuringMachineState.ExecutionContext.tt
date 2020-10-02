@@ -3,7 +3,17 @@
 #><#@ assembly name="$(TargetDir)Brainf_ckSharp.dll"
 #><#@ assembly name="NetStandard"
 #><#@ import namespace="Brainf_ckSharp.Enums"
+#><#@ import namespace="System.Collections.Generic"
 #><#@ output extension=".g.cs" #>
+<#
+var cellTypes = new Dictionary<OverflowMode, string>
+{
+    [OverflowMode.UshortWithNoOverflow] = "ushort",
+    [OverflowMode.UshortWithOverflow] = "ushort",
+    [OverflowMode.ByteWithNoOverflow] = "byte",
+    [OverflowMode.ByteWithOverflow] = "byte",
+};
+#>
 using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
@@ -18,7 +28,7 @@ namespace Brainf_ckSharp.Memory
     /// <summary>
     /// A <see langword="class"/> that represents the state of a Turing machine
     /// </summary>
-    internal sealed partial class TuringMachineState
+    internal sealed partial class TuringMachineState<T>
     {
         /// <summary>
         /// Gets an execution context of the specified type
@@ -31,15 +41,16 @@ namespace Brainf_ckSharp.Memory
             where TExecutionContext : struct, IMachineStateExecutionContext
         {
             // The underlying buffer is guaranteed not to be null or unpinned here
-            ushort* ptr = (ushort*)Unsafe.AsPointer(ref _Buffer.DangerousGetReference());
+            T* ptr = (T*)Unsafe.AsPointer(ref _Buffer.DangerousGetReference());
 
 <#
-foreach (var mode in Enum.GetValues(typeof(OverflowMode)))
+foreach (var mode in (OverflowMode[])Enum.GetValues(typeof(OverflowMode)))
 {
+    string ptrType = cellTypes[mode];
 #>
             if (typeof(TExecutionContext) == typeof(<#=mode#>ExecutionContext))
             {
-                var executionContext = new <#=mode#>ExecutionContext(ptr, Size - 1, _Position);
+                var executionContext = new <#=mode#>ExecutionContext((<#=ptrType#>*)ptr, Size - 1, _Position);
 
                 return Unsafe.As<<#=mode#>ExecutionContext, TExecutionContext>(ref executionContext);
             }
@@ -54,32 +65,19 @@ foreach (var mode in (OverflowMode[])Enum.GetValues(typeof(OverflowMode)))
 {
     WriteLine("");
 
-    // Get the current cell type, for later use
-    string cellType;
-    switch (mode)
-    {
-        case OverflowMode.UshortWithNoOverflow:
-        case OverflowMode.UshortWithOverflow:
-            cellType = "ushort";
-            break;
-        case OverflowMode.ByteWithNoOverflow:
-        case OverflowMode.ByteWithOverflow:
-            cellType = "byte";
-            break;
-        default: throw new ArgumentException($"Invalid overflow mode: {mode}", nameof(mode));
-    }
+    string cellType = cellTypes[mode];
 #>
         /// <summary>
         /// A <see langword="struct"/> implementing <see cref="IMachineStateExecutionContext"/> for <see cref="OverflowMode.<#=mode#>"/>
         /// </summary>
         public unsafe struct <#=mode#>ExecutionContext : IMachineStateExecutionContext
         {
-            private readonly ushort* Ptr;
+            private readonly <#=cellType#>* Ptr;
             private readonly int MaxIndex;
             private int _Position;
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public <#=mode#>ExecutionContext(ushort* ptr, int maxIndex, int position)
+            public <#=mode#>ExecutionContext(<#=cellType#>* ptr, int maxIndex, int position)
             {
                 Ptr = ptr;
                 MaxIndex = maxIndex;
@@ -172,7 +170,7 @@ foreach (var mode in (OverflowMode[])Enum.GetValues(typeof(OverflowMode)))
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryIncrement()
             {
-                ushort* current = Ptr + _Position;
+                <#=cellType#>* current = Ptr + _Position;
 
 <#
 // Setup the correct increment code
@@ -208,7 +206,7 @@ switch (mode)
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryIncrement(int count, ref int totalOperations)
             {
-                ushort* current = Ptr + _Position;
+                <#=cellType#>* current = Ptr + _Position;
 
 <#
 // Setup the correct increment code
@@ -252,7 +250,7 @@ switch (mode)
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryDecrement()
             {
-                ushort* current = Ptr + _Position;
+                <#=cellType#>* current = Ptr + _Position;
 
 <#
 // Setup the correct decrement code
@@ -263,7 +261,7 @@ switch (mode)
 #>
                 if (*current != 0)
                 {
-                    *current = (ushort)(*current - 1);
+                    *current = (<#=cellType#>)(*current - 1);
 
                     return true;
                 }
@@ -288,7 +286,7 @@ switch (mode)
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryDecrement(int count, ref int totalOperations)
             {
-                ushort* current = Ptr + _Position;
+                <#=cellType#>* current = Ptr + _Position;
 
 <#
 // Setup the correct decrement code
@@ -299,7 +297,7 @@ switch (mode)
 #>
                 if (*current >= count)
                 {
-                    *current = (ushort)(*current - count);
+                    *current = (<#=cellType#>)(*current - count);
 
                     totalOperations += count;
 
@@ -332,7 +330,7 @@ switch (mode)
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryInput(char c)
             {
-                ushort* current = Ptr + _Position;
+                <#=cellType#>* current = Ptr + _Position;
 
 <#
 // Setup the correct input code
@@ -350,7 +348,7 @@ switch (mode)
 #>
                 if (c <= byte.MaxValue)
                 {
-                    *current = c;
+                    *current = (byte)c;
 
                     return true;
                 }
