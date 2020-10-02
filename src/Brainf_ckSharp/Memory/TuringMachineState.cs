@@ -14,7 +14,7 @@ namespace Brainf_ckSharp.Memory
     /// <summary>
     /// A <see langword="class"/> that represents the state of a Turing machine
     /// </summary>
-    internal sealed partial class TuringMachineState : IReadOnlyMachineState
+    internal sealed partial class TuringMachineState : IMachineState
     {
         /// <summary>
         /// The size of the usable buffer within <see cref="_Buffer"/>
