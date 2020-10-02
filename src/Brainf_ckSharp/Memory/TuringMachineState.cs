@@ -14,7 +14,10 @@ namespace Brainf_ckSharp.Memory
     /// <summary>
     /// A <see langword="class"/> that represents the state of a Turing machine
     /// </summary>
-    internal sealed partial class TuringMachineState : IReadOnlyMachineState
+    /// <typeparam name="T">The type of data in the underlying buffer</typeparam>
+    /// <remarks>The only supported types for <typeparamref name="T"/> are <see cref="byte"/> or <see cref="ushort"/></remarks>
+    internal sealed partial class TuringMachineState<T> : IMachineState
+        where T : unmanaged, IEquatable<T>
     {
         /// <summary>
         /// The size of the usable buffer within <see cref="_Buffer"/>
@@ -27,13 +30,13 @@ namespace Brainf_ckSharp.Memory
         public readonly OverflowMode Mode;
 
         /// <summary>
-        /// The underlying <see cref="ushort"/> buffer
+        /// The underlying <typeparamref name="T"/> buffer
         /// </summary>
         /// <remarks>
         /// Similarly to <see cref="Buffers.StdoutBuffer"/>, the buffer is rented directly
         /// from this type to reduce the overhead when accessing individual items.
         /// </remarks>
-        private ushort[]? _Buffer;
+        private T[]? _Buffer;
 
         /// <summary>
         /// The current position within the underlying buffer
@@ -57,7 +60,7 @@ namespace Brainf_ckSharp.Memory
         /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
         private TuringMachineState(int size, OverflowMode mode, bool clear)
         {
-            _Buffer = ArrayPool<ushort>.Shared.Rent(size);
+            _Buffer = ArrayPool<T>.Shared.Rent(size);
             Size = size;
             Mode = mode;
 
@@ -68,7 +71,7 @@ namespace Brainf_ckSharp.Memory
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="TuringMachineState"/> class.
+        /// Finalizes an instance of the <see cref="TuringMachineState{T}"/> class.
         /// </summary>
         ~TuringMachineState() => Dispose();
 
@@ -84,13 +87,24 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
-                ushort[]? array = _Buffer;
+                T[]? array = _Buffer;
 
                 if (array is null) ThrowObjectDisposedException();
 
-                ushort value = array!.DangerousGetReferenceAt(_Position);
+                T value = array!.DangerousGetReferenceAt(_Position);
 
-                return new Brainf_ckMemoryCell(_Position, value, true);
+                ushort result;
+
+                if (typeof(T) == typeof(byte))
+                {
+                    result = Unsafe.As<T, byte>(ref value);
+                }
+                else
+                {
+                    result = Unsafe.As<T, ushort>(ref value);
+                }
+
+                return new Brainf_ckMemoryCell(_Position, result, true);
             }
         }
 
@@ -100,7 +114,7 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
-                ushort[]? array = _Buffer;
+                T[]? array = _Buffer;
 
                 if (array is null) ThrowObjectDisposedException();
 
@@ -109,9 +123,20 @@ namespace Brainf_ckSharp.Memory
                 // actually be greater than the memory state.
                 Guard.IsInRange(index, 0, Size, nameof(index));
 
-                ushort value = array!.DangerousGetReferenceAt(index);
+                T value = array!.DangerousGetReferenceAt(index);
 
-                return new Brainf_ckMemoryCell(index, value, _Position == index);
+                ushort result;
+
+                if (typeof(T) == typeof(byte))
+                {
+                    result = Unsafe.As<T, byte>(ref value);
+                }
+                else
+                {
+                    result = Unsafe.As<T, ushort>(ref value);
+                }
+
+                return new Brainf_ckMemoryCell(index, result, _Position == index);
             }
         }
 
@@ -130,7 +155,7 @@ namespace Brainf_ckSharp.Memory
 
             if (_Buffer is null) ThrowObjectDisposedException();
 
-            if (!(other is TuringMachineState state)) return false;
+            if (!(other is TuringMachineState<T> state)) return false;
 
             if (state._Buffer is null) ThrowObjectDisposedException();
 
@@ -151,7 +176,7 @@ namespace Brainf_ckSharp.Memory
             hashCode.Add(Size);
             hashCode.Add(Mode);
             hashCode.Add(_Position);
-            hashCode.Add<ushort>(_Buffer.AsSpan(0, Size));
+            hashCode.Add<T>(_Buffer.AsSpan(0, Size));
 
             return hashCode.ToHashCode();
         }
@@ -182,7 +207,7 @@ namespace Brainf_ckSharp.Memory
         {
             if (_Buffer is null) ThrowObjectDisposedException();
 
-            TuringMachineState clone = new TuringMachineState(Size, Mode, false) { _Position = _Position };
+            TuringMachineState<T> clone = new TuringMachineState<T>(Size, Mode, false) { _Position = _Position };
 
             _Buffer.AsSpan(0, Size).CopyTo(clone._Buffer.AsSpan(0, Size));
 
@@ -192,13 +217,13 @@ namespace Brainf_ckSharp.Memory
         /// <inheritdoc/>
         public void Dispose()
         {
-            ushort[]? array = _Buffer;
+            T[]? array = _Buffer;
 
             if (array is null) return;
 
             _Buffer = null;
 
-            ArrayPool<ushort>.Shared.Return(array);
+            ArrayPool<T>.Shared.Return(array);
         }
 
         /// <summary>

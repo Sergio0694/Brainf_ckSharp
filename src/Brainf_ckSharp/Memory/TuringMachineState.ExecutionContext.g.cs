@@ -12,7 +12,7 @@ namespace Brainf_ckSharp.Memory
     /// <summary>
     /// A <see langword="class"/> that represents the state of a Turing machine
     /// </summary>
-    internal sealed partial class TuringMachineState
+    internal sealed partial class TuringMachineState<T>
     {
         /// <summary>
         /// Gets an execution context of the specified type
@@ -25,32 +25,32 @@ namespace Brainf_ckSharp.Memory
             where TExecutionContext : struct, IMachineStateExecutionContext
         {
             // The underlying buffer is guaranteed not to be null or unpinned here
-            ushort* ptr = (ushort*)Unsafe.AsPointer(ref _Buffer.DangerousGetReference());
+            T* ptr = (T*)Unsafe.AsPointer(ref _Buffer.DangerousGetReference());
 
             if (typeof(TExecutionContext) == typeof(ByteWithOverflowExecutionContext))
             {
-                var executionContext = new ByteWithOverflowExecutionContext(ptr, Size - 1, _Position);
+                var executionContext = new ByteWithOverflowExecutionContext((byte*)ptr, Size - 1, _Position);
 
                 return Unsafe.As<ByteWithOverflowExecutionContext, TExecutionContext>(ref executionContext);
             }
 
             if (typeof(TExecutionContext) == typeof(ByteWithNoOverflowExecutionContext))
             {
-                var executionContext = new ByteWithNoOverflowExecutionContext(ptr, Size - 1, _Position);
+                var executionContext = new ByteWithNoOverflowExecutionContext((byte*)ptr, Size - 1, _Position);
 
                 return Unsafe.As<ByteWithNoOverflowExecutionContext, TExecutionContext>(ref executionContext);
             }
 
             if (typeof(TExecutionContext) == typeof(UshortWithOverflowExecutionContext))
             {
-                var executionContext = new UshortWithOverflowExecutionContext(ptr, Size - 1, _Position);
+                var executionContext = new UshortWithOverflowExecutionContext((ushort*)ptr, Size - 1, _Position);
 
                 return Unsafe.As<UshortWithOverflowExecutionContext, TExecutionContext>(ref executionContext);
             }
 
             if (typeof(TExecutionContext) == typeof(UshortWithNoOverflowExecutionContext))
             {
-                var executionContext = new UshortWithNoOverflowExecutionContext(ptr, Size - 1, _Position);
+                var executionContext = new UshortWithNoOverflowExecutionContext((ushort*)ptr, Size - 1, _Position);
 
                 return Unsafe.As<UshortWithNoOverflowExecutionContext, TExecutionContext>(ref executionContext);
             }
@@ -63,12 +63,12 @@ namespace Brainf_ckSharp.Memory
         /// </summary>
         public unsafe struct ByteWithOverflowExecutionContext : IMachineStateExecutionContext
         {
-            private readonly ushort* Ptr;
+            private readonly byte* Ptr;
             private readonly int MaxIndex;
             private int _Position;
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public ByteWithOverflowExecutionContext(ushort* ptr, int maxIndex, int position)
+            public ByteWithOverflowExecutionContext(byte* ptr, int maxIndex, int position)
             {
                 Ptr = ptr;
                 MaxIndex = maxIndex;
@@ -161,7 +161,7 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryIncrement()
             {
-                ushort* current = Ptr + _Position;
+                byte* current = Ptr + _Position;
 
                 *current = unchecked((byte)(*current + 1));
 
@@ -172,7 +172,7 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryIncrement(int count, ref int totalOperations)
             {
-                ushort* current = Ptr + _Position;
+                byte* current = Ptr + _Position;
 
                 *current = unchecked((byte)(*current + count));
 
@@ -185,7 +185,7 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryDecrement()
             {
-                ushort* current = Ptr + _Position;
+                byte* current = Ptr + _Position;
 
                 *current = unchecked((byte)(*current - 1));
 
@@ -196,7 +196,7 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryDecrement(int count, ref int totalOperations)
             {
-                ushort* current = Ptr + _Position;
+                byte* current = Ptr + _Position;
 
                 *current = unchecked((byte)(*current - count));
 
@@ -209,7 +209,7 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryInput(char c)
             {
-                ushort* current = Ptr + _Position;
+                byte* current = Ptr + _Position;
 
                 *current = unchecked((byte)c);
 
@@ -226,12 +226,12 @@ namespace Brainf_ckSharp.Memory
         /// </summary>
         public unsafe struct ByteWithNoOverflowExecutionContext : IMachineStateExecutionContext
         {
-            private readonly ushort* Ptr;
+            private readonly byte* Ptr;
             private readonly int MaxIndex;
             private int _Position;
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public ByteWithNoOverflowExecutionContext(ushort* ptr, int maxIndex, int position)
+            public ByteWithNoOverflowExecutionContext(byte* ptr, int maxIndex, int position)
             {
                 Ptr = ptr;
                 MaxIndex = maxIndex;
@@ -324,7 +324,7 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryIncrement()
             {
-                ushort* current = Ptr + _Position;
+                byte* current = Ptr + _Position;
 
                 if (*current != byte.MaxValue)
                 {
@@ -340,7 +340,7 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryIncrement(int count, ref int totalOperations)
             {
-                ushort* current = Ptr + _Position;
+                byte* current = Ptr + _Position;
 
                 if (*current + count <= byte.MaxValue)
                 {
@@ -362,11 +362,11 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryDecrement()
             {
-                ushort* current = Ptr + _Position;
+                byte* current = Ptr + _Position;
 
                 if (*current != 0)
                 {
-                    *current = (ushort)(*current - 1);
+                    *current = (byte)(*current - 1);
 
                     return true;
                 }
@@ -378,11 +378,11 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryDecrement(int count, ref int totalOperations)
             {
-                ushort* current = Ptr + _Position;
+                byte* current = Ptr + _Position;
 
                 if (*current >= count)
                 {
-                    *current = (ushort)(*current - count);
+                    *current = (byte)(*current - count);
 
                     totalOperations += count;
 
@@ -400,11 +400,11 @@ namespace Brainf_ckSharp.Memory
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryInput(char c)
             {
-                ushort* current = Ptr + _Position;
+                byte* current = Ptr + _Position;
 
                 if (c <= byte.MaxValue)
                 {
-                    *current = c;
+                    *current = unchecked((byte)c);
 
                     return true;
                 }

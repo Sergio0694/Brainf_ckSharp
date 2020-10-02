@@ -23,7 +23,7 @@ namespace Brainf_ckSharp.Memory
     /// <summary>
     /// A <see langword="class"/> that represents the state of a Turing machine
     /// </summary>
-    internal sealed partial class TuringMachineState
+    internal sealed partial class TuringMachineState<T>
     {
         /// <inheritdoc/>
         public InterpreterResult Run(Span<Brainf_ckOperation> opcodes, string stdin, CancellationToken executionToken)
@@ -32,10 +32,10 @@ namespace Brainf_ckSharp.Memory
 
             return Mode switch
             {
-                OverflowMode.ByteWithOverflow => Brainf_ckInterpreter.Release.Run<ByteWithOverflowExecutionContext>(opcodes, stdin, this, executionToken),
-                OverflowMode.ByteWithNoOverflow => Brainf_ckInterpreter.Release.Run<ByteWithNoOverflowExecutionContext>(opcodes, stdin, this, executionToken),
-                OverflowMode.UshortWithOverflow => Brainf_ckInterpreter.Release.Run<UshortWithOverflowExecutionContext>(opcodes, stdin, this, executionToken),
-                OverflowMode.UshortWithNoOverflow => Brainf_ckInterpreter.Release.Run<UshortWithNoOverflowExecutionContext>(opcodes, stdin, this, executionToken),
+                OverflowMode.ByteWithOverflow => Brainf_ckInterpreter.Release.Run<T, ByteWithOverflowExecutionContext>(opcodes, stdin, this, executionToken),
+                OverflowMode.ByteWithNoOverflow => Brainf_ckInterpreter.Release.Run<T, ByteWithNoOverflowExecutionContext>(opcodes, stdin, this, executionToken),
+                OverflowMode.UshortWithOverflow => Brainf_ckInterpreter.Release.Run<T, UshortWithOverflowExecutionContext>(opcodes, stdin, this, executionToken),
+                OverflowMode.UshortWithNoOverflow => Brainf_ckInterpreter.Release.Run<T, UshortWithNoOverflowExecutionContext>(opcodes, stdin, this, executionToken),
                 _ => ThrowHelper.ThrowArgumentOutOfRangeException<InterpreterResult>(nameof(Mode), "Invalid execution mode")
             };
         }
@@ -66,7 +66,7 @@ namespace Brainf_ckSharp.Memory
             stackFrames.DangerousGetReference() = new StackFrame(new Range(0, opcodes.Length), 0);
 
             // Create the interpreter session
-            InterpreterSession session = new InterpreterSession(
+            InterpreterSession<T> session = new InterpreterSession<T>(
                 opcodes,
                 breakpointsTable,
                 jumpTable,
@@ -114,9 +114,9 @@ namespace Brainf_ckSharp.Memory
             private readonly GCHandle Handle;
 
             /// <summary>
-            /// The <see cref="TuringMachineState"/> instance in use
+            /// The <see cref="TuringMachineState{T}"/> instance in use
             /// </summary>
-            private readonly TuringMachineState MachineState;
+            private readonly TuringMachineState<T> MachineState;
 
             /// <summary>
             /// The <typeparamref name="TExecutionContext"/> instance for the current session
@@ -126,10 +126,10 @@ namespace Brainf_ckSharp.Memory
             /// <summary>
             /// Creates a new <see cref="ExecutionSession{TExecutionContext}"/> instance with the specified value
             /// </summary>
-            /// <param name="state">The <see cref="TuringMachineState"/> instance to use</param>
+            /// <param name="state">The <see cref="TuringMachineState{T}"/> instance to use</param>
             [EditorBrowsable(EditorBrowsableState.Never)]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public ExecutionSession(TuringMachineState state)
+            public ExecutionSession(TuringMachineState<T> state)
             {
                 Assert(state._Buffer != null);
 

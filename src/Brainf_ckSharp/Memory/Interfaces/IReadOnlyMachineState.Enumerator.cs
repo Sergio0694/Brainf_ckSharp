@@ -12,9 +12,9 @@ namespace Brainf_ckSharp.Memory.Interfaces
     public ref struct IReadOnlyMachineStateEnumerator
     {
         /// <summary>
-        /// The target <see cref="TuringMachineState"/> instance to enumerate
+        /// The target <see cref="IMachineState"/> instance to enumerate
         /// </summary>
-        private readonly TuringMachineState MachineState;
+        private readonly IMachineState MachineState;
 
         /// <summary>
         /// The size of <see cref="MachineState"/>, used to skip an indirect memory access
@@ -30,12 +30,12 @@ namespace Brainf_ckSharp.Memory.Interfaces
         /// <summary>
         /// Creates a new <see cref="IReadOnlyMachineStateEnumerator"/> with the specified values
         /// </summary>
-        /// <param name="machineState">The target <see cref="TuringMachineState"/> instance to enumerate</param>
+        /// <param name="machineState">The target <see cref="IMachineState"/> instance to enumerate</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal IReadOnlyMachineStateEnumerator(TuringMachineState machineState)
+        internal IReadOnlyMachineStateEnumerator(IMachineState machineState)
         {
             MachineState = machineState;
-            Size = machineState.Size;
+            Size = machineState.Count;
             _Index = -1;
         }
 

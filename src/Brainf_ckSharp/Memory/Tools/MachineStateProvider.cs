@@ -35,7 +35,14 @@ namespace Brainf_ckSharp.Memory.Tools
         {
             Guard.IsBetweenOrEqualTo(size, Specs.MinimumMemorySize, Specs.MaximumMemorySize, nameof(size));
 
-            return new TuringMachineState(size, overflowMode);
+            return overflowMode switch
+            {
+                OverflowMode.ByteWithOverflow => new TuringMachineState<byte>(size, overflowMode),
+                OverflowMode.ByteWithNoOverflow => new TuringMachineState<byte>(size, overflowMode),
+                OverflowMode.UshortWithOverflow => new TuringMachineState<ushort>(size, overflowMode),
+                OverflowMode.UshortWithNoOverflow => new TuringMachineState<ushort>(size, overflowMode),
+                _ => ThrowHelper.ThrowArgumentOutOfRangeException<IReadOnlyMachineState>(nameof(overflowMode), "Invalid execution mode")
+            };
         }
     }
 }
