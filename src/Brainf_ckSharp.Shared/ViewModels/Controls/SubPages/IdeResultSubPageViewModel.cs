@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Buffers;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -46,7 +47,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// The <see cref="InterpreterSession"/> to use, when in DEBUG mode
         /// </summary>
-        private InterpreterSession? _DebugSession;
+        private IEnumerator<InterpreterResult>? _DebugSession;
 
         /// <summary>
         /// Creates a new <see cref="IdeResultSubPageViewModel"/> instance

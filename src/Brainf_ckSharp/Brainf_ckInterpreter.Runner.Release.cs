@@ -9,7 +9,6 @@ using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Internal;
 using Brainf_ckSharp.Opcodes;
-using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 using Microsoft.Toolkit.HighPerformance.Extensions;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
@@ -31,40 +30,13 @@ namespace Brainf_ckSharp
             /// <summary>
             /// Runs a given Brainf*ck/PBrain executable with the given parameters
             /// </summary>
-            /// <param name="opcodes">The executable to run</param>
-            /// <param name="stdin">The input buffer to read data from</param>
-            /// <param name="machineState">The target machine state to use to run the script</param>
-            /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
-            /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-            public static InterpreterResult Run(
-                Span<Brainf_ckOperation> opcodes,
-                string stdin,
-                TuringMachineState machineState,
-                CancellationToken executionToken)
-            {
-                Assert(opcodes.Length >= 0);
-                Assert(machineState.Size >= 0);
-
-                return machineState.Mode switch
-                {
-                    OverflowMode.ByteWithOverflow => Run<TuringMachineState.ByteWithOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
-                    OverflowMode.ByteWithNoOverflow => Run<TuringMachineState.ByteWithNoOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
-                    OverflowMode.UshortWithOverflow => Run<TuringMachineState.UshortWithOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
-                    OverflowMode.UshortWithNoOverflow => Run<TuringMachineState.UshortWithNoOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
-                    _ => ThrowHelper.ThrowArgumentOutOfRangeException<InterpreterResult>(nameof(TuringMachineState.Mode), "Invalid execution mode")
-                };
-            }
-
-            /// <summary>
-            /// Runs a given Brainf*ck/PBrain executable with the given parameters
-            /// </summary>
             /// <typeparam name="TExecutionContext">The type implementing <see cref="IMachineStateExecutionContext"/> to use</typeparam>
             /// <param name="opcodes">The executable to run</param>
             /// <param name="stdin">The input buffer to read data from</param>
             /// <param name="machineState">The target machine state to use to run the script</param>
             /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
             /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-            private static InterpreterResult Run<TExecutionContext>(
+            public static InterpreterResult Run<TExecutionContext>(
                 Span<Brainf_ckOperation> opcodes,
                 string stdin,
                 TuringMachineState machineState,

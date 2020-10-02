@@ -1,15 +1,10 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ckSharp.Buffers;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
-using Brainf_ckSharp.Memory;
 using Brainf_ckSharp.Memory.Interfaces;
-using Brainf_ckSharp.Models;
-using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Opcodes;
-using Microsoft.Toolkit.HighPerformance.Buffers;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
 using Range = Brainf_ckSharp.Models.Internal.Range;
 using static System.Diagnostics.Debug;
@@ -26,54 +21,6 @@ namespace Brainf_ckSharp
         /// </summary>
         internal static partial class Debug
         {
-            /// <summary>
-            /// Creates a new Brainf*ck/PBrain session with the given parameters
-            /// </summary>
-            /// <param name="source">The source code to parse and execute</param>
-            /// <param name="breakpoints">The sequence of indices for the breakpoints to apply to the script</param>
-            /// <param name="stdin">The input buffer to read data from</param>
-            /// <param name="machineState">The target machine state to use to run the script</param>
-            /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
-            /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
-            /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterSession"/> instance with the results of the execution</returns>
-            public static Option<InterpreterSession> TryCreateSession(
-                ReadOnlySpan<char> source,
-                ReadOnlySpan<int> breakpoints,
-                string stdin,
-                TuringMachineState machineState,
-                CancellationToken executionToken,
-                CancellationToken debugToken)
-            {
-                MemoryOwner<Brainf_ckOperator> opcodes = Brainf_ckParser.TryParse<Brainf_ckOperator>(source, out SyntaxValidationResult validationResult)!;
-
-                if (!validationResult.IsSuccess) return Option<InterpreterSession>.From(validationResult);
-
-                // Initialize the temporary buffers
-                MemoryOwner<bool> breakpointsTable = LoadBreakpointsTable(source, validationResult.OperatorsCount, breakpoints);
-                MemoryOwner<int> jumpTable = LoadJumpTable(opcodes.Span, out int functionsCount);
-                MemoryOwner<Range> functions = MemoryOwner<Range>.Allocate(ushort.MaxValue, AllocationMode.Clear);
-                MemoryOwner<ushort> definitions = LoadDefinitionsTable(functionsCount);
-                MemoryOwner<StackFrame> stackFrames = MemoryOwner<StackFrame>.Allocate(Specs.MaximumStackSize);
-
-                // Initialize the root stack frame
-                stackFrames.DangerousGetReference() = new StackFrame(new Range(0, opcodes.Length), 0);
-
-                // Create the interpreter session
-                InterpreterSession session = new InterpreterSession(
-                    opcodes,
-                    breakpointsTable,
-                    jumpTable,
-                    functions,
-                    definitions,
-                    stackFrames,
-                    stdin,
-                    machineState,
-                    executionToken,
-                    debugToken);
-
-                return Option<InterpreterSession>.From(validationResult, session);
-            }
-
             /// <summary>
             /// Tries to run a given input Brainf*ck/PBrain executable
             /// </summary>

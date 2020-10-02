@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
-using Brainf_ckSharp.Memory;
+using Brainf_ckSharp.Memory.Interfaces;
+using Brainf_ckSharp.Memory.Tools;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Opcodes;
@@ -29,12 +30,12 @@ namespace Brainf_ckSharp.Configurations
 
             if (!validationResult.IsSuccess) return Option<InterpreterResult>.From(validationResult);
 
-            if (InitialState is TuringMachineState initialState)
+            if (InitialState is IMachineState initialState)
             {
                 Guard.IsNull(MemorySize, nameof(MemorySize));
                 Guard.IsNull(OverflowMode, nameof(OverflowMode));
 
-                initialState = (TuringMachineState)initialState.Clone();
+                initialState = (IMachineState)initialState.Clone();
             }
             else
             {
@@ -42,13 +43,12 @@ namespace Brainf_ckSharp.Configurations
 
                 Guard.IsBetweenOrEqualTo(size, Specs.MinimumMemorySize, Specs.MaximumMemorySize, nameof(MemorySize));
 
-                initialState = new TuringMachineState(size, OverflowMode ?? Specs.DefaultOverflowMode);
+                initialState = (IMachineState)MachineStateProvider.Create(size, OverflowMode ?? Specs.DefaultOverflowMode);
             }
 
-            InterpreterResult result = Brainf_ckInterpreter.Release.Run(
+            InterpreterResult result = initialState.Run(
                 operations!.Span,
                 Stdin ?? string.Empty,
-                initialState,
                 ExecutionToken);
 
             return Option<InterpreterResult>.From(validationResult, result);

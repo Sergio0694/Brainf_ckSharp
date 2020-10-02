@@ -23,7 +23,7 @@ namespace Brainf_ckSharp
             /// <param name="functionsCount">The total number of declared functions in the input sequence of opcodes</param>
             /// <returns>The resulting precomputed jump table for the input executable</returns>
             [Pure]
-            private static MemoryOwner<int> LoadJumpTable<TOpcode>(
+            public static MemoryOwner<int> LoadJumpTable<TOpcode>(
                 Span<TOpcode> opcodes,
                 out int functionsCount)
                 where TOpcode : unmanaged, IOpcode
@@ -42,7 +42,7 @@ namespace Brainf_ckSharp
             /// <returns>The resulting buffer to store keys for the declared functions</returns>
             [Pure]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            private static MemoryOwner<ushort> LoadDefinitionsTable(int functionsCount)
+            public static MemoryOwner<ushort> LoadDefinitionsTable(int functionsCount)
             {
                 Assert(functionsCount >= 0);
 

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ckSharp.Constants;
-using Brainf_ckSharp.Memory;
+using Brainf_ckSharp.Memory.Interfaces;
+using Brainf_ckSharp.Memory.Tools;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Microsoft.Toolkit.Diagnostics;
@@ -31,16 +33,16 @@ namespace Brainf_ckSharp.Configurations
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public Option<InterpreterSession> TryRun()
+        public Option<IEnumerator<InterpreterResult>> TryRun()
         {
             Guard.IsNotNull(Source, nameof(Source));
 
-            if (InitialState is TuringMachineState initialState)
+            if (InitialState is IMachineState initialState)
             {
                 Guard.IsNull(MemorySize, nameof(MemorySize));
                 Guard.IsNull(OverflowMode, nameof(OverflowMode));
 
-                initialState = (TuringMachineState)initialState.Clone();
+                initialState = (IMachineState)initialState.Clone();
             }
             else
             {
@@ -48,14 +50,13 @@ namespace Brainf_ckSharp.Configurations
 
                 Guard.IsBetweenOrEqualTo(size, Specs.MinimumMemorySize, Specs.MaximumMemorySize, nameof(MemorySize));
 
-                initialState = new TuringMachineState(size, OverflowMode ?? Specs.DefaultOverflowMode);
+                initialState = (IMachineState)MachineStateProvider.Create(size, OverflowMode ?? Specs.DefaultOverflowMode);
             }
 
-            return Brainf_ckInterpreter.Debug.TryCreateSession(
+            return initialState.TryCreateSession(
                 Source.Value.Span,
                 Breakpoints.Span,
                 Stdin ?? string.Empty,
-                initialState,
                 ExecutionToken,
                 DebugToken);
         }
