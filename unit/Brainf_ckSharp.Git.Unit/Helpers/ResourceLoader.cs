@@ -24,10 +24,10 @@ namespace Brainf_ckSharp.Git.Unit.Helpers
                 oldPath = assembly.GetManifestResourceNames().First(name => name.EndsWith($"{key}Old.txt")),
                 newPath = assembly.GetManifestResourceNames().First(name => name.EndsWith($"{key}New.txt"));
 
-            using Stream oldStream = assembly.GetManifestResourceStream(oldPath);
+            using Stream oldStream = assembly.GetManifestResourceStream(oldPath)!;
             using StreamReader oldReader = new StreamReader(oldStream);
 
-            using Stream newStream = assembly.GetManifestResourceStream(newPath);
+            using Stream newStream = assembly.GetManifestResourceStream(newPath)!;
             using StreamReader newReader = new StreamReader(newStream);
 
             string

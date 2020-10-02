@@ -171,7 +171,7 @@ namespace Brainf_ckSharp.Uwp.Profiler
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public string Run(Script script)
             {
-                Option<InterpreterSession> result = Brainf_ckInterpreter
+                Option<IEnumerator<InterpreterResult>> result = Brainf_ckInterpreter
                     .CreateDebugConfiguration()
                     .WithSource(script.Source)
                     .WithStdin(script.Stdin)
@@ -179,10 +179,11 @@ namespace Brainf_ckSharp.Uwp.Profiler
                     .WithOverflowMode(script.OverflowMode)
                     .TryRun();
 
-                using InterpreterSession enumerator = result.Value!;
+                using IEnumerator<InterpreterResult> enumerator = result.Value!;
 
                 enumerator.MoveNext();
-                return enumerator.Current.Stdout;
+
+                return enumerator.Current!.Stdout;
             }
         }
 
@@ -204,7 +205,7 @@ namespace Brainf_ckSharp.Uwp.Profiler
 
                 result.Value!.MachineState.Dispose();
 
-                return result.Value.Stdout;
+                return result.Value!.Stdout;
             }
         }
     }

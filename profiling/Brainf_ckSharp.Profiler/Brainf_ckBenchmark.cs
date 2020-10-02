@@ -1,4 +1,5 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿using System.Collections.Generic;
+using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Jobs;
@@ -37,7 +38,7 @@ namespace Brainf_ckSharp.Profiler
         [Benchmark(Baseline = true)]
         public string Debug()
         {
-            Option<InterpreterSession> result = Brainf_ckInterpreter
+            Option<IEnumerator<InterpreterResult>> result = Brainf_ckInterpreter
                 .CreateDebugConfiguration()
                 .WithSource(Script!.Source)
                 .WithStdin(Script.Stdin)
@@ -45,7 +46,7 @@ namespace Brainf_ckSharp.Profiler
                 .WithOverflowMode(Script.OverflowMode)
                 .TryRun();
 
-            using InterpreterSession enumerator = result.Value!;
+            using IEnumerator<InterpreterResult> enumerator = result.Value!;
 
             enumerator!.MoveNext();
 

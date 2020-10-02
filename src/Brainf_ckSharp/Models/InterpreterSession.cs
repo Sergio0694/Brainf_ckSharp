@@ -19,7 +19,7 @@ namespace Brainf_ckSharp.Models
     /// <summary>
     /// A <see langword="class"/> that represents an interpreter session executing on a given script
     /// </summary>
-    public sealed class InterpreterSession<T> : IEnumerator<InterpreterResult>
+    internal sealed class InterpreterSession<T> : IEnumerator<InterpreterResult>
         where T : unmanaged, IEquatable<T>
     {
         /// <summary>
