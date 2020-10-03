@@ -47,7 +47,7 @@ namespace Brainf_ckSharp.Configurations
 
             InterpreterResult result = Brainf_ckInterpreter.Release.Run(
                 operations!.Span,
-                Stdin ?? string.Empty,
+                Stdin.GetValueOrDefault().Span,
                 initialState,
                 ExecutionToken);
 

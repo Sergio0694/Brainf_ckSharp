@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
 using Microsoft.Toolkit.HighPerformance.Buffers;
+using Microsoft.Toolkit.HighPerformance.Extensions;
 using static System.Diagnostics.Debug;
 
 namespace Brainf_ckSharp.Buffers
@@ -16,12 +17,6 @@ namespace Brainf_ckSharp.Buffers
         /// <summary>
         /// The underlying <see cref="char"/> buffer
         /// </summary>
-        /// <remarks>
-        /// This array is rented and disposed directly within this type to avoid
-        /// having to use another reference type as container, which would have caused
-        /// a third indirect reference to access any individual value in the buffer.
-        /// Storing the buffer directly in this type exchanges some verbosity for speed.
-        /// </remarks>
         private readonly char[] Buffer;
 
         /// <summary>
@@ -51,35 +46,79 @@ namespace Brainf_ckSharp.Buffers
         }
 
         /// <summary>
-        /// Tries to write a new character into the current buffer
+        /// Creates a new <see cref="Writer"/> instance to write to the underlying buffer
         /// </summary>
-        /// <param name="c">The input character to write to the underlying buffer</param>
-        /// <returns><see langword="true"/> if the character was written successfully, <see langword="false"/> otherwise</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryWrite(char c)
+        /// <returns>A <see cref="Writer"/> instance to write characters</returns>
+        [Pure]
+        public Writer CreateWriter()
         {
-            Assert(_Position >= 0);
-            Assert(_Position <= Specs.StdoutBufferSizeLimit);
+            return new Writer(Buffer, _Position);
+        }
 
-            char[] buffer = Buffer!;
-            int position = _Position;
+        /// <summary>
+        /// Synchronizes the current buffer position with a given <see cref="Writer"/> instance
+        /// </summary>
+        /// <param name="writer">The <see cref="Writer"/> instance that was previously used</param>
+        public void Synchronize(ref Writer writer)
+        {
+            _Position = writer.Position;
+        }
 
-            // Like in the other buffer, manually check for bounds to remove the
-            // automatic bounds check added by the JIT compiler in the array access.
-            if ((uint)position < (uint)buffer.Length)
+        /// <summary>
+        /// A <see langword="struct"/> that can writer data on the memory from a <see cref="StdoutBuffer"/> instance
+        /// </summary>
+        public ref struct Writer
+        {
+            /// <inheritdoc cref="StdoutBuffer.Buffer"/>
+            private readonly Span<char> Buffer;
+
+            /// <inheritdoc cref="_Position"/>
+            public int Position;
+
+            /// <summary>
+            /// Creates a new <see cref="Writer"/> instance targeting the input buffer
+            /// </summary>
+            /// <param name="buffer">The input buffer to write to</param>
+            /// <param name="position">The initial position to write from</param>
+            public Writer(Span<char> buffer, int position = 0)
             {
-                buffer[position] = c;
-
-                _Position = position + 1;
-
-                return true;
+                Buffer = buffer;
+                Position = position;
             }
 
-            return false;
+            /// <summary>
+            /// Tries to write a new character into the current buffer
+            /// </summary>
+            /// <param name="c">The input character to write to the underlying buffer</param>
+            /// <returns><see langword="true"/> if the character was written successfully, <see langword="false"/> otherwise</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool TryWrite(char c)
+            {
+                Assert(Position >= 0);
+                Assert(Position <= Specs.StdoutBufferSizeLimit);
+
+                int position = Position;
+
+                if ((uint)position < (uint)Buffer.Length)
+                {
+                    Buffer.DangerousGetReferenceAt(position) = c;
+
+                    Position = position + 1;
+
+                    return true;
+                }
+
+                return false;
+            }
+
+            /// <inheritdoc/>
+            public override readonly string ToString()
+            {
+                return StringPool.Shared.GetOrAdd(Buffer.Slice(0, Position));
+            }
         }
 
         /// <inheritdoc/>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override readonly string ToString()
         {
             return StringPool.Shared.GetOrAdd(new ReadOnlySpan<char>(Buffer, 0, _Position));

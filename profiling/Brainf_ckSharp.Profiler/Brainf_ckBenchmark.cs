@@ -1,7 +1,8 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿using System;
+using System.Threading;
+using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Engines;
-using BenchmarkDotNet.Jobs;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Unit.Shared;
@@ -12,26 +13,53 @@ using Brainf_ckSharp.Unit.Shared.Models;
 namespace Brainf_ckSharp.Profiler
 {
     [MemoryDiagnoser]
-    [SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.NetCoreApp21)]
-    [SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.NetCoreApp31)]
     [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByParams)]
-    public class Brainf_ckBenchmark
+    public abstract class Brainf_ckBenchmarkBase
     {
-        /// <summary>
-        /// The name of the script to benchmark
-        /// </summary>
-        [Params("HelloWorld", "Sum", "Multiply", "Division", "Fibonacci", "Mandelbrot")]
-        public string? Name;
-
         /// <summary>
         /// The currently loaded script to test
         /// </summary>
         private Script? Script;
 
+        /// <summary>
+        /// The name of the script to benchmark
+        /// </summary>
+        public virtual string? Name { get; set; }
+
         [GlobalSetup]
         public void Setup()
         {
+            TriggerTier1Jit();
+
             Script = ScriptLoader.LoadScriptByName(Name!);
+        }
+
+        /// <summary>
+        /// Runs all the benchmarks a number of times to ensure Tier1 code is generated
+        /// </summary>
+        private void TriggerTier1Jit()
+        {
+            Script = ScriptLoader.LoadScriptByName("HelloWorld");
+
+            for (int i = 0; i < 1000; i++)
+            {
+                Debug();
+            }
+
+            Thread.Sleep(TimeSpan.FromSeconds(1));
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+            for (int i = 0; i < 1000; i++)
+            {
+                Release();
+            }
+
+            Thread.Sleep(TimeSpan.FromSeconds(1));
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         [Benchmark(Baseline = true)]
@@ -67,5 +95,21 @@ namespace Brainf_ckSharp.Profiler
 
             return result.Value!.Stdout;
         }
+    }
+
+    [SimpleJob(RunStrategy.Throughput)]
+    public class Brainf_ckBenchmark_Short : Brainf_ckBenchmarkBase
+    {
+        /// <inheritdoc/>
+        [Params("HelloWorld", "Sum", "Multiply", "Division", "Fibonacci")]
+        public override string? Name { get; set; }
+    }
+
+    [SimpleJob(RunStrategy.Monitoring)]
+    public class Brainf_ckBenchmark_Long : Brainf_ckBenchmarkBase
+    {
+        /// <inheritdoc/>
+        [Params("Mandelbrot")]
+        public override string? Name { get; set; }
     }
 }

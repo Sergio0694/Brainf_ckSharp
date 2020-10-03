@@ -52,19 +52,19 @@ namespace Brainf_ckSharp.Models
         private readonly MemoryOwner<StackFrame> StackFrames;
 
         /// <summary>
+        /// The target <see cref="TuringMachineState"/> instance to execute the code on
+        /// </summary>
+        private readonly TuringMachineState MachineState;
+
+        /// <summary>
         /// The input buffer to read characters from
         /// </summary>
-        private readonly StdinBuffer StdinBuffer;
+        private StdinBuffer StdinBuffer;
 
         /// <summary>
         /// The output buffer to write characters to
         /// </summary>
-        private readonly StdoutBuffer StdoutBuffer;
-
-        /// <summary>
-        /// The target <see cref="TuringMachineState"/> instance to execute the code on
-        /// </summary>
-        private readonly TuringMachineState MachineState;
+        private StdoutBuffer StdoutBuffer;
 
         /// <summary>
         /// The current stack depth
@@ -115,7 +115,7 @@ namespace Brainf_ckSharp.Models
         /// <param name="functions">The mapping of functions for the current execution</param>
         /// <param name="definitions">The lookup table to check which functions are defined</param>
         /// <param name="stackFrames">The sequence of stack frames for the current execution</param>
-        /// <param name="stdin">The input <see cref="string"/> to read characters from</param>
+        /// <param name="stdin">The input <see cref="ReadOnlyMemory{T}"/> to read characters from</param>
         /// <param name="machineState">The target machine state to use to run the script</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
@@ -126,7 +126,7 @@ namespace Brainf_ckSharp.Models
             MemoryOwner<Range> functions,
             MemoryOwner<ushort> definitions,
             MemoryOwner<StackFrame> stackFrames,
-            string stdin,
+            ReadOnlyMemory<char> stdin,
             TuringMachineState machineState,
             CancellationToken executionToken,
             CancellationToken debugToken)
@@ -137,9 +137,9 @@ namespace Brainf_ckSharp.Models
             Functions = functions;
             Definitions = definitions;
             StackFrames = stackFrames;
+            MachineState = machineState;
             StdinBuffer = new StdinBuffer(stdin);
             StdoutBuffer = StdoutBuffer.Allocate();
-            MachineState = machineState;
             ExecutionToken = executionToken;
             DebugToken = debugToken;
             Stopwatch = new Stopwatch();
@@ -195,6 +195,10 @@ namespace Brainf_ckSharp.Models
             {
                 Stopwatch.Start();
 
+                // Setup the stdin and stdout readers and writers
+                StdinBuffer.Reader stdinReader = StdinBuffer.CreateReader();
+                StdoutBuffer.Writer stdoutWriter = StdoutBuffer.CreateWriter();
+
                 // Execute the new interpreter debug step
                 exitCode = Brainf_ckInterpreter.Debug.Run(
                     ref Unsafe.AsRef(session.ExecutionContext),
@@ -207,10 +211,14 @@ namespace Brainf_ckSharp.Models
                     ref _Depth,
                     ref _TotalOperations,
                     ref _TotalFunctions,
-                    ref Unsafe.AsRef(StdinBuffer),
-                    ref Unsafe.AsRef(StdoutBuffer),
+                    ref stdinReader,
+                    ref stdoutWriter,
                     ExecutionToken,
                     DebugToken);
+
+                // Synchronize the buffers
+                StdinBuffer.Synchronize(ref stdinReader);
+                StdoutBuffer.Synchronize(ref stdoutWriter);
 
                 Stopwatch.Stop();
             }

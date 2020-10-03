@@ -38,7 +38,7 @@ namespace Brainf_ckSharp
             /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
             public static InterpreterResult Run(
                 Span<Brainf_ckOperation> opcodes,
-                string stdin,
+                ReadOnlySpan<char> stdin,
                 TuringMachineState machineState,
                 CancellationToken executionToken)
             {
@@ -66,7 +66,7 @@ namespace Brainf_ckSharp
             /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
             private static InterpreterResult Run<TExecutionContext>(
                 Span<Brainf_ckOperation> opcodes,
-                string stdin,
+                ReadOnlySpan<char> stdin,
                 TuringMachineState machineState,
                 CancellationToken executionToken)
                 where TExecutionContext : struct, IMachineStateExecutionContext
@@ -90,8 +90,9 @@ namespace Brainf_ckSharp
                 // Manually set the initial stack frame to the entire script
                 stackFrames.DangerousGetReference() = new StackFrame(new Range(0, opcodes.Length), 0);
 
-                // Wrap the stdin buffer
-                StdinBuffer stdinBuffer = new StdinBuffer(stdin);
+                // Setup the stdin and stdout readers and writers
+                StdinBuffer.Reader stdinReader = new StdinBuffer.Reader(stdin);
+                StdoutBuffer.Writer stdoutWriter = stdout.CreateWriter();
 
                 // Create the execution session
                 using (TuringMachineState.ExecutionSession<TExecutionContext> session = machineState.CreateExecutionSession<TExecutionContext>())
@@ -109,8 +110,8 @@ namespace Brainf_ckSharp
                         ref depth,
                         ref totalOperations,
                         ref totalFunctions,
-                        ref stdinBuffer,
-                        ref Unsafe.AsRef(stdout),
+                        ref stdinReader,
+                        ref stdoutWriter,
                         executionToken);
 
                     elapsed = TimeSpan.FromTicks(timestamp.Ticks);
@@ -138,8 +139,8 @@ namespace Brainf_ckSharp
                     debugInfo,
                     machineState,
                     functionDefinitions,
-                    stdin,
-                    stdout.ToString(),
+                    stdinReader.ToString(),
+                    stdoutWriter.ToString(),
                     elapsed,
                     totalOperations);
             }
@@ -157,8 +158,8 @@ namespace Brainf_ckSharp
             /// <param name="depth">The current stack depth</param>
             /// <param name="totalOperations">The total number of executed opcodes</param>
             /// <param name="totalFunctions">The total number of defined functions</param>
-            /// <param name="stdin">The input buffer to read characters from</param>
-            /// <param name="stdout">The output buffer to write characters to</param>
+            /// <param name="stdinReader">The input buffer to read characters from</param>
+            /// <param name="stdoutWriter">The output buffer to write characters to</param>
             /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
             /// <returns>The resulting <see cref="ExitCode"/> value for the current execution of the input script</returns>
             /// <remarks>This method mirrors the one from the <see cref="Debug"/> class, but with more optimizations</remarks>
@@ -172,8 +173,8 @@ namespace Brainf_ckSharp
                 ref int depth,
                 ref int totalOperations,
                 ref int totalFunctions,
-                ref StdinBuffer stdin,
-                ref StdoutBuffer stdout,
+                ref StdinBuffer.Reader stdinReader,
+                ref StdoutBuffer.Writer stdoutWriter,
                 CancellationToken executionToken)
                 where TExecutionContext : struct, IMachineStateExecutionContext
             {
@@ -229,13 +230,13 @@ namespace Brainf_ckSharp
 
                             // putch(*ptr)
                             case Operators.PrintChar:
-                                if (stdout.TryWrite((char)executionContext.Current)) totalOperations++;
+                                if (stdoutWriter.TryWrite((char)executionContext.Current)) totalOperations++;
                                 else goto StdoutBufferLimitExceeded;
                                 break;
 
                             // *ptr = getch()
                             case Operators.ReadChar:
-                                if (stdin.TryRead(out char c))
+                                if (stdinReader.TryRead(out char c))
                                 {
                                     // Check if the input character can be stored in the current cell
                                     if (executionContext.TryInput(c)) totalOperations++;
