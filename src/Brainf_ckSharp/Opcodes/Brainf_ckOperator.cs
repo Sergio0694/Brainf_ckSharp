@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using Brainf_ckSharp.Opcodes.Interfaces;
 
 namespace Brainf_ckSharp.Opcodes
@@ -9,7 +8,6 @@ namespace Brainf_ckSharp.Opcodes
     /// A model that represents a Brainf*ck/PBrain opcode
     /// </summary>
     [DebuggerDisplay("'{Operator}'")]
-    [StructLayout(LayoutKind.Explicit, Size = 1)]
     internal readonly struct Brainf_ckOperator : IOpcode
     {
         /// <summary>
@@ -19,21 +17,11 @@ namespace Brainf_ckSharp.Opcodes
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Brainf_ckOperator(byte op)
         {
-            Unsafe.As<Brainf_ckOperator, byte>(ref this) = op;
+            Operator = op;
         }
 
         /// <inheritdoc/>
-        public byte Operator
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get
-            {
-                ref Brainf_ckOperator r0 = ref Unsafe.AsRef(this);
-                ref byte r1 = ref Unsafe.As<Brainf_ckOperator, byte>(ref r0);
-
-                return r1;
-            }
-        }
+        public byte Operator { get; }
 
         /// <summary>
         /// Creates a new <see cref="Brainf_ckOperator"/> instance from a specified operator
