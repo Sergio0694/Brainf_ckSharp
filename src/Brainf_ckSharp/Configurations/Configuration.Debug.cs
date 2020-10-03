@@ -54,7 +54,7 @@ namespace Brainf_ckSharp.Configurations
             return Brainf_ckInterpreter.Debug.TryCreateSession(
                 Source.Value.Span,
                 Breakpoints.Span,
-                Stdin ?? string.Empty,
+                Stdin.GetValueOrDefault(),
                 initialState,
                 ExecutionToken,
                 DebugToken);

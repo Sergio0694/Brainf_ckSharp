@@ -55,6 +55,21 @@ namespace Brainf_ckSharp
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly DebugConfiguration WithStdin(in this DebugConfiguration configuration, string stdin)
         {
+            Unsafe.AsRef(configuration.Stdin) = stdin.AsMemory();
+            
+            return ref configuration;
+        }
+
+        /// <summary>
+        /// Sets the stdin buffer to read for a given configuration
+        /// </summary>
+        /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
+        /// <param name="stdin">The input buffer to read data from</param>
+        /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ref readonly DebugConfiguration WithStdin(in this DebugConfiguration configuration, ReadOnlyMemory<char> stdin)
+        {
             Unsafe.AsRef(configuration.Stdin) = stdin;
             
             return ref configuration;
@@ -166,6 +181,21 @@ namespace Brainf_ckSharp
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly ReleaseConfiguration WithStdin(in this ReleaseConfiguration configuration, string stdin)
+        {
+            Unsafe.AsRef(configuration.Stdin) = stdin.AsMemory();
+            
+            return ref configuration;
+        }
+
+        /// <summary>
+        /// Sets the stdin buffer to read for a given configuration
+        /// </summary>
+        /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
+        /// <param name="stdin">The input buffer to read data from</param>
+        /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ref readonly ReleaseConfiguration WithStdin(in this ReleaseConfiguration configuration, ReadOnlyMemory<char> stdin)
         {
             Unsafe.AsRef(configuration.Stdin) = stdin;
             

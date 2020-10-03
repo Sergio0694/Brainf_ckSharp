@@ -20,7 +20,7 @@ namespace Brainf_ckSharp.Configurations
         /// <summary>
         /// The (optional) stdin buffer to use to run the script
         /// </summary>
-        public readonly string? Stdin;
+        public readonly ReadOnlyMemory<char>? Stdin;
 
         /// <summary>
         /// The (optional) initial machine state to use to execute the script
@@ -56,7 +56,7 @@ namespace Brainf_ckSharp.Configurations
         /// <summary>
         /// The (optional) stdin buffer to use to run the script
         /// </summary>
-        public readonly string? Stdin;
+        public readonly ReadOnlyMemory<char>? Stdin;
 
         /// <summary>
         /// The (optional) initial machine state to use to execute the script
