@@ -6,7 +6,7 @@ namespace Brainf_ckSharp.Profiler
     {
         static void Main()
         {
-            BenchmarkRunner.Run<Brainf_ckBenchmark>();
+            BenchmarkSwitcher.FromTypes(new[] { typeof(Brainf_ckBenchmark_Short), typeof(Brainf_ckBenchmark_Long) }).RunAllJoined();
         }
     }
 }
