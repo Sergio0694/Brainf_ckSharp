@@ -1,7 +1,7 @@
 # Brainf*ck#
 A complete, full-featured Brainf*ck IDE/console for Windows 10
 
-<a href="https://www.microsoft.com/store/apps/9nblgggzhvq5"><img src="https://assets.windowsphone.com/85864462-9c82-451e-9355-a3d5f874397a/English_get-it-from-MS_InvariantCulture_Default.png" alt="Get it from Microsoft" width='280' /></a>
+<a href="https://www.microsoft.com/store/apps/9nblgggzhvq5?cid=github"><img src="https://developer.microsoft.com/en-us/store/badges/images/English_get-it-from-MS.png" alt="Get it from Microsoft" width='280' /></a>
 
 ## Overview
 
