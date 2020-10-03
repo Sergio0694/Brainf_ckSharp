@@ -41,7 +41,7 @@ namespace Brainf_ckSharp
             if (totalFunctions == 0) return Array.Empty<FunctionDefinition>();
 
             FunctionDefinition[] result = new FunctionDefinition[totalFunctions];
-            ref FunctionDefinition r0 = ref result[0];
+            ref FunctionDefinition r0 = ref result.DangerousGetReference();
 
             // Process all the declared functions
             for (int i = 0; i < totalFunctions; i++)
@@ -157,7 +157,7 @@ namespace Brainf_ckSharp
             if (depth == -1) return null;
 
             string[] stackTrace = new string[depth + 1];
-            ref string r0 = ref stackTrace[0];
+            ref string r0 = ref stackTrace.DangerousGetReference();
 
             // Process all the stack frames
             for (int i = 0, j = depth; j >= 0; i++, j--)
