@@ -97,7 +97,7 @@
                 VerticalAlignment="Top"
                 Height="8"
                 Background="Transparent"
-                IsIndeterminate="{x:Bind ViewModel.IsRunning, Mode=OneWay}"/>
+                IsIndeterminate="{x:Bind converters:BoolConverter.Any(ViewModel.LoadDataCommand.IsRunning, ViewModel.ContinueCommand.IsRunning, ViewModel.SkipCommand.IsRunning), Mode=OneWay}"/>
 
             <!--Semantic zoom-->
             <SemanticZoom

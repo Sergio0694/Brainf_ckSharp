@@ -156,6 +156,7 @@
       <DependentUpon>UnicodeCharactersMapSubPageTemplates.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Windows.UI.Xaml.Controls\ComboBoxWithNoScrollWheelSupport.cs" />
+    <Compile Include="Converters\BoolConverter.cs" />
     <Compile Include="Converters\Console\ExitCodeConverter.cs" />
     <Compile Include="Converters\Ide\CodeSnippetTitleConverter.cs" />
     <Compile Include="Converters\LocalizationConverter.cs" />
