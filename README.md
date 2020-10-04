@@ -1,5 +1,5 @@
 # Brainf\*ck#
-A complete, full-featured Brainf\*ck IDE/console for Windows 10
+A complete, full-featured Brainf\*ck IDE/console for Windows 10, built from the ground up as a UWP app.
 
 <a href="https://www.microsoft.com/store/apps/9nblgggzhvq5?cid=github"><img src="https://developer.microsoft.com/en-us/store/badges/images/English_get-it-from-MS.png" alt="Get it from Microsoft" width='280' /></a>
 
