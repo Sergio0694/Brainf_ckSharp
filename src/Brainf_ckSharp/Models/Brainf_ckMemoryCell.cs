@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Memory.Interfaces;
 using Microsoft.Toolkit.HighPerformance.Helpers;
@@ -9,6 +10,7 @@ namespace Brainf_ckSharp.Models
     /// <summary>
     /// A model that represents the information on a given memory cell in a <see cref="IReadOnlyMachineState"/> object
     /// </summary>
+    [DebuggerDisplay("({Index}: {Value}, {Character}, {IsSelected})")]
     public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     {
         /// <summary>
