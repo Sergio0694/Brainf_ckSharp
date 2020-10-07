@@ -8,13 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GitInfo" Version="2.0.30">
+    <PackageReference Include="GitInfo" Version="2.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.8" />
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.0.0-build.227" />
-    <PackageReference Include="Nito.AsyncEx" Version="5.0.0" />
+    <PackageReference Include="Nito.AsyncEx" Version="5.1.0" />
     <PackageReference Include="System.Text.Json" Version="4.7.2" />
   </ItemGroup>
 
