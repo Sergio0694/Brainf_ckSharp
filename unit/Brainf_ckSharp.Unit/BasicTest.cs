@@ -1,4 +1,5 @@
 ﻿using Brainf_ckSharp.Enums;
+using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -163,6 +164,34 @@ namespace Brainf_ckSharp.Unit
             Assert.IsNotNull(result.Value);
             Assert.AreEqual(result.Value!.ExitCode, ExitCode.Success);
             Assert.AreEqual(result.Value.Stdout, "ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz");
+        }
+
+        [TestMethod]
+        public void MemoryCells()
+        {
+            const string script = ",>+++>>+";
+
+            IReadOnlyMachineState machineState = Brainf_ckInterpreter
+                .CreateReleaseConfiguration()
+                .WithSource(script)
+                .WithStdin("a")
+                .TryRun().Value!.MachineState;
+
+            Assert.AreEqual(machineState[0].Index, 0);
+            Assert.AreEqual(machineState[0].Value, (ushort)'a');
+            Assert.AreEqual(machineState[0].IsSelected, false);
+
+            Assert.AreEqual(machineState[1].Index, 1);
+            Assert.AreEqual(machineState[1].Value, 3);
+            Assert.AreEqual(machineState[1].IsSelected, false);
+
+            Assert.AreEqual(machineState[2].Index, 2);
+            Assert.AreEqual(machineState[2].Value, 0);
+            Assert.AreEqual(machineState[2].IsSelected, false);
+
+            Assert.AreEqual(machineState[3].Index, 3);
+            Assert.AreEqual(machineState[3].Value, 1);
+            Assert.AreEqual(machineState[3].IsSelected, true);
         }
     }
 }

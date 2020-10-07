@@ -15,7 +15,11 @@ namespace Brainf_ckSharp.Constants
         /// <summary>
         /// The maximum allowed memory size
         /// </summary>
-        public const int MaximumMemorySize = 1024 * 64;
+        /// <remarks>
+        /// The maximum memory size is such that the index can never exceed <see cref="short.MaxValue"/>.
+        /// This allows <see cref="Models.Brainf_ckMemoryCell"/> to be just 4 bytes in size instead of 8.
+        /// </remarks>
+        public const int MaximumMemorySize = short.MaxValue + 1;
 
         /// <summary>
         /// The default memory size for machine states used to run scripts

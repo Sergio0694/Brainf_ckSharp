@@ -22,7 +22,15 @@ namespace Brainf_ckSharp.Unit
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
             Assert.AreEqual(result.Value!.ExitCode, ExitCode.Success);
+            Assert.AreEqual(result.Value!.MachineState[0].Value, 1);
+            Assert.AreEqual(result.Value!.MachineState[0].Index, 0);
+            Assert.AreEqual(result.Value!.MachineState[0].IsSelected, false);
+            Assert.AreEqual(result.Value!.MachineState[2].Value, 'a');
+            Assert.AreEqual(result.Value!.MachineState[2].Index, 2);
+            Assert.AreEqual(result.Value!.MachineState[2].IsSelected, true);
+            Assert.AreEqual(result.Value.MachineState.Current.Index, 2);
             Assert.AreEqual(result.Value.MachineState.Current.Character, 'a');
+            Assert.AreEqual(result.Value.MachineState.Current.IsSelected, true);
             Assert.AreEqual(result.Value.Stdout, "a");
             Assert.AreEqual(result.Value.Functions.Count, 1);
             Assert.AreEqual(result.Value.Functions[0].Index, 0);

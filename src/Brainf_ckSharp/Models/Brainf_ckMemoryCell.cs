@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Memory.Interfaces;
+using Microsoft.Toolkit.HighPerformance.Helpers;
+using static System.Diagnostics.Debug;
 
 namespace Brainf_ckSharp.Models
 {
@@ -10,6 +12,14 @@ namespace Brainf_ckSharp.Models
     public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     {
         /// <summary>
+        /// The state for the cell, which combines the current index with a flag that
+        /// indicates whether the current cell is selected. Since the maximum possible
+        /// value for the index is <see cref="short.MaxValue"/>, we can track the
+        /// selection in the 15th bit, and use the previous ones to store the index.
+        /// </summary>
+        private readonly uint State;
+
+        /// <summary>
         /// Creates a new instance with the given value
         /// </summary>
         /// <param name="index">The index for the memory cell</param>
@@ -18,15 +28,20 @@ namespace Brainf_ckSharp.Models
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal Brainf_ckMemoryCell(int index, ushort value, bool isSelected)
         {
-            Index = index;
+            Assert((uint)index <= short.MaxValue);
+
+            State = BitHelper.SetFlag((uint)index, 15, isSelected);
             Value = value;
-            IsSelected = isSelected;
         }
 
         /// <summary>
         /// Gets the numerical index for the current memory cell
         /// </summary>
-        public int Index { get; }
+        public int Index
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => (int)BitHelper.SetFlag(State, 15, false);
+        }
 
         /// <summary>
         /// Gets the value of the current cell
@@ -45,7 +60,11 @@ namespace Brainf_ckSharp.Models
         /// <summary>
         /// Gets whether or not the cell is currently selected
         /// </summary>
-        public bool IsSelected { get; }
+        public bool IsSelected
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => BitHelper.HasFlag(State, 15);
+        }
 
         /// <summary>
         /// Checks whether or not two <see cref="Brainf_ckMemoryCell"/> instances are equal
@@ -67,9 +86,8 @@ namespace Brainf_ckSharp.Models
         public bool Equals(Brainf_ckMemoryCell other)
         {
             return
-                Index == other.Index &&
-                Value == other.Value &&
-                IsSelected == other.IsSelected;
+                State == other.State &&
+                Value == other.Value;
         }
 
         /// <inheritdoc/>
@@ -83,7 +101,7 @@ namespace Brainf_ckSharp.Models
         /// <inheritdoc/>
         public override int GetHashCode()
         {
-            return HashCode.Combine(Index, Value, IsSelected);
+            return HashCode.Combine(State, Value);
         }
     }
 }
