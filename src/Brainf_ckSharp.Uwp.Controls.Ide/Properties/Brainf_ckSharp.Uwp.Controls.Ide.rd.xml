@@ -25,7 +25,7 @@
     https://go.microsoft.com/fwlink/?LinkID=391919
 -->
 <Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
-  <Library Name="Brainf_ckSharp.UWP.Controls.Ide">
+  <Library Name="Brainf_ckSharp.Uwp.Controls.Ide">
 
     <!--Needed for the reflection to add event handlers-->
     <Type Name="Brainf_ckSharp.Uwp.Controls.Ide.Brainf_ckEditBox" Dynamic="Required All" />

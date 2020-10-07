@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Brainf_ckSharp.UWP.Controls.IDE")]
+[assembly: AssemblyTitle("Brainf_ckSharp.Uwp.Controls.Ide")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Brainf_ckSharp.UWP.Controls.IDE")]
+[assembly: AssemblyProduct("Brainf_ckSharp.Uwp.Controls.Ide")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
