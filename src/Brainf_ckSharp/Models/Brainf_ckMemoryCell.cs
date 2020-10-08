@@ -19,7 +19,7 @@ namespace Brainf_ckSharp.Models
         /// value for the index is <see cref="short.MaxValue"/>, we can track the
         /// selection in the 15th bit, and use the previous ones to store the index.
         /// </summary>
-        private readonly uint State;
+        private readonly ushort State;
 
         /// <summary>
         /// Creates a new instance with the given value
@@ -32,7 +32,7 @@ namespace Brainf_ckSharp.Models
         {
             Assert((uint)index <= short.MaxValue);
 
-            State = BitHelper.SetFlag((uint)index, 15, isSelected);
+            State = (ushort)BitHelper.SetFlag((uint)index, 15, isSelected);
             Value = value;
         }
 
