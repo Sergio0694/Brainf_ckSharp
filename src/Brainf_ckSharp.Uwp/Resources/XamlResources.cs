@@ -43,6 +43,8 @@ namespace Brainf_ckSharp.Uwp.Resources
         {
             public static readonly Brush SystemControlHighlightAccent = Get();
             public static readonly Brush ZeroValueInMemoryViewer = Get();
+            public static readonly Brush MemoryCellDefaultForeground = Get();
+            public static readonly Brush MemoryCellSelectedForeground = Get();
 
             /// <summary>
             /// A helper function that returns the appropriate <see cref="Brush"/> from the XAML resource dictionary

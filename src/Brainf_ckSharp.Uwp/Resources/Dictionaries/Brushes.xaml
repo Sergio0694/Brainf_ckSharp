@@ -52,5 +52,7 @@
     <SolidColorBrush x:Key="ZeroValueInMemoryViewerBrush" Color="#D0FFFFFF"/>
     <SolidColorBrush x:Key="GitHubContributorBackgroundBrush" Color="#FF1A1B1C"/>
     <SolidColorBrush x:Key="WidgetHeaderForeground" Color="#FFA0A0A0"/>
-
+    <SolidColorBrush x:Key="MemoryCellDefaultForegroundBrush" Color="#FFA0A0A0"/>
+    <SolidColorBrush x:Key="MemoryCellSelectedForegroundBrush" Color="#FFC0C0C0"/>
+    
 </ResourceDictionary>

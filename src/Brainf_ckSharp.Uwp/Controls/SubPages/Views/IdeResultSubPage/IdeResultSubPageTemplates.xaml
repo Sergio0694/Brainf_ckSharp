@@ -5,6 +5,8 @@
     xmlns:models="using:Brainf_ckSharp.Models"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     xmlns:convertersConsole="using:Brainf_ckSharp.Uwp.Converters.Console"
+    xmlns:convertersIde="using:Brainf_ckSharp.Uwp.Converters.Ide"
+    xmlns:convertersUI="using:Brainf_ckSharp.Uwp.Converters.UI"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:views="using:Brainf_ckSharp.Shared.Models.Ide.Views"
@@ -250,7 +252,8 @@
                             Grid.Row="1"
                             Text="{x:Bind Index.ToString()}"
                             HorizontalAlignment="Center"
-                            Foreground="#FFA0A0A0"/>
+                            Foreground="{x:Bind convertersIde:BoolToForegroundBrushConverter.Convert(IsSelected)}"
+                            FontWeight="{x:Bind convertersUI:BoolToFontWeightConverter.Convert(IsSelected)}"/>
                     </Grid>
                 </DataTemplate>
             </winui:ItemsRepeater.ItemTemplate>
