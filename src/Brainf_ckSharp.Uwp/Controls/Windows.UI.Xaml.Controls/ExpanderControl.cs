@@ -47,7 +47,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
             nameof(Header),
             typeof(FrameworkElement),
             typeof(ExpanderControl),
-            new PropertyMetadata(default(FrameworkElement)));
+            new(default(FrameworkElement)));
 
         /// <summary>
         /// Gets or sets the height of the header content
@@ -65,7 +65,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
             nameof(HeaderHeight),
             typeof(double),
             typeof(ExpanderControl),
-            new PropertyMetadata(default(double)));
+            new(default(double)));
 
         /// <summary>
         /// Gets or sets the expandable content
@@ -83,7 +83,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
             nameof(ExpandableContent),
             typeof(FrameworkElement),
             typeof(ExpanderControl),
-            new PropertyMetadata(default(FrameworkElement)));
+            new(default(FrameworkElement)));
 
         /// <summary>
         /// Gets or sets the height of the header content
@@ -101,7 +101,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
             nameof(ExpandableContentHeight),
             typeof(double),
             typeof(ExpanderControl),
-            new PropertyMetadata(default(double)));
+            new(default(double)));
 
         /// <summary>
         /// Gets or sets whether or not the control is currently expanded
@@ -119,7 +119,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
             nameof(IsExpanded),
             typeof(bool),
             typeof(ExpanderControl),
-            new PropertyMetadata(true, OnIsExpandedPropertyChanged));
+            new(true, OnIsExpandedPropertyChanged));
 
         /// <summary>
         /// Updates the UI when <see cref="IsExpanded"/> changes

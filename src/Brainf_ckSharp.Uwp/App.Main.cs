@@ -170,7 +170,7 @@ namespace Brainf_ckSharp.Uwp
         {
             if (!TryGetInstanceForFilePath(file.Path, out AppInstance? instance)) return false;
 
-            Uri uri = new Uri($"brainf-ck:///switch?key={instance!.Key}");
+            Uri uri = new($"brainf-ck:///switch?key={instance!.Key}");
 
             _ = Launcher.LaunchUriAsync(uri);
 

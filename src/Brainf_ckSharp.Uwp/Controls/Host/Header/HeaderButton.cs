@@ -52,7 +52,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.Header
             nameof(Icon),
             typeof(string),
             typeof(HeaderButton),
-            new PropertyMetadata(DependencyProperty.UnsetValue));
+            new(DependencyProperty.UnsetValue));
 
         /// <summary>
         /// Gets or sets the text for the current control
@@ -70,7 +70,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.Header
             nameof(Text),
             typeof(string),
             typeof(HeaderButton),
-            new PropertyMetadata(DependencyProperty.UnsetValue));
+            new(DependencyProperty.UnsetValue));
 
         /// <summary>
         /// Gets or sets whether or not the control is currently selected
@@ -88,7 +88,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.Header
             nameof(IsSelected),
             typeof(bool),
             typeof(HeaderButton),
-            new PropertyMetadata(DependencyProperty.UnsetValue, OnIsSelectedPropertyChanged));
+            new(DependencyProperty.UnsetValue, OnIsSelectedPropertyChanged));
 
         /// <summary>
         /// Raised whenever the <see cref="IsSelected"/> property is set to <see langword="true"/>

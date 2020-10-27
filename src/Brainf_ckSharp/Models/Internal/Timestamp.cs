@@ -39,7 +39,7 @@ namespace Brainf_ckSharp.Models.Internal
         public static Timestamp Now
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new Timestamp(Stopwatch.GetTimestamp());
+            get => new(Stopwatch.GetTimestamp());
         }
 
         /// <summary>

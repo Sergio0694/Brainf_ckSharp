@@ -14,7 +14,7 @@ namespace Brainf_ckSharp.Services.Uwp.Analytics
         /// <inheritdoc/>
         public void Log(string title, params (string Property, string Value)[] data)
         {
-            var builder = new StringBuilder();
+            StringBuilder builder = new();
 
             builder.AppendLine($"[EVENT]: \"{title}\"");
 

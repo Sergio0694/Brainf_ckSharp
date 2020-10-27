@@ -44,7 +44,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
             "StackTrace",
             typeof(IReadOnlyList<string>),
             typeof(Brainf_ckInlineFormatterHelper),
-            new PropertyMetadata(Array.Empty<FunctionDefinition>(), OnStackTracePropertyChanged));
+            new(Array.Empty<FunctionDefinition>(), OnStackTracePropertyChanged));
 
         // Localized resources
         private static readonly string At = "StackTrace/At".GetLocalized();
@@ -80,7 +80,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
                 @this.Inlines.Add(new LineBreak());
 
                 // Add the formatted call line
-                Span line = new Span();
+                Span line = new();
                 SetSource(line, entry.Item);
                 @this.Inlines.Add(line);
             }
@@ -94,7 +94,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
         public static IEnumerable<(string Item, int Occurrences, int Length)> CompressStackTrace(IReadOnlyList<string> frames)
         {
             int i = 0;
-            List<(int Length, int Occurrences)> info = new List<(int, int)>();
+            List<(int Length, int Occurrences)> info = new();
             while (i < frames.Count)
             {
                 for (int step = 1; step < 5 && i + step * 2 - 1 < frames.Count; step++)
@@ -136,7 +136,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
                 else
                 {
                     var best = info.OrderByDescending(item => item.Length * item.Occurrences).ThenBy(item => item.Length).First();
-                    StringBuilder builder = new StringBuilder();
+                    StringBuilder builder = new();
                     for (int j = 0; j < best.Length; j++)
                         builder.Append(frames[i + j]);
                     string call = builder.ToString();

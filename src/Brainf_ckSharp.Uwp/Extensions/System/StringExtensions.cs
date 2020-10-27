@@ -39,7 +39,7 @@ namespace Brainf_ckSharp.Uwp.Extensions.System
             // Create a string from the temporary buffer
             fixed (char* p = &bufferRef)
             {
-                return new string(p, 0, buffer.Length);
+                return new(p, 0, buffer.Length);
             }
         }
     }

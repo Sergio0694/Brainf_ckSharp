@@ -37,15 +37,15 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
             "Character",
             typeof(char),
             typeof(CharacterRotationHelper),
-            new PropertyMetadata(DependencyProperty.UnsetValue, OnCharacterPropertyChanged));
+            new(DependencyProperty.UnsetValue, OnCharacterPropertyChanged));
 
         /// <summary>
         /// The mapping of <see cref="CompositeTransform"/> instance from number of digits
         /// </summary>
         /// <remarks>Using a <see cref="Dictionary{TKey,TValue}"/> for the field type to try to avoid the <see langword="callvirt"/> overhead</remarks>
-        private static readonly Dictionary<int, CompositeTransform> TransformsMap = new Dictionary<int, CompositeTransform>
+        private static readonly Dictionary<int, CompositeTransform> TransformsMap = new()
         {
-            [2] = new CompositeTransform
+            [2] = new()
             {
                 Rotation = -70,
                 CenterX = 12,
@@ -55,7 +55,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
                 TranslateX = -4,
                 TranslateY = -2
             },
-            [3] = new CompositeTransform
+            [3] = new()
             {
                 Rotation = -70,
                 CenterX = 14,

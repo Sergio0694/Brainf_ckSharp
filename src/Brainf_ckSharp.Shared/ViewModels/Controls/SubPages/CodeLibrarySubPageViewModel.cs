@@ -158,20 +158,20 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Gets the current collection of sections to display
         /// </summary>
-        public ObservableGroupedCollection<CodeLibrarySection, object> Source { get; } = new ObservableGroupedCollection<CodeLibrarySection, object>();
+        public ObservableGroupedCollection<CodeLibrarySection, object> Source { get; } = new();
 
         /// <summary>
         /// Loads the currently available code samples and recently used files
         /// </summary>
         private async Task LoadDataAsync()
         {
-            List<CodeLibraryEntry> recent = new List<CodeLibraryEntry>();
+            List<CodeLibraryEntry> recent = new();
 
             // Load the recent files
             await foreach ((IFile file, string data) in FilesService.GetFutureAccessFilesAsync())
             {
                 // Deserialize the metadata and prepare the model
-                CodeMetadata metadata = string.IsNullOrEmpty(data) ? new CodeMetadata() : JsonSerializer.Deserialize<CodeMetadata>(data);
+                CodeMetadata metadata = string.IsNullOrEmpty(data) ? new() : JsonSerializer.Deserialize<CodeMetadata>(data);
                 CodeLibraryEntry? entry = await CodeLibraryEntry.TryLoadFromFileAsync(file, metadata);
 
                 if (entry is null) ThrowHelper.ThrowInvalidOperationException("Failed to load the source code");

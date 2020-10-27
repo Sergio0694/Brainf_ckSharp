@@ -17,7 +17,7 @@ namespace Brainf_ckSharp.Services
         public static async Task<string> ReadAllTextAsync(this IFile file)
         {
             using Stream stream = await file.OpenStreamForReadAsync();
-            using StreamReader reader = new StreamReader(stream);
+            using StreamReader reader = new(stream);
 
             return await reader.ReadToEndAsync();
         }
@@ -35,7 +35,7 @@ namespace Brainf_ckSharp.Services
             // Clear the current content
             if (stream.Length > 0) stream.SetLength(0);
 
-            using StreamWriter writer = new StreamWriter(stream, Encoding.UTF8);
+            using StreamWriter writer = new(stream, Encoding.UTF8);
 
             await writer.WriteAsync(text);
         }

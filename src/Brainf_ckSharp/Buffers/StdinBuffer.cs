@@ -40,7 +40,7 @@ namespace Brainf_ckSharp.Buffers
         [Pure]
         public Reader CreateReader()
         {
-            return new Reader(Data.Span, _Position);
+            return new(Data.Span, _Position);
         }
 
         /// <summary>

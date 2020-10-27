@@ -13,6 +13,6 @@
         /// <summary>
         /// Gets the default, empty <see cref="CodeMetadata"/> instance
         /// </summary>
-        public static CodeMetadata Default { get; } = new CodeMetadata();
+        public static CodeMetadata Default { get; } = new();
     }
 }

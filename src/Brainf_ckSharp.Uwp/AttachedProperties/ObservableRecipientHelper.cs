@@ -36,7 +36,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
             nameof(ObservableRecipient.IsActive),
             typeof(bool),
             typeof(ObservableRecipientHelper),
-            new PropertyMetadata(DependencyProperty.UnsetValue, OnIsActivePropertyChanged));
+            new(DependencyProperty.UnsetValue, OnIsActivePropertyChanged));
 
         /// <summary>
         /// Updates the UI when <see cref="IsActiveProperty"/> changes

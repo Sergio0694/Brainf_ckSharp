@@ -157,13 +157,13 @@ namespace Brainf_ckSharp
                         // depth level is already 0, the source code is invalid
                         if (functionStart == -1)
                         {
-                            if (rootDepth == 0) return new SyntaxValidationResult(SyntaxError.MismatchedSquareBracket, i);
+                            if (rootDepth == 0) return new(SyntaxError.MismatchedSquareBracket, i);
                             totalOps++;
                             rootDepth--;
                         }
                         else
                         {
-                            if (functionDepth == 0) return new SyntaxValidationResult(SyntaxError.MismatchedSquareBracket, i);
+                            if (functionDepth == 0) return new(SyntaxError.MismatchedSquareBracket, i);
                             totalOps++;
                             functionDepth--;
                             functionOps++;
@@ -172,8 +172,8 @@ namespace Brainf_ckSharp
                     case Characters.FunctionStart:
 
                         // Start a function definition, track the index and reset the counter
-                        if (rootDepth != 0) return new SyntaxValidationResult(SyntaxError.InvalidFunctionDeclaration, i);
-                        if (functionStart != -1) return new SyntaxValidationResult(SyntaxError.NestedFunctionDeclaration, i);
+                        if (rootDepth != 0) return new(SyntaxError.InvalidFunctionDeclaration, i);
+                        if (functionStart != -1) return new(SyntaxError.NestedFunctionDeclaration, i);
                         totalOps++;
                         functionStart = i;
                         functionDepth = 0;
@@ -183,9 +183,9 @@ namespace Brainf_ckSharp
                     case Characters.FunctionEnd:
 
                         // Validate the function definition and reset the index
-                        if (functionStart == -1) return new SyntaxValidationResult(SyntaxError.MismatchedParenthesis, i);
-                        if (functionDepth != 0) return new SyntaxValidationResult(SyntaxError.MismatchedSquareBracket, functionLoopStart);
-                        if (functionOps == 0) return new SyntaxValidationResult(SyntaxError.EmptyFunctionDeclaration, i);
+                        if (functionStart == -1) return new(SyntaxError.MismatchedParenthesis, i);
+                        if (functionDepth != 0) return new(SyntaxError.MismatchedSquareBracket, functionLoopStart);
+                        if (functionOps == 0) return new(SyntaxError.EmptyFunctionDeclaration, i);
                         totalOps++;
                         functionStart = -1;
                         break;
@@ -196,11 +196,11 @@ namespace Brainf_ckSharp
             //   - An incomplete function declaration, when the user missed the closing parenthesis
             //   - A missing square bracket for one of the loops in the main script
             //   - No operators present in the source file
-            if (functionStart != -1) return new SyntaxValidationResult(SyntaxError.IncompleteFunctionDeclaration, functionStart);
-            if (rootDepth != 0) return new SyntaxValidationResult(SyntaxError.IncompleteLoop, outerLoopStart);
-            if (totalOps == 0) return new SyntaxValidationResult(SyntaxError.MissingOperators, -1, 0);
+            if (functionStart != -1) return new(SyntaxError.IncompleteFunctionDeclaration, functionStart);
+            if (rootDepth != 0) return new(SyntaxError.IncompleteLoop, outerLoopStart);
+            if (totalOps == 0) return new(SyntaxError.MissingOperators, -1, 0);
 
-            return new SyntaxValidationResult(SyntaxError.None, -1, totalOps);
+            return new(SyntaxError.None, -1, totalOps);
         }
     }
 }

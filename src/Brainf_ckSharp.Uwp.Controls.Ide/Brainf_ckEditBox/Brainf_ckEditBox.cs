@@ -262,7 +262,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// The list of shortcut keys to ignore
         /// </summary>
-        private readonly HashSet<VirtualKey> IgnoredShortcuts = new HashSet<VirtualKey>(new[]
+        private readonly HashSet<VirtualKey> IgnoredShortcuts = new(new[]
         {
             VirtualKey.E, VirtualKey.R, // Indent right
             VirtualKey.J,               // Can't remember now

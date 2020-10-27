@@ -41,7 +41,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
             "Source",
             typeof(IEnumerable),
             typeof(ItemsWrapGridHelper),
-            new PropertyMetadata(DependencyProperty.UnsetValue, OnSourcePropertyChanged));
+            new(DependencyProperty.UnsetValue, OnSourcePropertyChanged));
 
         /// <summary>
         /// Updates the UI when <see cref="SourceProperty"/> changes

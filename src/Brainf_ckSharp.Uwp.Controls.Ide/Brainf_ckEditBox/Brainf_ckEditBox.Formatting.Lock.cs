@@ -40,7 +40,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             /// <returns>A new <see cref="FormattingLock"/> instance targeting <paramref name="this"/></returns>
             [Pure]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static FormattingLock For(Brainf_ckEditBox @this) => new FormattingLock(@this);
+            public static FormattingLock For(Brainf_ckEditBox @this) => new(@this);
 
             /// <inheritdoc cref="IDisposable.Dispose"/>
             public void Dispose()

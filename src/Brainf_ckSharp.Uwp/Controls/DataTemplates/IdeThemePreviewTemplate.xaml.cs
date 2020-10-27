@@ -32,7 +32,7 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates
             nameof(Theme),
             typeof(IdeTheme),
             typeof(IdeThemePreviewTemplate),
-            new PropertyMetadata(DependencyProperty.UnsetValue, OnThemePropertyChanged));
+            new(DependencyProperty.UnsetValue, OnThemePropertyChanged));
 
         /// <summary>
         /// Updates the UI when <see cref="Theme"/> changes

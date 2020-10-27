@@ -35,7 +35,7 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates
             nameof(Image),
             typeof(ImageSource),
             typeof(FeaturedLinkTemplate),
-            new PropertyMetadata(default(ImageSource)));
+            new(default(ImageSource)));
 
         /// <summary>
         /// Gets or sets the <see cref="string"/> with the URL to navigate to
@@ -53,7 +53,7 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates
             nameof(NavigationUrl),
             typeof(string),
             typeof(FeaturedLinkTemplate),
-            new PropertyMetadata(default(string)));
+            new(default(string)));
 
         // Opens the featured link
         private void RootButton_Clicked(object sender, RoutedEventArgs e)

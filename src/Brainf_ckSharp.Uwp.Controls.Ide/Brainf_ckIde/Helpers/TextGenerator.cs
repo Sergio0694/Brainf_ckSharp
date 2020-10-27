@@ -74,7 +74,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers
 
                     // Build the new concatenated string
                     string left = Unsafe.Add(ref r0, i - 1);
-                    string right = new string(p0, 0, numberOfDigits + 1);
+                    string right = new(p0, 0, numberOfDigits + 1);
                     string combined = string.Concat(left, right);
 
                     // Store it in the cache

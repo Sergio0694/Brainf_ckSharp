@@ -20,7 +20,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         {
             get
             {
-                return _VisualStudio ??= new Brainf_ckTheme(
+                return _VisualStudio ??= new(
                     "#FF1E1E1E".ToColor(),
                     "#FF333333".ToColor(),
                     "#FF237CAD".ToColor(),
@@ -49,7 +49,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         {
             get
             {
-                return _VisualStudioCode ??= new Brainf_ckTheme(
+                return _VisualStudioCode ??= new(
                     "#FF1E1E1E".ToColor(),
                     "#FF252526".ToColor(),
                     "#FF4B4B4B".ToColor(),
@@ -78,7 +78,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         {
             get
             {
-                return _Monokai ??= new Brainf_ckTheme(
+                return _Monokai ??= new(
                     "#FF272822".ToColor(),
                     "#FF49483E".ToColor(),
                     "#FFA4A59E".ToColor(),
@@ -107,7 +107,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         {
             get
             {
-                return _Dracula ??= new Brainf_ckTheme(
+                return _Dracula ??= new(
                     "#FF282A36".ToColor(),
                     "#FF414456".ToColor(),
                     "#FFA5A5A6".ToColor(),
@@ -136,7 +136,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         {
             get
             {
-                return _Vim ??= new Brainf_ckTheme(
+                return _Vim ??= new(
                     "#FF171717".ToColor(),
                     "#FF252525".ToColor(),
                     "#FF727272".ToColor(),
@@ -165,7 +165,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         {
             get
             {
-                return _OneDark ??= new Brainf_ckTheme(
+                return _OneDark ??= new(
                     "#FF282C34".ToColor(),
                     "#FF383E49".ToColor(),
                     "#FF5A5A5A".ToColor(),
@@ -194,7 +194,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         {
             get
             {
-                return _XCodeDark ??= new Brainf_ckTheme(
+                return _XCodeDark ??= new(
                     "#FF292A30".ToColor(),
                     "#FF383E49".ToColor(),
                     "#FF5C5F62".ToColor(),
@@ -223,7 +223,7 @@ namespace Brainf_ckSharp.Uwp.Themes
         {
             get
             {
-                return _Base16 ??= new Brainf_ckTheme(
+                return _Base16 ??= new(
                     "#FF1D1F21".ToColor(),
                     "#FF373B41".ToColor(),
                     "#FF656767".ToColor(),

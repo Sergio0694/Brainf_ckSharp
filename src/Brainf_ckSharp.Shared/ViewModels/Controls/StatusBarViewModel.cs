@@ -144,7 +144,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
             _OverflowMode = overflowMode;
             _MachineState = machineState;
 
-            CancellationTokenSource tokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(2));
+            CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(2));
 
             Option<InterpreterResult> result = Brainf_ckInterpreter
                 .CreateReleaseConfiguration()

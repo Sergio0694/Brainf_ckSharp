@@ -38,7 +38,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel
             nameof(ShellSelectedIndex),
             typeof(int),
             typeof(StdinHeader),
-            new PropertyMetadata(default(int)));
+            new(default(int)));
 
         /// <summary>
         /// Gets or sets the currently selected index for the stdin header buttons
@@ -56,7 +56,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel
             nameof(StdinSelectedIndex),
             typeof(int),
             typeof(StdinHeader),
-            new PropertyMetadata(default(int), OnStdinSelectedIndexPropertyChanged));
+            new(default(int), OnStdinSelectedIndexPropertyChanged));
 
         /// <summary>
         /// Updates the UI when <see cref="StdinSelectedIndex"/> changes

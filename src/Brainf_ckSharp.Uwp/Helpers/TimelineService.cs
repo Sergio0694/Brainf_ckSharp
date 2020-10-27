@@ -22,7 +22,7 @@ namespace Brainf_ckSharp.Uwp.Helpers
         /// <summary>
         /// The <see cref="Uri"/> for the template file
         /// </summary>
-        private static readonly Uri TemplateUri = new Uri("ms-appx:///Assets/Misc/SourceCodeAdaptiveCard.mustache");
+        private static readonly Uri TemplateUri = new("ms-appx:///Assets/Misc/SourceCodeAdaptiveCard.mustache");
 
         /// <summary>
         /// Gets the collection of background images to use for the adaptive cards
@@ -44,7 +44,7 @@ namespace Brainf_ckSharp.Uwp.Helpers
         /// <summary>
         /// The synchronization mutex to create and manage user activities
         /// </summary>
-        private readonly AsyncLock TimelineMutex = new AsyncLock();
+        private readonly AsyncLock TimelineMutex = new();
 
         /// <summary>
         /// The adaptive card template, if loaded
@@ -77,7 +77,7 @@ namespace Brainf_ckSharp.Uwp.Helpers
                     background = BackgroundImages[(int)(numericId % BackgroundImages.Count)];
 
                 // Create the model to represent the current activity
-                AdaptiveCard model = new AdaptiveCard(file.DisplayName, preview, background);
+                AdaptiveCard model = new(file.DisplayName, preview, background);
 
                 // Render the adaptive card
                 string adaptiveCard = await StaticStubbleRenderer.Instance.RenderAsync(_Template, model);

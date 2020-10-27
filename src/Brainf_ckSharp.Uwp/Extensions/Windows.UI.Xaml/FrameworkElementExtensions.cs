@@ -20,7 +20,7 @@ namespace Windows.UI.Xaml
             try
             {
                 // Get the element bounds and transform them relative to the parent element
-                Rect bounds = new Rect(0.0, 0.0, element.ActualWidth, element.ActualHeight);
+                Rect bounds = new(0.0, 0.0, element.ActualWidth, element.ActualHeight);
                 return element.TransformToVisual(parent).TransformBounds(bounds);
             }
             catch

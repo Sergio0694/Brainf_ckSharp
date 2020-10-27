@@ -51,7 +51,7 @@ namespace Windows.Storage
                 }
 
                 // Create a string from the buffer and skip the last separator
-                return new string(p, 0, formattedLength - 3);
+                return new(p, 0, formattedLength - 3);
             }
         }
     }

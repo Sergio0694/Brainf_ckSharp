@@ -271,7 +271,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
             stream.SetLength(0);
 
-            using StreamWriter writer = new StreamWriter(stream);
+            using StreamWriter writer = new(stream);
 
             await writer.WriteAsync(json);
         }
@@ -292,7 +292,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
                     return;
 
                 using Stream stream = await jsonFile.OpenStreamForReadAsync();
-                using StreamReader reader = new StreamReader(stream);
+                using StreamReader reader = new(stream);
 
                 string json = await reader.ReadToEndAsync();
 

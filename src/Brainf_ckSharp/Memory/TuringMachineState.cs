@@ -90,7 +90,7 @@ namespace Brainf_ckSharp.Memory
 
                 ushort value = array!.DangerousGetReferenceAt(_Position);
 
-                return new Brainf_ckMemoryCell(_Position, value, true);
+                return new(_Position, value, true);
             }
         }
 
@@ -111,7 +111,7 @@ namespace Brainf_ckSharp.Memory
 
                 ushort value = array!.DangerousGetReferenceAt(index);
 
-                return new Brainf_ckMemoryCell(index, value, _Position == index);
+                return new(index, value, _Position == index);
             }
         }
 
@@ -174,7 +174,7 @@ namespace Brainf_ckSharp.Memory
         /// <inheritdoc/>
         public IReadOnlyMachineStateEnumerator GetEnumerator()
         {
-            return new IReadOnlyMachineStateEnumerator(this);
+            return new(this);
         }
 
         /// <inheritdoc/>
@@ -182,7 +182,7 @@ namespace Brainf_ckSharp.Memory
         {
             if (_Buffer is null) ThrowObjectDisposedException();
 
-            TuringMachineState clone = new TuringMachineState(Size, Mode, false) { _Position = _Position };
+            TuringMachineState clone = new(Size, Mode, false) { _Position = _Position };
 
             _Buffer.AsSpan(0, Size).CopyTo(clone._Buffer.AsSpan(0, Size));
 

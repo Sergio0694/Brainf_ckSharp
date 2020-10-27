@@ -34,7 +34,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         /// <summary>
         /// Gets the current collection of <see cref="Brainf_ckMemoryCellChunk"/> instances
         /// </summary>
-        public ObservableCollection<Brainf_ckMemoryCellChunk> Source { get; } = new ObservableCollection<Brainf_ckMemoryCellChunk>();
+        public ObservableCollection<Brainf_ckMemoryCellChunk> Source { get; } = new();
 
         private IReadOnlyMachineState? _MachineState;
 

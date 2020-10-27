@@ -128,7 +128,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 nameof(IsTextSelected),
                 typeof(bool),
                 typeof(Brainf_ckEditBox),
-                new PropertyMetadata(false));
+                new(false));
 
         /// <summary>
         /// Gets the dependency property for <see cref="IsTextInClipboard"/>.
@@ -138,6 +138,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 nameof(IsTextInClipboard),
                 typeof(bool),
                 typeof(Brainf_ckEditBox),
-                new PropertyMetadata(false));
+                new(false));
     }
 }

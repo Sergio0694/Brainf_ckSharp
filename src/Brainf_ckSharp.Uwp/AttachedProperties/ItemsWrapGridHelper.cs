@@ -39,7 +39,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
             "DesiredItemWidth",
             typeof(double),
             typeof(ItemsWrapGridHelper),
-            new PropertyMetadata(DependencyProperty.UnsetValue, OnDesiredItemWidthPropertyChanged));
+            new(DependencyProperty.UnsetValue, OnDesiredItemWidthPropertyChanged));
 
         /// <summary>
         /// A table that keeps track of <see cref="ItemsWrapGrid"/> instances with an already added <see cref="FrameworkElement.SizeChanged"/> handler for <see cref="DesiredItemWidthProperty"/>

@@ -59,7 +59,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// </summary>
         private Task SendFeedbackEmailAsync()
         {
-            StringBuilder builder = new StringBuilder();
+            StringBuilder builder = new();
 
             builder.AppendLine();
             builder.AppendLine();

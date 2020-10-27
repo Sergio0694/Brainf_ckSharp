@@ -20,7 +20,7 @@ namespace System.Reflection
         public static string GetManifestResourceString(this Assembly assembly, string path)
         {
             using Stream stream = assembly.GetManifestResourceStream(path);
-            using StreamReader reader = new StreamReader(stream);
+            using StreamReader reader = new(stream);
 
             return reader.ReadToEnd().Trim();
         }

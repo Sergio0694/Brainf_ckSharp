@@ -52,7 +52,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
             "Section",
             typeof(IdeResultWithSectionInfo),
             typeof(Brainf_ckInlineFormatterHelper),
-            new PropertyMetadata(DependencyProperty.UnsetValue, OnSectionPropertyChanged));
+            new(DependencyProperty.UnsetValue, OnSectionPropertyChanged));
 
         // Localized resources
         private static readonly string AtPosition = "IdeResults/AtPosition".GetLocalized();
