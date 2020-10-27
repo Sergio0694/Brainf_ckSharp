@@ -48,6 +48,6 @@ namespace Brainf_ckSharp.Models.Internal
         /// <returns>A <see cref="StackFrame"/> instance like the current one, but with a different offset</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public StackFrame WithOffset(int offset) => new StackFrame(Range, offset);
+        public StackFrame WithOffset(int offset) => new(Range, offset);
     }
 }

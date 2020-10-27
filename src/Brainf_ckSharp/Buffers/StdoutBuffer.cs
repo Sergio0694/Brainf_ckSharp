@@ -42,7 +42,7 @@ namespace Brainf_ckSharp.Buffers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static StdoutBuffer Allocate()
         {
-            return new StdoutBuffer(ArrayPool<char>.Shared.Rent(Specs.StdoutBufferSizeLimit));
+            return new(ArrayPool<char>.Shared.Rent(Specs.StdoutBufferSizeLimit));
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Brainf_ckSharp.Buffers
         [Pure]
         public Writer CreateWriter()
         {
-            return new Writer(Buffer, _Position);
+            return new(Buffer, _Position);
         }
 
         /// <summary>

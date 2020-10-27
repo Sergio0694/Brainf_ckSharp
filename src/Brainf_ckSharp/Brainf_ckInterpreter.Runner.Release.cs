@@ -133,7 +133,7 @@ namespace Brainf_ckSharp
                     definitions.Span,
                     totalFunctions);
 
-                return new InterpreterResult(
+                return new(
                     sourceCode,
                     exitCode,
                     debugInfo,
@@ -285,7 +285,7 @@ namespace Brainf_ckSharp
                                 if (Unsafe.Add(ref functions, executionContext.Current).Length != 0) goto DuplicateFunctionDefinition;
 
                                 // Save the new function definition
-                                Range function = new Range(i + 1, Unsafe.Add(ref jumpTable, i));
+                                Range function = new(i + 1, Unsafe.Add(ref jumpTable, i));
                                 Unsafe.Add(ref functions, executionContext.Current) = function;
                                 Unsafe.Add(ref definitions, totalFunctions++) = executionContext.Current;
                                 totalOperations++;

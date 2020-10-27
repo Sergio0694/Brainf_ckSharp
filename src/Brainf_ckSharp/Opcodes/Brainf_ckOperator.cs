@@ -28,6 +28,6 @@ namespace Brainf_ckSharp.Opcodes
         /// </summary>
         /// <param name="op">The input operator to convert</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator Brainf_ckOperator(byte op) => new Brainf_ckOperator(op);
+        public static implicit operator Brainf_ckOperator(byte op) => new(op);
     }
 }

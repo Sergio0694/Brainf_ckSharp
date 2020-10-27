@@ -59,7 +59,7 @@ namespace Brainf_ckSharp
                 stackFrames.DangerousGetReference() = new StackFrame(new Range(0, opcodes.Length), 0);
 
                 // Create the interpreter session
-                InterpreterSession session = new InterpreterSession(
+                InterpreterSession session = new(
                     opcodes,
                     breakpointsTable,
                     jumpTable,
@@ -211,7 +211,7 @@ namespace Brainf_ckSharp
                                 if (Unsafe.Add(ref functions, executionContext.Current).Length != 0) goto DuplicateFunctionDefinition;
 
                                 // Save the new function definition
-                                Range function = new Range(i + 1, Unsafe.Add(ref jumpTable, i));
+                                Range function = new(i + 1, Unsafe.Add(ref jumpTable, i));
                                 Unsafe.Add(ref functions, executionContext.Current) = function;
                                 Unsafe.Add(ref definitions, totalFunctions++) = executionContext.Current;
                                 totalOperations++;

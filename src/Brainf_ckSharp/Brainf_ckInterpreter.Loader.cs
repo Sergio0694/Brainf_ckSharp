@@ -188,10 +188,7 @@ namespace Brainf_ckSharp
             int errorOffset = stackFrames[depth].Offset;
             char opcode = Brainf_ckParser.GetCharacterFromOpcode(opcodes[errorOffset]);
 
-            return new HaltedExecutionInfo(
-                stackTrace,
-                opcode,
-                errorOffset);
+            return new(stackTrace, opcode, errorOffset);
         }
     }
 }
