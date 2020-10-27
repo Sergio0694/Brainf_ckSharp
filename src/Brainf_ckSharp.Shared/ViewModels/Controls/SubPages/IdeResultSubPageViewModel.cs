@@ -31,7 +31,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// A mutex to avoid race conditions when handling executions and tokens
         /// </summary>
-        private readonly AsyncLock LoadingMutex = new AsyncLock();
+        private readonly AsyncLock LoadingMutex = new();
 
         /// <summary>
         /// The <see cref="CancellationTokenSource"/> to handle executions within <see cref="LoadDataAsync"/>
@@ -66,7 +66,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Gets the current collection of sections to display
         /// </summary>
-        public ObservableGroupedCollection<IdeResultSection, IdeResultWithSectionInfo> Source { get; } = new ObservableGroupedCollection<IdeResultSection, IdeResultWithSectionInfo>();
+        public ObservableGroupedCollection<IdeResultSection, IdeResultWithSectionInfo> Source { get; } = new();
 
         /// <summary>
         /// Gets or sets the script to execute

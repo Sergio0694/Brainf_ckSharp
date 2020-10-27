@@ -31,6 +31,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings
         /// <summary>
         /// Gets the current collection of sections to display
         /// </summary>
-        public ObservableGroupedCollection<SettingsSection, SettingsSectionViewModelBase> Source { get; } = new ObservableGroupedCollection<SettingsSection, SettingsSectionViewModelBase>();
+        public ObservableGroupedCollection<SettingsSection, SettingsSectionViewModelBase> Source { get; } = new();
     }
 }

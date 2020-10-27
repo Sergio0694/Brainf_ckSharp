@@ -43,7 +43,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <summary>
         /// An <see cref="AsyncLock"/> instance to synchronize accesses to the console results
         /// </summary>
-        private readonly AsyncLock ExecutionMutex = new AsyncLock();
+        private readonly AsyncLock ExecutionMutex = new();
 
         /// <summary>
         /// Creates a new <see cref="ConsoleViewModel"/> instance with a new command ready to use
@@ -98,7 +98,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
         /// <summary>
         /// Gets the collection of currently visible console lines
         /// </summary>
-        public ObservableCollection<IConsoleEntry> Source { get; } = new ObservableCollection<IConsoleEntry> { new ConsoleCommand() };
+        public ObservableCollection<IConsoleEntry> Source { get; } = new() { new ConsoleCommand() };
 
         private IReadOnlyMachineState _MachineState;
 

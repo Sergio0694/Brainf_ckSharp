@@ -15,7 +15,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// A mutex to avoid race conditions when loading <see cref="_32To127"/> and <see cref="_160To255"/>
         /// </summary>
-        private static readonly AsyncLock LoadingMutex = new AsyncLock();
+        private static readonly AsyncLock LoadingMutex = new();
 
         /// <summary>
         /// The collection of characters in the [32, 127] range
@@ -43,7 +43,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Gets the current collection of intervals to display
         /// </summary>
-        public ObservableGroupedCollection<UnicodeInterval, UnicodeCharacter> Source { get; } = new ObservableGroupedCollection<UnicodeInterval, UnicodeCharacter>();
+        public ObservableGroupedCollection<UnicodeInterval, UnicodeCharacter> Source { get; } = new();
 
         /// <summary>
         /// Loads the grouped characters to display

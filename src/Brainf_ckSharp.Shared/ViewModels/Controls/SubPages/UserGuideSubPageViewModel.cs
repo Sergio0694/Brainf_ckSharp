@@ -35,6 +35,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages
         /// <summary>
         /// Gets the current collection of sections to display
         /// </summary>
-        public ObservableGroupedCollection<UserGuideSection, UserGuideSection> Source { get; } = new ObservableGroupedCollection<UserGuideSection, UserGuideSection>();
+        public ObservableGroupedCollection<UserGuideSection, UserGuideSection> Source { get; } = new();
     }
 }

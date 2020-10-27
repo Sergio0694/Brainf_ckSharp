@@ -84,7 +84,7 @@ namespace Brainf_ckSharp.Shared.Models.Ide
 
                 (_, DateTimeOffset editTime) = await file.GetPropertiesAsync();
 
-                return new CodeLibraryEntry(file, editTime, metadata, file.DisplayName, preview);
+                return new(file, editTime, metadata, file.DisplayName, preview);
             }
             catch
             {
@@ -110,7 +110,7 @@ namespace Brainf_ckSharp.Shared.Models.Ide
                 // so the properties loading can be skipped entirely.
                 // The edit time is just set to the minimum value in this case,
                 // since that property will not actually be used.
-                return new CodeLibraryEntry(file, DateTimeOffset.MinValue, CodeMetadata.Default, title, preview);
+                return new(file, DateTimeOffset.MinValue, CodeMetadata.Default, title, preview);
             }
             catch
             {
@@ -128,7 +128,7 @@ namespace Brainf_ckSharp.Shared.Models.Ide
         {
             // Open the input file and a streama reader to decode the text
             using Stream stream = await file.OpenStreamForReadAsync();
-            using StreamReader reader = new StreamReader(stream);
+            using StreamReader reader = new(stream);
 
             // Allocate a temporary buffer for the resulting characters and one for the blocks to read
             char[] charBuffer = ArrayPool<char>.Shared.Rent(CodePreviewLength);
@@ -153,7 +153,7 @@ namespace Brainf_ckSharp.Shared.Models.Ide
                 }
 
                 // Create a string with the parsed operators up to this point
-                return new string(charBuffer, 0, previewLength);
+                return new(charBuffer, 0, previewLength);
             }
             finally
             {

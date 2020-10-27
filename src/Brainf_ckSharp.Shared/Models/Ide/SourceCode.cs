@@ -52,7 +52,7 @@ namespace Brainf_ckSharp.Shared.Models.Ide
         /// </summary>
         /// <returns>A new, empty <see cref="SourceCode"/> instance</returns>
         [Pure]
-        public static SourceCode CreateEmpty() => new SourceCode(EmptyContent, null, new CodeMetadata());
+        public static SourceCode CreateEmpty() => new(EmptyContent, null, new CodeMetadata());
 
         /// <summary>
         /// Creates a new <see cref="SourceCode"/> instance from the specified reference file
@@ -64,7 +64,7 @@ namespace Brainf_ckSharp.Shared.Models.Ide
         {
             string text = await file.ReadAllTextAsync();
 
-            return new SourceCode(text, null, CodeMetadata.Default);
+            return new(text, null, CodeMetadata.Default);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Brainf_ckSharp.Shared.Models.Ide
 
                 text = text.Replace(Environment.NewLine, "\r");
 
-                SourceCode code = new SourceCode(text, file, new CodeMetadata());
+                SourceCode code = new(text, file, new CodeMetadata());
 
                 string metadata = JsonSerializer.Serialize(code.Metadata);
 
