@@ -27,7 +27,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel
             nameof(Operator),
             typeof(char),
             typeof(OperatorButton),
-            new PropertyMetadata(default(char)));
+            new(default(char)));
 
         /// <summary>
         /// Gets or sets the description for the current control
@@ -45,7 +45,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel
             nameof(Description),
             typeof(string),
             typeof(OperatorButton),
-            new PropertyMetadata(string.Empty));
+            new(string.Empty));
 
         /// <inheritdoc cref="Button.Command"/>
         public ICommand Command
@@ -61,6 +61,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel
             nameof(Command),
             typeof(ICommand),
             typeof(OperatorButton),
-            new PropertyMetadata(null));
+            new(null));
     }
 }

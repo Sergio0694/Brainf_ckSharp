@@ -131,7 +131,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
             else if (c == Characters.CarriageReturn && _SyntaxValidationResult.IsSuccessOrEmptyScript)
             {
                 int depth = text.CalculateIndentationDepth(start);
-                string autocomplete = new string(Characters.Tab, depth);
+                string autocomplete = new(Characters.Tab, depth);
 
                 // Simply insert the tabs at the current selection, then collapse it
                 Document.Selection.Text = autocomplete;

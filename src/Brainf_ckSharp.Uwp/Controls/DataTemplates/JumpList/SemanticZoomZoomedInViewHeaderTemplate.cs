@@ -24,6 +24,6 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList
             nameof(Title),
             typeof(string),
             typeof(SemanticZoomZoomedInViewHeaderTemplate),
-            new PropertyMetadata(DependencyProperty.UnsetValue));
+            new(DependencyProperty.UnsetValue));
     }
 }

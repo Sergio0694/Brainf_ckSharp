@@ -19,7 +19,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
         /// <summary>
         /// Synchronization lock to avoid race conditions for user requests
         /// </summary>
-        private readonly AsyncLock SubFrameLock = new AsyncLock();
+        private readonly AsyncLock SubFrameLock = new();
 
         /// <summary>
         /// The minimum window width for the expanded state
@@ -145,7 +145,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
             {
                 // Setup
                 RootGrid.BorderThickness = new Thickness();
-                Thickness contentBorderThickness = new Thickness(1);
+                Thickness contentBorderThickness = new(1);
 
                 // Adjust the content width
                 double targetWidth;

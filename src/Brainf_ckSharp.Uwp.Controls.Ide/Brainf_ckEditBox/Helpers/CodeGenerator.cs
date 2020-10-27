@@ -59,7 +59,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers
 
             p1[depth * 2 + 4] = Characters.LoopEnd;
 
-            return new string(p0, 0, length);
+            return new(p0, 0, length);
         }
     }
 }

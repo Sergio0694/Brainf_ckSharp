@@ -61,7 +61,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel
             nameof(Icon),
             typeof(string),
             typeof(MinimalHeaderButton),
-            new PropertyMetadata(DependencyProperty.UnsetValue));
+            new(DependencyProperty.UnsetValue));
 
         /// <summary>
         /// Gets or sets whether or not the control is currently selected
@@ -79,7 +79,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel
             nameof(IsSelected),
             typeof(bool),
             typeof(MinimalHeaderButton),
-            new PropertyMetadata(DependencyProperty.UnsetValue, OnIsSelectedPropertyChanged));
+            new(DependencyProperty.UnsetValue, OnIsSelectedPropertyChanged));
 
         /// <summary>
         /// Raised whenever the <see cref="IsSelected"/> property is set to <see langword="true"/>

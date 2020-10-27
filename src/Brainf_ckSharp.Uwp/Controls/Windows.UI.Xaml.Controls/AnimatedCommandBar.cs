@@ -21,7 +21,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
         /// <summary>
         /// The <see cref="AsyncLock"/> instance used to avoid race conditions when switching buttons
         /// </summary>
-        private readonly AsyncLock ContentSwitchLock = new AsyncLock();
+        private readonly AsyncLock ContentSwitchLock = new();
 
         /// <summary>
         /// The duration of each button animation
@@ -54,7 +54,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
             nameof(IsPrimaryContentDisplayed),
             typeof(bool?),
             typeof(AnimatedCommandBar),
-            new PropertyMetadata(null, OnIsPrimaryContentDisplayedChanged));
+            new(null, OnIsPrimaryContentDisplayedChanged));
 
         /// <summary>
         /// Updates the UI when <see cref="IsPrimaryContentDisplayed"/> changes

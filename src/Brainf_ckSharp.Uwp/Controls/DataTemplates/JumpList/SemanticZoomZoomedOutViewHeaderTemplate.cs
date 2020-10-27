@@ -48,7 +48,7 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList
             nameof(Title),
             typeof(string),
             typeof(SemanticZoomZoomedOutViewHeaderTemplate),
-            new PropertyMetadata(DependencyProperty.UnsetValue));
+            new(DependencyProperty.UnsetValue));
 
         /// <summary>
         /// Gets or sets the text for the current control's description
@@ -66,7 +66,7 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList
             nameof(DescriptionText),
             typeof(string),
             typeof(SemanticZoomZoomedOutViewHeaderTemplate),
-            new PropertyMetadata(null, OnDescriptionTextPropertyChanged));
+            new(null, OnDescriptionTextPropertyChanged));
 
         /// <summary>
         /// Sets a new <see cref="Span"/> for the description when <see cref="DescriptionText"/> changes
@@ -96,7 +96,7 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList
             nameof(DescriptionSpan),
             typeof(Span),
             typeof(SemanticZoomZoomedOutViewHeaderTemplate),
-            new PropertyMetadata(null, OnDescriptionSpanPropertyChanged));
+            new(null, OnDescriptionSpanPropertyChanged));
 
         /// <summary>
         /// Sets a new <see cref="Span"/> for the description when <see cref="DescriptionSpan"/> changes

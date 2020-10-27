@@ -54,7 +54,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
             "Source",
             typeof(string),
             typeof(Brainf_ckInlineFormatterHelper),
-            new PropertyMetadata(string.Empty, OnSourcePropertyChanged));
+            new(string.Empty, OnSourcePropertyChanged));
 
         /// <summary>
         /// Updates the UI when <see cref="SourceProperty"/> changes

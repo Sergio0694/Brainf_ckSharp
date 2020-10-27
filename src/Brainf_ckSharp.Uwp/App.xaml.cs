@@ -196,7 +196,7 @@ namespace Brainf_ckSharp.Uwp
         [Pure]
         private IServiceProvider ConfigureServices()
         {
-            var services = new ServiceCollection();
+            ServiceCollection services = new();
 
             // Platform specific options
             services.AddOptions<AppConfiguration>().Configure(options => options.UnlockThemesIapId = "9P4Q63CCFPBM");

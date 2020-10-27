@@ -38,12 +38,12 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.Templates
             // URIs created from XAML to local files will use the "ms-resource:///Files/" base path,
             // whereas the StorageFile API requires a URI with the "ms-appx:///" schema,
             // with the local path starting immediately from the root of the installation folder.
-            Uri appxUri = new Uri($"ms-appx:///{SampleUri.LocalPath.Replace("/Files/", string.Empty)}");
+            Uri appxUri = new($"ms-appx:///{SampleUri.LocalPath.Replace("/Files/", string.Empty)}");
 
             StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(appxUri);
 
             using Stream stream = await file.OpenStreamForReadAsync();
-            using StreamReader reader = new StreamReader(stream);
+            using StreamReader reader = new(stream);
 
             string text = await reader.ReadToEndAsync();
 

@@ -79,7 +79,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="args">The <see cref="CanvasCreateResourcesEventArgs"/> for the current instance</param>
         private void _TextOverlaysCanvas_CreateResources(CanvasControl sender, CanvasCreateResourcesEventArgs args)
         {
-            CanvasPathBuilder pathBuilder = new CanvasPathBuilder(sender);
+            CanvasPathBuilder pathBuilder = new(sender);
 
             pathBuilder.BeginFigure(0, 2.5f);
             pathBuilder.AddLine(2, 0);
@@ -383,7 +383,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 Document.GetRangeAt(bounds.End).GetRect(PointOptions.Transform, out Rect close, out _);
 
                 // Render the new line guide
-                ColumnGuideInfo guideInfo = new ColumnGuideInfo(
+                ColumnGuideInfo guideInfo = new(
                     MathF.Min((float)open.X, (float)close.X) + 10,
                     (float)open.Top + 22,
                     (float)(close.Top - open.Bottom));

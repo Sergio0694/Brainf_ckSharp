@@ -18,7 +18,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Helpers
         /// <summary>
         /// A <see cref="RichEditBox"/> provuder used to parse RTF data from the clipboard
         /// </summary>
-        private static readonly RichEditBox EditBox = new RichEditBox();
+        private static readonly RichEditBox EditBox = new();
 
         /// <summary>
         /// Tries to copy some text to the clipboard

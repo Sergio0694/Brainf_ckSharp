@@ -42,12 +42,12 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
             "IsAutoScrollEnabled",
             typeof(INotifyCollectionChanged),
             typeof(ListViewBaseHelper),
-            new PropertyMetadata(DependencyProperty.UnsetValue, OnIsAutoScrollEnabledPropertyChanged));
+            new(DependencyProperty.UnsetValue, OnIsAutoScrollEnabledPropertyChanged));
 
         /// <summary>
         /// A table that maps existing <see cref="INotifyCollectionChanged"/> items to target <see cref="ListViewBase"/>
         /// </summary>
-        private static readonly ConditionalWeakTable<INotifyCollectionChanged, ListViewBase> ControlsMap = new ConditionalWeakTable<INotifyCollectionChanged, ListViewBase>();
+        private static readonly ConditionalWeakTable<INotifyCollectionChanged, ListViewBase> ControlsMap = new();
 
         /// <summary>
         /// Updates the UI when <see cref="IsAutoScrollEnabledProperty"/> changes

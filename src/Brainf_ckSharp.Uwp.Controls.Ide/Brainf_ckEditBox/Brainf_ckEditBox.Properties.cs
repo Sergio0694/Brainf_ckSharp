@@ -85,7 +85,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 nameof(Text),
                 typeof(string),
                 typeof(Brainf_ckEditBox),
-                new PropertyMetadata("\r"));
+                new("\r"));
 
         /// <summary>
         /// Gets the dependency property for <see cref="VerticalScrollBarMargin"/>.
@@ -95,7 +95,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 nameof(VerticalScrollBarMargin),
                 typeof(Thickness),
                 typeof(Brainf_ckEditBox),
-                new PropertyMetadata(default(Thickness), OnVerticalScrollBarMarginPropertyChanged));
+                new(default(Thickness), OnVerticalScrollBarMarginPropertyChanged));
 
         /// <summary>
         /// Gets the dependency property for <see cref="BracketsFormattingStyle"/>.
@@ -105,7 +105,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 nameof(BracketsFormattingStyle),
                 typeof(BracketsFormattingStyle),
                 typeof(Brainf_ckEditBox),
-                new PropertyMetadata(default(BracketsFormattingStyle)));
+                new(default(BracketsFormattingStyle)));
 
         /// <summary>
         /// Gets the dependency property for <see cref="RenderWhitespaceCharacters"/>.
@@ -115,7 +115,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 nameof(RenderWhitespaceCharacters),
                 typeof(bool),
                 typeof(Brainf_ckEditBox),
-                new PropertyMetadata(true, OnRenderWhitespaceCharactersPropertyChanged));
+                new(true, OnRenderWhitespaceCharactersPropertyChanged));
 
         /// <summary>
         /// Gets the dependency property for <see cref="SyntaxHighlightTheme"/>.
@@ -125,7 +125,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 nameof(SyntaxHighlightTheme),
                 typeof(Brainf_ckTheme),
                 typeof(Brainf_ckEditBox),
-                new PropertyMetadata(Brainf_ckThemes.VisualStudio, OnSyntaxHighlightThemePropertyChanged));
+                new(Brainf_ckThemes.VisualStudio, OnSyntaxHighlightThemePropertyChanged));
 
         /// <summary>
         /// Gets the dependency property for <see cref="ContextMenuSecondaryContent"/>.
@@ -135,7 +135,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 nameof(ContextMenuSecondaryContent),
                 typeof(FrameworkElement),
                 typeof(Brainf_ckEditBox),
-                new PropertyMetadata(null, OnContextMenuSecondaryContentPropertyChanged));
+                new(null, OnContextMenuSecondaryContentPropertyChanged));
 
         /// <summary>
         /// Updates the <see cref="FrameworkElement.Margin"/> property for <see cref="_VerticalContentScrollBar"/> when <see cref="VerticalScrollBarMargin"/> changes

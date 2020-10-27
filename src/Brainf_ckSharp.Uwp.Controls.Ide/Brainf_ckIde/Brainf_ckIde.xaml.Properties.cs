@@ -66,6 +66,6 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                 nameof(SyntaxHighlightTheme),
                 typeof(Brainf_ckTheme),
                 typeof(Brainf_ckIde),
-                new PropertyMetadata(Brainf_ckThemes.VisualStudio));
+                new(Brainf_ckThemes.VisualStudio));
     }
 }

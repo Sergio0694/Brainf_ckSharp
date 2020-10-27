@@ -26,6 +26,6 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host
             nameof(Title),
             typeof(string),
             typeof(SubPageFrame),
-            new PropertyMetadata(string.Empty));
+            new(string.Empty));
     }
 }

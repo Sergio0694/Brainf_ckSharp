@@ -27,7 +27,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Host.Header
             nameof(SelectedIndex),
             typeof(int),
             typeof(HeaderPanel),
-            new PropertyMetadata(default(int), OnSelectedIndexPropertyChanged));
+            new(default(int), OnSelectedIndexPropertyChanged));
 
         /// <summary>
         /// Updates the UI when <see cref="SelectedIndex"/> changes

@@ -37,12 +37,12 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
             "IsBlinking",
             typeof(bool),
             typeof(BlinkingAnimationHelper),
-            new PropertyMetadata(DependencyProperty.UnsetValue, OnIsBlinkingPropertyChanged));
+            new(DependencyProperty.UnsetValue, OnIsBlinkingPropertyChanged));
 
         /// <summary>
         /// A table that maps existing, running <see cref="Storyboard"/> items to target <see cref="UIElement"/>
         /// </summary>
-        private static readonly ConditionalWeakTable<UIElement, Storyboard> StoryboardTable = new ConditionalWeakTable<UIElement, Storyboard>();
+        private static readonly ConditionalWeakTable<UIElement, Storyboard> StoryboardTable = new();
 
         /// <summary>
         /// Updates the UI when <see cref="IsBlinkingProperty"/> changes
@@ -81,7 +81,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
                 Storyboard.SetTargetProperty(animation, nameof(UIElement.Opacity));
 
                 // Create the storyboard and start it
-                Storyboard storyboard = new Storyboard();
+                Storyboard storyboard = new();
                 storyboard.Children.Add(animation);
                 storyboard.Begin();
 

@@ -22,7 +22,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <summary>
         /// The map of breakpoints in use
         /// </summary>
-        private readonly DictionarySlim<int, float> BreakpointIndicators = new DictionarySlim<int, float>();
+        private readonly DictionarySlim<int, float> BreakpointIndicators = new();
 
         /// <summary>
         /// The precomputed areas of breakpoints to display
