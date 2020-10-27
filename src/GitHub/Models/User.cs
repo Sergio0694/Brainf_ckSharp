@@ -11,24 +11,24 @@ namespace GitHub.Models
         /// Gets the name of the current contributor
         /// </summary>
         [JsonPropertyName("name")]
-        public string? Name { get; set; }
+        public string? Name { get; init; }
 
         /// <summary>
         /// Gets the URL of the contributor profile image
         /// </summary>
         [JsonPropertyName("avatar_url")]
-        public string? ProfileImageUrl { get; set; }
+        public string? ProfileImageUrl { get; init; }
 
         /// <summary>
         /// Gets the URL of the contributor profile page
         /// </summary>
         [JsonPropertyName("html_url")]
-        public string? ProfilePageUrl { get; set; }
+        public string? ProfilePageUrl { get; init; }
 
         /// <summary>
         /// Gets the user bio
         /// </summary>
         [JsonPropertyName("bio")]
-        public string? Bio { get; set; }
+        public string? Bio { get; init; }
     }
 }
