@@ -25,8 +25,6 @@ namespace Brainf_ckSharp.Services.Uwp.Store
         /// <inheritdoc/>
         public Task<StorePurchaseResult> TryPurchaseProductAsync(string id)
         {
-            bool success = new Random().Next(0, 2) == 1;
-
             return Task.FromResult(StorePurchaseResult.Success);
         }
     }

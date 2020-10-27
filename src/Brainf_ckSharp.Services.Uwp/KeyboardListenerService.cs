@@ -15,7 +15,7 @@ namespace Brainf_ckSharp.Uwp.Services.Keyboard
         /// <summary>
         /// Lock target for <see cref="IKeyboardListenerService.CharacterReceived"/>
         /// </summary>
-        private readonly object Lock = new object();
+        private readonly object Lock = new();
 
         /// <summary>
         /// Private backing event for <see cref="IKeyboardListenerService.CharacterReceived"/>

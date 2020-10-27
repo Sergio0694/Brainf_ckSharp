@@ -14,7 +14,7 @@ namespace Brainf_ckSharp.Services.Uwp.Email
         /// <inheritdoc/>
         public async Task TryComposeEmailAsync(string? address = null, string? subject = null, string? body = null)
         {
-            EmailMessage email = new EmailMessage();
+            EmailMessage email = new();
 
             if (!(address is null)) email.To.Add(new EmailRecipient(address));
             if (!(subject is null)) email.Subject = subject;
