@@ -1,0 +1,9 @@
+{
+  "solution": {
+    "path": "Brainf_ckSharp.sln",
+    "projects": [
+      "profiling\\Brainf_ckSharp.Profiler\\Brainf_ckSharp.Profiler.csproj",
+      "src\\Brainf_ckSharp\\Brainf_ckSharp.csproj"
+    ]
+  }
+}

@@ -43,16 +43,6 @@ namespace Brainf_ckSharp.Profiler
 
             for (int i = 0; i < 1000; i++)
             {
-                Debug();
-            }
-
-            Thread.Sleep(TimeSpan.FromSeconds(1));
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-
-            for (int i = 0; i < 1000; i++)
-            {
                 Release();
             }
 
@@ -60,24 +50,6 @@ namespace Brainf_ckSharp.Profiler
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
-        }
-
-        [Benchmark(Baseline = true)]
-        public string Debug()
-        {
-            Option<InterpreterSession> result = Brainf_ckInterpreter
-                .CreateDebugConfiguration()
-                .WithSource(Script!.Source)
-                .WithStdin(Script.Stdin)
-                .WithMemorySize(Script.MemorySize)
-                .WithOverflowMode(Script.OverflowMode)
-                .TryRun();
-
-            using InterpreterSession enumerator = result.Value!;
-
-            enumerator!.MoveNext();
-
-            return enumerator.Current.Stdout;
         }
 
         [Benchmark]
