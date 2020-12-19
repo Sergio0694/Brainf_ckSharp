@@ -3,6 +3,7 @@ using System.Threading;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Engines;
+using BenchmarkDotNet.Jobs;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Unit.Shared;
@@ -69,7 +70,8 @@ namespace Brainf_ckSharp.Profiler
         }
     }
 
-    [SimpleJob(RunStrategy.Throughput)]
+    [SimpleJob(RunStrategy.Throughput, RuntimeMoniker.NetCoreApp31)]
+    [SimpleJob(RunStrategy.Throughput, RuntimeMoniker.NetCoreApp50)]
     public class Brainf_ckBenchmark_Short : Brainf_ckBenchmarkBase
     {
         /// <inheritdoc/>
@@ -77,7 +79,8 @@ namespace Brainf_ckSharp.Profiler
         public override string? Name { get; set; }
     }
 
-    [SimpleJob(RunStrategy.Monitoring)]
+    [SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.NetCoreApp31)]
+    [SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.NetCoreApp50)]
     public class Brainf_ckBenchmark_Long : Brainf_ckBenchmarkBase
     {
         /// <inheritdoc/>
