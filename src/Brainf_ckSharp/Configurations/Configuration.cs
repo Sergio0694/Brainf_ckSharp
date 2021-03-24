@@ -1,15 +1,15 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Threading;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
-
-#pragma warning disable CS0282
 
 namespace Brainf_ckSharp.Configurations
 {
     /// <summary>
     /// A model for a DEBUG configuration being built
     /// </summary>
+    [StructLayout(LayoutKind.Auto)]
     public readonly ref partial struct DebugConfiguration
     {
         /// <summary>
@@ -46,6 +46,7 @@ namespace Brainf_ckSharp.Configurations
     /// <summary>
     /// A model for a RELEASE configuration being built
     /// </summary>
+    [StructLayout(LayoutKind.Auto)]
     public readonly ref partial struct ReleaseConfiguration
     {
         /// <summary>
