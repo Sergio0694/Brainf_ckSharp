@@ -10,7 +10,7 @@ using Brainf_ckSharp.Shared.Models.Ide.Views;
 using Brainf_ckSharp.Uwp.Converters.Console;
 using Brainf_ckSharp.Uwp.Themes;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Uwp.Extensions;
+using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Diagnostics;
 
 namespace Brainf_ckSharp.Uwp.AttachedProperties

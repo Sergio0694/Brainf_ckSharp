@@ -7,7 +7,8 @@ using Brainf_ckSharp.Uwp.Themes;
 using Brainf_ckSharp.Uwp.Themes.Enums;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Toolkit.Diagnostics;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Microsoft.Toolkit.Uwp.UI;
+using Microsoft.Toolkit.Uwp.UI.Animations;
 using Microsoft.UI.Xaml.Controls;
 
 #nullable enable
@@ -154,7 +155,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// <param name="e">The <see cref="RoutedEventArgs"/> for <see cref="FrameworkElement.Loaded"/></param>
         private void ContentElement_Loaded(object sender, RoutedEventArgs e)
         {
-            _VerticalContentScrollBar = (ScrollBar)ContentScroller.FindDescendantByName(VerticalScrollBarName);
+            _VerticalContentScrollBar = (ScrollBar?)ContentScroller!.FindDescendant(VerticalScrollBarName);
 
             Guard.IsNotNull(_VerticalContentScrollBar, nameof(ContentScroller));
 

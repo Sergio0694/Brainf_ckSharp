@@ -74,19 +74,19 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
                     // the multiple null and type checking produced by the C# compiler
                     if (indicator.GetType() == typeof(FunctionIndicator))
                     {
-                        FunctionIndicator function = Unsafe.As<FunctionIndicator>(indicator);
+                        FunctionIndicator function = Unsafe.As<FunctionIndicator>(indicator)!;
 
                         DrawFunctionDeclaration(args.DrawingSession, GetOffsetAt(i) + IndentationIndicatorsVerticalOffsetMargin, function.Type);
                     }
                     else if (indicator.GetType() == typeof(BlockIndicator))
                     {
-                        BlockIndicator block = Unsafe.As<BlockIndicator>(indicator);
+                        BlockIndicator block = Unsafe.As<BlockIndicator>(indicator)!;
 
                         DrawIndentationBlock(args.DrawingSession, GetOffsetAt(i) + IndentationIndicatorsVerticalOffsetMargin, block.Depth, block.Type, block.IsWithinFunction);
                     }
                     else if (indicator.GetType() == typeof(LineIndicator))
                     {
-                        LineIndicator line = Unsafe.As<LineIndicator>(indicator);
+                        LineIndicator line = Unsafe.As<LineIndicator>(indicator)!;
 
                         DrawLine(args.DrawingSession, GetOffsetAt(i) + IndentationIndicatorsVerticalOffsetMargin, line.Type);
                     }

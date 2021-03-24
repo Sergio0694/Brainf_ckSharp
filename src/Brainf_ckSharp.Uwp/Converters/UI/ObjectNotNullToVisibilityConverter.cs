@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
-using Microsoft.Toolkit.HighPerformance.Extensions;
+using Microsoft.Toolkit.HighPerformance;
 
 #nullable enable
 
@@ -21,7 +21,7 @@ namespace Brainf_ckSharp.Uwp.Converters.UI
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Visibility Convert(object? obj)
         {
-            return (Visibility)(obj is null).ToInt();
+            return (Visibility)(obj is null).ToByte();
         }
     }
 }

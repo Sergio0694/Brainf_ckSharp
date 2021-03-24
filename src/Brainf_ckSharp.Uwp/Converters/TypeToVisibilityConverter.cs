@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
-using Microsoft.Toolkit.HighPerformance.Extensions;
+using Microsoft.Toolkit.HighPerformance;
 
 namespace Brainf_ckSharp.Uwp.Converters
 {
@@ -18,7 +18,7 @@ namespace Brainf_ckSharp.Uwp.Converters
         /// <inheritdoc/>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return (Visibility)(value?.GetType() != TargetType).ToInt();
+            return (Visibility)(value?.GetType() != TargetType).ToByte();
         }
 
         /// <inheritdoc/>

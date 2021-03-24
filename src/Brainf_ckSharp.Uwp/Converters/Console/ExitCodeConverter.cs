@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Enums;
 using Microsoft.Toolkit.Diagnostics;
-using Microsoft.Toolkit.Uwp.Extensions;
+using Microsoft.Toolkit.Uwp;
 
 namespace Brainf_ckSharp.Uwp.Converters.Console
 {

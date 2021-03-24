@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Toolkit.Diagnostics;
 
 #nullable enable
@@ -92,7 +92,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
 
             // Wait for the new item to be displayed, then scroll down
             await Task.Delay(250);
-            ScrollViewer scroller = control.FindDescendant<ScrollViewer>();
+            ScrollViewer scroller = control.FindDescendant<ScrollViewer>()!;
             scroller?.ChangeView(null, scroller.ScrollableHeight, null, false);
         }
     }

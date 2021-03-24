@@ -9,6 +9,7 @@ using Brainf_ckSharp.Shared.Messages.Ide;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Models.Ide;
 using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
+using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Views
@@ -296,7 +297,9 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
                 string json = await reader.ReadToEndAsync();
 
-                IdeState state = JsonSerializer.Deserialize<IdeState>(json);
+                IdeState? state = JsonSerializer.Deserialize<IdeState>(json);
+                
+                if (state is null) ThrowHelper.ThrowInvalidOperationException("Failed to load previous IDE state");
 
                 if (state.FilePath is null) Code = SourceCode.CreateEmpty();
                 else
