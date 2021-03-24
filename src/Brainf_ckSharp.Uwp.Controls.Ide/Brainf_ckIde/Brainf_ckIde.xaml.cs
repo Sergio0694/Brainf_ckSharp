@@ -6,8 +6,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
-using Microsoft.Toolkit.HighPerformance.Extensions;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Microsoft.Toolkit.HighPerformance;
+using Microsoft.Toolkit.Uwp.UI.Animations;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {

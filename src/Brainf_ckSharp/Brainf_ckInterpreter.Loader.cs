@@ -4,8 +4,8 @@ using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Opcodes.Interfaces;
+using Microsoft.Toolkit.HighPerformance;
 using Microsoft.Toolkit.HighPerformance.Buffers;
-using Microsoft.Toolkit.HighPerformance.Extensions;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
 using Range = Brainf_ckSharp.Models.Internal.Range;
 using static System.Diagnostics.Debug;
@@ -175,7 +175,7 @@ namespace Brainf_ckSharp
                 // reinterpret cast saves a conditional jump in the asm code.
                 int
                     start = frame.Range.Start,
-                    offset = frame.Offset + (i == 0).ToInt(),
+                    offset = frame.Offset + (i == 0).ToByte(),
                     length = offset - start;
                 Span<TOpcode> span = opcodes.Slice(start, length);
 

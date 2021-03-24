@@ -5,8 +5,8 @@ using Brainf_ckSharp.Git.Buffers;
 using Brainf_ckSharp.Git.Enums;
 using Brainf_ckSharp.Git.Models;
 using Microsoft.Collections.Extensions;
+using Microsoft.Toolkit.HighPerformance;
 using Microsoft.Toolkit.HighPerformance.Buffers;
-using Microsoft.Toolkit.HighPerformance.Extensions;
 using Microsoft.Toolkit.HighPerformance.Helpers;
 
 namespace Brainf_ckSharp.Git

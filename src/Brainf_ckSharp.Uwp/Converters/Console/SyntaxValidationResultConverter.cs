@@ -2,7 +2,7 @@
 using Windows.ApplicationModel.Resources;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
-using Microsoft.Toolkit.Uwp.Extensions;
+using Microsoft.Toolkit.Uwp;
 
 namespace Brainf_ckSharp.Uwp.Converters.Console
 {

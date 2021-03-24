@@ -16,7 +16,7 @@
     xmlns:models="using:Brainf_ckSharp.Shared.Models.Ide.Views"
     xmlns:collections="using:Microsoft.Toolkit.Collections"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
@@ -86,7 +86,7 @@
         </VisualStateManager.VisualStateGroups>
 
         <!--Results content-->
-        <Grid extensions:UIElementExtensions.ClipToBounds="True">
+        <Grid ui:UIElementExtensions.ClipToBounds="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>

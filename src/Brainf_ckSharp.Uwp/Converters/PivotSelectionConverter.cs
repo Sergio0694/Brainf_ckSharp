@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 using Brainf_ckSharp.Shared.Enums.Settings;
-using Microsoft.Toolkit.HighPerformance.Extensions;
+using Microsoft.Toolkit.HighPerformance;
 
 namespace Brainf_ckSharp.Uwp.Converters
 {
@@ -32,7 +32,7 @@ namespace Brainf_ckSharp.Uwp.Converters
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Visibility ConvertToVisibility(ViewType viewType, ViewType target)
         {
-            return (Visibility)(viewType != target).ToInt();
+            return (Visibility)(viewType != target).ToByte();
         }
 
         /// <summary>

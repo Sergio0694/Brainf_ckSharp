@@ -33,7 +33,7 @@ using Brainf_ckSharp.Uwp.Controls.SubPages.Host;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Uwp.Helpers;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Microsoft.Toolkit.Uwp.UI;
 
 #nullable enable
 
@@ -59,7 +59,7 @@ namespace Brainf_ckSharp.Uwp
         /// <summary>
         /// Gets the <see cref="Controls.SubPages.Host.SubPageHost"/> instance used to display popups in the app
         /// </summary>
-        public SubPageHost SubPageHost => _SubPageHost ??= Window.Current.Content.FindDescendant<SubPageHost>();
+        public SubPageHost SubPageHost => _SubPageHost ??= Window.Current.Content.FindDescendant<SubPageHost>()!;
 
         /// <summary>
         /// Extracts the current file request, if present

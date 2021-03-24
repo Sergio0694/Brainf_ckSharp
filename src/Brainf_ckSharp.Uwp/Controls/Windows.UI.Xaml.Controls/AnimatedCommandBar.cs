@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Brainf_ckSharp.Uwp.Extensions.System.Collections.Generic;
-using Microsoft.Toolkit.HighPerformance.Extensions;
+using Microsoft.Toolkit.HighPerformance;
 using Nito.AsyncEx;
 
 namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
@@ -71,7 +71,7 @@ namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls
             {
                 foreach (var item in @this.PrimaryCommands.Cast<FrameworkElement>())
                 {
-                    item.Visibility = (Visibility)((bool)item.Tag != primary).ToInt();
+                    item.Visibility = (Visibility)((bool)item.Tag != primary).ToByte();
                 }
 
                 return;

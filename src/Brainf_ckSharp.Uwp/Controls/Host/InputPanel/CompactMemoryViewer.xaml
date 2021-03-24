@@ -16,7 +16,7 @@
         Padding="4,0,0,0"
         ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
         SelectionMode="None"
-        animations:ReorderGridAnimation.Duration="500">
+        animations:ItemsReorderAnimation.Duration="0:0:0.500">
         <GridView.Resources>
 
             <!--Expand the items to cover all the available space-->

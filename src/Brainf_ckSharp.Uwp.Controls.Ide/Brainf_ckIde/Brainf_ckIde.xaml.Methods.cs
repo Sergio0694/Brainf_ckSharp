@@ -9,8 +9,8 @@ using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System;
 using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.Windows.UI.Text;
 using Microsoft.Toolkit.Diagnostics;
+using Microsoft.Toolkit.HighPerformance;
 using Microsoft.Toolkit.HighPerformance.Buffers;
-using Microsoft.Toolkit.HighPerformance.Extensions;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide
 {

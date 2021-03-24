@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ide="using:Brainf_ckSharp.Uwp.Controls.Ide"
     xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
-    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -103,7 +103,7 @@
             x:Name="CodeEditBox"
             Grid.Column="1"
             AllowFocusWhenDisabled="False"
-            extensions:UIElementExtensions.ClipToBounds="True"
+            ui:UIElementExtensions.ClipToBounds="True"
             Padding="4,8,8,8"
             SyntaxHighlightTheme="{x:Bind SyntaxHighlightTheme, Mode=OneWay}"
             FormattingCompleted="CodeEditBox_OnFormattingCompleted"
