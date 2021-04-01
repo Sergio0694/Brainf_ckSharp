@@ -13,7 +13,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
     /// <summary>
     /// A view model for a compact memory viewer for the interactive REPL console
     /// </summary>
-    public sealed class CompactMemoryViewerViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<IReadOnlyMachineState>>
+    public sealed class CompactMemoryViewerViewModel : ObservableRecipient
     {
         /// <summary>
         /// Creates a new <see cref="CompactMemoryViewerViewModel"/> instance
@@ -26,7 +26,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         /// <inheritdoc/>
         protected override void OnActivated()
         {
-            base.OnActivated();
+            Messenger.Register<CompactMemoryViewerViewModel, PropertyChangedMessage<IReadOnlyMachineState>>(this, (r, m) => r.MachineState = m.NewValue);
 
             MachineState = Messenger.Send<MemoryStateRequestMessage>().Response;
         }
@@ -81,12 +81,6 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
                     }
                 }
             }
-        }
-
-        /// <inheritdoc/>
-        void IRecipient<PropertyChangedMessage<IReadOnlyMachineState>>.Receive(PropertyChangedMessage<IReadOnlyMachineState> message)
-        {
-            MachineState = message.NewValue;
         }
     }
 }

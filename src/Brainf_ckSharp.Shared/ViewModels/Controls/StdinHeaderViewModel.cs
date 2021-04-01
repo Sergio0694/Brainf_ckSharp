@@ -6,7 +6,7 @@ using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls
 {
-    public sealed class StdinHeaderViewModel : ObservableRecipient, IRecipient<StdinRequestMessage>
+    public sealed class StdinHeaderViewModel : ObservableRecipient
     {
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
@@ -24,6 +24,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
             SettingsService = settingsService;
         }
 
+        /// <inheritdoc/>
+        protected override void OnActivated()
+        {
+            Messenger.Register<StdinHeaderViewModel, StdinRequestMessage>(this, (r, m) => r.GetStdinBuffer(m));
+        }
+
         private string _Text = string.Empty;
 
         /// <summary>
@@ -36,7 +42,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
         }
 
         /// <inheritdoc/>
-        void IRecipient<StdinRequestMessage>.Receive(StdinRequestMessage request)
+        private void GetStdinBuffer(StdinRequestMessage request)
         {
             request.Reply(Text);
 

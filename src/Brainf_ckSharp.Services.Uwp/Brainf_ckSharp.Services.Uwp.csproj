@@ -134,7 +134,6 @@
     <Compile Include="Store\ProductionStoreService.cs" />
     <Compile Include="Store\TestStoreService.cs" />
     <Compile Include="SystemInformationService.cs" />
-    <EmbeddedResource Include="Properties\Brainf_ckSharp.Services.Uwp.rd.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AppCenter.Analytics">
