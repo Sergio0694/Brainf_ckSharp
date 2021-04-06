@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Services.Enums;
@@ -6,7 +7,6 @@ using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.Messages.Settings;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections.Abstract;
-using Microsoft.Extensions.Options;
 using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
@@ -37,13 +37,13 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections
         /// <param name="analyticsService">The <see cref="IAnalyticsService"/> instance to use</param>
         /// <param name="storeService">The <see cref="IStoreService"/> instance to use</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
-        /// <param name="configuration">The <see cref="IOptions{T}"/> instance to use</param>
-        public IdeSettingsSectionViewModel(IMessenger messenger, IAnalyticsService analyticsService, IStoreService storeService, ISettingsService settingsService, IOptions<AppConfiguration> configuration)
+        /// <param name="configuration">The <see cref="AppConfiguration"/> instance to use</param>
+        public IdeSettingsSectionViewModel(IMessenger messenger, IAnalyticsService analyticsService, IStoreService storeService, ISettingsService settingsService, AppConfiguration configuration)
             : base(messenger, settingsService)
         {
             AnalyticsService = analyticsService;
             StoreService = storeService;
-            Configuration = configuration.Value;
+            Configuration = configuration;
 
             _IdeTheme = SettingsService.GetValue<IdeTheme>(SettingsKeys.IdeTheme);
             _BracketsFormattingStyle = SettingsService.GetValue<BracketsFormattingStyle>(SettingsKeys.BracketsFormattingStyle);
@@ -62,6 +62,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections
         /// Gets the <see cref="ICommand"/> instance responsible for unlocking the themes selector
         /// </summary>
         public ICommand UnlockThemesSelectorCommand { get; }
+
+        /// <summary>
+        /// Gets the available themes.
+        /// </summary>
+        public IReadOnlyCollection<IdeTheme> IdeThemes { get; } = (IdeTheme[])typeof(IdeTheme).GetEnumValues();
 
         private IdeTheme _IdeTheme;
 
@@ -90,6 +95,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections
             get => _IsThemeSelectorAvailable;
             private set => SetProperty(ref _IsThemeSelectorAvailable, value);
         }
+
+        /// <summary>
+        /// Gets the available bracket formatting styles.
+        /// </summary>
+        public IReadOnlyCollection<BracketsFormattingStyle> BracketsFormattingStyles { get; } = (BracketsFormattingStyle[])typeof(BracketsFormattingStyle).GetEnumValues();
 
         private BracketsFormattingStyle _BracketsFormattingStyle;
 

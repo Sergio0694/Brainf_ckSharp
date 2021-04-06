@@ -20,7 +20,6 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:controls="using:Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls"
     xmlns:sections="using:Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections"
-    xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -59,7 +58,7 @@
                         Padding="2,0,0,0"
                         MinWidth="240"
                         MinHeight="112"
-                        ItemsSource="{ui:EnumValues Type=enumsSettings:IdeTheme}"
+                        ItemsSource="{x:Bind IdeThemes}"
                         SelectedItem="{x:Bind IdeTheme, Mode=TwoWay}">
                         <ComboBox.ItemContainerStyle>
                             <Style TargetType="ComboBoxItem">
@@ -122,7 +121,7 @@
                     CornerRadius="0"
                     Margin="0,4,0,0"
                     MinWidth="140"
-                    ItemsSource="{ui:EnumValues Type=enumsSettings:BracketsFormattingStyle}"
+                    ItemsSource="{x:Bind BracketsFormattingStyles}"
                     SelectedItem="{x:Bind BracketsFormattingStyle, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="enumsSettings:BracketsFormattingStyle">
@@ -200,7 +199,7 @@
                     CornerRadius="0"
                     Margin="0,4,0,0"
                     MinWidth="140"
-                    ItemsSource="{ui:EnumValues Type=interpreterEnums:OverflowMode}"
+                    ItemsSource="{x:Bind OverflowModes}"
                     SelectedItem="{x:Bind OverflowMode, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="interpreterEnums:OverflowMode">

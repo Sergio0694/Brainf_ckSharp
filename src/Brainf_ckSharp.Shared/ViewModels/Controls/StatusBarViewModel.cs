@@ -15,7 +15,7 @@ using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls
 {
-    public sealed class StatusBarViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<bool>>
+    public sealed class StatusBarViewModel : ObservableRecipient
     {
         /// <summary>
         /// The <see cref="ISettingsService"/> instance currently in use
@@ -68,6 +68,12 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
             SettingsService = settingsService;
             Context = SynchronizationContext.Current;
             Timer = new Timer(vm => ((StatusBarViewModel)vm).RunBackgroundCode(), this, default, TimeSpan.FromSeconds(2));
+        }
+        
+        /// <inheritdoc/>
+        protected override void OnActivated()
+        {
+            Messenger.Register<StatusBarViewModel, PropertyChangedMessage<bool>>(this, (r, m) => r.Receive(m));
         }
 
         private Option<InterpreterResult>? _BackgroundExecutionResult;
@@ -159,8 +165,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls
             Context.Post(_ => BackgroundExecutionResult = result, null);
         }
 
-        /// <inheritdoc/>
-        void IRecipient<PropertyChangedMessage<bool>>.Receive(PropertyChangedMessage<bool> message)
+        /// <summary>
+        /// Sets the currently active viewmodel.
+        /// </summary>
+        /// <param name="message">The input notification message.</param>
+        private void Receive(PropertyChangedMessage<bool> message)
         {
             if (message.PropertyName == nameof(IsActive) &&
                 message.NewValue &&

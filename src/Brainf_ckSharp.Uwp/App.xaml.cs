@@ -198,8 +198,11 @@ namespace Brainf_ckSharp.Uwp
         {
             ServiceCollection services = new();
 
-            // Platform specific options
-            services.AddOptions<AppConfiguration>().Configure(options => options.UnlockThemesIapId = "9P4Q63CCFPBM");
+            // Prepare the app configuration
+            services.AddSingleton(new AppConfiguration()
+            {
+                UnlockThemesIapId = "9P4Q63CCFPBM"
+            });
 
             // Services
             services.AddSingleton<IMessenger, StrongReferenceMessenger>();

@@ -17,17 +17,9 @@
 
 <Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
   <Application>
-    <!--
-      An Assembly element with Name="*Application*" applies to all assemblies in
-      the application package. The asterisks are not wildcards.
-    -->
-    <Assembly Name="*Application*" Dynamic="Required All" />
-    
-    
-    <!-- Add your application specific runtime directives here. -->
-    <Type Name="System.Text.Json.Serialization.Converters.JsonConverterBoolean" Dynamic="Required All" />
-    <Type Name="System.Text.Json.Serialization.Converters.JsonConverterInt32" Dynamic="Required All" />
-    <Type Name="System.Text.Json.Serialization.Converters.JsonConverterString" Dynamic="Required All" />
+
+    <!--Refit project-->
+    <Assembly Name="GitHub" Dynamic="Required All" />
 
   </Application>
 </Directives>
