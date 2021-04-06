@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Services.Enums;
@@ -62,6 +63,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections
         /// </summary>
         public ICommand UnlockThemesSelectorCommand { get; }
 
+        /// <summary>
+        /// Gets the available themes.
+        /// </summary>
+        public IReadOnlyCollection<IdeTheme> IdeThemes { get; } = (IdeTheme[])typeof(IdeTheme).GetEnumValues();
+
         private IdeTheme _IdeTheme;
 
         /// <summary>
@@ -89,6 +95,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections
             get => _IsThemeSelectorAvailable;
             private set => SetProperty(ref _IsThemeSelectorAvailable, value);
         }
+
+        /// <summary>
+        /// Gets the available bracket formatting styles.
+        /// </summary>
+        public IReadOnlyCollection<BracketsFormattingStyle> BracketsFormattingStyles { get; } = (BracketsFormattingStyle[])typeof(BracketsFormattingStyle).GetEnumValues();
 
         private BracketsFormattingStyle _BracketsFormattingStyle;
 

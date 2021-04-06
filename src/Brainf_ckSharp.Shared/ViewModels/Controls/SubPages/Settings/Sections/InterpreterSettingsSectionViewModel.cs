@@ -22,6 +22,11 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections
             _MemorySize = SettingsService.GetValue<int>(SettingsKeys.MemorySize);
         }
 
+        /// <summary>
+        /// Gets the available overflow modes.
+        /// </summary>
+        public IReadOnlyCollection<OverflowMode> OverflowModes { get; } = (OverflowMode[])typeof(OverflowMode).GetEnumValues();
+
         private OverflowMode _OverflowMode;
 
         /// <summary>
