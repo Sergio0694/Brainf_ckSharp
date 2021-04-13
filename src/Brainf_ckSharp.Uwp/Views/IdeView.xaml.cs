@@ -73,7 +73,7 @@ namespace Brainf_ckSharp.Uwp.Views
         /// <param name="e">The empty <see cref="EventArgs"/> instance for this event</param>
         private void IdeViewModel_OnScriptRunRequested(object sender, EventArgs e)
         {
-            if (!ViewModel.ValidationResult.IsSuccessOrEmptyScript)
+            if (!ViewModel.ValidationResult.IsSuccess)
             {
                 CodeEditor.TryShowSyntaxErrorToolTip();
 
@@ -90,7 +90,7 @@ namespace Brainf_ckSharp.Uwp.Views
         /// <param name="e">The empty <see cref="EventArgs"/> instance for this event</param>
         private void IdeViewModel_OnScriptDebugRequested(object sender, EventArgs e)
         {
-            if (!ViewModel.ValidationResult.IsSuccessOrEmptyScript)
+            if (!ViewModel.ValidationResult.IsSuccess)
             {
                 CodeEditor.TryShowSyntaxErrorToolTip();
 

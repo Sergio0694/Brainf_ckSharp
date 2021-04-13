@@ -152,9 +152,13 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide
         /// </summary>
         public async void TryShowSyntaxErrorToolTip()
         {
-            if (_SyntaxValidationResult.IsSuccessOrEmptyScript) return;
+            if (_SyntaxValidationResult.IsSuccess) return;
 
-            int errorPosition = _SyntaxValidationResult.ErrorOffset;
+            int errorPosition = _SyntaxValidationResult.IsEmptyScript switch
+            {
+                true => int.MaxValue,
+                false => _SyntaxValidationResult.ErrorOffset
+            };
 
             TaskCompletionSource<object?> tcs = new TaskCompletionSource<object?>();
 
