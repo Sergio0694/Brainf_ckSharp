@@ -1,12 +1,4 @@
 ﻿using BenchmarkDotNet.Running;
+using Brainf_ckSharp.Profiler;
 
-namespace Brainf_ckSharp.Profiler
-{
-    class Program
-    {
-        static void Main()
-        {
-            BenchmarkSwitcher.FromTypes(new[] { typeof(Brainf_ckBenchmark_Short), typeof(Brainf_ckBenchmark_Long) }).RunAllJoined();
-        }
-    }
-}
+BenchmarkSwitcher.FromTypes(new[] { typeof(Brainf_ckBenchmark_Short), typeof(Brainf_ckBenchmark_Long) }).RunAllJoined();

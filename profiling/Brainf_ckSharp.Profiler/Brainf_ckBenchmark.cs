@@ -3,12 +3,11 @@ using System.Threading;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Engines;
+using BenchmarkDotNet.Jobs;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Unit.Shared;
 using Brainf_ckSharp.Unit.Shared.Models;
-
-#nullable enable
 
 namespace Brainf_ckSharp.Profiler
 {
@@ -43,45 +42,17 @@ namespace Brainf_ckSharp.Profiler
 
             for (int i = 0; i < 1000; i++)
             {
-                Debug();
+                RunScript();
             }
 
             Thread.Sleep(TimeSpan.FromSeconds(1));
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
-
-            for (int i = 0; i < 1000; i++)
-            {
-                Release();
-            }
-
-            Thread.Sleep(TimeSpan.FromSeconds(1));
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-        }
-
-        [Benchmark(Baseline = true)]
-        public string Debug()
-        {
-            Option<InterpreterSession> result = Brainf_ckInterpreter
-                .CreateDebugConfiguration()
-                .WithSource(Script!.Source)
-                .WithStdin(Script.Stdin)
-                .WithMemorySize(Script.MemorySize)
-                .WithOverflowMode(Script.OverflowMode)
-                .TryRun();
-
-            using InterpreterSession enumerator = result.Value!;
-
-            enumerator!.MoveNext();
-
-            return enumerator.Current.Stdout;
         }
 
         [Benchmark]
-        public string Release()
+        public string RunScript()
         {
             Option<InterpreterResult> result = Brainf_ckInterpreter
                 .CreateReleaseConfiguration()
@@ -97,7 +68,8 @@ namespace Brainf_ckSharp.Profiler
         }
     }
 
-    [SimpleJob(RunStrategy.Throughput)]
+    [SimpleJob(RunStrategy.Throughput, RuntimeMoniker.NetCoreApp31)]
+    [SimpleJob(RunStrategy.Throughput, RuntimeMoniker.NetCoreApp50)]
     public class Brainf_ckBenchmark_Short : Brainf_ckBenchmarkBase
     {
         /// <inheritdoc/>
@@ -105,7 +77,8 @@ namespace Brainf_ckSharp.Profiler
         public override string? Name { get; set; }
     }
 
-    [SimpleJob(RunStrategy.Monitoring)]
+    [SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.NetCoreApp31)]
+    [SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.NetCoreApp50)]
     public class Brainf_ckBenchmark_Long : Brainf_ckBenchmarkBase
     {
         /// <inheritdoc/>
