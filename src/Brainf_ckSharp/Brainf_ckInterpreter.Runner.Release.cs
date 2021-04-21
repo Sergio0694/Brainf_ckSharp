@@ -145,6 +145,221 @@ namespace Brainf_ckSharp
                     totalOperations);
             }
 
+            // DISASM THIS ONE TO REPRO
+            [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+            public static ExitCode Run2(
+                ref TuringMachineState.ByteWithOverflowExecutionContext executionContext,
+                ref Brainf_ckOperation opcodes,
+                ref int jumpTable,
+                ref Range functions,
+                ref ushort definitions,
+                ref StackFrame stackFrames,
+                ref int depth,
+                ref int totalOperations,
+                ref int totalFunctions,
+                ref StdinBuffer.Reader stdinReader,
+                ref StdoutBuffer.Writer stdoutWriter,
+                CancellationToken executionToken)
+            {
+                Assert(depth >= 0);
+                Assert(totalOperations >= 0);
+                Assert(totalFunctions >= 0);
+
+                // Outer loop to go through the existing stack frames
+                StackFrame frame;
+                int i;
+                do
+                {
+                    frame = Unsafe.Add(ref stackFrames, depth);
+
+                    // This label is used when a function call is performed: a new stack frame
+                    // is pushed in the frames collection and then a goto is used to jump out
+                    // of both the switch case and the inner loop. This is faster than using
+                    // another variable to manually handle the two consecutive breaks to
+                    // reach the start of the inner loop from a switch case.
+                    StackFrameLoop:
+
+                    // Iterate over the current opcodes
+                    for (i = frame.Offset; i < frame.Range.End; i++)
+                    {
+                        Brainf_ckOperation opcode = Unsafe.Add(ref opcodes, i);
+
+                        // Execute the current operator
+                        switch (opcode.Operator)
+                        {
+                            // ptr++
+                            case Operators.ForwardPtr:
+                                if (!executionContext.TryMoveNext(opcode.Count, ref totalOperations))
+                                    goto UpperBoundExceeded;
+                                break;
+
+                            // ptr--
+                            case Operators.BackwardPtr:
+                                if (!executionContext.TryMoveBack(opcode.Count, ref totalOperations))
+                                    goto LowerBoundExceeded;
+                                break;
+
+                            // (*ptr)++
+                            case Operators.Plus:
+                                if (!executionContext.TryIncrement(opcode.Count, ref totalOperations))
+                                    goto MaxValueExceeded;
+                                break;
+
+                            // (*ptr)--
+                            case Operators.Minus:
+                                if (!executionContext.TryDecrement(opcode.Count, ref totalOperations))
+                                    goto NegativeValue;
+                                break;
+
+                            // putch(*ptr)
+                            case Operators.PrintChar:
+                                if (stdoutWriter.TryWrite((char)executionContext.Current)) totalOperations++;
+                                else goto StdoutBufferLimitExceeded;
+                                break;
+
+                            // *ptr = getch()
+                            case Operators.ReadChar:
+                                if (stdinReader.TryRead(out char c))
+                                {
+                                    // Check if the input character can be stored in the current cell
+                                    if (executionContext.TryInput(c)) totalOperations++;
+                                    else goto MaxValueExceeded;
+                                }
+                                else goto StdinBufferExhausted;
+                                break;
+
+                            // while (*ptr) {
+                            case Operators.LoopStart:
+
+                                // Check whether the loop is active
+                                if (executionContext.Current == 0)
+                                {
+                                    i = Unsafe.Add(ref jumpTable, i);
+                                    totalOperations++;
+                                }
+                                else if (Unsafe.Add(ref jumpTable, i) == i + 2 &&
+                                         Unsafe.Add(ref opcodes, i + 1).Operator == Operators.Minus)
+                                {
+                                    // Fast path for [-] loops
+                                    executionContext.ResetCell();
+                                    totalOperations += executionContext.Current * 2 + 1;
+                                    i += 2;
+                                }
+                                break;
+
+                            // {
+                            case Operators.LoopEnd:
+
+                                // Check whether the loop is still active and can be repeated
+                                if (executionContext.Current > 0)
+                                {
+                                    i = Unsafe.Add(ref jumpTable, i);
+
+                                    // Check whether the code can still be executed before starting an active loop
+                                    if (executionToken.IsCancellationRequested) goto ThresholdExceeded;
+                                }
+                                totalOperations++;
+                                break;
+
+                            // f[*ptr] = []() {
+                            case Operators.FunctionStart:
+                                {
+                                    // Check for duplicate function definitions
+                                    if (Unsafe.Add(ref functions, executionContext.Current).Length != 0) goto DuplicateFunctionDefinition;
+
+                                    // Save the new function definition
+                                    Range function = new(i + 1, Unsafe.Add(ref jumpTable, i));
+                                    Unsafe.Add(ref functions, executionContext.Current) = function;
+                                    Unsafe.Add(ref definitions, totalFunctions++) = executionContext.Current;
+                                    totalOperations++;
+                                    i += function.Length;
+                                    break;
+                                }
+
+                            // f[*ptr]()
+                            case Operators.FunctionCall:
+                                {
+                                    // Try to retrieve the function to invoke
+                                    Range function = Unsafe.Add(ref functions, executionContext.Current);
+                                    if (function.Length == 0) goto UndefinedFunctionCalled;
+
+                                    // Ensure the stack has space for the new function invocation
+                                    if (depth == Specs.MaximumStackSize - 1) goto StackLimitExceeded;
+
+                                    // Check for remaining time
+                                    if (executionToken.IsCancellationRequested) goto ThresholdExceeded;
+
+                                    // Update the current stack frame and exit the inner loop
+                                    Unsafe.Add(ref stackFrames, depth++) = frame.WithOffset(i + 1);
+                                    frame = new StackFrame(function);
+                                    totalOperations++;
+                                    goto StackFrameLoop;
+                                }
+                        }
+                    }
+                } while (--depth >= 0);
+
+                // We still use a goto in the success path to be able to reuse
+                // the same epilogue in the generated code for all exit conditions.
+                // This is because this method needs to push quite a few registers to
+                // the stack, so having a single exit point helps to reduce the code size.
+                ExitCode exitCode = ExitCode.Success;
+                goto Exit;
+
+                // Exit paths for all failures or partial executions in the interpreter.
+                // Whenever an executable completes its execution and the current stack
+                // frame needs to be updated with the current position, it is done from
+                // one of these labels: each of them sets the right exit flag and then
+                // jumps to the exit label, which updates the current stack frame and
+                // returns. Having all these exit paths here makes the code more compact
+                // into the inner loop, and the two jumps don't produce overhead since
+                // one of them would only be triggered when the inner loop has terminated.
+                UpperBoundExceeded:
+                exitCode = ExitCode.UpperBoundExceeded;
+                goto UpdateStackFrameAndExit;
+
+                LowerBoundExceeded:
+                exitCode = ExitCode.LowerBoundExceeded;
+                goto UpdateStackFrameAndExit;
+
+                MaxValueExceeded:
+                exitCode = ExitCode.MaxValueExceeded;
+                goto UpdateStackFrameAndExit;
+
+                NegativeValue:
+                exitCode = ExitCode.NegativeValue;
+                goto UpdateStackFrameAndExit;
+
+                StdoutBufferLimitExceeded:
+                exitCode = ExitCode.StdoutBufferLimitExceeded;
+                goto UpdateStackFrameAndExit;
+
+                StdinBufferExhausted:
+                exitCode = ExitCode.StdinBufferExhausted;
+                goto UpdateStackFrameAndExit;
+
+                ThresholdExceeded:
+                exitCode = ExitCode.ThresholdExceeded;
+                goto UpdateStackFrameAndExit;
+
+                DuplicateFunctionDefinition:
+                exitCode = ExitCode.DuplicateFunctionDefinition;
+                goto UpdateStackFrameAndExit;
+
+                UndefinedFunctionCalled:
+                exitCode = ExitCode.UndefinedFunctionCalled;
+                goto UpdateStackFrameAndExit;
+
+                StackLimitExceeded:
+                exitCode = ExitCode.StackLimitExceeded;
+
+                UpdateStackFrameAndExit:
+                Unsafe.Add(ref stackFrames, depth) = frame.WithOffset(i);
+
+                Exit:
+                return exitCode;
+            }
+
             /// <summary>
             /// Tries to run a given input Brainf*ck/PBrain executable
             /// </summary>

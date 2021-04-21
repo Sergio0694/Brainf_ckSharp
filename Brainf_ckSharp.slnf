@@ -1,0 +1,8 @@
+{
+  "solution": {
+    "path": "Brainf_ckSharp.sln",
+    "projects": [
+      "src\\Brainf_ckSharp\\Brainf_ckSharp.csproj"
+    ]
+  }
+}
