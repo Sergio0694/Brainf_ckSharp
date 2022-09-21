@@ -3,6 +3,8 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
 
+#nullable enable
+
 namespace Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList
 {
     /// <summary>
@@ -14,7 +16,7 @@ namespace Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList
         /// <summary>
         /// The <see cref="TextBlock"/> displaying the description
         /// </summary>
-        private TextBlock _DescriptionBlock;
+        private TextBlock? _DescriptionBlock;
 
         /// <inheritdoc/>
         protected override void OnApplyTemplate()

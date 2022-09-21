@@ -5,6 +5,8 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Uwp.Controls.Ide;
 
+#nullable enable
+
 namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.Templates
 {
     public sealed partial class CodeSampleTemplate : UserControl
@@ -26,7 +28,7 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.Templates
         /// <summary>
         /// Gets or sets the <see cref="Uri"/> for the code sample to load
         /// </summary>
-        public Uri SampleUri { get; set; }
+        public Uri? SampleUri { get; set; }
 
         /// <summary>
         /// Loads the requested code sample when the IDE control is loaded
@@ -35,10 +37,15 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide.Templates
         /// <param name="e">The empty <see cref="RoutedEventArgs"/> instance for the event</param>
         private async void Brainf_ckIde_OnLoaded(object sender, RoutedEventArgs e)
         {
+            if (SampleUri is not Uri sampleUri)
+            {
+                return;
+            }
+
             // URIs created from XAML to local files will use the "ms-resource:///Files/" base path,
             // whereas the StorageFile API requires a URI with the "ms-appx:///" schema,
             // with the local path starting immediately from the root of the installation folder.
-            Uri appxUri = new($"ms-appx:///{SampleUri.LocalPath.Replace("/Files/", string.Empty)}");
+            Uri appxUri = new($"ms-appx:///{sampleUri.LocalPath.Replace("/Files/", string.Empty)}");
 
             StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(appxUri);
 

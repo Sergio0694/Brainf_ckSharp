@@ -2,6 +2,8 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
+#nullable enable
+
 namespace Brainf_ckSharp.Uwp.Profiler
 {
     /// <summary>
@@ -21,9 +23,9 @@ namespace Brainf_ckSharp.Uwp.Profiler
         /// <inheritdoc/>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
+            Frame? rootFrame = Window.Current.Content as Frame;
 
-            if (rootFrame == null)
+            if (rootFrame is null)
             {
                 rootFrame = new Frame();
 

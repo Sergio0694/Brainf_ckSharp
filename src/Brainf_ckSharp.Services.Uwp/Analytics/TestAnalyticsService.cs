@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Text;
 
+#nullable enable
+
 namespace Brainf_ckSharp.Services.Uwp.Analytics
 {
     /// <summary>
@@ -12,13 +14,13 @@ namespace Brainf_ckSharp.Services.Uwp.Analytics
         public void Initialize(string secret) { }
 
         /// <inheritdoc/>
-        public void Log(string title, params (string Property, string Value)[] data)
+        public void Log(string title, params (string Property, string Value)[]? data)
         {
             StringBuilder builder = new();
 
             builder.AppendLine($"[EVENT]: \"{title}\"");
 
-            if (data != null)
+            if (data is not null)
                 foreach (var info in data)
                     builder.AppendLine($">> {info.Property}: \"{info.Value}\"");
 

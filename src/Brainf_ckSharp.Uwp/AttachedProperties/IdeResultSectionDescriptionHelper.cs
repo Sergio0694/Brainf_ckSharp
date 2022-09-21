@@ -13,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Diagnostics;
 
+#nullable enable
+
 namespace Brainf_ckSharp.Uwp.AttachedProperties
 {
     /// <summary>
@@ -30,7 +32,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
         /// </summary>
         /// <param name="element">The input <see cref="Span"/> for which to get the property value</param>
         /// <returns>The value of the <see cref="SectionProperty"/> property for the input <see cref="Span"/> instance</returns>
-        public static IdeResultWithSectionInfo GetSection(Span element)
+        public static IdeResultWithSectionInfo? GetSection(Span element)
         {
             return element.GetValue(SectionProperty) as IdeResultWithSectionInfo;
         }
@@ -40,7 +42,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
         /// </summary>
         /// <param name="element">The input <see cref="Span"/> for which to set the property value</param>
         /// <param name="value">The value to set for the <see cref="SectionProperty"/> property</param>
-        public static void SetSection(Span element, IdeResultWithSectionInfo value)
+        public static void SetSection(Span element, IdeResultWithSectionInfo? value)
         {
             element.SetValue(SectionProperty, value);
         }

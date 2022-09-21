@@ -4,6 +4,8 @@ using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Models.Ide;
 using Microsoft.Toolkit.Diagnostics;
 
+#nullable enable
+
 namespace Brainf_ckSharp.Uwp.StyleSelectors
 {
     /// <summary>
@@ -14,15 +16,15 @@ namespace Brainf_ckSharp.Uwp.StyleSelectors
         /// <summary>
         /// Gets or sets the <see cref="Style"/> for the <see cref="ListViewItem"/> container for a <see cref="CodeLibraryEntry"/> instance
         /// </summary>
-        public Style DefaultContainerStyle { get; set; }
+        public Style? DefaultContainerStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Style"/> for the <see cref="ListViewItem"/> container for a placeholder item
         /// </summary>
-        public Style PlaceholderContainerStyle { get; set; }
+        public Style? PlaceholderContainerStyle { get; set; }
 
         /// <inheritdoc/>
-        protected override Style SelectStyleCore(object item, DependencyObject container)
+        protected override Style? SelectStyleCore(object item, DependencyObject container)
         {
             return item switch
             {

@@ -3,6 +3,8 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 using Microsoft.Toolkit.HighPerformance;
 
+#nullable enable
+
 namespace Brainf_ckSharp.Uwp.Converters
 {
     /// <summary>
@@ -13,7 +15,7 @@ namespace Brainf_ckSharp.Uwp.Converters
         /// <summary>
         /// Gets or sets the <see cref="Type"/> to match values against
         /// </summary>
-        public Type TargetType { get; set; }
+        public Type? TargetType { get; set; }
 
         /// <inheritdoc/>
         public object Convert(object value, Type targetType, object parameter, string language)

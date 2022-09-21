@@ -5,6 +5,8 @@ using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
 using Microsoft.Toolkit.Diagnostics;
 
+#nullable enable
+
 namespace Brainf_ckSharp.Services.Uwp.Analytics
 {
     /// <summary>
@@ -34,9 +36,9 @@ namespace Brainf_ckSharp.Services.Uwp.Analytics
         private const int PropertyStringMaxLength = 124; // It's 125, but one character is reserved for the leading '|' to indicate trimming
 
         /// <inheritdoc/>
-        public void Log(string title, params (string Property, string Value)[] data)
+        public void Log(string title, params (string Property, string Value)[]? data)
         {
-            IDictionary<string, string> properties = data?.ToDictionary(
+            IDictionary<string, string>? properties = data?.ToDictionary(
                 pair => pair.Property,
                 pair => pair.Value.Length <= PropertyStringMaxLength
                     ? pair.Value

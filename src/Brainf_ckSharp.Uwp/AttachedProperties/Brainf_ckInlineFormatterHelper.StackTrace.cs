@@ -10,6 +10,8 @@ using Windows.UI.Xaml.Media;
 using Brainf_ckSharp.Models;
 using Microsoft.Toolkit.Uwp;
 
+#nullable enable
+
 namespace Brainf_ckSharp.Uwp.AttachedProperties
 {
     /// <summary>
@@ -22,7 +24,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
         /// </summary>
         /// <param name="element">The input <see cref="Paragraph"/> for which to get the property value</param>
         /// <returns>The value of the <see cref="StackTraceProperty"/> property for the input <see cref="Paragraph"/> instance</returns>
-        public static IReadOnlyList<string> GetStackTrace(Paragraph element)
+        public static IReadOnlyList<string>? GetStackTrace(Paragraph element)
         {
             return element.GetValue(StackTraceProperty) as IReadOnlyList<string>;
         }
@@ -32,7 +34,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties
         /// </summary>
         /// <param name="element">The input <see cref="Paragraph"/> for which to set the property value</param>
         /// <param name="value">The value to set for the <see cref="StackTraceProperty"/> property</param>
-        public static void SetStackTrace(Paragraph element, IReadOnlyList<string> value)
+        public static void SetStackTrace(Paragraph element, IReadOnlyList<string>? value)
         {
             element.SetValue(StackTraceProperty, value);
         }

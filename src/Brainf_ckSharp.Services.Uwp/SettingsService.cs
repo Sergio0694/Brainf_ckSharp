@@ -29,7 +29,7 @@ namespace Brainf_ckSharp.Uwp.Services.Settings
             }
             else if (typeof(T).IsPrimitive || typeof(T) == typeof(string))
             {
-                serializable = value;
+                serializable = value!;
             }
             else if (typeof(T) == typeof(DateTime))
             {
@@ -53,7 +53,7 @@ namespace Brainf_ckSharp.Uwp.Services.Settings
             // Try to get the setting value
             if (!SettingsStorage.TryGetValue(key, out object value))
             {
-                if (fallback) return default;
+                if (fallback) return default!;
 
                 ThrowHelper.ThrowArgumentException("The setting with the given key does not exist");
             }
