@@ -114,7 +114,6 @@
         attachedProperties:ListViewBaseHelper.IsAutoScrollEnabled="{x:Bind ViewModel.Source}"
         SelectionMode="None"
         Padding="0,4,0,0"
-        IsHitTestVisible="False"
         IsTabStop="False">
         <ListView.ItemTemplateSelector>
             <templateSelectors:ConsoleEntryTemplateSelector
