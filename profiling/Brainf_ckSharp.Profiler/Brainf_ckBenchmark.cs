@@ -69,7 +69,7 @@ public abstract class Brainf_ckBenchmarkBase
 }
 
 [SimpleJob(RunStrategy.Throughput, RuntimeMoniker.NetCoreApp31)]
-[SimpleJob(RunStrategy.Throughput, RuntimeMoniker.NetCoreApp50)]
+[SimpleJob(RunStrategy.Throughput, RuntimeMoniker.Net50)]
 public class Brainf_ckBenchmark_Short : Brainf_ckBenchmarkBase
 {
     /// <inheritdoc/>
@@ -78,7 +78,7 @@ public class Brainf_ckBenchmark_Short : Brainf_ckBenchmarkBase
 }
 
 [SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.NetCoreApp31)]
-[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.NetCoreApp50)]
+[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.Net50)]
 public class Brainf_ckBenchmark_Long : Brainf_ckBenchmarkBase
 {
     /// <inheritdoc/>
