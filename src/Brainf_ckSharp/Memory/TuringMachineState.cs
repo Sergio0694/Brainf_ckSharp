@@ -7,7 +7,7 @@ using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
 using CommunityToolkit.Diagnostics;
-using Microsoft.Toolkit.HighPerformance;
+using CommunityToolkit.HighPerformance;
 
 namespace Brainf_ckSharp.Memory;
 

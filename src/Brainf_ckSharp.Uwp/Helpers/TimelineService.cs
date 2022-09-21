@@ -6,7 +6,7 @@ using Windows.Storage;
 using Windows.UI.Shell;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Models.Ide;
-using Microsoft.Toolkit.HighPerformance.Helpers;
+using CommunityToolkit.HighPerformance.Helpers;
 using Nito.AsyncEx;
 using Stubble.Core;
 

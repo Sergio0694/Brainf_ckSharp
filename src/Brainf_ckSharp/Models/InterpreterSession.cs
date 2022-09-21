@@ -10,7 +10,7 @@ using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models.Internal;
 using Brainf_ckSharp.Opcodes;
 using CommunityToolkit.Diagnostics;
-using Microsoft.Toolkit.HighPerformance.Buffers;
+using CommunityToolkit.HighPerformance.Buffers;
 using Range = Brainf_ckSharp.Models.Internal.Range;
 using Stopwatch = System.Diagnostics.Stopwatch;
 

@@ -6,7 +6,7 @@ using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Opcodes;
 using CommunityToolkit.Diagnostics;
-using Microsoft.Toolkit.HighPerformance.Buffers;
+using CommunityToolkit.HighPerformance.Buffers;
 
 namespace Brainf_ckSharp.Configurations;
 

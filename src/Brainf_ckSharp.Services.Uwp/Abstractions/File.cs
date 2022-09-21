@@ -7,7 +7,7 @@ using Windows.Storage.AccessCache;
 using Windows.Storage.FileProperties;
 using Brainf_ckSharp.Services;
 using CommunityToolkit.Diagnostics;
-using Microsoft.Toolkit.HighPerformance;
+using CommunityToolkit.HighPerformance;
 
 namespace Brainf_ckSharp.Uwp.Services.Files;
 

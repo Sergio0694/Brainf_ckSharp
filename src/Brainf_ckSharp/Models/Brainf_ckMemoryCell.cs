@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Memory.Interfaces;
-using Microsoft.Toolkit.HighPerformance.Helpers;
+using CommunityToolkit.HighPerformance.Helpers;
 using static System.Diagnostics.Debug;
 
 namespace Brainf_ckSharp.Models;

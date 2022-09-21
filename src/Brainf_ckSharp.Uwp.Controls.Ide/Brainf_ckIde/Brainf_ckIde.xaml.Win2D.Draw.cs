@@ -11,7 +11,7 @@ using Brainf_ckSharp.Uwp.Controls.Ide.Models.Abstract;
 using Microsoft.Collections.Extensions;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
-using Microsoft.Toolkit.HighPerformance.Buffers;
+using CommunityToolkit.HighPerformance.Buffers;
 
 #nullable enable
 

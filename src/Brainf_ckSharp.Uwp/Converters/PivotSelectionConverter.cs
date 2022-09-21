@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 using Brainf_ckSharp.Shared.Enums.Settings;
-using Microsoft.Toolkit.HighPerformance;
+using CommunityToolkit.HighPerformance;
 
 namespace Brainf_ckSharp.Uwp.Converters;
 
