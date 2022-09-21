@@ -135,7 +135,7 @@
             <Border Height="68"/>
         </ListView.Header>
         <ListView.Footer>
-            <Border Height="12"/>
+            <Border x:Name="FooterBorder" Height="12"/>
         </ListView.Footer>
     </ListView>
 </UserControl>

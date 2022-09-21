@@ -5,6 +5,7 @@ using Brainf_ckSharp.Shared.Models.Console;
 using Brainf_ckSharp.Shared.ViewModels.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using Windows.UI.Xaml;
 
 #nullable enable
 
@@ -27,6 +28,15 @@ namespace Brainf_ckSharp.Uwp.Views
         /// Gets the <see cref="ConsoleViewModel"/> instance currently in use
         /// </summary>
         public ConsoleViewModel ViewModel => (ConsoleViewModel)DataContext;
+
+        /// <summary>
+        /// Gets or sets the spacing of the bottom footer
+        /// </summary>
+        public double FooterSpacing
+        {
+            get => FooterBorder.Height - 12;
+            set => FooterBorder.Height = value + 12;
+        }
 
         /// <summary>
         /// Forces all the displayed commands to be rendered again with updated settings
