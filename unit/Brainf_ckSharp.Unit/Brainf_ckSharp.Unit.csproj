@@ -4,8 +4,6 @@
     <TargetFrameworks>netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
     <RootNamespace>Brainf_ckSharp.Unit</RootNamespace>
     <IsPackable>false</IsPackable>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
