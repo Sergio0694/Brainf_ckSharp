@@ -50,7 +50,7 @@ The **Brainf\*ck#** solution requires the following tools to build all the avail
 
 ## Trivia 📖
 
-This project was the one I used to prototype and develop both the [`Microsoft.Toolkit.Mvvm`](https://www.nuget.org/packages/Microsoft.Toolkit.Mvvm/) and [`Microsoft.Toolkit.HighPerformance`](https://www.nuget.org/packages/Microsoft.Toolkit.HighPerformance/) packages, which are heavily used in the projects in this repository.
+This project was the one I used to prototype and develop both the [`CommunityToolkit.Mvvm`](https://www.nuget.org/packages/CommunityToolkit.Mvvm/) and [`Microsoft.Toolkit.HighPerformance`](https://www.nuget.org/packages/Microsoft.Toolkit.HighPerformance/) packages, which are heavily used in the projects in this repository.
 
 If you'd like to learn more on these libraries:
 

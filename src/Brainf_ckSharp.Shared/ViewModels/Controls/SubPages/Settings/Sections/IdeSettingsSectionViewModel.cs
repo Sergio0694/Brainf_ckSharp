@@ -8,8 +8,8 @@ using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.Messages.Settings;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections.Abstract;
 using CommunityToolkit.Diagnostics;
-using Microsoft.Toolkit.Mvvm.Input;
-using Microsoft.Toolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections;
 

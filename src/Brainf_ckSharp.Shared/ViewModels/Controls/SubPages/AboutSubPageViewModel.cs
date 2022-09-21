@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Brainf_ckSharp.Shared.Constants;
 using GitHub.APIs;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using User = GitHub.Models.User;
 
 #nullable enable

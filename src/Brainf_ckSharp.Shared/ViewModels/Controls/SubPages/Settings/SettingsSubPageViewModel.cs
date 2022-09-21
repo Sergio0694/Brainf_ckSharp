@@ -4,8 +4,8 @@ using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections.Abstract;
 using Microsoft.Toolkit.Collections;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings;
 

@@ -1,5 +1,5 @@
 ﻿using Brainf_ckSharp.Shared.Models.Console.Interfaces;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Brainf_ckSharp.Shared.Models.Console;
 

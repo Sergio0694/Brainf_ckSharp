@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using Brainf_ckSharp.Shared.Enums;
 using Microsoft.Toolkit.Collections;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 

@@ -31,7 +31,7 @@ using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings;
 using Brainf_ckSharp.Shared.ViewModels.Views;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Host;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.UI;
 

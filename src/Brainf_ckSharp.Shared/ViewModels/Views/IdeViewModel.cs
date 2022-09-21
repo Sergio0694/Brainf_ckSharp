@@ -10,7 +10,7 @@ using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Models.Ide;
 using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
 using CommunityToolkit.Diagnostics;
-using Microsoft.Toolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Views;
 

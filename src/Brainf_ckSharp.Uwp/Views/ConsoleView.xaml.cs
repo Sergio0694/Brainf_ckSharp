@@ -3,9 +3,8 @@ using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.Messages.Settings;
 using Brainf_ckSharp.Shared.Models.Console;
 using Brainf_ckSharp.Shared.ViewModels.Views;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.Messaging;
-using Windows.UI.Xaml;
 
 #nullable enable
 

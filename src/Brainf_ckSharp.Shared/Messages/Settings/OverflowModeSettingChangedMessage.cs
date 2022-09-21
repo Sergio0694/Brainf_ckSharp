@@ -1,6 +1,6 @@
 ﻿using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Shared.Constants;
-using Microsoft.Toolkit.Mvvm.Messaging.Messages;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace Brainf_ckSharp.Shared.Messages.Settings;
 

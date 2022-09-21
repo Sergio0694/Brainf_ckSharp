@@ -13,9 +13,9 @@ using Brainf_ckSharp.Uwp.Controls.SubPages.Shell.UserGuide;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Views.UnicodeCharactersMap;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.Input;
-using Microsoft.Toolkit.Mvvm.Messaging;
-using Microsoft.Toolkit.Mvvm.Messaging.Messages;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.Toolkit.Uwp.Helpers;
 
 #nullable enable
