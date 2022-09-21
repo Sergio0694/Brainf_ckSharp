@@ -12,7 +12,7 @@ using Brainf_ckSharp.Shared.Extensions.System.Collections.Generic;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Brainf_ckSharp.Shared.Models.Ide;
 using Microsoft.Toolkit.Collections;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
@@ -242,7 +242,7 @@ public sealed class CodeLibrarySubPageViewModel : ObservableRecipient
     /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to toggle</param>
     private void ToggleFavorite(CodeLibraryEntry? entry)
     {
-        Guard.IsNotNull(entry, nameof(entry));
+        Guard.IsNotNull(entry);
         
         AnalyticsService.Log(EventNames.ToggleFavoriteSourceCode, (nameof(CodeMetadata.IsFavorited), entry.Metadata.IsFavorited.ToString()));
 
@@ -280,7 +280,7 @@ public sealed class CodeLibrarySubPageViewModel : ObservableRecipient
     /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to copy to the clipboard</param>
     private async Task CopyToClipboardAsync(CodeLibraryEntry? entry)
     {
-        Guard.IsNotNull(entry, nameof(entry));
+        Guard.IsNotNull(entry);
         
         AnalyticsService.Log(EventNames.CopySourceCode);
 
@@ -295,7 +295,7 @@ public sealed class CodeLibrarySubPageViewModel : ObservableRecipient
     /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to share</param>
     private void Share(CodeLibraryEntry? entry)
     {
-        Guard.IsNotNull(entry, nameof(entry));
+        Guard.IsNotNull(entry);
         
         AnalyticsService.Log(EventNames.ShareSourceCode);
 
@@ -322,7 +322,7 @@ public sealed class CodeLibrarySubPageViewModel : ObservableRecipient
     /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to remove</param>
     private Task RemoveFromLibraryAsync(CodeLibraryEntry? entry)
     {
-        Guard.IsNotNull(entry, nameof(entry));
+        Guard.IsNotNull(entry);
         
         AnalyticsService.Log(EventNames.RemoveFromLibrary, (nameof(CodeMetadata.IsFavorited), entry.Metadata.IsFavorited.ToString()));
 
@@ -337,7 +337,7 @@ public sealed class CodeLibrarySubPageViewModel : ObservableRecipient
     /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to delete</param>
     private Task DeleteAsync(CodeLibraryEntry? entry)
     {
-        Guard.IsNotNull(entry, nameof(entry));
+        Guard.IsNotNull(entry);
         
         AnalyticsService.Log(EventNames.DeleteSourceCode, (nameof(CodeMetadata.IsFavorited), entry.Metadata.IsFavorited.ToString()));
 

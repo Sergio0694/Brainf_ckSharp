@@ -1,6 +1,6 @@
 ﻿using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace Brainf_ckSharp.Shared.Models.Console.Controls;

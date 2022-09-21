@@ -1,7 +1,7 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.Models.Console;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 #nullable enable
 
@@ -40,7 +40,7 @@ public sealed class ConsoleEntryTemplateSelector : DataTemplateSelector
     /// <inheritdoc/>
     protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
     {
-        Guard.IsNotNull(item, nameof(item));
+        Guard.IsNotNull(item);
 
         DataTemplate? template = item switch
         {

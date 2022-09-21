@@ -6,7 +6,7 @@ using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Memory;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 namespace Brainf_ckSharp.Configurations;
 
@@ -33,12 +33,12 @@ public readonly ref partial struct DebugConfiguration
     [MethodImpl(MethodImplOptions.NoInlining)]
     public Option<InterpreterSession> TryRun()
     {
-        Guard.IsNotNull(Source, nameof(Source));
+        Guard.IsNotNull(Source);
 
         if (InitialState is TuringMachineState initialState)
         {
-            Guard.IsNull(MemorySize, nameof(MemorySize));
-            Guard.IsNull(OverflowMode, nameof(OverflowMode));
+            Guard.IsNull(MemorySize);
+            Guard.IsNull(OverflowMode);
 
             initialState = (TuringMachineState)initialState.Clone();
         }

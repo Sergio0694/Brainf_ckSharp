@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 using Microsoft.Toolkit.HighPerformance;
 
 namespace Brainf_ckSharp.Memory;
@@ -107,7 +107,7 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
             // Manually check the current size, as the buffer
             // is rented from the pool and its length might
             // actually be greater than the memory state.
-            Guard.IsInRange(index, 0, Size, nameof(index));
+            Guard.IsInRange(index, 0, Size);
 
             ushort value = array!.DangerousGetReferenceAt(index);
 

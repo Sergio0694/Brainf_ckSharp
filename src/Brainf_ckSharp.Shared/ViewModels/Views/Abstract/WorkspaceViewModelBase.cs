@@ -1,7 +1,7 @@
 ﻿using System;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Shared.Models.Ide;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
@@ -91,7 +91,7 @@ public abstract class WorkspaceViewModelBase : ObservableRecipient
         get => _Row;
         set
         {
-            Guard.IsGreaterThan(value, 0, nameof(Row));
+            Guard.IsGreaterThan(value, 0);
 
             SetProperty(ref _Row, value);
         }
@@ -107,7 +107,7 @@ public abstract class WorkspaceViewModelBase : ObservableRecipient
         get => _Column;
         set
         {
-            Guard.IsGreaterThan(value, 0, nameof(Column));
+            Guard.IsGreaterThan(value, 0);
 
             SetProperty(ref _Column, value);
         }

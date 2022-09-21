@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Enums;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 using Microsoft.Toolkit.Uwp;
 
 namespace Brainf_ckSharp.Uwp.Converters.Console;

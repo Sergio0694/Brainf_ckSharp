@@ -5,7 +5,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Services;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 using Microsoft.Toolkit.HighPerformance;
 
 #nullable enable
@@ -172,8 +172,8 @@ public sealed class CodeLibraryEntry
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int ExtractOperators(ReadOnlySpan<char> source, Span<char> destination)
     {
-        Guard.IsNotEmpty(source, nameof(source));
-        Guard.IsNotEmpty(destination, nameof(destination));
+        Guard.IsNotEmpty(source);
+        Guard.IsNotEmpty(destination);
 
         ref char sourceRef = ref source.DangerousGetReference();
         ref char destinationRef = ref destination.DangerousGetReference();

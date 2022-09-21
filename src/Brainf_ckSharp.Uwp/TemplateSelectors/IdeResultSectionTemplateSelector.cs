@@ -2,7 +2,7 @@
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Models.Ide.Views;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 #nullable enable
 
@@ -56,8 +56,8 @@ public sealed class IdeResultSectionTemplateSelector : DataTemplateSelector
     /// <inheritdoc/>
     protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
     {
-        Guard.IsNotNull(item, nameof(item));
-        Guard.IsOfType<IdeResultWithSectionInfo>(item, nameof(item));
+        Guard.IsNotNull(item);
+        Guard.IsOfType<IdeResultWithSectionInfo>(item);
 
         var model = (IdeResultWithSectionInfo)item;
 

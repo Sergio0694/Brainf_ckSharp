@@ -1,4 +1,4 @@
-﻿using Microsoft.Toolkit.Diagnostics;
+﻿using CommunityToolkit.Diagnostics;
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;

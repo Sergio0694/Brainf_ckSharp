@@ -6,7 +6,7 @@ using Windows.UI.Xaml.Media;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 #nullable enable
 
@@ -58,7 +58,7 @@ public sealed partial class FeaturedLinkTemplate : UserControl
     // Opens the featured link
     private void RootButton_Clicked(object sender, RoutedEventArgs e)
     {
-        Guard.IsNotNull(NavigationUrl, nameof(NavigationUrl));
+        Guard.IsNotNull(NavigationUrl);
 
         _ = Launcher.LaunchUriAsync(new Uri(NavigationUrl));
 

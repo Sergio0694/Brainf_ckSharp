@@ -2,7 +2,7 @@
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Models.Ide;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 #nullable enable
 
@@ -36,7 +36,7 @@ public sealed class SourceCodeEntryTemplateSelector : DataTemplateSelector
     /// <inheritdoc/>
     protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
     {
-        Guard.IsNotNull(item, nameof(item));
+        Guard.IsNotNull(item);
 
         DataTemplate? template = item switch
         {

@@ -11,7 +11,7 @@ using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Models.Ide.Views;
 using Microsoft.Toolkit.Collections;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
@@ -116,7 +116,7 @@ public sealed class IdeResultSubPageViewModel : ObservableRecipient
     /// </summary>
     private async Task LoadDataAsync()
     {
-        Guard.IsNotNull(Source, nameof(Source));
+        Guard.IsNotNull(Source);
 
         using (await LoadingMutex.LockAsync())
         {

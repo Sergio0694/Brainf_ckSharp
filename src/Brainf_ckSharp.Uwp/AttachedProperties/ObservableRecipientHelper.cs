@@ -1,6 +1,6 @@
 ﻿using Windows.UI.Xaml;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 namespace Brainf_ckSharp.Uwp.AttachedProperties;
 

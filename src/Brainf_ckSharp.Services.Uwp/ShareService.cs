@@ -3,7 +3,7 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Uwp.Services.Files;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 #nullable enable
 

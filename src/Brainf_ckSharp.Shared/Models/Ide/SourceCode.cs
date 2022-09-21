@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Services;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 #nullable enable
 
@@ -101,7 +101,7 @@ public sealed class SourceCode
     /// <returns><see langword="true"/> if the data was saved successfully, <see langword="false"/> otherwise</returns>
     public async Task<bool> TrySaveAsync()
     {
-        Guard.IsNotNull(File, nameof(File));
+        Guard.IsNotNull(File);
 
         try
         {

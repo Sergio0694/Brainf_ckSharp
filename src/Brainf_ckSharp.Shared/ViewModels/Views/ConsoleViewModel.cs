@@ -17,7 +17,7 @@ using Brainf_ckSharp.Shared.Messages.Settings;
 using Brainf_ckSharp.Shared.Models.Console;
 using Brainf_ckSharp.Shared.Models.Console.Interfaces;
 using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Nito.AsyncEx;
 

@@ -2,7 +2,7 @@
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Models.Ide;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 #nullable enable
 

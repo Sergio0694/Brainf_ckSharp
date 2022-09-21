@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 #nullable enable
 
@@ -23,7 +23,7 @@ public static class XamlResources
     {
         object value = Application.Current.Resources[key];
 
-        Guard.IsAssignableToType<T>(value, nameof(value));
+        Guard.IsAssignableToType<T>(value);
 
         return (T)value;
     }
@@ -53,7 +53,7 @@ public static class XamlResources
         [Pure]
         private static Brush Get([CallerMemberName] string? name = null)
         {
-            Guard.IsNotNull(name, nameof(name));
+            Guard.IsNotNull(name);
 
             return Get<Brush>($"{name}Brush");
         }
@@ -74,7 +74,7 @@ public static class XamlResources
         [Pure]
         private static string Get([CallerMemberName] string? name = null)
         {
-            Guard.IsNotNull(name, nameof(name));
+            Guard.IsNotNull(name);
 
             return Get<string>($"{name}Icon");
         }

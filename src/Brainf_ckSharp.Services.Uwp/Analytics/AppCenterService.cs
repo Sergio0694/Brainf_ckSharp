@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 #nullable enable
 

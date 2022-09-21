@@ -5,7 +5,7 @@ using Brainf_ckSharp.Memory;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Opcodes;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 using Microsoft.Toolkit.HighPerformance.Buffers;
 
 namespace Brainf_ckSharp.Configurations;
@@ -23,7 +23,7 @@ public readonly ref partial struct ReleaseConfiguration
     [MethodImpl(MethodImplOptions.NoInlining)]
     public Option<InterpreterResult> TryRun()
     {
-        Guard.IsNotNull(Source, nameof(Source));
+        Guard.IsNotNull(Source);
 
         using MemoryOwner<Brainf_ckOperation>? operations = Brainf_ckParser.TryParse<Brainf_ckOperation>(Source.Value.Span, out SyntaxValidationResult validationResult);
 
@@ -31,8 +31,8 @@ public readonly ref partial struct ReleaseConfiguration
 
         if (InitialState is TuringMachineState initialState)
         {
-            Guard.IsNull(MemorySize, nameof(MemorySize));
-            Guard.IsNull(OverflowMode, nameof(OverflowMode));
+            Guard.IsNull(MemorySize);
+            Guard.IsNull(OverflowMode);
 
             initialState = (TuringMachineState)initialState.Clone();
         }

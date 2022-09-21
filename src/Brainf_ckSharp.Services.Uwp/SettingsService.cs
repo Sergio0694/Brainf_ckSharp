@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 using Brainf_ckSharp.Services;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 namespace Brainf_ckSharp.Uwp.Services.Settings;
 

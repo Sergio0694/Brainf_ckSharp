@@ -2,7 +2,7 @@
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 namespace Brainf_ckSharp.Memory.Tools;
 
@@ -33,7 +33,7 @@ public static class MachineStateProvider
     [Pure]
     public static IReadOnlyMachineState Create(int size, OverflowMode overflowMode)
     {
-        Guard.IsBetweenOrEqualTo(size, Specs.MinimumMemorySize, Specs.MaximumMemorySize, nameof(size));
+        Guard.IsBetweenOrEqualTo(size, Specs.MinimumMemorySize, Specs.MaximumMemorySize);
 
         return new TuringMachineState(size, overflowMode);
     }

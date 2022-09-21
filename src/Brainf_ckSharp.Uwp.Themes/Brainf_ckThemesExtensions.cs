@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Shared.Enums.Settings;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 namespace Brainf_ckSharp.Uwp.Themes;
 
