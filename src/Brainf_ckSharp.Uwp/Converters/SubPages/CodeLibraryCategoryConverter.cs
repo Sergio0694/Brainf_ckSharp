@@ -3,51 +3,50 @@ using Brainf_ckSharp.Shared.Enums;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Diagnostics;
 
-namespace Brainf_ckSharp.Uwp.Converters.SubPages
+namespace Brainf_ckSharp.Uwp.Converters.SubPages;
+
+/// <summary>
+/// A <see langword="class"/> with helper functions to format <see cref="CodeLibrarySection"/> values
+/// </summary>
+public static class CodeLibraryCategoryConverter
 {
     /// <summary>
-    /// A <see langword="class"/> with helper functions to format <see cref="CodeLibrarySection"/> values
+    /// Converts a <see cref="CodeLibrarySection"/> value into its representation
     /// </summary>
-    public static class CodeLibraryCategoryConverter
+    /// <param name="section">The input <see cref="CodeLibrarySection"/> value</param>
+    /// <returns>A <see cref="string"/> representing the input <see cref="CodeLibrarySection"/> value</returns>
+    [Pure]
+    public static string ConvertSectionName(CodeLibrarySection section)
     {
-        /// <summary>
-        /// Converts a <see cref="CodeLibrarySection"/> value into its representation
-        /// </summary>
-        /// <param name="section">The input <see cref="CodeLibrarySection"/> value</param>
-        /// <returns>A <see cref="string"/> representing the input <see cref="CodeLibrarySection"/> value</returns>
-        [Pure]
-        public static string ConvertSectionName(CodeLibrarySection section)
+        return section switch
         {
-            return section switch
-            {
-                CodeLibrarySection.Favorites => "Favorites",
-                CodeLibrarySection.Recent => "Recent",
-                CodeLibrarySection.Samples => "Samples",
-                _ => ThrowHelper.ThrowArgumentException<string>(nameof(section), "Invalid target section")
-            };
-        }
+            CodeLibrarySection.Favorites => "Favorites",
+            CodeLibrarySection.Recent => "Recent",
+            CodeLibrarySection.Samples => "Samples",
+            _ => ThrowHelper.ThrowArgumentException<string>(nameof(section), "Invalid target section")
+        };
+    }
 
-        /// <summary>
-        /// Converts a group into its description for a given section
-        /// </summary>
-        /// <param name="group">The input <see cref="IReadOnlyObservableGroup"/> instance</param>
-        /// <returns>A <see cref="string"/> representing the input <see cref="IReadOnlyObservableGroup"/> instance</returns>
-        [Pure]
-        public static string ConvertSectionDescription(IReadOnlyObservableGroup group)
+    /// <summary>
+    /// Converts a group into its description for a given section
+    /// </summary>
+    /// <param name="group">The input <see cref="IReadOnlyObservableGroup"/> instance</param>
+    /// <returns>A <see cref="string"/> representing the input <see cref="IReadOnlyObservableGroup"/> instance</returns>
+    [Pure]
+    public static string ConvertSectionDescription(IReadOnlyObservableGroup group)
+    {
+        return (CodeLibrarySection)group.Key switch
         {
-            return (CodeLibrarySection)group.Key switch
-            {
-                CodeLibrarySection.Favorites => group.Count > 0
-                    ? $"{group.Count} favorite script{(group.Count > 1 ? "s" : string.Empty)}"
-                    : "No favorite scripts",
-                CodeLibrarySection.Recent => group.Count > 0
-                    ? $"{group.Count} recent script{(group.Count > 1 ? "s" : string.Empty)}"
-                    : "No recent scripts",
-                CodeLibrarySection.Samples => group.Count > 0
-                    ? $"{group.Count} sample script{(group.Count > 1 ? "s" : string.Empty)}"
-                    : "No sample scripts",
-                _ => ThrowHelper.ThrowArgumentException<string>(nameof(group), "Invalid group value")
-            };
-        }
+            CodeLibrarySection.Favorites => group.Count > 0
+                ? $"{group.Count} favorite script{(group.Count > 1 ? "s" : string.Empty)}"
+                : "No favorite scripts",
+            CodeLibrarySection.Recent => group.Count > 0
+                ? $"{group.Count} recent script{(group.Count > 1 ? "s" : string.Empty)}"
+                : "No recent scripts",
+            CodeLibrarySection.Samples => group.Count > 0
+                ? $"{group.Count} sample script{(group.Count > 1 ? "s" : string.Empty)}"
+                : "No sample scripts",
+            _ => ThrowHelper.ThrowArgumentException<string>(nameof(group), "Invalid group value")
+        };
     }
 }

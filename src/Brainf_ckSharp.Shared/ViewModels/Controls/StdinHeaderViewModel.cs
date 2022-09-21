@@ -4,54 +4,53 @@ using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
-namespace Brainf_ckSharp.Shared.ViewModels.Controls
+namespace Brainf_ckSharp.Shared.ViewModels.Controls;
+
+public sealed class StdinHeaderViewModel : ObservableRecipient
 {
-    public sealed class StdinHeaderViewModel : ObservableRecipient
+    /// <summary>
+    /// The <see cref="ISettingsService"/> instance currently in use
+    /// </summary>
+    private readonly ISettingsService SettingsService;
+
+    /// <summary>
+    /// Creates a new <see cref="StdinHeaderViewModel"/> instance
+    /// </summary>
+    /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
+    /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
+    public StdinHeaderViewModel(IMessenger messenger, ISettingsService settingsService)
+        : base(messenger)
     {
-        /// <summary>
-        /// The <see cref="ISettingsService"/> instance currently in use
-        /// </summary>
-        private readonly ISettingsService SettingsService;
+        SettingsService = settingsService;
+    }
 
-        /// <summary>
-        /// Creates a new <see cref="StdinHeaderViewModel"/> instance
-        /// </summary>
-        /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
-        /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use</param>
-        public StdinHeaderViewModel(IMessenger messenger, ISettingsService settingsService)
-            : base(messenger)
+    /// <inheritdoc/>
+    protected override void OnActivated()
+    {
+        Messenger.Register<StdinHeaderViewModel, StdinRequestMessage>(this, (r, m) => r.GetStdinBuffer(m));
+    }
+
+    private string _Text = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the current text in the stdin buffer
+    /// </summary>
+    public string Text
+    {
+        get => _Text;
+        set => SetProperty(ref _Text, value);
+    }
+
+    /// <inheritdoc/>
+    private void GetStdinBuffer(StdinRequestMessage request)
+    {
+        request.Reply(Text);
+
+        // Clear the buffer if requested, and if not from a background execution
+        if (!request.IsFromBackgroundExecution &&
+            SettingsService.GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest))
         {
-            SettingsService = settingsService;
-        }
-
-        /// <inheritdoc/>
-        protected override void OnActivated()
-        {
-            Messenger.Register<StdinHeaderViewModel, StdinRequestMessage>(this, (r, m) => r.GetStdinBuffer(m));
-        }
-
-        private string _Text = string.Empty;
-
-        /// <summary>
-        /// Gets or sets the current text in the stdin buffer
-        /// </summary>
-        public string Text
-        {
-            get => _Text;
-            set => SetProperty(ref _Text, value);
-        }
-
-        /// <inheritdoc/>
-        private void GetStdinBuffer(StdinRequestMessage request)
-        {
-            request.Reply(Text);
-
-            // Clear the buffer if requested, and if not from a background execution
-            if (!request.IsFromBackgroundExecution &&
-                SettingsService.GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest))
-            {
-                Text = string.Empty;
-            }
+            Text = string.Empty;
         }
     }
 }

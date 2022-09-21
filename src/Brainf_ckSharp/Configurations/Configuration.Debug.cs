@@ -8,56 +8,55 @@ using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Microsoft.Toolkit.Diagnostics;
 
-namespace Brainf_ckSharp.Configurations
+namespace Brainf_ckSharp.Configurations;
+
+/// <summary>
+/// A model for a DEBUG configuration being built
+/// </summary>
+public readonly ref partial struct DebugConfiguration
 {
     /// <summary>
-    /// A model for a DEBUG configuration being built
+    /// The sequence of indices for the breakpoints to apply to the script
     /// </summary>
-    public readonly ref partial struct DebugConfiguration
+    public readonly ReadOnlyMemory<int> Breakpoints;
+
+    /// <summary>
+    /// The token to cancel the monitoring of breakpoints
+    /// </summary>
+    public readonly CancellationToken DebugToken;
+
+    /// <summary>
+    /// Runs the current Brainf*ck/PBrain configuration
+    /// </summary>
+    /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
+    [Pure]
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    public Option<InterpreterSession> TryRun()
     {
-        /// <summary>
-        /// The sequence of indices for the breakpoints to apply to the script
-        /// </summary>
-        public readonly ReadOnlyMemory<int> Breakpoints;
+        Guard.IsNotNull(Source, nameof(Source));
 
-        /// <summary>
-        /// The token to cancel the monitoring of breakpoints
-        /// </summary>
-        public readonly CancellationToken DebugToken;
-
-        /// <summary>
-        /// Runs the current Brainf*ck/PBrain configuration
-        /// </summary>
-        /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public Option<InterpreterSession> TryRun()
+        if (InitialState is TuringMachineState initialState)
         {
-            Guard.IsNotNull(Source, nameof(Source));
+            Guard.IsNull(MemorySize, nameof(MemorySize));
+            Guard.IsNull(OverflowMode, nameof(OverflowMode));
 
-            if (InitialState is TuringMachineState initialState)
-            {
-                Guard.IsNull(MemorySize, nameof(MemorySize));
-                Guard.IsNull(OverflowMode, nameof(OverflowMode));
-
-                initialState = (TuringMachineState)initialState.Clone();
-            }
-            else
-            {
-                int size = MemorySize ?? Specs.DefaultMemorySize;
-
-                Guard.IsBetweenOrEqualTo(size, Specs.MinimumMemorySize, Specs.MaximumMemorySize, nameof(MemorySize));
-
-                initialState = new TuringMachineState(size, OverflowMode ?? Specs.DefaultOverflowMode);
-            }
-
-            return Brainf_ckInterpreter.Debug.TryCreateSession(
-                Source.Value.Span,
-                Breakpoints.Span,
-                Stdin.GetValueOrDefault(),
-                initialState,
-                ExecutionToken,
-                DebugToken);
+            initialState = (TuringMachineState)initialState.Clone();
         }
+        else
+        {
+            int size = MemorySize ?? Specs.DefaultMemorySize;
+
+            Guard.IsBetweenOrEqualTo(size, Specs.MinimumMemorySize, Specs.MaximumMemorySize, nameof(MemorySize));
+
+            initialState = new TuringMachineState(size, OverflowMode ?? Specs.DefaultOverflowMode);
+        }
+
+        return Brainf_ckInterpreter.Debug.TryCreateSession(
+            Source.Value.Span,
+            Breakpoints.Span,
+            Stdin.GetValueOrDefault(),
+            initialState,
+            ExecutionToken,
+            DebugToken);
     }
 }

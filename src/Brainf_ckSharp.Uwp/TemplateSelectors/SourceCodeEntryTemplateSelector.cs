@@ -6,53 +6,52 @@ using Microsoft.Toolkit.Diagnostics;
 
 #nullable enable
 
-namespace Brainf_ckSharp.Uwp.TemplateSelectors
+namespace Brainf_ckSharp.Uwp.TemplateSelectors;
+
+/// <summary>
+/// A template selector for source code entries
+/// </summary>
+public sealed class SourceCodeEntryTemplateSelector : DataTemplateSelector
 {
     /// <summary>
-    /// A template selector for source code entries
+    /// Gets or sets the <see cref="DataTemplate"/> for the placeholder in the favorites section
     /// </summary>
-    public sealed class SourceCodeEntryTemplateSelector : DataTemplateSelector
+    public DataTemplate? FavoritePlaceholderTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the <see cref="DataTemplate"/> for the placeholder in the history section
+    /// </summary>
+    public DataTemplate? RecentPlaceholderTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the <see cref="DataTemplate"/> for a recent item
+    /// </summary>
+    public DataTemplate? RecentItemTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the <see cref="DataTemplate"/> for the code samples
+    /// </summary>
+    public DataTemplate? SampleTemplate { get; set; }
+
+    /// <inheritdoc/>
+    protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
     {
-        /// <summary>
-        /// Gets or sets the <see cref="DataTemplate"/> for the placeholder in the favorites section
-        /// </summary>
-        public DataTemplate? FavoritePlaceholderTemplate { get; set; }
+        Guard.IsNotNull(item, nameof(item));
 
-        /// <summary>
-        /// Gets or sets the <see cref="DataTemplate"/> for the placeholder in the history section
-        /// </summary>
-        public DataTemplate? RecentPlaceholderTemplate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="DataTemplate"/> for a recent item
-        /// </summary>
-        public DataTemplate? RecentItemTemplate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="DataTemplate"/> for the code samples
-        /// </summary>
-        public DataTemplate? SampleTemplate { get; set; }
-
-        /// <inheritdoc/>
-        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
+        DataTemplate? template = item switch
         {
-            Guard.IsNotNull(item, nameof(item));
+            CodeLibraryEntry entry when entry.File.IsReadOnly => SampleTemplate,
+            CodeLibraryEntry _ => RecentItemTemplate,
+            CodeLibrarySection.Favorites => FavoritePlaceholderTemplate,
+            CodeLibrarySection.Recent => RecentPlaceholderTemplate,
+            _ => ThrowHelper.ThrowArgumentException<DataTemplate>("Invalid item type")
+        };
 
-            DataTemplate? template = item switch
-            {
-                CodeLibraryEntry entry when entry.File.IsReadOnly => SampleTemplate,
-                CodeLibraryEntry _ => RecentItemTemplate,
-                CodeLibrarySection.Favorites => FavoritePlaceholderTemplate,
-                CodeLibrarySection.Recent => RecentPlaceholderTemplate,
-                _ => ThrowHelper.ThrowArgumentException<DataTemplate>("Invalid item type")
-            };
-
-            if (template is null)
-            {
-                ThrowHelper.ThrowInvalidOperationException("The requested template is null");
-            }
-
-            return template;
+        if (template is null)
+        {
+            ThrowHelper.ThrowInvalidOperationException("The requested template is null");
         }
+
+        return template;
     }
 }

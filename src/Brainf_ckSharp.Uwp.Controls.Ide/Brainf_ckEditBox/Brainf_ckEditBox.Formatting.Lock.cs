@@ -5,61 +5,60 @@ using Windows.UI.Xaml.Controls;
 
 #nullable enable
 
-namespace Brainf_ckSharp.Uwp.Controls.Ide
+namespace Brainf_ckSharp.Uwp.Controls.Ide;
+
+internal sealed partial class Brainf_ckEditBox
 {
-    internal sealed partial class Brainf_ckEditBox
+    /// <summary>
+    /// A helper <see langword="ref"/> <see langword="struct"/> that pauses UI updates when text formatting is performed
+    /// </summary>
+    private readonly ref struct FormattingLock
     {
         /// <summary>
-        /// A helper <see langword="ref"/> <see langword="struct"/> that pauses UI updates when text formatting is performed
+        /// The current <see cref="Brainf_ckEditBox"/> instance
         /// </summary>
-        private readonly ref struct FormattingLock
+        private readonly Brainf_ckEditBox This;
+
+        /// <summary>
+        /// Creates a new <see cref="FormattingLock"/> instance with the specified parameters
+        /// </summary>
+        /// <param name="this">The current <see cref="Brainf_ckEditBox"/> instance</param>
+        private FormattingLock(Brainf_ckEditBox @this)
         {
-            /// <summary>
-            /// The current <see cref="Brainf_ckEditBox"/> instance
-            /// </summary>
-            private readonly Brainf_ckEditBox This;
+            This = @this;
 
-            /// <summary>
-            /// Creates a new <see cref="FormattingLock"/> instance with the specified parameters
-            /// </summary>
-            /// <param name="this">The current <see cref="Brainf_ckEditBox"/> instance</param>
-            private FormattingLock(Brainf_ckEditBox @this)
-            {
-                This = @this;
+            @this.TextChanging -= @this.MarkdownRichEditBox_TextChanging;
+            ((RichEditBox)@this).TextChanged -= @this.MarkdownRichEditBox_TextChanged;
+            @this.Document.BatchDisplayUpdates();
+            @this.IsUndoGroupingEnabled = true;
+        }
 
-                @this.TextChanging -= @this.MarkdownRichEditBox_TextChanging;
-                ((RichEditBox)@this).TextChanged -= @this.MarkdownRichEditBox_TextChanged;
-                @this.Document.BatchDisplayUpdates();
-                @this.IsUndoGroupingEnabled = true;
-            }
+        /// <summary>
+        /// Creates a new <see cref="FormattingLock"/> instance for a target <see cref="Brainf_ckEditBox"/>
+        /// </summary>
+        /// <param name="this">The current <see cref="Brainf_ckEditBox"/> instance</param>
+        /// <returns>A new <see cref="FormattingLock"/> instance targeting <paramref name="this"/></returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static FormattingLock For(Brainf_ckEditBox @this) => new(@this);
 
-            /// <summary>
-            /// Creates a new <see cref="FormattingLock"/> instance for a target <see cref="Brainf_ckEditBox"/>
-            /// </summary>
-            /// <param name="this">The current <see cref="Brainf_ckEditBox"/> instance</param>
-            /// <returns>A new <see cref="FormattingLock"/> instance targeting <paramref name="this"/></returns>
-            [Pure]
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static FormattingLock For(Brainf_ckEditBox @this) => new(@this);
+        /// <inheritdoc cref="IDisposable.Dispose"/>
+        public void Dispose()
+        {
+            This.TextChanging += This.MarkdownRichEditBox_TextChanging;
+            ((RichEditBox)This).TextChanged += This.MarkdownRichEditBox_TextChanged;
+            This.Document.ApplyDisplayUpdates();
+            This.IsUndoGroupingEnabled = false;
 
-            /// <inheritdoc cref="IDisposable.Dispose"/>
-            public void Dispose()
-            {
-                This.TextChanging += This.MarkdownRichEditBox_TextChanging;
-                ((RichEditBox)This).TextChanged += This.MarkdownRichEditBox_TextChanged;
-                This.Document.ApplyDisplayUpdates();
-                This.IsUndoGroupingEnabled = false;
+            // Redraw the overlays, if needed
+            This.TryUpdateBracketsList();
+            if (This.RenderWhitespaceCharacters) This.TryUpdateWhitespaceCharactersList();
+            This.TryProcessErrorCoordinate();
 
-                // Redraw the overlays, if needed
-                This.TryUpdateBracketsList();
-                if (This.RenderWhitespaceCharacters) This.TryUpdateWhitespaceCharactersList();
-                This.TryProcessErrorCoordinate();
+            // Notify external subscribers
+            This.FormattingCompleted?.Invoke(This, EventArgs.Empty);
 
-                // Notify external subscribers
-                This.FormattingCompleted?.Invoke(This, EventArgs.Empty);
-
-                This._TextOverlaysCanvas!.Invalidate();
-            }
+            This._TextOverlaysCanvas!.Invalidate();
         }
     }
 }

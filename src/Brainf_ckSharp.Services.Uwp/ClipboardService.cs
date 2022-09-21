@@ -5,56 +5,55 @@ using Brainf_ckSharp.Services;
 
 #nullable enable
 
-namespace Brainf_ckSharp.Uwp.Services.Clipboard
+namespace Brainf_ckSharp.Uwp.Services.Clipboard;
+
+/// <summary>
+/// A <see langword="class"/> that interacts with the system clipboard
+/// </summary>
+public sealed class ClipboardService : IClipboardService
 {
-    /// <summary>
-    /// A <see langword="class"/> that interacts with the system clipboard
-    /// </summary>
-    public sealed class ClipboardService : IClipboardService
+    /// <inheritdoc/>
+    public bool TryCopy(string text, bool flush = true)
     {
-        /// <inheritdoc/>
-        public bool TryCopy(string text, bool flush = true)
+        try
         {
-            try
-            {
-                DataPackage package = new DataPackage { RequestedOperation = DataPackageOperation.Copy };
-                package.SetText(text);
-                Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(package);
+            DataPackage package = new DataPackage { RequestedOperation = DataPackageOperation.Copy };
+            package.SetText(text);
+            Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(package);
 
-                if (flush) Windows.ApplicationModel.DataTransfer.Clipboard.Flush();
+            if (flush) Windows.ApplicationModel.DataTransfer.Clipboard.Flush();
 
-                return true;
-            }
-            catch
-            {
-                // Whops!
-                return false;
-            }
+            return true;
         }
-
-        /// <inheritdoc/>
-        public async Task<string?> TryGetTextAsync()
+        catch
         {
-            try
-            {
-                DataPackageView view = Windows.ApplicationModel.DataTransfer.Clipboard.GetContent();
+            // Whops!
+            return false;
+        }
+    }
 
-                // Try to extract the requested content
-                string? item;
-                if (view.Contains(StandardDataFormats.Text))
-                {
-                    item = await view.GetTextAsync();
-                    view.ReportOperationCompleted(DataPackageOperation.Copy);
-                }
-                else item = null;
+    /// <inheritdoc/>
+    public async Task<string?> TryGetTextAsync()
+    {
+        try
+        {
+            DataPackageView view = Windows.ApplicationModel.DataTransfer.Clipboard.GetContent();
 
-                return item;
-            }
-            catch
+            // Try to extract the requested content
+            string? item;
+            if (view.Contains(StandardDataFormats.Text))
             {
-                // Y u do dis?
-                return null;
+                item = await view.GetTextAsync();
+                view.ReportOperationCompleted(DataPackageOperation.Copy);
             }
+            else item = null;
+
+            return item;
+        }
+        catch
+        {
+            // Y u do dis?
+            return null;
         }
     }
 }

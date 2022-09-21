@@ -2,24 +2,23 @@
 using Brainf_ckSharp.Shared.ViewModels.Controls;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel
+namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel;
+
+/// <summary>
+/// A virtual keyboard with the Brainf*ck/PBrain operators
+/// </summary>
+public sealed partial class VirtualKeyboard : UserControl
 {
-    /// <summary>
-    /// A virtual keyboard with the Brainf*ck/PBrain operators
-    /// </summary>
-    public sealed partial class VirtualKeyboard : UserControl
+    public VirtualKeyboard()
     {
-        public VirtualKeyboard()
-        {
-            this.InitializeComponent();
-            this.DataContext = App.Current.Services.GetRequiredService<VirtualKeyboardViewModel>();
+        this.InitializeComponent();
+        this.DataContext = App.Current.Services.GetRequiredService<VirtualKeyboardViewModel>();
 
-            ViewModel.IsActive = true;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="VirtualKeyboardViewModel"/> instance currently in use
-        /// </summary>
-        public VirtualKeyboardViewModel ViewModel => (VirtualKeyboardViewModel)DataContext;
+        ViewModel.IsActive = true;
     }
+
+    /// <summary>
+    /// Gets the <see cref="VirtualKeyboardViewModel"/> instance currently in use
+    /// </summary>
+    public VirtualKeyboardViewModel ViewModel => (VirtualKeyboardViewModel)DataContext;
 }

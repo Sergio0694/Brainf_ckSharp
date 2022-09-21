@@ -12,234 +12,208 @@ using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
 using Microsoft.Toolkit.Diagnostics;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
-namespace Brainf_ckSharp.Shared.ViewModels.Views
+namespace Brainf_ckSharp.Shared.ViewModels.Views;
+
+/// <summary>
+/// A view model for a Brainf*ck/PBrain IDE
+/// </summary>
+public sealed class IdeViewModel : WorkspaceViewModelBase
 {
     /// <summary>
-    /// A view model for a Brainf*ck/PBrain IDE
+    /// The <see cref="IAnalyticsService"/> instance currently in use
     /// </summary>
-    public sealed class IdeViewModel : WorkspaceViewModelBase
+    private readonly IAnalyticsService AnalyticsService;
+
+    /// <summary>
+    /// The <see cref="IFilesService"/> instance currently in use
+    /// </summary>
+    private readonly IFilesService FilesService;
+
+    /// <summary>
+    /// The <see cref="IFilesManagerService"/> instance currently in use
+    /// </summary>
+    private readonly IFilesManagerService FilesManagerService;
+
+    /// <summary>
+    /// The <see cref="IFilesHistoryService"/> instance currently in use
+    /// </summary>
+    private readonly IFilesHistoryService FilesHistoryService;
+
+    /// <summary>
+    /// Raised whenever a script is requested to be run
+    /// </summary>
+    public event EventHandler? ScriptRunRequested;
+
+    /// <summary>
+    /// Raised whenever a script is requested to be debugged
+    /// </summary>
+    public event EventHandler? ScriptDebugRequested;
+
+    /// <summary>
+    /// Raised whenever a new character is requested to be added to the current text
+    /// </summary>
+    public event EventHandler<char>? CharacterAdded;
+
+    /// <summary>
+    /// Raised whenever a character is requested to be deleted
+    /// </summary>
+    public event EventHandler? CharacterDeleted;
+
+    /// <summary>
+    /// Raised whenever a new source code is loaded and used as a reference
+    /// </summary>
+    public event EventHandler<string>? CodeLoaded;
+
+    /// <summary>
+    /// Raised whenever the current source code is saved by the user
+    /// </summary>
+    public event EventHandler? CodeSaved;
+
+    /// <summary>
+    /// Raised whenever the state is restored from a serialized one
+    /// </summary>
+    public event EventHandler<IdeState>? StateRestored;
+
+    /// <summary>
+    /// Creates a new <see cref="IdeViewModel"/> instance
+    /// </summary>
+    /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
+    /// <param name="analyticsService">The <see cref="IAnalyticsService"/> instance to use</param>
+    /// <param name="filesService">The <see cref="IFilesService"/> instance to use</param>
+    /// <param name="filesManagerService">The <see cref="IFilesManagerService"/> instance to use</param>
+    /// <param name="filesHistoryService">The <see cref="IFilesHistoryService"/> instance to use</param>
+    public IdeViewModel(IMessenger messenger, IAnalyticsService analyticsService, IFilesService filesService, IFilesManagerService filesManagerService, IFilesHistoryService filesHistoryService)
+        : base(messenger)
     {
-        /// <summary>
-        /// The <see cref="IAnalyticsService"/> instance currently in use
-        /// </summary>
-        private readonly IAnalyticsService AnalyticsService;
+        AnalyticsService = analyticsService;
+        FilesService = filesService;
+        FilesManagerService = filesManagerService;
+        FilesHistoryService = filesHistoryService;
+    }
 
-        /// <summary>
-        /// The <see cref="IFilesService"/> instance currently in use
-        /// </summary>
-        private readonly IFilesService FilesService;
+    /// <inheritdoc/>
+    protected override void OnActivated()
+    {
+        Messenger.Register<IdeViewModel, RunIdeScriptRequestMessage>(this, (r, m) => r.ScriptRunRequested?.Invoke(r, EventArgs.Empty));
+        Messenger.Register<IdeViewModel, DebugIdeScriptRequestMessage>(this, (r, m) => r.ScriptDebugRequested?.Invoke(r, EventArgs.Empty));
+        Messenger.Register<IdeViewModel, InsertNewLineRequestMessage>(this, (r, m) => r.CharacterAdded?.Invoke(r, Characters.CarriageReturn));
+        Messenger.Register<IdeViewModel, OperatorKeyPressedNotificationMessage>(this, (r, m) => r.CharacterAdded?.Invoke(r, m.Value));
+        Messenger.Register<IdeViewModel, DeleteCharacterRequestMessage>(this, (r, m) => r.CharacterDeleted?.Invoke(r, EventArgs.Empty));
+        Messenger.Register<IdeViewModel, PickOpenFileRequestMessage>(this, (r, m) => _ = r.TryLoadTextFromFileAsync(m.Favorite));
+        Messenger.Register<IdeViewModel, LoadSourceCodeRequestMessage>(this, (r, m) => r.LoadSourceCode(m.Value));
+        Messenger.Register<IdeViewModel, NewFileRequestMessage>(this, (r, m) => r.LoadNewFile());
+        Messenger.Register<IdeViewModel, SaveFileRequestMessage>(this, (r, m) => _ = r.TrySaveTextAsync());
+        Messenger.Register<IdeViewModel, SaveFileAsRequestMessage>(this, (r, m) => _ = r.TrySaveTextAsAsync());
+    }
 
-        /// <summary>
-        /// The <see cref="IFilesManagerService"/> instance currently in use
-        /// </summary>
-        private readonly IFilesManagerService FilesManagerService;
+    /// <inheritdoc/>
+    protected override void OnCodeChanged(SourceCode code)
+    {
+        FilesManagerService.RegisterFile(code.File);
+    }
 
-        /// <summary>
-        /// The <see cref="IFilesHistoryService"/> instance currently in use
-        /// </summary>
-        private readonly IFilesHistoryService FilesHistoryService;
+    /// <summary>
+    /// Loads a specific <see cref="SourceCode"/> instance
+    /// </summary>
+    /// <param name="code">The source code to load</param>
+    private void LoadSourceCode(SourceCode code)
+    {
+        AnalyticsService.Log(EventNames.LoadLibrarySourceCode);
 
-        /// <summary>
-        /// Raised whenever a script is requested to be run
-        /// </summary>
-        public event EventHandler? ScriptRunRequested;
-
-        /// <summary>
-        /// Raised whenever a script is requested to be debugged
-        /// </summary>
-        public event EventHandler? ScriptDebugRequested;
-
-        /// <summary>
-        /// Raised whenever a new character is requested to be added to the current text
-        /// </summary>
-        public event EventHandler<char>? CharacterAdded;
-
-        /// <summary>
-        /// Raised whenever a character is requested to be deleted
-        /// </summary>
-        public event EventHandler? CharacterDeleted;
-
-        /// <summary>
-        /// Raised whenever a new source code is loaded and used as a reference
-        /// </summary>
-        public event EventHandler<string>? CodeLoaded;
-
-        /// <summary>
-        /// Raised whenever the current source code is saved by the user
-        /// </summary>
-        public event EventHandler? CodeSaved;
-
-        /// <summary>
-        /// Raised whenever the state is restored from a serialized one
-        /// </summary>
-        public event EventHandler<IdeState>? StateRestored;
-
-        /// <summary>
-        /// Creates a new <see cref="IdeViewModel"/> instance
-        /// </summary>
-        /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
-        /// <param name="analyticsService">The <see cref="IAnalyticsService"/> instance to use</param>
-        /// <param name="filesService">The <see cref="IFilesService"/> instance to use</param>
-        /// <param name="filesManagerService">The <see cref="IFilesManagerService"/> instance to use</param>
-        /// <param name="filesHistoryService">The <see cref="IFilesHistoryService"/> instance to use</param>
-        public IdeViewModel(IMessenger messenger, IAnalyticsService analyticsService, IFilesService filesService, IFilesManagerService filesManagerService, IFilesHistoryService filesHistoryService)
-            : base(messenger)
+        if (!(code.File is null) &&
+            FilesManagerService.TrySwitchTo(code.File))
         {
-            AnalyticsService = analyticsService;
-            FilesService = filesService;
-            FilesManagerService = filesManagerService;
-            FilesHistoryService = filesHistoryService;
+            AnalyticsService.Log(EventNames.SwitchToFile);
+
+            return;
         }
 
-        /// <inheritdoc/>
-        protected override void OnActivated()
+        Code = code;
+
+        if (!(code.File is null))
         {
-            Messenger.Register<IdeViewModel, RunIdeScriptRequestMessage>(this, (r, m) => r.ScriptRunRequested?.Invoke(r, EventArgs.Empty));
-            Messenger.Register<IdeViewModel, DebugIdeScriptRequestMessage>(this, (r, m) => r.ScriptDebugRequested?.Invoke(r, EventArgs.Empty));
-            Messenger.Register<IdeViewModel, InsertNewLineRequestMessage>(this, (r, m) => r.CharacterAdded?.Invoke(r, Characters.CarriageReturn));
-            Messenger.Register<IdeViewModel, OperatorKeyPressedNotificationMessage>(this, (r, m) => r.CharacterAdded?.Invoke(r, m.Value));
-            Messenger.Register<IdeViewModel, DeleteCharacterRequestMessage>(this, (r, m) => r.CharacterDeleted?.Invoke(r, EventArgs.Empty));
-            Messenger.Register<IdeViewModel, PickOpenFileRequestMessage>(this, (r, m) => _ = r.TryLoadTextFromFileAsync(m.Favorite));
-            Messenger.Register<IdeViewModel, LoadSourceCodeRequestMessage>(this, (r, m) => r.LoadSourceCode(m.Value));
-            Messenger.Register<IdeViewModel, NewFileRequestMessage>(this, (r, m) => r.LoadNewFile());
-            Messenger.Register<IdeViewModel, SaveFileRequestMessage>(this, (r, m) => _ = r.TrySaveTextAsync());
-            Messenger.Register<IdeViewModel, SaveFileAsRequestMessage>(this, (r, m) => _ = r.TrySaveTextAsAsync());
+            _ = FilesHistoryService.LogOrUpdateActivityAsync(code.File);
         }
 
-        /// <inheritdoc/>
-        protected override void OnCodeChanged(SourceCode code)
+        CodeLoaded?.Invoke(this, Code.Content);
+    }
+
+    /// <summary>
+    /// Loads an empty source code
+    /// </summary>
+    private void LoadNewFile()
+    {
+        Code = SourceCode.CreateEmpty();
+
+        _ = FilesHistoryService.DismissCurrentActivityAsync();
+
+        CodeLoaded?.Invoke(this, Code.Content);
+    }
+
+    /// <summary>
+    /// Tries to open and load a source code file
+    /// </summary>
+    /// <param name="favorite">Whether to immediately mark the item as favorite</param>
+    private async Task TryLoadTextFromFileAsync(bool favorite)
+    {
+        AnalyticsService.Log(EventNames.PickFileRequest);
+
+        if (!(await FilesService.TryPickOpenFileAsync(".bfs") is IFile file)) return;
+
+        if (FilesManagerService.TrySwitchTo(file))
         {
-            FilesManagerService.RegisterFile(code.File);
+            AnalyticsService.Log(EventNames.SwitchToFile);
+
+            return;
         }
 
-        /// <summary>
-        /// Loads a specific <see cref="SourceCode"/> instance
-        /// </summary>
-        /// <param name="code">The source code to load</param>
-        private void LoadSourceCode(SourceCode code)
-        {
-            AnalyticsService.Log(EventNames.LoadLibrarySourceCode);
+        AnalyticsService.Log(EventNames.LoadPickedFile, (nameof(CodeMetadata.IsFavorited), favorite.ToString()));
 
-            if (!(code.File is null) &&
-                FilesManagerService.TrySwitchTo(code.File))
+        if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
+        {
+            // Set the favorite state, if requested
+            if (favorite)
             {
-                AnalyticsService.Log(EventNames.SwitchToFile);
+                code.Metadata.IsFavorited = true;
 
-                return;
+                await code.TrySaveAsync();
             }
 
             Code = code;
 
-            if (!(code.File is null))
-            {
-                _ = FilesHistoryService.LogOrUpdateActivityAsync(code.File);
-            }
+            _ = FilesHistoryService.LogOrUpdateActivityAsync(code.File!);
 
             CodeLoaded?.Invoke(this, Code.Content);
         }
+    }
 
-        /// <summary>
-        /// Loads an empty source code
-        /// </summary>
-        private void LoadNewFile()
+    /// <summary>
+    /// Tries to open and load a source code file
+    /// </summary>
+    /// <param name="file">The file to open</param>
+    private async Task TryLoadTextFromFileAsync(IFile file)
+    {
+        if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
         {
-            Code = SourceCode.CreateEmpty();
+            Code = code;
 
-            _ = FilesHistoryService.DismissCurrentActivityAsync();
+            _ = FilesHistoryService.LogOrUpdateActivityAsync(code.File!);
 
             CodeLoaded?.Invoke(this, Code.Content);
         }
+    }
 
-        /// <summary>
-        /// Tries to open and load a source code file
-        /// </summary>
-        /// <param name="favorite">Whether to immediately mark the item as favorite</param>
-        private async Task TryLoadTextFromFileAsync(bool favorite)
+    /// <summary>
+    /// Tries to save the current text to the current file, if possible
+    /// </summary>
+    private async Task TrySaveTextAsync()
+    {
+        if (Code.File == null) await TrySaveTextAsAsync();
+        else
         {
-            AnalyticsService.Log(EventNames.PickFileRequest);
-
-            if (!(await FilesService.TryPickOpenFileAsync(".bfs") is IFile file)) return;
-
-            if (FilesManagerService.TrySwitchTo(file))
-            {
-                AnalyticsService.Log(EventNames.SwitchToFile);
-
-                return;
-            }
-
-            AnalyticsService.Log(EventNames.LoadPickedFile, (nameof(CodeMetadata.IsFavorited), favorite.ToString()));
-
-            if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
-            {
-                // Set the favorite state, if requested
-                if (favorite)
-                {
-                    code.Metadata.IsFavorited = true;
-
-                    await code.TrySaveAsync();
-                }
-
-                Code = code;
-
-                _ = FilesHistoryService.LogOrUpdateActivityAsync(code.File!);
-
-                CodeLoaded?.Invoke(this, Code.Content);
-            }
-        }
-
-        /// <summary>
-        /// Tries to open and load a source code file
-        /// </summary>
-        /// <param name="file">The file to open</param>
-        private async Task TryLoadTextFromFileAsync(IFile file)
-        {
-            if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
-            {
-                Code = code;
-
-                _ = FilesHistoryService.LogOrUpdateActivityAsync(code.File!);
-
-                CodeLoaded?.Invoke(this, Code.Content);
-            }
-        }
-
-        /// <summary>
-        /// Tries to save the current text to the current file, if possible
-        /// </summary>
-        private async Task TrySaveTextAsync()
-        {
-            if (Code.File == null) await TrySaveTextAsAsync();
-            else
-            {
-                Code.Content = Text.ToString();
-
-                await Code.TrySaveAsync();
-
-                _ = FilesHistoryService.LogOrUpdateActivityAsync(Code.File!);
-
-                CodeSaved?.Invoke(this, EventArgs.Empty);
-
-                ReportCodeSaved();
-            }
-        }
-
-        /// <summary>
-        /// Tries to save the current text to a new file
-        /// </summary>
-        private async Task TrySaveTextAsAsync()
-        {
-            if (!(await FilesService.TryPickSaveFileAsync(string.Empty, (string.Empty, ".bfs")) is IFile file)) return;
-
-            if (FilesManagerService.TrySwitchTo(file))
-            {
-                AnalyticsService.Log(EventNames.SwitchToFile);
-
-                return;
-            }
-
             Code.Content = Text.ToString();
 
-            await Code.TrySaveAsAsync(file);
+            await Code.TrySaveAsync();
 
             _ = FilesHistoryService.LogOrUpdateActivityAsync(Code.File!);
 
@@ -247,81 +221,106 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views
 
             ReportCodeSaved();
         }
+    }
 
-        /// <summary>
-        /// Serializes and saves the state of the current instance
-        /// </summary>
-        public async Task SaveStateAsync()
+    /// <summary>
+    /// Tries to save the current text to a new file
+    /// </summary>
+    private async Task TrySaveTextAsAsync()
+    {
+        if (!(await FilesService.TryPickSaveFileAsync(string.Empty, (string.Empty, ".bfs")) is IFile file)) return;
+
+        if (FilesManagerService.TrySwitchTo(file))
         {
-            IdeState state = new IdeState
-            {
-                FilePath = Code.File?.Path,
-                Text = Text.ToString(),
-                Row = Row,
-                Column = Column
-            };
+            AnalyticsService.Log(EventNames.SwitchToFile);
 
+            return;
+        }
+
+        Code.Content = Text.ToString();
+
+        await Code.TrySaveAsAsync(file);
+
+        _ = FilesHistoryService.LogOrUpdateActivityAsync(Code.File!);
+
+        CodeSaved?.Invoke(this, EventArgs.Empty);
+
+        ReportCodeSaved();
+    }
+
+    /// <summary>
+    /// Serializes and saves the state of the current instance
+    /// </summary>
+    public async Task SaveStateAsync()
+    {
+        IdeState state = new IdeState
+        {
+            FilePath = Code.File?.Path,
+            Text = Text.ToString(),
+            Row = Row,
+            Column = Column
+        };
+
+        string
+            json = JsonSerializer.Serialize(state),
+            temporaryPath = FilesService.TemporaryFilesPath,
+            statePath = Path.Combine(temporaryPath, "state.json");
+
+        IFile file = await FilesService.CreateOrOpenFileFromPathAsync(statePath);
+
+        using Stream stream = await file.OpenStreamForWriteAsync();
+
+        stream.SetLength(0);
+
+        using StreamWriter writer = new(stream);
+
+        await writer.WriteAsync(json);
+    }
+
+    /// <summary>
+    /// Loads and restores the serialized state of the current instance, if available
+    /// </summary>
+    /// <param name="file">The optional file to load, if present</param>
+    public async Task RestoreStateAsync(IFile? file)
+    {
+        if (file is null)
+        {
             string
-                json = JsonSerializer.Serialize(state),
                 temporaryPath = FilesService.TemporaryFilesPath,
                 statePath = Path.Combine(temporaryPath, "state.json");
 
-            IFile file = await FilesService.CreateOrOpenFileFromPathAsync(statePath);
+            if (!(await FilesService.TryGetFileFromPathAsync(statePath) is IFile jsonFile))
+                return;
 
-            using Stream stream = await file.OpenStreamForWriteAsync();
+            using Stream stream = await jsonFile.OpenStreamForReadAsync();
+            using StreamReader reader = new(stream);
 
-            stream.SetLength(0);
+            string json = await reader.ReadToEndAsync();
 
-            using StreamWriter writer = new(stream);
+            IdeState? state = JsonSerializer.Deserialize<IdeState>(json);
+            
+            if (state is null) ThrowHelper.ThrowInvalidOperationException("Failed to load previous IDE state");
 
-            await writer.WriteAsync(json);
-        }
-
-        /// <summary>
-        /// Loads and restores the serialized state of the current instance, if available
-        /// </summary>
-        /// <param name="file">The optional file to load, if present</param>
-        public async Task RestoreStateAsync(IFile? file)
-        {
-            if (file is null)
+            if (state.FilePath is null) Code = SourceCode.CreateEmpty();
+            else
             {
-                string
-                    temporaryPath = FilesService.TemporaryFilesPath,
-                    statePath = Path.Combine(temporaryPath, "state.json");
+                IFile? sourceFile = await FilesService.TryGetFileFromPathAsync(state.FilePath);
 
-                if (!(await FilesService.TryGetFileFromPathAsync(statePath) is IFile jsonFile))
-                    return;
-
-                using Stream stream = await jsonFile.OpenStreamForReadAsync();
-                using StreamReader reader = new(stream);
-
-                string json = await reader.ReadToEndAsync();
-
-                IdeState? state = JsonSerializer.Deserialize<IdeState>(json);
-                
-                if (state is null) ThrowHelper.ThrowInvalidOperationException("Failed to load previous IDE state");
-
-                if (state.FilePath is null) Code = SourceCode.CreateEmpty();
-                else
-                {
-                    IFile? sourceFile = await FilesService.TryGetFileFromPathAsync(state.FilePath);
-
-                    if (sourceFile is null) Code = SourceCode.CreateEmpty();
-                    else Code = await SourceCode.TryLoadFromEditableFileAsync(sourceFile) ?? SourceCode.CreateEmpty();
-                }
-
-                Text = state.Text.AsMemory();
-                Row = state.Row;
-                Column = state.Column;
-
-                if (!(Code.File is null))
-                {
-                    _ = FilesHistoryService.LogOrUpdateActivityAsync(Code.File);
-                }
-
-                StateRestored?.Invoke(this, state);
+                if (sourceFile is null) Code = SourceCode.CreateEmpty();
+                else Code = await SourceCode.TryLoadFromEditableFileAsync(sourceFile) ?? SourceCode.CreateEmpty();
             }
-            else await TryLoadTextFromFileAsync(file);
+
+            Text = state.Text.AsMemory();
+            Row = state.Row;
+            Column = state.Column;
+
+            if (!(Code.File is null))
+            {
+                _ = FilesHistoryService.LogOrUpdateActivityAsync(Code.File);
+            }
+
+            StateRestored?.Invoke(this, state);
         }
+        else await TryLoadTextFromFileAsync(file);
     }
 }

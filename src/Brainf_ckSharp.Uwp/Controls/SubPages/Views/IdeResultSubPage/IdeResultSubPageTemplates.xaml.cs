@@ -1,12 +1,11 @@
 ﻿using Windows.UI.Xaml;
 
-namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views
+namespace Brainf_ckSharp.Uwp.Controls.SubPages.Views;
+
+public sealed partial class IdeResultSubPageTemplates : ResourceDictionary
 {
-    public sealed partial class IdeResultSubPageTemplates : ResourceDictionary
+    public IdeResultSubPageTemplates()
     {
-        public IdeResultSubPageTemplates()
-        {
-            this.InitializeComponent();
-        }
+        this.InitializeComponent();
     }
 }

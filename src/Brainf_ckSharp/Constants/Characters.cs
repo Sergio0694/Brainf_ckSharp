@@ -1,83 +1,82 @@
-﻿namespace Brainf_ckSharp.Constants
+﻿namespace Brainf_ckSharp.Constants;
+
+/// <summary>
+/// A <see langword="class"/> that exposes the collection of available Brainf*ck/PBrain characters, and common characters
+/// </summary>
+public static class Characters
 {
     /// <summary>
-    /// A <see langword="class"/> that exposes the collection of available Brainf*ck/PBrain characters, and common characters
+    /// The <see langword="+"/> operator, that increments the current memory cell (<see langword="(*ptr)++"/>)
     /// </summary>
-    public static class Characters
-    {
-        /// <summary>
-        /// The <see langword="+"/> operator, that increments the current memory cell (<see langword="(*ptr)++"/>)
-        /// </summary>
-        public const char Plus = '+';
+    public const char Plus = '+';
 
-        /// <summary>
-        /// The <see langword="-"/> operator, that decrements the current memory cell (<see langword="(*ptr)--"/>)
-        /// </summary>
-        public const char Minus = '-';
+    /// <summary>
+    /// The <see langword="-"/> operator, that decrements the current memory cell (<see langword="(*ptr)--"/>)
+    /// </summary>
+    public const char Minus = '-';
 
-        /// <summary>
-        /// The <see langword=">"/> operator, that moves the memory pointer forwards (<see langword="++ptr"/>)
-        /// </summary>
-        public const char ForwardPtr = '>';
+    /// <summary>
+    /// The <see langword=">"/> operator, that moves the memory pointer forwards (<see langword="++ptr"/>)
+    /// </summary>
+    public const char ForwardPtr = '>';
 
-        /// <summary>
-        /// The <see langword="&lt;"/> operator, that moves the memory pointer backwards (<see langword="--ptr"/>)
-        /// </summary>
-        public const char BackwardPtr = '<';
+    /// <summary>
+    /// The <see langword="&lt;"/> operator, that moves the memory pointer backwards (<see langword="--ptr"/>)
+    /// </summary>
+    public const char BackwardPtr = '<';
 
-        /// <summary>
-        /// The <see langword="."/> operator, prints the current memory cell (<see langword="putchar(*ptr)"/>)
-        /// </summary>
-        public const char PrintChar = '.';
+    /// <summary>
+    /// The <see langword="."/> operator, prints the current memory cell (<see langword="putchar(*ptr)"/>)
+    /// </summary>
+    public const char PrintChar = '.';
 
-        /// <summary>
-        /// The <see langword=","/> operator, that reads a value for the current memory cell (<see langword="*ptr = getchar()"/>)
-        /// </summary>
-        public const char ReadChar = ',';
+    /// <summary>
+    /// The <see langword=","/> operator, that reads a value for the current memory cell (<see langword="*ptr = getchar()"/>)
+    /// </summary>
+    public const char ReadChar = ',';
 
-        /// <summary>
-        /// The <see langword="["/> operator, that starts a loop if the current cell is not 0 (<see langword="while (*ptr) {"/>)
-        /// </summary>
-        public const char LoopStart = '[';
+    /// <summary>
+    /// The <see langword="["/> operator, that starts a loop if the current cell is not 0 (<see langword="while (*ptr) {"/>)
+    /// </summary>
+    public const char LoopStart = '[';
 
-        /// <summary>
-        /// The <see langword="]"/> operator, that ands the current loop (<see langword="}"/>)
-        /// </summary>
-        public const char LoopEnd = ']';
+    /// <summary>
+    /// The <see langword="]"/> operator, that ands the current loop (<see langword="}"/>)
+    /// </summary>
+    public const char LoopEnd = ']';
 
-        /// <summary>
-        /// The <see langword="("/> operator, that starts a function definition (<see langword="f[*ptr] = []() {"/>)
-        /// </summary>
-        public const char FunctionStart = '(';
+    /// <summary>
+    /// The <see langword="("/> operator, that starts a function definition (<see langword="f[*ptr] = []() {"/>)
+    /// </summary>
+    public const char FunctionStart = '(';
 
-        /// <summary>
-        /// The <see langword=")"/> operator, that completes the current function definition (<see langword="}"/>)
-        /// </summary>
-        public const char FunctionEnd = ')';
+    /// <summary>
+    /// The <see langword=")"/> operator, that completes the current function definition (<see langword="}"/>)
+    /// </summary>
+    public const char FunctionEnd = ')';
 
-        /// <summary>
-        /// The <see langword=":"/> operator, that invokes a specified function (<see langword="f[*ptr]()"/>)
-        /// </summary>
-        public const char FunctionCall = ':';
+    /// <summary>
+    /// The <see langword=":"/> operator, that invokes a specified function (<see langword="f[*ptr]()"/>)
+    /// </summary>
+    public const char FunctionCall = ':';
 
-        /// <summary>
-        /// The space character <see langword="' '"/>
-        /// </summary>
-        public const char Space = ' ';
+    /// <summary>
+    /// The space character <see langword="' '"/>
+    /// </summary>
+    public const char Space = ' ';
 
-        /// <summary>
-        /// The tab character <see langword="'\t'"/>
-        /// </summary>
-        public const char Tab = '\t';
+    /// <summary>
+    /// The tab character <see langword="'\t'"/>
+    /// </summary>
+    public const char Tab = '\t';
 
-        /// <summary>
-        /// The line feed character <see langword="'\n'"/>
-        /// </summary>
-        public const char LineFeed = '\n';
+    /// <summary>
+    /// The line feed character <see langword="'\n'"/>
+    /// </summary>
+    public const char LineFeed = '\n';
 
-        /// <summary>
-        /// The carriage return character <see langword="'\r'"/>
-        /// </summary>
-        public const char CarriageReturn = '\r';
-    }
+    /// <summary>
+    /// The carriage return character <see langword="'\r'"/>
+    /// </summary>
+    public const char CarriageReturn = '\r';
 }

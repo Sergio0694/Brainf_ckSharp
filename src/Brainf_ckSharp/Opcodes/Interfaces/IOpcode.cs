@@ -1,13 +1,12 @@
-﻿namespace Brainf_ckSharp.Opcodes.Interfaces
+﻿namespace Brainf_ckSharp.Opcodes.Interfaces;
+
+/// <summary>
+/// An <see langword="interface"/> for a Brainf*ck/PBrain opcode
+/// </summary>
+internal interface IOpcode
 {
     /// <summary>
-    /// An <see langword="interface"/> for a Brainf*ck/PBrain opcode
+    /// The operator to execute
     /// </summary>
-    internal interface IOpcode
-    {
-        /// <summary>
-        /// The operator to execute
-        /// </summary>
-        byte Operator { get; }
-    }
+    byte Operator { get; }
 }

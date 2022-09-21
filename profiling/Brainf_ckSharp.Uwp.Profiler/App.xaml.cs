@@ -4,43 +4,42 @@ using Windows.UI.Xaml.Controls;
 
 #nullable enable
 
-namespace Brainf_ckSharp.Uwp.Profiler
+namespace Brainf_ckSharp.Uwp.Profiler;
+
+/// <summary>
+/// Provides application-specific behavior to supplement the default Application class.
+/// </summary>
+sealed partial class App : Application
 {
     /// <summary>
-    /// Provides application-specific behavior to supplement the default Application class.
+    /// Initializes the singleton application object.  This is the first line of authored code
+    /// executed, and as such is the logical equivalent of main() or WinMain().
     /// </summary>
-    sealed partial class App : Application
+    public App()
     {
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
-        public App()
+        this.InitializeComponent();
+    }
+
+    /// <inheritdoc/>
+    protected override void OnLaunched(LaunchActivatedEventArgs e)
+    {
+        Frame? rootFrame = Window.Current.Content as Frame;
+
+        if (rootFrame is null)
         {
-            this.InitializeComponent();
+            rootFrame = new Frame();
+
+            Window.Current.Content = rootFrame;
         }
 
-        /// <inheritdoc/>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        if (e.PrelaunchActivated == false)
         {
-            Frame? rootFrame = Window.Current.Content as Frame;
-
-            if (rootFrame is null)
+            if (rootFrame.Content == null)
             {
-                rootFrame = new Frame();
-
-                Window.Current.Content = rootFrame;
+                rootFrame.Navigate(typeof(MainPage), e.Arguments);
             }
 
-            if (e.PrelaunchActivated == false)
-            {
-                if (rootFrame.Content == null)
-                {
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
-                }
-
-                Window.Current.Activate();
-            }
+            Window.Current.Activate();
         }
     }
 }

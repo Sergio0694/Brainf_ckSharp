@@ -1,53 +1,52 @@
-﻿namespace Brainf_ckSharp.Shared.Enums
+﻿namespace Brainf_ckSharp.Shared.Enums;
+
+/// <summary>
+/// An <see langword="enum"/> that indicates the kind of info to show about an interpreter session
+/// </summary>
+public enum IdeResultSection
 {
     /// <summary>
-    /// An <see langword="enum"/> that indicates the kind of info to show about an interpreter session
+    /// The type of exception raised
     /// </summary>
-    public enum IdeResultSection
-    {
-        /// <summary>
-        /// The type of exception raised
-        /// </summary>
-        ExceptionType,
+    ExceptionType,
 
-        /// <summary>
-        /// The faulting operator
-        /// </summary>
-        FaultingOperator,
+    /// <summary>
+    /// The faulting operator
+    /// </summary>
+    FaultingOperator,
 
-        /// <summary>
-        /// The currently hit breakpoint
-        /// </summary>
-        BreakpointReached,
+    /// <summary>
+    /// The currently hit breakpoint
+    /// </summary>
+    BreakpointReached,
 
-        /// <summary>
-        /// The stack trace currently available
-        /// </summary>
-        StackTrace,
+    /// <summary>
+    /// The stack trace currently available
+    /// </summary>
+    StackTrace,
 
-        /// <summary>
-        /// The stdout buffer
-        /// </summary>
-        Stdout,
+    /// <summary>
+    /// The stdout buffer
+    /// </summary>
+    Stdout,
 
-        /// <summary>
-        /// The executed source code
-        /// </summary>
-        SourceCode,
+    /// <summary>
+    /// The executed source code
+    /// </summary>
+    SourceCode,
 
-        /// <summary>
-        /// The defined functions in the current script
-        /// </summary>
-        FunctionDefinitions,
+    /// <summary>
+    /// The defined functions in the current script
+    /// </summary>
+    FunctionDefinitions,
 
-        /// <summary>
-        /// The current memory state
-        /// </summary>
-        MemoryState,
+    /// <summary>
+    /// The current memory state
+    /// </summary>
+    MemoryState,
 
-        /// <summary>
-        /// The statistics for the current session
-        /// </summary>
-        Statistics
-    }
+    /// <summary>
+    /// The statistics for the current session
+    /// </summary>
+    Statistics
 }
