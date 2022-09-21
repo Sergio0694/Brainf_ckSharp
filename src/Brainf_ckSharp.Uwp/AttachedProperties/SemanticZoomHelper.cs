@@ -1,6 +1,6 @@
-﻿using Microsoft.Toolkit.Collections;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using CommunityToolkit.Mvvm.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;

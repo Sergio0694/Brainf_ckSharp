@@ -3,7 +3,7 @@ using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections.Abstract;
-using Microsoft.Toolkit.Collections;
+using CommunityToolkit.Mvvm.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 
@@ -22,9 +22,9 @@ public sealed class SettingsSubPageViewModel : ObservableRecipient
     public SettingsSubPageViewModel(IMessenger messenger, IAnalyticsService analyticsService, IStoreService storeService, ISettingsService settingsService, AppConfiguration configuration)
         : base(messenger)
     {
-        Source.AddGroup(SettingsSection.Ide, new IdeSettingsSectionViewModel(messenger, analyticsService, storeService, settingsService, configuration));
-        Source.AddGroup(SettingsSection.UI, new UISettingsSectionViewModel(messenger, settingsService));
-        Source.AddGroup(SettingsSection.Interpreter, new InterpreterSettingsSectionViewModel(messenger, settingsService));
+        Source.AddGroup(SettingsSection.Ide, new[] { new IdeSettingsSectionViewModel(messenger, analyticsService, storeService, settingsService, configuration) });
+        Source.AddGroup(SettingsSection.UI, new[] { new UISettingsSectionViewModel(messenger, settingsService) });
+        Source.AddGroup(SettingsSection.Interpreter, new[] { new InterpreterSettingsSectionViewModel(messenger, settingsService) });
     }
 
     /// <summary>

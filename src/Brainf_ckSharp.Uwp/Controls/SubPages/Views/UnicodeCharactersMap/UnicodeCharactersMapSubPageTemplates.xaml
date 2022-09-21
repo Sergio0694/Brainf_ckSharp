@@ -4,9 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:convertersSubPage="using:Brainf_ckSharp.Uwp.Converters.SubPages"
-    xmlns:system="using:System"
     xmlns:models="using:Brainf_ckSharp.Shared.Models"
-    xmlns:collections="using:Microsoft.Toolkit.Collections">
+    xmlns:collections="using:CommunityToolkit.Mvvm.Collections">
 
     <!--Unicode character template-->
     <DataTemplate

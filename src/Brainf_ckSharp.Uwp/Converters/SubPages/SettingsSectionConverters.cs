@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Reflection;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections.Abstract;
-using Microsoft.Toolkit.Collections;
+using CommunityToolkit.Mvvm.Collections;
 using Microsoft.Toolkit.Uwp;
 
 namespace Brainf_ckSharp.Uwp.Converters.SubPages;

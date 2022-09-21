@@ -11,8 +11,8 @@ using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Extensions.System.Collections.Generic;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Brainf_ckSharp.Shared.Models.Ide;
-using Microsoft.Toolkit.Collections;
 using CommunityToolkit.Diagnostics;
+using CommunityToolkit.Mvvm.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -308,7 +308,7 @@ public sealed class CodeLibrarySubPageViewModel : ObservableRecipient
     /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to remove</param>
     private void RemoveTrackedSourceCode(CodeLibraryEntry entry)
     {
-        var group = Source.First(g => g.Contains(entry));
+        var group = Source.First<ObservableGroup<CodeLibrarySection, object>>(g => g.Contains(entry));
 
         if (group.Count == 1) Source.Remove(group);
         else group.Remove(entry);

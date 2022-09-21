@@ -3,10 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Brainf_ckSharp.Shared.Models;
-using Microsoft.Toolkit.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Nito.AsyncEx;
+using CommunityToolkit.Mvvm.Collections;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 

@@ -8,7 +8,7 @@
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     xmlns:jumpList="using:Brainf_ckSharp.Uwp.Controls.DataTemplates.JumpList"
     xmlns:templateSelectors="using:Brainf_ckSharp.Uwp.TemplateSelectors"
-    xmlns:collections="using:Microsoft.Toolkit.Collections"
+    xmlns:collections="using:CommunityToolkit.Mvvm.Collections"
     xmlns:interpreterEnums="using:Brainf_ckSharp.Enums"
     xmlns:enums="using:Brainf_ckSharp.Shared.Enums"
     xmlns:enumsSettings="using:Brainf_ckSharp.Shared.Enums.Settings"

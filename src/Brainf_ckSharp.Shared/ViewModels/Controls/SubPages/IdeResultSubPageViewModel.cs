@@ -10,8 +10,8 @@ using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Models.Ide.Views;
-using Microsoft.Toolkit.Collections;
 using CommunityToolkit.Diagnostics;
+using CommunityToolkit.Mvvm.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -221,7 +221,7 @@ public sealed class IdeResultSubPageViewModel : ObservableRecipient
         {
             var model = new IdeResultWithSectionInfo(section, result);
 
-            Source.AddGroup(section, model);
+            Source.AddGroup(section, new[] { model });
         }
 
         // The order of items in the result view is as follows:

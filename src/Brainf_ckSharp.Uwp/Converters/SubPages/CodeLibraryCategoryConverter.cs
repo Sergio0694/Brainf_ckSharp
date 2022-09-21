@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Shared.Enums;
-using Microsoft.Toolkit.Collections;
 using CommunityToolkit.Diagnostics;
+using CommunityToolkit.Mvvm.Collections;
 
 namespace Brainf_ckSharp.Uwp.Converters.SubPages;
 
