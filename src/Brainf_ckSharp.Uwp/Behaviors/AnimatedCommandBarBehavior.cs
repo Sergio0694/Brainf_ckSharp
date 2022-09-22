@@ -2,27 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Brainf_ckSharp.Uwp.Extensions.System.Collections.Generic;
+using CommunityToolkit.HighPerformance;
+using Microsoft.Xaml.Interactivity;
+using Nito.AsyncEx;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
-using Brainf_ckSharp.Uwp.Extensions.System.Collections.Generic;
-using CommunityToolkit.HighPerformance;
-using Nito.AsyncEx;
 
-namespace Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls;
+#nullable enable
+
+namespace Brainf_ckSharp.Uwp.Behaviors;
 
 /// <summary>
-/// A custom <see cref="AnimatedCommandBar"/> that uses animations to switch between different visible buttons
+/// A behavior for <see cref="CommandBar"/> to let it use animations to switch between different visible buttons.
 /// </summary>
-/// <remarks>The items in <see cref="CommandBar.PrimaryCommands"/> need to use the <see cref="FrameworkElement.Tag"/> with a <see cref="bool"/> value</remarks>
-public sealed class AnimatedCommandBar : CommandBar
+/// <remarks>The items in <see cref="CommandBar.PrimaryCommands"/> need to use the <see cref="FrameworkElement.Tag"/> with a <see cref="bool"/> value.</remarks>
+public sealed class AnimatedCommandBarBehavior : Behavior<CommandBar>
 {
-    /// <summary>
-    /// The <see cref="AsyncLock"/> instance used to avoid race conditions when switching buttons
-    /// </summary>
-    private readonly AsyncLock ContentSwitchLock = new();
-
     /// <summary>
     /// The duration of each button animation
     /// </summary>
@@ -39,12 +37,17 @@ public sealed class AnimatedCommandBar : CommandBar
     private const int ButtonsAnimationOffset = 30;
 
     /// <summary>
+    /// The <see cref="AsyncLock"/> instance used to avoid race conditions when switching buttons
+    /// </summary>
+    private readonly AsyncLock ContentSwitchLock = new();
+
+    /// <summary>
     /// Gets or sets whether or not the primary buttons are currently displayed
     /// </summary>
     public bool IsPrimaryContentDisplayed
     {
         get => (bool)(bool?)GetValue(IsPrimaryContentDisplayedProperty);
-        set => SetValue(IsPrimaryContentDisplayedProperty, (bool?)value);
+        set => SetValue(IsPrimaryContentDisplayedProperty, value);
     }
 
     /// <summary>
@@ -53,7 +56,7 @@ public sealed class AnimatedCommandBar : CommandBar
     public static readonly DependencyProperty IsPrimaryContentDisplayedProperty = DependencyProperty.Register(
         nameof(IsPrimaryContentDisplayed),
         typeof(bool?),
-        typeof(AnimatedCommandBar),
+        typeof(AnimatedCommandBarBehavior),
         new(null, OnIsPrimaryContentDisplayedChanged));
 
     /// <summary>
@@ -63,13 +66,14 @@ public sealed class AnimatedCommandBar : CommandBar
     /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> info for the current update</param>
     private static async void OnIsPrimaryContentDisplayedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        AnimatedCommandBar @this = (AnimatedCommandBar)d;
+        AnimatedCommandBarBehavior @this = (AnimatedCommandBarBehavior)d;
+        CommandBar commandBar = @this.AssociatedObject;
         bool primary = (bool)e.NewValue;
 
         // If this is the initial setup, skip all animations
         if (e.OldValue is null)
         {
-            foreach (var item in @this.PrimaryCommands.Cast<FrameworkElement>())
+            foreach (var item in commandBar.PrimaryCommands.Cast<FrameworkElement>())
             {
                 item.Visibility = (Visibility)((bool)item.Tag != primary).ToByte();
             }
@@ -103,7 +107,7 @@ public sealed class AnimatedCommandBar : CommandBar
             };
 
             Storyboard.SetTarget(opacityAnimation, button);
-            Storyboard.SetTargetProperty(opacityAnimation, nameof(Opacity));
+            Storyboard.SetTargetProperty(opacityAnimation, nameof(UIElement.Opacity));
 
             Storyboard storyboard = new Storyboard
             {
@@ -120,11 +124,11 @@ public sealed class AnimatedCommandBar : CommandBar
 
         using (await @this.ContentSwitchLock.LockAsync())
         {
-            @this.IsHitTestVisible = false;
+            commandBar.IsHitTestVisible = false;
 
             // Get the outgoing buttons
             IReadOnlyList<FrameworkElement> pendingElements = (
-                from button in @this.PrimaryCommands.Cast<FrameworkElement>()
+                from button in commandBar.PrimaryCommands.Cast<FrameworkElement>()
                 where button.Tag is bool flag && flag != primary
                 select button).ToArray();
 
@@ -145,7 +149,7 @@ public sealed class AnimatedCommandBar : CommandBar
 
             // Get the target buttons
             IReadOnlyList<FrameworkElement> targetElements = (
-                from button in @this.PrimaryCommands.Cast<FrameworkElement>()
+                from button in commandBar.PrimaryCommands.Cast<FrameworkElement>()
                 where button.Tag is bool flag && flag == primary
                 select button).ToArray();
 
@@ -167,7 +171,7 @@ public sealed class AnimatedCommandBar : CommandBar
             // Wait for the second animations to finish
             await Task.Delay((targetElements.Count - 1) * ButtonsFadeDelayBetweenAnimations + ContentAnimationDuration);
 
-            @this.IsHitTestVisible = true;
+            commandBar.IsHitTestVisible = true;
         }
     }
 }

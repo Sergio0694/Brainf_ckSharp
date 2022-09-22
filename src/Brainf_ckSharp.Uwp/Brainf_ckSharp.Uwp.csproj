@@ -129,6 +129,7 @@
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.Source.cs" />
     <Compile Include="AttachedProperties\SemanticZoomHelper.cs" />
     <Compile Include="AttachedProperties\ObservableRecipientHelper.cs" />
+    <Compile Include="Behaviors\AnimatedCommandBarBehavior.cs" />
     <Compile Include="Behaviors\LockedPivotBehavior.cs" />
     <Compile Include="Controls\DataTemplates\IdeThemePreviewTemplate.xaml.cs">
       <DependentUpon>IdeThemePreviewTemplate.xaml</DependentUpon>
@@ -226,7 +227,6 @@
       <DependentUpon>UnicodeCharactersMapSubPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Windows.UI.Xaml.Controls\ExpanderControl.cs" />
-    <Compile Include="Controls\Windows.UI.Xaml.Controls\AnimatedCommandBar.cs" />
     <Compile Include="Controls\Host\Header\HeaderButton.cs" />
     <Compile Include="Controls\Host\Header\HeaderPanel.xaml.cs">
       <DependentUpon>HeaderPanel.xaml</DependentUpon>

@@ -14,7 +14,9 @@
     xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:local="using:Brainf_ckSharp.Uwp.Controls.Host"
     xmlns:settings="using:Brainf_ckSharp.Shared.Enums.Settings"
-    xmlns:windows="using:Windows.System" xmlns:interactivity="using:Microsoft.Xaml.Interactivity" xmlns:behaviors="using:Brainf_ckSharp.Uwp.Behaviors"
+    xmlns:windows="using:Windows.System"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:behaviors="using:Brainf_ckSharp.Uwp.Behaviors"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400"
@@ -106,12 +108,14 @@
         </Border>
 
         <!--Command bar-->
-        <controls:AnimatedCommandBar
+        <CommandBar
             Grid.Row="2"
             IsDynamicOverflowEnabled="False"
-            Style="{StaticResource CommandBarRevealStyle}"
-            IsPrimaryContentDisplayed="{x:Bind ViewModel.SelectedView.Equals(settings:ViewType.Console), Mode=OneWay}">
-            <controls:AnimatedCommandBar.PrimaryCommands>
+            Style="{StaticResource CommandBarRevealStyle}">
+            <interactivity:Interaction.Behaviors>
+                <behaviors:AnimatedCommandBarBehavior IsPrimaryContentDisplayed="{x:Bind ViewModel.SelectedView.Equals(settings:ViewType.Console), Mode=OneWay}"/>
+            </interactivity:Interaction.Behaviors>
+            <CommandBar.PrimaryCommands>
 
                 <!--Console buttons-->
                 <AppBarButton
@@ -276,8 +280,8 @@
                         <x:Boolean>False</x:Boolean>
                     </AppBarButton.Tag>
                 </AppBarButton>
-            </controls:AnimatedCommandBar.PrimaryCommands>
-            <controls:AnimatedCommandBar.SecondaryCommands>
+            </CommandBar.PrimaryCommands>
+            <CommandBar.SecondaryCommands>
                 <AppBarButton
                     x:Uid="Shell/UserGuide"
                     Label="User guide"
@@ -396,8 +400,8 @@
                         <KeyboardAccelerator Key="A" Modifiers="Control"/>
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
-            </controls:AnimatedCommandBar.SecondaryCommands>
-        </controls:AnimatedCommandBar>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
 
         <!--Status bar-->
         <local:StatusBar Grid.Row="3"/>
