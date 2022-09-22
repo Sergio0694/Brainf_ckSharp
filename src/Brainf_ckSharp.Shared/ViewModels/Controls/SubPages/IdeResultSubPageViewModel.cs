@@ -2,7 +2,6 @@
 using System.Buffers;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Services;
@@ -21,7 +20,7 @@ using Nito.AsyncEx;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 
-public sealed class IdeResultSubPageViewModel : ObservableRecipient
+public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
 {
     /// <summary>
     /// The <see cref="ISettingsService"/> instance currently in use
@@ -57,10 +56,6 @@ public sealed class IdeResultSubPageViewModel : ObservableRecipient
         : base(messenger)
     {
         SettingsService = settingsService;
-
-        LoadDataCommand = new AsyncRelayCommand(LoadDataAsync);
-        ContinueCommand = new AsyncRelayCommand(ContinueAsync);
-        SkipCommand = new AsyncRelayCommand(SkipAsync);
     }
 
     /// <summary>
@@ -78,21 +73,6 @@ public sealed class IdeResultSubPageViewModel : ObservableRecipient
     /// </summary>
     /// <remarks>If <see langword="null"/>, the RELEASE mode is used to run the code</remarks>
     public IMemoryOwner<int>? Breakpoints { get; set; }
-
-    /// <summary>
-    /// Gets the <see cref="ICommand"/> instance responsible for loading the available source codes
-    /// </summary>
-    public IAsyncRelayCommand LoadDataCommand { get; }
-
-    /// <summary>
-    /// Gets the <see cref="ICommand"/> instance responsible for continuing a DEBUG session
-    /// </summary>
-    public IAsyncRelayCommand ContinueCommand { get; }
-
-    /// <summary>
-    /// Gets the <see cref="ICommand"/> instance responsible for completing a DEBUG session
-    /// </summary>
-    public IAsyncRelayCommand SkipCommand { get; }
 
     /// <summary>
     /// Gets whether or not the debugger is currently stopped at a breakpoint
@@ -114,6 +94,7 @@ public sealed class IdeResultSubPageViewModel : ObservableRecipient
     /// <summary>
     /// Loads the currently available code samples and recently used files
     /// </summary>
+    [RelayCommand]
     private async Task LoadDataAsync()
     {
         Guard.IsNotNull(Source);
@@ -179,6 +160,7 @@ public sealed class IdeResultSubPageViewModel : ObservableRecipient
     /// <summary>
     /// Continues the DEBUG session and moves ahead by one step
     /// </summary>
+    [RelayCommand]
     private async Task ContinueAsync()
     {
         using (await LoadingMutex.LockAsync())
@@ -194,6 +176,7 @@ public sealed class IdeResultSubPageViewModel : ObservableRecipient
     /// <summary>
     /// Runs the current DEBUG session to completion, skipping remaining breakpoints
     /// </summary>
+    [RelayCommand]
     private async Task SkipAsync()
     {
         using (await LoadingMutex.LockAsync())

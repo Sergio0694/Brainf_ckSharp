@@ -1,5 +1,4 @@
-﻿using System.Windows.Input;
-using Brainf_ckSharp.Services;
+﻿using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Messages.Settings;
@@ -9,7 +8,7 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls;
 
-public sealed class VirtualKeyboardViewModel : ObservableRecipient
+public sealed partial class VirtualKeyboardViewModel : ObservableRecipient
 {
     /// <summary>
     /// Creates a new <see cref="VirtualKeyboardViewModel"/> instance
@@ -20,8 +19,6 @@ public sealed class VirtualKeyboardViewModel : ObservableRecipient
         : base(messenger)
     {
         _IsPBrainModeEnabled = settingsService.GetValue<bool>(SettingsKeys.ShowPBrainButtons);
-
-        InsertOperatorCommand = new RelayCommand<char>(InsertOperator);
     }
 
     /// <inheritdoc/>
@@ -29,11 +26,6 @@ public sealed class VirtualKeyboardViewModel : ObservableRecipient
     {
         Messenger.Register<VirtualKeyboardViewModel, ShowPBrainButtonsSettingsChangedMessage>(this, (r, m) => r.IsPBrainModeEnabled = m.Value);
     }
-
-    /// <summary>
-    /// Gets the <see cref="ICommand"/> instance responsible for inserting a new Brainf*ck/PBrain operator
-    /// </summary>
-    public ICommand InsertOperatorCommand { get; }
 
     private bool _IsPBrainModeEnabled;
 
@@ -50,6 +42,7 @@ public sealed class VirtualKeyboardViewModel : ObservableRecipient
     /// Signals the insertion of a new operator
     /// </summary>
     /// <param name="op">The input Brainf*ck/PBrain operator</param>
+    [RelayCommand]
     private void InsertOperator(char op)
     {
         Messenger.Send(new OperatorKeyPressedNotificationMessage(op));

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Brainf_ckSharp.Shared.Constants;
 using GitHub.APIs;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -14,7 +13,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 /// <summary>
 /// A view model for the about page in the app
 /// </summary>
-public sealed class AboutSubPageViewModel : ObservableObject
+public sealed partial class AboutSubPageViewModel : ObservableObject
 {
     /// <summary>
     /// The <see cref="IGitHubService"/> instance currently in use
@@ -28,14 +27,7 @@ public sealed class AboutSubPageViewModel : ObservableObject
     public AboutSubPageViewModel(IGitHubService gitHubService)
     {
         GitHubService = gitHubService;
-
-        LoadDataCommand = new AsyncRelayCommand(LoadDataAsync);
     }
-
-    /// <summary>
-    /// Gets the <see cref="ICommand"/> instance responsible for loading the available source codes
-    /// </summary>
-    public ICommand LoadDataCommand { get; }
 
     /// <summary>
     /// Forwards the <see cref="ThisAssembly.Git.Branch"/> property
@@ -87,6 +79,7 @@ public sealed class AboutSubPageViewModel : ObservableObject
     /// <summary>
     /// Loads all the necessary data for the view model
     /// </summary>
+    [RelayCommand]
     public async Task LoadDataAsync()
     {
         if (Developers != null) return;

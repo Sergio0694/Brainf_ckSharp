@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Services.Enums;
 using Brainf_ckSharp.Shared.Constants;
@@ -13,7 +12,7 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections;
 
-public sealed class IdeSettingsSectionViewModel : SettingsSectionViewModelBase
+public sealed partial class IdeSettingsSectionViewModel : SettingsSectionViewModelBase
 {
     /// <summary>
     /// The <see cref="IAnalyticsService"/> instance currently in use
@@ -48,20 +47,7 @@ public sealed class IdeSettingsSectionViewModel : SettingsSectionViewModelBase
         _IdeTheme = SettingsService.GetValue<IdeTheme>(SettingsKeys.IdeTheme);
         _BracketsFormattingStyle = SettingsService.GetValue<BracketsFormattingStyle>(SettingsKeys.BracketsFormattingStyle);
         _RenderWhitespaces = SettingsService.GetValue<bool>(SettingsKeys.RenderWhitespaces);
-
-        InitializeCommand = new AsyncRelayCommand(InitializeAsync);
-        UnlockThemesSelectorCommand = new AsyncRelayCommand(TryUnlockThemesSelectorAsync);
     }
-
-    /// <summary>
-    /// Gets the <see cref="ICommand"/> instance responsible for initializing the view model
-    /// </summary>
-    public ICommand InitializeCommand { get; }
-
-    /// <summary>
-    /// Gets the <see cref="ICommand"/> instance responsible for unlocking the themes selector
-    /// </summary>
-    public ICommand UnlockThemesSelectorCommand { get; }
 
     /// <summary>
     /// Gets the available themes.
@@ -126,6 +112,7 @@ public sealed class IdeSettingsSectionViewModel : SettingsSectionViewModelBase
     /// <summary>
     /// Initializes the current view model
     /// </summary>
+    [RelayCommand]
     private async Task InitializeAsync()
     {
         if (!IsThemeSelectorAvailable)
@@ -139,6 +126,7 @@ public sealed class IdeSettingsSectionViewModel : SettingsSectionViewModelBase
     /// <summary>
     /// Prompts the user to unlock the themes selector
     /// </summary>
+    [RelayCommand]
     private async Task TryUnlockThemesSelectorAsync()
     {
         Guard.IsNotNull(Configuration.UnlockThemesIapId, nameof(AppConfiguration.UnlockThemesIapId));

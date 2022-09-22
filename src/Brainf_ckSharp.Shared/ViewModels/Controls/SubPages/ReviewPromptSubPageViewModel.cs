@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -11,7 +10,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 /// <summary>
 /// A view model for the review prompt in the app
 /// </summary>
-public sealed class ReviewPromptSubPageViewModel : ObservableObject
+public sealed partial class ReviewPromptSubPageViewModel : ObservableObject
 {
     /// <summary>
     /// The <see cref="IEmailService"/> instance currently in use
@@ -39,24 +38,19 @@ public sealed class ReviewPromptSubPageViewModel : ObservableObject
         EmailService = emailService;
         StoreService = storeService;
         SystemInformationService = systemInformationService;
-
-        ReviewCommand = new AsyncRelayCommand(StoreService.RequestReviewAsync);
-        FeedbackEmailCommand = new AsyncRelayCommand(SendFeedbackEmailAsync);
     }
 
-    /// <summary>
-    /// Gets the <see cref="ICommand"/> responsible for requesting a Store review
-    /// </summary>
-    public ICommand ReviewCommand { get; }
-
-    /// <summary>
-    /// Gets the <see cref="ICommand"/> responsible for sending a feedback email
-    /// </summary>
-    public ICommand FeedbackEmailCommand { get; }
+    /// <inheritdoc cref="IStoreService.RequestReviewAsync"/>
+    [RelayCommand]
+    private Task RequestReviewAsync()
+    {
+        return StoreService.RequestReviewAsync();
+    }
 
     /// <summary>
     /// Prepares and sends a feedback email
     /// </summary>
+    [RelayCommand]
     private Task SendFeedbackEmailAsync()
     {
         StringBuilder builder = new();

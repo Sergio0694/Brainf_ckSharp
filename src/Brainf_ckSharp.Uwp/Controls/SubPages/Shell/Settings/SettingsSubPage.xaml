@@ -85,7 +85,7 @@
                         Background="#C0000000">
                         <Button
                             Style="{StaticResource ExpandedSquareButtonRevealStyle}"
-                            Command="{x:Bind UnlockThemesSelectorCommand}">
+                            Command="{x:Bind TryUnlockThemesSelectorCommand}">
                             <StackPanel Spacing="8">
                                 <TextBlock
                                     HorizontalAlignment="Center"

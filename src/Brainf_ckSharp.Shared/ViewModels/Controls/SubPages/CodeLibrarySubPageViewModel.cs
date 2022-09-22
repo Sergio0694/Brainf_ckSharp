@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums;
@@ -21,7 +20,7 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 
-public sealed class CodeLibrarySubPageViewModel : ObservableRecipient
+public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
 {
     /// <summary>
     /// The <see cref="IAnalyticsService"/> instance currently in use
@@ -110,50 +109,7 @@ public sealed class CodeLibrarySubPageViewModel : ObservableRecipient
         FilesHistoryService = filesHistoryService;
         ClipboardService = clipboardService;
         ShareService = shareService;
-
-        LoadDataCommand = new AsyncRelayCommand(LoadDataAsync);
-        ProcessItemCommand = new RelayCommand<object>(ProcessItem);
-        ToggleFavoriteCommand = new RelayCommand<CodeLibraryEntry>(ToggleFavorite);
-        CopyToClipboardCommand = new AsyncRelayCommand<CodeLibraryEntry>(CopyToClipboardAsync);
-        ShareCommand = new RelayCommand<CodeLibraryEntry>(Share);
-        RemoveFromLibraryCommand = new AsyncRelayCommand<CodeLibraryEntry>(RemoveFromLibraryAsync);
-        DeleteCommand = new AsyncRelayCommand<CodeLibraryEntry>(DeleteAsync);
     }
-
-    /// <summary>
-    /// Gets the <see cref="ICommand"/> instance responsible for loading the available source codes
-    /// </summary>
-    public ICommand LoadDataCommand { get; }
-
-    /// <summary>
-    /// Gets the <see cref="ICommand"/> instance responsible for processing a selected item
-    /// </summary>
-    public ICommand ProcessItemCommand { get; }
-
-    /// <summary>
-    /// Gets the <see cref="ICommand"/> instance responsible for toggling a favorite item
-    /// </summary>
-    public ICommand ToggleFavoriteCommand { get; }
-
-    /// <summary>
-    /// Gets the <see cref="ICommand"/> instance responsible for copying an item to the clipboard
-    /// </summary>
-    public ICommand CopyToClipboardCommand { get; }
-
-    /// <summary>
-    /// Gets the <see cref="ICommand"/> instance responsible for sharing an item
-    /// </summary>
-    public ICommand ShareCommand { get; }
-
-    /// <summary>
-    /// Gets the <see cref="ICommand"/> instance responsible for removing an item from the library
-    /// </summary>
-    public ICommand RemoveFromLibraryCommand { get; }
-
-    /// <summary>
-    /// Gets the <see cref="ICommand"/> instance responsible for deleting an item in the library
-    /// </summary>
-    public ICommand DeleteCommand { get; }
 
     /// <summary>
     /// Gets the current collection of sections to display
@@ -163,6 +119,7 @@ public sealed class CodeLibrarySubPageViewModel : ObservableRecipient
     /// <summary>
     /// Loads the currently available code samples and recently used files
     /// </summary>
+    [RelayCommand]
     private async Task LoadDataAsync()
     {
         List<CodeLibraryEntry> recent = new();
@@ -202,6 +159,7 @@ public sealed class CodeLibrarySubPageViewModel : ObservableRecipient
     /// Processes a given item
     /// </summary>
     /// <param name="item">The target item to process</param>
+    [RelayCommand]
     private void ProcessItem(object? item)
     {
         if (item is CodeLibraryEntry entry) _ = OpenFileAsync(entry);
@@ -240,6 +198,7 @@ public sealed class CodeLibrarySubPageViewModel : ObservableRecipient
     /// Toggles the favorite state of a given <see cref="CodeLibraryEntry"/> instance
     /// </summary>
     /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to toggle</param>
+    [RelayCommand]
     private void ToggleFavorite(CodeLibraryEntry? entry)
     {
         Guard.IsNotNull(entry);
@@ -278,6 +237,7 @@ public sealed class CodeLibrarySubPageViewModel : ObservableRecipient
     /// Copies the content of a specified entry to the clipboard
     /// </summary>
     /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to copy to the clipboard</param>
+    [RelayCommand]
     private async Task CopyToClipboardAsync(CodeLibraryEntry? entry)
     {
         Guard.IsNotNull(entry);
@@ -293,6 +253,7 @@ public sealed class CodeLibrarySubPageViewModel : ObservableRecipient
     /// Shares a specified entry
     /// </summary>
     /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to share</param>
+    [RelayCommand]
     private void Share(CodeLibraryEntry? entry)
     {
         Guard.IsNotNull(entry);
@@ -320,6 +281,7 @@ public sealed class CodeLibrarySubPageViewModel : ObservableRecipient
     /// Removes a specific <see cref="CodeLibraryEntry"/> instance from the code library
     /// </summary>
     /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to remove</param>
+    [RelayCommand]
     private Task RemoveFromLibraryAsync(CodeLibraryEntry? entry)
     {
         Guard.IsNotNull(entry);
@@ -335,6 +297,7 @@ public sealed class CodeLibrarySubPageViewModel : ObservableRecipient
     /// Deletes a specific <see cref="CodeLibraryEntry"/> instance in the code library
     /// </summary>
     /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to delete</param>
+    [RelayCommand]
     private Task DeleteAsync(CodeLibraryEntry? entry)
     {
         Guard.IsNotNull(entry);
