@@ -14,7 +14,7 @@
     xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:local="using:Brainf_ckSharp.Uwp.Controls.Host"
     xmlns:settings="using:Brainf_ckSharp.Shared.Enums.Settings"
-    xmlns:windows="using:Windows.System"
+    xmlns:windows="using:Windows.System" xmlns:interactivity="using:Microsoft.Xaml.Interactivity" xmlns:behaviors="using:Brainf_ckSharp.Uwp.Behaviors"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400"
@@ -87,17 +87,20 @@
                         ShellSelectedIndex="{x:Bind converters:PivotSelectionConverter.ConvertToIndex(ViewModel.SelectedView), Mode=OneWay}"/>
                 </controls:ExpanderControl.Header>
                 <controls:ExpanderControl.ExpandableContent>
-                    <controls:LockedPivot
+                    <Pivot
                         Style="{StaticResource ExpandedPivotWithNoHeaderStyle}"
                         SelectedIndex="{x:Bind StdinHeader.StdinSelectedIndex, Mode=OneWay, FallbackValue=0}"
                         SelectionChanged="Pivot_OnSelectionChanged">
+                        <interactivity:Interaction.Behaviors>
+                            <behaviors:LockedPivotBehavior/>
+                        </interactivity:Interaction.Behaviors>
                         <PivotItem>
                             <inputPanel:VirtualKeyboard/>
                         </PivotItem>
                         <PivotItem>
                             <inputPanel:CompactMemoryViewer attachedProperties:ObservableRecipientHelper.IsActive="{x:Bind StdinHeader.StdinSelectedIndex.Equals(1), Mode=OneWay}"/>
                         </PivotItem>
-                    </controls:LockedPivot>
+                    </Pivot>
                 </controls:ExpanderControl.ExpandableContent>
             </controls:ExpanderControl>
         </Border>
