@@ -15,10 +15,11 @@
     <!--Virtual keyboard brush-->
     <media:AcrylicBrush
         x:Key="VirtualKeyboardBackgroundBrush"
-        BackgroundSource="HostBackdrop"
+        BackgroundSource="Backdrop"
+        BlurAmount="8"
         FallbackColor="#FF141414"
         TintColor="#FF101010"
-        TintOpacity="0.9"
+        TintOpacity="0.7"
         TextureUri="/Assets/Misc/noise_low.png"/>
 
     <!--Sub page brushes-->

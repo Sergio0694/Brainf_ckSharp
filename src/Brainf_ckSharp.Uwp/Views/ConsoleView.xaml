@@ -114,7 +114,6 @@
         attachedProperties:ListViewBaseHelper.IsAutoScrollEnabled="{x:Bind ViewModel.Source}"
         SelectionMode="None"
         Padding="0,4,0,0"
-        IsHitTestVisible="False"
         IsTabStop="False">
         <ListView.ItemTemplateSelector>
             <templateSelectors:ConsoleEntryTemplateSelector
@@ -135,7 +134,7 @@
             <Border Height="68"/>
         </ListView.Header>
         <ListView.Footer>
-            <Border Height="12"/>
+            <Border x:Name="FooterBorder" Height="12"/>
         </ListView.Footer>
     </ListView>
 </UserControl>

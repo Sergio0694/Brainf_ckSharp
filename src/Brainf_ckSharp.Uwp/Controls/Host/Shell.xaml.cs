@@ -27,6 +27,11 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
     /// </summary>
     public sealed partial class Shell : UserControl
     {
+        /// <summary>
+        /// The previous height of the virtual keyboard
+        /// </summary>
+        private double _previousKeyboardHeight;
+
         public Shell()
         {
             this.InitializeComponent();
@@ -122,6 +127,21 @@ namespace Brainf_ckSharp.Uwp.Controls.Host
             if (((Pivot)sender).SelectedIndex == 1)
             {
                 App.Current.Services.GetRequiredService<IAnalyticsService>().Log(EventNames.CompactMemoryViewerOpened);
+            }
+        }
+
+        /// <summary>
+        /// Updates the height of the virtual keyboard grid row when its size changes.
+        /// This is needed so that the text control updates its margin correctly.
+        /// </summary>
+        private void Border_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (Math.Abs(_previousKeyboardHeight - e.NewSize.Height) > 0.01)
+            {
+                _previousKeyboardHeight = e.NewSize.Height;
+
+                ConsolePivotItem.FooterSpacing = e.NewSize.Height;
+                IdePivotItem.FooterSpacing = e.NewSize.Height;
             }
         }
     }

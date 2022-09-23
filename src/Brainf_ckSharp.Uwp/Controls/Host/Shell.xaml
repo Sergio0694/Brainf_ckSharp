@@ -33,7 +33,6 @@
             <RowDefinition Height="68"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="24"/>
         </Grid.RowDefinitions>
 
@@ -44,10 +43,10 @@
             Style="{StaticResource ExpandedPivotWithNoHeaderStyle}"
             SelectedIndex="{x:Bind converters:PivotSelectionConverter.ConvertToIndex(ViewModel.SelectedView), Mode=OneWay}">
             <PivotItem>
-                <views:ConsoleView attachedProperties:ObservableRecipientHelper.IsActive="{x:Bind ViewModel.SelectedView.Equals(settings:ViewType.Console), Mode=OneWay}"/>
+                <views:ConsoleView x:Name="ConsolePivotItem" attachedProperties:ObservableRecipientHelper.IsActive="{x:Bind ViewModel.SelectedView.Equals(settings:ViewType.Console), Mode=OneWay}"/>
             </PivotItem>
             <PivotItem>
-                <views:IdeView attachedProperties:ObservableRecipientHelper.IsActive="{x:Bind ViewModel.SelectedView.Equals(settings:ViewType.Ide), Mode=OneWay}"/>
+                <views:IdeView x:Name="IdePivotItem" attachedProperties:ObservableRecipientHelper.IsActive="{x:Bind ViewModel.SelectedView.Equals(settings:ViewType.Ide), Mode=OneWay}"/>
             </PivotItem>
         </Pivot>
 
@@ -72,10 +71,12 @@
 
         <!--Expandable keyboard area-->
         <Border
-            Grid.Row="2"
+            Grid.Row="1"
             BorderThickness="0,1,0,0"
             BorderBrush="#FF323232"
-            Background="{StaticResource VirtualKeyboardBackgroundBrush}">
+            Background="{StaticResource VirtualKeyboardBackgroundBrush}"
+            VerticalAlignment="Bottom"
+            SizeChanged="Border_SizeChanged">
             <controls:ExpanderControl
                 HeaderHeight="48"
                 ExpandableContentHeight="180"
@@ -103,7 +104,7 @@
 
         <!--Command bar-->
         <controls:AnimatedCommandBar
-            Grid.Row="3"
+            Grid.Row="2"
             IsDynamicOverflowEnabled="False"
             Style="{StaticResource CommandBarRevealStyle}"
             IsPrimaryContentDisplayed="{x:Bind ViewModel.SelectedView.Equals(settings:ViewType.Console), Mode=OneWay}">
@@ -396,11 +397,11 @@
         </controls:AnimatedCommandBar>
 
         <!--Status bar-->
-        <local:StatusBar Grid.Row="4"/>
+        <local:StatusBar Grid.Row="3"/>
 
         <!--Sub page host-->
         <host:SubPageHost
             Grid.Row="0"
-            Grid.RowSpan="5"/>
+            Grid.RowSpan="4"/>
     </Grid>
 </UserControl>

@@ -55,6 +55,15 @@ namespace Brainf_ckSharp.Uwp.Views
         public IdeViewModel ViewModel => (IdeViewModel)DataContext;
 
         /// <summary>
+        /// Gets or sets the spacing of the bottom footer
+        /// </summary>
+        public double FooterSpacing
+        {
+            get => CodeEditor.FooterSpacing;
+            set => CodeEditor.FooterSpacing = value;
+        }
+
+        /// <summary>
         /// Restores the IDE state when it is loaded
         /// </summary>
         /// <param name="sender">The current <see cref="IdeViewModel"/> instance</param>
