@@ -111,7 +111,10 @@
         <CommandBar
             Grid.Row="2"
             IsDynamicOverflowEnabled="False"
-            Style="{StaticResource CommandBarRevealStyle}">
+            Background="{StaticResource CommandBarBackgroundBrush}">
+            <CommandBar.Resources>
+                <SolidColorBrush x:Key="CommandBarBackgroundOpen" Color="{StaticResource CommandBarBackgroundColor}"/>
+            </CommandBar.Resources>
             <interactivity:Interaction.Behaviors>
                 <behaviors:AnimatedCommandBarBehavior IsPrimaryContentDisplayed="{x:Bind ViewModel.SelectedView.Equals(settings:ViewType.Console), Mode=OneWay}"/>
             </interactivity:Interaction.Behaviors>
