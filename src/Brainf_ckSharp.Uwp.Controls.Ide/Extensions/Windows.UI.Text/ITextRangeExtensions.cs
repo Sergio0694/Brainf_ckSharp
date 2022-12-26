@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Windows.UI.Text;
 
 #nullable enable
@@ -15,7 +14,6 @@ internal static class ITextRaangeExtensions
     /// Gets the plain text from the input <see cref="ITextRange"/> instance
     /// </summary>
     /// <param name="range">The range to read the text from</param>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string GetText(this ITextRange range)
     {
@@ -28,7 +26,6 @@ internal static class ITextRaangeExtensions
     /// Returns the start and end positions for an <see cref="ITextRange"/> instance, so that start &lt;= end no matter the selection direction
     /// </summary>
     /// <param name="range">The input range to analyze</param>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (int Start, int End) GetBounds(this ITextRange range)
     {

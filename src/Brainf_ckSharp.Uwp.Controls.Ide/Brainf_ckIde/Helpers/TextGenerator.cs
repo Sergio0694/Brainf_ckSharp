@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Buffers;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System;
 
@@ -37,7 +36,6 @@ internal static class TextGenerator
     /// </summary>
     /// <param name="n">The target number of lines</param>
     /// <returns>A <see cref="string"/> with the numbers in [1,n], one per line</returns>
-    [Pure]
     public static unsafe string GetLineNumbersText(int n)
     {
         Debug.Assert(n >= 1);

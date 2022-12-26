@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using Windows.UI;
@@ -92,7 +91,6 @@ public static partial class Brainf_ckInlineFormatterHelper
     /// Compresses a stack trace by aggregating recursive calls
     /// </summary>
     /// <param name="frames">The input list of stack frames</param>
-    [Pure]
     public static IEnumerable<(string Item, int Occurrences, int Length)> CompressStackTrace(IReadOnlyList<string> frames)
     {
         int i = 0;

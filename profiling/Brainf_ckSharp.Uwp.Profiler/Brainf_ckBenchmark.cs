@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -81,7 +80,6 @@ public static class Brainf_ckBenchmark
     /// </summary>
     /// <typeparam name="T">The type of benchmark to run</typeparam>
     /// <param name="script">The input script to run</param>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static string Run<T>(Script script)
         where T : struct, IScriptRunner
@@ -119,7 +117,6 @@ public static class Brainf_ckBenchmark
     /// Creates a formatted representation of times from a given run result
     /// </summary>
     /// <param name="times">The times for a benchmark run</param>
-    [Pure]
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static string GetStatisticsForRun(ReadOnlySpan<TimeSpan> times)
     {

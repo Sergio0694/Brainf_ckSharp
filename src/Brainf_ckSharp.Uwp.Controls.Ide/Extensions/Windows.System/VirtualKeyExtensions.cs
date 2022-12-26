@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -18,7 +17,6 @@ internal static class VirtualKeyExtensions
     /// </summary>
     /// <param name="key">The key to check</param>
     /// <returns><see langword="true"/> if <paramref name="key"/> is pressed, <see langword="false"/> otherwise</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsDown(this VirtualKey key)
     {

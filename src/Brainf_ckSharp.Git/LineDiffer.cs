@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Git.Buffers;
 using Brainf_ckSharp.Git.Enums;
@@ -33,7 +32,6 @@ public static class LineDiffer
     /// <param name="newText">The updated text to compare</param>
     /// <param name="separator">The separator character to use to split lines in <paramref name="oldText"/> and <paramref name="newText"/></param>
     /// <returns>A <see cref="MemoryOwner{T}"/> instance with the sequence of line modifications</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static MemoryOwner<LineModificationType> ComputeDiff(string oldText, string newText, char separator)
     {
@@ -47,7 +45,6 @@ public static class LineDiffer
     /// <param name="newText">The updated text to compare</param>
     /// <param name="separator">The separator character to use to split lines in <paramref name="oldText"/> and <paramref name="newText"/></param>
     /// <returns>A <see cref="MemoryOwner{T}"/> instance with the sequence of line modifications</returns>
-    [Pure]
     public static MemoryOwner<LineModificationType> ComputeDiff(ReadOnlySpan<char> oldText, ReadOnlySpan<char> newText, char separator)
     {
         // If the new text is empty, no modifications are returned

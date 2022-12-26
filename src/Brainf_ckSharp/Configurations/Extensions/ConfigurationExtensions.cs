@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ckSharp.Configurations;
@@ -21,7 +20,6 @@ public static partial class DebugConfigurationExtensions
     /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
     /// <param name="source">The source code to parse and execute</param>
     /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithSource(in this DebugConfiguration configuration, string source)
     {
@@ -36,7 +34,6 @@ public static partial class DebugConfigurationExtensions
     /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
     /// <param name="source">The source code to parse and execute</param>
     /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithSource(in this DebugConfiguration configuration, ReadOnlyMemory<char> source)
     {
@@ -51,7 +48,6 @@ public static partial class DebugConfigurationExtensions
     /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
     /// <param name="stdin">The input buffer to read data from</param>
     /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithStdin(in this DebugConfiguration configuration, string stdin)
     {
@@ -66,7 +62,6 @@ public static partial class DebugConfigurationExtensions
     /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
     /// <param name="stdin">The input buffer to read data from</param>
     /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithStdin(in this DebugConfiguration configuration, ReadOnlyMemory<char> stdin)
     {
@@ -82,7 +77,6 @@ public static partial class DebugConfigurationExtensions
     /// <param name="initialState">The initial state machine to use to start running the script from</param>
     /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
     /// <remarks>This property will override the values of <see cref="DebugConfiguration.MemorySize"/> and <see cref="DebugConfiguration.OverflowMode"/></remarks>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithInitialState(in this DebugConfiguration configuration, IReadOnlyMachineState initialState)
     {
@@ -97,7 +91,6 @@ public static partial class DebugConfigurationExtensions
     /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
     /// <param name="memorySize">The size of the state machine to create to run the script</param>
     /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithMemorySize(in this DebugConfiguration configuration, int memorySize)
     {
@@ -112,7 +105,6 @@ public static partial class DebugConfigurationExtensions
     /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
     /// <param name="overflowMode">The overflow mode to use in the state machine used to run the script</param>
     /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithOverflowMode(in this DebugConfiguration configuration, OverflowMode overflowMode)
     {
@@ -127,7 +119,6 @@ public static partial class DebugConfigurationExtensions
     /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
     /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution of long running scripts</param>
     /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithExecutionToken(in this DebugConfiguration configuration, CancellationToken executionToken)
     {
@@ -148,7 +139,6 @@ public static class ReleaseConfigurationExtensions
     /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
     /// <param name="source">The source code to parse and execute</param>
     /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly ReleaseConfiguration WithSource(in this ReleaseConfiguration configuration, string source)
     {
@@ -163,7 +153,6 @@ public static class ReleaseConfigurationExtensions
     /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
     /// <param name="source">The source code to parse and execute</param>
     /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly ReleaseConfiguration WithSource(in this ReleaseConfiguration configuration, ReadOnlyMemory<char> source)
     {
@@ -178,7 +167,6 @@ public static class ReleaseConfigurationExtensions
     /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
     /// <param name="stdin">The input buffer to read data from</param>
     /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly ReleaseConfiguration WithStdin(in this ReleaseConfiguration configuration, string stdin)
     {
@@ -193,7 +181,6 @@ public static class ReleaseConfigurationExtensions
     /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
     /// <param name="stdin">The input buffer to read data from</param>
     /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly ReleaseConfiguration WithStdin(in this ReleaseConfiguration configuration, ReadOnlyMemory<char> stdin)
     {
@@ -209,7 +196,6 @@ public static class ReleaseConfigurationExtensions
     /// <param name="initialState">The initial state machine to use to start running the script from</param>
     /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
     /// <remarks>This property will override the values of <see cref="ReleaseConfiguration.MemorySize"/> and <see cref="ReleaseConfiguration.OverflowMode"/></remarks>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly ReleaseConfiguration WithInitialState(in this ReleaseConfiguration configuration, IReadOnlyMachineState initialState)
     {
@@ -224,7 +210,6 @@ public static class ReleaseConfigurationExtensions
     /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
     /// <param name="memorySize">The size of the state machine to create to run the script</param>
     /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly ReleaseConfiguration WithMemorySize(in this ReleaseConfiguration configuration, int memorySize)
     {
@@ -239,7 +224,6 @@ public static class ReleaseConfigurationExtensions
     /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
     /// <param name="overflowMode">The overflow mode to use in the state machine used to run the script</param>
     /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly ReleaseConfiguration WithOverflowMode(in this ReleaseConfiguration configuration, OverflowMode overflowMode)
     {
@@ -254,7 +238,6 @@ public static class ReleaseConfigurationExtensions
     /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
     /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution of long running scripts</param>
     /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly ReleaseConfiguration WithExecutionToken(in this ReleaseConfiguration configuration, CancellationToken executionToken)
     {

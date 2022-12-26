@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -79,7 +78,6 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     /// Loads the available code samples
     /// </summary>
     /// <returns>A <see cref="IReadOnlyList{T}"/> instance with the loaded code samples</returns>
-    [Pure]
     private async ValueTask<IReadOnlyList<CodeLibraryEntry>> GetSampleCodesAsync()
     {
         return _SampleCodes ??= await Task.WhenAll(SampleFilesMapping.Select(async item =>

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using Windows.Foundation;
+﻿using Windows.Foundation;
 
 namespace Windows.UI.Xaml;
 
@@ -14,7 +13,6 @@ public static class FrameworkElementExtensions
     /// <param name="element">The target <see cref="FrameworkElement"/> instance</param>
     /// <param name="parent">The parent <see cref="UIElement"/> instance</param>
     /// <returns>The bounds of <paramref name="element"/> relative to <paramref name="parent"/></returns>
-    [Pure]
     public static Rect GetRelativeBounds(this FrameworkElement element, UIElement parent)
     {
         try

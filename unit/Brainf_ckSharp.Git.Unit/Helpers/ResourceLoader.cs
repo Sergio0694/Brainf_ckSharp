@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -15,7 +14,6 @@ internal sealed class ResourceLoader
     /// </summary>
     /// <param name="key">The key of the test samples to retrieve</param>
     /// <returns>A pair of reference and updated text files with the specified key</returns>
-    [Pure]
     public static (string Old, string New) LoadTestSample(string key)
     {
         Assembly assembly = Assembly.GetExecutingAssembly();

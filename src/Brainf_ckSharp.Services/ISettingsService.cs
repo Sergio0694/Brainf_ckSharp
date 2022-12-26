@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 
 namespace Brainf_ckSharp.Services;
 
@@ -23,7 +22,6 @@ public interface ISettingsService
     /// <typeparam name="T">The type of the object to retrieve</typeparam>
     /// <param name="key">The key associated to the requested object</param>
     /// <param name="fallback">If true, the method returns the default <typeparamref name="T"/> value in case of failure</param>
-    [Pure]
     T GetValue<T>(string key, bool fallback = false);
 
     /// <summary>

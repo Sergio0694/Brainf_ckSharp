@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Windows.UI;
@@ -144,7 +143,6 @@ public sealed class Brainf_ckTheme
     /// </summary>
     /// <param name="first">The first operator</param>
     /// <param name="second">The second operator</param>
-    [Pure]
     public static bool HaveSameColor(char first, char second)
     {
         if (first == second) return true;
@@ -165,7 +163,6 @@ public sealed class Brainf_ckTheme
     /// </summary>
     /// <param name="c">The character to parse</param>
     /// <returns>The <see cref="Color"/> value for the input character</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Color GetColor(char c) => HighlightColorMap.TryGetValue(c, out Color color) ? color : CommentsColor;
 
@@ -174,7 +171,6 @@ public sealed class Brainf_ckTheme
     /// </summary>
     /// <param name="c">The character to parse</param>
     /// <returns>The <see cref="Brush"/> value for the input character</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Brush GetBrush(char c) => HighlightBrushMap.TryGetValue(c, out SolidColorBrush brush) ? brush : CommentsBrush;
 }

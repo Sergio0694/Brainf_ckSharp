@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Models;
@@ -23,7 +22,6 @@ public static partial class Brainf_ckInterpreter
     /// <param name="definitions">The lookup table to check which functions are defined</param>
     /// <param name="totalFunctions">The total number of defined functions</param>
     /// <returns>An array of <see cref="FunctionDefinition"/> instance with the defined functions</returns>
-    [Pure]
     internal static FunctionDefinition[] LoadFunctionDefinitions<TOpcode>(
         Span<TOpcode> opcodes,
         Span<Range> functions,
@@ -142,7 +140,6 @@ public static partial class Brainf_ckInterpreter
     /// <param name="stackFrames">The sequence of stack frames for the current execution</param>
     /// <param name="depth">The current stack depth</param>
     /// <returns>An <see cref="HaltedExecutionInfo"/> instance, if the input script was halted during its execution</returns>
-    [Pure]
     internal static HaltedExecutionInfo? LoadDebugInfo<TOpcode>(
         Span<TOpcode> opcodes,
         Span<StackFrame> stackFrames,

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using Brainf_ckSharp.Shared.Enums.Settings;
+﻿using Brainf_ckSharp.Shared.Enums.Settings;
 using CommunityToolkit.Diagnostics;
 
 namespace Brainf_ckSharp.Uwp.Themes;
@@ -12,7 +11,6 @@ public static class Brainf_ckThemesExtensions
     /// <summary>
     /// Gets the current <see cref="Brainf_ckTheme"/> instance in use
     /// </summary>
-    [Pure]
     public static Brainf_ckTheme AsBrainf_ckTheme(this IdeTheme theme)
     {
         return theme switch

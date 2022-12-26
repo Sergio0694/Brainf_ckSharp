@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ckSharp.Configurations;
@@ -17,7 +16,6 @@ public static partial class DebugConfigurationExtensions
     /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
     /// <param name="breakpoints">The sequence of indices for the breakpoints to apply to the script</param>
     /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithBreakpoints(in this DebugConfiguration configuration, ReadOnlyMemory<int> breakpoints)
     {
@@ -32,7 +30,6 @@ public static partial class DebugConfigurationExtensions
     /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
     /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
     /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithDebugToken(in this DebugConfiguration configuration, CancellationToken debugToken)
     {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.IO;
 using Brainf_ckSharp.Services;
 using CommunityToolkit.HighPerformance;
@@ -17,7 +16,6 @@ public static class IFileExtensions
     /// </summary>
     /// <param name="file">The input <see cref="IFile"/> instance to analyze</param>
     /// <returns>A formatted path <see cref="string"/> for <paramref name="file"/></returns>
-    [Pure]
     public static unsafe string GetFormattedPath(this IFile file)
     {
         const int separatorLength = 3; // " » "

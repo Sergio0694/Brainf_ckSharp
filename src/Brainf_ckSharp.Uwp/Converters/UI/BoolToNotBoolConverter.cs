@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 #nullable enable
 
@@ -15,7 +14,6 @@ public static class BoolToNotBoolConverter
     /// </summary>
     /// <param name="value">The input <see cref="bool"/> value</param>
     /// <returns>The negation of <paramref name="value"/></returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool Convert(bool value) => !value;
 }

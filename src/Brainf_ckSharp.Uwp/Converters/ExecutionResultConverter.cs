@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
@@ -19,7 +18,6 @@ public static class ExecutionResultConverter
     /// </summary>
     /// <param name="result">The input result to convert</param>
     /// <returns>A <see cref="bool"/> value for the input result and requested state to check</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsEmptyOrSuccessfulRun(Option<InterpreterResult>? result)
     {
@@ -34,7 +32,6 @@ public static class ExecutionResultConverter
     /// </summary>
     /// <param name="result">The input result to convert</param>
     /// <returns>A <see cref="bool"/> value for the input result and requested state to check</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsFailedRun(Option<InterpreterResult>? result)
     {
@@ -46,7 +43,6 @@ public static class ExecutionResultConverter
     /// </summary>
     /// <param name="result">The input result to convert</param>
     /// <returns>A representation of the input run</returns>
-    [Pure]
     public static string? StdoutOrExitCodeDescription(Option<InterpreterResult>? result)
     {
         if (result is null) return null;

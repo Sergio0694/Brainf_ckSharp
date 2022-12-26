@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml.Controls;
 
@@ -38,7 +37,6 @@ internal sealed partial class Brainf_ckEditBox
         /// </summary>
         /// <param name="this">The current <see cref="Brainf_ckEditBox"/> instance</param>
         /// <returns>A new <see cref="FormattingLock"/> instance targeting <paramref name="this"/></returns>
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static FormattingLock For(Brainf_ckEditBox @this) => new(@this);
 

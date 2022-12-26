@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using static System.Diagnostics.Debug;
 
 namespace Brainf_ckSharp.Models.Internal;
@@ -46,7 +45,6 @@ internal readonly struct StackFrame
     /// </summary>
     /// <param name="offset">The current offset during execution</param>
     /// <returns>A <see cref="StackFrame"/> instance like the current one, but with a different offset</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public StackFrame WithOffset(int offset) => new(Range, offset);
 }

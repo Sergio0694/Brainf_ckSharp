@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Opcodes.Interfaces;
 using CommunityToolkit.HighPerformance.Buffers;
@@ -21,7 +20,6 @@ public static partial class Brainf_ckInterpreter
         /// <param name="opcodes">The sequence of parsed opcodes to inspect</param>
         /// <param name="functionsCount">The total number of declared functions in the input sequence of opcodes</param>
         /// <returns>The resulting precomputed jump table for the input executable</returns>
-        [Pure]
         private static SpanOwner<int> LoadJumpTable<TOpcode>(
             Span<TOpcode> opcodes,
             out int functionsCount)
@@ -39,7 +37,6 @@ public static partial class Brainf_ckInterpreter
         /// </summary>
         /// <param name="functionsCount">The total number of declared functions in the script to execute</param>
         /// <returns>The resulting buffer to store keys for the declared functions</returns>
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static SpanOwner<ushort> LoadDefinitionsTable(int functionsCount)
         {

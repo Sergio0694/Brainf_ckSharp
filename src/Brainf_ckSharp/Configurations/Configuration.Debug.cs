@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ckSharp.Constants;
@@ -29,7 +28,6 @@ public readonly ref partial struct DebugConfiguration
     /// Runs the current Brainf*ck/PBrain configuration
     /// </summary>
     /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.NoInlining)]
     public Option<InterpreterSession> TryRun()
     {

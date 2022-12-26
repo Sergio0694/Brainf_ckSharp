@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Buffers;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
 using CommunityToolkit.HighPerformance;
@@ -38,7 +37,6 @@ internal struct StdoutBuffer : IDisposable
     /// Creates a new <see cref="StdoutBuffer"/> with an empty underlying buffer
     /// </summary>
     /// <returns>A new <see cref="StdoutBuffer"/> value ready to use</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static StdoutBuffer Allocate()
     {
@@ -49,7 +47,6 @@ internal struct StdoutBuffer : IDisposable
     /// Creates a new <see cref="Writer"/> instance to write to the underlying buffer
     /// </summary>
     /// <returns>A <see cref="Writer"/> instance to write characters</returns>
-    [Pure]
     public Writer CreateWriter()
     {
         return new(Buffer, _Position);

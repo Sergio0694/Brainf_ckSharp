@@ -1,5 +1,4 @@
 ﻿using Brainf_ckSharp.Uwp.Resources;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml.Media;
 
@@ -17,7 +16,6 @@ public static class BoolToForegroundBrushConverter
     /// </summary>
     /// <param name="value">The input <see cref="bool"/> value</param>
     /// <returns>A <see cref="Brush"/> corresponding to <paramref name="value"/>value</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Brush Convert(bool value)
     {

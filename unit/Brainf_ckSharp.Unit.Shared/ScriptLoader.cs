@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -20,7 +19,6 @@ public static class ScriptLoader
     /// </summary>
     /// <param name="name">The name of the script to load</param>
     /// <returns>The data for the requested script</returns>
-    [Pure]
     public static Script LoadScriptByName(string name)
     {
         Assembly assembly = Assembly.GetExecutingAssembly();

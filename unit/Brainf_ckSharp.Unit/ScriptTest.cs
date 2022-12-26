@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
@@ -27,7 +26,6 @@ public class ScriptTest
 public partial class DebugTest
 {
     // Executes a script in DEBUG mode
-    [Pure]
     private static InterpreterResult Run(Script script)
     {
         var session = Brainf_ckInterpreter
@@ -56,7 +54,6 @@ public partial class DebugTest
 public partial class ReleaseTest
 {
     // Executes a script in RELEASE mode
-    [Pure]
     private static InterpreterResult Run(Script script)
     {
         var result = Brainf_ckInterpreter

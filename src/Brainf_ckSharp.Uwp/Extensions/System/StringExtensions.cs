@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.HighPerformance;
 using CommunityToolkit.HighPerformance.Buffers;
@@ -17,7 +16,6 @@ public static class StringExtensions
     /// <param name="text">The input <see cref="ReadOnlySpan{T}"/> value, mapping the input text</param>
     /// <param name="c">The separator character to interleave</param>
     /// <returns>A new <see cref="string"/> instance with alternating source and separator characters</returns>
-    [Pure]
     public static unsafe string InterleaveWithCharacter(this ReadOnlySpan<char> text, char c)
     {
         int textLength = text.Length;

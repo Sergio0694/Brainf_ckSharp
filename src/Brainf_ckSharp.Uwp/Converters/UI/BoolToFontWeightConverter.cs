@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Windows.UI.Text;
 
 #nullable enable
@@ -16,7 +15,6 @@ public static class BoolToFontWeightConverter
     /// </summary>
     /// <param name="value">The input <see cref="bool"/> value</param>
     /// <returns><see cref="FontWeights.Bold"/> if <paramref name="value"/> is <see langword="true"/></returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static FontWeight Convert(bool value)
     {

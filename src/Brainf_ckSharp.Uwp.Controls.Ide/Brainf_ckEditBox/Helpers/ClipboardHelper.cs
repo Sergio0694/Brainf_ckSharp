@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Text;
@@ -48,7 +47,6 @@ internal static class ClipboardHelper
     /// Checks whether or not there is some text available in the clipboard
     /// </summary>
     /// <returns>Whether or not there is text available to copy</returns>
-    [Pure]
     public static bool IsTextAvailable()
     {
         try
@@ -69,7 +67,6 @@ internal static class ClipboardHelper
     /// Tries to get plain text content from the clipboard
     /// </summary>
     /// <returns>The plain text content from the clipboard, or <see langword="null"/></returns>
-    [Pure]
     public static async Task<string?> TryGetTextAsync()
     {
         DataPackageView view;

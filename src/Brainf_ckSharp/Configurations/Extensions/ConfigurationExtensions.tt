@@ -29,7 +29,6 @@ foreach (var name in names)
         /// <param name="configuration">The input <see cref="<#=name#>Configuration"/> instance</param>
         /// <param name="source">The source code to parse and execute</param>
         /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly <#=name#>Configuration WithSource(in this <#=name#>Configuration configuration, string source)
         {
@@ -44,7 +43,6 @@ foreach (var name in names)
         /// <param name="configuration">The input <see cref="<#=name#>Configuration"/> instance</param>
         /// <param name="source">The source code to parse and execute</param>
         /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly <#=name#>Configuration WithSource(in this <#=name#>Configuration configuration, ReadOnlyMemory<char> source)
         {
@@ -59,7 +57,6 @@ foreach (var name in names)
         /// <param name="configuration">The input <see cref="<#=name#>Configuration"/> instance</param>
         /// <param name="stdin">The input buffer to read data from</param>
         /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly <#=name#>Configuration WithStdin(in this <#=name#>Configuration configuration, string stdin)
         {
@@ -74,7 +71,6 @@ foreach (var name in names)
         /// <param name="configuration">The input <see cref="<#=name#>Configuration"/> instance</param>
         /// <param name="stdin">The input buffer to read data from</param>
         /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly <#=name#>Configuration WithStdin(in this <#=name#>Configuration configuration, ReadOnlyMemory<char> stdin)
         {
@@ -90,7 +86,6 @@ foreach (var name in names)
         /// <param name="initialState">The initial state machine to use to start running the script from</param>
         /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
         /// <remarks>This property will override the values of <see cref="<#=name#>Configuration.MemorySize"/> and <see cref="<#=name#>Configuration.OverflowMode"/></remarks>
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly <#=name#>Configuration WithInitialState(in this <#=name#>Configuration configuration, IReadOnlyMachineState initialState)
         {
@@ -105,7 +100,6 @@ foreach (var name in names)
         /// <param name="configuration">The input <see cref="<#=name#>Configuration"/> instance</param>
         /// <param name="memorySize">The size of the state machine to create to run the script</param>
         /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly <#=name#>Configuration WithMemorySize(in this <#=name#>Configuration configuration, int memorySize)
         {
@@ -120,7 +114,6 @@ foreach (var name in names)
         /// <param name="configuration">The input <see cref="<#=name#>Configuration"/> instance</param>
         /// <param name="overflowMode">The overflow mode to use in the state machine used to run the script</param>
         /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly <#=name#>Configuration WithOverflowMode(in this <#=name#>Configuration configuration, OverflowMode overflowMode)
         {
@@ -135,7 +128,6 @@ foreach (var name in names)
         /// <param name="configuration">The input <see cref="<#=name#>Configuration"/> instance</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution of long running scripts</param>
         /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref readonly <#=name#>Configuration WithExecutionToken(in this <#=name#>Configuration configuration, CancellationToken executionToken)
         {

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Memory;
 using Brainf_ckSharp.Models;
@@ -19,7 +18,6 @@ public readonly ref partial struct ReleaseConfiguration
     /// Runs the current Brainf*ck/PBrain configuration
     /// </summary>
     /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.NoInlining)]
     public Option<InterpreterResult> TryRun()
     {

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Windows.UI;
 using Windows.UI.Text;
 
@@ -16,7 +15,6 @@ internal static class ITextDocumentExtensions
     /// Gets the plain text from the input <see cref="ITextDocument"/> instance
     /// </summary>
     /// <param name="document">The document to read the text from</param>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string GetText(this ITextDocument document)
     {
@@ -30,7 +28,6 @@ internal static class ITextDocumentExtensions
     /// </summary>
     /// <param name="document">The input document</param>
     /// <param name="position">The position for the range to retrieve</param>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ITextRange GetRangeAt(this ITextDocument document, int position)
     {

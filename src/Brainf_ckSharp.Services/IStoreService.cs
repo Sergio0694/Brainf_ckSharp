@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Brainf_ckSharp.Services.Enums;
 
 namespace Brainf_ckSharp.Services;
@@ -18,7 +17,6 @@ public interface IStoreService
     /// Checks if a product with a given id has already been purchased by the current user
     /// </summary>
     /// <param name="id">The id of the product to check</param>
-    [Pure]
     Task<bool> IsProductPurchasedAsync(string id);
 
     /// <summary>

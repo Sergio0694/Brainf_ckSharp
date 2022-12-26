@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
@@ -66,7 +65,6 @@ public static partial class Brainf_ckParser
     /// </summary>
     /// <param name="c">The input character to check</param>
     /// <returns><see langword="true"/> if the input character is a Brainf*ck/PBrain operator, <see langword="false"/> otherwise</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOperator(char c)
     {
@@ -79,7 +77,6 @@ public static partial class Brainf_ckParser
     /// <param name="c">The input character to check</param>
     /// <param name="op">The resulting operator, if <paramref name="c"/> was valid</param>
     /// <returns><see langword="true"/> if the input character is a Brainf*ck/PBrain operator, <see langword="false"/> otherwise</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static bool TryParseOperator(char c, out byte op)
     {
@@ -93,7 +90,6 @@ public static partial class Brainf_ckParser
     /// </summary>
     /// <param name="source">The input script to validate</param>
     /// <returns>A <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SyntaxValidationResult ValidateSyntax(string source) => ValidateSyntax(source.AsSpan());
 
@@ -102,7 +98,6 @@ public static partial class Brainf_ckParser
     /// </summary>
     /// <param name="span">A <see cref="ReadOnlySpan{T}"/> instance with the input script to validate</param>
     /// <returns>A <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</returns>
-    [Pure]
     public static SyntaxValidationResult ValidateSyntax(ReadOnlySpan<char> span)
     {
         // Local variables to track the depth and the function definitions

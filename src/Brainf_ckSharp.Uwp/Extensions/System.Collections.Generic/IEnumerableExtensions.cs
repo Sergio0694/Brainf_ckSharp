@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Brainf_ckSharp.Uwp.Extensions.System.Collections.Generic;
@@ -15,7 +14,6 @@ public static class IEnumerableExtensions
     /// <typeparam name="T">The type of items in the input sequence</typeparam>
     /// <param name="items">The input sequence of <typeparamref name="T"/> items</param>
     /// <returns>A sequence of pairs of items and indices</returns>
-    [Pure]
     public static IEnumerable<(T Value, int Index)> Enumerate<T>(this IEnumerable<T> items)
     {
         return items.Select((item, index) => (item, index));

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using CommunityToolkit.HighPerformance;
@@ -37,7 +36,6 @@ internal struct StdinBuffer
     /// Creates a new <see cref="Reader"/> instance to read from the underlying buffer
     /// </summary>
     /// <returns>A <see cref="Reader"/> instance to read characters</returns>
-    [Pure]
     public Reader CreateReader()
     {
         return new(Data.Span, _Position);

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Windows.Foundation;
 using Windows.UI;
@@ -121,7 +120,6 @@ public sealed partial class Brainf_ckIde
     /// </summary>
     /// <param name="i">The line for which to retrieve the vertical offset</param>
     /// <returns>The vertical offset for a line at position <param name="i"></param></returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static float GetOffsetAt(int i)
     {

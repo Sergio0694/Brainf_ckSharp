@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using Windows.ApplicationModel.Resources;
+﻿using Windows.ApplicationModel.Resources;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 using Microsoft.Toolkit.Uwp;
@@ -29,7 +28,6 @@ public static class SyntaxValidationResultConverter
     /// </summary>
     /// <param name="result">The input <see cref="SyntaxValidationResult"/> instance to format</param>
     /// <returns>A <see cref="string"/> representing the input <see cref="SyntaxValidationResult"/> instance</returns>
-    [Pure]
     public static string Convert(SyntaxValidationResult result)
     {
         string message = ResourceLoader.GetString($"{nameof(SyntaxError)}/{result.ErrorType}");

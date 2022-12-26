@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Services;
@@ -51,7 +50,6 @@ public sealed class SourceCode
     /// Creates a new <see cref="SourceCode"/> instance with no linked file
     /// </summary>
     /// <returns>A new, empty <see cref="SourceCode"/> instance</returns>
-    [Pure]
     public static SourceCode CreateEmpty() => new(EmptyContent, null, new CodeMetadata());
 
     /// <summary>
@@ -59,7 +57,6 @@ public sealed class SourceCode
     /// </summary>
     /// <param name="file">The file to read the contents of the source code from</param>
     /// <returns>A new <see cref="SourceCode"/> instance with the contents of <paramref name="file"/></returns>
-    [Pure]
     public static async Task<SourceCode> LoadFromReferenceFileAsync(IFile file)
     {
         string text = await file.ReadAllTextAsync();
@@ -72,7 +69,6 @@ public sealed class SourceCode
     /// </summary>
     /// <param name="file">The file to read the contents of the source code from</param>
     /// <returns>A new <see cref="IFile"/> instance with the contents of <paramref name="file"/></returns>
-    [Pure]
     public static async Task<SourceCode?> TryLoadFromEditableFileAsync(IFile file)
     {
         try

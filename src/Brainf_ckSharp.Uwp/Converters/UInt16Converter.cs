@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Windows.UI.Xaml.Media;
 using Brainf_ckSharp.Uwp.Resources;
 
@@ -15,7 +14,6 @@ public static class UInt16Converter
     /// </summary>
     /// <param name="c">The input character to convert</param>
     /// <returns>A <see cref="ushort"/> value for the input character</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ushort Convert(char c)
     {
@@ -27,7 +25,6 @@ public static class UInt16Converter
     /// </summary>
     /// <param name="c">The input character to convert</param>
     /// <returns>A <see cref="string"/> with the original character, if visible, or an equivalent value</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string ConvertToVisibleText(ushort c)
     {
@@ -47,7 +44,6 @@ public static class UInt16Converter
     /// </summary>
     /// <param name="c">The input value to check</param>
     /// <returns>The accent brush if <paramref name="c"/> is positive, a fallback brush otherwise</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Brush ConvertPositiveValueToAccentBrushOrFallback(ushort c)
     {

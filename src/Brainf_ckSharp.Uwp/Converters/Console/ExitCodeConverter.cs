@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Enums;
 using CommunityToolkit.Diagnostics;
 using Microsoft.Toolkit.Uwp;
@@ -17,7 +16,6 @@ public static class ExitCodeConverter
     /// </summary>
     /// <param name="code">The input <see cref="ExitCode"/> instance to format</param>
     /// <returns>A <see cref="string"/> representing the input <see cref="ExitCode"/> value</returns>
-    [Pure]
     public static string Convert(ExitCode code)
     {
         Debug.Assert(code.HasFlag(ExitCode.Failure));

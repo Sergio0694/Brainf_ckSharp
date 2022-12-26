@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using Windows.ApplicationModel.Activation;
@@ -193,7 +192,6 @@ public sealed partial class App : Application
     /// Configures the services to use in the app
     /// </summary>
     /// <returns>An <see cref="IServiceProvider"/> instance with the app services.</returns>
-    [Pure]
     private IServiceProvider ConfigureServices()
     {
         ServiceCollection services = new();

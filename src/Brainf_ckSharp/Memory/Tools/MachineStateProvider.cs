@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using Brainf_ckSharp.Constants;
+﻿using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
 using CommunityToolkit.Diagnostics;
@@ -21,7 +20,6 @@ public static class MachineStateProvider
     /// </summary>
     /// <param name="size">The size of the state machine to create</param>
     /// <returns>A new <see cref="IReadOnlyMachineState"/> instance with the specified parameters</returns>
-    [Pure]
     public static IReadOnlyMachineState Create(int size) => Create(size, Specs.DefaultOverflowMode);
 
     /// <summary>
@@ -30,7 +28,6 @@ public static class MachineStateProvider
     /// <param name="size">The size of the state machine to create</param>
     /// <param name="overflowMode">The overflow mode to use in the state machine to create</param>
     /// <returns>A new <see cref="IReadOnlyMachineState"/> instance with the specified parameters</returns>
-    [Pure]
     public static IReadOnlyMachineState Create(int size, OverflowMode overflowMode)
     {
         Guard.IsBetweenOrEqualTo(size, Specs.MinimumMemorySize, Specs.MaximumMemorySize);

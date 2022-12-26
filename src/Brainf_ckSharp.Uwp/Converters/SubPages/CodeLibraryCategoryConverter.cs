@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using Brainf_ckSharp.Shared.Enums;
+﻿using Brainf_ckSharp.Shared.Enums;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.Collections;
 
@@ -15,7 +14,6 @@ public static class CodeLibraryCategoryConverter
     /// </summary>
     /// <param name="section">The input <see cref="CodeLibrarySection"/> value</param>
     /// <returns>A <see cref="string"/> representing the input <see cref="CodeLibrarySection"/> value</returns>
-    [Pure]
     public static string ConvertSectionName(CodeLibrarySection section)
     {
         return section switch
@@ -32,7 +30,6 @@ public static class CodeLibraryCategoryConverter
     /// </summary>
     /// <param name="group">The input <see cref="IReadOnlyObservableGroup"/> instance</param>
     /// <returns>A <see cref="string"/> representing the input <see cref="IReadOnlyObservableGroup"/> instance</returns>
-    [Pure]
     public static string ConvertSectionDescription(IReadOnlyObservableGroup group)
     {
         return (CodeLibrarySection)group.Key switch

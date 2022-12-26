@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Brainf_ckSharp.Memory.Interfaces;
@@ -20,7 +19,6 @@ internal sealed partial class TuringMachineState
     /// </summary>
     /// <typeparam name="TExecutionContext">The type of execution context to retrieve</typeparam>
     /// <returns>An execution session of the specified type</returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ExecutionSession<TExecutionContext> CreateExecutionSession<TExecutionContext>()
         where TExecutionContext : struct, IMachineStateExecutionContext

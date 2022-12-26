@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.IO;
+﻿using System.IO;
 
 #nullable enable
 
@@ -16,7 +15,6 @@ public static class AssemblyExtensions
     /// <param name="assembly">The target <see cref="Assembly"/> instance</param>
     /// <param name="path">The path of the file to read</param>
     /// <returns>The text contents of the specified manifest file</returns>
-    [Pure]
     public static string GetManifestResourceString(this Assembly assembly, string path)
     {
         using Stream stream = assembly.GetManifestResourceStream(path);

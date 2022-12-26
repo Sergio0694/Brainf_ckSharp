@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System;
@@ -42,7 +41,6 @@ internal static class UInt32Extensions
     /// <param name="value">The input <see cref="uint"/> value</param>
     /// <returns>The number of digits in <paramref name="value"/></returns>
     /// <remarks>This code is borrowed from <see href="https://github.com/dotnet/runtime/blob/master/src/libraries/System.Private.CoreLib/src/System/Buffers/Text/FormattingHelpers.CountDigits.cs">dotnet/runtime</see></remarks>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int CountDigits(this uint value)
     {

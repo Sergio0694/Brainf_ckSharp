@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Opcodes;
@@ -24,7 +23,6 @@ public static partial class Brainf_ckParser
         /// <param name="source">The input script to validate</param>
         /// <param name="validationResult">The <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</param>
         /// <returns>The resulting buffer of operators for the parsed script</returns>
-        [Pure]
         public static MemoryOwner<Brainf_ckOperator>? TryParse(ReadOnlySpan<char> source, out SyntaxValidationResult validationResult)
         {
             // Check the syntax of the input source code
@@ -55,7 +53,6 @@ public static partial class Brainf_ckParser
         /// </summary>
         /// <param name="operators">The input sequence of parsed operators to read</param>
         /// <returns>A <see cref="string"/> representing the input sequence of operators</returns>
-        [Pure]
         public static string ExtractSource(Span<Brainf_ckOperator> operators)
         {
             // Rent a buffer to use to build the final string

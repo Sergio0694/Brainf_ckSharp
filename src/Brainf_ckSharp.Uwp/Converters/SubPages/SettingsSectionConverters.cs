@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Reflection;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections.Abstract;
@@ -18,7 +17,6 @@ public static class SettingsSectionConverters
     /// </summary>
     /// <param name="section">The input <see cref="IReadOnlyObservableGroup"/> value</param>
     /// <returns>A <see cref="string"/> representing the input <see cref="IReadOnlyObservableGroup"/> value</returns>
-    [Pure]
     public static string ConvertSectionDescription(IReadOnlyObservableGroup section)
     {
         Type viewModelType = ((ObservableGroup<SettingsSection, SettingsSectionViewModelBase>)section)[0].GetType();

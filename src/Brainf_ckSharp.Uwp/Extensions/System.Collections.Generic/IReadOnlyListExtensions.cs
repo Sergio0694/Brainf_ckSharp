@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Brainf_ckSharp.Uwp.Extensions.System.Collections.Generic;
@@ -15,7 +14,6 @@ public static class IReadOnlyListExtensions
     /// <typeparam name="T">The type of items in the input list</typeparam>
     /// <param name="items">The input list of <typeparamref name="T"/> items</param>
     /// <returns>An enumeration of the input items in reverse order</returns>
-    [Pure]
     public static IEnumerable<T> Reverse<T>(this IReadOnlyList<T> items)
     {
         for (int i = items.Count - 1; i >= 0; i--)

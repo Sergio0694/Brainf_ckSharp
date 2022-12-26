@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using Microsoft.Toolkit.Uwp;
 
 namespace Brainf_ckSharp.Uwp.Converters;
@@ -14,7 +13,6 @@ public static class EnumConverter
     /// </summary>
     /// <param name="value">The input value to localize</param>
     /// <returns>A localized representation for <paramref name="value"/></returns>
-    [Pure]
     [Obsolete("This method is needed to trick the XAML compiler, use the generic version instead")]
     public static string Convert(object value)
     {
@@ -27,7 +25,6 @@ public static class EnumConverter
     /// <typeparam name="T">The input<see cref="Enum"/> value to localize</typeparam>
     /// <param name="value">The input value to localize</param>
     /// <returns>A localized representation for <paramref name="value"/></returns>
-    [Pure]
     public static string Convert<T>(T value) where T : struct, Enum
     {
         return $"{typeof(T).Name}/{value}".GetLocalized();
@@ -39,7 +36,6 @@ public static class EnumConverter
     /// <param name="value">The input value to localize</param>
     /// <param name="scope">The scope to use to retrieve the localized text</param>
     /// <returns>A localized representation for <paramref name="value"/></returns>
-    [Pure]
     public static string Convert(object value, string scope)
     {
         throw new NotImplementedException();
@@ -52,7 +48,6 @@ public static class EnumConverter
     /// <param name="value">The input value to localize</param>
     /// <param name="scope">The scope to use to retrieve the localized text</param>
     /// <returns>A localized representation for <paramref name="value"/></returns>
-    [Pure]
     public static string Convert<T>(T value, string scope) where T : struct, Enum
     {
         return $"{typeof(T).Name}/{value}/{scope}".GetLocalized();

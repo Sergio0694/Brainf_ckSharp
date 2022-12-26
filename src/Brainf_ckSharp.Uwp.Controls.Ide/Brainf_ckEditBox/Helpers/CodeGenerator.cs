@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
 
@@ -16,7 +15,6 @@ internal static class CodeGenerator
     /// <param name="style">The current formatting style in use</param>
     /// <param name="depth">The current indentation depth level</param>
     /// <returns>A formatted autocomplete text</returns>
-    [Pure]
     public static unsafe string GetBracketAutocompleteText(BracketsFormattingStyle style, int depth)
     {
         Debug.Assert(depth >= 0);

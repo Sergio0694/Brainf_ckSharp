@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using CommunityToolkit.Diagnostics;
@@ -18,7 +17,6 @@ public static class XamlResources
     /// </summary>
     /// <typeparam name="T">The type of resource to retrieve</typeparam>
     /// <param name="key">The key of the resource to retrieve</param>
-    [Pure]
     public static T Get<T>(string key)
     {
         object value = Application.Current.Resources[key];
@@ -50,7 +48,6 @@ public static class XamlResources
         /// A helper function that returns the appropriate <see cref="Brush"/> from the XAML resource dictionary
         /// </summary>
         /// <param name="name">The name of the <see cref="Brush"/> to retrieve</param>
-        [Pure]
         private static Brush Get([CallerMemberName] string? name = null)
         {
             Guard.IsNotNull(name);
@@ -71,7 +68,6 @@ public static class XamlResources
         /// A helper function that returns the appropriate icon from the XAML resource dictionary
         /// </summary>
         /// <param name="name">The name of the icon to retrieve</param>
-        [Pure]
         private static string Get([CallerMemberName] string? name = null)
         {
             Guard.IsNotNull(name);

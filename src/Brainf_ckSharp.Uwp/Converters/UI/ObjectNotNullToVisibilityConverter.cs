@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using CommunityToolkit.HighPerformance;
 
@@ -17,7 +16,6 @@ public static class ObjectNotNullToVisibilityConverter
     /// </summary>
     /// <param name="obj">The input <see cref="object"/> instance</param>
     /// <returns><see cref="Visibility.Visible"/> if <paramref name="obj"/> is <see langword="null"/></returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Visibility Convert(object? obj)
     {

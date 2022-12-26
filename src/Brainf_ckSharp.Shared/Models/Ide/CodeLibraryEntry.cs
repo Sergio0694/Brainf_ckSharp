@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Buffers;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -75,7 +74,6 @@ public sealed class CodeLibraryEntry
     /// <param name="file">The input file to read data from</param>
     /// <param name="metadata">The metadata for the current file</param>
     /// <returns>A new <see cref="CodeLibraryEntry"/> instance for <paramref name="file"/></returns>
-    [Pure]
     public static async Task<CodeLibraryEntry?> TryLoadFromFileAsync(IFile file, CodeMetadata metadata)
     {
         try
@@ -98,7 +96,6 @@ public sealed class CodeLibraryEntry
     /// <param name="file">The input file to read data from</param>
     /// <param name="title">The name to use for the new <see cref="CodeLibraryEntry"/> instance</param>
     /// <returns>A new <see cref="CodeLibraryEntry"/> instance for <paramref name="file"/></returns>
-    [Pure]
     public static async Task<CodeLibraryEntry?> TryLoadFromFileAsync(IFile file, string title)
     {
         try
@@ -123,7 +120,6 @@ public sealed class CodeLibraryEntry
     /// </summary>
     /// <param name="file">The input <see cref="IFile"/> to read from</param>
     /// <returns>A <see cref="string"/> with a preview of the Brainf*ck/PBrain source code in <paramref name="file"/></returns>
-    [Pure]
     public static async Task<string> LoadCodePreviewAsync(IFile file)
     {
         // Open the input file and a streama reader to decode the text
@@ -168,7 +164,6 @@ public sealed class CodeLibraryEntry
     /// <param name="source">The source <see cref="ReadOnlySpan{T}"/> with the characters to read</param>
     /// <param name="destination">The target <see cref="Span{T}"/> to write the parsed operators to</param>
     /// <returns>The number of Brainf*ck/PBrain operators that have been parsed and written to <paramref name="destination"/></returns>
-    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int ExtractOperators(ReadOnlySpan<char> source, Span<char> destination)
     {

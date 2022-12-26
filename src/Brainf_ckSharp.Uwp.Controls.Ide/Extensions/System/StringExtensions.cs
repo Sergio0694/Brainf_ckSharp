@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Brainf_ckSharp.Constants;
@@ -20,7 +19,6 @@ internal static class StringExtensions
     /// </summary>
     /// <param name="text">The input text to parse and convert</param>
     /// <returns>A <see cref="string"/> equivalent to <paramref name="text"/>, with CR endings</returns>
-    [Pure]
     public static string WithCarriageReturnLineEndings(this string text)
     {
         if (text.Length == 0) return text;
@@ -37,7 +35,6 @@ internal static class StringExtensions
     /// <param name="text">The input script to parse</param>
     /// <param name="end">The end index for the parsing operation</param>
     /// <returns>The indentation depth for the script at the specified index</returns>
-    [Pure]
     public static int CalculateIndentationDepth(this string text, int end)
     {
         Debug.Assert(text.Length > 0);
@@ -69,7 +66,6 @@ internal static class StringExtensions
     /// <param name="text">The input script to parse</param>
     /// <param name="offset">The offset within <paramref name="text"/></param>
     /// <returns>The 2D coordinates within <paramref name="text"/></returns>
-    [Pure]
     public static (int Row, int Column) CalculateCoordinates(this string text, int offset)
     {
         Debug.Assert(offset >= 0);
@@ -95,7 +91,6 @@ internal static class StringExtensions
     /// <param name="row">The target row</param>
     /// <param name="column">The target column</param>
     /// <returns>The index for <paramref name="row"/> and <paramref name="column"/></returns>
-    [Pure]
     public static int CalculateIndex(this string text, int row, int column)
     {
         Debug.Assert(row >= 1);

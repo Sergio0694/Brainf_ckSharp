@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Brainf_ckSharp.Services;
 
@@ -18,6 +17,5 @@ public interface IClipboardService
     /// <summary>
     /// Tries to extract text from the clipboard
     /// </summary>
-    [Pure]
     Task<string?> TryGetTextAsync();
 }

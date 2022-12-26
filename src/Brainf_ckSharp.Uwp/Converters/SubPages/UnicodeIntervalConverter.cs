@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using Brainf_ckSharp.Shared.Models;
+﻿using Brainf_ckSharp.Shared.Models;
 using CommunityToolkit.Diagnostics;
 using Microsoft.Toolkit.Uwp;
 
@@ -19,7 +18,6 @@ public static class UnicodeIntervalConverter
     /// </summary>
     /// <param name="interval">The input <see cref="UnicodeInterval"/> instance</param>
     /// <returns>A <see cref="string"/> representing the input <see cref="UnicodeInterval"/> instance</returns>
-    [Pure]
     public static string ConvertDescription(UnicodeInterval interval)
     {
         return (interval.Start, interval.End) switch

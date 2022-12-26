@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using Brainf_ckSharp.Shared.Constants;
+﻿using Brainf_ckSharp.Shared.Constants;
 using CommunityToolkit.Diagnostics;
 using Microsoft.Toolkit.Uwp;
 
@@ -15,7 +14,6 @@ public static class CodeSnippetTitleConverter
     /// </summary>
     /// <param name="snippet">The input code snippet</param>
     /// <returns>The title for <paramref name="snippet"/></returns>
-    [Pure]
     public static string Convert(string snippet)
     {
         return snippet switch

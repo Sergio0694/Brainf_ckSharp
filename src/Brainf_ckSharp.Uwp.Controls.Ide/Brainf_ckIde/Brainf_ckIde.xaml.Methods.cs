@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Buffers;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Windows.System;
@@ -116,7 +115,6 @@ public sealed partial class Brainf_ckIde
     /// Gets a buffer with the existing breakpoints (their line numbers)
     /// </summary>
     /// <returns>A <see cref="MemoryOwner{T}"/> instance with the line numbers with a breakpoint.</returns>
-    [Pure]
     public IMemoryOwner<int> GetBreakpoints()
     {
         int count = BreakpointIndicators.Count;
