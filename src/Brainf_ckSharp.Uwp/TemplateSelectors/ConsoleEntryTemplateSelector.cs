@@ -1,63 +1,62 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.Models.Console;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 #nullable enable
 
-namespace Brainf_ckSharp.Uwp.TemplateSelectors
+namespace Brainf_ckSharp.Uwp.TemplateSelectors;
+
+/// <summary>
+/// A template selector for console entries
+/// </summary>
+public sealed class ConsoleEntryTemplateSelector : DataTemplateSelector
 {
     /// <summary>
-    /// A template selector for console entries
+    /// Gets or sets the <see cref="DataTemplate"/> for console commands
     /// </summary>
-    public sealed class ConsoleEntryTemplateSelector : DataTemplateSelector
+    public DataTemplate? CommandTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the <see cref="DataTemplate"/> for console textual results
+    /// </summary>
+    public DataTemplate? ResultTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the <see cref="DataTemplate"/> for console syntax errors
+    /// </summary>
+    public DataTemplate? SyntaxErrorTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the <see cref="DataTemplate"/> for console exceptions
+    /// </summary>
+    public DataTemplate? ExceptionTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the <see cref="DataTemplate"/> for console restart requests
+    /// </summary>
+    public DataTemplate? RestartTemplate { get; set; }
+
+    /// <inheritdoc/>
+    protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
     {
-        /// <summary>
-        /// Gets or sets the <see cref="DataTemplate"/> for console commands
-        /// </summary>
-        public DataTemplate? CommandTemplate { get; set; }
+        Guard.IsNotNull(item);
 
-        /// <summary>
-        /// Gets or sets the <see cref="DataTemplate"/> for console textual results
-        /// </summary>
-        public DataTemplate? ResultTemplate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="DataTemplate"/> for console syntax errors
-        /// </summary>
-        public DataTemplate? SyntaxErrorTemplate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="DataTemplate"/> for console exceptions
-        /// </summary>
-        public DataTemplate? ExceptionTemplate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="DataTemplate"/> for console restart requests
-        /// </summary>
-        public DataTemplate? RestartTemplate { get; set; }
-
-        /// <inheritdoc/>
-        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
+        DataTemplate? template = item switch
         {
-            Guard.IsNotNull(item, nameof(item));
+            ConsoleCommand _ => CommandTemplate,
+            ConsoleResult _ => ResultTemplate,
+            ConsoleSyntaxError _ => SyntaxErrorTemplate,
+            ConsoleException _ => ExceptionTemplate,
+            ConsoleRestart _ => RestartTemplate,
+            _ => ThrowHelper.ThrowArgumentException<DataTemplate>("Invalid input item type")
+        };
 
-            DataTemplate? template = item switch
-            {
-                ConsoleCommand _ => CommandTemplate,
-                ConsoleResult _ => ResultTemplate,
-                ConsoleSyntaxError _ => SyntaxErrorTemplate,
-                ConsoleException _ => ExceptionTemplate,
-                ConsoleRestart _ => RestartTemplate,
-                _ => ThrowHelper.ThrowArgumentException<DataTemplate>("Invalid input item type")
-            };
-
-            if (template is null)
-            {
-                ThrowHelper.ThrowInvalidOperationException("The requested template is null");
-            }
-
-            return template;
+        if (template is null)
+        {
+            ThrowHelper.ThrowInvalidOperationException("The requested template is null");
         }
+
+        return template;
     }
 }

@@ -56,7 +56,7 @@
                         Background="#FF1A1B1C"
                         Style="{StaticResource ExpandedSquareButtonRevealStyle}"
                         ToolTipService.ToolTip="Leave a review in the Store"
-                        Command="{x:Bind ViewModel.ReviewCommand}"
+                        Command="{x:Bind ViewModel.RequestReviewCommand}"
                         Click="ActionButton_OnClick">
                         <TextBlock
                             Text="😄"
@@ -75,7 +75,7 @@
                         Background="#FF1A1B1C"
                         Style="{StaticResource ExpandedSquareButtonRevealStyle}"
                         ToolTipService.ToolTip="Contact the developer"
-                        Command="{x:Bind ViewModel.FeedbackEmailCommand}"
+                        Command="{x:Bind ViewModel.SendFeedbackEmailCommand}"
                         Click="ActionButton_OnClick">
                         <TextBlock
                             Text="😥"

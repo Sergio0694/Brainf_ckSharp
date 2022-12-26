@@ -1,18 +1,17 @@
-﻿namespace Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces
+﻿namespace Brainf_ckSharp.Uwp.Controls.SubPages.Interfaces;
+
+/// <summary>
+/// An <see langword="interface"/> for a sub page with size constraints
+/// </summary>
+public interface IConstrainedSubPage
 {
     /// <summary>
-    /// An <see langword="interface"/> for a sub page with size constraints
+    /// Gets the maximum width for the current sub page
     /// </summary>
-    public interface IConstrainedSubPage
-    {
-        /// <summary>
-        /// Gets the maximum width for the current sub page
-        /// </summary>
-        double MaxExpandedWidth { get; }
+    double MaxExpandedWidth { get; }
 
-        /// <summary>
-        /// Gets the maximum height for the current sub page
-        /// </summary>
-        double MaxExpandedHeight { get; }
-    }
+    /// <summary>
+    /// Gets the maximum height for the current sub page
+    /// </summary>
+    double MaxExpandedHeight { get; }
 }

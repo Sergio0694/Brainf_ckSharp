@@ -14,7 +14,7 @@
     xmlns:views="using:Brainf_ckSharp.Uwp.Controls.SubPages.Views"
     xmlns:attachedProperties="using:Brainf_ckSharp.Uwp.AttachedProperties"
     xmlns:models="using:Brainf_ckSharp.Shared.Models.Ide.Views"
-    xmlns:collections="using:Microsoft.Toolkit.Collections"
+    xmlns:collections="using:CommunityToolkit.Mvvm.Collections"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"

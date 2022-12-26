@@ -4,33 +4,32 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-namespace Brainf_ckSharp.Uwp.Profiler
+namespace Brainf_ckSharp.Uwp.Profiler;
+
+/// <summary>
+/// An empty page that can be used on its own or navigated to within a Frame.
+/// </summary>
+public sealed partial class MainPage : Page
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class MainPage : Page
+    public MainPage()
     {
-        public MainPage()
-        {
-            this.InitializeComponent();
-        }
+        this.InitializeComponent();
+    }
 
-        /// <inheritdoc/>
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
-        {
-            await Task.Delay(2000);
+    /// <inheritdoc/>
+    protected override async void OnNavigatedTo(NavigationEventArgs e)
+    {
+        await Task.Delay(2000);
 
-            string result = await Brainf_ckBenchmark.RunAsync();
+        string result = await Brainf_ckBenchmark.RunAsync();
 
-            MarkdownTextBlock.Text = result;
-            ProgressBar.Visibility = Visibility.Collapsed;
+        MarkdownTextBlock.Text = result;
+        ProgressBar.Visibility = Visibility.Collapsed;
 
-            DataPackage package = new DataPackage { RequestedOperation = DataPackageOperation.Copy };
-            package.SetText(result);
+        DataPackage package = new() { RequestedOperation = DataPackageOperation.Copy };
+        package.SetText(result);
 
-            Clipboard.SetContent(package);
-            Clipboard.Flush();
-        }
+        Clipboard.SetContent(package);
+        Clipboard.Flush();
     }
 }

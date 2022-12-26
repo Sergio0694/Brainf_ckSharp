@@ -35,6 +35,10 @@
     <SolidColorBrush x:Key="SubFrameBackgroundBrush" Color="{StaticResource SubFrameBackgroundColor}"/>
     <SolidColorBrush x:Key="SubFrameBorderBrush" Color="#FF555555"/>
 
+    <!--Shell-->
+    <Color x:Key="CommandBarBackgroundColor">#FF1F1F1F</Color>
+    <SolidColorBrush x:Key="CommandBarBackgroundBrush" Color="{StaticResource CommandBarBackgroundColor}"/>
+
     <!--Commands-->
     <Color x:Key="RunColor">#FF008000</Color>
     <SolidColorBrush x:Key="RunBrush" Color="{StaticResource RunColor}"/>

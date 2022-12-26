@@ -6,63 +6,62 @@ using Windows.UI.Xaml.Media;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 #nullable enable
 
-namespace Brainf_ckSharp.Uwp.Controls.DataTemplates
+namespace Brainf_ckSharp.Uwp.Controls.DataTemplates;
+
+public sealed partial class FeaturedLinkTemplate : UserControl
 {
-    public sealed partial class FeaturedLinkTemplate : UserControl
+    public FeaturedLinkTemplate()
     {
-        public FeaturedLinkTemplate()
-        {
-            this.InitializeComponent();
-        }
+        this.InitializeComponent();
+    }
 
-        /// <summary>
-        /// Gets or sets the <see cref="ImageSource"/> for the image to display
-        /// </summary>
-        public ImageSource? Image
-        {
-            get => (ImageSource)GetValue(ImageProperty);
-            set => SetValue(ImageProperty, value);
-        }
+    /// <summary>
+    /// Gets or sets the <see cref="ImageSource"/> for the image to display
+    /// </summary>
+    public ImageSource? Image
+    {
+        get => (ImageSource)GetValue(ImageProperty);
+        set => SetValue(ImageProperty, value);
+    }
 
-        /// <summary>
-        /// The dependency property for <see cref="Image"/>
-        /// </summary>
-        public static readonly DependencyProperty ImageProperty = DependencyProperty.Register(
-            nameof(Image),
-            typeof(ImageSource),
-            typeof(FeaturedLinkTemplate),
-            new(default(ImageSource)));
+    /// <summary>
+    /// The dependency property for <see cref="Image"/>
+    /// </summary>
+    public static readonly DependencyProperty ImageProperty = DependencyProperty.Register(
+        nameof(Image),
+        typeof(ImageSource),
+        typeof(FeaturedLinkTemplate),
+        new(default(ImageSource)));
 
-        /// <summary>
-        /// Gets or sets the <see cref="string"/> with the URL to navigate to
-        /// </summary>
-        public string? NavigationUrl
-        {
-            get => (string?)GetValue(NavigationUrlProperty);
-            set => SetValue(NavigationUrlProperty, value);
-        }
+    /// <summary>
+    /// Gets or sets the <see cref="string"/> with the URL to navigate to
+    /// </summary>
+    public string? NavigationUrl
+    {
+        get => (string?)GetValue(NavigationUrlProperty);
+        set => SetValue(NavigationUrlProperty, value);
+    }
 
-        /// <summary>
-        /// The dependency property for <see cref="Image"/>
-        /// </summary>
-        public static readonly DependencyProperty NavigationUrlProperty = DependencyProperty.Register(
-            nameof(NavigationUrl),
-            typeof(string),
-            typeof(FeaturedLinkTemplate),
-            new(default(string)));
+    /// <summary>
+    /// The dependency property for <see cref="Image"/>
+    /// </summary>
+    public static readonly DependencyProperty NavigationUrlProperty = DependencyProperty.Register(
+        nameof(NavigationUrl),
+        typeof(string),
+        typeof(FeaturedLinkTemplate),
+        new(default(string)));
 
-        // Opens the featured link
-        private void RootButton_Clicked(object sender, RoutedEventArgs e)
-        {
-            Guard.IsNotNull(NavigationUrl, nameof(NavigationUrl));
+    // Opens the featured link
+    private void RootButton_Clicked(object sender, RoutedEventArgs e)
+    {
+        Guard.IsNotNull(NavigationUrl);
 
-            _ = Launcher.LaunchUriAsync(new Uri(NavigationUrl));
+        _ = Launcher.LaunchUriAsync(new Uri(NavigationUrl));
 
-            App.Current.Services.GetRequiredService<IAnalyticsService>().Log(EventNames.PayPalDonationOpened);
-        }
+        App.Current.Services.GetRequiredService<IAnalyticsService>().Log(EventNames.PayPalDonationOpened);
     }
 }

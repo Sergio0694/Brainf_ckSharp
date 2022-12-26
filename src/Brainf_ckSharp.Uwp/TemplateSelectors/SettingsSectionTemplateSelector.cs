@@ -1,51 +1,50 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 #nullable enable
 
-namespace Brainf_ckSharp.Uwp.TemplateSelectors
+namespace Brainf_ckSharp.Uwp.TemplateSelectors;
+
+/// <summary>
+/// A template selector for settings sections
+/// </summary>
+public sealed class SettingsSectionTemplateSelector : DataTemplateSelector
 {
     /// <summary>
-    /// A template selector for settings sections
+    /// Gets or sets the <see cref="DataTemplate"/> for the IDE settings
     /// </summary>
-    public sealed class SettingsSectionTemplateSelector : DataTemplateSelector
+    public DataTemplate? IdeSettingsTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the <see cref="DataTemplate"/> for the UI settings
+    /// </summary>
+    public DataTemplate? UISettingsTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the <see cref="DataTemplate"/> for the interpreter settings
+    /// </summary>
+    public DataTemplate? InterpreterSettingsTemplate { get; set; }
+
+    /// <inheritdoc/>
+    protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
     {
-        /// <summary>
-        /// Gets or sets the <see cref="DataTemplate"/> for the IDE settings
-        /// </summary>
-        public DataTemplate? IdeSettingsTemplate { get; set; }
+        Guard.IsNotNull(item);
 
-        /// <summary>
-        /// Gets or sets the <see cref="DataTemplate"/> for the UI settings
-        /// </summary>
-        public DataTemplate? UISettingsTemplate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="DataTemplate"/> for the interpreter settings
-        /// </summary>
-        public DataTemplate? InterpreterSettingsTemplate { get; set; }
-
-        /// <inheritdoc/>
-        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
+        DataTemplate? template = item switch
         {
-            Guard.IsNotNull(item, nameof(item));
+            IdeSettingsSectionViewModel _ => IdeSettingsTemplate,
+            UISettingsSectionViewModel _ => UISettingsTemplate,
+            InterpreterSettingsSectionViewModel _ => InterpreterSettingsTemplate,
+            _ => ThrowHelper.ThrowArgumentException<DataTemplate>("Invalid requested section")
+        };
 
-            DataTemplate? template = item switch
-            {
-                IdeSettingsSectionViewModel _ => IdeSettingsTemplate,
-                UISettingsSectionViewModel _ => UISettingsTemplate,
-                InterpreterSettingsSectionViewModel _ => InterpreterSettingsTemplate,
-                _ => ThrowHelper.ThrowArgumentException<DataTemplate>("Invalid requested section")
-            };
-
-            if (template is null)
-            {
-                ThrowHelper.ThrowInvalidOperationException("The requested template is null");
-            }
-
-            return template;
+        if (template is null)
+        {
+            ThrowHelper.ThrowInvalidOperationException("The requested template is null");
         }
+
+        return template;
     }
 }

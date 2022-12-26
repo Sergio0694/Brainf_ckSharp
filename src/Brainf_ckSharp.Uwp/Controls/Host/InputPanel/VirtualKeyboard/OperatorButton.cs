@@ -4,63 +4,62 @@ using Windows.UI.Xaml.Controls;
 
 #nullable enable
 
-namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel
+namespace Brainf_ckSharp.Uwp.Controls.Host.InputPanel;
+
+/// <summary>
+/// A templated <see cref="Control"/> for a Brainf*ck/PBrain operator
+/// </summary>
+public sealed class OperatorButton : Control
 {
     /// <summary>
-    /// A templated <see cref="Control"/> for a Brainf*ck/PBrain operator
+    /// Gets or sets the operator for the current control
     /// </summary>
-    public sealed class OperatorButton : Control
+    public char Operator
     {
-        /// <summary>
-        /// Gets or sets the operator for the current control
-        /// </summary>
-        public char Operator
-        {
-            get => (char)GetValue(OperatorProperty);
-            set => SetValue(OperatorProperty, value);
-        }
-
-        /// <summary>
-        /// The dependency property for <see cref="Operator"/>
-        /// </summary>
-        public static readonly DependencyProperty OperatorProperty = DependencyProperty.Register(
-            nameof(Operator),
-            typeof(char),
-            typeof(OperatorButton),
-            new(default(char)));
-
-        /// <summary>
-        /// Gets or sets the description for the current control
-        /// </summary>
-        public string Description
-        {
-            get => (string)GetValue(DescriptionProperty);
-            set => SetValue(DescriptionProperty, value);
-        }
-
-        /// <summary>
-        /// The dependency property for <see cref="Description"/>
-        /// </summary>
-        public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
-            nameof(Description),
-            typeof(string),
-            typeof(OperatorButton),
-            new(string.Empty));
-
-        /// <inheritdoc cref="Button.Command"/>
-        public ICommand Command
-        {
-            get => (ICommand)GetValue(CommandProperty);
-            set => SetValue(CommandProperty, value);
-        }
-
-        /// <summary>
-        /// The dependency property for <see cref="Command"/>
-        /// </summary>
-        public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(
-            nameof(Command),
-            typeof(ICommand),
-            typeof(OperatorButton),
-            new(null));
+        get => (char)GetValue(OperatorProperty);
+        set => SetValue(OperatorProperty, value);
     }
+
+    /// <summary>
+    /// The dependency property for <see cref="Operator"/>
+    /// </summary>
+    public static readonly DependencyProperty OperatorProperty = DependencyProperty.Register(
+        nameof(Operator),
+        typeof(char),
+        typeof(OperatorButton),
+        new(default(char)));
+
+    /// <summary>
+    /// Gets or sets the description for the current control
+    /// </summary>
+    public string Description
+    {
+        get => (string)GetValue(DescriptionProperty);
+        set => SetValue(DescriptionProperty, value);
+    }
+
+    /// <summary>
+    /// The dependency property for <see cref="Description"/>
+    /// </summary>
+    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
+        nameof(Description),
+        typeof(string),
+        typeof(OperatorButton),
+        new(string.Empty));
+
+    /// <inheritdoc cref="Button.Command"/>
+    public ICommand Command
+    {
+        get => (ICommand)GetValue(CommandProperty);
+        set => SetValue(CommandProperty, value);
+    }
+
+    /// <summary>
+    /// The dependency property for <see cref="Command"/>
+    /// </summary>
+    public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(
+        nameof(Command),
+        typeof(ICommand),
+        typeof(OperatorButton),
+        new(null));
 }
