@@ -27,7 +27,7 @@ public static class ScriptLoader
         string filename = assembly.GetManifestResourceNames().First(path => path.EndsWith($"{name}.txt"));
 
         using Stream stream = assembly.GetManifestResourceStream(filename)!;
-        using StreamReader reader = new StreamReader(stream);
+        using StreamReader reader = new(stream);
 
         string text = reader.ReadToEnd();
         string[] parts = text.Split("|").Select(p => p.TrimStart().Replace("\r", string.Empty)).ToArray();

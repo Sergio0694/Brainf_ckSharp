@@ -34,7 +34,7 @@ public static class Brainf_ckBenchmark
         StorageFolder scriptsFolder = await Package.Current.InstalledLocation.GetFolderAsync(@"Assets\Scripts");
         IReadOnlyCollection<StorageFile> scriptFiles = await scriptsFolder.GetFilesAsync();
 
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new();
 
         builder.AppendLine("|         Test |  Config. |         Mean |          Min |          Max |");
         builder.AppendLine("|-------------:|----------|-------------:|-------------:|-------------:|");
@@ -52,7 +52,7 @@ public static class Brainf_ckBenchmark
                     text = reader.ReadToEnd();
                 string[] parts = text.Split("|").Select(p => p.TrimStart().Replace("\r", string.Empty)).ToArray();
 
-                Script script = new Script(
+                Script script = new(
                     parts[0],
                     parts[1],
                     int.Parse(parts[2]),
@@ -97,7 +97,7 @@ public static class Brainf_ckBenchmark
 
         Span<TimeSpan> times = stackalloc TimeSpan[NumberOfRuns];
 
-        Stopwatch timer = new Stopwatch();
+        Stopwatch timer = new();
 
         for (int i = 0; i < NumberOfRuns; i++)
         {

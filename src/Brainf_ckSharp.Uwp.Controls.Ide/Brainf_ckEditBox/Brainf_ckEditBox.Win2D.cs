@@ -40,7 +40,7 @@ internal sealed partial class Brainf_ckEditBox
     /// The optional <see cref="CanvasStrokeStyle"/> for the vertical column guides
     /// </summary>
     /// <remarks>This field is updated from <see cref="OnSyntaxHighlightThemePropertyChanged"/></remarks>
-    private CanvasStrokeStyle _DashStrokeStyle = new CanvasStrokeStyle { CustomDashStyle = new float[] { 2, 5 } };
+    private CanvasStrokeStyle _DashStrokeStyle = new() { CustomDashStyle = new float[] { 2, 5 } };
 
     /// <summary>
     /// The current sequence of bracket pairs being displayed in the text
@@ -121,7 +121,7 @@ internal sealed partial class Brainf_ckEditBox
         // Spaces
         foreach (Rect spaceArea in _SpaceAreas.Span)
         {
-            Rect dot = new Rect
+            Rect dot = new()
             {
                 Height = 2,
                 Width = 2,
@@ -138,7 +138,7 @@ internal sealed partial class Brainf_ckEditBox
             if (width < 12)
             {
                 // Small dot at the center
-                Rect dot = new Rect
+                Rect dot = new()
                 {
                     Height = 2,
                     Width = 2,

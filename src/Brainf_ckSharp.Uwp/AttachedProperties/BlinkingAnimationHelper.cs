@@ -57,7 +57,7 @@ public static class BlinkingAnimationHelper
         if (value)
         {
             // Create the new blinking animation
-            DoubleAnimationUsingKeyFrames animation = new DoubleAnimationUsingKeyFrames
+            DoubleAnimationUsingKeyFrames animation = new()
             {
                 AutoReverse = true,
                 RepeatBehavior = RepeatBehavior.Forever,

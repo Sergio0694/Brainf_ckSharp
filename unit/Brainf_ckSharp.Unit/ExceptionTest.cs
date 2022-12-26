@@ -36,7 +36,7 @@ public class ExceptionTest
     [TestMethod]
     public void ThresholdExceeded()
     {
-        CancellationTokenSource cts = new CancellationTokenSource(500);
+        CancellationTokenSource cts = new(500);
 
         const string script = "+[+-]";
 

@@ -253,7 +253,7 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     /// </summary>
     public async Task SaveStateAsync()
     {
-        IdeState state = new IdeState
+        IdeState state = new()
         {
             FilePath = Code.File?.Path,
             Text = Text.ToString(),

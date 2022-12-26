@@ -44,7 +44,7 @@ public static class ItemsWrapGridHelper
     /// <summary>
     /// A table that keeps track of <see cref="ItemsWrapGrid"/> instances with an already added <see cref="FrameworkElement.SizeChanged"/> handler for <see cref="DesiredItemWidthProperty"/>
     /// </summary>
-    private static readonly ConditionalWeakTable<ItemsWrapGrid, object?> ControlsMap = new ConditionalWeakTable<ItemsWrapGrid, object?>();
+    private static readonly ConditionalWeakTable<ItemsWrapGrid, object?> ControlsMap = new();
 
     /// <summary>
     /// Updates the UI when <see cref="DesiredItemWidthProperty"/> changes

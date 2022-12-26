@@ -26,7 +26,7 @@ public sealed partial class MainPage : Page
         MarkdownTextBlock.Text = result;
         ProgressBar.Visibility = Visibility.Collapsed;
 
-        DataPackage package = new DataPackage { RequestedOperation = DataPackageOperation.Copy };
+        DataPackage package = new() { RequestedOperation = DataPackageOperation.Copy };
         package.SetText(result);
 
         Clipboard.SetContent(package);

@@ -91,7 +91,7 @@ public static partial class Brainf_ckInterpreter
             stackFrames.DangerousGetReference() = new StackFrame(new Range(0, opcodes.Length), 0);
 
             // Setup the stdin and stdout readers and writers
-            StdinBuffer.Reader stdinReader = new StdinBuffer.Reader(stdin);
+            StdinBuffer.Reader stdinReader = new(stdin);
             StdoutBuffer.Writer stdoutWriter = stdout.CreateWriter();
 
             // Create the execution session

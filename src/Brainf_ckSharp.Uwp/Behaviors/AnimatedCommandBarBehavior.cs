@@ -84,7 +84,7 @@ public sealed class AnimatedCommandBarBehavior : Behavior<CommandBar>
         // Creates and starts a storyboard animation for the specified transition
         static void StartButtonAnimation(FrameworkElement button, int delay, int startX, int endX, double startOpacity, double endOpacity)
         {
-            DoubleAnimation translationAnimation = new DoubleAnimation
+            DoubleAnimation translationAnimation = new()
             {
                 From = startX,
                 To = endX,
@@ -98,7 +98,7 @@ public sealed class AnimatedCommandBarBehavior : Behavior<CommandBar>
             Storyboard.SetTarget(translationAnimation, button.RenderTransform);
             Storyboard.SetTargetProperty(translationAnimation, nameof(TranslateTransform.X));
 
-            DoubleAnimation opacityAnimation = new DoubleAnimation
+            DoubleAnimation opacityAnimation = new()
             {
                 From = startOpacity,
                 To = endOpacity,
@@ -109,7 +109,7 @@ public sealed class AnimatedCommandBarBehavior : Behavior<CommandBar>
             Storyboard.SetTarget(opacityAnimation, button);
             Storyboard.SetTargetProperty(opacityAnimation, nameof(UIElement.Opacity));
 
-            Storyboard storyboard = new Storyboard
+            Storyboard storyboard = new()
             {
                 BeginTime = TimeSpan.FromMilliseconds(delay),
                 Children =

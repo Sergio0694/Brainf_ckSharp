@@ -25,10 +25,10 @@ internal sealed class ResourceLoader
             newPath = assembly.GetManifestResourceNames().First(name => name.EndsWith($"{key}New.txt"));
 
         using Stream oldStream = assembly.GetManifestResourceStream(oldPath)!;
-        using StreamReader oldReader = new StreamReader(oldStream);
+        using StreamReader oldReader = new(oldStream);
 
         using Stream newStream = assembly.GetManifestResourceStream(newPath)!;
-        using StreamReader newReader = new StreamReader(newStream);
+        using StreamReader newReader = new(newStream);
 
         string
             oldText = oldReader.ReadToEnd(),

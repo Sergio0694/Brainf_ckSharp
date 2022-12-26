@@ -17,7 +17,7 @@ public sealed class ClipboardService : IClipboardService
     {
         try
         {
-            DataPackage package = new DataPackage { RequestedOperation = DataPackageOperation.Copy };
+            DataPackage package = new() { RequestedOperation = DataPackageOperation.Copy };
             package.SetText(text);
             Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(package);
 

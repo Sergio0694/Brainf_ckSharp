@@ -160,7 +160,7 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
             false => _SyntaxValidationResult.ErrorOffset
         };
 
-        TaskCompletionSource<object?> tcs = new TaskCompletionSource<object?>();
+        TaskCompletionSource<object?> tcs = new();
 
         bool hasViewChanged = false;
 

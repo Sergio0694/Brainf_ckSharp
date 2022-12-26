@@ -13,7 +13,7 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-        Parser parser = new Parser(options =>
+        Parser parser = new(options =>
         {
             options.CaseInsensitiveEnumValues = true;
             options.IgnoreUnknownArguments = false;

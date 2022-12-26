@@ -63,7 +63,7 @@ public sealed class FilesService : IFilesService
     public async Task<IFile?> TryPickOpenFileAsync(string extension)
     {
         // Create the file picker
-        FileOpenPicker picker = new FileOpenPicker
+        FileOpenPicker picker = new()
         {
             ViewMode = PickerViewMode.List,
             SuggestedStartLocation = PickerLocationId.DocumentsLibrary
@@ -84,7 +84,7 @@ public sealed class FilesService : IFilesService
     public async Task<IFile?> TryPickSaveFileAsync(string filename, (string Name, string Extension) fileType)
     {
         // Create the file picker
-        FileSavePicker picker = new FileSavePicker
+        FileSavePicker picker = new()
         {
             SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
             DefaultFileExtension = fileType.Extension,

@@ -29,7 +29,7 @@ internal static class ClipboardHelper
     {
         try
         {
-            DataPackage package = new DataPackage { RequestedOperation = DataPackageOperation.Copy };
+            DataPackage package = new() { RequestedOperation = DataPackageOperation.Copy };
 
             package.SetText(text);
 

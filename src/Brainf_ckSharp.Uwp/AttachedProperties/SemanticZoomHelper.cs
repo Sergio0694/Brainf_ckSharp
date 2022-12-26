@@ -60,7 +60,7 @@ public static class SemanticZoomHelper
 
         if (e.NewValue is IEnumerable value)
         {
-            CollectionViewSource source = new CollectionViewSource
+            CollectionViewSource source = new()
             {
                 IsSourceGrouped = true,
                 Source = value

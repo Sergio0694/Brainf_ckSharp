@@ -24,7 +24,7 @@ public static class LineDiffer
     /// <summary>
     /// The reusable <see cref="DictionarySlim{TKey,TValue}"/>
     /// </summary>
-    private static readonly DictionarySlim<int, DiffEntry> LinesMap = new DictionarySlim<int, DiffEntry>();
+    private static readonly DictionarySlim<int, DiffEntry> LinesMap = new();
 
     /// <summary>
     /// Computes the line difference for a reference text and a new text

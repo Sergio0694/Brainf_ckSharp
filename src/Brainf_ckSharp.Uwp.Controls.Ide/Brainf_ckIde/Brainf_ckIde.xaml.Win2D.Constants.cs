@@ -94,7 +94,7 @@ public sealed partial class Brainf_ckIde
     /// <summary>
     /// The text format for text overlays
     /// </summary>
-    private static readonly CanvasTextFormat TextFormat = new CanvasTextFormat { FontSize = 8 };
+    private static readonly CanvasTextFormat TextFormat = new() { FontSize = 8 };
 
     /// <summary>
     /// The top padding for the start of the breakpoint indicators
