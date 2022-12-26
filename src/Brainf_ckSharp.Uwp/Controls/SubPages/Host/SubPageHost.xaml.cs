@@ -114,7 +114,7 @@ public sealed partial class SubPageHost : UserControl
     {
         using (await SubFrameLock.LockAsync())
         {
-            if (!(SubPage is UserControl page)) return;
+            if (SubPage is not UserControl page) return;
 
             page.IsHitTestVisible = false;
             RootGrid.Visibility = SubFrameContentHost.Visibility = Visibility.Collapsed;

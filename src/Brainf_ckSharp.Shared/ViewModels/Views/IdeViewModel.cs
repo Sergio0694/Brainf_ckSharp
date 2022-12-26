@@ -120,7 +120,7 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     {
         AnalyticsService.Log(EventNames.LoadLibrarySourceCode);
 
-        if (!(code.File is null) &&
+        if (code.File is not null &&
             FilesManagerService.TrySwitchTo(code.File))
         {
             AnalyticsService.Log(EventNames.SwitchToFile);
@@ -130,7 +130,7 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
 
         Code = code;
 
-        if (!(code.File is null))
+        if (code.File is not null)
         {
             _ = FilesHistoryService.LogOrUpdateActivityAsync(code.File);
         }
@@ -158,7 +158,7 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     {
         AnalyticsService.Log(EventNames.PickFileRequest);
 
-        if (!(await FilesService.TryPickOpenFileAsync(".bfs") is IFile file)) return;
+        if (await FilesService.TryPickOpenFileAsync(".bfs") is not IFile file) return;
 
         if (FilesManagerService.TrySwitchTo(file))
         {
@@ -228,7 +228,7 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task TrySaveTextAsAsync()
     {
-        if (!(await FilesService.TryPickSaveFileAsync(string.Empty, (string.Empty, ".bfs")) is IFile file)) return;
+        if (await FilesService.TryPickSaveFileAsync(string.Empty, (string.Empty, ".bfs")) is not IFile file) return;
 
         if (FilesManagerService.TrySwitchTo(file))
         {
@@ -289,7 +289,7 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
                 temporaryPath = FilesService.TemporaryFilesPath,
                 statePath = Path.Combine(temporaryPath, "state.json");
 
-            if (!(await FilesService.TryGetFileFromPathAsync(statePath) is IFile jsonFile))
+            if (await FilesService.TryGetFileFromPathAsync(statePath) is not IFile jsonFile)
                 return;
 
             using Stream stream = await jsonFile.OpenStreamForReadAsync();
@@ -314,7 +314,7 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
             Row = state.Row;
             Column = state.Column;
 
-            if (!(Code.File is null))
+            if (Code.File is not null)
             {
                 _ = FilesHistoryService.LogOrUpdateActivityAsync(Code.File);
             }

@@ -68,7 +68,7 @@ public sealed partial class Brainf_ckIde
         i = 0;
         foreach (var indicator in _IndentationIndicators.Span)
         {
-            if (!(indicator is null))
+            if (indicator is not null)
             {
                 // Manually perform the type checks and unsafe casts to skip
                 // the multiple null and type checking produced by the C# compiler

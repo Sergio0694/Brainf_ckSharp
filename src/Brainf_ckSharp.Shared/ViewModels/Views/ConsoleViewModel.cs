@@ -222,7 +222,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     {
         using (await ExecutionMutex.LockAsync())
         {
-            if (!(Source.LastOrDefault() is ConsoleCommand command))
+            if (Source.LastOrDefault() is not ConsoleCommand command)
             {
                 ThrowHelper.ThrowInvalidOperationException("Missing console command to run");
 
@@ -287,7 +287,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
         {
             if (Source.Reverse().OfType<ConsoleCommand>().Skip(1).FirstOrDefault() is ConsoleCommand previous)
             {
-                if (!(Source.LastOrDefault() is ConsoleCommand current))
+                if (Source.LastOrDefault() is not ConsoleCommand current)
                 {
                     ThrowHelper.ThrowInvalidOperationException("Missing console command to run");
 

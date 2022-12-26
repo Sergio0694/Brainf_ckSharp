@@ -130,7 +130,7 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
 
         if (_Buffer is null) ThrowObjectDisposedException();
 
-        if (!(other is TuringMachineState state)) return false;
+        if (other is not TuringMachineState state) return false;
 
         if (state._Buffer is null) ThrowObjectDisposedException();
 

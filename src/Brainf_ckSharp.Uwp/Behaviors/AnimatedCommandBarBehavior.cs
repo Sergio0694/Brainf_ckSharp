@@ -92,7 +92,7 @@ public sealed class AnimatedCommandBarBehavior : Behavior<CommandBar>
                 Duration = new Duration(TimeSpan.FromMilliseconds(ContentAnimationDuration))
             };
 
-            if (!(button.RenderTransform is TranslateTransform))
+            if (button.RenderTransform is not TranslateTransform)
                 button.RenderTransform = new TranslateTransform();
 
             Storyboard.SetTarget(translationAnimation, button.RenderTransform);

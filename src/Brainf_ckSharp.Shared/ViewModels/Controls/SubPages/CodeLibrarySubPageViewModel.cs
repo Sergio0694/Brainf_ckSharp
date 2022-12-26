@@ -192,7 +192,7 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
         }
         else
         {
-            if (!(await SourceCode.TryLoadFromEditableFileAsync(entry.File) is SourceCode sourceCode)) return;
+            if (await SourceCode.TryLoadFromEditableFileAsync(entry.File) is not SourceCode sourceCode) return;
 
             Messenger.Send(new LoadSourceCodeRequestMessage(sourceCode));
         }

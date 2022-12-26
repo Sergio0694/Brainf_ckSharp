@@ -25,7 +25,7 @@ public sealed class ProductionStoreService : IStoreService
     /// <inheritdoc/>
     public async Task<bool> IsProductPurchasedAsync(string id)
     {
-        if (!(await StoreContext.GetAppLicenseAsync() is StoreAppLicense license)) return false;
+        if (await StoreContext.GetAppLicenseAsync() is not StoreAppLicense license) return false;
 
         return license.AddOnLicenses
             .FirstOrDefault(pair => pair.Value.InAppOfferToken.Equals(id))

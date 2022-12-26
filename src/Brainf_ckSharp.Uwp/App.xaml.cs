@@ -52,7 +52,7 @@ public sealed partial class App : Application
     /// <summary>
     /// Gets whether or not there is a file request pending
     /// </summary>
-    public bool IsFileRequestPending => !(_RequestedFile is null);
+    public bool IsFileRequestPending => _RequestedFile is not null;
 
     public SubPageHost? _SubPageHost;
 
@@ -72,7 +72,7 @@ public sealed partial class App : Application
 
         _RequestedFile = null;
 
-        return !(file is null);
+        return file is not null;
     }
 
     /// <inheritdoc/>
@@ -106,7 +106,7 @@ public sealed partial class App : Application
     {
         Uri? uri = (args as ProtocolActivatedEventArgs)?.Uri;
 
-        if (!(uri is null))
+        if (uri is not null)
         {
             // The app is activated only in two cases: either from a /switch protocol
             // to focus an instance with a requested file already loaded from the IDE, or
@@ -151,7 +151,7 @@ public sealed partial class App : Application
     private void OnActivated(bool prelaunchActivated)
     {
         // Initialize the UI if needed
-        if (!(Window.Current.Content is Shell))
+        if (Window.Current.Content is not Shell)
         {
             InitializeServices();
 

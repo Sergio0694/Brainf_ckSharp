@@ -62,14 +62,14 @@ public static class ListViewBaseHelper
             newValue = (INotifyCollectionChanged?)e.NewValue;
 
         // Remove the old handler, if necessary
-        if (!(oldValue is null))
+        if (oldValue is not null)
         {
             ControlsMap.Remove(oldValue);
             oldValue.CollectionChanged -= INotifyCollectionChanged_CollectionChanged;
         }
 
         // Register the new collection, if needed
-        if (!(newValue is null))
+        if (newValue is not null)
         {
             ControlsMap.Add(newValue, @this);
             newValue.CollectionChanged += INotifyCollectionChanged_CollectionChanged;

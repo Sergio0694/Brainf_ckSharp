@@ -26,7 +26,7 @@ public sealed class ShareService : IShareService
 
     private void InitializeDataTransferManager()
     {
-        if (!(_DataTransferManager is null)) return;
+        if (_DataTransferManager is not null) return;
 
         _DataTransferManager = DataTransferManager.GetForCurrentView();
         _DataTransferManager.DataRequested += DataTransferManager_DataRequested;
