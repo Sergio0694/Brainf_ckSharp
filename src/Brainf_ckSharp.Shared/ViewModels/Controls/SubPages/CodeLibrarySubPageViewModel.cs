@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums;
-using Brainf_ckSharp.Shared.Extensions.System.Collections.Generic;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Brainf_ckSharp.Shared.Models.Ide;
 using CommunityToolkit.Diagnostics;
@@ -65,6 +64,11 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
         ("Fibonacci", "Fibonacci"),
         ("Header comment", "HeaderComment")
     };
+
+    /// <summary>
+    /// The <see cref="IComparer{T}"/> instance to compare <see cref="Source"/> items.
+    /// </summary>
+    private static IComparer<object?> SourceItemEditTimeComparer { get; } = Comparer<object?>.Create(CompareSourceItemByEditTime);
 
     /// <summary>
     /// The cached collection of sample codes, if available
@@ -205,13 +209,6 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
         
         AnalyticsService.Log(EventNames.ToggleFavoriteSourceCode, (nameof(CodeMetadata.IsFavorited), entry.Metadata.IsFavorited.ToString()));
 
-        // Shared comparison function to insert items in a target group
-        static int Comparer(object a, object b)
-        {
-            if (a is CodeLibraryEntry left && b is CodeLibraryEntry right) return left.EditTime.CompareTo(right.EditTime);
-            return -1;
-        }
-
         // If the current item is favorited, set is as not favorited
         // and move it back into the recent files section.
         // If the favorites section becomes empty, remove it entirely.
@@ -219,15 +216,15 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
         {
             entry.Metadata.IsFavorited = false;
 
-            Source[0].Remove(entry);
-            Source[1].InsertSorted(entry, Comparer);
+            Source.RemoveItem(CodeLibrarySection.Favorites, entry);
+            Source.InsertItem(CodeLibrarySection.Recent, Comparer<CodeLibrarySection>.Default, entry, SourceItemEditTimeComparer);
         }
         else
         {
             entry.Metadata.IsFavorited = true;
 
-            Source[1].Remove(entry);
-            Source[0].InsertSorted(entry, Comparer);
+            Source.RemoveItem(CodeLibrarySection.Recent, entry);
+            Source.InsertItem(CodeLibrarySection.Favorites, Comparer<CodeLibrarySection>.Default, entry, SourceItemEditTimeComparer);
         }
 
         entry.File.RequestFutureAccessPermission(JsonSerializer.Serialize(entry.Metadata));
@@ -311,5 +308,21 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
         return Task.WhenAll(
             FilesHistoryService.RemoveActivityAsync(entry.File),
             entry.File.DeleteAsync());
+    }
+
+    /// <summary>
+    /// Compares two <see cref="Source"/> items by their edit time, assuming they are <see cref="CodeLibraryEntry"/> instances.
+    /// </summary>
+    /// <param name="a">The first item to compare.</param>
+    /// <param name="b">The second iteme to compare.</param>
+    /// <returns>The comparison result.</returns>
+    private static int CompareSourceItemByEditTime(object? a, object? b)
+    {
+        if (a is CodeLibraryEntry left && b is CodeLibraryEntry right)
+        {
+            return left.EditTime.CompareTo(right.EditTime);
+        }
+
+        return -1;
     }
 }
