@@ -1,0 +1,44 @@
+name: CI
+
+on: [pull_request]
+
+jobs:
+
+  # Build the whole solution
+  build-solution:
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+        platform: [x64, arm64]
+    runs-on: windows-2022
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v3
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+    - name: Build
+      run: msbuild -t:restore,build /p:Configuration=${{matrix.configuration}} /p:Platform=${{matrix.platform}} /bl
+    - name: Upload MSBuild binary log
+      uses: actions/upload-artifact@v3
+      with:
+        name: msbuild_log_${{matrix.configuration}}_${{matrix.platform}}
+        path: msbuild.binlog
+        if-no-files-found: error
+
+  # Run all unit tests
+  run-tests:
+    needs: [build-solution]
+    strategy:
+      matrix:
+        framework: [netcoreapp3.1]
+    runs-on: windows-2022
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v3
+    - name: Run Brainf_ckSharp.Unit
+      run: dotnet test unit\Brainf_ckSharp.Unit\Brainf_ckSharp.Unit.csproj -c Release -f ${{matrix.framework}} -v n -l "console;verbosity=detailed"
+    - name: Run Brainf_ckSharp.Unit.Internals
+      run: dotnet test unit\Brainf_ckSharp.Unit.Internals\Brainf_ckSharp.Unit.Internals.csproj -c Release -f ${{matrix.framework}} -v n -l "console;verbosity=detailed"
+    - name: Run Brainf_ckSharp.Git.Unit
+      run: dotnet test unit\Brainf_ckSharp.Git.Unit\Brainf_ckSharp.Git.Unit.csproj -c Release -f ${{matrix.framework}} -v n -l "console;verbosity=detailed"
+
