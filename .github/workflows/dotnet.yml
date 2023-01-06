@@ -1,0 +1,26 @@
+name: CI
+
+on: [pull_request]
+
+jobs:
+
+  # Build the whole Brainf*ck# solution
+  build-solution:
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+        platform: [x64, arm64]
+    runs-on: windows-2022
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v3
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+    - name: Build
+      run: msbuild -t:restore,build /p:Configuration=${{matrix.configuration}} /p:Platform=${{matrix.platform}} /bl
+    - name: Upload MSBuild binary log
+      uses: actions/upload-artifact@v3
+      with:
+        name: msbuild_log_${{matrix.configuration}}_${{matrix.platform}}
+        path: msbuild.binlog
+        if-no-files-found: error
