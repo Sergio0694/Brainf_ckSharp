@@ -4,7 +4,7 @@ on: [pull_request]
 
 jobs:
 
-  # Build the whole Brainf*ck# solution
+  # Build the whole solution
   build-solution:
     strategy:
       matrix:
@@ -24,3 +24,21 @@ jobs:
         name: msbuild_log_${{matrix.configuration}}_${{matrix.platform}}
         path: msbuild.binlog
         if-no-files-found: error
+
+  # Run all unit tests
+  run-tests:
+    needs: [build-solution]
+    strategy:
+      matrix:
+        framework: [netcoreapp3.1]
+    runs-on: windows-2022
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v3
+    - name: Run Brainf_ckSharp.Unit
+      run: dotnet test unit\Brainf_ckSharp.Unit\Brainf_ckSharp.Unit.csproj -c Release -f ${{matrix.framework}} -v n -l "console;verbosity=detailed"
+    - name: Run Brainf_ckSharp.Unit.Internals
+      run: dotnet test unit\Brainf_ckSharp.Unit.Internals\Brainf_ckSharp.Unit.Internals.csproj -c Release -f ${{matrix.framework}} -v n -l "console;verbosity=detailed"
+    - name: Run Brainf_ckSharp.Git.Unit
+      run: dotnet test unit\Brainf_ckSharp.Git.Unit\Brainf_ckSharp.Git.Unit.csproj -c Release -f ${{matrix.framework}} -v n -l "console;verbosity=detailed"
+
