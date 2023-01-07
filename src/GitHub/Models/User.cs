@@ -5,29 +5,12 @@ namespace GitHub.Models;
 /// <summary>
 /// A model for a GitHub user
 /// </summary>
-public sealed class User
-{
-    /// <summary>
-    /// Gets the name of the current contributor
-    /// </summary>
-    [JsonPropertyName("name")]
-    public string? Name { get; init; }
-
-    /// <summary>
-    /// Gets the URL of the contributor profile image
-    /// </summary>
-    [JsonPropertyName("avatar_url")]
-    public string? ProfileImageUrl { get; init; }
-
-    /// <summary>
-    /// Gets the URL of the contributor profile page
-    /// </summary>
-    [JsonPropertyName("html_url")]
-    public string? ProfilePageUrl { get; init; }
-
-    /// <summary>
-    /// Gets the user bio
-    /// </summary>
-    [JsonPropertyName("bio")]
-    public string? Bio { get; init; }
-}
+/// <param name="Name">Gets the name of the current contributor.</param>
+/// <param name="ProfileImageUrl">Gets the URL of the contributor profile image.</param>
+/// <param name="ProfilePageUrl">Gets the URL of the contributor profile page.</param>
+/// <param name="Bio">Gets the user bio.</param>
+public sealed record User(
+    [property: JsonPropertyName("name"), JsonRequired] string Name,
+    [property: JsonPropertyName("avatar_url"), JsonRequired] string ProfileImageUrl,
+    [property: JsonPropertyName("html_url"), JsonRequired] string ProfilePageUrl,
+    [property: JsonPropertyName("bio"), JsonRequired] string Bio);

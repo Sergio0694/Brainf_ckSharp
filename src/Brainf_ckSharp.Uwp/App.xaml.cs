@@ -213,7 +213,7 @@ public sealed partial class App : Application
         services.AddSingleton<IShareService, ShareService>();
         services.AddSingleton<IEmailService, EmailService>();
         services.AddSingleton<ISystemInformationService, SystemInformationService>();
-        services.AddSingleton(_ => GitHubRestFactory.GetGitHubService("Brainf_ckSharp|Uwp"));
+        services.AddSingleton<IGitHubService>(_ => new GitHubService("Brainf_ckSharp|Uwp"));
 #if DEBUG
         services.AddSingleton<IStoreService, TestStoreService>();
         services.AddSingleton<IAnalyticsService, TestAnalyticsService>();

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Shared.Constants;
-using GitHub.APIs;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GitHub;
 using User = GitHub.Models.User;
 
 #nullable enable
