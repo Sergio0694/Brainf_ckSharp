@@ -181,9 +181,23 @@ public sealed partial class App : Application
     {
         Deferral deferral = e.GetDeferral();
 
-        await Services.GetRequiredService<IdeViewModel>().SaveStateAsync();
+        try
+        {
+            await Services.GetRequiredService<IdeViewModel>().SaveStateAsync();
+        }
+        catch
+        {
+            // Ignore errors if saving the session failed, to avoid crashing the app
+        }
 
-        RegisterFile(null);
+        try
+        {
+            RegisterFile(null);
+        }
+        catch
+        {
+            // Also ignore errors when clearing the registered file
+        }
 
         deferral.Complete();
     }
@@ -197,10 +211,7 @@ public sealed partial class App : Application
         ServiceCollection services = new();
 
         // Prepare the app configuration
-        services.AddSingleton(new AppConfiguration()
-        {
-            UnlockThemesIapId = "9P4Q63CCFPBM"
-        });
+        services.AddSingleton(new AppConfiguration() { UnlockThemesIapId = "9P4Q63CCFPBM" });
 
         // Services
         services.AddSingleton<IMessenger, StrongReferenceMessenger>();

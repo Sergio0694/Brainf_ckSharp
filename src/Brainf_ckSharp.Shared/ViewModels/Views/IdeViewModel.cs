@@ -7,6 +7,7 @@ using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.Ide;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
+using Brainf_ckSharp.Shared.Models;
 using Brainf_ckSharp.Shared.Models.Ide;
 using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
 using CommunityToolkit.Diagnostics;
@@ -253,16 +254,9 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     /// </summary>
     public async Task SaveStateAsync()
     {
-        IdeState state = new()
-        {
-            FilePath = Code.File?.Path,
-            Text = Text.ToString(),
-            Row = Row,
-            Column = Column
-        };
+        IdeState state = new(Text.ToString(), Row, Column, Code.File?.Path);
 
         string
-            json = JsonSerializer.Serialize(state),
             temporaryPath = FilesService.TemporaryFilesPath,
             statePath = Path.Combine(temporaryPath, "state.json");
 
@@ -272,9 +266,7 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
 
         stream.SetLength(0);
 
-        using StreamWriter writer = new(stream);
-
-        await writer.WriteAsync(json);
+        await JsonSerializer.SerializeAsync(stream, state, Brainf_ckSharpJsonSerializerContext.Default.IdeState);
     }
 
     /// <summary>
@@ -292,12 +284,12 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
             if (await FilesService.TryGetFileFromPathAsync(statePath) is not IFile jsonFile)
                 return;
 
-            using Stream stream = await jsonFile.OpenStreamForReadAsync();
-            using StreamReader reader = new(stream);
+            IdeState? state;
 
-            string json = await reader.ReadToEndAsync();
-
-            IdeState? state = JsonSerializer.Deserialize<IdeState>(json);
+            using (Stream stream = await jsonFile.OpenStreamForReadAsync())
+            {
+                state = await JsonSerializer.DeserializeAsync(stream, Brainf_ckSharpJsonSerializerContext.Default.IdeState);
+            }
             
             if (state is null) ThrowHelper.ThrowInvalidOperationException("Failed to load previous IDE state");
 
