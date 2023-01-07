@@ -43,7 +43,7 @@ public class ParsingTest
     {
         const string script = "[\n\tTest script\n]\n+++++[\n\t>++ 5 x 2 = 10\n\t<- Loop decrement\n]\n> Move to cell 1";
 
-        using MemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>(script, out SyntaxValidationResult result);
+        using MemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>(script.AsSpan(), out SyntaxValidationResult result);
 
         Assert.IsTrue(result.IsSuccess);
         Assert.AreEqual(result.ErrorType, SyntaxError.None);
@@ -64,7 +64,7 @@ public class ParsingTest
     {
         const string script = "[\n\tTest script\n]\n+++++[\n\t>++ 5 x 2 = 10\n\t<- Loop decrement\n]\n> Move to cell 1";
 
-        using MemoryOwner<Brainf_ckOperation>? operations = Brainf_ckParser.TryParse<Brainf_ckOperation>(script, out SyntaxValidationResult result);
+        using MemoryOwner<Brainf_ckOperation>? operations = Brainf_ckParser.TryParse<Brainf_ckOperation>(script.AsSpan(), out SyntaxValidationResult result);
 
         Assert.IsTrue(result.IsSuccess);
         Assert.AreEqual(result.ErrorType, SyntaxError.None);
@@ -117,7 +117,7 @@ public class ParsingTest
 
         string script = Brainf_ckParser.ExtractSource(operations);
 
-        using MemoryOwner<Brainf_ckOperation>? buffer = Brainf_ckParser.TryParse<Brainf_ckOperation>(script, out SyntaxValidationResult result);
+        using MemoryOwner<Brainf_ckOperation>? buffer = Brainf_ckParser.TryParse<Brainf_ckOperation>(script.AsSpan(), out SyntaxValidationResult result);
 
         Assert.IsTrue(result.IsSuccess);
         Assert.AreEqual(result.ErrorType, SyntaxError.None);

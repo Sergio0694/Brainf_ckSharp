@@ -28,13 +28,13 @@ public static class ScriptLoader
         using StreamReader reader = new(stream);
 
         string text = reader.ReadToEnd();
-        string[] parts = text.Split("|").Select(p => p.TrimStart().Replace("\r", string.Empty)).ToArray();
+        string[] parts = text.Split('|').Select(p => p.TrimStart().Replace("\r", string.Empty)).ToArray();
 
         return new Script(
             parts[0],
             parts[1],
             int.Parse(parts[2]),
-            Enum.Parse<OverflowMode>(parts[3]),
+            (OverflowMode)Enum.Parse(typeof(OverflowMode), parts[3]),
             parts[4]);
     }
 }

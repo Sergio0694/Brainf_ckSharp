@@ -1,8 +1,10 @@
-﻿using Brainf_ckSharp.Models;
+﻿using System;
+using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Internal;
 using Brainf_ckSharp.Opcodes;
 using CommunityToolkit.HighPerformance.Buffers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Range = Brainf_ckSharp.Models.Internal.Range;
 
 namespace Brainf_ckSharp.Unit.Internals;
 
@@ -15,7 +17,7 @@ public class LoadingTest
     [TestMethod]
     public void EmptyStackTrace()
     {
-        using MemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>("++[>++>-]>+", out _);
+        using MemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>("++[>++>-]>+".AsSpan(), out _);
 
         Assert.IsNotNull(operators);
 
@@ -31,7 +33,7 @@ public class LoadingTest
     [TestMethod]
     public void RootBreakpoint()
     {
-        using MemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>("++[>++>-]>+", out _);
+        using MemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>("++[>++>-]>+".AsSpan(), out _);
 
         Assert.IsNotNull(operators);
 
@@ -51,7 +53,7 @@ public class LoadingTest
     [TestMethod]
     public void FunctionCallBreakpoint()
     {
-        using MemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>("(+>):+", out _);
+        using MemoryOwner<Brainf_ckOperator>? operators = Brainf_ckParser.TryParse<Brainf_ckOperator>("(+>):+".AsSpan(), out _);
 
         Assert.IsNotNull(operators);
 
