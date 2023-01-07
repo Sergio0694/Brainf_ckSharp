@@ -8,5 +8,5 @@ public sealed class AppConfiguration
     /// <summary>
     /// Gets or sets the id of the IAP to unlock the themes
     /// </summary>
-    public string? UnlockThemesIapId { get; set; }
+    public required string UnlockThemesIapId { get; init; }
 }
