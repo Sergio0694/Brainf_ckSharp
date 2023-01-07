@@ -68,8 +68,10 @@ public abstract class Brainf_ckBenchmarkBase
     }
 }
 
-[SimpleJob(RunStrategy.Throughput, RuntimeMoniker.NetCoreApp31)]
-[SimpleJob(RunStrategy.Throughput, RuntimeMoniker.Net50)]
+[SimpleJob(RunStrategy.Throughput, RuntimeMoniker.Net472)]
+[SimpleJob(RunStrategy.Throughput, RuntimeMoniker.Net60)]
+[SimpleJob(RunStrategy.Throughput, RuntimeMoniker.Net70)]
+[SimpleJob(RunStrategy.Throughput, RuntimeMoniker.NativeAot70)]
 public class Brainf_ckBenchmark_Short : Brainf_ckBenchmarkBase
 {
     /// <inheritdoc/>
@@ -77,8 +79,10 @@ public class Brainf_ckBenchmark_Short : Brainf_ckBenchmarkBase
     public override string? Name { get; set; }
 }
 
-[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.NetCoreApp31)]
-[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.Net50)]
+[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.Net472)]
+[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.Net60)]
+[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.Net70)]
+[SimpleJob(RunStrategy.Monitoring, RuntimeMoniker.NativeAot70)]
 public class Brainf_ckBenchmark_Long : Brainf_ckBenchmarkBase
 {
     /// <inheritdoc/>

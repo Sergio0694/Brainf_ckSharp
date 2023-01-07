@@ -30,7 +30,7 @@ jobs:
     needs: [build-solution]
     strategy:
       matrix:
-        framework: [netcoreapp3.1]
+        framework: [net472, net6.0, net7.0]
     runs-on: windows-2022
     steps:
     - name: Git checkout
@@ -41,4 +41,3 @@ jobs:
       run: dotnet test unit\Brainf_ckSharp.Unit.Internals\Brainf_ckSharp.Unit.Internals.csproj -c Release -f ${{matrix.framework}} -v n -l "console;verbosity=detailed"
     - name: Run Brainf_ckSharp.Git.Unit
       run: dotnet test unit\Brainf_ckSharp.Git.Unit\Brainf_ckSharp.Git.Unit.csproj -c Release -f ${{matrix.framework}} -v n -l "console;verbosity=detailed"
-
