@@ -79,7 +79,7 @@ public sealed class SourceCode
 
             SourceCode code = new(text, file, new CodeMetadata());
 
-            string metadata = JsonSerializer.Serialize(code.Metadata);
+            string metadata = JsonSerializer.Serialize(code.Metadata, Brainf_ckSharpJsonSerializerContext.Default.CodeMetadata);
 
             file.RequestFutureAccessPermission(metadata);
 
@@ -103,7 +103,7 @@ public sealed class SourceCode
         {
             await File!.WriteAllTextAsync(Content);
 
-            string metadata = JsonSerializer.Serialize(Metadata);
+            string metadata = JsonSerializer.Serialize(Metadata, Brainf_ckSharpJsonSerializerContext.Default.CodeMetadata);
 
             File!.RequestFutureAccessPermission(metadata);
 

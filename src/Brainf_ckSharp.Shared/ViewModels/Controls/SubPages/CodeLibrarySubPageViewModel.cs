@@ -7,6 +7,7 @@ using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.Messages.Ide;
+using Brainf_ckSharp.Shared.Models;
 using Brainf_ckSharp.Shared.Models.Ide;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.Collections;
@@ -130,7 +131,7 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
         await foreach ((IFile file, string data) in FilesService.GetFutureAccessFilesAsync())
         {
             // Deserialize the metadata and prepare the model
-            CodeMetadata? metadata = string.IsNullOrEmpty(data) ? new() : JsonSerializer.Deserialize<CodeMetadata>(data);
+            CodeMetadata? metadata = string.IsNullOrEmpty(data) ? new() : JsonSerializer.Deserialize(data, Brainf_ckSharpJsonSerializerContext.Default.CodeMetadata);
             
             if (metadata is null) ThrowHelper.ThrowInvalidOperationException("Failed to load the source code metadata");
             
@@ -225,7 +226,7 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
             Source.InsertItem(CodeLibrarySection.Favorites, Comparer<CodeLibrarySection>.Default, entry, SourceItemEditTimeComparer);
         }
 
-        entry.File.RequestFutureAccessPermission(JsonSerializer.Serialize(entry.Metadata));
+        entry.File.RequestFutureAccessPermission(JsonSerializer.Serialize(entry.Metadata, Brainf_ckSharpJsonSerializerContext.Default.CodeMetadata));
     }
 
     /// <summary>

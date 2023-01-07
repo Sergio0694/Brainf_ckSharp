@@ -136,10 +136,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Diagnostics">
-      <Version>8.0.0</Version>
+      <Version>8.1.0-preview3</Version>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.HighPerformance">
-      <Version>8.0.0</Version>
+      <Version>8.1.0-preview3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Analytics">
       <Version>5.0.1</Version>
