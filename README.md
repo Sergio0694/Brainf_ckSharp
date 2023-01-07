@@ -26,9 +26,9 @@ A complete, full-featured Brainf\*ck IDE/console for Windows 10, built from the 
 
 The **Brainf\*ck#** solution requires the following tools to build all the available projects:
 
-- [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/), with .NET and UWP workloads
+- [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/), with .NET and UWP workloads
 - [Windows 10 SDK, version 1903](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive)
-- [.NET Core 3.1 SDK](https://dotnet.microsoft.com/download/visual-studio-sdks)
+- [.NET Core 7 SDK](https://dotnet.microsoft.com/download/visual-studio-sdks)
 - Windows 10 >= 1903
 
 ## Contributing 🙌
@@ -44,7 +44,6 @@ The **Brainf\*ck#** solution requires the following tools to build all the avail
 - [Windows Community Toolkit](https://github.com/windows-toolkit/WindowsCommunityToolkit)
 - [WinUI](https://github.com/Microsoft/microsoft-ui-xaml)
 - [Win2D](https://github.com/microsoft/Win2D)
-- [refit](https://github.com/reactiveui/refit)
 - [Stubble](https://github.com/StubbleOrg/Stubble)
 - [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet)
 
