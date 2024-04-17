@@ -13,8 +13,8 @@ public class ScriptTest
     // Tests a script with a given runner
     public static void TestScript(Func<Script, InterpreterResult> runner, [CallerMemberName] string? name = null)
     {
-        var script = ScriptLoader.LoadScriptByName(name!);
-        var debug = runner(script);
+        Script script = ScriptLoader.LoadScriptByName(name!);
+        InterpreterResult debug = runner(script);
 
         Assert.IsNotNull(debug);
         Assert.AreEqual(debug.ExitCode, ExitCode.Success);
@@ -28,7 +28,7 @@ public partial class DebugTest
     // Executes a script in DEBUG mode
     private static InterpreterResult Run(Script script)
     {
-        var session = Brainf_ckInterpreter
+        Models.Base.Option<InterpreterSession> session = Brainf_ckInterpreter
             .CreateDebugConfiguration()
             .WithSource(script.Source)
             .WithStdin(script.Stdin)
@@ -56,7 +56,7 @@ public partial class ReleaseTest
     // Executes a script in RELEASE mode
     private static InterpreterResult Run(Script script)
     {
-        var result = Brainf_ckInterpreter
+        Models.Base.Option<InterpreterResult> result = Brainf_ckInterpreter
             .CreateReleaseConfiguration()
             .WithSource(script.Source)
             .WithStdin(script.Stdin)

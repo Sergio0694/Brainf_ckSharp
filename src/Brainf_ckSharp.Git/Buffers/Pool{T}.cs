@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.HighPerformance;
 
@@ -32,7 +32,7 @@ public sealed class Pool<T> where T : class, new()
     /// </summary>
     private Pool()
     {
-        var items = this._Items = new T[MinimumPoolSize];
+        T[] items = this._Items = new T[MinimumPoolSize];
 
         ref T r0 = ref items.DangerousGetReference();
 

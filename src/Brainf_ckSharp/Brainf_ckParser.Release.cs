@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Opcodes;
@@ -107,7 +107,7 @@ public static partial class Brainf_ckParser
             int size = 0;
 
             // Count the number of original operators
-            foreach (var opcode in operations)
+            foreach (Brainf_ckOperation opcode in operations)
             {
                 size += opcode.Count;
             }

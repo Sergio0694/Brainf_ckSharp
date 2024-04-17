@@ -126,7 +126,7 @@ public class DiffTest
     /// <param name="key">The key of the test resources to load</param>
     private static void Test(LineModificationType[] expected, [CallerMemberName] string key = null!)
     {
-        var data = ResourceLoader.LoadTestSample(key);
+        (string Old, string New) data = ResourceLoader.LoadTestSample(key);
 
         string
             oldText = data.Old.Replace("\n", string.Empty),

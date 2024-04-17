@@ -59,7 +59,7 @@ public sealed class IdeResultSectionTemplateSelector : DataTemplateSelector
         Guard.IsNotNull(item);
         Guard.IsOfType<IdeResultWithSectionInfo>(item);
 
-        var model = (IdeResultWithSectionInfo)item;
+        IdeResultWithSectionInfo model = (IdeResultWithSectionInfo)item;
 
         DataTemplate? template = model.Section switch
         {

@@ -73,7 +73,7 @@ public sealed class AnimatedCommandBarBehavior : Behavior<CommandBar>
         // If this is the initial setup, skip all animations
         if (e.OldValue is null)
         {
-            foreach (var item in commandBar.PrimaryCommands.Cast<FrameworkElement>())
+            foreach (FrameworkElement item in commandBar.PrimaryCommands.Cast<FrameworkElement>())
             {
                 item.Visibility = (Visibility)((bool)item.Tag != primary).ToByte();
             }
@@ -133,7 +133,7 @@ public sealed class AnimatedCommandBarBehavior : Behavior<CommandBar>
                 select button).ToArray();
 
             // Fade the visible buttons out
-            foreach (var item in pendingElements.Enumerate())
+            foreach ((FrameworkElement Value, int Index) item in pendingElements.Enumerate())
             {
                 int delay = ButtonsFadeDelayBetweenAnimations * item.Index;
 
@@ -144,7 +144,7 @@ public sealed class AnimatedCommandBarBehavior : Behavior<CommandBar>
             await Task.Delay(((pendingElements.Count - 1) * ButtonsFadeDelayBetweenAnimations) + ContentAnimationDuration);
 
             // Set the animated buttons to invisible
-            foreach (var item in pendingElements)
+            foreach (FrameworkElement item in pendingElements)
                 item.Visibility = Visibility.Collapsed;
 
             // Get the target buttons
@@ -154,14 +154,14 @@ public sealed class AnimatedCommandBarBehavior : Behavior<CommandBar>
                 select button).ToArray();
 
             // Display the target buttons with transparent opacity
-            foreach (var item in targetElements)
+            foreach (FrameworkElement item in targetElements)
             {
                 item.Opacity = 0;
                 item.Visibility = Visibility.Visible;
             }
 
             // Fade the target buttons in
-            foreach (var item in targetElements.Reverse().Enumerate())
+            foreach ((FrameworkElement Value, int Index) item in targetElements.Reverse().Enumerate())
             {
                 int delay = ButtonsFadeDelayBetweenAnimations * item.Index;
 

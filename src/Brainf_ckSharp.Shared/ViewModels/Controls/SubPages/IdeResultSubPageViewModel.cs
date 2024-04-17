@@ -136,7 +136,7 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
                 // Run in DEBUG mode
                 this._DebugSession = await Task.Run(() =>
                 {
-                    var session = Brainf_ckInterpreter
+                    InterpreterSession session = Brainf_ckInterpreter
                         .CreateDebugConfiguration()
                         .WithSource(Script!)
                         .WithStdin(stdin)
@@ -205,7 +205,7 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
         // A function used to quickly add a specific section to the current collection
         void AddToSource(IdeResultSection section)
         {
-            var model = new IdeResultWithSectionInfo(section, result);
+            IdeResultWithSectionInfo model = new(section, result);
 
             _ = Source.AddGroup(section, new[] { model });
         }

@@ -43,7 +43,7 @@ public sealed partial class UnicodeCharactersMapSubPageViewModel : ObservableObj
         using (await LoadingMutex.LockAsync())
         {
             // Load the first group if needed
-            var first = _32To127 ??= await Task.Run(() => (
+            IReadOnlyList<UnicodeCharacter> first = _32To127 ??= await Task.Run(() => (
                 from i in Enumerable.Range(0, 128 - 32)
                 let c = (char)(i + 32)
                 select new UnicodeCharacter(c)).ToArray());
@@ -53,7 +53,7 @@ public sealed partial class UnicodeCharactersMapSubPageViewModel : ObservableObj
                 first));
 
             // Load the second group if needed
-            var second = _160To255 ??= await Task.Run(() => (
+            IReadOnlyList<UnicodeCharacter> second = _160To255 ??= await Task.Run(() => (
                 from i in Enumerable.Range(0, 256 - 160)
                 let c = (char)(i + 160)
                 select new UnicodeCharacter(c)).ToArray());

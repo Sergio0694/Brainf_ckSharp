@@ -67,7 +67,7 @@ public static partial class Brainf_ckInlineFormatterHelper
         if (value.Count == 0) return;
 
         int i = 0;
-        foreach (var entry in CompressStackTrace(value))
+        foreach ((string Item, int Occurrences, int Length) entry in CompressStackTrace(value))
         {
             if (i++ > 0) @this.Inlines.Add(new LineBreak());
 
@@ -137,7 +137,7 @@ public static partial class Brainf_ckInlineFormatterHelper
             }
             else
             {
-                var best = info.OrderByDescending(item => item.Length * item.Occurrences).ThenBy(item => item.Length).First();
+                (int Length, int Occurrences) best = info.OrderByDescending(item => item.Length * item.Occurrences).ThenBy(item => item.Length).First();
                 StringBuilder builder = new();
                 for (int j = 0; j < best.Length; j++)
                     builder.Append(frames[i + j]);

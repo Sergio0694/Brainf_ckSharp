@@ -134,7 +134,7 @@ public sealed partial class IdeSettingsSectionViewModel : SettingsSectionViewMod
     {
         Guard.IsNotNull(this.Configuration.UnlockThemesIapId, nameof(AppConfiguration.UnlockThemesIapId));
 
-        var result = await this.StoreService.TryPurchaseProductAsync(this.Configuration.UnlockThemesIapId);
+        StorePurchaseResult result = await this.StoreService.TryPurchaseProductAsync(this.Configuration.UnlockThemesIapId);
 
         IsThemeSelectorAvailable = result == StorePurchaseResult.Success ||
                                    result == StorePurchaseResult.AlreadyPurchased;

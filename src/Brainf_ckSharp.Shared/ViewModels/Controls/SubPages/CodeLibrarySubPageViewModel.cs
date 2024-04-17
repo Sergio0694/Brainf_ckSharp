@@ -269,7 +269,7 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to remove</param>
     private void RemoveTrackedSourceCode(CodeLibraryEntry entry)
     {
-        var group = Source.First<ObservableGroup<CodeLibrarySection, object>>(g => g.Contains(entry));
+        ObservableGroup<CodeLibrarySection, object> group = Source.First<ObservableGroup<CodeLibrarySection, object>>(g => g.Contains(entry));
 
         if (group.Count == 1) _ = Source.Remove(group);
         else _ = group.Remove(entry);
