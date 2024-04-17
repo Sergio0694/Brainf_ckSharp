@@ -46,5 +46,8 @@ internal readonly struct StackFrame
     /// <param name="offset">The current offset during execution</param>
     /// <returns>A <see cref="StackFrame"/> instance like the current one, but with a different offset</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public StackFrame WithOffset(int offset) => new(this.Range, offset);
+    public StackFrame WithOffset(int offset)
+    {
+        return new(this.Range, offset);
+    }
 }

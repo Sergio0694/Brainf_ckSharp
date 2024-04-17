@@ -20,7 +20,10 @@ public static class MachineStateProvider
     /// </summary>
     /// <param name="size">The size of the state machine to create</param>
     /// <returns>A new <see cref="IReadOnlyMachineState"/> instance with the specified parameters</returns>
-    public static IReadOnlyMachineState Create(int size) => Create(size, Specs.DefaultOverflowMode);
+    public static IReadOnlyMachineState Create(int size)
+    {
+        return Create(size, Specs.DefaultOverflowMode);
+    }
 
     /// <summary>
     /// Creates a new <see cref="IReadOnlyMachineState"/> instance with the specified parameters

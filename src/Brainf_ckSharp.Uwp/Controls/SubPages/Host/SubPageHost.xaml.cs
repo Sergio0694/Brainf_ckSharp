@@ -132,7 +132,10 @@ public sealed partial class SubPageHost : UserControl
     }
 
     // Executes a UI refresh when the root size changes
-    private void SubFrameHost_SizeChanged(object sender, SizeChangedEventArgs e) => UpdateLayout(e.NewSize);
+    private void SubFrameHost_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        UpdateLayout(e.NewSize);
+    }
 
     /// <summary>
     /// Adjusts the UI when the window is resized

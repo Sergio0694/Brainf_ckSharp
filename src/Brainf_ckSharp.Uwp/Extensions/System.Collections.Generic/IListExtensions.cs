@@ -14,5 +14,8 @@ public static class IListExtensions
     /// <typeparam name="T">The type of items in the input list</typeparam>
     /// <param name="items">The input list of <typeparamref name="T"/> items</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void RemoveLast<T>(this IList<T> items) => items.RemoveAt(items.Count - 1);
+    public static void RemoveLast<T>(this IList<T> items)
+    {
+        items.RemoveAt(items.Count - 1);
+    }
 }

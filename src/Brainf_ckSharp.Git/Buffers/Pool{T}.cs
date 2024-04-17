@@ -92,5 +92,8 @@ public sealed class Pool<T> where T : class, new()
     /// </summary>
     /// <remarks>This can cause previously rented objects to be reused</remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Reset() => this._Offset = 0;
+    public void Reset()
+    {
+        this._Offset = 0;
+    }
 }

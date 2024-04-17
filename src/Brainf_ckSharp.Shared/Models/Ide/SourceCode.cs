@@ -50,7 +50,10 @@ public sealed class SourceCode
     /// Creates a new <see cref="SourceCode"/> instance with no linked file
     /// </summary>
     /// <returns>A new, empty <see cref="SourceCode"/> instance</returns>
-    public static SourceCode CreateEmpty() => new(EmptyContent, null, new CodeMetadata());
+    public static SourceCode CreateEmpty()
+    {
+        return new(EmptyContent, null, new CodeMetadata());
+    }
 
     /// <summary>
     /// Creates a new <see cref="SourceCode"/> instance from the specified reference file

@@ -129,5 +129,8 @@ public sealed class MinimalHeaderButton : Control
     }
 
     // Updates the UI when the control is selected
-    private void RootButton_Click(object sender, RoutedEventArgs e) => IsSelected = true;
+    private void RootButton_Click(object sender, RoutedEventArgs e)
+    {
+        IsSelected = true;
+    }
 }

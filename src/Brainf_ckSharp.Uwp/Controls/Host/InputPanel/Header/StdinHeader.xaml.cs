@@ -71,13 +71,22 @@ public sealed partial class StdinHeader : UserControl
     }
 
     // Sets the selected index to 0 when the keyboard button is clicked
-    private void VirtualKeyboardHeaderSelected(object sender, EventArgs e) => StdinSelectedIndex = 0;
+    private void VirtualKeyboardHeaderSelected(object sender, EventArgs e)
+    {
+        StdinSelectedIndex = 0;
+    }
 
     // Sets the selected index to 1 when the memory viewer button is clicked
-    private void MemoryViewerHeaderSelected(object sender, EventArgs e) => StdinSelectedIndex = 1;
+    private void MemoryViewerHeaderSelected(object sender, EventArgs e)
+    {
+        StdinSelectedIndex = 1;
+    }
 
     // Sets the selected index to 0 when the memory viewer button is deselected
-    private void MemoryViewerHeaderDeselected(object sender, EventArgs e) => StdinSelectedIndex = 0;
+    private void MemoryViewerHeaderDeselected(object sender, EventArgs e)
+    {
+        StdinSelectedIndex = 0;
+    }
 
     // Prevents the event from bubbling up the UI stack
     private void StdinBox_OnCharacterReceived(UIElement sender, CharacterReceivedRoutedEventArgs args)

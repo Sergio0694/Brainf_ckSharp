@@ -11,7 +11,10 @@ internal static class Logger
     /// <summary>
     /// Inserts a new line to the console output
     /// </summary>
-    public static void NewLine() => Console.Write(Environment.NewLine);
+    public static void NewLine()
+    {
+        Console.Write(Environment.NewLine);
+    }
 
     /// <summary>
     /// Writes an opening tag

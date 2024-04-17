@@ -78,7 +78,10 @@ public static partial class Brainf_ckParser
     /// <param name="source">The input script to validate</param>
     /// <returns>A <see cref="SyntaxValidationResult"/> instance with the results of the parsing operation</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static SyntaxValidationResult ValidateSyntax(string source) => ValidateSyntax(source.AsSpan());
+    public static SyntaxValidationResult ValidateSyntax(string source)
+    {
+        return ValidateSyntax(source.AsSpan());
+    }
 
     /// <summary>
     /// Checks whether or not the syntax of the input script is valid

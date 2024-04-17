@@ -15,5 +15,8 @@ public static class BoolToNotBoolConverter
     /// <param name="value">The input <see cref="bool"/> value</param>
     /// <returns>The negation of <paramref name="value"/></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool Convert(bool value) => !value;
+    public static bool Convert(bool value)
+    {
+        return !value;
+    }
 }

@@ -112,12 +112,18 @@ public sealed class ShellViewModel : ObservableRecipient
     /// <summary>
     /// Deletes the last operator in the current console script
     /// </summary>
-    public void DeleteConsoleOperator() => Messenger.Send<DeleteOperatorRequestMessage>();
+    public void DeleteConsoleOperator()
+    {
+        Messenger.Send<DeleteOperatorRequestMessage>();
+    }
 
     /// <summary>
     /// Clears the current console command
     /// </summary>
-    public void ClearConsoleCommand() => Messenger.Send<ClearCommandRequestMessage>();
+    public void ClearConsoleCommand()
+    {
+        Messenger.Send<ClearCommandRequestMessage>();
+    }
 
     /// <summary>
     /// Clears the current console screen
@@ -182,12 +188,18 @@ public sealed class ShellViewModel : ObservableRecipient
     /// <summary>
     /// Inserts a new line into the IDE
     /// </summary>
-    public void InsertNewLine() => Messenger.Send<InsertNewLineRequestMessage>();
+    public void InsertNewLine()
+    {
+        Messenger.Send<InsertNewLineRequestMessage>();
+    }
 
     /// <summary>
     /// Deletes the last character in the IDE
     /// </summary>
-    public void DeleteIdeCharacter() => Messenger.Send<DeleteCharacterRequestMessage>();
+    public void DeleteIdeCharacter()
+    {
+        Messenger.Send<DeleteCharacterRequestMessage>();
+    }
 
     /// <summary>
     /// Opens a new file in the IDE

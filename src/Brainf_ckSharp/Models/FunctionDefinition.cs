@@ -71,7 +71,10 @@ public sealed class FunctionDefinition : IEquatable<FunctionDefinition>
     }
 
     /// <inheritdoc/>
-    public override bool Equals(object? obj) => Equals(obj as FunctionDefinition);
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as FunctionDefinition);
+    }
 
     /// <inheritdoc/>
     public override int GetHashCode()

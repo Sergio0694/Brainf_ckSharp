@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Configurations;
 
 namespace Brainf_ckSharp;
@@ -13,12 +13,18 @@ public static partial class Brainf_ckInterpreter
     /// </summary>
     /// <returns>A <see cref="DebugConfiguration"/> instance to prepare a script execution</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static DebugConfiguration CreateDebugConfiguration() => default;
+    public static DebugConfiguration CreateDebugConfiguration()
+    {
+        return default;
+    }
 
     /// <summary>
     /// Creates a new <see cref="ReleaseConfiguration"/> instance to prepare a script execution in RELEASE mode
     /// </summary>
     /// <returns>A <see cref="ReleaseConfiguration"/> instance to prepare a script execution</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ReleaseConfiguration CreateReleaseConfiguration() => default;
+    public static ReleaseConfiguration CreateReleaseConfiguration()
+    {
+        return default;
+    }
 }

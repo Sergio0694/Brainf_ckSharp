@@ -176,7 +176,10 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     /// <summary>
     /// Requests to pick and open a source code file
     /// </summary>
-    private void RequestOpenFile(bool favorite) => Messenger.Send(new PickOpenFileRequestMessage(favorite));
+    private void RequestOpenFile(bool favorite)
+    {
+        Messenger.Send(new PickOpenFileRequestMessage(favorite));
+    }
 
     /// <summary>
     /// Sends a request to load a specified code entry
