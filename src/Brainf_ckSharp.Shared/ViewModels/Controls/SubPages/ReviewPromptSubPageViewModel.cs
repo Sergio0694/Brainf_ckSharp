@@ -35,16 +35,16 @@ public sealed partial class ReviewPromptSubPageViewModel : ObservableObject
     /// <param name="systemInformationService">The <see cref="ISystemInformationService"/> instance to use</param>
     public ReviewPromptSubPageViewModel(IEmailService emailService, IStoreService storeService, ISystemInformationService systemInformationService)
     {
-        EmailService = emailService;
-        StoreService = storeService;
-        SystemInformationService = systemInformationService;
+        this.EmailService = emailService;
+        this.StoreService = storeService;
+        this.SystemInformationService = systemInformationService;
     }
 
     /// <inheritdoc cref="IStoreService.RequestReviewAsync"/>
     [RelayCommand]
     private Task RequestReviewAsync()
     {
-        return StoreService.RequestReviewAsync();
+        return this.StoreService.RequestReviewAsync();
     }
 
     /// <summary>
@@ -58,13 +58,13 @@ public sealed partial class ReviewPromptSubPageViewModel : ObservableObject
         builder.AppendLine();
         builder.AppendLine();
         builder.AppendLine("==========================");
-        builder.AppendLine($"[AppVersion]: {SystemInformationService.ApplicationVersion}");
-        builder.AppendLine($"[CPU architecture]: {SystemInformationService.CpuArchitecture}");
-        builder.AppendLine($"[OS]: {SystemInformationService.OperatingSystemVersion}");
-        builder.AppendLine($"[OS build]: {SystemInformationService.OperatingSystemVersion}");
+        builder.AppendLine($"[AppVersion]: {this.SystemInformationService.ApplicationVersion}");
+        builder.AppendLine($"[CPU architecture]: {this.SystemInformationService.CpuArchitecture}");
+        builder.AppendLine($"[OS]: {this.SystemInformationService.OperatingSystemVersion}");
+        builder.AppendLine($"[OS build]: {this.SystemInformationService.OperatingSystemVersion}");
 
         string body = builder.ToString();
 
-        return EmailService.TryComposeEmailAsync(DeveloperInfo.FeedbackEmail, "Brainf*ck# feedback", body);
+        return this.EmailService.TryComposeEmailAsync(DeveloperInfo.FeedbackEmail, "Brainf*ck# feedback", body);
     }
 }

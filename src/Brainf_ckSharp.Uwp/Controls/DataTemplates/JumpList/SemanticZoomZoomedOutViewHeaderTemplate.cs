@@ -23,14 +23,14 @@ public sealed class SemanticZoomZoomedOutViewHeaderTemplate : Control
     {
         base.OnApplyTemplate();
 
-        _DescriptionBlock = GetTemplateChild("DescriptionBlock") as TextBlock
+        this._DescriptionBlock = GetTemplateChild("DescriptionBlock") as TextBlock
                             ?? ThrowHelper.ThrowInvalidOperationException<TextBlock>("Failed to find description block");
 
         // Load the span explicitly, if present
         if (DescriptionSpan is { } span)
         {
-            _DescriptionBlock.Inlines.Clear();
-            _DescriptionBlock.Inlines.Add(span);
+            this._DescriptionBlock.Inlines.Clear();
+            this._DescriptionBlock.Inlines.Add(span);
         }
     }
 

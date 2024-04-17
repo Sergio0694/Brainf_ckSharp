@@ -32,7 +32,7 @@ public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     {
         Assert((uint)index <= short.MaxValue);
 
-        State = (ushort)BitHelper.SetFlag((uint)index, 15, isSelected);
+        this.State = (ushort)BitHelper.SetFlag((uint)index, 15, isSelected);
         Value = value;
     }
 
@@ -42,7 +42,7 @@ public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     public int Index
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => (int)BitHelper.SetFlag(State, 15, false);
+        get => (int)BitHelper.SetFlag(this.State, 15, false);
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     public bool IsSelected
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => BitHelper.HasFlag(State, 15);
+        get => BitHelper.HasFlag(this.State, 15);
     }
 
     /// <summary>
@@ -88,7 +88,7 @@ public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     public bool Equals(Brainf_ckMemoryCell other)
     {
         return
-            State == other.State &&
+            this.State == other.State &&
             Value == other.Value;
     }
 
@@ -103,6 +103,6 @@ public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     /// <inheritdoc/>
     public override int GetHashCode()
     {
-        return HashCode.Combine(State, Value);
+        return HashCode.Combine(this.State, Value);
     }
 }

@@ -34,27 +34,27 @@ public ref struct IReadOnlyMachineStateEnumerator
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal IReadOnlyMachineStateEnumerator(TuringMachineState machineState)
     {
-        MachineState = machineState;
-        Size = machineState.Size;
-        _Index = -1;
+        this.MachineState = machineState;
+        this.Size = machineState.Size;
+        this._Index = -1;
     }
 
     /// <inheritdoc cref="IEnumerator{T}.Current"/>
     public Brainf_ckMemoryCell Current
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => MachineState[_Index];
+        get => this.MachineState[this._Index];
     }
 
     /// <inheritdoc cref="System.Collections.IEnumerator.MoveNext"/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool MoveNext()
     {
-        int index = _Index + 1;
+        int index = this._Index + 1;
 
-        if (index < Size)
+        if (index < this.Size)
         {
-            _Index = index;
+            this._Index = index;
 
             return true;
         }

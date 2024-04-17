@@ -27,10 +27,10 @@ public abstract class WorkspaceViewModelBase : ObservableRecipient
     /// </summary>
     public SourceCode Code
     {
-        get => _Code;
+        get => this._Code;
         protected set
         {
-            if (SetProperty(ref _Code, value))
+            if (SetProperty(ref this._Code, value))
             {
                 OnCodeChanged(value);
             }
@@ -44,12 +44,12 @@ public abstract class WorkspaceViewModelBase : ObservableRecipient
     /// </summary>
     public ReadOnlyMemory<char> Text
     {
-        get => _Text;
+        get => this._Text;
         set
         {
-            if (_Text.Span.SequenceEqual(value.Span)) return;
+            if (this._Text.Span.SequenceEqual(value.Span)) return;
 
-            _Text = value;
+            this._Text = value;
 
             OnPropertyChanged();
 
@@ -66,8 +66,8 @@ public abstract class WorkspaceViewModelBase : ObservableRecipient
     /// </summary>
     public bool IsUnsavedEditPending
     {
-        get => _IsUnsavedEditPending;
-        private set => SetProperty(ref _IsUnsavedEditPending, value);
+        get => this._IsUnsavedEditPending;
+        private set => SetProperty(ref this._IsUnsavedEditPending, value);
     }
 
     private SyntaxValidationResult _ValidationResult;
@@ -77,8 +77,8 @@ public abstract class WorkspaceViewModelBase : ObservableRecipient
     /// </summary>
     public SyntaxValidationResult ValidationResult
     {
-        get => _ValidationResult;
-        set => SetProperty(ref _ValidationResult, value);
+        get => this._ValidationResult;
+        set => SetProperty(ref this._ValidationResult, value);
     }
 
     private int _Row = 1;
@@ -88,12 +88,12 @@ public abstract class WorkspaceViewModelBase : ObservableRecipient
     /// </summary>
     public int Row
     {
-        get => _Row;
+        get => this._Row;
         set
         {
             Guard.IsGreaterThan(value, 0);
 
-            SetProperty(ref _Row, value);
+            SetProperty(ref this._Row, value);
         }
     }
 
@@ -104,12 +104,12 @@ public abstract class WorkspaceViewModelBase : ObservableRecipient
     /// </summary>
     public int Column
     {
-        get => _Column;
+        get => this._Column;
         set
         {
             Guard.IsGreaterThan(value, 0);
 
-            SetProperty(ref _Column, value);
+            SetProperty(ref this._Column, value);
         }
     }
 

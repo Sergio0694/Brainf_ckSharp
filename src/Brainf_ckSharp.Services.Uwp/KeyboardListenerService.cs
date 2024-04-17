@@ -27,7 +27,7 @@ public sealed class KeyboardListenerService : IKeyboardListenerService
     {
         add
         {
-            lock (Lock)
+            lock (this.Lock)
             {
                 if (CharacterReceived is null)
                 {
@@ -39,7 +39,7 @@ public sealed class KeyboardListenerService : IKeyboardListenerService
         }
         remove
         {
-            lock (Lock)
+            lock (this.Lock)
             {
                 CharacterReceived -= value;
 

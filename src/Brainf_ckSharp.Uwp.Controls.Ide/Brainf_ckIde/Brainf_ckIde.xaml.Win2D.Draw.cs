@@ -48,7 +48,7 @@ public sealed partial class Brainf_ckIde
     {
         // Git diff indicators
         int i = 0;
-        foreach (var modification in _DiffIndicators.Span)
+        foreach (var modification in this._DiffIndicators.Span)
         {
             switch (modification)
             {
@@ -65,7 +65,7 @@ public sealed partial class Brainf_ckIde
 
         // Indentation indicators
         i = 0;
-        foreach (var indicator in _IndentationIndicators.Span)
+        foreach (var indicator in this._IndentationIndicators.Span)
         {
             if (indicator is not null)
             {
@@ -95,7 +95,7 @@ public sealed partial class Brainf_ckIde
         }
 
         // Breakpoints markers
-        foreach (var pair in BreakpointIndicators)
+        foreach (var pair in this.BreakpointIndicators)
         {
             DrawBreakpointIndicator(args.DrawingSession, pair.Value);
         }
@@ -109,7 +109,7 @@ public sealed partial class Brainf_ckIde
     private void CodeEditBox_OnDrawOverlays(CanvasControl sender, CanvasDrawEventArgs args)
     {
         // Breakpoints areas
-        foreach (var rect in _BreakpointAreas.Span)
+        foreach (var rect in this._BreakpointAreas.Span)
         {
             DrawBreakpointArea(args.DrawingSession, rect);
         }

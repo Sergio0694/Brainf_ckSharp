@@ -28,8 +28,8 @@ internal struct StdinBuffer
     /// <param name="data">The input data to use to read characters from</param>
     public StdinBuffer(ReadOnlyMemory<char> data)
     {
-        Data = data;
-        _Position = 0;
+        this.Data = data;
+        this._Position = 0;
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ internal struct StdinBuffer
     /// <returns>A <see cref="Reader"/> instance to read characters</returns>
     public Reader CreateReader()
     {
-        return new(Data.Span, _Position);
+        return new(this.Data.Span, this._Position);
     }
 
     /// <summary>
@@ -47,7 +47,7 @@ internal struct StdinBuffer
     /// <param name="reader">The <see cref="Reader"/> instance that was previously used</param>
     public void Synchronize(ref Reader reader)
     {
-        _Position = reader.Position;
+        this._Position = reader.Position;
     }
 
     /// <summary>
@@ -68,8 +68,8 @@ internal struct StdinBuffer
         /// <param name="position">The initial position to read from</param>
         public Reader(ReadOnlySpan<char> data, int position = 0)
         {
-            Data = data;
-            Position = position;
+            this.Data = data;
+            this.Position = position;
         }
 
         /// <summary>
@@ -80,16 +80,16 @@ internal struct StdinBuffer
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryRead(out char c)
         {
-            Assert(Position >= 0);
-            Assert(Position <= Data.Length);
+            Assert(this.Position >= 0);
+            Assert(this.Position <= this.Data.Length);
 
-            int position = Position;
+            int position = this.Position;
 
-            if ((uint)position < (uint)Data.Length)
+            if ((uint)position < (uint)this.Data.Length)
             {
-                c = Data.DangerousGetReferenceAt(position);
+                c = this.Data.DangerousGetReferenceAt(position);
 
-                Position = position + 1;
+                this.Position = position + 1;
 
                 return true;
             }
@@ -102,7 +102,7 @@ internal struct StdinBuffer
         /// <inheritdoc/>
         public override string ToString()
         {
-            return StringPool.Shared.GetOrAdd(Data);
+            return StringPool.Shared.GetOrAdd(this.Data);
         }
     }
 
@@ -113,12 +113,12 @@ internal struct StdinBuffer
         // we can just return that same instance with no additional allocations (this is the
         // same behavior of ReadOnlyMemory<char>.ToString()). Otherwise, we use StringPool to
         // avoid repeated allocations if the source buffers represent a repeated text.
-        if (MemoryMarshal.TryGetString(Data, out string text, out int start, out int length) &&
+        if (MemoryMarshal.TryGetString(this.Data, out string text, out int start, out int length) &&
             start == 0 && length == text.Length)
         {
             return text;
         }
 
-        return StringPool.Shared.GetOrAdd(Data.Span);
+        return StringPool.Shared.GetOrAdd(this.Data.Span);
     }
 }

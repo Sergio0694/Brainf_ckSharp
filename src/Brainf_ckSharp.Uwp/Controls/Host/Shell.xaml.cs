@@ -136,12 +136,12 @@ public sealed partial class Shell : UserControl
     /// </summary>
     private void Border_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        if (Math.Abs(_previousKeyboardHeight - e.NewSize.Height) > 0.01)
+        if (Math.Abs(this._previousKeyboardHeight - e.NewSize.Height) > 0.01)
         {
-            _previousKeyboardHeight = e.NewSize.Height;
+            this._previousKeyboardHeight = e.NewSize.Height;
 
-            ConsolePivotItem.FooterSpacing = e.NewSize.Height;
-            IdePivotItem.FooterSpacing = e.NewSize.Height;
+            this.ConsolePivotItem.FooterSpacing = e.NewSize.Height;
+            this.IdePivotItem.FooterSpacing = e.NewSize.Height;
         }
     }
 }

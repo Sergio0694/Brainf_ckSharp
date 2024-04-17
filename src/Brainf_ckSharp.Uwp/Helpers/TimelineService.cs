@@ -59,7 +59,7 @@ public sealed class TimelineService : IFilesHistoryService
     /// <inheritdoc/>
     public async Task LogOrUpdateActivityAsync(IFile file)
     {
-        using (await TimelineMutex.LockAsync())
+        using (await this.TimelineMutex.LockAsync())
         {
             // Load the template, if needed
             if (_Template is null)
@@ -95,25 +95,25 @@ public sealed class TimelineService : IFilesHistoryService
             await activity.SaveAsync();
 
             // Update the activity currently in use
-            _Session?.Dispose();
-            _Session = activity.CreateSession();
+            this._Session?.Dispose();
+            this._Session = activity.CreateSession();
         }
     }
 
     /// <inheritdoc/>
     public async Task DismissCurrentActivityAsync()
     {
-        using (await TimelineMutex.LockAsync())
+        using (await this.TimelineMutex.LockAsync())
         {
-            _Session?.Dispose();
-            _Session = null;
+            this._Session?.Dispose();
+            this._Session = null;
         }
     }
 
     /// <inheritdoc/>
     public async Task RemoveActivityAsync(IFile file)
     {
-        using (await TimelineMutex.LockAsync())
+        using (await this.TimelineMutex.LockAsync())
         {
             // Get a unique id for the file
             string id = ((uint)HashCode<char>.Combine(file.Path.AsSpan())).ToString();

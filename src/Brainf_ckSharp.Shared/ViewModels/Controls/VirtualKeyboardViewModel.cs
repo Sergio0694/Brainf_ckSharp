@@ -18,7 +18,7 @@ public sealed partial class VirtualKeyboardViewModel : ObservableRecipient
     public VirtualKeyboardViewModel(IMessenger messenger, ISettingsService settingsService)
         : base(messenger)
     {
-        _IsPBrainModeEnabled = settingsService.GetValue<bool>(SettingsKeys.ShowPBrainButtons);
+        this._IsPBrainModeEnabled = settingsService.GetValue<bool>(SettingsKeys.ShowPBrainButtons);
     }
 
     /// <inheritdoc/>
@@ -34,8 +34,8 @@ public sealed partial class VirtualKeyboardViewModel : ObservableRecipient
     /// </summary>
     public bool IsPBrainModeEnabled
     {
-        get => _IsPBrainModeEnabled;
-        private set => SetProperty(ref _IsPBrainModeEnabled, value);
+        get => this._IsPBrainModeEnabled;
+        private set => SetProperty(ref this._IsPBrainModeEnabled, value);
     }
 
     /// <summary>

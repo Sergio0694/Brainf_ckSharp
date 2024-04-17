@@ -26,7 +26,7 @@ public sealed partial class AboutSubPageViewModel : ObservableObject
     /// <param name="gitHubService">The <see cref="IGitHubService"/> instance to use</param>
     public AboutSubPageViewModel(IGitHubService gitHubService)
     {
-        GitHubService = gitHubService;
+        this.GitHubService = gitHubService;
     }
 
     /// <summary>
@@ -86,7 +86,7 @@ public sealed partial class AboutSubPageViewModel : ObservableObject
 
         try
         {
-            Developers = new[] { await GitHubService.GetUserAsync(DeveloperInfo.GitHubUsername) };
+            Developers = new[] { await this.GitHubService.GetUserAsync(DeveloperInfo.GitHubUsername) };
             FeaturedLinks = new[] { DeveloperInfo.PayPalMeUrl };
         }
         catch

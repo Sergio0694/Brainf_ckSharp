@@ -28,10 +28,10 @@ public sealed class HeaderButton : Control
     {
         base.OnApplyTemplate();
 
-        _RootButton = (Button?)GetTemplateChild(RootButtonName)
+        this._RootButton = (Button?)GetTemplateChild(RootButtonName)
                       ?? ThrowHelper.ThrowInvalidOperationException<Button>("Can't find " + RootButtonName);
 
-        _RootButton.Click += RootButton_Click;
+        this._RootButton.Click += RootButton_Click;
 
         UpdateVisualState();
     }

@@ -34,13 +34,13 @@ public sealed class LockedPivotBehavior : Behavior<Pivot>
 
         AssociatedObject.Loaded -= AssociatedObject_Loaded;
 
-        if (_scrollViewer is not null)
+        if (this._scrollViewer is not null)
         {
-            _scrollViewer!.PointerEntered -= Scroller_PointerIn;
-            _scrollViewer.PointerMoved -= Scroller_PointerIn;
-            _scrollViewer.PointerExited -= Scroller_PointerOut;
-            _scrollViewer.PointerReleased -= Scroller_PointerOut;
-            _scrollViewer.PointerCaptureLost -= Scroller_PointerOut;
+            this._scrollViewer!.PointerEntered -= Scroller_PointerIn;
+            this._scrollViewer.PointerMoved -= Scroller_PointerIn;
+            this._scrollViewer.PointerExited -= Scroller_PointerOut;
+            this._scrollViewer.PointerReleased -= Scroller_PointerOut;
+            this._scrollViewer.PointerCaptureLost -= Scroller_PointerOut;
         }
     }
 
@@ -54,14 +54,14 @@ public sealed class LockedPivotBehavior : Behavior<Pivot>
             return;
         }
 
-        _scrollViewer = scroller;
+        this._scrollViewer = scroller;
 
         // Add the handlers to disable the swipe gestures
-        _scrollViewer.PointerEntered += Scroller_PointerIn;
-        _scrollViewer.PointerMoved += Scroller_PointerIn;
-        _scrollViewer.PointerExited += Scroller_PointerOut;
-        _scrollViewer.PointerReleased += Scroller_PointerOut;
-        _scrollViewer.PointerCaptureLost += Scroller_PointerOut;
+        this._scrollViewer.PointerEntered += Scroller_PointerIn;
+        this._scrollViewer.PointerMoved += Scroller_PointerIn;
+        this._scrollViewer.PointerExited += Scroller_PointerOut;
+        this._scrollViewer.PointerReleased += Scroller_PointerOut;
+        this._scrollViewer.PointerCaptureLost += Scroller_PointerOut;
     }
 
     // Disables the swipe gesture for the keyboard pivot (swiping that pivot causes the app to crash)

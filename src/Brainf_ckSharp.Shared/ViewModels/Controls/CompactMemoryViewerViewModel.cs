@@ -43,10 +43,10 @@ public sealed class CompactMemoryViewerViewModel : ObservableRecipient
     /// </summary>
     public IReadOnlyMachineState? MachineState
     {
-        get => _MachineState;
+        get => this._MachineState;
         set
         {
-            if (SetProperty(ref _MachineState, value))
+            if (SetProperty(ref this._MachineState, value))
             {
                 UpdateFromState(value);
             }

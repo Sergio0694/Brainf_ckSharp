@@ -26,9 +26,9 @@ internal sealed partial class Brainf_ckEditBox
         {
             SetValue(TextProperty, value);
 
-            _SyntaxValidationResult = Brainf_ckParser.ValidateSyntax(value);
+            this._SyntaxValidationResult = Brainf_ckParser.ValidateSyntax(value);
 
-            TextChanged?.Invoke(this, new TextChangedEventArgs(value, _SyntaxValidationResult));
+            TextChanged?.Invoke(this, new TextChangedEventArgs(value, this._SyntaxValidationResult));
         }
     }
 

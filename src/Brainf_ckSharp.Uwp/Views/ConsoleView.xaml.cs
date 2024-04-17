@@ -33,8 +33,8 @@ public sealed partial class ConsoleView : UserControl
     /// </summary>
     public double FooterSpacing
     {
-        get => FooterBorder.Height - 12;
-        set => FooterBorder.Height = value + 12;
+        get => this.FooterBorder.Height - 12;
+        set => this.FooterBorder.Height = value + 12;
     }
 
     /// <summary>

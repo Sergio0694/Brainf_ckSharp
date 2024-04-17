@@ -30,7 +30,7 @@ internal readonly struct Timestamp
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Timestamp(long value)
     {
-        Value = value;
+        this.Value = value;
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ internal readonly struct Timestamp
         {
             long
                 current = Stopwatch.GetTimestamp(),
-                delta = Math.Abs(current - Value),
+                delta = Math.Abs(current - this.Value),
                 ticks = unchecked((long)(delta * TickFrequency));
 
             return ticks;

@@ -29,8 +29,8 @@ internal struct StdoutBuffer : IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private StdoutBuffer(char[] buffer)
     {
-        Buffer = buffer;
-        _Position = 0;
+        this.Buffer = buffer;
+        this._Position = 0;
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ internal struct StdoutBuffer : IDisposable
     /// <returns>A <see cref="Writer"/> instance to write characters</returns>
     public Writer CreateWriter()
     {
-        return new(Buffer, _Position);
+        return new(this.Buffer, this._Position);
     }
 
     /// <summary>
@@ -58,7 +58,7 @@ internal struct StdoutBuffer : IDisposable
     /// <param name="writer">The <see cref="Writer"/> instance that was previously used</param>
     public void Synchronize(ref Writer writer)
     {
-        _Position = writer.Position;
+        this._Position = writer.Position;
     }
 
     /// <summary>
@@ -79,8 +79,8 @@ internal struct StdoutBuffer : IDisposable
         /// <param name="position">The initial position to write from</param>
         public Writer(Span<char> buffer, int position = 0)
         {
-            Buffer = buffer;
-            Position = position;
+            this.Buffer = buffer;
+            this.Position = position;
         }
 
         /// <summary>
@@ -91,16 +91,16 @@ internal struct StdoutBuffer : IDisposable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryWrite(char c)
         {
-            Assert(Position >= 0);
-            Assert(Position <= Specs.StdoutBufferSizeLimit);
+            Assert(this.Position >= 0);
+            Assert(this.Position <= Specs.StdoutBufferSizeLimit);
 
-            int position = Position;
+            int position = this.Position;
 
-            if ((uint)position < (uint)Buffer.Length)
+            if ((uint)position < (uint)this.Buffer.Length)
             {
-                Buffer.DangerousGetReferenceAt(position) = c;
+                this.Buffer.DangerousGetReferenceAt(position) = c;
 
-                Position = position + 1;
+                this.Position = position + 1;
 
                 return true;
             }
@@ -111,19 +111,19 @@ internal struct StdoutBuffer : IDisposable
         /// <inheritdoc/>
         public override readonly string ToString()
         {
-            return StringPool.Shared.GetOrAdd(Buffer.Slice(0, Position));
+            return StringPool.Shared.GetOrAdd(this.Buffer.Slice(0, this.Position));
         }
     }
 
     /// <inheritdoc/>
     public override readonly string ToString()
     {
-        return StringPool.Shared.GetOrAdd(new ReadOnlySpan<char>(Buffer, 0, _Position));
+        return StringPool.Shared.GetOrAdd(new ReadOnlySpan<char>(this.Buffer, 0, this._Position));
     }
 
     /// <inheritdoc/>
     public readonly void Dispose()
     {
-        ArrayPool<char>.Shared.Return(Buffer);
+        ArrayPool<char>.Shared.Return(this.Buffer);
     }
 }

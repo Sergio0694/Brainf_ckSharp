@@ -25,7 +25,7 @@ public abstract class SettingsSectionViewModelBase : ObservableRecipient
     protected SettingsSectionViewModelBase(IMessenger messenger, ISettingsService settingsService)
         : base(messenger)
     {
-        SettingsService = settingsService;
+        this.SettingsService = settingsService;
     }
 
     /// <summary>
@@ -40,7 +40,7 @@ public abstract class SettingsSectionViewModelBase : ObservableRecipient
     {
         if (base.SetProperty(ref field, value, name))
         {
-            SettingsService.SetValue(name!, value);
+            this.SettingsService.SetValue(name!, value);
         }
     }
 
@@ -58,7 +58,7 @@ public abstract class SettingsSectionViewModelBase : ObservableRecipient
     {
         if (base.SetProperty(ref field, value, name))
         {
-            SettingsService.SetValue(name!, value);
+            this.SettingsService.SetValue(name!, value);
 
             TMessage message = (TMessage)Activator.CreateInstance(typeof(TMessage), value);
 

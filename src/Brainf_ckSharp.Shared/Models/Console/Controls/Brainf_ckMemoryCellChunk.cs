@@ -19,12 +19,12 @@ public sealed class Brainf_ckMemoryCellChunk : ObservableObject
     {
         BaseOffset = offset;
 
-        _Zero = state[BaseOffset];
-        _One = state[BaseOffset + 1];
-        _Two = state[BaseOffset + 2];
-        _Three = state[BaseOffset + 3];
+        this._Zero = state[BaseOffset];
+        this._One = state[BaseOffset + 1];
+        this._Two = state[BaseOffset + 2];
+        this._Three = state[BaseOffset + 3];
 
-        _SelectedIndex = state.Position;
+        this._SelectedIndex = state.Position;
     }
 
     private Brainf_ckMemoryCell _Zero;
@@ -34,8 +34,8 @@ public sealed class Brainf_ckMemoryCellChunk : ObservableObject
     /// </summary>
     public Brainf_ckMemoryCell Zero
     {
-        get => _Zero;
-        set => SetProperty(ref _Zero, value);
+        get => this._Zero;
+        set => SetProperty(ref this._Zero, value);
     }
 
     private Brainf_ckMemoryCell _One;
@@ -45,8 +45,8 @@ public sealed class Brainf_ckMemoryCellChunk : ObservableObject
     /// </summary>
     public Brainf_ckMemoryCell One
     {
-        get => _One;
-        set => SetProperty(ref _One, value);
+        get => this._One;
+        set => SetProperty(ref this._One, value);
     }
 
     private Brainf_ckMemoryCell _Two;
@@ -56,8 +56,8 @@ public sealed class Brainf_ckMemoryCellChunk : ObservableObject
     /// </summary>
     public Brainf_ckMemoryCell Two
     {
-        get => _Two;
-        set => SetProperty(ref _Two, value);
+        get => this._Two;
+        set => SetProperty(ref this._Two, value);
     }
 
     private Brainf_ckMemoryCell _Three;
@@ -67,8 +67,8 @@ public sealed class Brainf_ckMemoryCellChunk : ObservableObject
     /// </summary>
     public Brainf_ckMemoryCell Three
     {
-        get => _Three;
-        set => SetProperty(ref _Three, value);
+        get => this._Three;
+        set => SetProperty(ref this._Three, value);
     }
 
     /// <summary>
@@ -79,10 +79,10 @@ public sealed class Brainf_ckMemoryCellChunk : ObservableObject
     /// <summary>
     /// Gets whether or not the current position is within the current chunk
     /// </summary>
-    public bool IsChunkSelected => _Zero.IsSelected ||
-                                   _One.IsSelected ||
-                                   _Two.IsSelected ||
-                                   _Three.IsSelected;
+    public bool IsChunkSelected => this._Zero.IsSelected ||
+                                   this._One.IsSelected ||
+                                   this._Two.IsSelected ||
+                                   this._Three.IsSelected;
 
     private int _SelectedIndex;
 
@@ -94,7 +94,7 @@ public sealed class Brainf_ckMemoryCellChunk : ObservableObject
     {
         get
         {
-            int index = _SelectedIndex - BaseOffset;
+            int index = this._SelectedIndex - BaseOffset;
 
             if (index > 3) return 3;
             if (index < 0) return 0;
@@ -119,7 +119,7 @@ public sealed class Brainf_ckMemoryCellChunk : ObservableObject
         Two = state[BaseOffset + 2];
         Three = state[BaseOffset + 3];
 
-        _SelectedIndex = state.Position;
+        this._SelectedIndex = state.Position;
 
         OnPropertyChanged(nameof(IsChunkSelected));
         OnPropertyChanged(nameof(SelectedIndex));

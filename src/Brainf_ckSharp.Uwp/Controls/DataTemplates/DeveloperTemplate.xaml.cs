@@ -29,7 +29,7 @@ public sealed partial class DeveloperTemplate : UserControl
     public User? ViewModel => DataContext as User;
 
     // Hides the progress ring
-    private void ImageExBase_OnImageExOpened(object sender, ImageExOpenedEventArgs e) => LoadingRing.Visibility = Visibility.Collapsed;
+    private void ImageExBase_OnImageExOpened(object sender, ImageExOpenedEventArgs e) => this.LoadingRing.Visibility = Visibility.Collapsed;
 
     // Opens the profile page of the current contributor
     private void Contributor_Clicked(object sender, RoutedEventArgs e)

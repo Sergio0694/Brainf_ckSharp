@@ -24,7 +24,7 @@ internal sealed partial class Brainf_ckEditBox
         /// <param name="this">The current <see cref="Brainf_ckEditBox"/> instance</param>
         private FormattingLock(Brainf_ckEditBox @this)
         {
-            This = @this;
+            this.This = @this;
 
             @this.TextChanging -= @this.MarkdownRichEditBox_TextChanging;
             ((RichEditBox)@this).TextChanged -= @this.MarkdownRichEditBox_TextChanged;
@@ -43,20 +43,20 @@ internal sealed partial class Brainf_ckEditBox
         /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
         {
-            This.TextChanging += This.MarkdownRichEditBox_TextChanging;
-            ((RichEditBox)This).TextChanged += This.MarkdownRichEditBox_TextChanged;
-            This.Document.ApplyDisplayUpdates();
-            This.IsUndoGroupingEnabled = false;
+            this.This.TextChanging += this.This.MarkdownRichEditBox_TextChanging;
+            ((RichEditBox)this.This).TextChanged += this.This.MarkdownRichEditBox_TextChanged;
+            this.This.Document.ApplyDisplayUpdates();
+            this.This.IsUndoGroupingEnabled = false;
 
             // Redraw the overlays, if needed
-            This.TryUpdateBracketsList();
-            if (This.RenderWhitespaceCharacters) This.TryUpdateWhitespaceCharactersList();
-            This.TryProcessErrorCoordinate();
+            this.This.TryUpdateBracketsList();
+            if (this.This.RenderWhitespaceCharacters) this.This.TryUpdateWhitespaceCharactersList();
+            this.This.TryProcessErrorCoordinate();
 
             // Notify external subscribers
-            This.FormattingCompleted?.Invoke(This, EventArgs.Empty);
+            this.This.FormattingCompleted?.Invoke(this.This, EventArgs.Empty);
 
-            This._TextOverlaysCanvas!.Invalidate();
+            this.This._TextOverlaysCanvas!.Invalidate();
         }
     }
 }

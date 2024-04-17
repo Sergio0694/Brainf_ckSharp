@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
@@ -18,8 +18,8 @@ public sealed class InterpreterSettingsSectionViewModel : SettingsSectionViewMod
     public InterpreterSettingsSectionViewModel(IMessenger messenger, ISettingsService settingsService)
         : base(messenger, settingsService)
     {
-        _OverflowMode = SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
-        _MemorySize = SettingsService.GetValue<int>(SettingsKeys.MemorySize);
+        this._OverflowMode = this.SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
+        this._MemorySize = this.SettingsService.GetValue<int>(SettingsKeys.MemorySize);
     }
 
     /// <summary>
@@ -34,8 +34,8 @@ public sealed class InterpreterSettingsSectionViewModel : SettingsSectionViewMod
     /// </summary>
     public OverflowMode OverflowMode
     {
-        get => _OverflowMode;
-        set => SetProperty<OverflowMode, OverflowModeSettingChangedMessage>(ref _OverflowMode, value);
+        get => this._OverflowMode;
+        set => SetProperty<OverflowMode, OverflowModeSettingChangedMessage>(ref this._OverflowMode, value);
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public sealed class InterpreterSettingsSectionViewModel : SettingsSectionViewMod
     /// </summary>
     public int MemorySize
     {
-        get => _MemorySize;
-        set => SetProperty<int, MemorySizeSettingChangedMessage>(ref _MemorySize, value);
+        get => this._MemorySize;
+        set => SetProperty<int, MemorySizeSettingChangedMessage>(ref this._MemorySize, value);
     }
 }

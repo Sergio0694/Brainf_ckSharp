@@ -65,18 +65,18 @@ internal sealed partial class TuringMachineState
         {
             Assert(state._Buffer != null);
 
-            Handle = GCHandle.Alloc(state._Buffer);
-            MachineState = state;
-            ExecutionContext = state.GetExecutionContext<TExecutionContext>();
+            this.Handle = GCHandle.Alloc(state._Buffer);
+            this.MachineState = state;
+            this.ExecutionContext = state.GetExecutionContext<TExecutionContext>();
         }
 
         /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
         {
             // Cast to a mutable reference to avoid the defensive copy
-            Unsafe.AsRef(Handle).Free();
+            Unsafe.AsRef(this.Handle).Free();
 
-            MachineState._Position = ExecutionContext.Position;
+            this.MachineState._Position = this.ExecutionContext.Position;
         }
     }
 }

@@ -131,19 +131,19 @@ public sealed class InterpreterSession : IEnumerator<InterpreterResult>
         CancellationToken executionToken,
         CancellationToken debugToken)
     {
-        Opcodes = opcodes;
-        Breakpoints = breakpoints;
-        JumpTable = jumpTable;
-        Functions = functions;
-        Definitions = definitions;
-        StackFrames = stackFrames;
-        MachineState = machineState;
-        StdinBuffer = new StdinBuffer(stdin);
-        StdoutBuffer = StdoutBuffer.Allocate();
-        ExecutionToken = executionToken;
-        DebugToken = debugToken;
-        Stopwatch = new Stopwatch();
-        SourceCode = Brainf_ckParser.ExtractSource(opcodes.Span);
+        this.Opcodes = opcodes;
+        this.Breakpoints = breakpoints;
+        this.JumpTable = jumpTable;
+        this.Functions = functions;
+        this.Definitions = definitions;
+        this.StackFrames = stackFrames;
+        this.MachineState = machineState;
+        this.StdinBuffer = new StdinBuffer(stdin);
+        this.StdoutBuffer = StdoutBuffer.Allocate();
+        this.ExecutionToken = executionToken;
+        this.DebugToken = debugToken;
+        this.Stopwatch = new Stopwatch();
+        this.SourceCode = Brainf_ckParser.ExtractSource(opcodes.Span);
     }
 
     private InterpreterResult? _Current;
@@ -152,7 +152,7 @@ public sealed class InterpreterSession : IEnumerator<InterpreterResult>
     public InterpreterResult Current
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => _Current ?? ThrowHelper.ThrowInvalidOperationException<InterpreterResult>("The session has not been initialized yet");
+        get => this._Current ?? ThrowHelper.ThrowInvalidOperationException<InterpreterResult>("The session has not been initialized yet");
     }
 
     /// <inheritdoc/>
@@ -162,21 +162,21 @@ public sealed class InterpreterSession : IEnumerator<InterpreterResult>
     public bool MoveNext()
     {
         // Check whether the current session can go ahead by one step
-        if (_Current != null &&
-            (_Current.ExitCode.HasFlag(ExitCode.Failure) ||
-             !_Current.ExitCode.HasFlag(ExitCode.BreakpointReached)))
+        if (this._Current != null &&
+            (this._Current.ExitCode.HasFlag(ExitCode.Failure) ||
+             !this._Current.ExitCode.HasFlag(ExitCode.BreakpointReached)))
         {
             return false;
         }
 
         // Execute the mode specific implementation
-        switch (MachineState.Mode)
+        switch (this.MachineState.Mode)
         {
             case OverflowMode.ByteWithOverflow: MoveNext<TuringMachineState.ByteWithOverflowExecutionContext>(); break;
             case OverflowMode.ByteWithNoOverflow: MoveNext<TuringMachineState.ByteWithNoOverflowExecutionContext>(); break;
             case OverflowMode.UshortWithOverflow: MoveNext<TuringMachineState.UshortWithOverflowExecutionContext>(); break;
             case OverflowMode.UshortWithNoOverflow: MoveNext<TuringMachineState.UshortWithNoOverflowExecutionContext>(); break;
-            default: ThrowHelper.ThrowArgumentOutOfRangeException(nameof(MachineState.Mode), $"Invalid execution mode: {MachineState.Mode}"); break;
+            default: ThrowHelper.ThrowArgumentOutOfRangeException(nameof(this.MachineState.Mode), $"Invalid execution mode: {this.MachineState.Mode}"); break;
         };
 
         return true;
@@ -191,62 +191,62 @@ public sealed class InterpreterSession : IEnumerator<InterpreterResult>
     {
         ExitCode exitCode;
 
-        using (TuringMachineState.ExecutionSession<TExecutionContext> session = MachineState.CreateExecutionSession<TExecutionContext>())
+        using (TuringMachineState.ExecutionSession<TExecutionContext> session = this.MachineState.CreateExecutionSession<TExecutionContext>())
         {
-            Stopwatch.Start();
+            this.Stopwatch.Start();
 
             // Setup the stdin and stdout readers and writers
-            StdinBuffer.Reader stdinReader = StdinBuffer.CreateReader();
-            StdoutBuffer.Writer stdoutWriter = StdoutBuffer.CreateWriter();
+            StdinBuffer.Reader stdinReader = this.StdinBuffer.CreateReader();
+            StdoutBuffer.Writer stdoutWriter = this.StdoutBuffer.CreateWriter();
 
             // Execute the new interpreter debug step
             exitCode = Brainf_ckInterpreter.Debug.Run(
                 ref Unsafe.AsRef(session.ExecutionContext),
-                ref Opcodes.DangerousGetReference(),
-                ref Breakpoints.DangerousGetReference(),
-                ref JumpTable.DangerousGetReference(),
-                ref Functions.DangerousGetReference(),
-                ref Definitions.DangerousGetReference(),
-                ref StackFrames.DangerousGetReference(),
-                ref _Depth,
-                ref _TotalOperations,
-                ref _TotalFunctions,
+                ref this.Opcodes.DangerousGetReference(),
+                ref this.Breakpoints.DangerousGetReference(),
+                ref this.JumpTable.DangerousGetReference(),
+                ref this.Functions.DangerousGetReference(),
+                ref this.Definitions.DangerousGetReference(),
+                ref this.StackFrames.DangerousGetReference(),
+                ref this._Depth,
+                ref this._TotalOperations,
+                ref this._TotalFunctions,
                 ref stdinReader,
                 ref stdoutWriter,
-                ExecutionToken,
-                DebugToken);
+                this.ExecutionToken,
+                this.DebugToken);
 
             // Synchronize the buffers
-            StdinBuffer.Synchronize(ref stdinReader);
-            StdoutBuffer.Synchronize(ref stdoutWriter);
+            this.StdinBuffer.Synchronize(ref stdinReader);
+            this.StdoutBuffer.Synchronize(ref stdoutWriter);
 
-            Stopwatch.Stop();
+            this.Stopwatch.Stop();
         }
 
         // Prepare the debug info
         HaltedExecutionInfo? debugInfo = Brainf_ckInterpreter.LoadDebugInfo(
-            Opcodes.Span,
-            StackFrames.Span,
-            _Depth);
+            this.Opcodes.Span,
+            this.StackFrames.Span,
+            this._Depth);
 
         // Build the collection of defined functions
         FunctionDefinition[] functionDefinitions = Brainf_ckInterpreter.LoadFunctionDefinitions(
-            Opcodes.Span,
-            Functions.Span,
-            Definitions.Span,
-            _TotalFunctions);
+            this.Opcodes.Span,
+            this.Functions.Span,
+            this.Definitions.Span,
+            this._TotalFunctions);
 
         // Update the current interpreter result
-        _Current = new InterpreterResult(
-            SourceCode,
+        this._Current = new InterpreterResult(
+            this.SourceCode,
             exitCode,
             debugInfo,
-            (TuringMachineState)MachineState.Clone(),
+            (TuringMachineState)this.MachineState.Clone(),
             functionDefinitions,
-            StdinBuffer.ToString(),
-            StdoutBuffer.ToString(),
-            Stopwatch.Elapsed,
-            _TotalOperations);
+            this.StdinBuffer.ToString(),
+            this.StdoutBuffer.ToString(),
+            this.Stopwatch.Elapsed,
+            this._TotalOperations);
     }
 
     /// <inheritdoc/>
@@ -257,18 +257,18 @@ public sealed class InterpreterSession : IEnumerator<InterpreterResult>
     /// <inheritdoc/>
     public void Dispose()
     {
-        if (_Disposed) return;
+        if (this._Disposed) return;
 
-        _Disposed = true;
+        this._Disposed = true;
 
-        Opcodes.Dispose();
-        Breakpoints.Dispose();
-        JumpTable.Dispose();
-        Functions.Dispose();
-        Definitions.Dispose();
-        StackFrames.Dispose();
-        StackFrames.Dispose();
-        StdoutBuffer.Dispose();
-        Stopwatch.Stop();
+        this.Opcodes.Dispose();
+        this.Breakpoints.Dispose();
+        this.JumpTable.Dispose();
+        this.Functions.Dispose();
+        this.Definitions.Dispose();
+        this.StackFrames.Dispose();
+        this.StackFrames.Dispose();
+        this.StdoutBuffer.Dispose();
+        this.Stopwatch.Stop();
     }
 }

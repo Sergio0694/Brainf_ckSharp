@@ -40,13 +40,13 @@ public sealed partial class IdeSettingsSectionViewModel : SettingsSectionViewMod
     public IdeSettingsSectionViewModel(IMessenger messenger, IAnalyticsService analyticsService, IStoreService storeService, ISettingsService settingsService, AppConfiguration configuration)
         : base(messenger, settingsService)
     {
-        AnalyticsService = analyticsService;
-        StoreService = storeService;
-        Configuration = configuration;
+        this.AnalyticsService = analyticsService;
+        this.StoreService = storeService;
+        this.Configuration = configuration;
 
-        _IdeTheme = SettingsService.GetValue<IdeTheme>(SettingsKeys.IdeTheme);
-        _BracketsFormattingStyle = SettingsService.GetValue<BracketsFormattingStyle>(SettingsKeys.BracketsFormattingStyle);
-        _RenderWhitespaces = SettingsService.GetValue<bool>(SettingsKeys.RenderWhitespaces);
+        this._IdeTheme = this.SettingsService.GetValue<IdeTheme>(SettingsKeys.IdeTheme);
+        this._BracketsFormattingStyle = this.SettingsService.GetValue<BracketsFormattingStyle>(SettingsKeys.BracketsFormattingStyle);
+        this._RenderWhitespaces = this.SettingsService.GetValue<bool>(SettingsKeys.RenderWhitespaces);
     }
 
     /// <summary>
@@ -61,12 +61,12 @@ public sealed partial class IdeSettingsSectionViewModel : SettingsSectionViewMod
     /// </summary>
     public IdeTheme IdeTheme
     {
-        get => _IdeTheme;
+        get => this._IdeTheme;
         set
         {
-            if (SetProperty<IdeTheme, IdeThemeSettingChangedMessage>(ref _IdeTheme, value))
+            if (SetProperty<IdeTheme, IdeThemeSettingChangedMessage>(ref this._IdeTheme, value))
             {
-                AnalyticsService.Log(EventNames.ThemeChanged, (nameof(Enums.Settings.IdeTheme), value.ToString()));
+                this.AnalyticsService.Log(EventNames.ThemeChanged, (nameof(Enums.Settings.IdeTheme), value.ToString()));
             }
         }
     }
@@ -94,8 +94,8 @@ public sealed partial class IdeSettingsSectionViewModel : SettingsSectionViewMod
     /// </summary>
     public BracketsFormattingStyle BracketsFormattingStyle
     {
-        get => _BracketsFormattingStyle;
-        set => SetProperty<BracketsFormattingStyle, BracketsFormattingStyleSettingsChangedMessage>(ref _BracketsFormattingStyle, value);
+        get => this._BracketsFormattingStyle;
+        set => SetProperty<BracketsFormattingStyle, BracketsFormattingStyleSettingsChangedMessage>(ref this._BracketsFormattingStyle, value);
     }
 
     private bool _RenderWhitespaces;
@@ -105,8 +105,8 @@ public sealed partial class IdeSettingsSectionViewModel : SettingsSectionViewMod
     /// </summary>
     public bool RenderWhitespaces
     {
-        get => _RenderWhitespaces;
-        set => SetProperty<bool, RenderWhitespacesSettingChangedMessage>(ref _RenderWhitespaces, value);
+        get => this._RenderWhitespaces;
+        set => SetProperty<bool, RenderWhitespacesSettingChangedMessage>(ref this._RenderWhitespaces, value);
     }
 
     /// <summary>
@@ -117,9 +117,9 @@ public sealed partial class IdeSettingsSectionViewModel : SettingsSectionViewMod
     {
         if (!IsThemeSelectorAvailable)
         {
-            Guard.IsNotNull(Configuration.UnlockThemesIapId, nameof(AppConfiguration.UnlockThemesIapId));
+            Guard.IsNotNull(this.Configuration.UnlockThemesIapId, nameof(AppConfiguration.UnlockThemesIapId));
 
-            IsThemeSelectorAvailable = await StoreService.IsProductPurchasedAsync(Configuration.UnlockThemesIapId);
+            IsThemeSelectorAvailable = await this.StoreService.IsProductPurchasedAsync(this.Configuration.UnlockThemesIapId);
         }
     }
 
@@ -129,13 +129,13 @@ public sealed partial class IdeSettingsSectionViewModel : SettingsSectionViewMod
     [RelayCommand]
     private async Task TryUnlockThemesSelectorAsync()
     {
-        Guard.IsNotNull(Configuration.UnlockThemesIapId, nameof(AppConfiguration.UnlockThemesIapId));
+        Guard.IsNotNull(this.Configuration.UnlockThemesIapId, nameof(AppConfiguration.UnlockThemesIapId));
 
-        var result = await StoreService.TryPurchaseProductAsync(Configuration.UnlockThemesIapId);
+        var result = await this.StoreService.TryPurchaseProductAsync(this.Configuration.UnlockThemesIapId);
 
         IsThemeSelectorAvailable = result == StorePurchaseResult.Success ||
                                    result == StorePurchaseResult.AlreadyPurchased;
 
-        AnalyticsService.Log(EventNames.ThemesUnlockRequest, (nameof(StorePurchaseResult), result.ToString()));
+        this.AnalyticsService.Log(EventNames.ThemesUnlockRequest, (nameof(StorePurchaseResult), result.ToString()));
     }
 }

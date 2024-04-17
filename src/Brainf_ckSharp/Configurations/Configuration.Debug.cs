@@ -31,30 +31,30 @@ public readonly ref partial struct DebugConfiguration
     [MethodImpl(MethodImplOptions.NoInlining)]
     public Option<InterpreterSession> TryRun()
     {
-        Guard.IsNotNull(Source);
+        Guard.IsNotNull(this.Source);
 
-        if (InitialState is TuringMachineState initialState)
+        if (this.InitialState is TuringMachineState initialState)
         {
-            Guard.IsNull(MemorySize);
-            Guard.IsNull(OverflowMode);
+            Guard.IsNull(this.MemorySize);
+            Guard.IsNull(this.OverflowMode);
 
             initialState = (TuringMachineState)initialState.Clone();
         }
         else
         {
-            int size = MemorySize ?? Specs.DefaultMemorySize;
+            int size = this.MemorySize ?? Specs.DefaultMemorySize;
 
-            Guard.IsBetweenOrEqualTo(size, Specs.MinimumMemorySize, Specs.MaximumMemorySize, nameof(MemorySize));
+            Guard.IsBetweenOrEqualTo(size, Specs.MinimumMemorySize, Specs.MaximumMemorySize, nameof(this.MemorySize));
 
-            initialState = new TuringMachineState(size, OverflowMode ?? Specs.DefaultOverflowMode);
+            initialState = new TuringMachineState(size, this.OverflowMode ?? Specs.DefaultOverflowMode);
         }
 
         return Brainf_ckInterpreter.Debug.TryCreateSession(
-            Source.Value.Span,
-            Breakpoints.Span,
-            Stdin.GetValueOrDefault(),
+            this.Source.Value.Span,
+            this.Breakpoints.Span,
+            this.Stdin.GetValueOrDefault(),
             initialState,
-            ExecutionToken,
-            DebugToken);
+            this.ExecutionToken,
+            this.DebugToken);
     }
 }

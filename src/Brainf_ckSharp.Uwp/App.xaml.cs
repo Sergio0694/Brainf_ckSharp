@@ -51,14 +51,14 @@ public sealed partial class App : Application
     /// <summary>
     /// Gets whether or not there is a file request pending
     /// </summary>
-    public bool IsFileRequestPending => _RequestedFile is not null;
+    public bool IsFileRequestPending => this._RequestedFile is not null;
 
     public SubPageHost? _SubPageHost;
 
     /// <summary>
     /// Gets the <see cref="Controls.SubPages.Host.SubPageHost"/> instance used to display popups in the app
     /// </summary>
-    public SubPageHost SubPageHost => _SubPageHost ??= Window.Current.Content.FindDescendant<SubPageHost>()!;
+    public SubPageHost SubPageHost => this._SubPageHost ??= Window.Current.Content.FindDescendant<SubPageHost>()!;
 
     /// <summary>
     /// Extracts the current file request, if present
@@ -67,9 +67,9 @@ public sealed partial class App : Application
     /// <returns>Whether or not a requested file was present</returns>
     public bool TryExtractRequestedFile(out IFile? file)
     {
-        file = _RequestedFile;
+        file = this._RequestedFile;
 
-        _RequestedFile = null;
+        this._RequestedFile = null;
 
         return file is not null;
     }
@@ -89,9 +89,9 @@ public sealed partial class App : Application
     {
         if (args.Files.FirstOrDefault() is StorageFile file)
         {
-            _RequestedFile = new File(file);
+            this._RequestedFile = new File(file);
         }
-        else _RequestedFile = null;
+        else this._RequestedFile = null;
 
         OnActivated(false);
 
@@ -124,7 +124,7 @@ public sealed partial class App : Application
 
                 StorageFile file = await StorageFile.GetFileFromPathAsync(unescapedPath);
 
-                _RequestedFile = new File(file);
+                this._RequestedFile = new File(file);
             }
 
             // Then only if this is not a new app instance, focus the IDE

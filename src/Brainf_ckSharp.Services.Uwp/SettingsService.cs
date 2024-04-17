@@ -43,15 +43,15 @@ public sealed class SettingsService : ISettingsService
         }
 
         // Store the new value
-        if (!SettingsStorage.ContainsKey(key)) SettingsStorage.Add(key, serializable);
-        else if (overwrite) SettingsStorage[key] = serializable;
+        if (!this.SettingsStorage.ContainsKey(key)) this.SettingsStorage.Add(key, serializable);
+        else if (overwrite) this.SettingsStorage[key] = serializable;
     }
 
     /// <inheritdoc/>
     public T GetValue<T>(string key, bool fallback = false)
     {
         // Try to get the setting value
-        if (!SettingsStorage.TryGetValue(key, out object value))
+        if (!this.SettingsStorage.TryGetValue(key, out object value))
         {
             if (fallback) return default!;
 
@@ -65,5 +65,5 @@ public sealed class SettingsService : ISettingsService
     }
 
     /// <inheritdoc/>
-    public void Clear() => SettingsStorage.Clear();
+    public void Clear() => this.SettingsStorage.Clear();
 }

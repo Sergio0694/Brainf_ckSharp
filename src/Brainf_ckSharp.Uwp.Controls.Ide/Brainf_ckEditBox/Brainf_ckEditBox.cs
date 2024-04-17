@@ -59,8 +59,8 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
     /// <param name="args">The <see cref="RichEditBoxSelectionChangingEventArgs"/> instance for the <see cref="RichEditBox.SelectionChanging"/> event</param>
     private void Brainf_ckEditBox_SelectionChanging(RichEditBox sender, RichEditBoxSelectionChangingEventArgs args)
     {
-        _SelectionStart = args.SelectionStart;
-        _SelectionLength = args.SelectionLength;
+        this._SelectionStart = args.SelectionStart;
+        this._SelectionLength = args.SelectionLength;
 
         IsTextSelected = args.SelectionLength > 0;
     }
@@ -78,20 +78,20 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
         // Both elements are translated to the right position and made visible
         // if the current selection is not collapsed to a single point, otherwise
         // they're both hidden. This is the same behavior of Visual Studio.
-        if (_SelectionLength > 0)
+        if (this._SelectionLength > 0)
         {
-            _SelectionHighlightBorder!.Opacity = 0;
-            _CursorIndicatorRectangle!.Visibility = Visibility.Collapsed;
+            this._SelectionHighlightBorder!.Opacity = 0;
+            this._CursorIndicatorRectangle!.Visibility = Visibility.Collapsed;
         }
         else
         {
             // Line highlight
-            _SelectionHighlightBorder!.Opacity = 1;
-            ((TranslateTransform)_SelectionHighlightBorder.RenderTransform).Y = rect.Top + Padding.Top;
+            this._SelectionHighlightBorder!.Opacity = 1;
+            ((TranslateTransform)this._SelectionHighlightBorder.RenderTransform).Y = rect.Top + Padding.Top;
 
             // Cursor indicator
-            _CursorIndicatorRectangle!.Visibility = Visibility.Visible;
-            TranslateTransform cursorTransform = (TranslateTransform)_CursorIndicatorRectangle.RenderTransform;
+            this._CursorIndicatorRectangle!.Visibility = Visibility.Visible;
+            TranslateTransform cursorTransform = (TranslateTransform)this._CursorIndicatorRectangle.RenderTransform;
             cursorTransform.X = rect.X + Padding.Left;
             cursorTransform.Y = rect.Y + Padding.Top;
         }
@@ -152,12 +152,12 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
     /// </summary>
     public async void TryShowSyntaxErrorToolTip()
     {
-        if (_SyntaxValidationResult.IsSuccess) return;
+        if (this._SyntaxValidationResult.IsSuccess) return;
 
-        int errorPosition = _SyntaxValidationResult.IsEmptyScript switch
+        int errorPosition = this._SyntaxValidationResult.IsEmptyScript switch
         {
             true => int.MaxValue,
-            false => _SyntaxValidationResult.ErrorOffset
+            false => this._SyntaxValidationResult.ErrorOffset
         };
 
         TaskCompletionSource<object?> tcs = new();
@@ -209,13 +209,13 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
         ContentScroller!.IsHitTestVisible = false;
 
         // Reset the target to ensure the right target coordinates are used
-        _SyntaxErrorToolTip!.IsOpen = false;
-        _SyntaxErrorToolTip.Target = null;
+        this._SyntaxErrorToolTip!.IsOpen = false;
+        this._SyntaxErrorToolTip.Target = null;
 
         // Setup and display the tooltip
-        _SyntaxErrorToolTip.Subtitle = ResourceLoader.GetString($"{nameof(SyntaxError)}/{_SyntaxValidationResult.ErrorType}");
-        _SyntaxErrorToolTip.Target = _CursorIndicatorRectangle!;
-        _SyntaxErrorToolTip!.IsOpen = true;
+        this._SyntaxErrorToolTip.Subtitle = this.ResourceLoader.GetString($"{nameof(SyntaxError)}/{this._SyntaxValidationResult.ErrorType}");
+        this._SyntaxErrorToolTip.Target = this._CursorIndicatorRectangle!;
+        this._SyntaxErrorToolTip!.IsOpen = true;
     }
 
     /// <summary>
@@ -251,9 +251,9 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
     {
         set
         {
-            if (_IsUndoGroupingEnabled != value)
+            if (this._IsUndoGroupingEnabled != value)
             {
-                _IsUndoGroupingEnabled = value;
+                this._IsUndoGroupingEnabled = value;
                 if (value) Document.BeginUndoGroup();
                 else Document.EndUndoGroup();
             }
@@ -281,7 +281,7 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
     {
         // Disable the unwanted shortcuts
         bool ctrl = VirtualKey.Control.IsDown();
-        if (ctrl && IgnoredShortcuts.Contains(e.Key))
+        if (ctrl && this.IgnoredShortcuts.Contains(e.Key))
         {
             goto HandleAndReturn;
         }
@@ -298,7 +298,7 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
         if (e.Key == VirtualKey.Back ||
             e.Key == VirtualKey.Delete)
         {
-            _IsDeleteRequested = true;
+            this._IsDeleteRequested = true;
 
             goto BaseOnKeyDown;
         }

@@ -54,13 +54,13 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     public ConsoleViewModel(IMessenger messenger, ISettingsService settingsService, IKeyboardListenerService keyboardListenerService)
         : base(messenger)
     {
-        SettingsService = settingsService;
-        KeyboardListenerService = keyboardListenerService;
+        this.SettingsService = settingsService;
+        this.KeyboardListenerService = keyboardListenerService;
 
         // Initialize the machine state with the current user settings
-        _MachineState = MachineStateProvider.Create(
-            SettingsService.GetValue<int>(SettingsKeys.MemorySize),
-            SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode));
+        this._MachineState = MachineStateProvider.Create(
+            this.SettingsService.GetValue<int>(SettingsKeys.MemorySize),
+            this.SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode));
     }
 
     /// <inheritdoc/>
@@ -77,7 +77,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
         Messenger.Register<ConsoleViewModel, MemorySizeSettingChangedMessage>(this, (r, m) => _ = r.RestartAsync());
         Messenger.Register<ConsoleViewModel, OperatorKeyPressedNotificationMessage>(this, (r, m) => _ = r.TryAddOperatorAsync(m.Value));
 
-        KeyboardListenerService.CharacterReceived += TryAddOperator;
+        this.KeyboardListenerService.CharacterReceived += TryAddOperator;
     }
 
     /// <inheritdoc/>
@@ -85,7 +85,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     {
         base.OnDeactivated();
 
-        KeyboardListenerService.CharacterReceived -= TryAddOperator;
+        this.KeyboardListenerService.CharacterReceived -= TryAddOperator;
     }
 
     /// <inheritdoc/>
@@ -107,8 +107,8 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     public IReadOnlyMachineState MachineState
     {
-        get => _MachineState;
-        private set => SetProperty(ref _MachineState, value, true);
+        get => this._MachineState;
+        private set => SetProperty(ref this._MachineState, value, true);
     }
 
     /// <summary>
@@ -126,7 +126,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// <param name="c">The current operator to add</param>
     private async Task TryAddOperatorAsync(char c)
     {
-        using (await ExecutionMutex.LockAsync())
+        using (await this.ExecutionMutex.LockAsync())
         {
             if (!Brainf_ckParser.IsOperator(c)) return; 
             if (Source.LastOrDefault() is ConsoleCommand command)
@@ -144,7 +144,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task DeleteLastOperatorAsync()
     {
-        using (await ExecutionMutex.LockAsync())
+        using (await this.ExecutionMutex.LockAsync())
         {
             if (Source.LastOrDefault() is ConsoleCommand command)
             {
@@ -163,7 +163,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task ResetCommandAsync()
     {
-        using (await ExecutionMutex.LockAsync())
+        using (await this.ExecutionMutex.LockAsync())
         {
             if (Source.LastOrDefault() is ConsoleCommand command)
             {
@@ -180,7 +180,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task RestartAsync()
     {
-        using (await ExecutionMutex.LockAsync())
+        using (await this.ExecutionMutex.LockAsync())
         {
             if (Source.LastOrDefault() is ConsoleCommand command)
             {
@@ -191,8 +191,8 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
             Source.Add(new ConsoleRestart());
 
             MachineState = MachineStateProvider.Create(
-                SettingsService.GetValue<int>(SettingsKeys.MemorySize),
-                SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode));
+                this.SettingsService.GetValue<int>(SettingsKeys.MemorySize),
+                this.SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode));
 
             Source.Add(new ConsoleCommand());
 
@@ -205,7 +205,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task ClearScreenAsync()
     {
-        using (await ExecutionMutex.LockAsync())
+        using (await this.ExecutionMutex.LockAsync())
         {
             Source.Clear();
 
@@ -220,7 +220,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task ExecuteCommandAsync()
     {
-        using (await ExecutionMutex.LockAsync())
+        using (await this.ExecutionMutex.LockAsync())
         {
             if (Source.LastOrDefault() is not ConsoleCommand command)
             {
@@ -283,7 +283,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task RepeatLastScriptAsync()
     {
-        using (await ExecutionMutex.LockAsync())
+        using (await this.ExecutionMutex.LockAsync())
         {
             if (Source.Reverse().OfType<ConsoleCommand>().Skip(1).FirstOrDefault() is ConsoleCommand previous)
             {

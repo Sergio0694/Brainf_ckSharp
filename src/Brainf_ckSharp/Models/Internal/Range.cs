@@ -30,8 +30,8 @@ internal readonly struct Range
         Assert(end >= 0);
         Assert(start <= end);
 
-        Start = start;
-        End = end;
+        this.Start = start;
+        this.End = end;
     }
 
     /// <summary>
@@ -40,6 +40,6 @@ internal readonly struct Range
     public int Length
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => End - Start;
+        get => this.End - this.Start;
     }
 }

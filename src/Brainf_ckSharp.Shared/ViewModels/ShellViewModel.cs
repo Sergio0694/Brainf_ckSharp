@@ -58,11 +58,11 @@ public sealed class ShellViewModel : ObservableRecipient
     public ShellViewModel(IMessenger messenger, ISettingsService settingsService, IAnalyticsService analyticsService)
         : base(messenger)
     {
-        SettingsService = settingsService;
-        AnalyticsService = analyticsService;
+        this.SettingsService = settingsService;
+        this.AnalyticsService = analyticsService;
 
-        _SelectedView = SettingsService.GetValue<ViewType>(SettingsKeys.SelectedView);
-        _IsVirtualKeyboardEnabled = SettingsService.GetValue<bool>(SettingsKeys.IsVirtualKeyboardEnabled);
+        this._SelectedView = this.SettingsService.GetValue<ViewType>(SettingsKeys.SelectedView);
+        this._IsVirtualKeyboardEnabled = this.SettingsService.GetValue<bool>(SettingsKeys.IsVirtualKeyboardEnabled);
     }
 
     private ViewType _SelectedView;
@@ -72,12 +72,12 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public ViewType SelectedView
     {
-        get => _SelectedView;
+        get => this._SelectedView;
         set
         {
-            if (SetProperty(ref _SelectedView, value))
+            if (SetProperty(ref this._SelectedView, value))
             {
-                SettingsService.SetValue(SettingsKeys.SelectedView, value);
+                this.SettingsService.SetValue(SettingsKeys.SelectedView, value);
             }
         }
     }
@@ -89,12 +89,12 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public bool IsVirtualKeyboardEnabled
     {
-        get => _IsVirtualKeyboardEnabled;
+        get => this._IsVirtualKeyboardEnabled;
         set
         {
-            if (SetProperty(ref _IsVirtualKeyboardEnabled, value))
+            if (SetProperty(ref this._IsVirtualKeyboardEnabled, value))
             {
-                SettingsService.SetValue(SettingsKeys.IsVirtualKeyboardEnabled, value);
+                this.SettingsService.SetValue(SettingsKeys.IsVirtualKeyboardEnabled, value);
             }
         }
     }
@@ -104,7 +104,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void RunConsoleScript()
     {
-        AnalyticsService.Log(EventNames.ConsoleRun);
+        this.AnalyticsService.Log(EventNames.ConsoleRun);
 
         Messenger.Send<RunCommandRequestMessage>();
     }
@@ -124,7 +124,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void ClearConsoleScreen()
     {
-        AnalyticsService.Log(EventNames.ClearScreen);
+        this.AnalyticsService.Log(EventNames.ClearScreen);
 
         Messenger.Send<ClearConsoleScreenRequestMessage>();
     }
@@ -134,7 +134,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void RepeatLastConsoleScript()
     {
-        AnalyticsService.Log(EventNames.RepeatLastScript);
+        this.AnalyticsService.Log(EventNames.RepeatLastScript);
 
         Messenger.Send<RepeatCommandRequestMessage>();
     }
@@ -144,7 +144,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void RestartConsole()
     {
-        AnalyticsService.Log(EventNames.Restart);
+        this.AnalyticsService.Log(EventNames.Restart);
 
         Messenger.Send<RestartConsoleRequestMessage>();
     }
@@ -154,7 +154,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void RunIdeScript()
     {
-        AnalyticsService.Log(EventNames.IdeRun);
+        this.AnalyticsService.Log(EventNames.IdeRun);
 
         Messenger.Send<RunIdeScriptRequestMessage>();
     }
@@ -164,7 +164,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void DebugIdeScript()
     {
-        AnalyticsService.Log(EventNames.IdeDebug);
+        this.AnalyticsService.Log(EventNames.IdeDebug);
 
         Messenger.Send<DebugIdeScriptRequestMessage>();
     }
@@ -174,7 +174,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void NewIdeFile()
     {
-        AnalyticsService.Log(EventNames.NewFile);
+        this.AnalyticsService.Log(EventNames.NewFile);
 
         Messenger.Send<NewFileRequestMessage>();
     }
@@ -194,7 +194,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void OpenFile()
     {
-        AnalyticsService.Log(EventNames.OpenFile);
+        this.AnalyticsService.Log(EventNames.OpenFile);
 
         Messenger.Send(new PickOpenFileRequestMessage(false));
     }
@@ -204,7 +204,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void SaveFile()
     {
-        AnalyticsService.Log(EventNames.Save);
+        this.AnalyticsService.Log(EventNames.Save);
 
         Messenger.Send<SaveFileRequestMessage>();
     }
@@ -214,7 +214,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void SaveFileAs()
     {
-        AnalyticsService.Log(EventNames.SaveAs);
+        this.AnalyticsService.Log(EventNames.SaveAs);
 
         Messenger.Send<SaveFileAsRequestMessage>();
     }
@@ -224,7 +224,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void RequestUnicodeMap()
     {
-        AnalyticsService.Log(EventNames.UnicodeCharactersMapOpened);
+        this.AnalyticsService.Log(EventNames.UnicodeCharactersMapOpened);
 
         UnicodeMapRequested?.Invoke(this, EventArgs.Empty);
     }
@@ -234,7 +234,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void RequestAboutInfo()
     {
-        AnalyticsService.Log(EventNames.AboutPageOpened);
+        this.AnalyticsService.Log(EventNames.AboutPageOpened);
 
         AboutInfoRequested?.Invoke(this, EventArgs.Empty);
     }
@@ -244,7 +244,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void RequestUserGuide()
     {
-        AnalyticsService.Log(EventNames.UserGuideOpened);
+        this.AnalyticsService.Log(EventNames.UserGuideOpened);
 
         UserGuideRequested?.Invoke(this, EventArgs.Empty);
     }
@@ -254,7 +254,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void RequestSettings()
     {
-        AnalyticsService.Log(EventNames.SettingsOpened);
+        this.AnalyticsService.Log(EventNames.SettingsOpened);
 
         SettingsRequested?.Invoke(this, EventArgs.Empty);
     }
@@ -264,7 +264,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void RequestCodeLibrary()
     {
-        AnalyticsService.Log(EventNames.OpenCodeLibrary);
+        this.AnalyticsService.Log(EventNames.OpenCodeLibrary);
 
         CodeLibraryRequested?.Invoke(this, EventArgs.Empty);
     }

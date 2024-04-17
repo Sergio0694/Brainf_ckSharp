@@ -26,10 +26,10 @@ public sealed class ShareService : IShareService
 
     private void InitializeDataTransferManager()
     {
-        if (_DataTransferManager is not null) return;
+        if (this._DataTransferManager is not null) return;
 
-        _DataTransferManager = DataTransferManager.GetForCurrentView();
-        _DataTransferManager.DataRequested += DataTransferManager_DataRequested;
+        this._DataTransferManager = DataTransferManager.GetForCurrentView();
+        this._DataTransferManager.DataRequested += DataTransferManager_DataRequested;
     }
 
     /// <summary>
@@ -40,25 +40,25 @@ public sealed class ShareService : IShareService
     private void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
     {
         // Make sure there is some content to share
-        if (_Info == null) ThrowHelper.ThrowInvalidOperationException("There isn't a valid content to share");
+        if (this._Info == null) ThrowHelper.ThrowInvalidOperationException("There isn't a valid content to share");
 
         DataRequest request = args.Request;
 
         // Set the data to share
-        request.Data.Properties.Title = _Info.Title;
+        request.Data.Properties.Title = this._Info.Title;
         request.Data.Properties.Description = "Shared from Brainf*ck#";
 
-        switch (_Info)
+        switch (this._Info)
         {
             case FileShareInfo fileShare:
                 request.Data.SetStorageItems(new [] { fileShare.File }, true);
                 break;
             default:
-                ThrowHelper.ThrowArgumentException(nameof(_Info), "Invalid share info type");
+                ThrowHelper.ThrowArgumentException(nameof(this._Info), "Invalid share info type");
                 break;
         }
 
-        _Info = null;
+        this._Info = null;
     }
 
     /// <inheritdoc/>
@@ -70,7 +70,7 @@ public sealed class ShareService : IShareService
 
         InitializeDataTransferManager();
 
-        _Info = new FileShareInfo(title, storageFile);
+        this._Info = new FileShareInfo(title, storageFile);
 
         try
         {
@@ -79,7 +79,7 @@ public sealed class ShareService : IShareService
         catch (COMException)
         {
             // Busy application: there is another pending share request
-            _Info = null;
+            this._Info = null;
         }
 
     }

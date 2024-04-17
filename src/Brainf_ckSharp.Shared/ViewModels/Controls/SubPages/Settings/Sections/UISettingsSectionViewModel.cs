@@ -16,8 +16,8 @@ public sealed class UISettingsSectionViewModel : SettingsSectionViewModelBase
     public UISettingsSectionViewModel(IMessenger messenger, ISettingsService settingsService)
         : base(messenger, settingsService)
     {
-        _ClearStdinBufferOnRequest = SettingsService.GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest);
-        _ShowPBrainButtons = SettingsService.GetValue<bool>(SettingsKeys.ShowPBrainButtons);
+        this._ClearStdinBufferOnRequest = this.SettingsService.GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest);
+        this._ShowPBrainButtons = this.SettingsService.GetValue<bool>(SettingsKeys.ShowPBrainButtons);
     }
 
     private bool _ClearStdinBufferOnRequest;
@@ -27,8 +27,8 @@ public sealed class UISettingsSectionViewModel : SettingsSectionViewModelBase
     /// </summary>
     public bool ClearStdinBufferOnRequest
     {
-        get => _ClearStdinBufferOnRequest;
-        set => SetProperty(ref _ClearStdinBufferOnRequest, value);
+        get => this._ClearStdinBufferOnRequest;
+        set => SetProperty(ref this._ClearStdinBufferOnRequest, value);
     }
 
     private bool _ShowPBrainButtons;
@@ -38,7 +38,7 @@ public sealed class UISettingsSectionViewModel : SettingsSectionViewModelBase
     /// </summary>
     public bool ShowPBrainButtons
     {
-        get => _ShowPBrainButtons;
-        set => SetProperty<bool, ShowPBrainButtonsSettingsChangedMessage>(ref _ShowPBrainButtons, value);
+        get => this._ShowPBrainButtons;
+        set => SetProperty<bool, ShowPBrainButtonsSettingsChangedMessage>(ref this._ShowPBrainButtons, value);
     }
 }

@@ -32,7 +32,7 @@ public sealed class Pool<T> where T : class, new()
     /// </summary>
     private Pool()
     {
-        var items = _Items = new T[MinimumPoolSize];
+        var items = this._Items = new T[MinimumPoolSize];
 
         ref T r0 = ref items.DangerousGetReference();
 
@@ -56,12 +56,12 @@ public sealed class Pool<T> where T : class, new()
     public T Rent()
     {
         // Expand the current pool, if needed
-        if (_Offset == _Items.Length)
+        if (this._Offset == this._Items.Length)
         {
             ExpandBuffer();
         }
 
-        return _Items.DangerousGetReferenceAt(_Offset++);
+        return this._Items.DangerousGetReferenceAt(this._Offset++);
     }
 
     /// <summary>
@@ -70,18 +70,18 @@ public sealed class Pool<T> where T : class, new()
     [MethodImpl(MethodImplOptions.NoInlining)]
     private void ExpandBuffer()
     {
-        T[] oldItems = _Items;
+        T[] oldItems = this._Items;
         T[] newItems = new T[oldItems.Length * 2];
 
         // Copy over the previous elements
         oldItems.AsSpan().CopyTo(newItems);
 
-        _Items = newItems;
+        this._Items = newItems;
 
         ref T r0 = ref newItems.DangerousGetReference();
         int end = newItems.Length;
 
-        for (int i = _Offset; i < end; i++)
+        for (int i = this._Offset; i < end; i++)
         {
             Unsafe.Add(ref r0, i) = new T();
         }
@@ -92,5 +92,5 @@ public sealed class Pool<T> where T : class, new()
     /// </summary>
     /// <remarks>This can cause previously rented objects to be reused</remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Reset() => _Offset = 0;
+    public void Reset() => this._Offset = 0;
 }

@@ -27,7 +27,7 @@ internal sealed partial class Brainf_ckEditBox
         /// <param name="action">The <see cref="System.Action"/> to invoke</param>
         public Command(Action action)
         {
-            Action = action;
+            this.Action = action;
         }
 
         /// <inheritdoc/>
@@ -39,7 +39,7 @@ internal sealed partial class Brainf_ckEditBox
         /// <inheritdoc/>
         public void Execute(object parameter)
         {
-            Action();
+            this.Action();
         }
 
         /// <inheritdoc/>

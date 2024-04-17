@@ -28,8 +28,8 @@ internal readonly struct ColumnGuideInfo
     /// <param name="height">The line height</param>
     public ColumnGuideInfo(float x, float y, float height)
     {
-        X = x;
-        Y = y;
-        Height = height;
+        this.X = x;
+        this.Y = y;
+        this.Height = height;
     }
 }

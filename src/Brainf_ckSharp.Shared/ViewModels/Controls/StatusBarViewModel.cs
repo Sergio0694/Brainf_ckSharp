@@ -65,9 +65,9 @@ public sealed class StatusBarViewModel : ObservableRecipient
     public StatusBarViewModel(IMessenger messenger, ISettingsService settingsService)
         : base(messenger)
     {
-        SettingsService = settingsService;
-        Context = SynchronizationContext.Current;
-        Timer = new Timer(vm => ((StatusBarViewModel)vm).RunBackgroundCode(), this, default, TimeSpan.FromSeconds(2));
+        this.SettingsService = settingsService;
+        this.Context = SynchronizationContext.Current;
+        this.Timer = new Timer(vm => ((StatusBarViewModel)vm).RunBackgroundCode(), this, default, TimeSpan.FromSeconds(2));
     }
     
     /// <inheritdoc/>
@@ -83,12 +83,12 @@ public sealed class StatusBarViewModel : ObservableRecipient
     /// </summary>
     public Option<InterpreterResult>? BackgroundExecutionResult
     {
-        get => _BackgroundExecutionResult;
+        get => this._BackgroundExecutionResult;
         private set
         {
-            _BackgroundExecutionResult?.Value?.MachineState.Dispose();
+            this._BackgroundExecutionResult?.Value?.MachineState.Dispose();
 
-            _BackgroundExecutionResult = value;
+            this._BackgroundExecutionResult = value;
 
             OnPropertyChanged();
         }
@@ -101,8 +101,8 @@ public sealed class StatusBarViewModel : ObservableRecipient
     /// </summary>
     public WorkspaceViewModelBase? WorkspaceViewModel
     {
-        get => _WorkspaceViewModel;
-        private set => SetProperty(ref _WorkspaceViewModel, value);
+        get => this._WorkspaceViewModel;
+        private set => SetProperty(ref this._WorkspaceViewModel, value);
     }
 
     /// <summary>
@@ -115,7 +115,7 @@ public sealed class StatusBarViewModel : ObservableRecipient
 
         // Restart the time to make sure to update the background
         // execution result immediately when the workspace changes.
-        Timer.Change(default, TimeSpan.FromSeconds(2));
+        this.Timer.Change(default, TimeSpan.FromSeconds(2));
     }
 
     /// <summary>
@@ -130,25 +130,25 @@ public sealed class StatusBarViewModel : ObservableRecipient
         // stored arguments to be able to skip the execution if there were no changes.
         ReadOnlyMemory<char> source = viewModel.Text;
         string stdin = Messenger.Send(new StdinRequestMessage(true));
-        int memorySize = SettingsService.GetValue<int>(SettingsKeys.MemorySize);
-        OverflowMode overflowMode = SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
+        int memorySize = this.SettingsService.GetValue<int>(SettingsKeys.MemorySize);
+        OverflowMode overflowMode = this.SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
         IReadOnlyMachineState? machineState = (viewModel as ConsoleViewModel)?.MachineState;
 
-        if (source.Span.SequenceEqual(_Source.Span) &&
-            stdin.Equals(_Stdin) &&
-            memorySize == _MemorySize &&
-            overflowMode == _OverflowMode &&
-            (machineState is null && _MachineState is null ||
-             machineState?.Equals(_MachineState!) == true))
+        if (source.Span.SequenceEqual(this._Source.Span) &&
+            stdin.Equals(this._Stdin) &&
+            memorySize == this._MemorySize &&
+            overflowMode == this._OverflowMode &&
+            (machineState is null && this._MachineState is null ||
+             machineState?.Equals(this._MachineState!) == true))
         {
             return;
         }
 
-        _Source = source;
-        _Stdin = stdin;
-        _MemorySize = memorySize;
-        _OverflowMode = overflowMode;
-        _MachineState = machineState;
+        this._Source = source;
+        this._Stdin = stdin;
+        this._MemorySize = memorySize;
+        this._OverflowMode = overflowMode;
+        this._MachineState = machineState;
 
         CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(2));
 
@@ -162,7 +162,7 @@ public sealed class StatusBarViewModel : ObservableRecipient
             .TryRun();
 
         // Update the property from the original synchronization context
-        Context.Post(_ => BackgroundExecutionResult = result, null);
+        this.Context.Post(_ => BackgroundExecutionResult = result, null);
     }
 
     /// <summary>

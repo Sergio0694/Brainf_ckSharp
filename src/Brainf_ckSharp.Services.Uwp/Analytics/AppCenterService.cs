@@ -22,7 +22,7 @@ public sealed class AppCenterService : IAnalyticsService
     /// <inheritdoc/>
     public void Initialize(string secret)
     {
-        if (Interlocked.CompareExchange(ref _IsInitialized, 1, 0) != 0)
+        if (Interlocked.CompareExchange(ref this._IsInitialized, 1, 0) != 0)
         {
             ThrowHelper.ThrowInvalidOperationException("The service has already been initialized");
         }

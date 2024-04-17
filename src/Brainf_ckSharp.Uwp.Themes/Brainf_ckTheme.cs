@@ -73,10 +73,10 @@ public sealed class Brainf_ckTheme
         BracketsGuideColor = bracketsGuide;
         BracketsGuideStrokesLength = bracketsGuideStrokesLength;
         CommentsColor = comments;
-        CommentsBrush = new SolidColorBrush(comments);
+        this.CommentsBrush = new SolidColorBrush(comments);
         LineHighlightStyle = lineStyle;
         LineHighlightColor = lineColor;
-        HighlightColorMap = new Dictionary<char, Color>
+        this.HighlightColorMap = new Dictionary<char, Color>
         {
             [Characters.BackwardPtr] = arrows,
             [Characters.ForwardPtr] = arrows,
@@ -90,7 +90,7 @@ public sealed class Brainf_ckTheme
             [Characters.FunctionEnd] = function,
             [Characters.FunctionCall] = call
         };
-        HighlightBrushMap = HighlightColorMap.ToDictionary(p => p.Key, p => new SolidColorBrush(p.Value));
+        this.HighlightBrushMap = this.HighlightColorMap.ToDictionary(p => p.Key, p => new SolidColorBrush(p.Value));
     }
 
     /// <summary>
@@ -164,7 +164,7 @@ public sealed class Brainf_ckTheme
     /// <param name="c">The character to parse</param>
     /// <returns>The <see cref="Color"/> value for the input character</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Color GetColor(char c) => HighlightColorMap.TryGetValue(c, out Color color) ? color : CommentsColor;
+    public Color GetColor(char c) => this.HighlightColorMap.TryGetValue(c, out Color color) ? color : CommentsColor;
 
     /// <summary>
     /// Gets the corresponding <see cref="Brush"/> from a given character in a Brainf*ck/PBrain source code
@@ -172,5 +172,5 @@ public sealed class Brainf_ckTheme
     /// <param name="c">The character to parse</param>
     /// <returns>The <see cref="Brush"/> value for the input character</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Brush GetBrush(char c) => HighlightBrushMap.TryGetValue(c, out SolidColorBrush brush) ? brush : CommentsBrush;
+    public Brush GetBrush(char c) => this.HighlightBrushMap.TryGetValue(c, out SolidColorBrush brush) ? brush : this.CommentsBrush;
 }

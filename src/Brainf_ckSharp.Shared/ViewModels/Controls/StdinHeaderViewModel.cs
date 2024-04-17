@@ -21,7 +21,7 @@ public sealed class StdinHeaderViewModel : ObservableRecipient
     public StdinHeaderViewModel(IMessenger messenger, ISettingsService settingsService)
         : base(messenger)
     {
-        SettingsService = settingsService;
+        this.SettingsService = settingsService;
     }
 
     /// <inheritdoc/>
@@ -37,8 +37,8 @@ public sealed class StdinHeaderViewModel : ObservableRecipient
     /// </summary>
     public string Text
     {
-        get => _Text;
-        set => SetProperty(ref _Text, value);
+        get => this._Text;
+        set => SetProperty(ref this._Text, value);
     }
 
     /// <inheritdoc/>
@@ -48,7 +48,7 @@ public sealed class StdinHeaderViewModel : ObservableRecipient
 
         // Clear the buffer if requested, and if not from a background execution
         if (!request.IsFromBackgroundExecution &&
-            SettingsService.GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest))
+            this.SettingsService.GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest))
         {
             Text = string.Empty;
         }

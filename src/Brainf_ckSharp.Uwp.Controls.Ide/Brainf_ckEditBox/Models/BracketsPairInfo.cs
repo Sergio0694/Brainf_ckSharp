@@ -22,7 +22,7 @@ internal readonly struct BracketsPairInfo
     /// <param name="end">The offset of the right bracket</param>
     public BracketsPairInfo(int start, int end)
     {
-        Start = start;
-        End = end;
+        this.Start = start;
+        this.End = end;
     }
 }

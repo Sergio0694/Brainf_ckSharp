@@ -40,6 +40,6 @@ internal sealed partial class Brainf_ckEditBox
     /// </summary>
     public void InvalidateOverlays()
     {
-        _TextOverlaysCanvas!.Invalidate();
+        this._TextOverlaysCanvas!.Invalidate();
     }
 }

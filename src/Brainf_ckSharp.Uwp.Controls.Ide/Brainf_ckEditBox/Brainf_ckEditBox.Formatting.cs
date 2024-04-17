@@ -60,23 +60,23 @@ internal sealed partial class Brainf_ckEditBox
             //   - As a last resort, just format the entire text from start to finish.
             if (selectionLength == 0 &&
                 selectionStart > 0 &&
-                (_SelectionLength == 0 && textLength == oldText.Length + 1) ||
-                _SelectionLength > 1)
+                (this._SelectionLength == 0 && textLength == oldText.Length + 1) ||
+                this._SelectionLength > 1)
             {
                 FormatSingleCharacter(ref newText, selectionStart);
             }
             else if (selectionLength == 0 &&
-                     _SelectionLength == 0 &&
+                     this._SelectionLength == 0 &&
                      textLength == oldText.Length - 1 &&
-                     selectionStart == _SelectionStart)
+                     selectionStart == this._SelectionStart)
             {
                 // This branch also captures single character deletions.
                 // Set the property to false to make sure the formatting
                 // isn't compromised in future runs by the property
                 // remaining true because this branch took precedence.
-                _IsDeleteRequested = false;
+                this._IsDeleteRequested = false;
             }
-            else if (_IsDeleteRequested) _IsDeleteRequested = false;
+            else if (this._IsDeleteRequested) this._IsDeleteRequested = false;
             else FormatRange(newText, 0, textLength);
 
             Text = newText;
@@ -95,7 +95,7 @@ internal sealed partial class Brainf_ckEditBox
 
         char c = text[start - 1];
 
-        if (c == Characters.LoopStart && _SyntaxValidationResult.IsSuccessOrEmptyScript)
+        if (c == Characters.LoopStart && this._SyntaxValidationResult.IsSuccessOrEmptyScript)
         {
             int depth = text.CalculateIndentationDepth(start - 1);
             ITextRange range = Document.GetRange(start - 1, start);
@@ -128,7 +128,7 @@ internal sealed partial class Brainf_ckEditBox
 
             text = Document.GetText();
         }
-        else if (c == Characters.CarriageReturn && _SyntaxValidationResult.IsSuccessOrEmptyScript)
+        else if (c == Characters.CarriageReturn && this._SyntaxValidationResult.IsSuccessOrEmptyScript)
         {
             int depth = text.CalculateIndentationDepth(start);
             string autocomplete = new(Characters.Tab, depth);

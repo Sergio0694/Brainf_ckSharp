@@ -15,8 +15,8 @@ public sealed class ConsoleCommand : ObservableObject, IConsoleEntry
     /// </summary>
     public string Command
     {
-        get => _Command;
-        set => SetProperty(ref _Command, value);
+        get => this._Command;
+        set => SetProperty(ref this._Command, value);
     }
 
     private bool _IsActive = true;
@@ -26,7 +26,7 @@ public sealed class ConsoleCommand : ObservableObject, IConsoleEntry
     /// </summary>
     public bool IsActive
     {
-        get => _IsActive;
-        set => SetProperty(ref _IsActive, value);
+        get => this._IsActive;
+        set => SetProperty(ref this._IsActive, value);
     }
 }

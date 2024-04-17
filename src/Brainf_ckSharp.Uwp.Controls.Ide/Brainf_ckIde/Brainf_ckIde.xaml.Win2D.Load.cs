@@ -25,11 +25,11 @@ public sealed partial class Brainf_ckIde
     /// <param name="text">The current source code being displayed</param>
     private void UpdateDiffInfo(string text)
     {
-        MemoryOwner<LineModificationType> diff = LineDiffer.ComputeDiff(_LoadedText, text, Characters.CarriageReturn);
+        MemoryOwner<LineModificationType> diff = LineDiffer.ComputeDiff(this._LoadedText, text, Characters.CarriageReturn);
 
-        ref LineModificationType oldRef = ref _DiffIndicators.DangerousGetReference();
+        ref LineModificationType oldRef = ref this._DiffIndicators.DangerousGetReference();
         ref LineModificationType newRef = ref diff.DangerousGetReference();
-        int length = Math.Min(_DiffIndicators.Length, diff.Length);
+        int length = Math.Min(this._DiffIndicators.Length, diff.Length);
 
         // Maintain the saved indicators
         for (int i = 0; i < length; i++)
@@ -37,12 +37,12 @@ public sealed partial class Brainf_ckIde
                 Unsafe.Add(ref newRef, i) == LineModificationType.None)
                 Unsafe.Add(ref newRef, i) = LineModificationType.Saved;
 
-        _DiffIndicators.Dispose();
+        this._DiffIndicators.Dispose();
 
         // The edit box always ends with a final \r that can't be removed by the user.
         // Slicing out the last item prevents the modified marker from being displayed
         // below the last line actually being typed by the user.
-        _DiffIndicators = diff.Slice(0, diff.Length - 1);
+        this._DiffIndicators = diff.Slice(0, diff.Length - 1);
     }
 
     /// <summary>
@@ -50,11 +50,11 @@ public sealed partial class Brainf_ckIde
     /// </summary>
     private void UpdateDiffInfo()
     {
-        int size = _DiffIndicators.Length;
+        int size = this._DiffIndicators.Length;
 
         if (size == 0) return;
 
-        ref LineModificationType r0 = ref _DiffIndicators.DangerousGetReference();
+        ref LineModificationType r0 = ref this._DiffIndicators.DangerousGetReference();
 
         for (int i = 0; i < size; i++)
             if (Unsafe.Add(ref r0, i) == LineModificationType.Modified)
@@ -70,18 +70,18 @@ public sealed partial class Brainf_ckIde
     private void UpdateIndentationInfo(string text, bool isSyntaxValid, int numberOfLines)
     {
         // Return the previous buffer
-        _IndentationIndicators.Dispose();
+        this._IndentationIndicators.Dispose();
 
         // Skip if the current syntax is not valid
         if (!isSyntaxValid)
         {
-            _IndentationIndicators = MemoryOwner<IndentationIndicatorBase?>.Empty;
+            this._IndentationIndicators = MemoryOwner<IndentationIndicatorBase?>.Empty;
 
             return;
         }
 
         // Allocate the new buffer
-        MemoryOwner<IndentationIndicatorBase?> indicators = _IndentationIndicators = MemoryOwner<IndentationIndicatorBase?>.Allocate(numberOfLines);
+        MemoryOwner<IndentationIndicatorBase?> indicators = this._IndentationIndicators = MemoryOwner<IndentationIndicatorBase?>.Allocate(numberOfLines);
         ref IndentationIndicatorBase? indicatorsRef = ref indicators.DangerousGetReference(); // There's always at least one line
 
         // Reset the pools
@@ -254,16 +254,16 @@ public sealed partial class Brainf_ckIde
     /// </summary>
     private void UpdateBreakpointsInfo()
     {
-        int totalBreakpoints = BreakpointIndicators.Count;
+        int totalBreakpoints = this.BreakpointIndicators.Count;
 
         // If there are no breakpoints, do nothing
         if (totalBreakpoints == 0)
         {
-            if (_BreakpointAreas.Length != 0)
+            if (this._BreakpointAreas.Length != 0)
             {
-                _BreakpointAreas.Dispose();
+                this._BreakpointAreas.Dispose();
 
-                _BreakpointAreas = MemoryOwner<Rect>.Empty;
+                this._BreakpointAreas = MemoryOwner<Rect>.Empty;
             }
 
             return;
@@ -275,7 +275,7 @@ public sealed partial class Brainf_ckIde
         int currentLineNumber = 0;
 
         // Copy the current line numbers to a buffer
-        foreach (var entry in BreakpointIndicators)
+        foreach (var entry in this.BreakpointIndicators)
         {
             Unsafe.Add(ref lineNumbersRef, currentLineNumber++) = entry.Key;
         }
@@ -328,14 +328,14 @@ public sealed partial class Brainf_ckIde
                 // If there are no operators left, remove the breakpoint
                 if (firstOperatorOffset == -1)
                 {
-                    BreakpointIndicators.Remove(currentTargetLineNumber);
+                    this.BreakpointIndicators.Remove(currentTargetLineNumber);
 
                     totalBreakpoints--;
                 }
                 else
                 {
                     // Get the text range for the first operators interval
-                    ITextRange range = CodeEditBox.Document.GetRange(
+                    ITextRange range = this.CodeEditBox.Document.GetRange(
                         currentTextIndex + firstOperatorOffset,
                         currentTextIndex + lastOperatorOffset + 1);
 
@@ -357,8 +357,8 @@ public sealed partial class Brainf_ckIde
             currentTextIndex += line.Length + 1;
         }
 
-        _BreakpointAreas.Dispose();
+        this._BreakpointAreas.Dispose();
 
-        _BreakpointAreas = breakpointAreas.Slice(0, validatedBreakpoints);
+        this._BreakpointAreas = breakpointAreas.Slice(0, validatedBreakpoints);
     }
 }

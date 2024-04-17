@@ -10,7 +10,7 @@ public sealed partial class Brainf_ckIde
     /// <summary>
     /// Gets the text currently displayed
     /// </summary>
-    public string Text => CodeEditBox.Text;
+    public string Text => this.CodeEditBox.Text;
 
     private double _HeaderSpacing;
 
@@ -19,15 +19,15 @@ public sealed partial class Brainf_ckIde
     /// </summary>
     public double HeaderSpacing
     {
-        get => _HeaderSpacing;
+        get => this._HeaderSpacing;
         set
         {
-            _HeaderSpacing = value;
+            this._HeaderSpacing = value;
 
-            IdeOverlaysCanvasTransform.Y = value + 10;
-            LineBlockTransform.Y = value + 8;
-            CodeEditBox.Padding = new Thickness(4, value + 8, 8, FooterSpacing + 8);
-            CodeEditBox.VerticalScrollBarMargin = new Thickness(0, value, 0, FooterSpacing);
+            this.IdeOverlaysCanvasTransform.Y = value + 10;
+            this.LineBlockTransform.Y = value + 8;
+            this.CodeEditBox.Padding = new Thickness(4, value + 8, 8, FooterSpacing + 8);
+            this.CodeEditBox.VerticalScrollBarMargin = new Thickness(0, value, 0, FooterSpacing);
         }
     }
 
@@ -38,13 +38,13 @@ public sealed partial class Brainf_ckIde
     /// </summary>
     public double FooterSpacing
     {
-        get => _FooterSpacing;
+        get => this._FooterSpacing;
         set
         {
-            _FooterSpacing = value;
+            this._FooterSpacing = value;
 
-            CodeEditBox.Padding = new Thickness(4, HeaderSpacing + 8, 8, value + 8);
-            CodeEditBox.VerticalScrollBarMargin = new Thickness(0, HeaderSpacing, 0, value);
+            this.CodeEditBox.Padding = new Thickness(4, HeaderSpacing + 8, 8, value + 8);
+            this.CodeEditBox.VerticalScrollBarMargin = new Thickness(0, HeaderSpacing, 0, value);
         }
     }
 
@@ -53,8 +53,8 @@ public sealed partial class Brainf_ckIde
     /// </summary>
     public FrameworkElement ContextMenuSecondaryContent
     {
-        get => CodeEditBox.ContextMenuSecondaryContent;
-        set => CodeEditBox.ContextMenuSecondaryContent = value;
+        get => this.CodeEditBox.ContextMenuSecondaryContent;
+        set => this.CodeEditBox.ContextMenuSecondaryContent = value;
     }
 
     /// <summary>
@@ -62,8 +62,8 @@ public sealed partial class Brainf_ckIde
     /// </summary>
     public bool RenderWhitespaceCharacters
     {
-        get => CodeEditBox.RenderWhitespaceCharacters;
-        set => CodeEditBox.RenderWhitespaceCharacters = value;
+        get => this.CodeEditBox.RenderWhitespaceCharacters;
+        set => this.CodeEditBox.RenderWhitespaceCharacters = value;
     }
 
     /// <summary>
