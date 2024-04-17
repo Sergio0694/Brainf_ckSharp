@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Models;
@@ -78,7 +78,7 @@ public static partial class Brainf_ckInterpreter
         // executable, because that is the maximum number of open square brackets in a valid source file.
         // The two temporary buffers are used to implement an indirect indexing system while building
         // the table, which allows to reduce the complexity of the operation from O(N^2) to O(N).
-        int tempBuffersLength = opcodes.Length / 2 + 1;
+        int tempBuffersLength = (opcodes.Length / 2) + 1;
         using SpanOwner<int> rootTempIndices = SpanOwner<int>.Allocate(tempBuffersLength);
         using SpanOwner<int> functionTempIndices = SpanOwner<int>.Allocate(tempBuffersLength);
         ref int rootTempIndicesRef = ref rootTempIndices.DangerousGetReference();

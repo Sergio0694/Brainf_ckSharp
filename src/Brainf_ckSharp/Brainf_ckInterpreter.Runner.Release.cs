@@ -259,7 +259,7 @@ public static partial class Brainf_ckInterpreter
                             {
                                 // Fast path for [-] loops
                                 executionContext.ResetCell();
-                                totalOperations += executionContext.Current * 2 + 1;
+                                totalOperations += (executionContext.Current * 2) + 1;
                                 i += 2;
                             }
                             break;

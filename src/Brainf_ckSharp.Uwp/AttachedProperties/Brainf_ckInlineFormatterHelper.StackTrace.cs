@@ -97,7 +97,7 @@ public static partial class Brainf_ckInlineFormatterHelper
         List<(int Length, int Occurrences)> info = new();
         while (i < frames.Count)
         {
-            for (int step = 1; step < 5 && i + step * 2 - 1 < frames.Count; step++)
+            for (int step = 1; step < 5 && i + (step * 2) - 1 < frames.Count; step++)
             {
                 // Find a valid sub-pattern of a given length
                 bool valid = true;
@@ -111,7 +111,7 @@ public static partial class Brainf_ckInlineFormatterHelper
 
                 // Check of many times the pattern repeats
                 int occurrences = 2;
-                for (int j = i + step * 2; j + step - 1 < frames.Count; j += step)
+                for (int j = i + (step * 2); j + step - 1 < frames.Count; j += step)
                 {
                     valid = true;
                     for (int k = 0; k < step; k++)

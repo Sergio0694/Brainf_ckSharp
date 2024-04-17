@@ -143,8 +143,8 @@ public sealed class StatusBarViewModel : ObservableRecipient
             stdin.Equals(this._Stdin) &&
             memorySize == this._MemorySize &&
             overflowMode == this._OverflowMode &&
-            (machineState is null && this._MachineState is null ||
-             machineState?.Equals(this._MachineState!) == true))
+            ((machineState is null && this._MachineState is null) ||
+              machineState?.Equals(this._MachineState!) == true))
         {
             return;
         }

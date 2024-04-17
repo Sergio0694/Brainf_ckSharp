@@ -141,7 +141,7 @@ public sealed class AnimatedCommandBarBehavior : Behavior<CommandBar>
             }
 
             // Wait for the initial animations to finish
-            await Task.Delay((pendingElements.Count - 1) * ButtonsFadeDelayBetweenAnimations + ContentAnimationDuration);
+            await Task.Delay(((pendingElements.Count - 1) * ButtonsFadeDelayBetweenAnimations) + ContentAnimationDuration);
 
             // Set the animated buttons to invisible
             foreach (var item in pendingElements)
@@ -169,7 +169,7 @@ public sealed class AnimatedCommandBarBehavior : Behavior<CommandBar>
             }
 
             // Wait for the second animations to finish
-            await Task.Delay((targetElements.Count - 1) * ButtonsFadeDelayBetweenAnimations + ContentAnimationDuration);
+            await Task.Delay(((targetElements.Count - 1) * ButtonsFadeDelayBetweenAnimations) + ContentAnimationDuration);
 
             commandBar.IsHitTestVisible = true;
         }

@@ -166,7 +166,7 @@ public sealed partial class SubPageHost : UserControl
                 contentBorderThickness.Top = contentBorderThickness.Bottom = 0;
 
                 // Visual state update
-                if (targetWidth > size.Width - 48 * 2)
+                if (targetWidth > size.Width - (48 * 2))
                 {
                     this.ContentGrid.MaxWidth = targetWidth;
                     VisualStateManager.GoToState(this, nameof(this.TopBackButton), false);
@@ -210,8 +210,8 @@ public sealed partial class SubPageHost : UserControl
                     }
 
                     UpdateLayout(
-                        maxWidth + MinimumConstrainedMarginThreshold * 2 >= size.Width ? double.NaN : maxWidth,
-                        maxHeight + MinimumConstrainedMarginThreshold * 2 >= size.Height ? double.NaN : maxHeight);
+                        maxWidth + (MinimumConstrainedMarginThreshold * 2) >= size.Width ? double.NaN : maxWidth,
+                        maxHeight + (MinimumConstrainedMarginThreshold * 2) >= size.Height ? double.NaN : maxHeight);
                     break;
                 }
 

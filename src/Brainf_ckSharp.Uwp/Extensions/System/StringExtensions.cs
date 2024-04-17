@@ -31,7 +31,7 @@ public static class StringExtensions
         for (int i = 0; i < textLength; i++)
         {
             Unsafe.Add(ref bufferRef, i * 2) = Unsafe.Add(ref textRef, i);
-            Unsafe.Add(ref bufferRef, i * 2 + 1) = c;
+            Unsafe.Add(ref bufferRef, (i * 2) + 1) = c;
         }
 
         // Create a string from the temporary buffer
