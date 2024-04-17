@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Shared.Models.Ide;
 using CommunityToolkit.Diagnostics;
@@ -93,7 +93,7 @@ public abstract class WorkspaceViewModelBase : ObservableRecipient
         {
             Guard.IsGreaterThan(value, 0);
 
-            SetProperty(ref this._Row, value);
+            _ = SetProperty(ref this._Row, value);
         }
     }
 
@@ -109,7 +109,7 @@ public abstract class WorkspaceViewModelBase : ObservableRecipient
         {
             Guard.IsGreaterThan(value, 0);
 
-            SetProperty(ref this._Column, value);
+            _ = SetProperty(ref this._Column, value);
         }
     }
 

@@ -25,9 +25,9 @@ public sealed class SettingsSubPageViewModel : ObservableRecipient
     public SettingsSubPageViewModel(IMessenger messenger, IAnalyticsService analyticsService, IStoreService storeService, ISettingsService settingsService, AppConfiguration configuration)
         : base(messenger)
     {
-        Source.AddGroup(SettingsSection.Ide, new[] { new IdeSettingsSectionViewModel(messenger, analyticsService, storeService, settingsService, configuration) });
-        Source.AddGroup(SettingsSection.UI, new[] { new UISettingsSectionViewModel(messenger, settingsService) });
-        Source.AddGroup(SettingsSection.Interpreter, new[] { new InterpreterSettingsSectionViewModel(messenger, settingsService) });
+        _ = Source.AddGroup(SettingsSection.Ide, new[] { new IdeSettingsSectionViewModel(messenger, analyticsService, storeService, settingsService, configuration) });
+        _ = Source.AddGroup(SettingsSection.UI, new[] { new UISettingsSectionViewModel(messenger, settingsService) });
+        _ = Source.AddGroup(SettingsSection.Interpreter, new[] { new InterpreterSettingsSectionViewModel(messenger, settingsService) });
     }
 
     /// <summary>

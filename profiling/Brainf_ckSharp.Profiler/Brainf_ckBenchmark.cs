@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
@@ -42,7 +42,7 @@ public abstract class Brainf_ckBenchmarkBase
 
         for (int i = 0; i < 1000; i++)
         {
-            RunScript();
+            _ = RunScript();
         }
 
         Thread.Sleep(TimeSpan.FromSeconds(1));

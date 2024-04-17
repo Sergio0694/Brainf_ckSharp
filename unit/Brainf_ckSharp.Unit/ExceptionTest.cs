@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Threading;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
@@ -22,7 +22,7 @@ public class ExceptionTest
 
         Assert.IsNotNull(result);
 
-        result!.MoveNext();
+        _ = result!.MoveNext();
 
         Assert.IsNotNull(result.Current);
         Assert.AreEqual(result.Current.ExitCode, ExitCode.NegativeValue);
@@ -49,7 +49,7 @@ public class ExceptionTest
 
         Assert.IsNotNull(result);
 
-        result!.MoveNext();
+        _ = result!.MoveNext();
 
         Assert.IsNotNull(result.Current);
         Assert.AreEqual(result.Current!.ExitCode, ExitCode.ThresholdExceeded);
@@ -71,7 +71,7 @@ public class ExceptionTest
 
         Assert.IsNotNull(result);
 
-        result!.MoveNext();
+        _ = result!.MoveNext();
 
         Assert.IsNotNull(result.Current);
         Assert.AreEqual(result.Current!.ExitCode, ExitCode.StackLimitExceeded);
@@ -95,7 +95,7 @@ public class ExceptionTest
 
         Assert.IsNotNull(result);
 
-        result!.MoveNext();
+        _ = result!.MoveNext();
 
         Assert.IsNotNull(result.Current);
         Assert.AreEqual(result.Current!.ExitCode, ExitCode.StdinBufferExhausted);
@@ -119,7 +119,7 @@ public class ExceptionTest
 
         Assert.IsNotNull(result);
 
-        result!.MoveNext();
+        _ = result!.MoveNext();
 
         Assert.IsNotNull(result.Current);
         Assert.AreEqual(result.Current!.ExitCode, ExitCode.StdoutBufferLimitExceeded);

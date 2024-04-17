@@ -48,6 +48,6 @@ public sealed partial class VirtualKeyboardViewModel : ObservableRecipient
     [RelayCommand]
     private void InsertOperator(char op)
     {
-        Messenger.Send(new OperatorKeyPressedNotificationMessage(op));
+        _ = Messenger.Send(new OperatorKeyPressedNotificationMessage(op));
     }
 }

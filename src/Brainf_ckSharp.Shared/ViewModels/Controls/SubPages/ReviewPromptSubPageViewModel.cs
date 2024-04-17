@@ -1,4 +1,3 @@
-﻿using System.Text;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
@@ -53,17 +52,15 @@ public sealed partial class ReviewPromptSubPageViewModel : ObservableObject
     [RelayCommand]
     private Task SendFeedbackEmailAsync()
     {
-        StringBuilder builder = new();
+        string body = $"""
 
-        builder.AppendLine();
-        builder.AppendLine();
-        builder.AppendLine("==========================");
-        builder.AppendLine($"[AppVersion]: {this.SystemInformationService.ApplicationVersion}");
-        builder.AppendLine($"[CPU architecture]: {this.SystemInformationService.CpuArchitecture}");
-        builder.AppendLine($"[OS]: {this.SystemInformationService.OperatingSystemVersion}");
-        builder.AppendLine($"[OS build]: {this.SystemInformationService.OperatingSystemVersion}");
 
-        string body = builder.ToString();
+            ==========================
+            [AppVersion]: {this.SystemInformationService.ApplicationVersion}
+            [CPU architecture]: {this.SystemInformationService.CpuArchitecture}
+            [OS]: {this.SystemInformationService.OperatingSystemVersion}
+            [OS build]: {this.SystemInformationService.OperatingSystemVersion}
+            """;
 
         return this.EmailService.TryComposeEmailAsync(DeveloperInfo.FeedbackEmail, "Brainf*ck# feedback", body);
     }

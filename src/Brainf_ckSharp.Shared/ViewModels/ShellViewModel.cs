@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums.Settings;
@@ -106,7 +106,7 @@ public sealed class ShellViewModel : ObservableRecipient
     {
         this.AnalyticsService.Log(EventNames.ConsoleRun);
 
-        Messenger.Send<RunCommandRequestMessage>();
+        _ = Messenger.Send<RunCommandRequestMessage>();
     }
 
     /// <summary>
@@ -114,7 +114,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void DeleteConsoleOperator()
     {
-        Messenger.Send<DeleteOperatorRequestMessage>();
+        _ = Messenger.Send<DeleteOperatorRequestMessage>();
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void ClearConsoleCommand()
     {
-        Messenger.Send<ClearCommandRequestMessage>();
+        _ = Messenger.Send<ClearCommandRequestMessage>();
     }
 
     /// <summary>
@@ -132,7 +132,7 @@ public sealed class ShellViewModel : ObservableRecipient
     {
         this.AnalyticsService.Log(EventNames.ClearScreen);
 
-        Messenger.Send<ClearConsoleScreenRequestMessage>();
+        _ = Messenger.Send<ClearConsoleScreenRequestMessage>();
     }
 
     /// <summary>
@@ -142,7 +142,7 @@ public sealed class ShellViewModel : ObservableRecipient
     {
         this.AnalyticsService.Log(EventNames.RepeatLastScript);
 
-        Messenger.Send<RepeatCommandRequestMessage>();
+        _ = Messenger.Send<RepeatCommandRequestMessage>();
     }
 
     /// <summary>
@@ -152,7 +152,7 @@ public sealed class ShellViewModel : ObservableRecipient
     {
         this.AnalyticsService.Log(EventNames.Restart);
 
-        Messenger.Send<RestartConsoleRequestMessage>();
+        _ = Messenger.Send<RestartConsoleRequestMessage>();
     }
 
     /// <summary>
@@ -162,7 +162,7 @@ public sealed class ShellViewModel : ObservableRecipient
     {
         this.AnalyticsService.Log(EventNames.IdeRun);
 
-        Messenger.Send<RunIdeScriptRequestMessage>();
+        _ = Messenger.Send<RunIdeScriptRequestMessage>();
     }
 
     /// <summary>
@@ -172,7 +172,7 @@ public sealed class ShellViewModel : ObservableRecipient
     {
         this.AnalyticsService.Log(EventNames.IdeDebug);
 
-        Messenger.Send<DebugIdeScriptRequestMessage>();
+        _ = Messenger.Send<DebugIdeScriptRequestMessage>();
     }
 
     /// <summary>
@@ -182,7 +182,7 @@ public sealed class ShellViewModel : ObservableRecipient
     {
         this.AnalyticsService.Log(EventNames.NewFile);
 
-        Messenger.Send<NewFileRequestMessage>();
+        _ = Messenger.Send<NewFileRequestMessage>();
     }
 
     /// <summary>
@@ -190,7 +190,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void InsertNewLine()
     {
-        Messenger.Send<InsertNewLineRequestMessage>();
+        _ = Messenger.Send<InsertNewLineRequestMessage>();
     }
 
     /// <summary>
@@ -198,7 +198,7 @@ public sealed class ShellViewModel : ObservableRecipient
     /// </summary>
     public void DeleteIdeCharacter()
     {
-        Messenger.Send<DeleteCharacterRequestMessage>();
+        _ = Messenger.Send<DeleteCharacterRequestMessage>();
     }
 
     /// <summary>
@@ -208,7 +208,7 @@ public sealed class ShellViewModel : ObservableRecipient
     {
         this.AnalyticsService.Log(EventNames.OpenFile);
 
-        Messenger.Send(new PickOpenFileRequestMessage(false));
+        _ = Messenger.Send(new PickOpenFileRequestMessage(false));
     }
 
     /// <summary>
@@ -218,7 +218,7 @@ public sealed class ShellViewModel : ObservableRecipient
     {
         this.AnalyticsService.Log(EventNames.Save);
 
-        Messenger.Send<SaveFileRequestMessage>();
+        _ = Messenger.Send<SaveFileRequestMessage>();
     }
 
     /// <summary>
@@ -228,7 +228,7 @@ public sealed class ShellViewModel : ObservableRecipient
     {
         this.AnalyticsService.Log(EventNames.SaveAs);
 
-        Messenger.Send<SaveFileAsRequestMessage>();
+        _ = Messenger.Send<SaveFileAsRequestMessage>();
     }
 
     /// <summary>

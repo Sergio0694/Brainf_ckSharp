@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
@@ -41,7 +41,7 @@ public partial class DebugTest
 
         using (session.Value)
         {
-            session.Value!.MoveNext();
+            _ = session.Value!.MoveNext();
 
             Assert.IsNotNull(session.Value.Current);
 

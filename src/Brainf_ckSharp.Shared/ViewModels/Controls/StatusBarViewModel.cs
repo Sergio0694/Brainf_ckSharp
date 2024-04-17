@@ -120,7 +120,7 @@ public sealed class StatusBarViewModel : ObservableRecipient
 
         // Restart the time to make sure to update the background
         // execution result immediately when the workspace changes.
-        this.Timer.Change(default, TimeSpan.FromSeconds(2));
+        _ = this.Timer.Change(default, TimeSpan.FromSeconds(2));
     }
 
     /// <summary>

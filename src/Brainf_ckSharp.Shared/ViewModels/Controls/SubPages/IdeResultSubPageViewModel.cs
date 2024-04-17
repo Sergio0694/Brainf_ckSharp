@@ -149,7 +149,7 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
                         .TryRun()
                         .Value!;
 
-                    session.MoveNext();
+                    _ = session.MoveNext();
 
                     return session;
                 });
@@ -169,7 +169,7 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
     {
         using (await this.LoadingMutex.LockAsync())
         {
-            await Task.Run(() => this._DebugSession!.MoveNext());
+            _ = await Task.Run(() => this._DebugSession!.MoveNext());
 
             LoadResults(this._DebugSession!.Current);
 
@@ -187,7 +187,7 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
         {
             this._DebugTokenSource!.Cancel();
 
-            await Task.Run(() => this._DebugSession!.MoveNext());
+            _ = await Task.Run(() => this._DebugSession!.MoveNext());
 
             LoadResults(this._DebugSession!.Current);
 
@@ -208,7 +208,7 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
         {
             var model = new IdeResultWithSectionInfo(section, result);
 
-            Source.AddGroup(section, new[] { model });
+            _ = Source.AddGroup(section, new[] { model });
         }
 
         // The order of items in the result view is as follows:

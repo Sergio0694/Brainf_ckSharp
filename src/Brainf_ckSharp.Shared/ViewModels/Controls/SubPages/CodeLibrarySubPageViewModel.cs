@@ -153,12 +153,12 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
 
         // Add the favorites, if any
         IEnumerable<CodeLibraryEntry> favorited = sorted.Where(entry => entry.Metadata.IsFavorited)!;
-        Source.AddGroup(CodeLibrarySection.Favorites, favorited.Append<object>(CodeLibrarySection.Favorites));
+        _ = Source.AddGroup(CodeLibrarySection.Favorites, favorited.Append<object>(CodeLibrarySection.Favorites));
 
         // Add the recent and sample items
         IEnumerable<CodeLibraryEntry> unfavorited = sorted.Where(entry => !entry.Metadata.IsFavorited)!;
-        Source.AddGroup(CodeLibrarySection.Recent, unfavorited.Append<object>(CodeLibrarySection.Recent));
-        Source.AddGroup(CodeLibrarySection.Samples, samples);
+        _ = Source.AddGroup(CodeLibrarySection.Recent, unfavorited.Append<object>(CodeLibrarySection.Recent));
+        _ = Source.AddGroup(CodeLibrarySection.Samples, samples);
     }
 
     /// <summary>
@@ -178,7 +178,7 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     /// </summary>
     private void RequestOpenFile(bool favorite)
     {
-        Messenger.Send(new PickOpenFileRequestMessage(favorite));
+        _ = Messenger.Send(new PickOpenFileRequestMessage(favorite));
     }
 
     /// <summary>
@@ -193,13 +193,13 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
 
             SourceCode code = await SourceCode.LoadFromReferenceFileAsync(entry.File);
 
-            Messenger.Send(new LoadSourceCodeRequestMessage(code));
+            _ = Messenger.Send(new LoadSourceCodeRequestMessage(code));
         }
         else
         {
             if (await SourceCode.TryLoadFromEditableFileAsync(entry.File) is not SourceCode sourceCode) return;
 
-            Messenger.Send(new LoadSourceCodeRequestMessage(sourceCode));
+            _ = Messenger.Send(new LoadSourceCodeRequestMessage(sourceCode));
         }
     }
 
@@ -222,14 +222,14 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
             entry.Metadata.IsFavorited = false;
 
             Source.RemoveItem(CodeLibrarySection.Favorites, entry);
-            Source.InsertItem(CodeLibrarySection.Recent, Comparer<CodeLibrarySection>.Default, entry, SourceItemEditTimeComparer);
+            _ = Source.InsertItem(CodeLibrarySection.Recent, Comparer<CodeLibrarySection>.Default, entry, SourceItemEditTimeComparer);
         }
         else
         {
             entry.Metadata.IsFavorited = true;
 
             Source.RemoveItem(CodeLibrarySection.Recent, entry);
-            Source.InsertItem(CodeLibrarySection.Favorites, Comparer<CodeLibrarySection>.Default, entry, SourceItemEditTimeComparer);
+            _ = Source.InsertItem(CodeLibrarySection.Favorites, Comparer<CodeLibrarySection>.Default, entry, SourceItemEditTimeComparer);
         }
 
         entry.File.RequestFutureAccessPermission(JsonSerializer.Serialize(entry.Metadata, Brainf_ckSharpJsonSerializerContext.Default.CodeMetadata));
@@ -248,7 +248,7 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
 
         string text = await entry.File.ReadAllTextAsync();
 
-        this.ClipboardService.TryCopy(text);
+        _ = this.ClipboardService.TryCopy(text);
     }
 
     /// <summary>
@@ -273,8 +273,8 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     {
         var group = Source.First<ObservableGroup<CodeLibrarySection, object>>(g => g.Contains(entry));
 
-        if (group.Count == 1) Source.Remove(group);
-        else group.Remove(entry);
+        if (group.Count == 1) _ = Source.Remove(group);
+        else _ = group.Remove(entry);
 
         entry.File.RemoveFutureAccessPermission();
     }

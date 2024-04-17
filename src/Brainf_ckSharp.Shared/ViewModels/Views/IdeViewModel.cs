@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -177,7 +177,7 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
             {
                 code.Metadata.IsFavorited = true;
 
-                await code.TrySaveAsync();
+                _ = await code.TrySaveAsync();
             }
 
             Code = code;
@@ -214,7 +214,7 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
         {
             Code.Content = Text.ToString();
 
-            await Code.TrySaveAsync();
+            _ = await Code.TrySaveAsync();
 
             _ = this.FilesHistoryService.LogOrUpdateActivityAsync(Code.File!);
 
@@ -240,7 +240,7 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
 
         Code.Content = Text.ToString();
 
-        await Code.TrySaveAsAsync(file);
+        _ = await Code.TrySaveAsAsync(file);
 
         _ = this.FilesHistoryService.LogOrUpdateActivityAsync(Code.File!);
 

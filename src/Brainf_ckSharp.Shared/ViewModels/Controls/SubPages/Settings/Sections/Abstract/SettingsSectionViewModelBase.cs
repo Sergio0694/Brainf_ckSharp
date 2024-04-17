@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -62,7 +62,7 @@ public abstract class SettingsSectionViewModelBase : ObservableRecipient
 
             TMessage message = (TMessage)Activator.CreateInstance(typeof(TMessage), value);
 
-            Messenger.Send(message);
+            _ = Messenger.Send(message);
 
             return true;
         }
