@@ -216,7 +216,7 @@ public sealed partial class SubPageHost : UserControl
             }
 
             // Any content, that toggles between almost full screen and the compact state
-            case { } _:
+            case { }:
             {
                 UpdateLayout(
                     ExpandedStateMinimumWidth >= size.Width ? double.NaN : size.Width - 160,

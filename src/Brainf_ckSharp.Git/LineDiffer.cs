@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Git.Buffers;
 using Brainf_ckSharp.Git.Enums;
@@ -214,7 +214,7 @@ public static class LineDiffer
         {
             Unsafe.Add(ref resultRef, i) = Unsafe.Add(ref newTemporaryValuesRef, i) switch
             {
-                int _ => LineModificationType.None,
+                int => LineModificationType.None,
                 _ => LineModificationType.Modified
             };
         }
