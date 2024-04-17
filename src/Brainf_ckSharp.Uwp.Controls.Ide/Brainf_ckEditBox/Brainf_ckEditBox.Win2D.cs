@@ -40,7 +40,7 @@ internal sealed partial class Brainf_ckEditBox
     /// The optional <see cref="CanvasStrokeStyle"/> for the vertical column guides
     /// </summary>
     /// <remarks>This field is updated from <see cref="OnSyntaxHighlightThemePropertyChanged"/></remarks>
-    private CanvasStrokeStyle _DashStrokeStyle = new() { CustomDashStyle = new float[] { 2, 5 } };
+    private CanvasStrokeStyle _DashStrokeStyle = new() { CustomDashStyle = [2, 5] };
 
     /// <summary>
     /// The current sequence of bracket pairs being displayed in the text

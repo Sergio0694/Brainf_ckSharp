@@ -94,7 +94,7 @@ public static partial class Brainf_ckInlineFormatterHelper
     public static IEnumerable<(string Item, int Occurrences, int Length)> CompressStackTrace(IReadOnlyList<string> frames)
     {
         int i = 0;
-        List<(int Length, int Occurrences)> info = new();
+        List<(int Length, int Occurrences)> info = [];
         while (i < frames.Count)
         {
             for (int step = 1; step < 5 && i + (step * 2) - 1 < frames.Count; step++)

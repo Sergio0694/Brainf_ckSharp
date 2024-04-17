@@ -36,7 +36,7 @@ public static partial class Brainf_ckInterpreter
         Assert(totalFunctions >= 0);
 
         // No declared functions
-        if (totalFunctions == 0) return Array.Empty<FunctionDefinition>();
+        if (totalFunctions == 0) return [];
 
         FunctionDefinition[] result = new FunctionDefinition[totalFunctions];
         ref FunctionDefinition r0 = ref result.DangerousGetReference();

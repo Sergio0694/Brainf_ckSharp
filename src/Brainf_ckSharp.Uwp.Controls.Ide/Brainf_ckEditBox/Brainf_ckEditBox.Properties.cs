@@ -184,7 +184,7 @@ internal sealed partial class Brainf_ckEditBox
 
         if (theme.BracketsGuideStrokesLength is int dashLength)
         {
-            @this._DashStrokeStyle = new CanvasStrokeStyle { CustomDashStyle = new float[] { 2, 2 + dashLength } };
+            @this._DashStrokeStyle = new CanvasStrokeStyle { CustomDashStyle = [2, 2 + dashLength] };
         }
         else @this._DashStrokeStyle = new CanvasStrokeStyle();
 

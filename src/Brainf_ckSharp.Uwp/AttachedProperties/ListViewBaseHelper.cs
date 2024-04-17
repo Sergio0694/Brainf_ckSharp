@@ -47,7 +47,7 @@ public static class ListViewBaseHelper
     /// <summary>
     /// A table that maps existing <see cref="INotifyCollectionChanged"/> items to target <see cref="ListViewBase"/>
     /// </summary>
-    private static readonly ConditionalWeakTable<INotifyCollectionChanged, ListViewBase> ControlsMap = new();
+    private static readonly ConditionalWeakTable<INotifyCollectionChanged, ListViewBase> ControlsMap = [];
 
     /// <summary>
     /// Updates the UI when <see cref="IsAutoScrollEnabledProperty"/> changes

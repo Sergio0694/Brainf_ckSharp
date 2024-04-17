@@ -64,7 +64,7 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
     /// <summary>
     /// Gets the current collection of sections to display
     /// </summary>
-    public ObservableGroupedCollection<IdeResultSection, IdeResultWithSectionInfo> Source { get; } = new();
+    public ObservableGroupedCollection<IdeResultSection, IdeResultWithSectionInfo> Source { get; } = [];
 
     /// <summary>
     /// Gets or sets the script to execute

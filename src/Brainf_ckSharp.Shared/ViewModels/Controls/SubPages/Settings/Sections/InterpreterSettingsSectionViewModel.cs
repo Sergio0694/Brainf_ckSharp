@@ -44,7 +44,7 @@ public sealed class InterpreterSettingsSectionViewModel : SettingsSectionViewMod
     /// <summary>
     /// Gets the collection of the available tab lengths
     /// </summary>
-    public IReadOnlyCollection<int> MemorySizeOptions { get; } = new[] { 32, 64, 128, 256 };
+    public IReadOnlyCollection<int> MemorySizeOptions { get; } = [32, 64, 128, 256];
 
     private int memorySize;
 

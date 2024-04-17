@@ -96,7 +96,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// <summary>
     /// Gets the collection of currently visible console lines
     /// </summary>
-    public ObservableCollection<IConsoleEntry> Source { get; } = new() { new ConsoleCommand() };
+    public ObservableCollection<IConsoleEntry> Source { get; } = [new ConsoleCommand()];
 
     private IReadOnlyMachineState machineState;
 

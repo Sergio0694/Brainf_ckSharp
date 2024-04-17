@@ -15,8 +15,8 @@ public static partial class Brainf_ckParser
     /// <summary>
     /// A lookup table to quickly check characters
     /// </summary>
-    private static ReadOnlySpan<byte> OperatorsLookupTable => new byte[]
-    {
+    private static ReadOnlySpan<byte> OperatorsLookupTable =>
+    [
         0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
         0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
         0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
@@ -40,7 +40,7 @@ public static partial class Brainf_ckParser
         Operators.LoopStart,
         0xFF,
         Operators.LoopEnd
-    };
+    ];
 
     /// <summary>
     /// A lookup table to quickly check characters

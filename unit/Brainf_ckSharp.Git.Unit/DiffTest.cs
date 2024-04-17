@@ -14,20 +14,20 @@ public class DiffTest
     [TestMethod]
     public void EmptyString()
     {
-        Test(Array.Empty<LineModificationType>(), string.Empty, string.Empty);
+        Test([], string.Empty, string.Empty);
     }
 
     [TestMethod]
     public void BlankText()
     {
-        Test(new[] { LineModificationType.None, LineModificationType.None }, "\r", "\r");
+        Test([LineModificationType.None, LineModificationType.None], "\r", "\r");
     }
 
     [TestMethod]
     public void Small()
     {
         LineModificationType[] expected =
-        {
+        [
             LineModificationType.None,
             LineModificationType.None,
             LineModificationType.Modified,
@@ -43,7 +43,7 @@ public class DiffTest
             LineModificationType.None,
             LineModificationType.Modified,
             LineModificationType.None
-        };
+        ];
 
         Test(expected);
     }
@@ -52,7 +52,7 @@ public class DiffTest
     public void Medium()
     {
         LineModificationType[] expected =
-        {
+        [
             // 1
             LineModificationType.Modified,
             LineModificationType.Modified,
@@ -95,7 +95,7 @@ public class DiffTest
             LineModificationType.None,
             LineModificationType.None,
             LineModificationType.None
-        };
+        ];
 
         Test(expected);
     }

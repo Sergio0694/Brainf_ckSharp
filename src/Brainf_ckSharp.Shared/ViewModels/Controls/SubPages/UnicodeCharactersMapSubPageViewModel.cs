@@ -32,7 +32,7 @@ public sealed partial class UnicodeCharactersMapSubPageViewModel : ObservableObj
     /// <summary>
     /// Gets the current collection of intervals to display
     /// </summary>
-    public ObservableGroupedCollection<UnicodeInterval, UnicodeCharacter> Source { get; } = new();
+    public ObservableGroupedCollection<UnicodeInterval, UnicodeCharacter> Source { get; } = [];
 
     /// <summary>
     /// Loads the grouped characters to display

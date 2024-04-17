@@ -42,7 +42,7 @@ public static class BlinkingAnimationHelper
     /// <summary>
     /// A table that maps existing, running <see cref="Storyboard"/> items to target <see cref="UIElement"/>
     /// </summary>
-    private static readonly ConditionalWeakTable<UIElement, Storyboard> StoryboardTable = new();
+    private static readonly ConditionalWeakTable<UIElement, Storyboard> StoryboardTable = [];
 
     /// <summary>
     /// Updates the UI when <see cref="IsBlinkingProperty"/> changes

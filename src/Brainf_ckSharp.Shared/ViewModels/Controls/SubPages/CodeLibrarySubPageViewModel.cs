@@ -124,7 +124,7 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     /// <summary>
     /// Gets the current collection of sections to display
     /// </summary>
-    public ObservableGroupedCollection<CodeLibrarySection, object> Source { get; } = new();
+    public ObservableGroupedCollection<CodeLibrarySection, object> Source { get; } = [];
 
     /// <summary>
     /// Loads the currently available code samples and recently used files
@@ -132,7 +132,7 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     [RelayCommand]
     private async Task LoadDataAsync()
     {
-        List<CodeLibraryEntry> recent = new();
+        List<CodeLibraryEntry> recent = [];
 
         // Load the recent files
         await foreach ((IFile file, string data) in this.filesService.GetFutureAccessFilesAsync())

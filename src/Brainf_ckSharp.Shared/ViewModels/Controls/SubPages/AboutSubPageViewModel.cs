@@ -79,8 +79,8 @@ public sealed partial class AboutSubPageViewModel : ObservableObject
 
         try
         {
-            Developers = new[] { await this.gitHubService.GetUserAsync(DeveloperInfo.GitHubUsername) };
-            FeaturedLinks = new[] { DeveloperInfo.PayPalMeUrl };
+            Developers = [await this.gitHubService.GetUserAsync(DeveloperInfo.GitHubUsername)];
+            FeaturedLinks = [DeveloperInfo.PayPalMeUrl];
         }
         catch
         {

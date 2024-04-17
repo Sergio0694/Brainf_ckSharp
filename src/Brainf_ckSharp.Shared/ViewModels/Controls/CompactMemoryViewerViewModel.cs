@@ -32,7 +32,7 @@ public sealed class CompactMemoryViewerViewModel : ObservableRecipient
     /// <summary>
     /// Gets the current collection of <see cref="Brainf_ckMemoryCellChunk"/> instances
     /// </summary>
-    public ObservableCollection<Brainf_ckMemoryCellChunk> Source { get; } = new();
+    public ObservableCollection<Brainf_ckMemoryCellChunk> Source { get; } = [];
 
     private IReadOnlyMachineState? machineState;
 

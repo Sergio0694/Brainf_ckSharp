@@ -266,15 +266,15 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
     /// <summary>
     /// The list of shortcut keys to ignore
     /// </summary>
-    private readonly HashSet<VirtualKey> IgnoredShortcuts = new(new[]
-    {
+    private readonly HashSet<VirtualKey> IgnoredShortcuts = new(
+    [
         VirtualKey.E, VirtualKey.R, // Indent right
         VirtualKey.J,               // Can't remember now
         VirtualKey.L,               // Reset indent
         VirtualKey.B,               // Bold
         VirtualKey.I,               // Italic, or TAB
         VirtualKey.U                // Underline
-    });
+    ]);
 
     /// <inheritdoc/>
     protected override void OnKeyDown(KeyRoutedEventArgs e)

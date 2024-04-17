@@ -33,5 +33,5 @@ public sealed class SettingsSubPageViewModel : ObservableRecipient
     /// <summary>
     /// Gets the current collection of sections to display
     /// </summary>
-    public ObservableGroupedCollection<SettingsSection, SettingsSectionViewModelBase> Source { get; } = new();
+    public ObservableGroupedCollection<SettingsSection, SettingsSectionViewModelBase> Source { get; } = [];
 }

@@ -28,12 +28,12 @@ public sealed class UserGuideSubPageViewModel : ObservableObject
     {
         foreach (UserGuideSection section in UserGuideSections.Span)
         {
-            Source.Add(new ObservableGroup<UserGuideSection, UserGuideSection>(section, new[] { section }));
+            Source.Add(new ObservableGroup<UserGuideSection, UserGuideSection>(section, [section]));
         }
     }
 
     /// <summary>
     /// Gets the current collection of sections to display
     /// </summary>
-    public ObservableGroupedCollection<UserGuideSection, UserGuideSection> Source { get; } = new();
+    public ObservableGroupedCollection<UserGuideSection, UserGuideSection> Source { get; } = [];
 }
