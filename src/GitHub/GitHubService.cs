@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Text.Json;
@@ -11,7 +11,7 @@ namespace GitHub;
 /// <summary>
 /// The default <see cref="IGitHubService"/> implementation.
 /// </summary>
-public sealed class GitHubService : IGitHubService
+public sealed class GitHubService : IGitHubService, IDisposable
 {
     /// <summary>
     /// Gets the base URL for the service
@@ -43,5 +43,11 @@ public sealed class GitHubService : IGitHubService
         }
 
         return user ?? throw new JsonException("Failed to deserialize a GitHub user.");
+    }
+
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+        this.httpClient.Dispose();
     }
 }

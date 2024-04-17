@@ -13,6 +13,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 
+#pragma warning disable CA1001
+
 namespace Brainf_ckSharp.Shared.ViewModels.Controls;
 
 /// <summary>
