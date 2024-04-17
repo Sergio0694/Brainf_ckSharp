@@ -1,4 +1,4 @@
-﻿using System.Net.Http;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,7 +18,10 @@ internal sealed class UnauthenticatedHttpClientHandler : HttpClientHandler
     /// Creates a new <see cref="UnauthenticatedHttpClientHandler"/> instance with the specified parameters
     /// </summary>
     /// <param name="userAgent">The user agent to use to send the requests</param>
-    public UnauthenticatedHttpClientHandler(string userAgent) => this.UserAgent = userAgent;
+    public UnauthenticatedHttpClientHandler(string userAgent)
+    {
+        this.UserAgent = userAgent;
+    }
 
     /// <inheritdoc/>
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

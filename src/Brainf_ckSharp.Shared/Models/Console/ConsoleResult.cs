@@ -11,7 +11,10 @@ public sealed class ConsoleResult : IConsoleEntry
     /// Creates a new <see cref="ConsoleResult"/> instaance with the specified parameters
     /// </summary>
     /// <param name="stdout">The stdout result for the current instance</param>
-    public ConsoleResult(string stdout) => Stdout = stdout;
+    public ConsoleResult(string stdout)
+    {
+        Stdout = stdout;
+    }
 
     /// <summary>
     /// Gets the stdout result for the current instance

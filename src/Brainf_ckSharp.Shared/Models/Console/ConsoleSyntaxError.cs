@@ -12,7 +12,10 @@ public sealed class ConsoleSyntaxError : IConsoleEntry
     /// Creates a new <see cref="ConsoleSyntaxError"/> instance with the specified parameters
     /// </summary>
     /// <param name="result">The <see cref="SyntaxValidationResult"/> instance for the executed command</param>
-    public ConsoleSyntaxError(SyntaxValidationResult result) => Result = result;
+    public ConsoleSyntaxError(SyntaxValidationResult result)
+    {
+        Result = result;
+    }
 
     /// <summary>
     /// Gets the exit code for the executed command

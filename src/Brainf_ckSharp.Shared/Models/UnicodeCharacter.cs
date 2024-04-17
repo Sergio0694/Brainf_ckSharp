@@ -9,7 +9,10 @@ public sealed class UnicodeCharacter
     /// Creates a new <see cref="UnicodeCharacter"/> instance with the specified parameters
     /// </summary>
     /// <param name="value">The input unicode character to wrap</param>
-    public UnicodeCharacter(char value) => Value = value;
+    public UnicodeCharacter(char value)
+    {
+        Value = value;
+    }
 
     /// <summary>
     /// Gets the character for the current instance

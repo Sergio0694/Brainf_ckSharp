@@ -9,7 +9,10 @@ public sealed class PickOpenFileRequestMessage
     /// Creates a new <see cref="PickOpenFileRequestMessage"/> instance with the specified parameters
     /// </summary>
     /// <param name="favorite">Whether or not to add the picked file to the favorites</param>
-    public PickOpenFileRequestMessage(bool favorite) => Favorite = favorite;
+    public PickOpenFileRequestMessage(bool favorite)
+    {
+        Favorite = favorite;
+    }
 
     /// <summary>
     /// Gets whether or not to add the picked file to the favorites
