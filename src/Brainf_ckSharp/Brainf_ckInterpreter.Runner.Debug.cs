@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ckSharp.Buffers;
@@ -188,6 +188,7 @@ public static partial class Brainf_ckInterpreter
                                 i = Unsafe.Add(ref jumpTable, i);
                                 totalOperations++;
                             }
+
                             break;
 
                         // {
@@ -201,6 +202,7 @@ public static partial class Brainf_ckInterpreter
                                 // Check whether the code can still be executed before starting an active loop
                                 if (executionToken.IsCancellationRequested) goto ThresholdExceeded;
                             }
+
                             totalOperations++;
                             break;
 

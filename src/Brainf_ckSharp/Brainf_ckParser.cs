@@ -134,6 +134,7 @@ public static partial class Brainf_ckParser
                         functionDepth++;
                         functionOps++;
                     }
+
                     break;
                 case Characters.LoopEnd:
 
@@ -153,6 +154,7 @@ public static partial class Brainf_ckParser
                         functionDepth--;
                         functionOps++;
                     }
+
                     break;
                 case Characters.FunctionStart:
 

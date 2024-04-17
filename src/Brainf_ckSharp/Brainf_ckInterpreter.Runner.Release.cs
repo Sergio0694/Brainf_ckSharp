@@ -262,6 +262,7 @@ public static partial class Brainf_ckInterpreter
                                 totalOperations += (executionContext.Current * 2) + 1;
                                 i += 2;
                             }
+
                             break;
 
                         // {
@@ -275,6 +276,7 @@ public static partial class Brainf_ckInterpreter
                                 // Check whether the code can still be executed before starting an active loop
                                 if (executionToken.IsCancellationRequested) goto ThresholdExceeded;
                             }
+
                             totalOperations++;
                             break;
 

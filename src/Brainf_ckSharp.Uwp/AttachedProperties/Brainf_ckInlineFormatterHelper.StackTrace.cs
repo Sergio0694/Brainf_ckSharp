@@ -107,6 +107,7 @@ public static partial class Brainf_ckInlineFormatterHelper
                         valid = false;
                         break;
                     }
+
                 if (!valid) continue;
 
                 // Check of many times the pattern repeats
@@ -120,6 +121,7 @@ public static partial class Brainf_ckInlineFormatterHelper
                             valid = false;
                             break;
                         }
+
                     if (valid) occurrences++;
                 }
 
@@ -153,6 +155,7 @@ public static partial class Brainf_ckInlineFormatterHelper
                     i += 1;
                 }
             }
+
             info.Clear();
         }
     }
