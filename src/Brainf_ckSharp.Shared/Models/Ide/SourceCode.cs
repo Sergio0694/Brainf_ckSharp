@@ -1,10 +1,8 @@
-﻿using System;
+using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Services;
 using CommunityToolkit.Diagnostics;
-
-#nullable enable
 
 namespace Brainf_ckSharp.Shared.Models.Ide;
 

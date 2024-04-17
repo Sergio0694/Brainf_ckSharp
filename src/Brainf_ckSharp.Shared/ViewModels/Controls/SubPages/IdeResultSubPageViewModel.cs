@@ -16,7 +16,6 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Nito.AsyncEx;
 
-#nullable enable
 #pragma warning disable CA1001
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;

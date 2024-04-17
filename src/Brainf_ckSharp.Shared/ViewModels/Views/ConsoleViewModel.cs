@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -20,8 +20,6 @@ using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.Messaging;
 using Nito.AsyncEx;
-
-#nullable enable
 
 namespace Brainf_ckSharp.Shared.ViewModels.Views;
 

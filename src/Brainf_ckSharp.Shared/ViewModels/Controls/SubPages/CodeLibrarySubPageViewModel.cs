@@ -15,8 +15,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 
-#nullable enable
-
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 
 /// <summary>

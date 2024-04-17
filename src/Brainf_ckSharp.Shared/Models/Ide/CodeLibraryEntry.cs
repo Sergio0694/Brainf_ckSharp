@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Brainf_ckSharp.Services;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.HighPerformance;
-
-#nullable enable
 
 namespace Brainf_ckSharp.Shared.Models.Ide;
 

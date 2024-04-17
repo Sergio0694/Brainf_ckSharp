@@ -1,11 +1,9 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Unit.Shared.Models;
-
-#nullable enable
 
 namespace Brainf_ckSharp.Unit.Shared;
 
