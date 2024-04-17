@@ -1,4 +1,4 @@
-﻿using Brainf_ckSharp.Enums;
+using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
@@ -178,7 +178,7 @@ public class BasicTest
             .TryRun().Value!.MachineState;
 
         Assert.AreEqual(machineState[0].Index, 0);
-        Assert.AreEqual(machineState[0].Value, (ushort)'a');
+        Assert.AreEqual(machineState[0].Value, 'a');
         Assert.AreEqual(machineState[0].IsSelected, false);
 
         Assert.AreEqual(machineState[1].Index, 1);
