@@ -41,16 +41,11 @@ public sealed partial class AboutSubPageViewModel : ObservableObject
     /// Gets the name of the current build configuration
     /// </summary>
     public string BuildConfiguration
-    {
-        get
-        {
 #if DEBUG
-            return "DEBUG";
+        => "DEBUG";
 #else
-            return "RELEASE";
+        => "RELEASE";
 #endif
-        }
-    }
 
     private static IEnumerable<User>? _Developers;
 
