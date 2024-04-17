@@ -1,4 +1,4 @@
-﻿using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.Settings;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections.Abstract;
@@ -6,6 +6,9 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections;
 
+/// <summary>
+/// A viewmodel for the UI settings section.
+/// </summary>
 public sealed class UISettingsSectionViewModel : SettingsSectionViewModelBase
 {
     /// <summary>

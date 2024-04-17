@@ -1,4 +1,4 @@
-﻿using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections;
@@ -9,6 +9,9 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings;
 
+/// <summary>
+/// A viewmodel for the settings page.
+/// </summary>
 public sealed class SettingsSubPageViewModel : ObservableRecipient
 {
     /// <summary>

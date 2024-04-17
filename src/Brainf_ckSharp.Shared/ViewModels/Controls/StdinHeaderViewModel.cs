@@ -1,4 +1,4 @@
-﻿using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -6,6 +6,9 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls;
 
+/// <summary>
+/// A viewmodel for the stdin header shown in the app.
+/// </summary>
 public sealed class StdinHeaderViewModel : ObservableRecipient
 {
     /// <summary>

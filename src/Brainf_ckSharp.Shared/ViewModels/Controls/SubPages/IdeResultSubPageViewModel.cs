@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,6 +20,9 @@ using Nito.AsyncEx;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 
+/// <summary>
+/// A viewmodel for the IDE results page displayed when running a script.
+/// </summary>
 public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
 {
     /// <summary>

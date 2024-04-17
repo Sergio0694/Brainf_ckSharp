@@ -1,4 +1,6 @@
-﻿namespace Brainf_ckSharp.Shared.Constants;
+#pragma warning disable CS1591
+
+namespace Brainf_ckSharp.Shared.Constants;
 
 /// <summary>
 /// A <see langword="class"/> with the collection of tracked events for analytics

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
@@ -15,6 +15,9 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls;
 
+/// <summary>
+/// A viewmodel for the status bar in the application.
+/// </summary>
 public sealed class StatusBarViewModel : ObservableRecipient
 {
     /// <summary>

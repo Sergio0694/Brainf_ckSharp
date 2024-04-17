@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -252,6 +252,9 @@ public sealed class InterpreterSession : IEnumerator<InterpreterResult>
     /// <inheritdoc/>
     public void Reset() => throw new NotSupportedException("An interpreter session can't be reset");
 
+    /// <summary>
+    /// Disposes resources when the instance is finalized.
+    /// </summary>
     ~InterpreterSession() => Dispose();
 
     /// <inheritdoc/>

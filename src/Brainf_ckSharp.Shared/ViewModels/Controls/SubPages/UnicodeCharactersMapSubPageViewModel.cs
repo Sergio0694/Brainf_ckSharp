@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Shared.Models;
@@ -9,6 +9,9 @@ using CommunityToolkit.Mvvm.Collections;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 
+/// <summary>
+/// A viewmodel for the characters control.
+/// </summary>
 public sealed partial class UnicodeCharactersMapSubPageViewModel : ObservableObject
 {
     /// <summary>

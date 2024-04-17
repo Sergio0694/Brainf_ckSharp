@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Services.Enums;
@@ -12,6 +12,9 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections;
 
+/// <summary>
+/// A viewmodel for the IDE settings section.
+/// </summary>
 public sealed partial class IdeSettingsSectionViewModel : SettingsSectionViewModelBase
 {
     /// <summary>

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -19,6 +19,9 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 
+/// <summary>
+/// A viewmodel for the code library page.
+/// </summary>
 public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
 {
     /// <summary>

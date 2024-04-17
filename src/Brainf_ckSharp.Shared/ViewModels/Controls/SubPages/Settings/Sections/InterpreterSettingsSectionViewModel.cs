@@ -8,6 +8,9 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections;
 
+/// <summary>
+/// A viewmodel for the interpreter settings section.
+/// </summary>
 public sealed class InterpreterSettingsSectionViewModel : SettingsSectionViewModelBase
 {
     /// <summary>

@@ -1,4 +1,4 @@
-﻿using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Messages.Settings;
@@ -8,6 +8,9 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls;
 
+/// <summary>
+/// A viewmodel for the virtual keyboard control.
+/// </summary>
 public sealed partial class VirtualKeyboardViewModel : ObservableRecipient
 {
     /// <summary>
