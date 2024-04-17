@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using CommunityToolkit.HighPerformance;
@@ -36,7 +36,7 @@ internal struct StdinBuffer
     /// Creates a new <see cref="Reader"/> instance to read from the underlying buffer
     /// </summary>
     /// <returns>A <see cref="Reader"/> instance to read characters</returns>
-    public Reader CreateReader()
+    public readonly Reader CreateReader()
     {
         return new(this.Data.Span, this._Position);
     }
@@ -100,7 +100,7 @@ internal struct StdinBuffer
         }
 
         /// <inheritdoc/>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return StringPool.Shared.GetOrAdd(this.Data);
         }

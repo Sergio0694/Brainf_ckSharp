@@ -40,7 +40,7 @@ public ref struct IReadOnlyMachineStateEnumerator
     }
 
     /// <inheritdoc cref="IEnumerator{T}.Current"/>
-    public Brainf_ckMemoryCell Current
+    public readonly Brainf_ckMemoryCell Current
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => this.MachineState[this._Index];

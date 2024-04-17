@@ -47,7 +47,7 @@ internal struct StdoutBuffer : IDisposable
     /// Creates a new <see cref="Writer"/> instance to write to the underlying buffer
     /// </summary>
     /// <returns>A <see cref="Writer"/> instance to write characters</returns>
-    public Writer CreateWriter()
+    public readonly Writer CreateWriter()
     {
         return new(this.Buffer, this._Position);
     }
