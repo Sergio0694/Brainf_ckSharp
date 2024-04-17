@@ -18,7 +18,7 @@ public abstract class Brainf_ckBenchmarkBase
     /// <summary>
     /// The currently loaded script to test
     /// </summary>
-    private Script? Script;
+    private Script? script;
 
     /// <summary>
     /// The name of the script to benchmark
@@ -30,7 +30,7 @@ public abstract class Brainf_ckBenchmarkBase
     {
         TriggerTier1Jit();
 
-        this.Script = ScriptLoader.LoadScriptByName(Name!);
+        this.script = ScriptLoader.LoadScriptByName(Name!);
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ public abstract class Brainf_ckBenchmarkBase
     /// </summary>
     private void TriggerTier1Jit()
     {
-        this.Script = ScriptLoader.LoadScriptByName("HelloWorld");
+        this.script = ScriptLoader.LoadScriptByName("HelloWorld");
 
         for (int i = 0; i < 1000; i++)
         {
@@ -56,10 +56,10 @@ public abstract class Brainf_ckBenchmarkBase
     {
         Option<InterpreterResult> result = Brainf_ckInterpreter
             .CreateReleaseConfiguration()
-            .WithSource(this.Script!.Source)
-            .WithStdin(this.Script.Stdin)
-            .WithMemorySize(this.Script.MemorySize)
-            .WithOverflowMode(this.Script.OverflowMode)
+            .WithSource(this.script!.Source)
+            .WithStdin(this.script.Stdin)
+            .WithMemorySize(this.script.MemorySize)
+            .WithOverflowMode(this.script.OverflowMode)
             .TryRun();
 
         result.Value!.MachineState.Dispose();

@@ -21,8 +21,8 @@ public sealed class InterpreterSettingsSectionViewModel : SettingsSectionViewMod
     public InterpreterSettingsSectionViewModel(IMessenger messenger, ISettingsService settingsService)
         : base(messenger, settingsService)
     {
-        this._OverflowMode = this.SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
-        this._MemorySize = this.SettingsService.GetValue<int>(SettingsKeys.MemorySize);
+        this.overflowMode = this.SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
+        this.memorySize = this.SettingsService.GetValue<int>(SettingsKeys.MemorySize);
     }
 
     /// <summary>
@@ -30,15 +30,15 @@ public sealed class InterpreterSettingsSectionViewModel : SettingsSectionViewMod
     /// </summary>
     public IReadOnlyCollection<OverflowMode> OverflowModes { get; } = (OverflowMode[])typeof(OverflowMode).GetEnumValues();
 
-    private OverflowMode _OverflowMode;
+    private OverflowMode overflowMode;
 
     /// <summary>
     /// Exposes the <see cref="SettingsKeys.OverflowMode"/> setting
     /// </summary>
     public OverflowMode OverflowMode
     {
-        get => this._OverflowMode;
-        set => SetProperty<OverflowMode, OverflowModeSettingChangedMessage>(ref this._OverflowMode, value);
+        get => this.overflowMode;
+        set => SetProperty<OverflowMode, OverflowModeSettingChangedMessage>(ref this.overflowMode, value);
     }
 
     /// <summary>
@@ -46,14 +46,14 @@ public sealed class InterpreterSettingsSectionViewModel : SettingsSectionViewMod
     /// </summary>
     public IReadOnlyCollection<int> MemorySizeOptions { get; } = new[] { 32, 64, 128, 256 };
 
-    private int _MemorySize;
+    private int memorySize;
 
     /// <summary>
     /// Exposes the <see cref="SettingsKeys.MemorySize"/> setting
     /// </summary>
     public int MemorySize
     {
-        get => this._MemorySize;
-        set => SetProperty<int, MemorySizeSettingChangedMessage>(ref this._MemorySize, value);
+        get => this.memorySize;
+        set => SetProperty<int, MemorySizeSettingChangedMessage>(ref this.memorySize, value);
     }
 }

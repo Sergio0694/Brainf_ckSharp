@@ -12,7 +12,7 @@ internal sealed class UnauthenticatedHttpClientHandler : HttpClientHandler
     /// <summary>
     /// The user agent to use to send the requests
     /// </summary>
-    private readonly string UserAgent;
+    private readonly string userAgent;
 
     /// <summary>
     /// Creates a new <see cref="UnauthenticatedHttpClientHandler"/> instance with the specified parameters
@@ -20,14 +20,14 @@ internal sealed class UnauthenticatedHttpClientHandler : HttpClientHandler
     /// <param name="userAgent">The user agent to use to send the requests</param>
     public UnauthenticatedHttpClientHandler(string userAgent)
     {
-        this.UserAgent = userAgent;
+        this.userAgent = userAgent;
     }
 
     /// <inheritdoc/>
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         // Headers setup
-        request.Headers.Add("User-Agent", this.UserAgent);
+        request.Headers.Add("User-Agent", this.userAgent);
 
         // Send the request and handle errors
         return base.SendAsync(request, cancellationToken);

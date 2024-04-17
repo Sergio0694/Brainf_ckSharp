@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -43,12 +43,12 @@ internal sealed partial class TuringMachineState
         /// Allocating this handle from and disposing it as soon as the processing
         /// completes minimizes the time the target buffer remains pinned in memory.
         /// </remarks>
-        private readonly GCHandle Handle;
+        private readonly GCHandle handle;
 
         /// <summary>
         /// The <see cref="TuringMachineState"/> instance in use
         /// </summary>
-        private readonly TuringMachineState MachineState;
+        private readonly TuringMachineState machineState;
 
         /// <summary>
         /// The <typeparamref name="TExecutionContext"/> instance for the current session
@@ -63,10 +63,10 @@ internal sealed partial class TuringMachineState
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ExecutionSession(TuringMachineState state)
         {
-            Assert(state._Buffer != null);
+            Assert(state.buffer != null);
 
-            this.Handle = GCHandle.Alloc(state._Buffer);
-            this.MachineState = state;
+            this.handle = GCHandle.Alloc(state.buffer);
+            this.machineState = state;
             this.ExecutionContext = state.GetExecutionContext<TExecutionContext>();
         }
 
@@ -74,9 +74,9 @@ internal sealed partial class TuringMachineState
         public void Dispose()
         {
             // Cast to a mutable reference to avoid the defensive copy
-            Unsafe.AsRef(this.Handle).Free();
+            Unsafe.AsRef(this.handle).Free();
 
-            this.MachineState._Position = this.ExecutionContext.Position;
+            this.machineState.position = this.ExecutionContext.Position;
         }
     }
 }

@@ -31,17 +31,17 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// <summary>
     /// The <see cref="ISettingsService"/> instance currently in use
     /// </summary>
-    private readonly ISettingsService SettingsService;
+    private readonly ISettingsService settingsService;
 
     /// <summary>
     /// The <see cref="IKeyboardListenerService"/> instance currently in use
     /// </summary>
-    private readonly IKeyboardListenerService KeyboardListenerService;
+    private readonly IKeyboardListenerService keyboardListenerService;
 
     /// <summary>
     /// An <see cref="AsyncLock"/> instance to synchronize accesses to the console results
     /// </summary>
-    private readonly AsyncLock ExecutionMutex = new();
+    private readonly AsyncLock executionMutex = new();
 
     /// <summary>
     /// Creates a new <see cref="ConsoleViewModel"/> instance with a new command ready to use
@@ -52,13 +52,13 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     public ConsoleViewModel(IMessenger messenger, ISettingsService settingsService, IKeyboardListenerService keyboardListenerService)
         : base(messenger)
     {
-        this.SettingsService = settingsService;
-        this.KeyboardListenerService = keyboardListenerService;
+        this.settingsService = settingsService;
+        this.keyboardListenerService = keyboardListenerService;
 
         // Initialize the machine state with the current user settings
-        this._MachineState = MachineStateProvider.Create(
-            this.SettingsService.GetValue<int>(SettingsKeys.MemorySize),
-            this.SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode));
+        this.machineState = MachineStateProvider.Create(
+            this.settingsService.GetValue<int>(SettingsKeys.MemorySize),
+            this.settingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode));
     }
 
     /// <inheritdoc/>
@@ -75,7 +75,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
         Messenger.Register<ConsoleViewModel, MemorySizeSettingChangedMessage>(this, (r, m) => _ = r.RestartAsync());
         Messenger.Register<ConsoleViewModel, OperatorKeyPressedNotificationMessage>(this, (r, m) => _ = r.TryAddOperatorAsync(m.Value));
 
-        this.KeyboardListenerService.CharacterReceived += TryAddOperator;
+        this.keyboardListenerService.CharacterReceived += TryAddOperator;
     }
 
     /// <inheritdoc/>
@@ -83,7 +83,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     {
         base.OnDeactivated();
 
-        this.KeyboardListenerService.CharacterReceived -= TryAddOperator;
+        this.keyboardListenerService.CharacterReceived -= TryAddOperator;
     }
 
     /// <inheritdoc/>
@@ -98,15 +98,15 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     public ObservableCollection<IConsoleEntry> Source { get; } = new() { new ConsoleCommand() };
 
-    private IReadOnlyMachineState _MachineState;
+    private IReadOnlyMachineState machineState;
 
     /// <summary>
     /// Gets the <see cref="IReadOnlyMachineState"/> instance currently in use
     /// </summary>
     public IReadOnlyMachineState MachineState
     {
-        get => this._MachineState;
-        private set => SetProperty(ref this._MachineState, value, true);
+        get => this.machineState;
+        private set => SetProperty(ref this.machineState, value, true);
     }
 
     /// <summary>
@@ -124,7 +124,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// <param name="c">The current operator to add</param>
     private async Task TryAddOperatorAsync(char c)
     {
-        using (await this.ExecutionMutex.LockAsync())
+        using (await this.executionMutex.LockAsync())
         {
             if (!Brainf_ckParser.IsOperator(c)) return;
             if (Source.LastOrDefault() is ConsoleCommand command)
@@ -142,7 +142,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task DeleteLastOperatorAsync()
     {
-        using (await this.ExecutionMutex.LockAsync())
+        using (await this.executionMutex.LockAsync())
         {
             if (Source.LastOrDefault() is ConsoleCommand command)
             {
@@ -161,7 +161,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task ResetCommandAsync()
     {
-        using (await this.ExecutionMutex.LockAsync())
+        using (await this.executionMutex.LockAsync())
         {
             if (Source.LastOrDefault() is ConsoleCommand command)
             {
@@ -178,7 +178,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task RestartAsync()
     {
-        using (await this.ExecutionMutex.LockAsync())
+        using (await this.executionMutex.LockAsync())
         {
             if (Source.LastOrDefault() is ConsoleCommand command)
             {
@@ -189,8 +189,8 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
             Source.Add(new ConsoleRestart());
 
             MachineState = MachineStateProvider.Create(
-                this.SettingsService.GetValue<int>(SettingsKeys.MemorySize),
-                this.SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode));
+                this.settingsService.GetValue<int>(SettingsKeys.MemorySize),
+                this.settingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode));
 
             Source.Add(new ConsoleCommand());
 
@@ -203,7 +203,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task ClearScreenAsync()
     {
-        using (await this.ExecutionMutex.LockAsync())
+        using (await this.executionMutex.LockAsync())
         {
             Source.Clear();
 
@@ -218,7 +218,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task ExecuteCommandAsync()
     {
-        using (await this.ExecutionMutex.LockAsync())
+        using (await this.executionMutex.LockAsync())
         {
             if (Source.LastOrDefault() is not ConsoleCommand command)
             {
@@ -281,7 +281,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task RepeatLastScriptAsync()
     {
-        using (await this.ExecutionMutex.LockAsync())
+        using (await this.executionMutex.LockAsync())
         {
             if (Source.Reverse().OfType<ConsoleCommand>().Skip(1).FirstOrDefault() is ConsoleCommand previous)
             {

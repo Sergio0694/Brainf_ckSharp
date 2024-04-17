@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
@@ -21,7 +21,7 @@ internal readonly struct Timestamp
     /// <summary>
     /// The high resolution ticks for the current <see cref="Timestamp"/> value
     /// </summary>
-    private readonly long Value;
+    private readonly long value;
 
     /// <summary>
     /// Creates a new <see cref="Timestamp"/> value with the specified parameters
@@ -30,7 +30,7 @@ internal readonly struct Timestamp
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Timestamp(long value)
     {
-        this.Value = value;
+        this.value = value;
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ internal readonly struct Timestamp
         {
             long
                 current = Stopwatch.GetTimestamp(),
-                delta = Math.Abs(current - this.Value),
+                delta = Math.Abs(current - this.value),
                 ticks = unchecked((long)(delta * TickFrequency));
 
             return ticks;

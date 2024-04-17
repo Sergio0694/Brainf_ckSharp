@@ -20,36 +20,36 @@ public abstract class WorkspaceViewModelBase : ObservableRecipient
     {
     }
 
-    private SourceCode _Code = SourceCode.CreateEmpty();
+    private SourceCode code = SourceCode.CreateEmpty();
 
     /// <summary>
     /// Gets or sets the loaded source code
     /// </summary>
     public SourceCode Code
     {
-        get => this._Code;
+        get => this.code;
         protected set
         {
-            if (SetProperty(ref this._Code, value))
+            if (SetProperty(ref this.code, value))
             {
                 OnCodeChanged(value);
             }
         }
     }
 
-    private ReadOnlyMemory<char> _Text = SourceCode.EmptyContent.AsMemory();
+    private ReadOnlyMemory<char> text = SourceCode.EmptyContent.AsMemory();
 
     /// <summary>
     /// Gets or sets the currently displayed text
     /// </summary>
     public ReadOnlyMemory<char> Text
     {
-        get => this._Text;
+        get => this.text;
         set
         {
-            if (this._Text.Span.SequenceEqual(value.Span)) return;
+            if (this.text.Span.SequenceEqual(value.Span)) return;
 
-            this._Text = value;
+            this.text = value;
 
             OnPropertyChanged();
 
@@ -59,57 +59,57 @@ public abstract class WorkspaceViewModelBase : ObservableRecipient
         }
     }
 
-    private bool _IsUnsavedEditPending;
+    private bool isUnsavedEditPending;
 
     /// <summary>
     /// Gets whether or not there are pending unsaved changes to the current file
     /// </summary>
     public bool IsUnsavedEditPending
     {
-        get => this._IsUnsavedEditPending;
-        private set => SetProperty(ref this._IsUnsavedEditPending, value);
+        get => this.isUnsavedEditPending;
+        private set => SetProperty(ref this.isUnsavedEditPending, value);
     }
 
-    private SyntaxValidationResult _ValidationResult;
+    private SyntaxValidationResult validationResult;
 
     /// <summary>
     /// Gets the current <see cref="SyntaxValidationResult"/> value for <see cref="Text"/>
     /// </summary>
     public SyntaxValidationResult ValidationResult
     {
-        get => this._ValidationResult;
-        set => SetProperty(ref this._ValidationResult, value);
+        get => this.validationResult;
+        set => SetProperty(ref this.validationResult, value);
     }
 
-    private int _Row = 1;
+    private int row = 1;
 
     /// <summary>
     /// Gets the current row in the document in use
     /// </summary>
     public int Row
     {
-        get => this._Row;
+        get => this.row;
         set
         {
             Guard.IsGreaterThan(value, 0);
 
-            _ = SetProperty(ref this._Row, value);
+            _ = SetProperty(ref this.row, value);
         }
     }
 
-    private int _Column = 1;
+    private int column = 1;
 
     /// <summary>
     /// Gets the current column in the document in use
     /// </summary>
     public int Column
     {
-        get => this._Column;
+        get => this.column;
         set
         {
             Guard.IsGreaterThan(value, 0);
 
-            _ = SetProperty(ref this._Column, value);
+            _ = SetProperty(ref this.column, value);
         }
     }
 

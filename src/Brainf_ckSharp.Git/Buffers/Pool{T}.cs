@@ -20,19 +20,19 @@ public sealed class Pool<T> where T : class, new()
     /// The current pool of items
     /// </summary>
     /// <remarks>Not using the array pool here since previous pools are no longer needed</remarks>
-    private T[] _Items;
+    private T[] items;
 
     /// <summary>
     /// The current offset into the pool of items
     /// </summary>
-    private int _Offset;
+    private int offset;
 
     /// <summary>
     /// Creates a new <see cref="Pool{T}"/> instance.
     /// </summary>
     private Pool()
     {
-        T[] items = this._Items = new T[MinimumPoolSize];
+        T[] items = this.items = new T[MinimumPoolSize];
 
         ref T r0 = ref items.DangerousGetReference();
 
@@ -56,12 +56,12 @@ public sealed class Pool<T> where T : class, new()
     public T Rent()
     {
         // Expand the current pool, if needed
-        if (this._Offset == this._Items.Length)
+        if (this.offset == this.items.Length)
         {
             ExpandBuffer();
         }
 
-        return this._Items.DangerousGetReferenceAt(this._Offset++);
+        return this.items.DangerousGetReferenceAt(this.offset++);
     }
 
     /// <summary>
@@ -70,18 +70,18 @@ public sealed class Pool<T> where T : class, new()
     [MethodImpl(MethodImplOptions.NoInlining)]
     private void ExpandBuffer()
     {
-        T[] oldItems = this._Items;
+        T[] oldItems = this.items;
         T[] newItems = new T[oldItems.Length * 2];
 
         // Copy over the previous elements
         oldItems.AsSpan().CopyTo(newItems);
 
-        this._Items = newItems;
+        this.items = newItems;
 
         ref T r0 = ref newItems.DangerousGetReference();
         int end = newItems.Length;
 
-        for (int i = this._Offset; i < end; i++)
+        for (int i = this.offset; i < end; i++)
         {
             Unsafe.Add(ref r0, i) = new T();
         }
@@ -94,6 +94,6 @@ public sealed class Pool<T> where T : class, new()
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Reset()
     {
-        this._Offset = 0;
+        this.offset = 0;
     }
 }

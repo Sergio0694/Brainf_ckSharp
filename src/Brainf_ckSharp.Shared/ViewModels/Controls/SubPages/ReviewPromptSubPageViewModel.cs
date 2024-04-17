@@ -14,17 +14,17 @@ public sealed partial class ReviewPromptSubPageViewModel : ObservableObject
     /// <summary>
     /// The <see cref="IEmailService"/> instance currently in use
     /// </summary>
-    private readonly IEmailService EmailService;
+    private readonly IEmailService emailService;
 
     /// <summary>
     /// The <see cref="IStoreService"/> instance currently in use
     /// </summary>
-    private readonly IStoreService StoreService;
+    private readonly IStoreService storeService;
 
     /// <summary>
     /// The <see cref="ISystemInformationService"/> instance currently in use
     /// </summary>
-    private readonly ISystemInformationService SystemInformationService;
+    private readonly ISystemInformationService systemInformationService;
 
     /// <summary>
     /// Creates a new <see cref="ReviewPromptSubPageViewModel"/> instance
@@ -34,16 +34,16 @@ public sealed partial class ReviewPromptSubPageViewModel : ObservableObject
     /// <param name="systemInformationService">The <see cref="ISystemInformationService"/> instance to use</param>
     public ReviewPromptSubPageViewModel(IEmailService emailService, IStoreService storeService, ISystemInformationService systemInformationService)
     {
-        this.EmailService = emailService;
-        this.StoreService = storeService;
-        this.SystemInformationService = systemInformationService;
+        this.emailService = emailService;
+        this.storeService = storeService;
+        this.systemInformationService = systemInformationService;
     }
 
     /// <inheritdoc cref="IStoreService.RequestReviewAsync"/>
     [RelayCommand]
     private Task RequestReviewAsync()
     {
-        return this.StoreService.RequestReviewAsync();
+        return this.storeService.RequestReviewAsync();
     }
 
     /// <summary>
@@ -56,12 +56,12 @@ public sealed partial class ReviewPromptSubPageViewModel : ObservableObject
 
 
             ==========================
-            [AppVersion]: {this.SystemInformationService.ApplicationVersion}
-            [CPU architecture]: {this.SystemInformationService.CpuArchitecture}
-            [OS]: {this.SystemInformationService.OperatingSystemVersion}
-            [OS build]: {this.SystemInformationService.OperatingSystemVersion}
+            [AppVersion]: {this.systemInformationService.ApplicationVersion}
+            [CPU architecture]: {this.systemInformationService.CpuArchitecture}
+            [OS]: {this.systemInformationService.OperatingSystemVersion}
+            [OS build]: {this.systemInformationService.OperatingSystemVersion}
             """;
 
-        return this.EmailService.TryComposeEmailAsync(DeveloperInfo.FeedbackEmail, "Brainf*ck# feedback", body);
+        return this.emailService.TryComposeEmailAsync(DeveloperInfo.FeedbackEmail, "Brainf*ck# feedback", body);
     }
 }

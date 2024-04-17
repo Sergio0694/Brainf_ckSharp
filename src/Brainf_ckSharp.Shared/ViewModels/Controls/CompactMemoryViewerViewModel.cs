@@ -34,17 +34,17 @@ public sealed class CompactMemoryViewerViewModel : ObservableRecipient
     /// </summary>
     public ObservableCollection<Brainf_ckMemoryCellChunk> Source { get; } = new();
 
-    private IReadOnlyMachineState? _MachineState;
+    private IReadOnlyMachineState? machineState;
 
     /// <summary>
     /// Gets or sets the <see cref="IReadOnlyMachineState"/> instance for the current view model
     /// </summary>
     public IReadOnlyMachineState? MachineState
     {
-        get => this._MachineState;
+        get => this.machineState;
         set
         {
-            if (SetProperty(ref this._MachineState, value))
+            if (SetProperty(ref this.machineState, value))
             {
                 UpdateFromState(value);
             }

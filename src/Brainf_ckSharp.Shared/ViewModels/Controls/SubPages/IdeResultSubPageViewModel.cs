@@ -28,27 +28,27 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
     /// <summary>
     /// The <see cref="ISettingsService"/> instance currently in use
     /// </summary>
-    private readonly ISettingsService SettingsService;
+    private readonly ISettingsService settingsService;
 
     /// <summary>
     /// A mutex to avoid race conditions when handling executions and tokens
     /// </summary>
-    private readonly AsyncLock LoadingMutex = new();
+    private readonly AsyncLock loadingMutex = new();
 
     /// <summary>
     /// The <see cref="CancellationTokenSource"/> to handle executions within <see cref="LoadDataAsync"/>
     /// </summary>
-    private CancellationTokenSource? _ExecutionTokenSource;
+    private CancellationTokenSource? executionTokenSource;
 
     /// <summary>
     /// The <see cref="CancellationTokenSource"/> to handle debug breakpoints within <see cref="LoadDataAsync"/>
     /// </summary>
-    private CancellationTokenSource? _DebugTokenSource;
+    private CancellationTokenSource? debugTokenSource;
 
     /// <summary>
     /// The <see cref="InterpreterSession"/> to use, when in DEBUG mode
     /// </summary>
-    private InterpreterSession? _DebugSession;
+    private InterpreterSession? debugSession;
 
     /// <summary>
     /// Creates a new <see cref="IdeResultSubPageViewModel"/> instance
@@ -58,7 +58,7 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
     public IdeResultSubPageViewModel(IMessenger messenger, ISettingsService settingsService)
         : base(messenger)
     {
-        this.SettingsService = settingsService;
+        this.settingsService = settingsService;
     }
 
     /// <summary>
@@ -80,17 +80,17 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
     /// <summary>
     /// Gets whether or not the debugger is currently stopped at a breakpoint
     /// </summary>
-    public bool IsAtBreakpoint => this._DebugSession?.Current.ExitCode.HasFlag(ExitCode.BreakpointReached) == true;
+    public bool IsAtBreakpoint => this.debugSession?.Current.ExitCode.HasFlag(ExitCode.BreakpointReached) == true;
 
     /// <inheritdoc/>
     protected override async void OnDeactivated()
     {
-        this._ExecutionTokenSource?.Cancel();
-        this._DebugTokenSource?.Cancel();
+        this.executionTokenSource?.Cancel();
+        this.debugTokenSource?.Cancel();
 
-        using (await this.LoadingMutex.LockAsync())
+        using (await this.loadingMutex.LockAsync())
         {
-            this._DebugSession?.Dispose();
+            this.debugSession?.Dispose();
         }
     }
 
@@ -102,14 +102,14 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
     {
         Guard.IsNotNull(Source);
 
-        using (await this.LoadingMutex.LockAsync())
+        using (await this.loadingMutex.LockAsync())
         {
-            this._ExecutionTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            this.executionTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
 
             // Execution arguments and options
             string stdin = Messenger.Send(new StdinRequestMessage(false));
-            int memorySize = this.SettingsService.GetValue<int>(SettingsKeys.MemorySize);
-            OverflowMode overflowMode = this.SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
+            int memorySize = this.settingsService.GetValue<int>(SettingsKeys.MemorySize);
+            OverflowMode overflowMode = this.settingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
 
             // Run in RELEASE mode
             if (Breakpoints is null)
@@ -122,7 +122,7 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
                         .WithStdin(stdin)
                         .WithMemorySize(memorySize)
                         .WithOverflowMode(overflowMode)
-                        .WithExecutionToken(this._ExecutionTokenSource.Token)
+                        .WithExecutionToken(this.executionTokenSource.Token)
                         .TryRun()
                         .Value!;
                 });
@@ -131,10 +131,10 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
             }
             else
             {
-                this._DebugTokenSource = new CancellationTokenSource();
+                this.debugTokenSource = new CancellationTokenSource();
 
                 // Run in DEBUG mode
-                this._DebugSession = await Task.Run(() =>
+                this.debugSession = await Task.Run(() =>
                 {
                     InterpreterSession session = Brainf_ckInterpreter
                         .CreateDebugConfiguration()
@@ -143,8 +143,8 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
                         .WithBreakpoints(Breakpoints.Memory)
                         .WithMemorySize(memorySize)
                         .WithOverflowMode(overflowMode)
-                        .WithExecutionToken(this._ExecutionTokenSource.Token)
-                        .WithDebugToken(this._DebugTokenSource.Token)
+                        .WithExecutionToken(this.executionTokenSource.Token)
+                        .WithDebugToken(this.debugTokenSource.Token)
                         .TryRun()
                         .Value!;
 
@@ -153,7 +153,7 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
                     return session;
                 });
 
-                LoadResults(this._DebugSession.Current);
+                LoadResults(this.debugSession.Current);
 
                 OnPropertyChanged(nameof(IsAtBreakpoint));
             }
@@ -166,11 +166,11 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
     [RelayCommand]
     private async Task ContinueAsync()
     {
-        using (await this.LoadingMutex.LockAsync())
+        using (await this.loadingMutex.LockAsync())
         {
-            _ = await Task.Run(() => this._DebugSession!.MoveNext());
+            _ = await Task.Run(() => this.debugSession!.MoveNext());
 
-            LoadResults(this._DebugSession!.Current);
+            LoadResults(this.debugSession!.Current);
 
             OnPropertyChanged(nameof(IsAtBreakpoint));
         }
@@ -182,13 +182,13 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
     [RelayCommand]
     private async Task SkipAsync()
     {
-        using (await this.LoadingMutex.LockAsync())
+        using (await this.loadingMutex.LockAsync())
         {
-            this._DebugTokenSource!.Cancel();
+            this.debugTokenSource!.Cancel();
 
-            _ = await Task.Run(() => this._DebugSession!.MoveNext());
+            _ = await Task.Run(() => this.debugSession!.MoveNext());
 
-            LoadResults(this._DebugSession!.Current);
+            LoadResults(this.debugSession!.Current);
 
             OnPropertyChanged(nameof(IsAtBreakpoint));
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace Brainf_ckSharp.Memory;
 internal sealed partial class TuringMachineState : IReadOnlyMachineState
 {
     /// <summary>
-    /// The size of the usable buffer within <see cref="_Buffer"/>
+    /// The size of the usable buffer within <see cref="buffer"/>
     /// </summary>
     public readonly int Size;
 
@@ -33,12 +33,12 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     /// Similarly to <see cref="Buffers.StdoutBuffer"/>, the buffer is rented directly
     /// from this type to reduce the overhead when accessing individual items.
     /// </remarks>
-    private ushort[]? _Buffer;
+    private ushort[]? buffer;
 
     /// <summary>
-    /// The current position within the underlying buffer
+    /// The current position within the underlying buffer.
     /// </summary>
-    public int _Position;
+    private int position;
 
     /// <summary>
     /// Creates a new blank machine state with the given parameters
@@ -57,13 +57,13 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
     private TuringMachineState(int size, OverflowMode mode, bool clear)
     {
-        this._Buffer = ArrayPool<ushort>.Shared.Rent(size);
+        this.buffer = ArrayPool<ushort>.Shared.Rent(size);
         this.Size = size;
         this.Mode = mode;
 
         if (clear)
         {
-            this._Buffer.AsSpan(0, size).Clear();
+            this.buffer.AsSpan(0, size).Clear();
         }
     }
 
@@ -73,7 +73,7 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     ~TuringMachineState() => Dispose();
 
     /// <inheritdoc/>
-    public int Position => this._Position;
+    public int Position => this.position;
 
     /// <inheritdoc/>
     public int Count => this.Size;
@@ -84,13 +84,13 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
         {
-            ushort[]? array = this._Buffer;
+            ushort[]? array = this.buffer;
 
             if (array is null) ThrowObjectDisposedException();
 
-            ushort value = array!.DangerousGetReferenceAt(this._Position);
+            ushort value = array!.DangerousGetReferenceAt(this.position);
 
-            return new(this._Position, value, true);
+            return new(this.position, value, true);
         }
     }
 
@@ -100,7 +100,7 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
         {
-            ushort[]? array = this._Buffer;
+            ushort[]? array = this.buffer;
 
             if (array is null) ThrowObjectDisposedException();
 
@@ -111,7 +111,7 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
 
             ushort value = array!.DangerousGetReferenceAt(index);
 
-            return new(index, value, this._Position == index);
+            return new(index, value, this.position == index);
         }
     }
 
@@ -128,30 +128,30 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
 
         if (ReferenceEquals(this, other)) return true;
 
-        if (this._Buffer is null) ThrowObjectDisposedException();
+        if (this.buffer is null) ThrowObjectDisposedException();
 
         if (other is not TuringMachineState state) return false;
 
-        if (state._Buffer is null) ThrowObjectDisposedException();
+        if (state.buffer is null) ThrowObjectDisposedException();
 
         return
             this.Size == state.Size &&
             this.Mode == state.Mode &&
-            this._Position == state._Position &&
-            this._Buffer.AsSpan(0, this.Size).SequenceEqual(state._Buffer.AsSpan(0, this.Size));
+            this.position == state.position &&
+            this.buffer.AsSpan(0, this.Size).SequenceEqual(state.buffer.AsSpan(0, this.Size));
     }
 
     /// <inheritdoc/>
     public override int GetHashCode()
     {
-        if (this._Buffer is null) ThrowObjectDisposedException();
+        if (this.buffer is null) ThrowObjectDisposedException();
 
         HashCode hashCode = default;
 
         hashCode.Add(this.Size);
         hashCode.Add(this.Mode);
-        hashCode.Add(this._Position);
-        hashCode.Add<ushort>(this._Buffer.AsSpan(0, this.Size));
+        hashCode.Add(this.position);
+        hashCode.Add<ushort>(this.buffer.AsSpan(0, this.Size));
 
         return hashCode.ToHashCode();
     }
@@ -180,11 +180,11 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     /// <inheritdoc/>
     public object Clone()
     {
-        if (this._Buffer is null) ThrowObjectDisposedException();
+        if (this.buffer is null) ThrowObjectDisposedException();
 
-        TuringMachineState clone = new(this.Size, this.Mode, false) { _Position = this._Position };
+        TuringMachineState clone = new(this.Size, this.Mode, false) { position = this.position };
 
-        this._Buffer.AsSpan(0, this.Size).CopyTo(clone._Buffer.AsSpan(0, this.Size));
+        this.buffer.AsSpan(0, this.Size).CopyTo(clone.buffer.AsSpan(0, this.Size));
 
         return clone;
     }
@@ -192,17 +192,17 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     /// <inheritdoc/>
     public void Dispose()
     {
-        ushort[]? array = this._Buffer;
+        ushort[]? array = this.buffer;
 
         if (array is null) return;
 
-        this._Buffer = null;
+        this.buffer = null;
 
         ArrayPool<ushort>.Shared.Return(array);
     }
 
     /// <summary>
-    /// Throws an <see cref="ObjectDisposedException"/> when <see cref="_Buffer"/> is <see langword="null"/>.
+    /// Throws an <see cref="ObjectDisposedException"/> when <see cref="buffer"/> is <see langword="null"/>.
     /// </summary>
     private static void ThrowObjectDisposedException()
     {

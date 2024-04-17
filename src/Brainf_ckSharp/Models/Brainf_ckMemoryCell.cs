@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Memory.Interfaces;
@@ -19,7 +19,7 @@ public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     /// value for the index is <see cref="short.MaxValue"/>, we can track the
     /// selection in the 15th bit, and use the previous ones to store the index.
     /// </summary>
-    private readonly ushort State;
+    private readonly ushort state;
 
     /// <summary>
     /// Creates a new instance with the given value
@@ -32,7 +32,7 @@ public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     {
         Assert((uint)index <= short.MaxValue);
 
-        this.State = (ushort)BitHelper.SetFlag((uint)index, 15, isSelected);
+        this.state = (ushort)BitHelper.SetFlag((uint)index, 15, isSelected);
         Value = value;
     }
 
@@ -42,7 +42,7 @@ public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     public int Index
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => (int)BitHelper.SetFlag(this.State, 15, false);
+        get => (int)BitHelper.SetFlag(this.state, 15, false);
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     public bool IsSelected
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => BitHelper.HasFlag(this.State, 15);
+        get => BitHelper.HasFlag(this.state, 15);
     }
 
     /// <summary>
@@ -88,7 +88,7 @@ public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     public bool Equals(Brainf_ckMemoryCell other)
     {
         return
-            this.State == other.State &&
+            this.state == other.state &&
             Value == other.Value;
     }
 
@@ -103,6 +103,6 @@ public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     /// <inheritdoc/>
     public override int GetHashCode()
     {
-        return HashCode.Combine(this.State, Value);
+        return HashCode.Combine(this.state, Value);
     }
 }

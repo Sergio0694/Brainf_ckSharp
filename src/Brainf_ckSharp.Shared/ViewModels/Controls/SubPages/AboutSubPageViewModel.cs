@@ -16,7 +16,7 @@ public sealed partial class AboutSubPageViewModel : ObservableObject
     /// <summary>
     /// The <see cref="IGitHubService"/> instance currently in use
     /// </summary>
-    private readonly IGitHubService GitHubService;
+    private readonly IGitHubService gitHubService;
 
     /// <summary>
     /// Creates a new <see cref="AboutSubPageViewModel"/> instance
@@ -24,7 +24,7 @@ public sealed partial class AboutSubPageViewModel : ObservableObject
     /// <param name="gitHubService">The <see cref="IGitHubService"/> instance to use</param>
     public AboutSubPageViewModel(IGitHubService gitHubService)
     {
-        this.GitHubService = gitHubService;
+        this.gitHubService = gitHubService;
     }
 
     /// <summary>
@@ -47,26 +47,26 @@ public sealed partial class AboutSubPageViewModel : ObservableObject
         => "RELEASE";
 #endif
 
-    private static IEnumerable<User>? _Developers;
+    private static IEnumerable<User>? developers;
 
     /// <summary>
     /// Gets the list of lead developers to the Legere repository
     /// </summary>
     public IEnumerable<User>? Developers
     {
-        get => _Developers;
-        private set => SetProperty(ref _Developers, value);
+        get => developers;
+        private set => SetProperty(ref developers, value);
     }
 
-    private static IEnumerable<string>? _FeaturedLinks;
+    private static IEnumerable<string>? featuredLinks;
 
     /// <summary>
     /// Gets the list of featured links to use
     /// </summary>
     public IEnumerable<string>? FeaturedLinks
     {
-        get => _FeaturedLinks;
-        private set => SetProperty(ref _FeaturedLinks, value);
+        get => featuredLinks;
+        private set => SetProperty(ref featuredLinks, value);
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ public sealed partial class AboutSubPageViewModel : ObservableObject
 
         try
         {
-            Developers = new[] { await this.GitHubService.GetUserAsync(DeveloperInfo.GitHubUsername) };
+            Developers = new[] { await this.gitHubService.GetUserAsync(DeveloperInfo.GitHubUsername) };
             FeaturedLinks = new[] { DeveloperInfo.PayPalMeUrl };
         }
         catch

@@ -21,7 +21,7 @@ public sealed partial class VirtualKeyboardViewModel : ObservableRecipient
     public VirtualKeyboardViewModel(IMessenger messenger, ISettingsService settingsService)
         : base(messenger)
     {
-        this._IsPBrainModeEnabled = settingsService.GetValue<bool>(SettingsKeys.ShowPBrainButtons);
+        this.isPBrainModeEnabled = settingsService.GetValue<bool>(SettingsKeys.ShowPBrainButtons);
     }
 
     /// <inheritdoc/>
@@ -30,15 +30,15 @@ public sealed partial class VirtualKeyboardViewModel : ObservableRecipient
         Messenger.Register<VirtualKeyboardViewModel, ShowPBrainButtonsSettingsChangedMessage>(this, (r, m) => r.IsPBrainModeEnabled = m.Value);
     }
 
-    private bool _IsPBrainModeEnabled;
+    private bool isPBrainModeEnabled;
 
     /// <summary>
     /// Gets whether or not the PBrain mode is currently enabled
     /// </summary>
     public bool IsPBrainModeEnabled
     {
-        get => this._IsPBrainModeEnabled;
-        private set => SetProperty(ref this._IsPBrainModeEnabled, value);
+        get => this.isPBrainModeEnabled;
+        private set => SetProperty(ref this.isPBrainModeEnabled, value);
     }
 
     /// <summary>

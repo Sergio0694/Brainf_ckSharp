@@ -15,12 +15,12 @@ internal struct StdinBuffer
     /// <summary>
     /// The underlying buffer to read characters from
     /// </summary>
-    private readonly ReadOnlyMemory<char> Data;
+    private readonly ReadOnlyMemory<char> data;
 
     /// <summary>
     /// The current position in the underlying buffer to read from
     /// </summary>
-    private int _Position;
+    private int position;
 
     /// <summary>
     /// Creates a new <see cref="StdinBuffer"/> instance with the specified parameters
@@ -28,8 +28,8 @@ internal struct StdinBuffer
     /// <param name="data">The input data to use to read characters from</param>
     public StdinBuffer(ReadOnlyMemory<char> data)
     {
-        this.Data = data;
-        this._Position = 0;
+        this.data = data;
+        this.position = 0;
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ internal struct StdinBuffer
     /// <returns>A <see cref="Reader"/> instance to read characters</returns>
     public readonly Reader CreateReader()
     {
-        return new(this.Data.Span, this._Position);
+        return new(this.data.Span, this.position);
     }
 
     /// <summary>
@@ -47,7 +47,7 @@ internal struct StdinBuffer
     /// <param name="reader">The <see cref="Reader"/> instance that was previously used</param>
     public void Synchronize(ref Reader reader)
     {
-        this._Position = reader.Position;
+        this.position = reader.Position;
     }
 
     /// <summary>
@@ -55,10 +55,10 @@ internal struct StdinBuffer
     /// </summary>
     public ref struct Reader
     {
-        /// <inheritdoc cref="StdinBuffer.Data"/>
-        private readonly ReadOnlySpan<char> Data;
+        /// <inheritdoc cref="StdinBuffer.data"/>
+        private readonly ReadOnlySpan<char> data;
 
-        /// <inheritdoc cref="_Position"/>
+        /// <inheritdoc cref="position"/>
         public int Position;
 
         /// <summary>
@@ -68,7 +68,7 @@ internal struct StdinBuffer
         /// <param name="position">The initial position to read from</param>
         public Reader(ReadOnlySpan<char> data, int position = 0)
         {
-            this.Data = data;
+            this.data = data;
             this.Position = position;
         }
 
@@ -81,13 +81,13 @@ internal struct StdinBuffer
         public bool TryRead(out char c)
         {
             Assert(this.Position >= 0);
-            Assert(this.Position <= this.Data.Length);
+            Assert(this.Position <= this.data.Length);
 
             int position = this.Position;
 
-            if ((uint)position < (uint)this.Data.Length)
+            if ((uint)position < (uint)this.data.Length)
             {
-                c = this.Data.DangerousGetReferenceAt(position);
+                c = this.data.DangerousGetReferenceAt(position);
 
                 this.Position = position + 1;
 
@@ -102,7 +102,7 @@ internal struct StdinBuffer
         /// <inheritdoc/>
         public override readonly string ToString()
         {
-            return StringPool.Shared.GetOrAdd(this.Data);
+            return StringPool.Shared.GetOrAdd(this.data);
         }
     }
 
@@ -113,12 +113,12 @@ internal struct StdinBuffer
         // we can just return that same instance with no additional allocations (this is the
         // same behavior of ReadOnlyMemory<char>.ToString()). Otherwise, we use StringPool to
         // avoid repeated allocations if the source buffers represent a repeated text.
-        if (MemoryMarshal.TryGetString(this.Data, out string text, out int start, out int length) &&
+        if (MemoryMarshal.TryGetString(this.data, out string text, out int start, out int length) &&
             start == 0 && length == text.Length)
         {
             return text;
         }
 
-        return StringPool.Shared.GetOrAdd(this.Data.Span);
+        return StringPool.Shared.GetOrAdd(this.data.Span);
     }
 }
