@@ -290,7 +290,7 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
             {
                 state = await JsonSerializer.DeserializeAsync(stream, Brainf_ckSharpJsonSerializerContext.Default.IdeState);
             }
-            
+
             if (state is null) ThrowHelper.ThrowInvalidOperationException("Failed to load previous IDE state");
 
             if (state.FilePath is null) Code = SourceCode.CreateEmpty();

@@ -9,7 +9,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties;
 /// A <see langword="class"/> with an attached XAML property to display a blinking animation on a target <see cref="UIElement"/>
 /// </summary>
 public static class BlinkingAnimationHelper
-{ 
+{
     /// <summary>
     /// Gets the value of <see cref="IsBlinkingProperty"/> for a given <see cref="UIElement"/>
     /// </summary>

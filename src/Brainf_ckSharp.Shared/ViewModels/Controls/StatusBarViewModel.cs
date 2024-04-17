@@ -74,7 +74,7 @@ public sealed class StatusBarViewModel : ObservableRecipient
         this.Context = SynchronizationContext.Current;
         this.Timer = new Timer(vm => ((StatusBarViewModel)vm).RunBackgroundCode(), this, default, TimeSpan.FromSeconds(2));
     }
-    
+
     /// <inheritdoc/>
     protected override void OnActivated()
     {

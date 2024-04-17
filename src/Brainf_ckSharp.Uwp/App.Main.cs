@@ -65,7 +65,7 @@ public sealed partial class App : Application, IFilesManagerService
 
                 return;
             }
-            
+
             // If the activation uses a protocol, handle the possible cases.
             // Currently there are two possible protocols being used:
             //   - [/switch?key=...] is used to request a direct switch to an existing instance.
@@ -88,7 +88,7 @@ public sealed partial class App : Application, IFilesManagerService
 
                     return;
                 }
-                
+
                 // File request by path from a timeline item
                 if (protocolArgs.Uri.LocalPath.Equals("/file"))
                 {

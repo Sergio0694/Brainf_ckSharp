@@ -21,7 +21,7 @@ public enum ExitCode : uint
     /// <summary>
     /// The source code produced a runtime exception
     /// </summary>
-    ExceptionThrown = (1 << 2)| Failure,
+    ExceptionThrown = (1 << 2) | Failure,
 
     /// <summary>
     /// The code run into an infinite loop (according to the desired time threshold)

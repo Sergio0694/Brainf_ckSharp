@@ -128,7 +128,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     {
         using (await this.ExecutionMutex.LockAsync())
         {
-            if (!Brainf_ckParser.IsOperator(c)) return; 
+            if (!Brainf_ckParser.IsOperator(c)) return;
             if (Source.LastOrDefault() is ConsoleCommand command)
             {
                 command.Command += c;

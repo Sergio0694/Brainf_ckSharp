@@ -135,9 +135,9 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
         {
             // Deserialize the metadata and prepare the model
             CodeMetadata? metadata = string.IsNullOrEmpty(data) ? new() : JsonSerializer.Deserialize(data, Brainf_ckSharpJsonSerializerContext.Default.CodeMetadata);
-            
+
             if (metadata is null) ThrowHelper.ThrowInvalidOperationException("Failed to load the source code metadata");
-            
+
             CodeLibraryEntry? entry = await CodeLibraryEntry.TryLoadFromFileAsync(file, metadata);
 
             if (entry is null) ThrowHelper.ThrowInvalidOperationException("Failed to load the source code file");

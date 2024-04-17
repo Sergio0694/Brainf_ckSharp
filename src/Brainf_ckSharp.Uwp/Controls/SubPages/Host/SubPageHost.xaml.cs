@@ -197,32 +197,32 @@ public sealed partial class SubPageHost : UserControl
         {
             // A constrained content, with a given maximum size
             case IConstrainedSubPage constrained:
+            {
+                double maxHeight = constrained.MaxExpandedHeight;
+                double maxWidth = constrained.MaxExpandedWidth;
+
+                // Disable the fullscreen mode if requested, and if there's enough space
+                if (size.Height >= 600 && size.Width >= 540 &&
+                    double.IsInfinity(constrained.MaxExpandedHeight) && double.IsInfinity(constrained.MaxExpandedWidth))
                 {
-                    double maxHeight = constrained.MaxExpandedHeight;
-                    double maxWidth = constrained.MaxExpandedWidth;
-
-                    // Disable the fullscreen mode if requested, and if there's enough space
-                    if (size.Height >= 600 && size.Width >= 540 &&
-                        double.IsInfinity(constrained.MaxExpandedHeight) && double.IsInfinity(constrained.MaxExpandedWidth))
-                    {
-                        maxHeight = size.Height - 160;
-                        maxWidth = size.Width - 160;
-                    }
-
-                    UpdateLayout(
-                        maxWidth + (MinimumConstrainedMarginThreshold * 2) >= size.Width ? double.NaN : maxWidth,
-                        maxHeight + (MinimumConstrainedMarginThreshold * 2) >= size.Height ? double.NaN : maxHeight);
-                    break;
+                    maxHeight = size.Height - 160;
+                    maxWidth = size.Width - 160;
                 }
+
+                UpdateLayout(
+                    maxWidth + (MinimumConstrainedMarginThreshold * 2) >= size.Width ? double.NaN : maxWidth,
+                    maxHeight + (MinimumConstrainedMarginThreshold * 2) >= size.Height ? double.NaN : maxHeight);
+                break;
+            }
 
             // Any content, that toggles between almost full screen and the compact state
             case { } _:
-                {
-                    UpdateLayout(
-                        ExpandedStateMinimumWidth >= size.Width ? double.NaN : size.Width - 160,
-                        ExpandedStateMinimumHeight >= size.Height ? double.NaN : size.Height - 160);
-                    break;
-                }
+            {
+                UpdateLayout(
+                    ExpandedStateMinimumWidth >= size.Width ? double.NaN : size.Width - 160,
+                    ExpandedStateMinimumHeight >= size.Height ? double.NaN : size.Height - 160);
+                break;
+            }
         }
 
         // Additional UI tweaks

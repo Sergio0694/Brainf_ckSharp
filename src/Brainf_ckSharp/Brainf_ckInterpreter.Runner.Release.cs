@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ckSharp.Buffers;
@@ -212,7 +212,7 @@ public static partial class Brainf_ckInterpreter
 
                         // ptr--
                         case Operators.BackwardPtr:
-                            if (!executionContext.TryMoveBack(opcode.Count, ref totalOperations)) 
+                            if (!executionContext.TryMoveBack(opcode.Count, ref totalOperations))
                                 goto LowerBoundExceeded;
                             break;
 
