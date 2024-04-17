@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
@@ -45,20 +45,7 @@ public static partial class Brainf_ckParser
     /// <summary>
     /// A lookup table to quickly check characters
     /// </summary>
-    private static ReadOnlySpan<byte> OperatorsInverseLookupTable => new[]
-    {
-        (byte)Characters.LoopStart,
-        (byte)Characters.LoopEnd,
-        (byte)Characters.FunctionStart,
-        (byte)Characters.FunctionEnd,
-        (byte)Characters.Plus,
-        (byte)Characters.Minus,
-        (byte)Characters.ForwardPtr,
-        (byte)Characters.BackwardPtr,
-        (byte)Characters.PrintChar,
-        (byte)Characters.ReadChar,
-        (byte)Characters.FunctionCall
-    };
+    private static ReadOnlySpan<byte> OperatorsInverseLookupTable => "[]()+-><.,:"u8;
 
     /// <summary>
     /// Checks whether or not an input character is a Brainf*ck/PBrain operator
