@@ -204,7 +204,7 @@ public sealed class InterpreterSession : IEnumerator<InterpreterResult>
 
             // Execute the new interpreter debug step
             exitCode = Brainf_ckInterpreter.Debug.Run(
-                ref Unsafe.AsRef(session.ExecutionContext),
+                ref Unsafe.AsRef(in session.ExecutionContext),
                 ref this.opcodes.DangerousGetReference(),
                 ref this.breakpoints.DangerousGetReference(),
                 ref this.jumpTable.DangerousGetReference(),

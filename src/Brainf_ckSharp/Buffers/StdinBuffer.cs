@@ -95,7 +95,7 @@ internal struct StdinBuffer(ReadOnlyMemory<char> data)
         // we can just return that same instance with no additional allocations (this is the
         // same behavior of ReadOnlyMemory<char>.ToString()). Otherwise, we use StringPool to
         // avoid repeated allocations if the source buffers represent a repeated text.
-        if (MemoryMarshal.TryGetString(this.data, out string text, out int start, out int length) &&
+        if (MemoryMarshal.TryGetString(this.data, out string? text, out int start, out int length) &&
             start == 0 && length == text.Length)
         {
             return text;

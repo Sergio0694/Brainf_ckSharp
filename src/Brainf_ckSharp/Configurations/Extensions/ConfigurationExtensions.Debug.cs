@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ckSharp.Configurations;
@@ -19,7 +19,7 @@ public static partial class DebugConfigurationExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithBreakpoints(in this DebugConfiguration configuration, ReadOnlyMemory<int> breakpoints)
     {
-        Unsafe.AsRef(configuration.Breakpoints) = breakpoints;
+        Unsafe.AsRef(in configuration.Breakpoints) = breakpoints;
 
         return ref configuration;
     }
@@ -33,7 +33,7 @@ public static partial class DebugConfigurationExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithDebugToken(in this DebugConfiguration configuration, CancellationToken debugToken)
     {
-        Unsafe.AsRef(configuration.DebugToken) = debugToken;
+        Unsafe.AsRef(in configuration.DebugToken) = debugToken;
 
         return ref configuration;
     }

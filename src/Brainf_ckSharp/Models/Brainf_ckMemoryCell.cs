@@ -93,7 +93,7 @@ public readonly struct Brainf_ckMemoryCell : IEquatable<Brainf_ckMemoryCell>
     }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return
             obj is Brainf_ckMemoryCell cell &&

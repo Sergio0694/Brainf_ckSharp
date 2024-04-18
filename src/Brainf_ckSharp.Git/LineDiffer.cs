@@ -53,8 +53,13 @@ public static class LineDiffer
             return MemoryOwner<LineModificationType>.Empty;
         }
 
+#if NET8_0_OR_GREATER
+        int oldNumberOfLines = System.MemoryExtensions.Count(oldText, separator) + 1;
+        int newNumberOfLines = System.MemoryExtensions.Count(newText, separator) + 1;
+#else
         int oldNumberOfLines = oldText.Count(separator) + 1;
         int newNumberOfLines = newText.Count(separator) + 1;
+#endif
 
         // Fast path if the input text segments have the same length and are short enough
         if (oldText.Length == newText.Length &&

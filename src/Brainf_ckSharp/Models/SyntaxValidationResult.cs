@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Brainf_ckSharp.Enums;
 using static System.Diagnostics.Debug;
 
@@ -90,7 +90,7 @@ public readonly struct SyntaxValidationResult : IEquatable<SyntaxValidationResul
     }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is SyntaxValidationResult result && Equals(result);
     }

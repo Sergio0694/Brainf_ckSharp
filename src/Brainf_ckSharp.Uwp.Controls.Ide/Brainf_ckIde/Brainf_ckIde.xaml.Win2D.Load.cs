@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Windows.Foundation;
@@ -383,7 +383,7 @@ public sealed partial class Brainf_ckIde
                 // If there are no operators left, remove the breakpoint
                 if (firstOperatorOffset == -1)
                 {
-                    this.breakpointIndicators.Remove(currentTargetLineNumber);
+                    _ = this.breakpointIndicators.Remove(currentTargetLineNumber);
 
                     totalBreakpoints--;
                 }

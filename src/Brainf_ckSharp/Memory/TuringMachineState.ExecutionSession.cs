@@ -74,7 +74,7 @@ internal sealed partial class TuringMachineState
         public void Dispose()
         {
             // Cast to a mutable reference to avoid the defensive copy
-            Unsafe.AsRef(this.handle).Free();
+            Unsafe.AsRef(in this.handle).Free();
 
             this.machineState.position = this.ExecutionContext.Position;
         }

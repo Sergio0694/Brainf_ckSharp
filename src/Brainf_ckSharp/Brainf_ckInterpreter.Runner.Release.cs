@@ -101,7 +101,7 @@ public static partial class Brainf_ckInterpreter
 
                 // Start the interpreter
                 exitCode = Run(
-                    ref Unsafe.AsRef(session.ExecutionContext),
+                    ref Unsafe.AsRef(in session.ExecutionContext),
                     ref opcodes.DangerousGetReference(),
                     ref jumpTable.DangerousGetReference(),
                     ref functions.DangerousGetReference(),

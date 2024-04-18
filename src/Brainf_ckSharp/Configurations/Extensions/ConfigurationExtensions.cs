@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ckSharp.Configurations;
@@ -23,7 +23,7 @@ public static partial class DebugConfigurationExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithSource(in this DebugConfiguration configuration, string source)
     {
-        Unsafe.AsRef(configuration.Source) = source.AsMemory();
+        Unsafe.AsRef(in configuration.Source) = source.AsMemory();
 
         return ref configuration;
     }
@@ -37,7 +37,7 @@ public static partial class DebugConfigurationExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithSource(in this DebugConfiguration configuration, ReadOnlyMemory<char> source)
     {
-        Unsafe.AsRef(configuration.Source) = source;
+        Unsafe.AsRef(in configuration.Source) = source;
 
         return ref configuration;
     }
@@ -51,7 +51,7 @@ public static partial class DebugConfigurationExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithStdin(in this DebugConfiguration configuration, string stdin)
     {
-        Unsafe.AsRef(configuration.Stdin) = stdin.AsMemory();
+        Unsafe.AsRef(in configuration.Stdin) = stdin.AsMemory();
 
         return ref configuration;
     }
@@ -65,7 +65,7 @@ public static partial class DebugConfigurationExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithStdin(in this DebugConfiguration configuration, ReadOnlyMemory<char> stdin)
     {
-        Unsafe.AsRef(configuration.Stdin) = stdin;
+        Unsafe.AsRef(in configuration.Stdin) = stdin;
 
         return ref configuration;
     }
@@ -80,7 +80,7 @@ public static partial class DebugConfigurationExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithInitialState(in this DebugConfiguration configuration, IReadOnlyMachineState initialState)
     {
-        Unsafe.AsRef(configuration.InitialState) = initialState;
+        Unsafe.AsRef(in configuration.InitialState) = initialState;
 
         return ref configuration;
     }
@@ -94,7 +94,7 @@ public static partial class DebugConfigurationExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithMemorySize(in this DebugConfiguration configuration, int memorySize)
     {
-        Unsafe.AsRef(configuration.MemorySize) = memorySize;
+        Unsafe.AsRef(in configuration.MemorySize) = memorySize;
 
         return ref configuration;
     }
@@ -108,7 +108,7 @@ public static partial class DebugConfigurationExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithOverflowMode(in this DebugConfiguration configuration, OverflowMode overflowMode)
     {
-        Unsafe.AsRef(configuration.OverflowMode) = overflowMode;
+        Unsafe.AsRef(in configuration.OverflowMode) = overflowMode;
 
         return ref configuration;
     }
@@ -122,7 +122,7 @@ public static partial class DebugConfigurationExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithExecutionToken(in this DebugConfiguration configuration, CancellationToken executionToken)
     {
-        Unsafe.AsRef(configuration.ExecutionToken) = executionToken;
+        Unsafe.AsRef(in configuration.ExecutionToken) = executionToken;
 
         return ref configuration;
     }
@@ -142,7 +142,7 @@ public static class ReleaseConfigurationExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly ReleaseConfiguration WithSource(in this ReleaseConfiguration configuration, string source)
     {
-        Unsafe.AsRef(configuration.Source) = source.AsMemory();
+        Unsafe.AsRef(in configuration.Source) = source.AsMemory();
 
         return ref configuration;
     }
@@ -156,7 +156,7 @@ public static class ReleaseConfigurationExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly ReleaseConfiguration WithSource(in this ReleaseConfiguration configuration, ReadOnlyMemory<char> source)
     {
-        Unsafe.AsRef(configuration.Source) = source;
+        Unsafe.AsRef(in configuration.Source) = source;
 
         return ref configuration;
     }
@@ -170,7 +170,7 @@ public static class ReleaseConfigurationExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly ReleaseConfiguration WithStdin(in this ReleaseConfiguration configuration, string stdin)
     {
-        Unsafe.AsRef(configuration.Stdin) = stdin.AsMemory();
+        Unsafe.AsRef(in configuration.Stdin) = stdin.AsMemory();
 
         return ref configuration;
     }
@@ -184,7 +184,7 @@ public static class ReleaseConfigurationExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly ReleaseConfiguration WithStdin(in this ReleaseConfiguration configuration, ReadOnlyMemory<char> stdin)
     {
-        Unsafe.AsRef(configuration.Stdin) = stdin;
+        Unsafe.AsRef(in configuration.Stdin) = stdin;
 
         return ref configuration;
     }
@@ -199,7 +199,7 @@ public static class ReleaseConfigurationExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly ReleaseConfiguration WithInitialState(in this ReleaseConfiguration configuration, IReadOnlyMachineState initialState)
     {
-        Unsafe.AsRef(configuration.InitialState) = initialState;
+        Unsafe.AsRef(in configuration.InitialState) = initialState;
 
         return ref configuration;
     }
@@ -213,7 +213,7 @@ public static class ReleaseConfigurationExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly ReleaseConfiguration WithMemorySize(in this ReleaseConfiguration configuration, int memorySize)
     {
-        Unsafe.AsRef(configuration.MemorySize) = memorySize;
+        Unsafe.AsRef(in configuration.MemorySize) = memorySize;
 
         return ref configuration;
     }
@@ -227,7 +227,7 @@ public static class ReleaseConfigurationExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly ReleaseConfiguration WithOverflowMode(in this ReleaseConfiguration configuration, OverflowMode overflowMode)
     {
-        Unsafe.AsRef(configuration.OverflowMode) = overflowMode;
+        Unsafe.AsRef(in configuration.OverflowMode) = overflowMode;
 
         return ref configuration;
     }
@@ -241,7 +241,7 @@ public static class ReleaseConfigurationExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly ReleaseConfiguration WithExecutionToken(in this ReleaseConfiguration configuration, CancellationToken executionToken)
     {
-        Unsafe.AsRef(configuration.ExecutionToken) = executionToken;
+        Unsafe.AsRef(in configuration.ExecutionToken) = executionToken;
 
         return ref configuration;
     }
