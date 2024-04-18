@@ -99,7 +99,7 @@ internal sealed partial class Brainf_ckEditBox
 
         char c = text[start - 1];
 
-        if (c == Characters.LoopStart && this._SyntaxValidationResult.IsSuccessOrEmptyScript)
+        if (c == Characters.LoopStart && this.syntaxValidationResult.IsSuccessOrEmptyScript)
         {
             int depth = text.CalculateIndentationDepth(start - 1);
             ITextRange range = Document.GetRange(start - 1, start);
@@ -135,7 +135,7 @@ internal sealed partial class Brainf_ckEditBox
 
             text = Document.GetText();
         }
-        else if (c == Characters.CarriageReturn && this._SyntaxValidationResult.IsSuccessOrEmptyScript)
+        else if (c == Characters.CarriageReturn && this.syntaxValidationResult.IsSuccessOrEmptyScript)
         {
             int depth = text.CalculateIndentationDepth(start);
             string autocomplete = new(Characters.Tab, depth);

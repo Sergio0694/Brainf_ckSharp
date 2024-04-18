@@ -10,27 +10,18 @@ namespace Brainf_ckSharp.Buffers;
 /// <summary>
 /// A <see langword="struct"/> that represents a memory area to be used as stdin buffer
 /// </summary>
-internal struct StdinBuffer
+/// <param name="data">The input data to use to read characters from</param>
+internal struct StdinBuffer(ReadOnlyMemory<char> data)
 {
     /// <summary>
     /// The underlying buffer to read characters from
     /// </summary>
-    private readonly ReadOnlyMemory<char> data;
+    private readonly ReadOnlyMemory<char> data = data;
 
     /// <summary>
     /// The current position in the underlying buffer to read from
     /// </summary>
-    private int position;
-
-    /// <summary>
-    /// Creates a new <see cref="StdinBuffer"/> instance with the specified parameters
-    /// </summary>
-    /// <param name="data">The input data to use to read characters from</param>
-    public StdinBuffer(ReadOnlyMemory<char> data)
-    {
-        this.data = data;
-        this.position = 0;
-    }
+    private int position = 0;
 
     /// <summary>
     /// Creates a new <see cref="Reader"/> instance to read from the underlying buffer
@@ -53,24 +44,15 @@ internal struct StdinBuffer
     /// <summary>
     /// A <see langword="struct"/> that can read data from memory from a <see cref="StdinBuffer"/> instance
     /// </summary>
-    public ref struct Reader
+    /// <param name="data">The input buffer to read from</param>
+    /// <param name="position">The initial position to read from</param>
+    public ref struct Reader(ReadOnlySpan<char> data, int position = 0)
     {
         /// <inheritdoc cref="StdinBuffer.data"/>
-        private readonly ReadOnlySpan<char> data;
+        private readonly ReadOnlySpan<char> data = data;
 
         /// <inheritdoc cref="position"/>
-        public int Position;
-
-        /// <summary>
-        /// Creates a new <see cref="Reader"/> instance targeting the input buffer
-        /// </summary>
-        /// <param name="data">The input buffer to read from</param>
-        /// <param name="position">The initial position to read from</param>
-        public Reader(ReadOnlySpan<char> data, int position = 0)
-        {
-            this.data = data;
-            this.Position = position;
-        }
+        public int Position = position;
 
         /// <summary>
         /// Tries to read a character from the current buffer

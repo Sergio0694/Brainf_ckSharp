@@ -4,6 +4,8 @@ using Brainf_ckSharp.Shared.Constants;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
+#pragma warning disable IDE0290
+
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 
 /// <summary>

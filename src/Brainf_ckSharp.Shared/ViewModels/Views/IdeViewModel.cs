@@ -13,6 +13,8 @@ using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.Messaging;
 
+#pragma warning disable IDE0290
+
 namespace Brainf_ckSharp.Shared.ViewModels.Views;
 
 /// <summary>
@@ -83,7 +85,12 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     /// <param name="filesService">The <see cref="IFilesService"/> instance to use</param>
     /// <param name="filesManagerService">The <see cref="IFilesManagerService"/> instance to use</param>
     /// <param name="filesHistoryService">The <see cref="IFilesHistoryService"/> instance to use</param>
-    public IdeViewModel(IMessenger messenger, IAnalyticsService analyticsService, IFilesService filesService, IFilesManagerService filesManagerService, IFilesHistoryService filesHistoryService)
+    public IdeViewModel(
+        IMessenger messenger,
+        IAnalyticsService analyticsService,
+        IFilesService filesService,
+        IFilesManagerService filesManagerService,
+        IFilesHistoryService filesHistoryService)
         : base(messenger)
     {
         this.analyticsService = analyticsService;

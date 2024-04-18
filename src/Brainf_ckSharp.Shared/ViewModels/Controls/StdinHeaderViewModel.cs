@@ -4,6 +4,8 @@ using Brainf_ckSharp.Shared.Messages.InputPanel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 
+#pragma warning disable IDE0290
+
 namespace Brainf_ckSharp.Shared.ViewModels.Controls;
 
 /// <summary>

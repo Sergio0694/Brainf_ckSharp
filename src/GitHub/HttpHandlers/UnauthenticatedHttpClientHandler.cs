@@ -7,21 +7,13 @@ namespace GitHub.HttpHandlers;
 /// <summary>
 /// A custom <see cref="HttpClientHandler"/> to perform public actions
 /// </summary>
-internal sealed class UnauthenticatedHttpClientHandler : HttpClientHandler
+/// <param name="userAgent">The user agent to use to send the requests</param>
+internal sealed class UnauthenticatedHttpClientHandler(string userAgent) : HttpClientHandler
 {
     /// <summary>
     /// The user agent to use to send the requests
     /// </summary>
-    private readonly string userAgent;
-
-    /// <summary>
-    /// Creates a new <see cref="UnauthenticatedHttpClientHandler"/> instance with the specified parameters
-    /// </summary>
-    /// <param name="userAgent">The user agent to use to send the requests</param>
-    public UnauthenticatedHttpClientHandler(string userAgent)
-    {
-        this.userAgent = userAgent;
-    }
+    private readonly string userAgent = userAgent;
 
     /// <inheritdoc/>
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

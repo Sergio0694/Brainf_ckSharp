@@ -6,6 +6,8 @@ using CommunityToolkit.Mvvm.Input;
 using GitHub;
 using User = GitHub.Models.User;
 
+#pragma warning disable IDE0290
+
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 
 /// <summary>

@@ -80,18 +80,18 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
         // they're both hidden. This is the same behavior of Visual Studio.
         if (this.selectionLength > 0)
         {
-            this._SelectionHighlightBorder!.Opacity = 0;
-            this._CursorIndicatorRectangle!.Visibility = Visibility.Collapsed;
+            this.selectionHighlightBorder!.Opacity = 0;
+            this.cursorIndicatorRectangle!.Visibility = Visibility.Collapsed;
         }
         else
         {
             // Line highlight
-            this._SelectionHighlightBorder!.Opacity = 1;
-            ((TranslateTransform)this._SelectionHighlightBorder.RenderTransform).Y = rect.Top + Padding.Top;
+            this.selectionHighlightBorder!.Opacity = 1;
+            ((TranslateTransform)this.selectionHighlightBorder.RenderTransform).Y = rect.Top + Padding.Top;
 
             // Cursor indicator
-            this._CursorIndicatorRectangle!.Visibility = Visibility.Visible;
-            TranslateTransform cursorTransform = (TranslateTransform)this._CursorIndicatorRectangle.RenderTransform;
+            this.cursorIndicatorRectangle!.Visibility = Visibility.Visible;
+            TranslateTransform cursorTransform = (TranslateTransform)this.cursorIndicatorRectangle.RenderTransform;
             cursorTransform.X = rect.X + Padding.Left;
             cursorTransform.Y = rect.Y + Padding.Top;
         }
@@ -164,15 +164,15 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
     /// </summary>
     public async void TryShowSyntaxErrorToolTip()
     {
-        if (this._SyntaxValidationResult.IsSuccess)
+        if (this.syntaxValidationResult.IsSuccess)
         {
             return;
         }
 
-        int errorPosition = this._SyntaxValidationResult.IsEmptyScript switch
+        int errorPosition = this.syntaxValidationResult.IsEmptyScript switch
         {
             true => int.MaxValue,
-            false => this._SyntaxValidationResult.ErrorOffset
+            false => this.syntaxValidationResult.ErrorOffset
         };
 
         TaskCompletionSource<object?> tcs = new();
@@ -227,13 +227,13 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
         ContentScroller!.IsHitTestVisible = false;
 
         // Reset the target to ensure the right target coordinates are used
-        this._SyntaxErrorToolTip!.IsOpen = false;
-        this._SyntaxErrorToolTip.Target = null;
+        this.syntaxErrorToolTip!.IsOpen = false;
+        this.syntaxErrorToolTip.Target = null;
 
         // Setup and display the tooltip
-        this._SyntaxErrorToolTip.Subtitle = this.ResourceLoader.GetString($"{nameof(SyntaxError)}/{this._SyntaxValidationResult.ErrorType}");
-        this._SyntaxErrorToolTip.Target = this._CursorIndicatorRectangle!;
-        this._SyntaxErrorToolTip!.IsOpen = true;
+        this.syntaxErrorToolTip.Subtitle = this.ResourceLoader.GetString($"{nameof(SyntaxError)}/{this.syntaxValidationResult.ErrorType}");
+        this.syntaxErrorToolTip.Target = this.cursorIndicatorRectangle!;
+        this.syntaxErrorToolTip!.IsOpen = true;
     }
 
     /// <summary>

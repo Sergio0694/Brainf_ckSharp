@@ -1,4 +1,4 @@
-﻿using Windows.UI.Xaml;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
@@ -67,29 +67,29 @@ internal sealed partial class Brainf_ckEditBox
     /// <summary>
     /// The <see cref="Canvas"/> instance for the control
     /// </summary>
-    private Canvas? _BackgroundCanvas;
+    private Canvas? backgroundCanvas;
 
     /// <summary>
     /// The <see cref="CanvasControl"/> instance for the control
     /// </summary>
-    private CanvasControl? _TextOverlaysCanvas;
+    private CanvasControl? textOverlaysCanvas;
 
     /// <summary>
     /// The <see cref="Border"/> instance to highlight the selected line
     /// </summary>
-    private Border? _SelectionHighlightBorder;
+    private Border? selectionHighlightBorder;
 
     /// <summary>
     /// The <see cref="Rectangle"/> instance to indicate the cursor position
     /// </summary>
-    private Rectangle? _CursorIndicatorRectangle;
+    private Rectangle? cursorIndicatorRectangle;
 
-    private TeachingTip? _SyntaxErrorToolTip;
+    private TeachingTip? syntaxErrorToolTip;
 
     /// <summary>
     /// The vertical <see cref="ScrollBar"/> instance for the main content
     /// </summary>
-    private ScrollBar? _VerticalContentScrollBar;
+    private ScrollBar? verticalContentScrollBar;
 
     /// <summary>
     /// Gets the <see cref="ContentPresenter"/> instance for the main content
@@ -106,34 +106,34 @@ internal sealed partial class Brainf_ckEditBox
     {
         base.OnApplyTemplate();
 
-        this._BackgroundCanvas = (Canvas)GetTemplateChild(BackgroundCanvasName);
-        this._TextOverlaysCanvas = (CanvasControl)GetTemplateChild(TextOverlaysCanvasName);
-        this._SelectionHighlightBorder = (Border)GetTemplateChild(SelectionHighlightBorderName);
-        this._CursorIndicatorRectangle = (Rectangle)GetTemplateChild(CursorIndicatorRectangleName);
-        this._SyntaxErrorToolTip = (TeachingTip)GetTemplateChild(SyntaxErrorToolTipName);
+        this.backgroundCanvas = (Canvas)GetTemplateChild(BackgroundCanvasName);
+        this.textOverlaysCanvas = (CanvasControl)GetTemplateChild(TextOverlaysCanvasName);
+        this.selectionHighlightBorder = (Border)GetTemplateChild(SelectionHighlightBorderName);
+        this.cursorIndicatorRectangle = (Rectangle)GetTemplateChild(CursorIndicatorRectangleName);
+        this.syntaxErrorToolTip = (TeachingTip)GetTemplateChild(SyntaxErrorToolTipName);
         ContentScroller = (ScrollViewer)GetTemplateChild(ContentScrollerName);
         ContentElement = (ContentPresenter)GetTemplateChild(ContentElementName);
 
-        Guard.IsNotNull(this._BackgroundCanvas, nameof(BackgroundCanvasName));
-        Guard.IsNotNull(this._TextOverlaysCanvas, nameof(TextOverlaysCanvasName));
-        Guard.IsNotNull(this._SelectionHighlightBorder, nameof(SelectionHighlightBorderName));
-        Guard.IsNotNull(this._CursorIndicatorRectangle, nameof(CursorIndicatorRectangleName));
-        Guard.IsNotNull(this._SyntaxErrorToolTip, SyntaxErrorToolTipName);
+        Guard.IsNotNull(this.backgroundCanvas, nameof(BackgroundCanvasName));
+        Guard.IsNotNull(this.textOverlaysCanvas, nameof(TextOverlaysCanvasName));
+        Guard.IsNotNull(this.selectionHighlightBorder, nameof(SelectionHighlightBorderName));
+        Guard.IsNotNull(this.cursorIndicatorRectangle, nameof(CursorIndicatorRectangleName));
+        Guard.IsNotNull(this.syntaxErrorToolTip, SyntaxErrorToolTipName);
         Guard.IsNotNull(ContentScroller, ContentScrollerName);
         Guard.IsNotNull(ContentElement, ContentElementName);
 
-        this._BackgroundCanvas.SizeChanged += BackgroundCanvas_SizeChanged;
-        this._TextOverlaysCanvas.CreateResources += _TextOverlaysCanvas_CreateResources;
-        this._TextOverlaysCanvas.Draw += TextOverlaysCanvas_Draw;
-        this._SyntaxErrorToolTip.Closed += delegate { ContentScroller.IsHitTestVisible = true; };
+        this.backgroundCanvas.SizeChanged += BackgroundCanvas_SizeChanged;
+        this.textOverlaysCanvas.CreateResources += TextOverlaysCanvas_CreateResources;
+        this.textOverlaysCanvas.Draw += TextOverlaysCanvas_Draw;
+        this.syntaxErrorToolTip.Closed += delegate { ContentScroller.IsHitTestVisible = true; };
         ContentScroller.Loaded += ContentElement_Loaded;
         ContentElement.SizeChanged += ContentElement_SizeChanged;
 
-        ContentScroller.StartExpressionAnimation(this._TextOverlaysCanvas, Axis.X, VisualProperty.Offset);
-        ContentScroller.StartExpressionAnimation(this._TextOverlaysCanvas, Axis.Y, VisualProperty.Offset);
-        ContentScroller.StartExpressionAnimation(this._SelectionHighlightBorder, Axis.Y, VisualProperty.Offset);
-        ContentScroller.StartExpressionAnimation(this._CursorIndicatorRectangle, Axis.X, VisualProperty.Offset);
-        ContentScroller.StartExpressionAnimation(this._CursorIndicatorRectangle, Axis.Y, VisualProperty.Offset);
+        _ = ContentScroller.StartExpressionAnimation(this.textOverlaysCanvas, Axis.X, VisualProperty.Offset);
+        _ = ContentScroller.StartExpressionAnimation(this.textOverlaysCanvas, Axis.Y, VisualProperty.Offset);
+        _ = ContentScroller.StartExpressionAnimation(this.selectionHighlightBorder, Axis.Y, VisualProperty.Offset);
+        _ = ContentScroller.StartExpressionAnimation(this.cursorIndicatorRectangle, Axis.X, VisualProperty.Offset);
+        _ = ContentScroller.StartExpressionAnimation(this.cursorIndicatorRectangle, Axis.Y, VisualProperty.Offset);
 
         UpdateVisualElementsOnThemeChanged(SyntaxHighlightTheme);
     }
@@ -145,7 +145,7 @@ internal sealed partial class Brainf_ckEditBox
     /// <param name="e">The <see cref="SizeChangedEventArgs"/> for <see cref="FrameworkElement.SizeChanged"/></param>
     private void BackgroundCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        this._SelectionHighlightBorder!.Width = e.NewSize.Width;
+        this.selectionHighlightBorder!.Width = e.NewSize.Width;
     }
 
     /// <summary>
@@ -155,11 +155,11 @@ internal sealed partial class Brainf_ckEditBox
     /// <param name="e">The <see cref="RoutedEventArgs"/> for <see cref="FrameworkElement.Loaded"/></param>
     private void ContentElement_Loaded(object sender, RoutedEventArgs e)
     {
-        this._VerticalContentScrollBar = (ScrollBar?)ContentScroller!.FindDescendant(VerticalScrollBarName);
+        this.verticalContentScrollBar = (ScrollBar?)ContentScroller!.FindDescendant(VerticalScrollBarName);
 
-        Guard.IsNotNull(this._VerticalContentScrollBar, nameof(ContentScroller));
+        Guard.IsNotNull(this.verticalContentScrollBar, nameof(ContentScroller));
 
-        this._VerticalContentScrollBar.Margin = VerticalScrollBarMargin;
+        this.verticalContentScrollBar.Margin = VerticalScrollBarMargin;
     }
 
     /// <summary>
@@ -176,8 +176,8 @@ internal sealed partial class Brainf_ckEditBox
         // overlays that were previously out of bounds can become visible.
         // The height is also considering the top padding set by the user,
         // plus 20 more DIPs just to be extra safe.
-        this._TextOverlaysCanvas!.Height = e.NewSize.Height + Padding.Top + 20;
-        this._TextOverlaysCanvas.Width = e.NewSize.Width;
+        this.textOverlaysCanvas!.Height = e.NewSize.Height + Padding.Top + 20;
+        this.textOverlaysCanvas.Width = e.NewSize.Width;
     }
 
     /// <summary>
@@ -187,7 +187,7 @@ internal sealed partial class Brainf_ckEditBox
     /// <returns>Whether or not the theme change was applied</returns>
     private bool TryUpdateVisualElementsOnThemeChanged(Brainf_ckTheme theme)
     {
-        if (this._SelectionHighlightBorder is null)
+        if (this.selectionHighlightBorder is null)
         {
             return false;
         }
@@ -206,14 +206,14 @@ internal sealed partial class Brainf_ckEditBox
         switch (theme.LineHighlightStyle)
         {
             case LineHighlightStyle.Outline:
-                this._SelectionHighlightBorder!.BorderThickness = new Thickness(2);
-                this._SelectionHighlightBorder.BorderBrush = new SolidColorBrush(theme.LineHighlightColor);
-                this._SelectionHighlightBorder.Background = null;
+                this.selectionHighlightBorder!.BorderThickness = new Thickness(2);
+                this.selectionHighlightBorder.BorderBrush = new SolidColorBrush(theme.LineHighlightColor);
+                this.selectionHighlightBorder.Background = null;
                 break;
             case LineHighlightStyle.Fill:
-                this._SelectionHighlightBorder!.BorderThickness = default;
-                this._SelectionHighlightBorder.BorderBrush = null;
-                this._SelectionHighlightBorder.Background = new SolidColorBrush(theme.LineHighlightColor);
+                this.selectionHighlightBorder!.BorderThickness = default;
+                this.selectionHighlightBorder.BorderBrush = null;
+                this.selectionHighlightBorder.Background = new SolidColorBrush(theme.LineHighlightColor);
                 break;
             default:
                 ThrowHelper.ThrowArgumentException("Invalid line highlight style");

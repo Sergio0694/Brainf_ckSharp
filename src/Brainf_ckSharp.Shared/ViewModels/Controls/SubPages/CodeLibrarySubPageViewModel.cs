@@ -15,6 +15,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 
+#pragma warning disable IDE0290
+
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 
 /// <summary>
@@ -159,7 +161,7 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
         }
 
         // Sort chronologically
-        IReadOnlyList<CodeLibraryEntry> sorted = recent.OrderByDescending(entry => entry.EditTime).ToArray();
+        IReadOnlyList<CodeLibraryEntry> sorted = [.. recent.OrderByDescending(entry => entry.EditTime)];
 
         // Load the code samples
         IReadOnlyList<CodeLibraryEntry> samples = await GetSampleCodesAsync();

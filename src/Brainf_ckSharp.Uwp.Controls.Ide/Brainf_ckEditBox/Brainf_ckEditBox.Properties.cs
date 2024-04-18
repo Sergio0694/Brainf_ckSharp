@@ -1,4 +1,4 @@
-﻿using Windows.UI.Xaml;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Uwp.Controls.Ide.Enums;
@@ -14,7 +14,7 @@ internal sealed partial class Brainf_ckEditBox
     /// <summary>
     /// The syntax validation result for the currently displayed text
     /// </summary>
-    private SyntaxValidationResult _SyntaxValidationResult = Brainf_ckParser.ValidateSyntax("\r");
+    private SyntaxValidationResult syntaxValidationResult = Brainf_ckParser.ValidateSyntax("\r");
 
     /// <summary>
     /// Gets the plain text currently displayed in the control
@@ -26,9 +26,9 @@ internal sealed partial class Brainf_ckEditBox
         {
             SetValue(TextProperty, value);
 
-            this._SyntaxValidationResult = Brainf_ckParser.ValidateSyntax(value);
+            this.syntaxValidationResult = Brainf_ckParser.ValidateSyntax(value);
 
-            TextChanged?.Invoke(this, new TextChangedEventArgs(value, this._SyntaxValidationResult));
+            TextChanged?.Invoke(this, new TextChangedEventArgs(value, this.syntaxValidationResult));
         }
     }
 
@@ -138,7 +138,7 @@ internal sealed partial class Brainf_ckEditBox
             new(null, OnContextMenuSecondaryContentPropertyChanged));
 
     /// <summary>
-    /// Updates the <see cref="FrameworkElement.Margin"/> property for <see cref="_VerticalContentScrollBar"/> when <see cref="VerticalScrollBarMargin"/> changes
+    /// Updates the <see cref="FrameworkElement.Margin"/> property for <see cref="verticalContentScrollBar"/> when <see cref="VerticalScrollBarMargin"/> changes
     /// </summary>
     /// <param name="d">The source <see cref="Brainf_ckEditBox"/> instance</param>
     /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance with the new <see cref="VerticalScrollBarMargin"/> value</param>
@@ -146,12 +146,12 @@ internal sealed partial class Brainf_ckEditBox
     {
         Brainf_ckEditBox @this = (Brainf_ckEditBox)d;
 
-        if (@this._VerticalContentScrollBar == null)
+        if (@this.verticalContentScrollBar == null)
         {
             return;
         }
 
-        @this._VerticalContentScrollBar.Margin = (Thickness)e.NewValue;
+        @this.verticalContentScrollBar.Margin = (Thickness)e.NewValue;
     }
 
     /// <summary>
@@ -164,7 +164,7 @@ internal sealed partial class Brainf_ckEditBox
         Brainf_ckEditBox @this = (Brainf_ckEditBox)d;
         bool value = (bool)e.NewValue;
 
-        if (@this._TextOverlaysCanvas is null)
+        if (@this.textOverlaysCanvas is null)
         {
             return;
         }
@@ -178,7 +178,7 @@ internal sealed partial class Brainf_ckEditBox
             @this.ResetWhitespaceCharactersList();
         }
 
-        @this._TextOverlaysCanvas.Invalidate();
+        @this.textOverlaysCanvas.Invalidate();
     }
 
     /// <summary>

@@ -64,24 +64,15 @@ internal struct StdoutBuffer : IDisposable
     /// <summary>
     /// A <see langword="struct"/> that can writer data on the memory from a <see cref="StdoutBuffer"/> instance
     /// </summary>
-    public ref struct Writer
+    /// <param name="buffer">The input buffer to write to</param>
+    /// <param name="position">The initial position to write from</param>
+    public ref struct Writer(Span<char> buffer, int position = 0)
     {
         /// <inheritdoc cref="StdoutBuffer.buffer"/>
-        private readonly Span<char> buffer;
+        private readonly Span<char> buffer = buffer;
 
         /// <inheritdoc cref="position"/>
-        public int Position;
-
-        /// <summary>
-        /// Creates a new <see cref="Writer"/> instance targeting the input buffer
-        /// </summary>
-        /// <param name="buffer">The input buffer to write to</param>
-        /// <param name="position">The initial position to write from</param>
-        public Writer(Span<char> buffer, int position = 0)
-        {
-            this.buffer = buffer;
-            this.Position = position;
-        }
+        public int Position = position;
 
         /// <summary>
         /// Tries to write a new character into the current buffer

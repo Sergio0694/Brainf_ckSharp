@@ -266,7 +266,7 @@ internal sealed partial class Brainf_ckEditBox
     /// </summary>
     private void TryUpdateBracketsList()
     {
-        if (!this._SyntaxValidationResult.IsSuccessOrEmptyScript)
+        if (!this.syntaxValidationResult.IsSuccessOrEmptyScript)
         {
             this.bracketPairs = MemoryOwner<BracketsPairInfo>.Empty;
             this.columnGuides = MemoryOwner<ColumnGuideInfo>.Empty;
@@ -409,7 +409,7 @@ internal sealed partial class Brainf_ckEditBox
     /// </summary>
     private void TryProcessErrorCoordinate()
     {
-        if (this._SyntaxValidationResult.IsSuccessOrEmptyScript)
+        if (this.syntaxValidationResult.IsSuccessOrEmptyScript)
         {
             this.errorPosition = null;
 
@@ -417,7 +417,7 @@ internal sealed partial class Brainf_ckEditBox
         }
 
         // Get the range for the current error
-        Document.GetRangeAt(this._SyntaxValidationResult.ErrorOffset).GetRect(PointOptions.Transform, out Rect rect, out _);
+        Document.GetRangeAt(this.syntaxValidationResult.ErrorOffset).GetRect(PointOptions.Transform, out Rect rect, out _);
 
         this.errorPosition = new Vector2((float)rect.Left, (float)rect.Top);
     }

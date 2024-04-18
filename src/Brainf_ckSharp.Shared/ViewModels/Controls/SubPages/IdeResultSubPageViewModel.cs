@@ -16,7 +16,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Nito.AsyncEx;
 
-#pragma warning disable CA1001
+#pragma warning disable CA1001, IDE0290
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 
@@ -205,7 +205,7 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
         // A function used to quickly add a specific section to the current collection
         void AddToSource(IdeResultSection section)
         {
-            IdeResultWithSectionInfo model = new(section, result);
+            IdeResultWithSectionInfo model = new() { Section = section, Result = result };
 
             _ = Source.AddGroup(section, new[] { model });
         }

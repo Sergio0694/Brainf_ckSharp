@@ -68,7 +68,7 @@ internal sealed partial class Brainf_ckEditBox
             // Notify external subscribers
             this.@this.FormattingCompleted?.Invoke(this.@this, EventArgs.Empty);
 
-            this.@this._TextOverlaysCanvas!.Invalidate();
+            this.@this.textOverlaysCanvas!.Invalidate();
         }
     }
 }

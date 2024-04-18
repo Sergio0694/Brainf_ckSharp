@@ -277,7 +277,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
 
             if (!result.ValidationResult.IsSuccess)
             {
-                Source.Add(new ConsoleSyntaxError(result.ValidationResult));
+                Source.Add(new ConsoleSyntaxError { Result = result.ValidationResult });
             }
             else
             {
@@ -287,12 +287,12 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
                 // Display textual results and exit codes
                 if (!string.IsNullOrEmpty(result.Value!.Stdout))
                 {
-                    Source.Add(new ConsoleResult(result.Value!.Stdout));
+                    Source.Add(new ConsoleResult { Stdout = result.Value!.Stdout });
                 }
 
                 if (!result.Value!.ExitCode.HasFlag(ExitCode.Success))
                 {
-                    Source.Add(new ConsoleException(result.Value!.ExitCode, result.Value!.HaltingInfo!));
+                    Source.Add(new ConsoleException { ExitCode = result.Value!.ExitCode, HaltingInfo = result.Value!.HaltingInfo! });
                 }
             }
         }

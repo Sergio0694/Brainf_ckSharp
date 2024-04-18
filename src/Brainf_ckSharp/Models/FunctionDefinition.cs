@@ -14,7 +14,7 @@ public sealed class FunctionDefinition : IEquatable<FunctionDefinition>
     /// <param name="index">The numerical index for the current function definition</param>
     /// <param name="offset">The function script offset</param>
     /// <param name="body">The function code</param>
-    public FunctionDefinition(ushort value, int index, int offset, string body)
+    internal FunctionDefinition(ushort value, int index, int offset, string body)
     {
         Value = value;
         Index = index;
