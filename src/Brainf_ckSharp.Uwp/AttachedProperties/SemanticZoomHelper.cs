@@ -70,6 +70,9 @@ public static class SemanticZoomHelper
             zoomedInList.ItemsSource = source.View;
             zoomedOutList.ItemsSource = source.View.CollectionGroups;
         }
-        else zoomedInList.ItemsSource = zoomedOutList.ItemsSource = null;
+        else
+        {
+            zoomedInList.ItemsSource = zoomedOutList.ItemsSource = null;
+        }
     }
 }

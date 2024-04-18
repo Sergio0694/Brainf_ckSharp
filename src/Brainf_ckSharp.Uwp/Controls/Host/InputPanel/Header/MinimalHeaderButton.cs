@@ -100,8 +100,14 @@ public sealed class MinimalHeaderButton : Control
     {
         MinimalHeaderButton @this = (MinimalHeaderButton)d;
 
-        if (e.NewValue is bool value && value) @this.Selected?.Invoke(@this, EventArgs.Empty);
-        else @this.Deselected?.Invoke(@this, EventArgs.Empty);
+        if (e.NewValue is bool value && value)
+        {
+            @this.Selected?.Invoke(@this, EventArgs.Empty);
+        }
+        else
+        {
+            @this.Deselected?.Invoke(@this, EventArgs.Empty);
+        }
 
         @this.UpdateVisualState();
     }
@@ -112,9 +118,18 @@ public sealed class MinimalHeaderButton : Control
     /// <remarks>This method also needs to be called when the template is applied</remarks>
     private void UpdateVisualState()
     {
-        if (!IsEnabled) VisualStateManager.GoToState(this, DisabledVisualStateName, false);
-        else if (IsSelected) VisualStateManager.GoToState(this, SelectedVisualStateName, false);
-        else VisualStateManager.GoToState(this, DefaultVisualStateName, false);
+        if (!IsEnabled)
+        {
+            VisualStateManager.GoToState(this, DisabledVisualStateName, false);
+        }
+        else if (IsSelected)
+        {
+            VisualStateManager.GoToState(this, SelectedVisualStateName, false);
+        }
+        else
+        {
+            VisualStateManager.GoToState(this, DefaultVisualStateName, false);
+        }
     }
 
     /// <summary>
@@ -124,8 +139,14 @@ public sealed class MinimalHeaderButton : Control
     /// <param name="dp">The source <see cref="DependencyProperty"/> info for the current update</param>
     private void OnIsEnabledChanged(DependencyObject sender, DependencyProperty dp)
     {
-        if (!IsEnabled && IsSelected) IsSelected = false;
-        else UpdateVisualState();
+        if (!IsEnabled && IsSelected)
+        {
+            IsSelected = false;
+        }
+        else
+        {
+            UpdateVisualState();
+        }
     }
 
     // Updates the UI when the control is selected

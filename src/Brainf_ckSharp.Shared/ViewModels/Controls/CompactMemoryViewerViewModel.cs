@@ -57,7 +57,10 @@ public sealed class CompactMemoryViewerViewModel : ObservableRecipient
     /// <param name="state">The input <see cref="IReadOnlyMachineState"/> instance to read data from</param>
     public void UpdateFromState(IReadOnlyMachineState? state)
     {
-        if (state == null) Source.Clear();
+        if (state == null)
+        {
+            Source.Clear();
+        }
         else
         {
             int chunks = state.Count / 4;
@@ -66,7 +69,9 @@ public sealed class CompactMemoryViewerViewModel : ObservableRecipient
             {
                 // Update the existing models
                 foreach (Brainf_ckMemoryCellChunk chunk in Source)
+                {
                     chunk.UpdateFromState(state);
+                }
             }
             else
             {

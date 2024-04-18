@@ -98,8 +98,14 @@ public static class LineDiffer
             }
             else
             {
-                if (entry.NumberOfOccurrencesInNewText == 1) entry.NumberOfOccurrencesInNewText = 2;
-                else entry.NumberOfOccurrencesInNewText = int.MaxValue;
+                if (entry.NumberOfOccurrencesInNewText == 1)
+                {
+                    entry.NumberOfOccurrencesInNewText = 2;
+                }
+                else
+                {
+                    entry.NumberOfOccurrencesInNewText = int.MaxValue;
+                }
             }
 
             Unsafe.Add(ref newTemporaryValuesRef, i) = entry;
@@ -126,8 +132,14 @@ public static class LineDiffer
             }
             else
             {
-                if (entry.NumberOfOccurrencesInOldText < 2) entry.NumberOfOccurrencesInOldText++;
-                else entry.NumberOfOccurrencesInOldText = int.MaxValue;
+                if (entry.NumberOfOccurrencesInOldText < 2)
+                {
+                    entry.NumberOfOccurrencesInOldText++;
+                }
+                else
+                {
+                    entry.NumberOfOccurrencesInOldText = int.MaxValue;
+                }
             }
 
             entry.LineNumberInOldText = j;

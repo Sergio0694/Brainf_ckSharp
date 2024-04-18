@@ -29,7 +29,10 @@ parserResult.WithParsed(options =>
     {
         source = File.ReadAllText(options.SourceFile);
     }
-    else source = options.Source!;
+    else
+    {
+        source = options.Source!;
+    }
 
     // Get the stdin to use
     string stdin;
@@ -37,7 +40,10 @@ parserResult.WithParsed(options =>
     {
         stdin = File.ReadAllText(options.StdinFile);
     }
-    else stdin = options.Stdin ?? string.Empty;
+    else
+    {
+        stdin = options.Stdin ?? string.Empty;
+    }
 
     // Create the cancellation token source
     CancellationTokenSource cts = options.Timeout == 0
@@ -86,7 +92,10 @@ parserResult.WithParsed(options =>
             interpreterResult.Value.Stdout);
         Logger.NewLine();
 
-        if (options.Stdout is { }) File.WriteAllText(options.Stdout, interpreterResult.Value.Stdout);
+        if (options.Stdout is { })
+        {
+            File.WriteAllText(options.Stdout, interpreterResult.Value.Stdout);
+        }
 
         // Additional info, if verbose mode is on
         if (options.Verbose)
@@ -149,7 +158,10 @@ parserResult.WithNotParsed(errors =>
 {
     foreach (Error error in errors)
     {
-        if (error is HelpRequestedError) continue;
+        if (error is HelpRequestedError)
+        {
+            continue;
+        }
 
         Logger.Write(
             ConsoleColor.Red,

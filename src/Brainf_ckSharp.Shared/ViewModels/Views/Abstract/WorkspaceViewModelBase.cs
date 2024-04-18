@@ -47,7 +47,10 @@ public abstract class WorkspaceViewModelBase : ObservableRecipient
         get => this.text;
         set
         {
-            if (this.text.Span.SequenceEqual(value.Span)) return;
+            if (this.text.Span.SequenceEqual(value.Span))
+            {
+                return;
+            }
 
             this.text = value;
 

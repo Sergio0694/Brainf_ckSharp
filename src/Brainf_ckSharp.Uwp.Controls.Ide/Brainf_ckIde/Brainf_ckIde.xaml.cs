@@ -122,24 +122,33 @@ public sealed partial class Brainf_ckIde : UserControl
         // Get the line number
         int lineNumber = this.CodeEditBox.Text.AsSpan(0, range.StartPosition).Count(Characters.CarriageReturn) + 1;
 
-        if (lineNumber == 1) return;
+        if (lineNumber == 1)
+        {
+            return;
+        }
 
         // Store or remove the breakpoint
-        if (this.BreakpointIndicators.ContainsKey(lineNumber))
+        if (this.breakpointIndicators.ContainsKey(lineNumber))
         {
-            this.BreakpointIndicators.Remove(lineNumber);
+            this.breakpointIndicators.Remove(lineNumber);
 
-            if (this.BreakpointIndicators.Count == 0) this.BreakpointsBorder.ContextFlyout = null;
+            if (this.breakpointIndicators.Count == 0)
+            {
+                this.BreakpointsBorder.ContextFlyout = null;
+            }
 
-            BreakpointRemoved?.Invoke(this, new BreakpointToggleEventArgs(lineNumber, this.BreakpointIndicators.Count));
+            BreakpointRemoved?.Invoke(this, new BreakpointToggleEventArgs(lineNumber, this.breakpointIndicators.Count));
         }
         else
         {
-            if (this.BreakpointIndicators.Count == 0) this.BreakpointsBorder.ContextFlyout = this.BreakpointsMenuFlyout;
+            if (this.breakpointIndicators.Count == 0)
+            {
+                this.BreakpointsBorder.ContextFlyout = this.BreakpointsMenuFlyout;
+            }
 
-            this.BreakpointIndicators.GetOrAddValueRef(lineNumber) = (float)line.Top;
+            this.breakpointIndicators.GetOrAddValueRef(lineNumber) = (float)line.Top;
 
-            BreakpointAdded?.Invoke(this, new BreakpointToggleEventArgs(lineNumber, this.BreakpointIndicators.Count));
+            BreakpointAdded?.Invoke(this, new BreakpointToggleEventArgs(lineNumber, this.breakpointIndicators.Count));
         }
 
         UpdateBreakpointsInfo();
@@ -155,9 +164,9 @@ public sealed partial class Brainf_ckIde : UserControl
     /// <param name="e">The <see cref="RoutedEventArgs"/> for the current event</param>
     private void RemoveAllBreakpointsButton_Clicked(object sender, RoutedEventArgs e)
     {
-        BreakpointsCleared?.Invoke(this, this.BreakpointIndicators.Count);
+        BreakpointsCleared?.Invoke(this, this.breakpointIndicators.Count);
 
-        this.BreakpointIndicators.Clear();
+        this.breakpointIndicators.Clear();
 
         UpdateBreakpointsInfo();
 

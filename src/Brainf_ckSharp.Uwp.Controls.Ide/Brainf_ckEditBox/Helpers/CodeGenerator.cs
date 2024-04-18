@@ -22,7 +22,7 @@ internal static class CodeGenerator
         // This is the maximum length for the newline style.
         // It contains a series of 3 indentations, plus the space
         // for the 2 brackets and the 3 newline characters.
-        int length = depth * 3 + 6;
+        int length = (depth * 3) + 6;
         char*
             p0 = stackalloc char[length],
             p1 = p0;
@@ -35,11 +35,16 @@ internal static class CodeGenerator
             *p0 = '\r';
 
             for (int i = 0; i < depth; i++)
+            {
                 p0[i] = '\t';
+            }
 
             p1 = p0 + depth + 1;
         }
-        else length -= depth + 1;
+        else
+        {
+            length -= depth + 1;
+        }
 
         // Bracket and new line
         p1[0] = Characters.LoopStart;
@@ -47,15 +52,19 @@ internal static class CodeGenerator
 
         // Middle tabs
         for (int i = 0; i < depth + 1; i++)
+        {
             p1[i + 2] = '\t';
+        }
 
         p1[depth + 3] = '\r';
 
         // End tabs
         for (int i = 0; i < depth; i++)
+        {
             p1[i + depth + 4] = '\t';
+        }
 
-        p1[depth * 2 + 4] = Characters.LoopEnd;
+        p1[(depth * 2) + 4] = Characters.LoopEnd;
 
         return new(p0, 0, length);
     }

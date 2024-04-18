@@ -21,8 +21,12 @@ public sealed class TestAnalyticsService : IAnalyticsService
         builder.AppendLine($"[EVENT]: \"{title}\"");
 
         if (data is not null)
-            foreach (var info in data)
+        {
+            foreach ((string Property, string Value) info in data)
+            {
                 builder.AppendLine($">> {info.Property}: \"{info.Value}\"");
+            }
+        }
 
         Debug.Write(builder);
     }

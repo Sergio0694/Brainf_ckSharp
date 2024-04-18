@@ -96,8 +96,15 @@ public sealed class Brainf_ckMemoryCellChunk : ObservableObject
         {
             int index = this.selectedIndex - BaseOffset;
 
-            if (index > 3) return 3;
-            if (index < 0) return 0;
+            if (index > 3)
+            {
+                return 3;
+            }
+
+            if (index < 0)
+            {
+                return 0;
+            }
 
             return index;
         }

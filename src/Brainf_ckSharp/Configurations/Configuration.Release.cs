@@ -25,7 +25,10 @@ public readonly ref partial struct ReleaseConfiguration
 
         using MemoryOwner<Brainf_ckOperation>? operations = Brainf_ckParser.TryParse<Brainf_ckOperation>(this.Source.Value.Span, out SyntaxValidationResult validationResult);
 
-        if (!validationResult.IsSuccess) return Option<InterpreterResult>.From(validationResult);
+        if (!validationResult.IsSuccess)
+        {
+            return Option<InterpreterResult>.From(validationResult);
+        }
 
         if (this.InitialState is TuringMachineState initialState)
         {

@@ -75,7 +75,10 @@ public sealed partial class AboutSubPageViewModel : ObservableObject
     [RelayCommand]
     public async Task LoadDataAsync()
     {
-        if (Developers != null) return;
+        if (Developers != null)
+        {
+            return;
+        }
 
         try
         {

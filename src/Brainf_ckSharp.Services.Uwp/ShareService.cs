@@ -26,7 +26,10 @@ public sealed class ShareService : IShareService
 
     private void InitializeDataTransferManager()
     {
-        if (this._DataTransferManager is not null) return;
+        if (this._DataTransferManager is not null)
+        {
+            return;
+        }
 
         this._DataTransferManager = DataTransferManager.GetForCurrentView();
         this._DataTransferManager.DataRequested += DataTransferManager_DataRequested;
@@ -40,7 +43,10 @@ public sealed class ShareService : IShareService
     private void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
     {
         // Make sure there is some content to share
-        if (this._Info == null) ThrowHelper.ThrowInvalidOperationException("There isn't a valid content to share");
+        if (this._Info == null)
+        {
+            ThrowHelper.ThrowInvalidOperationException("There isn't a valid content to share");
+        }
 
         DataRequest request = args.Request;
 

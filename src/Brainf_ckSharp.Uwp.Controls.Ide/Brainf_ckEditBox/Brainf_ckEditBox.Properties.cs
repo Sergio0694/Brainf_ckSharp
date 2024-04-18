@@ -146,7 +146,10 @@ internal sealed partial class Brainf_ckEditBox
     {
         Brainf_ckEditBox @this = (Brainf_ckEditBox)d;
 
-        if (@this._VerticalContentScrollBar == null) return;
+        if (@this._VerticalContentScrollBar == null)
+        {
+            return;
+        }
 
         @this._VerticalContentScrollBar.Margin = (Thickness)e.NewValue;
     }
@@ -161,10 +164,19 @@ internal sealed partial class Brainf_ckEditBox
         Brainf_ckEditBox @this = (Brainf_ckEditBox)d;
         bool value = (bool)e.NewValue;
 
-        if (@this._TextOverlaysCanvas is null) return;
+        if (@this._TextOverlaysCanvas is null)
+        {
+            return;
+        }
 
-        if (value) @this.TryUpdateWhitespaceCharactersList();
-        else @this.ResetWhitespaceCharactersList();
+        if (value)
+        {
+            @this.TryUpdateWhitespaceCharactersList();
+        }
+        else
+        {
+            @this.ResetWhitespaceCharactersList();
+        }
 
         @this._TextOverlaysCanvas.Invalidate();
     }
@@ -180,13 +192,16 @@ internal sealed partial class Brainf_ckEditBox
         Brainf_ckTheme theme = (Brainf_ckTheme)e.NewValue;
 
         // Column guides color and dash style
-        @this._DashStrokeColor = theme.BracketsGuideColor;
+        @this.dashStrokeColor = theme.BracketsGuideColor;
 
         if (theme.BracketsGuideStrokesLength is int dashLength)
         {
-            @this._DashStrokeStyle = new CanvasStrokeStyle { CustomDashStyle = [2, 2 + dashLength] };
+            @this.dashStrokeStyle = new CanvasStrokeStyle { CustomDashStyle = [2, 2 + dashLength] };
         }
-        else @this._DashStrokeStyle = new CanvasStrokeStyle();
+        else
+        {
+            @this.dashStrokeStyle = new CanvasStrokeStyle();
+        }
 
         // Try to update the theme
         if (@this.TryUpdateVisualElementsOnThemeChanged(theme))

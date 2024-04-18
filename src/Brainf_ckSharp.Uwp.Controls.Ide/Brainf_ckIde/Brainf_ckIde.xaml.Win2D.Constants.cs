@@ -49,7 +49,7 @@ public sealed partial class Brainf_ckIde
     /// <summary>
     /// The middle left padding for the start of vertical lines
     /// </summary>
-    private const int IndentationIndicatorsMiddleMargin = IndentationIndicatorsLeftMargin + IndentationIndicatorBlockSize / 2;
+    private const int IndentationIndicatorsMiddleMargin = IndentationIndicatorsLeftMargin + (IndentationIndicatorBlockSize / 2);
 
     /// <summary>
     /// The right edge for horizontal lines

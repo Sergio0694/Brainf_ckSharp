@@ -104,7 +104,11 @@ public sealed class HeaderButton : Control
     {
         HeaderButton @this = (HeaderButton)d;
 
-        if (e.NewValue is bool value && value) @this.Selected?.Invoke(@this, EventArgs.Empty);
+        if (e.NewValue is bool value && value)
+        {
+            @this.Selected?.Invoke(@this, EventArgs.Empty);
+        }
+
         @this.UpdateVisualState();
     }
 

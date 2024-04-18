@@ -126,14 +126,21 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     {
         using (await this.executionMutex.LockAsync())
         {
-            if (!Brainf_ckParser.IsOperator(c)) return;
+            if (!Brainf_ckParser.IsOperator(c))
+            {
+                return;
+            }
+
             if (Source.LastOrDefault() is ConsoleCommand command)
             {
                 command.Command += c;
 
                 Text = command.Command.AsMemory();
             }
-            else ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
+            else
+            {
+                ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
+            }
         }
     }
 
@@ -152,7 +159,10 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
 
                 Text = command.Command.AsMemory();
             }
-            else ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
+            else
+            {
+                ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
+            }
         }
     }
 
@@ -169,7 +179,10 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
 
                 Text = Memory<char>.Empty;
             }
-            else ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
+            else
+            {
+                ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
+            }
         }
     }
 
@@ -184,7 +197,10 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
             {
                 command.IsActive = false;
             }
-            else ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
+            else
+            {
+                ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
+            }
 
             Source.Add(new ConsoleRestart());
 
@@ -259,15 +275,25 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
                     .TryRun();
             });
 
-            if (!result.ValidationResult.IsSuccess) Source.Add(new ConsoleSyntaxError(result.ValidationResult));
+            if (!result.ValidationResult.IsSuccess)
+            {
+                Source.Add(new ConsoleSyntaxError(result.ValidationResult));
+            }
             else
             {
                 // In all cases, update the current memory state
                 MachineState = result.Value!.MachineState;
 
                 // Display textual results and exit codes
-                if (!string.IsNullOrEmpty(result.Value!.Stdout)) Source.Add(new ConsoleResult(result.Value!.Stdout));
-                if (!result.Value!.ExitCode.HasFlag(ExitCode.Success)) Source.Add(new ConsoleException(result.Value!.ExitCode, result.Value!.HaltingInfo!));
+                if (!string.IsNullOrEmpty(result.Value!.Stdout))
+                {
+                    Source.Add(new ConsoleResult(result.Value!.Stdout));
+                }
+
+                if (!result.Value!.ExitCode.HasFlag(ExitCode.Success))
+                {
+                    Source.Add(new ConsoleException(result.Value!.ExitCode, result.Value!.HaltingInfo!));
+                }
             }
         }
 

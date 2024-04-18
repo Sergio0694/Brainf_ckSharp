@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Brainf_ckSharp.Models;
 
@@ -61,7 +61,10 @@ public sealed class FunctionDefinition : IEquatable<FunctionDefinition>
     /// <inheritdoc/>
     public bool Equals(FunctionDefinition? other)
     {
-        if (other is null) return false;
+        if (other is null)
+        {
+            return false;
+        }
 
         return
             Value == other.Value &&

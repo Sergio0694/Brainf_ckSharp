@@ -21,7 +21,10 @@ internal static class StringExtensions
     /// <returns>A <see cref="string"/> equivalent to <paramref name="text"/>, with CR endings</returns>
     public static string WithCarriageReturnLineEndings(this string text)
     {
-        if (text.Length == 0) return text;
+        if (text.Length == 0)
+        {
+            return text;
+        }
 
         return text
             .Replace("\r\n", "\r")
@@ -73,13 +76,19 @@ internal static class StringExtensions
 
         int row = text.AsSpan().Slice(0, offset).Count('\r');
 
-        if (row == 0) return (0, offset);
+        if (row == 0)
+        {
+            return (0, offset);
+        }
 
         ref char r0 = ref text.DangerousGetReference();
 
         int column = 0;
 
-        while (--offset >= 0 && Unsafe.Add(ref r0, offset) != '\r') column++;
+        while (--offset >= 0 && Unsafe.Add(ref r0, offset) != '\r')
+        {
+            column++;
+        }
 
         return (row, column);
     }
@@ -96,18 +105,30 @@ internal static class StringExtensions
         Debug.Assert(row >= 1);
         Debug.Assert(column >= 1);
 
-        if (row == 1) return column - 1;
+        if (row == 1)
+        {
+            return column - 1;
+        }
 
         int index = -1;
 
         // Count the distance in the rows
-        foreach (var line in text.Tokenize('\r'))
+        foreach (ReadOnlySpan<char> line in text.Tokenize('\r'))
         {
-            if (--row > 0) index += line.Length + 1;
-            else break;
+            if (--row > 0)
+            {
+                index += line.Length + 1;
+            }
+            else
+            {
+                break;
+            }
         }
 
-        if (column == 1) return index;
+        if (column == 1)
+        {
+            return index;
+        }
 
         return index + column;
     }

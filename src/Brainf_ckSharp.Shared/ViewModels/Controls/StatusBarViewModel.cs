@@ -134,7 +134,10 @@ public sealed class StatusBarViewModel : ObservableRecipient
     /// </summary>
     private void RunBackgroundCode()
     {
-        if (WorkspaceViewModel is not WorkspaceViewModelBase viewModel) return;
+        if (WorkspaceViewModel is not WorkspaceViewModelBase viewModel)
+        {
+            return;
+        }
 
         // Load all the new arguments and data for the new execution.
         // Before actually executing the code, also check with the previously

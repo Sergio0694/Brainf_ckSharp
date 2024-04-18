@@ -187,7 +187,10 @@ internal sealed partial class Brainf_ckEditBox
     /// <returns>Whether or not the theme change was applied</returns>
     private bool TryUpdateVisualElementsOnThemeChanged(Brainf_ckTheme theme)
     {
-        if (this._SelectionHighlightBorder is null) return false;
+        if (this._SelectionHighlightBorder is null)
+        {
+            return false;
+        }
 
         UpdateVisualElementsOnThemeChanged(theme);
 

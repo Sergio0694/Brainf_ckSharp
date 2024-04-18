@@ -27,8 +27,14 @@ public sealed class ExpanderControl : Control
 
         expanderButton.Click += (s, e) => IsExpanded = !IsExpanded;
 
-        if (IsExpanded) VisualStateManager.GoToState(this, ExpandedVisualStateName, false);
-        else VisualStateManager.GoToState(this, CollapsedVisualStateName, false);
+        if (IsExpanded)
+        {
+            VisualStateManager.GoToState(this, ExpandedVisualStateName, false);
+        }
+        else
+        {
+            VisualStateManager.GoToState(this, CollapsedVisualStateName, false);
+        }
     }
 
     /// <summary>
@@ -131,7 +137,13 @@ public sealed class ExpanderControl : Control
         ExpanderControl @this = (ExpanderControl)d;
         bool value = (bool)e.NewValue;
 
-        if (value) VisualStateManager.GoToState(@this, ExpandedVisualStateName, true);
-        else VisualStateManager.GoToState(@this, CollapsedVisualStateName, true);
+        if (value)
+        {
+            VisualStateManager.GoToState(@this, ExpandedVisualStateName, true);
+        }
+        else
+        {
+            VisualStateManager.GoToState(@this, CollapsedVisualStateName, true);
+        }
     }
 }

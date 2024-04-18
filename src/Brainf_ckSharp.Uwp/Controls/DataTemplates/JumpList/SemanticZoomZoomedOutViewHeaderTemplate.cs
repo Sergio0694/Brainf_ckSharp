@@ -111,7 +111,10 @@ public sealed class SemanticZoomZoomedOutViewHeaderTemplate : Control
         Span span = e.NewValue as Span
                     ?? ThrowHelper.ThrowArgumentException<Span>("Can't assign null to the " + nameof(DescriptionSpan) + " property");
 
-        if (@this._DescriptionBlock is null) return;
+        if (@this._DescriptionBlock is null)
+        {
+            return;
+        }
 
         @this._DescriptionBlock.Inlines.Clear();
         @this._DescriptionBlock.Inlines.Add(span);

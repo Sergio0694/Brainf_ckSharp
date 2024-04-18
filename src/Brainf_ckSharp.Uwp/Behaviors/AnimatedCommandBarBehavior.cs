@@ -93,7 +93,9 @@ public sealed class AnimatedCommandBarBehavior : Behavior<CommandBar>
             };
 
             if (button.RenderTransform is not TranslateTransform)
+            {
                 button.RenderTransform = new TranslateTransform();
+            }
 
             Storyboard.SetTarget(translationAnimation, button.RenderTransform);
             Storyboard.SetTargetProperty(translationAnimation, nameof(TranslateTransform.X));
@@ -145,7 +147,9 @@ public sealed class AnimatedCommandBarBehavior : Behavior<CommandBar>
 
             // Set the animated buttons to invisible
             foreach (FrameworkElement item in pendingElements)
+            {
                 item.Visibility = Visibility.Collapsed;
+            }
 
             // Get the target buttons
             IReadOnlyList<FrameworkElement> targetElements = (

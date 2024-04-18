@@ -149,7 +149,10 @@ public class DiffTest
         {
             Assert.AreEqual(expected.Length, result.Length);
 
-            if (expected.Length == 0) return;
+            if (expected.Length == 0)
+            {
+                return;
+            }
 
             Assert.IsTrue(expected.SequenceEqual(result.Span.ToArray()));
         }

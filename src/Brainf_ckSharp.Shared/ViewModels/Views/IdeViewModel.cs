@@ -159,7 +159,10 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     {
         this.analyticsService.Log(EventNames.PickFileRequest);
 
-        if (await this.filesService.TryPickOpenFileAsync(".bfs") is not IFile file) return;
+        if (await this.filesService.TryPickOpenFileAsync(".bfs") is not IFile file)
+        {
+            return;
+        }
 
         if (this.filesManagerService.TrySwitchTo(file))
         {
@@ -209,7 +212,10 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task TrySaveTextAsync()
     {
-        if (Code.File == null) await TrySaveTextAsAsync();
+        if (Code.File == null)
+        {
+            await TrySaveTextAsAsync();
+        }
         else
         {
             Code.Content = Text.ToString();
@@ -229,7 +235,10 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task TrySaveTextAsAsync()
     {
-        if (await this.filesService.TryPickSaveFileAsync(string.Empty, (string.Empty, ".bfs")) is not IFile file) return;
+        if (await this.filesService.TryPickSaveFileAsync(string.Empty, (string.Empty, ".bfs")) is not IFile file)
+        {
+            return;
+        }
 
         if (this.filesManagerService.TrySwitchTo(file))
         {
@@ -282,7 +291,9 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
                 statePath = Path.Combine(temporaryPath, "state.json");
 
             if (await this.filesService.TryGetFileFromPathAsync(statePath) is not IFile jsonFile)
+            {
                 return;
+            }
 
             IdeState? state;
 
@@ -291,15 +302,27 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
                 state = await JsonSerializer.DeserializeAsync(stream, Brainf_ckSharpJsonSerializerContext.Default.IdeState);
             }
 
-            if (state is null) ThrowHelper.ThrowInvalidOperationException("Failed to load previous IDE state");
+            if (state is null)
+            {
+                ThrowHelper.ThrowInvalidOperationException("Failed to load previous IDE state");
+            }
 
-            if (state.FilePath is null) Code = SourceCode.CreateEmpty();
+            if (state.FilePath is null)
+            {
+                Code = SourceCode.CreateEmpty();
+            }
             else
             {
                 IFile? sourceFile = await this.filesService.TryGetFileFromPathAsync(state.FilePath);
 
-                if (sourceFile is null) Code = SourceCode.CreateEmpty();
-                else Code = await SourceCode.TryLoadFromEditableFileAsync(sourceFile) ?? SourceCode.CreateEmpty();
+                if (sourceFile is null)
+                {
+                    Code = SourceCode.CreateEmpty();
+                }
+                else
+                {
+                    Code = await SourceCode.TryLoadFromEditableFileAsync(sourceFile) ?? SourceCode.CreateEmpty();
+                }
             }
 
             Text = state.Text.AsMemory();
@@ -313,6 +336,9 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
 
             StateRestored?.Invoke(this, state);
         }
-        else await TryLoadTextFromFileAsync(file);
+        else
+        {
+            await TryLoadTextFromFileAsync(file);
+        }
     }
 }

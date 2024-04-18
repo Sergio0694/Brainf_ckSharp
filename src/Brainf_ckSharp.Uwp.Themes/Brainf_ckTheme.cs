@@ -145,17 +145,23 @@ public sealed class Brainf_ckTheme
     /// <param name="second">The second operator</param>
     public static bool HaveSameColor(char first, char second)
     {
-        if (first == second) return true;
+        if (first == second)
+        {
+            return true;
+        }
 
         // Always have the lowest character in first position
-        if (second > first) (first, second) = (second, first);
+        if (second > first)
+        {
+            (first, second) = (second, first);
+        }
 
         return
-            !Brainf_ckParser.IsOperator(first) && !Brainf_ckParser.IsOperator(second) ||
-            first == Characters.BackwardPtr && second == Characters.ForwardPtr ||
-            first == Characters.Plus && second == Characters.Minus ||
-            first == Characters.LoopStart && second == Characters.LoopEnd ||
-            first == Characters.FunctionStart && second == Characters.FunctionEnd;
+            (!Brainf_ckParser.IsOperator(first) && !Brainf_ckParser.IsOperator(second)) ||
+            (first == Characters.BackwardPtr && second == Characters.ForwardPtr) ||
+            (first == Characters.Plus && second == Characters.Minus) ||
+            (first == Characters.LoopStart && second == Characters.LoopEnd) ||
+            (first == Characters.FunctionStart && second == Characters.FunctionEnd);
     }
 
     /// <summary>

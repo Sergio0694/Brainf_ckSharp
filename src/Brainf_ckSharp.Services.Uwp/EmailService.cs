@@ -16,9 +16,20 @@ public sealed class EmailService : IEmailService
     {
         EmailMessage email = new();
 
-        if (address is not null) email.To.Add(new EmailRecipient(address));
-        if (subject is not null) email.Subject = subject;
-        if (body is not null) email.Body = body;
+        if (address is not null)
+        {
+            email.To.Add(new EmailRecipient(address));
+        }
+
+        if (subject is not null)
+        {
+            email.Subject = subject;
+        }
+
+        if (body is not null)
+        {
+            email.Body = body;
+        }
 
         // Try to send the email message
         try

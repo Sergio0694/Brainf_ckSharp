@@ -266,7 +266,10 @@ public sealed class InterpreterSession : IEnumerator<InterpreterResult>
     /// <inheritdoc/>
     public void Dispose()
     {
-        if (this.disposed) return;
+        if (this.disposed)
+        {
+            return;
+        }
 
         this.disposed = true;
 

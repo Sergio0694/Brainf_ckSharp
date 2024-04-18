@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -19,17 +19,17 @@ internal sealed partial class Brainf_ckEditBox
     /// <summary>
     /// The start position of the current selection
     /// </summary>
-    private int _SelectionStart;
+    private int selectionStart;
 
     /// <summary>
     /// The length of the current selection
     /// </summary>
-    private int _SelectionLength;
+    private int selectionLength;
 
     /// <summary>
     /// Indicates whether the delete key was pressed
     /// </summary>
-    private bool _IsDeleteRequested;
+    private bool isDeleteRequested;
 
     /// <summary>
     /// Applies the syntaxt highlight to the current document, using less resources as possible
@@ -38,13 +38,11 @@ internal sealed partial class Brainf_ckEditBox
     {
         using (FormattingLock.For(this))
         {
-            string
-                oldText = Text,
-                newText = Document.GetText();
-            int
-                textLength = newText.Length,
-                selectionLength = Document.Selection.Length,
-                selectionStart = Document.Selection.StartPosition;
+            string oldText = Text;
+            string newText = Document.GetText();
+            int textLength = newText.Length;
+            int selectionLength = Document.Selection.Length;
+            int selectionStart = Document.Selection.StartPosition;
 
             // Handle all the possible cases individually.
             //   - If the current selection has a length of 0 and is not the first position in
@@ -58,26 +56,32 @@ internal sealed partial class Brainf_ckEditBox
             //   - If a deletion is requested, just skip the formatting entirely. If no new
             //     characters have been typed, there is no need to highlight anything.
             //   - As a last resort, just format the entire text from start to finish.
-            if (selectionLength == 0 &&
+            if ((selectionLength == 0 &&
                 selectionStart > 0 &&
-                (this._SelectionLength == 0 && textLength == oldText.Length + 1) ||
-                this._SelectionLength > 1)
+                this.selectionLength == 0 && textLength == oldText.Length + 1) ||
+                this.selectionLength > 1)
             {
                 FormatSingleCharacter(ref newText, selectionStart);
             }
             else if (selectionLength == 0 &&
-                     this._SelectionLength == 0 &&
+                     this.selectionLength == 0 &&
                      textLength == oldText.Length - 1 &&
-                     selectionStart == this._SelectionStart)
+                     selectionStart == this.selectionStart)
             {
                 // This branch also captures single character deletions.
                 // Set the property to false to make sure the formatting
                 // isn't compromised in future runs by the property
                 // remaining true because this branch took precedence.
-                this._IsDeleteRequested = false;
+                this.isDeleteRequested = false;
             }
-            else if (this._IsDeleteRequested) this._IsDeleteRequested = false;
-            else FormatRange(newText, 0, textLength);
+            else if (this.isDeleteRequested)
+            {
+                this.isDeleteRequested = false;
+            }
+            else
+            {
+                FormatRange(newText, 0, textLength);
+            }
 
             Text = newText;
         }
@@ -112,7 +116,10 @@ internal sealed partial class Brainf_ckEditBox
             {
                 autocomplete = CodeGenerator.GetBracketAutocompleteText(BracketsFormattingStyle.NewLine, depth);
             }
-            else autocomplete = CodeGenerator.GetBracketAutocompleteText(BracketsFormattingStyle.SameLine, depth);
+            else
+            {
+                autocomplete = CodeGenerator.GetBracketAutocompleteText(BracketsFormattingStyle.SameLine, depth);
+            }
 
             // Set the autocomplete text and color it
             range.SetText(TextSetOptions.None, autocomplete);
@@ -139,7 +146,10 @@ internal sealed partial class Brainf_ckEditBox
 
             text = Document.GetText();
         }
-        else Document.SetRangeColor(start - 1, start, SyntaxHighlightTheme.GetColor(c));
+        else
+        {
+            Document.SetRangeColor(start - 1, start, SyntaxHighlightTheme.GetColor(c));
+        }
     }
 
     /// <summary>
@@ -169,8 +179,12 @@ internal sealed partial class Brainf_ckEditBox
 
             // Find the edge of the current chunk of characters
             while (++j < end)
+            {
                 if (!Brainf_ckTheme.HaveSameColor(c, Unsafe.Add(ref r0, j)))
+                {
                     break;
+                }
+            }
 
             // Highlight the current range
             Document.SetRangeColor(i, j, SyntaxHighlightTheme.GetColor(c));
@@ -182,16 +196,21 @@ internal sealed partial class Brainf_ckEditBox
     /// </summary>
     public void DeleteSelectionOrCharacter()
     {
-        int
-            selectionLength = Document.Selection.Length,
-            selectionEnd = Document.Selection.EndPosition;
+        int selectionLength = Document.Selection.Length;
+        int selectionEnd = Document.Selection.EndPosition;
 
-        if (selectionEnd == 0) return;
+        if (selectionEnd == 0)
+        {
+            return;
+        }
 
         using (FormattingLock.For(this))
         {
             // Remove text in the current selection, or delete the previous character
-            if (selectionLength > 0) Document.Selection.Text = string.Empty;
+            if (selectionLength > 0)
+            {
+                Document.Selection.Text = string.Empty;
+            }
             else
             {
                 // Delete and adjust the selection
@@ -214,20 +233,23 @@ internal sealed partial class Brainf_ckEditBox
         using (FormattingLock.For(this))
         {
             // Get the current selection text and range
-            var bounds = Document.Selection.GetBounds();
+            (int Start, int End) bounds = Document.Selection.GetBounds();
             string text = Document.Selection.GetText();
             ref char r0 = ref MemoryMarshal.GetReference(text.AsSpan());
-            int
-                max = text.Length - 1,
-                count = 2; // Initial \t, +1 after each \r
+            int max = text.Length - 1;
+            int count = 2; // Initial \t, +1 after each \r
 
             // Initial tab
             Document.GetRangeAt(bounds.Start).Text = "\t";
 
             // Insert a tab before each new line character
             for (int i = 0; i < max; i++)
+            {
                 if (Unsafe.Add(ref r0, i) == Characters.CarriageReturn)
+                {
                     Document.GetRangeAt(bounds.Start + i + count++).Text = "\t";
+                }
+            }
 
             Text = Document.GetText();
         }
@@ -243,12 +265,11 @@ internal sealed partial class Brainf_ckEditBox
         using (FormattingLock.For(this))
         {
             // Get the current selection text and range
-            var bounds = Document.Selection.GetBounds();
+            (int Start, int End) bounds = Document.Selection.GetBounds();
             string text = Document.Selection.GetText();
             ref char r0 = ref MemoryMarshal.GetReference(text.AsSpan());
-            int
-                length = text.Length,
-                count = 0;
+            int length = text.Length;
+            int count = 0;
 
             // Remove leading \t from each line, if present
             for (int i = 0; i < length; i++)
@@ -263,7 +284,9 @@ internal sealed partial class Brainf_ckEditBox
                 // Move to the following \r
                 i++;
                 while (i < length && Unsafe.Add(ref r0, i) != Characters.CarriageReturn)
+                {
                     i++;
+                }
             }
 
             Text = Document.GetText();
@@ -276,7 +299,10 @@ internal sealed partial class Brainf_ckEditBox
     /// <param name="source">The source text to insert</param>
     public void InsertText(string source)
     {
-        if (source.Length == 0) return;
+        if (source.Length == 0)
+        {
+            return;
+        }
 
         ContextFlyout?.Hide();
 
@@ -289,10 +315,9 @@ internal sealed partial class Brainf_ckEditBox
 
             // Update the current syntax validation
             string text = Document.GetText();
-            int
-                sourceLength = source.Length,
-                selectionStart = Document.Selection.StartPosition,
-                selectionEnd = selectionStart + sourceLength;
+            int sourceLength = source.Length;
+            int selectionStart = Document.Selection.StartPosition;
+            int selectionEnd = selectionStart + sourceLength;
 
             // Only format the inserted text
             FormatRange(text, selectionStart, selectionEnd);

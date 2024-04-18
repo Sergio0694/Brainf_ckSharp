@@ -1,4 +1,4 @@
-﻿using Windows.UI.Xaml;
+using Windows.UI.Xaml;
 using Brainf_ckSharp.Uwp.Themes;
 
 #nullable enable
@@ -12,17 +12,17 @@ public sealed partial class Brainf_ckIde
     /// </summary>
     public string Text => this.CodeEditBox.Text;
 
-    private double _HeaderSpacing;
+    private double headerSpacing;
 
     /// <summary>
     /// Gets or sets the spacing of the top header
     /// </summary>
     public double HeaderSpacing
     {
-        get => this._HeaderSpacing;
+        get => this.headerSpacing;
         set
         {
-            this._HeaderSpacing = value;
+            this.headerSpacing = value;
 
             this.IdeOverlaysCanvasTransform.Y = value + 10;
             this.LineBlockTransform.Y = value + 8;
@@ -31,17 +31,17 @@ public sealed partial class Brainf_ckIde
         }
     }
 
-    private double _FooterSpacing;
+    private double footerSpacing;
 
     /// <summary>
     /// Gets or sets the spacing of the bottom footer
     /// </summary>
     public double FooterSpacing
     {
-        get => this._FooterSpacing;
+        get => this.footerSpacing;
         set
         {
-            this._FooterSpacing = value;
+            this.footerSpacing = value;
 
             this.CodeEditBox.Padding = new Thickness(4, HeaderSpacing + 8, 8, value + 8);
             this.CodeEditBox.VerticalScrollBarMargin = new Thickness(0, HeaderSpacing, 0, value);

@@ -27,7 +27,7 @@ internal static class UInt32Extensions
         {
             uint
                 division = n / 10,
-                remainder = n - division * 10;
+                remainder = n - (division * 10);
 
             n = division;
             *--p = (char)(remainder + '0');
@@ -53,10 +53,22 @@ internal static class UInt32Extensions
         }
 
         if (value < 10) { }
-        else if (value < 100) digits++;
-        else if (value < 1000) digits += 2;
-        else if (value < 10000) digits += 3;
-        else digits += 4;
+        else if (value < 100)
+        {
+            digits++;
+        }
+        else if (value < 1000)
+        {
+            digits += 2;
+        }
+        else if (value < 10000)
+        {
+            digits += 3;
+        }
+        else
+        {
+            digits += 4;
+        }
 
         return digits;
     }

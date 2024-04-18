@@ -90,7 +90,10 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
 
             CodeLibraryEntry? entry = await CodeLibraryEntry.TryLoadFromFileAsync(file, item.Title);
 
-            if (entry is null) ThrowHelper.ThrowInvalidOperationException("Failed to load the requested sample");
+            if (entry is null)
+            {
+                ThrowHelper.ThrowInvalidOperationException("Failed to load the requested sample");
+            }
 
             return entry;
         }));
@@ -140,11 +143,17 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
             // Deserialize the metadata and prepare the model
             CodeMetadata? metadata = string.IsNullOrEmpty(data) ? new() : JsonSerializer.Deserialize(data, Brainf_ckSharpJsonSerializerContext.Default.CodeMetadata);
 
-            if (metadata is null) ThrowHelper.ThrowInvalidOperationException("Failed to load the source code metadata");
+            if (metadata is null)
+            {
+                ThrowHelper.ThrowInvalidOperationException("Failed to load the source code metadata");
+            }
 
             CodeLibraryEntry? entry = await CodeLibraryEntry.TryLoadFromFileAsync(file, metadata);
 
-            if (entry is null) ThrowHelper.ThrowInvalidOperationException("Failed to load the source code file");
+            if (entry is null)
+            {
+                ThrowHelper.ThrowInvalidOperationException("Failed to load the source code file");
+            }
 
             recent.Add(entry);
         }
@@ -172,9 +181,18 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     [RelayCommand]
     private void ProcessItem(object? item)
     {
-        if (item is CodeLibraryEntry entry) _ = OpenFileAsync(entry);
-        else if (item is CodeLibrarySection c) RequestOpenFile(c == CodeLibrarySection.Favorites);
-        else ThrowHelper.ThrowArgumentException("The input item is not valid");
+        if (item is CodeLibraryEntry entry)
+        {
+            _ = OpenFileAsync(entry);
+        }
+        else if (item is CodeLibrarySection c)
+        {
+            RequestOpenFile(c == CodeLibrarySection.Favorites);
+        }
+        else
+        {
+            ThrowHelper.ThrowArgumentException("The input item is not valid");
+        }
     }
 
     /// <summary>
@@ -201,7 +219,10 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
         }
         else
         {
-            if (await SourceCode.TryLoadFromEditableFileAsync(entry.File) is not SourceCode sourceCode) return;
+            if (await SourceCode.TryLoadFromEditableFileAsync(entry.File) is not SourceCode sourceCode)
+            {
+                return;
+            }
 
             _ = Messenger.Send(new LoadSourceCodeRequestMessage(sourceCode));
         }
@@ -277,8 +298,14 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     {
         ObservableGroup<CodeLibrarySection, object> group = Source.First<ObservableGroup<CodeLibrarySection, object>>(g => g.Contains(entry));
 
-        if (group.Count == 1) _ = Source.Remove(group);
-        else _ = group.Remove(entry);
+        if (group.Count == 1)
+        {
+            _ = Source.Remove(group);
+        }
+        else
+        {
+            _ = group.Remove(entry);
+        }
 
         entry.File.RemoveFutureAccessPermission();
     }

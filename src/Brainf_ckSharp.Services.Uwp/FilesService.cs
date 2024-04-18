@@ -107,7 +107,7 @@ public sealed class FilesService : IFilesService
     {
         IReadOnlyList<AccessListEntry> entries = StorageApplicationPermissions.MostRecentlyUsedList.Entries.ToArray();
 
-        foreach (var entry in entries)
+        foreach (AccessListEntry entry in entries)
         {
             StorageFile file;
 

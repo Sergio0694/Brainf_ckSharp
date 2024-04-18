@@ -77,7 +77,10 @@ public static class ItemsWrapGridHelper
             columns = Math.Ceiling(e.NewSize.Width / desiredWidth);
 
         int maximumRowsOrColumns = @this.MaximumRowsOrColumns;
-        if (maximumRowsOrColumns > 0) columns = Math.Min(columns, maximumRowsOrColumns);
+        if (maximumRowsOrColumns > 0)
+        {
+            columns = Math.Min(columns, maximumRowsOrColumns);
+        }
 
         @this.ItemWidth = e.NewSize.Width / columns;
     }

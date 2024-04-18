@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Windows.Foundation;
@@ -21,23 +21,23 @@ public sealed partial class Brainf_ckIde
     /// <summary>
     /// The map of breakpoints in use
     /// </summary>
-    private readonly DictionarySlim<int, float> BreakpointIndicators = new();
+    private readonly DictionarySlim<int, float> breakpointIndicators = new();
 
     /// <summary>
     /// The precomputed areas of breakpoints to display
     /// </summary>
-    private MemoryOwner<Rect> _BreakpointAreas = MemoryOwner<Rect>.Empty;
+    private MemoryOwner<Rect> breakpointAreas = MemoryOwner<Rect>.Empty;
 
     /// <summary>
     /// The current buffer of line diff indicators
     /// </summary>
     /// <remarks>The initial size is 1 since it corresponds to the default '\r' character in the control</remarks>
-    private MemoryOwner<LineModificationType> _DiffIndicators = MemoryOwner<LineModificationType>.Allocate(1);
+    private MemoryOwner<LineModificationType> diffIndicators = MemoryOwner<LineModificationType>.Allocate(1);
 
     /// <summary>
     /// The current array of <see cref="IndentationIndicatorBase"/> instances to render
     /// </summary>
-    private MemoryOwner<IndentationIndicatorBase?> _IndentationIndicators = MemoryOwner<IndentationIndicatorBase?>.Empty;
+    private MemoryOwner<IndentationIndicatorBase?> indentationIndicators = MemoryOwner<IndentationIndicatorBase?>.Empty;
 
     /// <summary>
     /// Draws the IDE overlays when an update is requested
@@ -48,7 +48,7 @@ public sealed partial class Brainf_ckIde
     {
         // Git diff indicators
         int i = 0;
-        foreach (var modification in this._DiffIndicators.Span)
+        foreach (LineModificationType modification in this.diffIndicators.Span)
         {
             switch (modification)
             {
@@ -65,7 +65,7 @@ public sealed partial class Brainf_ckIde
 
         // Indentation indicators
         i = 0;
-        foreach (var indicator in this._IndentationIndicators.Span)
+        foreach (IndentationIndicatorBase? indicator in this.indentationIndicators.Span)
         {
             if (indicator is not null)
             {
@@ -95,7 +95,7 @@ public sealed partial class Brainf_ckIde
         }
 
         // Breakpoints markers
-        foreach (var pair in this.BreakpointIndicators)
+        foreach (System.Collections.Generic.KeyValuePair<int, float> pair in this.breakpointIndicators)
         {
             DrawBreakpointIndicator(args.DrawingSession, pair.Value);
         }
@@ -109,7 +109,7 @@ public sealed partial class Brainf_ckIde
     private void CodeEditBox_OnDrawOverlays(CanvasControl sender, CanvasDrawEventArgs args)
     {
         // Breakpoints areas
-        foreach (var rect in this._BreakpointAreas.Span)
+        foreach (Rect rect in this.breakpointAreas.Span)
         {
             DrawBreakpointArea(args.DrawingSession, rect);
         }
@@ -168,7 +168,7 @@ public sealed partial class Brainf_ckIde
         }
         else
         {
-            float middleOffset = offset + (IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f;
+            float middleOffset = offset + ((IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f);
             session.DrawLine(IndentationIndicatorsMiddleMargin, offset, IndentationIndicatorsMiddleMargin, middleOffset, OutlineColor);
         }
 
@@ -177,7 +177,7 @@ public sealed partial class Brainf_ckIde
         {
             float
                 horizontalOffset = IndentationIndicatorsMiddleMargin - 0.5f,
-                middleOffset = offset + (IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f + 0.5f;
+                middleOffset = offset + ((IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f) + 0.5f;
             session.DrawLine(horizontalOffset, middleOffset, IndentationIndicatorsRightMargin, middleOffset, OutlineColor);
         }
     }
@@ -205,7 +205,10 @@ public sealed partial class Brainf_ckIde
         {
             session.DrawRoundedRectangle(IndentationIndicatorsLeftMargin, offset, IndentationIndicatorBlockSize, IndentationIndicatorBlockSize, 2, 2, OutlineColor);
         }
-        else session.DrawRectangle(IndentationIndicatorsLeftMargin, offset, IndentationIndicatorBlockSize, IndentationIndicatorBlockSize, OutlineColor);
+        else
+        {
+            session.DrawRectangle(IndentationIndicatorsLeftMargin, offset, IndentationIndicatorBlockSize, IndentationIndicatorBlockSize, OutlineColor);
+        }
 
         // Depth level counter
         string text = depth <= 9 ? depth.ToString() : "•";
@@ -218,7 +221,7 @@ public sealed partial class Brainf_ckIde
         }
         else
         {
-            float middleOffset = offset + (IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f;
+            float middleOffset = offset + ((IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f);
             session.DrawLine(IndentationIndicatorsMiddleMargin, offset + IndentationIndicatorBlockSize, IndentationIndicatorsMiddleMargin, middleOffset, OutlineColor);
         }
 
@@ -227,7 +230,7 @@ public sealed partial class Brainf_ckIde
         {
             float
                 horizontalOffset = IndentationIndicatorsMiddleMargin - 0.5f,
-                middleOffset = offset + (IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f + 0.5f;
+                middleOffset = offset + ((IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f) + 0.5f;
             session.DrawLine(horizontalOffset, middleOffset, IndentationIndicatorsRightMargin, middleOffset, OutlineColor);
         }
     }
@@ -254,7 +257,7 @@ public sealed partial class Brainf_ckIde
         }
         else
         {
-            float middleOffset = offset + (IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f;
+            float middleOffset = offset + ((IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f);
             session.DrawLine(IndentationIndicatorsMiddleMargin, offset + IndentationIndicatorBlockSize, IndentationIndicatorsMiddleMargin, middleOffset, OutlineColor);
         }
 
@@ -263,7 +266,7 @@ public sealed partial class Brainf_ckIde
         {
             float
                 horizontalOffset = IndentationIndicatorsMiddleMargin - 0.5f,
-                middleOffset = offset + (IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f + 0.5f;
+                middleOffset = offset + ((IndentationIndicatorsElementHeight + IndentationIndicatorBlockSize) / 2f) + 0.5f;
             session.DrawLine(horizontalOffset, middleOffset, IndentationIndicatorsRightMargin, middleOffset, OutlineColor);
         }
     }

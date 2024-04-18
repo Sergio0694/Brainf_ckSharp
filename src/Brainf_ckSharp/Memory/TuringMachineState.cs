@@ -86,7 +86,10 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
         {
             ushort[]? array = this.buffer;
 
-            if (array is null) ThrowObjectDisposedException();
+            if (array is null)
+            {
+                ThrowObjectDisposedException();
+            }
 
             ushort value = array!.DangerousGetReferenceAt(this.position);
 
@@ -102,7 +105,10 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
         {
             ushort[]? array = this.buffer;
 
-            if (array is null) ThrowObjectDisposedException();
+            if (array is null)
+            {
+                ThrowObjectDisposedException();
+            }
 
             // Manually check the current size, as the buffer
             // is rented from the pool and its length might
@@ -124,15 +130,30 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     /// <inheritdoc/>
     public bool Equals(IReadOnlyMachineState? other)
     {
-        if (other is null) return false;
+        if (other is null)
+        {
+            return false;
+        }
 
-        if (ReferenceEquals(this, other)) return true;
+        if (ReferenceEquals(this, other))
+        {
+            return true;
+        }
 
-        if (this.buffer is null) ThrowObjectDisposedException();
+        if (this.buffer is null)
+        {
+            ThrowObjectDisposedException();
+        }
 
-        if (other is not TuringMachineState state) return false;
+        if (other is not TuringMachineState state)
+        {
+            return false;
+        }
 
-        if (state.buffer is null) ThrowObjectDisposedException();
+        if (state.buffer is null)
+        {
+            ThrowObjectDisposedException();
+        }
 
         return
             this.Size == state.Size &&
@@ -144,7 +165,10 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     /// <inheritdoc/>
     public override int GetHashCode()
     {
-        if (this.buffer is null) ThrowObjectDisposedException();
+        if (this.buffer is null)
+        {
+            ThrowObjectDisposedException();
+        }
 
         HashCode hashCode = default;
 
@@ -180,7 +204,10 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     /// <inheritdoc/>
     public object Clone()
     {
-        if (this.buffer is null) ThrowObjectDisposedException();
+        if (this.buffer is null)
+        {
+            ThrowObjectDisposedException();
+        }
 
         TuringMachineState clone = new(this.Size, this.Mode, false) { position = this.position };
 
@@ -194,7 +221,10 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     {
         ushort[]? array = this.buffer;
 
-        if (array is null) return;
+        if (array is null)
+        {
+            return;
+        }
 
         this.buffer = null;
 

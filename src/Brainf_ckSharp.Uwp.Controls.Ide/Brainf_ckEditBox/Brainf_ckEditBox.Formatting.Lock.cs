@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml.Controls;
 
@@ -16,7 +16,7 @@ internal sealed partial class Brainf_ckEditBox
         /// <summary>
         /// The current <see cref="Brainf_ckEditBox"/> instance
         /// </summary>
-        private readonly Brainf_ckEditBox This;
+        private readonly Brainf_ckEditBox @this;
 
         /// <summary>
         /// Creates a new <see cref="FormattingLock"/> instance with the specified parameters
@@ -24,11 +24,13 @@ internal sealed partial class Brainf_ckEditBox
         /// <param name="this">The current <see cref="Brainf_ckEditBox"/> instance</param>
         private FormattingLock(Brainf_ckEditBox @this)
         {
-            this.This = @this;
+            this.@this = @this;
 
             @this.TextChanging -= @this.MarkdownRichEditBox_TextChanging;
             ((RichEditBox)@this).TextChanged -= @this.MarkdownRichEditBox_TextChanged;
-            @this.Document.BatchDisplayUpdates();
+
+            _ = @this.Document.BatchDisplayUpdates();
+
             @this.IsUndoGroupingEnabled = true;
         }
 
@@ -38,25 +40,35 @@ internal sealed partial class Brainf_ckEditBox
         /// <param name="this">The current <see cref="Brainf_ckEditBox"/> instance</param>
         /// <returns>A new <see cref="FormattingLock"/> instance targeting <paramref name="this"/></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static FormattingLock For(Brainf_ckEditBox @this) => new(@this);
+        public static FormattingLock For(Brainf_ckEditBox @this)
+        {
+            return new(@this);
+        }
 
         /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
         {
-            this.This.TextChanging += this.This.MarkdownRichEditBox_TextChanging;
-            ((RichEditBox)this.This).TextChanged += this.This.MarkdownRichEditBox_TextChanged;
-            this.This.Document.ApplyDisplayUpdates();
-            this.This.IsUndoGroupingEnabled = false;
+            this.@this.TextChanging += this.@this.MarkdownRichEditBox_TextChanging;
+            ((RichEditBox)this.@this).TextChanged += this.@this.MarkdownRichEditBox_TextChanged;
+
+            _ = this.@this.Document.ApplyDisplayUpdates();
+
+            this.@this.IsUndoGroupingEnabled = false;
 
             // Redraw the overlays, if needed
-            this.This.TryUpdateBracketsList();
-            if (this.This.RenderWhitespaceCharacters) this.This.TryUpdateWhitespaceCharactersList();
-            this.This.TryProcessErrorCoordinate();
+            this.@this.TryUpdateBracketsList();
+
+            if (this.@this.RenderWhitespaceCharacters)
+            {
+                this.@this.TryUpdateWhitespaceCharactersList();
+            }
+
+            this.@this.TryProcessErrorCoordinate();
 
             // Notify external subscribers
-            this.This.FormattingCompleted?.Invoke(this.This, EventArgs.Empty);
+            this.@this.FormattingCompleted?.Invoke(this.@this, EventArgs.Empty);
 
-            this.This._TextOverlaysCanvas!.Invalidate();
+            this.@this._TextOverlaysCanvas!.Invalidate();
         }
     }
 }

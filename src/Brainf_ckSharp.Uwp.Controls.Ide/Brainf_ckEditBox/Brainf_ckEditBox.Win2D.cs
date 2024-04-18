@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -24,60 +24,60 @@ internal sealed partial class Brainf_ckEditBox
     /// <summary>
     /// The <see cref="CanvasCachedGeometry"/> instance for the squiggly line
     /// </summary>
-    private CanvasCachedGeometry? _SquigglyLineGeometry;
+    private CanvasCachedGeometry? squigglyLineGeometry;
 
     /// <summary>
     /// The position of the current error, if present
     /// </summary>
-    private Vector2? _ErrorPosition;
+    private Vector2? errorPosition;
 
     /// <summary>
     /// The <see cref="Color"/> for the vertical column guides
     /// </summary>
-    private Color _DashStrokeColor = Brainf_ckThemes.VisualStudio.BracketsGuideColor;
+    private Color dashStrokeColor = Brainf_ckThemes.VisualStudio.BracketsGuideColor;
 
     /// <summary>
     /// The optional <see cref="CanvasStrokeStyle"/> for the vertical column guides
     /// </summary>
     /// <remarks>This field is updated from <see cref="OnSyntaxHighlightThemePropertyChanged"/></remarks>
-    private CanvasStrokeStyle _DashStrokeStyle = new() { CustomDashStyle = [2, 5] };
+    private CanvasStrokeStyle dashStrokeStyle = new() { CustomDashStyle = [2, 5] };
 
     /// <summary>
     /// The current sequence of bracket pairs being displayed in the text
     /// </summary>
-    private MemoryOwner<BracketsPairInfo> _BracketPairs = MemoryOwner<BracketsPairInfo>.Empty;
+    private MemoryOwner<BracketsPairInfo> bracketPairs = MemoryOwner<BracketsPairInfo>.Empty;
 
     /// <summary>
     /// The current sequence of column guide coordinates to render
     /// </summary>
-    private MemoryOwner<ColumnGuideInfo> _ColumnGuides = MemoryOwner<ColumnGuideInfo>.Empty;
+    private MemoryOwner<ColumnGuideInfo> columnGuides = MemoryOwner<ColumnGuideInfo>.Empty;
 
     /// <summary>
     /// The current sequence of indices for the space characters to render
     /// </summary>
-    private MemoryOwner<int> _SpaceIndices = MemoryOwner<int>.Empty;
+    private MemoryOwner<int> spaceIndices = MemoryOwner<int>.Empty;
 
     /// <summary>
     /// The current sequence of areas for the space characters to render
     /// </summary>
-    private MemoryOwner<Rect> _SpaceAreas = MemoryOwner<Rect>.Empty;
+    private MemoryOwner<Rect> spaceAreas = MemoryOwner<Rect>.Empty;
 
     /// <summary>
     /// The current sequence of indices for the tab characters to render
     /// </summary>
-    private MemoryOwner<int> _TabIndices = MemoryOwner<int>.Empty;
+    private MemoryOwner<int> tabIndices = MemoryOwner<int>.Empty;
 
     /// <summary>
     /// The current sequence of areas for the tab characters to render
     /// </summary>
-    private MemoryOwner<Rect> _TabAreas = MemoryOwner<Rect>.Empty;
+    private MemoryOwner<Rect> tabAreas = MemoryOwner<Rect>.Empty;
 
     /// <summary>
     /// Creates the resources for the Win2D canvas
     /// </summary>
     /// <param name="sender">The sender <see cref="CanvasControl"/> instance</param>
     /// <param name="args">The <see cref="CanvasCreateResourcesEventArgs"/> for the current instance</param>
-    private void _TextOverlaysCanvas_CreateResources(CanvasControl sender, CanvasCreateResourcesEventArgs args)
+    private void TextOverlaysCanvas_CreateResources(CanvasControl sender, CanvasCreateResourcesEventArgs args)
     {
         CanvasPathBuilder pathBuilder = new(sender);
 
@@ -93,7 +93,7 @@ internal sealed partial class Brainf_ckEditBox
 
         CanvasGeometry canvasGeometry = CanvasGeometry.CreatePath(pathBuilder);
 
-        this._SquigglyLineGeometry = CanvasCachedGeometry.CreateStroke(canvasGeometry, 1);
+        this.squigglyLineGeometry = CanvasCachedGeometry.CreateStroke(canvasGeometry, 1);
 
         CreateOverlayResources?.Invoke(sender, args);
     }
@@ -108,31 +108,31 @@ internal sealed partial class Brainf_ckEditBox
         float offset = (float)Padding.Top;
 
         // Error
-        if (this._ErrorPosition is Vector2 errorPosition)
+        if (this.errorPosition is Vector2 errorPosition)
         {
             // Center the line indicator and move it below the referenced text
             float
                 x = MathF.Max(errorPosition.X, 4),
                 y = errorPosition.Y + offset + 20;
 
-            args.DrawingSession.DrawCachedGeometry(this._SquigglyLineGeometry, x, y, Colors.Red);
+            args.DrawingSession.DrawCachedGeometry(this.squigglyLineGeometry, x, y, Colors.Red);
         }
 
         // Spaces
-        foreach (Rect spaceArea in this._SpaceAreas.Span)
+        foreach (Rect spaceArea in this.spaceAreas.Span)
         {
             Rect dot = new()
             {
                 Height = 2,
                 Width = 2,
-                X = spaceArea.Left + (spaceArea.Right - spaceArea.Left) / 2 + 7,
-                Y = spaceArea.Top + (spaceArea.Bottom - spaceArea.Top) / 2 + offset
+                X = spaceArea.Left + ((spaceArea.Right - spaceArea.Left) / 2) + 7,
+                Y = spaceArea.Top + ((spaceArea.Bottom - spaceArea.Top) / 2) + offset
             };
             args.DrawingSession.FillRectangle(dot, Colors.DimGray);
         }
 
         // Tabs
-        foreach (Rect tabArea in this._TabAreas.Span)
+        foreach (Rect tabArea in this.tabAreas.Span)
         {
             double width = tabArea.Right - tabArea.Left;
             if (width < 12)
@@ -142,8 +142,8 @@ internal sealed partial class Brainf_ckEditBox
                 {
                     Height = 2,
                     Width = 2,
-                    X = tabArea.Left + width / 2 + 8,
-                    Y = tabArea.Top + (tabArea.Bottom - tabArea.Top) / 2 + offset
+                    X = tabArea.Left + (width / 2) + 8,
+                    Y = tabArea.Top + ((tabArea.Bottom - tabArea.Top) / 2) + offset
                 };
                 args.DrawingSession.FillRectangle(dot, Colors.DimGray);
             }
@@ -151,8 +151,8 @@ internal sealed partial class Brainf_ckEditBox
             {
                 // Arrow indicator
                 float
-                    x = (float)(tabArea.Left + width / 2) + 4,
-                    y = (float)(tabArea.Top + (tabArea.Bottom - tabArea.Top) / 2) + offset;
+                    x = (float)(tabArea.Left + (width / 2)) + 4,
+                    y = (float)(tabArea.Top + ((tabArea.Bottom - tabArea.Top) / 2)) + offset;
                 int length = width < 28 ? 8 : 12;
                 args.DrawingSession.DrawLine(x, y + 2, x + length, y + 2, Colors.DimGray);
                 args.DrawingSession.DrawLine(x + length - 2, y, x + length, y + 2, Colors.DimGray);
@@ -161,16 +161,16 @@ internal sealed partial class Brainf_ckEditBox
         }
 
         // Column guides
-        foreach (ColumnGuideInfo guideInfo in this._ColumnGuides.Span)
+        foreach (ColumnGuideInfo guideInfo in this.columnGuides.Span)
         {
             args.DrawingSession.DrawLine(
                 guideInfo.X + 0.5f,
                 guideInfo.Y - 0.5f + offset,
                 guideInfo.X + 0.5f,
                 guideInfo.Y + guideInfo.Height + 0.5f + offset,
-                this._DashStrokeColor,
+                this.dashStrokeColor,
                 1,
-                this._DashStrokeStyle);
+                this.dashStrokeStyle);
         }
 
         DrawOverlays?.Invoke(sender, args);
@@ -181,10 +181,10 @@ internal sealed partial class Brainf_ckEditBox
     /// </summary>
     private void ResetWhitespaceCharactersList()
     {
-        this._SpaceIndices = MemoryOwner<int>.Empty;
-        this._SpaceAreas = MemoryOwner<Rect>.Empty;
-        this._TabIndices = MemoryOwner<int>.Empty;
-        this._TabAreas = MemoryOwner<Rect>.Empty;
+        this.spaceIndices = MemoryOwner<int>.Empty;
+        this.spaceAreas = MemoryOwner<Rect>.Empty;
+        this.tabIndices = MemoryOwner<int>.Empty;
+        this.tabAreas = MemoryOwner<Rect>.Empty;
     }
 
     /// <summary>
@@ -222,17 +222,17 @@ internal sealed partial class Brainf_ckEditBox
         }
 
         // Dispose the previous buffers
-        this._SpaceIndices.Dispose();
-        this._TabIndices.Dispose();
-        this._SpaceAreas.Dispose();
-        this._TabAreas.Dispose();
+        this.spaceIndices.Dispose();
+        this.tabIndices.Dispose();
+        this.spaceAreas.Dispose();
+        this.tabAreas.Dispose();
 
         // Update the current data
-        this._SpaceIndices = spaces.Slice(0, spacesCount);
-        this._TabIndices = tabs.Slice(0, tabsCount);
+        this.spaceIndices = spaces.Slice(0, spacesCount);
+        this.tabIndices = tabs.Slice(0, tabsCount);
 
-        ProcessWhitespaceCharactersList(ref this._SpaceIndices, out this._SpaceAreas);
-        ProcessWhitespaceCharactersList(ref this._TabIndices, out this._TabAreas);
+        ProcessWhitespaceCharactersList(ref this.spaceIndices, out this.spaceAreas);
+        ProcessWhitespaceCharactersList(ref this.tabIndices, out this.tabAreas);
     }
 
     /// <summary>
@@ -268,8 +268,8 @@ internal sealed partial class Brainf_ckEditBox
     {
         if (!this._SyntaxValidationResult.IsSuccessOrEmptyScript)
         {
-            this._BracketPairs = MemoryOwner<BracketsPairInfo>.Empty;
-            this._ColumnGuides = MemoryOwner<ColumnGuideInfo>.Empty;
+            this.bracketPairs = MemoryOwner<BracketsPairInfo>.Empty;
+            this.columnGuides = MemoryOwner<ColumnGuideInfo>.Empty;
 
             return;
         }
@@ -280,7 +280,7 @@ internal sealed partial class Brainf_ckEditBox
         int length = text.Length;
 
         // Temporary buffers, just in the original method in the core library
-        int tempBuffersLength = length / 2 + 1;
+        int tempBuffersLength = (length / 2) + 1;
         using SpanOwner<(int, int)> rootTempIndices = SpanOwner<(int, int)>.Allocate(tempBuffersLength);
         using SpanOwner<(int, int)> functionTempIndices = SpanOwner<(int, int)>.Allocate(tempBuffersLength);
         ref (int Index, int Y) rootTempIndicesRef = ref rootTempIndices.DangerousGetReference();
@@ -300,13 +300,20 @@ internal sealed partial class Brainf_ckEditBox
             {
                 // Track each loop start
                 case Characters.LoopStart:
-                    if (f == -1) Unsafe.Add(ref rootTempIndicesRef, r++) = (i, y);
-                    else Unsafe.Add(ref functionTempIndicesRef, f++) = (i, y);
+                    if (f == -1)
+                    {
+                        Unsafe.Add(ref rootTempIndicesRef, r++) = (i, y);
+                    }
+                    else
+                    {
+                        Unsafe.Add(ref functionTempIndicesRef, f++) = (i, y);
+                    }
+
                     break;
 
                 // Track loop ends if there is at least one line of difference
                 case Characters.LoopEnd:
-                    var start = f == -1
+                    (int Index, int Y) start = f == -1
                         ? Unsafe.Add(ref rootTempIndicesRef, --r)
                         : Unsafe.Add(ref functionTempIndicesRef, --f);
                     if (start.Y < y)
@@ -315,6 +322,7 @@ internal sealed partial class Brainf_ckEditBox
 
                         Unsafe.Add(ref jumpTableRef, jumps++) = new BracketsPairInfo(start.Index, i);
                     }
+
                     break;
 
                 // Track functions, starting at 1 so that index 0 stores the function brackets
@@ -330,6 +338,7 @@ internal sealed partial class Brainf_ckEditBox
 
                         Unsafe.Add(ref jumpTableRef, jumps++) = new BracketsPairInfo(functionTempIndicesRef.Index, i);
                     }
+
                     break;
 
                 // Track each new line
@@ -340,7 +349,7 @@ internal sealed partial class Brainf_ckEditBox
         }
 
         // Skip the update if both sequences match
-        if (this._BracketPairs.Span.AsBytes().SequenceEqual(jumpTable.Span.AsBytes()))
+        if (this.bracketPairs.Span.AsBytes().SequenceEqual(jumpTable.Span.AsBytes()))
         {
             jumpTable.Dispose();
 
@@ -348,35 +357,38 @@ internal sealed partial class Brainf_ckEditBox
         }
 
         // Update the current brackets sequence
-        this._BracketPairs.Dispose();
-        this._BracketPairs = jumpTable.Slice(0, jumps);
+        this.bracketPairs.Dispose();
+        this.bracketPairs = jumpTable.Slice(0, jumps);
 
         // Processes the computed data
         ProcessBracketsList();
     }
 
     /// <summary>
-    /// Processes the current column guides info and updates <see cref="_ColumnGuides"/>
+    /// Processes the current column guides info and updates <see cref="columnGuides"/>
     /// </summary>
     private void ProcessBracketsList()
     {
-        this._ColumnGuides.Dispose();
+        this.columnGuides.Dispose();
 
         // Update the target buffer
-        MemoryOwner<BracketsPairInfo> bracketPairs = this._BracketPairs;
+        MemoryOwner<BracketsPairInfo> bracketPairs = this.bracketPairs;
         MemoryOwner<ColumnGuideInfo> columnGuides = MemoryOwner<ColumnGuideInfo>.Allocate(bracketPairs.Length);
 
-        this._ColumnGuides = columnGuides;
+        this.columnGuides = columnGuides;
 
         // Skip if there are no brackets to render
-        if (columnGuides.Length == 0) return;
+        if (columnGuides.Length == 0)
+        {
+            return;
+        }
 
         ref BracketsPairInfo bracketPairsRef = ref bracketPairs.DangerousGetReference();
         ref ColumnGuideInfo columnGuidesRef = ref columnGuides.DangerousGetReference();
 
         for (int i = 0; i < bracketPairs.Length; i++)
         {
-            var bounds = Unsafe.Add(ref bracketPairsRef, i);
+            BracketsPairInfo bounds = Unsafe.Add(ref bracketPairsRef, i);
 
             // Get the initial and ending range
             Document.GetRangeAt(bounds.Start).GetRect(PointOptions.Transform, out Rect open, out _);
@@ -399,7 +411,7 @@ internal sealed partial class Brainf_ckEditBox
     {
         if (this._SyntaxValidationResult.IsSuccessOrEmptyScript)
         {
-            this._ErrorPosition = null;
+            this.errorPosition = null;
 
             return;
         }
@@ -407,6 +419,6 @@ internal sealed partial class Brainf_ckEditBox
         // Get the range for the current error
         Document.GetRangeAt(this._SyntaxValidationResult.ErrorOffset).GetRect(PointOptions.Transform, out Rect rect, out _);
 
-        this._ErrorPosition = new Vector2((float)rect.Left, (float)rect.Top);
+        this.errorPosition = new Vector2((float)rect.Left, (float)rect.Top);
     }
 }

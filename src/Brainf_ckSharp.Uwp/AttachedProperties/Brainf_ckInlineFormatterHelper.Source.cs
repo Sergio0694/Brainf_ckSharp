@@ -139,7 +139,10 @@ public static partial class Brainf_ckInlineFormatterHelper
                 }
             }
         }
-        else @this.Inlines.Clear();
+        else
+        {
+            @this.Inlines.Clear();
+        }
 
         Brainf_ckTheme theme = SettingsService.GetValue<IdeTheme>(SettingsKeys.IdeTheme).AsBrainf_ckTheme();
 

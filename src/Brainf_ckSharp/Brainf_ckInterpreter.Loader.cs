@@ -36,7 +36,10 @@ public static partial class Brainf_ckInterpreter
         Assert(totalFunctions >= 0);
 
         // No declared functions
-        if (totalFunctions == 0) return [];
+        if (totalFunctions == 0)
+        {
+            return [];
+        }
 
         FunctionDefinition[] result = new FunctionDefinition[totalFunctions];
         ref FunctionDefinition r0 = ref result.DangerousGetReference();
@@ -95,8 +98,15 @@ public static partial class Brainf_ckInterpreter
                 // temporary buffer, depending on whether or not the current
                 // part of the executable is within a function definition
                 case Operators.LoopStart:
-                    if (f == -1) Unsafe.Add(ref rootTempIndicesRef, r++) = i;
-                    else Unsafe.Add(ref functionTempIndicesRef, f++) = i;
+                    if (f == -1)
+                    {
+                        Unsafe.Add(ref rootTempIndicesRef, r++) = i;
+                    }
+                    else
+                    {
+                        Unsafe.Add(ref functionTempIndicesRef, f++) = i;
+                    }
+
                     break;
 
                 // When a loop ends, the index of the corresponding open square
@@ -151,7 +161,10 @@ public static partial class Brainf_ckInterpreter
         Assert(depth >= -1);
 
         // No exception info for scripts completed successfully
-        if (depth == -1) return null;
+        if (depth == -1)
+        {
+            return null;
+        }
 
         string[] stackTrace = new string[depth + 1];
         ref string r0 = ref stackTrace.DangerousGetReference();

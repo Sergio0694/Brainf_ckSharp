@@ -69,8 +69,15 @@ public sealed partial class SubPageHost : UserControl
         get => this.HostControl.Content;
         set
         {
-            if (value == null && this.HostControl.Content != null) SizeChanged -= SubFrameHost_SizeChanged;
-            else if (value != null && this.HostControl.Content == null) SizeChanged += SubFrameHost_SizeChanged;
+            if (value == null && this.HostControl.Content != null)
+            {
+                SizeChanged -= SubFrameHost_SizeChanged;
+            }
+            else if (value != null && this.HostControl.Content == null)
+            {
+                SizeChanged += SubFrameHost_SizeChanged;
+            }
+
             this.HostControl.Content = value;
             UpdateLayout(new Size(ActualWidth, ActualHeight));
             SizeChanged += SubFrameHost_SizeChanged;
@@ -114,7 +121,10 @@ public sealed partial class SubPageHost : UserControl
     {
         using (await this.SubFrameLock.LockAsync())
         {
-            if (SubPage is not UserControl page) return;
+            if (SubPage is not UserControl page)
+            {
+                return;
+            }
 
             page.IsHitTestVisible = false;
             this.RootGrid.Visibility = this.SubFrameContentHost.Visibility = Visibility.Collapsed;
@@ -126,7 +136,10 @@ public sealed partial class SubPageHost : UserControl
     // Handles the software back button
     private void SubFrameControl_BackRequested(object sender, BackRequestedEventArgs e)
     {
-        if (SubPage != null) e.Handled = true; // This needs to be synchronous
+        if (SubPage != null)
+        {
+            e.Handled = true; // This needs to be synchronous
+        }
 
         CloseSubFramePage();
     }
@@ -157,7 +170,10 @@ public sealed partial class SubPageHost : UserControl
                 targetWidth = double.PositiveInfinity;
                 contentBorderThickness.Left = contentBorderThickness.Right = 0;
             }
-            else targetWidth = width;
+            else
+            {
+                targetWidth = width;
+            }
 
             // Adjust the content height
             if (double.IsNaN(height))

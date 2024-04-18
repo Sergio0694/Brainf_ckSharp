@@ -43,8 +43,14 @@ public sealed class SettingsService : ISettingsService
         }
 
         // Store the new value
-        if (!this.SettingsStorage.ContainsKey(key)) this.SettingsStorage.Add(key, serializable);
-        else if (overwrite) this.SettingsStorage[key] = serializable;
+        if (!this.SettingsStorage.ContainsKey(key))
+        {
+            this.SettingsStorage.Add(key, serializable);
+        }
+        else if (overwrite)
+        {
+            this.SettingsStorage[key] = serializable;
+        }
     }
 
     /// <inheritdoc/>
@@ -53,13 +59,19 @@ public sealed class SettingsService : ISettingsService
         // Try to get the setting value
         if (!this.SettingsStorage.TryGetValue(key, out object value))
         {
-            if (fallback) return default!;
+            if (fallback)
+            {
+                return default!;
+            }
 
             ThrowHelper.ThrowArgumentException("The setting with the given key does not exist");
         }
 
         // Cast and return the retrieved setting
-        if (typeof(T) == typeof(DateTime)) value = DateTime.FromBinary((long)value);
+        if (typeof(T) == typeof(DateTime))
+        {
+            value = DateTime.FromBinary((long)value);
+        }
 
         return (T)value;
     }

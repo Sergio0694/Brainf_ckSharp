@@ -53,14 +53,14 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
     }
 
     /// <summary>
-    /// Updates <see cref="_SelectionLength"/> with the length of the current selection
+    /// Updates <see cref="selectionLength"/> with the length of the current selection
     /// </summary>
     /// <param name="sender">The current <see cref="Brainf_ckEditBox"/> instance</param>
     /// <param name="args">The <see cref="RichEditBoxSelectionChangingEventArgs"/> instance for the <see cref="RichEditBox.SelectionChanging"/> event</param>
     private void Brainf_ckEditBox_SelectionChanging(RichEditBox sender, RichEditBoxSelectionChangingEventArgs args)
     {
-        this._SelectionStart = args.SelectionStart;
-        this._SelectionLength = args.SelectionLength;
+        this.selectionStart = args.SelectionStart;
+        this.selectionLength = args.SelectionLength;
 
         IsTextSelected = args.SelectionLength > 0;
     }
@@ -78,7 +78,7 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
         // Both elements are translated to the right position and made visible
         // if the current selection is not collapsed to a single point, otherwise
         // they're both hidden. This is the same behavior of Visual Studio.
-        if (this._SelectionLength > 0)
+        if (this.selectionLength > 0)
         {
             this._SelectionHighlightBorder!.Opacity = 0;
             this._CursorIndicatorRectangle!.Visibility = Visibility.Collapsed;
@@ -96,8 +96,8 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
             cursorTransform.Y = rect.Y + Padding.Top;
         }
 
-        var position = Text.CalculateCoordinates(Document.Selection.EndPosition);
-        var args = new CursorPositionChangedEventArgs(position.Row + 1, position.Column + 1);
+        (int Row, int Column) position = Text.CalculateCoordinates(Document.Selection.EndPosition);
+        CursorPositionChangedEventArgs args = new CursorPositionChangedEventArgs(position.Row + 1, position.Column + 1);
 
         // Signal the cursor movement
         CursorPositionChanged?.Invoke(this, args);
@@ -124,24 +124,36 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
 
         // Calculate the target horizontal offset
         double? horizontal;
-        if (rect.Left < horizontalOffset) horizontal = rect.Left - NegativeLeftOffsetBeforeSelection;
+        if (rect.Left < horizontalOffset)
+        {
+            horizontal = rect.Left - NegativeLeftOffsetBeforeSelection;
+        }
         else if (rect.Left > viewportWidth + horizontalOffset - HorizontalScrollingThreshold)
         {
             horizontal = rect.Left - viewportWidth + RightOffsetAfterSelection;
         }
-        else horizontal = null;
+        else
+        {
+            horizontal = null;
+        }
 
         const double VerticalScrollingThreshold = 32;
         const double BottomOffsetBelowSelection = 32;
 
         // Calculate the target vertical offset
         double? vertical;
-        if (transformedVerticalOffset < 0) vertical = verticalOffset + transformedVerticalOffset;
+        if (transformedVerticalOffset < 0)
+        {
+            vertical = verticalOffset + transformedVerticalOffset;
+        }
         else if (transformedVerticalOffset > viewportHeight - VerticalScrollingThreshold)
         {
             vertical = verticalOffset + (transformedVerticalOffset - viewportHeight) + BottomOffsetBelowSelection;
         }
-        else vertical = null;
+        else
+        {
+            vertical = null;
+        }
 
         // Scroll to selection
         ContentScroller.ChangeView(horizontal, vertical, null, false);
@@ -152,7 +164,10 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
     /// </summary>
     public async void TryShowSyntaxErrorToolTip()
     {
-        if (this._SyntaxValidationResult.IsSuccess) return;
+        if (this._SyntaxValidationResult.IsSuccess)
+        {
+            return;
+        }
 
         int errorPosition = this._SyntaxValidationResult.IsEmptyScript switch
         {
@@ -186,7 +201,10 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
         {
             ScrollToSelection(out _);
         }
-        else Document.Selection.SetRange(errorPosition, errorPosition);
+        else
+        {
+            Document.Selection.SetRange(errorPosition, errorPosition);
+        }
 
         // Wait a minimum delay
         await Task.Delay(100);
@@ -237,7 +255,10 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
     // Checks when the text changes and applies the syntax highlight
     private void MarkdownRichEditBox_TextChanging(RichEditBox sender, RichEditBoxTextChangingEventArgs args)
     {
-        if (!args.IsContentChanging) return;
+        if (!args.IsContentChanging)
+        {
+            return;
+        }
 
         ApplySyntaxHighlight();
     }
@@ -254,8 +275,14 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
             if (this._IsUndoGroupingEnabled != value)
             {
                 this._IsUndoGroupingEnabled = value;
-                if (value) Document.BeginUndoGroup();
-                else Document.EndUndoGroup();
+                if (value)
+                {
+                    Document.BeginUndoGroup();
+                }
+                else
+                {
+                    Document.EndUndoGroup();
+                }
             }
         }
     }
@@ -298,7 +325,7 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
         if (e.Key == VirtualKey.Back ||
             e.Key == VirtualKey.Delete)
         {
-            this._IsDeleteRequested = true;
+            this.isDeleteRequested = true;
 
             goto BaseOnKeyDown;
         }
@@ -315,8 +342,14 @@ internal sealed partial class Brainf_ckEditBox : RichEditBox
             {
                 Document.Selection.TypeText("\t");
             }
-            else if (VirtualKey.Shift.IsDown()) ShiftBackward();
-            else ShiftForward();
+            else if (VirtualKey.Shift.IsDown())
+            {
+                ShiftBackward();
+            }
+            else
+            {
+                ShiftForward();
+            }
 
             goto HandleAndReturn;
         }

@@ -33,7 +33,10 @@ public static class IFileExtensions
         using Stream stream = await file.OpenStreamForWriteAsync();
 
         // Clear the current content
-        if (stream.Length > 0) stream.SetLength(0);
+        if (stream.Length > 0)
+        {
+            stream.SetLength(0);
+        }
 
         using StreamWriter writer = new(stream, Encoding.UTF8);
 

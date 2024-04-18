@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -18,7 +18,7 @@ public sealed partial class Brainf_ckIde
     /// <summary>
     /// The loaded text currently in use (used as a reference for changes)
     /// </summary>
-    private string _LoadedText = "\r";
+    private string loadedText = "\r";
 
     /// <summary>
     /// Loads a given text file and starts using it as reference for the git diff indicators
@@ -26,11 +26,11 @@ public sealed partial class Brainf_ckIde
     /// <param name="text"></param>
     public void LoadText(string text)
     {
-        this._LoadedText = text.WithCarriageReturnLineEndings();
+        this.loadedText = text.WithCarriageReturnLineEndings();
 
-        this._DiffIndicators.Span.Clear();
+        this.diffIndicators.Span.Clear();
 
-        this.BreakpointIndicators.Clear();
+        this.breakpointIndicators.Clear();
 
         this.CodeEditBox.Document.LoadFromString(text);
     }
@@ -40,7 +40,7 @@ public sealed partial class Brainf_ckIde
     /// </summary>
     public void MarkTextAsSaved()
     {
-        this._LoadedText = this.CodeEditBox.Text;
+        this.loadedText = this.CodeEditBox.Text;
 
         UpdateDiffInfo();
 
@@ -117,9 +117,12 @@ public sealed partial class Brainf_ckIde
     /// <returns>A <see cref="MemoryOwner{T}"/> instance with the line numbers with a breakpoint.</returns>
     public IMemoryOwner<int> GetBreakpoints()
     {
-        int count = this.BreakpointIndicators.Count;
+        int count = this.breakpointIndicators.Count;
 
-        if (count == 0) return MemoryOwner<int>.Empty;
+        if (count == 0)
+        {
+            return MemoryOwner<int>.Empty;
+        }
 
         // Rent a buffer to copy the line numbers with a breakpoint
         MemoryOwner<int> buffer = MemoryOwner<int>.Allocate(count);
@@ -128,7 +131,7 @@ public sealed partial class Brainf_ckIde
         int i = 0;
 
         // Copy the existing breakpoints
-        foreach (var pair in this.BreakpointIndicators)
+        foreach (System.Collections.Generic.KeyValuePair<int, float> pair in this.breakpointIndicators)
         {
             Unsafe.Add(ref bufferRef, i++) = pair.Key - 1;
         }
@@ -136,7 +139,7 @@ public sealed partial class Brainf_ckIde
         // Get the underlying array to sort in-place.
         // This will no longer be needed on .NET 5, as there are APIs
         // to sort items within a Span<T> directly, not yet on UWP though.
-        _ = MemoryMarshal.TryGetArray<int>(buffer.Memory, out var segment);
+        _ = MemoryMarshal.TryGetArray<int>(buffer.Memory, out ArraySegment<int> segment);
 
         Array.Sort(segment.Array!, segment.Offset, segment.Count);
 
@@ -145,12 +148,12 @@ public sealed partial class Brainf_ckIde
         i = 0;
         int j = 0, k = 0;
 
-        foreach (var line in this.CodeEditBox.Text.Tokenize(Characters.CarriageReturn))
+        foreach (ReadOnlySpan<char> line in this.CodeEditBox.Text.Tokenize(Characters.CarriageReturn))
         {
             // If the current line is marked, do a linear search to find the first operator
             if (Unsafe.Add(ref bufferRef, i) == j)
             {
-                foreach (var item in line.Enumerate())
+                foreach (CommunityToolkit.HighPerformance.Enumerables.ReadOnlySpanEnumerable<char>.Item item in line.Enumerate())
                 {
                     if (Brainf_ckParser.IsOperator(item.Value))
                     {

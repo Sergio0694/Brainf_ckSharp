@@ -91,7 +91,10 @@ public sealed partial class App : Application
         {
             this._RequestedFile = new File(file);
         }
-        else this._RequestedFile = null;
+        else
+        {
+            this._RequestedFile = null;
+        }
 
         OnActivated(false);
 

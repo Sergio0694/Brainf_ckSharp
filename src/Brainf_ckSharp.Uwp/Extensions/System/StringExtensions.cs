@@ -20,7 +20,10 @@ public static class StringExtensions
     {
         int textLength = text.Length;
 
-        if (textLength == 0) return string.Empty;
+        if (textLength == 0)
+        {
+            return string.Empty;
+        }
 
         using SpanOwner<char> buffer = SpanOwner<char>.Allocate(textLength * 2);
 

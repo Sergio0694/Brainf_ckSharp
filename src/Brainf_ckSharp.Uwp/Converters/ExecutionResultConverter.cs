@@ -45,10 +45,16 @@ public static class ExecutionResultConverter
     /// <returns>A representation of the input run</returns>
     public static string? StdoutOrExitCodeDescription(Option<InterpreterResult>? result)
     {
-        if (result is null) return null;
+        if (result is null)
+        {
+            return null;
+        }
 
         // No result if the script is empty
-        if (result.ValidationResult.IsEmptyScript) return null;
+        if (result.ValidationResult.IsEmptyScript)
+        {
+            return null;
+        }
 
         // Show the syntax error, if present
         if (result.ValidationResult.IsError)

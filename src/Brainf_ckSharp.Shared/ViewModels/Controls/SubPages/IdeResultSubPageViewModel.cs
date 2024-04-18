@@ -227,11 +227,24 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
         // available info for the current script execution.
         // Each template is responsible for extracting info from it
         // and display according to its own function and section type.
-        if (!result.ExitCode.HasFlag(ExitCode.Success)) AddToSource(IdeResultSection.ExceptionType);
-        if (result.Stdout.Length > 0) AddToSource(IdeResultSection.Stdout);
+        if (!result.ExitCode.HasFlag(ExitCode.Success))
+        {
+            AddToSource(IdeResultSection.ExceptionType);
+        }
 
-        if (result.ExitCode.HasFlag(ExitCode.ExceptionThrown)) AddToSource(IdeResultSection.FaultingOperator);
-        else if (result.ExitCode.HasFlag(ExitCode.BreakpointReached)) AddToSource(IdeResultSection.BreakpointReached);
+        if (result.Stdout.Length > 0)
+        {
+            AddToSource(IdeResultSection.Stdout);
+        }
+
+        if (result.ExitCode.HasFlag(ExitCode.ExceptionThrown))
+        {
+            AddToSource(IdeResultSection.FaultingOperator);
+        }
+        else if (result.ExitCode.HasFlag(ExitCode.BreakpointReached))
+        {
+            AddToSource(IdeResultSection.BreakpointReached);
+        }
 
         if (result.ExitCode.HasFlag(ExitCode.ExceptionThrown) ||
             result.ExitCode.HasFlag(ExitCode.ThresholdExceeded) ||
@@ -242,7 +255,10 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
 
         AddToSource(IdeResultSection.SourceCode);
 
-        if (result.Functions.Count > 0) AddToSource(IdeResultSection.FunctionDefinitions);
+        if (result.Functions.Count > 0)
+        {
+            AddToSource(IdeResultSection.FunctionDefinitions);
+        }
 
         AddToSource(IdeResultSection.MemoryState);
         AddToSource(IdeResultSection.Statistics);
