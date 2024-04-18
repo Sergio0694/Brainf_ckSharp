@@ -64,11 +64,6 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     private readonly IFilesService filesService;
 
     /// <summary>
-    /// The <see cref="IFilesHistoryService"/> instance currently in use
-    /// </summary>
-    private readonly IFilesHistoryService filesHistoryService;
-
-    /// <summary>
     /// The <see cref="IClipboardService"/> instance currently in use
     /// </summary>
     private readonly IClipboardService clipboardService;
@@ -107,21 +102,18 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
     /// <param name="analyticsService">The <see cref="IAnalyticsService"/> instance to use</param>
     /// <param name="filesService">The <see cref="IFilesService"/> instance to use</param>
-    /// <param name="filesHistoryService">The <see cref="IFilesHistoryService"/> instance to use</param>
     /// <param name="clipboardService">The <see cref="IClipboardService"/> instance to use</param>
     /// <param name="shareService">The <see cref="IShareService"/> instance to use</param>
     public CodeLibrarySubPageViewModel(
         IMessenger messenger,
         IAnalyticsService analyticsService,
         IFilesService filesService,
-        IFilesHistoryService filesHistoryService,
         IClipboardService clipboardService,
         IShareService shareService)
         : base(messenger)
     {
         this.analyticsService = analyticsService;
         this.filesService = filesService;
-        this.filesHistoryService = filesHistoryService;
         this.clipboardService = clipboardService;
         this.shareService = shareService;
     }
@@ -317,15 +309,13 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     /// </summary>
     /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to remove</param>
     [RelayCommand]
-    private Task RemoveFromLibraryAsync(CodeLibraryEntry? entry)
+    private void RemoveFromLibrary(CodeLibraryEntry? entry)
     {
         Guard.IsNotNull(entry);
 
         this.analyticsService.Log(EventNames.RemoveFromLibrary, (nameof(CodeMetadata.IsFavorited), entry.Metadata.IsFavorited.ToString()));
 
         RemoveTrackedSourceCode(entry);
-
-        return this.filesHistoryService.RemoveActivityAsync(entry.File);
     }
 
     /// <summary>
@@ -333,7 +323,7 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     /// </summary>
     /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to delete</param>
     [RelayCommand]
-    private Task DeleteAsync(CodeLibraryEntry? entry)
+    private async Task DeleteAsync(CodeLibraryEntry? entry)
     {
         Guard.IsNotNull(entry);
 
@@ -341,11 +331,7 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
 
         RemoveTrackedSourceCode(entry);
 
-        // We can remove the item from history and delete the file in parallel,
-        // since removing a tracked item from history requires no file access.
-        return Task.WhenAll(
-            this.filesHistoryService.RemoveActivityAsync(entry.File),
-            entry.File.DeleteAsync());
+        await entry.File.DeleteAsync();
     }
 
     /// <summary>
