@@ -1,4 +1,4 @@
-﻿using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections;
@@ -9,6 +9,9 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings;
 
+/// <summary>
+/// A viewmodel for the settings page.
+/// </summary>
 public sealed class SettingsSubPageViewModel : ObservableRecipient
 {
     /// <summary>
@@ -22,13 +25,13 @@ public sealed class SettingsSubPageViewModel : ObservableRecipient
     public SettingsSubPageViewModel(IMessenger messenger, IAnalyticsService analyticsService, IStoreService storeService, ISettingsService settingsService, AppConfiguration configuration)
         : base(messenger)
     {
-        Source.AddGroup(SettingsSection.Ide, new[] { new IdeSettingsSectionViewModel(messenger, analyticsService, storeService, settingsService, configuration) });
-        Source.AddGroup(SettingsSection.UI, new[] { new UISettingsSectionViewModel(messenger, settingsService) });
-        Source.AddGroup(SettingsSection.Interpreter, new[] { new InterpreterSettingsSectionViewModel(messenger, settingsService) });
+        _ = Source.AddGroup(SettingsSection.Ide, new[] { new IdeSettingsSectionViewModel(messenger, analyticsService, storeService, settingsService, configuration) });
+        _ = Source.AddGroup(SettingsSection.UI, new[] { new UISettingsSectionViewModel(messenger, settingsService) });
+        _ = Source.AddGroup(SettingsSection.Interpreter, new[] { new InterpreterSettingsSectionViewModel(messenger, settingsService) });
     }
 
     /// <summary>
     /// Gets the current collection of sections to display
     /// </summary>
-    public ObservableGroupedCollection<SettingsSection, SettingsSectionViewModelBase> Source { get; } = new();
+    public ObservableGroupedCollection<SettingsSection, SettingsSectionViewModelBase> Source { get; } = [];
 }

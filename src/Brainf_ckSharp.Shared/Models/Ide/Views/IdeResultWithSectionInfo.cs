@@ -1,4 +1,4 @@
-﻿using Brainf_ckSharp.Models;
+using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Shared.Enums;
 
 namespace Brainf_ckSharp.Shared.Models.Ide.Views;
@@ -9,23 +9,20 @@ namespace Brainf_ckSharp.Shared.Models.Ide.Views;
 public sealed class IdeResultWithSectionInfo
 {
     /// <summary>
-    /// Creates a new <see cref="IdeResultWithSectionInfo"/> instance with the specified parameters
+    /// Creates a new <see cref="IdeResultWithSectionInfo"/> instance.
     /// </summary>
-    /// <param name="section">The current section being targeted</param>
-    /// <param name="result">The <see cref="InterpreterResult"/> instance to wrap</param>
-    public IdeResultWithSectionInfo(IdeResultSection section, InterpreterResult result)
+    /// <remarks>Needed to prevent the XAML compiler from producing invalid code.</remarks>
+    internal IdeResultWithSectionInfo()
     {
-        Section = section;
-        Result = result;
     }
 
     /// <summary>
     /// Gets the current section being targeted
     /// </summary>
-    public IdeResultSection Section { get; }
+    public required IdeResultSection Section { get; init; }
 
     /// <summary>
     /// Gets the <see cref="InterpreterResult"/> instance currently wrapped
     /// </summary>
-    public InterpreterResult Result { get; }
+    public required InterpreterResult Result { get; init; }
 }

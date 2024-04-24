@@ -1,4 +1,4 @@
-﻿namespace Brainf_ckSharp.Shared.Models;
+namespace Brainf_ckSharp.Shared.Models;
 
 /// <summary>
 /// A simple model that represents a unicode character
@@ -6,13 +6,16 @@
 public sealed class UnicodeCharacter
 {
     /// <summary>
-    /// Creates a new <see cref="UnicodeCharacter"/> instance with the specified parameters
+    /// Creates a new <see cref="UnicodeCharacter"/> instance.
     /// </summary>
-    /// <param name="value">The input unicode character to wrap</param>
-    public UnicodeCharacter(char value) => Value = value;
+    /// <remarks>Needed to prevent the XAML compiler from producing invalid code.</remarks>
+    internal UnicodeCharacter()
+    {
+    }
 
     /// <summary>
     /// Gets the character for the current instance
     /// </summary>
-    public char Value { get; }
+    /// <remarks>Not using <see langword="init"/> to prevent the XAML compiler from producing invalid code.</remarks>
+    public required char Value { get; set; }
 }

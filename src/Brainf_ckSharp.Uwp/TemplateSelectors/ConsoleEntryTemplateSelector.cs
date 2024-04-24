@@ -44,11 +44,11 @@ public sealed class ConsoleEntryTemplateSelector : DataTemplateSelector
 
         DataTemplate? template = item switch
         {
-            ConsoleCommand _ => CommandTemplate,
-            ConsoleResult _ => ResultTemplate,
-            ConsoleSyntaxError _ => SyntaxErrorTemplate,
-            ConsoleException _ => ExceptionTemplate,
-            ConsoleRestart _ => RestartTemplate,
+            ConsoleCommand => CommandTemplate,
+            ConsoleResult => ResultTemplate,
+            ConsoleSyntaxError => SyntaxErrorTemplate,
+            ConsoleException => ExceptionTemplate,
+            ConsoleRestart => RestartTemplate,
             _ => ThrowHelper.ThrowArgumentException<DataTemplate>("Invalid input item type")
         };
 

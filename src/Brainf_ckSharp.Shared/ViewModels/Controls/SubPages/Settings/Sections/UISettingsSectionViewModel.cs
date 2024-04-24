@@ -1,4 +1,4 @@
-﻿using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.Settings;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections.Abstract;
@@ -6,6 +6,9 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections;
 
+/// <summary>
+/// A viewmodel for the UI settings section.
+/// </summary>
 public sealed class UISettingsSectionViewModel : SettingsSectionViewModelBase
 {
     /// <summary>
@@ -16,29 +19,29 @@ public sealed class UISettingsSectionViewModel : SettingsSectionViewModelBase
     public UISettingsSectionViewModel(IMessenger messenger, ISettingsService settingsService)
         : base(messenger, settingsService)
     {
-        _ClearStdinBufferOnRequest = SettingsService.GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest);
-        _ShowPBrainButtons = SettingsService.GetValue<bool>(SettingsKeys.ShowPBrainButtons);
+        this.clearStdinBufferOnRequest = this.SettingsService.GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest);
+        this.showPBrainButtons = this.SettingsService.GetValue<bool>(SettingsKeys.ShowPBrainButtons);
     }
 
-    private bool _ClearStdinBufferOnRequest;
+    private bool clearStdinBufferOnRequest;
 
     /// <summary>
     /// Exposes the <see cref="SettingsKeys.ClearStdinBufferOnRequest"/> setting
     /// </summary>
     public bool ClearStdinBufferOnRequest
     {
-        get => _ClearStdinBufferOnRequest;
-        set => SetProperty(ref _ClearStdinBufferOnRequest, value);
+        get => this.clearStdinBufferOnRequest;
+        set => SetProperty(ref this.clearStdinBufferOnRequest, value);
     }
 
-    private bool _ShowPBrainButtons;
+    private bool showPBrainButtons;
 
     /// <summary>
     /// Exposes the <see cref="SettingsKeys.ShowPBrainButtons"/> setting
     /// </summary>
     public bool ShowPBrainButtons
     {
-        get => _ShowPBrainButtons;
-        set => SetProperty<bool, ShowPBrainButtonsSettingsChangedMessage>(ref _ShowPBrainButtons, value);
+        get => this.showPBrainButtons;
+        set => SetProperty<bool, ShowPBrainButtonsSettingsChangedMessage>(ref this.showPBrainButtons, value);
     }
 }

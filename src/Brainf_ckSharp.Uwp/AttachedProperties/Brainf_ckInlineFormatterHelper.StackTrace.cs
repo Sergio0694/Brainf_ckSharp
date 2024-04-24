@@ -64,12 +64,18 @@ public static partial class Brainf_ckInlineFormatterHelper
 
         @this.Inlines.Clear();
 
-        if (value.Count == 0) return;
+        if (value.Count == 0)
+        {
+            return;
+        }
 
         int i = 0;
-        foreach (var entry in CompressStackTrace(value))
+        foreach ((string Item, int Occurrences, int Length) entry in CompressStackTrace(value))
         {
-            if (i++ > 0) @this.Inlines.Add(new LineBreak());
+            if (i++ > 0)
+            {
+                @this.Inlines.Add(new LineBreak());
+            }
 
             // Insert the "at" separator if needed
             @this.Inlines.Add(new Run
@@ -94,33 +100,45 @@ public static partial class Brainf_ckInlineFormatterHelper
     public static IEnumerable<(string Item, int Occurrences, int Length)> CompressStackTrace(IReadOnlyList<string> frames)
     {
         int i = 0;
-        List<(int Length, int Occurrences)> info = new();
+        List<(int Length, int Occurrences)> info = [];
         while (i < frames.Count)
         {
-            for (int step = 1; step < 5 && i + step * 2 - 1 < frames.Count; step++)
+            for (int step = 1; step < 5 && i + (step * 2) - 1 < frames.Count; step++)
             {
                 // Find a valid sub-pattern of a given length
                 bool valid = true;
                 for (int j = 0; j < step; j++)
+                {
                     if (!frames[i + j].Equals(frames[i + step + j]))
                     {
                         valid = false;
                         break;
                     }
-                if (!valid) continue;
+                }
+
+                if (!valid)
+                {
+                    continue;
+                }
 
                 // Check of many times the pattern repeats
                 int occurrences = 2;
-                for (int j = i + step * 2; j + step - 1 < frames.Count; j += step)
+                for (int j = i + (step * 2); j + step - 1 < frames.Count; j += step)
                 {
                     valid = true;
                     for (int k = 0; k < step; k++)
+                    {
                         if (!frames[i + k].Equals(frames[j + k]))
                         {
                             valid = false;
                             break;
                         }
-                    if (valid) occurrences++;
+                    }
+
+                    if (valid)
+                    {
+                        occurrences++;
+                    }
                 }
 
                 // Store the current sub-sequence info
@@ -135,10 +153,13 @@ public static partial class Brainf_ckInlineFormatterHelper
             }
             else
             {
-                var best = info.OrderByDescending(item => item.Length * item.Occurrences).ThenBy(item => item.Length).First();
+                (int Length, int Occurrences) best = info.OrderByDescending(item => item.Length * item.Occurrences).ThenBy(item => item.Length).First();
                 StringBuilder builder = new();
                 for (int j = 0; j < best.Length; j++)
+                {
                     builder.Append(frames[i + j]);
+                }
+
                 string call = builder.ToString();
                 if (call.Contains(':'))
                 {
@@ -153,6 +174,7 @@ public static partial class Brainf_ckInlineFormatterHelper
                     i += 1;
                 }
             }
+
             info.Clear();
         }
     }

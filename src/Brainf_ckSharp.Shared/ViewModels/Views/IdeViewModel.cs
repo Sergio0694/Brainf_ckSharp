@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -13,6 +13,8 @@ using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.Messaging;
 
+#pragma warning disable IDE0290
+
 namespace Brainf_ckSharp.Shared.ViewModels.Views;
 
 /// <summary>
@@ -23,22 +25,22 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     /// <summary>
     /// The <see cref="IAnalyticsService"/> instance currently in use
     /// </summary>
-    private readonly IAnalyticsService AnalyticsService;
+    private readonly IAnalyticsService analyticsService;
 
     /// <summary>
     /// The <see cref="IFilesService"/> instance currently in use
     /// </summary>
-    private readonly IFilesService FilesService;
+    private readonly IFilesService filesService;
 
     /// <summary>
     /// The <see cref="IFilesManagerService"/> instance currently in use
     /// </summary>
-    private readonly IFilesManagerService FilesManagerService;
+    private readonly IFilesManagerService filesManagerService;
 
     /// <summary>
     /// The <see cref="IFilesHistoryService"/> instance currently in use
     /// </summary>
-    private readonly IFilesHistoryService FilesHistoryService;
+    private readonly IFilesHistoryService filesHistoryService;
 
     /// <summary>
     /// Raised whenever a script is requested to be run
@@ -83,13 +85,18 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     /// <param name="filesService">The <see cref="IFilesService"/> instance to use</param>
     /// <param name="filesManagerService">The <see cref="IFilesManagerService"/> instance to use</param>
     /// <param name="filesHistoryService">The <see cref="IFilesHistoryService"/> instance to use</param>
-    public IdeViewModel(IMessenger messenger, IAnalyticsService analyticsService, IFilesService filesService, IFilesManagerService filesManagerService, IFilesHistoryService filesHistoryService)
+    public IdeViewModel(
+        IMessenger messenger,
+        IAnalyticsService analyticsService,
+        IFilesService filesService,
+        IFilesManagerService filesManagerService,
+        IFilesHistoryService filesHistoryService)
         : base(messenger)
     {
-        AnalyticsService = analyticsService;
-        FilesService = filesService;
-        FilesManagerService = filesManagerService;
-        FilesHistoryService = filesHistoryService;
+        this.analyticsService = analyticsService;
+        this.filesService = filesService;
+        this.filesManagerService = filesManagerService;
+        this.filesHistoryService = filesHistoryService;
     }
 
     /// <inheritdoc/>
@@ -110,7 +117,7 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     /// <inheritdoc/>
     protected override void OnCodeChanged(SourceCode code)
     {
-        FilesManagerService.RegisterFile(code.File);
+        this.filesManagerService.RegisterFile(code.File);
     }
 
     /// <summary>
@@ -119,12 +126,12 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     /// <param name="code">The source code to load</param>
     private void LoadSourceCode(SourceCode code)
     {
-        AnalyticsService.Log(EventNames.LoadLibrarySourceCode);
+        this.analyticsService.Log(EventNames.LoadLibrarySourceCode);
 
         if (code.File is not null &&
-            FilesManagerService.TrySwitchTo(code.File))
+            this.filesManagerService.TrySwitchTo(code.File))
         {
-            AnalyticsService.Log(EventNames.SwitchToFile);
+            this.analyticsService.Log(EventNames.SwitchToFile);
 
             return;
         }
@@ -133,7 +140,7 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
 
         if (code.File is not null)
         {
-            _ = FilesHistoryService.LogOrUpdateActivityAsync(code.File);
+            _ = this.filesHistoryService.LogOrUpdateActivityAsync(code.File);
         }
 
         CodeLoaded?.Invoke(this, Code.Content);
@@ -146,7 +153,7 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     {
         Code = SourceCode.CreateEmpty();
 
-        _ = FilesHistoryService.DismissCurrentActivityAsync();
+        _ = this.filesHistoryService.DismissCurrentActivityAsync();
 
         CodeLoaded?.Invoke(this, Code.Content);
     }
@@ -157,18 +164,21 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     /// <param name="favorite">Whether to immediately mark the item as favorite</param>
     private async Task TryLoadTextFromFileAsync(bool favorite)
     {
-        AnalyticsService.Log(EventNames.PickFileRequest);
+        this.analyticsService.Log(EventNames.PickFileRequest);
 
-        if (await FilesService.TryPickOpenFileAsync(".bfs") is not IFile file) return;
-
-        if (FilesManagerService.TrySwitchTo(file))
+        if (await this.filesService.TryPickOpenFileAsync(".bfs") is not IFile file)
         {
-            AnalyticsService.Log(EventNames.SwitchToFile);
+            return;
+        }
+
+        if (this.filesManagerService.TrySwitchTo(file))
+        {
+            this.analyticsService.Log(EventNames.SwitchToFile);
 
             return;
         }
 
-        AnalyticsService.Log(EventNames.LoadPickedFile, (nameof(CodeMetadata.IsFavorited), favorite.ToString()));
+        this.analyticsService.Log(EventNames.LoadPickedFile, (nameof(CodeMetadata.IsFavorited), favorite.ToString()));
 
         if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
         {
@@ -177,12 +187,12 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
             {
                 code.Metadata.IsFavorited = true;
 
-                await code.TrySaveAsync();
+                _ = await code.TrySaveAsync();
             }
 
             Code = code;
 
-            _ = FilesHistoryService.LogOrUpdateActivityAsync(code.File!);
+            _ = this.filesHistoryService.LogOrUpdateActivityAsync(code.File!);
 
             CodeLoaded?.Invoke(this, Code.Content);
         }
@@ -198,7 +208,7 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
         {
             Code = code;
 
-            _ = FilesHistoryService.LogOrUpdateActivityAsync(code.File!);
+            _ = this.filesHistoryService.LogOrUpdateActivityAsync(code.File!);
 
             CodeLoaded?.Invoke(this, Code.Content);
         }
@@ -209,14 +219,17 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task TrySaveTextAsync()
     {
-        if (Code.File == null) await TrySaveTextAsAsync();
+        if (Code.File == null)
+        {
+            await TrySaveTextAsAsync();
+        }
         else
         {
             Code.Content = Text.ToString();
 
-            await Code.TrySaveAsync();
+            _ = await Code.TrySaveAsync();
 
-            _ = FilesHistoryService.LogOrUpdateActivityAsync(Code.File!);
+            _ = this.filesHistoryService.LogOrUpdateActivityAsync(Code.File!);
 
             CodeSaved?.Invoke(this, EventArgs.Empty);
 
@@ -229,20 +242,23 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task TrySaveTextAsAsync()
     {
-        if (await FilesService.TryPickSaveFileAsync(string.Empty, (string.Empty, ".bfs")) is not IFile file) return;
-
-        if (FilesManagerService.TrySwitchTo(file))
+        if (await this.filesService.TryPickSaveFileAsync(string.Empty, (string.Empty, ".bfs")) is not IFile file)
         {
-            AnalyticsService.Log(EventNames.SwitchToFile);
+            return;
+        }
+
+        if (this.filesManagerService.TrySwitchTo(file))
+        {
+            this.analyticsService.Log(EventNames.SwitchToFile);
 
             return;
         }
 
         Code.Content = Text.ToString();
 
-        await Code.TrySaveAsAsync(file);
+        _ = await Code.TrySaveAsAsync(file);
 
-        _ = FilesHistoryService.LogOrUpdateActivityAsync(Code.File!);
+        _ = this.filesHistoryService.LogOrUpdateActivityAsync(Code.File!);
 
         CodeSaved?.Invoke(this, EventArgs.Empty);
 
@@ -257,10 +273,10 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
         IdeState state = new(Text.ToString(), Row, Column, Code.File?.Path);
 
         string
-            temporaryPath = FilesService.TemporaryFilesPath,
+            temporaryPath = this.filesService.TemporaryFilesPath,
             statePath = Path.Combine(temporaryPath, "state.json");
 
-        IFile file = await FilesService.CreateOrOpenFileFromPathAsync(statePath);
+        IFile file = await this.filesService.CreateOrOpenFileFromPathAsync(statePath);
 
         using Stream stream = await file.OpenStreamForWriteAsync();
 
@@ -278,11 +294,13 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
         if (file is null)
         {
             string
-                temporaryPath = FilesService.TemporaryFilesPath,
+                temporaryPath = this.filesService.TemporaryFilesPath,
                 statePath = Path.Combine(temporaryPath, "state.json");
 
-            if (await FilesService.TryGetFileFromPathAsync(statePath) is not IFile jsonFile)
+            if (await this.filesService.TryGetFileFromPathAsync(statePath) is not IFile jsonFile)
+            {
                 return;
+            }
 
             IdeState? state;
 
@@ -290,16 +308,28 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
             {
                 state = await JsonSerializer.DeserializeAsync(stream, Brainf_ckSharpJsonSerializerContext.Default.IdeState);
             }
-            
-            if (state is null) ThrowHelper.ThrowInvalidOperationException("Failed to load previous IDE state");
 
-            if (state.FilePath is null) Code = SourceCode.CreateEmpty();
+            if (state is null)
+            {
+                ThrowHelper.ThrowInvalidOperationException("Failed to load previous IDE state");
+            }
+
+            if (state.FilePath is null)
+            {
+                Code = SourceCode.CreateEmpty();
+            }
             else
             {
-                IFile? sourceFile = await FilesService.TryGetFileFromPathAsync(state.FilePath);
+                IFile? sourceFile = await this.filesService.TryGetFileFromPathAsync(state.FilePath);
 
-                if (sourceFile is null) Code = SourceCode.CreateEmpty();
-                else Code = await SourceCode.TryLoadFromEditableFileAsync(sourceFile) ?? SourceCode.CreateEmpty();
+                if (sourceFile is null)
+                {
+                    Code = SourceCode.CreateEmpty();
+                }
+                else
+                {
+                    Code = await SourceCode.TryLoadFromEditableFileAsync(sourceFile) ?? SourceCode.CreateEmpty();
+                }
             }
 
             Text = state.Text.AsMemory();
@@ -308,11 +338,14 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
 
             if (Code.File is not null)
             {
-                _ = FilesHistoryService.LogOrUpdateActivityAsync(Code.File);
+                _ = this.filesHistoryService.LogOrUpdateActivityAsync(Code.File);
             }
 
             StateRestored?.Invoke(this, state);
         }
-        else await TryLoadTextFromFileAsync(file);
+        else
+        {
+            await TryLoadTextFromFileAsync(file);
+        }
     }
 }

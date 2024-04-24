@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Brainf_ckSharp.Services;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.HighPerformance;
-
-#nullable enable
 
 namespace Brainf_ckSharp.Shared.Models.Ide;
 
@@ -140,7 +138,10 @@ public sealed class CodeLibraryEntry
                 int maxCharactersToRead = ReadBlockLength;
                 int read = await reader.ReadAsync(tempBuffer, 0, maxCharactersToRead);
 
-                if (read == 0) break;
+                if (read == 0)
+                {
+                    break;
+                }
 
                 // Accumulate the operators in the current block
                 previewLength += ExtractOperators(
@@ -182,12 +183,18 @@ public sealed class CodeLibraryEntry
             char c = Unsafe.Add(ref sourceRef, i);
 
             // Ignore characters that are not valid operators (comments)
-            if (!Brainf_ckParser.IsOperator(c)) continue;
+            if (!Brainf_ckParser.IsOperator(c))
+            {
+                continue;
+            }
 
             Unsafe.Add(ref destinationRef, j++) = c;
 
             // Stop if the destination span is full
-            if (j == destinationLength) return destinationLength;
+            if (j == destinationLength)
+            {
+                return destinationLength;
+            }
         }
 
         return j;

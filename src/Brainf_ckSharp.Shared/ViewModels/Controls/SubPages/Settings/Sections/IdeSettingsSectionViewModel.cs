@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Services.Enums;
@@ -12,22 +12,25 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections;
 
+/// <summary>
+/// A viewmodel for the IDE settings section.
+/// </summary>
 public sealed partial class IdeSettingsSectionViewModel : SettingsSectionViewModelBase
 {
     /// <summary>
     /// The <see cref="IAnalyticsService"/> instance currently in use
     /// </summary>
-    private readonly IAnalyticsService AnalyticsService;
+    private readonly IAnalyticsService analyticsService;
 
     /// <summary>
     /// The <see cref="IStoreService"/> instance currently in use
     /// </summary>
-    private readonly IStoreService StoreService;
+    private readonly IStoreService storeService;
 
     /// <summary>
     /// The <see cref="AppConfiguration"/> instance currently in use
     /// </summary>
-    private readonly AppConfiguration Configuration;
+    private readonly AppConfiguration configuration;
 
     /// <summary>
     /// Creates a new <see cref="IdeSettingsSectionViewModel"/> instance
@@ -40,13 +43,13 @@ public sealed partial class IdeSettingsSectionViewModel : SettingsSectionViewMod
     public IdeSettingsSectionViewModel(IMessenger messenger, IAnalyticsService analyticsService, IStoreService storeService, ISettingsService settingsService, AppConfiguration configuration)
         : base(messenger, settingsService)
     {
-        AnalyticsService = analyticsService;
-        StoreService = storeService;
-        Configuration = configuration;
+        this.analyticsService = analyticsService;
+        this.storeService = storeService;
+        this.configuration = configuration;
 
-        _IdeTheme = SettingsService.GetValue<IdeTheme>(SettingsKeys.IdeTheme);
-        _BracketsFormattingStyle = SettingsService.GetValue<BracketsFormattingStyle>(SettingsKeys.BracketsFormattingStyle);
-        _RenderWhitespaces = SettingsService.GetValue<bool>(SettingsKeys.RenderWhitespaces);
+        this.ideTheme = this.SettingsService.GetValue<IdeTheme>(SettingsKeys.IdeTheme);
+        this.bracketsFormattingStyle = this.SettingsService.GetValue<BracketsFormattingStyle>(SettingsKeys.BracketsFormattingStyle);
+        this.renderWhitespaces = this.SettingsService.GetValue<bool>(SettingsKeys.RenderWhitespaces);
     }
 
     /// <summary>
@@ -54,32 +57,32 @@ public sealed partial class IdeSettingsSectionViewModel : SettingsSectionViewMod
     /// </summary>
     public IReadOnlyCollection<IdeTheme> IdeThemes { get; } = (IdeTheme[])typeof(IdeTheme).GetEnumValues();
 
-    private IdeTheme _IdeTheme;
+    private IdeTheme ideTheme;
 
     /// <summary>
     /// Exposes the <see cref="SettingsKeys.IdeTheme"/> setting
     /// </summary>
     public IdeTheme IdeTheme
     {
-        get => _IdeTheme;
+        get => this.ideTheme;
         set
         {
-            if (SetProperty<IdeTheme, IdeThemeSettingChangedMessage>(ref _IdeTheme, value))
+            if (SetProperty<IdeTheme, IdeThemeSettingChangedMessage>(ref this.ideTheme, value))
             {
-                AnalyticsService.Log(EventNames.ThemeChanged, (nameof(Enums.Settings.IdeTheme), value.ToString()));
+                this.analyticsService.Log(EventNames.ThemeChanged, (nameof(Enums.Settings.IdeTheme), value.ToString()));
             }
         }
     }
 
-    private static bool _IsThemeSelectorAvailable;
+    private static bool isThemeSelectorAvailable;
 
     /// <summary>
     /// Gets whether or not the selector for <see cref="IdeTheme"/> can be used
     /// </summary>
     public bool IsThemeSelectorAvailable
     {
-        get => _IsThemeSelectorAvailable;
-        private set => SetProperty(ref _IsThemeSelectorAvailable, value);
+        get => isThemeSelectorAvailable;
+        private set => SetProperty(ref isThemeSelectorAvailable, value);
     }
 
     /// <summary>
@@ -87,26 +90,26 @@ public sealed partial class IdeSettingsSectionViewModel : SettingsSectionViewMod
     /// </summary>
     public IReadOnlyCollection<BracketsFormattingStyle> BracketsFormattingStyles { get; } = (BracketsFormattingStyle[])typeof(BracketsFormattingStyle).GetEnumValues();
 
-    private BracketsFormattingStyle _BracketsFormattingStyle;
+    private BracketsFormattingStyle bracketsFormattingStyle;
 
     /// <summary>
     /// Exposes the <see cref="SettingsKeys.BracketsFormattingStyle"/> setting
     /// </summary>
     public BracketsFormattingStyle BracketsFormattingStyle
     {
-        get => _BracketsFormattingStyle;
-        set => SetProperty<BracketsFormattingStyle, BracketsFormattingStyleSettingsChangedMessage>(ref _BracketsFormattingStyle, value);
+        get => this.bracketsFormattingStyle;
+        set => SetProperty<BracketsFormattingStyle, BracketsFormattingStyleSettingsChangedMessage>(ref this.bracketsFormattingStyle, value);
     }
 
-    private bool _RenderWhitespaces;
+    private bool renderWhitespaces;
 
     /// <summary>
     /// Exposes the <see cref="SettingsKeys.RenderWhitespaces"/> setting
     /// </summary>
     public bool RenderWhitespaces
     {
-        get => _RenderWhitespaces;
-        set => SetProperty<bool, RenderWhitespacesSettingChangedMessage>(ref _RenderWhitespaces, value);
+        get => this.renderWhitespaces;
+        set => SetProperty<bool, RenderWhitespacesSettingChangedMessage>(ref this.renderWhitespaces, value);
     }
 
     /// <summary>
@@ -117,9 +120,9 @@ public sealed partial class IdeSettingsSectionViewModel : SettingsSectionViewMod
     {
         if (!IsThemeSelectorAvailable)
         {
-            Guard.IsNotNull(Configuration.UnlockThemesIapId, nameof(AppConfiguration.UnlockThemesIapId));
+            Guard.IsNotNull(this.configuration.UnlockThemesIapId, nameof(AppConfiguration.UnlockThemesIapId));
 
-            IsThemeSelectorAvailable = await StoreService.IsProductPurchasedAsync(Configuration.UnlockThemesIapId);
+            IsThemeSelectorAvailable = await this.storeService.IsProductPurchasedAsync(this.configuration.UnlockThemesIapId);
         }
     }
 
@@ -129,13 +132,13 @@ public sealed partial class IdeSettingsSectionViewModel : SettingsSectionViewMod
     [RelayCommand]
     private async Task TryUnlockThemesSelectorAsync()
     {
-        Guard.IsNotNull(Configuration.UnlockThemesIapId, nameof(AppConfiguration.UnlockThemesIapId));
+        Guard.IsNotNull(this.configuration.UnlockThemesIapId, nameof(AppConfiguration.UnlockThemesIapId));
 
-        var result = await StoreService.TryPurchaseProductAsync(Configuration.UnlockThemesIapId);
+        StorePurchaseResult result = await this.storeService.TryPurchaseProductAsync(this.configuration.UnlockThemesIapId);
 
         IsThemeSelectorAvailable = result == StorePurchaseResult.Success ||
                                    result == StorePurchaseResult.AlreadyPurchased;
 
-        AnalyticsService.Log(EventNames.ThemesUnlockRequest, (nameof(StorePurchaseResult), result.ToString()));
+        this.analyticsService.Log(EventNames.ThemesUnlockRequest, (nameof(StorePurchaseResult), result.ToString()));
     }
 }

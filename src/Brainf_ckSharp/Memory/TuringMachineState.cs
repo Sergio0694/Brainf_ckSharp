@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace Brainf_ckSharp.Memory;
 internal sealed partial class TuringMachineState : IReadOnlyMachineState
 {
     /// <summary>
-    /// The size of the usable buffer within <see cref="_Buffer"/>
+    /// The size of the usable buffer within <see cref="buffer"/>
     /// </summary>
     public readonly int Size;
 
@@ -33,12 +33,12 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     /// Similarly to <see cref="Buffers.StdoutBuffer"/>, the buffer is rented directly
     /// from this type to reduce the overhead when accessing individual items.
     /// </remarks>
-    private ushort[]? _Buffer;
+    private ushort[]? buffer;
 
     /// <summary>
-    /// The current position within the underlying buffer
+    /// The current position within the underlying buffer.
     /// </summary>
-    public int _Position;
+    private int position;
 
     /// <summary>
     /// Creates a new blank machine state with the given parameters
@@ -47,7 +47,8 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     /// <param name="mode">The overflow mode to use in the new instance</param>
     public TuringMachineState(int size, OverflowMode mode)
         : this(size, mode, true)
-    { }
+    {
+    }
 
     /// <summary>
     /// Creates a new blank machine state with the given parameters
@@ -57,13 +58,13 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
     private TuringMachineState(int size, OverflowMode mode, bool clear)
     {
-        _Buffer = ArrayPool<ushort>.Shared.Rent(size);
-        Size = size;
-        Mode = mode;
+        this.buffer = ArrayPool<ushort>.Shared.Rent(size);
+        this.Size = size;
+        this.Mode = mode;
 
         if (clear)
         {
-            _Buffer.AsSpan(0, size).Clear();
+            this.buffer.AsSpan(0, size).Clear();
         }
     }
 
@@ -73,10 +74,10 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     ~TuringMachineState() => Dispose();
 
     /// <inheritdoc/>
-    public int Position => _Position;
+    public int Position => this.position;
 
     /// <inheritdoc/>
-    public int Count => Size;
+    public int Count => this.Size;
 
     /// <inheritdoc/>
     public Brainf_ckMemoryCell Current
@@ -84,13 +85,16 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
         {
-            ushort[]? array = _Buffer;
+            ushort[]? array = this.buffer;
 
-            if (array is null) ThrowObjectDisposedException();
+            if (array is null)
+            {
+                ThrowObjectDisposedException();
+            }
 
-            ushort value = array!.DangerousGetReferenceAt(_Position);
+            ushort value = array!.DangerousGetReferenceAt(this.position);
 
-            return new(_Position, value, true);
+            return new(this.position, value, true);
         }
     }
 
@@ -100,18 +104,21 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
         {
-            ushort[]? array = _Buffer;
+            ushort[]? array = this.buffer;
 
-            if (array is null) ThrowObjectDisposedException();
+            if (array is null)
+            {
+                ThrowObjectDisposedException();
+            }
 
             // Manually check the current size, as the buffer
             // is rented from the pool and its length might
             // actually be greater than the memory state.
-            Guard.IsInRange(index, 0, Size);
+            Guard.IsInRange(index, 0, this.Size);
 
             ushort value = array!.DangerousGetReferenceAt(index);
 
-            return new(index, value, _Position == index);
+            return new(index, value, this.position == index);
         }
     }
 
@@ -124,34 +131,52 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     /// <inheritdoc/>
     public bool Equals(IReadOnlyMachineState? other)
     {
-        if (other is null) return false;
+        if (other is null)
+        {
+            return false;
+        }
 
-        if (ReferenceEquals(this, other)) return true;
+        if (ReferenceEquals(this, other))
+        {
+            return true;
+        }
 
-        if (_Buffer is null) ThrowObjectDisposedException();
+        if (this.buffer is null)
+        {
+            ThrowObjectDisposedException();
+        }
 
-        if (other is not TuringMachineState state) return false;
+        if (other is not TuringMachineState state)
+        {
+            return false;
+        }
 
-        if (state._Buffer is null) ThrowObjectDisposedException();
+        if (state.buffer is null)
+        {
+            ThrowObjectDisposedException();
+        }
 
         return
-            Size == state.Size &&
-            Mode == state.Mode &&
-            _Position == state._Position &&
-            _Buffer.AsSpan(0, Size).SequenceEqual(state._Buffer.AsSpan(0, Size));
+            this.Size == state.Size &&
+            this.Mode == state.Mode &&
+            this.position == state.position &&
+            this.buffer.AsSpan(0, this.Size).SequenceEqual(state.buffer.AsSpan(0, this.Size));
     }
 
     /// <inheritdoc/>
     public override int GetHashCode()
     {
-        if (_Buffer is null) ThrowObjectDisposedException();
+        if (this.buffer is null)
+        {
+            ThrowObjectDisposedException();
+        }
 
         HashCode hashCode = default;
 
-        hashCode.Add(Size);
-        hashCode.Add(Mode);
-        hashCode.Add(_Position);
-        hashCode.Add<ushort>(_Buffer.AsSpan(0, Size));
+        hashCode.Add(this.Size);
+        hashCode.Add(this.Mode);
+        hashCode.Add(this.position);
+        hashCode.Add<ushort>(this.buffer.AsSpan(0, this.Size));
 
         return hashCode.ToHashCode();
     }
@@ -165,7 +190,7 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     /// <inheritdoc/>
     IEnumerator<Brainf_ckMemoryCell> IEnumerable<Brainf_ckMemoryCell>.GetEnumerator()
     {
-        for (int i = 0; i < Size; i++)
+        for (int i = 0; i < this.Size; i++)
         {
             yield return this[i];
         }
@@ -180,11 +205,14 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     /// <inheritdoc/>
     public object Clone()
     {
-        if (_Buffer is null) ThrowObjectDisposedException();
+        if (this.buffer is null)
+        {
+            ThrowObjectDisposedException();
+        }
 
-        TuringMachineState clone = new(Size, Mode, false) { _Position = _Position };
+        TuringMachineState clone = new(this.Size, this.Mode, false) { position = this.position };
 
-        _Buffer.AsSpan(0, Size).CopyTo(clone._Buffer.AsSpan(0, Size));
+        this.buffer.AsSpan(0, this.Size).CopyTo(clone.buffer.AsSpan(0, this.Size));
 
         return clone;
     }
@@ -192,17 +220,20 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     /// <inheritdoc/>
     public void Dispose()
     {
-        ushort[]? array = _Buffer;
+        ushort[]? array = this.buffer;
 
-        if (array is null) return;
+        if (array is null)
+        {
+            return;
+        }
 
-        _Buffer = null;
+        this.buffer = null;
 
         ArrayPool<ushort>.Shared.Return(array);
     }
 
     /// <summary>
-    /// Throws an <see cref="ObjectDisposedException"/> when <see cref="_Buffer"/> is <see langword="null"/>.
+    /// Throws an <see cref="ObjectDisposedException"/> when <see cref="buffer"/> is <see langword="null"/>.
     /// </summary>
     private static void ThrowObjectDisposedException()
     {

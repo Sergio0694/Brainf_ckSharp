@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
@@ -16,21 +16,21 @@ public sealed class SemanticZoomZoomedOutViewHeaderTemplate : Control
     /// <summary>
     /// The <see cref="TextBlock"/> displaying the description
     /// </summary>
-    private TextBlock? _DescriptionBlock;
+    private TextBlock? descriptionBlock;
 
     /// <inheritdoc/>
     protected override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
 
-        _DescriptionBlock = GetTemplateChild("DescriptionBlock") as TextBlock
+        this.descriptionBlock = GetTemplateChild("DescriptionBlock") as TextBlock
                             ?? ThrowHelper.ThrowInvalidOperationException<TextBlock>("Failed to find description block");
 
         // Load the span explicitly, if present
         if (DescriptionSpan is { } span)
         {
-            _DescriptionBlock.Inlines.Clear();
-            _DescriptionBlock.Inlines.Add(span);
+            this.descriptionBlock.Inlines.Clear();
+            this.descriptionBlock.Inlines.Add(span);
         }
     }
 
@@ -111,9 +111,12 @@ public sealed class SemanticZoomZoomedOutViewHeaderTemplate : Control
         Span span = e.NewValue as Span
                     ?? ThrowHelper.ThrowArgumentException<Span>("Can't assign null to the " + nameof(DescriptionSpan) + " property");
 
-        if (@this._DescriptionBlock is null) return;
+        if (@this.descriptionBlock is null)
+        {
+            return;
+        }
 
-        @this._DescriptionBlock.Inlines.Clear();
-        @this._DescriptionBlock.Inlines.Add(span);
+        @this.descriptionBlock.Inlines.Clear();
+        @this.descriptionBlock.Inlines.Add(span);
     }
 }

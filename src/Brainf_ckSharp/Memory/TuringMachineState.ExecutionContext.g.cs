@@ -24,32 +24,32 @@ internal sealed partial class TuringMachineState
         where TExecutionContext : struct, IMachineStateExecutionContext
     {
         // The underlying buffer is guaranteed not to be null or unpinned here
-        ushort* ptr = (ushort*)Unsafe.AsPointer(ref _Buffer.DangerousGetReference());
+        ushort* ptr = (ushort*)Unsafe.AsPointer(ref buffer.DangerousGetReference());
 
         if (typeof(TExecutionContext) == typeof(ByteWithOverflowExecutionContext))
         {
-            var executionContext = new ByteWithOverflowExecutionContext(ptr, Size - 1, _Position);
+            var executionContext = new ByteWithOverflowExecutionContext(ptr, Size - 1, position);
 
             return Unsafe.As<ByteWithOverflowExecutionContext, TExecutionContext>(ref executionContext);
         }
 
         if (typeof(TExecutionContext) == typeof(ByteWithNoOverflowExecutionContext))
         {
-            var executionContext = new ByteWithNoOverflowExecutionContext(ptr, Size - 1, _Position);
+            var executionContext = new ByteWithNoOverflowExecutionContext(ptr, Size - 1, position);
 
             return Unsafe.As<ByteWithNoOverflowExecutionContext, TExecutionContext>(ref executionContext);
         }
 
         if (typeof(TExecutionContext) == typeof(UshortWithOverflowExecutionContext))
         {
-            var executionContext = new UshortWithOverflowExecutionContext(ptr, Size - 1, _Position);
+            var executionContext = new UshortWithOverflowExecutionContext(ptr, Size - 1, position);
 
             return Unsafe.As<UshortWithOverflowExecutionContext, TExecutionContext>(ref executionContext);
         }
 
         if (typeof(TExecutionContext) == typeof(UshortWithNoOverflowExecutionContext))
         {
-            var executionContext = new UshortWithNoOverflowExecutionContext(ptr, Size - 1, _Position);
+            var executionContext = new UshortWithNoOverflowExecutionContext(ptr, Size - 1, position);
 
             return Unsafe.As<UshortWithNoOverflowExecutionContext, TExecutionContext>(ref executionContext);
         }

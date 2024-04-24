@@ -92,7 +92,7 @@ public sealed class FilesService : IFilesService
         };
 
         // Add the extensions and pick the file
-        picker.FileTypeChoices.Add(fileType.Name, new[] { fileType.Extension });
+        picker.FileTypeChoices.Add(fileType.Name, [fileType.Extension]);
 
         if (await picker.PickSaveFileAsync() is StorageFile file)
         {
@@ -107,7 +107,7 @@ public sealed class FilesService : IFilesService
     {
         IReadOnlyList<AccessListEntry> entries = StorageApplicationPermissions.MostRecentlyUsedList.Entries.ToArray();
 
-        foreach (var entry in entries)
+        foreach (AccessListEntry entry in entries)
         {
             StorageFile file;
 

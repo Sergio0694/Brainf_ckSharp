@@ -37,8 +37,15 @@ public sealed class ItemClickBehavior : Behavior<ListViewBase>
     /// <param name="e">The <see cref="ItemClickEventArgs"/> instance with the clicked item</param>
     private void HandleItemClick(object sender, ItemClickEventArgs e)
     {
-        if (Command is not ICommand command) return;
-        if (!command.CanExecute(e.ClickedItem)) return;
+        if (Command is not ICommand command)
+        {
+            return;
+        }
+
+        if (!command.CanExecute(e.ClickedItem))
+        {
+            return;
+        }
 
         command.Execute(e.ClickedItem);
     }
@@ -48,7 +55,10 @@ public sealed class ItemClickBehavior : Behavior<ListViewBase>
     {
         base.OnAttached();
 
-        if (AssociatedObject != null) AssociatedObject.ItemClick += HandleItemClick;
+        if (AssociatedObject != null)
+        {
+            AssociatedObject.ItemClick += HandleItemClick;
+        }
     }
 
     /// <inheritdoc/>
@@ -56,6 +66,9 @@ public sealed class ItemClickBehavior : Behavior<ListViewBase>
     {
         base.OnDetaching();
 
-        if (AssociatedObject != null) AssociatedObject.ItemClick -= HandleItemClick;
+        if (AssociatedObject != null)
+        {
+            AssociatedObject.ItemClick -= HandleItemClick;
+        }
     }
 }

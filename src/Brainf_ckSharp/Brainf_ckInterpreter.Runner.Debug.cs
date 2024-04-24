@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ckSharp.Buffers;
@@ -46,7 +46,10 @@ public static partial class Brainf_ckInterpreter
         {
             MemoryOwner<Brainf_ckOperator> opcodes = Brainf_ckParser.TryParse<Brainf_ckOperator>(source, out SyntaxValidationResult validationResult)!;
 
-            if (!validationResult.IsSuccess) return Option<InterpreterSession>.From(validationResult);
+            if (!validationResult.IsSuccess)
+            {
+                return Option<InterpreterSession>.From(validationResult);
+            }
 
             // Initialize the temporary buffers
             MemoryOwner<bool> breakpointsTable = LoadBreakpointsTable(source, validationResult.OperatorsCount, breakpoints);
@@ -140,32 +143,67 @@ public static partial class Brainf_ckInterpreter
                     {
                         // ptr++
                         case Operators.ForwardPtr:
-                            if (executionContext.TryMoveNext()) totalOperations++;
-                            else goto UpperBoundExceeded;
+                            if (executionContext.TryMoveNext())
+                            {
+                                totalOperations++;
+                            }
+                            else
+                            {
+                                goto UpperBoundExceeded;
+                            }
+
                             break;
 
                         // ptr--
                         case Operators.BackwardPtr:
-                            if (executionContext.TryMoveBack()) totalOperations++;
-                            else goto LowerBoundExceeded;
+                            if (executionContext.TryMoveBack())
+                            {
+                                totalOperations++;
+                            }
+                            else
+                            {
+                                goto LowerBoundExceeded;
+                            }
+
                             break;
 
                         // (*ptr)++
                         case Operators.Plus:
-                            if (executionContext.TryIncrement()) totalOperations++;
-                            else goto MaxValueExceeded;
+                            if (executionContext.TryIncrement())
+                            {
+                                totalOperations++;
+                            }
+                            else
+                            {
+                                goto MaxValueExceeded;
+                            }
+
                             break;
 
                         // (*ptr)--
                         case Operators.Minus:
-                            if (executionContext.TryDecrement()) totalOperations++;
-                            else goto NegativeValue;
+                            if (executionContext.TryDecrement())
+                            {
+                                totalOperations++;
+                            }
+                            else
+                            {
+                                goto NegativeValue;
+                            }
+
                             break;
 
                         // putch(*ptr)
                         case Operators.PrintChar:
-                            if (stdoutWriter.TryWrite((char)executionContext.Current)) totalOperations++;
-                            else goto StdoutBufferLimitExceeded;
+                            if (stdoutWriter.TryWrite((char)executionContext.Current))
+                            {
+                                totalOperations++;
+                            }
+                            else
+                            {
+                                goto StdoutBufferLimitExceeded;
+                            }
+
                             break;
 
                         // *ptr = getch()
@@ -173,10 +211,20 @@ public static partial class Brainf_ckInterpreter
                             if (stdinReader.TryRead(out char c))
                             {
                                 // Check if the input character can be stored in the current cell
-                                if (executionContext.TryInput(c)) totalOperations++;
-                                else goto MaxValueExceeded;
+                                if (executionContext.TryInput(c))
+                                {
+                                    totalOperations++;
+                                }
+                                else
+                                {
+                                    goto MaxValueExceeded;
+                                }
                             }
-                            else goto StdinBufferExhausted;
+                            else
+                            {
+                                goto StdinBufferExhausted;
+                            }
+
                             break;
 
                         // while (*ptr) {
@@ -188,6 +236,7 @@ public static partial class Brainf_ckInterpreter
                                 i = Unsafe.Add(ref jumpTable, i);
                                 totalOperations++;
                             }
+
                             break;
 
                         // {
@@ -199,8 +248,12 @@ public static partial class Brainf_ckInterpreter
                                 i = Unsafe.Add(ref jumpTable, i);
 
                                 // Check whether the code can still be executed before starting an active loop
-                                if (executionToken.IsCancellationRequested) goto ThresholdExceeded;
+                                if (executionToken.IsCancellationRequested)
+                                {
+                                    goto ThresholdExceeded;
+                                }
                             }
+
                             totalOperations++;
                             break;
 
@@ -208,7 +261,10 @@ public static partial class Brainf_ckInterpreter
                         case Operators.FunctionStart:
                         {
                             // Check for duplicate function definitions
-                            if (Unsafe.Add(ref functions, executionContext.Current).Length != 0) goto DuplicateFunctionDefinition;
+                            if (Unsafe.Add(ref functions, executionContext.Current).Length != 0)
+                            {
+                                goto DuplicateFunctionDefinition;
+                            }
 
                             // Save the new function definition
                             Range function = new(i + 1, Unsafe.Add(ref jumpTable, i));
@@ -224,13 +280,22 @@ public static partial class Brainf_ckInterpreter
                         {
                             // Try to retrieve the function to invoke
                             Range function = Unsafe.Add(ref functions, executionContext.Current);
-                            if (function.Length == 0) goto UndefinedFunctionCalled;
+                            if (function.Length == 0)
+                            {
+                                goto UndefinedFunctionCalled;
+                            }
 
                             // Ensure the stack has space for the new function invocation
-                            if (depth == Specs.MaximumStackSize - 1) goto StackLimitExceeded;
+                            if (depth == Specs.MaximumStackSize - 1)
+                            {
+                                goto StackLimitExceeded;
+                            }
 
                             // Check for remaining time
-                            if (executionToken.IsCancellationRequested) goto ThresholdExceeded;
+                            if (executionToken.IsCancellationRequested)
+                            {
+                                goto ThresholdExceeded;
+                            }
 
                             // Update the current stack frame and exit the inner loop
                             Unsafe.Add(ref stackFrames, depth++) = frame.WithOffset(i + 1);

@@ -1,4 +1,4 @@
-﻿using System.Windows.Input;
+using System.Windows.Input;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
 using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
@@ -30,8 +30,14 @@ internal sealed partial class Brainf_ckEditBox
     /// <param name="isEnabled">Whether or not to monitor the clipboard contents</param>
     private void EnableClipboardMonitoring(bool isEnabled)
     {
-        if (isEnabled) Clipboard.ContentChanged += Clipboard_ContentChanged;
-        else Clipboard.ContentChanged -= Clipboard_ContentChanged;
+        if (isEnabled)
+        {
+            Clipboard.ContentChanged += Clipboard_ContentChanged;
+        }
+        else
+        {
+            Clipboard.ContentChanged -= Clipboard_ContentChanged;
+        }
     }
 
     /// <summary>
@@ -70,7 +76,10 @@ internal sealed partial class Brainf_ckEditBox
 
         string text = Document.Selection.Text;
 
-        if (text.Length == 0) return;
+        if (text.Length == 0)
+        {
+            return;
+        }
 
         bool isTrimmed = false;
 
@@ -83,7 +92,10 @@ internal sealed partial class Brainf_ckEditBox
 
         if (ClipboardHelper.TryCopy(text) && cut)
         {
-            if (isTrimmed) Document.Selection.EndPosition--;
+            if (isTrimmed)
+            {
+                Document.Selection.EndPosition--;
+            }
 
             Document.Selection.Text = string.Empty;
         }

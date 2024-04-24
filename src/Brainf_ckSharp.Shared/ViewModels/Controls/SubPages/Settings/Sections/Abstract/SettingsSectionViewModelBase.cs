@@ -1,9 +1,11 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+
+#pragma warning disable IDE0290
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections.Abstract;
 
@@ -25,7 +27,7 @@ public abstract class SettingsSectionViewModelBase : ObservableRecipient
     protected SettingsSectionViewModelBase(IMessenger messenger, ISettingsService settingsService)
         : base(messenger)
     {
-        SettingsService = settingsService;
+        this.SettingsService = settingsService;
     }
 
     /// <summary>
@@ -40,7 +42,7 @@ public abstract class SettingsSectionViewModelBase : ObservableRecipient
     {
         if (base.SetProperty(ref field, value, name))
         {
-            SettingsService.SetValue(name!, value);
+            this.SettingsService.SetValue(name!, value);
         }
     }
 
@@ -58,11 +60,11 @@ public abstract class SettingsSectionViewModelBase : ObservableRecipient
     {
         if (base.SetProperty(ref field, value, name))
         {
-            SettingsService.SetValue(name!, value);
+            this.SettingsService.SetValue(name!, value);
 
             TMessage message = (TMessage)Activator.CreateInstance(typeof(TMessage), value);
 
-            Messenger.Send(message);
+            _ = Messenger.Send(message);
 
             return true;
         }

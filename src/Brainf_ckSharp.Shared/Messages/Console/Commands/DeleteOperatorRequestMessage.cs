@@ -1,6 +1,6 @@
-﻿namespace Brainf_ckSharp.Shared.Messages.Console.Commands;
+namespace Brainf_ckSharp.Shared.Messages.Console.Commands;
 
 /// <summary>
 /// A message that represents a request to delete a console operator
 /// </summary>
-public sealed class DeleteOperatorRequestMessage { }
+public sealed class DeleteOperatorRequestMessage;

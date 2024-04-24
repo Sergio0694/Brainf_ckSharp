@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Shared.Constants;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 using GitHub;
 using User = GitHub.Models.User;
 
-#nullable enable
+#pragma warning disable IDE0290
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 
@@ -18,7 +18,7 @@ public sealed partial class AboutSubPageViewModel : ObservableObject
     /// <summary>
     /// The <see cref="IGitHubService"/> instance currently in use
     /// </summary>
-    private readonly IGitHubService GitHubService;
+    private readonly IGitHubService gitHubService;
 
     /// <summary>
     /// Creates a new <see cref="AboutSubPageViewModel"/> instance
@@ -26,7 +26,7 @@ public sealed partial class AboutSubPageViewModel : ObservableObject
     /// <param name="gitHubService">The <see cref="IGitHubService"/> instance to use</param>
     public AboutSubPageViewModel(IGitHubService gitHubService)
     {
-        GitHubService = gitHubService;
+        this.gitHubService = gitHubService;
     }
 
     /// <summary>
@@ -43,37 +43,32 @@ public sealed partial class AboutSubPageViewModel : ObservableObject
     /// Gets the name of the current build configuration
     /// </summary>
     public string BuildConfiguration
-    {
-        get
-        {
 #if DEBUG
-            return "DEBUG";
+        => "DEBUG";
 #else
-            return "RELEASE";
+        => "RELEASE";
 #endif
-        }
-    }
 
-    private static IEnumerable<User>? _Developers;
+    private static IEnumerable<User>? developers;
 
     /// <summary>
     /// Gets the list of lead developers to the Legere repository
     /// </summary>
     public IEnumerable<User>? Developers
     {
-        get => _Developers;
-        private set => SetProperty(ref _Developers, value);
+        get => developers;
+        private set => SetProperty(ref developers, value);
     }
 
-    private static IEnumerable<string>? _FeaturedLinks;
+    private static IEnumerable<string>? featuredLinks;
 
     /// <summary>
     /// Gets the list of featured links to use
     /// </summary>
     public IEnumerable<string>? FeaturedLinks
     {
-        get => _FeaturedLinks;
-        private set => SetProperty(ref _FeaturedLinks, value);
+        get => featuredLinks;
+        private set => SetProperty(ref featuredLinks, value);
     }
 
     /// <summary>
@@ -82,12 +77,15 @@ public sealed partial class AboutSubPageViewModel : ObservableObject
     [RelayCommand]
     public async Task LoadDataAsync()
     {
-        if (Developers != null) return;
+        if (Developers != null)
+        {
+            return;
+        }
 
         try
         {
-            Developers = new[] { await GitHubService.GetUserAsync(DeveloperInfo.GitHubUsername) };
-            FeaturedLinks = new[] { DeveloperInfo.PayPalMeUrl };
+            Developers = [await this.gitHubService.GetUserAsync(DeveloperInfo.GitHubUsername)];
+            FeaturedLinks = [DeveloperInfo.PayPalMeUrl];
         }
         catch
         {

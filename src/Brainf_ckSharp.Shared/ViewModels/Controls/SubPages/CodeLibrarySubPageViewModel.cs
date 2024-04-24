@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -15,41 +15,24 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 
-#nullable enable
+#pragma warning disable IDE0290
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 
+/// <summary>
+/// A viewmodel for the code library page.
+/// </summary>
 public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
 {
     /// <summary>
-    /// The <see cref="IAnalyticsService"/> instance currently in use
-    /// </summary>
-    private readonly IAnalyticsService AnalyticsService;
-
-    /// <summary>
-    /// The <see cref="IFilesService"/> instance currently in use
-    /// </summary>
-    private readonly IFilesService FilesService;
-
-    /// <summary>
-    /// The <see cref="IFilesHistoryService"/> instance currently in use
-    /// </summary>
-    private readonly IFilesHistoryService FilesHistoryService;
-
-    /// <summary>
-    /// The <see cref="IClipboardService"/> instance currently in use
-    /// </summary>
-    private readonly IClipboardService ClipboardService;
-
-    /// <summary>
-    /// The <see cref="IShareService"/> instance currently in use
-    /// </summary>
-    private readonly IShareService ShareService;
-
-    /// <summary>
     /// The relative path of folder that contains the sample files
     /// </summary>
-    private static readonly string SampleFilesRelativePath = @"Assets\Samples\";
+    private const string SampleFilesRelativePath = @"Assets\Samples\";
+
+    /// <summary>
+    /// The <see cref="IComparer{T}"/> instance to compare <see cref="Source"/> items.
+    /// </summary>
+    private static readonly IComparer<object?> SourceItemEditTimeComparer = Comparer<object?>.Create(CompareSourceItemByEditTime);
 
     /// <summary>
     /// The ordered mapping of available source code files
@@ -66,14 +49,34 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     };
 
     /// <summary>
-    /// The <see cref="IComparer{T}"/> instance to compare <see cref="Source"/> items.
+    /// The cached collection of sample codes, if available.
     /// </summary>
-    private static IComparer<object?> SourceItemEditTimeComparer { get; } = Comparer<object?>.Create(CompareSourceItemByEditTime);
+    private static IReadOnlyList<CodeLibraryEntry>? sampleCodes;
 
     /// <summary>
-    /// The cached collection of sample codes, if available
+    /// The <see cref="IAnalyticsService"/> instance currently in use
     /// </summary>
-    private static IReadOnlyList<CodeLibraryEntry>? _SampleCodes;
+    private readonly IAnalyticsService analyticsService;
+
+    /// <summary>
+    /// The <see cref="IFilesService"/> instance currently in use
+    /// </summary>
+    private readonly IFilesService filesService;
+
+    /// <summary>
+    /// The <see cref="IFilesHistoryService"/> instance currently in use
+    /// </summary>
+    private readonly IFilesHistoryService filesHistoryService;
+
+    /// <summary>
+    /// The <see cref="IClipboardService"/> instance currently in use
+    /// </summary>
+    private readonly IClipboardService clipboardService;
+
+    /// <summary>
+    /// The <see cref="IShareService"/> instance currently in use
+    /// </summary>
+    private readonly IShareService shareService;
 
     /// <summary>
     /// Loads the available code samples
@@ -81,15 +84,18 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     /// <returns>A <see cref="IReadOnlyList{T}"/> instance with the loaded code samples</returns>
     private async ValueTask<IReadOnlyList<CodeLibraryEntry>> GetSampleCodesAsync()
     {
-        return _SampleCodes ??= await Task.WhenAll(SampleFilesMapping.Select(async item =>
+        return sampleCodes ??= await Task.WhenAll(SampleFilesMapping.Select(async item =>
         {
-            string installationPath = FilesService.InstallationPath;
+            string installationPath = this.filesService.InstallationPath;
             string path = Path.Combine(installationPath, SampleFilesRelativePath, $"{item.Filename}.txt");
-            IFile file = await FilesService.GetFileFromPathAsync(path);
+            IFile file = await this.filesService.GetFileFromPathAsync(path);
 
             CodeLibraryEntry? entry = await CodeLibraryEntry.TryLoadFromFileAsync(file, item.Title);
 
-            if (entry is null) ThrowHelper.ThrowInvalidOperationException("Failed to load the requested sample");
+            if (entry is null)
+            {
+                ThrowHelper.ThrowInvalidOperationException("Failed to load the requested sample");
+            }
 
             return entry;
         }));
@@ -104,20 +110,26 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     /// <param name="filesHistoryService">The <see cref="IFilesHistoryService"/> instance to use</param>
     /// <param name="clipboardService">The <see cref="IClipboardService"/> instance to use</param>
     /// <param name="shareService">The <see cref="IShareService"/> instance to use</param>
-    public CodeLibrarySubPageViewModel(IMessenger messenger, IAnalyticsService analyticsService, IFilesService filesService, IFilesHistoryService filesHistoryService, IClipboardService clipboardService, IShareService shareService)
+    public CodeLibrarySubPageViewModel(
+        IMessenger messenger,
+        IAnalyticsService analyticsService,
+        IFilesService filesService,
+        IFilesHistoryService filesHistoryService,
+        IClipboardService clipboardService,
+        IShareService shareService)
         : base(messenger)
     {
-        AnalyticsService = analyticsService;
-        FilesService = filesService;
-        FilesHistoryService = filesHistoryService;
-        ClipboardService = clipboardService;
-        ShareService = shareService;
+        this.analyticsService = analyticsService;
+        this.filesService = filesService;
+        this.filesHistoryService = filesHistoryService;
+        this.clipboardService = clipboardService;
+        this.shareService = shareService;
     }
 
     /// <summary>
     /// Gets the current collection of sections to display
     /// </summary>
-    public ObservableGroupedCollection<CodeLibrarySection, object> Source { get; } = new();
+    public ObservableGroupedCollection<CodeLibrarySection, object> Source { get; } = [];
 
     /// <summary>
     /// Loads the currently available code samples and recently used files
@@ -125,37 +137,43 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     [RelayCommand]
     private async Task LoadDataAsync()
     {
-        List<CodeLibraryEntry> recent = new();
+        List<CodeLibraryEntry> recent = [];
 
         // Load the recent files
-        await foreach ((IFile file, string data) in FilesService.GetFutureAccessFilesAsync())
+        await foreach ((IFile file, string data) in this.filesService.GetFutureAccessFilesAsync())
         {
             // Deserialize the metadata and prepare the model
             CodeMetadata? metadata = string.IsNullOrEmpty(data) ? new() : JsonSerializer.Deserialize(data, Brainf_ckSharpJsonSerializerContext.Default.CodeMetadata);
-            
-            if (metadata is null) ThrowHelper.ThrowInvalidOperationException("Failed to load the source code metadata");
-            
+
+            if (metadata is null)
+            {
+                ThrowHelper.ThrowInvalidOperationException("Failed to load the source code metadata");
+            }
+
             CodeLibraryEntry? entry = await CodeLibraryEntry.TryLoadFromFileAsync(file, metadata);
 
-            if (entry is null) ThrowHelper.ThrowInvalidOperationException("Failed to load the source code file");
+            if (entry is null)
+            {
+                ThrowHelper.ThrowInvalidOperationException("Failed to load the source code file");
+            }
 
             recent.Add(entry);
         }
 
         // Sort chronologically
-        IReadOnlyList<CodeLibraryEntry> sorted = recent.OrderByDescending(entry => entry.EditTime).ToArray();
+        IReadOnlyList<CodeLibraryEntry> sorted = [.. recent.OrderByDescending(entry => entry.EditTime)];
 
         // Load the code samples
         IReadOnlyList<CodeLibraryEntry> samples = await GetSampleCodesAsync();
 
         // Add the favorites, if any
         IEnumerable<CodeLibraryEntry> favorited = sorted.Where(entry => entry.Metadata.IsFavorited)!;
-        Source.AddGroup(CodeLibrarySection.Favorites, favorited.Append<object>(CodeLibrarySection.Favorites));
+        _ = Source.AddGroup(CodeLibrarySection.Favorites, favorited.Append<object>(CodeLibrarySection.Favorites));
 
         // Add the recent and sample items
         IEnumerable<CodeLibraryEntry> unfavorited = sorted.Where(entry => !entry.Metadata.IsFavorited)!;
-        Source.AddGroup(CodeLibrarySection.Recent, unfavorited.Append<object>(CodeLibrarySection.Recent));
-        Source.AddGroup(CodeLibrarySection.Samples, samples);
+        _ = Source.AddGroup(CodeLibrarySection.Recent, unfavorited.Append<object>(CodeLibrarySection.Recent));
+        _ = Source.AddGroup(CodeLibrarySection.Samples, samples);
     }
 
     /// <summary>
@@ -165,15 +183,27 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     [RelayCommand]
     private void ProcessItem(object? item)
     {
-        if (item is CodeLibraryEntry entry) _ = OpenFileAsync(entry);
-        else if (item is CodeLibrarySection c) RequestOpenFile(c == CodeLibrarySection.Favorites);
-        else ThrowHelper.ThrowArgumentException("The input item is not valid");
+        if (item is CodeLibraryEntry entry)
+        {
+            _ = OpenFileAsync(entry);
+        }
+        else if (item is CodeLibrarySection c)
+        {
+            RequestOpenFile(c == CodeLibrarySection.Favorites);
+        }
+        else
+        {
+            ThrowHelper.ThrowArgumentException("The input item is not valid");
+        }
     }
 
     /// <summary>
     /// Requests to pick and open a source code file
     /// </summary>
-    private void RequestOpenFile(bool favorite) => Messenger.Send(new PickOpenFileRequestMessage(favorite));
+    private void RequestOpenFile(bool favorite)
+    {
+        _ = Messenger.Send(new PickOpenFileRequestMessage(favorite));
+    }
 
     /// <summary>
     /// Sends a request to load a specified code entry
@@ -183,17 +213,20 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     {
         if (entry.File.IsReadOnly)
         {
-            AnalyticsService.Log(EventNames.SampleCodeSelected, (nameof(SourceCode.File), entry.File.DisplayName));
+            this.analyticsService.Log(EventNames.SampleCodeSelected, (nameof(SourceCode.File), entry.File.DisplayName));
 
             SourceCode code = await SourceCode.LoadFromReferenceFileAsync(entry.File);
 
-            Messenger.Send(new LoadSourceCodeRequestMessage(code));
+            _ = Messenger.Send(new LoadSourceCodeRequestMessage(code));
         }
         else
         {
-            if (await SourceCode.TryLoadFromEditableFileAsync(entry.File) is not SourceCode sourceCode) return;
+            if (await SourceCode.TryLoadFromEditableFileAsync(entry.File) is not SourceCode sourceCode)
+            {
+                return;
+            }
 
-            Messenger.Send(new LoadSourceCodeRequestMessage(sourceCode));
+            _ = Messenger.Send(new LoadSourceCodeRequestMessage(sourceCode));
         }
     }
 
@@ -205,8 +238,8 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     private void ToggleFavorite(CodeLibraryEntry? entry)
     {
         Guard.IsNotNull(entry);
-        
-        AnalyticsService.Log(EventNames.ToggleFavoriteSourceCode, (nameof(CodeMetadata.IsFavorited), entry.Metadata.IsFavorited.ToString()));
+
+        this.analyticsService.Log(EventNames.ToggleFavoriteSourceCode, (nameof(CodeMetadata.IsFavorited), entry.Metadata.IsFavorited.ToString()));
 
         // If the current item is favorited, set is as not favorited
         // and move it back into the recent files section.
@@ -216,14 +249,14 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
             entry.Metadata.IsFavorited = false;
 
             Source.RemoveItem(CodeLibrarySection.Favorites, entry);
-            Source.InsertItem(CodeLibrarySection.Recent, Comparer<CodeLibrarySection>.Default, entry, SourceItemEditTimeComparer);
+            _ = Source.InsertItem(CodeLibrarySection.Recent, Comparer<CodeLibrarySection>.Default, entry, SourceItemEditTimeComparer);
         }
         else
         {
             entry.Metadata.IsFavorited = true;
 
             Source.RemoveItem(CodeLibrarySection.Recent, entry);
-            Source.InsertItem(CodeLibrarySection.Favorites, Comparer<CodeLibrarySection>.Default, entry, SourceItemEditTimeComparer);
+            _ = Source.InsertItem(CodeLibrarySection.Favorites, Comparer<CodeLibrarySection>.Default, entry, SourceItemEditTimeComparer);
         }
 
         entry.File.RequestFutureAccessPermission(JsonSerializer.Serialize(entry.Metadata, Brainf_ckSharpJsonSerializerContext.Default.CodeMetadata));
@@ -237,12 +270,12 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     private async Task CopyToClipboardAsync(CodeLibraryEntry? entry)
     {
         Guard.IsNotNull(entry);
-        
-        AnalyticsService.Log(EventNames.CopySourceCode);
+
+        this.analyticsService.Log(EventNames.CopySourceCode);
 
         string text = await entry.File.ReadAllTextAsync();
 
-        ClipboardService.TryCopy(text);
+        _ = this.clipboardService.TryCopy(text);
     }
 
     /// <summary>
@@ -253,10 +286,10 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     private void Share(CodeLibraryEntry? entry)
     {
         Guard.IsNotNull(entry);
-        
-        AnalyticsService.Log(EventNames.ShareSourceCode);
 
-        ShareService.Share(entry.Title, entry.File);
+        this.analyticsService.Log(EventNames.ShareSourceCode);
+
+        this.shareService.Share(entry.Title, entry.File);
     }
 
     /// <summary>
@@ -265,10 +298,16 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     /// <param name="entry">The <see cref="CodeLibraryEntry"/> instance to remove</param>
     private void RemoveTrackedSourceCode(CodeLibraryEntry entry)
     {
-        var group = Source.First<ObservableGroup<CodeLibrarySection, object>>(g => g.Contains(entry));
+        ObservableGroup<CodeLibrarySection, object> group = Source.First<ObservableGroup<CodeLibrarySection, object>>(g => g.Contains(entry));
 
-        if (group.Count == 1) Source.Remove(group);
-        else group.Remove(entry);
+        if (group.Count == 1)
+        {
+            _ = Source.Remove(group);
+        }
+        else
+        {
+            _ = group.Remove(entry);
+        }
 
         entry.File.RemoveFutureAccessPermission();
     }
@@ -281,12 +320,12 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     private Task RemoveFromLibraryAsync(CodeLibraryEntry? entry)
     {
         Guard.IsNotNull(entry);
-        
-        AnalyticsService.Log(EventNames.RemoveFromLibrary, (nameof(CodeMetadata.IsFavorited), entry.Metadata.IsFavorited.ToString()));
+
+        this.analyticsService.Log(EventNames.RemoveFromLibrary, (nameof(CodeMetadata.IsFavorited), entry.Metadata.IsFavorited.ToString()));
 
         RemoveTrackedSourceCode(entry);
 
-        return FilesHistoryService.RemoveActivityAsync(entry.File);
+        return this.filesHistoryService.RemoveActivityAsync(entry.File);
     }
 
     /// <summary>
@@ -297,15 +336,15 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     private Task DeleteAsync(CodeLibraryEntry? entry)
     {
         Guard.IsNotNull(entry);
-        
-        AnalyticsService.Log(EventNames.DeleteSourceCode, (nameof(CodeMetadata.IsFavorited), entry.Metadata.IsFavorited.ToString()));
+
+        this.analyticsService.Log(EventNames.DeleteSourceCode, (nameof(CodeMetadata.IsFavorited), entry.Metadata.IsFavorited.ToString()));
 
         RemoveTrackedSourceCode(entry);
 
         // We can remove the item from history and delete the file in parallel,
         // since removing a tracked item from history requires no file access.
         return Task.WhenAll(
-            FilesHistoryService.RemoveActivityAsync(entry.File),
+            this.filesHistoryService.RemoveActivityAsync(entry.File),
             entry.File.DeleteAsync());
     }
 

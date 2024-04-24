@@ -21,7 +21,7 @@ public static class IFileExtensions
         const int separatorLength = 3; // " » "
         int
             numberOfSeparators = file.Path.Count(Path.DirectorySeparatorChar),
-            formattedLength = file.Path.Length + numberOfSeparators * (separatorLength - 1) + separatorLength;
+            formattedLength = file.Path.Length + (numberOfSeparators * (separatorLength - 1)) + separatorLength;
 
         // The temporary buffer has space for one extra separator that is
         // always initialized even if it's not used in the final string.

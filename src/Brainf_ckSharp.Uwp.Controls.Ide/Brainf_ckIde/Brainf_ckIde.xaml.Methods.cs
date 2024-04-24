@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -18,7 +18,7 @@ public sealed partial class Brainf_ckIde
     /// <summary>
     /// The loaded text currently in use (used as a reference for changes)
     /// </summary>
-    private string _LoadedText = "\r";
+    private string loadedText = "\r";
 
     /// <summary>
     /// Loads a given text file and starts using it as reference for the git diff indicators
@@ -26,13 +26,13 @@ public sealed partial class Brainf_ckIde
     /// <param name="text"></param>
     public void LoadText(string text)
     {
-        _LoadedText = text.WithCarriageReturnLineEndings();
+        this.loadedText = text.WithCarriageReturnLineEndings();
 
-        _DiffIndicators.Span.Clear();
+        this.diffIndicators.Span.Clear();
 
-        BreakpointIndicators.Clear();
+        this.breakpointIndicators.Clear();
 
-        CodeEditBox.Document.LoadFromString(text);
+        this.CodeEditBox.Document.LoadFromString(text);
     }
 
     /// <summary>
@@ -40,11 +40,11 @@ public sealed partial class Brainf_ckIde
     /// </summary>
     public void MarkTextAsSaved()
     {
-        _LoadedText = CodeEditBox.Text;
+        this.loadedText = this.CodeEditBox.Text;
 
         UpdateDiffInfo();
 
-        IdeOverlaysCanvas.Invalidate();
+        this.IdeOverlaysCanvas.Invalidate();
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ public sealed partial class Brainf_ckIde
     /// <param name="character">The character to type</param>
     public void TypeCharacter(char character)
     {
-        CodeEditBox.Document.Selection.TypeText(character.ToString());
+        this.CodeEditBox.Document.Selection.TypeText(character.ToString());
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ public sealed partial class Brainf_ckIde
     /// <param name="source">The source text to insert</param>
     public void InsertText(string source)
     {
-        CodeEditBox.InsertText(source);
+        this.CodeEditBox.InsertText(source);
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public sealed partial class Brainf_ckIde
     /// </summary>
     public void DeleteCharacter()
     {
-        CodeEditBox.DeleteSelectionOrCharacter();
+        this.CodeEditBox.DeleteSelectionOrCharacter();
     }
 
     /// <summary>
@@ -82,16 +82,16 @@ public sealed partial class Brainf_ckIde
         switch (key)
         {
             case VirtualKey.Up:
-                CodeEditBox.Document.Selection.MoveUp(TextRangeUnit.Line, 1, false);
+                this.CodeEditBox.Document.Selection.MoveUp(TextRangeUnit.Line, 1, false);
                 break;
             case VirtualKey.Down:
-                CodeEditBox.Document.Selection.MoveDown(TextRangeUnit.Line, 1, false);
+                this.CodeEditBox.Document.Selection.MoveDown(TextRangeUnit.Line, 1, false);
                 break;
             case VirtualKey.Left:
-                CodeEditBox.Document.Selection.MoveLeft(TextRangeUnit.Character, 1, false);
+                this.CodeEditBox.Document.Selection.MoveLeft(TextRangeUnit.Character, 1, false);
                 break;
             case VirtualKey.Right:
-                CodeEditBox.Document.Selection.MoveRight(TextRangeUnit.Character, 1, false);
+                this.CodeEditBox.Document.Selection.MoveRight(TextRangeUnit.Character, 1, false);
                 break;
             default:
                 ThrowHelper.ThrowArgumentException(nameof(key), "Invalid virtual key");
@@ -108,7 +108,7 @@ public sealed partial class Brainf_ckIde
     {
         int index = Text.CalculateIndex(row, column);
 
-        CodeEditBox.Document.Selection.SetRange(index, index);
+        this.CodeEditBox.Document.Selection.SetRange(index, index);
     }
 
     /// <summary>
@@ -117,9 +117,12 @@ public sealed partial class Brainf_ckIde
     /// <returns>A <see cref="MemoryOwner{T}"/> instance with the line numbers with a breakpoint.</returns>
     public IMemoryOwner<int> GetBreakpoints()
     {
-        int count = BreakpointIndicators.Count;
+        int count = this.breakpointIndicators.Count;
 
-        if (count == 0) return MemoryOwner<int>.Empty;
+        if (count == 0)
+        {
+            return MemoryOwner<int>.Empty;
+        }
 
         // Rent a buffer to copy the line numbers with a breakpoint
         MemoryOwner<int> buffer = MemoryOwner<int>.Allocate(count);
@@ -128,7 +131,7 @@ public sealed partial class Brainf_ckIde
         int i = 0;
 
         // Copy the existing breakpoints
-        foreach (var pair in BreakpointIndicators)
+        foreach (System.Collections.Generic.KeyValuePair<int, float> pair in this.breakpointIndicators)
         {
             Unsafe.Add(ref bufferRef, i++) = pair.Key - 1;
         }
@@ -136,7 +139,7 @@ public sealed partial class Brainf_ckIde
         // Get the underlying array to sort in-place.
         // This will no longer be needed on .NET 5, as there are APIs
         // to sort items within a Span<T> directly, not yet on UWP though.
-        _ = MemoryMarshal.TryGetArray<int>(buffer.Memory, out var segment);
+        _ = MemoryMarshal.TryGetArray<int>(buffer.Memory, out ArraySegment<int> segment);
 
         Array.Sort(segment.Array!, segment.Offset, segment.Count);
 
@@ -145,12 +148,12 @@ public sealed partial class Brainf_ckIde
         i = 0;
         int j = 0, k = 0;
 
-        foreach (var line in CodeEditBox.Text.Tokenize(Characters.CarriageReturn))
+        foreach (ReadOnlySpan<char> line in this.CodeEditBox.Text.Tokenize(Characters.CarriageReturn))
         {
             // If the current line is marked, do a linear search to find the first operator
             if (Unsafe.Add(ref bufferRef, i) == j)
             {
-                foreach (var item in line.Enumerate())
+                foreach (CommunityToolkit.HighPerformance.Enumerables.ReadOnlySpanEnumerable<char>.Item item in line.Enumerate())
                 {
                     if (Brainf_ckParser.IsOperator(item.Value))
                     {
@@ -174,6 +177,6 @@ public sealed partial class Brainf_ckIde
     /// </summary>
     public void TryShowSyntaxErrorToolTip()
     {
-        CodeEditBox.TryShowSyntaxErrorToolTip();
+        this.CodeEditBox.TryShowSyntaxErrorToolTip();
     }
 }

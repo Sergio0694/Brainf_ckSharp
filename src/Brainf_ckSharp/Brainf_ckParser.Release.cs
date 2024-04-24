@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Opcodes;
@@ -28,7 +28,10 @@ public static partial class Brainf_ckParser
             // Check the syntax of the input source code
             validationResult = ValidateSyntax(source);
 
-            if (!validationResult.IsSuccess) return null;
+            if (!validationResult.IsSuccess)
+            {
+                return null;
+            }
 
             // Allocate the buffer of binary items with the input operations
             using SpanOwner<Brainf_ckOperation> buffer = SpanOwner<Brainf_ckOperation>.Allocate(validationResult.OperatorsCount);
@@ -38,7 +41,10 @@ public static partial class Brainf_ckParser
             int i = 0, j = 0;
 
             // Find the index of the first operator
-            while (!IsOperator(Unsafe.Add(ref sourceRef, j))) j++;
+            while (!IsOperator(Unsafe.Add(ref sourceRef, j)))
+            {
+                j++;
+            }
 
             // Initialize the first found operator to optimize the second loop.
             // This makes it so that it's possible to skip checks on the running
@@ -58,7 +64,10 @@ public static partial class Brainf_ckParser
                 char c = Unsafe.Add(ref sourceRef, j);
 
                 // Check if the character is an operator
-                if (!TryParseOperator(c, out byte op)) continue;
+                if (!TryParseOperator(c, out byte op))
+                {
+                    continue;
+                }
 
                 // Accumulate the current operator or finalize the operation.
                 // To check whether an operator is compressable, it is possible to
@@ -107,7 +116,7 @@ public static partial class Brainf_ckParser
             int size = 0;
 
             // Count the number of original operators
-            foreach (var opcode in operations)
+            foreach (Brainf_ckOperation opcode in operations)
             {
                 size += opcode.Count;
             }

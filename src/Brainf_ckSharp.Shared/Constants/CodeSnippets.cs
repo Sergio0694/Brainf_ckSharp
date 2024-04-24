@@ -30,11 +30,11 @@ public static class CodeSnippets
     /// <summary>
     /// Gets the collection of available code snippets
     /// </summary>
-    public static IReadOnlyList<string> All { get; } = new[]
-    {
+    public static IReadOnlyList<string> All { get; } =
+    [
         ResetCell,
         DuplicateValue,
         IfZeroThen,
         IfGreaterThanZeroThenElse
-    };
+    ];
 }

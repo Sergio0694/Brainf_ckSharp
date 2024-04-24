@@ -41,8 +41,8 @@ public sealed partial class IdeView : UserControl
         ViewModel.CodeSaved += ViewModel_CodeSaved;
         ViewModel.StateRestored += ViewModel_OnStateRestored;
 
-        CodeEditor.RenderWhitespaceCharacters = App.Current.Services.GetRequiredService<ISettingsService>().GetValue<bool>(SettingsKeys.RenderWhitespaces);
-        CodeEditor.SyntaxHighlightTheme = App.Current.Services.GetRequiredService<ISettingsService>().GetValue<IdeTheme>(SettingsKeys.IdeTheme).AsBrainf_ckTheme();
+        this.CodeEditor.RenderWhitespaceCharacters = App.Current.Services.GetRequiredService<ISettingsService>().GetValue<bool>(SettingsKeys.RenderWhitespaces);
+        this.CodeEditor.SyntaxHighlightTheme = App.Current.Services.GetRequiredService<ISettingsService>().GetValue<IdeTheme>(SettingsKeys.IdeTheme).AsBrainf_ckTheme();
 
         App.Current.Services.GetRequiredService<IMessenger>().Register<IdeView, ValueChangedMessage<VirtualKey>>(this, (r, m) => r.CodeEditor.Move(m.Value));
         App.Current.Services.GetRequiredService<IMessenger>().Register<IdeView, IdeThemeSettingChangedMessage>(this, (r, m) => r.CodeEditor.SyntaxHighlightTheme = m.Value.AsBrainf_ckTheme());
@@ -59,8 +59,8 @@ public sealed partial class IdeView : UserControl
     /// </summary>
     public double FooterSpacing
     {
-        get => CodeEditor.FooterSpacing;
-        set => CodeEditor.FooterSpacing = value;
+        get => this.CodeEditor.FooterSpacing;
+        set => this.CodeEditor.FooterSpacing = value;
     }
 
     /// <summary>
@@ -84,12 +84,12 @@ public sealed partial class IdeView : UserControl
     {
         if (!ViewModel.ValidationResult.IsSuccess)
         {
-            CodeEditor.TryShowSyntaxErrorToolTip();
+            this.CodeEditor.TryShowSyntaxErrorToolTip();
 
             return;
         }
 
-        App.Current.SubPageHost.DisplaySubFramePage(new IdeResultSubPage(CodeEditor.Text));
+        App.Current.SubPageHost.DisplaySubFramePage(new IdeResultSubPage(this.CodeEditor.Text));
     }
 
     /// <summary>
@@ -101,13 +101,13 @@ public sealed partial class IdeView : UserControl
     {
         if (!ViewModel.ValidationResult.IsSuccess)
         {
-            CodeEditor.TryShowSyntaxErrorToolTip();
+            this.CodeEditor.TryShowSyntaxErrorToolTip();
 
             return;
         }
 
-        string source = CodeEditor.Text;
-        IMemoryOwner<int> breakpoints = CodeEditor.GetBreakpoints();
+        string source = this.CodeEditor.Text;
+        IMemoryOwner<int> breakpoints = this.CodeEditor.GetBreakpoints();
 
         App.Current.SubPageHost.DisplaySubFramePage(new IdeResultSubPage(source, breakpoints));
     }
@@ -119,7 +119,7 @@ public sealed partial class IdeView : UserControl
     /// <param name="e">The operator character to add to the text</param>
     private void ViewModel_CharacterAdded(object sender, char e)
     {
-        CodeEditor.TypeCharacter(e);
+        this.CodeEditor.TypeCharacter(e);
     }
 
     /// <summary>
@@ -129,7 +129,7 @@ public sealed partial class IdeView : UserControl
     /// <param name="e">The empty <see cref="EventArgs"/> instance for this event</param>
     private void ViewModel_CharacterDeleted(object sender, EventArgs e)
     {
-        CodeEditor.DeleteCharacter();
+        this.CodeEditor.DeleteCharacter();
     }
 
     /// <summary>
@@ -139,7 +139,7 @@ public sealed partial class IdeView : UserControl
     /// <param name="e">The <see cref="string"/> with the code to load</param>
     private void ViewModel_CodeLoaded(object sender, string e)
     {
-        CodeEditor.LoadText(e);
+        this.CodeEditor.LoadText(e);
 
         App.Current.SubPageHost.CloseSubFramePage();
     }
@@ -151,7 +151,7 @@ public sealed partial class IdeView : UserControl
     /// <param name="e">The empty <see cref="EventArgs"/> instance for the event</param>
     private void ViewModel_CodeSaved(object sender, EventArgs e)
     {
-        CodeEditor.MarkTextAsSaved();
+        this.CodeEditor.MarkTextAsSaved();
     }
 
     /// <summary>
@@ -161,8 +161,8 @@ public sealed partial class IdeView : UserControl
     /// <param name="e">The empty <see cref="EventArgs"/> instance for the event</param>
     private void ViewModel_OnStateRestored(object sender, IdeState e)
     {
-        CodeEditor.LoadText(e.Text);
-        CodeEditor.Move(e.Row, e.Column);
+        this.CodeEditor.LoadText(e.Text);
+        this.CodeEditor.Move(e.Row, e.Column);
     }
 
     /// <summary>
@@ -204,7 +204,7 @@ public sealed partial class IdeView : UserControl
 
             App.Current.Services.GetRequiredService<IAnalyticsService>().Log(EventNames.InsertCodeSnippet, (nameof(CodeSnippets), name));
 
-            CodeEditor.InsertText(snippet);
+            this.CodeEditor.InsertText(snippet);
         }
     }
 

@@ -28,10 +28,10 @@ public sealed class HeaderButton : Control
     {
         base.OnApplyTemplate();
 
-        _RootButton = (Button?)GetTemplateChild(RootButtonName)
+        this._RootButton = (Button?)GetTemplateChild(RootButtonName)
                       ?? ThrowHelper.ThrowInvalidOperationException<Button>("Can't find " + RootButtonName);
 
-        _RootButton.Click += RootButton_Click;
+        this._RootButton.Click += RootButton_Click;
 
         UpdateVisualState();
     }
@@ -104,7 +104,11 @@ public sealed class HeaderButton : Control
     {
         HeaderButton @this = (HeaderButton)d;
 
-        if (e.NewValue is bool value && value) @this.Selected?.Invoke(@this, EventArgs.Empty);
+        if (e.NewValue is bool value && value)
+        {
+            @this.Selected?.Invoke(@this, EventArgs.Empty);
+        }
+
         @this.UpdateVisualState();
     }
 
@@ -119,5 +123,8 @@ public sealed class HeaderButton : Control
     }
 
     // Updates the UI when the control is selected
-    private void RootButton_Click(object sender, RoutedEventArgs e) => IsSelected = true;
+    private void RootButton_Click(object sender, RoutedEventArgs e)
+    {
+        IsSelected = true;
+    }
 }

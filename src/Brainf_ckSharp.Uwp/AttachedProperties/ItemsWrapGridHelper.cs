@@ -44,7 +44,7 @@ public static class ItemsWrapGridHelper
     /// <summary>
     /// A table that keeps track of <see cref="ItemsWrapGrid"/> instances with an already added <see cref="FrameworkElement.SizeChanged"/> handler for <see cref="DesiredItemWidthProperty"/>
     /// </summary>
-    private static readonly ConditionalWeakTable<ItemsWrapGrid, object?> ControlsMap = new();
+    private static readonly ConditionalWeakTable<ItemsWrapGrid, object?> ControlsMap = [];
 
     /// <summary>
     /// Updates the UI when <see cref="DesiredItemWidthProperty"/> changes
@@ -77,7 +77,10 @@ public static class ItemsWrapGridHelper
             columns = Math.Ceiling(e.NewSize.Width / desiredWidth);
 
         int maximumRowsOrColumns = @this.MaximumRowsOrColumns;
-        if (maximumRowsOrColumns > 0) columns = Math.Min(columns, maximumRowsOrColumns);
+        if (maximumRowsOrColumns > 0)
+        {
+            columns = Math.Min(columns, maximumRowsOrColumns);
+        }
 
         @this.ItemWidth = e.NewSize.Width / columns;
     }

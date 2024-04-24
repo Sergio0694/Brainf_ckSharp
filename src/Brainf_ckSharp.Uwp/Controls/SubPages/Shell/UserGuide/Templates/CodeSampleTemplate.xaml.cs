@@ -21,8 +21,8 @@ public sealed partial class CodeSampleTemplate : UserControl
     /// </summary>
     public string Title
     {
-        get => TitleBlock.Text;
-        set => TitleBlock.Text = value;
+        get => this.TitleBlock.Text;
+        set => this.TitleBlock.Text = value;
     }
 
     /// <summary>

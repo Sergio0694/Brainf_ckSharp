@@ -35,8 +35,12 @@ public static class ExitCodeConverter
         };
 
         foreach (ExitCode entry in span)
+        {
             if (code.HasFlag(entry))
+            {
                 return $"{nameof(ExitCode)}/{entry}".GetLocalized();
+            }
+        }
 
         return ThrowHelper.ThrowArgumentException<string>(nameof(code), "Invalid exit code");
     }

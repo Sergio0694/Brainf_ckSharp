@@ -52,6 +52,9 @@ public static class ObservableRecipientHelper
         {
             viewModel.IsActive = value;
         }
-        else ThrowHelper.ThrowInvalidOperationException("Invalid view model type");
+        else
+        {
+            ThrowHelper.ThrowInvalidOperationException("Invalid view model type");
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
@@ -13,49 +13,64 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 
+#pragma warning disable CA1001
+
 namespace Brainf_ckSharp.Shared.ViewModels.Controls;
 
+/// <summary>
+/// A viewmodel for the status bar in the application.
+/// </summary>
 public sealed class StatusBarViewModel : ObservableRecipient
 {
     /// <summary>
     /// The <see cref="ISettingsService"/> instance currently in use
     /// </summary>
-    private readonly ISettingsService SettingsService;
+    private readonly ISettingsService settingsService;
 
     /// <summary>
     /// The <see cref="SynchronizationContext"/> in use when <see cref="StatusBarViewModel"/> is instantiated
     /// </summary>
-    private readonly SynchronizationContext Context;
+    private readonly SynchronizationContext context;
 
     /// <summary>
-    /// The <see cref="Timer"/> instance used to perodically invoke <see cref="RunBackgroundCode"/>
+    /// The <see cref="timer"/> instance used to perodically invoke <see cref="RunBackgroundCode"/>
     /// </summary>
-    private readonly Timer Timer;
+    private readonly Timer timer;
 
     /// <summary>
     /// The last source code that was used
     /// </summary>
-    private ReadOnlyMemory<char> _Source;
+    private ReadOnlyMemory<char> source;
 
     /// <summary>
     /// The last stdin that was used
     /// </summary>
-    private string _Stdin = string.Empty;
+    private string stdin = string.Empty;
 
     /// <summary>
     /// The last memory size setting that was used
     /// </summary>
-    private int _MemorySize;
+    private int memorySize;
 
     /// <summary>
     /// The last overflow mode that was used
     /// </summary>
-    private OverflowMode _OverflowMode;
+    private OverflowMode overflowMode;
 
     /// <summary>
     /// The last machine state that was used, if available
     /// </summary>
-    private IReadOnlyMachineState? _MachineState;
+    private IReadOnlyMachineState? machineState;
+
+    /// <summary>
+    /// The backing field for <see cref="BackgroundExecutionResult"/>.
+    /// </summary>
+    private Option<InterpreterResult>? backgroundExecutionResult;
+
+    /// <summary>
+    /// The backing field for <see cref="WorkspaceViewModel"/>.
+    /// </summary>
+    private WorkspaceViewModelBase? workspaceViewModel;
 
     /// <summary>
     /// Creates a new <see cref="StatusBarViewModel"/> instance
@@ -65,44 +80,40 @@ public sealed class StatusBarViewModel : ObservableRecipient
     public StatusBarViewModel(IMessenger messenger, ISettingsService settingsService)
         : base(messenger)
     {
-        SettingsService = settingsService;
-        Context = SynchronizationContext.Current;
-        Timer = new Timer(vm => ((StatusBarViewModel)vm).RunBackgroundCode(), this, default, TimeSpan.FromSeconds(2));
+        this.settingsService = settingsService;
+        this.context = SynchronizationContext.Current;
+        this.timer = new Timer(vm => ((StatusBarViewModel)vm).RunBackgroundCode(), this, default, TimeSpan.FromSeconds(2));
     }
-    
+
     /// <inheritdoc/>
     protected override void OnActivated()
     {
         Messenger.Register<StatusBarViewModel, PropertyChangedMessage<bool>>(this, (r, m) => r.Receive(m));
     }
 
-    private Option<InterpreterResult>? _BackgroundExecutionResult;
-
     /// <summary>
     /// Gets the current <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance
     /// </summary>
     public Option<InterpreterResult>? BackgroundExecutionResult
     {
-        get => _BackgroundExecutionResult;
+        get => this.backgroundExecutionResult;
         private set
         {
-            _BackgroundExecutionResult?.Value?.MachineState.Dispose();
+            this.backgroundExecutionResult?.Value?.MachineState.Dispose();
 
-            _BackgroundExecutionResult = value;
+            this.backgroundExecutionResult = value;
 
             OnPropertyChanged();
         }
     }
-
-    private WorkspaceViewModelBase? _WorkspaceViewModel;
 
     /// <summary>
     /// Gets the <see cref="WorkspaceViewModelBase"/> instance in use
     /// </summary>
     public WorkspaceViewModelBase? WorkspaceViewModel
     {
-        get => _WorkspaceViewModel;
-        private set => SetProperty(ref _WorkspaceViewModel, value);
+        get => this.workspaceViewModel;
+        private set => SetProperty(ref this.workspaceViewModel, value);
     }
 
     /// <summary>
@@ -115,7 +126,7 @@ public sealed class StatusBarViewModel : ObservableRecipient
 
         // Restart the time to make sure to update the background
         // execution result immediately when the workspace changes.
-        Timer.Change(default, TimeSpan.FromSeconds(2));
+        _ = this.timer.Change(default, TimeSpan.FromSeconds(2));
     }
 
     /// <summary>
@@ -123,32 +134,35 @@ public sealed class StatusBarViewModel : ObservableRecipient
     /// </summary>
     private void RunBackgroundCode()
     {
-        if (WorkspaceViewModel is not WorkspaceViewModelBase viewModel) return;
+        if (WorkspaceViewModel is not WorkspaceViewModelBase viewModel)
+        {
+            return;
+        }
 
         // Load all the new arguments and data for the new execution.
         // Before actually executing the code, also check with the previously
         // stored arguments to be able to skip the execution if there were no changes.
         ReadOnlyMemory<char> source = viewModel.Text;
         string stdin = Messenger.Send(new StdinRequestMessage(true));
-        int memorySize = SettingsService.GetValue<int>(SettingsKeys.MemorySize);
-        OverflowMode overflowMode = SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
+        int memorySize = this.settingsService.GetValue<int>(SettingsKeys.MemorySize);
+        OverflowMode overflowMode = this.settingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
         IReadOnlyMachineState? machineState = (viewModel as ConsoleViewModel)?.MachineState;
 
-        if (source.Span.SequenceEqual(_Source.Span) &&
-            stdin.Equals(_Stdin) &&
-            memorySize == _MemorySize &&
-            overflowMode == _OverflowMode &&
-            (machineState is null && _MachineState is null ||
-             machineState?.Equals(_MachineState!) == true))
+        if (source.Span.SequenceEqual(this.source.Span) &&
+            stdin.Equals(this.stdin) &&
+            memorySize == this.memorySize &&
+            overflowMode == this.overflowMode &&
+            ((machineState is null && this.machineState is null) ||
+              machineState?.Equals(this.machineState!) == true))
         {
             return;
         }
 
-        _Source = source;
-        _Stdin = stdin;
-        _MemorySize = memorySize;
-        _OverflowMode = overflowMode;
-        _MachineState = machineState;
+        this.source = source;
+        this.stdin = stdin;
+        this.memorySize = memorySize;
+        this.overflowMode = overflowMode;
+        this.machineState = machineState;
 
         CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(2));
 
@@ -162,7 +176,7 @@ public sealed class StatusBarViewModel : ObservableRecipient
             .TryRun();
 
         // Update the property from the original synchronization context
-        Context.Post(_ => BackgroundExecutionResult = result, null);
+        this.context.Post(_ => BackgroundExecutionResult = result, null);
     }
 
     /// <summary>

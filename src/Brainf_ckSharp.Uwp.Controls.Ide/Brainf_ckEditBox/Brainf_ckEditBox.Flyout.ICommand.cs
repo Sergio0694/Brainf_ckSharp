@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Input;
 
 #nullable enable
@@ -19,7 +19,7 @@ internal sealed partial class Brainf_ckEditBox
         /// <summary>
         /// The <see cref="System.Action"/> to invoke when this command is executed
         /// </summary>
-        private readonly Action Action;
+        private readonly Action action;
 
         /// <summary>
         /// Creates a new <see cref="Command"/> instance with the specified parameters
@@ -27,7 +27,7 @@ internal sealed partial class Brainf_ckEditBox
         /// <param name="action">The <see cref="System.Action"/> to invoke</param>
         public Command(Action action)
         {
-            Action = action;
+            this.action = action;
         }
 
         /// <inheritdoc/>
@@ -39,7 +39,7 @@ internal sealed partial class Brainf_ckEditBox
         /// <inheritdoc/>
         public void Execute(object parameter)
         {
-            Action();
+            this.action();
         }
 
         /// <inheritdoc/>

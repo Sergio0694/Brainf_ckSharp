@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -21,8 +21,6 @@ using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.Messaging;
 using Nito.AsyncEx;
 
-#nullable enable
-
 namespace Brainf_ckSharp.Shared.ViewModels.Views;
 
 /// <summary>
@@ -33,17 +31,17 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// <summary>
     /// The <see cref="ISettingsService"/> instance currently in use
     /// </summary>
-    private readonly ISettingsService SettingsService;
+    private readonly ISettingsService settingsService;
 
     /// <summary>
     /// The <see cref="IKeyboardListenerService"/> instance currently in use
     /// </summary>
-    private readonly IKeyboardListenerService KeyboardListenerService;
+    private readonly IKeyboardListenerService keyboardListenerService;
 
     /// <summary>
     /// An <see cref="AsyncLock"/> instance to synchronize accesses to the console results
     /// </summary>
-    private readonly AsyncLock ExecutionMutex = new();
+    private readonly AsyncLock executionMutex = new();
 
     /// <summary>
     /// Creates a new <see cref="ConsoleViewModel"/> instance with a new command ready to use
@@ -54,13 +52,13 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     public ConsoleViewModel(IMessenger messenger, ISettingsService settingsService, IKeyboardListenerService keyboardListenerService)
         : base(messenger)
     {
-        SettingsService = settingsService;
-        KeyboardListenerService = keyboardListenerService;
+        this.settingsService = settingsService;
+        this.keyboardListenerService = keyboardListenerService;
 
         // Initialize the machine state with the current user settings
-        _MachineState = MachineStateProvider.Create(
-            SettingsService.GetValue<int>(SettingsKeys.MemorySize),
-            SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode));
+        this.machineState = MachineStateProvider.Create(
+            this.settingsService.GetValue<int>(SettingsKeys.MemorySize),
+            this.settingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode));
     }
 
     /// <inheritdoc/>
@@ -77,7 +75,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
         Messenger.Register<ConsoleViewModel, MemorySizeSettingChangedMessage>(this, (r, m) => _ = r.RestartAsync());
         Messenger.Register<ConsoleViewModel, OperatorKeyPressedNotificationMessage>(this, (r, m) => _ = r.TryAddOperatorAsync(m.Value));
 
-        KeyboardListenerService.CharacterReceived += TryAddOperator;
+        this.keyboardListenerService.CharacterReceived += TryAddOperator;
     }
 
     /// <inheritdoc/>
@@ -85,7 +83,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     {
         base.OnDeactivated();
 
-        KeyboardListenerService.CharacterReceived -= TryAddOperator;
+        this.keyboardListenerService.CharacterReceived -= TryAddOperator;
     }
 
     /// <inheritdoc/>
@@ -98,17 +96,17 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// <summary>
     /// Gets the collection of currently visible console lines
     /// </summary>
-    public ObservableCollection<IConsoleEntry> Source { get; } = new() { new ConsoleCommand() };
+    public ObservableCollection<IConsoleEntry> Source { get; } = [new ConsoleCommand()];
 
-    private IReadOnlyMachineState _MachineState;
+    private IReadOnlyMachineState machineState;
 
     /// <summary>
     /// Gets the <see cref="IReadOnlyMachineState"/> instance currently in use
     /// </summary>
     public IReadOnlyMachineState MachineState
     {
-        get => _MachineState;
-        private set => SetProperty(ref _MachineState, value, true);
+        get => this.machineState;
+        private set => SetProperty(ref this.machineState, value, true);
     }
 
     /// <summary>
@@ -126,16 +124,23 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// <param name="c">The current operator to add</param>
     private async Task TryAddOperatorAsync(char c)
     {
-        using (await ExecutionMutex.LockAsync())
+        using (await this.executionMutex.LockAsync())
         {
-            if (!Brainf_ckParser.IsOperator(c)) return; 
+            if (!Brainf_ckParser.IsOperator(c))
+            {
+                return;
+            }
+
             if (Source.LastOrDefault() is ConsoleCommand command)
             {
                 command.Command += c;
 
                 Text = command.Command.AsMemory();
             }
-            else ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
+            else
+            {
+                ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
+            }
         }
     }
 
@@ -144,7 +149,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task DeleteLastOperatorAsync()
     {
-        using (await ExecutionMutex.LockAsync())
+        using (await this.executionMutex.LockAsync())
         {
             if (Source.LastOrDefault() is ConsoleCommand command)
             {
@@ -154,7 +159,10 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
 
                 Text = command.Command.AsMemory();
             }
-            else ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
+            else
+            {
+                ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
+            }
         }
     }
 
@@ -163,7 +171,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task ResetCommandAsync()
     {
-        using (await ExecutionMutex.LockAsync())
+        using (await this.executionMutex.LockAsync())
         {
             if (Source.LastOrDefault() is ConsoleCommand command)
             {
@@ -171,7 +179,10 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
 
                 Text = Memory<char>.Empty;
             }
-            else ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
+            else
+            {
+                ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
+            }
         }
     }
 
@@ -180,19 +191,22 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task RestartAsync()
     {
-        using (await ExecutionMutex.LockAsync())
+        using (await this.executionMutex.LockAsync())
         {
             if (Source.LastOrDefault() is ConsoleCommand command)
             {
                 command.IsActive = false;
             }
-            else ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
+            else
+            {
+                ThrowHelper.ThrowInvalidOperationException("Missing console command to modify");
+            }
 
             Source.Add(new ConsoleRestart());
 
             MachineState = MachineStateProvider.Create(
-                SettingsService.GetValue<int>(SettingsKeys.MemorySize),
-                SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode));
+                this.settingsService.GetValue<int>(SettingsKeys.MemorySize),
+                this.settingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode));
 
             Source.Add(new ConsoleCommand());
 
@@ -205,7 +219,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task ClearScreenAsync()
     {
-        using (await ExecutionMutex.LockAsync())
+        using (await this.executionMutex.LockAsync())
         {
             Source.Clear();
 
@@ -220,7 +234,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task ExecuteCommandAsync()
     {
-        using (await ExecutionMutex.LockAsync())
+        using (await this.executionMutex.LockAsync())
         {
             if (Source.LastOrDefault() is not ConsoleCommand command)
             {
@@ -261,15 +275,25 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
                     .TryRun();
             });
 
-            if (!result.ValidationResult.IsSuccess) Source.Add(new ConsoleSyntaxError(result.ValidationResult));
+            if (!result.ValidationResult.IsSuccess)
+            {
+                Source.Add(new ConsoleSyntaxError { Result = result.ValidationResult });
+            }
             else
             {
                 // In all cases, update the current memory state
                 MachineState = result.Value!.MachineState;
 
                 // Display textual results and exit codes
-                if (!string.IsNullOrEmpty(result.Value!.Stdout)) Source.Add(new ConsoleResult(result.Value!.Stdout));
-                if (!result.Value!.ExitCode.HasFlag(ExitCode.Success)) Source.Add(new ConsoleException(result.Value!.ExitCode, result.Value!.HaltingInfo!));
+                if (!string.IsNullOrEmpty(result.Value!.Stdout))
+                {
+                    Source.Add(new ConsoleResult { Stdout = result.Value!.Stdout });
+                }
+
+                if (!result.Value!.ExitCode.HasFlag(ExitCode.Success))
+                {
+                    Source.Add(new ConsoleException { ExitCode = result.Value!.ExitCode, HaltingInfo = result.Value!.HaltingInfo! });
+                }
             }
         }
 
@@ -283,7 +307,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     private async Task RepeatLastScriptAsync()
     {
-        using (await ExecutionMutex.LockAsync())
+        using (await this.executionMutex.LockAsync())
         {
             if (Source.Reverse().OfType<ConsoleCommand>().Skip(1).FirstOrDefault() is ConsoleCommand previous)
             {

@@ -13,13 +13,13 @@ jobs:
     runs-on: windows-2022
     steps:
     - name: Git checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
     - name: Build
       run: msbuild -t:restore,build /p:Configuration=${{matrix.configuration}} /p:Platform=${{matrix.platform}} /bl
     - name: Upload MSBuild binary log
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: msbuild_log_${{matrix.configuration}}_${{matrix.platform}}
         path: msbuild.binlog
@@ -30,11 +30,11 @@ jobs:
     needs: [build-solution]
     strategy:
       matrix:
-        framework: [net472, net6.0, net7.0]
+        framework: [net472, net8.0]
     runs-on: windows-2022
     steps:
     - name: Git checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Run Brainf_ckSharp.Unit
       run: dotnet test unit\Brainf_ckSharp.Unit\Brainf_ckSharp.Unit.csproj -c Release -f ${{matrix.framework}} -v n -l "console;verbosity=detailed"
     - name: Run Brainf_ckSharp.Unit.Internals

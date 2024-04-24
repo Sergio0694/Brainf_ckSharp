@@ -1,23 +1,15 @@
-﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace Brainf_ckSharp.Shared.Messages.InputPanel;
 
 /// <summary>
 /// A request message for the current stdin buffer
 /// </summary>
-public sealed class StdinRequestMessage : RequestMessage<string>
+/// <param name="isFromBackgroundExecution">Indicates whether or not this request is from a background execution</param>
+public sealed class StdinRequestMessage(bool isFromBackgroundExecution) : RequestMessage<string>
 {
-    /// <summary>
-    /// Creates a new <see cref="StdinRequestMessage"/> instance with the specified parameters
-    /// </summary>
-    /// <param name="isFromBackgroundExecution">Indicates whether or not this request is from a background execution</param>
-    public StdinRequestMessage(bool isFromBackgroundExecution)
-    {
-        IsFromBackgroundExecution = isFromBackgroundExecution;
-    }
-
     /// <summary>
     /// Indicates whether or not this request is from a background execution
     /// </summary>
-    public bool IsFromBackgroundExecution { get; }
+    public bool IsFromBackgroundExecution { get; } = isFromBackgroundExecution;
 }

@@ -1,4 +1,4 @@
-﻿using Windows.UI.Xaml;
+using Windows.UI.Xaml;
 using Brainf_ckSharp.Uwp.Themes;
 
 #nullable enable
@@ -10,41 +10,41 @@ public sealed partial class Brainf_ckIde
     /// <summary>
     /// Gets the text currently displayed
     /// </summary>
-    public string Text => CodeEditBox.Text;
+    public string Text => this.CodeEditBox.Text;
 
-    private double _HeaderSpacing;
+    private double headerSpacing;
 
     /// <summary>
     /// Gets or sets the spacing of the top header
     /// </summary>
     public double HeaderSpacing
     {
-        get => _HeaderSpacing;
+        get => this.headerSpacing;
         set
         {
-            _HeaderSpacing = value;
+            this.headerSpacing = value;
 
-            IdeOverlaysCanvasTransform.Y = value + 10;
-            LineBlockTransform.Y = value + 8;
-            CodeEditBox.Padding = new Thickness(4, value + 8, 8, FooterSpacing + 8);
-            CodeEditBox.VerticalScrollBarMargin = new Thickness(0, value, 0, FooterSpacing);
+            this.IdeOverlaysCanvasTransform.Y = value + 10;
+            this.LineBlockTransform.Y = value + 8;
+            this.CodeEditBox.Padding = new Thickness(4, value + 8, 8, FooterSpacing + 8);
+            this.CodeEditBox.VerticalScrollBarMargin = new Thickness(0, value, 0, FooterSpacing);
         }
     }
 
-    private double _FooterSpacing;
+    private double footerSpacing;
 
     /// <summary>
     /// Gets or sets the spacing of the bottom footer
     /// </summary>
     public double FooterSpacing
     {
-        get => _FooterSpacing;
+        get => this.footerSpacing;
         set
         {
-            _FooterSpacing = value;
+            this.footerSpacing = value;
 
-            CodeEditBox.Padding = new Thickness(4, HeaderSpacing + 8, 8, value + 8);
-            CodeEditBox.VerticalScrollBarMargin = new Thickness(0, HeaderSpacing, 0, value);
+            this.CodeEditBox.Padding = new Thickness(4, HeaderSpacing + 8, 8, value + 8);
+            this.CodeEditBox.VerticalScrollBarMargin = new Thickness(0, HeaderSpacing, 0, value);
         }
     }
 
@@ -53,8 +53,8 @@ public sealed partial class Brainf_ckIde
     /// </summary>
     public FrameworkElement ContextMenuSecondaryContent
     {
-        get => CodeEditBox.ContextMenuSecondaryContent;
-        set => CodeEditBox.ContextMenuSecondaryContent = value;
+        get => this.CodeEditBox.ContextMenuSecondaryContent;
+        set => this.CodeEditBox.ContextMenuSecondaryContent = value;
     }
 
     /// <summary>
@@ -62,8 +62,8 @@ public sealed partial class Brainf_ckIde
     /// </summary>
     public bool RenderWhitespaceCharacters
     {
-        get => CodeEditBox.RenderWhitespaceCharacters;
-        set => CodeEditBox.RenderWhitespaceCharacters = value;
+        get => this.CodeEditBox.RenderWhitespaceCharacters;
+        set => this.CodeEditBox.RenderWhitespaceCharacters = value;
     }
 
     /// <summary>

@@ -21,8 +21,8 @@ public sealed partial class OperatorInfoTemplate : UserControl
     /// </summary>
     public string ItemName
     {
-        get => ItemNameBlock.Text;
-        set => ItemNameBlock.Text = value;
+        get => this.ItemNameBlock.Text;
+        set => this.ItemNameBlock.Text = value;
     }
 
     /// <summary>
@@ -30,8 +30,8 @@ public sealed partial class OperatorInfoTemplate : UserControl
     /// </summary>
     public Brush ItemNameForegroundBrush
     {
-        get => ItemNameBlock.Foreground;
-        set => ItemNameBlock.Foreground = value;
+        get => this.ItemNameBlock.Foreground;
+        set => this.ItemNameBlock.Foreground = value;
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public sealed partial class OperatorInfoTemplate : UserControl
     /// </summary>
     public string Description
     {
-        get => DescriptionBlock.Text;
-        set => DescriptionBlock.Text = value;
+        get => this.DescriptionBlock.Text;
+        set => this.DescriptionBlock.Text = value;
     }
 }

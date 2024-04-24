@@ -9,7 +9,7 @@ namespace Brainf_ckSharp.Uwp.AttachedProperties;
 /// A <see langword="class"/> with an attached XAML property to display a blinking animation on a target <see cref="UIElement"/>
 /// </summary>
 public static class BlinkingAnimationHelper
-{ 
+{
     /// <summary>
     /// Gets the value of <see cref="IsBlinkingProperty"/> for a given <see cref="UIElement"/>
     /// </summary>
@@ -42,7 +42,7 @@ public static class BlinkingAnimationHelper
     /// <summary>
     /// A table that maps existing, running <see cref="Storyboard"/> items to target <see cref="UIElement"/>
     /// </summary>
-    private static readonly ConditionalWeakTable<UIElement, Storyboard> StoryboardTable = new();
+    private static readonly ConditionalWeakTable<UIElement, Storyboard> StoryboardTable = [];
 
     /// <summary>
     /// Updates the UI when <see cref="IsBlinkingProperty"/> changes

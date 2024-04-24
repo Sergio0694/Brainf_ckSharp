@@ -65,7 +65,7 @@ public sealed partial class App : Application, IFilesManagerService
 
                 return;
             }
-            
+
             // If the activation uses a protocol, handle the possible cases.
             // Currently there are two possible protocols being used:
             //   - [/switch?key=...] is used to request a direct switch to an existing instance.
@@ -88,7 +88,7 @@ public sealed partial class App : Application, IFilesManagerService
 
                     return;
                 }
-                
+
                 // File request by path from a timeline item
                 if (protocolArgs.Uri.LocalPath.Equals("/file"))
                 {
@@ -112,7 +112,10 @@ public sealed partial class App : Application, IFilesManagerService
             // Start the app as usual, passing the current key
             Start(_ => new App(key));
         }
-        else AppInstance.RecommendedInstance.RedirectActivationTo();
+        else
+        {
+            AppInstance.RecommendedInstance.RedirectActivationTo();
+        }
     }
 
     /// <summary>
@@ -130,7 +133,10 @@ public sealed partial class App : Application, IFilesManagerService
             // Get the filename associated to the current instance
             string keyPath = Path.Combine(temporaryPath, entry.Key);
 
-            if (!File.Exists(keyPath)) continue;
+            if (!File.Exists(keyPath))
+            {
+                continue;
+            }
 
             string currentPath = File.ReadAllText(keyPath);
 
@@ -155,8 +161,14 @@ public sealed partial class App : Application, IFilesManagerService
             temporaryPath = ApplicationData.Current.TemporaryFolder.Path,
             keyPath = Path.Combine(temporaryPath, Id);
 
-        if (file is null) File.Delete(keyPath);
-        else File.WriteAllText(keyPath, file.Path);
+        if (file is null)
+        {
+            File.Delete(keyPath);
+        }
+        else
+        {
+            File.WriteAllText(keyPath, file.Path);
+        }
     }
 
     /// <inheritdoc/>
@@ -168,7 +180,10 @@ public sealed partial class App : Application, IFilesManagerService
     /// <inheritdoc/>
     public bool TrySwitchTo(IFile file)
     {
-        if (!TryGetInstanceForFilePath(file.Path, out AppInstance? instance)) return false;
+        if (!TryGetInstanceForFilePath(file.Path, out AppInstance? instance))
+        {
+            return false;
+        }
 
         Uri uri = new($"brainf-ck:///switch?key={instance!.Key}");
 

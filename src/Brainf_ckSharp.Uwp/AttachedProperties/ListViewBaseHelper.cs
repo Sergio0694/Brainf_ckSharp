@@ -47,7 +47,7 @@ public static class ListViewBaseHelper
     /// <summary>
     /// A table that maps existing <see cref="INotifyCollectionChanged"/> items to target <see cref="ListViewBase"/>
     /// </summary>
-    private static readonly ConditionalWeakTable<INotifyCollectionChanged, ListViewBase> ControlsMap = new();
+    private static readonly ConditionalWeakTable<INotifyCollectionChanged, ListViewBase> ControlsMap = [];
 
     /// <summary>
     /// Updates the UI when <see cref="IsAutoScrollEnabledProperty"/> changes
@@ -83,7 +83,10 @@ public static class ListViewBaseHelper
     /// <param name="e">The events info for the current invocation</param>
     private static async void INotifyCollectionChanged_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        if (e.Action != NotifyCollectionChangedAction.Add) return;
+        if (e.Action != NotifyCollectionChangedAction.Add)
+        {
+            return;
+        }
 
         if (!ControlsMap.TryGetValue((INotifyCollectionChanged)sender, out ListViewBase control))
         {

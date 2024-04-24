@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Windows.Foundation;
@@ -25,24 +25,28 @@ public sealed partial class Brainf_ckIde
     /// <param name="text">The current source code being displayed</param>
     private void UpdateDiffInfo(string text)
     {
-        MemoryOwner<LineModificationType> diff = LineDiffer.ComputeDiff(_LoadedText, text, Characters.CarriageReturn);
+        MemoryOwner<LineModificationType> diff = LineDiffer.ComputeDiff(this.loadedText, text, Characters.CarriageReturn);
 
-        ref LineModificationType oldRef = ref _DiffIndicators.DangerousGetReference();
+        ref LineModificationType oldRef = ref this.diffIndicators.DangerousGetReference();
         ref LineModificationType newRef = ref diff.DangerousGetReference();
-        int length = Math.Min(_DiffIndicators.Length, diff.Length);
+        int length = Math.Min(this.diffIndicators.Length, diff.Length);
 
         // Maintain the saved indicators
         for (int i = 0; i < length; i++)
+        {
             if (Unsafe.Add(ref oldRef, i) == LineModificationType.Saved &&
                 Unsafe.Add(ref newRef, i) == LineModificationType.None)
+            {
                 Unsafe.Add(ref newRef, i) = LineModificationType.Saved;
+            }
+        }
 
-        _DiffIndicators.Dispose();
+        this.diffIndicators.Dispose();
 
         // The edit box always ends with a final \r that can't be removed by the user.
         // Slicing out the last item prevents the modified marker from being displayed
         // below the last line actually being typed by the user.
-        _DiffIndicators = diff.Slice(0, diff.Length - 1);
+        this.diffIndicators = diff.Slice(0, diff.Length - 1);
     }
 
     /// <summary>
@@ -50,15 +54,22 @@ public sealed partial class Brainf_ckIde
     /// </summary>
     private void UpdateDiffInfo()
     {
-        int size = _DiffIndicators.Length;
+        int size = this.diffIndicators.Length;
 
-        if (size == 0) return;
+        if (size == 0)
+        {
+            return;
+        }
 
-        ref LineModificationType r0 = ref _DiffIndicators.DangerousGetReference();
+        ref LineModificationType r0 = ref this.diffIndicators.DangerousGetReference();
 
         for (int i = 0; i < size; i++)
+        {
             if (Unsafe.Add(ref r0, i) == LineModificationType.Modified)
+            {
                 Unsafe.Add(ref r0, i) = LineModificationType.Saved;
+            }
+        }
     }
 
     /// <summary>
@@ -70,18 +81,18 @@ public sealed partial class Brainf_ckIde
     private void UpdateIndentationInfo(string text, bool isSyntaxValid, int numberOfLines)
     {
         // Return the previous buffer
-        _IndentationIndicators.Dispose();
+        this.indentationIndicators.Dispose();
 
         // Skip if the current syntax is not valid
         if (!isSyntaxValid)
         {
-            _IndentationIndicators = MemoryOwner<IndentationIndicatorBase?>.Empty;
+            this.indentationIndicators = MemoryOwner<IndentationIndicatorBase?>.Empty;
 
             return;
         }
 
         // Allocate the new buffer
-        MemoryOwner<IndentationIndicatorBase?> indicators = _IndentationIndicators = MemoryOwner<IndentationIndicatorBase?>.Allocate(numberOfLines);
+        MemoryOwner<IndentationIndicatorBase?> indicators = this.indentationIndicators = MemoryOwner<IndentationIndicatorBase?>.Allocate(numberOfLines);
         ref IndentationIndicatorBase? indicatorsRef = ref indicators.DangerousGetReference(); // There's always at least one line
 
         // Reset the pools
@@ -130,10 +141,18 @@ public sealed partial class Brainf_ckIde
                         maxRootDepth = Math.Max(endRootDepth, maxRootDepth);
                         hasRootLoopStarted = true;
                     }
+
                     break;
                 case Characters.LoopEnd:
-                    if (isWithinFunction) endFunctionDepth--;
-                    else endRootDepth--;
+                    if (isWithinFunction)
+                    {
+                        endFunctionDepth--;
+                    }
+                    else
+                    {
+                        endRootDepth--;
+                    }
+
                     break;
 
                 // For ( and ) operators, all is needed is to update the variables to
@@ -162,10 +181,19 @@ public sealed partial class Brainf_ckIde
                         IndentationType type;
                         if (hasFunctionEnded)
                         {
-                            if (isWithinFunction || endRootDepth > 0) type = IndentationType.SelfContainedAndContinuing;
-                            else type = IndentationType.SelfContained;
+                            if (isWithinFunction || endRootDepth > 0)
+                            {
+                                type = IndentationType.SelfContainedAndContinuing;
+                            }
+                            else
+                            {
+                                type = IndentationType.SelfContained;
+                            }
                         }
-                        else type = IndentationType.Open;
+                        else
+                        {
+                            type = IndentationType.Open;
+                        }
 
                         FunctionIndicator indicator = Pool<FunctionIndicator>.Shared.Rent();
                         indicator.Type = type;
@@ -180,7 +208,10 @@ public sealed partial class Brainf_ckIde
                         {
                             type = endRootDepth > 0 ? IndentationType.SelfContainedAndContinuing : IndentationType.SelfContained;
                         }
-                        else type = IndentationType.Open;
+                        else
+                        {
+                            type = IndentationType.Open;
+                        }
 
                         BlockIndicator indicator = Pool<BlockIndicator>.Shared.Rent();
                         indicator.Type = type;
@@ -195,10 +226,19 @@ public sealed partial class Brainf_ckIde
                         IndentationType type;
                         if (maxFunctionDepth > endFunctionDepth)
                         {
-                            if (isWithinFunction || endFunctionDepth > 0) type = IndentationType.SelfContainedAndContinuing;
-                            else type = IndentationType.SelfContained;
+                            if (isWithinFunction || endFunctionDepth > 0)
+                            {
+                                type = IndentationType.SelfContainedAndContinuing;
+                            }
+                            else
+                            {
+                                type = IndentationType.SelfContained;
+                            }
                         }
-                        else type = IndentationType.Open;
+                        else
+                        {
+                            type = IndentationType.Open;
+                        }
 
                         BlockIndicator indicator = Pool<BlockIndicator>.Shared.Rent();
                         indicator.Type = type;
@@ -216,8 +256,14 @@ public sealed partial class Brainf_ckIde
                         // visual mode to use depends on whether or not there is an
                         // additional external indentation scope still active at the end.
                         IndentationType type;
-                        if (isWithinFunction || endRootDepth > 0) type = IndentationType.SelfContainedAndContinuing;
-                        else type = IndentationType.SelfContained;
+                        if (isWithinFunction || endRootDepth > 0)
+                        {
+                            type = IndentationType.SelfContainedAndContinuing;
+                        }
+                        else
+                        {
+                            type = IndentationType.SelfContained;
+                        }
 
                         LineIndicator indicator = Pool<LineIndicator>.Shared.Rent();
                         indicator.Type = type;
@@ -232,7 +278,10 @@ public sealed partial class Brainf_ckIde
 
                         Unsafe.Add(ref indicatorsRef, y) = indicator;
                     }
-                    else Unsafe.Add(ref indicatorsRef, y) = null;
+                    else
+                    {
+                        Unsafe.Add(ref indicatorsRef, y) = null;
+                    }
 
                     // Update the persistent trackers across lines
                     y++;
@@ -254,16 +303,16 @@ public sealed partial class Brainf_ckIde
     /// </summary>
     private void UpdateBreakpointsInfo()
     {
-        int totalBreakpoints = BreakpointIndicators.Count;
+        int totalBreakpoints = this.breakpointIndicators.Count;
 
         // If there are no breakpoints, do nothing
         if (totalBreakpoints == 0)
         {
-            if (_BreakpointAreas.Length != 0)
+            if (this.breakpointAreas.Length != 0)
             {
-                _BreakpointAreas.Dispose();
+                this.breakpointAreas.Dispose();
 
-                _BreakpointAreas = MemoryOwner<Rect>.Empty;
+                this.breakpointAreas = MemoryOwner<Rect>.Empty;
             }
 
             return;
@@ -275,7 +324,7 @@ public sealed partial class Brainf_ckIde
         int currentLineNumber = 0;
 
         // Copy the current line numbers to a buffer
-        foreach (var entry in BreakpointIndicators)
+        foreach (System.Collections.Generic.KeyValuePair<int, float> entry in this.breakpointIndicators)
         {
             Unsafe.Add(ref lineNumbersRef, currentLineNumber++) = entry.Key;
         }
@@ -297,7 +346,7 @@ public sealed partial class Brainf_ckIde
         currentLineNumber = 1; // The line count starts at 1
 
         // Go through all the available lines of text
-        foreach (var line in Text.Tokenize(Characters.CarriageReturn))
+        foreach (ReadOnlySpan<char> line in Text.Tokenize(Characters.CarriageReturn))
         {
             if (currentTargetLineNumber == currentLineNumber)
             {
@@ -315,8 +364,14 @@ public sealed partial class Brainf_ckIde
 
                         for (int j = i + 1; j < line.Length; j++)
                         {
-                            if (Brainf_ckParser.IsOperator(line[j])) lastOperatorOffset = j;
-                            else goto ProcessLineAnalysisResults;
+                            if (Brainf_ckParser.IsOperator(line[j]))
+                            {
+                                lastOperatorOffset = j;
+                            }
+                            else
+                            {
+                                goto ProcessLineAnalysisResults;
+                            }
                         }
 
                         goto ProcessLineAnalysisResults;
@@ -328,14 +383,14 @@ public sealed partial class Brainf_ckIde
                 // If there are no operators left, remove the breakpoint
                 if (firstOperatorOffset == -1)
                 {
-                    BreakpointIndicators.Remove(currentTargetLineNumber);
+                    _ = this.breakpointIndicators.Remove(currentTargetLineNumber);
 
                     totalBreakpoints--;
                 }
                 else
                 {
                     // Get the text range for the first operators interval
-                    ITextRange range = CodeEditBox.Document.GetRange(
+                    ITextRange range = this.CodeEditBox.Document.GetRange(
                         currentTextIndex + firstOperatorOffset,
                         currentTextIndex + lastOperatorOffset + 1);
 
@@ -346,8 +401,15 @@ public sealed partial class Brainf_ckIde
                         out _);
                 }
 
-                if (validatedBreakpoints == totalBreakpoints) break;
-                if (currentBreakpointIndex++ == totalBreakpoints) break;
+                if (validatedBreakpoints == totalBreakpoints)
+                {
+                    break;
+                }
+
+                if (currentBreakpointIndex++ == totalBreakpoints)
+                {
+                    break;
+                }
 
                 // Update the target breakpoint line number
                 currentTargetLineNumber = Unsafe.Add(ref lineNumbersRef, currentBreakpointIndex);
@@ -357,8 +419,8 @@ public sealed partial class Brainf_ckIde
             currentTextIndex += line.Length + 1;
         }
 
-        _BreakpointAreas.Dispose();
+        this.breakpointAreas.Dispose();
 
-        _BreakpointAreas = breakpointAreas.Slice(0, validatedBreakpoints);
+        this.breakpointAreas = breakpointAreas.Slice(0, validatedBreakpoints);
     }
 }

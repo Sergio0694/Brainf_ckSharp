@@ -13,8 +13,14 @@ public sealed class TestStoreService : IStoreService
     /// <inheritdoc/>
     public Task RequestReviewAsync()
     {
-        if (Debugger.IsAttached) Debug.WriteLine("[STORE] Review requested");
-        else Console.WriteLine("[STORE] Review requested");
+        if (Debugger.IsAttached)
+        {
+            Debug.WriteLine("[STORE] Review requested");
+        }
+        else
+        {
+            Console.WriteLine("[STORE] Review requested");
+        }
 
         return Task.CompletedTask;
     }

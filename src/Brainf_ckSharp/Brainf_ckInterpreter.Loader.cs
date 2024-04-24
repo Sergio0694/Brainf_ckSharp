@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Models;
@@ -36,7 +36,10 @@ public static partial class Brainf_ckInterpreter
         Assert(totalFunctions >= 0);
 
         // No declared functions
-        if (totalFunctions == 0) return Array.Empty<FunctionDefinition>();
+        if (totalFunctions == 0)
+        {
+            return [];
+        }
 
         FunctionDefinition[] result = new FunctionDefinition[totalFunctions];
         ref FunctionDefinition r0 = ref result.DangerousGetReference();
@@ -78,7 +81,7 @@ public static partial class Brainf_ckInterpreter
         // executable, because that is the maximum number of open square brackets in a valid source file.
         // The two temporary buffers are used to implement an indirect indexing system while building
         // the table, which allows to reduce the complexity of the operation from O(N^2) to O(N).
-        int tempBuffersLength = opcodes.Length / 2 + 1;
+        int tempBuffersLength = (opcodes.Length / 2) + 1;
         using SpanOwner<int> rootTempIndices = SpanOwner<int>.Allocate(tempBuffersLength);
         using SpanOwner<int> functionTempIndices = SpanOwner<int>.Allocate(tempBuffersLength);
         ref int rootTempIndicesRef = ref rootTempIndices.DangerousGetReference();
@@ -95,8 +98,15 @@ public static partial class Brainf_ckInterpreter
                 // temporary buffer, depending on whether or not the current
                 // part of the executable is within a function definition
                 case Operators.LoopStart:
-                    if (f == -1) Unsafe.Add(ref rootTempIndicesRef, r++) = i;
-                    else Unsafe.Add(ref functionTempIndicesRef, f++) = i;
+                    if (f == -1)
+                    {
+                        Unsafe.Add(ref rootTempIndicesRef, r++) = i;
+                    }
+                    else
+                    {
+                        Unsafe.Add(ref functionTempIndicesRef, f++) = i;
+                    }
+
                     break;
 
                 // When a loop ends, the index of the corresponding open square
@@ -151,7 +161,10 @@ public static partial class Brainf_ckInterpreter
         Assert(depth >= -1);
 
         // No exception info for scripts completed successfully
-        if (depth == -1) return null;
+        if (depth == -1)
+        {
+            return null;
+        }
 
         string[] stackTrace = new string[depth + 1];
         ref string r0 = ref stackTrace.DangerousGetReference();

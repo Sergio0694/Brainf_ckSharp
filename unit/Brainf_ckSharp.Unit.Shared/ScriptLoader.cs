@@ -1,11 +1,9 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Unit.Shared.Models;
-
-#nullable enable
 
 namespace Brainf_ckSharp.Unit.Shared;
 
@@ -30,11 +28,13 @@ public static class ScriptLoader
         string text = reader.ReadToEnd();
         string[] parts = text.Split('|').Select(p => p.TrimStart().Replace("\r", string.Empty)).ToArray();
 
-        return new Script(
-            parts[0],
-            parts[1],
-            int.Parse(parts[2]),
-            (OverflowMode)Enum.Parse(typeof(OverflowMode), parts[3]),
-            parts[4]);
+        return new Script
+        {
+            Stdin = parts[0],
+            Stdout = parts[1],
+            MemorySize = int.Parse(parts[2]),
+            OverflowMode = (OverflowMode)Enum.Parse(typeof(OverflowMode), parts[3]),
+            Source = parts[4]
+        };
     }
 }

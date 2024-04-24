@@ -32,7 +32,10 @@ public static class XamlResources
     /// <typeparam name="T">The type of resource to set</typeparam>
     /// <param name="key">The key of the resource to create or update</param>
     /// <param name="value">The resource value to set</param>
-    public static void Set<T>(string key, T value) => Application.Current.Resources[key] = value;
+    public static void Set<T>(string key, T value)
+    {
+        Application.Current.Resources[key] = value;
+    }
 
     /// <summary>
     /// A <see langword="class"/> with some hardcoded brushes

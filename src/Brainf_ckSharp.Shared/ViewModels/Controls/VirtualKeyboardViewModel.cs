@@ -1,4 +1,4 @@
-﻿using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using Brainf_ckSharp.Shared.Messages.Settings;
@@ -6,8 +6,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 
+#pragma warning disable IDE0290
+
 namespace Brainf_ckSharp.Shared.ViewModels.Controls;
 
+/// <summary>
+/// A viewmodel for the virtual keyboard control.
+/// </summary>
 public sealed partial class VirtualKeyboardViewModel : ObservableRecipient
 {
     /// <summary>
@@ -18,7 +23,7 @@ public sealed partial class VirtualKeyboardViewModel : ObservableRecipient
     public VirtualKeyboardViewModel(IMessenger messenger, ISettingsService settingsService)
         : base(messenger)
     {
-        _IsPBrainModeEnabled = settingsService.GetValue<bool>(SettingsKeys.ShowPBrainButtons);
+        this.isPBrainModeEnabled = settingsService.GetValue<bool>(SettingsKeys.ShowPBrainButtons);
     }
 
     /// <inheritdoc/>
@@ -27,15 +32,15 @@ public sealed partial class VirtualKeyboardViewModel : ObservableRecipient
         Messenger.Register<VirtualKeyboardViewModel, ShowPBrainButtonsSettingsChangedMessage>(this, (r, m) => r.IsPBrainModeEnabled = m.Value);
     }
 
-    private bool _IsPBrainModeEnabled;
+    private bool isPBrainModeEnabled;
 
     /// <summary>
     /// Gets whether or not the PBrain mode is currently enabled
     /// </summary>
     public bool IsPBrainModeEnabled
     {
-        get => _IsPBrainModeEnabled;
-        private set => SetProperty(ref _IsPBrainModeEnabled, value);
+        get => this.isPBrainModeEnabled;
+        private set => SetProperty(ref this.isPBrainModeEnabled, value);
     }
 
     /// <summary>
@@ -45,6 +50,6 @@ public sealed partial class VirtualKeyboardViewModel : ObservableRecipient
     [RelayCommand]
     private void InsertOperator(char op)
     {
-        Messenger.Send(new OperatorKeyPressedNotificationMessage(op));
+        _ = Messenger.Send(new OperatorKeyPressedNotificationMessage(op));
     }
 }

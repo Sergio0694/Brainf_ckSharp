@@ -21,33 +21,36 @@ public readonly ref partial struct ReleaseConfiguration
     [MethodImpl(MethodImplOptions.NoInlining)]
     public Option<InterpreterResult> TryRun()
     {
-        Guard.IsNotNull(Source);
+        Guard.IsNotNull(this.Source);
 
-        using MemoryOwner<Brainf_ckOperation>? operations = Brainf_ckParser.TryParse<Brainf_ckOperation>(Source.Value.Span, out SyntaxValidationResult validationResult);
+        using MemoryOwner<Brainf_ckOperation>? operations = Brainf_ckParser.TryParse<Brainf_ckOperation>(this.Source.Value.Span, out SyntaxValidationResult validationResult);
 
-        if (!validationResult.IsSuccess) return Option<InterpreterResult>.From(validationResult);
-
-        if (InitialState is TuringMachineState initialState)
+        if (!validationResult.IsSuccess)
         {
-            Guard.IsNull(MemorySize);
-            Guard.IsNull(OverflowMode);
+            return Option<InterpreterResult>.From(validationResult);
+        }
+
+        if (this.InitialState is TuringMachineState initialState)
+        {
+            Guard.IsNull(this.MemorySize);
+            Guard.IsNull(this.OverflowMode);
 
             initialState = (TuringMachineState)initialState.Clone();
         }
         else
         {
-            int size = MemorySize ?? Specs.DefaultMemorySize;
+            int size = this.MemorySize ?? Specs.DefaultMemorySize;
 
-            Guard.IsBetweenOrEqualTo(size, Specs.MinimumMemorySize, Specs.MaximumMemorySize, nameof(MemorySize));
+            Guard.IsBetweenOrEqualTo(size, Specs.MinimumMemorySize, Specs.MaximumMemorySize, nameof(this.MemorySize));
 
-            initialState = new TuringMachineState(size, OverflowMode ?? Specs.DefaultOverflowMode);
+            initialState = new TuringMachineState(size, this.OverflowMode ?? Specs.DefaultOverflowMode);
         }
 
         InterpreterResult result = Brainf_ckInterpreter.Release.Run(
             operations!.Span,
-            Stdin.GetValueOrDefault().Span,
+            this.Stdin.GetValueOrDefault().Span,
             initialState,
-            ExecutionToken);
+            this.ExecutionToken);
 
         return Option<InterpreterResult>.From(validationResult, result);
     }

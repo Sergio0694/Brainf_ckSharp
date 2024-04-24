@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Git.Buffers;
 using Brainf_ckSharp.Git.Enums;
@@ -53,8 +53,13 @@ public static class LineDiffer
             return MemoryOwner<LineModificationType>.Empty;
         }
 
+#if NET8_0_OR_GREATER
+        int oldNumberOfLines = System.MemoryExtensions.Count(oldText, separator) + 1;
+        int newNumberOfLines = System.MemoryExtensions.Count(newText, separator) + 1;
+#else
         int oldNumberOfLines = oldText.Count(separator) + 1;
         int newNumberOfLines = newText.Count(separator) + 1;
+#endif
 
         // Fast path if the input text segments have the same length and are short enough
         if (oldText.Length == newText.Length &&
@@ -98,8 +103,14 @@ public static class LineDiffer
             }
             else
             {
-                if (entry.NumberOfOccurrencesInNewText == 1) entry.NumberOfOccurrencesInNewText = 2;
-                else entry.NumberOfOccurrencesInNewText = int.MaxValue;
+                if (entry.NumberOfOccurrencesInNewText == 1)
+                {
+                    entry.NumberOfOccurrencesInNewText = 2;
+                }
+                else
+                {
+                    entry.NumberOfOccurrencesInNewText = int.MaxValue;
+                }
             }
 
             Unsafe.Add(ref newTemporaryValuesRef, i) = entry;
@@ -126,8 +137,14 @@ public static class LineDiffer
             }
             else
             {
-                if (entry.NumberOfOccurrencesInOldText < 2) entry.NumberOfOccurrencesInOldText++;
-                else entry.NumberOfOccurrencesInOldText = int.MaxValue;
+                if (entry.NumberOfOccurrencesInOldText < 2)
+                {
+                    entry.NumberOfOccurrencesInOldText++;
+                }
+                else
+                {
+                    entry.NumberOfOccurrencesInOldText = int.MaxValue;
+                }
             }
 
             entry.LineNumberInOldText = j;
@@ -214,7 +231,7 @@ public static class LineDiffer
         {
             Unsafe.Add(ref resultRef, i) = Unsafe.Add(ref newTemporaryValuesRef, i) switch
             {
-                int _ => LineModificationType.None,
+                int => LineModificationType.None,
                 _ => LineModificationType.Modified
             };
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Brainf_ckSharp.Models;
 
@@ -14,7 +14,7 @@ public sealed class FunctionDefinition : IEquatable<FunctionDefinition>
     /// <param name="index">The numerical index for the current function definition</param>
     /// <param name="offset">The function script offset</param>
     /// <param name="body">The function code</param>
-    public FunctionDefinition(ushort value, int index, int offset, string body)
+    internal FunctionDefinition(ushort value, int index, int offset, string body)
     {
         Value = value;
         Index = index;
@@ -61,7 +61,10 @@ public sealed class FunctionDefinition : IEquatable<FunctionDefinition>
     /// <inheritdoc/>
     public bool Equals(FunctionDefinition? other)
     {
-        if (other is null) return false;
+        if (other is null)
+        {
+            return false;
+        }
 
         return
             Value == other.Value &&
@@ -71,7 +74,10 @@ public sealed class FunctionDefinition : IEquatable<FunctionDefinition>
     }
 
     /// <inheritdoc/>
-    public override bool Equals(object? obj) => Equals(obj as FunctionDefinition);
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as FunctionDefinition);
+    }
 
     /// <inheritdoc/>
     public override int GetHashCode()

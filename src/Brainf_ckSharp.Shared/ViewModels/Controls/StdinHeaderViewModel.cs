@@ -1,17 +1,22 @@
-﻿using Brainf_ckSharp.Services;
+using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using Brainf_ckSharp.Shared.Messages.InputPanel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 
+#pragma warning disable IDE0290
+
 namespace Brainf_ckSharp.Shared.ViewModels.Controls;
 
+/// <summary>
+/// A viewmodel for the stdin header shown in the app.
+/// </summary>
 public sealed class StdinHeaderViewModel : ObservableRecipient
 {
     /// <summary>
     /// The <see cref="ISettingsService"/> instance currently in use
     /// </summary>
-    private readonly ISettingsService SettingsService;
+    private readonly ISettingsService settingsService;
 
     /// <summary>
     /// Creates a new <see cref="StdinHeaderViewModel"/> instance
@@ -21,7 +26,7 @@ public sealed class StdinHeaderViewModel : ObservableRecipient
     public StdinHeaderViewModel(IMessenger messenger, ISettingsService settingsService)
         : base(messenger)
     {
-        SettingsService = settingsService;
+        this.settingsService = settingsService;
     }
 
     /// <inheritdoc/>
@@ -30,15 +35,15 @@ public sealed class StdinHeaderViewModel : ObservableRecipient
         Messenger.Register<StdinHeaderViewModel, StdinRequestMessage>(this, (r, m) => r.GetStdinBuffer(m));
     }
 
-    private string _Text = string.Empty;
+    private string text = string.Empty;
 
     /// <summary>
     /// Gets or sets the current text in the stdin buffer
     /// </summary>
     public string Text
     {
-        get => _Text;
-        set => SetProperty(ref _Text, value);
+        get => this.text;
+        set => SetProperty(ref this.text, value);
     }
 
     /// <inheritdoc/>
@@ -48,7 +53,7 @@ public sealed class StdinHeaderViewModel : ObservableRecipient
 
         // Clear the buffer if requested, and if not from a background execution
         if (!request.IsFromBackgroundExecution &&
-            SettingsService.GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest))
+            this.settingsService.GetValue<bool>(SettingsKeys.ClearStdinBufferOnRequest))
         {
             Text = string.Empty;
         }

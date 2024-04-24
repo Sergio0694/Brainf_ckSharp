@@ -43,7 +43,10 @@ public sealed partial class IdeThemePreviewTemplate : UserControl
     {
         IdeThemePreviewTemplate @this = (IdeThemePreviewTemplate)d;
 
-        if (e.NewValue is not IdeTheme theme) return;
+        if (e.NewValue is not IdeTheme theme)
+        {
+            return;
+        }
 
         Brainf_ckTheme value = theme.AsBrainf_ckTheme();
 

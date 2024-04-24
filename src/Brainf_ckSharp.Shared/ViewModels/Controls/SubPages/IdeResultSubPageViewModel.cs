@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,36 +16,39 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Nito.AsyncEx;
 
-#nullable enable
+#pragma warning disable CA1001, IDE0290
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 
+/// <summary>
+/// A viewmodel for the IDE results page displayed when running a script.
+/// </summary>
 public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
 {
     /// <summary>
     /// The <see cref="ISettingsService"/> instance currently in use
     /// </summary>
-    private readonly ISettingsService SettingsService;
+    private readonly ISettingsService settingsService;
 
     /// <summary>
     /// A mutex to avoid race conditions when handling executions and tokens
     /// </summary>
-    private readonly AsyncLock LoadingMutex = new();
+    private readonly AsyncLock loadingMutex = new();
 
     /// <summary>
     /// The <see cref="CancellationTokenSource"/> to handle executions within <see cref="LoadDataAsync"/>
     /// </summary>
-    private CancellationTokenSource? _ExecutionTokenSource;
+    private CancellationTokenSource? executionTokenSource;
 
     /// <summary>
     /// The <see cref="CancellationTokenSource"/> to handle debug breakpoints within <see cref="LoadDataAsync"/>
     /// </summary>
-    private CancellationTokenSource? _DebugTokenSource;
+    private CancellationTokenSource? debugTokenSource;
 
     /// <summary>
     /// The <see cref="InterpreterSession"/> to use, when in DEBUG mode
     /// </summary>
-    private InterpreterSession? _DebugSession;
+    private InterpreterSession? debugSession;
 
     /// <summary>
     /// Creates a new <see cref="IdeResultSubPageViewModel"/> instance
@@ -55,13 +58,13 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
     public IdeResultSubPageViewModel(IMessenger messenger, ISettingsService settingsService)
         : base(messenger)
     {
-        SettingsService = settingsService;
+        this.settingsService = settingsService;
     }
 
     /// <summary>
     /// Gets the current collection of sections to display
     /// </summary>
-    public ObservableGroupedCollection<IdeResultSection, IdeResultWithSectionInfo> Source { get; } = new();
+    public ObservableGroupedCollection<IdeResultSection, IdeResultWithSectionInfo> Source { get; } = [];
 
     /// <summary>
     /// Gets or sets the script to execute
@@ -77,17 +80,17 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
     /// <summary>
     /// Gets whether or not the debugger is currently stopped at a breakpoint
     /// </summary>
-    public bool IsAtBreakpoint => _DebugSession?.Current.ExitCode.HasFlag(ExitCode.BreakpointReached) == true;
+    public bool IsAtBreakpoint => this.debugSession?.Current.ExitCode.HasFlag(ExitCode.BreakpointReached) == true;
 
     /// <inheritdoc/>
     protected override async void OnDeactivated()
     {
-        _ExecutionTokenSource?.Cancel();
-        _DebugTokenSource?.Cancel();
+        this.executionTokenSource?.Cancel();
+        this.debugTokenSource?.Cancel();
 
-        using (await LoadingMutex.LockAsync())
+        using (await this.loadingMutex.LockAsync())
         {
-            _DebugSession?.Dispose();
+            this.debugSession?.Dispose();
         }
     }
 
@@ -99,14 +102,14 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
     {
         Guard.IsNotNull(Source);
 
-        using (await LoadingMutex.LockAsync())
+        using (await this.loadingMutex.LockAsync())
         {
-            _ExecutionTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            this.executionTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
 
             // Execution arguments and options
             string stdin = Messenger.Send(new StdinRequestMessage(false));
-            int memorySize = SettingsService.GetValue<int>(SettingsKeys.MemorySize);
-            OverflowMode overflowMode = SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
+            int memorySize = this.settingsService.GetValue<int>(SettingsKeys.MemorySize);
+            OverflowMode overflowMode = this.settingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
 
             // Run in RELEASE mode
             if (Breakpoints is null)
@@ -119,7 +122,7 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
                         .WithStdin(stdin)
                         .WithMemorySize(memorySize)
                         .WithOverflowMode(overflowMode)
-                        .WithExecutionToken(_ExecutionTokenSource.Token)
+                        .WithExecutionToken(this.executionTokenSource.Token)
                         .TryRun()
                         .Value!;
                 });
@@ -128,29 +131,29 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
             }
             else
             {
-                _DebugTokenSource = new CancellationTokenSource();
+                this.debugTokenSource = new CancellationTokenSource();
 
                 // Run in DEBUG mode
-                _DebugSession = await Task.Run(() =>
+                this.debugSession = await Task.Run(() =>
                 {
-                    var session = Brainf_ckInterpreter
+                    InterpreterSession session = Brainf_ckInterpreter
                         .CreateDebugConfiguration()
                         .WithSource(Script!)
                         .WithStdin(stdin)
                         .WithBreakpoints(Breakpoints.Memory)
                         .WithMemorySize(memorySize)
                         .WithOverflowMode(overflowMode)
-                        .WithExecutionToken(_ExecutionTokenSource.Token)
-                        .WithDebugToken(_DebugTokenSource.Token)
+                        .WithExecutionToken(this.executionTokenSource.Token)
+                        .WithDebugToken(this.debugTokenSource.Token)
                         .TryRun()
                         .Value!;
 
-                    session.MoveNext();
+                    _ = session.MoveNext();
 
                     return session;
                 });
 
-                LoadResults(_DebugSession.Current);
+                LoadResults(this.debugSession.Current);
 
                 OnPropertyChanged(nameof(IsAtBreakpoint));
             }
@@ -163,11 +166,11 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
     [RelayCommand]
     private async Task ContinueAsync()
     {
-        using (await LoadingMutex.LockAsync())
+        using (await this.loadingMutex.LockAsync())
         {
-            await Task.Run(() => _DebugSession!.MoveNext());
+            _ = await Task.Run(() => this.debugSession!.MoveNext());
 
-            LoadResults(_DebugSession!.Current);
+            LoadResults(this.debugSession!.Current);
 
             OnPropertyChanged(nameof(IsAtBreakpoint));
         }
@@ -179,13 +182,13 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
     [RelayCommand]
     private async Task SkipAsync()
     {
-        using (await LoadingMutex.LockAsync())
+        using (await this.loadingMutex.LockAsync())
         {
-            _DebugTokenSource!.Cancel();
+            this.debugTokenSource!.Cancel();
 
-            await Task.Run(() => _DebugSession!.MoveNext());
+            _ = await Task.Run(() => this.debugSession!.MoveNext());
 
-            LoadResults(_DebugSession!.Current);
+            LoadResults(this.debugSession!.Current);
 
             OnPropertyChanged(nameof(IsAtBreakpoint));
         }
@@ -202,9 +205,9 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
         // A function used to quickly add a specific section to the current collection
         void AddToSource(IdeResultSection section)
         {
-            var model = new IdeResultWithSectionInfo(section, result);
+            IdeResultWithSectionInfo model = new() { Section = section, Result = result };
 
-            Source.AddGroup(section, new[] { model });
+            _ = Source.AddGroup(section, new[] { model });
         }
 
         // The order of items in the result view is as follows:
@@ -224,11 +227,24 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
         // available info for the current script execution.
         // Each template is responsible for extracting info from it
         // and display according to its own function and section type.
-        if (!result.ExitCode.HasFlag(ExitCode.Success)) AddToSource(IdeResultSection.ExceptionType);
-        if (result.Stdout.Length > 0) AddToSource(IdeResultSection.Stdout);
+        if (!result.ExitCode.HasFlag(ExitCode.Success))
+        {
+            AddToSource(IdeResultSection.ExceptionType);
+        }
 
-        if (result.ExitCode.HasFlag(ExitCode.ExceptionThrown)) AddToSource(IdeResultSection.FaultingOperator);
-        else if (result.ExitCode.HasFlag(ExitCode.BreakpointReached)) AddToSource(IdeResultSection.BreakpointReached);
+        if (result.Stdout.Length > 0)
+        {
+            AddToSource(IdeResultSection.Stdout);
+        }
+
+        if (result.ExitCode.HasFlag(ExitCode.ExceptionThrown))
+        {
+            AddToSource(IdeResultSection.FaultingOperator);
+        }
+        else if (result.ExitCode.HasFlag(ExitCode.BreakpointReached))
+        {
+            AddToSource(IdeResultSection.BreakpointReached);
+        }
 
         if (result.ExitCode.HasFlag(ExitCode.ExceptionThrown) ||
             result.ExitCode.HasFlag(ExitCode.ThresholdExceeded) ||
@@ -239,7 +255,10 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
 
         AddToSource(IdeResultSection.SourceCode);
 
-        if (result.Functions.Count > 0) AddToSource(IdeResultSection.FunctionDefinitions);
+        if (result.Functions.Count > 0)
+        {
+            AddToSource(IdeResultSection.FunctionDefinitions);
+        }
 
         AddToSource(IdeResultSection.MemoryState);
         AddToSource(IdeResultSection.Statistics);

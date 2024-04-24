@@ -28,8 +28,8 @@ public sealed class CodeLibraryEntryItemContainerStyleSelector : StyleSelector
     {
         return item switch
         {
-            CodeLibraryEntry _ => DefaultContainerStyle,
-            CodeLibrarySection _ => PlaceholderContainerStyle,
+            CodeLibraryEntry => DefaultContainerStyle,
+            CodeLibrarySection => PlaceholderContainerStyle,
             _ => ThrowHelper.ThrowArgumentNullException<Style>(nameof(item), "The input item can't be null")
         };
     }

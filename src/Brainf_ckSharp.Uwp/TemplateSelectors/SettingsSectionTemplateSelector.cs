@@ -34,9 +34,9 @@ public sealed class SettingsSectionTemplateSelector : DataTemplateSelector
 
         DataTemplate? template = item switch
         {
-            IdeSettingsSectionViewModel _ => IdeSettingsTemplate,
-            UISettingsSectionViewModel _ => UISettingsTemplate,
-            InterpreterSettingsSectionViewModel _ => InterpreterSettingsTemplate,
+            IdeSettingsSectionViewModel => IdeSettingsTemplate,
+            UISettingsSectionViewModel => UISettingsTemplate,
+            InterpreterSettingsSectionViewModel => InterpreterSettingsTemplate,
             _ => ThrowHelper.ThrowArgumentException<DataTemplate>("Invalid requested section")
         };
 

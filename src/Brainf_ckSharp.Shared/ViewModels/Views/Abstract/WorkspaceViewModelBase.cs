@@ -1,9 +1,11 @@
-﻿using System;
+using System;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Shared.Models.Ide;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+
+#pragma warning disable IDE0290
 
 namespace Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
 
@@ -20,36 +22,39 @@ public abstract class WorkspaceViewModelBase : ObservableRecipient
     {
     }
 
-    private SourceCode _Code = SourceCode.CreateEmpty();
+    private SourceCode code = SourceCode.CreateEmpty();
 
     /// <summary>
     /// Gets or sets the loaded source code
     /// </summary>
     public SourceCode Code
     {
-        get => _Code;
+        get => this.code;
         protected set
         {
-            if (SetProperty(ref _Code, value))
+            if (SetProperty(ref this.code, value))
             {
                 OnCodeChanged(value);
             }
         }
     }
 
-    private ReadOnlyMemory<char> _Text = SourceCode.EmptyContent.AsMemory();
+    private ReadOnlyMemory<char> text = SourceCode.EmptyContent.AsMemory();
 
     /// <summary>
     /// Gets or sets the currently displayed text
     /// </summary>
     public ReadOnlyMemory<char> Text
     {
-        get => _Text;
+        get => this.text;
         set
         {
-            if (_Text.Span.SequenceEqual(value.Span)) return;
+            if (this.text.Span.SequenceEqual(value.Span))
+            {
+                return;
+            }
 
-            _Text = value;
+            this.text = value;
 
             OnPropertyChanged();
 
@@ -59,57 +64,57 @@ public abstract class WorkspaceViewModelBase : ObservableRecipient
         }
     }
 
-    private bool _IsUnsavedEditPending;
+    private bool isUnsavedEditPending;
 
     /// <summary>
     /// Gets whether or not there are pending unsaved changes to the current file
     /// </summary>
     public bool IsUnsavedEditPending
     {
-        get => _IsUnsavedEditPending;
-        private set => SetProperty(ref _IsUnsavedEditPending, value);
+        get => this.isUnsavedEditPending;
+        private set => SetProperty(ref this.isUnsavedEditPending, value);
     }
 
-    private SyntaxValidationResult _ValidationResult;
+    private SyntaxValidationResult validationResult;
 
     /// <summary>
     /// Gets the current <see cref="SyntaxValidationResult"/> value for <see cref="Text"/>
     /// </summary>
     public SyntaxValidationResult ValidationResult
     {
-        get => _ValidationResult;
-        set => SetProperty(ref _ValidationResult, value);
+        get => this.validationResult;
+        set => SetProperty(ref this.validationResult, value);
     }
 
-    private int _Row = 1;
+    private int row = 1;
 
     /// <summary>
     /// Gets the current row in the document in use
     /// </summary>
     public int Row
     {
-        get => _Row;
+        get => this.row;
         set
         {
             Guard.IsGreaterThan(value, 0);
 
-            SetProperty(ref _Row, value);
+            _ = SetProperty(ref this.row, value);
         }
     }
 
-    private int _Column = 1;
+    private int column = 1;
 
     /// <summary>
     /// Gets the current column in the document in use
     /// </summary>
     public int Column
     {
-        get => _Column;
+        get => this.column;
         set
         {
             Guard.IsGreaterThan(value, 0);
 
-            SetProperty(ref _Column, value);
+            _ = SetProperty(ref this.column, value);
         }
     }
 
@@ -117,13 +122,17 @@ public abstract class WorkspaceViewModelBase : ObservableRecipient
     /// Raised whenever <see cref="Code"/> changes
     /// </summary>
     /// <param name="code">Thew value for <see cref="Code"/></param>
-    protected virtual void OnCodeChanged(SourceCode code) { }
+    protected virtual void OnCodeChanged(SourceCode code)
+    {
+    }
 
     /// <summary>
     /// Raised whenever <see cref="Text"/> changes
     /// </summary>
     /// <param name="text">The new value for <see cref="Text"/></param>
-    protected virtual void OnTextChanged(ReadOnlyMemory<char> text) { }
+    protected virtual void OnTextChanged(ReadOnlyMemory<char> text)
+    {
+    }
 
     /// <summary>
     /// Reports that <see cref="Code"/> has been saved, and updates <see cref="IsUnsavedEditPending"/>

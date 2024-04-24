@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Shared.Messages.Console.MemoryState;
 using Brainf_ckSharp.Shared.Models.Console.Controls;
@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 
-#nullable enable
+#pragma warning disable IDE0290
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls;
 
@@ -34,19 +34,19 @@ public sealed class CompactMemoryViewerViewModel : ObservableRecipient
     /// <summary>
     /// Gets the current collection of <see cref="Brainf_ckMemoryCellChunk"/> instances
     /// </summary>
-    public ObservableCollection<Brainf_ckMemoryCellChunk> Source { get; } = new();
+    public ObservableCollection<Brainf_ckMemoryCellChunk> Source { get; } = [];
 
-    private IReadOnlyMachineState? _MachineState;
+    private IReadOnlyMachineState? machineState;
 
     /// <summary>
     /// Gets or sets the <see cref="IReadOnlyMachineState"/> instance for the current view model
     /// </summary>
     public IReadOnlyMachineState? MachineState
     {
-        get => _MachineState;
+        get => this.machineState;
         set
         {
-            if (SetProperty(ref _MachineState, value))
+            if (SetProperty(ref this.machineState, value))
             {
                 UpdateFromState(value);
             }
@@ -59,7 +59,10 @@ public sealed class CompactMemoryViewerViewModel : ObservableRecipient
     /// <param name="state">The input <see cref="IReadOnlyMachineState"/> instance to read data from</param>
     public void UpdateFromState(IReadOnlyMachineState? state)
     {
-        if (state == null) Source.Clear();
+        if (state == null)
+        {
+            Source.Clear();
+        }
         else
         {
             int chunks = state.Count / 4;
@@ -68,7 +71,9 @@ public sealed class CompactMemoryViewerViewModel : ObservableRecipient
             {
                 // Update the existing models
                 foreach (Brainf_ckMemoryCellChunk chunk in Source)
+                {
                     chunk.UpdateFromState(state);
+                }
             }
             else
             {

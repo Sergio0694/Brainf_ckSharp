@@ -32,16 +32,16 @@ public sealed partial class Brainf_ckIde : UserControl
     /// <param name="e">The <see cref="RoutedEventArgs"/> instance for the <see cref="FrameworkElement.Loaded"/> event</param>
     private void Brainf_ckIde_Loaded(object sender, RoutedEventArgs e)
     {
-        CodeEditBox.ContentScroller!.StartExpressionAnimation(LineBlock, Axis.Y, VisualProperty.Offset);
-        CodeEditBox.ContentScroller.StartExpressionAnimation(IdeOverlaysCanvas, Axis.Y, VisualProperty.Offset);
-        CodeEditBox.ContentElement!.SizeChanged += Brainf_ckIde_SizeChanged;
+        this.CodeEditBox.ContentScroller!.StartExpressionAnimation(this.LineBlock, Axis.Y, VisualProperty.Offset);
+        this.CodeEditBox.ContentScroller.StartExpressionAnimation(this.IdeOverlaysCanvas, Axis.Y, VisualProperty.Offset);
+        this.CodeEditBox.ContentElement!.SizeChanged += Brainf_ckIde_SizeChanged;
 
         // Manually adjust the Win2D canvas size here, since when this handler runs
         // for the code editor, the first size changed event for the inner content
         // element has already been raised. Doing this fixes the Win2D canvas
         // size without the user having to first manually resize the app window.
-        IdeOverlaysCanvas.Height = CodeEditBox.ContentElement.ActualHeight;
-        IdeOverlaysCanvas.Width = CodeEditBox.ContentElement.ActualWidth + 72;
+        this.IdeOverlaysCanvas.Height = this.CodeEditBox.ContentElement.ActualHeight;
+        this.IdeOverlaysCanvas.Width = this.CodeEditBox.ContentElement.ActualWidth + 72;
     }
 
     /// <summary>
@@ -51,8 +51,8 @@ public sealed partial class Brainf_ckIde : UserControl
     /// <param name="e">The <see cref="SizeChangedEventArgs"/> for <see cref="FrameworkElement.SizeChanged"/></param>
     private void Brainf_ckIde_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        IdeOverlaysCanvas.Height = e.NewSize.Height + 20;
-        IdeOverlaysCanvas.Width = e.NewSize.Width + 72;
+        this.IdeOverlaysCanvas.Height = e.NewSize.Height + 20;
+        this.IdeOverlaysCanvas.Width = e.NewSize.Width + 72;
     }
 
     /// <summary>
@@ -80,7 +80,7 @@ public sealed partial class Brainf_ckIde : UserControl
         UpdateDiffInfo(args.PlainText);
         UpdateIndentationInfo(args.PlainText, args.ValidationResult.IsSuccessOrEmptyScript, numberOfLines);
 
-        IdeOverlaysCanvas.Invalidate();
+        this.IdeOverlaysCanvas.Invalidate();
     }
 
     /// <summary>
@@ -99,7 +99,7 @@ public sealed partial class Brainf_ckIde : UserControl
     /// <param name="numberOfLines">The current number of lines being displayed</param>
     private void UpdateLineIndicators(int numberOfLines)
     {
-        LineBlock.Text = TextGenerator.GetLineNumbersText(numberOfLines);
+        this.LineBlock.Text = TextGenerator.GetLineNumbersText(numberOfLines);
     }
 
     /// <summary>
@@ -112,40 +112,49 @@ public sealed partial class Brainf_ckIde : UserControl
         // Calculate the target vertical offset for the tap
         double yOffset =
             e.GetPosition((Border)sender).Y - 8 -         // Tap Y offset and adjustment
-            CodeEditBox.VerticalScrollBarMargin.Top +     // Top internal padding
-            CodeEditBox.ContentScroller!.VerticalOffset;  // Vertical scroll offset
+            this.CodeEditBox.VerticalScrollBarMargin.Top +     // Top internal padding
+            this.CodeEditBox.ContentScroller!.VerticalOffset;  // Vertical scroll offset
 
         // Get the range aligned to the left edge of the tapped line
-        ITextRange range = CodeEditBox.Document.GetRangeFromPoint(new Point(0, yOffset), PointOptions.ClientCoordinates);
+        ITextRange range = this.CodeEditBox.Document.GetRangeFromPoint(new Point(0, yOffset), PointOptions.ClientCoordinates);
         range.GetRect(PointOptions.Transform, out Rect line, out _);
 
         // Get the line number
-        int lineNumber = CodeEditBox.Text.AsSpan(0, range.StartPosition).Count(Characters.CarriageReturn) + 1;
+        int lineNumber = this.CodeEditBox.Text.AsSpan(0, range.StartPosition).Count(Characters.CarriageReturn) + 1;
 
-        if (lineNumber == 1) return;
+        if (lineNumber == 1)
+        {
+            return;
+        }
 
         // Store or remove the breakpoint
-        if (BreakpointIndicators.ContainsKey(lineNumber))
+        if (this.breakpointIndicators.ContainsKey(lineNumber))
         {
-            BreakpointIndicators.Remove(lineNumber);
+            this.breakpointIndicators.Remove(lineNumber);
 
-            if (BreakpointIndicators.Count == 0) BreakpointsBorder.ContextFlyout = null;
+            if (this.breakpointIndicators.Count == 0)
+            {
+                this.BreakpointsBorder.ContextFlyout = null;
+            }
 
-            BreakpointRemoved?.Invoke(this, new BreakpointToggleEventArgs(lineNumber, BreakpointIndicators.Count));
+            BreakpointRemoved?.Invoke(this, new BreakpointToggleEventArgs(lineNumber, this.breakpointIndicators.Count));
         }
         else
         {
-            if (BreakpointIndicators.Count == 0) BreakpointsBorder.ContextFlyout = BreakpointsMenuFlyout;
+            if (this.breakpointIndicators.Count == 0)
+            {
+                this.BreakpointsBorder.ContextFlyout = this.BreakpointsMenuFlyout;
+            }
 
-            BreakpointIndicators.GetOrAddValueRef(lineNumber) = (float)line.Top;
+            this.breakpointIndicators.GetOrAddValueRef(lineNumber) = (float)line.Top;
 
-            BreakpointAdded?.Invoke(this, new BreakpointToggleEventArgs(lineNumber, BreakpointIndicators.Count));
+            BreakpointAdded?.Invoke(this, new BreakpointToggleEventArgs(lineNumber, this.breakpointIndicators.Count));
         }
 
         UpdateBreakpointsInfo();
 
-        IdeOverlaysCanvas.Invalidate();
-        CodeEditBox.InvalidateOverlays();
+        this.IdeOverlaysCanvas.Invalidate();
+        this.CodeEditBox.InvalidateOverlays();
     }
 
     /// <summary>
@@ -155,13 +164,13 @@ public sealed partial class Brainf_ckIde : UserControl
     /// <param name="e">The <see cref="RoutedEventArgs"/> for the current event</param>
     private void RemoveAllBreakpointsButton_Clicked(object sender, RoutedEventArgs e)
     {
-        BreakpointsCleared?.Invoke(this, BreakpointIndicators.Count);
+        BreakpointsCleared?.Invoke(this, this.breakpointIndicators.Count);
 
-        BreakpointIndicators.Clear();
+        this.breakpointIndicators.Clear();
 
         UpdateBreakpointsInfo();
 
-        IdeOverlaysCanvas.Invalidate();
-        CodeEditBox.InvalidateOverlays();
+        this.IdeOverlaysCanvas.Invalidate();
+        this.CodeEditBox.InvalidateOverlays();
     }
 }

@@ -69,12 +69,12 @@ public static partial class Brainf_ckParser
         {
             return Debug.ExtractSource(opcodes.Cast<TOpcode, Brainf_ckOperator>());
         }
-        
+
         if (typeof(TOpcode) == typeof(Brainf_ckOperation))
         {
             return Release.ExtractSource(opcodes.Cast<TOpcode, Brainf_ckOperation>());
         }
-        
+
         throw new ArgumentException($"Invalid opcode type: {typeof(TOpcode)}", nameof(TOpcode));
     }
 }

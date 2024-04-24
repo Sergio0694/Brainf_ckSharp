@@ -21,7 +21,10 @@ public sealed class ClipboardService : IClipboardService
             package.SetText(text);
             Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(package);
 
-            if (flush) Windows.ApplicationModel.DataTransfer.Clipboard.Flush();
+            if (flush)
+            {
+                Windows.ApplicationModel.DataTransfer.Clipboard.Flush();
+            }
 
             return true;
         }
@@ -46,7 +49,10 @@ public sealed class ClipboardService : IClipboardService
                 item = await view.GetTextAsync();
                 view.ReportOperationCompleted(DataPackageOperation.Copy);
             }
-            else item = null;
+            else
+            {
+                item = null;
+            }
 
             return item;
         }

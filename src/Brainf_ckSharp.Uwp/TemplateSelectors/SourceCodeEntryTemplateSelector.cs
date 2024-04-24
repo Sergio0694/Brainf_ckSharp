@@ -41,7 +41,7 @@ public sealed class SourceCodeEntryTemplateSelector : DataTemplateSelector
         DataTemplate? template = item switch
         {
             CodeLibraryEntry entry when entry.File.IsReadOnly => SampleTemplate,
-            CodeLibraryEntry _ => RecentItemTemplate,
+            CodeLibraryEntry => RecentItemTemplate,
             CodeLibrarySection.Favorites => FavoritePlaceholderTemplate,
             CodeLibrarySection.Recent => RecentPlaceholderTemplate,
             _ => ThrowHelper.ThrowArgumentException<DataTemplate>("Invalid item type")

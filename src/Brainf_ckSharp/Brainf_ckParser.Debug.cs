@@ -28,7 +28,10 @@ public static partial class Brainf_ckParser
             // Check the syntax of the input source code
             validationResult = ValidateSyntax(source);
 
-            if (!validationResult.IsSuccess) return null;
+            if (!validationResult.IsSuccess)
+            {
+                return null;
+            }
 
             // Allocate the buffer of binary items with the input operators
             MemoryOwner<Brainf_ckOperator> operators = MemoryOwner<Brainf_ckOperator>.Allocate(validationResult.OperatorsCount);
@@ -42,7 +45,10 @@ public static partial class Brainf_ckParser
                 char c = Unsafe.Add(ref sourceRef, j);
                 ref byte op = ref Unsafe.Add(ref opsRef, i);
 
-                if (TryParseOperator(c, out op)) i++;
+                if (TryParseOperator(c, out op))
+                {
+                    i++;
+                }
             }
 
             return operators;

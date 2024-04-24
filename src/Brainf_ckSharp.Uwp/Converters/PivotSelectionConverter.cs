@@ -18,7 +18,10 @@ public sealed class PivotSelectionConverter : IValueConverter
     /// <param name="viewType">The input <see cref="ViewType"/> value</param>
     /// <returns>The <see cref="int"/> value representing <paramref name="viewType"/></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int ConvertToIndex(ViewType viewType) => (int)viewType;
+    public static int ConvertToIndex(ViewType viewType)
+    {
+        return (int)viewType;
+    }
 
     /// <summary>
     /// Returns a <see cref="Visibility"/> value if the two arguments match
@@ -39,7 +42,10 @@ public sealed class PivotSelectionConverter : IValueConverter
     /// <param name="target">The target value to match</param>
     /// <returns><see langword="true"/> if the input values match, <see langword="false"/> otherwise</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ConvertIndexToBool(int index, int target) => index == target;
+    public static bool ConvertIndexToBool(int index, int target)
+    {
+        return index == target;
+    }
 
     /// <inheritdoc/>
     public object Convert(object value, Type targetType, object parameter, string language)

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Models;
@@ -14,18 +14,18 @@ public ref struct IReadOnlyMachineStateEnumerator
     /// <summary>
     /// The target <see cref="TuringMachineState"/> instance to enumerate
     /// </summary>
-    private readonly TuringMachineState MachineState;
+    private readonly TuringMachineState machineState;
 
     /// <summary>
-    /// The size of <see cref="MachineState"/>, used to skip an indirect memory access
+    /// The size of <see cref="machineState"/>, used to skip an indirect memory access
     /// </summary>
     /// <remarks>On 64-bit, this field doesn't change the size of the type anyway</remarks>
-    private readonly int Size;
+    private readonly int size;
 
     /// <summary>
-    /// The current index within <see cref="MachineState"/>
+    /// The current index within <see cref="machineState"/>
     /// </summary>
-    private int _Index;
+    private int index;
 
     /// <summary>
     /// Creates a new <see cref="IReadOnlyMachineStateEnumerator"/> with the specified values
@@ -34,27 +34,27 @@ public ref struct IReadOnlyMachineStateEnumerator
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal IReadOnlyMachineStateEnumerator(TuringMachineState machineState)
     {
-        MachineState = machineState;
-        Size = machineState.Size;
-        _Index = -1;
+        this.machineState = machineState;
+        this.size = machineState.Size;
+        this.index = -1;
     }
 
     /// <inheritdoc cref="IEnumerator{T}.Current"/>
-    public Brainf_ckMemoryCell Current
+    public readonly Brainf_ckMemoryCell Current
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => MachineState[_Index];
+        get => this.machineState[this.index];
     }
 
     /// <inheritdoc cref="System.Collections.IEnumerator.MoveNext"/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool MoveNext()
     {
-        int index = _Index + 1;
+        int index = this.index + 1;
 
-        if (index < Size)
+        if (index < this.size)
         {
-            _Index = index;
+            this.index = index;
 
             return true;
         }

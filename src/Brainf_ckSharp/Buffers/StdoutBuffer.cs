@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
@@ -16,12 +16,12 @@ internal struct StdoutBuffer : IDisposable
     /// <summary>
     /// The underlying <see cref="char"/> buffer
     /// </summary>
-    private readonly char[] Buffer;
+    private readonly char[] buffer;
 
     /// <summary>
     /// The current position in the underlying buffer to write to
     /// </summary>
-    private int _Position;
+    private int position;
 
     /// <summary>
     /// Creates a new <see cref="StdoutBuffer"/> instance
@@ -29,8 +29,8 @@ internal struct StdoutBuffer : IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private StdoutBuffer(char[] buffer)
     {
-        Buffer = buffer;
-        _Position = 0;
+        this.buffer = buffer;
+        this.position = 0;
     }
 
     /// <summary>
@@ -47,9 +47,9 @@ internal struct StdoutBuffer : IDisposable
     /// Creates a new <see cref="Writer"/> instance to write to the underlying buffer
     /// </summary>
     /// <returns>A <see cref="Writer"/> instance to write characters</returns>
-    public Writer CreateWriter()
+    public readonly Writer CreateWriter()
     {
-        return new(Buffer, _Position);
+        return new(this.buffer, this.position);
     }
 
     /// <summary>
@@ -58,30 +58,21 @@ internal struct StdoutBuffer : IDisposable
     /// <param name="writer">The <see cref="Writer"/> instance that was previously used</param>
     public void Synchronize(ref Writer writer)
     {
-        _Position = writer.Position;
+        this.position = writer.Position;
     }
 
     /// <summary>
     /// A <see langword="struct"/> that can writer data on the memory from a <see cref="StdoutBuffer"/> instance
     /// </summary>
-    public ref struct Writer
+    /// <param name="buffer">The input buffer to write to</param>
+    /// <param name="position">The initial position to write from</param>
+    public ref struct Writer(Span<char> buffer, int position = 0)
     {
-        /// <inheritdoc cref="StdoutBuffer.Buffer"/>
-        private readonly Span<char> Buffer;
+        /// <inheritdoc cref="StdoutBuffer.buffer"/>
+        private readonly Span<char> buffer = buffer;
 
-        /// <inheritdoc cref="_Position"/>
-        public int Position;
-
-        /// <summary>
-        /// Creates a new <see cref="Writer"/> instance targeting the input buffer
-        /// </summary>
-        /// <param name="buffer">The input buffer to write to</param>
-        /// <param name="position">The initial position to write from</param>
-        public Writer(Span<char> buffer, int position = 0)
-        {
-            Buffer = buffer;
-            Position = position;
-        }
+        /// <inheritdoc cref="position"/>
+        public int Position = position;
 
         /// <summary>
         /// Tries to write a new character into the current buffer
@@ -91,16 +82,16 @@ internal struct StdoutBuffer : IDisposable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryWrite(char c)
         {
-            Assert(Position >= 0);
-            Assert(Position <= Specs.StdoutBufferSizeLimit);
+            Assert(this.Position >= 0);
+            Assert(this.Position <= Specs.StdoutBufferSizeLimit);
 
-            int position = Position;
+            int position = this.Position;
 
-            if ((uint)position < (uint)Buffer.Length)
+            if ((uint)position < (uint)this.buffer.Length)
             {
-                Buffer.DangerousGetReferenceAt(position) = c;
+                this.buffer.DangerousGetReferenceAt(position) = c;
 
-                Position = position + 1;
+                this.Position = position + 1;
 
                 return true;
             }
@@ -111,19 +102,19 @@ internal struct StdoutBuffer : IDisposable
         /// <inheritdoc/>
         public override readonly string ToString()
         {
-            return StringPool.Shared.GetOrAdd(Buffer.Slice(0, Position));
+            return StringPool.Shared.GetOrAdd(this.buffer.Slice(0, this.Position));
         }
     }
 
     /// <inheritdoc/>
     public override readonly string ToString()
     {
-        return StringPool.Shared.GetOrAdd(new ReadOnlySpan<char>(Buffer, 0, _Position));
+        return StringPool.Shared.GetOrAdd(new ReadOnlySpan<char>(this.buffer, 0, this.position));
     }
 
     /// <inheritdoc/>
     public readonly void Dispose()
     {
-        ArrayPool<char>.Shared.Return(Buffer);
+        ArrayPool<char>.Shared.Return(this.buffer);
     }
 }

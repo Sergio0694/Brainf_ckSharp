@@ -1,9 +1,10 @@
-﻿using System.Text;
 using System.Threading.Tasks;
 using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
+#pragma warning disable IDE0290
 
 namespace Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 
@@ -15,17 +16,17 @@ public sealed partial class ReviewPromptSubPageViewModel : ObservableObject
     /// <summary>
     /// The <see cref="IEmailService"/> instance currently in use
     /// </summary>
-    private readonly IEmailService EmailService;
+    private readonly IEmailService emailService;
 
     /// <summary>
     /// The <see cref="IStoreService"/> instance currently in use
     /// </summary>
-    private readonly IStoreService StoreService;
+    private readonly IStoreService storeService;
 
     /// <summary>
     /// The <see cref="ISystemInformationService"/> instance currently in use
     /// </summary>
-    private readonly ISystemInformationService SystemInformationService;
+    private readonly ISystemInformationService systemInformationService;
 
     /// <summary>
     /// Creates a new <see cref="ReviewPromptSubPageViewModel"/> instance
@@ -35,16 +36,16 @@ public sealed partial class ReviewPromptSubPageViewModel : ObservableObject
     /// <param name="systemInformationService">The <see cref="ISystemInformationService"/> instance to use</param>
     public ReviewPromptSubPageViewModel(IEmailService emailService, IStoreService storeService, ISystemInformationService systemInformationService)
     {
-        EmailService = emailService;
-        StoreService = storeService;
-        SystemInformationService = systemInformationService;
+        this.emailService = emailService;
+        this.storeService = storeService;
+        this.systemInformationService = systemInformationService;
     }
 
     /// <inheritdoc cref="IStoreService.RequestReviewAsync"/>
     [RelayCommand]
     private Task RequestReviewAsync()
     {
-        return StoreService.RequestReviewAsync();
+        return this.storeService.RequestReviewAsync();
     }
 
     /// <summary>
@@ -53,18 +54,16 @@ public sealed partial class ReviewPromptSubPageViewModel : ObservableObject
     [RelayCommand]
     private Task SendFeedbackEmailAsync()
     {
-        StringBuilder builder = new();
+        string body = $"""
 
-        builder.AppendLine();
-        builder.AppendLine();
-        builder.AppendLine("==========================");
-        builder.AppendLine($"[AppVersion]: {SystemInformationService.ApplicationVersion}");
-        builder.AppendLine($"[CPU architecture]: {SystemInformationService.CpuArchitecture}");
-        builder.AppendLine($"[OS]: {SystemInformationService.OperatingSystemVersion}");
-        builder.AppendLine($"[OS build]: {SystemInformationService.OperatingSystemVersion}");
 
-        string body = builder.ToString();
+            ==========================
+            [AppVersion]: {this.systemInformationService.ApplicationVersion}
+            [CPU architecture]: {this.systemInformationService.CpuArchitecture}
+            [OS]: {this.systemInformationService.OperatingSystemVersion}
+            [OS build]: {this.systemInformationService.OperatingSystemVersion}
+            """;
 
-        return EmailService.TryComposeEmailAsync(DeveloperInfo.FeedbackEmail, "Brainf*ck# feedback", body);
+        return this.emailService.TryComposeEmailAsync(DeveloperInfo.FeedbackEmail, "Brainf*ck# feedback", body);
     }
 }

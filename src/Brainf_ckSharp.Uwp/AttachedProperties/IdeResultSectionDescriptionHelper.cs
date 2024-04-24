@@ -77,7 +77,10 @@ public static class IdeResultSectionDescriptionHelper
 
         @this.Inlines.Clear();
 
-        if (value is null) return;
+        if (value is null)
+        {
+            return;
+        }
 
         switch (value.Section)
         {

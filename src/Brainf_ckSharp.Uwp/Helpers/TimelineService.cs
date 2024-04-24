@@ -27,8 +27,8 @@ public sealed class TimelineService : IFilesHistoryService
     /// <summary>
     /// Gets the collection of background images to use for the adaptive cards
     /// </summary>
-    private static readonly IReadOnlyList<string> BackgroundImages = new[]
-    {
+    private static readonly IReadOnlyList<string> BackgroundImages =
+    [
         "https://i.imgur.com/PBramWx.png",
         "https://i.imgur.com/Ibcyqz2.png",
         "https://i.imgur.com/s2ATSPZ.png",
@@ -39,7 +39,7 @@ public sealed class TimelineService : IFilesHistoryService
         "https://i.imgur.com/V5sw76e.png",
         "https://i.imgur.com/ElimxNR.png",
         "https://i.imgur.com/RB0bOD5.png"
-    };
+    ];
 
     /// <summary>
     /// The synchronization mutex to create and manage user activities
@@ -59,7 +59,7 @@ public sealed class TimelineService : IFilesHistoryService
     /// <inheritdoc/>
     public async Task LogOrUpdateActivityAsync(IFile file)
     {
-        using (await TimelineMutex.LockAsync())
+        using (await this.TimelineMutex.LockAsync())
         {
             // Load the template, if needed
             if (_Template is null)
@@ -95,25 +95,25 @@ public sealed class TimelineService : IFilesHistoryService
             await activity.SaveAsync();
 
             // Update the activity currently in use
-            _Session?.Dispose();
-            _Session = activity.CreateSession();
+            this._Session?.Dispose();
+            this._Session = activity.CreateSession();
         }
     }
 
     /// <inheritdoc/>
     public async Task DismissCurrentActivityAsync()
     {
-        using (await TimelineMutex.LockAsync())
+        using (await this.TimelineMutex.LockAsync())
         {
-            _Session?.Dispose();
-            _Session = null;
+            this._Session?.Dispose();
+            this._Session = null;
         }
     }
 
     /// <inheritdoc/>
     public async Task RemoveActivityAsync(IFile file)
     {
-        using (await TimelineMutex.LockAsync())
+        using (await this.TimelineMutex.LockAsync())
         {
             // Get a unique id for the file
             string id = ((uint)HashCode<char>.Combine(file.Path.AsSpan())).ToString();

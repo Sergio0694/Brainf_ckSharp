@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
@@ -17,8 +17,8 @@ public class ParsingTest
     [TestMethod]
     public void ExtractSource()
     {
-        Span<Brainf_ckOperator> operators = stackalloc Brainf_ckOperator[]
-        {
+        Span<Brainf_ckOperator> operators =
+        [
             Operators.Plus,
             Operators.Minus,
             Operators.ForwardPtr,
@@ -30,7 +30,7 @@ public class ParsingTest
             Operators.FunctionStart,
             Operators.FunctionEnd,
             Operators.FunctionCall
-        };
+        ];
 
         string source = Brainf_ckParser.ExtractSource(operators);
 
@@ -83,8 +83,8 @@ public class ParsingTest
     [TestMethod]
     public void ValidateReleaseCompression()
     {
-        Span<Brainf_ckOperation> operations = stackalloc[]
-        {
+        Span<Brainf_ckOperation> operations =
+        [
             new Brainf_ckOperation(Operators.Plus, 5),
             new Brainf_ckOperation(Operators.Minus, 4),
             new Brainf_ckOperation(Operators.ForwardPtr, 7),
@@ -113,7 +113,7 @@ public class ParsingTest
             new Brainf_ckOperation(Operators.PrintChar, 1),
             new Brainf_ckOperation(Operators.ReadChar, 1),
             new Brainf_ckOperation(Operators.ReadChar, 1),
-        };
+        ];
 
         string script = Brainf_ckParser.ExtractSource(operations);
 
