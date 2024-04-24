@@ -9,6 +9,14 @@ namespace Brainf_ckSharp.Shared.Models.Ide.Views;
 public sealed class IdeResultWithSectionInfo
 {
     /// <summary>
+    /// Creates a new <see cref="IdeResultWithSectionInfo"/> instance.
+    /// </summary>
+    /// <remarks>Needed to prevent the XAML compiler from producing invalid code.</remarks>
+    internal IdeResultWithSectionInfo()
+    {
+    }
+
+    /// <summary>
     /// Gets the current section being targeted
     /// </summary>
     public required IdeResultSection Section { get; init; }

@@ -6,6 +6,14 @@ namespace Brainf_ckSharp.Shared.Models;
 public sealed class UnicodeInterval
 {
     /// <summary>
+    /// Creates a new <see cref="UnicodeInterval"/> instance.
+    /// </summary>
+    /// <remarks>Needed to prevent the XAML compiler from producing invalid code.</remarks>
+    internal UnicodeInterval()
+    {
+    }
+
+    /// <summary>
     /// Gets the start of the interval
     /// </summary>
     public required int Start { get; init; }

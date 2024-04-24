@@ -6,7 +6,16 @@ namespace Brainf_ckSharp.Shared.Models;
 public sealed class UnicodeCharacter
 {
     /// <summary>
+    /// Creates a new <see cref="UnicodeCharacter"/> instance.
+    /// </summary>
+    /// <remarks>Needed to prevent the XAML compiler from producing invalid code.</remarks>
+    internal UnicodeCharacter()
+    {
+    }
+
+    /// <summary>
     /// Gets the character for the current instance
     /// </summary>
-    public required char Value { get; init; }
+    /// <remarks>Not using <see langword="init"/> to prevent the XAML compiler from producing invalid code.</remarks>
+    public required char Value { get; set; }
 }
