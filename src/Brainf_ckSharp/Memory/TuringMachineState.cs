@@ -47,7 +47,8 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     /// <param name="mode">The overflow mode to use in the new instance</param>
     public TuringMachineState(int size, OverflowMode mode)
         : this(size, mode, true)
-    { }
+    {
+    }
 
     /// <summary>
     /// Creates a new blank machine state with the given parameters

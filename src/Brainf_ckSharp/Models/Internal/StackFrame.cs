@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 using static System.Diagnostics.Debug;
 
 namespace Brainf_ckSharp.Models.Internal;
@@ -23,7 +23,10 @@ internal readonly struct StackFrame
     /// </summary>
     /// <param name="range">The range of operators to execute</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public StackFrame(Range range) : this(range, range.Start) { }
+    public StackFrame(Range range)
+        : this(range, range.Start)
+    {
+    }
 
     /// <summary>
     /// Creates a new <see cref="StackFrame"/> instance with the specified parameters

@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Text;
 
 #nullable enable
@@ -11,7 +11,9 @@ namespace Brainf_ckSharp.Services.Uwp.Analytics;
 public sealed class TestAnalyticsService : IAnalyticsService
 {
     /// <inheritdoc/>
-    public void Initialize(string secret) { }
+    public void Initialize(string secret)
+    {
+    }
 
     /// <inheritdoc/>
     public void Log(string title, params (string Property, string Value)[]? data)

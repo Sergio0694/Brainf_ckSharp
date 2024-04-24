@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System;
@@ -52,7 +52,9 @@ internal static class UInt32Extensions
             digits += 5;
         }
 
-        if (value < 10) { }
+        if (value < 10)
+        {
+        }
         else if (value < 100)
         {
             digits++;

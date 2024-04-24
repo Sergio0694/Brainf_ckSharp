@@ -122,13 +122,17 @@ public abstract class WorkspaceViewModelBase : ObservableRecipient
     /// Raised whenever <see cref="Code"/> changes
     /// </summary>
     /// <param name="code">Thew value for <see cref="Code"/></param>
-    protected virtual void OnCodeChanged(SourceCode code) { }
+    protected virtual void OnCodeChanged(SourceCode code)
+    {
+    }
 
     /// <summary>
     /// Raised whenever <see cref="Text"/> changes
     /// </summary>
     /// <param name="text">The new value for <see cref="Text"/></param>
-    protected virtual void OnTextChanged(ReadOnlyMemory<char> text) { }
+    protected virtual void OnTextChanged(ReadOnlyMemory<char> text)
+    {
+    }
 
     /// <summary>
     /// Reports that <see cref="Code"/> has been saved, and updates <see cref="IsUnsavedEditPending"/>
