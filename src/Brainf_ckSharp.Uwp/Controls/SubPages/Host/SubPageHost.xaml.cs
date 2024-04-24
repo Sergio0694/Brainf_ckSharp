@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.UI.Core;
@@ -17,11 +17,6 @@ namespace Brainf_ckSharp.Uwp.Controls.SubPages.Host;
 public sealed partial class SubPageHost : UserControl
 {
     /// <summary>
-    /// Synchronization lock to avoid race conditions for user requests
-    /// </summary>
-    private readonly AsyncLock SubFrameLock = new();
-
-    /// <summary>
     /// The minimum window width for the expanded state
     /// </summary>
     private const double ExpandedStateMinimumWidth = 880;
@@ -37,9 +32,14 @@ public sealed partial class SubPageHost : UserControl
     private const double MinimumConstrainedMarginThreshold = 48;
 
     /// <summary>
+    /// Synchronization lock to avoid race conditions for user requests
+    /// </summary>
+    private readonly AsyncLock subFrameLock = new();
+
+    /// <summary>
     /// Indicates whether or not the title bar in the current application is visible or collapsed (when in tablet mode)
     /// </summary>
-    private bool _IsTitleBarVisible;
+    private bool isTitleBarVisible;
 
     /// <summary>
     /// Creates a new <see cref="SubPageHost"/> instance
@@ -53,10 +53,10 @@ public sealed partial class SubPageHost : UserControl
 
         // Other sub page settings
         CoreApplicationViewTitleBar titleBar = CoreApplication.GetCurrentView().TitleBar;
-        this._IsTitleBarVisible = titleBar.IsVisible;
+        this.isTitleBarVisible = titleBar.IsVisible;
         titleBar.IsVisibleChanged += (s, e) =>
         {
-            this._IsTitleBarVisible = s.IsVisible;
+            this.isTitleBarVisible = s.IsVisible;
             UpdateLayout(new Size(ActualWidth, ActualHeight));
         };
     }
@@ -90,7 +90,7 @@ public sealed partial class SubPageHost : UserControl
     /// <param name="subPage">The page to display</param>
     public async void DisplaySubFramePage(UserControl subPage)
     {
-        using (await this.SubFrameLock.LockAsync())
+        using (await this.subFrameLock.LockAsync())
         {
             // Fade out the current content, if present
             if (SubPage is UserControl page)
@@ -109,7 +109,8 @@ public sealed partial class SubPageHost : UserControl
                 this.RootGrid.Visibility = this.SubFrameContentHost.Visibility = Visibility.Visible;
             }
 
-            this.HostControl.Focus(FocusState.Keyboard);
+            _ = this.HostControl.Focus(FocusState.Keyboard);
+
             subPage.IsHitTestVisible = true;
         }
     }
@@ -119,7 +120,7 @@ public sealed partial class SubPageHost : UserControl
     /// </summary>
     public async void CloseSubFramePage()
     {
-        using (await this.SubFrameLock.LockAsync())
+        using (await this.subFrameLock.LockAsync())
         {
             if (SubPage is not UserControl page)
             {
@@ -185,13 +186,17 @@ public sealed partial class SubPageHost : UserControl
                 if (targetWidth > size.Width - (48 * 2))
                 {
                     this.ContentGrid.MaxWidth = targetWidth;
-                    VisualStateManager.GoToState(this, nameof(this.TopBackButton), false);
+
+                    _ = VisualStateManager.GoToState(this, nameof(this.TopBackButton), false);
+
                     this.CloseButton.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
                     this.ContentGrid.MaxWidth = targetWidth + 48;
-                    VisualStateManager.GoToState(this, nameof(this.LeftBackButton), false);
+
+                    _ = VisualStateManager.GoToState(this, nameof(this.LeftBackButton), false);
+
                     this.CloseButton.Visibility = Visibility.Visible;
                 }
             }
@@ -199,7 +204,9 @@ public sealed partial class SubPageHost : UserControl
             {
                 this.ContentGrid.MaxHeight = height + 48;
                 this.ContentGrid.MaxWidth = targetWidth;
-                VisualStateManager.GoToState(this, nameof(this.TopBackButton), false);
+
+                _ = _ = VisualStateManager.GoToState(this, nameof(this.TopBackButton), false);
+
                 this.CloseButton.Visibility = Visibility.Visible;
             }
 
@@ -244,7 +251,7 @@ public sealed partial class SubPageHost : UserControl
         // Additional UI tweaks
         if (SubPage is IAdaptiveSubPage adaptive)
         {
-            adaptive.IsFullHeight = double.IsPositiveInfinity(this.ContentGrid.MaxHeight) && this._IsTitleBarVisible;
+            adaptive.IsFullHeight = double.IsPositiveInfinity(this.ContentGrid.MaxHeight) && this.isTitleBarVisible;
         }
     }
 }

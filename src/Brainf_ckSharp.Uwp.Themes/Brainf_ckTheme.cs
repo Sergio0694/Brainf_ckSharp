@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Windows.UI;
@@ -17,17 +17,17 @@ public sealed class Brainf_ckTheme
     /// The syntax highlight brushes map for the available operators
     /// </summary>
     /// <remarks>Using a <see cref="Dictionary{TKey,TValue}"/> to try to avoid the <see langword="callvirt"/> call when retrieving values</remarks>
-    private readonly Dictionary<char, SolidColorBrush> HighlightBrushMap;
+    private readonly Dictionary<char, SolidColorBrush> highlightBrushMap;
 
     /// <summary>
     /// Gets the syntax highlight colors map for the available operators
     /// </summary>
-    private readonly Dictionary<char, Color> HighlightColorMap;
+    private readonly Dictionary<char, Color> highlightColorMap;
 
     /// <summary>
     /// The brush of the comments in the code
     /// </summary>
-    private readonly Brush CommentsBrush;
+    private readonly Brush commentsBrush;
 
     /// <summary>
     /// Creates a new <see cref="Brainf_ckTheme"/> instance with the specified parameters
@@ -73,10 +73,10 @@ public sealed class Brainf_ckTheme
         BracketsGuideColor = bracketsGuide;
         BracketsGuideStrokesLength = bracketsGuideStrokesLength;
         CommentsColor = comments;
-        this.CommentsBrush = new SolidColorBrush(comments);
+        this.commentsBrush = new SolidColorBrush(comments);
         LineHighlightStyle = lineStyle;
         LineHighlightColor = lineColor;
-        this.HighlightColorMap = new Dictionary<char, Color>
+        this.highlightColorMap = new Dictionary<char, Color>
         {
             [Characters.BackwardPtr] = arrows,
             [Characters.ForwardPtr] = arrows,
@@ -90,7 +90,7 @@ public sealed class Brainf_ckTheme
             [Characters.FunctionEnd] = function,
             [Characters.FunctionCall] = call
         };
-        this.HighlightBrushMap = this.HighlightColorMap.ToDictionary(p => p.Key, p => new SolidColorBrush(p.Value));
+        this.highlightBrushMap = this.highlightColorMap.ToDictionary(p => p.Key, p => new SolidColorBrush(p.Value));
     }
 
     /// <summary>
@@ -170,7 +170,10 @@ public sealed class Brainf_ckTheme
     /// <param name="c">The character to parse</param>
     /// <returns>The <see cref="Color"/> value for the input character</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Color GetColor(char c) => this.HighlightColorMap.TryGetValue(c, out Color color) ? color : CommentsColor;
+    public Color GetColor(char c)
+    {
+        return this.highlightColorMap.TryGetValue(c, out Color color) ? color : CommentsColor;
+    }
 
     /// <summary>
     /// Gets the corresponding <see cref="Brush"/> from a given character in a Brainf*ck/PBrain source code
@@ -178,5 +181,8 @@ public sealed class Brainf_ckTheme
     /// <param name="c">The character to parse</param>
     /// <returns>The <see cref="Brush"/> value for the input character</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Brush GetBrush(char c) => this.HighlightBrushMap.TryGetValue(c, out SolidColorBrush brush) ? brush : this.CommentsBrush;
+    public Brush GetBrush(char c)
+    {
+        return this.highlightBrushMap.TryGetValue(c, out SolidColorBrush brush) ? brush : this.commentsBrush;
+    }
 }

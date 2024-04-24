@@ -20,13 +20,13 @@ public sealed class TestAnalyticsService : IAnalyticsService
     {
         StringBuilder builder = new();
 
-        builder.AppendLine($"[EVENT]: \"{title}\"");
+        _ = builder.AppendLine($"[EVENT]: \"{title}\"");
 
         if (data is not null)
         {
             foreach ((string Property, string Value) info in data)
             {
-                builder.AppendLine($">> {info.Property}: \"{info.Value}\"");
+                _ = builder.AppendLine($">> {info.Property}: \"{info.Value}\"");
             }
         }
 
