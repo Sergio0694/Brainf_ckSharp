@@ -232,7 +232,7 @@ public sealed partial class App : Application
         services.AddSingleton<IAnalyticsService, TestAnalyticsService>();
 #else
         services.AddSingleton<IStoreService, ProductionStoreService>();
-        services.AddSingleton<IAnalyticsService, AppCenterService>();
+        services.AddSingleton<IAnalyticsService, ReleaseAnalyticsService>();
 #endif
 
         // Viewmodels
@@ -257,11 +257,6 @@ public sealed partial class App : Application
     /// </summary>
     private void InitializeServices()
     {
-        // Initialize the analytics service
-        string appCenterSecret = Assembly.GetExecutingAssembly().GetManifestResourceString("Brainf_ckSharp.Uwp.Assets.ServiceTokens.AppCenter.txt");
-
-        Services.GetRequiredService<IAnalyticsService>().Initialize(appCenterSecret);
-
         ISettingsService settings = Services.GetRequiredService<ISettingsService>();
 
         // Initialize default settings
