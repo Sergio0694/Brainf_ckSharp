@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
     x:Class="Brainf_ckSharp.Uwp.Controls.DataTemplates.DeveloperTemplate"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -194,20 +194,23 @@
                     </ProgressRing>
 
                     <!--Image-->
-                    <controls:ImageEx
-                        Height="56" Width="56"
+                    <Ellipse
+                        Height="56"
+                        Width="56"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
-                        IsCacheEnabled="False"
-                        Source="{x:Bind ViewModel.ProfileImageUrl}"
-                        Stretch="UniformToFill"
-                        ImageExOpened="ImageExBase_OnImageExOpened"
-                        RenderTransformOrigin="0.5, 0.5"
-                        CornerRadius="9999">
-                        <controls:ImageEx.RenderTransform>
+                        RenderTransformOrigin="0.5, 0.5">
+                        <Ellipse.RenderTransform>
                             <ScaleTransform x:Name="ImageTransform"/>
-                        </controls:ImageEx.RenderTransform>
-                    </controls:ImageEx>
+                        </Ellipse.RenderTransform>
+                        <Ellipse.Fill>
+                            <ImageBrush
+                                ImageSource="{x:Bind ViewModel.ProfileImageUrl}"
+                                Stretch="UniformToFill"
+                                ImageOpened="Image_ImageOpened"
+                                ImageFailed="Image_ImageFailed"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
                 </Grid>
 
                 <!--Info-->

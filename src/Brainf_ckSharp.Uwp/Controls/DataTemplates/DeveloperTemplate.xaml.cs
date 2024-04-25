@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Brainf_ckSharp.Services;
@@ -28,8 +28,14 @@ public sealed partial class DeveloperTemplate : UserControl
     /// </summary>
     public User? ViewModel => DataContext as User;
 
-    // Hides the progress ring
-    private void ImageExBase_OnImageExOpened(object sender, ImageExOpenedEventArgs e)
+    // Hides the progress ring when the image loads
+    private void Image_ImageOpened(object sender, RoutedEventArgs e)
+    {
+        this.LoadingRing.Visibility = Visibility.Collapsed;
+    }
+
+    // Hides the progress ring when the image fails to load
+    private void Image_ImageFailed(object sender, ExceptionRoutedEventArgs e)
     {
         this.LoadingRing.Visibility = Visibility.Collapsed;
     }
