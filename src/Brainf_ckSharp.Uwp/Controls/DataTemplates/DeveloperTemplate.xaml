@@ -5,11 +5,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:interactionsMedia="using:Microsoft.Xaml.Interactions.Media"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:media="using:Microsoft.UI.Xaml.Media"
+    xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
+    xmlns:media2="using:Microsoft.Toolkit.Uwp.UI.Media"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -56,8 +57,8 @@
             </DoubleAnimation>
             <DoubleAnimation
                 EnableDependentAnimation="True"
-                Storyboard.TargetProperty="ShadowOpacity"
-                Storyboard.TargetName="ShadowPanel"
+                Storyboard.TargetProperty="Opacity"
+                Storyboard.TargetName="CardShadow"
                 Duration="0:0:0.4" To="1"/>
             <DoubleAnimation
                 EnableDependentAnimation="True"
@@ -108,8 +109,8 @@
             </DoubleAnimation>
             <DoubleAnimation
                 EnableDependentAnimation="True"
-                Storyboard.TargetProperty="ShadowOpacity"
-                Storyboard.TargetName="ShadowPanel"
+                Storyboard.TargetProperty="Opacity"
+                Storyboard.TargetName="CardShadow"
                 Duration="0:0:0.4" To="0.6"/>
             <DoubleAnimation
                 EnableDependentAnimation="True"
@@ -123,19 +124,43 @@
         </Storyboard>
     </UserControl.Resources>
 
-    <!--Drop shadow container-->
-    <controls:DropShadowPanel
+    <!--Root-->
+    <Button
         Height="80"
-        x:Name="ShadowPanel"
-        Color="Black"
-        ShadowOpacity="0.6"
-        BlurRadius="8"
-        OffsetY="4"
-        HorizontalContentAlignment="Stretch"
-        RenderTransformOrigin="0.5, 0.5">
-        <controls:DropShadowPanel.RenderTransform>
+        Style="{StaticResource ExpandedSquareButtonRevealStyle}"
+        Background="{ThemeResource GitHubContributorBackgroundBrush}"
+        CornerRadius="8"
+        Padding="8,0,8,0"
+        RenderTransformOrigin="0.5, 0.5"
+        HorizontalContentAlignment="Left"
+        Click="Contributor_Clicked">
+        <Button.RenderTransform>
             <ScaleTransform x:Name="RootTransform"/>
-        </controls:DropShadowPanel.RenderTransform>
+        </Button.RenderTransform>
+        <Button.Resources>
+
+            <!--Replacement for the reveal brushes-->
+            <media:RevealBackgroundBrush
+                x:Key="ButtonRevealBackgroundPointerOver"
+                TargetTheme="Dark"
+                Color="#FF202226"
+                FallbackColor="#FF202226"/>
+            <media:RevealBackgroundBrush
+                x:Key="ButtonRevealBackgroundPressed"
+                TargetTheme="Dark"
+                Color="#FF27292D"
+                FallbackColor="#FF27292D"/>
+        </Button.Resources>
+
+        <!-- Shadow -->
+        <ui:Effects.Shadow>
+            <media2:AttachedCardShadow
+                x:Name="CardShadow"
+                Color="Black"
+                Opacity="0.6"
+                BlurRadius="8"
+                Offset="4" />
+        </ui:Effects.Shadow>
 
         <!--Animation triggers-->
         <interactivity:Interaction.Behaviors>
@@ -151,88 +176,65 @@
             </core:EventTriggerBehavior>
         </interactivity:Interaction.Behaviors>
 
-        <!--Root-->
-        <Button
-            Style="{StaticResource ExpandedSquareButtonRevealStyle}"
-            Background="{ThemeResource GitHubContributorBackgroundBrush}"
-            CornerRadius="8"
-            Padding="8,0,8,0"
-            HorizontalContentAlignment="Left"
-            Click="Contributor_Clicked">
-            <Button.Resources>
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-                <!--Replacement for the reveal brushes-->
-                <media:RevealBackgroundBrush
-                    x:Key="ButtonRevealBackgroundPointerOver"
-                    TargetTheme="Dark"
-                    Color="#FF202226"
-                    FallbackColor="#FF202226"/>
-                <media:RevealBackgroundBrush
-                    x:Key="ButtonRevealBackgroundPressed"
-                    TargetTheme="Dark"
-                    Color="#FF27292D"
-                    FallbackColor="#FF27292D"/>
-            </Button.Resources>
-            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+            <!--Image grid-->
+            <Grid Margin="0,0,12,0" Padding="8">
 
-                <!--Image grid-->
-                <Grid Margin="0,0,12,0" Padding="8">
+                <!--Progress ring-->
+                <ProgressRing
+                    x:Name="LoadingRing"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Foreground="{ThemeResource SystemControlBackgroundAccentBrush}"
+                    IsActive="True">
+                    <animations:Implicit.HideAnimations>
+                        <animations:OpacityAnimation Duration="0:0:1" To="0"/>
+                    </animations:Implicit.HideAnimations>
+                </ProgressRing>
 
-                    <!--Progress ring-->
-                    <ProgressRing
-                        x:Name="LoadingRing"
-                        HorizontalAlignment="Center" VerticalAlignment="Center"
-                        Foreground="{ThemeResource SystemControlBackgroundAccentBrush}"
-                        IsActive="True">
-                        <animations:Implicit.HideAnimations>
-                            <animations:OpacityAnimation Duration="0:0:1" To="0"/>
-                        </animations:Implicit.HideAnimations>
-                    </ProgressRing>
-
-                    <!--Image-->
-                    <Ellipse
-                        Height="56"
-                        Width="56"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        RenderTransformOrigin="0.5, 0.5">
-                        <Ellipse.RenderTransform>
-                            <ScaleTransform x:Name="ImageTransform"/>
-                        </Ellipse.RenderTransform>
-                        <Ellipse.Fill>
-                            <ImageBrush
-                                ImageSource="{x:Bind ViewModel.ProfileImageUrl}"
-                                Stretch="UniformToFill"
-                                ImageOpened="Image_ImageOpened"
-                                ImageFailed="Image_ImageFailed"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
-                </Grid>
-
-                <!--Info-->
-                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                    <StackPanel.RenderTransform>
-                        <TranslateTransform x:Name="TextTransform"/>
-                    </StackPanel.RenderTransform>
-
-                    <!--Name-->
-                    <TextBlock
-                        Text="{x:Bind ViewModel.Name}"
-                        FontSize="16" FontWeight="SemiBold"/>
-
-                    <!--Bio-->
-                    <TextBlock
-                        Text="{x:Bind ViewModel.Bio}"
-                        FontSize="13"
-                        Foreground="{ThemeResource WidgetHeaderForeground}"
-                        TextWrapping="WrapWholeWords" MaxLines="2" TextTrimming="CharacterEllipsis"
-                        Margin="0,0,4,0"/>
-                </StackPanel>
+                <!--Image-->
+                <Ellipse
+                    Height="56"
+                    Width="56"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    RenderTransformOrigin="0.5, 0.5">
+                    <Ellipse.RenderTransform>
+                        <ScaleTransform x:Name="ImageTransform"/>
+                    </Ellipse.RenderTransform>
+                    <Ellipse.Fill>
+                        <ImageBrush
+                            ImageSource="{x:Bind ViewModel.ProfileImageUrl}"
+                            Stretch="UniformToFill"
+                            ImageOpened="Image_ImageOpened"
+                            ImageFailed="Image_ImageFailed"/>
+                    </Ellipse.Fill>
+                </Ellipse>
             </Grid>
-        </Button>
-    </controls:DropShadowPanel>
+
+            <!--Info-->
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <StackPanel.RenderTransform>
+                    <TranslateTransform x:Name="TextTransform"/>
+                </StackPanel.RenderTransform>
+
+                <!--Name-->
+                <TextBlock
+                    Text="{x:Bind ViewModel.Name}"
+                    FontSize="16" FontWeight="SemiBold"/>
+
+                <!--Bio-->
+                <TextBlock
+                    Text="{x:Bind ViewModel.Bio}"
+                    FontSize="13"
+                    Foreground="{ThemeResource WidgetHeaderForeground}"
+                    TextWrapping="WrapWholeWords" MaxLines="2" TextTrimming="CharacterEllipsis"
+                    Margin="0,0,4,0"/>
+            </StackPanel>
+        </Grid>
+    </Button>
 </UserControl>
