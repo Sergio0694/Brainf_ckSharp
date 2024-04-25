@@ -5,7 +5,6 @@ using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using GitHub.Models;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Uwp.UI.Controls;
 using Launcher = Windows.System.Launcher;
 
 #nullable enable

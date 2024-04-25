@@ -120,6 +120,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.Main.cs" />
+    <Compile Include="AttachedProperties\MarkdownHelper.cs" />
     <Compile Include="AttachedProperties\Brainf_ckInlineFormatterHelper.StackTrace.cs" />
     <Compile Include="AttachedProperties\CharacterRotationHelper.cs" />
     <Compile Include="AttachedProperties\IdeResultSectionDescriptionHelper.cs" />
