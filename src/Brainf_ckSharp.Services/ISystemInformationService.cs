@@ -1,4 +1,4 @@
-﻿using Brainf_ckSharp.Services.Enums;
+using System.Runtime.InteropServices;
 
 namespace Brainf_ckSharp.Services;
 
@@ -13,9 +13,9 @@ public interface ISystemInformationService
     string ApplicationVersion { get; }
 
     /// <summary>
-    /// Gets the current CPU architecture
+    /// Gets the current CPU architecture for the application package
     /// </summary>
-    CpuArchitecture CpuArchitecture { get; }
+    Architecture CpuArchitecture { get; }
 
     /// <summary>
     /// Gets the current operating system

@@ -1,5 +1,5 @@
 using System;
-using Brainf_ckSharp.Services.Enums;
+using System.Runtime.InteropServices;
 using Windows.ApplicationModel;
 using Windows.Security.ExchangeActiveSyncProvisioning;
 using Windows.System;
@@ -31,11 +31,11 @@ public sealed class SystemInformationService : ISystemInformationService
 
         CpuArchitecture = Package.Current.Id.Architecture switch
         {
-            ProcessorArchitecture.X86 => CpuArchitecture.X86,
-            ProcessorArchitecture.X64 => CpuArchitecture.X64,
-            ProcessorArchitecture.Arm => CpuArchitecture.Arm,
-            ProcessorArchitecture.Arm64 => CpuArchitecture.Arm64,
-            _ => CpuArchitecture.Unknown
+            ProcessorArchitecture.X86 => Architecture.X86,
+            ProcessorArchitecture.X64 => Architecture.X64,
+            ProcessorArchitecture.Arm => Architecture.Arm,
+            ProcessorArchitecture.Arm64 => Architecture.Arm64,
+            _ => (Architecture)int.MaxValue
         };
 
         OperatingSystem = new EasClientDeviceInformation().OperatingSystem;
@@ -55,7 +55,7 @@ public sealed class SystemInformationService : ISystemInformationService
     public string ApplicationVersion { get; }
 
     /// <inheritdoc/>
-    public CpuArchitecture CpuArchitecture { get; }
+    public Architecture CpuArchitecture { get; }
 
     /// <inheritdoc/>
     public string OperatingSystem { get; }
