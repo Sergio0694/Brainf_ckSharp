@@ -60,7 +60,7 @@ public sealed partial class ReviewPromptSubPageViewModel : ObservableObject
             ==========================
             [AppVersion]: {this.systemInformationService.ApplicationVersion}
             [CPU architecture]: {this.systemInformationService.CpuArchitecture}
-            [OS]: {this.systemInformationService.OperatingSystemVersion}
+            [OS]: {this.systemInformationService.OperatingSystem}
             [OS build]: {this.systemInformationService.OperatingSystemVersion}
             """;
 
