@@ -15,10 +15,23 @@ namespace Brainf_ckSharp.Services.Uwp.SystemInformation;
 public sealed class SystemInformationService : ISystemInformationService
 {
     /// <summary>
+    /// The setting key to track the number of app launches.
+    /// </summary>
+    private const string AppLaunchCountSettingKey = $"{nameof(SystemInformationService)}-AppLaunchCount";
+
+    /// <summary>
+    /// The <see cref="ISettingsService"/> instance to use.
+    /// </summary>
+    private readonly ISettingsService settingsService;
+
+    /// <summary>
     /// Creates a new <see cref="SystemInformationService"/> instance
     /// </summary>
-    public SystemInformationService()
+    /// <param name="settingsService">The <see cref="ISettingsService"/> instance to use.</param>
+    public SystemInformationService(ISettingsService settingsService)
     {
+        this.settingsService = settingsService;
+
         PackageVersion packageVersion = Package.Current.Id.Version;
 
         Version packageVersion2 = new(
@@ -62,4 +75,18 @@ public sealed class SystemInformationService : ISystemInformationService
 
     /// <inheritdoc/>
     public string OperatingSystemVersion { get; }
+
+    /// <inheritdoc/>
+    public int GetAppLaunchCount()
+    {
+        return this.settingsService.GetValue<int>(AppLaunchCountSettingKey, fallback: true);
+    }
+
+    /// <inheritdoc/>
+    public void TrackAppLaunch()
+    {
+        int launchCount = this.settingsService.GetValue<int>(AppLaunchCountSettingKey, fallback: true);
+
+        this.settingsService.SetValue(AppLaunchCountSettingKey, launchCount + 1);
+    }
 }

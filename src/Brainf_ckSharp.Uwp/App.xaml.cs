@@ -77,7 +77,10 @@ public sealed partial class App : Application
     /// <inheritdoc/>
     protected override void OnLaunched(LaunchActivatedEventArgs e)
     {
-        SystemInformation.Instance.TrackAppUse(e);
+        if (e.PreviousExecutionState is ApplicationExecutionState.ClosedByUser or ApplicationExecutionState.NotRunning)
+        {
+            Services.GetRequiredService<ISystemInformationService>().TrackAppLaunch();
+        }
 
         OnActivated(e.PrelaunchActivated);
 

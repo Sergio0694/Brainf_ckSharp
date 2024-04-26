@@ -26,4 +26,16 @@ public interface ISystemInformationService
     /// Gets the current version of the operating system
     /// </summary>
     string OperatingSystemVersion { get; }
+
+    /// <summary>
+    /// Tracks the app being launched.
+    /// </summary>
+    void TrackAppLaunch();
+
+    /// <summary>
+    /// Gets the total number of launches for the app.
+    /// </summary>
+    /// <returns>The total number of launches for the app.</returns>
+    /// <remarks>This relies on <see cref="TrackAppLaunch"/> being used.</remarks>
+    int GetAppLaunchCount();
 }
