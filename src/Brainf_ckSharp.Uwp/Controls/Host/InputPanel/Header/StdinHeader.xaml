@@ -79,6 +79,7 @@
             Grid.Column="2"
             CornerRadius="0"
             BorderThickness="1,0,1,1"
+            Background="#FF090909"
             BorderBrush="#FF323232"
             PlaceholderForeground="Gray"
             PlaceholderText="Stdin buffer"
