@@ -1,4 +1,4 @@
-﻿<ResourceDictionary
+<ResourceDictionary
     x:Class="Brainf_ckSharp.Uwp.Controls.SubPages.Views.IdeResultSubPageTemplates"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,7 +7,7 @@
     xmlns:convertersConsole="using:Brainf_ckSharp.Uwp.Converters.Console"
     xmlns:convertersIde="using:Brainf_ckSharp.Uwp.Converters.Ide"
     xmlns:convertersUI="using:Brainf_ckSharp.Uwp.Converters.UI"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:views="using:Brainf_ckSharp.Shared.Models.Ide.Views"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls">

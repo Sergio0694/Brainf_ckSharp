@@ -33,7 +33,7 @@ public sealed partial class Brainf_ckIde : UserControl
     private void Brainf_ckIde_Loaded(object sender, RoutedEventArgs e)
     {
         _ = this.CodeEditBox.ContentScroller!.StartExpressionAnimation(this.LineBlock, Axis.Y, VisualProperty.Offset);
-        _ = this.CodeEditBox.ContentScroller.StartExpressionAnimation(this.IdeOverlaysCanvas, Axis.Y, VisualProperty.Offset);
+        _ = this.CodeEditBox.ContentScroller!.StartExpressionAnimation(this.IdeOverlaysCanvas, Axis.Y, VisualProperty.Offset);
 
         this.CodeEditBox.ContentElement!.SizeChanged += Brainf_ckIde_SizeChanged;
 
