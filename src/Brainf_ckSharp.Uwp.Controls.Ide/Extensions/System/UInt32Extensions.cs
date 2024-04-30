@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using Windows.UI;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System;
 
@@ -8,6 +9,21 @@ namespace Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System;
 /// </summary>
 internal static class UInt32Extensions
 {
+    /// <summary>
+    /// Converts a given hex color into a <see cref="Color"/> value.
+    /// </summary>
+    /// <param name="hex">The input color.</param>
+    /// <returns>The resulting <see cref="Color"/> value.</returns>
+    public static Color ToColor(this uint hex)
+    {
+        byte a = (byte)(hex >> 24);
+        byte r = (byte)((hex >> 16) & 0xff);
+        byte g = (byte)((hex >> 8) & 0xff);
+        byte b = (byte)(hex & 0xff);
+
+        return Color.FromArgb(a, r, g, b);
+    }
+
     /// <summary>
     /// Writes a given <see cref="uint"/> value to a target buffer
     /// </summary>

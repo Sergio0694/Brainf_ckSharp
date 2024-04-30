@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Windows.Foundation;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
@@ -32,8 +32,9 @@ public sealed partial class Brainf_ckIde : UserControl
     /// <param name="e">The <see cref="RoutedEventArgs"/> instance for the <see cref="FrameworkElement.Loaded"/> event</param>
     private void Brainf_ckIde_Loaded(object sender, RoutedEventArgs e)
     {
-        this.CodeEditBox.ContentScroller!.StartExpressionAnimation(this.LineBlock, Axis.Y, VisualProperty.Offset);
-        this.CodeEditBox.ContentScroller.StartExpressionAnimation(this.IdeOverlaysCanvas, Axis.Y, VisualProperty.Offset);
+        _ = this.CodeEditBox.ContentScroller!.StartExpressionAnimation(this.LineBlock, Axis.Y, VisualProperty.Offset);
+        _ = this.CodeEditBox.ContentScroller.StartExpressionAnimation(this.IdeOverlaysCanvas, Axis.Y, VisualProperty.Offset);
+
         this.CodeEditBox.ContentElement!.SizeChanged += Brainf_ckIde_SizeChanged;
 
         // Manually adjust the Win2D canvas size here, since when this handler runs
@@ -130,7 +131,7 @@ public sealed partial class Brainf_ckIde : UserControl
         // Store or remove the breakpoint
         if (this.breakpointIndicators.ContainsKey(lineNumber))
         {
-            this.breakpointIndicators.Remove(lineNumber);
+            _ = this.breakpointIndicators.Remove(lineNumber);
 
             if (this.breakpointIndicators.Count == 0)
             {

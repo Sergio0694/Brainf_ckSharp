@@ -1,6 +1,6 @@
-﻿using Windows.UI;
+using Windows.UI;
 using Microsoft.Graphics.Canvas.Text;
-using Microsoft.Toolkit.Uwp.Helpers;
+using Brainf_ckSharp.Uwp.Controls.Ide.Extensions.System;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide;
 
@@ -24,22 +24,22 @@ public sealed partial class Brainf_ckIde
     /// <summary>
     /// The color used to draw the stroke of git diff markers for a saved line
     /// </summary>
-    private static readonly Color SavedGitDiffMarkerStrokeColor = "#FF577430".ToColor();
+    private static readonly Color SavedGitDiffMarkerStrokeColor = 0xFF577430.ToColor();
 
     /// <summary>
     /// The color used to draw the outline of git diff markers for a saved line
     /// </summary>
-    private static readonly Color SavedGitDiffMarkerOutlineColor = "#FF3A4927".ToColor();
+    private static readonly Color SavedGitDiffMarkerOutlineColor = 0xFF3A4927.ToColor();
 
     /// <summary>
     /// The color used to draw the stroke of git diff markers for a modified line
     /// </summary>
-    private static readonly Color ModifiedGitDiffMarkerStrokeColor = "#FFEFF284".ToColor();
+    private static readonly Color ModifiedGitDiffMarkerStrokeColor = 0xFFEFF284.ToColor();
 
     /// <summary>
     /// The color used to draw the outline of git diff markers for a modified line
     /// </summary>
-    private static readonly Color ModifiedGitDiffMarkerOutlineColor = "#FF868851".ToColor();
+    private static readonly Color ModifiedGitDiffMarkerOutlineColor = 0xFF868851.ToColor();
 
     /// <summary>
     /// The left padding for the start of the indentation indicators
@@ -79,17 +79,17 @@ public sealed partial class Brainf_ckIde
     /// <summary>
     /// The color used to draw outlines for the indentation indicators
     /// </summary>
-    private static readonly Color OutlineColor = "#FFA5A5A5".ToColor();
+    private static readonly Color OutlineColor = 0xFFA5A5A5.ToColor();
 
     /// <summary>
     /// The text for the background of the function declaration indicator
     /// </summary>
-    private static readonly Color FunctionBackgroundColor = "#FF3F3F3F".ToColor();
+    private static readonly Color FunctionBackgroundColor = 0xFF3F3F3F.ToColor();
 
     /// <summary>
     /// The colors used to render the counters for the indentation depth
     /// </summary>
-    private static readonly Color TextColor = "#FFE2E2E2".ToColor();
+    private static readonly Color TextColor = 0xFFE2E2E2.ToColor();
 
     /// <summary>
     /// The text format for text overlays
@@ -114,12 +114,12 @@ public sealed partial class Brainf_ckIde
     /// <summary>
     /// The color used to draw the outline of a breakpoint indicator
     /// </summary>
-    private static readonly Color BreakpointIndicatorBorderColor = "#FFF4DFDD".ToColor();
+    private static readonly Color BreakpointIndicatorBorderColor = 0xFFF4DFDD.ToColor();
 
     /// <summary>
     /// The color used to fill the breakpoint indicators
     /// </summary>
-    private static readonly Color BreakpointIndicatorFillColor = "#FFE51400".ToColor();
+    private static readonly Color BreakpointIndicatorFillColor = 0xFFE51400.ToColor();
 
     /// <summary>
     /// The radius of breakpoint areas
@@ -134,5 +134,5 @@ public sealed partial class Brainf_ckIde
     /// <summary>
     /// The color used to fill breakpoint areas
     /// </summary>
-    private static readonly Color BreakpointAreaFillColor = "#FF91272C".ToColor();
+    private static readonly Color BreakpointAreaFillColor = 0xFF91272C.ToColor();
 }

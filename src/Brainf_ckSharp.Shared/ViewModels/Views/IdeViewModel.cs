@@ -38,11 +38,6 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     private readonly IFilesManagerService filesManagerService;
 
     /// <summary>
-    /// The <see cref="IFilesHistoryService"/> instance currently in use
-    /// </summary>
-    private readonly IFilesHistoryService filesHistoryService;
-
-    /// <summary>
     /// Raised whenever a script is requested to be run
     /// </summary>
     public event EventHandler? ScriptRunRequested;
@@ -84,19 +79,16 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     /// <param name="analyticsService">The <see cref="IAnalyticsService"/> instance to use</param>
     /// <param name="filesService">The <see cref="IFilesService"/> instance to use</param>
     /// <param name="filesManagerService">The <see cref="IFilesManagerService"/> instance to use</param>
-    /// <param name="filesHistoryService">The <see cref="IFilesHistoryService"/> instance to use</param>
     public IdeViewModel(
         IMessenger messenger,
         IAnalyticsService analyticsService,
         IFilesService filesService,
-        IFilesManagerService filesManagerService,
-        IFilesHistoryService filesHistoryService)
+        IFilesManagerService filesManagerService)
         : base(messenger)
     {
         this.analyticsService = analyticsService;
         this.filesService = filesService;
         this.filesManagerService = filesManagerService;
-        this.filesHistoryService = filesHistoryService;
     }
 
     /// <inheritdoc/>
@@ -138,11 +130,6 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
 
         Code = code;
 
-        if (code.File is not null)
-        {
-            _ = this.filesHistoryService.LogOrUpdateActivityAsync(code.File);
-        }
-
         CodeLoaded?.Invoke(this, Code.Content);
     }
 
@@ -152,8 +139,6 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
     private void LoadNewFile()
     {
         Code = SourceCode.CreateEmpty();
-
-        _ = this.filesHistoryService.DismissCurrentActivityAsync();
 
         CodeLoaded?.Invoke(this, Code.Content);
     }
@@ -192,8 +177,6 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
 
             Code = code;
 
-            _ = this.filesHistoryService.LogOrUpdateActivityAsync(code.File!);
-
             CodeLoaded?.Invoke(this, Code.Content);
         }
     }
@@ -207,8 +190,6 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
         if (await SourceCode.TryLoadFromEditableFileAsync(file) is SourceCode code)
         {
             Code = code;
-
-            _ = this.filesHistoryService.LogOrUpdateActivityAsync(code.File!);
 
             CodeLoaded?.Invoke(this, Code.Content);
         }
@@ -228,8 +209,6 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
             Code.Content = Text.ToString();
 
             _ = await Code.TrySaveAsync();
-
-            _ = this.filesHistoryService.LogOrUpdateActivityAsync(Code.File!);
 
             CodeSaved?.Invoke(this, EventArgs.Empty);
 
@@ -257,8 +236,6 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
         Code.Content = Text.ToString();
 
         _ = await Code.TrySaveAsAsync(file);
-
-        _ = this.filesHistoryService.LogOrUpdateActivityAsync(Code.File!);
 
         CodeSaved?.Invoke(this, EventArgs.Empty);
 
@@ -335,11 +312,6 @@ public sealed class IdeViewModel : WorkspaceViewModelBase
             Text = state.Text.AsMemory();
             Row = state.Row;
             Column = state.Column;
-
-            if (Code.File is not null)
-            {
-                _ = this.filesHistoryService.LogOrUpdateActivityAsync(Code.File);
-            }
 
             StateRestored?.Invoke(this, state);
         }

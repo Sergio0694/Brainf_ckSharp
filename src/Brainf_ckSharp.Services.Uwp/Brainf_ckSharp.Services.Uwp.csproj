@@ -120,7 +120,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Analytics\AppCenterService.cs" />
+    <Compile Include="Analytics\ReleaseAnalyticsService.cs" />
     <Compile Include="Analytics\TestAnalyticsService.cs" />
     <Compile Include="ClipboardService.cs" />
     <Compile Include="Abstractions\File.cs" />
@@ -141,17 +141,8 @@
     <PackageReference Include="CommunityToolkit.HighPerformance">
       <Version>8.2.2</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.AppCenter.Analytics">
-      <Version>5.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.AppCenter.Crashes">
-      <Version>5.0.1</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Toolkit.Uwp">
-      <Version>7.0.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

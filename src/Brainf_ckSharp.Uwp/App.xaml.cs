@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using Windows.ApplicationModel.Activation;
@@ -19,7 +19,6 @@ using Brainf_ckSharp.Uwp.Services.Files;
 using Brainf_ckSharp.Uwp.Services.Keyboard;
 using Brainf_ckSharp.Uwp.Services.Settings;
 using Brainf_ckSharp.Uwp.Services.Share;
-using GitHub;
 using Brainf_ckSharp.Services.Uwp.Store;
 using Brainf_ckSharp.Services.Uwp.SystemInformation;
 using Brainf_ckSharp.Shared.Constants;
@@ -29,8 +28,9 @@ using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings;
 using Brainf_ckSharp.Shared.ViewModels.Views;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Host;
-using Microsoft.Extensions.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
+using GitHub;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.UI;
 
@@ -46,19 +46,19 @@ public sealed partial class App : Application
     /// <summary>
     /// The currently requested file to open
     /// </summary>
-    private IFile? _RequestedFile;
+    private IFile? requestedFile;
 
     /// <summary>
     /// Gets whether or not there is a file request pending
     /// </summary>
-    public bool IsFileRequestPending => this._RequestedFile is not null;
+    public bool IsFileRequestPending => this.requestedFile is not null;
 
-    public SubPageHost? _SubPageHost;
+    private SubPageHost? subPageHost;
 
     /// <summary>
     /// Gets the <see cref="Controls.SubPages.Host.SubPageHost"/> instance used to display popups in the app
     /// </summary>
-    public SubPageHost SubPageHost => this._SubPageHost ??= Window.Current.Content.FindDescendant<SubPageHost>()!;
+    public SubPageHost SubPageHost => this.subPageHost ??= Window.Current.Content.FindDescendant<SubPageHost>()!;
 
     /// <summary>
     /// Extracts the current file request, if present
@@ -67,9 +67,9 @@ public sealed partial class App : Application
     /// <returns>Whether or not a requested file was present</returns>
     public bool TryExtractRequestedFile(out IFile? file)
     {
-        file = this._RequestedFile;
+        file = this.requestedFile;
 
-        this._RequestedFile = null;
+        this.requestedFile = null;
 
         return file is not null;
     }
@@ -77,7 +77,10 @@ public sealed partial class App : Application
     /// <inheritdoc/>
     protected override void OnLaunched(LaunchActivatedEventArgs e)
     {
-        SystemInformation.Instance.TrackAppUse(e);
+        if (e.PreviousExecutionState is ApplicationExecutionState.ClosedByUser or ApplicationExecutionState.NotRunning)
+        {
+            Services.GetRequiredService<ISystemInformationService>().TrackAppLaunch();
+        }
 
         OnActivated(e.PrelaunchActivated);
 
@@ -89,11 +92,11 @@ public sealed partial class App : Application
     {
         if (args.Files.FirstOrDefault() is StorageFile file)
         {
-            this._RequestedFile = new File(file);
+            this.requestedFile = new File(file);
         }
         else
         {
-            this._RequestedFile = null;
+            this.requestedFile = null;
         }
 
         OnActivated(false);
@@ -127,7 +130,7 @@ public sealed partial class App : Application
 
                 StorageFile file = await StorageFile.GetFileFromPathAsync(unescapedPath);
 
-                this._RequestedFile = new File(file);
+                this.requestedFile = new File(file);
             }
 
             // Then only if this is not a new app instance, focus the IDE
@@ -220,7 +223,6 @@ public sealed partial class App : Application
         services.AddSingleton<IMessenger, StrongReferenceMessenger>();
         services.AddSingleton<IFilesService, FilesService>();
         services.AddSingleton<IFilesManagerService>(this);
-        services.AddSingleton<IFilesHistoryService, TimelineService>();
         services.AddSingleton<ISettingsService, SettingsService>();
         services.AddSingleton<IKeyboardListenerService, KeyboardListenerService>();
         services.AddSingleton<IClipboardService, ClipboardService>();
@@ -233,7 +235,7 @@ public sealed partial class App : Application
         services.AddSingleton<IAnalyticsService, TestAnalyticsService>();
 #else
         services.AddSingleton<IStoreService, ProductionStoreService>();
-        services.AddSingleton<IAnalyticsService, AppCenterService>();
+        services.AddSingleton<IAnalyticsService, ReleaseAnalyticsService>();
 #endif
 
         // Viewmodels
@@ -258,11 +260,6 @@ public sealed partial class App : Application
     /// </summary>
     private void InitializeServices()
     {
-        // Initialize the analytics service
-        string appCenterSecret = Assembly.GetExecutingAssembly().GetManifestResourceString("Brainf_ckSharp.Uwp.Assets.ServiceTokens.AppCenter.txt");
-
-        Services.GetRequiredService<IAnalyticsService>().Initialize(appCenterSecret);
-
         ISettingsService settings = Services.GetRequiredService<ISettingsService>();
 
         // Initialize default settings

@@ -121,7 +121,7 @@
     <value>Build:</value>
     <comment>Keep the initial uppercase and trailing :</comment>
   </data>
-  <data name="About/Description.Text" xml:space="preserve">
+  <data name="About/Description.[using:Brainf_ckSharp.Uwp.AttachedProperties]MarkdownHelper.Text" xml:space="preserve">
     <value>**Brainf*ck#** is a console and IDE for **Brainf*ck/PBrain**.
 
 Thanks to **Andrea Salvati** for his help with the original interpreter algorithm that we designed back in 2015, **Camil Demetrescu** for the idea to port **Brainf*ck#** to Windows 10 and **Christopher Blackman** for his help during the app development.</value>
@@ -294,7 +294,7 @@ Thanks to **Andrea Salvati** for his help with the original interpreter algorith
   <data name="OverflowMode/UshortWithOverflow" xml:space="preserve">
     <value>Signed short [0, 65535]</value>
   </data>
-  <data name="ReviewPrompt/Body.Text" xml:space="preserve">
+  <data name="ReviewPrompt/Body.[using:Brainf_ckSharp.Uwp.AttachedProperties]MarkdownHelper.Text" xml:space="preserve">
     <value>Thank you for downloading **Brainf\*ck#**!
 
 Are you enjoying it so far?</value>

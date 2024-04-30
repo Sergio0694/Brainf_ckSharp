@@ -1,4 +1,4 @@
-﻿using Brainf_ckSharp.Services.Enums;
+using System.Runtime.InteropServices;
 
 namespace Brainf_ckSharp.Services;
 
@@ -13,9 +13,9 @@ public interface ISystemInformationService
     string ApplicationVersion { get; }
 
     /// <summary>
-    /// Gets the current CPU architecture
+    /// Gets the current CPU architecture for the application package
     /// </summary>
-    CpuArchitecture CpuArchitecture { get; }
+    Architecture CpuArchitecture { get; }
 
     /// <summary>
     /// Gets the current operating system
@@ -26,4 +26,16 @@ public interface ISystemInformationService
     /// Gets the current version of the operating system
     /// </summary>
     string OperatingSystemVersion { get; }
+
+    /// <summary>
+    /// Tracks the app being launched.
+    /// </summary>
+    void TrackAppLaunch();
+
+    /// <summary>
+    /// Gets the total number of launches for the app.
+    /// </summary>
+    /// <returns>The total number of launches for the app.</returns>
+    /// <remarks>This relies on <see cref="TrackAppLaunch"/> being used.</remarks>
+    int GetAppLaunchCount();
 }

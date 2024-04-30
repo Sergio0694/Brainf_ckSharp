@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Services.Store;
@@ -12,20 +12,20 @@ namespace Brainf_ckSharp.Services.Uwp.Store;
 public sealed class ProductionStoreService : IStoreService
 {
     /// <summary>
-    /// The <see cref="Windows.Services.Store.StoreContext"/> instance to use for the current application
+    /// The <see cref="StoreContext"/> instance to use for the current application
     /// </summary>
-    private readonly StoreContext StoreContext = StoreContext.GetDefault();
+    private readonly StoreContext storeContext = StoreContext.GetDefault();
 
     /// <inheritdoc/>
-    public Task RequestReviewAsync()
+    public async Task RequestReviewAsync()
     {
-        return Microsoft.Toolkit.Uwp.Helpers.SystemInformation.LaunchStoreForReviewAsync();
+        _ = await this.storeContext.RequestRateAndReviewAppAsync();
     }
 
     /// <inheritdoc/>
     public async Task<bool> IsProductPurchasedAsync(string id)
     {
-        if (await this.StoreContext.GetAppLicenseAsync() is not StoreAppLicense license)
+        if (await this.storeContext.GetAppLicenseAsync() is not StoreAppLicense license)
         {
             return false;
         }
@@ -41,7 +41,7 @@ public sealed class ProductionStoreService : IStoreService
         try
         {
 
-            Windows.Services.Store.StorePurchaseResult result = await this.StoreContext.RequestPurchaseAsync(id);
+            Windows.Services.Store.StorePurchaseResult result = await this.storeContext.RequestPurchaseAsync(id);
 
             return result.Status switch
             {
