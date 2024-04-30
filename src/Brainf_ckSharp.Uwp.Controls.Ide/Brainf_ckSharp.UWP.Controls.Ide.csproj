@@ -163,14 +163,14 @@
     <EmbeddedResource Include="Properties\Brainf_ckSharp.Uwp.Controls.Ide.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Uwp.Animations">
+      <Version>8.0.240109</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Animations">
-      <Version>7.0.1</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.5.0</Version>
+      <Version>2.8.6</Version>
     </PackageReference>
     <PackageReference Include="Win2D.uwp">
       <Version>1.27.1</Version>
