@@ -1,4 +1,4 @@
-﻿using Microsoft.Toolkit.Uwp;
+using CommunityToolkit.WinUI;
 
 namespace Brainf_ckSharp.Uwp.Converters;
 
@@ -15,6 +15,6 @@ public static class LocalizationConverter
     /// <returns>The requested formatted and localized <see cref="string"/></returns>
     public static string Convert(string resource, object value)
     {
-        return string.Format(resource.GetLocalized(), value);
+        return string.Format(resource.GetLocalized()!, value);
     }
 }

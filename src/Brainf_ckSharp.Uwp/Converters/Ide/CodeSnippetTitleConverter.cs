@@ -1,6 +1,6 @@
-﻿using Brainf_ckSharp.Shared.Constants;
+using Brainf_ckSharp.Shared.Constants;
 using CommunityToolkit.Diagnostics;
-using Microsoft.Toolkit.Uwp;
+using CommunityToolkit.WinUI;
 
 namespace Brainf_ckSharp.Uwp.Converters.Ide;
 
@@ -18,8 +18,8 @@ public static class CodeSnippetTitleConverter
     {
         return snippet switch
         {
-            CodeSnippets.ResetCell => "CodeSnippets/ResetCell".GetLocalized(),
-            CodeSnippets.DuplicateValue => "CodeSnippets/DuplicateValue".GetLocalized(),
+            CodeSnippets.ResetCell => "CodeSnippets/ResetCell".GetLocalized()!,
+            CodeSnippets.DuplicateValue => "CodeSnippets/DuplicateValue".GetLocalized()!,
             CodeSnippets.IfZeroThen => "if (x == 0) { }",
             CodeSnippets.IfGreaterThanZeroThenElse => "if (x > 0) { } else { }",
             _ => ThrowHelper.ThrowArgumentException<string>(nameof(snippet), "Invalid target code snippet")

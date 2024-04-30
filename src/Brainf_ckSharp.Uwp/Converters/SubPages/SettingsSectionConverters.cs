@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Reflection;
 using Brainf_ckSharp.Shared.Enums;
 using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings.Sections.Abstract;
 using CommunityToolkit.Mvvm.Collections;
-using Microsoft.Toolkit.Uwp;
+using CommunityToolkit.WinUI;
 
 namespace Brainf_ckSharp.Uwp.Converters.SubPages;
 
@@ -23,6 +23,6 @@ public static class SettingsSectionConverters
 
         int numberOfProperties = viewModelType.GetProperties(BindingFlags.Instance | BindingFlags.Public).Length;
 
-        return string.Format("Settings/SettingsAvailable".GetLocalized(), numberOfProperties);
+        return string.Format("Settings/SettingsAvailable".GetLocalized()!, numberOfProperties);
     }
 }

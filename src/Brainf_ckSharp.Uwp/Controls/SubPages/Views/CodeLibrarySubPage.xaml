@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
     x:Class="Brainf_ckSharp.Uwp.Controls.SubPages.Views.CodeLibrarySubPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -12,7 +12,7 @@
     xmlns:storage="using:Windows.Storage"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
+    xmlns:ui="using:CommunityToolkit.WinUI"
     xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
     xmlns:enums="using:Brainf_ckSharp.Shared.Enums"
     xmlns:ide="using:Brainf_ckSharp.Shared.Models.Ide"

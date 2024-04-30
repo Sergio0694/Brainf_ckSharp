@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
@@ -29,10 +28,9 @@ using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings;
 using Brainf_ckSharp.Shared.ViewModels.Views;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Host;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.WinUI;
 using GitHub;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Uwp.Helpers;
-using Microsoft.Toolkit.Uwp.UI;
 
 #nullable enable
 

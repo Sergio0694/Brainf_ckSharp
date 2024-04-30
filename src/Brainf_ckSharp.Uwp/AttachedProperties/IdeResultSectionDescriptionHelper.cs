@@ -1,4 +1,4 @@
-﻿using Windows.UI;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
@@ -9,9 +9,9 @@ using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Shared.Models.Ide.Views;
 using Brainf_ckSharp.Uwp.Converters.Console;
 using Brainf_ckSharp.Uwp.Themes;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Uwp;
 using CommunityToolkit.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
+using CommunityToolkit.WinUI;
 
 #nullable enable
 
@@ -57,12 +57,12 @@ public static class IdeResultSectionDescriptionHelper
         new(DependencyProperty.UnsetValue, OnSectionPropertyChanged));
 
     // Localized resources
-    private static readonly string AtPosition = "IdeResults/AtPosition".GetLocalized();
-    private static readonly string StackFrames = "IdeResults/StackFrames".GetLocalized();
-    private static readonly string DefinedFunctions = "IdeResults/DefinedFunctions".GetLocalized();
-    private static readonly string Operators = "IdeResults/Operators".GetLocalized();
-    private static readonly string MemoryCells = "IdeResults/MemoryCells".GetLocalized();
-    private static readonly string OperatorsInTime = "IdeResults/OperatorsInTime".GetLocalized();
+    private static readonly string AtPosition = "IdeResults/AtPosition".GetLocalized()!;
+    private static readonly string StackFrames = "IdeResults/StackFrames".GetLocalized()!;
+    private static readonly string DefinedFunctions = "IdeResults/DefinedFunctions".GetLocalized()!;
+    private static readonly string Operators = "IdeResults/Operators".GetLocalized()!;
+    private static readonly string MemoryCells = "IdeResults/MemoryCells".GetLocalized()!;
+    private static readonly string OperatorsInTime = "IdeResults/OperatorsInTime".GetLocalized()!;
 
     /// <summary>
     /// Updates the UI when <see cref="SectionProperty"/> changes
