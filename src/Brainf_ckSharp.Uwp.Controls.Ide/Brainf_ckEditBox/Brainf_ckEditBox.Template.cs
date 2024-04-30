@@ -5,10 +5,10 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using Brainf_ckSharp.Uwp.Themes;
 using Brainf_ckSharp.Uwp.Themes.Enums;
-using Microsoft.Graphics.Canvas.UI.Xaml;
 using CommunityToolkit.Diagnostics;
-using Microsoft.Toolkit.Uwp.UI;
-using Microsoft.Toolkit.Uwp.UI.Animations;
+using CommunityToolkit.WinUI;
+using CommunityToolkit.WinUI.Animations;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 #nullable enable
