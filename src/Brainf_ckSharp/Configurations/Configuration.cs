@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Brainf_ckSharp.Enums;
@@ -33,9 +33,14 @@ public readonly ref partial struct DebugConfiguration
     public readonly int? MemorySize;
 
     /// <summary>
-    /// The (optional) overflow mode to use to run the script
+    /// The (optional) data type to use to run the script
     /// </summary>
-    public readonly OverflowMode? OverflowMode;
+    public readonly DataType? DataType;
+
+    /// <summary>
+    /// The setting to control whether overflow is enabled
+    /// </summary>
+    public readonly bool IsOverflowEnabled;
 
     /// <summary>
     /// The token to cancel a long running execution
@@ -70,9 +75,14 @@ public readonly ref partial struct ReleaseConfiguration
     public readonly int? MemorySize;
 
     /// <summary>
-    /// The (optional) overflow mode to use to run the script
+    /// The (optional) data type to use to run the script
     /// </summary>
-    public readonly OverflowMode? OverflowMode;
+    public readonly DataType? DataType;
+
+    /// <summary>
+    /// The setting to control whether overflow is enabled
+    /// </summary>
+    public readonly bool IsOverflowEnabled;
 
     /// <summary>
     /// The token to cancel a long running execution

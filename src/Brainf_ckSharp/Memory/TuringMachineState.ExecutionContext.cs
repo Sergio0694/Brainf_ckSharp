@@ -1,11 +1,9 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+using System;
 using System.Runtime.CompilerServices;
-using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
 using CommunityToolkit.HighPerformance;
 
-#pragma warning disable IDE0032
+#pragma warning disable
 
 namespace Brainf_ckSharp.Memory;
 
@@ -126,14 +124,14 @@ internal sealed partial class TuringMachineState
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryMoveBack()
         {
-            if (_Position != 0) 
+            if (_Position != 0)
             {
                 _Position--;
 
                 return true;
             }
 
-            return false;                
+            return false;
         }
 
         /// <inheritdoc/>
@@ -289,14 +287,14 @@ internal sealed partial class TuringMachineState
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryMoveBack()
         {
-            if (_Position != 0) 
+            if (_Position != 0)
             {
                 _Position--;
 
                 return true;
             }
 
-            return false;                
+            return false;
         }
 
         /// <inheritdoc/>
@@ -331,7 +329,7 @@ internal sealed partial class TuringMachineState
 
                 return true;
             }
-            
+
             return false;
         }
 
@@ -485,14 +483,14 @@ internal sealed partial class TuringMachineState
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryMoveBack()
         {
-            if (_Position != 0) 
+            if (_Position != 0)
             {
                 _Position--;
 
                 return true;
             }
 
-            return false;                
+            return false;
         }
 
         /// <inheritdoc/>
@@ -648,14 +646,14 @@ internal sealed partial class TuringMachineState
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryMoveBack()
         {
-            if (_Position != 0) 
+            if (_Position != 0)
             {
                 _Position--;
 
                 return true;
             }
 
-            return false;                
+            return false;
         }
 
         /// <inheritdoc/>
@@ -690,7 +688,7 @@ internal sealed partial class TuringMachineState
 
                 return true;
             }
-            
+
             return false;
         }
 

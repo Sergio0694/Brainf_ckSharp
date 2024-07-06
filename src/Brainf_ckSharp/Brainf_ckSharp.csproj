@@ -20,10 +20,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Configuration.cs</LastGenOutput>
     </None>
-    <None Update="Memory\TuringMachineState.ExecutionContext.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TuringMachineState.ExecutionContext.g.cs</LastGenOutput>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -40,11 +36,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Configuration.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Memory\TuringMachineState.ExecutionContext.g.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>TuringMachineState.ExecutionContext.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 

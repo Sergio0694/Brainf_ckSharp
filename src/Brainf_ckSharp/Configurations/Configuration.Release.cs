@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Memory;
 using Brainf_ckSharp.Models;
@@ -33,7 +33,7 @@ public readonly ref partial struct ReleaseConfiguration
         if (this.InitialState is TuringMachineState initialState)
         {
             Guard.IsNull(this.MemorySize);
-            Guard.IsNull(this.OverflowMode);
+            Guard.IsNull(this.DataType);
 
             initialState = (TuringMachineState)initialState.Clone();
         }
@@ -43,13 +43,14 @@ public readonly ref partial struct ReleaseConfiguration
 
             Guard.IsBetweenOrEqualTo(size, Specs.MinimumMemorySize, Specs.MaximumMemorySize, nameof(this.MemorySize));
 
-            initialState = new TuringMachineState(size, this.OverflowMode ?? Specs.DefaultOverflowMode);
+            initialState = new TuringMachineState(size, this.DataType ?? Specs.DefaultDataType);
         }
 
         InterpreterResult result = Brainf_ckInterpreter.Release.Run(
             operations!.Span,
             this.Stdin.GetValueOrDefault().Span,
             initialState,
+            this.IsOverflowEnabled,
             this.ExecutionToken);
 
         return Option<InterpreterResult>.From(validationResult, result);

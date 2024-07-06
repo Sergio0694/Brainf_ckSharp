@@ -33,6 +33,7 @@ public static partial class Brainf_ckInterpreter
         /// <param name="breakpoints">The sequence of indices for the breakpoints to apply to the script</param>
         /// <param name="stdin">The input buffer to read data from</param>
         /// <param name="machineState">The target machine state to use to run the script</param>
+        /// <param name="isOverflowEnabled">Whether overflow is enabled for the interpreter.</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
         /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterSession"/> instance with the results of the execution</returns>
@@ -41,6 +42,7 @@ public static partial class Brainf_ckInterpreter
             ReadOnlySpan<int> breakpoints,
             ReadOnlyMemory<char> stdin,
             TuringMachineState machineState,
+            bool isOverflowEnabled,
             CancellationToken executionToken,
             CancellationToken debugToken)
         {
@@ -71,6 +73,7 @@ public static partial class Brainf_ckInterpreter
                 stackFrames,
                 stdin,
                 machineState,
+                isOverflowEnabled,
                 executionToken,
                 debugToken);
 

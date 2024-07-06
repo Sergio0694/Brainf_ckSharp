@@ -22,9 +22,9 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     public readonly int Size;
 
     /// <summary>
-    /// The overflow mode being used by the current instance
+    /// The data type being used by the current instance
     /// </summary>
-    public readonly OverflowMode Mode;
+    public readonly DataType DataType;
 
     /// <summary>
     /// The underlying <see cref="ushort"/> buffer
@@ -44,9 +44,9 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     /// Creates a new blank machine state with the given parameters
     /// </summary>
     /// <param name="size">The size of the new memory buffer to use</param>
-    /// <param name="mode">The overflow mode to use in the new instance</param>
-    public TuringMachineState(int size, OverflowMode mode)
-        : this(size, mode, true)
+    /// <param name="dataType">The data type to use in the new instance</param>
+    public TuringMachineState(int size, DataType dataType)
+        : this(size, dataType, true)
     {
     }
 
@@ -54,13 +54,13 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
     /// Creates a new blank machine state with the given parameters
     /// </summary>
     /// <param name="size">The size of the new memory buffer to use</param>
-    /// <param name="mode">The overflow mode to use in the new instance</param>
+    /// <param name="dataType">The data type to use in the new instance</param>
     /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
-    private TuringMachineState(int size, OverflowMode mode, bool clear)
+    private TuringMachineState(int size, DataType dataType, bool clear)
     {
         this.buffer = ArrayPool<ushort>.Shared.Rent(size);
         this.Size = size;
-        this.Mode = mode;
+        this.DataType = dataType;
 
         if (clear)
         {
@@ -158,7 +158,7 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
 
         return
             this.Size == state.Size &&
-            this.Mode == state.Mode &&
+            this.DataType == state.DataType &&
             this.position == state.position &&
             this.buffer.AsSpan(0, this.Size).SequenceEqual(state.buffer.AsSpan(0, this.Size));
     }
@@ -174,7 +174,7 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
         HashCode hashCode = default;
 
         hashCode.Add(this.Size);
-        hashCode.Add(this.Mode);
+        hashCode.Add(this.DataType);
         hashCode.Add(this.position);
         hashCode.Add<ushort>(this.buffer.AsSpan(0, this.Size));
 
@@ -210,7 +210,7 @@ internal sealed partial class TuringMachineState : IReadOnlyMachineState
             ThrowObjectDisposedException();
         }
 
-        TuringMachineState clone = new(this.Size, this.Mode, false) { position = this.position };
+        TuringMachineState clone = new(this.Size, this.DataType, false) { position = this.position };
 
         this.buffer.AsSpan(0, this.Size).CopyTo(clone.buffer.AsSpan(0, this.Size));
 
