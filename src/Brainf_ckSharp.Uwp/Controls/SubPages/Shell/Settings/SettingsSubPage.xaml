@@ -190,6 +190,19 @@
             x:DataType="sections:InterpreterSettingsSectionViewModel">
             <StackPanel Spacing="4">
 
+                <!--Memory size-->
+                <TextBlock
+                    x:Uid="Settings/MemorySize"
+                    Margin="0,8,0,0"
+                    TextWrapping="Wrap"
+                    Text="Memory size"/>
+                <controls:ComboBoxWithNoScrollWheelSupport
+                    CornerRadius="0"
+                    Margin="0,4,0,0"
+                    MinWidth="140"
+                    ItemsSource="{x:Bind MemorySizeOptions}"
+                    SelectedItem="{x:Bind MemorySize, Mode=TwoWay}"/>
+
                 <!--Data type-->
                 <TextBlock
                     x:Uid="Settings/DataType"
@@ -215,19 +228,6 @@
                     TextWrapping="Wrap"
                     Text="Allow overflow"/>
                 <ToggleSwitch IsOn="{x:Bind IsOverflowEnabled, Mode=TwoWay}"/>
-
-                <!--Memory size-->
-                <TextBlock
-                    x:Uid="Settings/MemorySize"
-                    Margin="0,8,0,0"
-                    TextWrapping="Wrap"
-                    Text="Memory size"/>
-                <controls:ComboBoxWithNoScrollWheelSupport
-                    CornerRadius="0"
-                    Margin="0,4,0,0"
-                    MinWidth="140"
-                    ItemsSource="{x:Bind MemorySizeOptions}"
-                    SelectedItem="{x:Bind MemorySize, Mode=TwoWay}"/>
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
