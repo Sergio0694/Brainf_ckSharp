@@ -23,9 +23,14 @@ public sealed class Script
     public required int MemorySize { get; init; }
 
     /// <summary>
-    /// Gets the overflow mode to use to run the script
+    /// Gets the data type to use to run the script
     /// </summary>
-    public required OverflowMode OverflowMode { get; init; }
+    public required DataType DataType { get; init; }
+
+    /// <summary>
+    /// Gets the additional execution options to run the script
+    /// </summary>
+    public required ExecutionOptions ExecutionOptions { get; init; }
 
     /// <summary>
     /// Gets the source code of the script

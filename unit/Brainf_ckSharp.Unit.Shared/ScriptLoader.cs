@@ -33,8 +33,9 @@ public static class ScriptLoader
             Stdin = parts[0],
             Stdout = parts[1],
             MemorySize = int.Parse(parts[2]),
-            OverflowMode = (OverflowMode)Enum.Parse(typeof(OverflowMode), parts[3]),
-            Source = parts[4]
+            DataType = (DataType)Enum.Parse(typeof(DataType), parts[3]),
+            ExecutionOptions = (ExecutionOptions)Enum.Parse(typeof(ExecutionOptions), parts[4]),
+            Source = parts[5]
         };
     }
 }

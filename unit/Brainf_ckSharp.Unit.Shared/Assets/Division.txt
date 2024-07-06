@@ -1,7 +1,8 @@
-﻿9713|
+9713|
 97 / 13 = 7|
 64|
-UshortWithNoOverflow|
+UnsignedShort|
+None|
 [
 	This program executes the integer division between
 	a pair of two-digits integer values and prints the result.
