@@ -57,7 +57,7 @@ public sealed class ShareService : IShareService
         switch (this._Info)
         {
             case FileShareInfo fileShare:
-                request.Data.SetStorageItems(new [] { fileShare.File }, true);
+                request.Data.SetStorageItems([fileShare.File], true);
                 break;
             default:
                 ThrowHelper.ThrowArgumentException(nameof(this._Info), "Invalid share info type");
