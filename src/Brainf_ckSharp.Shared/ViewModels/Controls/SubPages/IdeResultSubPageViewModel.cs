@@ -207,7 +207,7 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
         {
             IdeResultWithSectionInfo model = new() { Section = section, Result = result };
 
-            _ = Source.AddGroup(section, new[] { model });
+            _ = Source.AddGroup(section, [model]);
         }
 
         // The order of items in the result view is as follows:

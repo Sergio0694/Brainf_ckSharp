@@ -37,8 +37,8 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
     /// <summary>
     /// The ordered mapping of available source code files
     /// </summary>
-    private static readonly IReadOnlyList<(string Title, string Filename)> SampleFilesMapping = new[]
-    {
+    private static readonly IReadOnlyList<(string Title, string Filename)> SampleFilesMapping =
+    [
         ("Hello World!", "HelloWorld"),
         ("Unicode value", "UnicodeValue"),
         ("Unicode sum", "UnicodeSum"),
@@ -46,7 +46,7 @@ public sealed partial class CodeLibrarySubPageViewModel : ObservableRecipient
         ("Integer division", "IntegerDivision"),
         ("Fibonacci", "Fibonacci"),
         ("Header comment", "HeaderComment")
-    };
+    ];
 
     /// <summary>
     /// The cached collection of sample codes, if available.
