@@ -1,4 +1,4 @@
-﻿using Brainf_ckSharp.Enums;
+using Brainf_ckSharp.Enums;
 using CommandLine;
 
 namespace Brainf_ckSharp.Cli;
@@ -56,14 +56,24 @@ public sealed class Options
     public int MemorySize { get; set; }
 
     /// <summary>
-    /// Gets or sets the overflow mode to use for the memory buffer
+    /// Gets or sets the data type to use in the memory buffer
     /// </summary>
     [Option(
-        "overflow",
-        Default = OverflowMode.ByteWithOverflow,
-        HelpText = "The overflow mode to use for the memory buffer [ByteWithOverflow|ByteWithNoOverflow|UshortWithOverflow|UshortWithNoOverflow]",
+        "data-type",
+        Default = DataType.Byte,
+        HelpText = "The data type to use for the memory buffer [Byte|UnsignedShort]",
         Required = false)]
-    public OverflowMode OverflowMode { get; set; }
+    public DataType DataType { get; set; }
+
+    /// <summary>
+    /// Gets or sets the execution options to use to run the script
+    /// </summary>
+    [Option(
+        "execution-options",
+        Default = ExecutionOptions.AllowOverflow,
+        HelpText = "The execution options to use to run the script [None|AllowOverflow]",
+        Required = false)]
+    public ExecutionOptions ExecutionOptions { get; set; }
 
     /// <summary>
     /// Gets or sets the path for a file to dump the output buffer to
