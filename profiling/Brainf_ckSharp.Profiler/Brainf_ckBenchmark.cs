@@ -59,7 +59,8 @@ public abstract class Brainf_ckBenchmarkBase
             .WithSource(this.script!.Source)
             .WithStdin(this.script.Stdin)
             .WithMemorySize(this.script.MemorySize)
-            .WithOverflowMode(this.script.OverflowMode)
+            .WithDataType(this.script.DataType)
+            .WithExecutionOptions(this.script.ExecutionOptions)
             .TryRun();
 
         result.Value!.MachineState.Dispose();
