@@ -33,7 +33,8 @@ public partial class DebugTest
             .WithSource(script.Source)
             .WithStdin(script.Stdin)
             .WithMemorySize(script.MemorySize)
-            .WithOverflowMode(script.OverflowMode)
+            .WithDataType(script.DataType)
+            .WithExecutionOptions(script.ExecutionOptions)
             .TryRun();
 
         Assert.IsNotNull(session.Value);
@@ -61,7 +62,8 @@ public partial class ReleaseTest
             .WithSource(script.Source)
             .WithStdin(script.Stdin)
             .WithMemorySize(script.MemorySize)
-            .WithOverflowMode(script.OverflowMode)
+            .WithDataType(script.DataType)
+            .WithExecutionOptions(script.ExecutionOptions)
             .TryRun();
 
         Assert.IsNotNull(result.Value);

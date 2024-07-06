@@ -8,7 +8,6 @@ using Brainf_ckSharp.Memory.Interfaces;
 #pragma warning disable CS0282
 
 namespace Brainf_ckSharp;
-
 /// <summary>
 /// Extensions for building DEBUG configurations
 /// </summary>
@@ -76,7 +75,7 @@ public static partial class DebugConfigurationExtensions
     /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
     /// <param name="initialState">The initial state machine to use to start running the script from</param>
     /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
-    /// <remarks>This property will override the values of <see cref="DebugConfiguration.MemorySize"/> and <see cref="DebugConfiguration.OverflowMode"/></remarks>
+    /// <remarks>This property will override the values of <see cref="DebugConfiguration.MemorySize"/> and <see cref="DebugConfiguration.DataType"/></remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly DebugConfiguration WithInitialState(in this DebugConfiguration configuration, IReadOnlyMachineState initialState)
     {
@@ -100,15 +99,29 @@ public static partial class DebugConfigurationExtensions
     }
 
     /// <summary>
+    /// Sets the data type for a given configuration
+    /// </summary>
+    /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
+    /// <param name="dataType">The data type to use in the state machine used to run the script</param>
+    /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref readonly DebugConfiguration WithDataType(in this DebugConfiguration configuration, DataType dataType)
+    {
+        Unsafe.AsRef(in configuration.DataType) = dataType;
+
+        return ref configuration;
+    }
+
+    /// <summary>
     /// Sets the overflow mode for a given configuration
     /// </summary>
     /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
-    /// <param name="overflowMode">The overflow mode to use in the state machine used to run the script</param>
+    /// <param name="executionOptions">The execution options to use when running the script</param>
     /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref readonly DebugConfiguration WithOverflowMode(in this DebugConfiguration configuration, OverflowMode overflowMode)
+    public static ref readonly DebugConfiguration WithExecutionOptions(in this DebugConfiguration configuration, ExecutionOptions executionOptions)
     {
-        Unsafe.AsRef(in configuration.OverflowMode) = overflowMode;
+        Unsafe.AsRef(in configuration.ExecutionOptions) = executionOptions;
 
         return ref configuration;
     }
@@ -195,7 +208,7 @@ public static class ReleaseConfigurationExtensions
     /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
     /// <param name="initialState">The initial state machine to use to start running the script from</param>
     /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
-    /// <remarks>This property will override the values of <see cref="ReleaseConfiguration.MemorySize"/> and <see cref="ReleaseConfiguration.OverflowMode"/></remarks>
+    /// <remarks>This property will override the values of <see cref="ReleaseConfiguration.MemorySize"/> and <see cref="ReleaseConfiguration.DataType"/></remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly ReleaseConfiguration WithInitialState(in this ReleaseConfiguration configuration, IReadOnlyMachineState initialState)
     {
@@ -219,15 +232,29 @@ public static class ReleaseConfigurationExtensions
     }
 
     /// <summary>
+    /// Sets the data type for a given configuration
+    /// </summary>
+    /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
+    /// <param name="dataType">The data type to use in the state machine used to run the script</param>
+    /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref readonly ReleaseConfiguration WithDataType(in this ReleaseConfiguration configuration, DataType dataType)
+    {
+        Unsafe.AsRef(in configuration.DataType) = dataType;
+
+        return ref configuration;
+    }
+
+    /// <summary>
     /// Sets the overflow mode for a given configuration
     /// </summary>
     /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
-    /// <param name="overflowMode">The overflow mode to use in the state machine used to run the script</param>
+    /// <param name="executionOptions">The execution options to use when running the script</param>
     /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref readonly ReleaseConfiguration WithOverflowMode(in this ReleaseConfiguration configuration, OverflowMode overflowMode)
+    public static ref readonly ReleaseConfiguration WithExecutionOptions(in this ReleaseConfiguration configuration, ExecutionOptions executionOptions)
     {
-        Unsafe.AsRef(in configuration.OverflowMode) = overflowMode;
+        Unsafe.AsRef(in configuration.ExecutionOptions) = executionOptions;
 
         return ref configuration;
     }

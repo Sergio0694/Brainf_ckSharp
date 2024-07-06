@@ -34,24 +34,26 @@ public static partial class Brainf_ckInterpreter
         /// <param name="opcodes">The executable to run</param>
         /// <param name="stdin">The input buffer to read data from</param>
         /// <param name="machineState">The target machine state to use to run the script</param>
+        /// <param name="executionOptions">The execution options to use when running the script</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
         public static InterpreterResult Run(
             Span<Brainf_ckOperation> opcodes,
             ReadOnlySpan<char> stdin,
             TuringMachineState machineState,
+            ExecutionOptions executionOptions,
             CancellationToken executionToken)
         {
             Assert(opcodes.Length >= 0);
             Assert(machineState.Size >= 0);
 
-            return machineState.Mode switch
+            return (machineState.DataType, executionOptions.HasFlag(ExecutionOptions.AllowOverflow)) switch
             {
-                OverflowMode.ByteWithOverflow => Run<TuringMachineState.ByteWithOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
-                OverflowMode.ByteWithNoOverflow => Run<TuringMachineState.ByteWithNoOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
-                OverflowMode.UshortWithOverflow => Run<TuringMachineState.UshortWithOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
-                OverflowMode.UshortWithNoOverflow => Run<TuringMachineState.UshortWithNoOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
-                _ => ThrowHelper.ThrowArgumentOutOfRangeException<InterpreterResult>(nameof(TuringMachineState.Mode), "Invalid execution mode")
+                (DataType.Byte, true) => Run<TuringMachineState.ByteWithOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
+                (DataType.Byte, false) => Run<TuringMachineState.ByteWithNoOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
+                (DataType.UnsignedShort, true) => Run<TuringMachineState.UshortWithOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
+                (DataType.UnsignedShort, false) => Run<TuringMachineState.UshortWithNoOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
+                _ => ThrowHelper.ThrowInvalidOperationException<InterpreterResult>("Invalid interpreter configuration.")
             };
         }
 

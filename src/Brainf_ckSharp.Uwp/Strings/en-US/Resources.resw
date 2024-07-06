@@ -187,6 +187,12 @@ Thanks to **Andrea Salvati** for his help with the original interpreter algorith
     <value>syntax error:</value>
     <comment>Keep the initial lowercase and the trailing :</comment>
   </data>
+  <data name="DataType/Byte" xml:space="preserve">
+    <value>Byte [0, 255]</value>
+  </data>
+  <data name="DataType/UnsignedShort" xml:space="preserve">
+    <value>Unsigned short [0, 65535]</value>
+  </data>
   <data name="ExitCode/DuplicateFunctionDefinition" xml:space="preserve">
     <value>Duplicate function definition</value>
   </data>
@@ -282,18 +288,6 @@ Thanks to **Andrea Salvati** for his help with the original interpreter algorith
   <data name="IdeResultSection/Stdout" xml:space="preserve">
     <value>Stdout</value>
   </data>
-  <data name="OverflowMode/ByteWithNoOverflow" xml:space="preserve">
-    <value>Byte, no overflow</value>
-  </data>
-  <data name="OverflowMode/ByteWithOverflow" xml:space="preserve">
-    <value>Byte [0, 255]</value>
-  </data>
-  <data name="OverflowMode/UshortWithNoOverflow" xml:space="preserve">
-    <value>Signed short, no overflow</value>
-  </data>
-  <data name="OverflowMode/UshortWithOverflow" xml:space="preserve">
-    <value>Signed short [0, 65535]</value>
-  </data>
   <data name="ReviewPrompt/Body.[using:Brainf_ckSharp.Uwp.AttachedProperties]MarkdownHelper.Text" xml:space="preserve">
     <value>Thank you for downloading **Brainf\*ck#**!
 
@@ -310,11 +304,17 @@ Are you enjoying it so far?</value>
   <data name="ReviewPrompt/Review.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Leave a review in the Store</value>
   </data>
+  <data name="Settings/AllowOverflow.Text" xml:space="preserve">
+    <value>Allow overflow</value>
+  </data>
   <data name="Settings/BracketsOnNewLine.Text" xml:space="preserve">
     <value>Brackets position</value>
   </data>
   <data name="Settings/ClearStdinBufferOnExecution.Text" xml:space="preserve">
     <value>Clear stdin buffer on execution</value>
+  </data>
+  <data name="Settings/DataType.Text" xml:space="preserve">
+    <value>Data type</value>
   </data>
   <data name="Settings/Frame.Title" xml:space="preserve">
     <value>SETTINGS</value>
@@ -322,9 +322,6 @@ Are you enjoying it so far?</value>
   </data>
   <data name="Settings/MemorySize.Text" xml:space="preserve">
     <value>Memory size</value>
-  </data>
-  <data name="Settings/OverflowMode.Text" xml:space="preserve">
-    <value>Overflow mode</value>
   </data>
   <data name="Settings/RenderWhitespaces.Text" xml:space="preserve">
     <value>Render whitespaces</value>

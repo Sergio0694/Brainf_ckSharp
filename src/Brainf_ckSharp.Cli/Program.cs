@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading;
 using Brainf_ckSharp.Cli;
@@ -56,7 +56,8 @@ parserResult.WithParsed(options =>
         .WithSource(source)
         .WithStdin(stdin)
         .WithMemorySize(options.MemorySize)
-        .WithOverflowMode(options.OverflowMode)
+        .WithDataType(options.DataType)
+        .WithExecutionOptions(options.ExecutionOptions)
         .WithExecutionToken(cts.Token)
         .TryRun();
 

@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
     x:Class="Brainf_ckSharp.Uwp.Controls.SubPages.Shell.Settings.SettingsSubPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -190,24 +190,6 @@
             x:DataType="sections:InterpreterSettingsSectionViewModel">
             <StackPanel Spacing="4">
 
-                <!--Overflow mode-->
-                <TextBlock
-                    x:Uid="Settings/OverflowMode"
-                    TextWrapping="Wrap"
-                    Text="Overflow mode"/>
-                <controls:ComboBoxWithNoScrollWheelSupport
-                    CornerRadius="0"
-                    Margin="0,4,0,0"
-                    MinWidth="140"
-                    ItemsSource="{x:Bind OverflowModes}"
-                    SelectedItem="{x:Bind OverflowMode, Mode=TwoWay}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate x:DataType="interpreterEnums:OverflowMode">
-                            <TextBlock Text="{x:Bind converters:EnumConverter.Convert((interpreterEnums:OverflowMode))}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </controls:ComboBoxWithNoScrollWheelSupport>
-
                 <!--Memory size-->
                 <TextBlock
                     x:Uid="Settings/MemorySize"
@@ -220,6 +202,32 @@
                     MinWidth="140"
                     ItemsSource="{x:Bind MemorySizeOptions}"
                     SelectedItem="{x:Bind MemorySize, Mode=TwoWay}"/>
+
+                <!--Data type-->
+                <TextBlock
+                    x:Uid="Settings/DataType"
+                    TextWrapping="Wrap"
+                    Text="Overflow mode"/>
+                <controls:ComboBoxWithNoScrollWheelSupport
+                    CornerRadius="0"
+                    Margin="0,4,0,0"
+                    MinWidth="140"
+                    ItemsSource="{x:Bind DataTypes}"
+                    SelectedItem="{x:Bind DataType, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="interpreterEnums:DataType">
+                            <TextBlock Text="{x:Bind converters:EnumConverter.Convert((interpreterEnums:DataType))}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </controls:ComboBoxWithNoScrollWheelSupport>
+
+                <!--Allow overflow-->
+                <TextBlock
+                    x:Uid="Settings/AllowOverflow"
+                    Margin="0,8,0,0"
+                    TextWrapping="Wrap"
+                    Text="Allow overflow"/>
+                <ToggleSwitch IsOn="{x:Bind IsOverflowEnabled, Mode=TwoWay}"/>
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>

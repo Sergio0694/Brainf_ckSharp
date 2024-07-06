@@ -1,4 +1,4 @@
-﻿using Brainf_ckSharp.Enums;
+using Brainf_ckSharp.Enums;
 
 namespace Brainf_ckSharp.Constants;
 
@@ -27,9 +27,14 @@ internal static class Specs
     public const int DefaultMemorySize = 128;
 
     /// <summary>
-    /// The default overflow mode for running scripts
+    /// The default data type for running scripts
     /// </summary>
-    public const OverflowMode DefaultOverflowMode = OverflowMode.ByteWithNoOverflow;
+    public const DataType DefaultDataType = DataType.Byte;
+
+    /// <summary>
+    /// The default overflow mode for running scripts.
+    /// </summary>
+    public const bool DefaultIsOverflowEnabled = false;
 
     /// <summary>
     /// The maximum number of recursive calls that can be performed by a script

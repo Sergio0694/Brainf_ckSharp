@@ -38,12 +38,16 @@ public abstract class SettingsSectionViewModelBase : ObservableRecipient
     /// <param name="field">The previous setting value</param>
     /// <param name="value">The new value to set</param>
     /// <param name="name">The name of the setting that changed</param>
-    protected new void SetProperty<T>(ref T field, T value, [CallerMemberName] string? name = null)
+    protected new bool SetProperty<T>(ref T field, T value, [CallerMemberName] string? name = null)
     {
         if (base.SetProperty(ref field, value, name))
         {
             this.SettingsService.SetValue(name!, value);
+
+            return true;
         }
+
+        return false;
     }
 
     /// <summary>

@@ -270,7 +270,8 @@ public sealed partial class App : Application
         settings.SetValue(SettingsKeys.SelectedView, ViewType.Console, false);
         settings.SetValue(SettingsKeys.ClearStdinBufferOnRequest, false, false);
         settings.SetValue(SettingsKeys.ShowPBrainButtons, true, false);
-        settings.SetValue(SettingsKeys.OverflowMode, OverflowMode.ByteWithOverflow, false);
+        settings.SetValue(SettingsKeys.DataType, DataType.Byte, false);
+        settings.SetValue(SettingsKeys.ExecutionOptions, ExecutionOptions.AllowOverflow, false);
         settings.SetValue(SettingsKeys.MemorySize, 128, false);
     }
 }

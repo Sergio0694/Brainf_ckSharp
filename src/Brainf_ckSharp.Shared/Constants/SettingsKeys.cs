@@ -1,4 +1,4 @@
-﻿namespace Brainf_ckSharp.Shared.Constants;
+namespace Brainf_ckSharp.Shared.Constants;
 
 /// <summary>
 /// A <see langword="class"/> that holds the various setting keys used in the app
@@ -41,9 +41,14 @@ public static class SettingsKeys
     public const string ShowPBrainButtons = nameof(ShowPBrainButtons);
 
     /// <summary>
-    /// Indicates the overflow mode currently in use, uses a <see cref="Brainf_ckSharp.Enums.OverflowMode"/>
+    /// Indicates the overflow mode currently in use, uses a <see cref="Brainf_ckSharp.Enums.DataType"/>
     /// </summary>
-    public const string OverflowMode = nameof(OverflowMode);
+    public const string DataType = nameof(DataType);
+
+    /// <summary>
+    /// Indicates the execution options in use, uses a <see cref="Brainf_ckSharp.Enums.ExecutionOptions"/>
+    /// </summary>
+    public const string ExecutionOptions = nameof(ExecutionOptions);
 
     /// <summary>
     /// Indicates the memory size for the interpreter, uses an <see cref="int"/>

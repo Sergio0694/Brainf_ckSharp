@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Brainf_ckSharp.Constants;
@@ -36,7 +36,7 @@ public readonly ref partial struct DebugConfiguration
         if (this.InitialState is TuringMachineState initialState)
         {
             Guard.IsNull(this.MemorySize);
-            Guard.IsNull(this.OverflowMode);
+            Guard.IsNull(this.DataType);
 
             initialState = (TuringMachineState)initialState.Clone();
         }
@@ -46,7 +46,7 @@ public readonly ref partial struct DebugConfiguration
 
             Guard.IsBetweenOrEqualTo(size, Specs.MinimumMemorySize, Specs.MaximumMemorySize, nameof(this.MemorySize));
 
-            initialState = new TuringMachineState(size, this.OverflowMode ?? Specs.DefaultOverflowMode);
+            initialState = new TuringMachineState(size, this.DataType ?? Specs.DefaultDataType);
         }
 
         return Brainf_ckInterpreter.Debug.TryCreateSession(
@@ -54,6 +54,7 @@ public readonly ref partial struct DebugConfiguration
             this.Breakpoints.Span,
             this.Stdin.GetValueOrDefault(),
             initialState,
+            this.ExecutionOptions,
             this.ExecutionToken,
             this.DebugToken);
     }
