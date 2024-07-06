@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Services;
@@ -21,24 +22,44 @@ public sealed class InterpreterSettingsSectionViewModel : SettingsSectionViewMod
     public InterpreterSettingsSectionViewModel(IMessenger messenger, ISettingsService settingsService)
         : base(messenger, settingsService)
     {
-        this.overflowMode = this.SettingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
+        this.dataType = this.SettingsService.GetValue<DataType>(SettingsKeys.DataType);
+        this.executionOptions = this.SettingsService.GetValue<ExecutionOptions>(SettingsKeys.ExecutionOptions);
         this.memorySize = this.SettingsService.GetValue<int>(SettingsKeys.MemorySize);
     }
 
     /// <summary>
-    /// Gets the available overflow modes.
+    /// Gets the available data types
     /// </summary>
-    public IReadOnlyCollection<OverflowMode> OverflowModes { get; } = (OverflowMode[])typeof(OverflowMode).GetEnumValues();
+    public IReadOnlyCollection<DataType> DataTypes { get; } = (DataType[])Enum.GetValues(typeof(DataType));
 
-    private OverflowMode overflowMode;
+    private DataType dataType;
 
     /// <summary>
-    /// Exposes the <see cref="SettingsKeys.OverflowMode"/> setting
+    /// Exposes the <see cref="SettingsKeys.DataType"/> setting
     /// </summary>
-    public OverflowMode OverflowMode
+    public DataType DataType
     {
-        get => this.overflowMode;
-        set => SetProperty<OverflowMode, OverflowModeSettingChangedMessage>(ref this.overflowMode, value);
+        get => this.dataType;
+        set => SetProperty<DataType, DataTypeSettingChangedMessage>(ref this.dataType, value);
+    }
+
+    private ExecutionOptions executionOptions;
+
+    /// <summary>
+    /// Exposes the <see cref="ExecutionOptions.AllowOverflow"/> setting
+    /// </summary>
+    public bool IsOverflowEnabled
+    {
+        get => this.executionOptions.HasFlag(ExecutionOptions.AllowOverflow);
+        set
+        {
+            if (SetProperty(
+                ref this.executionOptions,
+                this.executionOptions | (value ? ExecutionOptions.AllowOverflow : ExecutionOptions.None)))
+            {
+                _ = Messenger.Send(new ExecutionOptionsSettingChangedMessage(this.executionOptions));
+            }
+        }
     }
 
     /// <summary>

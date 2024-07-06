@@ -58,7 +58,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
         // Initialize the machine state with the current user settings
         this.machineState = MachineStateProvider.Create(
             this.settingsService.GetValue<int>(SettingsKeys.MemorySize),
-            this.settingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode));
+            this.settingsService.GetValue<DataType>(SettingsKeys.DataType));
     }
 
     /// <inheritdoc/>
@@ -71,7 +71,8 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
         Messenger.Register<ConsoleViewModel, RestartConsoleRequestMessage>(this, (r, m) => _ = r.RestartAsync());
         Messenger.Register<ConsoleViewModel, ClearConsoleScreenRequestMessage>(this, (r, m) => _ = r.ClearScreenAsync());
         Messenger.Register<ConsoleViewModel, RepeatCommandRequestMessage>(this, (r, m) => _ = r.RepeatLastScriptAsync());
-        Messenger.Register<ConsoleViewModel, OverflowModeSettingChangedMessage>(this, (r, m) => _ = r.RestartAsync());
+        Messenger.Register<ConsoleViewModel, DataTypeSettingChangedMessage>(this, (r, m) => _ = r.RestartAsync());
+        Messenger.Register<ConsoleViewModel, ExecutionOptionsSettingChangedMessage>(this, (r, m) => _ = r.RestartAsync());
         Messenger.Register<ConsoleViewModel, MemorySizeSettingChangedMessage>(this, (r, m) => _ = r.RestartAsync());
         Messenger.Register<ConsoleViewModel, OperatorKeyPressedNotificationMessage>(this, (r, m) => _ = r.TryAddOperatorAsync(m.Value));
 
@@ -206,7 +207,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
 
             MachineState = MachineStateProvider.Create(
                 this.settingsService.GetValue<int>(SettingsKeys.MemorySize),
-                this.settingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode));
+                this.settingsService.GetValue<DataType>(SettingsKeys.DataType));
 
             Source.Add(new ConsoleCommand());
 
@@ -263,6 +264,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
         if (!string.IsNullOrEmpty(command))
         {
             string stdin = Messenger.Send(new StdinRequestMessage(false));
+            ExecutionOptions executionOptions = this.settingsService.GetValue<ExecutionOptions>(SettingsKeys.ExecutionOptions);
 
             Option<InterpreterResult> result = await Task.Run(() =>
             {
@@ -271,6 +273,7 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
                     .WithSource(command)
                     .WithStdin(stdin)
                     .WithInitialState(MachineState)
+                    .WithExecutionOptions(executionOptions)
                     .WithExecutionToken(new CancellationTokenSource(TimeSpan.FromSeconds(2)).Token)
                     .TryRun();
             });

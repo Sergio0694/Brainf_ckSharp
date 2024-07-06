@@ -53,9 +53,14 @@ public sealed class StatusBarViewModel : ObservableRecipient
     private int memorySize;
 
     /// <summary>
-    /// The last overflow mode that was used
+    /// The last data type that was used
     /// </summary>
-    private OverflowMode overflowMode;
+    private DataType dataType;
+
+    /// <summary>
+    /// The last execution options that were used
+    /// </summary>
+    private ExecutionOptions executionOptions;
 
     /// <summary>
     /// The last machine state that was used, if available
@@ -145,13 +150,15 @@ public sealed class StatusBarViewModel : ObservableRecipient
         ReadOnlyMemory<char> source = viewModel.Text;
         string stdin = Messenger.Send(new StdinRequestMessage(true));
         int memorySize = this.settingsService.GetValue<int>(SettingsKeys.MemorySize);
-        OverflowMode overflowMode = this.settingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
+        DataType dataType = this.settingsService.GetValue<DataType>(SettingsKeys.DataType);
+        ExecutionOptions executionOptions = this.settingsService.GetValue<ExecutionOptions>(SettingsKeys.ExecutionOptions);
         IReadOnlyMachineState? machineState = (viewModel as ConsoleViewModel)?.MachineState;
 
         if (source.Span.SequenceEqual(this.source.Span) &&
             stdin.Equals(this.stdin) &&
             memorySize == this.memorySize &&
-            overflowMode == this.overflowMode &&
+            dataType == this.dataType &&
+            executionOptions == this.executionOptions &&
             ((machineState is null && this.machineState is null) ||
               machineState?.Equals(this.machineState!) == true))
         {
@@ -161,7 +168,8 @@ public sealed class StatusBarViewModel : ObservableRecipient
         this.source = source;
         this.stdin = stdin;
         this.memorySize = memorySize;
-        this.overflowMode = overflowMode;
+        this.dataType = dataType;
+        this.executionOptions = executionOptions;
         this.machineState = machineState;
 
         CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(2));
@@ -171,7 +179,8 @@ public sealed class StatusBarViewModel : ObservableRecipient
             .WithSource(WorkspaceViewModel.Text)
             .WithStdin(stdin)
             .WithMemorySize(memorySize)
-            .WithOverflowMode(overflowMode)
+            .WithDataType(dataType)
+            .WithExecutionOptions(executionOptions)
             .WithExecutionToken(tokenSource.Token)
             .TryRun();
 

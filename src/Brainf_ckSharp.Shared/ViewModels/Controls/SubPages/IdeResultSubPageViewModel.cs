@@ -109,7 +109,8 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
             // Execution arguments and options
             string stdin = Messenger.Send(new StdinRequestMessage(false));
             int memorySize = this.settingsService.GetValue<int>(SettingsKeys.MemorySize);
-            OverflowMode overflowMode = this.settingsService.GetValue<OverflowMode>(SettingsKeys.OverflowMode);
+            DataType dataType = this.settingsService.GetValue<DataType>(SettingsKeys.DataType);
+            ExecutionOptions executionOptions = this.settingsService.GetValue<ExecutionOptions>(SettingsKeys.ExecutionOptions);
 
             // Run in RELEASE mode
             if (Breakpoints is null)
@@ -121,7 +122,8 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
                         .WithSource(Script!)
                         .WithStdin(stdin)
                         .WithMemorySize(memorySize)
-                        .WithOverflowMode(overflowMode)
+                        .WithDataType(dataType)
+                        .WithExecutionOptions(executionOptions)
                         .WithExecutionToken(this.executionTokenSource.Token)
                         .TryRun()
                         .Value!;
@@ -142,7 +144,8 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
                         .WithStdin(stdin)
                         .WithBreakpoints(Breakpoints.Memory)
                         .WithMemorySize(memorySize)
-                        .WithOverflowMode(overflowMode)
+                        .WithDataType(dataType)
+                        .WithExecutionOptions(executionOptions)
                         .WithExecutionToken(this.executionTokenSource.Token)
                         .WithDebugToken(this.debugTokenSource.Token)
                         .TryRun()
