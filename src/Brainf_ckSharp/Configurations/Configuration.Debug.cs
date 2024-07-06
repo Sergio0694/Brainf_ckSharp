@@ -54,7 +54,7 @@ public readonly ref partial struct DebugConfiguration
             this.Breakpoints.Span,
             this.Stdin.GetValueOrDefault(),
             initialState,
-            this.IsOverflowEnabled,
+            this.ExecutionOptions,
             this.ExecutionToken,
             this.DebugToken);
     }

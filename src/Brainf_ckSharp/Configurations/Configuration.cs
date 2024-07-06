@@ -38,9 +38,9 @@ public readonly ref partial struct DebugConfiguration
     public readonly DataType? DataType;
 
     /// <summary>
-    /// The setting to control whether overflow is enabled
+    /// The setting to control the execution options to run the script
     /// </summary>
-    public readonly bool IsOverflowEnabled;
+    public readonly ExecutionOptions ExecutionOptions;
 
     /// <summary>
     /// The token to cancel a long running execution
@@ -80,9 +80,9 @@ public readonly ref partial struct ReleaseConfiguration
     public readonly DataType? DataType;
 
     /// <summary>
-    /// The setting to control whether overflow is enabled
+    /// The setting to control the execution options to run the script
     /// </summary>
-    public readonly bool IsOverflowEnabled;
+    public readonly ExecutionOptions ExecutionOptions;
 
     /// <summary>
     /// The token to cancel a long running execution

@@ -50,7 +50,7 @@ public readonly ref partial struct ReleaseConfiguration
             operations!.Span,
             this.Stdin.GetValueOrDefault().Span,
             initialState,
-            this.IsOverflowEnabled,
+            this.ExecutionOptions,
             this.ExecutionToken);
 
         return Option<InterpreterResult>.From(validationResult, result);

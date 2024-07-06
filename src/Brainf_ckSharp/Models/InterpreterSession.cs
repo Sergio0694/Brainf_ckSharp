@@ -82,9 +82,9 @@ public sealed class InterpreterSession : IEnumerator<InterpreterResult>
     private int totalFunctions;
 
     /// <summary>
-    /// Whether overflow is enabled for the interpreter session.
+    /// The execution options to use when executing code
     /// </summary>
-    private readonly bool isOverflowEnabled;
+    private readonly ExecutionOptions executionOptions;
 
     /// <summary>
     /// A <see cref="CancellationToken"/> that can be used to halt the execution
@@ -127,7 +127,7 @@ public sealed class InterpreterSession : IEnumerator<InterpreterResult>
     /// <param name="stackFrames">The sequence of stack frames for the current execution</param>
     /// <param name="stdin">The input <see cref="ReadOnlyMemory{T}"/> to read characters from</param>
     /// <param name="machineState">The target machine state to use to run the script</param>
-    /// <param name="isOverflowEnabled">Whether overflow is enabled for the interpreter session.</param>
+    /// <param name="executionOptions">The execution options to use when running the script</param>
     /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
     /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
     internal InterpreterSession(
@@ -139,7 +139,7 @@ public sealed class InterpreterSession : IEnumerator<InterpreterResult>
         MemoryOwner<StackFrame> stackFrames,
         ReadOnlyMemory<char> stdin,
         TuringMachineState machineState,
-        bool isOverflowEnabled,
+        ExecutionOptions executionOptions,
         CancellationToken executionToken,
         CancellationToken debugToken)
     {
@@ -152,7 +152,7 @@ public sealed class InterpreterSession : IEnumerator<InterpreterResult>
         this.machineState = machineState;
         this.stdinBuffer = new StdinBuffer(stdin);
         this.stdoutBuffer = StdoutBuffer.Allocate();
-        this.isOverflowEnabled = isOverflowEnabled;
+        this.executionOptions = executionOptions;
         this.executionToken = executionToken;
         this.debugToken = debugToken;
         this.stopwatch = new Stopwatch();
@@ -181,7 +181,7 @@ public sealed class InterpreterSession : IEnumerator<InterpreterResult>
         }
 
         // Execute the mode specific implementation
-        switch (this.machineState.DataType, this.isOverflowEnabled)
+        switch (this.machineState.DataType, this.executionOptions.HasFlag(ExecutionOptions.AllowOverflow))
         {
             case (DataType.Byte, true): MoveNext<TuringMachineState.ByteWithOverflowExecutionContext>(); break;
             case (DataType.Byte, false): MoveNext<TuringMachineState.ByteWithNoOverflowExecutionContext>(); break;

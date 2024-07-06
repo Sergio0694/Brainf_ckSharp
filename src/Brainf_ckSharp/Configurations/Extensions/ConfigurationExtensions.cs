@@ -116,12 +116,12 @@ public static partial class DebugConfigurationExtensions
     /// Sets the overflow mode for a given configuration
     /// </summary>
     /// <param name="configuration">The input <see cref="DebugConfiguration"/> instance</param>
-    /// <param name="isOverflowEnabled">Whether overflow should be enabled when running the script</param>
+    /// <param name="executionOptions">The execution options to use when running the script</param>
     /// <returns>The input <see cref="DebugConfiguration"/> instance</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref readonly DebugConfiguration WithIsOverflowEnabled(in this DebugConfiguration configuration, bool isOverflowEnabled)
+    public static ref readonly DebugConfiguration WithExecutionOptions(in this DebugConfiguration configuration, ExecutionOptions executionOptions)
     {
-        Unsafe.AsRef(in configuration.IsOverflowEnabled) = isOverflowEnabled;
+        Unsafe.AsRef(in configuration.ExecutionOptions) = executionOptions;
 
         return ref configuration;
     }
@@ -249,12 +249,12 @@ public static class ReleaseConfigurationExtensions
     /// Sets the overflow mode for a given configuration
     /// </summary>
     /// <param name="configuration">The input <see cref="ReleaseConfiguration"/> instance</param>
-    /// <param name="isOverflowEnabled">Whether overflow should be enabled when running the script</param>
+    /// <param name="executionOptions">The execution options to use when running the script</param>
     /// <returns>The input <see cref="ReleaseConfiguration"/> instance</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref readonly ReleaseConfiguration WithIsOverflowEnabled(in this ReleaseConfiguration configuration, bool isOverflowEnabled)
+    public static ref readonly ReleaseConfiguration WithExecutionOptions(in this ReleaseConfiguration configuration, ExecutionOptions executionOptions)
     {
-        Unsafe.AsRef(in configuration.IsOverflowEnabled) = isOverflowEnabled;
+        Unsafe.AsRef(in configuration.ExecutionOptions) = executionOptions;
 
         return ref configuration;
     }

@@ -34,20 +34,20 @@ public static partial class Brainf_ckInterpreter
         /// <param name="opcodes">The executable to run</param>
         /// <param name="stdin">The input buffer to read data from</param>
         /// <param name="machineState">The target machine state to use to run the script</param>
-        /// <param name="isOverflowEnabled">Whether overflow is enabled for the interpreter.</param>
+        /// <param name="executionOptions">The execution options to use when running the script</param>
         /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
         /// <returns>An <see cref="InterpreterResult"/> instance with the results of the execution</returns>
         public static InterpreterResult Run(
             Span<Brainf_ckOperation> opcodes,
             ReadOnlySpan<char> stdin,
             TuringMachineState machineState,
-            bool isOverflowEnabled,
+            ExecutionOptions executionOptions,
             CancellationToken executionToken)
         {
             Assert(opcodes.Length >= 0);
             Assert(machineState.Size >= 0);
 
-            return (machineState.DataType, isOverflowEnabled) switch
+            return (machineState.DataType, executionOptions.HasFlag(ExecutionOptions.AllowOverflow)) switch
             {
                 (DataType.Byte, true) => Run<TuringMachineState.ByteWithOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),
                 (DataType.Byte, false) => Run<TuringMachineState.ByteWithNoOverflowExecutionContext>(opcodes, stdin, machineState, executionToken),

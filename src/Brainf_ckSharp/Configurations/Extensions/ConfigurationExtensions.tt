@@ -124,12 +124,12 @@ public static <#=name == "Release" ? "class" : "partial class"#> <#=name#>Config
     /// Sets the overflow mode for a given configuration
     /// </summary>
     /// <param name="configuration">The input <see cref="<#=name#>Configuration"/> instance</param>
-    /// <param name="isOverflowEnabled">Whether overflow should be enabled when running the script</param>
+    /// <param name="executionOptions">The execution options to use when running the script</param>
     /// <returns>The input <see cref="<#=name#>Configuration"/> instance</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref readonly <#=name#>Configuration WithIsOverflowEnabled(in this <#=name#>Configuration configuration, bool isOverflowEnabled)
+    public static ref readonly <#=name#>Configuration WithExecutionOptions(in this <#=name#>Configuration configuration, ExecutionOptions executionOptions)
     {
-        Unsafe.AsRef(in configuration.IsOverflowEnabled) = isOverflowEnabled;
+        Unsafe.AsRef(in configuration.ExecutionOptions) = executionOptions;
 
         return ref configuration;
     }
