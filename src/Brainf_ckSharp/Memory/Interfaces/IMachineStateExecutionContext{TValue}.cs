@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace Brainf_ckSharp.Memory.Interfaces;
 
 /// <summary>
@@ -7,7 +5,6 @@ namespace Brainf_ckSharp.Memory.Interfaces;
 /// </summary>
 /// <typeparam name="TValue">The type of values in each memory cell</typeparam>
 internal interface IMachineStateExecutionContext<TValue>
-    where TValue : unmanaged, IBinaryInteger<TValue>
 {
     /// <summary>
     /// Gets the current position on the memory buffer
@@ -17,7 +14,17 @@ internal interface IMachineStateExecutionContext<TValue>
     /// <summary>
     /// Gets the value at the current memory position
     /// </summary>
-    TValue Current { get; }
+    ushort CurrentValue { get; }
+
+    /// <summary>
+    /// Gets the character at the current memory position
+    /// </summary>
+    char CurrentCharacter { get; }
+
+    /// <summary>
+    /// Gets whether the current value is a positive number
+    /// </summary>
+    bool IsCurrentValuePositive { get; }
 
     /// <summary>
     /// Tries to move the memory pointer forward

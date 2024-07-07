@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Memory;
+using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Opcodes;
@@ -30,12 +31,12 @@ public readonly ref partial struct ReleaseConfiguration
             return Option<InterpreterResult>.From(validationResult);
         }
 
-        if (this.InitialState is TuringMachineState initialState)
+        if (this.InitialState is IMachineState initialState)
         {
             Guard.IsNull(this.MemorySize);
             Guard.IsNull(this.DataType);
 
-            initialState = (TuringMachineState)initialState.Clone();
+            initialState = (IMachineState)initialState.Clone();
         }
         else
         {
@@ -43,7 +44,7 @@ public readonly ref partial struct ReleaseConfiguration
 
             Guard.IsBetweenOrEqualTo(size, Specs.MinimumMemorySize, Specs.MaximumMemorySize, nameof(this.MemorySize));
 
-            initialState = new TuringMachineState(size, this.DataType ?? Specs.DefaultDataType);
+            initialState = (IMachineState)TuringMachineState.Create(size, this.DataType ?? Specs.DefaultDataType);
         }
 
         InterpreterResult result = Brainf_ckInterpreter.Release.Run(

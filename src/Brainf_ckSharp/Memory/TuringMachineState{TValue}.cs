@@ -4,8 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
+using Brainf_ckSharp.Opcodes;
 using CommunityToolkit.HighPerformance;
 
 namespace Brainf_ckSharp.Memory;
@@ -14,8 +16,8 @@ namespace Brainf_ckSharp.Memory;
 /// A <see langword="class"/> that represents the state of a Turing machine
 /// </summary>
 /// <typeparam name="TValue">The type of values in each memory cell</typeparam>
-internal sealed partial class TuringMachineState<TValue> : IReadOnlyMachineState
-    where TValue : unmanaged, IBinaryInteger<TValue>
+internal sealed partial class TuringMachineState<TValue> : IMachineState
+    where TValue : unmanaged, IBinaryInteger<TValue>, IMinMaxValue<TValue>
 {
     /// <summary>
     /// The size of the machine state
@@ -62,7 +64,11 @@ internal sealed partial class TuringMachineState<TValue> : IReadOnlyMachineState
     }
 
     /// <inheritdoc/>
-    public int Position => this.position;
+    public int Position
+    {
+        get => this.position;
+        set => this.position = value;
+    }
 
     /// <inheritdoc/>
     public int Count => this.size;
@@ -200,5 +206,11 @@ internal sealed partial class TuringMachineState<TValue> : IReadOnlyMachineState
         this.buffer = null;
 
         ArrayPool<TValue>.Shared.Return(array);
+    }
+
+    /// <inheritdoc/>
+    ExitCode IMachineState.Invoke(ExecutionOptions executionOptions, in ExecutionParameters<Brainf_ckOperation> executionParameters)
+    {
+        return Brainf_ckInterpreter.Release.Run<TValue>(this, executionOptions, in executionParameters);
     }
 }

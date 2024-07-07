@@ -1,5 +1,3 @@
-using System.Numerics;
-
 #pragma warning disable CS1573
 
 namespace Brainf_ckSharp.Memory.Interfaces;
@@ -9,7 +7,6 @@ namespace Brainf_ckSharp.Memory.Interfaces;
 /// </summary>
 /// <typeparam name="TValue">The type of values in each memory cell</typeparam>
 internal interface IMachineStateNumberHandler<TValue>
-    where TValue : unmanaged, IBinaryInteger<TValue>
 {
     /// <inheritdoc cref="IMachineStateExecutionContext{TValue}.TryIncrement()"/>
     /// <param name="value">The target value to modify.</param>

@@ -44,10 +44,24 @@ internal ref struct MachineStateExecutionContext<TValue, TSize, TNumberHandler> 
     }
 
     /// <inheritdoc/>
-    public readonly TValue Current
+    public readonly ushort CurrentValue
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Unsafe.Add(ref this.reference, (uint)this.position);
+        get => ushort.CreateTruncating(Unsafe.Add(ref this.reference, (uint)this.position));
+    }
+
+    /// <inheritdoc/>
+    public readonly char CurrentCharacter
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => (char)ushort.CreateTruncating(Unsafe.Add(ref this.reference, (uint)this.position));
+    }
+
+    /// <inheritdoc/>
+    public readonly bool IsCurrentValuePositive
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => Unsafe.Add(ref this.reference, (uint)this.position) > TValue.Zero;
     }
 
     /// <inheritdoc/>
