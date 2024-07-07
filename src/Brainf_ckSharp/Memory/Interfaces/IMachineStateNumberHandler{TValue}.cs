@@ -8,23 +8,23 @@ namespace Brainf_ckSharp.Memory.Interfaces;
 /// <typeparam name="TValue">The type of values in each memory cell</typeparam>
 internal interface IMachineStateNumberHandler<TValue>
 {
-    /// <inheritdoc cref="IMachineStateExecutionContext{TValue}.TryIncrement()"/>
+    /// <inheritdoc cref="IMachineStateExecutionContext.TryIncrement()"/>
     /// <param name="value">The target value to modify.</param>
     static abstract bool TryIncrement(ref TValue value);
 
-    /// <inheritdoc cref="IMachineStateExecutionContext{TValue}.TryIncrement(int, ref int)"/>
+    /// <inheritdoc cref="IMachineStateExecutionContext.TryIncrement(int, ref int)"/>
     /// <param name="value">The target value to modify.</param>
     static abstract bool TryIncrement(ref TValue value, int count, ref int totalOperations);
 
-    /// <inheritdoc cref="IMachineStateExecutionContext{TValue}.TryDecrement()"/>
+    /// <inheritdoc cref="IMachineStateExecutionContext.TryDecrement()"/>
     /// <param name="value">The target value to modify.</param>
     static abstract bool TryDecrement(ref TValue value);
 
-    /// <inheritdoc cref="IMachineStateExecutionContext{TValue}.TryDecrement(int, ref int)"/>
+    /// <inheritdoc cref="IMachineStateExecutionContext.TryDecrement(int, ref int)"/>
     /// <param name="value">The target value to modify.</param>
     static abstract bool TryDecrement(ref TValue value, int count, ref int totalOperations);
 
-    /// <inheritdoc cref="IMachineStateExecutionContext{TValue}.TryInput"/>
+    /// <inheritdoc cref="IMachineStateExecutionContext.TryInput"/>
     /// <param name="value">The target value to modify.</param>
     static abstract bool TryInput(ref TValue value, char c);
 }

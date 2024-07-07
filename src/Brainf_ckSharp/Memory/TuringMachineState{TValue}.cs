@@ -16,7 +16,7 @@ namespace Brainf_ckSharp.Memory;
 /// A <see langword="class"/> that represents the state of a Turing machine
 /// </summary>
 /// <typeparam name="TValue">The type of values in each memory cell</typeparam>
-internal sealed partial class TuringMachineState<TValue> : IMachineState
+internal sealed partial class TuringMachineState<TValue> : IMachineState<TValue>
     where TValue : unmanaged, IBinaryInteger<TValue>, IMinMaxValue<TValue>
 {
     /// <summary>
@@ -54,6 +54,7 @@ internal sealed partial class TuringMachineState<TValue> : IMachineState
     /// <param name="clear">Indicates whether or not to clear the allocated memory area</param>
     private TuringMachineState(int size, bool clear)
     {
+        this.size = size;
         this.buffer = ArrayPool<TValue>.Shared.Rent(size);
         this.position = 0;
 
@@ -64,11 +65,7 @@ internal sealed partial class TuringMachineState<TValue> : IMachineState
     }
 
     /// <inheritdoc/>
-    public int Position
-    {
-        get => this.position;
-        set => this.position = value;
-    }
+    public int Position => this.position;
 
     /// <inheritdoc/>
     public int Count => this.size;
@@ -211,6 +208,27 @@ internal sealed partial class TuringMachineState<TValue> : IMachineState
     /// <inheritdoc/>
     ExitCode IMachineState.Invoke(ExecutionOptions executionOptions, in ExecutionParameters<Brainf_ckOperation> executionParameters)
     {
-        return Brainf_ckInterpreter.Release.Run<TValue>(this, executionOptions, in executionParameters);
+        return Brainf_ckInterpreter.Release.Run(this, executionOptions, in executionParameters);
+    }
+
+    /// <inheritdoc/>
+    ExitCode IMachineState.Invoke(
+        ExecutionOptions executionOptions,
+        in ExecutionParameters<Brainf_ckOperator> executionParameters,
+        in DebugParameters debugParameters)
+    {
+        return Brainf_ckInterpreter.Debug.Run(this, executionOptions, in executionParameters, in debugParameters);
+    }
+
+    /// <inheritdoc/>
+    MachineStateExecutionContext<TValue, TSize, TNumberHandler> IMachineState<TValue>.CreateExecutionContext<TSize, TNumberHandler>()
+    {
+        return new(ref this.buffer!.DangerousGetReference(), this.size);
+    }
+
+    /// <inheritdoc/>
+    void IMachineState<TValue>.FinalizeExecution<TExecutionContext>(in TExecutionContext executionContext)
+    {
+        this.position = executionContext.Position;
     }
 }

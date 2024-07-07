@@ -1,10 +1,11 @@
 using System;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using Brainf_ckSharp.Buffers;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory;
+using Brainf_ckSharp.Memory.ExecutionContexts;
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
@@ -13,6 +14,8 @@ using CommunityToolkit.HighPerformance.Buffers;
 using StackFrame = Brainf_ckSharp.Models.Internal.StackFrame;
 using Range = Brainf_ckSharp.Models.Internal.Range;
 using static System.Diagnostics.Debug;
+
+#pragma warning disable CS1573
 
 namespace Brainf_ckSharp;
 
@@ -41,7 +44,7 @@ public static partial class Brainf_ckInterpreter
             ReadOnlySpan<char> source,
             ReadOnlySpan<int> breakpoints,
             ReadOnlyMemory<char> stdin,
-            TuringMachineState machineState,
+            IMachineState machineState,
             ExecutionOptions executionOptions,
             CancellationToken executionToken,
             CancellationToken debugToken)
@@ -80,52 +83,96 @@ public static partial class Brainf_ckInterpreter
             return Option<InterpreterSession>.From(validationResult, session);
         }
 
-        /// <summary>
-        /// Tries to run a given input Brainf*ck/PBrain executable
-        /// </summary>
-        /// <typeparam name="TExecutionContext">The type implementing <see cref="IMachineStateExecutionContext"/> to use</typeparam>
-        /// <param name="executionContext">The target <typeparamref name="TExecutionContext"/>/> instance to execute the code on</param>
-        /// <param name="opcodes">The sequence of parsed opcodes to execute</param>
-        /// <param name="breakpoints">The table of breakpoints for the current executable</param>
-        /// <param name="jumpTable">The jump table for loops and function declarations</param>
-        /// <param name="functions">The mapping of functions for the current execution</param>
-        /// <param name="definitions">The lookup table to check which functions are defined</param>
-        /// <param name="stackFrames">The sequence of stack frames for the current execution</param>
-        /// <param name="depth">The current stack depth</param>
-        /// <param name="totalOperations">The total number of executed opcodes</param>
-        /// <param name="totalFunctions">The total number of defined functions</param>
-        /// <param name="stdinReader">The input buffer to read characters from</param>
-        /// <param name="stdoutWriter">The output buffer to write characters to</param>
-        /// <param name="executionToken">A <see cref="CancellationToken"/> that can be used to halt the execution</param>
-        /// <param name="debugToken">A <see cref="CancellationToken"/> that is used to ignore/respect existing breakpoints</param>
-        /// <returns>The resulting <see cref="ExitCode"/> value for the current execution of the input script</returns>
-        public static ExitCode Run<TExecutionContext>(
-            ref TExecutionContext executionContext,
-            ref Brainf_ckOperator opcodes,
-            ref bool breakpoints,
-            ref int jumpTable,
-            ref Range functions,
-            ref ushort definitions,
-            ref StackFrame stackFrames,
-            ref int depth,
-            ref int totalOperations,
-            ref int totalFunctions,
-            ref StdinBuffer.Reader stdinReader,
-            ref StdoutBuffer.Writer stdoutWriter,
-            CancellationToken executionToken,
-            CancellationToken debugToken)
-            where TExecutionContext : struct, IMachineStateExecutionContext
+        /// <inheritdoc cref="IMachineState.Invoke(ExecutionOptions, in ExecutionParameters{Brainf_ckOperator}, in DebugParameters)"/>
+        /// <typeparam name="TValue">The type of values in each memory cell</typeparam>
+        /// <param name="machineState">The target machine state to use to run the script</param>
+        public static ExitCode Run<TValue>(
+            IMachineState<TValue> machineState,
+            ExecutionOptions executionOptions,
+            in ExecutionParameters<Brainf_ckOperator> executionParameters,
+            in DebugParameters debugParameters)
+            where TValue : unmanaged, IBinaryInteger<TValue>, IMinMaxValue<TValue>
         {
-            Assert(depth >= 0);
-            Assert(totalOperations >= 0);
-            Assert(totalFunctions >= 0);
+            return machineState.Count switch
+            {
+                32 => Run<TValue, MachineStateSize._32>(machineState, executionOptions, in executionParameters, in debugParameters),
+                64 => Run<TValue, MachineStateSize._64>(machineState, executionOptions, in executionParameters, in debugParameters),
+                128 => Run<TValue, MachineStateSize._128>(machineState, executionOptions, in executionParameters, in debugParameters),
+                256 => Run<TValue, MachineStateSize._256>(machineState, executionOptions, in executionParameters, in debugParameters),
+                512 => Run<TValue, MachineStateSize._512>(machineState, executionOptions, in executionParameters, in debugParameters),
+                1024 => Run<TValue, MachineStateSize._1024>(machineState, executionOptions, in executionParameters, in debugParameters),
+                2048 => Run<TValue, MachineStateSize._2048>(machineState, executionOptions, in executionParameters, in debugParameters),
+                4096 => Run<TValue, MachineStateSize._4096>(machineState, executionOptions, in executionParameters, in debugParameters),
+                8192 => Run<TValue, MachineStateSize._8192>(machineState, executionOptions, in executionParameters, in debugParameters),
+                16384 => Run<TValue, MachineStateSize._16384>(machineState, executionOptions, in executionParameters, in debugParameters),
+                _ => Run<TValue, MachineStateSize._32768>(machineState, executionOptions, in executionParameters, in debugParameters)
+            };
+        }
+
+        /// <inheritdoc cref="IMachineState.Invoke(ExecutionOptions, in ExecutionParameters{Brainf_ckOperator}, in DebugParameters)"/>
+        /// <typeparam name="TValue">The type of values in each memory cell</typeparam>
+        /// <typeparam name="TSize">The type representing the size of the machine state</typeparam>
+        /// <param name="machineState">The target machine state to use to run the script</param>
+        private static ExitCode Run<TValue, TSize>(
+            IMachineState<TValue> machineState,
+            ExecutionOptions executionOptions,
+            in ExecutionParameters<Brainf_ckOperator> executionParameters,
+            in DebugParameters debugParameters)
+            where TValue : unmanaged, IBinaryInteger<TValue>, IMinMaxValue<TValue>
+            where TSize : unmanaged, IMachineStateSize
+        {
+            return executionOptions.HasFlag(ExecutionOptions.AllowOverflow)
+                ? Run<TValue, TSize, MachineStateNumberHandler.Overflow<TValue>>(machineState, in executionParameters, in debugParameters)
+                : Run<TValue, TSize, MachineStateNumberHandler.NoOverflow<TValue>>(machineState, in executionParameters, in debugParameters);
+        }
+
+        /// <inheritdoc cref="IMachineState.Invoke(ExecutionOptions, in ExecutionParameters{Brainf_ckOperator}, in DebugParameters)"/>
+        /// <typeparam name="TValue">The type of values in each memory cell</typeparam>
+        /// <typeparam name="TSize">The type representing the size of the machine state</typeparam>
+        /// <typeparam name="TNumberHandler">The type handling numeric operations for the machine state</typeparam>
+        /// <param name="machineState">The target machine state to use to run the script</param>
+        private static ExitCode Run<TValue, TSize, TNumberHandler>(
+            IMachineState<TValue> machineState,
+            in ExecutionParameters<Brainf_ckOperator> executionParameters,
+            in DebugParameters debugParameters)
+            where TValue : unmanaged, IBinaryInteger<TValue>
+            where TSize : unmanaged, IMachineStateSize
+            where TNumberHandler : unmanaged, IMachineStateNumberHandler<TValue>
+        {
+            MachineStateExecutionContext<TValue, TSize, TNumberHandler> executionContext = machineState.CreateExecutionContext<TSize, TNumberHandler>();
+
+            ExitCode exitCode = Run<TValue, MachineStateExecutionContext<TValue, TSize, TNumberHandler>>(
+                ref executionContext,
+                in executionParameters,
+                in debugParameters);
+
+            machineState.FinalizeExecution(in executionContext);
+
+            return exitCode;
+        }
+
+        /// <inheritdoc cref="IMachineState.Invoke(ExecutionOptions, in ExecutionParameters{Brainf_ckOperator}, in DebugParameters)"/>
+        /// <typeparam name="TValue">The type of values in each memory cell</typeparam>
+        /// <typeparam name="TExecutionContext">The type of execution context instance to use to run the script.</typeparam>
+        /// <param name="executionContext">The execution context instance to use to run the script.</param>
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static unsafe ExitCode Run<TValue, TExecutionContext>(
+            ref TExecutionContext executionContext,
+            in ExecutionParameters<Brainf_ckOperator> executionParameters,
+            in DebugParameters debugParameters)
+            where TValue : unmanaged
+            where TExecutionContext : struct, IMachineStateExecutionContext, allows ref struct
+        {
+            Assert(executionParameters.Depth >= 0);
+            Assert(executionParameters.TotalFunctions >= 0);
+            Assert(debugParameters.TotalOperations >= 0);
 
             // Outer loop to go through the existing stack frames
             StackFrame frame;
             int i;
             do
             {
-                frame = Unsafe.Add(ref stackFrames, depth);
+                frame = Unsafe.Add(ref executionParameters.StackFrames, executionParameters.Depth);
 
                 StackFrameLoop:
 
@@ -133,22 +180,23 @@ public static partial class Brainf_ckInterpreter
                 for (i = frame.Offset; i < frame.Range.End; i++)
                 {
                     // Check if a breakpoint has been reached
-                    if (Unsafe.Add(ref breakpoints, i) && !debugToken.IsCancellationRequested)
+                    if (Unsafe.Add(ref debugParameters.Breakpoints, i) && !debugParameters.DebugToken.IsCancellationRequested)
                     {
                         // Disable the current breakpoint so that it won't be
                         // triggered again when the execution resumes from this point
-                        Unsafe.Add(ref breakpoints, i) = false;
+                        Unsafe.Add(ref debugParameters.Breakpoints, i) = false;
+
                         goto BreakpointReached;
                     }
 
                     // Execute the current operator
-                    switch (Unsafe.Add(ref opcodes, i).Operator)
+                    switch (Unsafe.Add(ref executionParameters.Opcodes, i).Operator)
                     {
                         // ptr++
                         case Operators.ForwardPtr:
                             if (executionContext.TryMoveNext())
                             {
-                                totalOperations++;
+                                debugParameters.TotalOperations++;
                             }
                             else
                             {
@@ -161,7 +209,7 @@ public static partial class Brainf_ckInterpreter
                         case Operators.BackwardPtr:
                             if (executionContext.TryMoveBack())
                             {
-                                totalOperations++;
+                                debugParameters.TotalOperations++;
                             }
                             else
                             {
@@ -174,7 +222,7 @@ public static partial class Brainf_ckInterpreter
                         case Operators.Plus:
                             if (executionContext.TryIncrement())
                             {
-                                totalOperations++;
+                                debugParameters.TotalOperations++;
                             }
                             else
                             {
@@ -187,7 +235,7 @@ public static partial class Brainf_ckInterpreter
                         case Operators.Minus:
                             if (executionContext.TryDecrement())
                             {
-                                totalOperations++;
+                                debugParameters.TotalOperations++;
                             }
                             else
                             {
@@ -198,9 +246,9 @@ public static partial class Brainf_ckInterpreter
 
                         // putch(*ptr)
                         case Operators.PrintChar:
-                            if (stdoutWriter.TryWrite((char)executionContext.Current))
+                            if (executionParameters.StdoutWriter->TryWrite(executionContext.CurrentCharacter))
                             {
-                                totalOperations++;
+                                debugParameters.TotalOperations++;
                             }
                             else
                             {
@@ -211,12 +259,12 @@ public static partial class Brainf_ckInterpreter
 
                         // *ptr = getch()
                         case Operators.ReadChar:
-                            if (stdinReader.TryRead(out char c))
+                            if (executionParameters.StdinReader->TryRead(out char c))
                             {
                                 // Check if the input character can be stored in the current cell
                                 if (executionContext.TryInput(c))
                                 {
-                                    totalOperations++;
+                                    debugParameters.TotalOperations++;
                                 }
                                 else
                                 {
@@ -234,10 +282,10 @@ public static partial class Brainf_ckInterpreter
                         case Operators.LoopStart:
 
                             // Check whether the loop is active
-                            if (executionContext.Current == 0)
+                            if (!executionContext.IsCurrentValuePositive)
                             {
-                                i = Unsafe.Add(ref jumpTable, i);
-                                totalOperations++;
+                                i = Unsafe.Add(ref executionParameters.JumpTable, i);
+                                debugParameters.TotalOperations++;
                             }
 
                             break;
@@ -246,34 +294,34 @@ public static partial class Brainf_ckInterpreter
                         case Operators.LoopEnd:
 
                             // Check whether the loop is still active and can be repeated
-                            if (executionContext.Current > 0)
+                            if (executionContext.IsCurrentValuePositive)
                             {
-                                i = Unsafe.Add(ref jumpTable, i);
+                                i = Unsafe.Add(ref executionParameters.JumpTable, i);
 
                                 // Check whether the code can still be executed before starting an active loop
-                                if (executionToken.IsCancellationRequested)
+                                if (executionParameters.ExecutionToken.IsCancellationRequested)
                                 {
                                     goto ThresholdExceeded;
                                 }
                             }
 
-                            totalOperations++;
+                            debugParameters.TotalOperations++;
                             break;
 
                         // f[*ptr] = []() {
                         case Operators.FunctionStart:
                         {
                             // Check for duplicate function definitions
-                            if (Unsafe.Add(ref functions, executionContext.Current).Length != 0)
+                            if (Unsafe.Add(ref executionParameters.Functions, (uint)executionContext.CurrentValue).Length != 0)
                             {
                                 goto DuplicateFunctionDefinition;
                             }
 
                             // Save the new function definition
-                            Range function = new(i + 1, Unsafe.Add(ref jumpTable, i));
-                            Unsafe.Add(ref functions, executionContext.Current) = function;
-                            Unsafe.Add(ref definitions, totalFunctions++) = executionContext.Current;
-                            totalOperations++;
+                            Range function = new(i + 1, Unsafe.Add(ref executionParameters.JumpTable, i));
+                            Unsafe.Add(ref executionParameters.Functions, (uint)executionContext.CurrentValue) = function;
+                            Unsafe.Add(ref executionParameters.Definitions, executionParameters.TotalFunctions++) = executionContext.CurrentValue;
+                            debugParameters.TotalOperations++;
                             i += function.Length;
                             break;
                         }
@@ -282,33 +330,33 @@ public static partial class Brainf_ckInterpreter
                         case Operators.FunctionCall:
                         {
                             // Try to retrieve the function to invoke
-                            Range function = Unsafe.Add(ref functions, executionContext.Current);
+                            Range function = Unsafe.Add(ref executionParameters.Functions, (uint)executionContext.CurrentValue);
                             if (function.Length == 0)
                             {
                                 goto UndefinedFunctionCalled;
                             }
 
                             // Ensure the stack has space for the new function invocation
-                            if (depth == Specs.MaximumStackSize - 1)
+                            if (executionParameters.Depth == Specs.MaximumStackSize - 1)
                             {
                                 goto StackLimitExceeded;
                             }
 
                             // Check for remaining time
-                            if (executionToken.IsCancellationRequested)
+                            if (executionParameters.ExecutionToken.IsCancellationRequested)
                             {
                                 goto ThresholdExceeded;
                             }
 
                             // Update the current stack frame and exit the inner loop
-                            Unsafe.Add(ref stackFrames, depth++) = frame.WithOffset(i + 1);
+                            Unsafe.Add(ref executionParameters.StackFrames, executionParameters.Depth++) = frame.WithOffset(i + 1);
                             frame = new StackFrame(function);
-                            totalOperations++;
+                            debugParameters.TotalOperations++;
                             goto StackFrameLoop;
                         }
                     }
                 }
-            } while (--depth >= 0);
+            } while (--executionParameters.Depth >= 0);
 
             ExitCode exitCode = ExitCode.Success;
             goto Exit;
@@ -357,7 +405,7 @@ public static partial class Brainf_ckInterpreter
             exitCode = ExitCode.StackLimitExceeded;
 
             UpdateStackFrameAndExit:
-            Unsafe.Add(ref stackFrames, depth) = frame.WithOffset(i);
+            Unsafe.Add(ref executionParameters.StackFrames, executionParameters.Depth) = frame.WithOffset(i);
 
             Exit:
             return exitCode;
