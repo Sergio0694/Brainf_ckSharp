@@ -15,7 +15,7 @@ internal interface IMachineState<TValue> : IMachineState
     /// <typeparam name="TSize">The type representing the size of the machine state</typeparam>
     /// <typeparam name="TNumberHandler">The type handling numeric operations for the machine state</typeparam>
     /// <returns>The execution context to use.</returns>
-    MachineStateExecutionContext<TValue, TSize, TNumberHandler> CreateExecutionContext<TSize, TNumberHandler>()
+    ExecutionContext<TValue, TSize, TNumberHandler> CreateExecutionContext<TSize, TNumberHandler>()
         where TSize : unmanaged, IMachineStateSize
         where TNumberHandler : unmanaged, IMachineStateNumberHandler<TValue>;
 

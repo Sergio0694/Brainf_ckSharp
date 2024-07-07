@@ -10,7 +10,7 @@ namespace Brainf_ckSharp.Memory;
 /// <typeparam name="TValue">The type of values in each memory cell</typeparam>
 /// <typeparam name="TSize">The type representing the size of the machine state</typeparam>
 /// <typeparam name="TNumberHandler">The type handling numeric operations for the machine state</typeparam>
-internal ref struct MachineStateExecutionContext<TValue, TSize, TNumberHandler> : IMachineStateExecutionContext
+internal ref struct ExecutionContext<TValue, TSize, TNumberHandler> : IMachineStateExecutionContext
     where TValue : unmanaged, IBinaryInteger<TValue>
     where TSize : unmanaged, IMachineStateSize
     where TNumberHandler : unmanaged, IMachineStateNumberHandler<TValue>
@@ -26,11 +26,11 @@ internal ref struct MachineStateExecutionContext<TValue, TSize, TNumberHandler> 
     private int position;
 
     /// <summary>
-    /// Creates a new <see cref="MachineStateExecutionContext{TValue, TSize, TNumberHandler}"/> instance with the specified parameters.
+    /// Creates a new <see cref="ExecutionContext{TValue, TSize, TNumberHandler}"/> instance with the specified parameters.
     /// </summary>
     /// <param name="reference">The reference to the machine state data</param>
     /// <param name="position">The current position in the machine state data</param>
-    public MachineStateExecutionContext(ref TValue reference, int position)
+    public ExecutionContext(ref TValue reference, int position)
     {
         this.reference = ref reference;
         this.position = position;
