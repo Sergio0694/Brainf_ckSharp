@@ -139,9 +139,9 @@ public static partial class Brainf_ckInterpreter
             where TSize : unmanaged, IMachineStateSize
             where TNumberHandler : unmanaged, IMachineStateNumberHandler<TValue>
         {
-            MachineStateExecutionContext<TValue, TSize, TNumberHandler> executionContext = machineState.CreateExecutionContext<TSize, TNumberHandler>();
+            ExecutionContext<TValue, TSize, TNumberHandler> executionContext = machineState.CreateExecutionContext<TSize, TNumberHandler>();
 
-            ExitCode exitCode = Run<TValue, MachineStateExecutionContext<TValue, TSize, TNumberHandler>>(
+            ExitCode exitCode = Run<TValue, ExecutionContext<TValue, TSize, TNumberHandler>>(
                 ref executionContext,
                 in executionParameters,
                 in debugParameters);
