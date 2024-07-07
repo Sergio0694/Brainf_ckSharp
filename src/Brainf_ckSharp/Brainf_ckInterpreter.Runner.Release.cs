@@ -122,11 +122,11 @@ public static partial class Brainf_ckInterpreter
                 totalOperations);
         }
 
-        /// <inheritdoc cref="IMachineState.Invoke"/>
+        /// <inheritdoc cref="IMachineState.Invoke(ExecutionOptions, in ExecutionParameters{Brainf_ckOperation})"/>
         /// <typeparam name="TValue">The type of values in each memory cell</typeparam>
         /// <param name="machineState">The target machine state to use to run the script</param>
         public static ExitCode Run<TValue>(
-            IMachineState machineState,
+            IMachineState<TValue> machineState,
             ExecutionOptions executionOptions,
             in ExecutionParameters<Brainf_ckOperation> executionParameters)
             where TValue : unmanaged, IBinaryInteger<TValue>, IMinMaxValue<TValue>
@@ -147,12 +147,12 @@ public static partial class Brainf_ckInterpreter
             };
         }
 
-        /// <inheritdoc cref="IMachineState.Invoke"/>
+        /// <inheritdoc cref="IMachineState.Invoke(ExecutionOptions, in ExecutionParameters{Brainf_ckOperation})"/>
         /// <typeparam name="TValue">The type of values in each memory cell</typeparam>
         /// <typeparam name="TSize">The type representing the size of the machine state</typeparam>
         /// <param name="machineState">The target machine state to use to run the script</param>
         private static ExitCode Run<TValue, TSize>(
-            IMachineState machineState,
+            IMachineState<TValue> machineState,
             ExecutionOptions executionOptions,
             in ExecutionParameters<Brainf_ckOperation> executionParameters)
             where TValue : unmanaged, IBinaryInteger<TValue>, IMinMaxValue<TValue>
@@ -163,30 +163,30 @@ public static partial class Brainf_ckInterpreter
                 : Run<TValue, TSize, MachineStateNumberHandler.NoOverflow<TValue>>(machineState, in executionParameters);
         }
 
-        /// <inheritdoc cref="IMachineState.Invoke"/>
+        /// <inheritdoc cref="IMachineState.Invoke(ExecutionOptions, in ExecutionParameters{Brainf_ckOperation})"/>
         /// <typeparam name="TValue">The type of values in each memory cell</typeparam>
         /// <typeparam name="TSize">The type representing the size of the machine state</typeparam>
         /// <typeparam name="TNumberHandler">The type handling numeric operations for the machine state</typeparam>
         /// <param name="machineState">The target machine state to use to run the script</param>
         private static ExitCode Run<TValue, TSize, TNumberHandler>(
-            IMachineState machineState,
+            IMachineState<TValue> machineState,
             in ExecutionParameters<Brainf_ckOperation> executionParameters)
             where TValue : unmanaged, IBinaryInteger<TValue>
             where TSize : unmanaged, IMachineStateSize
             where TNumberHandler : unmanaged, IMachineStateNumberHandler<TValue>
         {
-            MachineStateExecutionContext<TValue, TSize, TNumberHandler> executionContext = new();
+            MachineStateExecutionContext<TValue, TSize, TNumberHandler> executionContext = machineState.CreateExecutionContext<TSize, TNumberHandler>();
 
             ExitCode exitCode = Run<TValue, MachineStateExecutionContext<TValue, TSize, TNumberHandler>>(
                 ref executionContext,
                 in executionParameters);
 
-            machineState.Position = executionContext.Position;
+            machineState.FinalizeExecution(in executionContext);
 
             return exitCode;
         }
 
-        /// <inheritdoc cref="IMachineState.Invoke"/>
+        /// <inheritdoc cref="IMachineState.Invoke(ExecutionOptions, in ExecutionParameters{Brainf_ckOperation})"/>
         /// <typeparam name="TValue">The type of values in each memory cell</typeparam>
         /// <typeparam name="TExecutionContext">The type of execution context instance to use to run the script.</typeparam>
         /// <param name="executionContext">The execution context instance to use to run the script.</param>
@@ -195,7 +195,7 @@ public static partial class Brainf_ckInterpreter
             ref TExecutionContext executionContext,
             in ExecutionParameters<Brainf_ckOperation> executionParameters)
             where TValue : unmanaged
-            where TExecutionContext : struct, IMachineStateExecutionContext<TValue>, allows ref struct
+            where TExecutionContext : struct, IMachineStateExecutionContext, allows ref struct
         {
             // Outer loop to go through the existing stack frames
             StackFrame frame;

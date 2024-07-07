@@ -3,8 +3,7 @@ namespace Brainf_ckSharp.Memory.Interfaces;
 /// <summary>
 /// An <see langword="interface"/> that is used by mode-specific execution contexts
 /// </summary>
-/// <typeparam name="TValue">The type of values in each memory cell</typeparam>
-internal interface IMachineStateExecutionContext<TValue>
+internal interface IMachineStateExecutionContext
 {
     /// <summary>
     /// Gets the current position on the memory buffer

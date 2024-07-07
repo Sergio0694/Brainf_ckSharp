@@ -5,12 +5,12 @@ using Brainf_ckSharp.Memory.Interfaces;
 namespace Brainf_ckSharp.Memory;
 
 /// <summary>
-/// A <see langword="struct"/> implementing <see cref="IMachineStateExecutionContext{TValue}"/> with a given configuration
+/// A <see langword="struct"/> implementing <see cref="IMachineStateExecutionContext"/> with a given configuration
 /// </summary>
 /// <typeparam name="TValue">The type of values in each memory cell</typeparam>
 /// <typeparam name="TSize">The type representing the size of the machine state</typeparam>
 /// <typeparam name="TNumberHandler">The type handling numeric operations for the machine state</typeparam>
-internal ref struct MachineStateExecutionContext<TValue, TSize, TNumberHandler> : IMachineStateExecutionContext<TValue>
+internal ref struct MachineStateExecutionContext<TValue, TSize, TNumberHandler> : IMachineStateExecutionContext
     where TValue : unmanaged, IBinaryInteger<TValue>
     where TSize : unmanaged, IMachineStateSize
     where TNumberHandler : unmanaged, IMachineStateNumberHandler<TValue>

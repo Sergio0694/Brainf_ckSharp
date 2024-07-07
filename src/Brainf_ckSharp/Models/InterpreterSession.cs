@@ -52,9 +52,9 @@ public sealed class InterpreterSession : IEnumerator<InterpreterResult>
     private readonly MemoryOwner<StackFrame> stackFrames;
 
     /// <summary>
-    /// The target <see cref="TuringMachineState"/> instance to execute the code on
+    /// The target <see cref="IMachineState"/> instance to execute the code on
     /// </summary>
-    private readonly TuringMachineState machineState;
+    private readonly IMachineState machineState;
 
     /// <summary>
     /// The input buffer to read characters from
@@ -138,7 +138,7 @@ public sealed class InterpreterSession : IEnumerator<InterpreterResult>
         MemoryOwner<ushort> definitions,
         MemoryOwner<StackFrame> stackFrames,
         ReadOnlyMemory<char> stdin,
-        TuringMachineState machineState,
+        IMachineState machineState,
         ExecutionOptions executionOptions,
         CancellationToken executionToken,
         CancellationToken debugToken)
@@ -180,59 +180,41 @@ public sealed class InterpreterSession : IEnumerator<InterpreterResult>
             return false;
         }
 
-        // Execute the mode specific implementation
-        switch (this.machineState.DataType, this.executionOptions.HasFlag(ExecutionOptions.AllowOverflow))
-        {
-            case (DataType.Byte, true): MoveNext<TuringMachineState.ByteWithOverflowExecutionContext>(); break;
-            case (DataType.Byte, false): MoveNext<TuringMachineState.ByteWithNoOverflowExecutionContext>(); break;
-            case (DataType.UnsignedShort, true): MoveNext<TuringMachineState.UshortWithOverflowExecutionContext>(); break;
-            case (DataType.UnsignedShort, false): MoveNext<TuringMachineState.UshortWithNoOverflowExecutionContext>(); break;
-            default: ThrowHelper.ThrowInvalidOperationException("Invalid interpreter session configuration."); break;
-        };
+        // Setup the stdin and stdout readers and writers
+        StdinBuffer.Reader stdinReader = this.stdinBuffer.CreateReader();
+        StdoutBuffer.Writer stdoutWriter = this.stdoutBuffer.CreateWriter();
 
-        return true;
-    }
+        this.stopwatch.Start();
 
-    /// <summary>
-    /// Implements the <see cref="MoveNext"/> logic with a specific execution mode
-    /// </summary>
-    /// <typeparam name="TExecutionContext">The type implementing <see cref="IMachineStateExecutionContext"/> to use</typeparam>
-    private void MoveNext<TExecutionContext>()
-        where TExecutionContext : struct, IMachineStateExecutionContext
-    {
-        ExitCode exitCode;
+        ExecutionParameters<Brainf_ckOperator> executionParameters = new(
+            ref this.opcodes.DangerousGetReference(),
+            ref this.jumpTable.DangerousGetReference(),
+            ref this.functions.DangerousGetReference(),
+            ref this.definitions.DangerousGetReference(),
+            ref this.stackFrames.DangerousGetReference(),
+            ref this.depth,
+            ref this.totalOperations,
+            ref this.totalFunctions,
+            ref stdinReader,
+            ref stdoutWriter,
+            this.executionToken);
 
-        using (TuringMachineState.ExecutionSession<TExecutionContext> session = this.machineState.CreateExecutionSession<TExecutionContext>())
-        {
-            this.stopwatch.Start();
+        DebugParameters debugParameters = new(
+            ref this.breakpoints.DangerousGetReference(),
+            ref this.totalOperations,
+            this.debugToken);
 
-            // Setup the stdin and stdout readers and writers
-            StdinBuffer.Reader stdinReader = this.stdinBuffer.CreateReader();
-            StdoutBuffer.Writer stdoutWriter = this.stdoutBuffer.CreateWriter();
+        // Execute the new interpreter debug step
+        ExitCode exitCode = this.machineState.Invoke(
+            this.executionOptions,
+            in executionParameters,
+            in debugParameters);
 
-            // Execute the new interpreter debug step
-            exitCode = Brainf_ckInterpreter.Debug.Run(
-                ref Unsafe.AsRef(in session.ExecutionContext),
-                ref this.opcodes.DangerousGetReference(),
-                ref this.breakpoints.DangerousGetReference(),
-                ref this.jumpTable.DangerousGetReference(),
-                ref this.functions.DangerousGetReference(),
-                ref this.definitions.DangerousGetReference(),
-                ref this.stackFrames.DangerousGetReference(),
-                ref this.depth,
-                ref this.totalOperations,
-                ref this.totalFunctions,
-                ref stdinReader,
-                ref stdoutWriter,
-                this.executionToken,
-                this.debugToken);
+        this.stopwatch.Stop();
 
-            // Synchronize the buffers
-            this.stdinBuffer.Synchronize(ref stdinReader);
-            this.stdoutBuffer.Synchronize(ref stdoutWriter);
-
-            this.stopwatch.Stop();
-        }
+        // Synchronize the buffers
+        this.stdinBuffer.Synchronize(ref stdinReader);
+        this.stdoutBuffer.Synchronize(ref stdoutWriter);
 
         // Prepare the debug info
         HaltedExecutionInfo? debugInfo = Brainf_ckInterpreter.LoadDebugInfo(
@@ -252,12 +234,14 @@ public sealed class InterpreterSession : IEnumerator<InterpreterResult>
             this.sourceCode,
             exitCode,
             debugInfo,
-            (TuringMachineState)this.machineState.Clone(),
+            (IMachineState)this.machineState.Clone(),
             functionDefinitions,
             this.stdinBuffer.ToString(),
             this.stdoutBuffer.ToString(),
             this.stopwatch.Elapsed,
             this.totalOperations);
+
+        return true;
     }
 
     /// <inheritdoc/>
