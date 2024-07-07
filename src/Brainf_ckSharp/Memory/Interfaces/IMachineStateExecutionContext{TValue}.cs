@@ -1,9 +1,13 @@
-﻿namespace Brainf_ckSharp.Memory.Interfaces;
+using System.Numerics;
+
+namespace Brainf_ckSharp.Memory.Interfaces;
 
 /// <summary>
 /// An <see langword="interface"/> that is used by mode-specific execution contexts
 /// </summary>
-internal interface IMachineStateExecutionContext
+/// <typeparam name="TValue">The type of values in each memory cell</typeparam>
+internal interface IMachineStateExecutionContext<TValue>
+    where TValue : unmanaged, IBinaryInteger<TValue>
 {
     /// <summary>
     /// Gets the current position on the memory buffer
@@ -13,7 +17,7 @@ internal interface IMachineStateExecutionContext
     /// <summary>
     /// Gets the value at the current memory position
     /// </summary>
-    ushort Current { get; }
+    TValue Current { get; }
 
     /// <summary>
     /// Tries to move the memory pointer forward
