@@ -12,14 +12,17 @@ namespace Brainf_ckSharp.Memory.Interfaces;
 public ref struct IReadOnlyMachineStateEnumerator
 {
     /// <summary>
-    /// The target <see cref="TuringMachineState"/> instance to enumerate
+    /// The target <see cref="IReadOnlyMachineState"/> instance to enumerate
     /// </summary>
-    private readonly TuringMachineState machineState;
+    private readonly IReadOnlyMachineState machineState;
 
     /// <summary>
     /// The size of <see cref="machineState"/>, used to skip an indirect memory access
     /// </summary>
-    /// <remarks>On 64-bit, this field doesn't change the size of the type anyway</remarks>
+    /// <remarks>
+    /// On 64-bit, this field doesn't change the size of the type anyway.
+    /// Caching the size in a field avoids one extra interface stub dispatch.
+    /// </remarks>
     private readonly int size;
 
     /// <summary>
@@ -32,10 +35,10 @@ public ref struct IReadOnlyMachineStateEnumerator
     /// </summary>
     /// <param name="machineState">The target <see cref="TuringMachineState"/> instance to enumerate</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal IReadOnlyMachineStateEnumerator(TuringMachineState machineState)
+    internal IReadOnlyMachineStateEnumerator(IReadOnlyMachineState machineState)
     {
         this.machineState = machineState;
-        this.size = machineState.Size;
+        this.size = machineState.Count;
         this.index = -1;
     }
 
