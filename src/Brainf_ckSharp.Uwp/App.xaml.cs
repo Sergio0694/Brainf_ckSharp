@@ -1,47 +1,27 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Storage;
 using Windows.UI.Core.Preview;
 using Windows.UI.Xaml;
-using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Services;
-using Brainf_ckSharp.Services.Uwp.Analytics;
-using Brainf_ckSharp.Services.Uwp.Email;
-using Brainf_ckSharp.Shared.Enums.Settings;
 using Brainf_ckSharp.Uwp.Controls.Host;
 using Brainf_ckSharp.Uwp.Helpers;
-using Brainf_ckSharp.Uwp.Services.Clipboard;
 using Brainf_ckSharp.Uwp.Services.Files;
-using Brainf_ckSharp.Uwp.Services.Keyboard;
-using Brainf_ckSharp.Uwp.Services.Settings;
-using Brainf_ckSharp.Uwp.Services.Share;
-using Brainf_ckSharp.Services.Uwp.Store;
-using Brainf_ckSharp.Services.Uwp.SystemInformation;
 using Brainf_ckSharp.Shared.Constants;
-using Brainf_ckSharp.Shared.ViewModels;
-using Brainf_ckSharp.Shared.ViewModels.Controls;
-using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages;
-using Brainf_ckSharp.Shared.ViewModels.Controls.SubPages.Settings;
 using Brainf_ckSharp.Shared.ViewModels.Views;
 using Brainf_ckSharp.Uwp.Controls.SubPages.Host;
-using CommunityToolkit.Mvvm.Messaging;
-using GitHub;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.UI;
 
 #nullable enable
 
 namespace Brainf_ckSharp.Uwp;
 
-/// <summary>
-/// Provides application-specific behavior to supplement the default <see cref="Application"/> class
-/// </summary>
-public sealed partial class App : Application
+/// <inheritdoc/>
+partial class App
 {
     /// <summary>
     /// The currently requested file to open
@@ -158,7 +138,7 @@ public sealed partial class App : Application
         // Initialize the UI if needed
         if (Window.Current.Content is not Shell)
         {
-            InitializeServices();
+            InitializeServices(Services);
 
             // Initial UI styling
             TitleBarHelper.ExpandViewIntoTitleBar();
@@ -206,72 +186,5 @@ public sealed partial class App : Application
         }
 
         deferral.Complete();
-    }
-
-    /// <summary>
-    /// Configures the services to use in the app
-    /// </summary>
-    /// <returns>An <see cref="IServiceProvider"/> instance with the app services.</returns>
-    private IServiceProvider ConfigureServices()
-    {
-        ServiceCollection services = new();
-
-        // Prepare the app configuration
-        services.AddSingleton(new AppConfiguration() { UnlockThemesIapId = "9P4Q63CCFPBM" });
-
-        // Services
-        services.AddSingleton<IMessenger, StrongReferenceMessenger>();
-        services.AddSingleton<IFilesService, FilesService>();
-        services.AddSingleton<IFilesManagerService>(this);
-        services.AddSingleton<ISettingsService, SettingsService>();
-        services.AddSingleton<IKeyboardListenerService, KeyboardListenerService>();
-        services.AddSingleton<IClipboardService, ClipboardService>();
-        services.AddSingleton<IShareService, ShareService>();
-        services.AddSingleton<IEmailService, EmailService>();
-        services.AddSingleton<ISystemInformationService, SystemInformationService>();
-        services.AddSingleton<IGitHubService>(_ => new GitHubService("Brainf_ckSharp|Uwp"));
-#if DEBUG
-        services.AddSingleton<IStoreService, TestStoreService>();
-        services.AddSingleton<IAnalyticsService, TestAnalyticsService>();
-#else
-        services.AddSingleton<IStoreService, ProductionStoreService>();
-        services.AddSingleton<IAnalyticsService, ReleaseAnalyticsService>();
-#endif
-
-        // Viewmodels
-        services.AddSingleton<ShellViewModel>();
-        services.AddSingleton<CompactMemoryViewerViewModel>();
-        services.AddSingleton<ConsoleViewModel>();
-        services.AddSingleton<IdeViewModel>();
-        services.AddSingleton<VirtualKeyboardViewModel>();
-        services.AddSingleton<StdinHeaderViewModel>();
-        services.AddSingleton<StatusBarViewModel>();
-        services.AddTransient<SettingsSubPageViewModel>();
-        services.AddTransient<ReviewPromptSubPageViewModel>();
-        services.AddTransient<IdeResultSubPageViewModel>();
-        services.AddTransient<CodeLibrarySubPageViewModel>();
-        services.AddTransient<AboutSubPageViewModel>();
-
-        return services.BuildServiceProvider();
-    }
-
-    /// <summary>
-    /// Performs additional settings configuration and other startup initialization
-    /// </summary>
-    private void InitializeServices()
-    {
-        ISettingsService settings = Services.GetRequiredService<ISettingsService>();
-
-        // Initialize default settings
-        settings.SetValue(SettingsKeys.IsVirtualKeyboardEnabled, true, false);
-        settings.SetValue(SettingsKeys.BracketsFormattingStyle, BracketsFormattingStyle.NewLine, false);
-        settings.SetValue(SettingsKeys.IdeTheme, IdeTheme.VisualStudio, false);
-        settings.SetValue(SettingsKeys.RenderWhitespaces, true, false);
-        settings.SetValue(SettingsKeys.SelectedView, ViewType.Console, false);
-        settings.SetValue(SettingsKeys.ClearStdinBufferOnRequest, false, false);
-        settings.SetValue(SettingsKeys.ShowPBrainButtons, true, false);
-        settings.SetValue(SettingsKeys.DataType, DataType.Byte, false);
-        settings.SetValue(SettingsKeys.ExecutionOptions, ExecutionOptions.AllowOverflow, false);
-        settings.SetValue(SettingsKeys.MemorySize, 128, false);
     }
 }

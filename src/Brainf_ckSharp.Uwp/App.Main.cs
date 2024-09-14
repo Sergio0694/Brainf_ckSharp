@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using Windows.ApplicationModel;
@@ -24,7 +24,7 @@ public sealed partial class App : Application, IFilesManagerService
     public App(string id)
     {
         Id = id;
-        Services = ConfigureServices();
+        Services = BuildServiceProvider();
 
         this.InitializeComponent();
     }
