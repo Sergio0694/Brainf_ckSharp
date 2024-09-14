@@ -20,7 +20,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls;
 /// <summary>
 /// A viewmodel for the status bar in the application.
 /// </summary>
-public sealed class StatusBarViewModel : ObservableRecipient
+public sealed partial class StatusBarViewModel : ObservableRecipient
 {
     /// <summary>
     /// The <see cref="ISettingsService"/> instance currently in use
@@ -73,11 +73,6 @@ public sealed class StatusBarViewModel : ObservableRecipient
     private Option<InterpreterResult>? backgroundExecutionResult;
 
     /// <summary>
-    /// The backing field for <see cref="WorkspaceViewModel"/>.
-    /// </summary>
-    private WorkspaceViewModelBase? workspaceViewModel;
-
-    /// <summary>
     /// Creates a new <see cref="StatusBarViewModel"/> instance
     /// </summary>
     /// <param name="messenger">The <see cref="IMessenger"/> instance to use</param>
@@ -115,11 +110,8 @@ public sealed class StatusBarViewModel : ObservableRecipient
     /// <summary>
     /// Gets the <see cref="WorkspaceViewModelBase"/> instance in use
     /// </summary>
-    public WorkspaceViewModelBase? WorkspaceViewModel
-    {
-        get => this.workspaceViewModel;
-        private set => SetProperty(ref this.workspaceViewModel, value);
-    }
+    [ObservableProperty]
+    private WorkspaceViewModelBase? workspaceViewModel;
 
     /// <summary>
     /// Assigns <see cref="WorkspaceViewModel"/> and <see cref="IdeViewModel"/> when the current view model changes

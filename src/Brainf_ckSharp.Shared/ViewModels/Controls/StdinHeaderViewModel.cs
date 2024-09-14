@@ -11,7 +11,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls;
 /// <summary>
 /// A viewmodel for the stdin header shown in the app.
 /// </summary>
-public sealed class StdinHeaderViewModel : ObservableRecipient
+public sealed partial class StdinHeaderViewModel : ObservableRecipient
 {
     /// <summary>
     /// The <see cref="ISettingsService"/> instance currently in use
@@ -35,16 +35,11 @@ public sealed class StdinHeaderViewModel : ObservableRecipient
         Messenger.Register<StdinHeaderViewModel, StdinRequestMessage>(this, (r, m) => r.GetStdinBuffer(m));
     }
 
-    private string text = string.Empty;
-
     /// <summary>
     /// Gets or sets the current text in the stdin buffer
     /// </summary>
-    public string Text
-    {
-        get => this.text;
-        set => SetProperty(ref this.text, value);
-    }
+    [ObservableProperty]
+    private string text = string.Empty;
 
     /// <inheritdoc/>
     private void GetStdinBuffer(StdinRequestMessage request)

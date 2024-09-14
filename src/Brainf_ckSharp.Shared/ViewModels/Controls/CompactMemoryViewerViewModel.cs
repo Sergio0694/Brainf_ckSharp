@@ -13,7 +13,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Controls;
 /// <summary>
 /// A view model for a compact memory viewer for the interactive REPL console
 /// </summary>
-public sealed class CompactMemoryViewerViewModel : ObservableRecipient
+public sealed partial class CompactMemoryViewerViewModel : ObservableRecipient
 {
     /// <summary>
     /// Creates a new <see cref="CompactMemoryViewerViewModel"/> instance
@@ -36,28 +36,14 @@ public sealed class CompactMemoryViewerViewModel : ObservableRecipient
     /// </summary>
     public ObservableCollection<Brainf_ckMemoryCellChunk> Source { get; } = [];
 
-    private IReadOnlyMachineState? machineState;
-
     /// <summary>
     /// Gets or sets the <see cref="IReadOnlyMachineState"/> instance for the current view model
     /// </summary>
-    public IReadOnlyMachineState? MachineState
-    {
-        get => this.machineState;
-        set
-        {
-            if (SetProperty(ref this.machineState, value))
-            {
-                UpdateFromState(value);
-            }
-        }
-    }
+    [ObservableProperty]
+    private IReadOnlyMachineState? machineState;
 
-    /// <summary>
-    /// Updates the current model from the input machine state
-    /// </summary>
-    /// <param name="state">The input <see cref="IReadOnlyMachineState"/> instance to read data from</param>
-    public void UpdateFromState(IReadOnlyMachineState? state)
+    /// <inheritdoc/>
+    partial void OnMachineStateChanged(IReadOnlyMachineState? state)
     {
         if (state == null)
         {

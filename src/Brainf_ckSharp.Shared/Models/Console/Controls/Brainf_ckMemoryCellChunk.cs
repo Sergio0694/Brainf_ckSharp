@@ -8,7 +8,7 @@ namespace Brainf_ckSharp.Shared.Models.Console.Controls;
 /// <summary>
 /// A model that represents a group of 4 contiguous memory cells
 /// </summary>
-public sealed class Brainf_ckMemoryCellChunk : ObservableObject
+public sealed partial class Brainf_ckMemoryCellChunk : ObservableObject
 {
     /// <summary>
     /// Creates a new <see cref="Brainf_ckMemoryCellChunk"/> instance with the specified parameters
@@ -27,49 +27,29 @@ public sealed class Brainf_ckMemoryCellChunk : ObservableObject
         this.selectedIndex = state.Position;
     }
 
-    private Brainf_ckMemoryCell zero;
-
     /// <summary>
     /// Gets the first memory cell
     /// </summary>
-    public Brainf_ckMemoryCell Zero
-    {
-        get => this.zero;
-        set => SetProperty(ref this.zero, value);
-    }
-
-    private Brainf_ckMemoryCell one;
+    [ObservableProperty]
+    private Brainf_ckMemoryCell zero;
 
     /// <summary>
     /// Gets the second memory cell
     /// </summary>
-    public Brainf_ckMemoryCell One
-    {
-        get => this.one;
-        set => SetProperty(ref this.one, value);
-    }
-
-    private Brainf_ckMemoryCell two;
+    [ObservableProperty]
+    private Brainf_ckMemoryCell one;
 
     /// <summary>
     /// Gets the third memory cell
     /// </summary>
-    public Brainf_ckMemoryCell Two
-    {
-        get => this.two;
-        set => SetProperty(ref this.two, value);
-    }
-
-    private Brainf_ckMemoryCell three;
+    [ObservableProperty]
+    private Brainf_ckMemoryCell two;
 
     /// <summary>
     /// Gets the fourth memory cell
     /// </summary>
-    public Brainf_ckMemoryCell Three
-    {
-        get => this.three;
-        set => SetProperty(ref this.three, value);
-    }
+    [ObservableProperty]
+    private Brainf_ckMemoryCell three;
 
     /// <summary>
     /// Gets the offset of the first memory cell in the chunk with respect to the source memory state
@@ -79,10 +59,10 @@ public sealed class Brainf_ckMemoryCellChunk : ObservableObject
     /// <summary>
     /// Gets whether or not the current position is within the current chunk
     /// </summary>
-    public bool IsChunkSelected => this.zero.IsSelected ||
-                                   this.one.IsSelected ||
-                                   this.two.IsSelected ||
-                                   this.three.IsSelected;
+    public bool IsChunkSelected => Zero.IsSelected ||
+                                   One.IsSelected ||
+                                   Two.IsSelected ||
+                                   Three.IsSelected;
 
     private int selectedIndex;
 

@@ -18,6 +18,7 @@ using Brainf_ckSharp.Shared.Models.Console;
 using Brainf_ckSharp.Shared.Models.Console.Interfaces;
 using Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
 using CommunityToolkit.Diagnostics;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Nito.AsyncEx;
 
@@ -26,7 +27,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views;
 /// <summary>
 /// A view model for an interactive REPL console for Brainf*ck/PBrain
 /// </summary>
-public sealed class ConsoleViewModel : WorkspaceViewModelBase
+public sealed partial class ConsoleViewModel : WorkspaceViewModelBase
 {
     /// <summary>
     /// The <see cref="ISettingsService"/> instance currently in use
@@ -99,16 +100,12 @@ public sealed class ConsoleViewModel : WorkspaceViewModelBase
     /// </summary>
     public ObservableCollection<IConsoleEntry> Source { get; } = [new ConsoleCommand()];
 
-    private IReadOnlyMachineState machineState;
-
     /// <summary>
     /// Gets the <see cref="IReadOnlyMachineState"/> instance currently in use
     /// </summary>
-    public IReadOnlyMachineState MachineState
-    {
-        get => this.machineState;
-        private set => SetProperty(ref this.machineState, value, true);
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedRecipients]
+    private IReadOnlyMachineState machineState;
 
     /// <summary>
     /// Adds a new operator to the last command in the console
