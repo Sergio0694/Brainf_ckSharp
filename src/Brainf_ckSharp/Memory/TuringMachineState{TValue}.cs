@@ -223,7 +223,7 @@ internal sealed partial class TuringMachineState<TValue> : IMachineState<TValue>
     /// <inheritdoc/>
     ExecutionContext<TValue, TSize, TNumberHandler> IMachineState<TValue>.CreateExecutionContext<TSize, TNumberHandler>()
     {
-        return new(ref this.buffer!.DangerousGetReference(), this.size);
+        return new(ref this.buffer!.DangerousGetReference(), this.position);
     }
 
     /// <inheritdoc/>
