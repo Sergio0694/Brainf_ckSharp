@@ -32,16 +32,11 @@ public sealed partial class VirtualKeyboardViewModel : ObservableRecipient
         Messenger.Register<VirtualKeyboardViewModel, ShowPBrainButtonsSettingsChangedMessage>(this, (r, m) => r.IsPBrainModeEnabled = m.Value);
     }
 
-    private bool isPBrainModeEnabled;
-
     /// <summary>
     /// Gets whether or not the PBrain mode is currently enabled
     /// </summary>
-    public bool IsPBrainModeEnabled
-    {
-        get => this.isPBrainModeEnabled;
-        private set => SetProperty(ref this.isPBrainModeEnabled, value);
-    }
+    [ObservableProperty]
+    private bool isPBrainModeEnabled;
 
     /// <summary>
     /// Signals the insertion of a new operator

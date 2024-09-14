@@ -49,27 +49,17 @@ public sealed partial class AboutSubPageViewModel : ObservableObject
         => "RELEASE";
 #endif
 
-    private static IEnumerable<User>? developers;
-
     /// <summary>
     /// Gets the list of lead developers to the Legere repository
     /// </summary>
-    public IEnumerable<User>? Developers
-    {
-        get => developers;
-        private set => SetProperty(ref developers, value);
-    }
-
-    private static IEnumerable<string>? featuredLinks;
+    [ObservableProperty]
+    private static IEnumerable<User>? developers;
 
     /// <summary>
     /// Gets the list of featured links to use
     /// </summary>
-    public IEnumerable<string>? FeaturedLinks
-    {
-        get => featuredLinks;
-        private set => SetProperty(ref featuredLinks, value);
-    }
+    [ObservableProperty]
+    private static IEnumerable<string>? featuredLinks;
 
     /// <summary>
     /// Loads all the necessary data for the view model

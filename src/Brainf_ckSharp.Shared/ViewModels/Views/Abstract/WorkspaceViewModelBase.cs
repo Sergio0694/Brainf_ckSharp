@@ -12,7 +12,7 @@ namespace Brainf_ckSharp.Shared.ViewModels.Views.Abstract;
 /// <summary>
 /// An <see cref="ObservableRecipient"/> implementation for workspaces
 /// </summary>
-public abstract class WorkspaceViewModelBase : ObservableRecipient
+public abstract partial class WorkspaceViewModelBase : ObservableRecipient
 {
     /// <summary>
     /// Creates a new <see cref="WorkspaceViewModelBase"/> instance
@@ -64,27 +64,17 @@ public abstract class WorkspaceViewModelBase : ObservableRecipient
         }
     }
 
-    private bool isUnsavedEditPending;
-
     /// <summary>
     /// Gets whether or not there are pending unsaved changes to the current file
     /// </summary>
-    public bool IsUnsavedEditPending
-    {
-        get => this.isUnsavedEditPending;
-        private set => SetProperty(ref this.isUnsavedEditPending, value);
-    }
-
-    private SyntaxValidationResult validationResult;
+    [ObservableProperty]
+    private bool isUnsavedEditPending;
 
     /// <summary>
     /// Gets the current <see cref="SyntaxValidationResult"/> value for <see cref="Text"/>
     /// </summary>
-    public SyntaxValidationResult ValidationResult
-    {
-        get => this.validationResult;
-        set => SetProperty(ref this.validationResult, value);
-    }
+    [ObservableProperty]
+    private SyntaxValidationResult validationResult;
 
     private int row = 1;
 
