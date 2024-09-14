@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using Brainf_ckSharp.Configurations;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Unit.Shared;
@@ -28,14 +29,14 @@ public partial class DebugTest
     // Executes a script in DEBUG mode
     private static InterpreterResult Run(Script script)
     {
-        Models.Base.Option<InterpreterSession> session = Brainf_ckInterpreter
-            .CreateDebugConfiguration()
-            .WithSource(script.Source)
-            .WithStdin(script.Stdin)
-            .WithMemorySize(script.MemorySize)
-            .WithDataType(script.DataType)
-            .WithExecutionOptions(script.ExecutionOptions)
-            .TryRun();
+        Models.Base.Option<InterpreterSession> session = Brainf_ckInterpreter.TryRun(new DebugConfiguration
+        {
+            Source = script.Source.AsMemory(),
+            Stdin = script.Stdin.AsMemory(),
+            MemorySize = script.MemorySize,
+            DataType = script.DataType,
+            ExecutionOptions = script.ExecutionOptions
+        });
 
         Assert.IsNotNull(session.Value);
         Assert.IsTrue(session.ValidationResult.IsSuccess);
@@ -57,14 +58,14 @@ public partial class ReleaseTest
     // Executes a script in RELEASE mode
     private static InterpreterResult Run(Script script)
     {
-        Models.Base.Option<InterpreterResult> result = Brainf_ckInterpreter
-            .CreateReleaseConfiguration()
-            .WithSource(script.Source)
-            .WithStdin(script.Stdin)
-            .WithMemorySize(script.MemorySize)
-            .WithDataType(script.DataType)
-            .WithExecutionOptions(script.ExecutionOptions)
-            .TryRun();
+        Models.Base.Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+        {
+            Source = script.Source.AsMemory(),
+            Stdin = script.Stdin.AsMemory(),
+            MemorySize = script.MemorySize,
+            DataType = script.DataType,
+            ExecutionOptions = script.ExecutionOptions
+        });
 
         Assert.IsNotNull(result.Value);
         Assert.IsTrue(result.ValidationResult.IsSuccess);

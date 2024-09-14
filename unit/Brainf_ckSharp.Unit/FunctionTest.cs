@@ -1,4 +1,6 @@
-﻿using Brainf_ckSharp.Enums;
+using System;
+using Brainf_ckSharp.Configurations;
+using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,11 +15,11 @@ public class FunctionTest
     {
         const string script = "+(,[>+<-]>.)>+:";
 
-        Option<InterpreterResult> result = Brainf_ckInterpreter
-            .CreateReleaseConfiguration()
-            .WithSource(script)
-            .WithStdin("a")
-            .TryRun();
+        Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+        {
+            Source = script.AsMemory(),
+            Stdin = "a".AsMemory()
+        });
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.Value);
@@ -44,10 +46,10 @@ public class FunctionTest
     {
         const string script = "(+++):>:";
 
-        Option<InterpreterResult> result = Brainf_ckInterpreter
-            .CreateReleaseConfiguration()
-            .WithSource(script)
-            .TryRun();
+        Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+        {
+            Source = script.AsMemory()
+        });
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.Value);
@@ -66,11 +68,11 @@ public class FunctionTest
     {
         const string script = ">,<(>[>+<-<:]):>[<<+>>-]<<.[-]";
 
-        Option<InterpreterResult> result = Brainf_ckInterpreter
-            .CreateReleaseConfiguration()
-            .WithSource(script)
-            .WithStdin("%")
-            .TryRun();
+        Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+        {
+            Source = script.AsMemory(),
+            Stdin = "%".AsMemory()
+        });
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.Value);

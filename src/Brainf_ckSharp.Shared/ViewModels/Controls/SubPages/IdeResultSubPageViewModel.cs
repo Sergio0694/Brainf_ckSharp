@@ -2,6 +2,7 @@ using System;
 using System.Buffers;
 using System.Threading;
 using System.Threading.Tasks;
+using Brainf_ckSharp.Configurations;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Services;
@@ -117,16 +118,15 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
             {
                 InterpreterResult result = await Task.Run(() =>
                 {
-                    return Brainf_ckInterpreter
-                        .CreateReleaseConfiguration()
-                        .WithSource(Script!)
-                        .WithStdin(stdin)
-                        .WithMemorySize(memorySize)
-                        .WithDataType(dataType)
-                        .WithExecutionOptions(executionOptions)
-                        .WithExecutionToken(this.executionTokenSource.Token)
-                        .TryRun()
-                        .Value!;
+                    return Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+                    {
+                        Source = Script.AsMemory(),
+                        Stdin = stdin.AsMemory(),
+                        MemorySize = memorySize,
+                        DataType = dataType,
+                        ExecutionOptions = executionOptions,
+                        ExecutionToken = this.executionTokenSource.Token
+                    }).Value!;
                 });
 
                 LoadResults(result);
@@ -138,18 +138,17 @@ public sealed partial class IdeResultSubPageViewModel : ObservableRecipient
                 // Run in DEBUG mode
                 this.debugSession = await Task.Run(() =>
                 {
-                    InterpreterSession session = Brainf_ckInterpreter
-                        .CreateDebugConfiguration()
-                        .WithSource(Script!)
-                        .WithStdin(stdin)
-                        .WithBreakpoints(Breakpoints.Memory)
-                        .WithMemorySize(memorySize)
-                        .WithDataType(dataType)
-                        .WithExecutionOptions(executionOptions)
-                        .WithExecutionToken(this.executionTokenSource.Token)
-                        .WithDebugToken(this.debugTokenSource.Token)
-                        .TryRun()
-                        .Value!;
+                    InterpreterSession session = Brainf_ckInterpreter.TryRun(new DebugConfiguration
+                    {
+                        Source = Script.AsMemory(),
+                        Stdin = stdin.AsMemory(),
+                        Breakpoints = Breakpoints.Memory,
+                        MemorySize = memorySize,
+                        DataType = dataType,
+                        ExecutionOptions = executionOptions,
+                        ExecutionToken = this.executionTokenSource.Token,
+                        DebugToken = this.debugTokenSource.Token
+                    }).Value!;
 
                     _ = session.MoveNext();
 

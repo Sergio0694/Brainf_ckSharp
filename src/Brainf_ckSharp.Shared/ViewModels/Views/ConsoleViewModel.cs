@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Brainf_ckSharp.Configurations;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Memory.Tools;
@@ -265,14 +266,14 @@ public sealed partial class ConsoleViewModel : WorkspaceViewModelBase
 
             Option<InterpreterResult> result = await Task.Run(() =>
             {
-                return Brainf_ckInterpreter
-                    .CreateReleaseConfiguration()
-                    .WithSource(command)
-                    .WithStdin(stdin)
-                    .WithInitialState(MachineState)
-                    .WithExecutionOptions(executionOptions)
-                    .WithExecutionToken(new CancellationTokenSource(TimeSpan.FromSeconds(2)).Token)
-                    .TryRun();
+                return Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+                {
+                    Source = command.AsMemory(),
+                    Stdin = stdin.AsMemory(),
+                    InitialState = MachineState,
+                    ExecutionOptions = executionOptions,
+                    ExecutionToken = new CancellationTokenSource(TimeSpan.FromSeconds(2)).Token
+                });
             });
 
             if (!result.ValidationResult.IsSuccess)
