@@ -1,11 +1,10 @@
-using System.Runtime.CompilerServices;
 using Brainf_ckSharp.Configurations;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Memory;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Models;
-using CommunityToolkit.Diagnostics;
 using Brainf_ckSharp.Opcodes;
+using CommunityToolkit.Diagnostics;
 using CommunityToolkit.HighPerformance.Buffers;
 
 namespace Brainf_ckSharp;
@@ -20,7 +19,6 @@ public static partial class Brainf_ckInterpreter
     /// </summary>
     /// <param name="configuration">The configuration to run</param>
     /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-    [MethodImpl(MethodImplOptions.NoInlining)]
     public static Option<InterpreterSession> TryRun(in DebugConfiguration configuration)
     {
         if (configuration.InitialState is TuringMachineState initialState)
@@ -54,7 +52,6 @@ public static partial class Brainf_ckInterpreter
     /// </summary>
     /// <param name="configuration">The configuration to run</param>
     /// <returns>An <see cref="Option{T}"/> of <see cref="InterpreterResult"/> instance with the results of the execution</returns>
-    [MethodImpl(MethodImplOptions.NoInlining)]
     public static Option<InterpreterResult> TryRun(in ReleaseConfiguration configuration)
     {
         using MemoryOwner<Brainf_ckOperation>? operations = Brainf_ckParser.TryParse<Brainf_ckOperation>(
