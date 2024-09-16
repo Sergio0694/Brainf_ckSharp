@@ -1,6 +1,6 @@
-﻿using Brainf_ckSharp.Shared.Models;
+using Brainf_ckSharp.Shared.Models;
 using CommunityToolkit.Diagnostics;
-using Microsoft.Toolkit.Uwp;
+using CommunityToolkit.WinUI;
 
 namespace Brainf_ckSharp.Uwp.Converters.SubPages;
 
@@ -10,8 +10,8 @@ namespace Brainf_ckSharp.Uwp.Converters.SubPages;
 public static class UnicodeIntervalConverter
 {
     // Localized resources
-    private static readonly string ControlCharacters = "UnicodeInterval/ControlCharacters".GetLocalized();
-    private static readonly string NonVisible = "UnicodeInterval/NonVisible".GetLocalized();
+    private static readonly string ControlCharacters = "UnicodeInterval/ControlCharacters".GetLocalized()!;
+    private static readonly string NonVisible = "UnicodeInterval/NonVisible".GetLocalized()!;
 
     /// <summary>
     /// Converts a <see cref="UnicodeInterval"/> instance into its description representation

@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using Brainf_ckSharp.Enums;
 using CommunityToolkit.Diagnostics;
-using Microsoft.Toolkit.Uwp;
+using CommunityToolkit.WinUI;
 
 namespace Brainf_ckSharp.Uwp.Converters.Console;
 
@@ -38,7 +38,7 @@ public static class ExitCodeConverter
         {
             if (code.HasFlag(entry))
             {
-                return $"{nameof(ExitCode)}/{entry}".GetLocalized();
+                return $"{nameof(ExitCode)}/{entry}".GetLocalized()!;
             }
         }
 

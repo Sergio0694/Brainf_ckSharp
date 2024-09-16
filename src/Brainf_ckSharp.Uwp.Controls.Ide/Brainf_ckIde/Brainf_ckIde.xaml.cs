@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Input;
 using Brainf_ckSharp.Constants;
 using Brainf_ckSharp.Uwp.Controls.Ide.Helpers;
 using CommunityToolkit.HighPerformance;
-using Microsoft.Toolkit.Uwp.UI.Animations;
+using CommunityToolkit.WinUI.Animations;
 
 namespace Brainf_ckSharp.Uwp.Controls.Ide;
 
@@ -33,7 +33,7 @@ public sealed partial class Brainf_ckIde : UserControl
     private void Brainf_ckIde_Loaded(object sender, RoutedEventArgs e)
     {
         _ = this.CodeEditBox.ContentScroller!.StartExpressionAnimation(this.LineBlock, Axis.Y, VisualProperty.Offset);
-        _ = this.CodeEditBox.ContentScroller.StartExpressionAnimation(this.IdeOverlaysCanvas, Axis.Y, VisualProperty.Offset);
+        _ = this.CodeEditBox.ContentScroller!.StartExpressionAnimation(this.IdeOverlaysCanvas, Axis.Y, VisualProperty.Offset);
 
         this.CodeEditBox.ContentElement!.SizeChanged += Brainf_ckIde_SizeChanged;
 
