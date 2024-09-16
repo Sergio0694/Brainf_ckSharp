@@ -9,34 +9,7 @@
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.3.1" />
     <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.3.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Configurations\Extensions\ConfigurationExtensions.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ConfigurationExtensions.cs</LastGenOutput>
-    </None>
-    <None Update="Configurations\Configuration.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Configuration.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Configurations\Extensions\ConfigurationExtensions.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ConfigurationExtensions.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Configurations\Configuration.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Configuration.tt</DependentUpon>
-    </Compile>
+    <PackageReference Include="PolySharp" Version="1.14.1" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>

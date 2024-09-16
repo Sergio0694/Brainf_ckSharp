@@ -1,60 +1,47 @@
-<#@ template language="C#"
-#><#@ assembly name="System.Core" #>
 using System;
-using System.Runtime.InteropServices;
 using System.Threading;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
 
 namespace Brainf_ckSharp.Configurations;
 
-<#
-var names = new[] {"Debug", "Release"};
-foreach (var name in names)
-{
-    if (name != names[0]) WriteLine("");
-#>
 /// <summary>
-/// A model for a <#=name.ToUpper()#> configuration being built
+/// A model for a RELEASE configuration being built
 /// </summary>
-[StructLayout(LayoutKind.Auto)]
-public readonly ref partial struct <#=name#>Configuration
+public readonly ref partial struct ReleaseConfiguration
 {
     /// <summary>
     /// The source code to parse and execute
     /// </summary>
-    public readonly ReadOnlyMemory<char>? Source;
+    public required ReadOnlyMemory<char> Source { get; init; }
 
     /// <summary>
     /// The (optional) stdin buffer to use to run the script
     /// </summary>
-    public readonly ReadOnlyMemory<char>? Stdin;
+    public ReadOnlyMemory<char> Stdin { get; init; }
 
     /// <summary>
     /// The (optional) initial machine state to use to execute the script
     /// </summary>
-    public readonly IReadOnlyMachineState? InitialState;
+    public IReadOnlyMachineState? InitialState { get; init; }
 
     /// <summary>
     /// The (optional) memory size for the machine state to use
     /// </summary>
-    public readonly int? MemorySize;
+    public int? MemorySize { get; init; }
 
     /// <summary>
     /// The (optional) data type to use to run the script
     /// </summary>
-    public readonly DataType? DataType;
+    public DataType? DataType { get; init; }
 
     /// <summary>
     /// The setting to control the execution options to run the script
     /// </summary>
-    public readonly ExecutionOptions ExecutionOptions;
+    public ExecutionOptions ExecutionOptions { get; init; }
 
     /// <summary>
     /// The token to cancel a long running execution
     /// </summary>
-    public readonly CancellationToken ExecutionToken;
+    public CancellationToken ExecutionToken { get; init; }
 }
-<#
-}
-#>

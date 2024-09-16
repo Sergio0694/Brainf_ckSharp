@@ -4,6 +4,7 @@ using System.Threading;
 using Brainf_ckSharp.Cli;
 using Brainf_ckSharp;
 using Brainf_ckSharp.Cli.Helpers;
+using Brainf_ckSharp.Configurations;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
@@ -51,15 +52,15 @@ parserResult.WithParsed(options =>
         : new CancellationTokenSource(TimeSpan.FromSeconds(options.Timeout));
 
     // Execute the code
-    Option<InterpreterResult> interpreterResult = Brainf_ckInterpreter
-        .CreateReleaseConfiguration()
-        .WithSource(source)
-        .WithStdin(stdin)
-        .WithMemorySize(options.MemorySize)
-        .WithDataType(options.DataType)
-        .WithExecutionOptions(options.ExecutionOptions)
-        .WithExecutionToken(cts.Token)
-        .TryRun();
+    Option<InterpreterResult> interpreterResult = Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+    {
+        Source = source.AsMemory(),
+        Stdin = stdin.AsMemory(),
+        MemorySize = options.MemorySize,
+        DataType = options.DataType,
+        ExecutionOptions = options.ExecutionOptions,
+        ExecutionToken = cts.Token
+    });
 
     // Display the execution result
     if (interpreterResult.Value is { })

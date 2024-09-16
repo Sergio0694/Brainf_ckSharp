@@ -4,6 +4,7 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Jobs;
+using Brainf_ckSharp.Configurations;
 using Brainf_ckSharp.Models;
 using Brainf_ckSharp.Models.Base;
 using Brainf_ckSharp.Unit.Shared;
@@ -54,14 +55,14 @@ public abstract class Brainf_ckBenchmarkBase
     [Benchmark]
     public string RunScript()
     {
-        Option<InterpreterResult> result = Brainf_ckInterpreter
-            .CreateReleaseConfiguration()
-            .WithSource(this.script!.Source)
-            .WithStdin(this.script.Stdin)
-            .WithMemorySize(this.script.MemorySize)
-            .WithDataType(this.script.DataType)
-            .WithExecutionOptions(this.script.ExecutionOptions)
-            .TryRun();
+        Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+        {
+            Source = this.script!.Source.AsMemory(),
+            Stdin = this.script.Stdin.AsMemory(),
+            MemorySize = this.script.MemorySize,
+            DataType = this.script.DataType,
+            ExecutionOptions = this.script.ExecutionOptions
+        });
 
         result.Value!.MachineState.Dispose();
 

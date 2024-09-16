@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using Brainf_ckSharp.Configurations;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
@@ -45,7 +46,7 @@ public sealed partial class StatusBarViewModel : ObservableRecipient
     /// <summary>
     /// The last stdin that was used
     /// </summary>
-    private string stdin = string.Empty;
+    private ReadOnlyMemory<char> stdin;
 
     /// <summary>
     /// The last memory size setting that was used
@@ -140,14 +141,14 @@ public sealed partial class StatusBarViewModel : ObservableRecipient
         // Before actually executing the code, also check with the previously
         // stored arguments to be able to skip the execution if there were no changes.
         ReadOnlyMemory<char> source = viewModel.Text;
-        string stdin = Messenger.Send(new StdinRequestMessage(true));
+        ReadOnlyMemory<char> stdin = Messenger.Send(new StdinRequestMessage(true)).Response.AsMemory();
         int memorySize = this.settingsService.GetValue<int>(SettingsKeys.MemorySize);
         DataType dataType = this.settingsService.GetValue<DataType>(SettingsKeys.DataType);
         ExecutionOptions executionOptions = this.settingsService.GetValue<ExecutionOptions>(SettingsKeys.ExecutionOptions);
         IReadOnlyMachineState? machineState = (viewModel as ConsoleViewModel)?.MachineState;
 
         if (source.Span.SequenceEqual(this.source.Span) &&
-            stdin.Equals(this.stdin) &&
+            stdin.Span.SequenceEqual(this.stdin.Span) &&
             memorySize == this.memorySize &&
             dataType == this.dataType &&
             executionOptions == this.executionOptions &&
@@ -166,15 +167,15 @@ public sealed partial class StatusBarViewModel : ObservableRecipient
 
         CancellationTokenSource tokenSource = new(TimeSpan.FromSeconds(2));
 
-        Option<InterpreterResult> result = Brainf_ckInterpreter
-            .CreateReleaseConfiguration()
-            .WithSource(WorkspaceViewModel.Text)
-            .WithStdin(stdin)
-            .WithMemorySize(memorySize)
-            .WithDataType(dataType)
-            .WithExecutionOptions(executionOptions)
-            .WithExecutionToken(tokenSource.Token)
-            .TryRun();
+        Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+        {
+            Source = WorkspaceViewModel.Text,
+            Stdin = stdin,
+            MemorySize = memorySize,
+            DataType = dataType,
+            ExecutionOptions = executionOptions,
+            ExecutionToken = tokenSource.Token
+        });
 
         // Update the property from the original synchronization context
         this.context.Post(_ => BackgroundExecutionResult = result, null);

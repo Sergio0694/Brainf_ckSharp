@@ -1,3 +1,5 @@
+using System;
+using Brainf_ckSharp.Configurations;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Memory.Interfaces;
 using Brainf_ckSharp.Models;
@@ -14,10 +16,10 @@ public class BasicTest
     {
         const string script = "+++++";
 
-        Option<InterpreterResult> result = Brainf_ckInterpreter
-            .CreateReleaseConfiguration()
-            .WithSource(script)
-            .TryRun();
+        Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+        {
+            Source = script.AsMemory()
+        });
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.Value);
@@ -31,10 +33,10 @@ public class BasicTest
     {
         const string script = "+++++---";
 
-        Option<InterpreterResult> result = Brainf_ckInterpreter
-            .CreateReleaseConfiguration()
-            .WithSource(script)
-            .TryRun();
+        Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+        {
+            Source = script.AsMemory()
+        });
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.Value);
@@ -48,11 +50,11 @@ public class BasicTest
     {
         const string script = ",++.";
 
-        Option<InterpreterResult> result = Brainf_ckInterpreter
-            .CreateReleaseConfiguration()
-            .WithSource(script)
-            .WithStdin("0")
-            .TryRun();
+        Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+        {
+            Source = script.AsMemory(),
+            Stdin = "0".AsMemory()
+        });
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.Value);
@@ -66,10 +68,10 @@ public class BasicTest
     {
         const string script = "+++++[>++<-]>";
 
-        Option<InterpreterResult> result = Brainf_ckInterpreter
-            .CreateReleaseConfiguration()
-            .WithSource(script)
-            .TryRun();
+        Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+        {
+            Source = script.AsMemory()
+        });
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.Value);
@@ -83,10 +85,10 @@ public class BasicTest
     {
         const string script = "[]";
 
-        Option<InterpreterResult> result = Brainf_ckInterpreter
-            .CreateReleaseConfiguration()
-            .WithSource(script)
-            .TryRun();
+        Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+        {
+            Source = script.AsMemory()
+        });
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.Value);
@@ -100,11 +102,11 @@ public class BasicTest
     {
         const string script = ",[-]";
 
-        Option<InterpreterResult> result = Brainf_ckInterpreter
-            .CreateReleaseConfiguration()
-            .WithSource(script)
-            .WithStdin("0")
-            .TryRun();
+        Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+        {
+            Source = script.AsMemory(),
+            Stdin = "0".AsMemory()
+        });
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.Value);
@@ -118,11 +120,11 @@ public class BasicTest
     {
         const string script = ",[>+<-]>.";
 
-        Option<InterpreterResult> result = Brainf_ckInterpreter
-            .CreateReleaseConfiguration()
-            .WithSource(script)
-            .WithStdin("0")
-            .TryRun();
+        Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+        {
+            Source = script.AsMemory(),
+            Stdin = "0".AsMemory()
+        });
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.Value);
@@ -136,11 +138,11 @@ public class BasicTest
     {
         const string script = "++[>++[>+<-]<-]>,[>+<-]>.";
 
-        Option<InterpreterResult> result = Brainf_ckInterpreter
-            .CreateReleaseConfiguration()
-            .WithSource(script)
-            .WithStdin("0")
-            .TryRun();
+        Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+        {
+            Source = script.AsMemory(),
+            Stdin = "0".AsMemory()
+        });
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.Value);
@@ -154,11 +156,11 @@ public class BasicTest
     {
         const string script = ",>,+[<.+>-]";
 
-        Option<InterpreterResult> result = Brainf_ckInterpreter
-            .CreateReleaseConfiguration()
-            .WithSource(script)
-            .WithStdin("A9")
-            .TryRun();
+        Option<InterpreterResult> result = Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+        {
+            Source = script.AsMemory(),
+            Stdin = "A9".AsMemory()
+        });
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.Value);
@@ -171,11 +173,11 @@ public class BasicTest
     {
         const string script = ",>+++>>+";
 
-        IReadOnlyMachineState machineState = Brainf_ckInterpreter
-            .CreateReleaseConfiguration()
-            .WithSource(script)
-            .WithStdin("a")
-            .TryRun().Value!.MachineState;
+        IReadOnlyMachineState machineState = Brainf_ckInterpreter.TryRun(new ReleaseConfiguration
+        {
+            Source = script.AsMemory(),
+            Stdin = "a".AsMemory()
+        }).Value!.MachineState;
 
         Assert.AreEqual(machineState[0].Index, 0);
         Assert.AreEqual(machineState[0].Value, 'a');

@@ -1,5 +1,7 @@
+using System;
 using System.Linq;
 using System.Threading;
+using Brainf_ckSharp.Configurations;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,11 +16,10 @@ public class ExceptionTest
     {
         const string script = "+++>>-++";
 
-        using InterpreterSession? result = Brainf_ckInterpreter
-            .CreateDebugConfiguration()
-            .WithSource(script)
-            .TryRun()
-            .Value;
+        using InterpreterSession? result = Brainf_ckInterpreter.TryRun(new DebugConfiguration
+        {
+            Source = script.AsMemory()
+        }).Value;
 
         Assert.IsNotNull(result);
 
@@ -40,12 +41,11 @@ public class ExceptionTest
 
         const string script = "+[+-]";
 
-        using InterpreterSession? result = Brainf_ckInterpreter
-            .CreateDebugConfiguration()
-            .WithSource(script)
-            .WithExecutionToken(cts.Token)
-            .TryRun()
-            .Value;
+        using InterpreterSession? result = Brainf_ckInterpreter.TryRun(new DebugConfiguration
+        {
+            Source = script.AsMemory(),
+            ExecutionToken = cts.Token
+        }).Value;
 
         Assert.IsNotNull(result);
 
@@ -63,11 +63,10 @@ public class ExceptionTest
     {
         const string script = "(:):";
 
-        using InterpreterSession? result = Brainf_ckInterpreter
-            .CreateDebugConfiguration()
-            .WithSource(script)
-            .TryRun()
-            .Value;
+        using InterpreterSession? result = Brainf_ckInterpreter.TryRun(new DebugConfiguration
+        {
+            Source = script.AsMemory()
+        }).Value;
 
         Assert.IsNotNull(result);
 
@@ -87,11 +86,10 @@ public class ExceptionTest
     {
         const string script = ",";
 
-        using InterpreterSession? result = Brainf_ckInterpreter
-            .CreateDebugConfiguration()
-            .WithSource(script)
-            .TryRun()
-            .Value;
+        using InterpreterSession? result = Brainf_ckInterpreter.TryRun(new DebugConfiguration
+        {
+            Source = script.AsMemory()
+        }).Value;
 
         Assert.IsNotNull(result);
 
@@ -110,12 +108,11 @@ public class ExceptionTest
     {
         const string script = ",[.]";
 
-        using InterpreterSession? result = Brainf_ckInterpreter
-            .CreateDebugConfiguration()
-            .WithSource(script)
-            .WithStdin("a")
-            .TryRun()
-            .Value;
+        using InterpreterSession? result = Brainf_ckInterpreter.TryRun(new DebugConfiguration
+        {
+            Source = script.AsMemory(),
+            Stdin = "a".AsMemory()
+        }).Value;
 
         Assert.IsNotNull(result);
 
