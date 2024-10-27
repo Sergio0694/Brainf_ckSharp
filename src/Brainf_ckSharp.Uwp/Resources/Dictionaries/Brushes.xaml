@@ -5,7 +5,7 @@
 
     <!--Shell header background brush-->
     <media:AcrylicBrush
-        x:Key="ShellHeaderBackgroundBrush"
+        x:Key="ShellCommonBackgroundBrush"
         BackgroundSource="Backdrop"
         BlurAmount="8"
         TintColor="#FF1E1E1E"

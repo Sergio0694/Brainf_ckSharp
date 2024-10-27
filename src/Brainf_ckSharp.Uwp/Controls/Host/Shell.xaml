@@ -27,6 +27,23 @@
             doesn't support static functions being used for two way binding yet.
             Not using a converter results in the convert back value being discarded.-->
         <converters:PivotSelectionConverter x:Key="PivotSelectionConverter"/>
+
+        <!--Custom style for the command bar, restoring a dark background for the overflow area-->
+        <Style
+            x:Key="DefaultCommandBarWithDarkOverflowPresenterStyle"
+            BasedOn="{StaticResource DefaultCommandBarStyle}"
+            TargetType="CommandBar">
+            <Setter Property="CommandBarOverflowPresenterStyle" Value="{ThemeResource DarkCommandBarOverflowPresenterStyle}" />
+        </Style>
+
+        <!--Custom command bar overflow style, with a dark in-app acrylic background-->
+        <Style
+            x:Key="DarkCommandBarOverflowPresenterStyle"
+            BasedOn="{StaticResource DefaultCommandBarOverflowPresenterStyle}"
+            TargetType="CommandBarOverflowPresenter">
+            <Setter Property="Background" Value="{ThemeResource ShellCommonBackgroundBrush}" />
+            <Setter Property="BorderBrush" Value="{ThemeResource SurfaceStrokeColorFlyoutBrush}" />
+        </Style>
     </UserControl.Resources>
 
     <!--Main app UI-->
@@ -111,7 +128,8 @@
         <CommandBar
             Grid.Row="2"
             IsDynamicOverflowEnabled="False"
-            Background="{StaticResource CommandBarBackgroundBrush}">
+            Background="{StaticResource CommandBarBackgroundBrush}"
+            Style="{StaticResource DefaultCommandBarWithDarkOverflowPresenterStyle}">
             <CommandBar.Resources>
                 <SolidColorBrush x:Key="CommandBarBackgroundOpen" Color="{StaticResource CommandBarBackgroundColor}"/>
             </CommandBar.Resources>
