@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +7,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 using Brainf_ckSharp.Models;
-using Microsoft.Toolkit.Uwp;
+using CommunityToolkit.WinUI;
 
 #nullable enable
 
@@ -48,8 +48,8 @@ public static partial class Brainf_ckInlineFormatterHelper
         new(Array.Empty<FunctionDefinition>(), OnStackTracePropertyChanged));
 
     // Localized resources
-    private static readonly string At = "StackTrace/At".GetLocalized();
-    private static readonly string Frames = "StackTrace/Frames".GetLocalized();
+    private static readonly string At = "StackTrace/At".GetLocalized()!;
+    private static readonly string Frames = "StackTrace/Frames".GetLocalized()!;
 
     /// <summary>
     /// Updates the UI when <see cref="StackTraceProperty"/> changes
@@ -70,6 +70,7 @@ public static partial class Brainf_ckInlineFormatterHelper
         }
 
         int i = 0;
+
         foreach ((string Item, int Occurrences, int Length) entry in CompressStackTrace(value))
         {
             if (i++ > 0)
@@ -84,11 +85,14 @@ public static partial class Brainf_ckInlineFormatterHelper
                 Foreground = new SolidColorBrush(Colors.DimGray),
                 FontSize = @this.FontSize - 1
             });
+
             @this.Inlines.Add(new LineBreak());
 
             // Add the formatted call line
             Span line = new();
+
             SetSource(line, entry.Item);
+
             @this.Inlines.Add(line);
         }
     }
@@ -101,12 +105,14 @@ public static partial class Brainf_ckInlineFormatterHelper
     {
         int i = 0;
         List<(int Length, int Occurrences)> info = [];
+
         while (i < frames.Count)
         {
             for (int step = 1; step < 5 && i + (step * 2) - 1 < frames.Count; step++)
             {
                 // Find a valid sub-pattern of a given length
                 bool valid = true;
+
                 for (int j = 0; j < step; j++)
                 {
                     if (!frames[i + j].Equals(frames[i + step + j]))
@@ -123,9 +129,11 @@ public static partial class Brainf_ckInlineFormatterHelper
 
                 // Check of many times the pattern repeats
                 int occurrences = 2;
+
                 for (int j = i + (step * 2); j + step - 1 < frames.Count; j += step)
                 {
                     valid = true;
+
                     for (int k = 0; k < step; k++)
                     {
                         if (!frames[i + k].Equals(frames[j + k]))
@@ -155,22 +163,26 @@ public static partial class Brainf_ckInlineFormatterHelper
             {
                 (int Length, int Occurrences) best = info.OrderByDescending(item => item.Length * item.Occurrences).ThenBy(item => item.Length).First();
                 StringBuilder builder = new();
+
                 for (int j = 0; j < best.Length; j++)
                 {
-                    builder.Append(frames[i + j]);
+                    _ = builder.Append(frames[i + j]);
                 }
 
                 string call = builder.ToString();
+
                 if (call.Contains(':'))
                 {
                     // Only aggregate recursive calls
                     yield return (call, best.Occurrences, best.Length);
+
                     i += best.Length * best.Occurrences;
                 }
                 else
                 {
                     // The repeated loops are just user code
                     yield return (frames[i], 1, 1);
+
                     i += 1;
                 }
             }

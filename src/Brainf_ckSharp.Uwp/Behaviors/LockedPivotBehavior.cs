@@ -1,5 +1,5 @@
-﻿using CommunityToolkit.Diagnostics;
-using Microsoft.Toolkit.Uwp.UI;
+using CommunityToolkit.Diagnostics;
+using CommunityToolkit.WinUI;
 using Microsoft.Xaml.Interactivity;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -17,7 +17,7 @@ public sealed class LockedPivotBehavior : Behavior<Pivot>
     /// <summary>
     /// The root <see cref="ScrollViewer"/> for the associated <see cref="Pivot"/>.
     /// </summary>
-    private ScrollViewer? _scrollViewer;
+    private ScrollViewer? scrollViewer;
 
     /// <inheritdoc/>
     protected override void OnAttached()
@@ -34,13 +34,13 @@ public sealed class LockedPivotBehavior : Behavior<Pivot>
 
         AssociatedObject.Loaded -= AssociatedObject_Loaded;
 
-        if (this._scrollViewer is not null)
+        if (this.scrollViewer is not null)
         {
-            this._scrollViewer!.PointerEntered -= Scroller_PointerIn;
-            this._scrollViewer.PointerMoved -= Scroller_PointerIn;
-            this._scrollViewer.PointerExited -= Scroller_PointerOut;
-            this._scrollViewer.PointerReleased -= Scroller_PointerOut;
-            this._scrollViewer.PointerCaptureLost -= Scroller_PointerOut;
+            this.scrollViewer!.PointerEntered -= Scroller_PointerIn;
+            this.scrollViewer.PointerMoved -= Scroller_PointerIn;
+            this.scrollViewer.PointerExited -= Scroller_PointerOut;
+            this.scrollViewer.PointerReleased -= Scroller_PointerOut;
+            this.scrollViewer.PointerCaptureLost -= Scroller_PointerOut;
         }
     }
 
@@ -54,14 +54,14 @@ public sealed class LockedPivotBehavior : Behavior<Pivot>
             return;
         }
 
-        this._scrollViewer = scroller;
+        this.scrollViewer = scroller;
 
         // Add the handlers to disable the swipe gestures
-        this._scrollViewer.PointerEntered += Scroller_PointerIn;
-        this._scrollViewer.PointerMoved += Scroller_PointerIn;
-        this._scrollViewer.PointerExited += Scroller_PointerOut;
-        this._scrollViewer.PointerReleased += Scroller_PointerOut;
-        this._scrollViewer.PointerCaptureLost += Scroller_PointerOut;
+        this.scrollViewer.PointerEntered += Scroller_PointerIn;
+        this.scrollViewer.PointerMoved += Scroller_PointerIn;
+        this.scrollViewer.PointerExited += Scroller_PointerOut;
+        this.scrollViewer.PointerReleased += Scroller_PointerOut;
+        this.scrollViewer.PointerCaptureLost += Scroller_PointerOut;
     }
 
     // Disables the swipe gesture for the keyboard pivot (swiping that pivot causes the app to crash)

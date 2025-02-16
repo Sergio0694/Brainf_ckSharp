@@ -1,7 +1,7 @@
-﻿using Windows.ApplicationModel.Resources;
+using Windows.ApplicationModel.Resources;
 using Brainf_ckSharp.Enums;
 using Brainf_ckSharp.Models;
-using Microsoft.Toolkit.Uwp;
+using CommunityToolkit.WinUI;
 
 namespace Brainf_ckSharp.Uwp.Converters.Console;
 
@@ -21,7 +21,7 @@ public static class SyntaxValidationResultConverter
     /// <summary>
     /// The "operator" localized text
     /// </summary>
-    private static readonly string Operator = "SyntaxValidationResult/Operator".GetLocalized();
+    private static readonly string Operator = "SyntaxValidationResult/Operator".GetLocalized()!;
 
     /// <summary>
     /// Converts a given <see cref="SyntaxValidationResult"/> instance to its representation

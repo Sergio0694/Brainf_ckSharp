@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.Toolkit.Uwp;
+using System;
+using CommunityToolkit.WinUI;
 
 namespace Brainf_ckSharp.Uwp.Converters;
 
@@ -27,7 +27,7 @@ public static class EnumConverter
     /// <returns>A localized representation for <paramref name="value"/></returns>
     public static string Convert<T>(T value) where T : struct, Enum
     {
-        return $"{typeof(T).Name}/{value}".GetLocalized();
+        return $"{typeof(T).Name}/{value}".GetLocalized()!;
     }
 
     /// <summary>
@@ -50,6 +50,6 @@ public static class EnumConverter
     /// <returns>A localized representation for <paramref name="value"/></returns>
     public static string Convert<T>(T value, string scope) where T : struct, Enum
     {
-        return $"{typeof(T).Name}/{value}/{scope}".GetLocalized();
+        return $"{typeof(T).Name}/{value}/{scope}".GetLocalized()!;
     }
 }

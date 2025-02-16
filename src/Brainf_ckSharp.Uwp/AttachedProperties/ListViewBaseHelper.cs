@@ -1,10 +1,10 @@
-﻿using System.Collections.Specialized;
+using System.Collections.Specialized;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Microsoft.Toolkit.Uwp.UI;
 using CommunityToolkit.Diagnostics;
+using CommunityToolkit.WinUI;
 
 #nullable enable
 
@@ -64,7 +64,8 @@ public static class ListViewBaseHelper
         // Remove the old handler, if necessary
         if (oldValue is not null)
         {
-            ControlsMap.Remove(oldValue);
+            _ = ControlsMap.Remove(oldValue);
+
             oldValue.CollectionChanged -= INotifyCollectionChanged_CollectionChanged;
         }
 
@@ -72,6 +73,7 @@ public static class ListViewBaseHelper
         if (newValue is not null)
         {
             ControlsMap.Add(newValue, @this);
+
             newValue.CollectionChanged += INotifyCollectionChanged_CollectionChanged;
         }
     }
@@ -95,7 +97,9 @@ public static class ListViewBaseHelper
 
         // Wait for the new item to be displayed, then scroll down
         await Task.Delay(250);
+
         ScrollViewer scroller = control.FindDescendant<ScrollViewer>()!;
-        scroller?.ChangeView(null, scroller.ScrollableHeight, null, false);
+
+        _ = scroller?.ChangeView(null, scroller.ScrollableHeight, null, false);
     }
 }

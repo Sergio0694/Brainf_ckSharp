@@ -1,11 +1,11 @@
-﻿<ResourceDictionary
+<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media">
+    xmlns:media="using:CommunityToolkit.WinUI.Media">
 
     <!--Shell header background brush-->
     <media:AcrylicBrush
-        x:Key="ShellHeaderBackgroundBrush"
+        x:Key="ShellCommonBackgroundBrush"
         BackgroundSource="Backdrop"
         BlurAmount="8"
         TintColor="#FF1E1E1E"

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Input;
 using Windows.System;
 using Windows.UI.Xaml;
@@ -16,7 +16,6 @@ using Microsoft.Extensions.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Microsoft.Toolkit.Uwp.Helpers;
 
 #nullable enable
 
@@ -30,7 +29,7 @@ public sealed partial class Shell : UserControl
     /// <summary>
     /// The previous height of the virtual keyboard
     /// </summary>
-    private double _previousKeyboardHeight;
+    private double previousKeyboardHeight;
 
     public Shell()
     {
@@ -60,7 +59,7 @@ public sealed partial class Shell : UserControl
     /// </summary>
     private void Shell_OnLoaded(object sender, RoutedEventArgs e)
     {
-        if (SystemInformation.Instance.LaunchCount == 4)
+        if (App.Current.Services.GetRequiredService<ISystemInformationService>().GetAppLaunchCount() == 4)
         {
             App.Current.SubPageHost.DisplaySubFramePage(new ReviewPromptSubPage());
         }
@@ -136,9 +135,9 @@ public sealed partial class Shell : UserControl
     /// </summary>
     private void Border_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        if (Math.Abs(this._previousKeyboardHeight - e.NewSize.Height) > 0.01)
+        if (Math.Abs(this.previousKeyboardHeight - e.NewSize.Height) > 0.01)
         {
-            this._previousKeyboardHeight = e.NewSize.Height;
+            this.previousKeyboardHeight = e.NewSize.Height;
 
             this.ConsolePivotItem.FooterSpacing = e.NewSize.Height;
             this.IdePivotItem.FooterSpacing = e.NewSize.Height;

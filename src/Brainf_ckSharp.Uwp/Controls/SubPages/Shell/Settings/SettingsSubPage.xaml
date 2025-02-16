@@ -15,7 +15,7 @@
     xmlns:dataTemplates="using:Brainf_ckSharp.Uwp.Controls.DataTemplates"
     xmlns:converters="using:Brainf_ckSharp.Uwp.Converters"
     xmlns:convertersSubPages="using:Brainf_ckSharp.Uwp.Converters.SubPages"
-    xmlns:convertersToolkit="using:Microsoft.Toolkit.Uwp.UI.Converters"
+    xmlns:convertersToolkit="using:CommunityToolkit.WinUI.Converters"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:controls="using:Brainf_ckSharp.Uwp.Controls.Windows.UI.Xaml.Controls"

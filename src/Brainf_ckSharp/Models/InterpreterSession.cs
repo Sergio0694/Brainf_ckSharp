@@ -188,7 +188,7 @@ public sealed class InterpreterSession : IEnumerator<InterpreterResult>
             case (DataType.UnsignedShort, true): MoveNext<TuringMachineState.UshortWithOverflowExecutionContext>(); break;
             case (DataType.UnsignedShort, false): MoveNext<TuringMachineState.UshortWithNoOverflowExecutionContext>(); break;
             default: ThrowHelper.ThrowInvalidOperationException("Invalid interpreter session configuration."); break;
-        };
+        }
 
         return true;
     }

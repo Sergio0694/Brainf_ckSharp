@@ -9,7 +9,6 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:appModel="using:Windows.ApplicationModel"
-    xmlns:helpers="using:Microsoft.Toolkit.Uwp.Helpers"
     xmlns:dataTemplates="using:Brainf_ckSharp.Uwp.Controls.DataTemplates"
     mc:Ignorable="d"
     d:DesignHeight="300"
@@ -48,7 +47,7 @@
                             FontWeight="SemiBold"
                             FontSize="14"/>
                         <Run 
-                            Text="{x:Bind helpers:PackageVersionHelper.ToFormattedString(helpers:SystemInformation.Instance.ApplicationVersion, 4)}"
+                            Text="{x:Bind ViewModel.AppVersion}"
                             FontSize="15"
                             FontWeight="SemiBold"
                             FontFamily="Consolas"/>

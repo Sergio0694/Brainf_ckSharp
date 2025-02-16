@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Brainf_ckSharp.Services;
 using Brainf_ckSharp.Shared.Constants;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -21,12 +22,21 @@ public sealed partial class AboutSubPageViewModel : ObservableObject
     private readonly IGitHubService gitHubService;
 
     /// <summary>
+    /// The <see cref="IGitHubService"/> instance currently in use
+    /// </summary>
+    private readonly ISystemInformationService systemInformationService;
+
+    /// <summary>
     /// Creates a new <see cref="AboutSubPageViewModel"/> instance
     /// </summary>
     /// <param name="gitHubService">The <see cref="IGitHubService"/> instance to use</param>
-    public AboutSubPageViewModel(IGitHubService gitHubService)
+    /// <param name="systemInformationService">The <see cref="ISystemInformationService"/> instance to use</param>
+    public AboutSubPageViewModel(
+        IGitHubService gitHubService,
+        ISystemInformationService systemInformationService)
     {
         this.gitHubService = gitHubService;
+        this.systemInformationService = systemInformationService;
     }
 
     /// <summary>
@@ -38,6 +48,11 @@ public sealed partial class AboutSubPageViewModel : ObservableObject
     /// Forwards the <see cref=" ThisAssembly.Git.Commit"/> property
     /// </summary>
     public string GitCommit => ThisAssembly.Git.Commit;
+
+    /// <summary>
+    /// Gets the current app version.
+    /// </summary>
+    public string AppVersion => this.systemInformationService.ApplicationVersion;
 
     /// <summary>
     /// Gets the name of the current build configuration
